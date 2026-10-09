@@ -34,8 +34,8 @@ test('Roster in All games: one Import from HoYoLAB and one Scan a screenshot, fo
 test('Connected accounts: one list, explained, honest about what needs you', async ({ page }) => {
   await page.goto('/all/today');
   await page.getByRole('button', { name: 'Account' }).first().click();
-  const sheet = page.getByRole('dialog', { name: 'Account' });
-  await sheet.getByRole('button', { name: /^Connected accounts/ }).click();
+  await page.getByRole('navigation', { name: 'Account sections' }).getByRole('link', { name: /^Connected accounts/ }).click();
+  const sheet = page.getByRole('region', { name: 'Connected accounts' });
   await expect(sheet.getByText('How connected accounts work')).toBeVisible();
   await expect(sheet.getByLabel('Example accounts')).toContainText('EXAMPLE');
   await expect(sheet.getByRole('region', { name: 'What HLITH can do on its own' })).toContainText('Web events need you to open them yourself');

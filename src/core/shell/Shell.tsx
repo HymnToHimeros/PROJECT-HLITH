@@ -12,7 +12,7 @@ import { useSampleShown } from '../ui/sampleMarker';
 import { Segmented } from '../ui/Segmented';
 import { useNow } from '../ui/useNow';
 import { EditLayout } from './EditLayout';
-import { navigate, parseRoute, routePath, usePath } from './route';
+import { accountPath, navigate, parseAccountRoute, parseRoute, routePath, usePath } from './route';
 import { ServerPicker } from './ServerPicker';
 import { useIsPhone } from './useIsPhone';
 import s from './shell.module.css';
@@ -26,7 +26,7 @@ interface Props {
   isOwner?: boolean;
 }
 
-type Sheet = null | 'more' | 'edit' | 'account' | 'games' | 'assistant' | 'server' | 'owner';
+type Sheet = null | 'more' | 'edit' | 'games' | 'assistant';
 
 /** Saved-layout key shared by every scope (older per-game layouts are ignored, never deleted). */
 const SHARED = 'shared';
@@ -47,8 +47,8 @@ export function Shell({ games: registered, account = null, isOwner = false }: Pr
   const sample = useSampleShown();
   useTheme();
   const [sheet, setSheet] = useState<Sheet>(null);
-  const [serverGame, setServerGame] = useState<GameId | null>(null);
-  const [accountPage, setAccountPage] = useState<string | undefined>(undefined);
+  // The game scope you came from, so the Account page keeps its colour and "back" lands there.
+  const [homeScope, setHomeScope] = useState<Scope | null>(null);
   const [tabs, setTabs] = useState<Record<string, string>>({});
 
   // Games in the switcher: the viewer's choice, else all. Never empty.
@@ -56,15 +56,17 @@ export function Shell({ games: registered, account = null, isOwner = false }: Pr
   const games = chosen.length ? chosen.map((id) => registered.find((g) => g.id === id) as GameContract) : registered;
   const scopes: Scope[] = games.length > 1 ? ['all', ...games.map((g) => g.id)] : games.map((g) => g.id);
 
-  const route = parseRoute(path);
+  const acct = parseAccountRoute(path);
+  const route = acct ? { scope: homeScope, module: null } : parseRoute(path);
   const scope: Scope = route.scope && scopes.includes(route.scope) ? route.scope : (scopes[0] ?? 'all');
   const game = scope === 'all' ? undefined : games.find((g) => g.id === scope);
   // One layout for every game and All games, so the bars mirror each other; modules a game lacks just drop out.
   const layout: LayoutState = prefs.layouts[SHARED] ?? defaultLayout();
   const visible = slot(games, scope, layout);
   const remembered = prefs.lastModule[scope];
-  const active: ModuleId | undefined =
-    route.module && visible.includes(route.module)
+  const active: ModuleId | undefined = acct
+    ? undefined
+    : route.module && visible.includes(route.module)
       ? route.module
       : remembered && visible.includes(remembered)
         ? remembered
@@ -73,8 +75,8 @@ export function Shell({ games: registered, account = null, isOwner = false }: Pr
 
   // Keep the address in step with what is shown.
   useEffect(() => {
-    if (active && path !== routePath(scope, active)) navigate(routePath(scope, active), true);
-  }, [active, scope, path]);
+    if (!acct && active && path !== routePath(scope, active)) navigate(routePath(scope, active), true);
+  }, [acct, active, scope, path]);
 
   useEffect(() => {
     if (active && prefs.lastModule[scope] !== active) {
@@ -95,15 +97,15 @@ export function Shell({ games: registered, account = null, isOwner = false }: Pr
   }, []);
 
   const close = useCallback(() => setSheet(null), []);
-  const openAccount = (page?: unknown) => {
-    // Screens often pass this straight to onClick, so ignore anything that isn't a page name.
-    setAccountPage(typeof page === 'string' ? page : undefined);
-    setSheet('account');
+  /** The Account page is a full page at /account/<section>; the browser's back button returns. */
+  const openAccount = (section?: unknown, detail?: string) => {
+    if (!acct) setHomeScope(scope);
+    setSheet(null);
+    // Screens often pass this straight to onClick, so ignore anything that isn't a section name.
+    navigate(accountPath(typeof section === 'string' ? section : null, detail));
   };
-  const openServer = (id: GameId) => {
-    setServerGame(id);
-    setSheet('server');
-  };
+  /** "Choose server" anywhere: Account → Game settings, with that game's picker first. */
+  const openServer = (id: GameId) => openAccount('game-settings', id);
   const go = (nextScope: Scope, module?: ModuleId) => (e?: MouseEvent) => {
     e?.preventDefault();
     const nextLayout = prefs.layouts[SHARED] ?? defaultLayout();
@@ -120,16 +122,17 @@ export function Shell({ games: registered, account = null, isOwner = false }: Pr
     scope,
     servers: prefs.servers,
     account,
-    close,
+    close: acct ? () => go(scope)() : close,
     open: (m, t) => {
       if (t) setTabs((cur) => ({ ...cur, [m]: t }));
       go(scope, m)();
     },
     editLayout: () => setSheet('edit'),
-    // Shows the Owner console row; every owner write is still checked on the server by public.is_owner().
+    // Shows the Owner console section; every owner write is still checked on the server by public.is_owner().
     isOwner,
-    openOwnerConsole: () => setSheet('owner'),
-    startPage: accountPage,
+    section: acct?.section ?? undefined,
+    detail: acct?.detail ?? undefined,
+    goSection: (section, detail) => openAccount(section, detail),
   };
   const setLayout = (next: LayoutState) => updatePrefs((p) => ({ ...p, layouts: { ...p.layouts, [SHARED]: next } }));
   const setServer = (gameId: string, serverId: string) => updatePrefs((p) => ({ ...p, servers: { ...p.servers, [gameId]: serverId } }));
@@ -142,9 +145,9 @@ export function Shell({ games: registered, account = null, isOwner = false }: Pr
   const labelOf = (sc: Scope) => (sc === 'all' ? 'ALL' : (games.find((g) => g.id === sc)?.short ?? sc));
   const scopeName = game ? game.name : 'All games';
   const moduleDef = active ? MODULES[active] : undefined;
+  const accountPage = panel('account');
   const serverFor = (g: GameContract) => g.servers.find((sv) => sv.id === prefs.servers[g.id]);
   const clockGames = prefs.showServerTime ? (game ? [game] : games).filter((g) => serverFor(g)) : [];
-  const pickerGame = games.find((g) => g.id === serverGame) ?? game ?? games[0];
 
   const switcher = (
     <div className={s.switcher} role="group" aria-label="Game">
@@ -206,7 +209,7 @@ export function Shell({ games: registered, account = null, isOwner = false }: Pr
                 ⌘K
               </span>
             </button>
-            <button type="button" className={s.accountBtn} onClick={() => openAccount()}>
+            <button type="button" className={s.accountBtn} onClick={() => openAccount()} aria-current={acct ? 'page' : undefined}>
               {avatar('sm')}
               <span className={s.grow}>Account</span>
               <span className={s.dots} aria-hidden="true">
@@ -223,7 +226,7 @@ export function Shell({ games: registered, account = null, isOwner = false }: Pr
           {switcher}
           <span className={s.topSpacer} />
           <SyncDot status={sync} now={now} onClick={onSyncClick} />
-          <button type="button" className={s.avatarBtn} onClick={() => openAccount()} aria-label="Account">
+          <button type="button" className={s.avatarBtn} onClick={() => openAccount()} aria-label="Account" aria-current={acct ? 'page' : undefined}>
             {avatar('md')}
           </button>
         </header>
@@ -231,57 +234,92 @@ export function Shell({ games: registered, account = null, isOwner = false }: Pr
 
       {/* ── Module slot ── */}
       <main className={s.main}>
-        <div className={s.header}>
-          <div className={s.headerText}>
-            <div className={s.scopeLabel}>{scopeName.toUpperCase()}</div>
-            <h1 className={s.title}>{moduleDef?.label}</h1>
-          </div>
-          {clockGames.map((g) => (
-            <ServerClock key={g.id} game={g} serverId={serverFor(g)?.id ?? ''} now={now} tag={!game} />
-          ))}
-          {sample && (
-            <span className={s.sampleMark} title="Example values stand in until your own data or the game’s lists arrive. Look for the EXAMPLE notice on the page.">
-              SAMPLE DATA
-            </span>
-          )}
-        </div>
-        <div className={s.content}>
-          {moduleDef?.tabs && (
-            <Segmented
-              label={moduleDef.label}
-              tone="vent"
-              options={moduleDef.tabs}
-              value={tabs[moduleDef.id] ?? moduleDef.tabs[0]?.id ?? ''}
-              onChange={(t) => setTabs((cur) => ({ ...cur, [moduleDef.id]: t }))}
-            />
-          )}
-          {active && moduleScreen(active) ? (
-            <Suspense fallback={<p className={s.note}>Loading…</p>}>
-              <ModuleSlot
-                id={active}
-                games={games}
-                scope={scope}
-                tab={moduleDef?.tabs ? (tabs[moduleDef.id] ?? moduleDef.tabs[0]?.id) : undefined}
-                servers={prefs.servers}
-                openTab={(t) => setTabs((cur) => ({ ...cur, [active]: t }))}
-                open={(m, t) => {
-                  if (t) setTabs((cur) => ({ ...cur, [m]: t }));
-                  go(scope, m)();
-                }}
-                openAccount={() => openAccount()}
-                openServer={openServer}
-              />
-            </Suspense>
-          ) : (
-            <section className={s.placeholder}>
-              <span className="t-label">BEING BUILT</span>
-              <p>
-                {moduleDef?.label} for {scopeName} isn’t built yet. It shows nothing rather than made-up numbers. Progress is tracked in the
-                roadmap.
-              </p>
-            </section>
-          )}
-        </div>
+        {acct ? (
+          <>
+            <div className={s.header}>
+              <div className={s.headerText}>
+                <div className={s.scopeLabel}>YOUR ACCOUNT</div>
+                <h1 className={s.title}>Account</h1>
+              </div>
+            </div>
+            <div className={s.content}>
+              {accountPage ? (
+                <Suspense fallback={<p className={s.note}>Loading…</p>}>
+                  <PanelSlot id="account" {...panelProps} />
+                </Suspense>
+              ) : (
+                <>
+                  <button type="button" className={s.sheetRow} onClick={() => setSheet('edit')}>
+                    <span className={s.grow}>
+                      <span className={s.rowTitle}>Layout settings</span>
+                      <span className={s.rowSub}>Edit layout for {scope === 'all' ? 'All games' : labelOf(scope)}</span>
+                    </span>
+                    <span className={s.chev} aria-hidden="true">
+                      ›
+                    </span>
+                  </button>
+                  {games.map((g) => (
+                    <ServerPicker key={g.id} game={g} value={prefs.servers[g.id]} onChange={(id) => setServer(g.id, id)} now={now} legend />
+                  ))}
+                </>
+              )}
+            </div>
+          </>
+        ) : (
+          <>
+            <div className={s.header}>
+              <div className={s.headerText}>
+                <div className={s.scopeLabel}>{scopeName.toUpperCase()}</div>
+                <h1 className={s.title}>{moduleDef?.label}</h1>
+              </div>
+              {clockGames.map((g) => (
+                <ServerClock key={g.id} game={g} serverId={serverFor(g)?.id ?? ''} now={now} tag={!game} />
+              ))}
+              {sample && (
+                <span className={s.sampleMark} title="Example values stand in until your own data or the game’s lists arrive. Look for the EXAMPLE notice on the page.">
+                  SAMPLE DATA
+                </span>
+              )}
+            </div>
+            <div className={s.content}>
+              {moduleDef?.tabs && (
+                <Segmented
+                  label={moduleDef.label}
+                  tone="vent"
+                  options={moduleDef.tabs}
+                  value={tabs[moduleDef.id] ?? moduleDef.tabs[0]?.id ?? ''}
+                  onChange={(t) => setTabs((cur) => ({ ...cur, [moduleDef.id]: t }))}
+                />
+              )}
+              {active && moduleScreen(active) ? (
+                <Suspense fallback={<p className={s.note}>Loading…</p>}>
+                  <ModuleSlot
+                    id={active}
+                    games={games}
+                    scope={scope}
+                    tab={moduleDef?.tabs ? (tabs[moduleDef.id] ?? moduleDef.tabs[0]?.id) : undefined}
+                    servers={prefs.servers}
+                    openTab={(t) => setTabs((cur) => ({ ...cur, [active]: t }))}
+                    open={(m, t) => {
+                      if (t) setTabs((cur) => ({ ...cur, [m]: t }));
+                      go(scope, m)();
+                    }}
+                    openAccount={() => openAccount()}
+                    openServer={openServer}
+                  />
+                </Suspense>
+              ) : (
+                <section className={s.placeholder}>
+                  <span className="t-label">BEING BUILT</span>
+                  <p>
+                    {moduleDef?.label} for {scopeName} isn’t built yet. It shows nothing rather than made-up numbers. Progress is tracked in the
+                    roadmap.
+                  </p>
+                </section>
+              )}
+            </div>
+          </>
+        )}
       </main>
 
       {phone && (
@@ -332,21 +370,6 @@ export function Shell({ games: registered, account = null, isOwner = false }: Pr
         <EditLayout games={games} scope={scope} layout={layout} onChange={setLayout} onDone={close} scopeName={scopeName} />
       </BottomSheet>
 
-      <BottomSheet open={sheet === 'server' && Boolean(pickerGame)} title={`Server · ${pickerGame?.name ?? ''}`} onClose={close} placement="center" closeButton>
-        <p className={s.sheetText}>Resets follow the game’s server, not your clock. Each game keeps its own server and reset rule.</p>
-        {pickerGame && (
-          <ServerPicker
-            game={pickerGame}
-            value={prefs.servers[pickerGame.id]}
-            now={now}
-            onChange={(id) => {
-              setServer(pickerGame.id, id);
-              close();
-            }}
-          />
-        )}
-      </BottomSheet>
-
       <BottomSheet open={sheet === 'games'} title="Add a game" onClose={close} placement="center" closeButton>
         <p className={s.sheetText}>
           A game is one record: name, vent colour, icon, currencies, reset times and the modules it supports. The shell stays the same. Turning a game off
@@ -386,37 +409,6 @@ export function Shell({ games: registered, account = null, isOwner = false }: Pr
         })}
         <p className={s.note}>More games arrive as their records are added. Nothing else changes.</p>
       </BottomSheet>
-
-      <BottomSheet open={sheet === 'account'} title="Account" onClose={close} placement="center" hideTitle={Boolean(panel('settings'))} closeButton>
-        {panel('settings') ? (
-          <Suspense fallback={<p className={s.note}>Loading…</p>}>
-            <PanelSlot id="settings" {...panelProps} />
-          </Suspense>
-        ) : (
-          <>
-            <button type="button" className={s.sheetRow} onClick={() => setSheet('edit')}>
-              <span className={s.grow}>
-                <span className={s.rowTitle}>Layout settings</span>
-                <span className={s.rowSub}>Edit layout for {scope === 'all' ? 'All games' : labelOf(scope)}</span>
-              </span>
-              <span className={s.chev} aria-hidden="true">
-                ›
-              </span>
-            </button>
-            {games.map((g) => (
-              <ServerPicker key={g.id} game={g} value={prefs.servers[g.id]} onChange={(id) => setServer(g.id, id)} now={now} legend />
-            ))}
-          </>
-        )}
-      </BottomSheet>
-
-      {isOwner && panel('owner') && (
-        <BottomSheet open={sheet === 'owner'} title="Owner console" onClose={close} side>
-          <Suspense fallback={<p className={s.note}>Loading…</p>}>
-            <PanelSlot id="owner" {...panelProps} />
-          </Suspense>
-        </BottomSheet>
-      )}
 
       <BottomSheet open={sheet === 'assistant'} title="Assistant" onClose={close} side>
         {panel('assistant') ? (

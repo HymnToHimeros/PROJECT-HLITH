@@ -2,122 +2,21 @@ import { useEffect, useState } from 'react';
 import type { GameContract, GameId } from '../../core/contract';
 import { BACKUP_EVERY_DAYS, daysSinceBackup, downloadBackup, parseBackup, restoreBackup, summarize, type Backup } from '../../core/data/backup';
 import { updatePrefs, usePrefs } from '../../core/data/prefs';
-import { canSync, syncNow, useSyncStatus, type SyncStatus } from '../../core/data/sync';
-import type { PanelProps } from '../../core/registry/panels';
+import { canSync, syncNow, type SyncStatus } from '../../core/data/sync';
 import { ServerPicker } from '../../core/shell/ServerPicker';
 import { setTheme } from '../../core/theme/theme';
 import { formatDate, formatTime } from '../../core/time/reset';
-import { Button, HowTo, useNow } from '../../core/ui';
-import { LinkAccounts } from '../account-links/LinkAccount';
-import { FeedSettings } from '../feeds/FeedSettings';
+import { Button, HowTo } from '../../core/ui';
 import { callFunction, hasServer, type DeletionRequest } from '../feeds/server';
 import a from './account.module.css';
-import { Guide } from './Guide';
-import { ago, Card, Row, SubHeader, Switch } from './parts';
-import { SetupChecklist } from './SetupChecklist';
+import { ago, Card, Switch } from './parts';
 
-type Page = 'root' | 'sync' | 'backup' | 'notifications' | 'game-settings' | 'connections' | 'guide' | 'theme' | 'sign-in';
-const PAGES: Page[] = ['root', 'sync', 'backup', 'notifications', 'game-settings', 'connections', 'guide', 'theme', 'sign-in'];
-
-const PROVIDER: Record<string, string> = { google: 'Google', discord: 'Discord', email: 'email' };
-
-/**
- * Account sheet (design: Account sheet). Rows exactly as the design: Sync, Backup,
- * Notifications, Game settings, Guide, Layout settings, Theme, Owner console (owners
- * only), Sign out. Each row opens a page inside the sheet with a back arrow.
+/*
+ * The Account page's settings sections (Sync, Backup, Game settings, Theme, Sign in).
+ * They were the sub-pages of the old Account sheet; the page draws them now.
  */
-export default function AccountPanel(props: PanelProps) {
-  const start = PAGES.includes(props.startPage as Page) ? (props.startPage as Page) : 'root';
-  const [page, setPage] = useState<Page>(start);
-  const prefs = usePrefs();
-  const sync = useSyncStatus();
-  const now = useNow(60_000);
-  const { account, games, scope, close } = props;
-  const back = () => setPage('root');
-  const n = games.length;
-  const who = account ? `Signed in with ${PROVIDER[account.provider ?? ''] ?? account.provider ?? 'your account'} · ${n} game${n === 1 ? '' : 's'}` : `This device only · ${n} game${n === 1 ? '' : 's'}`;
 
-  if (page !== 'root') {
-    const titles: Record<Exclude<Page, 'root'>, string> = {
-      sync: 'Sync',
-      backup: 'Backup',
-      notifications: 'Notifications',
-      'game-settings': 'Game settings',
-      connections: 'Connected accounts',
-      guide: 'Guide',
-      theme: 'Theme',
-      'sign-in': 'Sign in',
-    };
-    return (
-      <div className={a.stack}>
-        <SubHeader title={titles[page]} onBack={back} onClose={close} />
-        {page === 'sync' && <SyncPage status={sync} now={now} signedIn={Boolean(account)} />}
-        {page === 'backup' && <BackupPage now={now} signedIn={Boolean(account)} />}
-        {page === 'notifications' && <FeedSettings games={games} servers={prefs.servers} signedIn={Boolean(account)} chooseServer={() => setPage('game-settings')} />}
-        {page === 'game-settings' && <GameSettingsPage games={games} allGames={props.allGames} now={now} />}
-        {page === 'connections' && <LinkAccounts games={games} />}
-        {page === 'guide' && (
-          <>
-            <SetupChecklist games={games} open={props.open} goTo={setPage} />
-            <Guide open={props.open} />
-          </>
-        )}
-        {page === 'theme' && <ThemePage />}
-        {page === 'sign-in' && <SignInPage />}
-      </div>
-    );
-  }
-
-  const days = daysSinceBackup(now);
-  const notify = prefs.notify;
-  const scopeShort = scope === 'all' ? 'All games' : (games.find((g) => g.id === scope)?.short ?? scope);
-  return (
-    <div className={a.stack}>
-      <div className={a.head}>
-        <span className={a.avatar} aria-hidden="true">
-          {account?.email.charAt(0).toUpperCase()}
-        </span>
-        <div className={a.headText}>
-          <h2 className={a.title}>Account</h2>
-          <span className={a.sub} title={account?.email}>
-            {who}
-          </span>
-        </div>
-        <button type="button" className={a.iconBtn} onClick={close} aria-label="Close">
-          ✕
-        </button>
-      </div>
-      <Row title="Sync" sub={syncSub(sync, now)} onClick={() => setPage('sync')} />
-      <Row
-        title="Backup"
-        sub={days === null ? 'No backup yet' : `Last backup ${days === 0 ? 'today' : days === 1 ? 'yesterday' : `${days} days ago`}${days >= BACKUP_EVERY_DAYS ? ' · time for a new one' : ''}`}
-        onClick={() => setPage('backup')}
-      />
-      <Row title="Notifications" sub={notify?.enabled ? `Evening message at ${notify.time}` : 'Resets, stamina full, banners ending'} onClick={() => setPage('notifications')} />
-      <Row title="Game settings" sub="Server and reset times, per game" onClick={() => setPage('game-settings')} />
-      {/* Not in the design (Override 5): HoYoLAB link sits with the game settings it belongs to. */}
-      <Row title="Connected accounts" sub="HoYoLAB · live stamina, check-in, character import" onClick={() => setPage('connections')} />
-      <Row title="Guide" sub="How HLITH works · setup checklist" onClick={() => setPage('guide')} />
-      <Row title="Layout settings" sub={`Edit layout for ${scopeShort}`} onClick={props.editLayout} />
-      <Row title="Theme" sub={prefs.theme === 'light' ? 'Light' : 'Dark'} onClick={() => setPage('theme')} />
-      {props.isOwner && props.openOwnerConsole && <Row title="Owner console" sub="Only the site owner sees this · games, lists, sources" onClick={props.openOwnerConsole} />}
-      {account ? (
-        <Row title="Sign out" sub="Your data stays on your account" onClick={account.onSignOut} />
-      ) : (
-        <Row title="Sign in" sub="Not switched on for this site yet · everything stays on this device" onClick={() => setPage('sign-in')} />
-      )}
-      <HowTo
-        steps={[
-          'Tap a row to open it; the arrow at the top takes you back here.',
-          'Start with Guide: its setup checklist shows what to do first, and ticks itself as you go.',
-          'Download a backup now and then (Backup). Your game data lives on this device.',
-        ]}
-      />
-    </div>
-  );
-}
-
-function syncSub(status: SyncStatus, now: number): string {
+export function syncSub(status: SyncStatus, now: number): string {
   if (status.state === 'synced') {
     const min = Math.floor((now - status.at) / 60_000);
     return `Last sync ${min < 1 ? 'just now' : `${min} min ago`} · tap to sync now`;
@@ -128,7 +27,7 @@ function syncSub(status: SyncStatus, now: number): string {
   return 'This device only · nothing leaves this browser';
 }
 
-function SyncPage({ status, now, signedIn }: { status: SyncStatus; now: number; signedIn: boolean }) {
+export function SyncPage({ status, now, signedIn }: { status: SyncStatus; now: number; signedIn: boolean }) {
   const [busy, setBusy] = useState(false);
   const ok = status.state === 'synced';
   return (
@@ -162,7 +61,7 @@ function SyncPage({ status, now, signedIn }: { status: SyncStatus; now: number; 
   );
 }
 
-function BackupPage({ now, signedIn }: { now: number; signedIn: boolean }) {
+export function BackupPage({ now, signedIn }: { now: number; signedIn: boolean }) {
   const prefs = usePrefs();
   const [picked, setPicked] = useState<{ backup: Backup; name: string } | null>(null);
   const [message, setMessage] = useState<{ tone: 'good' | 'warn'; text: string } | null>(null);
@@ -374,7 +273,7 @@ function taskRows(game: GameContract): { id: string; label: string }[] {
   return [...income, ...game.stamina.map((p) => ({ id: `stamina:${p.id}`, label: `Spend ${p.name} · daily` }))];
 }
 
-function GameSettingsPage({ games, allGames, now }: { games: GameContract[]; allGames: GameContract[]; now: number }) {
+export function GameSettingsPage({ games, allGames, now, focus, onBack }: { games: GameContract[]; allGames: GameContract[]; now: number; focus?: GameId | undefined; onBack?: (() => void) | undefined }) {
   const prefs = usePrefs();
   const chosen = (prefs.games ?? allGames.map((g) => g.id)).filter((id) => allGames.some((g) => g.id === id));
   const hidden = prefs.hiddenTasks ?? {};
@@ -387,9 +286,19 @@ function GameSettingsPage({ games, allGames, now }: { games: GameContract[]; all
     <>
       <Card title="Server, per game">
         <p className={a.small}>Resets follow the game’s server, not your clock. Each option shows its daily reset in your time.</p>
-        {games.map((g) => (
-          <ServerPicker key={g.id} game={g} value={prefs.servers[g.id]} now={now} legend onChange={(id) => updatePrefs((p) => ({ ...p, servers: { ...p.servers, [g.id]: id } }))} />
+        {/* Opened from a "Choose server" button: that game's picker comes first, marked. */}
+        {[...games].sort((x, y) => Number(y.id === focus) - Number(x.id === focus)).map((g) => (
+          <div key={g.id} className={g.id === focus ? a.focus : undefined}>
+            <ServerPicker game={g} value={prefs.servers[g.id]} now={now} legend onChange={(id) => updatePrefs((p) => ({ ...p, servers: { ...p.servers, [g.id]: id } }))} />
+          </div>
         ))}
+        {focus && onBack && games.some((g) => g.id === focus) && (
+          <div className={a.actions}>
+            <Button variant={prefs.servers[focus] ? 'primary' : 'secondary'} onClick={onBack}>
+              Done · back to where you were
+            </Button>
+          </div>
+        )}
         <Switch label="Show server time" hint="A small clock next to each screen’s title." checked={Boolean(prefs.showServerTime)} onChange={(on) => updatePrefs((p) => ({ ...p, showServerTime: on }))} />
       </Card>
       <Card title="Your games">
@@ -426,7 +335,7 @@ function GameSettingsPage({ games, allGames, now }: { games: GameContract[]; all
   );
 }
 
-function ThemePage() {
+export function ThemePage() {
   const theme = usePrefs().theme ?? 'dark';
   const options = [
     { id: 'dark' as const, label: 'Dark', sub: 'Glacier over basalt. The designed look.', swatch: '#08090B' },
@@ -451,7 +360,7 @@ function ThemePage() {
   );
 }
 
-function SignInPage() {
+export function SignInPage() {
   return (
     <Card title="Sign in isn’t switched on here">
       <p className={a.text}>This copy of HLITH runs in “this device only” mode: no server is connected, so there is no account to sign in to. Everything you enter stays in this browser.</p>
