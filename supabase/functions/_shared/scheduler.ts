@@ -371,14 +371,27 @@ export async function callJobFunction(fetchFn: FetchLike, baseUrl: string, servi
 export type Caller = 'cron' | 'owner' | 'nobody';
 
 /**
- * The cron job (holding the service key) or a signed-in owner (public.is_owner()).
- * Everyone else: nobody. `isOwnerToken` asks the database with the caller's own token.
+ * The cron job or a signed-in owner (public.is_owner()). Everyone else: nobody.
+ * The cron job sends the Vault secret scheduler_key; `isTimerKey` asks the database whether
+ * the token matches it (so it works whichever form of the project key the runtime holds).
+ * `isOwnerToken` asks the database with the caller's own token.
  */
-export async function whoCalls(authorization: string | null, serviceKey: string | undefined, isOwnerToken: (token: string) => Promise<boolean>): Promise<Caller> {
+export async function whoCalls(
+  authorization: string | null,
+  serviceKey: string | undefined,
+  isOwnerToken: (token: string) => Promise<boolean>,
+  isTimerKey: (token: string) => Promise<boolean> = async () => false,
+): Promise<Caller> {
   if (isScheduler(authorization, serviceKey)) return 'cron';
   const token = authorization?.match(/^Bearer\s+(.+)$/i)?.[1];
+  if (!token) return 'nobody';
+  try {
+    if (await isTimerKey(token)) return 'cron';
+  } catch {
+    // database unreachable: fall through to the owner check
+  }
   // A user token is a JWT (three dot-separated parts); the public key is not.
-  if (!token || token.split('.').length !== 3) return 'nobody';
+  if (token.split('.').length !== 3) return 'nobody';
   try {
     return (await isOwnerToken(token)) ? 'owner' : 'nobody';
   } catch {

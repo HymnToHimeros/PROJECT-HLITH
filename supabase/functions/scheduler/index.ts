@@ -1,6 +1,6 @@
 // Supabase Edge Function: the scheduler. One entry point for every fixed job.
 // Started every 15 minutes by ONE database cron job (supabase/migrations/0005_scheduler.sql),
-// which sends the key kept in Vault as scheduler_key. Each run reads the job list
+// which sends the key kept in Vault as scheduler_key (checked by scheduler_key_ok, 0006). Each run reads the job list
 // (_shared/jobs.ts), runs the jobs that are due inside a time budget, never two copies
 // of the same job (lock row), and records every run in scheduler_runs.
 // An owner can also start one job now from the Owner console: { job: "<id>" }.
@@ -32,7 +32,16 @@ Deno.serve(async (req) => {
   const anonKey = Deno.env.get('SUPABASE_ANON_KEY');
   if (!url || !serviceKey) return json({ error: 'The server is missing its settings.' }, 500);
 
-  const caller = await whoCalls(req.headers.get('Authorization'), serviceKey, (token) => ownerByToken(token, { url, anonKey }, (u, init) => fetch(u, init)));
+  const db = createClient(url, serviceKey, { auth: { persistSession: false } });
+  const caller = await whoCalls(
+    req.headers.get('Authorization'),
+    serviceKey,
+    (token) => ownerByToken(token, { url, anonKey }, (u, init) => fetch(u, init)),
+    async (token) => {
+      const ok = await db.rpc('scheduler_key_ok', { p_key: token });
+      return !ok.error && ok.data === true;
+    },
+  );
   if (caller === 'nobody') return json({ error: 'Not allowed.' }, 401);
 
   let body: { job?: unknown } = {};
@@ -45,7 +54,6 @@ Deno.serve(async (req) => {
   if (caller === 'owner' && !only) return json({ error: 'Send { job: "<id>" } to run one job now.' }, 400);
   if (only && !findJob(only)) return json({ error: `No job called “${only}”.` }, 400);
 
-  const db = createClient(url, serviceKey, { auth: { persistSession: false } });
   const store: SchedulerStore = {
     async register(ids) {
       const { error } = await db.from('scheduler_jobs').upsert(
