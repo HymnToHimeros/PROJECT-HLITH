@@ -285,6 +285,15 @@ describe('who may start the scheduler', () => {
     expect(await whoCalls('Bearer a.b.c', 'svc', async () => Promise.reject(new Error('down')))).toBe('nobody');
   });
 
+  it('the cron job is also let in when its token matches the Vault secret, even if the runtime key differs', async () => {
+    const timerKey = vi.fn(async (token: string) => token === 'vault.jwt.key');
+    expect(await whoCalls('Bearer vault.jwt.key', 'other-form-of-key', ownerCheck, timerKey)).toBe('cron');
+    expect(await whoCalls('Bearer vault.jwt.key', undefined, ownerCheck, timerKey)).toBe('cron');
+    expect(await whoCalls('Bearer a.owner.jwt', 'svc', ownerCheck, timerKey)).toBe('owner');
+    expect(await whoCalls('Bearer wrong', 'svc', ownerCheck, timerKey)).toBe('nobody');
+    expect(await whoCalls('Bearer a.owner.jwt', 'svc', ownerCheck, async () => Promise.reject(new Error('down')))).toBe('owner');
+  });
+
   it('asks is_owner() with the caller’s own token; only a plain true counts', async () => {
     const f = vi.fn(async () => ({ ok: true, json: async () => true }));
     expect(await ownerByToken('a.b.c', { url: 'https://x.supabase.co/', anonKey: 'anon' }, f)).toBe(true);

@@ -26,6 +26,11 @@ Resume with: "continue from PROGRESS.md". Newest entry on top.
 - CI (`.github/workflows/ci.yml`) runs both on every pull request.
 
 ## Done
+- 2026-10-09 · **Timer key fix** (branch `frame/scheduler-key-check`). The first
+  timer run (23:30 UTC) was refused (401): the scheduler compared the Vault key with
+  its own copy of the project key, which differs. It now asks the database
+  (`scheduler_key_ok`, migration 0006) whether the key matches the Vault secret
+  `scheduler_key`. Tested on local Postgres; browser users can't call it.
 - 2026-10-09 · **R63 Scheduler frame** (branch `frame/scheduler`). Shown to you
   for approval (no design yet, Override 5).
   - Live since PR #30. One Cron job (`hlith-scheduler`, every 15 min) exists
