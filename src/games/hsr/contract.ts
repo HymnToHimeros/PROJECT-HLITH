@@ -50,7 +50,7 @@ export const hsr: GameContract = {
   currencies: [
     { id: 'stellar-jade', name: 'Stellar Jade', perPull: 160 },
     { id: 'special-pass', name: 'Star Rail Special Pass', pullItemFor: ['character', 'light-cone'] },
-    { id: 'pass', name: 'Star Rail Pass', pullItemFor: ['standard'] },
+    { id: 'pass', name: 'Star Rail Pass', pullItemFor: ['standard', 'departure'] },
     { id: 'oneiric-shard', name: 'Oneiric Shard', paid: true },
   ],
   stamina: [{ id: 'trailblaze-power', name: 'Trailblaze Power', max: 240, minutesPerPoint: 6 }],
@@ -91,6 +91,13 @@ export const hsr: GameContract = {
       },
     },
     {
+      id: 'departure',
+      label: 'Departure Warp',
+      pullItem: 'pass',
+      target: 'other',
+      pity: { kind: 'hard-pity', hardPity: 50, baseRate: 0.006 },
+    },
+    {
       id: 'standard',
       label: 'Stellar Warp',
       pullItem: 'pass',
@@ -108,6 +115,13 @@ export const hsr: GameContract = {
     { id: 'hsr.events', source: 'events', label: 'Events', currency: 'stellar-jade', amount: null, schedule: { kind: 'from-events' } },
     { id: 'hsr.login', source: 'login', label: 'Login events', currency: 'stellar-jade', amount: null, schedule: { kind: 'from-login-events' } },
   ],
+  historyMapping: {
+    uigfKey: 'hkrpg',
+    // 1 Stellar Warp · 2 Departure Warp · 11 character event · 12 light cone event.
+    // Collaboration warps (21, 22) are skipped until their pity rules are confirmed.
+    gachaTypes: { '1': 'standard', '2': 'departure', '11': 'character', '12': 'light-cone' },
+    rarity: { '5': 'top', '4': 'mid', '3': 'low' },
+  },
   historyImporters: [
     { id: 'srgf', kind: 'file', label: 'SRGF export file' },
     { id: 'uigf-v4', kind: 'file', label: 'UIGF v4 export file' },

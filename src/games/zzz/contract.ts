@@ -106,6 +106,12 @@ export const zzz: GameContract = {
     { id: 'zzz.events', source: 'events', label: 'Events', currency: 'polychrome', amount: null, schedule: { kind: 'from-events' } },
     { id: 'zzz.login', source: 'login', label: 'Login events', currency: 'polychrome', amount: null, schedule: { kind: 'from-login-events' } },
   ],
+  historyMapping: {
+    uigfKey: 'nap',
+    // 1 Stable Channel · 2 Exclusive Channel · 3 W-Engine Channel · 5 Bangboo Channel.
+    gachaTypes: { '1': 'standard', '2': 'exclusive', '3': 'w-engine', '5': 'bangboo' },
+    rarity: { '4': 'top', '3': 'mid', '2': 'low' },
+  },
   historyImporters: [
     { id: 'uigf-v4', kind: 'file', label: 'UIGF v4 export file' },
     { id: 'zzz-link', kind: 'link', label: 'In-game history link' },

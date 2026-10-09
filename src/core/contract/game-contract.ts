@@ -77,6 +77,8 @@ export interface GameContract {
   bannerTypes: BannerType[];
   income: IncomeRow[];
   historyImporters: HistoryImporter[]; // [] = no import; History offers manual entry
+  /** How this game's history exports and links map onto HLITH (data, read by tools/import). */
+  historyMapping?: HistoryMapping;
 
   // ── Built-in lists (seed data; the owner can update them later) ─
   data: GameDataLoaders;
@@ -174,6 +176,17 @@ export interface HistoryImporter {
   label: string;
   /** file: parsed in the browser · link: sent to the gacha-import server function. */
   parse?: (input: string) => Promise<PullRecord[]>;
+}
+
+export interface HistoryMapping {
+  /** Section name inside a UIGF v4 file: 'hkrpg' (HSR), 'nap' (ZZZ), 'hk4e' (Genshin). */
+  uigfKey?: string;
+  /** The game's gacha_type → our BannerType id. Unlisted types are skipped and counted. */
+  gachaTypes: Record<string, string>;
+  /** The game's rank_type → rarity. */
+  rarity: Record<string, 'top' | 'mid' | 'low'>;
+  /** Item ids of standard-pool top results: getting one on a featured banner = lost 50/50. */
+  standardTop?: string[];
 }
 
 export interface AccountLink {
