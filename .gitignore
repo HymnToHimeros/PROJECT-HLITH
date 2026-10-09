@@ -4,8 +4,8 @@ test-results/
 playwright-report/
 .env
 .env.*
-!.env.production
-!.env.example
+!config/.env.production
+!config/.env.example
 *.local
 
 # Temporary copies used by parallel builders
