@@ -188,6 +188,19 @@
   color: var(--ink-4);
 }
 
+/* Example data marker: glacier, dashed, clearly not a real value. */
+.exampleTag {
+  display: inline-block;
+  flex: none;
+  font: 600 9px/1 var(--font-numbers);
+  letter-spacing: 0.08em;
+  padding: 3px 5px;
+  border-radius: var(--r-tag);
+  border: 1px dashed var(--glacier);
+  color: var(--glacier);
+  vertical-align: middle;
+}
+
 /* ── Character tile ── */
 .charTile {
   display: flex;

@@ -1,0 +1,203 @@
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-4);
+}
+.notice {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--s-3);
+  padding: var(--s-3) var(--s-4);
+  border-radius: var(--r-card);
+  border: 1px dashed var(--glacier);
+  background: color-mix(in srgb, var(--glacier) 6%, transparent);
+  color: var(--ink-2);
+  font-size: 13px;
+  line-height: 1.45;
+}
+.gameHead {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  margin: var(--s-2) 0 0;
+  font-size: 15px;
+  font-weight: 700;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: var(--s-3);
+}
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--line-default);
+  border-radius: var(--r-card);
+  padding: var(--s-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-3);
+  min-width: 0;
+}
+.cardHead {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--s-2);
+}
+.cardTitle {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 700;
+}
+.kind {
+  font-size: 12px;
+  color: var(--ink-4);
+}
+.figures {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--s-2);
+}
+.figure {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+.figLabel {
+  font-size: 12px;
+  color: var(--ink-3);
+}
+.figValue {
+  font: 600 22px/1 var(--font-numbers);
+  font-variant-numeric: tabular-nums;
+}
+.odds {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-top: var(--s-2);
+  border-top: 1px solid var(--line-subtle);
+  font-size: 13px;
+  color: var(--ink-3);
+}
+.oddsRow {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--s-2);
+}
+.oddsValue {
+  font: 600 13px var(--font-numbers);
+  color: var(--ink-1);
+}
+.verdict {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink-1);
+}
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+.table th {
+  text-align: left;
+  font: 600 10px var(--font-numbers);
+  letter-spacing: 0.12em;
+  color: var(--ink-5);
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--line-default);
+}
+.table td {
+  padding: 10px;
+  border-bottom: 1px solid var(--line-subtle);
+  vertical-align: top;
+}
+.num {
+  font-family: var(--font-numbers);
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+  white-space: nowrap;
+}
+.muted {
+  color: var(--ink-4);
+  font-size: 12px;
+}
+.tableWrap {
+  overflow-x: auto;
+  background: var(--bg-card);
+  border: 1px solid var(--line-default);
+  border-radius: var(--r-card);
+}
+.totalRow td {
+  border-bottom: 0;
+  font-weight: 700;
+}
+.toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+  font-size: 14px;
+  color: var(--ink-2);
+  min-height: var(--tap-min);
+  cursor: pointer;
+}
+.toggle input {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--vent);
+}
+.form {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: var(--s-2);
+}
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 12px;
+  color: var(--ink-3);
+}
+.input {
+  min-height: var(--tap-min);
+  padding: 0 var(--s-3);
+  border-radius: var(--r-button);
+  border: 1px solid var(--line-mid);
+  background: var(--bg-inset);
+  color: var(--ink-1);
+  font: inherit;
+  font-size: 14px;
+}
+.textarea {
+  min-height: 88px;
+  width: 100%;
+  padding: var(--s-3);
+  border-radius: var(--r-button);
+  border: 1px solid var(--line-mid);
+  background: var(--bg-inset);
+  color: var(--ink-1);
+  font: 13px var(--font-numbers);
+  resize: vertical;
+}
+.message {
+  font-size: 13px;
+  color: var(--ink-2);
+}
+.error {
+  font-size: 13px;
+  color: var(--ember-soft);
+}
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.top {
+  color: var(--rarity-top);
+  font-weight: 700;
+}
+.lost {
+  color: var(--ink-4);
+}

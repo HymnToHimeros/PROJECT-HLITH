@@ -1,9 +1,9 @@
-import { useCallback, useEffect, useRef, useState, type CSSProperties, type MouseEvent } from 'react';
+import { createElement, Suspense, useCallback, useEffect, useRef, useState, type CSSProperties, type MouseEvent } from 'react';
 import type { GameContract, ModuleId } from '../contract';
 import { updatePrefs, usePrefs } from '../data/prefs';
 import { useSyncStatus, type SyncStatus } from '../data/sync';
 import { defaultLayout, phoneBar, slot, type LayoutState, type Scope } from '../registry/layout';
-import { MODULES } from '../registry/modules';
+import { moduleScreen, MODULES, type ModuleScreenProps } from '../registry/modules';
 import { formatTime, nextDailyReset, serverRule } from '../time/reset';
 import { BottomSheet } from '../ui/BottomSheet';
 import { Segmented } from '../ui/Segmented';
@@ -23,6 +23,7 @@ interface Props {
 type Sheet = null | 'more' | 'edit' | 'account' | 'games' | 'assistant' | 'pick-game';
 
 const LONG_PRESS_MS = 500;
+
 
 /**
  * Layer 1: same for every game, never moves, never hides. Knows nothing about
@@ -192,13 +193,25 @@ export function Shell({ games: registered, account = null }: Props) {
               onChange={(t) => setTabs((cur) => ({ ...cur, [moduleDef.id]: t }))}
             />
           )}
-          <section className={s.placeholder}>
-            <span className="t-label">BEING BUILT</span>
-            <p>
-              {moduleDef?.label} for {scopeName} isn’t built yet. It shows nothing rather than made-up numbers. Progress is tracked in the
-              roadmap.
-            </p>
-          </section>
+          {active && moduleScreen(active) ? (
+            <Suspense fallback={<p className={s.note}>Loading…</p>}>
+              <ModuleSlot
+                id={active}
+                games={games}
+                scope={scope}
+                tab={moduleDef?.tabs ? (tabs[moduleDef.id] ?? moduleDef.tabs[0]?.id) : undefined}
+                servers={prefs.servers}
+              />
+            </Suspense>
+          ) : (
+            <section className={s.placeholder}>
+              <span className="t-label">BEING BUILT</span>
+              <p>
+                {moduleDef?.label} for {scopeName} isn’t built yet. It shows nothing rather than made-up numbers. Progress is tracked in the
+                roadmap.
+              </p>
+            </section>
+          )}
         </div>
       </main>
 
@@ -305,6 +318,12 @@ export function Shell({ games: registered, account = null }: Props) {
       </BottomSheet>
     </div>
   );
+}
+
+/** Draws the registered screen for a module (screens are prepared once at registration). */
+function ModuleSlot({ id, ...props }: { id: ModuleId } & ModuleScreenProps) {
+  const screen = moduleScreen(id);
+  return screen ? createElement(screen, props) : null;
 }
 
 function SyncLine({ status }: { status: SyncStatus }) {

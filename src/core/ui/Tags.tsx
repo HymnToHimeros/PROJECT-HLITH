@@ -21,3 +21,12 @@ export function UnverifiedTag({ source }: { source: string }) {
     </span>
   );
 }
+
+/** Marks example data shown before you add your own. Never shown on real values. */
+export function ExampleTag() {
+  return (
+    <span className={s.exampleTag} title="Example data, not yours">
+      EXAMPLE
+    </span>
+  );
+}
