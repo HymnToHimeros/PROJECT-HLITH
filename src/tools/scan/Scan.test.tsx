@@ -1,9 +1,10 @@
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor, within } from '@testing-library/react';
+import type { GameContract } from '../../core/contract';
 import { beforeEach, describe, expect, it } from 'vitest';
 import { gameData, resetUserData, setRosterEntry } from '../../core/data/userData';
 import { fakeGame } from '../account-links/fakeGame';
 import { checkValues, fieldsFor } from './scan';
-import { Scan } from './Scan';
+import { Scan, ScanEntry } from './Scan';
 
 const game = fakeGame();
 
@@ -59,5 +60,28 @@ describe('Scan', () => {
     await screen.findByRole('option', { name: 'Ice Friend' });
     fireEvent.change(screen.getByLabelText(/Eidolon/), { target: { value: '9' } });
     expect(screen.getByRole('button', { name: 'Save to my roster' })).toBeDisabled();
+  });
+});
+
+/** The same made-up game without a screenshot scan. */
+function noScan(g: GameContract): GameContract {
+  const { scan, ...rest } = g;
+  void scan;
+  return rest;
+}
+
+describe('Scan a screenshot button', () => {
+  it('is one button for several games; the sheet asks which game the screenshot is from', async () => {
+    const other = fakeGame({ id: 'bb', short: 'BB', name: 'Game B' });
+    render(<ScanEntry games={[game, other, noScan(fakeGame({ id: 'cc', short: 'CC' }))]} />);
+    const buttons = screen.getAllByRole('button', { name: 'Scan a screenshot' });
+    expect(buttons).toHaveLength(1);
+    fireEvent.click(buttons[0] as HTMLElement);
+    const tabs = await screen.findByRole('tablist', { name: 'Which game is the screenshot from' });
+    expect(within(tabs).getAllByRole('tab').map((t) => t.textContent)).toEqual(['AA', 'BB']);
+  });
+  it('is disabled when no game has a scan', () => {
+    render(<ScanEntry games={[noScan(fakeGame())]} />);
+    expect(screen.getByRole('button', { name: 'Scan a screenshot' })).toBeDisabled();
   });
 });

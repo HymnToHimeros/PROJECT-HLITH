@@ -119,8 +119,8 @@ export function Characters({ data, several, onOpen }: Props) {
         {/* RosterImport mounts here (account-links builder) */}
         {game && (
           <span className={r.importGroup}>
-            <RosterImport game={game} />
-            <ScanEntry game={game} />
+            <RosterImport games={[game]} />
+            <ScanEntry games={[game]} />
           </span>
         )}
         <span className={r.grow} />
