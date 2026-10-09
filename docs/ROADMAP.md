@@ -11,14 +11,14 @@ so it can't drift from the real code. Never tick a box by hand; add the proof.
 Who builds what: see `docs/WORKSTREAMS.md`.
 
 <!-- roadmap:summary -->
-**5 of 61 done** `██░░░░░░░░░░░░░░░░░░` 8%
+**8 of 61 done** `███░░░░░░░░░░░░░░░░░` 13%
 
-**Next up:** R06 Colour, type and spacing tokens (ink.5 lightened)
+**Next up:** R09 Game contract (the shape every game fills in)
 
 | Phase | Progress | Done |
 |---|---|---|
 | Phase 0 · Foundation | `██████████` | 5 / 5 |
-| Phase 1 · Look | `░░░░░░░░░░` | 0 / 3 |
+| Phase 1 · Look | `██████████` | 3 / 3 |
 | Phase 2 · Skeleton | `░░░░░░░░░░` | 0 / 11 |
 | Phase 3 · Accounts and data | `░░░░░░░░░░` | 0 / 5 |
 | Phase 4 · Engines | `░░░░░░░░░░` | 0 / 4 |
@@ -35,9 +35,9 @@ Who builds what: see `docs/WORKSTREAMS.md`.
 - [x] R05 Self-checking roadmap and workstreams · proof: `scripts/roadmap.ts`, `tests/roadmap.test.ts`, `docs/WORKSTREAMS.md`
 
 ## Phase 1 · Look
-- [ ] R06 Colour, type and spacing tokens (ink.5 lightened) · proof: `src/core/theme/tokens.css`
-- [ ] R07 Shared components (stat tile, progress bar, no data yet…) · proof: `src/core/ui/index.ts`
-- [ ] R08 Component preview page · proof: `src/core/ui/Preview.tsx`
+- [x] R06 Colour, type and spacing tokens (ink.5 lightened) · proof: `src/core/theme/tokens.css`
+- [x] R07 Shared components (stat tile, progress bar, no data yet…) · proof: `src/core/ui/index.ts`
+- [x] R08 Component preview page · proof: `src/core/ui/Preview.tsx`
 
 ## Phase 2 · Skeleton
 - [ ] R09 Game contract (the shape every game fills in) · proof: `src/core/contract/game-contract.ts`

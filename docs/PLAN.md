@@ -131,7 +131,7 @@ export type Known<T> =
   | { known: false; fix?: FixAction };            // UI shows "—  No data yet · <fix>"
 
 export type DataSource = 'official' | 'hoyolab' | 'import' | 'scan' | 'user' | 'assistant' | 'leak';
-export type FixAction = 'connect-hoyolab' | 'import-history' | 'import-build'
+export type FixAction = 'connect-account' | 'import-history' | 'import-build'
                       | 'enter-manually' | 'scan-screenshot';
 
 export interface GameContract {
