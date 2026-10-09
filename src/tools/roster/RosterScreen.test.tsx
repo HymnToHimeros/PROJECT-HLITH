@@ -76,6 +76,8 @@ const tileNames = () =>
     .getAllByRole('button')
     .map((b) => b.getAttribute('aria-label'));
 
+const openFilters = () => fireEvent.click(screen.getByRole('button', { name: /^Filters/ }));
+
 const openPage = async (name: string) => {
   fireEvent.click(screen.getByRole('button', { name }));
   return screen.findByRole('article', { name });
@@ -101,6 +103,10 @@ describe('Roster screen', () => {
     setRosterEntry('aa', 'c3', { owned: true, wanted: false, dupes: 0 });
     setRosterEntry('aa', 'c2', { owned: false, wanted: true, dupes: 0 });
     await show('characters');
+    // Search and the finer filters sit behind one closed "Filters" button.
+    expect(screen.queryByLabelText('Element')).not.toBeInTheDocument();
+    expect(screen.queryByLabelText('Search')).not.toBeInTheDocument();
+    openFilters();
     fireEvent.change(screen.getByLabelText('Element'), { target: { value: 'Fire' } });
     expect(tileNames()).toEqual(['Newest Star', 'Helper, owned']);
     const showGroup = screen.getByRole('group', { name: 'Show' });
@@ -116,6 +122,7 @@ describe('Roster screen', () => {
 
   it('tap actions mark many at once: owned, copies, and select several', async () => {
     await show('characters');
+    openFilters();
     const tap = screen.getByRole('group', { name: 'Tap a character to' });
     fireEvent.click(within(tap).getByRole('button', { name: 'Mark owned' }));
     fireEvent.click(screen.getByRole('button', { name: 'Helper' }));
@@ -222,11 +229,23 @@ describe('Roster screen', () => {
     expect(within(dialog).getAllByText('No data yet').length).toBe(2);
   });
 
-  it('All games: one grid, every tile with its game tag', async () => {
-    const b = { ...makeGame(false), id: 'bb', short: 'BB', name: 'Game B' } as GameContract;
-    await show('characters', makeGame(false), [makeGame(false), b], 'all');
-    expect(tileNames()).toContain('Newest Star (AA)');
-    expect(tileNames()).toContain('Newest Star (BB)');
-    expect(screen.getAllByText('BB').length).toBeGreaterThan(3);
+  it('All games: one game at a time, picked with a game switch that is remembered', async () => {
+    const bChars: Character[] = [{ id: 'b1', name: 'Bee Only', rarity: 'top', element: 'fire', role: 'attack' }];
+    const a = makeGame(false);
+    const b = { ...makeGame(false), id: 'bb', short: 'BB', name: 'Game B', data: { ...a.data, characters: async () => bChars } } as GameContract;
+    await show('characters', a, [a, b], 'all');
+    const sw = screen.getByRole('group', { name: 'Roster game' });
+    expect(within(sw).getByRole('button', { name: 'AA' })).toHaveAttribute('aria-pressed', 'true');
+    // Never two games mixed: only game A's tiles, no game tags.
+    expect(tileNames()).toEqual(['Newest Star', 'Older Star', 'Helper', 'Shield Friend']);
+    fireEvent.click(within(sw).getByRole('button', { name: 'BB' }));
+    expect(await screen.findByRole('button', { name: 'Bee Only' })).toBeInTheDocument();
+    expect(tileNames()).toEqual(['Bee Only']);
+    expect(localStorage.getItem('hlith.roster.game')).toBe('bb');
+  });
+
+  it('a single game shows no game switch', async () => {
+    await show('characters');
+    expect(screen.queryByRole('group', { name: 'Roster game' })).not.toBeInTheDocument();
   });
 });

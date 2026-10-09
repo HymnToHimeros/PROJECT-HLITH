@@ -43,21 +43,47 @@ export function Teams({ data, several, onOpen, openCharacters }: Props) {
 
   return (
     <div className={r.stack}>
-      <HowTo
-        steps={[
-          <>A preset is a team you play: up to {size} {word}s. Press <strong>New preset</strong>, name it and pick {word}s you own.</>,
-          <>Recommended teams list who fits each place, best first, and whether you own them.</>,
-          <>The number on each team is how well it fits your roster. It fills in once team scoring is added; until then it says “No data yet” (example teams show an example number).</>,
-          <><strong>Kit check</strong> on any team shows what each member’s skills really do, with the game’s own text as proof.</>,
-          <>Mark who you own in Characters first: that is what every team here is checked against.</>,
-        ]}
-      />
-
       {anyExample && (
         <ExampleNotice actions={ownsAnyone ? [] : [{ label: 'Mark who I own', onClick: openCharacters }]}>
           The recommended teams, their numbers and the ideas below are examples built from the {word} list, not advice. Real recommended teams and scoring still have to be added by us. Your roster and your own presets are always yours.
         </ExampleNotice>
       )}
+
+      <section className={r.stack} aria-labelledby="recommended-teams">
+        <SectionHead title="Recommended teams" id="recommended-teams" note="Each place lists who fits it, best first, with whether you own them.">
+          <span className={r.howSmall}>
+            <HowTo
+              steps={[
+                <>A preset is a team you play: up to {size} {word}s. Press <strong>New preset</strong>, name it and pick {word}s you own.</>,
+                <>Recommended teams list who fits each place, best first, and whether you own them.</>,
+                <>The number on each team is how well it fits your roster. It fills in once team scoring is added; until then it says “No data yet” (example teams show an example number).</>,
+                <><strong>Kit check</strong> on any team shows what each member’s skills really do, with the game’s own text as proof.</>,
+                <>Mark who you own in Characters first: that is what every team here is checked against.</>,
+              ]}
+            />
+          </span>
+        </SectionHead>
+        {recommended.length === 0 ? (
+          <p className={r.muted}>No recommended teams yet.</p>
+        ) : (
+          <div className={r.teamGrid}>
+            {recommended.map(({ d, p, i }) => (
+              <TeamCard
+                key={`${d.game.id}:${p.id}`}
+                data={d}
+                several={several}
+                name={p.name}
+                members={firsts(p)}
+                preset={p}
+                example={d.presets.example}
+                score={d.presets.example ? exampleScore(i) : null}
+                onOpen={(id) => onOpen(d.game.id, id)}
+                actions={<Button onClick={() => setKitFor({ data: d, name: p.name, members: firsts(p) })}>Kit check</Button>}
+              />
+            ))}
+          </div>
+        )}
+      </section>
 
       <section className={r.stack} aria-labelledby="your-presets">
         <SectionHead title="Your presets" id="your-presets" note={`Teams you made · up to ${size} each`}>
@@ -98,38 +124,18 @@ export function Teams({ data, several, onOpen, openCharacters }: Props) {
         )}
       </section>
 
-      <section className={r.stack} aria-labelledby="recommended-teams">
-        <SectionHead title="Recommended teams" id="recommended-teams" note="Each place lists who fits it, best first, with whether you own them." />
-        {recommended.length === 0 ? (
-          <p className={r.muted}>No recommended teams yet.</p>
-        ) : (
-          <div className={r.teamGrid}>
-            {recommended.map(({ d, p, i }) => (
-              <TeamCard
-                key={`${d.game.id}:${p.id}`}
-                data={d}
-                several={several}
-                name={p.name}
-                members={firsts(p)}
-                preset={p}
-                example={d.presets.example}
-                score={d.presets.example ? exampleScore(i) : null}
-                onOpen={(id) => onOpen(d.game.id, id)}
-                actions={<Button onClick={() => setKitFor({ data: d, name: p.name, members: firsts(p) })}>Kit check</Button>}
-              />
+      <details className={r.fold}>
+        <summary className={r.foldSummary}>
+          Ideas from your roster <span className={r.foldNote}>teams you can build, if you pull, endgame record</span>
+        </summary>
+        <div className={r.foldBody}>
+          <div className={r.cards}>
+            {data.map((d) => (
+              <Ideas key={d.game.id} data={d} several={several} />
             ))}
           </div>
-        )}
-      </section>
-
-      <section className={r.stack} aria-labelledby="team-ideas">
-        <SectionHead title="Ideas from your roster" id="team-ideas" />
-        <div className={r.cards}>
-          {data.map((d) => (
-            <Ideas key={d.game.id} data={d} several={several} />
-          ))}
         </div>
-      </section>
+      </details>
 
       <BottomSheet open={kitFor !== null} side title={kitFor ? `Kit check · ${kitFor.name}` : 'Kit check'} onClose={closeKit}>
         {kitFor && (

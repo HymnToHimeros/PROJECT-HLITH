@@ -131,44 +131,142 @@
   font: 700 15px var(--font-numbers);
   color: var(--ink-1);
 }
-.searchRow {
+/* One game at a time: Roster's own game switch in All games (same look as the shell's). */
+.gameSwitch {
   display: flex;
+  align-self: flex-start;
+  gap: 2px;
+  padding: 4px;
+  background: var(--bg-inset);
+  border: 1px solid var(--line-default);
+  border-radius: var(--r-button);
+  max-width: 100%;
 }
-.searchRow .field {
-  flex: 1;
+.gameSwitchBtn {
+  min-width: 56px;
+  height: 36px;
+  padding: 0 12px;
+  border: 0;
+  border-radius: var(--r-segment);
+  background: transparent;
+  color: var(--ink-3);
+  font: 600 12px/36px var(--font-numbers);
+  letter-spacing: 0.04em;
+  cursor: pointer;
 }
-.more {
+.gameSwitchBtn:hover {
+  color: var(--ink-1);
+}
+.gameSwitchBtn[aria-pressed='true'] {
+  background: var(--game-vent);
+  color: var(--on-vent);
+}
+
+/* Header row: import / scan, the Filters button and the small "How to use this". */
+.headRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s-2) var(--s-3);
+  min-width: 0;
+}
+.filtersBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 16px;
+  border-radius: var(--r-button);
+  border: 1px solid var(--line-mid);
+  background: var(--bg-raised);
+  color: var(--ink-1);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.filtersBtn[aria-expanded='true'] {
+  border-color: var(--vent);
+}
+.filtersCount {
+  min-width: 20px;
+  padding: 2px 6px;
+  border-radius: var(--r-tag);
+  background: var(--vent);
+  color: var(--on-vent);
+  font: 700 11px/16px var(--font-numbers);
+  text-align: center;
+}
+.filtersPanel {
   display: flex;
   flex-direction: column;
   gap: var(--s-3);
+  padding: var(--s-3) var(--s-4);
+  border: 1px solid var(--line-default);
+  border-radius: var(--r-card);
+  background: var(--bg-card);
+  min-width: 0;
 }
-.more[open] {
-  padding-bottom: var(--s-1);
+.panelFoot {
+  display: flex;
+  align-items: center;
+  gap: var(--s-3);
 }
-.moreSummary {
+.searchField {
+  grid-column: 1 / -1;
+}
+/* "How to use this", kept small: a one-line link that opens to full width. */
+.howSmall {
+  min-width: 0;
+}
+.howSmall > details {
+  padding: 6px 12px;
+  font-size: 12px;
+}
+.howSmall:has(> details[open]) {
+  flex-basis: 100%;
+  order: 10;
+}
+/* Secondary cards on the character page and in Teams: folded, open on demand. */
+.fold {
+  background: var(--bg-card);
+  border: 1px solid var(--line-default);
+  border-radius: var(--r-card);
+  min-width: 0;
+}
+.foldSummary {
   display: flex;
   align-items: center;
   gap: var(--s-2);
-  min-height: 32px;
+  min-height: 48px;
+  padding: 0 var(--s-4);
   cursor: pointer;
-  color: var(--glacier);
-  font-size: 13px;
-  font-weight: 600;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--ink-1);
 }
-.moreOn {
-  font: 600 10px/1 var(--font-numbers);
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  padding: 3px 5px;
-  border-radius: var(--r-tag);
-  background: var(--glacier);
-  color: var(--on-vent);
+.foldNote {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink-4);
+}
+.foldBody {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-3);
+  padding: 0 var(--s-4) var(--s-4);
+  min-width: 0;
+}
+.foldBody > .card {
+  border: 0;
+  padding: 0;
+  background: transparent;
 }
 .tools {
   display: grid;
   grid-template-columns: repeat(3, minmax(140px, 1fr));
   gap: var(--s-2) var(--s-3);
-  margin: var(--s-3) 0;
+  margin: 0;
 }
 .field {
   display: flex;
@@ -496,6 +594,7 @@
   scroll-margin-top: 120px;
 }
 .pageBar {
+  flex-wrap: wrap;
   display: flex;
   align-items: center;
   gap: var(--s-3);
@@ -1157,11 +1256,6 @@ button.member:hover .memberArt {
 }
 
 /* HoYoLAB import and screenshot scan (connections builder) */
-.importRow {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--s-2) var(--s-4);
-}
 .importGroup {
   display: inline-flex;
   flex-wrap: wrap;
