@@ -8,6 +8,11 @@ project_id = "PROJECT-HLITH"
 [functions.gacha-import]
 verify_jwt = true
 
+# Assistant: runs one chat turn with the caller's own Claude API key (sent per
+# request, never stored). The function checks the signed-in user itself.
+[functions.assistant]
+verify_jwt = true
+
 # Nightly backup: started by the schedule with the service key, so the platform's
 # user-token check is off and the function checks the key itself.
 [functions.backup]

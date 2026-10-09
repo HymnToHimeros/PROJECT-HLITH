@@ -27,6 +27,33 @@ Resume with: "continue from PROGRESS.md". Newest entry on top.
 - CI (`.github/workflows/ci.yml`) runs both on every pull request.
 
 ## Done
+- 2026-10-09 · **★ Assistant, proposals, Edit mode (R46, R48, R49)** — frame,
+  to show you (Override 5: no design for proposals or Edit mode yet).
+  - **Assistant** (⌘K / Ctrl+K, "Ask" on phone; look from the design
+    prototype): your own Claude key (kept only on this device or only for
+    this tab, your choice; "Forget key"; never in your synced settings),
+    model picker (Opus 5.5 default, Sonnet 5.5, Haiku 5.5, with prices, what
+    each is good for, and your own measured average per model), chat,
+    screenshots (shrunk in the browser), web search on Opus/Sonnet (not
+    documented for Haiku, so off there), cost of every reply as an estimate
+    (token counts × list price, + $0.01 per search), a daily limit counted on
+    this device, New chat, suggestions, and a clearly marked EXAMPLE chat
+    until you start. The server function `supabase/functions/assistant` needs
+    sign-in, gets your key with each message, uses it for that one call and
+    keeps nothing. It tells Claude a compact summary of your real data (no
+    examples).
+  - **Proposals**: the Assistant can only *propose* changes (bank log entry,
+    event done/skipped, backlog count, owned/wanted, tick a Today task, a
+    plan or a route). Each is a card: Approve / Dismiss, then Undo. Undo of a
+    bank log entry adds a correcting entry; nothing is ever deleted. Settings
+    lists every change it made, with Undo.
+  - **Edit mode**: add, change and hide your own events, banners and backlog
+    items per game; hide is a flag, list updates never touch your entries.
+    Reachable now from Assistant → Edit lists. Module screens can use
+    `useWithOwnItems(game, kind, list)` and `<EditListButton game kind />`
+    (one line each) once their builder adds them.
+  - Not checked against the live API yet: needs a deployed function and a
+    real key (see the report).
 - 2026-10-09 · **Every module has a real screen (R29–R30, R35–R45).** Today
   (resets, dailies/weeklies with ticks that clear at your server's reset,
   ★ tonight's run, ★ wishlist), Calendar (six-week timeline + coming up),
