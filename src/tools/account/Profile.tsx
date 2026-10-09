@@ -16,13 +16,14 @@ import {
   NAME_MAX,
   PIN_MAX,
   setCardShown,
-  shrinkImage,
   togglePin,
   type CardId,
   type Profile,
 } from './profile';
 import { METHOD_LABEL, showcaseCards, type Fix, type ShowcaseCard } from './showcase';
 import { storeFor, useProfile } from './useProfile';
+import { ImageAdjust } from './ImageAdjust';
+import type { ImageKind } from './imageCrop';
 
 interface Props {
   games: GameContract[];
@@ -123,7 +124,7 @@ export function ProfileSection({ games, account, open, goSection }: Props) {
   return (
     <div className={p.stack}>
       <section className={p.hero} aria-label="Your profile">
-        <div className={p.banner} style={banner ? undefined : { background: defaultBanner(games) }}>
+        <div className={p.banner} style={{ background: defaultBanner(games) }}>
           {banner && <img src={banner} alt="" className={p.bannerImg} />}
         </div>
         <div className={p.heroBody}>
@@ -164,12 +165,12 @@ export function ProfileSection({ games, account, open, goSection }: Props) {
 
       <HowTo
         steps={[
-          'Press “Edit profile” to add a picture, a banner, your name and a short bio.',
+          'Press “Edit profile” to add a picture, a banner, your name and a short bio. After choosing a picture you can drag and zoom it to choose exactly what shows.',
           'Pin up to 6 favourite characters per game. Only characters you marked as owned in Roster can be pinned.',
           'Switch showcase cards on or off. A card shows only what HLITH can prove from your own data: imported pulls, your roster, your backlog counts.',
           state.mode === 'account'
             ? 'Your profile is saved to your account, and the pictures to your own folder. Pictures are public links so they can show; your name, bio and stats stay private to you.'
-            : 'Your profile stays on this device. Pictures are shrunk first so they fit in this browser, and they’re included when you export a backup.',
+            : 'Your profile stays on this device. Pictures are cropped to what you chose and shrunk so they fit in this browser, and they’re included when you export a backup.',
         ]}
       >
         “No data yet” means there is nothing to show from your own data. The button next to it takes you to where you add it.
@@ -388,17 +389,35 @@ function ProfileEditor({ games, profile, imageUrl, mode, fallbackName, error, on
   const [imageError, setImageError] = useState('');
   const lists = useLists(games);
 
-  const pick = async (file: File | undefined, kind: 'avatar' | 'banner') => {
+  // While editing, the file you picked stays in memory (never stored) so "Adjust" starts from the full picture.
+  const [originals, setOriginals] = useState<Partial<Record<ImageKind, Blob>>>({});
+  const [adjust, setAdjust] = useState<{ kind: ImageKind; source: Blob } | null>(null);
+
+  const pick = (file: File | undefined, kind: ImageKind) => {
     setImageError('');
     if (!file) return;
     const problem = checkImage(file);
     if (problem) return setImageError(problem);
+    setOriginals((o) => ({ ...o, [kind]: file }));
+    setAdjust({ kind, source: file });
+  };
+  const startAdjust = async (kind: ImageKind) => {
+    setImageError('');
+    const original = originals[kind];
+    if (original) return setAdjust({ kind, source: original });
+    const url = show(draft[kind]);
+    if (!url) return;
     try {
-      const url = await shrinkImage(file, kind);
-      setDraft((d) => ({ ...d, [kind]: url }));
+      const res = await fetch(url);
+      if (!res.ok) throw new Error(String(res.status));
+      setAdjust({ kind, source: await res.blob() });
     } catch {
-      setImageError('That picture couldn’t be read. Try another file.');
+      setImageError('The saved picture couldn’t be opened for adjusting. Choose the file again instead.');
     }
+  };
+  const remove = (kind: ImageKind) => {
+    setDraft((d) => ({ ...d, [kind]: null }));
+    setOriginals((o) => ({ ...o, [kind]: undefined }));
   };
   const show = (v: string | null) => (v?.startsWith('data:') ? v : imageUrl(v));
   const banner = show(draft.banner);
@@ -416,32 +435,55 @@ function ProfileEditor({ games, profile, imageUrl, mode, fallbackName, error, on
     >
       <section className={p.editCard} aria-label="Pictures">
         <h3 className={p.cardTitle}>Pictures</h3>
-        <div className={p.bannerEdit} style={banner ? undefined : { background: defaultBanner(games) }}>
+        <div className={p.bannerEdit} style={{ background: defaultBanner(games) }}>
           {banner && <img src={banner} alt="Banner preview" className={p.bannerImg} />}
           <Avatar src={avatar} letter={draft.displayName ?? fallbackName ?? ''} size="md" />
         </div>
         <p className={p.muted}>
-          The preview shows how it will be cropped: the picture fills the circle and the banner fills its strip, centred. PNG, JPG, WebP or GIF, up to 2 MB. Pictures are shrunk
-          before saving.
+          After you choose a file you can move and zoom it, so nothing you want is cut off. The preview shows exactly how it will look. PNG, JPG, WebP or GIF, up to 2 MB.
         </p>
         <div className={p.actions}>
-          <FilePick label="Choose picture" onPick={(f) => void pick(f, 'avatar')} />
+          <FilePick label={draft.avatar ? 'Change picture' : 'Choose picture'} onPick={(f) => pick(f, 'avatar')} />
           {draft.avatar && (
-            <Button variant="quiet" onClick={() => setDraft((d) => ({ ...d, avatar: null }))}>
-              Remove picture
-            </Button>
+            <>
+              <Button onClick={() => void startAdjust('avatar')}>Adjust picture</Button>
+              <Button variant="quiet" onClick={() => remove('avatar')}>
+                Remove picture
+              </Button>
+            </>
           )}
-          <FilePick label="Choose banner" onPick={(f) => void pick(f, 'banner')} />
+        </div>
+        <div className={p.actions}>
+          <FilePick label={draft.banner ? 'Change banner' : 'Choose banner'} onPick={(f) => pick(f, 'banner')} />
           {draft.banner && (
-            <Button variant="quiet" onClick={() => setDraft((d) => ({ ...d, banner: null }))}>
-              Remove banner
-            </Button>
+            <>
+              <Button onClick={() => void startAdjust('banner')}>Adjust banner</Button>
+              <Button variant="quiet" onClick={() => remove('banner')}>
+                Remove banner
+              </Button>
+            </>
           )}
         </div>
         {imageError && (
           <p className={p.warn} role="alert">
             {imageError}
           </p>
+        )}
+        {adjust && (
+          <ImageAdjust
+            key={adjust.kind}
+            kind={adjust.kind}
+            source={adjust.source}
+            background={adjust.kind === 'banner' ? defaultBanner(games) : 'var(--bg-raised)'}
+            bannerBackground={defaultBanner(games)}
+            other={adjust.kind === 'avatar' ? banner : avatar}
+            name={draft.displayName ?? fallbackName ?? ''}
+            onCancel={() => setAdjust(null)}
+            onSave={(url) => {
+              setDraft((d) => ({ ...d, [adjust.kind]: url }));
+              setAdjust(null);
+            }}
+          />
         )}
       </section>
 

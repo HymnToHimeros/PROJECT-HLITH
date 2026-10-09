@@ -48,5 +48,19 @@ test('no serious accessibility problems · account', async ({ page }) => {
   await page.getByRole('button', { name: 'Edit profile' }).click();
   await expect(page.getByRole('form', { name: 'Edit profile' })).toBeVisible();
   await scan('/account (edit profile)');
+  // The Adjust picture sheet, with a picked file.
+  const b64 = await page.evaluate(() => {
+    const c = document.createElement('canvas');
+    c.width = 600;
+    c.height = 400;
+    const ctx = c.getContext('2d');
+    if (!ctx) return '';
+    ctx.fillStyle = '#7fb4d6';
+    ctx.fillRect(0, 0, 600, 400);
+    return c.toDataURL('image/png').split(',')[1] ?? '';
+  });
+  await page.getByLabel('Choose banner').setInputFiles({ name: 'b.png', mimeType: 'image/png', buffer: Buffer.from(b64, 'base64') });
+  await expect(page.getByRole('dialog', { name: 'Adjust banner' }).getByRole('application')).toBeVisible();
+  await scan('/account (adjust banner)');
   expect(problems, problems.join('\n')).toEqual([]);
 });

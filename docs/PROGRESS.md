@@ -25,6 +25,23 @@ Resume with: "continue from PROGRESS.md". Newest entry on top.
 - CI (`.github/workflows/ci.yml`) runs both on every pull request.
 
 ## Done
+- 2026-10-09 · **Adjust your profile picture and banner** (branch
+  `frame/profile-image-editor`). Shown to you for approval (no design yet).
+  - Choosing a file (or "Adjust picture" / "Adjust banner" on one you already
+    have) opens a sheet with the picture inside its exact final shape (circle,
+    or the 4 : 1 banner strip) and the outside dimmed.
+  - Drag (mouse or finger), pinch, mouse wheel, Zoom slider with − / +, Fill,
+    Fit and Reset. Keys: arrows move (Shift = bigger steps), + / − zoom, 0 resets.
+    Fill never leaves gaps; Fit shows the whole picture and the gaps show the
+    default background. Live preview of the profile header. Explained with HowTo.
+  - Saved exactly as shown: 512 × 512 picture, 1600 × 400 banner, JPEG 0.85
+    (WebP/PNG with see-through edges only after Fit). The original file stays
+    in memory only while editing. Same 2 MB / images-only limits and the same
+    save paths (this device or the avatars bucket).
+  - The profile banner is now always the same 4 : 1 shape as the saved banner.
+  - Files: `src/tools/account/imageCrop.ts` (maths), `imageRender.ts`,
+    `ImageAdjust.tsx`, `imageAdjust.module.css`; tests in `imageCrop.test.ts`,
+    `ImageAdjust.test.tsx`, e2e in `tests/e2e/smoke.spec.ts` + accessibility.
 - 2026-10-09 · **Account is its own page, with a customisable Profile** (branch
   `frame/account-page`). Shown to you for approval (no design yet, Override 5).
   - `/account` and `/account/<section>`: a section bar (left column on PC,
