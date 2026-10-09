@@ -5,7 +5,7 @@ import { defineConfig, devices } from '@playwright/test';
 const localChromium = '/opt/pw-browsers/chromium';
 
 export default defineConfig({
-  testDir: 'tests/e2e',
+  testDir: '../tests/e2e',
   use: {
     baseURL: 'http://localhost:4173',
     launchOptions: existsSync(localChromium) ? { executablePath: localChromium } : {},

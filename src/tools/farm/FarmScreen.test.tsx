@@ -49,7 +49,7 @@ describe('Farm', () => {
     show();
     fireEvent.click(await screen.findByRole('button', { name: 'Add Newest Star' }));
     expect(gameData('aa').farm).toEqual(['c1']);
-    expect(within(screen.getByLabelText('Chosen')).getByText('Newest Star')).toBeInTheDocument();
+    expect(within(await screen.findByLabelText('Chosen')).getByText('Newest Star')).toBeInTheDocument();
     fireEvent.change(screen.getByRole('searchbox'), { target: { value: 'help' } });
     fireEvent.click(screen.getByRole('button', { name: 'Add Helper' }));
     expect(gameData('aa').farm).toEqual(['c1', 'c2']);
