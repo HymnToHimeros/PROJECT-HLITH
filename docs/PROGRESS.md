@@ -3,16 +3,25 @@
 Resume with: "continue from PROGRESS.md". Newest entry on top.
 
 ## Now
-- **Step 0 — Plan.** Answers folded in; PLAN.md §2b added (new games, even
-  unlisted ones, are only a `games/` folder; fake-game test proves it).
-  **Waiting for "go" on step 1.** No app code yet.
+- **Step 1 — Project setup: done**, in review as a pull request.
 
 ## Next
-- Step 1 — Project setup (Vite + React + TypeScript strict, ESLint, Vitest,
-  Playwright, architecture test, migration safety test, CI). Starts only after
-  PLAN.md is approved.
+- Step 2 — Tokens (`tokens.css`, ink.5 = `#6C7F93`) and Layer 4 components with
+  a preview page.
+
+## How to check everything
+- `npm run check` = lint + typecheck + unit tests + build.
+- `npm run e2e` = browser smoke test at PC and phone sizes.
+- CI (`.github/workflows/ci.yml`) runs both on every pull request.
 
 ## Done
+- 2026-10-09 · **Step 1.** React 19 + Vite 8 + TypeScript 6 (strict), ESLint,
+  Vitest, Playwright, CI. Architecture test: core/ ↛ tools/ ↛ games/, games
+  only import core/, games never import each other; checked by a test and by
+  ESLint (both proven to fail on a planted bad import). Migration test blocks
+  DROP / DELETE / TRUNCATE / RENAME / ON DELETE CASCADE. Placeholder page only.
+  TypeScript stays on 6.x: the lint tools don't support 7 yet.
+- 2026-10-09 · Plan merged (pull request #1).
 - 2026-10-09 · Moved FEATURES.md, DESIGN.md and the design files into `docs/`
   (CLAUDE.md expects them there). Wrote `docs/PLAN.md` and this file.
 
@@ -20,8 +29,8 @@ Resume with: "continue from PROGRESS.md". Newest entry on top.
 - 2026-10-09 · You gave permission for me to open and merge pull requests on my own.
 - 2026-10-09 · Structure rule: core = skeleton, tools/modules = shelves and nerves,
   games = flesh. Nothing in core/ or tools/ may assume HoYoverse rules.
-- 2026-10-09 · Proposed: React + Vite, Supabase (database, login, server
-  functions), Cloudflare Pages hosting, Resend for email. Pending approval.
+- 2026-10-09 · Approved: React + Vite, Supabase (database, login, server
+  functions), Cloudflare Pages hosting, Resend for sign-in email.
 - 2026-10-09 · ink.5 proposed as `#6C7F93` (Override 4): 4.83:1 on bg.app,
   4.59:1 on bg.card.
 
@@ -35,8 +44,8 @@ Resume with: "continue from PROGRESS.md". Newest entry on top.
 ## Steps (from PLAN.md §8)
 | # | Step | State |
 |---|---|---|
-| 0 | Plan | answered, waiting for go |
-| 1 | Project setup + architecture test | not started |
+| 0 | Plan | done |
+| 1 | Project setup + architecture test | done |
 | 2 | Tokens + Layer 4 components | not started |
 | 3 | Contract, registries, `_template`, HSR + ZZZ records | not started |
 | 4 | Time and resets | not started |
