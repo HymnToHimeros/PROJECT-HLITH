@@ -53,4 +53,11 @@ mode). Tables checked live: all 10 exist, and writes without sign-in are refused
 ## 4. Later
 - **Resend** (sign-in emails at scale): resend.com → API key (**secret**) →
   Supabase → Authentication → Emails → SMTP settings.
-- **Cloudflare Pages** (hosting, ROADMAP R60) and **Cloudflare R2** (backups, R24).
+- **Cloudflare R2** (backups, R24).
+
+## 5. Hosting · Cloudflare (set up 2026-10-09)
+Cloudflare dashboard → Create app → Connect GitHub → `PROJECT-HLITH`.
+Project name `project-hlith`, build command `npm run build`, deploy command
+`npx wrangler deploy`, preview builds on. `wrangler.jsonc` in the repo tells
+Cloudflare to serve `./dist` and send unknown addresses to the app.
+Every merge to `main` redeploys the site.
