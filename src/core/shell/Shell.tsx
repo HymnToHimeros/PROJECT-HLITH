@@ -4,6 +4,7 @@ import { updatePrefs, usePrefs } from '../data/prefs';
 import { useSyncStatus, type SyncStatus } from '../data/sync';
 import { defaultLayout, phoneBar, slot, type LayoutState, type Scope } from '../registry/layout';
 import { moduleScreen, MODULES, type ModuleScreenProps } from '../registry/modules';
+import { panel, type PanelId, type PanelProps } from '../registry/panels';
 import { formatTime, nextDailyReset, serverRule } from '../time/reset';
 import { BottomSheet } from '../ui/BottomSheet';
 import { Segmented } from '../ui/Segmented';
@@ -80,6 +81,19 @@ export function Shell({ games: registered, account = null }: Props) {
   }, []);
 
   const close = useCallback(() => setSheet(null), []);
+  const panelProps: PanelProps = {
+    games,
+    allGames: registered,
+    scope,
+    servers: prefs.servers,
+    account,
+    close,
+    open: (m, t) => {
+      if (t) setTabs((cur) => ({ ...cur, [m]: t }));
+      go(scope, m)();
+    },
+    editLayout: () => setSheet('edit'),
+  };
   const setLayout = (next: LayoutState) => updatePrefs((p) => ({ ...p, layouts: { ...p.layouts, [scope]: next } }));
   const setServer = (gameId: string, serverId: string) => updatePrefs((p) => ({ ...p, servers: { ...p.servers, [gameId]: serverId } }));
   const go = (nextScope: Scope, module?: ModuleId) => (e?: MouseEvent) => {
@@ -289,6 +303,12 @@ export function Shell({ games: registered, account = null }: Props) {
       </BottomSheet>
 
       <BottomSheet open={sheet === 'account'} title="Account" onClose={close} side>
+        {panel('settings') ? (
+          <Suspense fallback={<p className={s.note}>Loading…</p>}>
+            <PanelSlot id="settings" {...panelProps} />
+          </Suspense>
+        ) : (
+        <>
         <div className={s.section}>
           <span className={s.sectionLabel}>LAYOUT</span>
           <button type="button" className={s.linkBtn} onClick={() => setSheet('edit')}>
@@ -315,15 +335,29 @@ export function Shell({ games: registered, account = null }: Props) {
             <p className={s.note}>Sign-in isn’t switched on yet, so your settings stay on this device only.</p>
           )}
         </div>
+        </>
+        )}
       </BottomSheet>
 
       <BottomSheet open={sheet === 'assistant'} title="Assistant" onClose={close} side>
-        <p className={s.note}>
-          The Assistant isn’t built yet. It will use your own Claude key, answer from your data, and show what each message costs.
-        </p>
+        {panel('assistant') ? (
+          <Suspense fallback={<p className={s.note}>Loading…</p>}>
+            <PanelSlot id="assistant" {...panelProps} />
+          </Suspense>
+        ) : (
+          <p className={s.note}>
+            The Assistant isn’t built yet. It will use your own Claude key, answer from your data, and show what each message costs.
+          </p>
+        )}
       </BottomSheet>
     </div>
   );
+}
+
+/** Draws a registered side panel. */
+function PanelSlot({ id, ...props }: { id: PanelId } & PanelProps) {
+  const p = panel(id);
+  return p ? createElement(p, props) : null;
 }
 
 /** Draws the registered screen for a module (screens are prepared once at registration). */
