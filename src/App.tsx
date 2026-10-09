@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { sendEmailLink, signInWith, signOut, useSession } from './core/auth/session';
 import { SignIn } from './core/auth/SignIn';
 import { backend } from './core/data/backend';
@@ -16,6 +16,20 @@ export function App() {
 function Root() {
   const session = useSession(backend);
   const userId = session?.user.id;
+  const [ownerOf, setOwnerOf] = useState<string | null>(null);
+
+  // Ask the server whether this account is an owner (public.is_owner()); only shows the Owner console row.
+  useEffect(() => {
+    if (!backend || !userId) return;
+    let alive = true;
+    void backend.rpc('is_owner').then(({ data }) => {
+      if (alive) setOwnerOf(data === true ? userId : null);
+    });
+    return () => {
+      alive = false;
+    };
+  }, [userId]);
+  const isOwner = Boolean(userId) && ownerOf === userId;
 
   useEffect(() => {
     if (!backend) return markDeviceOnly();
@@ -37,5 +51,5 @@ function Root() {
   }
   const provider = typeof session?.user.app_metadata.provider === 'string' ? session.user.app_metadata.provider : undefined;
   const account = client && session ? { email: session.user.email ?? 'your account', provider, onSignOut: () => void signOut(client) } : null;
-  return <Shell games={listGames()} account={account} />;
+  return <Shell games={listGames()} account={account} isOwner={isOwner} />;
 }

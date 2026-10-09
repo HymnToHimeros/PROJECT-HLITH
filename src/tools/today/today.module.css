@@ -13,7 +13,8 @@
 }
 .tiles {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  /* Four per row (reset, weekly, pulls, stamina): each game gets its own row, same tiles under each other. */
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: var(--s-3);
 }
 .tiles > div {
@@ -24,7 +25,7 @@
 }
 @media (max-width: 819px) {
   .tiles {
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 /* Big countdowns inside stat tiles: the tile sets the size, the Timer keeps its live tick. */

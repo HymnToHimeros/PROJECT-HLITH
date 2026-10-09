@@ -74,14 +74,16 @@ describe('Shell', () => {
     expect((container.firstChild as HTMLElement).style.getPropertyValue('--vent')).toBe('#D4F23A');
   });
 
-  it('opens a module from the sidebar and remembers it per game', () => {
+  it('switching games keeps the page you are on; if the other game lacks it, opens the page you last used there', () => {
     render(<Shell games={[A, B]} />);
     fireEvent.click(screen.getByRole('button', { name: 'AA' }));
-    fireEvent.click(sideNav().getByRole('link', { name: /Farm/ }));
-    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Farm');
+    fireEvent.click(sideNav().getByRole('link', { name: /Pulls/ }));
     fireEvent.click(screen.getByRole('button', { name: 'BB' }));
+    expect(window.location.pathname).toBe('/bb/pulls');
     fireEvent.click(screen.getByRole('button', { name: 'AA' }));
-    expect(window.location.pathname).toBe('/aa/farm');
+    fireEvent.click(sideNav().getByRole('link', { name: /Farm/ }));
+    fireEvent.click(screen.getByRole('button', { name: 'BB' }));
+    expect(window.location.pathname).toBe('/bb/pulls'); // BB has no Farm: back to where you were in BB
   });
 
   it('Pulls shows its four tabs', () => {
@@ -148,7 +150,7 @@ describe('Edit layout', () => {
     fireEvent.click(dialog.getAllByRole('button', { name: 'Hide' })[8] as HTMLElement); // Intel
     expect(navLabels()).not.toContain('Intel');
     expect(dialog.getByText('HIDDEN · STILL IN THIS GAME')).toBeInTheDocument();
-    expect(getPrefs().layouts.aa?.hidden).toEqual(['intel']);
+    expect(getPrefs().layouts.shared?.hidden).toEqual(['intel']); // one layout for every game
     fireEvent.click(dialog.getByRole('button', { name: 'Restore' }));
     expect(navLabels()).toContain('Intel');
   });

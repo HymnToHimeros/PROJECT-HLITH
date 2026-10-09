@@ -22,10 +22,14 @@ interface Props {
   games: GameContract[];
   /** Signed-in account, or null in "this device only" mode. */
   account?: PanelAccount | null;
+  /** The signed-in account is an owner (checked on the server with public.is_owner()). */
+  isOwner?: boolean;
 }
 
-type Sheet = null | 'more' | 'edit' | 'account' | 'games' | 'assistant' | 'server';
+type Sheet = null | 'more' | 'edit' | 'account' | 'games' | 'assistant' | 'server' | 'owner';
 
+/** Saved-layout key shared by every scope (older per-game layouts are ignored, never deleted). */
+const SHARED = 'shared';
 const LONG_PRESS_MS = 500;
 
 /**
@@ -34,7 +38,7 @@ const LONG_PRESS_MS = 500;
  * Drawn to docs/design/HLITH App.dc.html: PC sidebar 248 px; phone top bar,
  * bottom bar with the first four modules + More, and a floating ASK button.
  */
-export function Shell({ games: registered, account = null }: Props) {
+export function Shell({ games: registered, account = null, isOwner = false }: Props) {
   const prefs = usePrefs();
   const sync = useSyncStatus();
   const path = usePath();
@@ -55,7 +59,8 @@ export function Shell({ games: registered, account = null }: Props) {
   const route = parseRoute(path);
   const scope: Scope = route.scope && scopes.includes(route.scope) ? route.scope : (scopes[0] ?? 'all');
   const game = scope === 'all' ? undefined : games.find((g) => g.id === scope);
-  const layout: LayoutState = prefs.layouts[scope] ?? defaultLayout();
+  // One layout for every game and All games, so the bars mirror each other; modules a game lacks just drop out.
+  const layout: LayoutState = prefs.layouts[SHARED] ?? defaultLayout();
   const visible = slot(games, scope, layout);
   const remembered = prefs.lastModule[scope];
   const active: ModuleId | undefined =
@@ -101,9 +106,11 @@ export function Shell({ games: registered, account = null }: Props) {
   };
   const go = (nextScope: Scope, module?: ModuleId) => (e?: MouseEvent) => {
     e?.preventDefault();
-    const nextLayout = prefs.layouts[nextScope] ?? defaultLayout();
+    const nextLayout = prefs.layouts[SHARED] ?? defaultLayout();
     const nextVisible = slot(games, nextScope, nextLayout);
-    const target = module ?? (prefs.lastModule[nextScope] && nextVisible.includes(prefs.lastModule[nextScope]) ? prefs.lastModule[nextScope] : nextVisible[0]);
+    // Switching games keeps the page you're on when the other game has it.
+    const remembered = prefs.lastModule[nextScope];
+    const target = module ?? (active && nextVisible.includes(active) ? active : remembered && nextVisible.includes(remembered) ? remembered : nextVisible[0]);
     if (target) navigate(routePath(nextScope, target));
     setSheet(null);
   };
@@ -119,11 +126,12 @@ export function Shell({ games: registered, account = null }: Props) {
       go(scope, m)();
     },
     editLayout: () => setSheet('edit'),
-    // Owner check hook: no owner check exists in the app yet (server side it is public.is_owner()).
-    isOwner: false,
+    // Shows the Owner console row; every owner write is still checked on the server by public.is_owner().
+    isOwner,
+    openOwnerConsole: () => setSheet('owner'),
     startPage: accountPage,
   };
-  const setLayout = (next: LayoutState) => updatePrefs((p) => ({ ...p, layouts: { ...p.layouts, [scope]: next } }));
+  const setLayout = (next: LayoutState) => updatePrefs((p) => ({ ...p, layouts: { ...p.layouts, [SHARED]: next } }));
   const setServer = (gameId: string, serverId: string) => updatePrefs((p) => ({ ...p, servers: { ...p.servers, [gameId]: serverId } }));
   const onSyncClick = () => {
     if (canSync()) void syncNow();
@@ -401,6 +409,14 @@ export function Shell({ games: registered, account = null }: Props) {
           </>
         )}
       </BottomSheet>
+
+      {isOwner && panel('owner') && (
+        <BottomSheet open={sheet === 'owner'} title="Owner console" onClose={close} side>
+          <Suspense fallback={<p className={s.note}>Loading…</p>}>
+            <PanelSlot id="owner" {...panelProps} />
+          </Suspense>
+        </BottomSheet>
+      )}
 
       <BottomSheet open={sheet === 'assistant'} title="Assistant" onClose={close} side>
         {panel('assistant') ? (

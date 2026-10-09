@@ -2,7 +2,7 @@ import { lazy, type ComponentType, type LazyExoticComponent } from 'react';
 import type { GameContract, GameId, ModuleId } from '../contract';
 
 /** Panels the shell opens from anywhere (Account/Settings, Assistant). Their content lives in tools/, attached by main.tsx. */
-export type PanelId = 'settings' | 'assistant';
+export type PanelId = 'settings' | 'assistant' | 'owner';
 
 /** A signed-in account, as the shell knows it. */
 export interface PanelAccount {
