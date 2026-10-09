@@ -55,7 +55,13 @@ mode). Tables checked live: all 10 exist, and writes without sign-in are refused
 ## 4. Later
 - **Resend** (sign-in emails at scale): resend.com → API key (**secret**) →
   Supabase → Authentication → Emails → SMTP settings.
-- **Cloudflare R2** (backups, R24).
+- **Nightly backups (R24)** — the code is ready (`supabase/functions/backup`,
+  bucket `backups` declared in `supabase/config.toml`); it only needs a nightly
+  schedule. Done together at the end (parked items), with the dashboard checked
+  live at that moment: Supabase → Integrations → Cron → new job, once a night,
+  calling the Edge Function `backup` with header
+  `Authorization: Bearer <service_role key>`. The service key is typed into the
+  Supabase dashboard only, never into chat or the repo. Until then no backup runs.
 
 ## 5. Hosting · Cloudflare (set up 2026-10-09)
 Cloudflare dashboard → Create app → Connect GitHub → `PROJECT-HLITH`.

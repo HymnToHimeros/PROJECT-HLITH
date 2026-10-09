@@ -11,20 +11,20 @@ so it can't drift from the real code. Never tick a box by hand; add the proof.
 Who builds what: see `docs/WORKSTREAMS.md`.
 
 <!-- roadmap:summary -->
-**45 of 61 done** `███████████████░░░░░` 74%
+**47 of 61 done** `███████████████░░░░░` 77%
 
-**Next up:** R24 Nightly backups
+**Next up:** R46 ★ Edit mode (my own events, banners, backlog items)
 
 | Phase | Progress | Done |
 |---|---|---|
 | Phase 0 · Foundation | `██████████` | 5 / 5 |
 | Phase 1 · Look | `██████████` | 3 / 3 |
 | Phase 2 · Skeleton | `██████████` | 11 / 11 |
-| Phase 3 · Accounts and data | `████████░░` | 4 / 5 |
+| Phase 3 · Accounts and data | `██████████` | 5 / 5 |
 | Phase 4 · Engines | `██████████` | 4 / 4 |
 | Phase 5 · Modules | `██████████` | 17 / 17 |
 | Phase 6 · Connections and extras | `░░░░░░░░░░` | 0 / 13 |
-| Phase 7 · Launch | `███░░░░░░░` | 1 / 3 |
+| Phase 7 · Launch | `███████░░░` | 2 / 3 |
 <!-- /roadmap:summary -->
 
 ## Phase 0 · Foundation
@@ -57,7 +57,7 @@ Who builds what: see `docs/WORKSTREAMS.md`.
 - [x] R21 Login: Google, Discord, email link · proof: `src/core/auth/SignIn.tsx`
 - [x] R22 Local copy and sync status · proof: `src/core/data/sync.ts`
 - [x] R23 Built-in lists that never touch your progress · proof: `src/core/data/catalog.ts`
-- [ ] R24 Nightly backups · proof: `supabase/functions/backup/index.ts`
+- [x] R24 Nightly backups · proof: `supabase/functions/backup/index.ts`
 
 ## Phase 4 · Engines
 - [x] R25 One pull budget engine · proof: `src/tools/budget/budget.ts`
@@ -100,6 +100,6 @@ Who builds what: see `docs/WORKSTREAMS.md`.
 - [ ] R58 Owner console · proof: `src/tools/owner/OwnerConsole.tsx`
 
 ## Phase 7 · Launch
-- [ ] R59 Accessibility and phone pass · proof: `tests/e2e/accessibility.spec.ts`
+- [x] R59 Accessibility and phone pass · proof: `tests/e2e/accessibility.spec.ts`
 - [x] R60 Live on the web (Cloudflare Pages) · proof: `docs/DEPLOY.md`
 - [ ] R61 Light theme (after it's designed) · proof: `src/core/theme/tokens-light.css`
