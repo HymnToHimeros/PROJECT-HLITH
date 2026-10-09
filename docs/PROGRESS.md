@@ -8,7 +8,7 @@ Resume with: "continue from PROGRESS.md". Newest entry on top.
   database migrations (`docs/DEPLOY.md`).
 
 ## Next
-- Next build steps: history import (R27–R28), then the
+- Next build steps: in-game history link (R28), then the
   module screens, starting with Events, Backlog and Pulls.
 - Parked by your choice (2026-10-09): Google login, owner rights, Resend, R24
   backups. Building the website comes first.
@@ -21,6 +21,14 @@ Resume with: "continue from PROGRESS.md". Newest entry on top.
 - CI (`.github/workflows/ci.yml`) runs both on every pull request.
 
 ## Done
+- 2026-10-09 · **R27 · history from export files.** `src/tools/import/uigf.ts`
+  reads UIGF v4 (any game section) and SRGF v1; server time → UTC; oldest
+  first; unknown banner types and broken rows are counted, not hidden;
+  re-imports only add new pull ids, never change or remove stored ones. Games
+  describe their export format as data (`historyMapping`: gacha types, rarity,
+  optional standard pool for 50/50 results). HSR gains its Departure Warp
+  banner type; collab warps are skipped until their pity rules are confirmed.
+- 2026-10-09 · R26 merged (pull request #14).
 - 2026-10-09 · **R26 · pity engine.** `src/tools/pity/pity.ts`: chance of getting
   N featured copies within X pulls, computed exactly by stepping through every
   state, for any luck model (hard pity + 50/50, spark, none, a game's own rule);
