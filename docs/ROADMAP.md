@@ -11,7 +11,7 @@ so it can't drift from the real code. Never tick a box by hand; add the proof.
 Who builds what: see `docs/WORKSTREAMS.md`.
 
 <!-- roadmap:summary -->
-**23 of 61 done** `████████░░░░░░░░░░░░` 38%
+**24 of 61 done** `████████░░░░░░░░░░░░` 39%
 
 **Next up:** R24 Nightly backups
 
@@ -24,7 +24,7 @@ Who builds what: see `docs/WORKSTREAMS.md`.
 | Phase 4 · Engines | `░░░░░░░░░░` | 0 / 4 |
 | Phase 5 · Modules | `░░░░░░░░░░` | 0 / 17 |
 | Phase 6 · Connections and extras | `░░░░░░░░░░` | 0 / 13 |
-| Phase 7 · Launch | `░░░░░░░░░░` | 0 / 3 |
+| Phase 7 · Launch | `███░░░░░░░` | 1 / 3 |
 <!-- /roadmap:summary -->
 
 ## Phase 0 · Foundation
@@ -101,5 +101,5 @@ Who builds what: see `docs/WORKSTREAMS.md`.
 
 ## Phase 7 · Launch
 - [ ] R59 Accessibility and phone pass · proof: `tests/e2e/accessibility.spec.ts`
-- [ ] R60 Live on the web (Cloudflare Pages) · proof: `docs/DEPLOY.md`
+- [x] R60 Live on the web (Cloudflare Pages) · proof: `docs/DEPLOY.md`
 - [ ] R61 Light theme (after it's designed) · proof: `src/core/theme/tokens-light.css`

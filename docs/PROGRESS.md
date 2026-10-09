@@ -3,15 +3,14 @@
 Resume with: "continue from PROGRESS.md". Newest entry on top.
 
 ## Now
-- **Supabase connected.** Tables created by the GitHub integration and checked
-  live (all 10 exist; writes without sign-in are refused). App builds now open on
-  the sign-in screen. **Waiting on you:** Discord and Google login apps
-  (`docs/SETUP.md` §2), then hosting so you can open the app (R60).
+- **HLITH is live:** https://project-hlith.hliskjlf.workers.dev. Discord sign-in
+  works end to end. Every merge to `main` redeploys the site and applies new
+  database migrations (`docs/DEPLOY.md`).
 
 ## Next
-- Test sign-in end to end once a login provider is on and the app is hosted.
-- R24 backups (needs a storage choice) can wait; next build step is the pull
-  budget engine (R25).
+- Next build step: the pull budget engine (R25).
+- Later, needs you: Google login, making yourself owner (`docs/SETUP.md` §1.5),
+  Resend before real users, R24 backups (needs a storage choice).
 
 ## How to check everything
 - `npm run check` = lint + typecheck + unit tests + build.
@@ -19,6 +18,10 @@ Resume with: "continue from PROGRESS.md". Newest entry on top.
 - CI (`.github/workflows/ci.yml`) runs both on every pull request.
 
 ## Done
+- 2026-10-09 · **Live (R60).** Supabase tables created by its GitHub
+  integration; app connected (public values in `.env.production`); hosted on
+  Cloudflare (`wrangler.jsonc`, subdomain `hliskjlf`); Discord sign-in tested
+  end to end by you. `docs/DEPLOY.md` lists every outside setting.
 - 2026-10-09 · **Step 6 (R20–R23).** `supabase/migrations/0001_init.sql`:
   profiles, owners (set by hand only), settings, catalog (owner-only writes,
   items retired not deleted), your own items, roster, progress, append-only
@@ -28,8 +31,7 @@ Resume with: "continue from PROGRESS.md". Newest entry on top.
   "this device only" mode. Settings sync: newest copy wins, the other is kept
   as a backup; status in the sidebar (synced / syncing / failed). Built-in
   lists: owner updates layered over seed data, ids never disappear.
-  `docs/SETUP.md` has the outside setup steps. `public/_redirects` makes
-  addresses like /hsr/pulls work on Cloudflare Pages.
+  `docs/SETUP.md` has the outside setup steps.
 - 2026-10-09 · Step 5 merged (pull request #7).
 - 2026-10-09 · **Step 5 (R17–R19).** `src/core/shell/`: PC sidebar (game
   switcher All/HSR/ZZZ/+, modules, Edit layout, sync status, Assistant ⌘K,
@@ -88,7 +90,8 @@ Resume with: "continue from PROGRESS.md". Newest entry on top.
 - 2026-10-09 · Structure rule: core = skeleton, tools/modules = shelves and nerves,
   games = flesh. Nothing in core/ or tools/ may assume HoYoverse rules.
 - 2026-10-09 · Approved: React + Vite, Supabase (database, login, server
-  functions), Cloudflare Pages hosting, Resend for sign-in email.
+  functions), Cloudflare hosting (Workers static assets, chosen 2026-10-09 over
+  legacy Pages), Resend for sign-in email.
 - 2026-10-09 · ink.5 = `#6C7F93` (Override 4): 4.83:1 on bg.app, 4.59:1 on
   bg.card, 4.7:1 on bg.shell. It's for section labels only; on bg.inset/raised it
   is 4.4:1, so labels never go there.
@@ -104,7 +107,8 @@ Resume with: "continue from PROGRESS.md". Newest entry on top.
 2. Evening message: phone notification.
 3. Pull chances: both official and community soft-pity numbers, labelled.
 4. Supabase: free plan for now.
-5. Web address: free pages.dev address for now.
+5. Web address: free address for now; ended up as
+   `project-hlith.hliskjlf.workers.dev` (Cloudflare's newer Workers route).
 
 ## Steps
 The full checklist lives in `docs/ROADMAP.md` and ticks itself (`npm run roadmap`).

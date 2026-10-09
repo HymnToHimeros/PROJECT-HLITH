@@ -26,7 +26,7 @@ once a week, or move to Pro, $25/month); no automatic backups (ROADMAP R24).
 ## 2. Login providers
 Both need the callback address: `https://<your-project>.supabase.co/auth/v1/callback`.
 
-**Discord** · discord.com/developers/applications → New Application → OAuth2:
+**Discord** (done 2026-10-09) · discord.com/developers/applications → New Application → OAuth2:
 - Add redirect: the callback address above.
 - Copy **Client ID** (**public**) and **Client Secret** (**secret**).
 - Supabase → Authentication → Sign In / Providers → Discord → paste both → Enable.
@@ -41,8 +41,10 @@ Both need the callback address: `https://<your-project>.supabase.co/auth/v1/call
 **Email links** work out of the box for testing (Supabase's own mailer is
 limited to a few emails an hour). Before real users: Resend (section 4).
 
-Supabase → Authentication → URL Configuration: set **Site URL** to the app's
-address and add `http://localhost:5173` to Redirect URLs for local testing.
+Supabase → Authentication → URL Configuration (done 2026-10-09): **Site URL**
+`https://project-hlith.hliskjlf.workers.dev`, **Redirect URLs**
+`https://project-hlith.hliskjlf.workers.dev/**`. Without this, sign-in returns
+to `localhost` and fails.
 
 ## 3. Connect the app (done 2026-10-09)
 The live project's two public values are in `.env.production`:
