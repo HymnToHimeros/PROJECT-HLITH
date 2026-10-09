@@ -3,7 +3,9 @@
 Resume with: "continue from PROGRESS.md". Newest entry on top.
 
 ## Now
-- **Step 1 — Project setup: done**, in review as a pull request.
+- **Roadmap + workstreams added** (R05): `docs/ROADMAP.md` ticks itself from
+  proof files; `docs/WORKSTREAMS.md` lists who builds what. This chat is
+  **FRAME**, branches `frame/<job>`.
 
 ## Next
 - Step 2 — Tokens (`tokens.css`, ink.5 = `#6C7F93`) and Layer 4 components with
@@ -15,6 +17,8 @@ Resume with: "continue from PROGRESS.md". Newest entry on top.
 - CI (`.github/workflows/ci.yml`) runs both on every pull request.
 
 ## Done
+- 2026-10-09 · **R05.** Self-checking roadmap (`npm run roadmap`, test fails if
+  stale) and workstreams file. Step 1 merged (pull request #2).
 - 2026-10-09 · **Step 1.** React 19 + Vite 8 + TypeScript 6 (strict), ESLint,
   Vitest, Playwright, CI. Architecture test: core/ ↛ tools/ ↛ games/, games
   only import core/, games never import each other; checked by a test and by
@@ -26,6 +30,8 @@ Resume with: "continue from PROGRESS.md". Newest entry on top.
   (CLAUDE.md expects them there). Wrote `docs/PLAN.md` and this file.
 
 ## Decisions log
+- 2026-10-09 · This chat's name is FRAME (named by job, not fiction); its
+  branches are `frame/<job>`. Other chats pick a job name too.
 - 2026-10-09 · You gave permission for me to open and merge pull requests on my own.
 - 2026-10-09 · Structure rule: core = skeleton, tools/modules = shelves and nerves,
   games = flesh. Nothing in core/ or tools/ may assume HoYoverse rules.
@@ -41,19 +47,5 @@ Resume with: "continue from PROGRESS.md". Newest entry on top.
 4. Supabase: free plan for now.
 5. Web address: free pages.dev address for now.
 
-## Steps (from PLAN.md §8)
-| # | Step | State |
-|---|---|---|
-| 0 | Plan | done |
-| 1 | Project setup + architecture test | done |
-| 2 | Tokens + Layer 4 components | not started |
-| 3 | Contract, registries, `_template`, HSR + ZZZ records | not started |
-| 4 | Time and resets | not started |
-| 5 | Shell + Edit layout | not started |
-| 6 | Supabase schema, login, sync | not started |
-| 7 | Built-in lists + never-wipe tests | not started |
-| 8 | Budget engine | not started |
-| 9 | Pity engine + history import | not started |
-| 10–18 | Modules: Events, Backlog, Pulls, Roster, Banners, Farm, Calendar, Today, Intel | not started |
-| 19–27 | Edit mode, HoYoLAB, Assistant, scan, evening message + feed, share team, checklist + Guide, export + delete, Owner console | not started |
-| 28 | Polish | not started |
+## Steps
+The full checklist lives in `docs/ROADMAP.md` and ticks itself (`npm run roadmap`).

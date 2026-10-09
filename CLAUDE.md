@@ -16,6 +16,8 @@
   update PROGRESS.md and stop. I resume with "continue from PROGRESS.md".
 - Few pushes (free hosting rate limits). Branch names describe the job.
 - Ask questions in chat, not in a form.
+- Several chats build at once. Read docs/WORKSTREAMS.md (names, branch
+  prefixes, who owns what) and docs/ROADMAP.md (self-ticking checklist).
 
 ## OVERRIDES
 1. Every game has the same modules. Game-only things are features inside
