@@ -135,7 +135,9 @@ describe('Shell', () => {
     expect(side.getByRole('button', { name: 'Edit layout' })).toBeInTheDocument();
     expect(side.getByRole('status')).toHaveTextContent('Saved on this device only');
     fireEvent.click(side.getByRole('button', { name: /Account/ }));
-    expect(screen.getByRole('dialog', { name: 'Account' })).toBeInTheDocument();
+    expect(window.location.pathname).toBe('/account');
+    expect(screen.getByRole('heading', { level: 1, name: 'Account' })).toBeInTheDocument();
+    expect(side.getByRole('button', { name: /Account/ })).toHaveAttribute('aria-current', 'page');
   });
 });
 

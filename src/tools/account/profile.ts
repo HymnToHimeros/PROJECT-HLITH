@@ -1,0 +1,227 @@
+/**
+ * Your profile on the Account page: picture, banner, name, bio, pinned characters
+ * and which showcase cards show. No React here.
+ *
+ * Where it lives:
+ *  - This device only (no server): one key in this browser, `hlith.profile`. Pictures
+ *    are shrunk in the browser and kept as small image text (data URLs). It goes into
+ *    the backup file with everything else, and never leaves this browser otherwise.
+ *  - Signed in: the columns added to public.profiles in 0004_profile.sql, and the
+ *    pictures in the `avatars` storage bucket under your own folder (<user id>/…).
+ *
+ * Never wiped: unreadable saved text is kept under a backup key, not thrown away.
+ */
+import type { GameId } from '../../core/contract';
+
+export const BIO_MAX = 200;
+export const NAME_MAX = 40;
+export const PIN_MAX = 6;
+/** Largest picture you can pick, before it's shrunk. */
+export const IMAGE_MAX_BYTES = 2 * 1024 * 1024;
+export const IMAGE_TYPES = ['image/png', 'image/jpeg', 'image/webp', 'image/gif'];
+
+/** Showcase cards, in the order they show. */
+export const CARD_IDS = ['games', 'sign-in', 'member-since', 'characters', 'pulls', 'pity', 'backlog'] as const;
+export type CardId = (typeof CARD_IDS)[number];
+export const CARD_LABEL: Record<CardId, string> = {
+  games: 'Games you play',
+  'sign-in': 'Sign-in methods',
+  'member-since': 'Member since',
+  characters: 'Characters owned',
+  pulls: 'Pulls imported',
+  pity: 'Current pity',
+  backlog: 'Backlog progress',
+};
+
+export interface Profile {
+  displayName: string | null;
+  bio: string | null;
+  /** Picture: a data URL (this device) or a storage path inside the avatars bucket (signed in). null = your initial. */
+  avatar: string | null;
+  /** Banner: same as avatar. null = the default gradient in your games' colours. */
+  banner: string | null;
+  /** Characters you pinned to the showcase, per game (ids from your owned roster). */
+  pinned: Record<GameId, string[]>;
+  /** Cards you switched off. Missing = shown. */
+  hiddenCards: CardId[];
+  /** When it last changed (epoch ms). */
+  updatedAt: number;
+}
+
+export const EMPTY_PROFILE: Profile = { displayName: null, bio: null, avatar: null, banner: null, pinned: {}, hiddenCards: [], updatedAt: 0 };
+
+const text = (v: unknown, max: number): string | null => {
+  if (typeof v !== 'string') return null;
+  const t = v.replace(/\s+/g, ' ').trim();
+  return t ? t.slice(0, max) : null;
+};
+
+/** Bios keep line breaks (at most two in a row). */
+const bioText = (v: unknown): string | null => {
+  if (typeof v !== 'string') return null;
+  const t = v
+    .replace(/\r\n?/g, '\n')
+    .replace(/[^\S\n]+/g, ' ')
+    .replace(/\n{3,}/g, '\n\n')
+    .trim();
+  return t ? t.slice(0, BIO_MAX) : null;
+};
+
+const image = (v: unknown): string | null => (typeof v === 'string' && v.length > 0 ? v : null);
+
+/** Any stored or incoming value → a clean profile. Unknown fields are dropped, lengths and pin counts kept to the limits. */
+export function cleanProfile(raw: unknown): Profile {
+  const r = raw && typeof raw === 'object' ? (raw as Record<string, unknown>) : {};
+  const pinnedRaw = r.pinned && typeof r.pinned === 'object' ? (r.pinned as Record<string, unknown>) : {};
+  const pinned: Record<GameId, string[]> = {};
+  for (const [game, ids] of Object.entries(pinnedRaw)) {
+    if (!Array.isArray(ids)) continue;
+    const list = [...new Set(ids.filter((x): x is string => typeof x === 'string' && x.length > 0))].slice(0, PIN_MAX);
+    if (list.length) pinned[game] = list;
+  }
+  const hidden = Array.isArray(r.hiddenCards) ? r.hiddenCards.filter((c): c is CardId => (CARD_IDS as readonly string[]).includes(c as string)) : [];
+  return {
+    displayName: text(r.displayName, NAME_MAX),
+    bio: bioText(r.bio),
+    avatar: image(r.avatar),
+    banner: image(r.banner),
+    pinned,
+    hiddenCards: [...new Set(hidden)],
+    updatedAt: typeof r.updatedAt === 'number' && Number.isFinite(r.updatedAt) ? r.updatedAt : 0,
+  };
+}
+
+/** Pin or unpin one character (max PIN_MAX per game). Returns the same profile when the pin is full. */
+export function togglePin(p: Profile, game: GameId, characterId: string): Profile {
+  const cur = p.pinned[game] ?? [];
+  if (cur.includes(characterId)) {
+    const next = cur.filter((x) => x !== characterId);
+    const rest = Object.fromEntries(Object.entries(p.pinned).filter(([g]) => g !== game));
+    return { ...p, pinned: next.length ? { ...rest, [game]: next } : rest };
+  }
+  if (cur.length >= PIN_MAX) return p;
+  return { ...p, pinned: { ...p.pinned, [game]: [...cur, characterId] } };
+}
+
+export function setCardShown(p: Profile, card: CardId, shown: boolean): Profile {
+  const hidden = shown ? p.hiddenCards.filter((c) => c !== card) : [...new Set([...p.hiddenCards, card])];
+  return { ...p, hiddenCards: hidden };
+}
+
+// ── This device ─────────────────────────────────────────────────────
+export const DEVICE_KEY = 'hlith.profile';
+
+export function loadDeviceProfile(): Profile {
+  let raw: string | null = null;
+  try {
+    raw = localStorage.getItem(DEVICE_KEY);
+    return raw ? cleanProfile(JSON.parse(raw)) : EMPTY_PROFILE;
+  } catch {
+    try {
+      if (raw) localStorage.setItem(`${DEVICE_KEY}.unreadable.${Date.now()}`, raw);
+    } catch {
+      /* storage unavailable */
+    }
+    return EMPTY_PROFILE;
+  }
+}
+
+/** Saves on this device. Throws a plain-words error when the browser is out of room (pictures too big). */
+export function saveDeviceProfile(p: Profile, now = Date.now()): Profile {
+  const next = { ...cleanProfile(p), updatedAt: now };
+  try {
+    localStorage.setItem(DEVICE_KEY, JSON.stringify(next));
+  } catch {
+    throw new Error('This browser has no room left to save the profile. Try a smaller picture, or remove the banner.');
+  }
+  return next;
+}
+
+// ── Signed in: public.profiles row ──────────────────────────────────
+/** The columns of public.profiles this page reads and writes (0001 + 0004_profile.sql). */
+export interface ProfileRow {
+  user_id: string;
+  display_name: string | null;
+  bio: string | null;
+  avatar_path: string | null;
+  banner_path: string | null;
+  showcase: { pinned: Record<GameId, string[]>; hidden_cards: CardId[] } | null;
+  updated_at?: string;
+}
+
+export function toRow(p: Profile, userId: string): ProfileRow {
+  const c = cleanProfile(p);
+  if ([c.avatar, c.banner].some((x) => x?.startsWith('data:'))) throw new Error('Upload pictures before saving the row.');
+  return {
+    user_id: userId,
+    display_name: c.displayName,
+    bio: c.bio,
+    avatar_path: c.avatar,
+    banner_path: c.banner,
+    showcase: { pinned: c.pinned, hidden_cards: c.hiddenCards },
+    updated_at: new Date(c.updatedAt || Date.now()).toISOString(),
+  };
+}
+
+export function fromRow(row: Partial<ProfileRow> | null | undefined): Profile {
+  if (!row) return EMPTY_PROFILE;
+  const at = typeof row.updated_at === 'string' ? Date.parse(row.updated_at) : NaN;
+  return cleanProfile({
+    displayName: row.display_name,
+    bio: row.bio,
+    avatar: row.avatar_path,
+    banner: row.banner_path,
+    pinned: row.showcase?.pinned,
+    hiddenCards: row.showcase?.hidden_cards,
+    updatedAt: Number.isFinite(at) ? at : 0,
+  });
+}
+
+/** Path inside the avatars bucket. The first folder must be your user id (storage policy in 0004_profile.sql). */
+export const storagePath = (userId: string, kind: 'avatar' | 'banner', type = 'image/jpeg') => `${userId}/${kind}.${type === 'image/png' ? 'png' : 'jpg'}`;
+
+/** Has the person filled in anything at all? */
+export const isBlank = (p: Profile) => !p.displayName && !p.bio && !p.avatar && !p.banner && Object.keys(p.pinned).length === 0 && p.hiddenCards.length === 0;
+
+// ── Pictures ────────────────────────────────────────────────────────
+/** null when the file is fine, else why not, in plain words. */
+export function checkImage(file: { type: string; size: number }): string | null {
+  if (!IMAGE_TYPES.includes(file.type)) return 'That file isn’t a picture HLITH can use. Pick a PNG, JPG, WebP or GIF.';
+  if (file.size > IMAGE_MAX_BYTES) return `That picture is ${(file.size / 1024 / 1024).toFixed(1)} MB. The limit is 2 MB.`;
+  return null;
+}
+
+/** Final size each picture is shrunk to (cropped to fill, from the centre). */
+export const IMAGE_SIZE = { avatar: { w: 256, h: 256 }, banner: { w: 1200, h: 360 } } as const;
+
+/** The part of a w×h picture that fills a target box (centred crop, like object-fit: cover). */
+export function coverCrop(w: number, h: number, tw: number, th: number): { sx: number; sy: number; sw: number; sh: number } {
+  const scale = Math.max(tw / w, th / h);
+  const sw = Math.round(tw / scale);
+  const sh = Math.round(th / scale);
+  return { sx: Math.round((w - sw) / 2), sy: Math.round((h - sh) / 2), sw, sh };
+}
+
+/** Shrink and crop a picture in the browser. Returns a JPEG data URL (small enough for this device's storage). */
+export async function shrinkImage(file: Blob, kind: 'avatar' | 'banner'): Promise<string> {
+  const { w: tw, h: th } = IMAGE_SIZE[kind];
+  const bitmap = await createImageBitmap(file);
+  const canvas = document.createElement('canvas');
+  canvas.width = tw;
+  canvas.height = th;
+  const ctx = canvas.getContext('2d');
+  if (!ctx) throw new Error('This browser can’t resize pictures.');
+  const c = coverCrop(bitmap.width, bitmap.height, tw, th);
+  ctx.drawImage(bitmap, c.sx, c.sy, c.sw, c.sh, 0, 0, tw, th);
+  bitmap.close();
+  return canvas.toDataURL('image/jpeg', kind === 'avatar' ? 0.86 : 0.8);
+}
+
+export function dataUrlToBlob(url: string): Blob {
+  const [head = '', body = ''] = url.split(',');
+  const type = /data:([^;]+)/.exec(head)?.[1] ?? 'application/octet-stream';
+  const bin = atob(body);
+  const bytes = new Uint8Array(bin.length);
+  for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+  return new Blob([bytes], { type });
+}

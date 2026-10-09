@@ -25,6 +25,28 @@ Resume with: "continue from PROGRESS.md". Newest entry on top.
 - CI (`.github/workflows/ci.yml`) runs both on every pull request.
 
 ## Done
+- 2026-10-09 · **Account is its own page, with a customisable Profile** (branch
+  `frame/account-page`). Shown to you for approval (no design yet, Override 5).
+  - `/account` and `/account/<section>`: a section bar (left column on PC,
+    sideways-scrolling tabs on phone) with Profile, Sync, Backup, Notifications,
+    Game settings, Connected accounts, Guide, Layout, Theme, Owner console (owners
+    only), Sign in / Sign out. The sidebar stays; browser back works.
+  - Every "Choose server" button opens Account → Game settings for that game
+    (`/account/game-settings/<game>`), with "Done · back to where you were".
+  - Profile: banner (default: a wash in your games' colours), round picture
+    (default: your initial), name, bio (200 max), and showcase cards from your own
+    data only: games + server, sign-in methods, member since, characters owned +
+    up to 6 pinned per game, pulls imported, current pity per banner, backlog %
+    (only when every item has a count). Empty cards say "No data yet" with a button.
+    Edit mode: pictures (images only, 2 MB max, cropped to fill, shrunk in the
+    browser), name, bio, pins, card switches.
+  - Saved: this device only → `hlith.profile` in the browser (in backups too).
+    Signed in → new columns on `public.profiles` + an `avatars` storage bucket
+    (`supabase/migrations/0004_profile.sql`, `supabase/config.toml`): public read,
+    writes only into your own `<user id>/` folder, no delete policy.
+  - Checked: migrations 0001, 0002, 0004 applied to an in-process Postgres
+    (PGlite, Postgres 17 in WASM, stub auth/storage schemas) with the policy rules
+    exercised. Live upload to Supabase not tried yet.
 - 2026-10-09 · **R62 HoYoLAB: several accounts, one button, automatic check-in
   and codes** (branch `frame/hoyolab-accounts`).
   - Roster in All games has ONE "Import from HoYoLAB" and ONE "Scan a

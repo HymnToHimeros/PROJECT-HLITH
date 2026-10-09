@@ -29,7 +29,8 @@ test('switch game, open a module, edit the layout', async ({ page, isMobile }) =
   // Edit layout: hide Intel, it survives a reload (saved on this device).
   if (isMobile) {
     await page.getByRole('button', { name: 'Account' }).click();
-    await page.getByRole('dialog', { name: 'Account' }).getByRole('button', { name: /Layout settings/ }).click();
+    await page.getByRole('navigation', { name: 'Account sections' }).getByRole('link', { name: /^Layout/ }).click();
+    await page.getByRole('button', { name: 'Edit layout for ZZZ' }).click();
   } else {
     await page.getByRole('button', { name: 'Edit layout' }).click();
   }
@@ -60,27 +61,54 @@ test('drag a module to the top of the list (PC)', async ({ page, isMobile }) => 
   await expect(first).toContainText('Calendar');
 });
 
-test('the Account sheet: rows as designed, a sub-page, and back', async ({ page }) => {
+test('the Account page: section bar, a section, browser back, theme', async ({ page }) => {
   await page.goto('/hsr/today');
   await page.getByRole('button', { name: 'Account' }).first().click();
-  const sheet = page.getByRole('dialog', { name: 'Account' });
-  for (const row of ['Sync', 'Backup', 'Notifications', 'Game settings', 'Guide', 'Layout settings', 'Theme']) {
-    await expect(sheet.getByRole('button', { name: new RegExp(`^${row}`) })).toBeVisible();
+  await expect(page).toHaveURL(/\/account$/);
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Account');
+  const bar = page.getByRole('navigation', { name: 'Account sections' });
+  for (const s of ['Profile', 'Sync', 'Backup', 'Notifications', 'Game settings', 'Connected accounts', 'Guide', 'Layout', 'Theme']) {
+    await expect(bar.getByRole('link', { name: new RegExp(`^${s}`) })).toBeVisible();
   }
-  await sheet.getByRole('button', { name: /^Guide/ }).click();
-  await expect(sheet.getByLabel('Setup checklist')).toBeVisible();
-  await sheet.getByRole('button', { name: 'Back to Account' }).click();
-  await sheet.getByRole('button', { name: /^Theme/ }).click();
-  await sheet.getByRole('radio', { name: /Light/ }).click();
+  await expect(bar.getByRole('link', { name: 'Owner console' })).toHaveCount(0); // owners only
+  await bar.getByRole('link', { name: /^Guide/ }).click();
+  await expect(page).toHaveURL(/\/account\/guide$/);
+  await expect(page.getByLabel('Setup checklist')).toBeVisible();
+  await page.goBack();
+  await expect(page).toHaveURL(/\/account$/);
+  await expect(page.getByRole('region', { name: 'Your profile' })).toBeVisible();
+  await page.goBack();
+  await expect(page).toHaveURL(/\/hsr\/today$/);
+  await page.goto('/account/theme');
+  await page.getByRole('radio', { name: /Light/ }).click();
   await expect(page.locator('html')).toHaveAttribute('data-theme', 'light');
   await noSidewaysScroll(page);
 });
 
-test('the server chip on Today opens the server picker', async ({ page }) => {
+test('Profile: edit name, bio and cards on this device; it survives a reload', async ({ page }) => {
+  await page.goto('/account');
+  await expect(page.getByRole('region', { name: 'Pulls imported' })).toContainText('No data yet');
+  await page.getByRole('button', { name: 'Edit profile' }).click();
+  await page.getByLabel('Display name').fill('Mira');
+  await page.getByLabel(/^Bio/).fill('Story first, pulls second.');
+  await page.getByRole('switch', { name: 'Member since' }).click();
+  await noSidewaysScroll(page);
+  await page.getByRole('button', { name: 'Save profile' }).click();
+  await expect(page.getByRole('heading', { name: 'Mira' })).toBeVisible();
+  await page.reload();
+  await expect(page.getByRole('heading', { name: 'Mira' })).toBeVisible();
+  await expect(page.getByText('Story first, pulls second.')).toBeVisible();
+  await expect(page.getByRole('region', { name: 'Member since' })).toHaveCount(0);
+  await noSidewaysScroll(page);
+});
+
+test('the server chip on Today opens Account → Game settings for that game, and back', async ({ page }) => {
   await page.goto('/hsr/today');
   await page.getByRole('button', { name: 'Choose your HSR server' }).click();
-  const sheet = page.getByRole('dialog', { name: /Server · Honkai: Star Rail/ });
-  await sheet.getByRole('radio', { name: /Europe/ }).click();
+  await expect(page).toHaveURL(/\/account\/game-settings\/hsr$/);
+  await page.getByRole('radiogroup', { name: 'HSR server' }).getByRole('radio', { name: /Europe/ }).click();
+  await page.getByRole('button', { name: 'Done · back to where you were' }).click();
+  await expect(page).toHaveURL(/\/hsr\/today$/);
   await expect(page.getByRole('button', { name: 'HSR server: Europe. Change' })).toBeVisible();
 });
 

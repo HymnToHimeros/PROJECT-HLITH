@@ -32,6 +32,13 @@ verify_jwt = false
 [storage.buckets.backups]
 public = false
 
+# Profile pictures and banners (Account → Profile). Public read so they show with a plain
+# link; writes only into your own folder <user id>/… (storage policies in 0004_profile.sql).
+[storage.buckets.avatars]
+public = true
+file_size_limit = "2MiB"
+allowed_mime_types = ["image/png", "image/jpeg", "image/webp", "image/gif"]
+
 # Export my data (R56) and Delete my account (R57): signed-in users only (checked in the function).
 [functions.export-data]
 verify_jwt = true

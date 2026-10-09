@@ -49,7 +49,13 @@ function Root() {
   if (client && session === null) {
     return <SignIn onProvider={(p) => signInWith(client, p)} onEmail={(email) => sendEmailLink(client, email)} />;
   }
+  // How you signed in this time (currentProvider), and every method linked to the account (app_metadata.providers).
   const provider = session ? currentProvider(session.user) : undefined;
-  const account = client && session ? { email: session.user.email ?? 'your account', provider, onSignOut: () => void signOut(client) } : null;
+  const linked = session?.user.app_metadata.providers;
+  const methods = Array.isArray(linked) ? (linked as unknown[]).filter((m): m is string => typeof m === 'string') : provider ? [provider] : [];
+  const account =
+    client && session
+      ? { email: session.user.email ?? 'your account', provider, id: session.user.id, identities: methods, createdAt: session.user.created_at, onSignOut: () => void signOut(client) }
+      : null;
   return <Shell games={listGames()} account={account} isOwner={isOwner} />;
 }

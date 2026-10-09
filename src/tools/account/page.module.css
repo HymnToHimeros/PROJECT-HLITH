@@ -1,0 +1,130 @@
+/* Account page: section bar (left column on PC, scrolling tabs on phone) beside the open section. */
+.page {
+  display: grid;
+  grid-template-columns: 228px minmax(0, 1fr);
+  gap: var(--s-6);
+  align-items: start;
+  max-width: 1120px;
+}
+.bar {
+  position: sticky;
+  top: var(--s-4);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 6px;
+  background: var(--bg-shell);
+  border: 1px solid var(--line-default);
+  border-radius: var(--r-card);
+}
+.item {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2px;
+  min-height: var(--nav-row);
+  padding: 6px 12px;
+  border: 0;
+  border-radius: var(--r-row);
+  background: none;
+  color: var(--ink-3);
+  text-align: left;
+  text-decoration: none;
+  font: inherit;
+  cursor: pointer;
+  position: relative;
+}
+.item:hover {
+  background: var(--bg-inset);
+  color: var(--ink-1);
+}
+.item:focus-visible {
+  outline: 2px solid var(--vent);
+  outline-offset: -2px;
+}
+.item[aria-current='page'] {
+  background: var(--bg-raised);
+  color: var(--ink-1);
+}
+.item[aria-current='page']::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 9px;
+  bottom: 9px;
+  width: 3px;
+  border-radius: 2px;
+  background: var(--vent);
+}
+.itemLabel {
+  font-size: 14px;
+  font-weight: 600;
+}
+.itemHint {
+  font-size: 11px;
+  color: var(--ink-4);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.signOut {
+  margin-top: 6px;
+  border-top: 1px solid var(--line-subtle);
+  border-radius: 0 0 var(--r-row) var(--r-row);
+}
+.body {
+  min-width: 0;
+  max-width: 820px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-4);
+}
+.sectionTitle {
+  margin: 0;
+  font-weight: 800;
+  font-stretch: 110%;
+  font-size: 22px;
+}
+
+@media (max-width: 820px) {
+  .page {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--s-4);
+  }
+  .bar {
+    position: static;
+    flex-direction: row;
+    overflow-x: auto;
+    scrollbar-width: none;
+    gap: 4px;
+    padding: 4px;
+    margin: 0 calc(var(--s-4) * -1);
+    border-radius: 0;
+    border-left: 0;
+    border-right: 0;
+  }
+  .bar::-webkit-scrollbar {
+    display: none;
+  }
+  .item {
+    flex: none;
+    min-height: var(--tap-min);
+    padding: 6px 14px;
+  }
+  .item[aria-current='page']::before {
+    left: 12px;
+    right: 12px;
+    top: auto;
+    bottom: 2px;
+    width: auto;
+    height: 3px;
+  }
+  .itemHint {
+    display: none;
+  }
+  .signOut {
+    margin-top: 0;
+    border-top: 0;
+    border-radius: var(--r-row);
+  }
+}

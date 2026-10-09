@@ -22,8 +22,7 @@ registerModuleScreen('today', () => import('./tools/today/TodayScreen'));
 registerModuleScreen('calendar', () => import('./tools/calendar/CalendarScreen'));
 registerModuleScreen('farm', () => import('./tools/farm/FarmScreen'));
 registerPanel('assistant', () => import('./tools/assistant/AssistantPanel'));
-registerPanel('settings', () => import('./tools/account/AccountPanel'));
-registerPanel('owner', () => import('./tools/owner/OwnerPanel'));
+registerPanel('account', () => import('./tools/account/AccountPage'));
 applyTheme(savedTheme()); // before the first paint, so a light-theme user never sees a dark flash
 
 const root = document.getElementById('root');

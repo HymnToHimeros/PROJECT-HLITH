@@ -302,6 +302,18 @@ export function useGameData(id: GameId): GameUserData {
   );
 }
 
+/** Everything stored, kept current (for screens that read every game at once, like the profile showcase). */
+export function useAllUserData(): { version: 1; games: Record<GameId, GameUserData> } {
+  return useSyncExternalStore(
+    (l) => {
+      listeners.add(l);
+      return () => listeners.delete(l);
+    },
+    allUserData,
+    allUserData,
+  );
+}
+
 /**
  * Balances from the bank log: the latest "have" per currency plus changes
  * logged after it. A currency with no "have" entry is unknown.
