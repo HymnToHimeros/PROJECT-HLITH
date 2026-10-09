@@ -17,7 +17,40 @@ export interface Prefs {
   layouts: Record<Scope, LayoutState>;
   servers: Record<GameId, string>;
   lastModule: Record<Scope, ModuleId>;
+  /** Account → Theme. Missing = dark. */
+  theme?: Theme;
+  /** When you last downloaded a backup (epoch ms). Missing = never. */
+  lastBackupAt?: number;
+  /** Remind me to download a backup every two weeks. Missing = on. */
+  backupReminder?: boolean;
+  /** Account → Notifications: the evening message. */
+  notify?: NotifyPrefs;
+  /** Task ids you switched off on Today, per game. */
+  hiddenTasks?: Record<GameId, string[]>;
+  /** Hide ticked rows on Today. */
+  hideTicked?: boolean;
+  /** Show each game's server clock next to the screen title. */
+  showServerTime?: boolean;
 }
+
+export type Theme = 'dark' | 'light';
+
+export interface NotifyPrefs {
+  /** The evening message is on for this device. */
+  enabled: boolean;
+  /** Local time, "HH:MM". */
+  time: string;
+  items: { resets: boolean; stamina: boolean; banners: boolean; events: boolean; wanted: boolean };
+  /** An unfinished event joins the message in its last N evenings. */
+  eventDays: 1 | 2;
+}
+
+export const DEFAULT_NOTIFY: NotifyPrefs = {
+  enabled: false,
+  time: '21:00',
+  items: { resets: true, stamina: true, banners: true, events: true, wanted: true },
+  eventDays: 2,
+};
 
 const KEY = 'hlith.prefs';
 const EMPTY: Prefs = { version: 1, updatedAt: 0, games: null, layouts: {}, servers: {}, lastModule: {} };
