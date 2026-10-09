@@ -18,6 +18,7 @@ import {
 import { template } from '../src/games/_template/contract';
 import { games } from '../src/games';
 import { fakeGame } from './fixtures/fake-game/contract';
+import { duplicateIds } from '../src/core/data/catalog';
 
 describe('the real game records', () => {
   it.each(games.map((g) => [g.id, g] as const))('%s passes every registry check', (_id, g) => {
@@ -79,5 +80,20 @@ describe('a new, unlike game needs no core change (PLAN §2b)', () => {
     expect(at('zzz')).toBe(true);
     expect(at('hsr')).toBe(false);
     expect(at('fake-quest')).toBe(false);
+  });
+});
+
+describe('built-in list ids are unique in every game', () => {
+  it.each(games.map((g) => [g.id, g] as const))('%s', async (_id, g) => {
+    const lists = await Promise.all([
+      g.data.characters(),
+      g.data.banners(),
+      g.data.events(),
+      g.data.backlog(),
+      g.data.materials(),
+      g.data.teams(),
+      g.data.versions(),
+    ]);
+    for (const list of lists) expect(duplicateIds(list)).toEqual([]);
   });
 });
