@@ -27,6 +27,7 @@ Resume with: "continue from PROGRESS.md". Newest entry on top.
 - CI (`.github/workflows/ci.yml`) runs both on every pull request.
 
 ## Done
+<<<<<<< HEAD
 - 2026-10-09 · **Roster, Farm and Intel follow the design; Owner console frame
   (R58).** Branch `frame/design-roster-farm`. Roster: one grid in All games
   with game tags, design tiles with an art slot (hatched placeholder until art
@@ -39,6 +40,49 @@ Resume with: "continue from PROGRESS.md". Newest entry on top.
   farm. Intel: kind filter, dashed rows with source reliability. Owner
   console: built, not reachable until there is an owner check. Logic slots
   show "No data yet" or EXAMPLE values. Every screen has "How to use this".
+=======
+- 2026-10-09 · **R47 HoYoLAB link, roster import, R50 screenshot scan, R54 share
+  a team** (branch `frame/connections`, frames + plumbing). HoYoLAB: a server
+  function (`supabase/functions/hoyolab`, sign-in required, only HoYoLAB hosts)
+  reads live stamina, daily activity, check-in (and can claim it), characters
+  and endgame records. The login values are used once by default; "Remember on
+  this device" keeps them in this browser only (never synced or backed up).
+  **Not yet tested with a real HoYoLAB login**: it follows community docs
+  (genshin.py), and the screens say so. Roster → Characters has "Import from
+  HoYoLAB" (only adds and raises, never removes) and "Scan a screenshot"
+  (manual entry saves owned + dupes now; "Read it for me" waits for the
+  Assistant key). Share: a link with the team inside it (after the #, no
+  server), copy as text, save picture, phone share menu; opening a link shows
+  the team read-only with "Save to my teams". Still to mount: the HoYoLAB card in
+  the Account panel and the Share button on Teams (owners of those screens).
+- 2026-10-09 · **★ Assistant, proposals, Edit mode (R46, R48, R49)** — frame,
+  to show you (Override 5: no design for proposals or Edit mode yet).
+  - **Assistant** (⌘K / Ctrl+K, "Ask" on phone; look from the design
+    prototype): your own Claude key (kept only on this device or only for
+    this tab, your choice; "Forget key"; never in your synced settings),
+    model picker (Opus 5.5 default, Sonnet 5.5, Haiku 5.5, with prices, what
+    each is good for, and your own measured average per model), chat,
+    screenshots (shrunk in the browser), web search on Opus/Sonnet (not
+    documented for Haiku, so off there), cost of every reply as an estimate
+    (token counts × list price, + $0.01 per search), a daily limit counted on
+    this device, New chat, suggestions, and a clearly marked EXAMPLE chat
+    until you start. The server function `supabase/functions/assistant` needs
+    sign-in, gets your key with each message, uses it for that one call and
+    keeps nothing. It tells Claude a compact summary of your real data (no
+    examples).
+  - **Proposals**: the Assistant can only *propose* changes (bank log entry,
+    event done/skipped, backlog count, owned/wanted, tick a Today task, a
+    plan or a route). Each is a card: Approve / Dismiss, then Undo. Undo of a
+    bank log entry adds a correcting entry; nothing is ever deleted. Settings
+    lists every change it made, with Undo.
+  - **Edit mode**: add, change and hide your own events, banners and backlog
+    items per game; hide is a flag, list updates never touch your entries.
+    Reachable now from Assistant → Edit lists. Module screens can use
+    `useWithOwnItems(game, kind, list)` and `<EditListButton game kind />`
+    (one line each) once their builder adds them.
+  - Not checked against the live API yet: needs a deployed function and a
+    real key (see the report).
+>>>>>>> frame/skeleton
 - 2026-10-09 · **Every module has a real screen (R29–R30, R35–R45).** Today
   (resets, dailies/weeklies with ticks that clear at your server's reset,
   ★ tonight's run, ★ wishlist), Calendar (six-week timeline + coming up),

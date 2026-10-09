@@ -1,0 +1,264 @@
+/**
+ * The Assistant's server side, without the network: checks a request, builds
+ * the Claude Messages API call and shapes the reply. The `assistant` function
+ * (supabase/functions/assistant/index.ts) wires it to Deno and the SDK.
+ *
+ * The caller's own Claude API key arrives with each request, is handed to the
+ * SDK client for that one call, and is never stored, logged or sent back.
+ */
+import type Anthropic from '@anthropic-ai/sdk';
+
+type Params = Anthropic.Beta.Messages.MessageCreateParamsNonStreaming;
+type Message = Anthropic.Beta.BetaMessage;
+type MessageParam = Anthropic.Beta.BetaMessageParam;
+type Tool = Anthropic.Beta.BetaTool;
+
+/** Models the picker offers. Ids and prices: the Claude API reference (claude-api skill, cached 2026-10-06). */
+export const ASSISTANT_MODELS = ['claude-opus-5-5', 'claude-sonnet-5-5', 'claude-haiku-5-5'] as const;
+export type AssistantModel = (typeof ASSISTANT_MODELS)[number];
+
+/**
+ * Web search (server tool). The dynamic-filtering version is documented for
+ * Opus 5.5 and Sonnet 5.5; it is not listed for Haiku 5.5, so Haiku runs without it.
+ */
+export function webSearchAvailable(model: AssistantModel): boolean {
+  return model !== 'claude-haiku-5-5';
+}
+
+/** Server-side refusal fallback: documented for Opus 5.5 and Sonnet 5.5 on the Claude API, not for Haiku 5.5. */
+const FALLBACK_MODELS: readonly AssistantModel[] = ['claude-opus-5-5', 'claude-sonnet-5-5'];
+
+const id = { type: 'string' } as const;
+const why = { type: 'string', description: 'One short sentence for the user: why you propose this.' } as const;
+const game = { type: 'string', description: 'Game id from the data summary, e.g. "hsr".' } as const;
+const obj = (properties: Record<string, unknown>): Tool['input_schema'] => ({
+  type: 'object',
+  properties,
+  required: Object.keys(properties),
+  additionalProperties: false,
+});
+
+/**
+ * Actions the Assistant can PROPOSE. None of them changes anything by itself:
+ * the app shows each call as a card and applies it only when the user taps Approve.
+ */
+export const ACTION_TOOLS: Tool[] = [
+  {
+    name: 'log_bank_balance',
+    description:
+      'Propose a bank log entry for a currency: "have" = the balance the user sees now; "earned", "bought", "spent" = an amount that changed. Use currency ids from the data summary.',
+    strict: true,
+    input_schema: obj({
+      game,
+      currency: id,
+      kind: { type: 'string', enum: ['have', 'earned', 'bought', 'spent'] },
+      amount: { type: 'integer', minimum: 0 },
+      note: { type: 'string', description: 'Short note, or "" for none.' },
+      why,
+    }),
+  },
+  {
+    name: 'set_event_state',
+    description: 'Propose marking an event open, done or skipped, and optionally how many login days are claimed. Use event ids from the data summary.',
+    strict: true,
+    input_schema: obj({
+      game,
+      event_id: id,
+      state: { type: 'string', enum: ['open', 'done', 'skipped'] },
+      login_days_claimed: { type: ['integer', 'null'], minimum: 0 },
+      why,
+    }),
+  },
+  {
+    name: 'set_backlog_done',
+    description: 'Propose how many steps of a backlog item are done (out of its total). Use item ids from the data summary.',
+    strict: true,
+    input_schema: obj({ game, item_id: id, done: { type: 'integer', minimum: 0 }, why }),
+  },
+  {
+    name: 'set_roster',
+    description: 'Propose marking a character owned or not, wanted or not, and their dupes. Use character ids from the data summary or the game list.',
+    strict: true,
+    input_schema: obj({
+      game,
+      character_id: id,
+      owned: { type: 'boolean' },
+      wanted: { type: 'boolean' },
+      dupes: { type: ['integer', 'null'], minimum: 0, description: 'null = leave as it is.' },
+      why,
+    }),
+  },
+  {
+    name: 'tick_today_task',
+    description: "Propose ticking (or unticking) one of Today's tasks. Use task ids from the data summary.",
+    strict: true,
+    input_schema: obj({ game, task_id: id, done: { type: 'boolean' }, why }),
+  },
+  {
+    name: 'propose_plan',
+    description: 'Propose a plan for the Calendar (for example "farm ornaments during double drops").',
+    strict: true,
+    input_schema: obj({
+      game,
+      title: { type: 'string' },
+      start: { type: 'string', description: 'ISO 8601 date-time.' },
+      end: { type: ['string', 'null'], description: 'ISO 8601 date-time, or null.' },
+      note: { type: 'string', description: 'One line, or "".' },
+      why,
+    }),
+  },
+  {
+    name: 'propose_route',
+    description: 'Propose a route: stops in an order that saves time, each with its small steps. It becomes a plan for that day.',
+    strict: true,
+    input_schema: obj({
+      game,
+      title: { type: 'string' },
+      date: { type: 'string', description: 'ISO 8601 date-time the route is for.' },
+      stops: {
+        type: 'array',
+        items: obj({ title: { type: 'string' }, minutes: { type: ['integer', 'null'] }, items: { type: 'array', items: { type: 'string' } } }),
+      },
+      why,
+    }),
+  },
+];
+
+export const ACTION_TOOL_NAMES = ACTION_TOOLS.map((t) => t.name);
+
+/** Stable instructions (cached). The user's data follows as a second block. */
+export const SYSTEM_PROMPT = `You are the Assistant inside HLITH (PROJECT-HLITH, HLIÐSKJÁLF), a personal hub for gacha games such as Honkai: Star Rail and Zenless Zone Zero.
+
+How to answer:
+- Answer from the user's data summary below and from what they show you (screenshots). If a fact is not there and you cannot check it, say "no data yet" rather than guessing. Never present an estimate as a fact; label it.
+- Plain, friendly English. Short answers first; details only when asked. Times in the user's local time.
+- When you use web search, say where the information came from.
+
+Changing the user's data:
+- You can propose changes with your tools (bank log entries, event and backlog progress, roster, Today's tasks, plans and routes). Every tool call becomes a card the user approves or dismisses; nothing changes until they approve. Never say a change is done before the user approves it.
+- Use only ids that appear in the data summary. If you do not know the id, ask.
+- Tool results tell you what the user decided.`;
+
+export interface AssistantRequest {
+  model: AssistantModel;
+  messages: MessageParam[];
+  context: string;
+  webSearch: boolean;
+  apiKey: string;
+}
+
+export type Checked<T> = { ok: true; value: T } | { ok: false; error: string };
+
+const BLOCK_TYPES = new Set(['text', 'image', 'tool_use', 'tool_result', 'thinking', 'redacted_thinking', 'server_tool_use', 'web_search_tool_result']);
+const MAX_MESSAGES = 200;
+const MAX_CONTEXT = 24_000;
+const MAX_BODY_CHARS = 20_000_000;
+
+/** Check a request body. The key is checked for shape only; Claude decides if it is valid. */
+export function checkRequest(body: unknown, bodyChars: number): Checked<AssistantRequest> {
+  if (bodyChars > MAX_BODY_CHARS) return { ok: false, error: 'That message is too large. Try a smaller screenshot.' };
+  if (!body || typeof body !== 'object') return { ok: false, error: 'Send JSON.' };
+  const b = body as Record<string, unknown>;
+  const apiKey = typeof b.apiKey === 'string' ? b.apiKey.trim() : '';
+  if (!/^sk-ant-[A-Za-z0-9_-]{10,300}$/.test(apiKey)) return { ok: false, error: 'Add your Claude API key first (it starts with sk-ant-).' };
+  const model = ASSISTANT_MODELS.find((m) => m === b.model);
+  if (!model) return { ok: false, error: 'Choose one of the listed models.' };
+  if (!Array.isArray(b.messages) || b.messages.length === 0 || b.messages.length > MAX_MESSAGES)
+    return { ok: false, error: `Send between 1 and ${MAX_MESSAGES} messages. Start a new chat if this one is long.` };
+  for (const [i, m] of b.messages.entries()) {
+    if (!m || typeof m !== 'object') return { ok: false, error: 'A message is malformed.' };
+    const { role, content } = m as { role?: unknown; content?: unknown };
+    if (role !== 'user' && role !== 'assistant') return { ok: false, error: 'Messages are from the user or the assistant only.' };
+    if (i === 0 && role !== 'user') return { ok: false, error: 'The chat must start with your message.' };
+    if (typeof content === 'string') continue;
+    if (!Array.isArray(content) || content.some((c) => !c || typeof c !== 'object' || !BLOCK_TYPES.has(String((c as { type?: unknown }).type))))
+      return { ok: false, error: 'A message has content the Assistant does not accept.' };
+  }
+  if ((b.messages[b.messages.length - 1] as { role: string }).role !== 'user') return { ok: false, error: 'The last message must be yours.' };
+  const context = typeof b.context === 'string' ? b.context.slice(0, MAX_CONTEXT) : '';
+  return { ok: true, value: { model, messages: b.messages as MessageParam[], context, webSearch: b.webSearch === true && webSearchAvailable(model), apiKey } };
+}
+
+/** The Messages API request. The key is not part of it (it goes to the client constructor). */
+export function buildParams(req: Omit<AssistantRequest, 'apiKey'>): Params {
+  const tools: Params['tools'] = [...ACTION_TOOLS];
+  if (req.webSearch) tools.push({ type: 'web_search_20260209', name: 'web_search', max_uses: 5 });
+  return {
+    model: req.model,
+    max_tokens: 16000,
+    system: [
+      { type: 'text', text: SYSTEM_PROMPT },
+      { type: 'text', text: `The user's data (summary made by the app just now):\n${req.context || 'No data yet.'}` },
+    ],
+    messages: req.messages,
+    tools,
+    tool_choice: { type: 'auto' },
+    thinking: { type: 'adaptive' },
+    output_config: { effort: 'medium' },
+    // Caches the conversation so far; later turns re-read it at the cache price.
+    cache_control: { type: 'ephemeral' },
+    ...(FALLBACK_MODELS.includes(req.model) ? { betas: ['server-side-fallback-2026-07-01'], fallbacks: 'default' as const } : {}),
+  };
+}
+
+export interface CallUsage {
+  model: string;
+  usage: Message['usage'];
+}
+
+export interface AssistantReply {
+  /** The assistant turn, ready to append to the history unchanged. */
+  content: Message['content'];
+  stop_reason: Message['stop_reason'];
+  stop_details: Message['stop_details'];
+  /** The model that wrote the reply (differs from the chosen one after a fallback). */
+  model: string;
+  /** One entry per API call this turn (more than one when a long web search paused and resumed). */
+  calls: CallUsage[];
+}
+
+const MAX_CONTINUATIONS = 3;
+
+/**
+ * Run one assistant turn. `create` makes one Messages API call with the
+ * caller's key. A turn that pauses during web search is resumed (no extra user message).
+ */
+export async function runTurn(req: AssistantRequest, create: (params: Params, apiKey: string) => Promise<Message>): Promise<AssistantReply> {
+  const { apiKey, ...rest } = req;
+  let messages = [...rest.messages];
+  const content: Message['content'] = [];
+  const calls: CallUsage[] = [];
+  let last: Message | null = null;
+  for (let i = 0; i <= MAX_CONTINUATIONS; i++) {
+    last = await create(buildParams({ ...rest, messages }), apiKey);
+    calls.push({ model: last.model, usage: last.usage });
+    content.push(...last.content);
+    if (last.stop_reason !== 'pause_turn') break;
+    messages = [...rest.messages, { role: 'assistant', content: content as MessageParam['content'] }];
+  }
+  if (!last) throw new Error('no reply');
+  return { content, stop_reason: last.stop_reason, stop_details: last.stop_details, model: last.model, calls };
+}
+
+/** What the user sees when Claude returns an error. Never includes the key. */
+export function errorText(status: number | undefined): { status: number; error: string } {
+  switch (status) {
+    case 400:
+      return { status: 400, error: 'Claude could not read this request. Try again, or start a new chat.' };
+    case 401:
+      return { status: 401, error: 'Claude did not accept this API key. Check it in the Assistant settings.' };
+    case 403:
+      return { status: 403, error: 'This API key is not allowed to use that model. Try another model, or check your Console settings.' };
+    case 404:
+      return { status: 404, error: 'That model is not available to your key. Choose another model.' };
+    case 413:
+      return { status: 413, error: 'That message is too large. Try a smaller screenshot.' };
+    case 429:
+      return { status: 429, error: 'Your Claude account hit its rate or spend limit. Wait a minute, or check Billing in the Claude Console.' };
+    case 529:
+    case 503:
+      return { status: 503, error: 'Claude is busy right now. Try again in a minute.' };
+    default:
+      return { status: 502, error: 'The Assistant could not reach Claude. Try again in a minute.' };
+  }
+}

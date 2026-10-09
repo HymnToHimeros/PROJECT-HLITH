@@ -3,6 +3,7 @@ import type { Character, TeamPreset } from '../../core/contract';
 import { saveTeam, type UserTeam } from '../../core/data/userData';
 import { BottomSheet, Button, ExampleNotice, ExampleTag, GameTag, HowTo, NoData } from '../../core/ui';
 import { exampleScore } from './examples';
+import { ShareTeam } from '../share/ShareTeam';
 import { KitCheck } from './KitCheck';
 import r from './roster.module.css';
 import { artOf, byNewest, CharArt, elementOf, entryOf, SectionHead, tagOf } from './shared';
@@ -88,7 +89,7 @@ export function Teams({ data, several, onOpen, openCharacters }: Props) {
                   <>
                     <Button onClick={() => setKitFor({ data: d, name: t.name, members: t.members })}>Kit check</Button>
                     <Button onClick={() => setEditing({ data: d, team: t })}>Edit</Button>
-                    {/* ShareTeam mounts here (connections builder: copy as text, save a picture). */}
+                    <ShareTeam game={d.game} team={t} />
                   </>
                 }
               />

@@ -1155,3 +1155,16 @@ button.member:hover .memberArt {
     padding: var(--s-5);
   }
 }
+
+/* HoYoLAB import and screenshot scan (connections builder) */
+.importRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-2) var(--s-4);
+}
+.importGroup {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s-2);
+}

@@ -2,6 +2,8 @@ import { useMemo, useState } from 'react';
 import type { Character } from '../../core/contract';
 import { setRosterEntry, type RosterEntry } from '../../core/data/userData';
 import { EmptyState, GameTag, HowTo } from '../../core/ui';
+import { RosterImport } from '../account-links/RosterImport';
+import { ScanEntry } from '../scan/Scan';
 import r from './roster.module.css';
 import { artOf, byNewest, CharArt, dupesLabel, elementOf, entryOf, rarityColor, subtitleOf, tagOf } from './shared';
 import type { RosterData } from './useRosterData';
@@ -110,6 +112,15 @@ export function Characters({ data, several, onOpen }: Props) {
   return (
     <div className={r.stack}>
       {/* RosterImport mounts here (account-links builder) */}
+      <div className={r.importRow}>
+        {data.map((d) => (
+          <span key={d.game.id} className={r.importGroup}>
+            {several && <GameTag label={d.game.short} vent={d.game.vent} />}
+            <RosterImport game={d.game} />
+            <ScanEntry game={d.game} />
+          </span>
+        ))}
+      </div>
       <HowTo
         steps={[
           <>Tap a {word} to open their page. There you mark them <strong>Owned</strong> or <strong>Wanted</strong> and set how many copies you have ({copiesWord(data)}).</>,

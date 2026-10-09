@@ -1,0 +1,267 @@
+/* Shared by account-links, scan and share: same tokens and shapes as the module screens. */
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-4);
+  min-width: 0;
+}
+.tight {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-2);
+  min-width: 0;
+}
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--line-default);
+  border-radius: var(--r-card);
+  padding: var(--s-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-3);
+  min-width: 0;
+}
+.cardHead {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--s-2);
+}
+.cardTitle {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--ink-1);
+}
+.label {
+  font: 600 10px var(--font-numbers);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-5);
+}
+.kind {
+  font-size: 12px;
+  color: var(--ink-4);
+}
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s-2);
+}
+.entryRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-2);
+}
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 12px;
+  color: var(--ink-3);
+  min-width: 0;
+}
+.input {
+  min-height: var(--tap-min);
+  padding: 0 var(--s-3);
+  border-radius: var(--r-button);
+  border: 1px solid var(--line-mid);
+  background: var(--bg-inset);
+  color: var(--ink-1);
+  font: inherit;
+  font-size: 14px;
+  min-width: 0;
+  width: 100%;
+}
+.textarea {
+  min-height: 88px;
+  width: 100%;
+  padding: var(--s-3);
+  border-radius: var(--r-button);
+  border: 1px solid var(--line-mid);
+  background: var(--bg-inset);
+  color: var(--ink-1);
+  font: 13px var(--font-numbers);
+  resize: vertical;
+}
+.toggle {
+  display: inline-flex;
+  align-items: flex-start;
+  gap: var(--s-2);
+  font-size: 14px;
+  color: var(--ink-2);
+  min-height: var(--tap-min);
+  padding-top: 12px;
+  cursor: pointer;
+}
+.toggle input {
+  width: 18px;
+  height: 18px;
+  flex: none;
+  accent-color: var(--vent);
+}
+.toggleNote {
+  display: block;
+  font-size: 12px;
+  color: var(--ink-4);
+}
+.muted {
+  color: var(--ink-4);
+  font-size: 12px;
+  line-height: 1.45;
+}
+.body {
+  color: var(--ink-3);
+  font-size: 14px;
+  line-height: 1.45;
+  margin: 0;
+}
+.body + .body {
+  margin-top: var(--s-2);
+}
+.message {
+  font-size: 13px;
+  color: var(--ok);
+}
+.error {
+  font-size: 13px;
+  color: var(--ember-soft);
+}
+.mono {
+  font-family: var(--font-numbers);
+  font-size: 0.92em;
+  color: var(--ink-1);
+  overflow-wrap: anywhere;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: var(--s-3);
+}
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+.listRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--s-2);
+  padding: 10px 0;
+  border-bottom: 1px solid var(--line-subtle);
+  font-size: 14px;
+  color: var(--ink-1);
+  min-width: 0;
+}
+.listRow:last-child {
+  border-bottom: 0;
+}
+.listName {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+.listSub {
+  font-size: 12px;
+  color: var(--ink-4);
+}
+.num {
+  font-family: var(--font-numbers);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  color: var(--ink-1);
+}
+.status {
+  font: 600 10px var(--font-numbers);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 3px 6px;
+  border-radius: var(--r-tag);
+  border: 1px solid var(--line-strong);
+  color: var(--ink-3);
+  white-space: nowrap;
+}
+.status_new {
+  border-color: var(--ok);
+  color: var(--ok);
+}
+.status_update {
+  border-color: var(--glacier);
+  color: var(--glacier);
+}
+.status_unknown {
+  border-style: dashed;
+  border-color: var(--line-empty);
+  color: var(--ink-4);
+}
+.example {
+  border-style: dashed;
+}
+.notBuilt {
+  border: 1px dashed var(--line-empty);
+  border-radius: var(--r-row);
+  padding: var(--s-3);
+  font-size: 13px;
+  color: var(--ink-3);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.drop {
+  border: 1px dashed var(--line-strong);
+  border-radius: var(--r-hero);
+  background: var(--bg-inset);
+  padding: var(--s-5);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--s-2);
+  text-align: center;
+  min-height: 160px;
+  color: var(--ink-3);
+  font-size: 14px;
+}
+.dropActive {
+  border-color: var(--vent);
+  background: color-mix(in srgb, var(--vent) 6%, var(--bg-inset));
+}
+.shot {
+  display: block;
+  max-width: 100%;
+  max-height: 420px;
+  margin: 0 auto;
+  border-radius: var(--r-row);
+  border: 1px solid var(--line-default);
+  object-fit: contain;
+}
+.sheetBar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-2);
+}
+.visuallyHidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+.memberGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+  gap: var(--s-3);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
