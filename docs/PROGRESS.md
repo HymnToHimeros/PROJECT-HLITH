@@ -8,7 +8,11 @@ Resume with: "continue from PROGRESS.md". Newest entry on top.
   database migrations (`docs/DEPLOY.md`).
 
 ## Next
-- Next build steps: the module screens, starting with Events, Backlog and Pulls.
+- Next build steps: Events and Backlog screens with example data, then Roster
+  (character grid from the nanoka.cc lists), Banners, Today, Intel.
+- Later: copy your bank log and pull history from this device into your
+  account (bank_ledger / pulls tables), and test the in-game link import with
+  a real link from you.
 - Parked by your choice (2026-10-09): Google login, owner rights, Resend, R24
   backups. Building the website comes first.
 - Optional dashboard fix: Cloudflare preview command → `npx wrangler versions
@@ -20,6 +24,19 @@ Resume with: "continue from PROGRESS.md". Newest entry on top.
 - CI (`.github/workflows/ci.yml`) runs both on every pull request.
 
 ## Done
+- 2026-10-09 · **R31–R34 · Pulls screen** (the first real module screen; the
+  others still say "being built"). Four tabs (Override 3): **Planner** (per
+  banner: pulls now, by its end, worst case, chance by end with official and
+  community odds, what isn't counted and why), **Calculator** (every income
+  row until the version ends, paid extras switch), **Bank log** (add-only:
+  I have / earned / bought / spent → balance), **History** (import an export
+  file; in-game link when signed in, never saved; pity per banner; latest top
+  results; **Luck report** card). Until you add your own, each tab shows
+  **example data** built from the game's real character list, with an EXAMPLE
+  badge on every example value and a notice on top. Your entries are kept on
+  this device (`src/core/data/userData.ts`) and never removed. Screens load
+  only when opened (registered in `src/main.tsx`), so the skeleton stays
+  separate from the modules.
 - 2026-10-09 · **Game data from nanoka.cc** (owner's permission). `npm run
   data:nanoka` fills `src/games/{hsr,zzz}/data/characters.json` from
   static.nanoka.cc: 99 HSR characters (game data 4.6.51, incl. the new
