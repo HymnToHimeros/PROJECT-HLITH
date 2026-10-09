@@ -11,15 +11,15 @@ so it can't drift from the real code. Never tick a box by hand; add the proof.
 Who builds what: see `docs/WORKSTREAMS.md`.
 
 <!-- roadmap:summary -->
-**8 of 61 done** `███░░░░░░░░░░░░░░░░░` 13%
+**15 of 61 done** `█████░░░░░░░░░░░░░░░` 25%
 
-**Next up:** R09 Game contract (the shape every game fills in)
+**Next up:** R16 Server resets, local time, local date and number formats
 
 | Phase | Progress | Done |
 |---|---|---|
 | Phase 0 · Foundation | `██████████` | 5 / 5 |
 | Phase 1 · Look | `██████████` | 3 / 3 |
-| Phase 2 · Skeleton | `░░░░░░░░░░` | 0 / 11 |
+| Phase 2 · Skeleton | `██████░░░░` | 7 / 11 |
 | Phase 3 · Accounts and data | `░░░░░░░░░░` | 0 / 5 |
 | Phase 4 · Engines | `░░░░░░░░░░` | 0 / 4 |
 | Phase 5 · Modules | `░░░░░░░░░░` | 0 / 17 |
@@ -40,13 +40,13 @@ Who builds what: see `docs/WORKSTREAMS.md`.
 - [x] R08 Component preview page · proof: `src/core/ui/Preview.tsx`
 
 ## Phase 2 · Skeleton
-- [ ] R09 Game contract (the shape every game fills in) · proof: `src/core/contract/game-contract.ts`
-- [ ] R10 Module, feature and game registries · proof: `src/core/registry/modules.ts`, `src/core/registry/features.ts`, `src/core/registry/games.ts`
-- [ ] R11 Layout rules (order, hidden, phone bar, All games) · proof: `src/core/registry/layout.ts`
-- [ ] R12 Game template folder · proof: `src/games/_template/contract.ts`
-- [ ] R13 Honkai: Star Rail record · proof: `src/games/hsr/contract.ts`
-- [ ] R14 Zenless Zone Zero record · proof: `src/games/zzz/contract.ts`
-- [ ] R15 Made-up test game proves new games need no core change · proof: `tests/fixtures/fake-game/contract.ts`
+- [x] R09 Game contract (the shape every game fills in) · proof: `src/core/contract/game-contract.ts`
+- [x] R10 Module, feature and game registries · proof: `src/core/registry/modules.ts`, `src/core/registry/features.ts`, `src/core/registry/games.ts`
+- [x] R11 Layout rules (order, hidden, phone bar, All games) · proof: `src/core/registry/layout.ts`
+- [x] R12 Game template folder · proof: `src/games/_template/contract.ts`
+- [x] R13 Honkai: Star Rail record · proof: `src/games/hsr/contract.ts`
+- [x] R14 Zenless Zone Zero record · proof: `src/games/zzz/contract.ts`
+- [x] R15 Made-up test game proves new games need no core change · proof: `tests/fixtures/fake-game/contract.ts`
 - [ ] R16 Server resets, local time, local date and number formats · proof: `src/core/time/reset.ts`
 - [ ] R17 Shell: PC sidebar, phone bars, More sheet, game switcher · proof: `src/core/shell/Shell.tsx`
 - [ ] R18 Edit layout (drag, hide, restore, reset) · proof: `src/core/shell/EditLayout.tsx`
