@@ -13,6 +13,8 @@ export interface Character {
   role: string; // GameContract.roles[].id
   releasedAt?: ISODate;
   art?: string;
+  /** Where this entry came from, e.g. 'nanoka.cc'. */
+  source?: string;
 }
 
 export interface Banner {
