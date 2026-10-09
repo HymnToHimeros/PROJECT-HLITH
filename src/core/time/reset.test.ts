@@ -72,8 +72,9 @@ describe('display in the viewer time zone and locale', () => {
   it('formats date ranges per locale', () => {
     const a = at('2026-10-12T12:00:00Z');
     const b = at('2026-10-26T12:00:00Z');
-    expect(formatRange(a, b, { locale: 'en-GB', timeZone: 'UTC' })).toBe('12–26 Oct');
-    // ICU uses thin spaces around the dash; compare with plain spaces.
-    expect(formatRange(a, b, { locale: 'en-US', timeZone: 'UTC' }).replace(/\s/g, ' ')).toBe('Oct 12 – 26');
+    // Spacing around the dash differs between ICU versions ("12–26" vs "12 – 26"); compare without it.
+    const tidy = (x: string) => x.replace(/\s+/g, ' ').replace(/ ?– ?/, '–');
+    expect(tidy(formatRange(a, b, { locale: 'en-GB', timeZone: 'UTC' }))).toBe('12–26 Oct');
+    expect(tidy(formatRange(a, b, { locale: 'en-US', timeZone: 'UTC' }))).toBe('Oct 12–26');
   });
 });
