@@ -8,15 +8,18 @@ Resume with: "continue from PROGRESS.md". Newest entry on top.
   database migrations (`docs/DEPLOY.md`).
 
 ## Next
-- Next build steps: Events and Backlog screens with example data, then Roster
-  (character grid from the nanoka.cc lists), Banners, Today, Intel.
-- Later: copy your bank log and pull history from this device into your
-  account (bank_ledger / pulls tables), and test the in-game link import with
-  a real link from you.
-- Parked by your choice (2026-10-09): Google login, owner rights, Resend, R24
-  backups. Building the website comes first.
-- Optional dashboard fix: Cloudflare preview command → `npx wrangler versions
-  upload` (the beta `wrangler preview` fails on pull requests; live site unaffected).
+- Real lists so the EXAMPLE badges go away: banners, events, versions,
+  endgame dates (nanoka.cc has endgame seasons in `maze.json` / `shiyu.json`,
+  and a list of not-yet-released characters in `manifest.json` → Intel).
+  No banner schedules exist on nanoka.cc.
+- The ★ screens still to build (Override 5): Edit mode, screenshot scan,
+  Assistant proposals, evening message and calendar feed settings, setup
+  checklist and Guide, HoYoLAB link, share a team, delete account, export data.
+- Copy your on-device data (bank log, pulls, progress) into your account.
+- Logic that belongs to other chats (see `docs/WORKSTREAMS.md`): team scoring,
+  kit check data, builds and who-fits (ROSTER-LOGIC); farm material planning.
+- Parked by your choice: Google login, owner rights, Resend, R24 backups.
+- Optional dashboard fix: Cloudflare preview command → `npx wrangler versions upload`.
 
 ## How to check everything
 - `npm run check` = lint + typecheck + unit tests + build.
@@ -24,6 +27,19 @@ Resume with: "continue from PROGRESS.md". Newest entry on top.
 - CI (`.github/workflows/ci.yml`) runs both on every pull request.
 
 ## Done
+- 2026-10-09 · **Every module has a real screen (R29–R30, R35–R45).** Today
+  (resets, dailies/weeklies with ticks that clear at your server's reset,
+  ★ tonight's run, ★ wishlist), Calendar (six-week timeline + coming up),
+  Events (open/done/skipped, login days), Backlog (progress, count-toward-pulls
+  switch), Banners (live/upcoming, leaks switch, owned/wanted/new label, Plan
+  pulls), Roster (all characters from nanoka.cc, character page with
+  owned/wanted/dupes, Teams, Kit check frame), Farm (pick characters; material
+  numbers are examples until data exists), Intel. Built as interface only;
+  logic slots say "No data yet" for the logic chats to fill. Real Events and
+  Backlog progress now feeds the Pulls budget. Team size is in the game record
+  (HSR 4, ZZZ 3). Browser test opens every module in every game with no errors.
+- 2026-10-09 · Same sidebar order in every game; example notice says exactly
+  what's example and has buttons to where you replace it (pull request #20).
 - 2026-10-09 · **R31–R34 · Pulls screen** (the first real module screen; the
   others still say "being built"). Four tabs (Override 3): **Planner** (per
   banner: pulls now, by its end, worst case, chance by end with official and

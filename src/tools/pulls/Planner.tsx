@@ -37,6 +37,7 @@ export function Planner({ game, data, serverId, now }: Props) {
           bank: data.bank.value,
           paidExtras: data.user.paidExtras,
           passes: Object.fromEntries(Object.entries(data.user.passes).map(([k, v]) => [k, Date.parse(v)])),
+          ...data.budgetExtras(Date.parse(b.end)),
         });
         const pullsByEnd = budgetPulls(game, byEnd, type.id);
         const pity = pityFromHistory(data.history.list, type.id);

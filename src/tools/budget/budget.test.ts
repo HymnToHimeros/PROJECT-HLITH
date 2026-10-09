@@ -23,6 +23,7 @@ function game(income: IncomeRow[]): GameContract {
       { id: 'std', name: 'Standard ticket', pullItemFor: ['standard'] },
       { id: 'paid', name: 'Paid gem', paid: true },
     ],
+    teamSize: 4,
     stamina: [],
     servers: [{ id: 'eu', label: 'Europe', utcOffset: 1 }],
     reset: { hour: 4, weekday: 1 },

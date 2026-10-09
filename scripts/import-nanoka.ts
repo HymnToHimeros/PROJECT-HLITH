@@ -76,7 +76,7 @@ async function hsr(): Promise<Out[]> {
   const data = await getJson(SOURCES.hsr);
   return Object.entries(data).map(([id, c]) => {
     const role = need(HSR_PATH, String(c.baseType), 'path', id);
-    let name = String(c.en);
+    let name = plain(c.en);
     // The Trailblazer's name is the player's choice; odd ids are Caelus, even Stelle.
     if (name === '{NICKNAME}') name = `Trailblazer · ${HSR_PATH_LABEL[role] ?? role} (${Number(id) % 2 ? 'Caelus' : 'Stelle'})`;
     const out: Out = {
@@ -92,11 +92,14 @@ async function hsr(): Promise<Out[]> {
   });
 }
 
+/** Names can carry game markup like <unbreak>999</unbreak>; keep the text only. */
+const plain = (v: unknown) => String(v).replace(/<[^>]+>/g, '');
+
 async function zzz(): Promise<Out[]> {
   const data = await getJson(SOURCES.zzz);
   return Object.entries(data).map(([id, c]) => ({
     id,
-    name: String(c.en),
+    name: plain(c.en),
     rarity: c.rank === 4 ? ('top' as const) : ('mid' as const),
     element: need(ZZZ_ELEMENT, Number(c.element), 'attribute', id),
     role: need(ZZZ_TYPE, Number(c.type), 'specialty', id),

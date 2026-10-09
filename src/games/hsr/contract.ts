@@ -55,6 +55,7 @@ export const hsr: GameContract = {
     { id: 'oneiric-shard', name: 'Oneiric Shard', paid: true },
   ],
   stamina: [{ id: 'trailblaze-power', name: 'Trailblaze Power', max: 240, minutesPerPoint: 6 }],
+  teamSize: 4,
   servers: [
     { id: 'america', label: 'America', utcOffset: -5 },
     { id: 'europe', label: 'Europe', utcOffset: 1 },
