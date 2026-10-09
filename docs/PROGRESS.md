@@ -20,6 +20,17 @@ Resume with: "continue from PROGRESS.md". Newest entry on top.
 - CI (`.github/workflows/ci.yml`) runs both on every pull request.
 
 ## Done
+- 2026-10-09 · **Game data from nanoka.cc** (owner's permission). `npm run
+  data:nanoka` fills `src/games/{hsr,zzz}/data/characters.json` from
+  static.nanoka.cc: 99 HSR characters (game data 4.6.51, incl. the new
+  **Elation** path) and 62 ZZZ agents (3.3.4, incl. the **Armorer** specialty and
+  **Windbite** / **Lumiflux** attributes, confirmed from the agents' level-up
+  chips). Unknown codes stop the script instead of being guessed. Test: every
+  character's element and role exists in its game. nanoka also has light
+  cones, W-Engines, relic/disc sets, items and per-agent skill files (for Kit
+  check later).
+- 2026-10-09 · gacha-import sign-in fix merged (#17) and checked live: a call
+  without sign-in now gets 401.
 - 2026-10-09 · **gacha-import requires sign-in.** Checked live after deploy:
   the function ran for a caller with only the public key (the platform's
   verify_jwt doesn't stop that with the new key style). It now confirms a
@@ -123,6 +134,11 @@ Resume with: "continue from PROGRESS.md". Newest entry on top.
   (CLAUDE.md expects them there). Wrote `docs/PLAN.md` and this file.
 
 ## Decisions log
+- 2026-10-09 · Screens show clearly marked **example data** until you add your
+  own (your request); example values carry an EXAMPLE badge so nothing fake
+  passes as real (CLAUDE.md honest-data rule).
+- 2026-10-09 · nanoka.cc (a friend's project) may be used for game data and,
+  later, Intel/leaks.
 - 2026-10-09 · You chose: build the website first; Google login, owner rights,
   Resend and backups wait.
 - 2026-10-09 · Database changes reach Supabase through its GitHub integration

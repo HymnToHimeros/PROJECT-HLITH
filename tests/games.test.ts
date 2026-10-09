@@ -107,3 +107,16 @@ describe('history mapping of the real games', () => {
     }
   });
 });
+
+describe('built-in character lists are consistent with their game record', () => {
+  it.each(games.map((g) => [g.id, g] as const))('%s: every element and role exists, ids unique', async (_id, g) => {
+    const chars = await g.data.characters();
+    const elements = new Set(g.elements.map((e) => e.id));
+    const roles = new Set(g.roles.map((r) => r.id));
+    for (const c of chars) {
+      expect(elements.has(c.element), `${c.name}: element ${c.element}`).toBe(true);
+      expect(roles.has(c.role), `${c.name}: role ${c.role}`).toBe(true);
+    }
+    expect(duplicateIds(chars)).toEqual([]);
+  });
+});

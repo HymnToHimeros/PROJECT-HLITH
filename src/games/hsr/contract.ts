@@ -45,6 +45,7 @@ export const hsr: GameContract = {
     { id: 'preservation', label: 'Preservation' },
     { id: 'abundance', label: 'Abundance' },
     { id: 'remembrance', label: 'Remembrance' },
+    { id: 'elation', label: 'Elation' },
   ],
   dupes: { prefix: 'E', name: 'Eidolon', max: 6 },
   currencies: [
@@ -141,6 +142,7 @@ export const hsr: GameContract = {
   scan: { screen: 'character', fields: ['level', 'eidolon', 'light-cone', 'relics', 'traces'] },
   rules: {},
   sources: [
+    { what: 'Character list (names, rarity, path, element, release date)', source: 'nanoka.cc data files, game data 4.6.51, used with permission', entered: '2026-10-09', verified: false },
     { what: 'Pull rates, hard pity, 50/50 and 75/25', source: 'official rates shown on the in-game Warp details page', entered: '2026-10-09', verified: false },
     { what: 'Rising odds before hard pity', source: COMMUNITY, entered: '2026-10-09', verified: false },
     { what: 'Stamina cap and regeneration', source: 'V1 design (docs/DESIGN.md); verify in game', entered: '2026-10-09', verified: false },

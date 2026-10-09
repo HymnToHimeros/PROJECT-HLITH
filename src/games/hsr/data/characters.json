@@ -1,1 +1,891 @@
-[]
+[
+  {
+    "id": "1001",
+    "name": "March 7th",
+    "rarity": "mid",
+    "element": "ice",
+    "role": "preservation",
+    "source": "nanoka.cc",
+    "releasedAt": "2023-04-25T22:00:00.000Z"
+  },
+  {
+    "id": "1002",
+    "name": "Dan Heng",
+    "rarity": "mid",
+    "element": "wind",
+    "role": "hunt",
+    "source": "nanoka.cc",
+    "releasedAt": "2023-04-25T22:00:00.000Z"
+  },
+  {
+    "id": "1003",
+    "name": "Himeko",
+    "rarity": "top",
+    "element": "fire",
+    "role": "erudition",
+    "source": "nanoka.cc",
+    "releasedAt": "2023-04-25T22:00:00.000Z"
+  },
+  {
+    "id": "1004",
+    "name": "Welt",
+    "rarity": "top",
+    "element": "imaginary",
+    "role": "nihility",
+    "source": "nanoka.cc",
+    "releasedAt": "2023-04-25T22:00:00.000Z"
+  },
+  {
+    "id": "1005",
+    "name": "Kafka",
+    "rarity": "top",
+    "element": "lightning",
+    "role": "nihility",
+    "source": "nanoka.cc",
+    "releasedAt": "2023-07-19T09:00:00.000Z"
+  },
+  {
+    "id": "1006",
+    "name": "Silver Wolf",
+    "rarity": "top",
+    "element": "quantum",
+    "role": "nihility",
+    "source": "nanoka.cc",
+    "releasedAt": "2023-06-07T09:00:00.000Z"
+  },
+  {
+    "id": "1008",
+    "name": "Arlan",
+    "rarity": "mid",
+    "element": "lightning",
+    "role": "destruction",
+    "source": "nanoka.cc",
+    "releasedAt": "2023-04-25T22:00:00.000Z"
+  },
+  {
+    "id": "1009",
+    "name": "Asta",
+    "rarity": "mid",
+    "element": "fire",
+    "role": "harmony",
+    "source": "nanoka.cc",
+    "releasedAt": "2023-04-25T22:00:00.000Z"
+  },
+  {
+    "id": "1013",
+    "name": "Herta",
+    "rarity": "mid",
+    "element": "ice",
+    "role": "erudition",
+    "source": "nanoka.cc",
+    "releasedAt": "2023-04-25T22:00:00.000Z"
+  },
+  {
+    "id": "1014",
+    "name": "Saber",
+    "rarity": "top",
+    "element": "wind",
+    "role": "destruction",
+    "source": "nanoka.cc",
+    "releasedAt": "2025-07-11T09:00:00.000Z"
+  },
+  {
+    "id": "1015",
+    "name": "Archer",
+    "rarity": "top",
+    "element": "quantum",
+    "role": "hunt",
+    "source": "nanoka.cc",
+    "releasedAt": "2025-07-11T09:00:00.000Z"
+  },
+  {
+    "id": "1101",
+    "name": "Bronya",
+    "rarity": "top",
+    "element": "wind",
+    "role": "harmony",
+    "source": "nanoka.cc",
+    "releasedAt": "2023-04-25T22:00:00.000Z"
+  },
+  {
+    "id": "1102",
+    "name": "Seele",
+    "rarity": "top",
+    "element": "quantum",
+    "role": "hunt",
+    "source": "nanoka.cc",
+    "releasedAt": "2023-04-25T22:00:00.000Z"
+  },
+  {
+    "id": "1103",
+    "name": "Serval",
+    "rarity": "mid",
+    "element": "lightning",
+    "role": "erudition",
+    "source": "nanoka.cc",
+    "releasedAt": "2023-04-25T22:00:00.000Z"
+  },
+  {
+    "id": "1104",
+    "name": "Gepard",
+    "rarity": "top",
+    "element": "ice",
+    "role": "preservation",
+    "source": "nanoka.cc",
+    "releasedAt": "2023-04-25T22:00:00.000Z"
+  },
+  {
+    "id": "1105",
+    "name": "Natasha",
+    "rarity": "mid",
+    "element": "physical",
+    "role": "abundance",
+    "source": "nanoka.cc",
+    "releasedAt": "2023-04-25T22:00:00.000Z"
+  },
+  {
+    "id": "1106",
+    "name": "Pela",
+    "rarity": "mid",
+    "element": "ice",
+    "role": "nihility",
+    "source": "nanoka.cc",
+    "releasedAt": "2023-04-25T22:00:00.000Z"
+  },
+  {
+    "id": "1107",
+    "name": "Clara",
+    "rarity": "top",
+    "element": "physical",
+    "role": "destruction",
+    "source": "nanoka.cc",
+    "releasedAt": "2023-04-25T22:00:00.000Z"
+  },
+  {
+    "id": "1108",
+    "name": "Sampo",
+    "rarity": "mid",
+    "element": "wind",
+    "role": "nihility",
+    "source": "nanoka.cc",
+    "releasedAt": "2023-04-25T22:00:00.000Z"
+  },
+  {
+    "id": "1109",
+    "name": "Hook",
+    "rarity": "mid",
+    "element": "fire",
+    "role": "destruction",
+    "source": "nanoka.cc",
+    "releasedAt": "2023-04-25T22:00:00.000Z"
+  },
+  {
+    "id": "1110",
+    "name": "Lynx",
+    "rarity": "mid",
+    "element": "quantum",
+    "role": "abundance",
+    "source": "nanoka.cc",
+    "releasedAt": "2023-09-20T09:00:00.000Z"
+  },
+  {
+    "id": "1111",
+    "name": "Luka",
+    "rarity": "mid",
+    "element": "physical",
+    "role": "nihility",
+    "source": "nanoka.cc",
+    "releasedAt": "2023-07-19T09:00:00.000Z"
+  },
+  {
+    "id": "1112",
+    "name": "Topaz & Numby",
+    "rarity": "top",
+    "element": "fire",
+    "role": "hunt",
+    "source": "nanoka.cc",
+    "releasedAt": "2023-10-28T09:00:00.000Z"
+  },
+  {
+    "id": "1201",
+    "name": "Qingque",
+    "rarity": "mid",
+    "element": "quantum",
+    "role": "erudition",
+    "source": "nanoka.cc",
+    "releasedAt": "2023-04-25T22:00:00.000Z"
+  },
+  {
+    "id": "1202",
+    "name": "Tingyun",
+    "rarity": "mid",
+    "element": "lightning",
+    "role": "harmony",
+    "source": "nanoka.cc",
+    "releasedAt": "2023-04-25T22:00:00.000Z"
+  },
+  {
+    "id": "1203",
+    "name": "Luocha",
+    "rarity": "top",
+    "element": "imaginary",
+    "role": "abundance",
+    "source": "nanoka.cc",
+    "releasedAt": "2023-06-28T09:00:00.000Z"
+  },
+  {
+    "id": "1204",
+    "name": "Jing Yuan",
+    "rarity": "top",
+    "element": "lightning",
+    "role": "erudition",
+    "source": "nanoka.cc",
+    "releasedAt": "2023-05-17T15:00:00.000Z"
+  },
+  {
+    "id": "1205",
+    "name": "Blade",
+    "rarity": "top",
+    "element": "wind",
+    "role": "destruction",
+    "source": "nanoka.cc",
+    "releasedAt": "2023-07-19T09:00:00.000Z"
+  },
+  {
+    "id": "1206",
+    "name": "Sushang",
+    "rarity": "mid",
+    "element": "physical",
+    "role": "hunt",
+    "source": "nanoka.cc",
+    "releasedAt": "2023-04-25T22:00:00.000Z"
+  },
+  {
+    "id": "1207",
+    "name": "Yukong",
+    "rarity": "mid",
+    "element": "imaginary",
+    "role": "harmony",
+    "source": "nanoka.cc",
+    "releasedAt": "2023-06-28T09:00:00.000Z"
+  },
+  {
+    "id": "1208",
+    "name": "Fu Xuan",
+    "rarity": "top",
+    "element": "quantum",
+    "role": "preservation",
+    "source": "nanoka.cc",
+    "releasedAt": "2023-09-20T09:00:00.000Z"
+  },
+  {
+    "id": "1209",
+    "name": "Yanqing",
+    "rarity": "top",
+    "element": "ice",
+    "role": "hunt",
+    "source": "nanoka.cc",
+    "releasedAt": "2023-04-25T22:00:00.000Z"
+  },
+  {
+    "id": "1210",
+    "name": "Guinaifen",
+    "rarity": "mid",
+    "element": "fire",
+    "role": "nihility",
+    "source": "nanoka.cc",
+    "releasedAt": "2023-10-28T09:00:00.000Z"
+  },
+  {
+    "id": "1211",
+    "name": "Bailu",
+    "rarity": "top",
+    "element": "lightning",
+    "role": "abundance",
+    "source": "nanoka.cc",
+    "releasedAt": "2023-04-25T22:00:00.000Z"
+  },
+  {
+    "id": "1212",
+    "name": "Jingliu",
+    "rarity": "top",
+    "element": "ice",
+    "role": "destruction",
+    "source": "nanoka.cc",
+    "releasedAt": "2023-10-11T09:00:00.000Z"
+  },
+  {
+    "id": "1213",
+    "name": "Dan Heng • Imbibitor Lunae",
+    "rarity": "top",
+    "element": "imaginary",
+    "role": "destruction",
+    "source": "nanoka.cc",
+    "releasedAt": "2023-08-30T09:00:00.000Z"
+  },
+  {
+    "id": "1214",
+    "name": "Xueyi",
+    "rarity": "mid",
+    "element": "quantum",
+    "role": "destruction",
+    "source": "nanoka.cc",
+    "releasedAt": "2023-12-27T10:00:00.000Z"
+  },
+  {
+    "id": "1215",
+    "name": "Hanya",
+    "rarity": "mid",
+    "element": "physical",
+    "role": "harmony",
+    "source": "nanoka.cc",
+    "releasedAt": "2023-12-06T10:00:00.000Z"
+  },
+  {
+    "id": "1217",
+    "name": "Huohuo",
+    "rarity": "top",
+    "element": "wind",
+    "role": "abundance",
+    "source": "nanoka.cc",
+    "releasedAt": "2023-11-15T10:00:00.000Z"
+  },
+  {
+    "id": "1218",
+    "name": "Jiaoqiu",
+    "rarity": "top",
+    "element": "fire",
+    "role": "nihility",
+    "source": "nanoka.cc",
+    "releasedAt": "2024-08-21T09:00:00.000Z"
+  },
+  {
+    "id": "1220",
+    "name": "Feixiao",
+    "rarity": "top",
+    "element": "wind",
+    "role": "hunt",
+    "source": "nanoka.cc",
+    "releasedAt": "2024-09-10T09:00:00.000Z"
+  },
+  {
+    "id": "1221",
+    "name": "Yunli",
+    "rarity": "top",
+    "element": "physical",
+    "role": "destruction",
+    "source": "nanoka.cc",
+    "releasedAt": "2024-07-31T09:00:00.000Z"
+  },
+  {
+    "id": "1222",
+    "name": "Lingsha",
+    "rarity": "top",
+    "element": "fire",
+    "role": "abundance",
+    "source": "nanoka.cc",
+    "releasedAt": "2024-10-02T09:00:00.000Z"
+  },
+  {
+    "id": "1223",
+    "name": "Moze",
+    "rarity": "mid",
+    "element": "lightning",
+    "role": "hunt",
+    "source": "nanoka.cc",
+    "releasedAt": "2024-09-10T09:00:00.000Z"
+  },
+  {
+    "id": "1224",
+    "name": "March 7th",
+    "rarity": "mid",
+    "element": "imaginary",
+    "role": "hunt",
+    "source": "nanoka.cc",
+    "releasedAt": "2024-07-31T09:00:00.000Z"
+  },
+  {
+    "id": "1225",
+    "name": "Fugue",
+    "rarity": "top",
+    "element": "fire",
+    "role": "nihility",
+    "source": "nanoka.cc",
+    "releasedAt": "2024-12-25T10:00:00.000Z"
+  },
+  {
+    "id": "1301",
+    "name": "Gallagher",
+    "rarity": "mid",
+    "element": "fire",
+    "role": "abundance",
+    "source": "nanoka.cc",
+    "releasedAt": "2024-03-27T10:00:00.000Z"
+  },
+  {
+    "id": "1302",
+    "name": "Argenti",
+    "rarity": "top",
+    "element": "physical",
+    "role": "erudition",
+    "source": "nanoka.cc",
+    "releasedAt": "2023-12-06T10:00:00.000Z"
+  },
+  {
+    "id": "1303",
+    "name": "Ruan Mei",
+    "rarity": "top",
+    "element": "ice",
+    "role": "harmony",
+    "source": "nanoka.cc",
+    "releasedAt": "2023-12-27T10:00:00.000Z"
+  },
+  {
+    "id": "1304",
+    "name": "Aventurine",
+    "rarity": "top",
+    "element": "imaginary",
+    "role": "preservation",
+    "source": "nanoka.cc",
+    "releasedAt": "2024-04-17T09:00:00.000Z"
+  },
+  {
+    "id": "1305",
+    "name": "Dr. Ratio",
+    "rarity": "top",
+    "element": "imaginary",
+    "role": "hunt",
+    "source": "nanoka.cc",
+    "releasedAt": "2024-01-17T10:00:00.000Z"
+  },
+  {
+    "id": "1306",
+    "name": "Sparkle",
+    "rarity": "top",
+    "element": "quantum",
+    "role": "harmony",
+    "source": "nanoka.cc",
+    "releasedAt": "2024-02-06T10:00:00.000Z"
+  },
+  {
+    "id": "1307",
+    "name": "Black Swan",
+    "rarity": "top",
+    "element": "wind",
+    "role": "nihility",
+    "source": "nanoka.cc",
+    "releasedAt": "2024-02-06T10:00:00.000Z"
+  },
+  {
+    "id": "1308",
+    "name": "Acheron",
+    "rarity": "top",
+    "element": "lightning",
+    "role": "nihility",
+    "source": "nanoka.cc",
+    "releasedAt": "2024-03-27T10:00:00.000Z"
+  },
+  {
+    "id": "1309",
+    "name": "Robin",
+    "rarity": "top",
+    "element": "physical",
+    "role": "harmony",
+    "source": "nanoka.cc",
+    "releasedAt": "2024-05-08T09:00:00.000Z"
+  },
+  {
+    "id": "1310",
+    "name": "Firefly",
+    "rarity": "top",
+    "element": "fire",
+    "role": "destruction",
+    "source": "nanoka.cc",
+    "releasedAt": "2024-06-19T09:00:00.000Z"
+  },
+  {
+    "id": "1312",
+    "name": "Misha",
+    "rarity": "mid",
+    "element": "ice",
+    "role": "destruction",
+    "source": "nanoka.cc",
+    "releasedAt": "2024-02-29T10:00:00.000Z"
+  },
+  {
+    "id": "1313",
+    "name": "Sunday",
+    "rarity": "top",
+    "element": "imaginary",
+    "role": "harmony",
+    "source": "nanoka.cc",
+    "releasedAt": "2024-12-04T10:00:00.000Z"
+  },
+  {
+    "id": "1314",
+    "name": "Jade",
+    "rarity": "top",
+    "element": "quantum",
+    "role": "erudition",
+    "source": "nanoka.cc",
+    "releasedAt": "2024-07-10T09:00:00.000Z"
+  },
+  {
+    "id": "1315",
+    "name": "Boothill",
+    "rarity": "top",
+    "element": "physical",
+    "role": "hunt",
+    "source": "nanoka.cc",
+    "releasedAt": "2024-05-29T09:00:00.000Z"
+  },
+  {
+    "id": "1317",
+    "name": "Rappa",
+    "rarity": "top",
+    "element": "imaginary",
+    "role": "erudition",
+    "source": "nanoka.cc",
+    "releasedAt": "2024-10-23T09:00:00.000Z"
+  },
+  {
+    "id": "1321",
+    "name": "The Dahlia",
+    "rarity": "top",
+    "element": "fire",
+    "role": "nihility",
+    "source": "nanoka.cc",
+    "releasedAt": "2025-12-07T10:00:00.000Z"
+  },
+  {
+    "id": "1401",
+    "name": "The Herta",
+    "rarity": "top",
+    "element": "ice",
+    "role": "erudition",
+    "source": "nanoka.cc",
+    "releasedAt": "2025-01-15T10:00:00.000Z"
+  },
+  {
+    "id": "1402",
+    "name": "Aglaea",
+    "rarity": "top",
+    "element": "lightning",
+    "role": "remembrance",
+    "source": "nanoka.cc",
+    "releasedAt": "2025-02-05T10:00:00.000Z"
+  },
+  {
+    "id": "1403",
+    "name": "Tribbie",
+    "rarity": "top",
+    "element": "quantum",
+    "role": "harmony",
+    "source": "nanoka.cc",
+    "releasedAt": "2025-02-26T10:00:00.000Z"
+  },
+  {
+    "id": "1404",
+    "name": "Mydei",
+    "rarity": "top",
+    "element": "imaginary",
+    "role": "destruction",
+    "source": "nanoka.cc",
+    "releasedAt": "2025-03-19T10:00:00.000Z"
+  },
+  {
+    "id": "1405",
+    "name": "Anaxa",
+    "rarity": "top",
+    "element": "wind",
+    "role": "erudition",
+    "source": "nanoka.cc",
+    "releasedAt": "2025-04-30T09:00:00.000Z"
+  },
+  {
+    "id": "1406",
+    "name": "Cipher",
+    "rarity": "top",
+    "element": "quantum",
+    "role": "nihility",
+    "source": "nanoka.cc",
+    "releasedAt": "2025-06-11T09:00:00.000Z"
+  },
+  {
+    "id": "1407",
+    "name": "Castorice",
+    "rarity": "top",
+    "element": "quantum",
+    "role": "remembrance",
+    "source": "nanoka.cc",
+    "releasedAt": "2025-04-09T09:00:00.000Z"
+  },
+  {
+    "id": "1408",
+    "name": "Phainon",
+    "rarity": "top",
+    "element": "physical",
+    "role": "destruction",
+    "source": "nanoka.cc",
+    "releasedAt": "2025-07-02T09:00:00.000Z"
+  },
+  {
+    "id": "1409",
+    "name": "Hyacine",
+    "rarity": "top",
+    "element": "wind",
+    "role": "remembrance",
+    "source": "nanoka.cc",
+    "releasedAt": "2025-05-21T09:00:00.000Z"
+  },
+  {
+    "id": "1410",
+    "name": "Hysilens",
+    "rarity": "top",
+    "element": "physical",
+    "role": "nihility",
+    "source": "nanoka.cc",
+    "releasedAt": "2025-08-13T09:00:00.000Z"
+  },
+  {
+    "id": "1412",
+    "name": "Cerydra",
+    "rarity": "top",
+    "element": "wind",
+    "role": "harmony",
+    "source": "nanoka.cc",
+    "releasedAt": "2025-09-02T09:00:00.000Z"
+  },
+  {
+    "id": "1413",
+    "name": "Evernight",
+    "rarity": "top",
+    "element": "ice",
+    "role": "remembrance",
+    "source": "nanoka.cc",
+    "releasedAt": "2025-09-25T09:00:00.000Z"
+  },
+  {
+    "id": "1414",
+    "name": "Dan Heng • Permansor Terrae",
+    "rarity": "top",
+    "element": "physical",
+    "role": "preservation",
+    "source": "nanoka.cc",
+    "releasedAt": "2025-10-11T09:00:00.000Z"
+  },
+  {
+    "id": "1415",
+    "name": "Cyrene",
+    "rarity": "top",
+    "element": "ice",
+    "role": "remembrance",
+    "source": "nanoka.cc",
+    "releasedAt": "2025-11-05T10:00:00.000Z"
+  },
+  {
+    "id": "1501",
+    "name": "Sparxie",
+    "rarity": "top",
+    "element": "fire",
+    "role": "elation",
+    "source": "nanoka.cc",
+    "releasedAt": "2026-02-13T10:00:00.000Z"
+  },
+  {
+    "id": "1502",
+    "name": "Yao Guang",
+    "rarity": "top",
+    "element": "physical",
+    "role": "elation",
+    "source": "nanoka.cc",
+    "releasedAt": "2026-02-13T10:00:00.000Z"
+  },
+  {
+    "id": "1503",
+    "name": "Pearl",
+    "rarity": "top",
+    "element": "ice",
+    "role": "elation",
+    "source": "nanoka.cc"
+  },
+  {
+    "id": "1504",
+    "name": "Ashveil",
+    "rarity": "top",
+    "element": "lightning",
+    "role": "hunt",
+    "source": "nanoka.cc",
+    "releasedAt": "2026-03-25T10:00:00.000Z"
+  },
+  {
+    "id": "1505",
+    "name": "Evanescia",
+    "rarity": "top",
+    "element": "physical",
+    "role": "elation",
+    "source": "nanoka.cc",
+    "releasedAt": "2026-05-13T09:00:00.000Z"
+  },
+  {
+    "id": "1506",
+    "name": "Silver Wolf LV.<unbreak>999</unbreak>",
+    "rarity": "top",
+    "element": "imaginary",
+    "role": "elation",
+    "source": "nanoka.cc",
+    "releasedAt": "2026-04-22T09:00:00.000Z"
+  },
+  {
+    "id": "1507",
+    "name": "Mortenax Blade",
+    "rarity": "top",
+    "element": "fire",
+    "role": "nihility",
+    "source": "nanoka.cc",
+    "releasedAt": "2026-06-01T09:00:00.000Z"
+  },
+  {
+    "id": "1508",
+    "name": "Rin Tohsaka",
+    "rarity": "top",
+    "element": "quantum",
+    "role": "erudition",
+    "source": "nanoka.cc",
+    "releasedAt": "2026-07-24T09:00:00.000Z"
+  },
+  {
+    "id": "1509",
+    "name": "Gilgamesh",
+    "rarity": "top",
+    "element": "lightning",
+    "role": "destruction",
+    "source": "nanoka.cc",
+    "releasedAt": "2026-07-24T09:00:00.000Z"
+  },
+  {
+    "id": "1510",
+    "name": "Himeko • Nova",
+    "rarity": "top",
+    "element": "fire",
+    "role": "erudition",
+    "source": "nanoka.cc",
+    "releasedAt": "2026-07-15T09:00:00.000Z"
+  },
+  {
+    "id": "1511",
+    "name": "Aeon ★ Aha",
+    "rarity": "top",
+    "element": "quantum",
+    "role": "elation",
+    "source": "nanoka.cc"
+  },
+  {
+    "id": "1512",
+    "name": "Robin • Summeretto",
+    "rarity": "top",
+    "element": "wind",
+    "role": "remembrance",
+    "source": "nanoka.cc",
+    "releasedAt": "2026-08-26T09:00:00.000Z"
+  },
+  {
+    "id": "1513",
+    "name": "Aventurine • Waveflair",
+    "rarity": "top",
+    "element": "quantum",
+    "role": "elation",
+    "source": "nanoka.cc",
+    "releasedAt": "2026-09-12T09:00:00.000Z"
+  },
+  {
+    "id": "8001",
+    "name": "Trailblazer · Destruction (Caelus)",
+    "rarity": "top",
+    "element": "physical",
+    "role": "destruction",
+    "source": "nanoka.cc",
+    "releasedAt": "2023-04-25T22:00:00.000Z"
+  },
+  {
+    "id": "8002",
+    "name": "Trailblazer · Destruction (Stelle)",
+    "rarity": "top",
+    "element": "physical",
+    "role": "destruction",
+    "source": "nanoka.cc",
+    "releasedAt": "2023-04-25T22:00:00.000Z"
+  },
+  {
+    "id": "8003",
+    "name": "Trailblazer · Preservation (Caelus)",
+    "rarity": "top",
+    "element": "fire",
+    "role": "preservation",
+    "source": "nanoka.cc",
+    "releasedAt": "2023-04-25T22:00:00.000Z"
+  },
+  {
+    "id": "8004",
+    "name": "Trailblazer · Preservation (Stelle)",
+    "rarity": "top",
+    "element": "fire",
+    "role": "preservation",
+    "source": "nanoka.cc",
+    "releasedAt": "2023-04-25T22:00:00.000Z"
+  },
+  {
+    "id": "8005",
+    "name": "Trailblazer · Harmony (Caelus)",
+    "rarity": "top",
+    "element": "imaginary",
+    "role": "harmony",
+    "source": "nanoka.cc",
+    "releasedAt": "2024-05-08T09:00:00.000Z"
+  },
+  {
+    "id": "8006",
+    "name": "Trailblazer · Harmony (Stelle)",
+    "rarity": "top",
+    "element": "imaginary",
+    "role": "harmony",
+    "source": "nanoka.cc",
+    "releasedAt": "2024-05-08T09:00:00.000Z"
+  },
+  {
+    "id": "8007",
+    "name": "Trailblazer · Remembrance (Caelus)",
+    "rarity": "top",
+    "element": "ice",
+    "role": "remembrance",
+    "source": "nanoka.cc",
+    "releasedAt": "2025-01-15T10:00:00.000Z"
+  },
+  {
+    "id": "8008",
+    "name": "Trailblazer · Remembrance (Stelle)",
+    "rarity": "top",
+    "element": "ice",
+    "role": "remembrance",
+    "source": "nanoka.cc",
+    "releasedAt": "2025-01-15T10:00:00.000Z"
+  },
+  {
+    "id": "8009",
+    "name": "Trailblazer · Elation (Caelus)",
+    "rarity": "top",
+    "element": "lightning",
+    "role": "elation",
+    "source": "nanoka.cc",
+    "releasedAt": "2026-04-22T09:00:00.000Z"
+  },
+  {
+    "id": "8010",
+    "name": "Trailblazer · Elation (Stelle)",
+    "rarity": "top",
+    "element": "lightning",
+    "role": "elation",
+    "source": "nanoka.cc",
+    "releasedAt": "2026-04-22T09:00:00.000Z"
+  }
+]
