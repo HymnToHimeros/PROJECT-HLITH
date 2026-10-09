@@ -21,17 +21,8 @@ import type {
 } from './entities';
 import type { Known } from './known';
 
-export const MODULE_IDS = [
-  'today',
-  'events',
-  'calendar',
-  'backlog',
-  'pulls',
-  'banners',
-  'roster',
-  'farm',
-  'intel',
-] as const;
+/** Every module, in the default sidebar order. Every game uses this same order (so the bar mirrors between games) until the viewer changes it. */
+export const MODULE_IDS = ['today', 'pulls', 'roster', 'calendar', 'events', 'banners', 'backlog', 'farm', 'intel'] as const;
 export type ModuleId = (typeof MODULE_IDS)[number];
 
 export type GameId = string;
@@ -71,7 +62,6 @@ export interface GameContract {
 
   // ── Modules ────────────────────────────────────────────────────
   modules: ModuleId[];
-  defaultOrder: ModuleId[];
 
   // ── Pulls ──────────────────────────────────────────────────────
   bannerTypes: BannerType[];

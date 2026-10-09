@@ -2,6 +2,7 @@ import { beforeEach, describe, expect, it } from 'vitest';
 import type { GameContract, ModuleId } from '../contract';
 import { clearGames, gameProblems, registerGame } from './games';
 import { defaultLayout, hide, move, notAvailable, phoneBar, reset, restore, slot, type LayoutState } from './layout';
+import { MODULE_CATALOG } from './modules';
 
 const ALL: ModuleId[] = ['today', 'events', 'calendar', 'backlog', 'pulls', 'banners', 'roster', 'farm', 'intel'];
 
@@ -22,7 +23,6 @@ function game(over: Partial<GameContract> = {}): GameContract {
     servers: [{ id: 'eu', label: 'Europe', utcOffset: 1 }],
     reset: { hour: 4, weekday: 1 },
     modules: ALL,
-    defaultOrder: ['today', 'pulls', 'roster', 'calendar', 'events', 'banners', 'backlog', 'farm', 'intel'],
     bannerTypes: [{ id: 'limited', label: 'L', pullItem: 'ticket', target: 'character', pity: { kind: 'none', baseRate: null } }],
     income: [],
     historyImporters: [],
@@ -54,9 +54,9 @@ describe('registerGame rejects broken records', () => {
     expect(gameProblems(game({ vent: '#FF8A4C' })).join()).toMatch(/reserved for ember/);
   });
 
-  it('rejects unknown modules and a default order that does not match', () => {
+  it('rejects unknown and repeated modules', () => {
     expect(gameProblems(game({ modules: [...ALL, 'bangboo' as ModuleId] })).join()).toMatch(/unknown modules: bangboo/);
-    expect(gameProblems(game({ defaultOrder: ['today'] })).join()).toMatch(/defaultOrder/);
+    expect(gameProblems(game({ modules: ['today', 'today'] })).join()).toMatch(/once each/);
   });
 
   it('rejects banner types and income rows pointing at missing currencies', () => {
@@ -77,14 +77,14 @@ describe('registerGame rejects broken records', () => {
 });
 
 describe('layout rules (DESIGN §1 flexibility rules)', () => {
-  const games = [game(), game({ id: 'g2', short: 'G2', vent: '#D4F23A', modules: ['today', 'pulls', 'roster'], defaultOrder: ['roster', 'today', 'pulls'] })];
+  const games = [game(), game({ id: 'g2', short: 'G2', vent: '#D4F23A', modules: ['today', 'pulls', 'roster'] })];
 
-  it('starts from the record default order', () => {
-    expect(slot(games, 'g2', defaultLayout(games, 'g2'))).toEqual(['roster', 'today', 'pulls']);
+  it('starts from the shared default order', () => {
+    expect(slot(games, 'g2', defaultLayout())).toEqual(['today', 'pulls', 'roster']);
   });
 
   it('hides, but never the last visible module', () => {
-    let l: LayoutState = defaultLayout(games, 'g2');
+    let l: LayoutState = defaultLayout();
     l = hide(games, 'g2', l, 'today');
     l = hide(games, 'g2', l, 'pulls');
     l = hide(games, 'g2', l, 'roster');
@@ -92,13 +92,13 @@ describe('layout rules (DESIGN §1 flexibility rules)', () => {
   });
 
   it('restore brings a module back', () => {
-    const l = hide(games, 'g1', defaultLayout(games, 'g1'), 'farm');
+    const l = hide(games, 'g1', defaultLayout(), 'farm');
     expect(slot(games, 'g1', l)).not.toContain('farm');
     expect(slot(games, 'g1', restore(l, 'farm'))).toContain('farm');
   });
 
   it('moves a module to a new position', () => {
-    const l = move(games, 'g1', defaultLayout(games, 'g1'), 'intel', 0);
+    const l = move(games, 'g1', defaultLayout(), 'intel', 0);
     expect(slot(games, 'g1', l)[0]).toBe('intel');
   });
 
@@ -109,11 +109,17 @@ describe('layout rules (DESIGN §1 flexibility rules)', () => {
   });
 
   it('reset restores the default order and unhides everything', () => {
-    expect(reset(games, 'g1')).toEqual({ order: game().defaultOrder, hidden: [] });
+    expect(reset()).toEqual({ order: [...MODULE_CATALOG], hidden: [] });
+  });
+
+  it('every game starts with the same order, so shared modules sit in the same place', () => {
+    const two = [game({ modules: ['intel', 'pulls', 'today'] }), game({ id: 'g2', short: 'G2', vent: '#D4F23A', modules: ['pulls', 'farm', 'today'] })];
+    expect(slot(two, 'g1', defaultLayout())).toEqual(['today', 'pulls', 'intel']);
+    expect(slot(two, 'g2', defaultLayout())).toEqual(['today', 'pulls', 'farm']);
   });
 
   it('marks modules the record lacks as not available', () => {
-    expect(notAvailable(games, 'g2')).toEqual(['events', 'calendar', 'backlog', 'banners', 'farm', 'intel']);
+    expect(notAvailable(games, 'g2')).toEqual(['calendar', 'events', 'banners', 'backlog', 'farm', 'intel']);
   });
 
   it('puts the first four in the phone bar and the rest in More', () => {

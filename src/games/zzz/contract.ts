@@ -64,7 +64,6 @@ export const zzz: GameContract = {
   ],
   reset: { hour: 4, weekday: 1 },
   modules: ['today', 'events', 'calendar', 'backlog', 'pulls', 'banners', 'roster', 'farm', 'intel'],
-  defaultOrder: ['today', 'pulls', 'calendar', 'roster', 'events', 'banners', 'farm', 'backlog', 'intel'],
   bannerTypes: [
     {
       id: 'exclusive',

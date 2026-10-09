@@ -20,7 +20,6 @@ const base = (over: Partial<GameContract>): GameContract => ({
   ],
   reset: { hour: 4, weekday: 1 },
   modules: ['today', 'events', 'calendar', 'backlog', 'pulls', 'banners', 'roster', 'farm', 'intel'],
-  defaultOrder: ['today', 'pulls', 'roster', 'calendar', 'events', 'banners', 'backlog', 'farm', 'intel'],
   bannerTypes: [],
   income: [],
   historyImporters: [],
@@ -38,7 +37,7 @@ const base = (over: Partial<GameContract>): GameContract => ({
   ...over,
 });
 const A = base({});
-const B = base({ id: 'bb', short: 'BB', name: 'Game B', vent: '#D4F23A', modules: ['today', 'pulls', 'roster'], defaultOrder: ['roster', 'today', 'pulls'] });
+const B = base({ id: 'bb', short: 'BB', name: 'Game B', vent: '#D4F23A', modules: ['today', 'pulls', 'roster'] });
 
 const sideNav = () => within(screen.getByRole('navigation', { name: 'Modules' }));
 const navLabels = () => sideNav().getAllByRole('link').map((a) => a.lastChild?.textContent);
@@ -57,11 +56,11 @@ describe('Shell', () => {
     expect(window.location.pathname).toBe('/all/today');
   });
 
-  it('switching game shows that game’s modules in its order and tints with its vent', () => {
+  it('switching game shows that game’s modules in the shared order and tints with its vent', () => {
     const { container } = render(<Shell games={[A, B]} />);
     fireEvent.click(screen.getByRole('button', { name: 'BB' }));
-    expect(navLabels()).toEqual(['Roster', 'Today', 'Pulls']);
-    expect(window.location.pathname).toBe('/bb/roster');
+    expect(navLabels()).toEqual(['Today', 'Pulls', 'Roster']);
+    expect(window.location.pathname).toBe('/bb/today');
     expect((container.firstChild as HTMLElement).style.getPropertyValue('--vent')).toBe('#D4F23A');
   });
 

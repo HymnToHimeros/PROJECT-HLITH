@@ -27,7 +27,6 @@ function game(income: IncomeRow[]): GameContract {
     servers: [{ id: 'eu', label: 'Europe', utcOffset: 1 }],
     reset: { hour: 4, weekday: 1 },
     modules: ['pulls'],
-    defaultOrder: ['pulls'],
     bannerTypes: [],
     income,
     historyImporters: [],

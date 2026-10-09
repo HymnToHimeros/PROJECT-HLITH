@@ -45,7 +45,7 @@ export function Shell({ games: registered, account = null }: Props) {
   const route = parseRoute(path);
   const scope: Scope = route.scope && scopes.includes(route.scope) ? route.scope : (scopes[0] ?? 'all');
   const game = scope === 'all' ? undefined : games.find((g) => g.id === scope);
-  const layout: LayoutState = prefs.layouts[scope] ?? defaultLayout(games, scope);
+  const layout: LayoutState = prefs.layouts[scope] ?? defaultLayout();
   const visible = slot(games, scope, layout);
   const remembered = prefs.lastModule[scope];
   const active: ModuleId | undefined =
@@ -84,7 +84,7 @@ export function Shell({ games: registered, account = null }: Props) {
   const setServer = (gameId: string, serverId: string) => updatePrefs((p) => ({ ...p, servers: { ...p.servers, [gameId]: serverId } }));
   const go = (nextScope: Scope, module?: ModuleId) => (e?: MouseEvent) => {
     e?.preventDefault();
-    const nextLayout = prefs.layouts[nextScope] ?? defaultLayout(games, nextScope);
+    const nextLayout = prefs.layouts[nextScope] ?? defaultLayout();
     const nextVisible = slot(games, nextScope, nextLayout);
     const target = module ?? (prefs.lastModule[nextScope] && nextVisible.includes(prefs.lastModule[nextScope]) ? prefs.lastModule[nextScope] : nextVisible[0]);
     if (target) navigate(routePath(nextScope, target));
@@ -201,6 +201,12 @@ export function Shell({ games: registered, account = null }: Props) {
                 scope={scope}
                 tab={moduleDef?.tabs ? (tabs[moduleDef.id] ?? moduleDef.tabs[0]?.id) : undefined}
                 servers={prefs.servers}
+                openTab={(t) => setTabs((cur) => ({ ...cur, [active]: t }))}
+                open={(m, t) => {
+                  if (t) setTabs((cur) => ({ ...cur, [m]: t }));
+                  go(scope, m)();
+                }}
+                openAccount={() => setSheet('account')}
               />
             </Suspense>
           ) : (

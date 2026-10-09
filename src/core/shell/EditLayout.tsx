@@ -96,7 +96,7 @@ export function EditLayout({ games, scope, layout, onChange, onDone }: Props) {
       )}
 
       <div className={p.actions}>
-        <Button onClick={() => onChange(reset(games, scope))}>Reset to default</Button>
+        <Button onClick={() => onChange(reset())}>Reset to default</Button>
         <Button variant="primary" onClick={onDone}>
           Done
         </Button>
