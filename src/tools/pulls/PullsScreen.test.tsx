@@ -1,7 +1,7 @@
 import { act, fireEvent, render, screen } from '@testing-library/react';
 import { beforeEach, describe, expect, it } from 'vitest';
 import type { Character, GameContract } from '../../core/contract';
-import { gameData, resetUserData } from '../../core/data/userData';
+import { gameData, resetUserData, setEventProgress } from '../../core/data/userData';
 import PullsScreen from './PullsScreen';
 
 const chars: Character[] = [
@@ -43,6 +43,7 @@ const game: GameContract = {
     { id: 'gem', name: 'Gem', perPull: 160 },
     { id: 'ticket', name: 'Ticket', pullItemFor: ['character'] },
   ],
+  teamSize: 4,
   stamina: [],
   servers: [{ id: 'eu', label: 'Europe', utcOffset: 1 }],
   reset: { hour: 4, weekday: 1 },
@@ -114,5 +115,19 @@ describe('Pulls screen', () => {
     });
     expect(gameData('aa').ledger).toHaveLength(1);
     expect(screen.getAllByText('1,234').length).toBeGreaterThan(0);
+  });
+
+  it('Calculator counts a real event until you mark it done', async () => {
+    const start = new Date(Date.now() - 86_400_000).toISOString();
+    const end = new Date(Date.now() + 5 * 86_400_000).toISOString();
+    const withEvent = { ...game, data: { ...game.data, events: async () => [{ id: 'ev1', title: 'Real event', kind: 'event', start, end, reward: 800, currency: 'gem' }] } } as GameContract;
+    const view = render(<PullsScreen games={[withEvent]} scope="aa" tab="calculator" servers={{ aa: 'eu' }} openTab={() => {}} open={() => {}} openAccount={() => {}} />);
+    const row = await screen.findByText('Real event');
+    expect(row.closest('tr')?.textContent).toMatch(/800/);
+    view.unmount();
+    act(() => setEventProgress('aa', 'ev1', { state: 'done' }));
+    render(<PullsScreen games={[withEvent]} scope="aa" tab="calculator" servers={{ aa: 'eu' }} openTab={() => {}} open={() => {}} openAccount={() => {}} />);
+    const again = await screen.findByText('Real event');
+    expect(again.closest('tr')?.textContent).not.toMatch(/800/);
   });
 });

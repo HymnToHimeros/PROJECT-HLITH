@@ -63,6 +63,7 @@ function GamePulls({ game, tab, serverId, now, heading, signedIn, openTab, openA
       actions.push({ label: 'Import my history', onClick: () => openTab('history') });
     }
     if (data.banners.example || data.versionEnd.example) parts.push('Banners and the version end date are examples until the game’s banner list is added (that part is on us, not you).');
+    if (data.notCounted.length) parts.push(`${data.notCounted.join(' and ')} rewards aren’t counted yet: those lists are still examples.`);
     if (!serverId) {
       parts.push('Daily and weekly income is left out until you pick your server.');
       actions.push({ label: 'Choose my server', onClick: openAccount });

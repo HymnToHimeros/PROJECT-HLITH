@@ -11,7 +11,7 @@ so it can't drift from the real code. Never tick a box by hand; add the proof.
 Who builds what: see `docs/WORKSTREAMS.md`.
 
 <!-- roadmap:summary -->
-**32 of 61 done** `██████████░░░░░░░░░░` 52%
+**45 of 61 done** `███████████████░░░░░` 74%
 
 **Next up:** R24 Nightly backups
 
@@ -22,7 +22,7 @@ Who builds what: see `docs/WORKSTREAMS.md`.
 | Phase 2 · Skeleton | `██████████` | 11 / 11 |
 | Phase 3 · Accounts and data | `████████░░` | 4 / 5 |
 | Phase 4 · Engines | `██████████` | 4 / 4 |
-| Phase 5 · Modules | `██░░░░░░░░` | 4 / 17 |
+| Phase 5 · Modules | `██████████` | 17 / 17 |
 | Phase 6 · Connections and extras | `░░░░░░░░░░` | 0 / 13 |
 | Phase 7 · Launch | `███░░░░░░░` | 1 / 3 |
 <!-- /roadmap:summary -->
@@ -66,23 +66,23 @@ Who builds what: see `docs/WORKSTREAMS.md`.
 - [x] R28 History import from the in-game link · proof: `supabase/functions/gacha-import/index.ts`
 
 ## Phase 5 · Modules
-- [ ] R29 Events (open / done / skipped, login days) · proof: `src/tools/events/Events.tsx`
-- [ ] R30 Backlog (categories, rewards, switches) · proof: `src/tools/backlog/Backlog.tsx`
+- [x] R29 Events (open / done / skipped, login days) · proof: `src/tools/events/Events.tsx`
+- [x] R30 Backlog (categories, rewards, switches) · proof: `src/tools/backlog/Backlog.tsx`
 - [x] R31 Pulls · Bank log · proof: `src/tools/pulls/BankLog.tsx`
 - [x] R32 Pulls · Calculator · proof: `src/tools/pulls/Calculator.tsx`
 - [x] R33 Pulls · Planner · proof: `src/tools/pulls/Planner.tsx`
 - [x] R34 Pulls · History with Luck report card · proof: `src/tools/pulls/History.tsx`, `src/tools/pulls/LuckReport.tsx`
-- [ ] R35 Roster · Characters grid · proof: `src/tools/roster/Characters.tsx`
-- [ ] R36 Roster · Character page · proof: `src/tools/roster/CharacterPage.tsx`
-- [ ] R37 Roster · Teams tab · proof: `src/tools/roster/Teams.tsx`
-- [ ] R38 Kit check (any game with kit data) · proof: `src/tools/roster/KitCheck.tsx`
-- [ ] R39 Banners (fit, leaks, plan pulls) · proof: `src/tools/banners/Banners.tsx`
-- [ ] R40 Farm (materials, stamina plan, gear) · proof: `src/tools/farm/Farm.tsx`
-- [ ] R41 Calendar · proof: `src/tools/calendar/Calendar.tsx`
-- [ ] R42 Today · proof: `src/tools/today/Today.tsx`
-- [ ] R43 ★ Today · tonight's run · proof: `src/tools/today/TonightsRun.tsx`
-- [ ] R44 ★ Today · wishlist · proof: `src/tools/today/Wishlist.tsx`
-- [ ] R45 Intel · proof: `src/tools/intel/Intel.tsx`
+- [x] R35 Roster · Characters grid · proof: `src/tools/roster/Characters.tsx`
+- [x] R36 Roster · Character page · proof: `src/tools/roster/CharacterPage.tsx`
+- [x] R37 Roster · Teams tab · proof: `src/tools/roster/Teams.tsx`
+- [x] R38 Kit check (any game with kit data) · proof: `src/tools/roster/KitCheck.tsx`
+- [x] R39 Banners (fit, leaks, plan pulls) · proof: `src/tools/banners/Banners.tsx`
+- [x] R40 Farm (materials, stamina plan, gear) · proof: `src/tools/farm/Farm.tsx`
+- [x] R41 Calendar · proof: `src/tools/calendar/Calendar.tsx`
+- [x] R42 Today · proof: `src/tools/today/Today.tsx`
+- [x] R43 ★ Today · tonight's run · proof: `src/tools/today/TonightsRun.tsx`
+- [x] R44 ★ Today · wishlist · proof: `src/tools/today/Wishlist.tsx`
+- [x] R45 Intel · proof: `src/tools/intel/Intel.tsx`
 
 ## Phase 6 · Connections and extras
 - [ ] R46 ★ Edit mode (my own events, banners, backlog items) · proof: `src/tools/edit-mode/EditMode.tsx`

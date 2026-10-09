@@ -29,6 +29,7 @@ export const fakeGame: GameContract = {
     { id: 'paid-gems', name: 'Paid Gems', perPull: 120, paid: true },
     { id: 'ticket', name: 'Ticket', pullItemFor: ['pickup'] },
   ],
+  teamSize: 4,
   stamina: [
     { id: 'ap', name: 'Action Points', max: 150, minutesPerPoint: 5 },
     { id: 'raid', name: 'Raid Keys', max: 3, minutesPerPoint: 480 },

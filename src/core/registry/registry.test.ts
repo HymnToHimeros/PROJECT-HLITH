@@ -19,6 +19,7 @@ function game(over: Partial<GameContract> = {}): GameContract {
       { id: 'premium', name: 'P', perPull: 160 },
       { id: 'ticket', name: 'T', pullItemFor: ['limited'] },
     ],
+    teamSize: 4,
     stamina: [],
     servers: [{ id: 'eu', label: 'Europe', utcOffset: 1 }],
     reset: { hour: 4, weekday: 1 },

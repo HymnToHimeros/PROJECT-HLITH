@@ -29,6 +29,7 @@ export function Calculator({ game, data, serverId, now }: { game: GameContract; 
     bank: data.bank.value,
     paidExtras: data.user.paidExtras,
     passes: Object.fromEntries(Object.entries(data.user.passes).map(([k, v]) => [k, Date.parse(v)])),
+    ...data.budgetExtras(until),
   });
   const main = game.bannerTypes.find((t) => t.target === 'character');
   const pulls = main ? budgetPulls(game, b, main.id) : null;

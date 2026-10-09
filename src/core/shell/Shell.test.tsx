@@ -13,6 +13,7 @@ const base = (over: Partial<GameContract>): GameContract => ({
   elements: [],
   roles: [],
   currencies: [{ id: 'p', name: 'P', perPull: 160 }],
+  teamSize: 4,
   stamina: [],
   servers: [
     { id: 'eu', label: 'Europe', utcOffset: 1 },
