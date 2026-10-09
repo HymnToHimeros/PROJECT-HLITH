@@ -12,6 +12,8 @@ for (const game of games) registerGame(game);
 registerModuleScreen('pulls', () => import('./tools/pulls/PullsScreen'));
 registerModuleScreen('events', () => import('./tools/events/EventsScreen'));
 registerModuleScreen('backlog', () => import('./tools/backlog/BacklogScreen'));
+registerModuleScreen('banners', () => import('./tools/banners/BannersScreen'));
+registerModuleScreen('intel', () => import('./tools/intel/IntelScreen'));
 
 const root = document.getElementById('root');
 if (!root) throw new Error('PROJECT-HLITH: #root element missing from index.html');
