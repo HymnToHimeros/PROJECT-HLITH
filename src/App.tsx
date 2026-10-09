@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { sendEmailLink, signInWith, signOut, useSession } from './core/auth/session';
+import { sendEmailLink, signInInfo, signInWith, signOut, useSession } from './core/auth/session';
 import { SignIn } from './core/auth/SignIn';
 import { backend } from './core/data/backend';
 import { supabaseSettings } from './core/data/supabaseSettings';
@@ -49,7 +49,18 @@ function Root() {
   if (client && session === null) {
     return <SignIn onProvider={(p) => signInWith(client, p)} onEmail={(email) => sendEmailLink(client, email)} />;
   }
-  const provider = typeof session?.user.app_metadata.provider === 'string' ? session.user.app_metadata.provider : undefined;
-  const account = client && session ? { email: session.user.email ?? 'your account', provider, onSignOut: () => void signOut(client) } : null;
+  // How you signed in this time (newest identity), and every linked method: see signInInfo.
+  const signIn = session ? signInInfo(session.user) : null;
+  const account =
+    client && session
+      ? {
+          email: session.user.email ?? 'your account',
+          provider: signIn?.provider,
+          id: session.user.id,
+          identities: signIn?.methods,
+          createdAt: session.user.created_at,
+          onSignOut: () => void signOut(client),
+        }
+      : null;
   return <Shell games={listGames()} account={account} isOwner={isOwner} />;
 }

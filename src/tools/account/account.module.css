@@ -392,3 +392,9 @@
   border-radius: 6px;
   border: 1px solid var(--line-strong);
 }
+/* Game settings opened from a "Choose server" button: that game's picker, marked. */
+.focus {
+  border-radius: var(--r-card);
+  outline: 1px solid var(--vent);
+  outline-offset: 6px;
+}

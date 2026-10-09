@@ -1,39 +1,6 @@
 import type { CSSProperties, ReactNode } from 'react';
 import a from './account.module.css';
 
-/** Sub-page header inside the Account sheet: ← back, title, ✕. */
-export function SubHeader({ title, sub, onBack, onClose }: { title: string; sub?: string; onBack: () => void; onClose: () => void }) {
-  return (
-    <div className={a.head}>
-      <button type="button" className={a.iconBtn} onClick={onBack} aria-label="Back to Account">
-        ←
-      </button>
-      <div className={a.headText}>
-        <h2 className={a.title}>{title}</h2>
-        {sub && <span className={a.sub}>{sub}</span>}
-      </div>
-      <button type="button" className={a.iconBtn} onClick={onClose} aria-label="Close">
-        ✕
-      </button>
-    </div>
-  );
-}
-
-/** One row of the Account sheet (design: label, sub line, ›). */
-export function Row({ title, sub, onClick, disabled = false }: { title: string; sub: ReactNode; onClick?: () => void; disabled?: boolean }) {
-  return (
-    <button type="button" className={a.row} onClick={onClick} disabled={disabled}>
-      <span className={a.rowText}>
-        <span className={a.rowTitle}>{title}</span>
-        <span className={a.rowSub}>{sub}</span>
-      </span>
-      <span className={a.chev} aria-hidden="true">
-        ›
-      </span>
-    </button>
-  );
-}
-
 export function Card({ title, children, danger = false, label }: { title: string; children: ReactNode; danger?: boolean; label?: string }) {
   return (
     <section className={danger ? `${a.card} ${a.danger}` : a.card} aria-label={label ?? title}>
