@@ -17,7 +17,7 @@ creates starts with that name, so you can always tell who made what.
 | Name | Branches | Builds | Roadmap items |
 |---|---|---|---|
 | **FRAME** | `frame/…` | The base and the interface: look, shell, contract, registries, saved data, every module screen as a frame (layout, components, example data, "No data yet" slots). Not the deeper logic behind them. | R01–R61 (the screens) |
-| *(next chat, e.g. ROSTER-LOGIC)* | `roster-logic/…` | Roster logic: full character data and builds, kit check data and parsing, team scoring, who-fits. Fills the slots FRAME's Roster screens leave. | logic behind R35–R38, plus any new items it adds |
+| **LOGIC-CORE** (brief: `docs/briefs/LOGIC-CORE.md`; code comments still say ROSTER-LOGIC) | `logic-core/…` | Roster logic: full character data and builds, kit check data and parsing, team scoring, who-fits. Fills the slots FRAME's Roster screens leave. | logic behind R35–R38, plus any new items it adds |
 
 ## Interface vs logic (owner's rule, 2026-10-09)
 FRAME builds the interface and the base, not the logic. A screen FRAME builds
