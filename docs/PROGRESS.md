@@ -46,6 +46,23 @@ Resume with: "continue from PROGRESS.md". Newest entry on top.
   - Checked: all five migrations on PGlite with stubbed auth/storage/vault/cron/
     net, policies exercised. Not checked live: the Cron call, Vault lookup, the
     function waiting for backup/hoyolab-daily, background work after the 202.
+- 2026-10-09 · **Adjust your profile picture and banner** (branch
+  `frame/profile-image-editor`). Shown to you for approval (no design yet).
+  - Choosing a file (or "Adjust picture" / "Adjust banner" on one you already
+    have) opens a sheet with the picture inside its exact final shape (circle,
+    or the 4 : 1 banner strip) and the outside dimmed.
+  - Drag (mouse or finger), pinch, mouse wheel, Zoom slider with − / +, Fill,
+    Fit and Reset. Keys: arrows move (Shift = bigger steps), + / − zoom, 0 resets.
+    Fill never leaves gaps; Fit shows the whole picture and the gaps show the
+    default background. Live preview of the profile header. Explained with HowTo.
+  - Saved exactly as shown: 512 × 512 picture, 1600 × 400 banner, JPEG 0.85
+    (WebP/PNG with see-through edges only after Fit). The original file stays
+    in memory only while editing. Same 2 MB / images-only limits and the same
+    save paths (this device or the avatars bucket).
+  - The profile banner is now always the same 4 : 1 shape as the saved banner.
+  - Files: `src/tools/account/imageCrop.ts` (maths), `imageRender.ts`,
+    `ImageAdjust.tsx`, `imageAdjust.module.css`; tests in `imageCrop.test.ts`,
+    `ImageAdjust.test.tsx`, e2e in `tests/e2e/smoke.spec.ts` + accessibility.
 - 2026-10-09 · **Account is its own page, with a customisable Profile** (branch
   `frame/account-page`). Shown to you for approval (no design yet, Override 5).
   - `/account` and `/account/<section>`: a section bar (left column on PC,
@@ -163,7 +180,6 @@ Resume with: "continue from PROGRESS.md". Newest entry on top.
     (one line each) once their builder adds them.
   - Not checked against the live API yet: needs a deployed function and a
     real key (see the report).
-<<<<<<< HEAD
 - 2026-10-09 · **Shell, Account, Today and Calendar drawn to the design
   (`docs/design/HLITH App.dc.html`).** Sidebar (segmented game switcher,
   MODULES with Edit layout beside it, boxed glyphs, sync line, Assistant,
@@ -180,8 +196,6 @@ Resume with: "continue from PROGRESS.md". Newest entry on top.
   settings. Today: tiles, server + currency chips, Open tasks, Live banners,
   Coming up, plus Tonight's run and Wishlist. Calendar: legend, Monday ticks,
   lanes, white today line, Dates list.
-=======
->>>>>>> frame/design-roster-farm
 - 2026-10-09 · **Every module has a real screen (R29–R30, R35–R45).** Today
   (resets, dailies/weeklies with ticks that clear at your server's reset,
   ★ tonight's run, ★ wishlist), Calendar (six-week timeline + coming up),

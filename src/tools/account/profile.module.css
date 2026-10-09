@@ -31,7 +31,8 @@
 }
 .banner {
   position: relative;
-  height: 180px;
+  /* Same 4 : 1 shape as the saved banner (imageCrop.ts OUTPUT_SIZE), so nothing more is cut off than the editor showed. */
+  aspect-ratio: 4 / 1;
   border-bottom: 1px solid var(--line-default);
 }
 .bannerImg {
@@ -241,7 +242,7 @@
 }
 .bannerEdit {
   position: relative;
-  height: 150px;
+  aspect-ratio: 4 / 1;
   border-radius: var(--r-card);
   border: 1px solid var(--line-strong);
   margin-bottom: 36px;
