@@ -1,0 +1,5 @@
+# Supabase settings read by the GitHub integration (Project Settings → Integrations).
+# On every merge to main, Supabase applies any new file in supabase/migrations to the
+# live project. Per Supabase's docs, auth, API and seed settings here are NOT applied
+# to the live project; only migrations (and declared edge functions / storage buckets).
+project_id = "PROJECT-HLITH"
