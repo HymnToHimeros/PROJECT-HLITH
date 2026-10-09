@@ -32,6 +32,9 @@ export function gameProblems(g: GameContract): string[] {
   for (const c of g.currencies) {
     for (const bt of c.pullItemFor ?? []) if (!bannerTypes.has(bt)) say(`currency ${c.id} names unknown banner type ${bt}`);
   }
+  for (const [type, bt] of Object.entries(g.historyMapping?.gachaTypes ?? {})) {
+    if (!bannerTypes.has(bt)) say(`history gacha_type ${type} maps to unknown banner type ${bt}`);
+  }
   const incomeIds = new Set<string>();
   for (const r of g.income) {
     if (incomeIds.has(r.id)) say(`income row ${r.id} listed twice`);

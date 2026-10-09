@@ -97,3 +97,13 @@ describe('built-in list ids are unique in every game', () => {
     for (const list of lists) expect(duplicateIds(list)).toEqual([]);
   });
 });
+
+describe('history mapping of the real games', () => {
+  it('HSR and ZZZ map every gacha type onto a banner type they have', () => {
+    for (const g of games) {
+      expect(g.historyMapping, g.id).toBeDefined();
+      const types = new Set(g.bannerTypes.map((b) => b.id));
+      for (const bt of Object.values(g.historyMapping?.gachaTypes ?? {})) expect(types.has(bt), `${g.id}: ${bt}`).toBe(true);
+    }
+  });
+});
