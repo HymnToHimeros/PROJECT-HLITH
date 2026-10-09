@@ -44,14 +44,11 @@ limited to a few emails an hour). Before real users: Resend (section 4).
 Supabase → Authentication → URL Configuration: set **Site URL** to the app's
 address and add `http://localhost:5173` to Redirect URLs for local testing.
 
-## 3. Connect the app
-Create `.env.local` in the project folder (never committed):
-```
-VITE_SUPABASE_URL=https://<your-project>.supabase.co
-VITE_SUPABASE_PUBLISHABLE_KEY=<publishable key>
-```
-Without these the app runs in "this device only" mode: everything works,
-nothing leaves the browser, and the sidebar says so.
+## 3. Connect the app (done 2026-10-09)
+The live project's two public values are in `.env.production`:
+project `qywvnvwfsknfcxgpbivo`, URL `https://qywvnvwfsknfcxgpbivo.supabase.co`.
+Builds use them; unit and browser tests run without them ("this device only"
+mode). Tables checked live: all 10 exist, and writes without sign-in are refused.
 
 ## 4. Later
 - **Resend** (sign-in emails at scale): resend.com → API key (**secret**) →
