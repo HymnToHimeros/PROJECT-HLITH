@@ -57,9 +57,9 @@ mode). Tables checked live: all 10 exist, and writes without sign-in are refused
   Supabase → Authentication → Emails → SMTP settings.
 - **Scheduled jobs (R63): nightly backup (R24), HoYoLAB daily check-in and
   codes (R62), and every later job.** You do **not** create any Cron job or
-  fill in any schedule form. Migration `supabase/migrations/0005_scheduler.sql`
-  creates the one Cron job (`hlith-scheduler`, every 15 minutes) by itself; it
-  calls the `scheduler` function, which runs each job when its time comes
+  fill in any schedule form. Nothing runs until **you** press **Start timer** in
+  Owner console → Scheduler: that creates the one Cron job (`hlith-scheduler`,
+  every 15 minutes; **Stop timer** removes it again). It calls the `scheduler` function, which runs each job when its time comes
   (backup nightly at 02:40 UTC, HoYoLAB daily at 16:10 UTC; the full list is
   in `supabase/functions/_shared/jobs.ts` and in Owner console → Scheduler).
   **Your one step:** put the project's secret key into Vault under the name
@@ -69,9 +69,8 @@ mode). Tables checked live: all 10 exist, and writes without sign-in are refused
      into Vault only, never into chat or the repo.
   2. Supabase → Integrations → **Vault** (on by default for new projects) →
      Add new secret → name `scheduler_key`, secret = that key → Save.
-  Until the secret exists, the Cron call is refused and nothing runs; Owner
-  console → Scheduler then says "Not started: add the Vault secret
-  scheduler_key". The exact dashboard labels will be checked live with you when
+  3. Owner console → Scheduler → **Start timer**. Until the secret exists the
+  timer card says so, and any run is refused. The exact dashboard labels will be checked live with you when
   we do this step; the code side is tested, the live run is not yet.
   Running the HoYoLAB job more often is safe: an account already checked in that
   day is skipped. Saved accounts and "Run now" in Connected accounts work even

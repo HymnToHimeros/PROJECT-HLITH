@@ -1,9 +1,9 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { runnerOf } from '../../../supabase/functions/_shared/jobs.ts';
 import { describeCadence, dueJobs, effectiveCadence, lastSlot, nextSlot, runnable } from '../../../supabase/functions/_shared/scheduler.ts';
 import { ExampleNotice, ExampleTag, HowTo, NoData } from '../../core/ui';
 import o from './owner.module.css';
-import { JOBS, jobLabel, runJobNow, setJobEnabled, type JobDef, type JobRowFull, type RunView, type SchedulerData } from './schedulerData';
+import { JOBS, jobLabel, runJobNow, setJobEnabled, setTimer, timerStatus, type TimerStatus, type JobDef, type JobRowFull, type RunView, type SchedulerData } from './schedulerData';
 
 /*
  * Owner console → Scheduler. Every job from supabase/functions/_shared/jobs.ts with its
@@ -52,11 +52,7 @@ export function Scheduler({ data, now }: Props) {
           Could not read the scheduler: {data.error}
         </p>
       )}
-      {notStarted && (
-        <p className={o.alert} role="status">
-          Not started: add the Vault secret <code>scheduler_key</code> (Supabase → Integrations → Vault).
-        </p>
-      )}
+      {data.mode === 'live' && <TimerCard notStarted={notStarted} />}
 
       <section className={o.card} aria-labelledby="sched-supabase">
         <h3 className={o.cardTitle} id="sched-supabase">
@@ -213,5 +209,56 @@ function JobRow({ job, row, now, example, reload }: { job: JobDef; row: JobRowFu
         </span>
       )}
     </article>
+  );
+}
+
+/** The on/off switch for the 15-minute timer. Nothing is scheduled until the owner presses Start. */
+function TimerCard({ notStarted }: { notStarted: boolean }) {
+  const [status, setStatus] = useState<TimerStatus | null>(null);
+  const [busy, setBusy] = useState(false);
+  const [problem, setProblem] = useState<string | null>(null);
+  const load = () => void timerStatus().then(setStatus);
+  useEffect(load, []);
+  const flip = async (on: boolean) => {
+    setBusy(true);
+    setProblem(null);
+    try {
+      await setTimer(on);
+      load();
+    } catch (e) {
+      setProblem(e instanceof Error ? e.message : String(e));
+    } finally {
+      setBusy(false);
+    }
+  };
+  return (
+    <section className={o.card} aria-labelledby="sched-timer">
+      <h3 className={o.cardTitle} id="sched-timer">
+        Timer
+      </h3>
+      <span className={o.note}>
+        {status === null
+          ? 'Checking…'
+          : status.running
+            ? 'On: the scheduler starts every 15 minutes.'
+            : 'Off: nothing runs on its own until you press Start.'}
+      </span>
+      {status && !status.key_saved && (
+        <p className={o.alert} role="status">
+          Before starting: add the Vault secret <code>scheduler_key</code> (Supabase → Integrations → Vault), or every run is refused.
+        </p>
+      )}
+      {status?.running && notStarted && <span className={o.note}>Started; the first run shows in the log within 15 minutes.</span>}
+      <span>
+        <button type="button" className={o.smallBtn} disabled={busy || status === null} onClick={() => void flip(!status?.running)}>
+          {status?.running ? 'Stop timer' : 'Start timer'}
+        </button>
+      </span>
+      {problem && (
+        <p className={o.alert} role="alert">
+          {problem}
+        </p>
+      )}
+    </section>
   );
 }

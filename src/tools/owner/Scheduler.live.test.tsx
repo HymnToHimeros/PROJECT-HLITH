@@ -45,6 +45,10 @@ vi.mock('../../core/data/backend', () => {
     backend: {
       from: query,
       auth: { getUser: async () => ({ data: { user: { id: 'owner-1' } } }) },
+      rpc: async (name: string) => {
+        calls.invoked.push([name, null]);
+        return { data: name === 'scheduler_timer_status' ? { running: false, key_saved: false } : null, error: null };
+      },
       functions: {
         invoke: async (name: string, opts: unknown) => {
           calls.invoked.push([name, opts]);
@@ -71,10 +75,13 @@ const game = {
 const renderConsole = () => render(<OwnerConsole games={[game]} scope="all" servers={{}} openTab={() => {}} open={() => {}} openAccount={() => {}} />);
 
 describe('Owner console · Scheduler with the server', () => {
-  it('says plainly that the cron job has not started until the Vault secret exists', async () => {
+  it('the timer is off until the owner presses Start, and says the Vault secret is missing', async () => {
     renderConsole();
     fireEvent.click(screen.getByRole('tab', { name: 'Scheduler' }));
-    expect(await screen.findByText(/Not started: add the Vault secret/)).toBeInTheDocument();
+    expect(await screen.findByText(/Off: nothing runs on its own until you press Start/)).toBeInTheDocument();
+    expect(screen.getByText(/Before starting: add the Vault secret/)).toBeInTheDocument();
+    await act(async () => fireEvent.click(screen.getByRole('button', { name: 'Start timer' })));
+    expect(calls.invoked).toContainEqual(['scheduler_timer_start', null]);
     expect(screen.queryByText(/is an example/)).toBeNull();
     const log = screen.getByRole('region', { name: 'Run log' });
     expect(within(log).getByText('No data yet')).toBeInTheDocument();

@@ -127,26 +127,58 @@ $$;
 revoke execute on function public.findings_intake_key_ok(text) from public, anon, authenticated;
 grant execute on function public.findings_intake_key_ok(text) to service_role;
 
--- ── The one cron job ───────────────────────────────────────────────
--- Every 15 minutes the database calls the scheduler function with the key kept in Vault
--- under the name scheduler_key (the owner adds it once: docs/SETUP.md). Without that secret
--- the call is refused (401) and nothing runs. Scheduling again under the same name replaces
--- the job, so running this file twice is harmless.
+-- ── The one cron job (started only by the owner) ───────────────────
+-- Nothing is scheduled by this migration. The owner presses "Start timer" in the Owner
+-- console, which calls scheduler_timer_start(): every 15 minutes the database then calls
+-- the scheduler function with the key kept in Vault as scheduler_key (docs/SETUP.md).
+-- "Stop timer" removes the timer again. Both check public.is_owner().
 create extension if not exists pg_cron with schema pg_catalog;
 create extension if not exists pg_net with schema extensions;
 
-select cron.schedule(
-  'hlith-scheduler',
-  '*/15 * * * *',
-  $cron$
-  select net.http_post(
-    url := 'https://qywvnvwfsknfcxgpbivo.supabase.co/functions/v1/scheduler',
-    headers := jsonb_build_object(
-      'Content-Type', 'application/json',
-      'Authorization', 'Bearer ' || (select decrypted_secret from vault.decrypted_secrets where name = 'scheduler_key' limit 1)
-    ),
-    body := '{}'::jsonb,
-    timeout_milliseconds := 10000
+create or replace function public.scheduler_timer_start() returns void
+language plpgsql security definer set search_path = public, extensions as $$
+begin
+  if not public.is_owner() then raise exception 'owners only'; end if;
+  perform cron.schedule(
+    'hlith-scheduler',
+    '*/15 * * * *',
+    $cron$
+    select net.http_post(
+      url := 'https://qywvnvwfsknfcxgpbivo.supabase.co/functions/v1/scheduler',
+      headers := jsonb_build_object(
+        'Content-Type', 'application/json',
+        'Authorization', 'Bearer ' || (select decrypted_secret from vault.decrypted_secrets where name = 'scheduler_key' limit 1)
+      ),
+      body := '{}'::jsonb,
+      timeout_milliseconds := 10000
+    );
+    $cron$
   );
-  $cron$
-);
+end;
+$$;
+
+create or replace function public.scheduler_timer_stop() returns void
+language plpgsql security definer set search_path = public as $$
+begin
+  if not public.is_owner() then raise exception 'owners only'; end if;
+  perform cron.unschedule(jobid) from cron.job where jobname = 'hlith-scheduler';
+end;
+$$;
+
+create or replace function public.scheduler_timer_status() returns jsonb
+language plpgsql stable security definer set search_path = public as $$
+begin
+  if not public.is_owner() then raise exception 'owners only'; end if;
+  return jsonb_build_object(
+    'running', exists (select 1 from cron.job where jobname = 'hlith-scheduler' and active),
+    'key_saved', exists (select 1 from vault.secrets where name = 'scheduler_key')
+  );
+end;
+$$;
+
+revoke execute on function public.scheduler_timer_start() from public, anon;
+revoke execute on function public.scheduler_timer_stop() from public, anon;
+revoke execute on function public.scheduler_timer_status() from public, anon;
+grant execute on function public.scheduler_timer_start() to authenticated;
+grant execute on function public.scheduler_timer_stop() to authenticated;
+grant execute on function public.scheduler_timer_status() to authenticated;

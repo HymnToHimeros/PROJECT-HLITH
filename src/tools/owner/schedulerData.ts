@@ -129,6 +129,25 @@ export async function setJobEnabled(id: string, enabled: boolean): Promise<void>
 }
 
 /** Starts one job now through the scheduler function (it checks you are an owner). */
+export interface TimerStatus {
+  running: boolean;
+  key_saved: boolean;
+}
+
+/** Is the 15-minute timer on, and is the Vault key there? (owner only, live mode) */
+export async function timerStatus(): Promise<TimerStatus | null> {
+  if (!backend) return null;
+  const { data, error } = await backend.rpc('scheduler_timer_status');
+  return error ? null : (data as TimerStatus);
+}
+
+/** Start or stop the 15-minute timer. Only the owner can; nothing runs until they press Start. */
+export async function setTimer(on: boolean): Promise<void> {
+  if (!backend) throw new Error('This site runs without a server (this device only).');
+  const { error } = await backend.rpc(on ? 'scheduler_timer_start' : 'scheduler_timer_stop');
+  if (error) throw new Error(error.message);
+}
+
 export async function runJobNow(id: string): Promise<void> {
   if (!backend) throw new Error('This site runs without a server (this device only).');
   const { error } = await backend.functions.invoke('scheduler', { body: { job: id } });
