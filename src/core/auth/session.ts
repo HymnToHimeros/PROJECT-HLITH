@@ -33,25 +33,12 @@ export async function signOut(client: SupabaseClient): Promise<void> {
   await client.auth.signOut();
 }
 
-/** What the shell shows about a sign-in: the method used for this session, and every method linked to the account. */
-export interface SignInInfo {
-  /** The method used most recently (this sign-in): the identity with the newest last_sign_in_at. */
-  provider: string | undefined;
-  /** Every linked method ('discord', 'google', 'email'…). */
-  methods: string[];
-}
-
 /**
- * Supabase's app_metadata.provider is the FIRST method ever used and never changes, so
- * it can't say how you signed in today. The identities list carries each method's
- * last_sign_in_at; the newest one is this sign-in. app_metadata.providers lists them all.
+ * How this session signed in. Supabase's app_metadata.provider is the FIRST
+ * provider ever used and never changes, so use the identity signed in most recently.
  */
-export function signInInfo(user: Pick<Session['user'], 'identities' | 'app_metadata'>): SignInInfo {
-  const identities = user.identities ?? [];
-  const time = (t: string | undefined) => (t ? Date.parse(t) || 0 : 0);
-  const newest = [...identities].sort((a, b) => time(b.last_sign_in_at) - time(a.last_sign_in_at))[0];
-  const listed = Array.isArray(user.app_metadata.providers) ? (user.app_metadata.providers as unknown[]).filter((p): p is string => typeof p === 'string') : [];
-  const first = typeof user.app_metadata.provider === 'string' ? user.app_metadata.provider : undefined;
-  const methods = [...new Set([...listed, ...identities.map((i) => i.provider), ...(first ? [first] : [])])];
-  return { provider: newest?.provider ?? first, methods };
+export function currentProvider(user: { app_metadata?: { provider?: unknown }; identities?: { provider: string; last_sign_in_at?: string | null }[] | null }): string | undefined {
+  const latest = [...(user.identities ?? [])].sort((a, b) => (b.last_sign_in_at ?? '').localeCompare(a.last_sign_in_at ?? ''))[0];
+  if (latest) return latest.provider;
+  return typeof user.app_metadata?.provider === 'string' ? user.app_metadata.provider : undefined;
 }
