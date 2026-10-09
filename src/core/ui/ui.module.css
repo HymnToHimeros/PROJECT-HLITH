@@ -628,3 +628,28 @@
   flex-wrap: wrap;
   gap: var(--s-2);
 }
+
+.howTo {
+  border: 1px solid var(--line-default);
+  border-radius: var(--r-card);
+  background: var(--bg-card);
+  padding: var(--s-3) var(--s-4);
+  color: var(--ink-2);
+  font-size: 13px;
+  line-height: 1.5;
+}
+.howToTitle {
+  cursor: pointer;
+  color: var(--glacier);
+  font-weight: 600;
+}
+.howToSteps {
+  margin: var(--s-3) 0 0;
+  padding-left: 1.4em;
+  display: grid;
+  gap: var(--s-2);
+}
+.howToNote {
+  margin-top: var(--s-3);
+  color: var(--ink-3);
+}
