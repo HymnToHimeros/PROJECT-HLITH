@@ -32,3 +32,13 @@ export async function sendEmailLink(client: SupabaseClient, email: string): Prom
 export async function signOut(client: SupabaseClient): Promise<void> {
   await client.auth.signOut();
 }
+
+/**
+ * How this session signed in. Supabase's app_metadata.provider is the FIRST
+ * provider ever used and never changes, so use the identity signed in most recently.
+ */
+export function currentProvider(user: { app_metadata?: { provider?: unknown }; identities?: { provider: string; last_sign_in_at?: string | null }[] | null }): string | undefined {
+  const latest = [...(user.identities ?? [])].sort((a, b) => (b.last_sign_in_at ?? '').localeCompare(a.last_sign_in_at ?? ''))[0];
+  if (latest) return latest.provider;
+  return typeof user.app_metadata?.provider === 'string' ? user.app_metadata.provider : undefined;
+}
