@@ -1,0 +1,57 @@
+# PROJECT-HLITH · SETUP
+
+What you set up outside the code, in order. Values marked **public** may be
+pasted in chat or committed; values marked **secret** never leave the
+dashboard they come from.
+
+## 1. Supabase (database, login, server functions) · free plan
+1. supabase.com → **Start your project** → sign in with GitHub.
+2. **New project**: name `PROJECT-HLITH`, generate a database password and keep
+   it in a password manager (**secret**), pick the region nearest you, plan **Free**.
+3. When it's ready: **Connect** (or Project Settings → API). Copy:
+   - **Project URL** (**public**), e.g. `https://abcd1234.supabase.co`
+   - **Publishable / anon key** (**public**)
+   - Never copy out the **service_role / secret** key (**secret**).
+4. Create the tables: **SQL Editor** → New query → paste
+   `supabase/migrations/0001_init.sql` → **Run**. (Later migrations: run each new
+   file in order. They only ever add.)
+5. Make yourself owner (after your first sign-in): **Table Editor** → `owners`
+   → Insert row → your `user_id` from **Authentication → Users**.
+
+Free-plan notes: the project pauses after 7 days with no visits (open the app
+once a week, or move to Pro, $25/month); no automatic backups (ROADMAP R24).
+
+## 2. Login providers
+Both need the callback address: `https://<your-project>.supabase.co/auth/v1/callback`.
+
+**Discord** · discord.com/developers/applications → New Application → OAuth2:
+- Add redirect: the callback address above.
+- Copy **Client ID** (**public**) and **Client Secret** (**secret**).
+- Supabase → Authentication → Sign In / Providers → Discord → paste both → Enable.
+
+**Google** · console.cloud.google.com → new project → APIs & Services:
+- OAuth consent screen: External, app name `HLITH`, your email.
+- Credentials → Create OAuth client ID → Web application → Authorized redirect
+  URI: the callback address above.
+- Copy **Client ID** (**public**) and **Client Secret** (**secret**).
+- Supabase → Authentication → Sign In / Providers → Google → paste both → Enable.
+
+**Email links** work out of the box for testing (Supabase's own mailer is
+limited to a few emails an hour). Before real users: Resend (section 4).
+
+Supabase → Authentication → URL Configuration: set **Site URL** to the app's
+address and add `http://localhost:5173` to Redirect URLs for local testing.
+
+## 3. Connect the app
+Create `.env.local` in the project folder (never committed):
+```
+VITE_SUPABASE_URL=https://<your-project>.supabase.co
+VITE_SUPABASE_PUBLISHABLE_KEY=<publishable key>
+```
+Without these the app runs in "this device only" mode: everything works,
+nothing leaves the browser, and the sidebar says so.
+
+## 4. Later
+- **Resend** (sign-in emails at scale): resend.com → API key (**secret**) →
+  Supabase → Authentication → Emails → SMTP settings.
+- **Cloudflare Pages** (hosting, ROADMAP R60) and **Cloudflare R2** (backups, R24).

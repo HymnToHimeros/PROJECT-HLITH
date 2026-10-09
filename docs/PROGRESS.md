@@ -3,13 +3,15 @@
 Resume with: "continue from PROGRESS.md". Newest entry on top.
 
 ## Now
-- **Step 5 (R17–R19) done**, in review: the shell, Edit layout, server picker.
+- **Step 6 (R20–R23) done**, in review: tables with per-user walls, sign-in
+  screen, settings sync, built-in lists. **Waiting on you:** Supabase project URL
+  + publishable key (see `docs/SETUP.md`), then Discord and Google login apps.
 
 ## Next
-- Step 6 — Accounts and data (R20–R24): Supabase project, tables with per-user
-  walls, login (Google, Discord, email link), sync, built-in lists, backups.
-  **Needs you:** a free Supabase account and project (I'll walk you through it),
-  plus Google and Discord login apps. I can write the code and tests first.
+- Connect the real Supabase project once you send the two public values, and
+  test sign-in end to end.
+- R24 backups (needs a storage choice) can wait; next build step is the pull
+  budget engine (R25).
 
 ## How to check everything
 - `npm run check` = lint + typecheck + unit tests + build.
@@ -17,6 +19,18 @@ Resume with: "continue from PROGRESS.md". Newest entry on top.
 - CI (`.github/workflows/ci.yml`) runs both on every pull request.
 
 ## Done
+- 2026-10-09 · **Step 6 (R20–R23).** `supabase/migrations/0001_init.sql`:
+  profiles, owners (set by hand only), settings, catalog (owner-only writes,
+  items retired not deleted), your own items, roster, progress, append-only
+  bank log and pull history, plans. Every user table has row-level security
+  and **no delete policy**; a test enforces both. Sign-in screen (Google,
+  Discord, email link) shown only when Supabase is configured; otherwise
+  "this device only" mode. Settings sync: newest copy wins, the other is kept
+  as a backup; status in the sidebar (synced / syncing / failed). Built-in
+  lists: owner updates layered over seed data, ids never disappear.
+  `docs/SETUP.md` has the outside setup steps. `public/_redirects` makes
+  addresses like /hsr/pulls work on Cloudflare Pages.
+- 2026-10-09 · Step 5 merged (pull request #7).
 - 2026-10-09 · **Step 5 (R17–R19).** `src/core/shell/`: PC sidebar (game
   switcher All/HSR/ZZZ/+, modules, Edit layout, sync status, Assistant ⌘K,
   Account), phone top bar + bottom bar (first 4 + More) with 500 ms
