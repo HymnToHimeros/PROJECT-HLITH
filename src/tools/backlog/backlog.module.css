@@ -1,0 +1,241 @@
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-4);
+  min-width: 0;
+}
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--line-default);
+  border-radius: var(--r-card);
+  padding: var(--s-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-3);
+  min-width: 0;
+}
+.off .items {
+  opacity: 0.6;
+}
+.catHead {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--s-3) var(--s-4);
+}
+.catTitleBox {
+  flex: 1 1 180px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+.catTitle {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 700;
+}
+.catReward {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+  text-align: right;
+}
+.amount {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--ink-2);
+}
+.num {
+  font-family: var(--font-numbers);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-1);
+}
+.muted {
+  margin: 0;
+  color: var(--ink-4);
+  font-size: 12px;
+}
+
+/* Switch: a real checkbox underneath, so keyboards and screen readers get it for free. */
+.switch {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+  min-height: var(--tap-min);
+  cursor: pointer;
+  font-size: 13px;
+  color: var(--ink-3);
+}
+.switch input {
+  position: absolute;
+  opacity: 0;
+  width: 40px;
+  height: 24px;
+  margin: 0;
+  cursor: pointer;
+}
+.track {
+  position: relative;
+  width: 40px;
+  height: 24px;
+  flex: none;
+  border-radius: 12px;
+  background: var(--line-strong);
+  transition: background 0.15s;
+}
+.knob {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--bg-app);
+  transition: left 0.15s;
+}
+.switch input:checked + .track {
+  background: var(--vent);
+}
+.switch input:checked + .track .knob {
+  left: 18px;
+}
+.switch input:focus-visible + .track {
+  outline: 2px solid var(--glacier);
+  outline-offset: 2px;
+}
+.switchText {
+  min-width: 128px;
+}
+
+.items {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+.item {
+  border-top: 1px solid var(--line-subtle);
+}
+.itemRow {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--s-2) var(--s-4);
+  padding: 12px 0;
+  cursor: pointer;
+}
+.itemMain {
+  flex: 1 1 240px;
+  min-width: 0;
+}
+.itemReward {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--ink-3);
+  min-width: 210px;
+  justify-content: flex-end;
+  white-space: nowrap;
+}
+.edit {
+  min-height: 36px;
+  padding: 0 14px;
+  font-size: 13px;
+}
+.editor {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--s-2);
+  padding: 0 0 12px;
+}
+.editorLabel {
+  font: 600 10px var(--font-numbers);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-5);
+}
+.editorEnd {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-3);
+  margin-left: auto;
+}
+.step {
+  min-height: 40px;
+  padding: 0 12px;
+  font-size: 13px;
+}
+.step:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+.input {
+  width: 96px;
+  min-height: 40px;
+  padding: 0 var(--s-3);
+  border-radius: var(--r-button);
+  border: 1px solid var(--line-mid);
+  background: var(--bg-inset);
+  color: var(--ink-1);
+  font: 600 14px var(--font-numbers);
+  text-align: center;
+}
+
+.summary {
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s-4);
+}
+.sumText {
+  flex: 1 1 240px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.sumLabel {
+  font-size: 14px;
+  color: var(--ink-3);
+}
+.sumFigure {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--s-2);
+}
+.sumValue {
+  font: 600 36px/1 var(--font-numbers);
+  font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 819px) {
+  .catReward {
+    align-items: flex-start;
+    text-align: left;
+  }
+  .itemMain {
+    flex-basis: 100%;
+  }
+  .itemRow {
+    gap: var(--s-2) var(--s-3);
+  }
+  .itemReward {
+    justify-content: flex-start;
+    min-width: 0;
+    flex: 1;
+    white-space: normal;
+    flex-wrap: wrap;
+  }
+  .editorEnd {
+    margin-left: 0;
+  }
+}
