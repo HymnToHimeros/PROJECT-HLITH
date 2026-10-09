@@ -3,6 +3,9 @@ import type { GameContract, GameEvent, Version } from '../../core/contract';
 import { useGameData, type GameUserData } from '../../core/data/userData';
 import { exampleVersionEnd } from '../pulls/examples';
 import { exampleEvents } from './examples';
+import { useWithOwnItems } from '../edit-mode/useWithOwnItems';
+
+const NO_EVENTS: GameEvent[] = [];
 
 export interface EventsData {
   user: GameUserData;
@@ -31,9 +34,11 @@ export function useEventsData(game: GameContract, now: number): EventsData {
   const current = (lists?.versions ?? []).find((v) => Date.parse(v.start) <= now && now < Date.parse(v.end));
   const at = lists?.at ?? now;
   const examples = useMemo(() => exampleEvents(game, at), [game, at]);
+  // Built-in events plus your own from Edit mode (hidden ones left out).
+  const events = useWithOwnItems(game, 'events', lists?.events ?? NO_EVENTS);
   return {
     user,
-    events: lists?.events.length ? { list: lists.events, example: false } : { list: examples, example: true },
+    events: events.length ? { list: events, example: false } : { list: examples, example: true },
     versionEnd: current ? { at: Date.parse(current.end), example: false } : { at: exampleVersionEnd(at), example: true },
     loading: lists === null,
   };

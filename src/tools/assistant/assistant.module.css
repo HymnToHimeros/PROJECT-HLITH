@@ -1,0 +1,489 @@
+/* Assistant panel. Look: docs/design/HLITH App.dc.html (asstOpen). Ember is the Assistant's colour, one fill per screen (Send). */
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-3);
+  flex: 1;
+  min-height: 0;
+  min-width: 0;
+}
+.head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-bottom: var(--s-3);
+  border-bottom: 1px solid var(--bg-track);
+}
+.mark {
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+  background: var(--ember);
+  flex: none;
+}
+.headText {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.headLabel {
+  font: 600 11px/1 var(--font-numbers);
+  letter-spacing: 0.12em;
+}
+.headSub {
+  font-size: 12px;
+  color: var(--ink-4);
+}
+.spend {
+  font: 500 11px/1.3 var(--font-numbers);
+  color: var(--ink-3);
+  text-align: right;
+}
+.tools {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-2);
+}
+.tool {
+  min-height: 36px;
+  padding: 0 var(--s-3);
+  border-radius: var(--r-button);
+  border: 1px solid var(--line-mid);
+  background: transparent;
+  color: var(--ink-3);
+  font-size: 13px;
+  cursor: pointer;
+}
+.tool:hover {
+  border-color: var(--glacier);
+  color: var(--ink-1);
+}
+.tool[aria-pressed='true'] {
+  border-color: var(--glacier);
+  color: var(--ink-1);
+  background: var(--bg-raised);
+}
+
+/* ── Messages ── */
+.messages {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+}
+.bubble {
+  max-width: 86%;
+  padding: 10px 13px;
+  border-radius: var(--r-card);
+  font-size: 14px;
+  line-height: 1.45;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.user {
+  align-self: flex-end;
+  background: var(--line-default);
+  color: var(--ink-1);
+}
+.assistant {
+  align-self: flex-start;
+  background: var(--bg-raised);
+  color: var(--ink-2);
+}
+.turn {
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-2);
+  min-width: 0;
+}
+.thinking {
+  align-self: flex-start;
+  padding: 10px 13px;
+  border-radius: var(--r-card);
+  background: var(--bg-raised);
+  font: 600 14px var(--font-numbers);
+  color: var(--ink-4);
+}
+.meta {
+  font: 500 11px/1.4 var(--font-numbers);
+  color: var(--ink-4);
+}
+.error {
+  align-self: stretch;
+  padding: 10px 13px;
+  border-radius: var(--r-card);
+  border: 1px solid color-mix(in srgb, var(--ember) 45%, transparent);
+  color: var(--ink-2);
+  font-size: 13px;
+}
+.notice {
+  align-self: stretch;
+  padding: 10px 13px;
+  border-radius: var(--r-card);
+  border: 1px dashed var(--line-strong);
+  color: var(--ink-3);
+  font-size: 13px;
+}
+.shot {
+  display: block;
+  max-width: 160px;
+  max-height: 160px;
+  border-radius: var(--r-row);
+  margin-bottom: 6px;
+}
+.sources {
+  margin: 0;
+  padding: 0 0 0 1.2em;
+  font-size: 12px;
+  color: var(--ink-3);
+}
+.sources a {
+  overflow-wrap: anywhere;
+}
+
+/* ── Example conversation ── */
+.example {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: var(--s-3);
+  border: 1px dashed var(--glacier);
+  border-radius: var(--r-card);
+}
+.exampleHead {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  font-size: 12px;
+  color: var(--ink-3);
+}
+
+/* ── Suggestions + composer ── */
+.suggestions {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  margin: 0 calc(-1 * var(--s-4));
+  padding: 0 var(--s-4);
+}
+.suggestion {
+  flex: none;
+  white-space: nowrap;
+  min-height: 36px;
+  padding: 6px 12px;
+  border-radius: var(--r-pill);
+  border: 1px solid var(--line-strong);
+  background: transparent;
+  font-size: 12px;
+  color: var(--ink-2);
+  cursor: pointer;
+  text-align: left;
+}
+.suggestion:hover {
+  border-color: var(--glacier);
+}
+.suggestion:disabled {
+  cursor: default;
+  color: var(--ink-4);
+}
+.composer {
+  position: sticky;
+  bottom: 0;
+  margin: 0 calc(-1 * var(--s-4)) calc(-18px - env(safe-area-inset-bottom));
+  padding: 12px var(--s-4) calc(16px + env(safe-area-inset-bottom));
+  background: var(--bg-card);
+  border-top: 1px solid var(--bg-track);
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-2);
+}
+.composeRow {
+  display: flex;
+  gap: var(--s-2);
+  align-items: stretch;
+}
+.input {
+  flex: 1;
+  min-width: 0;
+  height: 48px;
+  padding: 0 14px;
+  border-radius: var(--r-card);
+  background: var(--bg-raised);
+  border: 1px solid var(--line-mid);
+  color: var(--ink-1);
+  font: inherit;
+  font-size: 14px;
+}
+.input::placeholder {
+  color: var(--ink-4);
+}
+.attach {
+  width: 48px;
+  height: 48px;
+  flex: none;
+  display: grid;
+  place-items: center;
+  border-radius: var(--r-card);
+  border: 1px solid var(--line-mid);
+  background: transparent;
+  color: var(--ink-3);
+  cursor: pointer;
+  font-size: 18px;
+}
+.attach:hover {
+  border-color: var(--glacier);
+}
+.fileInput {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+.send {
+  height: 48px;
+  padding: 0 16px;
+  border-radius: var(--r-card);
+  border: 0;
+  background: var(--ember);
+  color: var(--on-vent);
+  font: inherit;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+}
+.send:disabled {
+  background: var(--bg-raised);
+  color: var(--ink-4);
+  cursor: default;
+}
+.pending {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  font-size: 12px;
+  color: var(--ink-3);
+}
+.pending img {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: var(--r-tag);
+}
+.hint {
+  margin: 0;
+  font-size: 12px;
+  color: var(--ink-4);
+}
+
+/* ── Settings, key ── */
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-3);
+  padding: var(--s-4);
+  border: 1px solid var(--line-default);
+  border-radius: var(--r-card);
+  background: var(--bg-card);
+}
+.sectionLabel {
+  font: 600 11px/1 var(--font-numbers);
+  letter-spacing: 0.12em;
+  color: var(--ink-3);
+}
+.p {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--ink-3);
+}
+.strong {
+  color: var(--ink-1);
+  font-weight: 600;
+}
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 12px;
+  color: var(--ink-3);
+}
+.textInput {
+  min-height: var(--tap-min);
+  padding: 0 var(--s-3);
+  border-radius: var(--r-button);
+  border: 1px solid var(--line-mid);
+  background: var(--bg-inset);
+  color: var(--ink-1);
+  font: inherit;
+  font-size: 14px;
+  min-width: 0;
+}
+.radioRow {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--s-2);
+  font-size: 13px;
+  color: var(--ink-2);
+  line-height: 1.4;
+}
+.radioRow input {
+  margin-top: 3px;
+  accent-color: var(--glacier);
+}
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-2);
+  align-items: center;
+}
+.modelCard {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--s-3);
+  padding: var(--s-3);
+  border: 1px solid var(--line-mid);
+  border-radius: var(--r-row);
+  cursor: pointer;
+}
+.modelCard:has(input:checked) {
+  border-color: var(--glacier);
+  background: var(--bg-raised);
+}
+.modelCard input {
+  margin-top: 3px;
+  accent-color: var(--glacier);
+}
+.modelText {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 12px;
+  color: var(--ink-3);
+  line-height: 1.45;
+  min-width: 0;
+}
+.modelName {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--ink-1);
+}
+.mono {
+  font-family: var(--font-numbers);
+}
+.ok {
+  color: var(--ok);
+}
+.actionList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-2);
+}
+.actionRow {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  font-size: 13px;
+  color: var(--ink-2);
+}
+.actionRow > span {
+  flex: 1;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.undone {
+  color: var(--ink-4);
+  text-decoration: line-through;
+}
+
+/* ── Proposal cards ── */
+.card {
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-2);
+  padding: var(--s-3);
+  border: 1px solid var(--line-mid);
+  border-radius: var(--r-card);
+  background: var(--bg-inset);
+}
+.cardHead {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+}
+.kind {
+  font: 600 10px/1 var(--font-numbers);
+  letter-spacing: 0.1em;
+  color: var(--ink-3);
+  flex: 1;
+}
+.cardTitle {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--ink-1);
+  overflow-wrap: anywhere;
+}
+.cardDetail {
+  margin: 0;
+  font-size: 12px;
+  color: var(--ink-3);
+  overflow-wrap: anywhere;
+}
+.why {
+  margin: 0;
+  font-size: 12px;
+  color: var(--ink-2);
+}
+.stops {
+  margin: 0;
+  padding: 0 0 0 1.4em;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--ink-2);
+}
+.stops ul {
+  margin: 2px 0 0;
+  padding-left: 1em;
+  font-size: 12px;
+  color: var(--ink-3);
+}
+.cardActions {
+  display: flex;
+  gap: var(--s-2);
+  align-items: center;
+  flex-wrap: wrap;
+}
+.state {
+  font-size: 12px;
+  color: var(--ink-3);
+  flex: 1;
+}
+.problem {
+  margin: 0;
+  font-size: 12px;
+  color: var(--ember-soft);
+}
+.plain {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-3);
+  padding: 0;
+  margin: 0;
+  border: 0;
+  min-width: 0;
+}
+.textLink {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}

@@ -45,11 +45,11 @@ const makeGame = (events: GameEvent[] = []): GameContract =>
 
 const show = async (game = makeGame(), servers: Record<string, string> = {}) => {
   render(<EventsScreen games={[game]} scope="aa" servers={servers} openTab={() => {}} open={() => {}} openAccount={() => {}} />);
-  await screen.findByText('Live now');
+  await screen.findByText('Rewards left');
 };
 
 const row = (title: string) => screen.getByRole('listitem', { name: title });
-const stillToEarn = () => screen.getByText('Still to earn this version').closest('div')?.parentElement as HTMLElement;
+const stillToEarn = () => screen.getByText('Rewards left').closest('div')?.parentElement as HTMLElement;
 
 describe('Events screen', () => {
   beforeEach(() => {
@@ -110,5 +110,15 @@ describe('Events screen', () => {
     expect(screen.queryByText('Limited story event')).not.toBeInTheDocument();
     expect(within(row('Real event')).queryByText('EXAMPLE')).not.toBeInTheDocument();
     expect(within(row('Real event')).getByText(/No data yet/)).toBeInTheDocument();
+  });
+
+  it('filters by login events and by ending soon', async () => {
+    await show();
+    fireEvent.click(screen.getByRole('button', { name: 'Login' }));
+    expect(screen.getByRole('listitem', { name: 'Daily login event' })).toBeInTheDocument();
+    expect(screen.queryByRole('listitem', { name: 'Limited story event' })).not.toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'Ending soon' }));
+    expect(screen.getByRole('listitem', { name: 'Web event' })).toBeInTheDocument();
+    expect(screen.queryByRole('listitem', { name: 'Limited story event' })).not.toBeInTheDocument();
   });
 });

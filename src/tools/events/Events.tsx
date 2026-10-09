@@ -1,13 +1,15 @@
-import type { CSSProperties, ReactNode } from 'react';
+import { useState, type CSSProperties } from 'react';
 import type { GameContract, GameEvent } from '../../core/contract';
-import { known, unknown } from '../../core/contract/known';
+import { known } from '../../core/contract/known';
 import { setEventProgress, type EventProgress, type GameUserData } from '../../core/data/userData';
 import { formatNumber } from '../../core/time/format';
-import { formatDate, formatRange } from '../../core/time/reset';
-import { Button, ExampleTag, NoData, ProgressBar, StatTile, Timer, UnverifiedTag } from '../../core/ui';
+import { formatRange } from '../../core/time/reset';
+import { Button, ExampleTag, NoData, ProgressBar, Timer, UnverifiedTag } from '../../core/ui';
 import { cx } from '../../core/ui/cx';
 import type { BudgetRow } from '../budget/budget';
-import { premiumCurrency } from './examples';
+import { pullsOf } from '../backlog/backlog';
+import { EmptyTile, Filters, Tile } from '../pulls/shared';
+import k from '../pulls/kit.module.css';
 import { countsBefore, cycles, eventsBudget, groupEvents, groupOf, progressOf, type Cycle } from './events';
 import e from './events.module.css';
 import type { EventsData } from './useEventsData';
@@ -29,12 +31,18 @@ interface Props {
   onChooseServer: () => void;
 }
 
+type Filter = 'all' | 'soon' | 'event' | 'login' | 'endgame' | 'bonus';
+const SOON = 4 * 86_400_000;
+
 /**
- * Events (R29): events, login events and endgame cycles with your state
- * (open / done / skipped) and login days claimed. Live first (ending soonest),
- * then upcoming, endgame cycles, and ended ones folded away.
+ * Events (R29, design: tiles over one list with Open / Done / Skip): events,
+ * login events and endgame cycles with your state and login days claimed.
+ * Live first (ending soonest), then endgame cycles, then upcoming; ended ones
+ * folded away. V1 features: filter by ending soon / limited / login / endgame /
+ * bonuses, rewards shown as pulls.
  */
 export function Events({ game, data, serverId, now, onChooseServer }: Props) {
+  const [filter, setFilter] = useState<Filter>('all');
   const until = data.versionEnd.at;
   const list = data.events.list;
   const example = data.events.example;
@@ -42,6 +50,11 @@ export function Events({ game, data, serverId, now, onChooseServer }: Props) {
   const rows = new Map(b.rows.map((r) => [r.id, r]));
   const groups = groupEvents(list, now);
   const name = (id: string) => game.currencies.find((c) => c.id === id)?.name ?? id;
+  const keep = (ev: GameEvent) =>
+    filter === 'all' ||
+    (filter === 'soon' && groupOf(ev, now) === 'live' && Date.parse(ev.end) - now < SOON) ||
+    (filter === 'event' && (ev.kind === 'event' || ev.kind === 'web')) ||
+    ev.kind === filter;
   const item = (ev: GameEvent) => (
     <EventItem
       key={ev.id}
@@ -56,22 +69,40 @@ export function Events({ game, data, serverId, now, onChooseServer }: Props) {
       onChooseServer={onChooseServer}
     />
   );
+  const live = groups.live.filter(keep);
+  const upcoming = groups.upcoming.filter(keep);
+  const cycleList = filter === 'all' || filter === 'endgame' ? cycles(game, now) : [];
+  const empty = live.length === 0 && upcoming.length === 0 && cycleList.length === 0;
 
   return (
     <div className={e.stack} style={{ '--vent': game.vent } as CSSProperties}>
-      <Tiles game={game} data={data} groups={groups} income={b.income} leftOut={b.leftOut} until={until} />
+      <Tiles game={game} data={data} groups={groups} income={b.income} leftOut={b.leftOut} />
+      <Filters
+        label="Show events"
+        value={filter}
+        onChange={setFilter}
+        options={[
+          { id: 'all', label: 'All' },
+          { id: 'soon', label: 'Ending soon' },
+          { id: 'event', label: 'Limited' },
+          { id: 'login', label: 'Login' },
+          { id: 'endgame', label: 'Endgame' },
+          { id: 'bonus', label: 'Bonuses' },
+        ]}
+      />
+      {empty ? (
+        <p className={e.muted}>{filter === 'all' ? 'No events are listed yet.' : 'Nothing in this filter right now.'}</p>
+      ) : (
+        <ul className={e.list} aria-label="Events">
+          {live.map(item)}
+          {cycleList.map((c) => (
+            <CycleItem key={c.row.id} game={game} cycle={c} user={data.user} currency={name} />
+          ))}
+          {upcoming.map(item)}
+        </ul>
+      )}
 
-      <Section label="Live now" count={groups.live.length}>
-        {groups.live.length ? <ul className={e.list}>{groups.live.map(item)}</ul> : <p className={e.muted}>Nothing is running right now.</p>}
-      </Section>
-
-      <Section label="Upcoming" count={groups.upcoming.length}>
-        {groups.upcoming.length ? <ul className={e.list}>{groups.upcoming.map(item)}</ul> : <p className={e.muted}>No upcoming events are listed yet.</p>}
-      </Section>
-
-      <EndgameCycles game={game} list={cycles(game, now)} user={data.user} currency={name} />
-
-      {groups.ended.length > 0 && (
+      {groups.ended.length > 0 && filter === 'all' && (
         <details className={e.ended}>
           <summary className={e.endedSummary}>
             <span className="t-label">Ended</span>
@@ -81,20 +112,8 @@ export function Events({ game, data, serverId, now, onChooseServer }: Props) {
         </details>
       )}
 
-      {b.leftOut.length > 0 && <p className={e.muted}>Not counted in “still to earn” (no data yet): {b.leftOut.join(', ')}.</p>}
+      {b.leftOut.length > 0 && <p className={e.muted}>Not counted in “Rewards left” (no data yet): {b.leftOut.join(', ')}.</p>}
     </div>
-  );
-}
-
-function Section({ label, count, children }: { label: string; count: number; children: ReactNode }) {
-  return (
-    <section className={e.section} aria-label={label}>
-      <h3 className={e.sectionHead}>
-        <span className="t-label">{label}</span>
-        <span className={e.count}>{count}</span>
-      </h3>
-      {children}
-    </section>
   );
 }
 
@@ -104,14 +123,12 @@ function Tiles({
   groups,
   income,
   leftOut,
-  until,
 }: {
   game: GameContract;
   data: EventsData;
   groups: ReturnType<typeof groupEvents>;
   income: Record<string, number>;
   leftOut: string[];
-  until: number;
 }) {
   const ex = data.events.example;
   const user = data.user;
@@ -119,62 +136,48 @@ function Tiles({
   const logins = groups.live.filter((x) => x.kind === 'login' && x.loginDays);
   const claimed = logins.reduce((a, x) => a + Math.min(x.loginDays ?? 0, progressOf(user, x.id).daysClaimed ?? 0), 0);
   const days = logins.reduce((a, x) => a + (x.loginDays ?? 0), 0);
-  const premium = premiumCurrency(game);
   const name = (id: string) => game.currencies.find((c) => c.id === id)?.name ?? id;
-  // "Still to earn": proven amounts only, shown in the premium currency when there is any.
+  // "Rewards left" in pulls: proven amounts only.
+  const pulls = pullsOf(game, income);
   const entries = Object.entries(income).filter(([, v]) => v > 0);
-  const main = entries.find(([c]) => c === premium?.id) ?? entries[0];
-  const perPull = main ? game.currencies.find((c) => c.id === main[0])?.perPull : undefined;
-  const pulls = main && perPull ? Math.floor(main[1] / perPull + 1e-9) : null;
-  const others = entries.filter((x) => x !== main).map(([c, v]) => `${formatNumber(Math.round(v))} ${name(c)}`);
-  // Nothing proven but some rows have no data → No data yet. Nothing left at all → a real 0.
-  const value = main
-    ? known(
-        <span className={e.tileValue}>
-          {formatNumber(Math.round(main[1]))} {ex && <ExampleTag />}
-        </span>,
-        'user',
-      )
-    : leftOut.length > 0
-      ? unknown()
-      : known(<span className={e.tileValue}>0</span>, 'user');
+  const amounts = entries.map(([c, v]) => `${formatNumber(Math.round(v))} ${name(c)}`).join(' + ');
+  const nothingProven = entries.length === 0;
 
   return (
-    <div className={e.tiles}>
-      <StatTile
-        label="Open events"
-        value={known(
-          <span className={e.tileValue}>
-            {openCount} {ex && <ExampleTag />}
-          </span>,
-          'user',
-        )}
-        caption="live and upcoming, not done or skipped"
-      />
-      {days > 0 && (
-        <StatTile
-          label="Login days claimed"
-          value={known(
-            <span className={e.tileValue}>
-              {claimed}/{days}
-            </span>,
-            'user',
-          )}
-          progress={claimed / days}
-          caption={`${logins.length} login event${logins.length === 1 ? '' : 's'} running`}
-        />
-      )}
-      <StatTile
-        label="Still to earn this version"
-        value={value}
-        caption={
+    <div className={k.tiles}>
+      <Tile
+        label="Open"
+        value={
           <>
-            {main ? `${name(main[0])}${pulls !== null ? ` · about ${formatNumber(pulls)} pulls` : ''}` : 'nothing left to earn'}
-            {others.length > 0 ? ` · plus ${others.join(', ')}` : ''} · until {formatDate(until)} {data.versionEnd.example && <ExampleTag />}
-            {leftOut.length > 0 && main && <span className={e.glacier}> · {leftOut.length} without data left out</span>}
+            {openCount} {ex && <ExampleTag />}
           </>
         }
+        caption="events you can still do"
       />
+      {days > 0 ? (
+        <Tile label="Login days claimed" value={`${claimed}/${days}`} caption={`${logins.length} login event${logins.length === 1 ? '' : 's'} running`} />
+      ) : (
+        <Tile label="Login days claimed" value="—" tone="muted" caption="no login event running" />
+      )}
+      {nothingProven && leftOut.length > 0 ? (
+        <EmptyTile label="Rewards left" why="rewards of the open events aren’t known" />
+      ) : (
+        <Tile
+          label="Rewards left"
+          value={
+            <>
+              +{formatNumber(pulls)} {ex && <ExampleTag />}
+            </>
+          }
+          tone={leftOut.length > 0 ? 'glacier' : undefined}
+          caption={
+            <>
+              pulls this version{amounts ? ` · ${amounts}` : ''}
+              {leftOut.length > 0 ? ` · ${leftOut.length} without data left out` : ' · feeds the Pulls budget'}
+            </>
+          }
+        />
+      )}
     </div>
   );
 }
@@ -213,9 +216,10 @@ function EventItem({ game, ev, now, until, user, example, row, currency, onChoos
           {group === 'upcoming' && <Timer to={start} prefix="starts in" />}
           {group === 'ended' && <span className={e.dates}>ended</span>}
           <span className={e.reward}>
-            <Reward ev={ev} state={p.state} row={row} until={until} currency={currency} onChooseServer={onChooseServer} />
+            <Reward ev={ev} state={p.state} row={row} until={until} currency={currency} pulls={row?.status === 'counted' ? asPulls(game, row.currency, row.amount) : null} onChooseServer={onChooseServer} />
           </span>
         </div>
+        {ev.kind === 'bonus' && <span className={e.muted}>Reminders for bonuses come with notifications (Account → Notifications).</span>}
         {ev.kind === 'login' && (
           <LoginDays title={ev.title} total={ev.loginDays} claimed={p.daysClaimed ?? 0} canClaim={group !== 'upcoming'} onSet={(daysClaimed) => save({ daysClaimed })} />
         )}
@@ -231,6 +235,7 @@ function Reward({
   row,
   until,
   currency,
+  pulls,
   onChooseServer,
 }: {
   ev: GameEvent;
@@ -238,6 +243,7 @@ function Reward({
   row: BudgetRow | undefined;
   until: number;
   currency: string;
+  pulls: number | null;
   onChooseServer: () => void;
 }) {
   const amount = (n: number) => `${formatNumber(Math.round(n))} ${currency}`;
@@ -260,7 +266,7 @@ function Reward({
     case 'counted':
       return (
         <span>
-          <strong className={e.amount}>{formatNumber(Math.round(row.amount))}</strong> {currency} left to earn
+          <strong className={e.amount}>{formatNumber(Math.round(row.amount))}</strong> {currency} left to earn{pulls ? ` · about ${formatNumber(pulls)} pulls` : ''}
         </span>
       );
     case 'already-earned':
@@ -306,20 +312,19 @@ function LoginDays({ title, total, claimed, canClaim, onSet }: { title: string; 
   return (
     <div className={e.login}>
       {total <= MAX_PIPS ? (
-        <div className={e.pips} role="group" aria-label={`Login days for ${title}`}>
+        // V1: tap the bar to set the days already claimed. Each segment is one day.
+        <div className={e.dayBar} role="group" aria-label={`Login days for ${title}`}>
           {Array.from({ length: total }, (_, i) => (
             <button
               key={i}
               type="button"
-              className={e.pip}
+              className={e.daySeg}
               aria-pressed={i < n}
               aria-label={`Day ${i + 1}`}
               disabled={!canClaim}
               // Tap a day to claim up to it; tap the last claimed day again to undo it.
               onClick={() => onSet(i === n - 1 ? i : i + 1)}
-            >
-              {i + 1}
-            </button>
+            />
           ))}
         </div>
       ) : (
@@ -342,54 +347,51 @@ function LoginDays({ title, total, claimed, canClaim, onSet }: { title: string; 
   );
 }
 
-function EndgameCycles({ game, list, user, currency }: { game: GameContract; list: Cycle[]; user: GameUserData; currency: (id: string) => string }) {
-  if (list.length === 0) return null;
+/** One endgame cycle as a row in the list: dates when known, reward per cycle, Open / Done / Skip for this cycle. */
+function CycleItem({ game, cycle: c, user, currency }: { game: GameContract; cycle: Cycle; user: GameUserData; currency: (id: string) => string }) {
+  const cur = c.current;
+  const p = cur ? progressOf(user, cur.key) : null;
   return (
-    <section className={e.section} aria-label="Endgame cycles">
-      <h3 className={e.sectionHead}>
-        <span className="t-label">Endgame cycles</span>
-        <span className={e.count}>{list.length}</span>
-      </h3>
-      <ul className={e.list}>
-        {list.map((c) => {
-          const cur = c.current;
-          const p = cur ? progressOf(user, cur.key) : null;
-          return (
-            <li key={c.row.id} className={cx(e.row, p && p.state !== 'open' && e.settled)} aria-label={c.row.label}>
-              <span className={e.mark} aria-hidden="true" />
-              <div className={e.main}>
-                <div className={e.titleLine}>
-                  <span className={e.title}>{c.row.label}</span>
-                  <span className={e.kind}>Endgame</span>
-                </div>
-                <div className={e.meta}>
-                  <span className={e.dates}>every {c.days} days</span>
-                  {cur ? (
-                    <>
-                      <span className={e.dates}>{formatRange(cur.start, cur.end)}</span>
-                      <Timer to={cur.end} deadline prefix="resets in" />
-                    </>
-                  ) : (
-                    <span className={e.glacier}>Dates not known yet</span>
-                  )}
-                  <span className={e.reward}>
-                    {c.row.amount === null ? (
-                      <span>
-                        Reward per cycle <NoData dash={false} />
-                      </span>
-                    ) : (
-                      <span>
-                        <strong className={e.amount}>{formatNumber(c.row.amount)}</strong> {currency(c.row.currency)} per cycle
-                      </span>
-                    )}
-                  </span>
-                </div>
-              </div>
-              {cur && p && <StateSwitch title={`${c.row.label} this cycle`} value={p.state} onChange={(state) => setEventProgress(game.id, cur.key, { state })} />}
-            </li>
-          );
-        })}
-      </ul>
-    </section>
+    <li className={cx(e.row, p && p.state !== 'open' && e.settled)} aria-label={c.row.label}>
+      <span className={e.mark} aria-hidden="true" />
+      <div className={e.main}>
+        <div className={e.titleLine}>
+          <span className={e.title}>{c.row.label}</span>
+          <span className={e.kind}>Endgame</span>
+        </div>
+        <div className={e.meta}>
+          <span className={e.dates}>every {c.days} days</span>
+          {cur ? (
+            <>
+              <span className={e.dates}>{formatRange(cur.start, cur.end)}</span>
+              <Timer to={cur.end} deadline prefix="resets in" />
+            </>
+          ) : (
+            <span className={e.glacier}>Dates not known yet</span>
+          )}
+          <span className={e.reward}>
+            {c.row.amount === null ? (
+              <span>
+                Reward per cycle <NoData dash={false} />
+              </span>
+            ) : (
+              <span>
+                <strong className={e.amount}>{formatNumber(c.row.amount)}</strong> {currency(c.row.currency)} per cycle
+                {asPulls(game, c.row.currency, c.row.amount) !== null ? ` · about ${formatNumber(asPulls(game, c.row.currency, c.row.amount) ?? 0)} pulls` : ''}
+              </span>
+            )}
+          </span>
+        </div>
+      </div>
+      {cur && p && <StateSwitch title={`${c.row.label} this cycle`} value={p.state} onChange={(state) => setEventProgress(game.id, cur.key, { state })} />}
+    </li>
   );
+}
+
+/** Pulls an amount is worth (premium ÷ per pull, or pull items as they are); null for other currencies. */
+function asPulls(game: GameContract, currency: string, amount: number): number | null {
+  const c = game.currencies.find((x) => x.id === currency);
+  if (c?.perPull && !c.paid) return Math.floor(amount / c.perPull + 1e-9);
+  if (c?.pullItemFor?.length) return Math.floor(amount);
+  return null;
 }

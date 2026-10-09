@@ -1,19 +1,35 @@
+/* Farm · follows docs/design/HLITH App.dc.html (isFarm). Colours only from tokens.css. */
 .stack {
   display: flex;
   flex-direction: column;
   gap: var(--s-4);
   min-width: 0;
 }
-.columns {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: var(--s-4);
-  align-items: start;
+.sub {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--ink-3);
 }
-@media (min-width: 1180px) {
-  .columns {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  }
+.label {
+  font: 600 11px var(--font-numbers);
+  letter-spacing: 0.12em;
+  color: var(--ink-4);
+}
+.linkButton {
+  align-self: flex-start;
+  border: 0;
+  background: none;
+  padding: 0;
+  min-height: 32px;
+  color: var(--glacier);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.linkButton:hover {
+  color: var(--ember);
 }
 .card {
   background: var(--bg-card);
@@ -22,14 +38,13 @@
   padding: var(--s-4);
   display: flex;
   flex-direction: column;
-  gap: var(--s-3);
+  gap: 10px;
   min-width: 0;
 }
 .cardHead {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
-  flex-wrap: wrap;
   gap: var(--s-2);
 }
 .cardTitle {
@@ -41,156 +56,197 @@
   font: 600 12px var(--font-numbers);
   color: var(--ink-3);
 }
-.sub {
+
+/* Farm for: pill chips (design: 38 high, card background; chosen = vent fill) */
+.chips {
+  list-style: none;
   margin: 0;
-  font-size: 13px;
-  color: var(--ink-4);
-  line-height: 1.45;
-}
-.label {
-  font: 600 10px var(--font-numbers);
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--ink-5);
-}
-.chosen {
+  padding: 0;
   display: flex;
   flex-wrap: wrap;
-  gap: var(--s-2);
-  margin: 0;
-  padding: 0;
-  list-style: none;
+  gap: 6px;
 }
 .chip {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--s-2);
-  min-height: 36px;
-  padding: 0 4px 0 12px;
-  border-radius: var(--r-pill);
-  background: color-mix(in srgb, var(--vent) 14%, var(--bg-raised));
-  border: 1px solid color-mix(in srgb, var(--vent) 40%, transparent);
-  font-size: 14px;
-  font-weight: 600;
-}
-.remove {
-  display: inline-grid;
-  place-items: center;
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  border: 0;
-  background: transparent;
-  color: var(--ink-3);
-  cursor: pointer;
-  font-size: 16px;
-  line-height: 1;
-}
-.remove:hover {
-  color: var(--ink-1);
-  background: var(--bg-inset);
-}
-.search {
-  min-height: var(--tap-min);
-  width: 100%;
-  padding: 0 var(--s-3);
-  border-radius: var(--r-button);
-  border: 1px solid var(--line-mid);
-  background: var(--bg-inset);
-  color: var(--ink-1);
-  font: inherit;
-  font-size: 14px;
-}
-.results {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(145px, 1fr));
-  gap: var(--s-2);
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-.pick {
   display: flex;
   align-items: center;
-  gap: var(--s-2);
-  width: 100%;
-  min-height: var(--tap-min);
-  padding: 6px 10px;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 12px 0 4px;
+  border-radius: var(--r-pill);
+  background: var(--bg-card);
+  border: 1px solid var(--line-default);
+  color: var(--ink-3);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.chip:hover {
+  border-color: var(--line-strong);
+}
+.chip[aria-pressed='true'] {
+  color: var(--on-vent);
+}
+.chipArt {
+  width: 27px;
+  height: 36px;
+  border-radius: 999px 8px 8px 999px;
+  flex: none;
+}
+.chipArt span {
+  font-size: 10px;
+}
+.chipMark {
+  font: 600 14px var(--font-numbers);
+  opacity: 0.8;
+}
+.searchLabel {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.search {
+  min-height: 44px;
+  padding: 0 12px;
   border-radius: var(--r-button);
   border: 1px solid var(--line-mid);
   background: var(--bg-raised);
   color: var(--ink-1);
+  font: inherit;
   font-size: 14px;
-  text-align: left;
-  cursor: pointer;
+  width: 100%;
 }
-.pick:hover {
-  border-color: var(--line-strong);
+.search::placeholder {
+  color: var(--ink-4);
 }
-.dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  flex: none;
-}
-.pickName {
-  flex: 1;
-  min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-.rarity {
-  font: 700 11px var(--font-numbers);
-}
-.plus {
-  font: 700 14px var(--font-numbers);
-  color: var(--glacier);
-}
-.tiles {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(145px, 1fr));
-  gap: var(--s-3);
-}
-.missing {
+
+/* Nothing chosen (design: dashed hero) */
+.nothing {
+  border: 1.5px dashed var(--line-strong);
+  border-radius: var(--r-hero);
+  padding: var(--s-6);
   display: flex;
   flex-direction: column;
   gap: var(--s-2);
-  padding: var(--s-4);
-  border: 1.5px dashed var(--line-strong);
-  border-radius: var(--r-hero);
-  background: var(--bg-shell);
 }
-.missing p {
-  margin: 0;
-  font-size: 14px;
-  color: var(--ink-2);
-  line-height: 1.45;
+.nothingTitle {
+  font-weight: 700;
+  font-size: 18px;
 }
-.tableWrap {
-  overflow-x: auto;
+
+/* Tiles */
+.tiles {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: var(--s-3);
 }
-.table {
-  width: 100%;
-  min-width: 520px;
-  border-collapse: collapse;
-  font-size: 14px;
+.tile {
+  background: var(--bg-card);
+  border: 1px solid var(--line-default);
+  border-radius: var(--r-card);
+  padding: 14px;
+  min-height: 108px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
-.table th {
-  text-align: left;
-  font: 600 10px var(--font-numbers);
-  letter-spacing: 0.12em;
-  color: var(--ink-5);
-  padding: 8px 10px;
-  border-bottom: 1px solid var(--line-default);
+.tileLabel {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  font-size: 13px;
+  color: var(--ink-3);
 }
-.table td {
-  padding: 10px;
+.tileValue {
+  font: 600 28px/1 var(--font-numbers);
+  color: var(--ink-1);
+}
+.tileDash {
+  font: 600 28px/1 var(--font-numbers);
+  color: var(--line-empty);
+}
+.tileSub {
+  margin-top: auto;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--ink-4);
+}
+.tileNoData {
+  margin-top: auto;
+  font-size: 12px;
+  color: var(--glacier);
+}
+
+/* Materials and gear */
+.columns {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr));
+  gap: var(--s-4);
+  align-items: start;
+}
+.matRow {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 6px 12px;
+  padding: 10px 0;
   border-bottom: 1px solid var(--line-subtle);
 }
-.num {
-  font-family: var(--font-numbers);
-  font-variant-numeric: tabular-nums;
+.rowTitle {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s-2);
+  font-size: 14px;
+  font-weight: 600;
+}
+.matValue {
+  font: 600 13px var(--font-numbers);
+  color: var(--ink-1);
   text-align: right;
-  white-space: nowrap;
+}
+.matValue[data-done='true'] {
+  color: var(--ok);
+}
+.track {
+  display: block;
+  height: 6px;
+  border-radius: 3px;
+  background: var(--bg-track);
+  overflow: hidden;
+  align-self: center;
+}
+.fill {
+  display: block;
+  height: 100%;
+}
+.matMeta {
+  font: 500 11px var(--font-numbers);
+  color: var(--ink-4);
+  text-align: right;
+}
+.gearRow {
+  display: flex;
+  gap: var(--s-3);
+  align-items: flex-start;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--line-subtle);
+}
+.gearArt {
+  width: 48px;
+  aspect-ratio: 3 / 4;
+  border-radius: 8px;
+  border: 1px solid var(--line-mid);
+  flex: none;
+}
+.gearArt span {
+  font-size: 14px;
+}
+.gearText {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
 }

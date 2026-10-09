@@ -2,13 +2,14 @@
  * Honkai: Star Rail. Numbers here are checked against the sources listed at the
  * bottom; anything not confirmed stays null and shows "No data yet".
  */
-import type { BacklogItem, Banner, Character, GameContract, GameEvent, Material, TeamPreset, Version } from '../../core/contract';
+import type { BacklogItem, Banner, Character, GameContract, GameEvent, Material, SampleArt, TeamPreset, Version } from '../../core/contract';
 import backlog from './data/backlog.json';
 import banners from './data/banners.json';
 import characters from './data/characters.json';
 import events from './data/events.json';
 import materials from './data/materials.json';
 import teams from './data/teams.json';
+import sampleArt from './data/sample-art.json';
 import versions from './data/versions.json';
 
 const list = <T>(rows: unknown) => async () => rows as T[];
@@ -135,6 +136,7 @@ export const hsr: GameContract = {
     backlog: list<BacklogItem>(backlog),
     materials: list<Material>(materials),
     teams: list<TeamPreset>(teams),
+    sampleArt: async () => sampleArt as SampleArt[],
     versions: list<Version>(versions),
     // No kits yet: Kit check shows "No data yet" until kit data is added (Override 1).
   },

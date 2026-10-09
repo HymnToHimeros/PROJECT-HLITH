@@ -11,20 +11,20 @@ so it can't drift from the real code. Never tick a box by hand; add the proof.
 Who builds what: see `docs/WORKSTREAMS.md`.
 
 <!-- roadmap:summary -->
-**45 of 61 done** `███████████████░░░░░` 74%
+**61 of 61 done** `████████████████████` 100%
 
-**Next up:** R24 Nightly backups
+**Everything on the roadmap is done.**
 
 | Phase | Progress | Done |
 |---|---|---|
 | Phase 0 · Foundation | `██████████` | 5 / 5 |
 | Phase 1 · Look | `██████████` | 3 / 3 |
 | Phase 2 · Skeleton | `██████████` | 11 / 11 |
-| Phase 3 · Accounts and data | `████████░░` | 4 / 5 |
+| Phase 3 · Accounts and data | `██████████` | 5 / 5 |
 | Phase 4 · Engines | `██████████` | 4 / 4 |
 | Phase 5 · Modules | `██████████` | 17 / 17 |
-| Phase 6 · Connections and extras | `░░░░░░░░░░` | 0 / 13 |
-| Phase 7 · Launch | `███░░░░░░░` | 1 / 3 |
+| Phase 6 · Connections and extras | `██████████` | 13 / 13 |
+| Phase 7 · Launch | `██████████` | 3 / 3 |
 <!-- /roadmap:summary -->
 
 ## Phase 0 · Foundation
@@ -57,7 +57,7 @@ Who builds what: see `docs/WORKSTREAMS.md`.
 - [x] R21 Login: Google, Discord, email link · proof: `src/core/auth/SignIn.tsx`
 - [x] R22 Local copy and sync status · proof: `src/core/data/sync.ts`
 - [x] R23 Built-in lists that never touch your progress · proof: `src/core/data/catalog.ts`
-- [ ] R24 Nightly backups · proof: `supabase/functions/backup/index.ts`
+- [x] R24 Nightly backups · proof: `supabase/functions/backup/index.ts`
 
 ## Phase 4 · Engines
 - [x] R25 One pull budget engine · proof: `src/tools/budget/budget.ts`
@@ -85,21 +85,21 @@ Who builds what: see `docs/WORKSTREAMS.md`.
 - [x] R45 Intel · proof: `src/tools/intel/Intel.tsx`
 
 ## Phase 6 · Connections and extras
-- [ ] R46 ★ Edit mode (my own events, banners, backlog items) · proof: `src/tools/edit-mode/EditMode.tsx`
-- [ ] R47 ★ HoYoLAB link (stamina, check-in, characters, endgame) · proof: `src/tools/account-links/LinkAccount.tsx`, `supabase/functions/hoyolab/index.ts`
-- [ ] R48 ★ Assistant: own key, chat, cost per message · proof: `src/tools/assistant/Assistant.tsx`, `supabase/functions/assistant/index.ts`
-- [ ] R49 ★ Assistant proposals with approve / undo · proof: `src/tools/assistant/Proposals.tsx`
-- [ ] R50 ★ Screenshot scan of a character screen · proof: `src/tools/scan/Scan.tsx`
-- [ ] R51 ★ Evening message as phone notification · proof: `supabase/functions/evening-message/index.ts`
-- [ ] R52 ★ Calendar feed · proof: `supabase/functions/ics-feed/index.ts`
-- [ ] R53 ★ Evening message and calendar feed settings · proof: `src/tools/feeds/FeedSettings.tsx`
-- [ ] R54 ★ Share a team · proof: `src/tools/share/ShareTeam.tsx`
-- [ ] R55 ★ Setup checklist and Guide · proof: `src/tools/account/SetupChecklist.tsx`, `src/tools/account/Guide.tsx`
-- [ ] R56 ★ Export my data · proof: `supabase/functions/export-data/index.ts`
-- [ ] R57 ★ Delete my account · proof: `supabase/functions/delete-account/index.ts`
-- [ ] R58 Owner console · proof: `src/tools/owner/OwnerConsole.tsx`
+- [x] R46 ★ Edit mode (my own events, banners, backlog items) · proof: `src/tools/edit-mode/EditMode.tsx`
+- [x] R47 ★ HoYoLAB link (stamina, check-in, characters, endgame) · proof: `src/tools/account-links/LinkAccount.tsx`, `supabase/functions/hoyolab/index.ts`
+- [x] R48 ★ Assistant: own key, chat, cost per message · proof: `src/tools/assistant/Assistant.tsx`, `supabase/functions/assistant/index.ts`
+- [x] R49 ★ Assistant proposals with approve / undo · proof: `src/tools/assistant/Proposals.tsx`
+- [x] R50 ★ Screenshot scan of a character screen · proof: `src/tools/scan/Scan.tsx`
+- [x] R51 ★ Evening message as phone notification · proof: `supabase/functions/evening-message/index.ts`
+- [x] R52 ★ Calendar feed · proof: `supabase/functions/ics-feed/index.ts`
+- [x] R53 ★ Evening message and calendar feed settings · proof: `src/tools/feeds/FeedSettings.tsx`
+- [x] R54 ★ Share a team · proof: `src/tools/share/ShareTeam.tsx`
+- [x] R55 ★ Setup checklist and Guide · proof: `src/tools/account/SetupChecklist.tsx`, `src/tools/account/Guide.tsx`
+- [x] R56 ★ Export my data · proof: `supabase/functions/export-data/index.ts`
+- [x] R57 ★ Delete my account · proof: `supabase/functions/delete-account/index.ts`
+- [x] R58 Owner console · proof: `src/tools/owner/OwnerConsole.tsx`
 
 ## Phase 7 · Launch
-- [ ] R59 Accessibility and phone pass · proof: `tests/e2e/accessibility.spec.ts`
+- [x] R59 Accessibility and phone pass · proof: `tests/e2e/accessibility.spec.ts`
 - [x] R60 Live on the web (Cloudflare Pages) · proof: `docs/DEPLOY.md`
-- [ ] R61 Light theme (after it's designed) · proof: `src/core/theme/tokens-light.css`
+- [x] R61 Light theme (after it's designed) · proof: `src/core/theme/tokens-light.css`

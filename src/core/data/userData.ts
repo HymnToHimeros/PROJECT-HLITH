@@ -5,8 +5,9 @@
  * Append-only: entries and pulls are never edited or removed, only added.
  */
 import { useSyncExternalStore } from 'react';
-import type { GameId, PullRecord } from '../contract';
+import type { BacklogItem, Banner, GameEvent, GameId, PullRecord } from '../contract';
 import { known, unknown, type Known } from '../contract/known';
+import { mergeAdd } from './merge';
 
 export interface LedgerEntry {
   id: string;
@@ -16,6 +17,11 @@ export interface LedgerEntry {
   /** 'have': the balance you saw. Others: the amount that changed (always positive). */
   amount: number;
   note?: string;
+  /**
+   * This entry cancels an earlier one (by id): both are then left out of the
+   * balance. How an undo works without ever removing an entry.
+   */
+  reverses?: string;
 }
 
 export interface GameUserData {
@@ -38,6 +44,65 @@ export interface GameUserData {
   teams: UserTeam[];
   /** Task id → when you ticked it (Today). A tick counts until the next reset. */
   ticks: Record<string, string>;
+  /** Edit mode: your own events, banners and backlog items, and your changes and hides on built-in ones. */
+  ownItems: OwnItems;
+  /** Your own plans (Calendar), including Assistant proposals you approved. Undone plans stay, marked undone. */
+  plans: UserPlan[];
+  /** Every change the Assistant made with your approval, with the value before, for Undo. Never removed. */
+  assistantActions: AssistantAction[];
+}
+
+/** The lists Edit mode can add to, change and hide in. */
+export interface OwnItemTypes {
+  events: GameEvent;
+  banners: Banner;
+  backlog: BacklogItem;
+}
+export type OwnKind = keyof OwnItemTypes;
+export const OWN_KINDS: OwnKind[] = ['events', 'banners', 'backlog'];
+
+/**
+ * One Edit mode entry. `mine: true` is an item you added (all its fields are
+ * yours); `mine: false` is your change to a built-in item with the same id
+ * (only the fields you changed). `hidden` hides it from the list; nothing is
+ * ever deleted, so it can always be shown again.
+ */
+export interface OwnItemEdit<T> {
+  id: string;
+  mine: boolean;
+  fields: Partial<T>;
+  hidden: boolean;
+  /** When you last changed it (ISO). */
+  at: string;
+}
+export type OwnItems = { [K in OwnKind]: Record<string, OwnItemEdit<OwnItemTypes[K]>> };
+
+export interface UserPlan {
+  id: string;
+  title: string;
+  /** ISO date-time the plan is for. */
+  start: string;
+  end?: string;
+  note?: string;
+  /** A route: stops in order, each with its own small steps. */
+  steps?: { title: string; minutes?: number; items?: string[] }[];
+  source: 'user' | 'assistant';
+  status: 'active' | 'undone';
+  at: string;
+}
+
+export interface AssistantAction {
+  /** The Assistant's proposal id (one action per proposal). */
+  id: string;
+  at: string;
+  tool: string;
+  /** One line in plain words: what changed. */
+  summary: string;
+  input: unknown;
+  /** What was there before, so Undo can put it back (or the ledger entry to cancel). */
+  before: unknown;
+  status: 'applied' | 'undone';
+  undoneAt?: string;
 }
 
 export interface EventProgress {
@@ -73,6 +138,9 @@ export const EMPTY_GAME: GameUserData = {
   farm: [],
   teams: [],
   ticks: {},
+  ownItems: { events: {}, banners: {}, backlog: {} },
+  plans: [],
+  assistantActions: [],
 };
 
 let unreadable = false;
@@ -111,7 +179,7 @@ export function gameData(id: GameId): GameUserData {
   const raw = store.games[id];
   const hit = cache.get(id);
   if (hit && hit.raw === raw) return hit.full;
-  const full = raw ? { ...EMPTY_GAME, ...raw } : EMPTY_GAME;
+  const full = raw ? { ...EMPTY_GAME, ...raw, ownItems: { ...EMPTY_GAME.ownItems, ...raw.ownItems } } : EMPTY_GAME;
   cache.set(id, { raw, full });
   return full;
 }
@@ -121,9 +189,18 @@ function update(id: GameId, change: (g: GameUserData) => GameUserData): void {
   save();
 }
 
-export function addLedgerEntry(game: GameId, entry: Omit<LedgerEntry, 'id'>): void {
+/** Add a bank log entry. Returns its id. */
+export function addLedgerEntry(game: GameId, entry: Omit<LedgerEntry, 'id'>): string {
   const id = `${Date.parse(entry.at)}-${Math.random().toString(36).slice(2, 8)}`;
   update(game, (g) => ({ ...g, ledger: [...g.ledger, { ...entry, id }] }));
+  return id;
+}
+
+/** Cancel a bank log entry by adding a correcting one (the original stays). Returns the new id, or null if there is nothing to cancel. */
+export function reverseLedgerEntry(game: GameId, entryId: string, at: string, note = 'Undo'): string | null {
+  const original = gameData(game).ledger.find((e) => e.id === entryId);
+  if (!original || gameData(game).ledger.some((e) => e.reverses === entryId)) return null;
+  return addLedgerEntry(game, { at, currency: original.currency, kind: original.kind, amount: original.amount, note, reverses: entryId });
 }
 
 /** Add pulls; ones already stored (same game pull id) are ignored. Returns how many were new. */
@@ -181,6 +258,39 @@ export function setTick(game: GameId, taskId: string, at: string | null): void {
   });
 }
 
+/** Edit mode: add or change one entry. Entries are never removed; hide them instead. */
+export function saveOwnItem<K extends OwnKind>(game: GameId, kind: K, edit: OwnItemEdit<OwnItemTypes[K]>): void {
+  update(game, (g) => ({ ...g, ownItems: { ...g.ownItems, [kind]: { ...g.ownItems[kind], [edit.id]: edit } } }));
+}
+
+/** Edit mode: hide or show an item (built-in or yours). Hiding a built-in item stores a hide flag only. */
+export function setOwnItemHidden(game: GameId, kind: OwnKind, id: string, hidden: boolean, at: string): void {
+  update(game, (g) => {
+    const cur = g.ownItems[kind][id];
+    const next = cur ? { ...cur, hidden, at } : { id, mine: false, fields: {}, hidden, at };
+    return { ...g, ownItems: { ...g.ownItems, [kind]: { ...g.ownItems[kind], [id]: next } } };
+  });
+}
+
+/** Add one of your plans. */
+export function addPlan(game: GameId, plan: UserPlan): void {
+  update(game, (g) => ({ ...g, plans: [...g.plans.filter((p) => p.id !== plan.id), plan] }));
+}
+
+/** Mark a plan active or undone (plans are never removed). */
+export function setPlanStatus(game: GameId, planId: string, status: UserPlan['status']): void {
+  update(game, (g) => ({ ...g, plans: g.plans.map((p) => (p.id === planId ? { ...p, status } : p)) }));
+}
+
+/** Record a change the Assistant made with your approval. */
+export function recordAssistantAction(game: GameId, action: AssistantAction): void {
+  update(game, (g) => ({ ...g, assistantActions: [...g.assistantActions.filter((a) => a.id !== action.id), action] }));
+}
+
+export function markAssistantActionUndone(game: GameId, actionId: string, at: string): void {
+  update(game, (g) => ({ ...g, assistantActions: g.assistantActions.map((a) => (a.id === actionId ? { ...a, status: 'undone' as const, undoneAt: at } : a)) }));
+}
+
 export function useGameData(id: GameId): GameUserData {
   return useSyncExternalStore(
     (l) => {
@@ -197,7 +307,9 @@ export function useGameData(id: GameId): GameUserData {
  * logged after it. A currency with no "have" entry is unknown.
  */
 export function balances(ledger: LedgerEntry[]): Known<Record<string, number>> {
-  const sorted = [...ledger].sort((a, b) => a.at.localeCompare(b.at));
+  // Undo pairs (an entry and the one that reverses it) count for nothing.
+  const reversed = new Set(ledger.flatMap((e) => (e.reverses ? [e.reverses] : [])));
+  const sorted = ledger.filter((e) => !e.reverses && !reversed.has(e.id)).sort((a, b) => a.at.localeCompare(b.at));
   const out: Record<string, number> = {};
   let latest = '';
   for (const e of sorted) {
@@ -209,6 +321,30 @@ export function balances(ledger: LedgerEntry[]): Known<Record<string, number>> {
     latest = e.at;
   }
   return Object.keys(out).length ? known(out, 'user', latest) : unknown('enter-manually');
+}
+
+/** Everything stored, exactly as saved (Account → Backup → Export my data). */
+export function allUserData(): { version: 1; games: Record<GameId, GameUserData> } {
+  return store;
+}
+
+/**
+ * Restore from a backup: adds what's missing, never removes or overwrites
+ * (see merge.ts). Returns how many items were added.
+ */
+export function mergeIntoUserData(games: Record<GameId, unknown>): number {
+  const count = { added: 0 };
+  let next = store.games;
+  for (const [id, incoming] of Object.entries(games)) {
+    if (typeof incoming !== 'object' || incoming === null || Array.isArray(incoming)) continue;
+    const merged = mergeAdd(store.games[id] ?? ({} as GameUserData), incoming, count);
+    if (merged !== store.games[id]) next = { ...next, [id]: merged };
+  }
+  if (next !== store.games) {
+    store = { ...store, games: next };
+    save();
+  }
+  return count.added;
 }
 
 /** Test helper. */

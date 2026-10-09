@@ -1,8 +1,10 @@
+/* Calendar, drawn to docs/design/HLITH App.dc.html (Calendar). */
 .stack {
   display: flex;
   flex-direction: column;
   gap: var(--s-4);
   min-width: 0;
+  max-width: var(--content-max);
 }
 .card {
   background: var(--bg-card);
@@ -11,18 +13,11 @@
   padding: var(--s-4);
   display: flex;
   flex-direction: column;
-  gap: var(--s-3);
+  gap: 2px;
   min-width: 0;
 }
-.cardHead {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: var(--s-2);
-}
 .cardTitle {
-  margin: 0;
+  margin: 0 0 var(--s-2);
   font-size: 17px;
   font-weight: 700;
 }
@@ -31,51 +26,109 @@
   font-size: 13px;
   color: var(--ink-4);
 }
+
+/* ── Legend ── */
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s-2) 18px;
+  font-size: 13px;
+  color: var(--ink-3);
+}
+.legendItem {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+}
+.keyConfirmed,
+.keyLeak,
+.keyPlan {
+  width: 28px;
+  height: 14px;
+  border-radius: 4px;
+}
+.keyConfirmed {
+  background: var(--bg-track);
+  border-left: 3px solid var(--vent);
+}
+.keyLeak {
+  border: 1px dashed var(--vent);
+  background: repeating-linear-gradient(135deg, var(--line-mid) 0 4px, transparent 4px 8px);
+}
+.keyPlan {
+  border: 1.5px dashed var(--glacier);
+}
+.keyToday {
+  width: 2px;
+  height: 16px;
+  background: var(--ink-1);
+}
+.zone {
+  margin-left: auto;
+  font: 500 11px var(--font-numbers);
+  color: var(--ink-4);
+}
+
+/* ── Timeline ── */
+.timelineCard {
+  background: var(--bg-card);
+  border: 1px solid var(--line-default);
+  border-radius: var(--r-card);
+  min-width: 0;
+}
 /* The timeline scrolls sideways on narrow screens; the page itself never does. */
 .scroller {
   overflow-x: auto;
   overscroll-behavior-x: contain;
-  margin: 0 calc(-1 * var(--s-4));
-  padding: 0 var(--s-4) var(--s-2);
 }
 .timeline {
   position: relative;
-  min-width: 880px;
+  padding: 8px var(--s-4) 14px;
 }
 .scale {
   position: relative;
-  height: 28px;
-  border-bottom: 1px solid var(--line-default);
+  height: 30px;
+  border-bottom: 1px solid var(--bg-track);
 }
 .scaleMark {
   position: absolute;
-  bottom: 6px;
-  font: 600 10px var(--font-numbers);
-  letter-spacing: 0.06em;
+  top: 9px;
+  padding-left: 5px;
+  font: 500 11px/1 var(--font-numbers);
   color: var(--ink-4);
   white-space: nowrap;
-  padding-left: 4px;
-  border-left: 1px solid var(--line-strong);
-  line-height: 1;
 }
 .lanes {
   position: relative;
-  background-image: linear-gradient(to right, var(--line-subtle) 1px, transparent 1px);
-  background-size: calc(100% / 42) 100%;
+  padding-bottom: 4px;
+}
+.gridLine {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: var(--line-subtle);
+}
+.today {
+  position: absolute;
+  top: -30px;
+  bottom: 0;
+  width: 2px;
+  background: var(--ink-1);
+  z-index: 2;
+  pointer-events: none;
 }
 .laneHead {
+  position: relative;
   display: flex;
   align-items: center;
   gap: var(--s-2);
-  padding: 10px 0 4px;
-  font: 600 10px var(--font-numbers);
+  padding: 14px 0 6px;
+  font: 600 10px/1 var(--font-numbers);
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--ink-5);
-  position: sticky;
-  left: 0;
-  width: max-content;
-  max-width: 100%;
 }
 .row {
   position: relative;
@@ -83,17 +136,27 @@
   height: 38px;
 }
 .emptyRow {
+  position: relative;
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: var(--s-2);
   min-height: 38px;
   font-size: 13px;
   color: var(--ink-4);
-  position: sticky;
-  left: 0;
-  width: max-content;
-  max-width: calc(100vw - 64px);
-  flex-wrap: wrap;
+}
+.linkBtn {
+  border: 0;
+  background: none;
+  padding: 0;
+  min-height: 32px;
+  color: var(--glacier);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+.linkBtn:hover {
+  color: var(--ember);
 }
 .resetMark {
   position: absolute;
@@ -109,28 +172,8 @@
   color: var(--ink-3);
   white-space: nowrap;
 }
-.today {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 0;
-  border-left: 2px solid var(--ember-soft);
-  pointer-events: none;
-  z-index: 0;
-}
-.todayLabel {
-  position: absolute;
-  z-index: 3;
-  top: -22px;
-  left: -2px;
-  padding: 1px 6px;
-  border-radius: var(--r-tag);
-  background: var(--ember-soft);
-  color: var(--on-vent);
-  font: 700 10px var(--font-numbers);
-  letter-spacing: 0.08em;
-  white-space: nowrap;
-}
+
+/* ── Dates ── */
 .list {
   display: flex;
   flex-direction: column;
@@ -139,41 +182,61 @@
   list-style: none;
 }
 .item {
-  display: grid;
-  grid-template-columns: minmax(150px, max-content) minmax(0, 1fr);
-  gap: var(--s-3);
+  display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  padding: 10px 0;
+  gap: 6px 10px;
+  min-height: 50px;
+  padding: 4px 0;
   border-bottom: 1px solid var(--line-subtle);
-  font-size: 14px;
 }
 .item:last-child {
   border-bottom: 0;
 }
-.when {
-  font: 600 12px var(--font-numbers);
-  color: var(--ink-3);
-  font-variant-numeric: tabular-nums;
-  white-space: nowrap;
+.mark {
+  width: 4px;
+  height: 24px;
+  border-radius: 2px;
+  flex: none;
 }
 .what {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: var(--s-2);
+  flex: 1 1 160px;
   min-width: 0;
-}
-.legend {
   display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: var(--s-2) var(--s-4);
-  font-size: 12px;
+  flex-direction: column;
+  gap: 3px;
+}
+.itemTitle {
+  font-size: 14px;
+  font-weight: 600;
+}
+.range {
+  font: 500 12px var(--font-numbers);
+  color: var(--ink-3);
+}
+.when {
+  min-width: 110px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+  margin-left: auto;
+}
+.when > time:first-child {
+  font-weight: 500;
+}
+.whenAt {
+  font: 500 11px var(--font-numbers);
   color: var(--ink-4);
 }
-@media (max-width: 560px) {
-  .item {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 2px;
+
+@media (min-width: 820px) {
+  .timeline {
+    min-width: 0;
+  }
+}
+@media (max-width: 819px) {
+  .timeline {
+    min-width: 860px;
   }
 }
