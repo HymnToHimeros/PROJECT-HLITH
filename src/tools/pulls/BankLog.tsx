@@ -66,7 +66,7 @@ export function BankLog({ game, data }: { game: GameContract; data: PullsData })
           </label>
           <label className={p.field}>
             Amount
-            <input className={p.input} inputMode="numeric" value={amount} onChange={(e) => setAmount(e.target.value)} placeholder="e.g. 8400" required />
+            <input id={`bank-amount-${game.id}`} className={p.input} inputMode="numeric" value={amount} onChange={(e) => setAmount(e.target.value)} placeholder="e.g. 8400" required />
           </label>
           <label className={p.field}>
             Currency

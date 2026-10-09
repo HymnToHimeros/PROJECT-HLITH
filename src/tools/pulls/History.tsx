@@ -104,7 +104,7 @@ export function History({ game, data, signedIn }: { game: GameContract; data: Pu
                   .map((i) => i.label)
                   .join(' or ')}
                 )
-                <input className={p.input} type="file" accept=".json,application/json" onChange={(e) => void onFile(e)} />
+                <input id={`history-file-${game.id}`} className={p.input} type="file" accept=".json,application/json" onChange={(e) => void onFile(e)} />
               </label>
             )}
             {linkImport &&

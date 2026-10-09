@@ -16,8 +16,14 @@ creates starts with that name, so you can always tell who made what.
 ## Who's who
 | Name | Branches | Builds | Roadmap items |
 |---|---|---|---|
-| **FRAME** | `frame/…` | The skeleton and shelves: look, shell, contract, registries, data, engines, the module screens as frames | R01–R34, R39–R61 |
-| *(next chat, e.g. ROSTER-LOGIC)* | `roster-logic/…` | Roster logic core: kit check, teams, roster scoring | R35–R38, plus any new items it adds |
+| **FRAME** | `frame/…` | The base and the interface: look, shell, contract, registries, saved data, every module screen as a frame (layout, components, example data, "No data yet" slots). Not the deeper logic behind them. | R01–R61 (the screens) |
+| *(next chat, e.g. ROSTER-LOGIC)* | `roster-logic/…` | Roster logic: full character data and builds, kit check data and parsing, team scoring, who-fits. Fills the slots FRAME's Roster screens leave. | logic behind R35–R38, plus any new items it adds |
+
+## Interface vs logic (owner's rule, 2026-10-09)
+FRAME builds the interface and the base, not the logic. A screen FRAME builds
+shows where logic will plug in (a "No data yet" or EXAMPLE slot, with a comment
+naming the workstream that fills it). Logic workstreams fill those slots without
+redesigning the screen.
 
 ## Shared files
 - `src/core/contract/` and `src/core/registry/`: owned by FRAME. The `Kit` and

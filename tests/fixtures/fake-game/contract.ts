@@ -36,7 +36,6 @@ export const fakeGame: GameContract = {
   servers: [{ id: 'jp', label: 'Japan', utcOffset: 9 }],
   reset: { hour: 5, weekday: 0 },
   modules: ['today', 'events', 'calendar', 'backlog', 'pulls', 'banners', 'roster'],
-  defaultOrder: ['today', 'roster', 'pulls', 'events', 'banners', 'calendar', 'backlog'],
   bannerTypes: [
     { id: 'pickup', label: 'Pick-up', pullItem: 'ticket', target: 'character', pity: { kind: 'spark', sparkAt: 200, baseRate: 0.03 } },
   ],

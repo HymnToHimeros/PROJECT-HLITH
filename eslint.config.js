@@ -11,7 +11,7 @@ const noGames = {
 };
 
 export default tseslint.config(
-  { ignores: ['dist', 'node_modules', 'docs', 'test-results', 'playwright-report'] },
+  { ignores: ['dist', 'node_modules', 'docs', 'test-results', 'playwright-report', '.claude'] },
   js.configs.recommended,
   ...tseslint.configs.strict,
   {

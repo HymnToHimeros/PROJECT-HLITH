@@ -7,3 +7,6 @@ playwright-report/
 !.env.production
 !.env.example
 *.local
+
+# Temporary copies used by parallel builders
+.claude/worktrees/

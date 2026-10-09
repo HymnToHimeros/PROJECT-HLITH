@@ -51,15 +51,15 @@ describe('a new, unlike game needs no core change (PLAN §2b)', () => {
 
   it('shows only its own modules, with the rest marked not available', () => {
     const all = [...games, fakeGame];
-    const layout = defaultLayout(all, 'fake-quest');
-    expect(slot(all, 'fake-quest', layout)).toEqual(fakeGame.defaultOrder);
+    const layout = defaultLayout();
+    expect(slot(all, 'fake-quest', layout)).toEqual(['today', 'pulls', 'roster', 'calendar', 'events', 'banners', 'backlog']);
     expect(notAvailable(all, 'fake-quest')).toEqual(['farm', 'intel']);
-    expect(phoneBar(slot(all, 'fake-quest', layout)).bar).toEqual(['today', 'roster', 'pulls', 'events']);
+    expect(phoneBar(slot(all, 'fake-quest', layout)).bar).toEqual(['today', 'pulls', 'roster', 'calendar']);
   });
 
   it('All games still offers every module, and never says "not available"', () => {
     const all = [...games, fakeGame];
-    expect(slot(all, 'all', defaultLayout(all, 'all'))).toEqual([...MODULE_IDS]);
+    expect(slot(all, 'all', defaultLayout())).toEqual([...MODULE_IDS]);
     expect(notAvailable(all, 'all')).toEqual([]);
     expect(hiddenIn(all, 'all', { order: [], hidden: ['farm'] })).toEqual(['farm']);
   });
