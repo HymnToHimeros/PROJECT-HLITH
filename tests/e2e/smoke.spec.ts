@@ -70,3 +70,17 @@ test('the component preview renders every section', async ({ page }) => {
   await expect(page.getByRole('dialog')).toHaveCount(0);
   await noSidewaysScroll(page);
 });
+
+test('every module opens a real screen in every game, with no errors', async ({ page }) => {
+  const errors: string[] = [];
+  page.on('pageerror', (e) => errors.push(e.message));
+  for (const scope of ['all', 'hsr', 'zzz']) {
+    for (const module of ['today', 'pulls', 'roster', 'calendar', 'events', 'banners', 'backlog', 'farm', 'intel']) {
+      await page.goto(`/${scope}/${module}`);
+      await expect(page.getByText('BEING BUILT')).toHaveCount(0);
+      await expect(page.getByText('Loading…')).toHaveCount(0);
+      await noSidewaysScroll(page);
+    }
+  }
+  expect(errors).toEqual([]);
+});
