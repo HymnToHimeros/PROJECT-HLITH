@@ -11,7 +11,7 @@ const noSidewaysScroll = async (page: Page) => {
   expect(await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth)).toBeLessThanOrEqual(0);
 };
 
-test('All games roster: one Import from HoYoLAB and one Scan a screenshot, each with a game picker', async ({ page }) => {
+test('Roster in All games: one Import from HoYoLAB and one Scan a screenshot, for the game shown', async ({ page }) => {
   await page.goto('/all/roster');
   await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
   await expect(page.getByRole('button', { name: 'Import from HoYoLAB' })).toHaveCount(1);
@@ -19,7 +19,6 @@ test('All games roster: one Import from HoYoLAB and one Scan a screenshot, each 
 
   await page.getByRole('button', { name: 'Import from HoYoLAB' }).click();
   const sheet = page.getByRole('dialog', { name: 'Import from HoYoLAB' });
-  await expect(sheet.getByRole('tablist', { name: 'Which game to import' })).toContainText('Every connected game');
   await expect(sheet.getByRole('region', { name: 'Example preview' })).toBeVisible();
   const problems = await axeProblems(page, 'import sheet');
   await noSidewaysScroll(page);
@@ -27,7 +26,7 @@ test('All games roster: one Import from HoYoLAB and one Scan a screenshot, each 
 
   await page.getByRole('button', { name: 'Scan a screenshot' }).click();
   const scan = page.getByRole('dialog', { name: 'Scan a screenshot' });
-  await expect(scan.getByRole('tablist', { name: 'Which game is the screenshot from' })).toBeVisible();
+  await expect(scan).toBeVisible();
   problems.push(...(await axeProblems(page, 'scan sheet')));
   expect(problems, problems.join('\n')).toEqual([]);
 });
