@@ -4,6 +4,7 @@ import { known, unknown } from '../../core/contract/known';
 import { setBacklogCategory, setBacklogDone } from '../../core/data/userData';
 import { formatNumber } from '../../core/time/format';
 import { Button, ExampleTag, NoData, ProgressBar } from '../../core/ui';
+import { Switch } from '../pulls/shared';
 import { cx } from '../../core/ui/cx';
 import { categories, estimate, pullsOf, type BacklogEstimate, type CategoryView, type ItemView } from './backlog';
 import b from './backlog.module.css';
@@ -16,9 +17,10 @@ interface Props {
 }
 
 /**
- * Backlog (R30): permanent content that still gives currency, by category.
- * Each item shows done / total and the reward left; tap it to change your done
- * count. Each category has a switch for whether its rewards count toward pulls.
+ * Backlog (R30, design: one card of category rows with a bar, done / total,
+ * pulls left and a switch; then "Backlog could add"). Open a category to see
+ * its items and set how much you have done. Each switch says whether that
+ * category's rewards count toward pulls (the same switch is in the Calculator).
  */
 export function Backlog({ game, data, openCalculator }: Props) {
   const cats = categories(game, data.items.list, data.user, data.items.exampleDone);
@@ -26,9 +28,11 @@ export function Backlog({ game, data, openCalculator }: Props) {
   const name = (id: string) => game.currencies.find((c) => c.id === id)?.name ?? id;
   return (
     <div className={b.stack} style={{ '--vent': game.vent } as CSSProperties}>
-      {cats.map((c, i) => (
-        <Category key={c.id} game={game} cat={c} example={data.items.example} name={name} firstId={i === 0 ? `backlog-first-${game.id}` : undefined} />
-      ))}
+      <div className={b.cats}>
+        {cats.map((c, i) => (
+          <Category key={c.id} game={game} cat={c} example={data.items.example} name={name} firstId={i === 0 ? `backlog-first-${game.id}` : undefined} />
+        ))}
+      </div>
       <Summary est={est} example={data.items.example} name={name} unknownCount={cats.filter((c) => c.enabled).reduce((a, c) => a + c.unknown.length, 0)} openCalculator={openCalculator} />
     </div>
   );
@@ -44,40 +48,52 @@ const amounts = (left: Record<string, number>, name: (id: string) => string) =>
   ));
 
 function Category({ game, cat, example, name, firstId }: { game: GameContract; cat: CategoryView; example: boolean; name: (id: string) => string; firstId: string | undefined }) {
-  const finished = cat.items.filter((v) => v.done !== null && v.done >= v.item.total).length;
+  // The first category starts open, so its items (and "Edit") are right there.
+  const [open, setOpen] = useState(firstId !== undefined);
+  const known = cat.items.filter((v) => v.done !== null);
+  const finished = known.filter((v) => v.done !== null && v.done >= v.item.total).length;
+  const ratio = known.length ? known.reduce((a, v) => a + Math.min(1, (v.done ?? 0) / Math.max(1, v.item.total)), 0) / cat.items.length : null;
+  const single = cat.items.length === 1 ? cat.items[0] : undefined;
   const hasLeft = Object.keys(cat.rewardLeft).length > 0;
   const pulls = pullsOf(game, cat.rewardLeft);
+  const value = known.length === 0 ? null : single && single.done !== null ? `${formatNumber(single.done)}/${formatNumber(single.item.total)}` : `${finished} of ${cat.items.length} finished`;
+  const listId = `backlog-${game.id}-${cat.id}`;
   return (
-    <section className={cx(b.card, !cat.enabled && b.off)} aria-label={cat.label}>
-      <header className={b.catHead}>
-        <div className={b.catTitleBox}>
-          <h3 className={b.catTitle}>{cat.label}</h3>
-          <span className={b.muted}>
-            {finished} of {cat.items.length} finished
-          </span>
+    <section className={cx(b.cat, !cat.enabled && b.off)} aria-label={cat.label}>
+      <div className={b.catRow}>
+        <div className={b.catMain}>
+          <h3 className={b.catTitle}>
+            <button type="button" className={b.catToggle} aria-expanded={open} aria-controls={listId} onClick={() => setOpen((x) => !x)}>
+              {cat.label}
+            </button>
+            {example && <ExampleTag />}
+          </h3>
+          <div className={b.barLine}>
+            <div className={b.bar} role="progressbar" aria-label={`${cat.label} done`} {...(ratio !== null ? { 'aria-valuenow': Math.round(ratio * 100), 'aria-valuemin': 0, 'aria-valuemax': 100 } : {})}>
+              {ratio !== null && <div className={b.barFill} style={{ width: `${ratio * 100}%` }} />}
+            </div>
+            <span className={b.barValue}>{value ?? <NoData dash={false} />}</span>
+          </div>
         </div>
         <div className={b.catReward}>
           {hasLeft ? (
             <>
-              <span className={b.amount}>
-                {amounts(cat.rewardLeft, name)} left {example && <ExampleTag />}
-              </span>
-              <span className={b.muted}>{cat.enabled ? `about ${formatNumber(pulls)} pulls` : `not counted · about ${formatNumber(pulls)} pulls`}</span>
+              <span className={cx(b.pullsLeft, !cat.enabled && b.dimmed)}>+{formatNumber(pulls)} pulls left</span>
+              <span className={b.amount}>{amounts(cat.rewardLeft, name)}</span>
             </>
           ) : (
-            <NoData dash={false} />
+            <button type="button" className={b.fix} onClick={() => setOpen(true)}>
+              Enter progress
+            </button>
           )}
         </div>
-        <label className={b.switch}>
-          <input type="checkbox" role="switch" checked={cat.enabled} onChange={(e) => setBacklogCategory(game.id, cat.id, e.target.checked)} aria-label={`Count ${cat.label} toward pulls`} />
-          <span className={b.track} aria-hidden="true">
-            <span className={b.knob} />
-          </span>
-          <span className={b.switchText}>{cat.enabled ? 'Counts toward pulls' : 'Not counted'}</span>
-        </label>
-      </header>
-      {cat.covers.length > 0 && <p className={b.muted}>While this is on, it also covers {cat.covers.map((r) => `“${r.label}”`).join(', ')} in Pulls, so nothing is counted twice.</p>}
-      <ul className={b.items}>
+        <span className={b.switchBox}>
+          <Switch checked={cat.enabled} onChange={(on) => setBacklogCategory(game.id, cat.id, on)} label={`Count ${cat.label} toward pulls`} />
+        </span>
+      </div>
+      {!cat.enabled && <p className={b.muted}>Not counted toward pulls.</p>}
+      {cat.covers.length > 0 && cat.enabled && <p className={b.muted}>While this is on, it also covers {cat.covers.map((r) => `“${r.label}”`).join(', ')} in Pulls, so nothing is counted twice.</p>}
+      <ul id={listId} className={b.items} hidden={!open}>
         {cat.items.map((v, i) => (
           <Item key={v.item.id} game={game} view={v} example={example} name={name} id={i === 0 ? firstId : undefined} />
         ))}
@@ -205,7 +221,7 @@ function Summary({
       <div className={b.sumFigure}>
         {counted || !est.anyEnabled ? (
           <>
-            <span className={b.sumValue}>{formatNumber(counted ? est.pulls : 0)}</span>
+            <span className={b.sumValue}>+{formatNumber(counted ? est.pulls : 0)}</span>
             <span className={b.muted}>pulls</span>
             {example && counted && <ExampleTag />}
           </>

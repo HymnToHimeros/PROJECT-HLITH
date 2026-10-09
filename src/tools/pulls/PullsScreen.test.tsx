@@ -1,7 +1,7 @@
-import { act, fireEvent, render, screen } from '@testing-library/react';
+import { act, fireEvent, render, screen, within } from '@testing-library/react';
 import { beforeEach, describe, expect, it } from 'vitest';
 import type { Character, GameContract } from '../../core/contract';
-import { gameData, resetUserData, setEventProgress } from '../../core/data/userData';
+import { addLedgerEntry, gameData, resetUserData, setEventProgress } from '../../core/data/userData';
 import PullsScreen from './PullsScreen';
 
 const chars: Character[] = [
@@ -95,7 +95,7 @@ describe('Pulls screen', () => {
     await show('planner');
     expect(screen.getByText('Newest Star')).toBeInTheDocument();
     expect(screen.getAllByText('EXAMPLE').length).toBeGreaterThan(1);
-    expect(screen.getByText(/Chance by end · official rates/)).toBeInTheDocument();
+    expect(screen.getAllByText(/Chance by then · official rates/).length).toBeGreaterThan(0);
   });
 
   it('History shows the example pity and a Luck report card', async () => {
@@ -122,12 +122,50 @@ describe('Pulls screen', () => {
     const end = new Date(Date.now() + 5 * 86_400_000).toISOString();
     const withEvent = { ...game, data: { ...game.data, events: async () => [{ id: 'ev1', title: 'Real event', kind: 'event', start, end, reward: 800, currency: 'gem' }] } } as GameContract;
     const view = render(<PullsScreen games={[withEvent]} scope="aa" tab="calculator" servers={{ aa: 'eu' }} openTab={() => {}} open={() => {}} openAccount={() => {}} />);
-    const row = await screen.findByText('Real event');
-    expect(row.closest('tr')?.textContent).toMatch(/800/);
+    expect(await screen.findByText(/Real event · \+800/)).toBeInTheDocument();
     view.unmount();
     act(() => setEventProgress('aa', 'ev1', { state: 'done' }));
     render(<PullsScreen games={[withEvent]} scope="aa" tab="calculator" servers={{ aa: 'eu' }} openTab={() => {}} open={() => {}} openAccount={() => {}} />);
-    const again = await screen.findByText('Real event');
-    expect(again.closest('tr')?.textContent).not.toMatch(/800/);
+    expect(await screen.findByText('Real event · done')).toBeInTheDocument();
+    expect(screen.queryByText(/Real event · \+800/)).not.toBeInTheDocument();
+  });
+
+  it('Bank log shows example entries with a running balance until you add your own', async () => {
+    await show('log');
+    const log = screen.getByRole('region', { name: 'Bank log entries' });
+    expect(within(log).getAllByText('EXAMPLE').length).toBeGreaterThan(0);
+    // The newest example row ends at the example balance.
+    expect(within(log).getAllByText('8,400').length).toBeGreaterThan(0);
+  });
+
+  it('Bank log: a balance check then a spend shows the change and the new balance', async () => {
+    act(() => {
+      addLedgerEntry('aa', { at: '2026-01-01T10:00:00.000Z', currency: 'gem', kind: 'have', amount: 5000 });
+      addLedgerEntry('aa', { at: '2026-01-02T10:00:00.000Z', currency: 'gem', kind: 'spent', amount: 1600, note: '10 pulls' });
+    });
+    render(<PullsScreen games={[game]} scope="aa" tab="log" servers={{ aa: 'eu' }} openTab={() => {}} open={() => {}} openAccount={() => {}} />);
+    const log = await screen.findByRole('region', { name: 'Bank log entries' });
+    expect(within(log).queryByText('EXAMPLE')).not.toBeInTheDocument();
+    expect(within(log).getByText('10 pulls')).toBeInTheDocument();
+    expect(within(log).getByText('3,400')).toBeInTheDocument();
+  });
+
+  it('History offers the link, the cache file and export files, each with its own guide', async () => {
+    const withLink = { ...game, historyImporters: [...game.historyImporters, { id: 'aa-link', kind: 'link', label: 'In-game history link' }] } as GameContract;
+    render(<PullsScreen games={[withLink]} scope="aa" tab="history" servers={{ aa: 'eu' }} openTab={() => {}} open={() => {}} openAccount={() => {}} />);
+    await screen.findByText('No pull history yet');
+    fireEvent.click(screen.getByRole('button', { name: /Upload a file/ }));
+    expect(screen.getByText('How do I get an export file?')).toBeInTheDocument();
+    expect(screen.getByLabelText(/Export file/)).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: /Pick the game’s cache file/ }));
+    // Without an account the link can't be imported: it says so instead of failing.
+    expect(screen.getByText(/Sign in \(Account\) to import from the game’s link/)).toBeInTheDocument();
+  });
+
+  it('Planner: typing your own pity shows it as a what-if, never saved', async () => {
+    await show('planner');
+    fireEvent.change(screen.getByPlaceholderText('e.g. 40'), { target: { value: '70' } });
+    expect(screen.getAllByText('Your pity (what-if, not saved)').length).toBeGreaterThan(0);
+    expect(gameData('aa').pulls).toHaveLength(0);
   });
 });
