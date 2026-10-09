@@ -25,6 +25,15 @@ shows where logic will plug in (a "No data yet" or EXAMPLE slot, with a comment
 naming the workstream that fills it). Logic workstreams fill those slots without
 redesigning the screen.
 
+## Scheduler (2026-10-09)
+The scheduler frame is FRAME's: the `scheduler` and `findings-intake` functions,
+`supabase/functions/_shared/jobs.ts` (the job list), migration 0005 and Owner
+console → Scheduler / Findings. Job logic belongs to a data workstream: the
+"find new info" jobs (leaks-scan, events-scan, game-data-refresh) run in a
+separate scheduled routine chat that delivers findings as described in
+`docs/ROUTINES.md`, and writing approved findings into the built-in lists fills
+`onApprove` in `src/tools/owner/schedulerData.ts`.
+
 ## Shared files
 - `src/core/contract/` and `src/core/registry/`: owned by FRAME. The `Kit` and
   `TeamPreset` types in `src/core/contract/entities.ts` are placeholders for

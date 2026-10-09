@@ -1,8 +1,11 @@
 import { useEffect, useState, type CSSProperties, type FormEvent } from 'react';
 import type { GameContract, GameId } from '../../core/contract';
 import type { ModuleScreenProps } from '../../core/registry/modules';
-import { ExampleNotice, ExampleTag, HowTo, NoData } from '../../core/ui';
+import { ExampleNotice, ExampleTag, HowTo, NoData, Segmented } from '../../core/ui';
+import { Findings } from './Findings';
 import o from './owner.module.css';
+import { Scheduler } from './Scheduler';
+import { useSchedulerData } from './schedulerData';
 
 /*
  * Owner console (R58), design: Account → Owner console. Interface frame only.
@@ -13,6 +16,9 @@ import o from './owner.module.css';
  * the real leak-source list, publishing announcements to every user, and the
  * user stats. Until then each slot is "No data yet" or a clearly marked EXAMPLE.
  * Nothing here ever touches anyone's progress.
+ *
+ * Tabs: Overview (this file), Scheduler (Scheduler.tsx) and Findings (Findings.tsx),
+ * both reading the scheduler tables through schedulerData.ts.
  */
 
 type Counts = { characters: number; banners: number; events: number; materials: number; backlog: number };
@@ -55,8 +61,35 @@ const EXAMPLE_SOURCES = [
 const pad = (n: number) => String(n).padStart(2, '0');
 const WEEKDAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
-/** The owner's console: game records, built-in lists, leak sources, announcements, user stats. */
-export default function OwnerConsole({ games }: ModuleScreenProps) {
+type OwnerTab = 'overview' | 'scheduler' | 'findings';
+
+/** The owner's console: Overview (records, lists, sources, announcements), Scheduler, Findings. */
+export default function OwnerConsole(props: ModuleScreenProps) {
+  const [tab, setTab] = useState<OwnerTab>('overview');
+  const [now] = useState(() => Date.now());
+  const sched = useSchedulerData(props.games.map((g) => g.id));
+  const newFindings = sched.findings.filter((f) => f.status === 'new').length;
+  return (
+    <div className={o.stack}>
+      <p className={o.scope}>OWNER · ONLY YOU SEE THIS</p>
+      <Segmented
+        label="Owner console"
+        value={tab}
+        onChange={setTab}
+        options={[
+          { id: 'overview', label: 'Overview' },
+          { id: 'scheduler', label: 'Scheduler' },
+          { id: 'findings', label: newFindings ? `Findings · ${newFindings}` : 'Findings' },
+        ]}
+      />
+      {tab === 'overview' && <Overview {...props} />}
+      {tab === 'scheduler' && <Scheduler data={sched} now={now} />}
+      {tab === 'findings' && <Findings data={sched} games={props.games} />}
+    </div>
+  );
+}
+
+function Overview({ games }: ModuleScreenProps) {
   const counts = useListCounts(games);
   const [sourceOn, setSourceOn] = useState<Record<string, boolean>>({});
   const [draft, setDraft] = useState('');
@@ -73,7 +106,6 @@ export default function OwnerConsole({ games }: ModuleScreenProps) {
 
   return (
     <div className={o.stack}>
-      <p className={o.scope}>OWNER · ONLY YOU SEE THIS</p>
       <HowTo
         steps={[
           <>Game records set each game’s colour, currencies, servers, reset time and modules. New colours must pass the 7:1 contrast check.</>,

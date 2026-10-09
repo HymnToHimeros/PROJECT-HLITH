@@ -271,3 +271,185 @@
   font-size: 14px;
   line-height: 1.4;
 }
+
+/* ── Scheduler and Findings tabs (no design yet: same tokens and parts as above) ── */
+.alert {
+  margin: 0;
+  padding: 12px 14px;
+  border-radius: var(--r-button);
+  border: 1px dashed var(--ember-soft);
+  background: var(--bg-card);
+  color: var(--ink-1);
+  font-size: 14px;
+  line-height: 1.45;
+}
+.alert code {
+  font-family: var(--font-numbers);
+  color: var(--ember-soft);
+}
+.job,
+.finding {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-2);
+  padding: var(--s-3);
+  border-radius: var(--r-button);
+  background: var(--bg-app);
+  border: 1px solid var(--line-default);
+  min-width: 0;
+}
+.jobHead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s-2);
+  min-width: 0;
+}
+.jobName {
+  font-size: 15px;
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
+.jobDoes {
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--ink-3);
+}
+.badge {
+  display: inline-block;
+  flex: none;
+  font: 600 10px/1 var(--font-numbers);
+  letter-spacing: 0.06em;
+  padding: 4px 6px;
+  border-radius: var(--r-tag);
+  border: 1px solid var(--line-strong);
+  color: var(--ink-2);
+  text-transform: uppercase;
+}
+.st_ok {
+  border-color: var(--ok);
+  color: var(--ok);
+}
+.st_error {
+  border-color: var(--ember-soft);
+  color: var(--ember-soft);
+}
+.st_skipped {
+  color: var(--ink-3);
+}
+.st_frame {
+  border-style: dashed;
+  border-color: var(--glacier);
+  color: var(--glacier);
+}
+.facts {
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 180px), 1fr));
+  gap: var(--s-2) var(--s-4);
+}
+.facts dt {
+  font-size: 11px;
+  color: var(--ink-4);
+  margin-bottom: 2px;
+}
+.facts dd {
+  margin: 0;
+  font-size: 13px;
+  color: var(--ink-1);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 6px;
+  overflow-wrap: anywhere;
+}
+.lastMsg {
+  width: 100%;
+  font-size: 12px;
+  color: var(--ink-3);
+}
+.jobActions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s-2) var(--s-3);
+}
+.log {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-2);
+}
+.logRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px var(--s-2);
+  padding: 8px 0;
+  border-bottom: 1px solid var(--line-subtle);
+  min-width: 0;
+}
+.logJob {
+  font-size: 14px;
+  font-weight: 600;
+}
+.logMsg {
+  flex: 1 1 200px;
+  font-size: 13px;
+  color: var(--ink-3);
+  overflow-wrap: anywhere;
+}
+.count {
+  font: 500 12px var(--font-numbers);
+  color: var(--ink-3);
+  margin-left: 6px;
+}
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-2) var(--s-3);
+}
+.filter {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 12px;
+  color: var(--ink-3);
+  flex: 1 1 140px;
+}
+.select {
+  min-height: var(--tap-min);
+  padding: 0 10px;
+  border-radius: var(--r-button);
+  background: var(--bg-raised);
+  border: 1px solid var(--line-mid);
+  color: var(--ink-1);
+  font: inherit;
+  font-size: 14px;
+}
+.link {
+  font-size: 12px;
+  color: var(--glacier);
+  overflow-wrap: anywhere;
+}
+.payload summary {
+  font-size: 12px;
+  color: var(--glacier);
+  cursor: pointer;
+}
+.payload pre {
+  margin: 6px 0 0;
+  padding: 8px;
+  border-radius: 8px;
+  background: var(--bg-inset);
+  color: var(--ink-2);
+  font: 12px/1.4 var(--font-numbers);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.switch:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
