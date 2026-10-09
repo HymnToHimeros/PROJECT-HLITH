@@ -5,6 +5,7 @@ import { GameHeading } from '../pulls/shared';
 import { Backlog } from './Backlog';
 import b from './backlog.module.css';
 import { useBacklogData } from './useBacklogData';
+import { EditListButton } from '../edit-mode/EditMode';
 
 /** Backlog module: one block per game in scope. */
 export default function BacklogScreen({ games, scope, open }: ModuleScreenProps) {
@@ -38,6 +39,7 @@ function GameBacklog({ game, heading, openCalculator }: { game: GameContract; he
   return (
     <section className={b.stack} aria-label={game.name}>
       <GameHeading game={game} show={heading} />
+      <EditListButton game={game} kind="backlog" />
       {data.items.example && (
         <ExampleNotice actions={actions}>
           This backlog is an example: the game’s backlog list still has to be added by us (not you). The done counts are examples too until you enter your own. Tap

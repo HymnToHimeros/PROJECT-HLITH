@@ -1,5 +1,6 @@
 import { useEffect, useRef, type CSSProperties } from 'react';
 import type { GameContract, GameId } from '../../core/contract';
+import type { UserPlan } from '../../core/data/userData';
 import { formatDateTime, formatRange } from '../../core/time/reset';
 import { CalendarBar, ExampleNotice, ExampleTag, GameTag, HowTo, Timer, UnverifiedTag } from '../../core/ui';
 import type { GameLists } from '../today/lists';
@@ -19,6 +20,8 @@ export interface CalendarProps {
   openAccount: () => void;
   /** Open the server picker for one game (falls back to the Account panel). */
   openServer?: ((game: GameId) => void) | undefined;
+  /** Your active plans (approved from the Assistant). */
+  plans?: { game: GameContract; plan: UserPlan }[];
 }
 
 const LANES: { id: Lane; label: string }[] = [
@@ -45,7 +48,7 @@ function examplePlan(timelines: { game: GameContract; timeline: GameTimeline }[]
 }
 
 /** Calendar (R41), drawn to the design's Calendar: legend, timeline with lanes and a today line, then every date in order. */
-export function Calendar({ games, servers, lists, now, openAccount, openServer }: CalendarProps) {
+export function Calendar({ games, servers, lists, now, openAccount, openServer, plans: mine = [] }: CalendarProps) {
   const tags = games.length > 1;
   const day0 = localDayStart(now);
   const from = day0 - DAYS_BACK * DAY;
@@ -57,8 +60,12 @@ export function Calendar({ games, servers, lists, now, openAccount, openServer }
     return { game, timeline: gameTimeline({ game, serverId: servers[game.id], characters: l.characters, banners: l.banners, events: l.events, versions: l.versions, now, from, to }) };
   });
   const laneExample = (lane: Lane) => timelines.some(({ timeline }) => timeline.example[lane]);
-  // Plans come from the Assistant and Edit mode (not built yet): until then one example plan shows the look.
-  const plan = examplePlan(timelines, now);
+  // Your plans; with none yet, one EXAMPLE plan shows the look.
+  const myPlans: Span[] = mine.map(({ game, plan: p }) => {
+    const start = Date.parse(p.start);
+    return { id: p.id, game, lane: 'banners', title: p.title, start, end: p.end ? Date.parse(p.end) : start + 60 * 60_000, example: false };
+  });
+  const plan = myPlans.length ? null : examplePlan(timelines, now);
   const anyExample = LANES.some((l) => laneExample(l.id)) || plan !== null;
   const zone = Intl.DateTimeFormat().resolvedOptions().timeZone;
   const chooseServer = (id: GameId) => (openServer ? openServer(id) : openAccount());
@@ -88,7 +95,7 @@ export function Calendar({ games, servers, lists, now, openAccount, openServer }
 
   // The list under the timeline: everything not over yet, by start date.
   const all = timelines.flatMap(({ timeline }) => timeline.spans);
-  const dates = [...all, ...(plan ? [plan] : [])].filter((s) => s.end >= now).sort((a, b) => a.start - b.start || a.end - b.end);
+  const dates = [...all, ...myPlans, ...(plan ? [plan] : [])].filter((s) => s.end >= now).sort((a, b) => a.start - b.start || a.end - b.end);
 
   return (
     <div className={c.stack}>
@@ -141,7 +148,12 @@ export function Calendar({ games, servers, lists, now, openAccount, openServer }
                 Your plans
                 {plan && <ExampleTag />}
               </div>
-              {plan ? (
+              {myPlans.map((p) => (
+                <div key={p.id} className={c.row}>
+                  <CalendarBar kind="plan" title={p.title} range={formatRange(p.start, p.end)} left={pct(p.start)} width={Math.max(2, pct(p.end) - pct(p.start))} />
+                </div>
+              ))}
+              {myPlans.length > 0 ? null : plan ? (
                 <div className={c.row}>
                   <CalendarBar kind="plan" title={plan.title} range={formatRange(plan.start, plan.end)} left={pct(plan.start)} width={Math.max(2, pct(plan.end) - pct(plan.start))} />
                 </div>

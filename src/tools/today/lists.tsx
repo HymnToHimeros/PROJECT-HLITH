@@ -6,6 +6,7 @@
 import { useEffect, useState, type ReactNode } from 'react';
 import type { Banner, Character, GameContract, GameEvent, GameId, Material, SampleArt, Version } from '../../core/contract';
 import { useGameData, type GameUserData } from '../../core/data/userData';
+import { mergeOwnItems } from '../edit-mode/merge';
 
 export interface GameLists {
   characters: Character[];
@@ -70,3 +71,13 @@ export const inScope = (games: GameContract[], scope: GameId | 'all') => (scope 
 
 /** A game tag, only when several games share the screen (DESIGN: tags appear only in All games). */
 export const tagFor = (game: GameContract, show: boolean) => (show ? { label: game.short, vent: game.vent } : undefined);
+
+/** The built-in banners and events plus your own from Edit mode (hidden ones left out). */
+export function withOwnItems(lists: Record<GameId, GameLists>, user: Record<GameId, GameUserData>): Record<GameId, GameLists> {
+  return Object.fromEntries(
+    Object.entries(lists).map(([id, l]) => {
+      const own = user[id]?.ownItems;
+      return [id, { ...l, banners: mergeOwnItems('banners', l.banners, own?.banners), events: mergeOwnItems('events', l.events, own?.events) }];
+    }),
+  );
+}

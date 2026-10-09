@@ -44,7 +44,7 @@ describe('Account sheet', () => {
   it('has the design’s rows, in order; Owner console only for owners', () => {
     const { rerender } = render(<AccountPanel {...props()} />);
     const rows = screen.getAllByRole('button').map((b) => b.querySelector('span > span')?.textContent).filter(Boolean);
-    expect(rows).toEqual(['Sync', 'Backup', 'Notifications', 'Game settings', 'Guide', 'Layout settings', 'Theme', 'Sign in']);
+    expect(rows).toEqual(['Sync', 'Backup', 'Notifications', 'Game settings', 'Connected accounts', 'Guide', 'Layout settings', 'Theme', 'Sign in']);
     expect(screen.getByText('This device only · 1 game')).toBeInTheDocument();
     rerender(<AccountPanel {...props({ isOwner: true, openOwnerConsole: () => {}, account: { email: 'a@b.c', provider: 'discord', onSignOut: () => {} } })} />);
     expect(screen.getByText('Owner console')).toBeInTheDocument();
@@ -88,7 +88,8 @@ describe('Account sheet', () => {
     const list = within(screen.getByLabelText('Setup checklist'));
     expect(list.getByText(/Enter your currency in the Bank log/)).toHaveTextContent('(done)');
     expect(list.getByText(/Choose your server/)).toHaveTextContent('(to do)');
-    expect(list.getByText(/Connect HoYoLAB/)).toHaveTextContent('(not available yet)');
+    // The test game has no HoYoLAB link, so nothing is remembered: still to do.
+    expect(list.getByText(/Connect HoYoLAB/)).toHaveTextContent('(to do)');
     fireEvent.click(list.getByRole('button', { name: 'Open History' }));
     expect(p.open).toHaveBeenCalledWith('pulls', 'history');
     act(() => updatePrefs((x) => ({ ...x, servers: { aa: 'eu' } })));

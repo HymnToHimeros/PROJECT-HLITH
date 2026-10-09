@@ -8,6 +8,7 @@ import { ServerPicker } from '../../core/shell/ServerPicker';
 import { setTheme } from '../../core/theme/theme';
 import { formatDate, formatTime } from '../../core/time/reset';
 import { Button, HowTo, useNow } from '../../core/ui';
+import { LinkAccounts } from '../account-links/LinkAccount';
 import { FeedSettings } from '../feeds/FeedSettings';
 import { callFunction, hasServer, type DeletionRequest } from '../feeds/server';
 import a from './account.module.css';
@@ -15,8 +16,8 @@ import { Guide } from './Guide';
 import { ago, Card, Row, SubHeader, Switch } from './parts';
 import { SetupChecklist } from './SetupChecklist';
 
-type Page = 'root' | 'sync' | 'backup' | 'notifications' | 'game-settings' | 'guide' | 'theme' | 'sign-in';
-const PAGES: Page[] = ['root', 'sync', 'backup', 'notifications', 'game-settings', 'guide', 'theme', 'sign-in'];
+type Page = 'root' | 'sync' | 'backup' | 'notifications' | 'game-settings' | 'connections' | 'guide' | 'theme' | 'sign-in';
+const PAGES: Page[] = ['root', 'sync', 'backup', 'notifications', 'game-settings', 'connections', 'guide', 'theme', 'sign-in'];
 
 const PROVIDER: Record<string, string> = { google: 'Google', discord: 'Discord', email: 'email' };
 
@@ -42,6 +43,7 @@ export default function AccountPanel(props: PanelProps) {
       backup: 'Backup',
       notifications: 'Notifications',
       'game-settings': 'Game settings',
+      connections: 'Connected accounts',
       guide: 'Guide',
       theme: 'Theme',
       'sign-in': 'Sign in',
@@ -53,6 +55,7 @@ export default function AccountPanel(props: PanelProps) {
         {page === 'backup' && <BackupPage now={now} signedIn={Boolean(account)} />}
         {page === 'notifications' && <FeedSettings games={games} servers={prefs.servers} signedIn={Boolean(account)} chooseServer={() => setPage('game-settings')} />}
         {page === 'game-settings' && <GameSettingsPage games={games} allGames={props.allGames} now={now} />}
+        {page === 'connections' && <LinkAccounts games={games} />}
         {page === 'guide' && (
           <>
             <SetupChecklist games={games} open={props.open} goTo={setPage} />
@@ -92,6 +95,8 @@ export default function AccountPanel(props: PanelProps) {
       />
       <Row title="Notifications" sub={notify?.enabled ? `Evening message at ${notify.time}` : 'Resets, stamina full, banners ending'} onClick={() => setPage('notifications')} />
       <Row title="Game settings" sub="Server and reset times, per game" onClick={() => setPage('game-settings')} />
+      {/* Not in the design (Override 5): HoYoLAB link sits with the game settings it belongs to. */}
+      <Row title="Connected accounts" sub="HoYoLAB · live stamina, check-in, character import" onClick={() => setPage('connections')} />
       <Row title="Guide" sub="How HLITH works · setup checklist" onClick={() => setPage('guide')} />
       <Row title="Layout settings" sub={`Edit layout for ${scopeShort}`} onClick={props.editLayout} />
       <Row title="Theme" sub={prefs.theme === 'light' ? 'Light' : 'Dark'} onClick={() => setPage('theme')} />

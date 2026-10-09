@@ -5,9 +5,10 @@ import { GameHeading } from '../pulls/shared';
 import { Events } from './Events';
 import e from './events.module.css';
 import { useEventsData } from './useEventsData';
+import { EditListButton } from '../edit-mode/EditMode';
 
 /** Events module: one block per game in scope. */
-export default function EventsScreen({ games, scope, servers, openAccount }: ModuleScreenProps) {
+export default function EventsScreen({ games, scope, servers, openAccount, openServer }: ModuleScreenProps) {
   const now = useNow(60_000);
   const shown = scope === 'all' ? games : games.filter((g) => g.id === scope);
   return (
@@ -29,7 +30,7 @@ export default function EventsScreen({ games, scope, servers, openAccount }: Mod
         ]}
       />
       {shown.map((g) => (
-        <GameEvents key={g.id} game={g} serverId={servers[g.id]} now={now} heading={shown.length > 1} openAccount={openAccount} />
+        <GameEvents key={g.id} game={g} serverId={servers[g.id]} now={now} heading={shown.length > 1} openAccount={openServer ? () => openServer(g.id) : openAccount} />
       ))}
     </div>
   );
@@ -53,6 +54,7 @@ function GameEvents({ game, serverId, now, heading, openAccount }: { game: GameC
   return (
     <section className={e.stack} aria-label={game.name}>
       <GameHeading game={game} show={heading} />
+      <EditListButton game={game} kind="events" />
       {anyExample && <ExampleNotice actions={actions}>{parts.join(' ')}</ExampleNotice>}
       <Events game={game} data={data} serverId={serverId} now={now} onChooseServer={openAccount} />
     </section>

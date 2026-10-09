@@ -8,21 +8,14 @@ Resume with: "continue from PROGRESS.md". Newest entry on top.
   database migrations (`docs/DEPLOY.md`).
 
 ## Next
-- Real lists so the EXAMPLE badges go away: banners, events, versions,
-  endgame dates (nanoka.cc has endgame seasons in `maze.json` / `shiyu.json`,
-  and a list of not-yet-released characters in `manifest.json` → Intel).
-  No banner schedules exist on nanoka.cc.
-- The ★ screens still to build (Override 5): Edit mode, screenshot scan,
-  Assistant proposals, HoYoLAB link, share a team (other chats are on them).
-- Evening message to the phone every evening: needs Web Push keys (VAPID) on
-  the server and a nightly schedule. Until then Account → Notifications builds
-  the message on demand (Preview / Send a test).
-- Delete my account: after the 30-day grace period the owner completes it with
-  the service role; no job does that yet.
-- Copy your on-device data (bank log, pulls, progress) into your account.
-- Logic that belongs to other chats (see `docs/WORKSTREAMS.md`): team scoring,
-  kit check data, builds and who-fits (ROSTER-LOGIC); farm material planning.
-- Parked by your choice: Google login, owner rights, Resend, R24 backups.
+- Show you every screen next to the design; fix what you point out.
+- At the end (parked, needs you): Google login, owner rights (owner check →
+  Owner console row), Resend, the nightly backup schedule, phone push keys
+  (VAPID) for the evening message, finishing account deletions after 30 days.
+- Live checks only possible with real logins: HoYoLAB link, in-game history
+  link, Assistant with your Claude key (all built, marked unverified until then).
+- Data/logic for other chats (`docs/WORKSTREAMS.md`): real banners, events,
+  versions, art; team scoring, kit data, builds, material planning.
 - Optional dashboard fix: Cloudflare preview command → `npx wrangler versions upload`.
 
 ## How to check everything
@@ -31,6 +24,18 @@ Resume with: "continue from PROGRESS.md". Newest entry on top.
 - CI (`.github/workflows/ci.yml`) runs both on every pull request.
 
 ## Done
+- 2026-10-09 · **All 61 roadmap steps have their frame** (branch `frame/skeleton`).
+  Five builders' work combined and joined up: Account as the design (Sync,
+  Backup with export/restore and delete account, Notifications with evening
+  message and calendar feed, Game settings, Connected accounts with the HoYoLAB
+  link, Guide with a self-ticking setup checklist, Layout, Theme dark/light,
+  Sign out); every module matched to the design with a "How to use this" box;
+  HoYoLAB roster import, screenshot scan, share a team; Assistant with your own
+  key, cost per message, proposals with approve/undo; Edit mode (your own
+  events, banners, backlog items show on Events, Banners, Backlog, Pulls, Today
+  and Calendar); approved plans on the Calendar; nightly backup function (R24);
+  accessibility test on every page, game and size (R59); light theme (R61).
+  Browser tests now always test this checkout's own fresh build.
 - 2026-10-09 · **Roster, Farm and Intel follow the design; Owner console frame
   (R58).** Branch `frame/design-roster-farm`. Roster: one grid in All games
   with game tags, design tiles with an art slot (hatched placeholder until art

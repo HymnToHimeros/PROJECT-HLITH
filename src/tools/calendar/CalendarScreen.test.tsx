@@ -1,6 +1,8 @@
 import { fireEvent, render, screen, within } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 import type { GameContract, GameEvent } from '../../core/contract';
+import { act } from '@testing-library/react';
+import { addPlan, resetUserData } from '../../core/data/userData';
 import CalendarScreen from './CalendarScreen';
 
 const DAY = 86_400_000;
@@ -90,5 +92,13 @@ describe('Calendar', () => {
     await screen.findByLabelText('Dates');
     // This game has no character banner types, so there are no example banners either, and the lane says so.
     expect(screen.getAllByText('Nothing in these six weeks.').length).toBeGreaterThan(0);
+  });
+
+  it('shows your approved plans in "Your plans" instead of the example plan', async () => {
+    resetUserData();
+    act(() => addPlan('aa', { id: 'p1', title: 'Farm relics before the banner', start: new Date(NOW + 2 * 86_400_000).toISOString(), source: 'assistant', status: 'active', at: new Date(NOW).toISOString() }));
+    show({ aa: 'eu' });
+    expect((await screen.findAllByText('Farm relics before the banner')).length).toBeGreaterThan(0);
+    resetUserData();
   });
 });

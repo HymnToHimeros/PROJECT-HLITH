@@ -13,7 +13,7 @@ import p from './pulls.module.css';
 import { usePullsData } from './usePullsData';
 
 /** Pulls module (Override 3): Planner, Calculator, Bank log, History. One block per game in scope. */
-export default function PullsScreen({ games, scope, tab, servers, openTab, open, openAccount }: ModuleScreenProps) {
+export default function PullsScreen({ games, scope, tab, servers, openTab, open, openAccount, openServer }: ModuleScreenProps) {
   const now = useNow(60_000);
   const signedIn = Boolean(useSession(backend));
   const shown = scope === 'all' ? games : games.filter((g) => g.id === scope);
@@ -22,7 +22,7 @@ export default function PullsScreen({ games, scope, tab, servers, openTab, open,
     <div className={p.page}>
       <HowTo title={`How to use the ${TAB_NAME[current] ?? 'Pulls'}`} steps={HOW[current] ?? HOW.planner ?? []} />
       {shown.map((g) => (
-        <GamePulls key={g.id} game={g} tab={current} serverId={servers[g.id]} now={now} many={shown.length > 1} signedIn={signedIn} openTab={openTab} open={open} openAccount={openAccount} />
+        <GamePulls key={g.id} game={g} tab={current} serverId={servers[g.id]} now={now} many={shown.length > 1} signedIn={signedIn} openTab={openTab} open={open} openAccount={openServer ? () => openServer(g.id) : openAccount} />
       ))}
     </div>
   );

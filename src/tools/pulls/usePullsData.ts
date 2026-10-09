@@ -8,6 +8,9 @@ import type { BudgetInput } from '../budget/budget';
 import { eventsForBudget } from '../events/events';
 import { useEventsData } from '../events/useEventsData';
 import { exampleBank, exampleBannerSchedule, exampleHistory, exampleVersionEnd } from './examples';
+import { useWithOwnItems } from '../edit-mode/useWithOwnItems';
+
+const NO_BANNERS: Banner[] = [];
 
 export interface PullsData {
   user: GameUserData;
@@ -57,10 +60,11 @@ export function usePullsData(game: GameContract, now: number): PullsData {
   const notCounted = [events.events.example && 'Events', backlog.items.example && 'Backlog'].filter((x): x is string => Boolean(x));
   const realBank = balances(user.ledger);
   const current = (lists?.versions ?? []).find((v) => Date.parse(v.start) <= now && now < Date.parse(v.end));
+  const ownBanners = useWithOwnItems(game, 'banners', lists?.banners ?? NO_BANNERS);
   return {
     user,
     characters,
-    banners: lists?.banners.length ? { list: lists.banners, example: false } : { list: exampleBannerSchedule(game, characters, now, lists?.withArt), example: true },
+    banners: ownBanners.length ? { list: ownBanners, example: false } : { list: exampleBannerSchedule(game, characters, now, lists?.withArt), example: true },
     bank: realBank.known ? { value: realBank, example: false } : { value: exampleBank(game), example: true },
     history: user.pulls.length ? { list: user.pulls, example: false } : { list: exampleHistory(game, characters, now), example: true },
     versionEnd: current ? { at: Date.parse(current.end), example: false } : { at: exampleVersionEnd(now), example: true },

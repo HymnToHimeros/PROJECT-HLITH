@@ -1,4 +1,5 @@
 import type { GameContract, GameId, ModuleId } from '../../core/contract';
+import { hoyolabLink, savedLogin } from '../account-links/hoyolab';
 import { usePrefs } from '../../core/data/prefs';
 import { Button } from '../../core/ui';
 import { WithUserData } from '../today/lists';
@@ -18,7 +19,7 @@ export interface SetupStep {
 interface Props {
   games: GameContract[];
   open: (module: ModuleId, tab?: string) => void;
-  goTo: (page: 'game-settings' | 'notifications' | 'backup') => void;
+  goTo: (page: 'game-settings' | 'notifications' | 'backup' | 'connections') => void;
 }
 
 /** Each step ticks itself from your real data; nothing is ticked by hand. */
@@ -30,8 +31,8 @@ export function setupSteps(games: GameContract[], servers: Record<GameId, string
     { id: 'bank', title: 'Enter your currency in the Bank log', why: 'Pulls available and the planner start from what you have.', done: all.some((d) => d.ledger.some((e) => e.kind === 'have')), action: { label: 'Open Bank log', onClick: () => act.open('pulls', 'log') } },
     { id: 'history', title: 'Import your pull history', why: 'Pity, guarantees and the luck report come from it.', done: all.some((d) => d.pulls.length > 0), action: { label: 'Open History', onClick: () => act.open('pulls', 'history') } },
     { id: 'owned', title: 'Mark the characters you own', why: 'Team fit, banner advice and Farm use your roster.', done: all.some((d) => Object.values(d.roster).some((r) => r.owned)), action: { label: 'Open Roster', onClick: () => act.open('roster', 'characters') } },
-    // Hook: tick this from the HoYoLAB link once it exists (connections workstream, R47).
-    { id: 'hoyolab', title: 'Connect HoYoLAB', why: 'Live stamina, the daily check-in and character import. Being built.', done: false, unavailable: true, action: null },
+    // Ticks when a HoYoLAB login is remembered on this device (the default is use-once, so it can stay open).
+    { id: 'hoyolab', title: 'Connect HoYoLAB', why: 'Live stamina, the daily check-in and character import.', done: games.some((g) => hoyolabLink(g) && savedLogin(g.id)), action: { label: 'Open Connected accounts', onClick: () => act.goTo('connections') } },
     { id: 'notify', title: 'Set up notifications', why: 'An evening message and a calendar feed so nothing ends unseen.', done: extra.notify, action: { label: 'Open Notifications', onClick: () => act.goTo('notifications') } },
     { id: 'backup', title: 'Download a backup', why: 'Your game data lives on this device: a backup keeps it safe.', done: extra.backup, action: { label: 'Open Backup', onClick: () => act.goTo('backup') } },
   ];

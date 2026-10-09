@@ -2,6 +2,9 @@ import { useEffect, useState } from 'react';
 import type { Banner, Character, GameContract, SampleArt } from '../../core/contract';
 import { useGameData, type GameUserData } from '../../core/data/userData';
 import { exampleBanners } from './examples';
+import { useWithOwnItems } from '../edit-mode/useWithOwnItems';
+
+const NO_BANNERS: Banner[] = [];
 
 export interface BannersData {
   user: GameUserData;
@@ -30,10 +33,11 @@ export function useBannersData(game: GameContract, now: number): BannersData {
 
   const characters = lists?.characters ?? [];
   const art = lists?.art ?? [];
+  const banners = useWithOwnItems(game, 'banners', lists?.banners ?? NO_BANNERS);
   return {
     user,
     characters: new Map(characters.map((c) => [c.id, c])),
-    banners: lists?.banners.length ? { list: lists.banners, example: false } : { list: exampleBanners(game, characters, now, art.map((a) => a.characterId)), example: true },
+    banners: banners.length ? { list: banners, example: false } : { list: exampleBanners(game, characters, now, art.map((a) => a.characterId)), example: true },
     sampleArt: new Map(art.map((a) => [a.characterId, a.art])),
     loading: lists === null,
   };
