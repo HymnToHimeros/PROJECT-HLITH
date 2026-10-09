@@ -15,7 +15,8 @@ export default defineConfig({
     { name: 'phone', use: { ...devices['Pixel 7'] } },
   ],
   webServer: {
-    command: 'npm run build && npm run preview -- --port 4173 --strictPort',
+    // Browser tests run without the live project ("this device only" mode).
+    command: 'VITE_SUPABASE_URL= VITE_SUPABASE_PUBLISHABLE_KEY= npm run build && npm run preview -- --port 4173 --strictPort',
     port: 4173,
     reuseExistingServer: !process.env.CI,
   },
