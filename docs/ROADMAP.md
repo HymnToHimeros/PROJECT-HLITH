@@ -11,7 +11,7 @@ so it can't drift from the real code. Never tick a box by hand; add the proof.
 Who builds what: see `docs/WORKSTREAMS.md`.
 
 <!-- roadmap:summary -->
-**36 of 61 done** `████████████░░░░░░░░` 59%
+**40 of 61 done** `█████████████░░░░░░░` 66%
 
 **Next up:** R24 Nightly backups
 
@@ -22,7 +22,7 @@ Who builds what: see `docs/WORKSTREAMS.md`.
 | Phase 2 · Skeleton | `██████████` | 11 / 11 |
 | Phase 3 · Accounts and data | `████████░░` | 4 / 5 |
 | Phase 4 · Engines | `██████████` | 4 / 4 |
-| Phase 5 · Modules | `█████░░░░░` | 8 / 17 |
+| Phase 5 · Modules | `███████░░░` | 12 / 17 |
 | Phase 6 · Connections and extras | `░░░░░░░░░░` | 0 / 13 |
 | Phase 7 · Launch | `███░░░░░░░` | 1 / 3 |
 <!-- /roadmap:summary -->
@@ -72,10 +72,10 @@ Who builds what: see `docs/WORKSTREAMS.md`.
 - [x] R32 Pulls · Calculator · proof: `src/tools/pulls/Calculator.tsx`
 - [x] R33 Pulls · Planner · proof: `src/tools/pulls/Planner.tsx`
 - [x] R34 Pulls · History with Luck report card · proof: `src/tools/pulls/History.tsx`, `src/tools/pulls/LuckReport.tsx`
-- [ ] R35 Roster · Characters grid · proof: `src/tools/roster/Characters.tsx`
-- [ ] R36 Roster · Character page · proof: `src/tools/roster/CharacterPage.tsx`
-- [ ] R37 Roster · Teams tab · proof: `src/tools/roster/Teams.tsx`
-- [ ] R38 Kit check (any game with kit data) · proof: `src/tools/roster/KitCheck.tsx`
+- [x] R35 Roster · Characters grid · proof: `src/tools/roster/Characters.tsx`
+- [x] R36 Roster · Character page · proof: `src/tools/roster/CharacterPage.tsx`
+- [x] R37 Roster · Teams tab · proof: `src/tools/roster/Teams.tsx`
+- [x] R38 Kit check (any game with kit data) · proof: `src/tools/roster/KitCheck.tsx`
 - [x] R39 Banners (fit, leaks, plan pulls) · proof: `src/tools/banners/Banners.tsx`
 - [ ] R40 Farm (materials, stamina plan, gear) · proof: `src/tools/farm/Farm.tsx`
 - [ ] R41 Calendar · proof: `src/tools/calendar/Calendar.tsx`

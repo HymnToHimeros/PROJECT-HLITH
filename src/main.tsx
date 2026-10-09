@@ -14,6 +14,7 @@ registerModuleScreen('events', () => import('./tools/events/EventsScreen'));
 registerModuleScreen('backlog', () => import('./tools/backlog/BacklogScreen'));
 registerModuleScreen('banners', () => import('./tools/banners/BannersScreen'));
 registerModuleScreen('intel', () => import('./tools/intel/IntelScreen'));
+registerModuleScreen('roster', () => import('./tools/roster/RosterScreen'));
 
 const root = document.getElementById('root');
 if (!root) throw new Error('PROJECT-HLITH: #root element missing from index.html');
