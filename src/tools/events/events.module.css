@@ -260,3 +260,53 @@
     flex: 1;
   }
 }
+
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-4);
+  max-width: var(--content-max);
+  min-width: 0;
+}
+
+/* Login days as one bar (design), each segment a day you can tap (V1). */
+.dayBar {
+  display: flex;
+  gap: 2px;
+  flex: 1 1 160px;
+  max-width: 240px;
+  padding: 10px 0;
+}
+.daySeg {
+  position: relative;
+  flex: 1;
+  height: 8px;
+  min-width: 12px;
+  padding: 0;
+  border: 0;
+  background: var(--bg-track);
+  cursor: pointer;
+}
+/* a taller invisible tap area around each thin segment */
+.daySeg::before {
+  content: '';
+  position: absolute;
+  inset: -12px 0;
+}
+.daySeg:first-child {
+  border-radius: 4px 0 0 4px;
+}
+.daySeg:last-child {
+  border-radius: 0 4px 4px 0;
+}
+.daySeg[aria-pressed='true'] {
+  background: var(--vent);
+}
+.daySeg:disabled {
+  cursor: default;
+  opacity: 0.55;
+}
+.daySeg:focus-visible {
+  outline: 2px solid var(--glacier);
+  outline-offset: 2px;
+}

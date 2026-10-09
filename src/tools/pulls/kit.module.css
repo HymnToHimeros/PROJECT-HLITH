@@ -1,0 +1,158 @@
+/* Small parts the Pulls, Banners, Events and Backlog screens share, drawn as in the design prototype. */
+
+/* ── Switch: 40×24 track, 20px dark knob ── */
+.switch {
+  position: relative;
+  flex: none;
+  width: 40px;
+  height: 24px;
+  /* a 44px tap target around the visible track */
+  margin: 10px 2px;
+  padding: 0;
+  border: 0;
+  border-radius: 12px;
+  background: var(--line-strong);
+  cursor: pointer;
+}
+.switch::before {
+  content: '';
+  position: absolute;
+  inset: -10px -2px;
+}
+.switch:disabled {
+  cursor: default;
+  opacity: 0.5;
+}
+.switchOn {
+  background: var(--vent);
+}
+.knob {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--bg-app);
+  transition: left 0.15s ease;
+}
+.switchOn .knob {
+  left: 18px;
+}
+
+/* ── Filters: the design's tab bar look, but buttons ── */
+.filters {
+  display: flex;
+  gap: 4px;
+  padding: 4px;
+  background: var(--bg-card);
+  border: 1px solid var(--line-default);
+  border-radius: var(--r-button);
+  align-self: flex-start;
+  max-width: 100%;
+  overflow-x: auto;
+}
+.filter {
+  flex: none;
+  min-height: 36px;
+  padding: 0 14px;
+  border: 0;
+  border-radius: var(--r-segment);
+  background: transparent;
+  color: var(--ink-3);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.filter[aria-pressed='true'] {
+  background: var(--vent);
+  color: var(--on-vent);
+}
+
+/* ── Dashed one-line notice ── */
+.strip {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 12px 14px;
+  border-radius: var(--r-button);
+  border: 1px dashed var(--line-strong);
+  font-size: 13px;
+  color: var(--ink-3);
+}
+.stripDash {
+  font: 600 16px var(--font-numbers);
+  color: var(--line-empty);
+}
+.stripText {
+  flex: 1;
+  min-width: 220px;
+}
+.stripAction {
+  border: 0;
+  background: none;
+  padding: 0;
+  min-height: 32px;
+  color: var(--glacier);
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+.stripAction:hover {
+  color: var(--ember);
+}
+
+/* ── Tiles ── */
+.tiles {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 200px), 1fr));
+  gap: var(--s-3);
+}
+.tile {
+  background: var(--bg-card);
+  border: 1px solid var(--line-default);
+  border-radius: var(--r-card);
+  padding: 14px;
+  min-height: 108px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+}
+.tileLabel {
+  font-size: 13px;
+  color: var(--ink-3);
+}
+.tileValue {
+  font: 600 28px/1 var(--font-numbers);
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-1);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.tileEmpty {
+  color: var(--line-empty);
+}
+.tileCaption {
+  margin-top: auto;
+  font-size: 12px;
+  line-height: 1.35;
+  color: var(--ink-4);
+}
+.glacier {
+  color: var(--glacier);
+}
+
+/* Links inside running text are underlined, so they don't rely on colour alone. */
+.link {
+  color: var(--glacier);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.link:hover {
+  color: var(--ember);
+}
