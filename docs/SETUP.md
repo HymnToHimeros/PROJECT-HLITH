@@ -62,6 +62,19 @@ mode). Tables checked live: all 10 exist, and writes without sign-in are refused
   calling the Edge Function `backup` with header
   `Authorization: Bearer <service_role key>`. The service key is typed into the
   Supabase dashboard only, never into chat or the repo. Until then no backup runs.
+- **Automatic HoYoLAB check-in and codes (R62)** — the code is ready
+  (`supabase/functions/hoyolab-daily`, tables and Vault functions in
+  `supabase/migrations/0003_hoyolab_links.sql`, both declared in
+  `supabase/config.toml`). It needs one daily schedule, set up the same way as
+  the backup and at the same time: Supabase → Integrations → Cron → new job,
+  once a day (suggested 16:10 UTC, just after HoYoLAB's check-in day turns over
+  at midnight UTC+8), calling the Edge Function `hoyolab-daily` with header
+  `Authorization: Bearer <service_role key>`. Running it more often is safe: an
+  account already checked in that day is skipped. Check first that **Vault** is
+  on (Database → Vault; on by default for new projects): the migration stores
+  the players' HoYoLAB logins there, encrypted. Until the schedule exists,
+  saved accounts still work and "Run now" in Connected accounts works; only the
+  unattended daily run is missing.
 
 ## 5. Hosting · Cloudflare (set up 2026-10-09)
 Cloudflare dashboard → Create app → Connect GitHub → `PROJECT-HLITH`.

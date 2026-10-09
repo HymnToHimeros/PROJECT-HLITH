@@ -34,6 +34,15 @@ describe('backup', () => {
     expect(summarize(parsed.backup).games).toEqual([{ id: 'hsr', bank: 1, pulls: 0, roster: 0, teams: 0, ticks: 0 }]);
   });
 
+  it('never puts a login remembered on this device into a backup, and never restores one from a file', () => {
+    localStorage.setItem('hlith.secret.hoyolab.accounts', '[{"login":"secret"}]');
+    expect(JSON.stringify(buildBackup(Date.UTC(2026, 9, 9)))).not.toContain('hlith.secret');
+    const file = { ...buildBackup(Date.UTC(2026, 9, 9)), extra: { 'hlith.secret.hoyolab': 'planted', 'hlith.ok': '1' } };
+    const parsed = parseBackup(JSON.stringify(file));
+    expect(parsed.ok && parsed.backup.extra).toEqual({ 'hlith.ok': '1' });
+    localStorage.removeItem('hlith.secret.hoyolab.accounts');
+  });
+
   it('rejects files that are not an HLITH backup, before touching anything', () => {
     expect(parseBackup('not json').ok).toBe(false);
     expect(parseBackup('{"info":{"uigf_version":"v4.0"}}')).toEqual({ ok: false, error: expect.stringMatching(/isn’t an HLITH backup/) });

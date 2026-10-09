@@ -84,10 +84,10 @@ describe('Farm', () => {
     show();
     await screen.findByText('NOTHING CHOSEN');
     act(() => setFarm('aa', ['c1']));
-    const stamina = screen.getByLabelText('Stamina plan');
+    const stamina = await screen.findByLabelText('Stamina plan'); // wait for the screen to update
     expect(within(stamina).getByText(/at 240 Power a day/)).toBeInTheDocument(); // refill per day comes straight from the record
     expect(within(stamina).getAllByText('EXAMPLE').length).toBeGreaterThan(0);
-    const materials = screen.getByLabelText('Materials');
+    const materials = await screen.findByLabelText('Materials');
     expect(within(materials).getAllByText('EXAMPLE').length).toBeGreaterThan(0);
     expect(screen.getByText(/Example data, not yours/)).toBeInTheDocument();
     // Gear needs build data that isn't there: honest empty, never a guess.

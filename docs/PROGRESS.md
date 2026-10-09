@@ -10,7 +10,8 @@ Resume with: "continue from PROGRESS.md". Newest entry on top.
 ## Next
 - Show you every screen next to the design; fix what you point out.
 - At the end (parked, needs you): Google login, owner rights (owner check →
-  Owner console row), Resend, the nightly backup schedule, phone push keys
+  Owner console row), Resend, the nightly backup schedule, the daily HoYoLAB
+  schedule (SETUP.md §4), phone push keys
   (VAPID) for the evening message, finishing account deletions after 30 days.
 - Live checks only possible with real logins: HoYoLAB link, in-game history
   link, Assistant with your Claude key (all built, marked unverified until then).
@@ -24,6 +25,36 @@ Resume with: "continue from PROGRESS.md". Newest entry on top.
 - CI (`.github/workflows/ci.yml`) runs both on every pull request.
 
 ## Done
+- 2026-10-09 · **R62 HoYoLAB: several accounts, one button, automatic check-in
+  and codes** (branch `frame/hoyolab-accounts`).
+  - Roster in All games has ONE "Import from HoYoLAB" and ONE "Scan a
+    screenshot". The import sheet picks a game (and which account reads it) or
+    "Every connected game", each into its own roster. The scan sheet asks which
+    game the screenshot is from.
+  - Account → Connected accounts is one list of HoYoLAB accounts ("Main",
+    "Alt"…), each showing the games and UIDs it covers, with Check now / Check
+    in now per game, Rename, Replace login, Forget. A login can be used once,
+    remembered on this device, or saved on HLITH's server.
+  - Saved on the server = encrypted in Supabase Vault (migration 0003); no
+    browser can read it back. Forget overwrites it with random text and keeps
+    the row (never-wipe).
+  - Automatic daily check-in and automatic codes (opt-in switches per account).
+    The `hoyolab-daily` function runs them and records every result; the card
+    shows "Last automatic check-in: today 05:02 · got 20 × Stellar Jade" or the
+    error. "Run now" does it on demand. **Needs the daily schedule (SETUP.md §4).**
+  - Codes come from the public list hoyo-codes.seria.moe (open source,
+    github.com/seriaati/hoyo-codes; it keeps only codes it could redeem on its
+    own test account) plus codes you paste. Redeeming needs a second login from
+    hoyoverse.com (account_id_v2, account_mid_v2, cookie_token_v2), because
+    codes are redeemed there, not on HoYoLAB.
+  - Research on "anything else it can do on its own" (genshin.py): web events
+    have no documented calls, so they need you; Traveling Mimo has calls, but
+    its tasks need you and spending its points is your choice, so it's left to
+    you; HoYoLAB's community check-in is retired. The screen says all this.
+  - Also fixed: backups no longer include logins remembered on the device
+    (`hlith.secret.*`), and a restore never brings one back.
+  - Not tested with a real login yet: check-in reward text, code redemption,
+    the Vault functions on the live database.
 - 2026-10-09 · **All 61 roadmap steps have their frame** (branch `frame/skeleton`).
   Five builders' work combined and joined up: Account as the design (Sync,
   Backup with export/restore and delete account, Notifications with evening
