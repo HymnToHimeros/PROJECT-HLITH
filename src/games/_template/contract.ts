@@ -32,6 +32,7 @@ export const template: GameContract = {
     { id: 'ticket', name: 'Pull ticket', pullItemFor: ['limited'] },
   ],
   stamina: [{ id: 'stamina', name: 'Stamina', max: 240, minutesPerPoint: 6 }],
+  teamSize: 4,
   servers: [{ id: 'global', label: 'Global', utcOffset: 0 }],
   reset: { hour: 4, weekday: 1 },
   modules: ['today', 'events', 'calendar', 'backlog', 'pulls', 'banners', 'roster', 'farm', 'intel'],

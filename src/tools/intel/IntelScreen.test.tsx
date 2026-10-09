@@ -27,6 +27,7 @@ const makeGame = (characters: Character[], list: Banner[]): GameContract =>
     elements: [{ id: 'e', label: 'Spark', color: '#ffffff' }],
     roles: [{ id: 'r', label: 'Runner' }],
     currencies: [],
+    teamSize: 4,
     stamina: [],
     servers: [],
     reset: { hour: 4, weekday: 1 },

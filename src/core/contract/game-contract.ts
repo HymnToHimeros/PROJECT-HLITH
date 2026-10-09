@@ -54,6 +54,8 @@ export interface GameContract {
   // ── Economy ────────────────────────────────────────────────────
   currencies: Currency[];
   stamina: StaminaPool[];
+  /** How many characters fit in one team (e.g. 4 or 3). */
+  teamSize: number;
 
   // ── Servers and resets (never in the shell) ───────────────────
   servers: { id: string; label: string; utcOffset: number }[];

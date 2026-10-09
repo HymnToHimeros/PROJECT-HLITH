@@ -19,6 +19,7 @@ const makeGame = (events: GameEvent[] = []): GameContract =>
       { id: 'gem', name: 'Gem', perPull: 160 },
       { id: 'ticket', name: 'Ticket', pullItemFor: ['character'] },
     ],
+    teamSize: 4,
     stamina: [],
     servers: [{ id: 'eu', label: 'Europe', utcOffset: 1 }],
     reset: { hour: 4, weekday: 1 },

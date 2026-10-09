@@ -16,14 +16,9 @@ export const subtitleOf = (game: GameContract, c: Character) => `${roleLabel(gam
 /** "E2" / "M1" from the game's dupe prefix; undefined when the game has no dupes. */
 export const dupesLabel = (game: GameContract, n: number) => (game.dupes ? `${game.dupes.prefix}${n}` : undefined);
 
-/**
- * How many characters a team holds. The game record may say (`teamSize`); else
- * the recommended presets show it; else 4.
- */
-export function teamSizeOf(game: GameContract, presets: TeamPreset[]): number {
-  if ('teamSize' in game && typeof game.teamSize === 'number' && game.teamSize > 0) return game.teamSize;
-  const fromPresets = Math.max(0, ...presets.map((p) => p.slots.length));
-  return fromPresets || 4;
+/** How many characters a team holds, from the game record. */
+export function teamSizeOf(game: GameContract): number {
+  return game.teamSize;
 }
 
 /** Newest first by release date; characters without a date go after, by name. */

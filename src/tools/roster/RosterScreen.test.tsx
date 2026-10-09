@@ -42,6 +42,7 @@ function makeGame(withKits: boolean, presets: TeamPreset[] = [preset]): GameCont
     ],
     dupes: { prefix: 'E', name: 'Eidolon', max: 6 },
     currencies: [],
+    teamSize: 4,
     stamina: [],
     servers: [],
     reset: { hour: 4, weekday: 1 },

@@ -33,7 +33,7 @@ export function useRosterData(game: GameContract): RosterData {
   const ready = lists?.game === game ? lists : null;
   const characters = ready?.characters ?? [];
   const realPresets = ready?.presets ?? [];
-  const teamSize = teamSizeOf(game, realPresets);
+  const teamSize = teamSizeOf(game);
   return {
     user,
     characters,

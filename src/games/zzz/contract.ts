@@ -56,6 +56,7 @@ export const zzz: GameContract = {
     { id: 'monochrome', name: 'Monochrome', paid: true },
   ],
   stamina: [{ id: 'battery-charge', name: 'Battery Charge', max: 240, minutesPerPoint: 6 }],
+  teamSize: 3,
   servers: [
     { id: 'america', label: 'America', utcOffset: -5 },
     { id: 'europe', label: 'Europe', utcOffset: 1 },

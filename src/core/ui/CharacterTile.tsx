@@ -37,7 +37,7 @@ export function CharacterTile({ name, subtitle, rarity, rarityLabel, elementColo
 export const initials = (name: string): string =>
   name
     .split(/\s+/)
-    .filter(Boolean)
+    .filter((w) => /^[\p{L}\p{N}]/u.test(w))
     .map((w) => w[0])
     .join('')
     .slice(0, 2)

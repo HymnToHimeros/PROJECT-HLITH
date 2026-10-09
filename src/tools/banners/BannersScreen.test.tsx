@@ -36,6 +36,7 @@ const makeGame = (banners: Banner[]): GameContract =>
     roles: [{ id: 'r', label: 'Runner' }],
     dupes: { prefix: 'E', name: 'Eidolon', max: 6 },
     currencies: [{ id: 'gem', name: 'Gem', perPull: 160 }],
+    teamSize: 4,
     stamina: [],
     servers: [{ id: 'eu', label: 'Europe', utcOffset: 1 }],
     reset: { hour: 4, weekday: 1 },
