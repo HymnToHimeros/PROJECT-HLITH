@@ -1,6 +1,8 @@
 import { useMemo, useState } from 'react';
 import type { Character, GameContract } from '../../core/contract';
 import { CharacterTile, EmptyState } from '../../core/ui';
+import { RosterImport } from '../account-links/RosterImport';
+import { ScanEntry } from '../scan/Scan';
 import r from './roster.module.css';
 import { byNewest, dupesLabel, elementOf, entryOf, subtitleOf } from './shared';
 import type { RosterData } from './useRosterData';
@@ -60,6 +62,8 @@ export function Characters({ game, data, onOpen }: Props) {
 
   return (
     <div className={r.stack}>
+      {/* RosterImport mounts here (account-links builder) */}
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}><RosterImport game={game} /><ScanEntry game={game} /></div>
       <div className={r.filters} role="search">
         <label className={`${r.field} ${r.searchField}`}>
           Search
