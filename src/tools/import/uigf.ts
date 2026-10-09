@@ -61,7 +61,8 @@ export function parseHistoryFile(text: string, mapping: HistoryMapping): ImportR
   return { ok: false, error: `Unsupported file version "${version || 'unknown'}". HLITH reads UIGF v4 and SRGF v1.` };
 }
 
-function readAccount(uid: string, list: unknown[], tz: number, mapping: HistoryMapping): ImportedAccount {
+/** Rows from any source (file or in-game link) → our pull records, using the game's mapping. */
+export function readAccount(uid: string, list: unknown[], tz: number, mapping: HistoryMapping): ImportedAccount {
   const records: PullRecord[] = [];
   const skipped: Record<string, number> = {};
   let invalid = 0;

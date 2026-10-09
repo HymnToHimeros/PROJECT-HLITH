@@ -25,6 +25,10 @@ export default tseslint.config(
     languageOptions: { globals: globals.node },
   },
   {
+    files: ['supabase/functions/**/*.ts'],
+    languageOptions: { globals: { ...globals.browser, Deno: 'readonly' } },
+  },
+  {
     files: ['src/tools/**/*.{ts,tsx}'],
     rules: { 'no-restricted-imports': ['error', { patterns: [noGames] }] },
   },

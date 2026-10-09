@@ -8,8 +8,7 @@ Resume with: "continue from PROGRESS.md". Newest entry on top.
   database migrations (`docs/DEPLOY.md`).
 
 ## Next
-- Next build steps: in-game history link (R28), then the
-  module screens, starting with Events, Backlog and Pulls.
+- Next build steps: the module screens, starting with Events, Backlog and Pulls.
 - Parked by your choice (2026-10-09): Google login, owner rights, Resend, R24
   backups. Building the website comes first.
 - Optional dashboard fix: Cloudflare preview command → `npx wrangler versions
@@ -21,6 +20,17 @@ Resume with: "continue from PROGRESS.md". Newest entry on top.
 - CI (`.github/workflows/ci.yml`) runs both on every pull request.
 
 ## Done
+- 2026-10-09 · **R28 · history from the in-game link.** Server function
+  `supabase/functions/gacha-import` (signed-in users only) with its logic in
+  `supabase/functions/_shared/hoyoGachaLog.ts`: finds the link in pasted text,
+  contacts only HoYoverse's history hosts, forwards only safe parameters, reads
+  every page of every banner type, stops at pulls already stored, never loops
+  or duplicates, plain messages for expired links and rate limits. Rows go
+  through the same reader as files. Deployed by the Supabase GitHub
+  integration (`supabase/config.toml`). **Not yet tested against the live
+  HoYoverse API** (needs a real link from you); ZZZ's query parameters are
+  from memory and unverified.
+- 2026-10-09 · R27 merged (pull request #15).
 - 2026-10-09 · **R27 · history from export files.** `src/tools/import/uigf.ts`
   reads UIGF v4 (any game section) and SRGF v1; server time → UTC; oldest
   first; unknown banner types and broken rows are counted, not hidden;
