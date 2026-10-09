@@ -8,9 +8,12 @@ Resume with: "continue from PROGRESS.md". Newest entry on top.
   database migrations (`docs/DEPLOY.md`).
 
 ## Next
-- Next build step: the pull budget engine (R25).
-- Later, needs you: Google login, making yourself owner (`docs/SETUP.md` §1.5),
-  Resend before real users, R24 backups (needs a storage choice).
+- Next build steps: pity engine (R26), history import (R27–R28), then the
+  module screens, starting with Events, Backlog and Pulls.
+- Parked by your choice (2026-10-09): Google login, owner rights, Resend, R24
+  backups. Building the website comes first.
+- Optional dashboard fix: Cloudflare preview command → `npx wrangler versions
+  upload` (the beta `wrangler preview` fails on pull requests; live site unaffected).
 
 ## How to check everything
 - `npm run check` = lint + typecheck + unit tests + build.
@@ -18,6 +21,14 @@ Resume with: "continue from PROGRESS.md". Newest entry on top.
 - CI (`.github/workflows/ci.yml`) runs both on every pull request.
 
 ## Done
+- 2026-10-09 · **R25 · pull budget engine.** `src/tools/budget/budget.ts`, pure
+  functions, 11 rules from PLAN §4, 22 tests: future income only, today/this
+  week/this cycle only if not done, events (open/done/skipped/ended), login
+  days limited by days left, cycles need known dates, pass only while active,
+  paid rows only with paid extras, Backlog counted once (covered rows skipped,
+  disabled categories shown as potential), unknown amounts left out and listed,
+  no bank → no total, pulls = premium ÷ per-pull (rounded down) + that banner's
+  pull items. Missing server → reset-based rows say "choose your server".
 - 2026-10-09 · **Live (R60).** Supabase tables created by its GitHub
   integration; app connected (public values in `.env.production`); hosted on
   Cloudflare (`wrangler.jsonc`, subdomain `hliskjlf`); Discord sign-in tested
@@ -81,6 +92,8 @@ Resume with: "continue from PROGRESS.md". Newest entry on top.
   (CLAUDE.md expects them there). Wrote `docs/PLAN.md` and this file.
 
 ## Decisions log
+- 2026-10-09 · You chose: build the website first; Google login, owner rights,
+  Resend and backups wait.
 - 2026-10-09 · Database changes reach Supabase through its GitHub integration
   (Deploy to production on `main`), not by pasting SQL. `supabase/config.toml`
   added for it; Supabase ignores its auth/API settings for the live project.

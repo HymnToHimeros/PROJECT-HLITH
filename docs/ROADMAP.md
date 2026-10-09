@@ -11,7 +11,7 @@ so it can't drift from the real code. Never tick a box by hand; add the proof.
 Who builds what: see `docs/WORKSTREAMS.md`.
 
 <!-- roadmap:summary -->
-**24 of 61 done** `████████░░░░░░░░░░░░` 39%
+**25 of 61 done** `████████░░░░░░░░░░░░` 41%
 
 **Next up:** R24 Nightly backups
 
@@ -21,7 +21,7 @@ Who builds what: see `docs/WORKSTREAMS.md`.
 | Phase 1 · Look | `██████████` | 3 / 3 |
 | Phase 2 · Skeleton | `██████████` | 11 / 11 |
 | Phase 3 · Accounts and data | `████████░░` | 4 / 5 |
-| Phase 4 · Engines | `░░░░░░░░░░` | 0 / 4 |
+| Phase 4 · Engines | `███░░░░░░░` | 1 / 4 |
 | Phase 5 · Modules | `░░░░░░░░░░` | 0 / 17 |
 | Phase 6 · Connections and extras | `░░░░░░░░░░` | 0 / 13 |
 | Phase 7 · Launch | `███░░░░░░░` | 1 / 3 |
@@ -60,7 +60,7 @@ Who builds what: see `docs/WORKSTREAMS.md`.
 - [ ] R24 Nightly backups · proof: `supabase/functions/backup/index.ts`
 
 ## Phase 4 · Engines
-- [ ] R25 One pull budget engine · proof: `src/tools/budget/budget.ts`
+- [x] R25 One pull budget engine · proof: `src/tools/budget/budget.ts`
 - [ ] R26 Pity engine: official and community odds, worst case · proof: `src/tools/pity/pity.ts`
 - [ ] R27 History import from UIGF / SRGF files · proof: `src/tools/import/uigf.ts`
 - [ ] R28 History import from the in-game link · proof: `supabase/functions/gacha-import/index.ts`
