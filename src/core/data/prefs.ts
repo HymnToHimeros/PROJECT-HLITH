@@ -1,0 +1,72 @@
+/**
+ * The viewer's own settings: which games, module order and hidden set per scope,
+ * server per game, last open module. Kept on this device until accounts and sync
+ * arrive (ROADMAP R20–R22), then mirrored to the database.
+ * Never wiped: unreadable saved data is kept under a backup key, not thrown away.
+ */
+import { useSyncExternalStore } from 'react';
+import type { GameId, ModuleId } from '../contract';
+import type { LayoutState, Scope } from '../registry/layout';
+
+export interface Prefs {
+  version: 1;
+  /** Games in the switcher, in order. null = every registered game. */
+  games: GameId[] | null;
+  layouts: Record<Scope, LayoutState>;
+  servers: Record<GameId, string>;
+  lastModule: Record<Scope, ModuleId>;
+}
+
+const KEY = 'hlith.prefs';
+const EMPTY: Prefs = { version: 1, games: null, layouts: {}, servers: {}, lastModule: {} };
+
+function read(): Prefs {
+  let raw: string | null = null;
+  try {
+    raw = localStorage.getItem(KEY);
+    if (!raw) return EMPTY;
+    const parsed = JSON.parse(raw) as Partial<Prefs>;
+    return { ...EMPTY, ...parsed, version: 1 };
+  } catch {
+    try {
+      if (raw) localStorage.setItem(`${KEY}.unreadable.${Date.now()}`, raw);
+    } catch {
+      /* storage unavailable: nothing to keep */
+    }
+    return EMPTY;
+  }
+}
+
+let current: Prefs = typeof localStorage === 'undefined' ? EMPTY : read();
+const listeners = new Set<() => void>();
+
+export function getPrefs(): Prefs {
+  return current;
+}
+
+export function updatePrefs(change: (p: Prefs) => Prefs): void {
+  current = change(current);
+  try {
+    localStorage.setItem(KEY, JSON.stringify(current));
+  } catch {
+    /* private mode or storage full: keep working in memory */
+  }
+  listeners.forEach((l) => l());
+}
+
+export function usePrefs(): Prefs {
+  return useSyncExternalStore(
+    (l) => {
+      listeners.add(l);
+      return () => listeners.delete(l);
+    },
+    getPrefs,
+    getPrefs,
+  );
+}
+
+/** Test helper: reload from storage. */
+export function reloadPrefs(): void {
+  current = read();
+  listeners.forEach((l) => l());
+}
