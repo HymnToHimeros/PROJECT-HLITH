@@ -19,4 +19,10 @@ creates starts with that name, so you can always tell who made what.
 | **FRAME** | `frame/…` | The skeleton and shelves: look, shell, contract, registries, data, engines, the module screens as frames | R01–R34, R39–R61 |
 | *(next chat, e.g. ROSTER-LOGIC)* | `roster-logic/…` | Roster logic core: kit check, teams, roster scoring | R35–R38, plus any new items it adds |
 
+## Shared files
+- `src/core/contract/` and `src/core/registry/`: owned by FRAME. The `Kit` and
+  `TeamPreset` types in `src/core/contract/entities.ts` are placeholders for
+  ROSTER-LOGIC to extend; say so here when you change them.
+- `src/games/<id>/data/*.json`: anyone adding game data. Ids never change once added.
+
 A new chat that adds roadmap items gives them the next free R-number and a proof file.

@@ -111,6 +111,10 @@ Allowed direction: `games → core`, `tools → core`, `main.tsx → everything`
 
 ## 2. The game contract
 
+> The code is now the source of truth: `src/core/contract/game-contract.ts`
+> (types) and `src/core/contract/entities.ts` (list items). This section is the
+> outline it was built from.
+
 One file per game: `src/games/<id>/contract.ts`, typed against
 `src/core/contract/game-contract.ts`. A game is data plus a few pure functions,
 never screens. Every module reads only this.

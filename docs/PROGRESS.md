@@ -3,11 +3,11 @@
 Resume with: "continue from PROGRESS.md". Newest entry on top.
 
 ## Now
-- **Step 2 (R06–R08) done**, in review: tokens, shared components, `/preview` page.
+- **Step 3 (R09–R15) done**, in review: game contract, registries, layout rules,
+  template, HSR and ZZZ records, made-up test game.
 
 ## Next
-- Step 3 — Game contract, registries, `_template`, HSR + ZZZ records, fake-game
-  test (R09–R15).
+- Step 4 — Server resets, local time, locale formats (R16), then the shell (R17–R19).
 
 ## How to check everything
 - `npm run check` = lint + typecheck + unit tests + build.
@@ -15,6 +15,15 @@ Resume with: "continue from PROGRESS.md". Newest entry on top.
 - CI (`.github/workflows/ci.yml`) runs both on every pull request.
 
 ## Done
+- 2026-10-09 · **Step 3 (R09–R15).** `src/core/contract/` (contract, list item
+  types, honest-data type), `src/core/registry/` (modules with Pulls' four tabs and
+  Roster's two, data-driven features, game registration that rejects broken
+  records, layout rules: order, hide-but-not-the-last, restore, move, reset,
+  not-available, phone bar). `src/games/_template`, `hsr`, `zzz` with empty lists
+  ready for data. Unknown numbers (endgame rewards, ZZZ weekly, Bangboo rate) are
+  null and will show "No data yet". Every source line says `verified: false`
+  until someone checks it in game. Made-up "Fake Quest" game (spark instead of
+  pity, no dupes, two stamina pools, no Farm/Intel) registers with no core change.
 - 2026-10-09 · **Step 2 (R06–R08).** `src/core/theme/tokens.css` is the only
   place colours, type and sizes live; ink.5 = `#6C7F93`. Fonts self-hosted
   (Archivo with width axis, JetBrains Mono). 15 shared components in
