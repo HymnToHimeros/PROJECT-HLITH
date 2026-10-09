@@ -3,13 +3,13 @@
 Resume with: "continue from PROGRESS.md". Newest entry on top.
 
 ## Now
-- **Step 6 (R20–R23) done**, in review: tables with per-user walls, sign-in
-  screen, settings sync, built-in lists. **Waiting on you:** Supabase project URL
-  + publishable key (see `docs/SETUP.md`), then Discord and Google login apps.
+- **Supabase connected.** Tables created by the GitHub integration and checked
+  live (all 10 exist; writes without sign-in are refused). App builds now open on
+  the sign-in screen. **Waiting on you:** Discord and Google login apps
+  (`docs/SETUP.md` §2), then hosting so you can open the app (R60).
 
 ## Next
-- Connect the real Supabase project once you send the two public values, and
-  test sign-in end to end.
+- Test sign-in end to end once a login provider is on and the app is hosted.
 - R24 backups (needs a storage choice) can wait; next build step is the pull
   budget engine (R25).
 

@@ -15,6 +15,7 @@
 }
 .name {
   margin: 0;
+  font-size: 50px; /* fits the 420px card; display size is for full-width headers */
 }
 .lead {
   margin: 0 0 var(--s-3);
