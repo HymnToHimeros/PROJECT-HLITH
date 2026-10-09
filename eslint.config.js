@@ -4,8 +4,9 @@ import reactHooks from 'eslint-plugin-react-hooks';
 import globals from 'globals';
 
 // Mirrors tests/architecture.test.ts so the editor flags it before the build does.
+// Any "../" path ending in games/, or the @/games alias. A sibling file named games.ts is fine.
 const noGames = {
-  group: ['**/games', '**/games/**', '@/games', '@/games/**'],
+  regex: '^(\\.\\./)+games(/|$)|^@/games(/|$)',
   message: 'core/ and tools/ never import from games/. Wire games in src/main.tsx.',
 };
 
@@ -35,7 +36,7 @@ export default tseslint.config(
         {
           patterns: [
             noGames,
-            { group: ['**/tools', '**/tools/**', '@/tools/**'], message: 'core/ never imports from tools/.' },
+            { regex: '^(\\.\\./)+tools(/|$)|^@/tools(/|$)', message: 'core/ never imports from tools/.' },
           ],
         },
       ],
