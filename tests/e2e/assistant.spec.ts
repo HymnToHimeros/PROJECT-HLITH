@@ -6,7 +6,8 @@ import { expect, test, type Page } from '@playwright/test';
 // and Edit mode keeps what you add.
 
 const openAssistant = async (page: Page, isMobile: boolean) => {
-  if (isMobile) await page.getByRole('button', { name: 'Ask' }).click();
+  await expect(page.getByRole('heading', { level: 1 })).toBeVisible(); // app ready
+  if (isMobile) await page.getByRole('button', { name: 'Assistant', exact: true }).click();
   else await page.keyboard.press('Control+k');
   const dialog = page.getByRole('dialog', { name: 'Assistant' });
   await expect(dialog).toBeVisible();
