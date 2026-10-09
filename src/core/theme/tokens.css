@@ -1,0 +1,180 @@
+/*
+ * PROJECT-HLITH design tokens. Source: docs/DESIGN.md §3.
+ * The only place colours, type, spacing and sizes are defined.
+ * Contrast is tested in src/core/theme/tokens.test.ts.
+ */
+:root {
+  color-scheme: dark;
+
+  /* Basalt · surfaces */
+  --bg-void: #050607;
+  --bg-app: #08090b;
+  --bg-shell: #0b0d10;
+  --bg-card: #0e1115;
+  --bg-inset: #12161b;
+  --bg-raised: #141920;
+  --bg-track: #1a2027; /* progress tracks, dragged row */
+
+  --line-subtle: #161b21;
+  --line-default: #1e242c;
+  --line-mid: #232a33;
+  --line-strong: #2a333d;
+  --line-empty: #3a4652; /* dashed, no data, the em dash */
+  --ghost: #2f3944; /* placeholder initials, sheet grabber: decoration only */
+  --hatch: #101418; /* second stripe of placeholder art */
+
+  /* Glacier · text and structure */
+  --ink-1: #e6eef3;
+  --ink-2: #cfe3ef;
+  --ink-3: #a9bbc8;
+  --ink-4: #6f8494;
+  --ink-5: #6c7f93; /* lightened from #56677A: CLAUDE.md Override 4 */
+  --glacier: #7fb4d6;
+  --ok: #6fd3a8;
+
+  /* Ember · heat, rare */
+  --ember: #ff6a1f;
+  --ember-soft: #ff8a4c;
+
+  /* Vents · one per game record. --vent is set per screen by the shell. */
+  --vent-all: #cfe3ef;
+  --vent: var(--vent-all);
+  --on-vent: #08090b;
+
+  /* Rarity */
+  --rarity-top: #e8b85c;
+  --rarity-mid: #7fb4d6;
+
+  /* Type */
+  --font-words: 'Archivo Variable', Archivo, system-ui, sans-serif;
+  --font-numbers: 'JetBrains Mono Variable', 'JetBrains Mono', ui-monospace, monospace;
+
+  /* Space · 4 base */
+  --s-1: 4px;
+  --s-2: 8px;
+  --s-3: 12px;
+  --s-4: 16px;
+  --s-5: 20px;
+  --s-6: 24px;
+  --s-7: 28px;
+
+  /* Radius */
+  --r-tag: 4px;
+  --r-segment: 7px;
+  --r-row: 9px;
+  --r-button: 10px;
+  --r-card: 12px;
+  --r-hero: 14px;
+  --r-sheet: 20px;
+  --r-pill: 999px;
+
+  /* Sizes */
+  --tap-min: 44px;
+  --phone-tab: 58px;
+  --nav-row: 42px;
+  --sidebar: 248px;
+  --content-max: 1240px;
+  --assistant-panel: 420px;
+  --scrim: rgb(5 6 7 / 0.6);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  background: var(--bg-app);
+  color: var(--ink-1);
+  font-family: var(--font-words);
+  font-size: 15px;
+  line-height: 1.45;
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: var(--glacier);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--ember);
+}
+
+button {
+  font: inherit;
+  color: inherit;
+}
+
+:focus-visible {
+  outline: 2px solid var(--vent);
+  outline-offset: 2px;
+}
+
+/* Type roles */
+.t-display {
+  font-weight: 800;
+  font-stretch: 118%;
+  font-size: 64px;
+  line-height: 0.95;
+}
+
+.t-title {
+  font-weight: 800;
+  font-stretch: 110%;
+  font-size: 30px;
+  line-height: 1.1;
+}
+
+.t-card-title {
+  font-weight: 700;
+  font-size: 17px;
+}
+
+.t-caption {
+  font-size: 12px;
+  color: var(--ink-4);
+}
+
+.t-label {
+  font-family: var(--font-numbers);
+  font-weight: 600;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-5);
+}
+
+.t-num {
+  font-family: var(--font-numbers);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+@media (max-width: 819px) {
+  .t-display {
+    font-size: 44px; /* phone: 64px runs off a 390px screen */
+  }
+  .t-title {
+    font-size: 24px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+    animation: none !important;
+  }
+}

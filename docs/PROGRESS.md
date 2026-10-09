@@ -3,13 +3,11 @@
 Resume with: "continue from PROGRESS.md". Newest entry on top.
 
 ## Now
-- **Roadmap + workstreams added** (R05): `docs/ROADMAP.md` ticks itself from
-  proof files; `docs/WORKSTREAMS.md` lists who builds what. This chat is
-  **FRAME**, branches `frame/<job>`.
+- **Step 2 (R06–R08) done**, in review: tokens, shared components, `/preview` page.
 
 ## Next
-- Step 2 — Tokens (`tokens.css`, ink.5 = `#6C7F93`) and Layer 4 components with
-  a preview page.
+- Step 3 — Game contract, registries, `_template`, HSR + ZZZ records, fake-game
+  test (R09–R15).
 
 ## How to check everything
 - `npm run check` = lint + typecheck + unit tests + build.
@@ -17,6 +15,14 @@ Resume with: "continue from PROGRESS.md". Newest entry on top.
 - CI (`.github/workflows/ci.yml`) runs both on every pull request.
 
 ## Done
+- 2026-10-09 · **Step 2 (R06–R08).** `src/core/theme/tokens.css` is the only
+  place colours, type and sizes live; ink.5 = `#6C7F93`. Fonts self-hosted
+  (Archivo with width axis, JetBrains Mono). 15 shared components in
+  `src/core/ui/` reading `--vent`, never a game name. `Known<T>` honest-data
+  type in `src/core/contract/known.ts`: unknown values render "— No data yet ·
+  fix", never 0. Countdown rules (2d 04h / live clock / ember under 72 h).
+  Tests: contrast for every text colour, vent rule (7:1, not orange/red),
+  component states. Preview at `/preview`, checked at PC and phone sizes.
 - 2026-10-09 · **R05.** Self-checking roadmap (`npm run roadmap`, test fails if
   stale) and workstreams file. Step 1 merged (pull request #2).
 - 2026-10-09 · **Step 1.** React 19 + Vite 8 + TypeScript 6 (strict), ESLint,
@@ -37,8 +43,13 @@ Resume with: "continue from PROGRESS.md". Newest entry on top.
   games = flesh. Nothing in core/ or tools/ may assume HoYoverse rules.
 - 2026-10-09 · Approved: React + Vite, Supabase (database, login, server
   functions), Cloudflare Pages hosting, Resend for sign-in email.
-- 2026-10-09 · ink.5 proposed as `#6C7F93` (Override 4): 4.83:1 on bg.app,
-  4.59:1 on bg.card.
+- 2026-10-09 · ink.5 = `#6C7F93` (Override 4): 4.83:1 on bg.app, 4.59:1 on
+  bg.card, 4.7:1 on bg.shell. It's for section labels only; on bg.inset/raised it
+  is 4.4:1, so labels never go there.
+- 2026-10-09 · "No data yet" fix wording is provider-neutral ("Connect account",
+  not "Connect HoYoLAB") so other games' services fit.
+- 2026-10-09 · Display type drops from 64px to 44px on phones (not in DESIGN.md;
+  64px runs off a phone screen).
 
 ## Answers (2026-10-09)
 1. Assistant: each user's own Claude key, set in their account.
