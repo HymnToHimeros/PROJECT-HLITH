@@ -16,3 +16,19 @@ verify_jwt = false
 # Private bucket for the nightly backups (never public).
 [storage.buckets.backups]
 public = false
+
+# Export my data (R56) and Delete my account (R57): signed-in users only (checked in the function).
+[functions.export-data]
+verify_jwt = true
+
+[functions.delete-account]
+verify_jwt = true
+
+# Evening message (R51): signed-in users only.
+[functions.evening-message]
+verify_jwt = true
+
+# Calendar feed (R52): calendar apps can't sign in, so the platform check is off and
+# the long random token in the link is checked by the function itself.
+[functions.ics-feed]
+verify_jwt = false

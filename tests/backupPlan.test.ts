@@ -1,10 +1,13 @@
-import { readFileSync } from 'node:fs';
+import { readdirSync, readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { BACKUP_TABLES, backupPath, isScheduler } from '../supabase/functions/_shared/backupPlan.ts';
 
 describe('nightly backup plan', () => {
-  it('backs up every table the database creates', () => {
-    const sql = readFileSync('supabase/migrations/0001_init.sql', 'utf8');
+  it('backs up every table the migrations create', () => {
+    const sql = readdirSync('supabase/migrations')
+      .filter((f) => f.endsWith('.sql'))
+      .map((f) => readFileSync(`supabase/migrations/${f}`, 'utf8'))
+      .join('\n');
     const created = [...sql.matchAll(/create table public\.(\w+)/g)].map((m) => m[1]);
     expect([...BACKUP_TABLES].sort()).toEqual(created.sort());
   });

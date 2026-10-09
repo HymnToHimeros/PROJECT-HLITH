@@ -13,8 +13,12 @@ Resume with: "continue from PROGRESS.md". Newest entry on top.
   and a list of not-yet-released characters in `manifest.json` → Intel).
   No banner schedules exist on nanoka.cc.
 - The ★ screens still to build (Override 5): Edit mode, screenshot scan,
-  Assistant proposals, evening message and calendar feed settings, setup
-  checklist and Guide, HoYoLAB link, share a team, delete account, export data.
+  Assistant proposals, HoYoLAB link, share a team (other chats are on them).
+- Evening message to the phone every evening: needs Web Push keys (VAPID) on
+  the server and a nightly schedule. Until then Account → Notifications builds
+  the message on demand (Preview / Send a test).
+- Delete my account: after the 30-day grace period the owner completes it with
+  the service role; no job does that yet.
 - Copy your on-device data (bank log, pulls, progress) into your account.
 - Logic that belongs to other chats (see `docs/WORKSTREAMS.md`): team scoring,
   kit check data, builds and who-fits (ROSTER-LOGIC); farm material planning.
@@ -27,6 +31,22 @@ Resume with: "continue from PROGRESS.md". Newest entry on top.
 - CI (`.github/workflows/ci.yml`) runs both on every pull request.
 
 ## Done
+- 2026-10-09 · **Shell, Account, Today and Calendar drawn to the design
+  (`docs/design/HLITH App.dc.html`).** Sidebar (segmented game switcher,
+  MODULES with Edit layout beside it, boxed glyphs, sync line, Assistant,
+  Account with avatar), phone top bar with the switcher, bottom bar with glyph
+  pills and the ASK button, SAMPLE DATA marker in the header whenever an EXAMPLE
+  notice is on screen, centred sheets on PC (Account, Server, Add a game, More),
+  Edit layout over the sidebar. Account sheet with the design's rows, each opening
+  a page: Sync, Backup (Export my data, Restore that only adds, Delete my account
+  with a 30-day grace period), Notifications (evening message + calendar feed,
+  R51–R53), Game settings (server per game, your games, tasks on Today), Guide +
+  Setup checklist (R55), Layout settings, Theme (dark/light, R61), Sign out.
+  Server functions export-data (R56), delete-account (R57), ics-feed (R52),
+  evening-message (R51); migration 0002 adds deletion requests and reminder
+  settings. Today: tiles, server + currency chips, Open tasks, Live banners,
+  Coming up, plus Tonight's run and Wishlist. Calendar: legend, Monday ticks,
+  lanes, white today line, Dates list.
 - 2026-10-09 · **Every module has a real screen (R29–R30, R35–R45).** Today
   (resets, dailies/weeklies with ticks that clear at your server's reset,
   ★ tonight's run, ★ wishlist), Calendar (six-week timeline + coming up),
@@ -190,8 +210,14 @@ Resume with: "continue from PROGRESS.md". Newest entry on top.
   is 4.4:1, so labels never go there.
 - 2026-10-09 · "No data yet" fix wording is provider-neutral ("Connect account",
   not "Connect HoYoLAB") so other games' services fit.
-- 2026-10-09 · Edit layout, Account and Assistant open as a right-side panel
-  on PC and a bottom sheet on phone (DESIGN.md names the Assistant panel only).
+- 2026-10-09 · As in the design: Account, Server, Add a game and More open as a
+  centred card on PC and a bottom sheet on phone; Edit layout covers the sidebar
+  on PC; the Assistant stays a right-side panel.
+- 2026-10-09 · Delete my account never removes rows on the spot: it records a
+  request with a 30-day grace period (cancel any time, export first). Restore from
+  a backup only adds: nothing on the device is removed or overwritten.
+- 2026-10-09 · Light theme (R61) is built from the tokens (`tokens-light.css`),
+  same names, contrast tested; the full light design still comes later.
 - 2026-10-09 · Display type drops from 64px to 44px on phones (not in DESIGN.md;
   64px runs off a phone screen).
 

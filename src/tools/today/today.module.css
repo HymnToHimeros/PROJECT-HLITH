@@ -4,10 +4,28 @@
   gap: var(--s-4);
   min-width: 0;
 }
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  max-width: var(--content-max);
+  min-width: 0;
+}
 .tiles {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   gap: var(--s-3);
+}
+.tiles > div {
+  min-height: 118px;
+}
+.tiles > .bigTime > div {
+  height: 100%;
+}
+@media (max-width: 819px) {
+  .tiles {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  }
 }
 /* Big countdowns inside stat tiles: the tile sets the size, the Timer keeps its live tick. */
 .bigTime time {
@@ -17,14 +35,9 @@
 }
 .columns {
   display: grid;
-  grid-template-columns: minmax(0, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr));
   gap: var(--s-4);
   align-items: start;
-}
-@media (min-width: 1180px) {
-  .columns {
-    grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
-  }
 }
 .card {
   background: var(--bg-card);
@@ -218,4 +231,182 @@
 }
 .wish .taskBody {
   flex: 1 1 180px;
+}
+
+/* ── Design: chip row (server + currencies) ── */
+.chipRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-2);
+}
+.chipWrap {
+  display: inline-flex;
+}
+.serverChip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+  height: 36px;
+  padding: 0 12px 0 8px;
+  border-radius: var(--r-pill);
+  background: var(--bg-card);
+  border: 1px solid var(--line-strong);
+  font-size: 13px;
+  color: var(--ink-3);
+  cursor: pointer;
+}
+.serverChip:hover {
+  border-color: var(--glacier);
+}
+.serverChipEmpty {
+  border-style: dashed;
+  border-color: var(--line-empty);
+}
+.chipTag {
+  font: 700 9px/1 var(--font-numbers);
+  padding: 4px 5px;
+  border-radius: var(--r-tag);
+  color: var(--on-vent);
+}
+.chipValue {
+  color: var(--ink-1);
+  font-weight: 600;
+}
+.serverChipEmpty .chipValue {
+  color: var(--glacier);
+}
+.chipCaret {
+  color: var(--ink-4);
+  font-size: 10px;
+}
+
+/* ── Design: Open tasks ── */
+.track {
+  height: 6px;
+  border-radius: 3px;
+  background: var(--bg-track);
+  overflow: hidden;
+}
+.fill {
+  height: 100%;
+  border-radius: 3px;
+  background: var(--vent);
+}
+.taskList {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.taskRow {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--s-3);
+  min-height: 50px;
+  padding: 4px 2px;
+  border-bottom: 1px solid var(--line-subtle);
+  cursor: pointer;
+}
+.taskRow.disabled {
+  cursor: not-allowed;
+}
+.checkInput {
+  position: absolute;
+  opacity: 0;
+  width: 24px;
+  height: 24px;
+  margin: 0;
+  left: 2px;
+  cursor: inherit;
+}
+.checkBox {
+  width: 24px;
+  height: 24px;
+  flex: none;
+  border-radius: 7px;
+  border: 1.5px solid var(--line-empty);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--on-vent);
+  font-size: 14px;
+  font-weight: 800;
+}
+.done .checkBox {
+  background: var(--box-vent, var(--vent));
+  border-color: var(--box-vent, var(--vent));
+}
+.checkInput:focus-visible + .checkBox {
+  outline: 2px solid var(--vent);
+  outline-offset: 2px;
+}
+.disabled .checkBox {
+  border-style: dashed;
+}
+.taskLabel {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px var(--s-2);
+  font-size: 14px;
+  line-height: 1.35;
+  color: var(--ink-1);
+}
+.done .taskLabel {
+  color: var(--ink-4);
+  text-decoration: line-through;
+}
+.kind {
+  font: 500 11px var(--font-numbers);
+  color: var(--ink-4);
+  width: 52px;
+  text-align: right;
+  flex: none;
+}
+.promptBtn {
+  min-height: var(--tap-min);
+  padding: 0 18px;
+  border-radius: var(--r-button);
+  border: 1px solid var(--line-mid);
+  background: var(--bg-raised);
+  color: var(--ink-1);
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+/* ── Design: Coming up ── */
+.comingList {
+  display: flex;
+  flex-direction: column;
+}
+.comingRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 10px;
+  min-height: 46px;
+  padding: 4px 0;
+  border-bottom: 1px solid var(--line-subtle);
+}
+.comingMark {
+  width: 4px;
+  height: 22px;
+  border-radius: 2px;
+  flex: none;
+}
+.comingLabel {
+  flex: 1 1 140px;
+  min-width: 0;
+  font-size: 14px;
+  line-height: 1.3;
+}
+.comingWhen {
+  min-width: 64px;
+  text-align: right;
+  font-weight: 500;
 }

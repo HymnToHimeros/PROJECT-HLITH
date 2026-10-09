@@ -118,7 +118,7 @@ describe('Today', () => {
 
   it('stamina is honest: no live link, so no number', async () => {
     render(<TodayScreen {...props()} />);
-    const tile = (await screen.findByText('Power · max 240')).closest('div')?.parentElement as HTMLElement;
+    const tile = (await screen.findByText('Power', { selector: 'span' })).closest('div')?.parentElement as HTMLElement;
     expect(within(tile).getByText(/No data yet/)).toBeInTheDocument();
     expect(within(tile).getByRole('button', { name: 'Connect account' })).toBeInTheDocument();
   });
@@ -144,6 +144,22 @@ describe('Today', () => {
     render(<TodayScreen {...props({ games: [makeGame(false)] })} />);
     expect(await screen.findByText(/Example data, not yours/)).toBeInTheDocument();
     expect(screen.getAllByText('EXAMPLE').length).toBeGreaterThan(1);
+  });
+
+  it('the server chip opens the server picker for that game', async () => {
+    const openServer = vi.fn();
+    render(<TodayScreen {...props({ servers: {}, openServer })} />);
+    fireEvent.click(await screen.findByRole('button', { name: 'Choose your AA server' }));
+    expect(openServer).toHaveBeenCalledWith('aa');
+  });
+
+  it('open tasks count what is ticked, with a Daily or Weekly label', async () => {
+    act(() => setTick('aa', 'income:aa.daily', new Date(NOW - HOUR).toISOString()));
+    render(<TodayScreen {...props()} />);
+    const card = await screen.findByLabelText('Open tasks');
+    expect(within(card).getByText('1/3')).toBeInTheDocument();
+    expect(within(card).getAllByText('Daily').length).toBe(2);
+    expect(within(card).getByText('Weekly')).toBeInTheDocument();
   });
 
   it('All games: one merged screen with game tags', async () => {

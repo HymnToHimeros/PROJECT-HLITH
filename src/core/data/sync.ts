@@ -70,6 +70,7 @@ export async function startSync(store: SettingsStore, debounceMs = 1500): Promis
       setStatus({ state: 'failed', message: e instanceof Error ? e.message : 'Sync failed' });
     }
   };
+  pushNow = push;
   const unsubscribe = subscribePrefs(() => {
     if (timer) clearTimeout(timer);
     timer = setTimeout(() => void push(), debounceMs);
@@ -77,5 +78,18 @@ export async function startSync(store: SettingsStore, debounceMs = 1500): Promis
   return () => {
     unsubscribe();
     if (timer) clearTimeout(timer);
+    if (pushNow === push) pushNow = null;
   };
 }
+
+let pushNow: (() => Promise<void>) | null = null;
+
+/** "Sync now" (Account → Sync, the sidebar sync line). False when there is nothing to sync with (this device only, signed out). */
+export async function syncNow(): Promise<boolean> {
+  if (!pushNow) return false;
+  await pushNow();
+  return true;
+}
+
+/** Is a sync connection running? */
+export const canSync = () => pushNow !== null;

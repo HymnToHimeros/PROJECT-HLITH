@@ -15,6 +15,8 @@ export const BACKUP_TABLES = [
   'bank_ledger',
   'pulls',
   'plans',
+  'account_deletion_requests',
+  'reminder_settings',
 ] as const;
 
 export const BACKUP_BUCKET = 'backups';
