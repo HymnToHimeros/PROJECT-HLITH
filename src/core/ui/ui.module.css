@@ -471,6 +471,25 @@
   margin: 0;
 }
 
+@media (min-width: 820px) {
+  .scrimSide {
+    align-items: stretch;
+    justify-content: flex-end;
+  }
+  .sheetSide {
+    max-width: var(--assistant-panel);
+    max-height: none;
+    height: 100%;
+    border: 0;
+    border-left: 1px solid var(--line-mid);
+    border-radius: 0;
+    padding: var(--s-6) var(--s-5);
+  }
+  .sheetSide .grabber {
+    display: none;
+  }
+}
+
 /* ── Drag handle row ── */
 .dragRow {
   display: flex;

@@ -3,11 +3,13 @@
 Resume with: "continue from PROGRESS.md". Newest entry on top.
 
 ## Now
-- **Step 4 (R16) done**, in review: server resets and local time.
+- **Step 5 (R17–R19) done**, in review: the shell, Edit layout, server picker.
 
 ## Next
-- Step 5 — The shell: PC sidebar, phone bars, More sheet, game switcher, Edit
-  layout, server picker (R17–R19). Uses local storage until accounts exist (R20+).
+- Step 6 — Accounts and data (R20–R24): Supabase project, tables with per-user
+  walls, login (Google, Discord, email link), sync, built-in lists, backups.
+  **Needs you:** a free Supabase account and project (I'll walk you through it),
+  plus Google and Discord login apps. I can write the code and tests first.
 
 ## How to check everything
 - `npm run check` = lint + typecheck + unit tests + build.
@@ -15,6 +17,18 @@ Resume with: "continue from PROGRESS.md". Newest entry on top.
 - CI (`.github/workflows/ci.yml`) runs both on every pull request.
 
 ## Done
+- 2026-10-09 · **Step 5 (R17–R19).** `src/core/shell/`: PC sidebar (game
+  switcher All/HSR/ZZZ/+, modules, Edit layout, sync status, Assistant ⌘K,
+  Account), phone top bar + bottom bar (first 4 + More) with 500 ms
+  long-press to edit, More sheet, game picker. Edit layout: drag or arrow
+  keys, Hide (never the last), Restore, Reset, "not in this game", phone-bar
+  line. Server picker per game with each server's reset in your own time;
+  no server is guessed ("Choose your server" until picked). Your games:
+  turn games on/off, never the last, never deletes data. Addresses like
+  /hsr/pulls. Settings saved on this device (`src/core/data/prefs.ts`);
+  unreadable saved data is backed up, not wiped. Modules show a "being
+  built" card, not fake numbers. Assistant opens a placeholder.
+- 2026-10-09 · Step 4 merged (pull request #6).
 - 2026-10-09 · **Step 4 (R16).** `src/core/time/reset.ts`: game day and week
   start, next daily/weekly reset, resets counted in a window (for the pull
   budget), all from the game record's server offset and reset rule. Display
@@ -63,6 +77,8 @@ Resume with: "continue from PROGRESS.md". Newest entry on top.
   is 4.4:1, so labels never go there.
 - 2026-10-09 · "No data yet" fix wording is provider-neutral ("Connect account",
   not "Connect HoYoLAB") so other games' services fit.
+- 2026-10-09 · Edit layout, Account and Assistant open as a right-side panel
+  on PC and a bottom sheet on phone (DESIGN.md names the Assistant panel only).
 - 2026-10-09 · Display type drops from 64px to 44px on phones (not in DESIGN.md;
   64px runs off a phone screen).
 

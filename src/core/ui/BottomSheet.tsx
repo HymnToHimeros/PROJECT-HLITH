@@ -1,4 +1,5 @@
 import { useEffect, useId, useRef, type ReactNode } from 'react';
+import { cx } from './cx';
 import s from './ui.module.css';
 
 interface Props {
@@ -6,10 +7,12 @@ interface Props {
   title: string;
   onClose: () => void;
   children: ReactNode;
+  /** On PC (≥ 820 px) dock to the right as a side panel instead of a bottom sheet. */
+  side?: boolean;
 }
 
 /** Phone sheet over a scrim. Escape or a tap on the scrim closes it. */
-export function BottomSheet({ open, title, onClose, children }: Props) {
+export function BottomSheet({ open, title, onClose, children, side = false }: Props) {
   const titleId = useId();
   const ref = useRef<HTMLDivElement>(null);
 
@@ -27,10 +30,10 @@ export function BottomSheet({ open, title, onClose, children }: Props) {
 
   if (!open) return null;
   return (
-    <div className={s.scrim} onClick={onClose}>
+    <div className={cx(s.scrim, side && s.scrimSide)} onClick={onClose}>
       <div
         ref={ref}
-        className={s.sheet}
+        className={cx(s.sheet, side && s.sheetSide)}
         role="dialog"
         aria-modal="true"
         aria-labelledby={titleId}
