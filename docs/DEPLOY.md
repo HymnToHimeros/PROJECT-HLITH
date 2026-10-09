@@ -8,7 +8,8 @@
    `npm run build` and publishes `./dist` via `npx wrangler deploy` (`wrangler.jsonc`).
    Pull requests also get a test copy at `https://<version>-project-hlith.hliskjlf.workers.dev`.
 3. **Supabase** (project `qywvnvwfsknfcxgpbivo`) applies any new file in
-   `supabase/migrations/` through its GitHub integration.
+   `supabase/migrations/` and deploys the server functions declared in
+   `supabase/config.toml` (now: `gacha-import`) through its GitHub integration.
 
 ## Settings that live outside the code
 | Where | Setting | Value |
