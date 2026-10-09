@@ -43,6 +43,15 @@ const B = base({ id: 'bb', short: 'BB', name: 'Game B', vent: '#D4F23A', modules
 const sideNav = () => within(screen.getByRole('navigation', { name: 'Modules' }));
 const navLabels = () => sideNav().getAllByRole('link').map((a) => a.lastChild?.textContent);
 
+/** The phone layout (top bar, bottom bar) is drawn below 820 px; tests ask for it explicitly. */
+function phoneMode() {
+  const before = window.matchMedia;
+  window.matchMedia = ((query: string) => ({ matches: true, media: query, addEventListener: () => {}, removeEventListener: () => {} })) as unknown as typeof window.matchMedia;
+  return () => {
+    window.matchMedia = before;
+  };
+}
+
 beforeEach(() => {
   localStorage.clear();
   reloadPrefs();
@@ -83,16 +92,30 @@ describe('Shell', () => {
   });
 
   it('phone bar holds the first four modules plus More', () => {
+    const restore = phoneMode();
     window.history.replaceState(null, '', '/aa/today');
     render(<Shell games={[A, B]} />);
     const bar = within(screen.getByRole('navigation', { name: 'Modules (phone)' }));
     expect(bar.getAllByRole('button').map((b) => b.lastChild?.textContent)).toEqual(['Today', 'Pulls', 'Roster', 'Calendar', 'More']);
     fireEvent.click(bar.getByRole('button', { name: /More/ }));
     const more = within(screen.getByRole('dialog', { name: 'More' }));
-    expect(more.getAllByRole('link').map((a) => a.textContent)).toEqual(['Events', 'Banners', 'Backlog', 'Farm', 'Intel']);
+    expect(more.getAllByRole('link').map((a) => a.lastChild?.textContent)).toEqual(['Events', 'Banners', 'Backlog', 'Farm', 'Intel']);
+    restore();
+  });
+
+  it('phone top bar: game switcher, sync dot, Account; the ASK button opens the Assistant', () => {
+    const restore = phoneMode();
+    render(<Shell games={[A, B]} />);
+    expect(screen.queryByRole('complementary', { name: 'Main' })).toBeNull();
+    fireEvent.click(screen.getByRole('button', { name: 'BB' }));
+    expect(window.location.pathname).toBe('/bb/today');
+    fireEvent.click(screen.getByRole('button', { name: 'Assistant' }));
+    expect(screen.getByRole('dialog', { name: 'Assistant' })).toBeInTheDocument();
+    restore();
   });
 
   it('a 500 ms press on a phone tab opens Edit layout', () => {
+    const restore = phoneMode();
     vi.useFakeTimers();
     render(<Shell games={[A, B]} />);
     const bar = within(screen.getByRole('navigation', { name: 'Modules (phone)' }));
@@ -100,6 +123,17 @@ describe('Shell', () => {
     act(() => vi.advanceTimersByTime(500));
     expect(screen.getByRole('dialog', { name: /Edit layout/ })).toBeInTheDocument();
     vi.useRealTimers();
+    restore();
+  });
+
+  it('PC sidebar: MODULES with Edit layout beside it, sync line, Assistant and Account', () => {
+    render(<Shell games={[A, B]} />);
+    const side = within(screen.getByRole('complementary', { name: 'Main' }));
+    expect(side.getByText('MODULES')).toBeInTheDocument();
+    expect(side.getByRole('button', { name: 'Edit layout' })).toBeInTheDocument();
+    expect(side.getByRole('status')).toHaveTextContent('Saved on this device only');
+    fireEvent.click(side.getByRole('button', { name: /Account/ }));
+    expect(screen.getByRole('dialog', { name: 'Account' })).toBeInTheDocument();
   });
 });
 
@@ -151,13 +185,16 @@ describe('Edit layout', () => {
 });
 
 describe('Server picker', () => {
-  it('asks for a server until one is chosen, then shows the reset in local time', () => {
+  it('each option shows its daily reset in your time; picking one saves it', () => {
     window.history.replaceState(null, '', '/aa/today');
     render(<Shell games={[A, B]} />);
-    fireEvent.click(screen.getByRole('button', { name: 'Choose your AA server' }));
-    fireEvent.click(screen.getAllByRole('radio', { name: /Europe/ })[0] as HTMLElement);
+    fireEvent.click(screen.getByRole('button', { name: /Account/ }));
+    const group = within(screen.getByRole('radiogroup', { name: 'AA server' }));
+    const europe = group.getByRole('radio', { name: /Europe, UTC\+1 · daily reset at .+ your time/ });
+    expect(europe).toHaveAttribute('aria-checked', 'false');
+    fireEvent.click(europe);
     expect(getPrefs().servers.aa).toBe('eu');
-    expect(screen.getByRole('button', { name: /Europe · reset .+ your time/ })).toBeInTheDocument();
+    expect(europe).toHaveAttribute('aria-checked', 'true');
   });
 });
 
@@ -165,8 +202,9 @@ describe('Your games', () => {
   it('turning a game off removes it from the switcher but never the last one', () => {
     render(<Shell games={[A, B]} />);
     fireEvent.click(screen.getByRole('button', { name: 'Add or remove games' }));
-    fireEvent.click(screen.getByRole('checkbox', { name: 'Game B' }));
+    expect(screen.getByRole('dialog', { name: 'Add a game' })).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('switch', { name: 'Game B' }));
     expect(screen.queryByRole('button', { name: 'BB' })).toBeNull();
-    expect(screen.getByRole('checkbox', { name: 'Game A' })).toBeDisabled();
+    expect(screen.getByRole('switch', { name: 'Game A' })).toBeDisabled();
   });
 });

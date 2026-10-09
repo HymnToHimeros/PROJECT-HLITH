@@ -67,7 +67,7 @@ const makeGame = (banners: Banner[]): GameContract =>
 
 const show = async (banners: Banner[], open: (m: ModuleId, t?: string) => void = () => {}) => {
   render(<BannersScreen games={[makeGame(banners)]} scope="aa" servers={{}} openTab={() => {}} open={open} openAccount={() => {}} />);
-  await screen.findByText(/LIVE NOW/);
+  await screen.findAllByRole('article');
 };
 const cardTitles = () => screen.getAllByRole('article').map((a) => a.getAttribute('aria-label'));
 
@@ -81,7 +81,6 @@ describe('Banners screen', () => {
   it('lists live banners first (ending soonest on top), then upcoming (starting soonest on top), and drops ended ones', async () => {
     await show(realBanners);
     expect(cardTitles()).toEqual(['Live short', 'Live long', 'Upcoming soon', 'Upcoming late', 'Leaked one']);
-    expect(screen.getByText('LIVE NOW · 2')).toBeInTheDocument();
     expect(screen.queryByText('Already over')).not.toBeInTheDocument();
     expect(screen.queryByText(/Example data/)).not.toBeInTheDocument();
   });
@@ -92,7 +91,8 @@ describe('Banners screen', () => {
     expect(within(leak).getByText('? UNVERIFIED')).toBeInTheDocument();
     expect(within(leak).getByText('a test leaker')).toBeInTheDocument();
 
-    fireEvent.click(screen.getByRole('switch', { name: 'Hide leaks' }));
+    expect(screen.getByRole('switch', { name: 'Show leaks' })).toHaveAttribute('aria-checked', 'true');
+    fireEvent.click(screen.getByRole('switch', { name: 'Show leaks' }));
     expect(screen.queryByRole('article', { name: 'Leaked one' })).not.toBeInTheDocument();
     expect(screen.getByText('1 leaked banner hidden.')).toBeInTheDocument();
     expect(localStorage.getItem('hlith.hideLeaks')).toBe('1');
@@ -126,5 +126,36 @@ describe('Banners screen', () => {
     expect(screen.getByText(/banner list for this game still has to be added by us/)).toBeInTheDocument();
     expect(cardTitles().length).toBeGreaterThan(1);
     expect(screen.getAllByRole('article').every((a) => within(a).queryByText('EXAMPLE'))).toBe(true);
+  });
+
+  it('filters live, upcoming and leaked banners, and says rerun watch has no data yet', async () => {
+    await show(realBanners);
+    fireEvent.click(screen.getByRole('button', { name: 'Live' }));
+    expect(cardTitles()).toEqual(['Live short', 'Live long']);
+    fireEvent.click(screen.getByRole('button', { name: 'Upcoming' }));
+    expect(cardTitles()).toEqual(['Upcoming soon', 'Upcoming late', 'Leaked one']);
+    fireEvent.click(screen.getByRole('button', { name: 'Leaks' }));
+    expect(cardTitles()).toEqual(['Leaked one']);
+    fireEvent.click(screen.getByRole('button', { name: 'Rerun watch' }));
+    expect(screen.queryAllByRole('article')).toHaveLength(0);
+    expect(screen.getByText(/Rerun watch: .*No data yet/)).toBeInTheDocument();
+  });
+
+  it('real banners without art get a full-size placeholder panel with the name, never sample art', async () => {
+    const game = makeGame(realBanners);
+    const withSample = { ...game, data: { ...game.data, sampleArt: async () => [{ characterId: 'c1', art: 'https://example.test/c1.webp', portrait: '' }] } } as GameContract;
+    render(<BannersScreen games={[withSample]} scope="aa" servers={{}} openTab={() => {}} open={() => {}} openAccount={() => {}} />);
+    const card = (await screen.findAllByRole('article'))[0] as HTMLElement;
+    expect(card.querySelector('img')).toBeNull();
+    expect(within(card).getByText('NO ART YET')).toBeInTheDocument();
+  });
+
+  it('example banners feature characters with sample art and show it', async () => {
+    const game = makeGame([]);
+    const withSample = { ...game, data: { ...game.data, sampleArt: async () => [{ characterId: 'c2', art: 'https://example.test/c2.webp', portrait: '' }] } } as GameContract;
+    render(<BannersScreen games={[withSample]} scope="aa" servers={{}} openTab={() => {}} open={() => {}} openAccount={() => {}} />);
+    const first = (await screen.findAllByRole('article'))[0] as HTMLElement;
+    expect(first.querySelector('img')?.getAttribute('src')).toBe('https://example.test/c2.webp');
+    expect(within(first).getByText('SAMPLE ART')).toBeInTheDocument();
   });
 });

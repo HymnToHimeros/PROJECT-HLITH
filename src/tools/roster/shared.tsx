@@ -1,6 +1,7 @@
-import type { Character, GameContract } from '../../core/contract';
-import type { RosterEntry } from '../../core/data/userData';
-import { GameTag } from '../../core/ui';
+import type { CSSProperties, ReactNode } from 'react';
+import type { Character, GameContract, GameId } from '../../core/contract';
+import { useGameData, type GameUserData, type RosterEntry } from '../../core/data/userData';
+import { initials } from '../../core/ui';
 import r from './roster.module.css';
 
 export const NO_ENTRY: RosterEntry = { owned: false, wanted: false, dupes: 0 };
@@ -16,10 +17,7 @@ export const subtitleOf = (game: GameContract, c: Character) => `${roleLabel(gam
 /** "E2" / "M1" from the game's dupe prefix; undefined when the game has no dupes. */
 export const dupesLabel = (game: GameContract, n: number) => (game.dupes ? `${game.dupes.prefix}${n}` : undefined);
 
-/** How many characters a team holds, from the game record. */
-export function teamSizeOf(game: GameContract): number {
-  return game.teamSize;
-}
+export const rarityColor = (c: Pick<Character, 'rarity'>) => (c.rarity === 'top' ? 'var(--rarity-top)' : 'var(--rarity-mid)');
 
 /** Newest first by release date; characters without a date go after, by name. */
 export function byNewest(a: Character, b: Character): number {
@@ -29,23 +27,75 @@ export function byNewest(a: Character, b: Character): number {
   return a.name.localeCompare(b.name);
 }
 
-export function GameHeading({ game, show }: { game: GameContract; show: boolean }) {
-  if (!show) return null;
+/** Released date still ahead: the character is upcoming (shown as unverified until it's out). */
+export const isUpcoming = (c: Character, now = Date.now()) => Boolean(c.releasedAt && Date.parse(c.releasedAt) > now);
+
+/** A game tag, only when several games share the screen (DESIGN: tags appear only in All games). */
+export const tagOf = (game: GameContract, show: boolean) => (show ? { label: game.short, vent: game.vent } : undefined);
+
+/**
+ * Character art: the image fills the frame (object-fit: cover). Without art, a
+ * properly sized hatched placeholder tinted by the element, with initials.
+ * `src` comes from the character itself, or from sample art on EXAMPLE items only.
+ */
+export function CharArt({ name, src, elementColor, className, children, label = false }: { name: string; src?: string | undefined; elementColor: string; className?: string | undefined; children?: ReactNode; label?: boolean }) {
   return (
-    <h2 className={r.gameHead}>
-      <GameTag label={game.short} vent={game.vent} />
-      {game.name}
-    </h2>
+    <div className={`${r.art} ${className ?? ''}`} style={{ '--el': elementColor } as CSSProperties}>
+      {src ? (
+        <img src={src} alt="" loading="lazy" decoding="async" />
+      ) : (
+        <>
+          <span className={r.artInitials} aria-hidden="true">
+            {initials(name)}
+          </span>
+          {label && (
+            <span className={r.artLabel} aria-hidden="true">
+              ART
+            </span>
+          )}
+        </>
+      )}
+      {children}
+    </div>
   );
 }
 
-/** A small "who" chip: name plus owned / wanted / missing, never colour alone. */
-export function WhoChip({ name, status }: { name: string; status: 'owned' | 'wanted' | 'gap' }) {
-  const word = status === 'owned' ? 'owned' : status === 'wanted' ? 'wanted' : 'not owned';
+/** The art a character shows: its own art, or sample art when (and only when) it's on an example item. */
+export function artOf(c: Character, kind: 'portrait' | 'art', sample?: { art: string; portrait: string } | undefined): string | undefined {
+  const own = kind === 'portrait' ? (c.portrait ?? c.art) : (c.art ?? c.portrait);
+  return own ?? (sample ? sample[kind] : undefined);
+}
+
+/**
+ * Your data for several games at once. Each step reads one game, so the
+ * number of hooks per component never changes.
+ */
+export function WithUserData({ games, children, acc = {} }: { games: GameContract[]; children: (data: Record<GameId, GameUserData>) => ReactNode; acc?: Record<GameId, GameUserData> }) {
+  const [first, ...rest] = games;
+  if (!first) return <>{children(acc)}</>;
+  return <Step game={first} rest={rest} acc={acc} render={children} />;
+}
+
+function Step({ game, rest, acc, render }: { game: GameContract; rest: GameContract[]; acc: Record<GameId, GameUserData>; render: (data: Record<GameId, GameUserData>) => ReactNode }) {
+  const data = useGameData(game.id);
   return (
-    <span className={`${r.who} ${r[`who_${status}`] ?? ''}`}>
-      <span className={r.whoName}>{name}</span>
-      <span className={r.whoState}>{word}</span>
-    </span>
+    <WithUserData games={rest} acc={{ ...acc, [game.id]: data }}>
+      {render}
+    </WithUserData>
+  );
+}
+
+/** A section title row inside a screen: title, optional note, optional action. */
+export function SectionHead({ title, note, children, id }: { title: string; note?: ReactNode; children?: ReactNode; id?: string }) {
+  return (
+    <div className={r.sectionHead}>
+      <div className={r.sectionText}>
+        <h3 className={r.sectionTitle} id={id}>
+          {title}
+        </h3>
+        {note && <span className={r.muted}>{note}</span>}
+      </div>
+      {children}
+    </div>
   );
 }

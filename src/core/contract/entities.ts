@@ -12,7 +12,10 @@ export interface Character {
   element: string; // GameContract.elements[].id
   role: string; // GameContract.roles[].id
   releasedAt?: ISODate;
+  /** Full splash art (banners, character page). */
   art?: string;
+  /** Small portrait (tiles, team slots). */
+  portrait?: string;
   /** Where this entry came from, e.g. 'nanoka.cc'. */
   source?: string;
 }

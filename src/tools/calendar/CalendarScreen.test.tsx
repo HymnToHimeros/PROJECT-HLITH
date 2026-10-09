@@ -1,6 +1,8 @@
 import { fireEvent, render, screen, within } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 import type { GameContract, GameEvent } from '../../core/contract';
+import { act } from '@testing-library/react';
+import { addPlan, resetUserData } from '../../core/data/userData';
 import CalendarScreen from './CalendarScreen';
 
 const DAY = 86_400_000;
@@ -45,29 +47,26 @@ const show = (servers: Record<string, string>, openAccount = () => {}) =>
   render(<CalendarScreen games={[game]} scope="aa" servers={servers} openTab={() => {}} open={() => {}} openAccount={openAccount} now={NOW} />);
 
 describe('Calendar', () => {
-  it('lists what’s coming in date order', async () => {
+  it('lists every date not over yet, by start, with a countdown', async () => {
     show({ aa: 'eu' });
-    const list = await screen.findByLabelText('Coming up');
+    const list = await screen.findByLabelText('Dates');
     const texts = within(list)
       .getAllByRole('listitem')
       .map((li) => li.textContent ?? '');
     const pos = (s: string) => texts.findIndex((t) => t.includes(s));
-    expect(pos('Soon event ends')).toBeGreaterThanOrEqual(0);
-    expect(pos('Soon event ends')).toBeLessThan(pos('Middle event starts'));
-    expect(pos('Middle event starts')).toBeLessThan(pos('Middle event ends'));
-    expect(pos('Middle event ends')).toBeLessThan(pos('Leaked event starts'));
-    expect(pos('Leaked event starts')).toBeLessThan(pos('Late event ends'));
-    expect(pos('Late event ends')).toBeLessThan(pos('Version 1.2 ends'));
-    // Dates are really ascending.
-    const times = within(list)
-      .getAllByRole('listitem')
-      .map((li) => Date.parse(li.querySelector('time')?.getAttribute('dateTime') ?? ''));
-    expect([...times].sort((a, b) => a - b)).toEqual(times);
+    expect(pos('Version 1.2')).toBe(0);
+    expect(pos('Soon event')).toBeLessThan(pos('Middle event'));
+    expect(pos('Late event')).toBeLessThan(pos('Middle event'));
+    expect(pos('Middle event')).toBeLessThan(pos('Leaked event'));
+    // Running: "ends in"; not started: "in".
+    expect(texts[pos('Soon event')]).toMatch(/ends in/);
+    expect(texts[pos('Middle event')]).toMatch(/in \d/);
+    expect(texts[pos('Middle event')]).not.toMatch(/ends in/);
   });
 
   it('weekly resets come from your server; endgame cycles from the record’s start date', async () => {
     show({ aa: 'eu' });
-    await screen.findByLabelText('Coming up');
+    await screen.findByLabelText('Dates');
     expect(screen.getAllByText('Weekly reset').length).toBeGreaterThan(3);
     expect(screen.getAllByText(/Deep Tower/).length).toBeGreaterThan(0);
     expect(screen.queryByText(/Example data, not yours/)).toBeNull();
@@ -75,7 +74,7 @@ describe('Calendar', () => {
 
   it('leaks are marked unverified with their source', async () => {
     show({ aa: 'eu' });
-    await screen.findByLabelText('Coming up');
+    await screen.findByLabelText('Dates');
     expect(screen.getAllByText('? UNVERIFIED').length).toBeGreaterThan(0);
     expect(screen.getAllByText('a forum').length).toBeGreaterThan(0);
   });
@@ -90,8 +89,16 @@ describe('Calendar', () => {
 
   it('a lane with nothing in the window says so', async () => {
     show({ aa: 'eu' });
-    await screen.findByLabelText('Coming up');
+    await screen.findByLabelText('Dates');
     // This game has no character banner types, so there are no example banners either, and the lane says so.
     expect(screen.getAllByText('Nothing in these six weeks.').length).toBeGreaterThan(0);
+  });
+
+  it('shows your approved plans in "Your plans" instead of the example plan', async () => {
+    resetUserData();
+    act(() => addPlan('aa', { id: 'p1', title: 'Farm relics before the banner', start: new Date(NOW + 2 * 86_400_000).toISOString(), source: 'assistant', status: 'active', at: new Date(NOW).toISOString() }));
+    show({ aa: 'eu' });
+    expect((await screen.findAllByText('Farm relics before the banner')).length).toBeGreaterThan(0);
+    resetUserData();
   });
 });

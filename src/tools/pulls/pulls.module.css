@@ -1,19 +1,13 @@
+/* Pulls, drawn after docs/design/HLITH App.dc.html (Pulls → Planner / Calculator / Bank log / History). */
+.page,
 .stack {
   display: flex;
   flex-direction: column;
   gap: var(--s-4);
+  min-width: 0;
 }
-.notice {
-  display: flex;
-  align-items: flex-start;
-  gap: var(--s-3);
-  padding: var(--s-3) var(--s-4);
-  border-radius: var(--r-card);
-  border: 1px dashed var(--glacier);
-  background: color-mix(in srgb, var(--glacier) 6%, transparent);
-  color: var(--ink-2);
-  font-size: 13px;
-  line-height: 1.45;
+.page {
+  max-width: var(--content-max);
 }
 .gameHead {
   display: flex;
@@ -23,9 +17,10 @@
   font-size: 15px;
   font-weight: 700;
 }
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
   gap: var(--s-3);
 }
 .card {
@@ -38,20 +33,72 @@
   gap: var(--s-3);
   min-width: 0;
 }
-.cardHead {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: var(--s-2);
-}
 .cardTitle {
   margin: 0;
   font-size: 17px;
   font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  flex-wrap: wrap;
+}
+.kindRow {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--s-2);
 }
 .kind {
+  flex: 1;
   font-size: 12px;
   color: var(--ink-4);
+}
+.muted {
+  color: var(--ink-4);
+  font-size: 12px;
+}
+.small {
+  font: 500 11px var(--font-numbers);
+  color: var(--ink-4);
+}
+.range {
+  font: 500 12px var(--font-numbers);
+  color: var(--ink-3);
+}
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* ── Planner ── */
+.planGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 360px), 1fr));
+  gap: 14px;
+}
+.planCard {
+  composes: card;
+  border-left: 3px solid var(--vent);
+}
+.leakCard {
+  border-style: dashed;
+  border-left-style: dashed;
+}
+.titleBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.bigTitle {
+  margin: 0;
+  font-weight: 800;
+  font-stretch: 110%;
+  font-size: 22px;
+  line-height: 1.15;
 }
 .figures {
   display: grid;
@@ -66,13 +113,48 @@
 }
 .figLabel {
   font-size: 12px;
-  color: var(--ink-3);
+  color: var(--ink-4);
 }
 .figValue {
-  font: 600 22px/1 var(--font-numbers);
+  font: 600 24px/1 var(--font-numbers);
   font-variant-numeric: tabular-nums;
 }
+.dim {
+  color: var(--ink-3);
+}
+.bar {
+  position: relative;
+  height: 8px;
+  border-radius: 4px;
+  background: var(--bg-track);
+  overflow: hidden;
+}
+.barBy,
+.barHave {
+  position: absolute;
+  inset: 0 auto 0 0;
+  background: var(--vent);
+}
+.barBy {
+  opacity: 0.4;
+}
+.verdictRow {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--s-2);
+  font-size: 12px;
+}
+.ok {
+  color: var(--ok);
+  font-weight: 600;
+}
+.short {
+  color: var(--ember-soft);
+  font-weight: 600;
+}
 .odds {
+  margin: 0;
   display: flex;
   flex-direction: column;
   gap: 4px;
@@ -86,67 +168,52 @@
   justify-content: space-between;
   gap: var(--s-2);
 }
+.oddsRow dt,
+.oddsRow dd {
+  margin: 0;
+}
 .oddsValue {
   font: 600 13px var(--font-numbers);
   color: var(--ink-1);
-}
-.verdict {
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--ink-1);
-}
-.table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 14px;
-}
-.table th {
-  text-align: left;
-  font: 600 10px var(--font-numbers);
-  letter-spacing: 0.12em;
-  color: var(--ink-5);
-  padding: 8px 10px;
-  border-bottom: 1px solid var(--line-default);
-}
-.table td {
-  padding: 10px;
-  border-bottom: 1px solid var(--line-subtle);
-  vertical-align: top;
-}
-.num {
-  font-family: var(--font-numbers);
-  font-variant-numeric: tabular-nums;
   text-align: right;
-  white-space: nowrap;
 }
-.muted {
-  color: var(--ink-4);
+.leftOut summary,
+.tryPity summary {
+  cursor: pointer;
+  color: var(--glacier);
   font-size: 12px;
+  font-weight: 600;
+  min-height: 32px;
+  display: flex;
+  align-items: center;
 }
-.tableWrap {
-  overflow-x: auto;
+.leftOut {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.leftOut[open] {
+  gap: 4px;
+}
+.tryPity {
   background: var(--bg-card);
   border: 1px solid var(--line-default);
-  border-radius: var(--r-card);
+  border-radius: var(--r-button);
+  padding: 4px 14px;
 }
-.totalRow td {
-  border-bottom: 0;
-  font-weight: 700;
+.tryPity summary {
+  min-height: 36px;
+  font-size: 13px;
 }
-.toggle {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--s-2);
-  font-size: 14px;
-  color: var(--ink-2);
-  min-height: var(--tap-min);
-  cursor: pointer;
+.tryBody {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: var(--s-3);
+  padding: var(--s-2) 0 var(--s-3);
 }
-.toggle input {
-  width: 18px;
-  height: 18px;
-  accent-color: var(--vent);
-}
+
+/* ── Forms ── */
 .form {
   display: flex;
   flex-wrap: wrap;
@@ -159,6 +226,10 @@
   gap: 4px;
   font-size: 12px;
   color: var(--ink-3);
+  min-width: 0;
+}
+.grow {
+  flex: 1 1 200px;
 }
 .input {
   min-height: var(--tap-min);
@@ -169,6 +240,7 @@
   color: var(--ink-1);
   font: inherit;
   font-size: 14px;
+  max-width: 100%;
 }
 .textarea {
   min-height: 88px;
@@ -189,15 +261,349 @@
   font-size: 13px;
   color: var(--ember-soft);
 }
-.chips {
+.note {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--ink-3);
+  max-width: 820px;
+}
+.linkButton {
+  align-self: flex-start;
+  border: 0;
+  background: none;
+  padding: 0;
+  min-height: 28px;
+  color: var(--glacier);
+  font: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.linkButton:hover {
+  color: var(--ember);
+}
+
+/* ── Calculator ── */
+.calcGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(min(100%, 280px), 1fr);
+  gap: 14px;
+  align-items: start;
+}
+@media (max-width: 1100px) {
+  .calcGrid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+.calcHead {
   display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  justify-content: space-between;
   flex-wrap: wrap;
+}
+.rows {
+  display: flex;
+  flex-direction: column;
+}
+.row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 54px;
+  padding: 4px 0;
+  border-bottom: 1px solid var(--line-subtle);
+}
+.rowMain {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.rowLabel {
+  font-size: 14px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  flex-wrap: wrap;
+}
+.rowSub {
+  font-size: 12px;
+  color: var(--ink-4);
+}
+.rowEnd {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 3px;
+  text-align: right;
+}
+.rowValue {
+  font: 600 15px var(--font-numbers);
+  color: var(--ink-1);
+}
+.off {
+  font: 600 15px var(--font-numbers);
+  color: var(--ink-4);
+}
+.groupList {
+  margin: 2px 0 0;
+  padding-left: 1.1em;
+  font-size: 12px;
+  color: var(--ink-4);
+}
+.passDate {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: 6px;
+}
+.dateInput {
+  min-height: 32px;
+  padding: 0 8px;
+  border-radius: var(--r-segment);
+  border: 1px solid var(--line-mid);
+  background: var(--bg-inset);
+  color: var(--ink-1);
+  font: 12px var(--font-numbers);
+}
+.totalLine {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding-top: 6px;
+}
+.totalText {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.totalLabel {
+  font-size: 13px;
+  color: var(--ink-3);
+}
+.totalFigure {
+  display: flex;
+  align-items: baseline;
   gap: 6px;
 }
-.top {
-  color: var(--rarity-top);
+.totalValue {
+  font: 600 44px/1 var(--font-numbers);
+  letter-spacing: -0.03em;
+}
+.spend {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--s-3);
+}
+.spendTile {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: var(--s-3);
+  border-radius: var(--r-button);
+  background: var(--bg-inset);
+}
+
+/* ── Bank log ── */
+.ledger {
+  composes: card;
+  padding: 8px 16px;
+  gap: 0;
+}
+.ledgerHead,
+.ledgerRow {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(72px, auto);
+  gap: 12px;
+  align-items: center;
+}
+.ledgerHead {
+  padding: 10px 0;
+  border-bottom: 1px solid var(--line-default);
+  font: 600 10px var(--font-numbers);
+  letter-spacing: 0.12em;
+  color: var(--ink-5);
+}
+.right {
+  text-align: right;
+}
+.ledgerList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.ledgerRow {
+  min-height: 54px;
+  border-bottom: 1px solid var(--line-subtle);
+  padding: 4px 0;
+}
+.ledgerMain {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+.change {
+  font: 600 14px var(--font-numbers);
+  text-align: right;
+  color: var(--ink-1);
+}
+.plus {
+  color: var(--ok);
+}
+.balance {
+  font: 500 13px var(--font-numbers);
+  text-align: right;
+  color: var(--ink-3);
+}
+.ledger > .muted {
+  padding: 10px 0 6px;
+}
+
+/* ── History ── */
+.noHistory {
+  border: 1.5px dashed var(--line-strong);
+  border-radius: var(--r-hero);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  background: var(--bg-shell);
+}
+.noDataLabel {
+  font: 600 11px var(--font-numbers);
+  letter-spacing: 0.12em;
+  color: var(--ink-4);
+}
+.noHistoryTitle {
+  margin: 0;
+  font-weight: 700;
+  font-size: 20px;
+}
+.noHistoryBody {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--ink-3);
+  max-width: 560px;
+}
+.ways {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+  gap: 12px;
+}
+.way {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-height: 96px;
+  padding: 16px;
+  border-radius: var(--r-card);
+  background: var(--bg-card);
+  border: 1px solid var(--line-default);
+  color: var(--ink-1);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.way:hover {
+  border-color: var(--glacier);
+}
+.wayOn {
+  border-color: var(--vent);
+  box-shadow: inset 3px 0 0 var(--vent);
+}
+.wayTitle {
+  font-size: 15px;
   font-weight: 700;
 }
+.waySub {
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--ink-3);
+}
+.pityGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 220px), 1fr));
+  gap: var(--s-3);
+}
+.topList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.topRow {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1.2fr) minmax(0, 0.8fr) auto minmax(0, 1fr);
+  gap: 10px;
+  align-items: center;
+  min-height: 44px;
+  border-bottom: 1px solid var(--line-subtle);
+}
+@media (max-width: 700px) {
+  .topRow {
+    grid-template-columns: minmax(0, 1fr) auto;
+    padding: 6px 0;
+  }
+}
+.topName {
+  font-weight: 700;
+  color: var(--rarity-top);
+}
 .lost {
-  color: var(--ink-4);
+  color: var(--ink-3);
+}
+.topPity {
+  font: 600 14px var(--font-numbers);
+  text-align: right;
+}
+.tableWrap {
+  overflow-x: auto;
+  border: 1px solid var(--line-default);
+  border-radius: var(--r-button);
+}
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+.table th {
+  text-align: left;
+  font: 600 10px var(--font-numbers);
+  letter-spacing: 0.12em;
+  color: var(--ink-5);
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--line-default);
+}
+.table td {
+  padding: 10px;
+  border-bottom: 1px solid var(--line-subtle);
+}
+.num {
+  font-family: var(--font-numbers);
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+  white-space: nowrap;
+}
+.table th.num {
+  text-align: right;
+}
+
+@media (max-width: 520px) {
+  .figValue {
+    font-size: 20px;
+  }
+  .totalValue {
+    font-size: 36px;
+  }
+  .ledger {
+    padding: 4px 12px;
+  }
 }

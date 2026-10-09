@@ -22,6 +22,11 @@ export interface ModuleScreenProps {
   open: (module: ModuleId, tab?: string) => void;
   /** Open the account panel (server, games, sign-in). */
   openAccount: () => void;
+  /**
+   * Open the server picker for one game (the design's "Server ▾" chip). Optional so
+   * older screens and tests keep working; when missing, fall back to openAccount.
+   */
+  openServer?: (game: GameId) => void;
 }
 export type ModuleScreen = ComponentType<ModuleScreenProps>;
 type ScreenLoader = () => Promise<{ default: ModuleScreen }>;

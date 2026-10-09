@@ -4,7 +4,7 @@ import { MODULES } from '../registry/modules';
 import { hiddenIn, hide, move, notAvailable, PHONE_BAR_SIZE, reset, restore, slot, type LayoutState, type Scope } from '../registry/layout';
 import { Button } from '../ui/Button';
 import { DragHandleRow } from '../ui/DragHandleRow';
-import s from './shell.module.css';
+import { HowTo } from '../ui/HowTo';
 import p from './picker.module.css';
 
 interface Props {
@@ -13,13 +13,17 @@ interface Props {
   layout: LayoutState;
   onChange: (layout: LayoutState) => void;
   onDone: () => void;
+  /** "Honkai: Star Rail" or "All games". */
+  scopeName: string;
 }
+
+const two = (n: number) => String(n).padStart(2, '0');
 
 /**
  * Edit layout (DESIGN §1 rules): drag ⋮⋮ (or arrow keys on it) to reorder, Hide,
  * Restore, Reset to default. The dashed line shows where the phone bar ends.
  */
-export function EditLayout({ games, scope, layout, onChange, onDone }: Props) {
+export function EditLayout({ games, scope, layout, onChange, onDone, scopeName }: Props) {
   const visible = slot(games, scope, layout);
   const hidden = hiddenIn(games, scope, layout);
   const missing = notAvailable(games, scope);
@@ -59,49 +63,69 @@ export function EditLayout({ games, scope, layout, onChange, onDone }: Props) {
   };
 
   return (
-    <div className={s.section}>
-      <p className={s.note}>Drag ⋮⋮ or use the arrow keys on it. The first {PHONE_BAR_SIZE} sit in the phone bar.</p>
-      <div className={p.rows} ref={rowsRef}>
-        {shown.map((id, i) => (
-          <div key={id} data-row>
-            {i === PHONE_BAR_SIZE && <div className={p.cut}>PHONE BAR ↑ · MORE ↓</div>}
-            <DragHandleRow
-              label={MODULES[id].label}
-              state={drag?.id === id ? 'dragging' : 'normal'}
-              {...(visible.length > 1 ? { onHide: () => onChange(hide(games, scope, layout, id)) } : {})}
-              handleProps={{ onPointerDown: onPointerDown(id), onPointerMove, onPointerUp, onPointerCancel: () => setDrag(null), onKeyDown: onKeyDown(id) }}
-            />
-          </div>
-        ))}
+    <>
+      <div className={p.editHead}>
+        <span className={p.editLabel}>EDIT LAYOUT</span>
+        <h3 className={p.editTitle}>{scopeName}</h3>
+        <p className={p.editNote}>Drag ⋮⋮ to reorder. Saved for this view only.</p>
       </div>
-      <span className="visually-hidden" aria-live="polite">
-        {announce}
-      </span>
-
-      {hidden.length > 0 && (
-        <div className={s.section}>
-          <span className={s.sectionLabel}>HIDDEN · STILL IN THIS GAME</span>
-          {hidden.map((id) => (
-            <DragHandleRow key={id} label={MODULES[id].label} state="hidden" onRestore={() => onChange(restore(layout, id))} />
+      <div className={p.editBody}>
+        <div className={p.rows} ref={rowsRef}>
+          {shown.map((id, i) => (
+            <div key={id} data-row>
+              <DragHandleRow
+                label={MODULES[id].label}
+                num={two(i + 1)}
+                state={drag?.id === id ? 'dragging' : 'normal'}
+                {...(visible.length > 1 ? { onHide: () => onChange(hide(games, scope, layout, id)) } : {})}
+                handleProps={{ onPointerDown: onPointerDown(id), onPointerMove, onPointerUp, onPointerCancel: () => setDrag(null), onKeyDown: onKeyDown(id) }}
+              />
+              {i === PHONE_BAR_SIZE - 1 && shown.length > PHONE_BAR_SIZE && <div className={p.cut}>PHONE BAR ↑ · MORE ↓</div>}
+            </div>
           ))}
         </div>
-      )}
-      {missing.length > 0 && (
-        <div className={s.section}>
-          <span className={s.sectionLabel}>NOT IN THIS GAME</span>
-          {missing.map((id) => (
-            <DragHandleRow key={id} label={MODULES[id].label} state="not-available" />
-          ))}
-        </div>
-      )}
+        <span className="visually-hidden" aria-live="polite">
+          {announce}
+        </span>
 
+        {hidden.length > 0 && (
+          <>
+            <span className={p.editSection}>HIDDEN · STILL IN THIS GAME</span>
+            <div className={p.rows}>
+              {hidden.map((id) => (
+                <DragHandleRow key={id} label={MODULES[id].label} state="hidden" onRestore={() => onChange(restore(layout, id))} />
+              ))}
+            </div>
+          </>
+        )}
+        {missing.length > 0 && (
+          <>
+            <span className={p.editSection}>NOT IN THIS GAME</span>
+            <div className={p.rows}>
+              {missing.map((id) => (
+                <DragHandleRow key={id} label={MODULES[id].label} state="not-available" />
+              ))}
+            </div>
+          </>
+        )}
+        <div style={{ marginTop: 'var(--s-4)' }}>
+          <HowTo
+            steps={[
+              'Press and hold ⋮⋮ next to a module, then drag it up or down. On a keyboard, focus ⋮⋮ and use the arrow keys.',
+              `The first ${PHONE_BAR_SIZE} modules sit in the phone’s bottom bar; the rest go under More.`,
+              'Hide takes a module out of the menu. It stays in the game: Restore brings it back with everything you saved.',
+              'Each view (All games, or one game) keeps its own order. Reset to default puts this view back the way it came.',
+            ]}
+          />
+        </div>
+      </div>
       <div className={p.actions}>
         <Button onClick={() => onChange(reset())}>Reset to default</Button>
         <Button variant="primary" onClick={onDone}>
           Done
         </Button>
       </div>
-    </div>
+    </>
   );
 }
 

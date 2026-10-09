@@ -91,11 +91,11 @@ describe('Backlog screen', () => {
   it('switching a category off removes it from the pull estimate', async () => {
     await show();
     // Rewards left: 840 + 570 + 701 + 425 + 720 + 868 = 4,124 Gem → 25 pulls.
-    expect(within(summary()).getByText('25')).toBeInTheDocument();
+    expect(within(summary()).getByText('+25')).toBeInTheDocument();
     fireEvent.click(screen.getByRole('switch', { name: 'Count Achievements toward pulls' }));
     expect(gameData('aa').backlogOff).toEqual(['achievements']);
     // Without achievements (868): 3,256 Gem → 20 pulls.
-    expect(within(summary()).getByText('20')).toBeInTheDocument();
+    expect(within(summary()).getByText('+20')).toBeInTheDocument();
     expect(within(summary()).getByText(/switched off: about 5 more pulls/)).toBeInTheDocument();
   });
 

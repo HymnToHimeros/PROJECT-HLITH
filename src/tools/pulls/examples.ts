@@ -18,9 +18,13 @@ export function exampleBank(game: GameContract): Known<Record<string, number>> {
   return known(value, 'user', new Date().toISOString());
 }
 
-/** A few banners: the newest top-rarity character on each character banner type, open for 18 more days. */
-export function exampleBanners(game: GameContract, characters: Character[], now: number): Banner[] {
-  const tops = newestTops(characters);
+/**
+ * A few banners: a top-rarity character on each banner type, open for 18 more
+ * days. Characters that have sample art come first, so example banners can show
+ * a picture (sample art is used only for example data).
+ */
+export function exampleBanners(game: GameContract, characters: Character[], now: number, withArt: string[] = []): Banner[] {
+  const tops = featuredPool(characters, withArt);
   return game.bannerTypes
     .filter((t) => t.target === 'character' || t.target === 'weapon')
     .map((t, i) => {
@@ -37,6 +41,46 @@ export function exampleBanners(game: GameContract, characters: Character[], now:
 }
 
 const newestTops = (characters: Character[]) => characters.filter((c) => c.rarity === 'top').sort((a, b) => (b.releasedAt ?? b.id).localeCompare(a.releasedAt ?? a.id));
+
+/** Top-rarity characters for example banners: those with sample art first (newest first), then the rest. */
+export function featuredPool(characters: Character[], withArt: string[] = []): Character[] {
+  const tops = newestTops(characters);
+  const art = new Set(withArt);
+  return [...tops.filter((c) => art.has(c.id)), ...tops.filter((c) => !art.has(c.id))];
+}
+
+/**
+ * The live example banners plus one upcoming and one leaked banner, so every
+ * part of the Planner and Banners screens can be seen before the real list.
+ */
+export function exampleBannerSchedule(game: GameContract, characters: Character[], now: number, withArt: string[] = []): Banner[] {
+  const live = exampleBanners(game, characters, now, withArt);
+  const type = game.bannerTypes.find((t) => t.target === 'character');
+  if (!type) return live;
+  const tops = featuredPool(characters, withArt);
+  const next = tops[live.length];
+  const later = tops[live.length + 1];
+  const upcoming: Banner[] = [
+    {
+      id: `example-${type.id}-next`,
+      type: type.id,
+      title: next?.name ?? 'Next featured character',
+      featured: next ? [next.id] : [],
+      start: new Date(now + 18 * DAY).toISOString(),
+      end: new Date(now + 39 * DAY).toISOString(),
+    },
+    {
+      id: `example-${type.id}-leak`,
+      type: type.id,
+      title: later?.name ?? 'Leaked featured character',
+      featured: later ? [later.id] : [],
+      start: new Date(now + 39 * DAY).toISOString(),
+      end: new Date(now + 60 * DAY).toISOString(),
+      leak: { source: 'example source' },
+    },
+  ];
+  return [...live, ...upcoming];
+}
 
 export const exampleVersionEnd = (now: number) => now + 21 * DAY;
 

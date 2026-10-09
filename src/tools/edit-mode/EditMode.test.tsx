@@ -1,0 +1,122 @@
+import { act, fireEvent, render, renderHook, screen, within } from '@testing-library/react';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+import type { BacklogItem, GameContract, GameEvent } from '../../core/contract';
+import { gameData, resetUserData, saveOwnItem, setOwnItemHidden } from '../../core/data/userData';
+import { EditMode } from './EditMode';
+import { mergeOwnItems, mergeRows } from './merge';
+import { useWithOwnItems } from './useWithOwnItems';
+
+const events: GameEvent[] = [
+  { id: 'ev1', title: 'Built-in Event', kind: 'event', start: '2026-10-01T00:00:00Z', end: '2026-10-20T00:00:00Z', reward: 800, currency: 'gem' },
+  { id: 'ev2', title: 'Second Event', kind: 'login', start: '2026-10-01T00:00:00Z', end: '2026-10-08T00:00:00Z', reward: null, currency: 'gem', loginDays: 7 },
+];
+const backlog: BacklogItem[] = [{ id: 'bl1', title: 'Story', category: 'story', total: 12, reward: 600, currency: 'gem' }];
+const AT = '2026-10-09T10:00:00Z';
+
+const game = {
+  id: 'aa',
+  short: 'AA',
+  name: 'Game A',
+  vent: '#A99BFF',
+  currencies: [{ id: 'gem', name: 'Gem', perPull: 160 }],
+  bannerTypes: [{ id: 'character', label: 'Character banner' }],
+  data: { events: async () => events, banners: async () => [], backlog: async () => backlog },
+} as unknown as GameContract;
+
+describe('Edit mode: your own items on top of the built-in list', () => {
+  beforeEach(() => {
+    localStorage.clear();
+    resetUserData();
+  });
+
+  it('adds your item, applies your change, and leaves hidden ones out', () => {
+    saveOwnItem('aa', 'events', { id: 'own-1', mine: true, fields: { title: 'My event', kind: 'web', start: AT, end: '2026-10-12T10:00:00Z', currency: 'gem', reward: 40 }, hidden: false, at: AT });
+    saveOwnItem('aa', 'events', { id: 'ev1', mine: false, fields: { reward: 1000 }, hidden: false, at: AT });
+    setOwnItemHidden('aa', 'events', 'ev2', true, AT);
+    const list = mergeOwnItems('events', events, gameData('aa').ownItems.events);
+    expect(list.map((e) => e.id)).toEqual(['ev1', 'own-1']);
+    expect(list[0]?.reward).toBe(1000);
+    expect(list[0]?.title).toBe('Built-in Event'); // unchanged fields come from the list
+    const rows = mergeRows('events', events, gameData('aa').ownItems.events);
+    expect(rows.map((r) => r.origin)).toEqual(['changed', 'built-in', 'mine']);
+    expect(rows[1]?.hidden).toBe(true);
+  });
+
+  it('hiding is a flag: showing it again brings it back, nothing is deleted', () => {
+    setOwnItemHidden('aa', 'backlog', 'bl1', true, AT);
+    expect(mergeOwnItems('backlog', backlog, gameData('aa').ownItems.backlog)).toEqual([]);
+    expect(gameData('aa').ownItems.backlog.bl1).toMatchObject({ hidden: true });
+    setOwnItemHidden('aa', 'backlog', 'bl1', false, AT);
+    expect(mergeOwnItems('backlog', backlog, gameData('aa').ownItems.backlog)).toEqual(backlog);
+  });
+
+  it('a list update never touches your items (they are matched by id)', () => {
+    saveOwnItem('aa', 'backlog', { id: 'own-x', mine: true, fields: { title: 'Mine', category: 'story', total: 3, reward: null, currency: 'gem' }, hidden: false, at: AT });
+    const updated = [...backlog, { id: 'bl2', title: 'New in list', category: 'modes', total: 5, reward: 100, currency: 'gem' }];
+    expect(mergeOwnItems('backlog', updated, gameData('aa').ownItems.backlog).map((b) => b.id)).toEqual(['bl1', 'bl2', 'own-x']);
+  });
+
+  it('skips an own item that is missing required fields instead of showing a broken row', () => {
+    saveOwnItem('aa', 'events', { id: 'own-bad', mine: true, fields: { title: 'No dates' }, hidden: false, at: AT });
+    expect(mergeOwnItems('events', events, gameData('aa').ownItems.events).map((e) => e.id)).toEqual(['ev1', 'ev2']);
+  });
+
+  it('data saved before Edit mode existed still loads (new fields start empty, old ones kept)', async () => {
+    localStorage.setItem('hlith.userdata', JSON.stringify({ version: 1, games: { aa: { ledger: [], backlog: { bl1: 2 } } } }));
+    vi.resetModules();
+    const fresh = await import('../../core/data/userData');
+    expect(fresh.gameData('aa').backlog).toEqual({ bl1: 2 });
+    expect(fresh.gameData('aa').ownItems).toEqual({ events: {}, banners: {}, backlog: {} });
+    expect(fresh.gameData('aa').plans).toEqual([]);
+    expect(fresh.gameData('aa').assistantActions).toEqual([]);
+  });
+
+  it('useWithOwnItems gives screens the merged list', () => {
+    saveOwnItem('aa', 'backlog', { id: 'own-y', mine: true, fields: { title: 'Mine', category: 'story', total: 3, reward: null, currency: 'gem' }, hidden: false, at: AT });
+    const { result } = renderHook(() => useWithOwnItems(game, 'backlog', backlog));
+    expect(result.current.map((b) => b.id)).toEqual(['bl1', 'own-y']);
+    act(() => setOwnItemHidden('aa', 'backlog', 'own-y', true, AT));
+    expect(result.current.map((b) => b.id)).toEqual(['bl1']);
+  });
+
+  it('the screen: add an item, hide a built-in one, show hidden', async () => {
+    render(<EditMode game={game} kind="backlog" />);
+    expect(await screen.findByText('Story')).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'Add backlog item' }));
+    const form = screen.getByRole('form', { name: 'Add backlog item' });
+    fireEvent.change(within(form).getByLabelText('Name'), { target: { value: 'Hidden achievements' } });
+    fireEvent.change(within(form).getByLabelText('Steps in total'), { target: { value: '20' } });
+    fireEvent.change(within(form).getByLabelText(/Reward/), { target: { value: '100' } });
+    fireEvent.submit(form);
+    expect(screen.getByText('Hidden achievements')).toBeInTheDocument();
+    expect(screen.getByText('YOURS')).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole('button', { name: 'Hide Story' }));
+    expect(screen.queryByText('Story')).not.toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'Show hidden (1)' }));
+    expect(screen.getByText('Story')).toBeInTheDocument();
+    expect(gameData('aa').ownItems.backlog.bl1?.hidden).toBe(true);
+  });
+
+  it('the screen: changing a built-in item stores only what you changed', async () => {
+    render(<EditMode game={game} kind="backlog" />);
+    await screen.findByText('Story');
+    fireEvent.click(screen.getByRole('button', { name: 'Change Story' }));
+    const form = screen.getByRole('form', { name: 'Change Story' });
+    fireEvent.change(within(form).getByLabelText('Steps in total'), { target: { value: '14' } });
+    fireEvent.submit(form);
+    expect(gameData('aa').ownItems.backlog.bl1).toMatchObject({ mine: false, fields: { total: 14 } });
+    expect(screen.getByText('CHANGED')).toBeInTheDocument();
+  });
+
+  it('the screen: a bad form says what to fix and saves nothing', async () => {
+    render(<EditMode game={game} kind="events" />);
+    await screen.findByText('Built-in Event');
+    fireEvent.click(screen.getByRole('button', { name: 'Add event' }));
+    const form = screen.getByRole('form', { name: 'Add event' });
+    fireEvent.change(within(form).getByLabelText('Name'), { target: { value: 'No dates' } });
+    fireEvent.submit(form);
+    expect(screen.getByRole('alert')).toHaveTextContent('Set when it starts and ends.');
+    expect(gameData('aa').ownItems.events).toEqual({});
+  });
+});
