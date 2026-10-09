@@ -208,7 +208,8 @@
   gap: var(--s-2);
   min-width: 0;
 }
-.notOwned {
+/* Not owned: dim the art only, never the text (text keeps 4.5:1). */
+.notOwned .charArt > * {
   opacity: 0.55;
 }
 .charArt {

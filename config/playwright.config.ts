@@ -18,6 +18,7 @@ export default defineConfig({
     // Browser tests run without the live project ("this device only" mode).
     command: 'VITE_SUPABASE_URL= VITE_SUPABASE_PUBLISHABLE_KEY= npm run build && npm run preview -- --port 4173 --strictPort',
     port: 4173,
+    timeout: 180_000, // the build can be slow on a busy machine
     reuseExistingServer: !process.env.CI,
   },
 });
