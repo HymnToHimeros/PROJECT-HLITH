@@ -38,7 +38,7 @@ PROJECT-HLITH/
 ├─ CLAUDE.md · README.md
 ├─ docs/
 │  ├─ PLAN.md · PROGRESS.md · FEATURES.md · DESIGN.md
-│  └─ HLITH *.dc.html · support.js        design files (reference only, not shipped)
+│  └─ design/ HLITH *.dc.html · support.js design files (reference only, not shipped)
 │
 ├─ src/
 │  ├─ main.tsx                 COMPOSITION ROOT. The only file that imports games/
@@ -96,7 +96,8 @@ PROJECT-HLITH/
 │  ├─ architecture.test.ts     FAILS THE BUILD if core/ or tools/ import from games/
 │  ├─ fixtures/fake-game/      made-up non-HoYoverse game; proves new games need no core change
 │  └─ e2e/                     Playwright smoke tests
-└─ package.json · tsconfig.json · vite.config.ts · eslint.config.js
+├─ config/                                 tool settings: vite, vitest, playwright, eslint, tsconfig parts, .env files
+└─ package.json · tsconfig.json · wrangler.jsonc
 ```
 
 **Import rule, enforced twice:**

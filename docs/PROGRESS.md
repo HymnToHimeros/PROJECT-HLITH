@@ -105,7 +105,7 @@ Resume with: "continue from PROGRESS.md". Newest entry on top.
   no bank → no total, pulls = premium ÷ per-pull (rounded down) + that banner's
   pull items. Missing server → reset-based rows say "choose your server".
 - 2026-10-09 · **Live (R60).** Supabase tables created by its GitHub
-  integration; app connected (public values in `.env.production`); hosted on
+  integration; app connected (public values in `config/.env.production`); hosted on
   Cloudflare (`wrangler.jsonc`, subdomain `hliskjlf`); Discord sign-in tested
   end to end by you. `docs/DEPLOY.md` lists every outside setting.
 - 2026-10-09 · **Step 6 (R20–R23).** `supabase/migrations/0001_init.sql`:

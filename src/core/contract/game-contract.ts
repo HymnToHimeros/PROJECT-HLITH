@@ -187,7 +187,16 @@ export interface AccountLink {
   config: Record<string, string>;
 }
 
+/** A few characters' art, used ONLY to illustrate example (EXAMPLE-badged) data. Real art comes from the data workstream. */
+export interface SampleArt {
+  characterId: string;
+  art: string;
+  portrait: string;
+}
+
 export interface GameDataLoaders {
+  /** Sample art for example data only. */
+  sampleArt?: () => Promise<SampleArt[]>;
   characters: () => Promise<Character[]>;
   banners: () => Promise<Banner[]>;
   events: () => Promise<GameEvent[]>;
