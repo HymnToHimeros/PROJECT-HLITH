@@ -104,6 +104,11 @@
   font: 600 10px var(--font-numbers);
   color: var(--ink-5);
 }
+/* ink.5 drops below 4.5:1 on the raised background of the open item; use ink.3 there. */
+.navItem[aria-current='page'] .glyph,
+.navItem:hover .glyph {
+  color: var(--ink-3);
+}
 .linkBtn {
   align-self: flex-start;
   min-height: 36px;

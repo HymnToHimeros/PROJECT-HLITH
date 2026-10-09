@@ -11,7 +11,7 @@ so it can't drift from the real code. Never tick a box by hand; add the proof.
 Who builds what: see `docs/WORKSTREAMS.md`.
 
 <!-- roadmap:summary -->
-**46 of 61 done** `███████████████░░░░░` 75%
+**47 of 61 done** `███████████████░░░░░` 77%
 
 **Next up:** R46 ★ Edit mode (my own events, banners, backlog items)
 
@@ -24,7 +24,7 @@ Who builds what: see `docs/WORKSTREAMS.md`.
 | Phase 4 · Engines | `██████████` | 4 / 4 |
 | Phase 5 · Modules | `██████████` | 17 / 17 |
 | Phase 6 · Connections and extras | `░░░░░░░░░░` | 0 / 13 |
-| Phase 7 · Launch | `███░░░░░░░` | 1 / 3 |
+| Phase 7 · Launch | `███████░░░` | 2 / 3 |
 <!-- /roadmap:summary -->
 
 ## Phase 0 · Foundation
@@ -100,6 +100,6 @@ Who builds what: see `docs/WORKSTREAMS.md`.
 - [ ] R58 Owner console · proof: `src/tools/owner/OwnerConsole.tsx`
 
 ## Phase 7 · Launch
-- [ ] R59 Accessibility and phone pass · proof: `tests/e2e/accessibility.spec.ts`
+- [x] R59 Accessibility and phone pass · proof: `tests/e2e/accessibility.spec.ts`
 - [x] R60 Live on the web (Cloudflare Pages) · proof: `docs/DEPLOY.md`
 - [ ] R61 Light theme (after it's designed) · proof: `src/core/theme/tokens-light.css`
