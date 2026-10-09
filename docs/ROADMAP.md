@@ -11,7 +11,7 @@ so it can't drift from the real code. Never tick a box by hand; add the proof.
 Who builds what: see `docs/WORKSTREAMS.md`.
 
 <!-- roadmap:summary -->
-**61 of 61 done** `████████████████████` 100%
+**62 of 62 done** `████████████████████` 100%
 
 **Everything on the roadmap is done.**
 
@@ -23,7 +23,7 @@ Who builds what: see `docs/WORKSTREAMS.md`.
 | Phase 3 · Accounts and data | `██████████` | 5 / 5 |
 | Phase 4 · Engines | `██████████` | 4 / 4 |
 | Phase 5 · Modules | `██████████` | 17 / 17 |
-| Phase 6 · Connections and extras | `██████████` | 13 / 13 |
+| Phase 6 · Connections and extras | `██████████` | 14 / 14 |
 | Phase 7 · Launch | `██████████` | 3 / 3 |
 <!-- /roadmap:summary -->
 
@@ -98,6 +98,7 @@ Who builds what: see `docs/WORKSTREAMS.md`.
 - [x] R56 ★ Export my data · proof: `supabase/functions/export-data/index.ts`
 - [x] R57 ★ Delete my account · proof: `supabase/functions/delete-account/index.ts`
 - [x] R58 Owner console · proof: `src/tools/owner/OwnerConsole.tsx`
+- [x] R62 ★ HoYoLAB: several accounts, one import and scan button, automatic daily check-in and codes · proof: `supabase/migrations/0003_hoyolab_links.sql`, `supabase/functions/hoyolab-daily/index.ts`, `src/tools/account-links/accounts.ts`, `tests/hoyolabAuto.test.ts`
 
 ## Phase 7 · Launch
 - [x] R59 Accessibility and phone pass · proof: `tests/e2e/accessibility.spec.ts`

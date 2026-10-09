@@ -28,7 +28,8 @@ function otherKeys(): Record<string, string> {
   try {
     for (let i = 0; i < localStorage.length; i++) {
       const k = localStorage.key(i);
-      if (!k || !k.startsWith('hlith.') || k === PREFS_KEY || k === DATA_KEY) continue;
+      // hlith.secret.* (logins remembered on this device) never go into a backup file.
+      if (!k || !k.startsWith('hlith.') || k.startsWith('hlith.secret.') || k === PREFS_KEY || k === DATA_KEY) continue;
       const v = localStorage.getItem(k);
       if (v !== null) out[k] = v;
     }
@@ -78,7 +79,7 @@ export function parseBackup(text: string): ParseResult {
   if (!isRecord(raw.prefs) || !isRecord(raw.userData) || !isRecord(raw.userData.games)) {
     return { ok: false, error: 'This backup is incomplete: its settings or game data are missing.' };
   }
-  const extra = isRecord(raw.extra) ? Object.fromEntries(Object.entries(raw.extra).filter(([k, v]) => k.startsWith('hlith.') && typeof v === 'string')) : {};
+  const extra = isRecord(raw.extra) ? Object.fromEntries(Object.entries(raw.extra).filter(([k, v]) => k.startsWith('hlith.') && !k.startsWith('hlith.secret.') && typeof v === 'string')) : {};
   return { ok: true, backup: { ...(raw as unknown as Backup), extra: extra as Record<string, string> } };
 }
 

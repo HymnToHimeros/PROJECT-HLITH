@@ -16,10 +16,17 @@ export const USER_TABLES = [
   'plans',
   'reminder_settings',
   'account_deletion_requests',
+  'hoyolab_links',
+  'hoyolab_checkins',
+  'hoyolab_redemptions',
+  'hoyolab_my_codes',
 ] as const;
 
-/** Secrets are never exported: the calendar link token and the phone's push address. */
-const SECRET_COLUMNS: Record<string, string[]> = { reminder_settings: ['feed_token', 'push_subscription'] };
+/**
+ * Secrets are never exported: the calendar link token, the phone's push address, and
+ * the ids of saved HoYoLAB logins in Vault (the logins themselves never leave Vault).
+ */
+const SECRET_COLUMNS: Record<string, string[]> = { reminder_settings: ['feed_token', 'push_subscription'], hoyolab_links: ['login_secret', 'redeem_secret'] };
 
 export function redact(table: string, rows: Record<string, unknown>[]): Record<string, unknown>[] {
   const secret = SECRET_COLUMNS[table];

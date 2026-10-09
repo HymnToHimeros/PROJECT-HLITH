@@ -1,4 +1,4 @@
-import { act, fireEvent, render, screen, within } from '@testing-library/react';
+import { act, fireEvent, render, screen, waitFor, within } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import type { Banner, Character, GameContract } from '../../core/contract';
 import { gameData, resetUserData, setRosterEntry, setTick } from '../../core/data/userData';
@@ -95,8 +95,9 @@ describe('Today', () => {
     expect(within(run).getByText('Daily task')).toBeInTheDocument();
     fireEvent.click(screen.getByRole('checkbox', { name: 'Daily task' }));
     expect(gameData('aa').ticks['income:aa.daily']).toBe(new Date(NOW).toISOString());
-    expect(within(run).queryByText('Daily task')).not.toBeInTheDocument();
-    expect(within(run).getByText('1/3 done')).toBeInTheDocument();
+    // Wait for the screen to redraw after the tick.
+    await waitFor(() => expect(within(screen.getByLabelText('Tonight’s run')).queryByText('Daily task')).not.toBeInTheDocument());
+    expect(await within(screen.getByLabelText('Tonight’s run')).findByText('1/3 done')).toBeInTheDocument();
   });
 
   it('tonight’s run puts what resets first at the top, each with a reason', () => {

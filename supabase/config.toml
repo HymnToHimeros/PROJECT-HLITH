@@ -8,8 +8,16 @@ project_id = "PROJECT-HLITH"
 [functions.gacha-import]
 verify_jwt = true
 
-# Reads your own HoYoLAB data (stamina, check-in, characters, endgame). Signed-in users only.
+# Reads your own HoYoLAB data (stamina, check-in, characters, endgame) and manages saved
+# HoYoLAB accounts. Signed-in users only (checked in the function).
 [functions.hoyolab]
+verify_jwt = true
+
+# Automatic daily check-in and code redemption: started by the daily schedule with the
+# service key, so the platform's user-token check is off and the function checks the key itself.
+[functions.hoyolab-daily]
+verify_jwt = false
+
 # Assistant: runs one chat turn with the caller's own Claude API key (sent per
 # request, never stored). The function checks the signed-in user itself.
 [functions.assistant]
