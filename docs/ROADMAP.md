@@ -11,7 +11,7 @@ so it can't drift from the real code. Never tick a box by hand; add the proof.
 Who builds what: see `docs/WORKSTREAMS.md`.
 
 <!-- roadmap:summary -->
-**32 of 61 done** `██████████░░░░░░░░░░` 52%
+**37 of 61 done** `████████████░░░░░░░░` 61%
 
 **Next up:** R24 Nightly backups
 
@@ -22,7 +22,7 @@ Who builds what: see `docs/WORKSTREAMS.md`.
 | Phase 2 · Skeleton | `██████████` | 11 / 11 |
 | Phase 3 · Accounts and data | `████████░░` | 4 / 5 |
 | Phase 4 · Engines | `██████████` | 4 / 4 |
-| Phase 5 · Modules | `██░░░░░░░░` | 4 / 17 |
+| Phase 5 · Modules | `█████░░░░░` | 9 / 17 |
 | Phase 6 · Connections and extras | `░░░░░░░░░░` | 0 / 13 |
 | Phase 7 · Launch | `███░░░░░░░` | 1 / 3 |
 <!-- /roadmap:summary -->
@@ -77,11 +77,11 @@ Who builds what: see `docs/WORKSTREAMS.md`.
 - [ ] R37 Roster · Teams tab · proof: `src/tools/roster/Teams.tsx`
 - [ ] R38 Kit check (any game with kit data) · proof: `src/tools/roster/KitCheck.tsx`
 - [ ] R39 Banners (fit, leaks, plan pulls) · proof: `src/tools/banners/Banners.tsx`
-- [ ] R40 Farm (materials, stamina plan, gear) · proof: `src/tools/farm/Farm.tsx`
-- [ ] R41 Calendar · proof: `src/tools/calendar/Calendar.tsx`
-- [ ] R42 Today · proof: `src/tools/today/Today.tsx`
-- [ ] R43 ★ Today · tonight's run · proof: `src/tools/today/TonightsRun.tsx`
-- [ ] R44 ★ Today · wishlist · proof: `src/tools/today/Wishlist.tsx`
+- [x] R40 Farm (materials, stamina plan, gear) · proof: `src/tools/farm/Farm.tsx`
+- [x] R41 Calendar · proof: `src/tools/calendar/Calendar.tsx`
+- [x] R42 Today · proof: `src/tools/today/Today.tsx`
+- [x] R43 ★ Today · tonight's run · proof: `src/tools/today/TonightsRun.tsx`
+- [x] R44 ★ Today · wishlist · proof: `src/tools/today/Wishlist.tsx`
 - [ ] R45 Intel · proof: `src/tools/intel/Intel.tsx`
 
 ## Phase 6 · Connections and extras

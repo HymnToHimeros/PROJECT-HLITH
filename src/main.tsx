@@ -10,6 +10,9 @@ import { games } from './games';
 
 for (const game of games) registerGame(game);
 registerModuleScreen('pulls', () => import('./tools/pulls/PullsScreen'));
+registerModuleScreen('today', () => import('./tools/today/TodayScreen'));
+registerModuleScreen('calendar', () => import('./tools/calendar/CalendarScreen'));
+registerModuleScreen('farm', () => import('./tools/farm/FarmScreen'));
 
 const root = document.getElementById('root');
 if (!root) throw new Error('PROJECT-HLITH: #root element missing from index.html');
