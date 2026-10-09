@@ -15,11 +15,7 @@ export function gameProblems(g: GameContract): string[] {
   const unknownModules = g.modules.filter((m) => !(MODULE_IDS as readonly string[]).includes(m));
   if (unknownModules.length) say(`unknown modules: ${unknownModules.join(', ')}`);
   if (g.modules.length === 0) say('needs at least one module');
-  const sameSet =
-    g.defaultOrder.length === g.modules.length &&
-    new Set(g.defaultOrder).size === g.defaultOrder.length &&
-    g.defaultOrder.every((m) => g.modules.includes(m));
-  if (!sameSet) say('defaultOrder must list exactly the modules, once each');
+  if (new Set(g.modules).size !== g.modules.length) say('modules must be listed once each');
 
   if (g.servers.length === 0) say('needs at least one server');
   if (g.reset.hour < 0 || g.reset.hour > 23 || g.reset.weekday < 0 || g.reset.weekday > 6) say('reset hour 0–23, weekday 0–6');

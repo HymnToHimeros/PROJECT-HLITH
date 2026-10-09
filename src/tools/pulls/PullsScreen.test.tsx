@@ -47,7 +47,6 @@ const game: GameContract = {
   servers: [{ id: 'eu', label: 'Europe', utcOffset: 1 }],
   reset: { hour: 4, weekday: 1 },
   modules: ['pulls'],
-  defaultOrder: ['pulls'],
   bannerTypes: [
     {
       id: 'character',
@@ -81,7 +80,7 @@ const game: GameContract = {
 } as unknown as GameContract;
 
 const show = async (tab: string) => {
-  render(<PullsScreen games={[game]} scope="aa" tab={tab} servers={{ aa: 'eu' }} />);
+  render(<PullsScreen games={[game]} scope="aa" tab={tab} servers={{ aa: 'eu' }} openTab={() => {}} open={() => {}} openAccount={() => {}} />);
   await screen.findByText(/Example data, not yours/);
 };
 

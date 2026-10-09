@@ -35,7 +35,6 @@ export const template: GameContract = {
   servers: [{ id: 'global', label: 'Global', utcOffset: 0 }],
   reset: { hour: 4, weekday: 1 },
   modules: ['today', 'events', 'calendar', 'backlog', 'pulls', 'banners', 'roster', 'farm', 'intel'],
-  defaultOrder: ['today', 'pulls', 'roster', 'calendar', 'events', 'banners', 'backlog', 'farm', 'intel'],
   bannerTypes: [
     {
       id: 'limited',

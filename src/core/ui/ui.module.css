@@ -606,3 +606,25 @@
   color: var(--ink-1);
   box-shadow: inset 0 -2px 0 var(--vent);
 }
+
+.exampleNotice {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s-3);
+  padding: var(--s-3) var(--s-4);
+  border-radius: var(--r-card);
+  border: 1px dashed var(--glacier);
+  background: color-mix(in srgb, var(--glacier) 6%, transparent);
+  color: var(--ink-2);
+  font-size: 13px;
+  line-height: 1.45;
+}
+.exampleText {
+  flex: 1 1 260px;
+}
+.exampleActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-2);
+}

@@ -14,10 +14,13 @@ export function offered(games: GameContract[]): ModuleId[] {
   return MODULE_CATALOG.filter((m) => set.has(m));
 }
 
-/** Default layout: a game's own default order; All games uses catalogue order. */
-export function defaultLayout(games: GameContract[], scope: Scope): LayoutState {
-  const game = scope === 'all' ? undefined : games.find((g) => g.id === scope);
-  return { order: game ? [...game.defaultOrder] : offered(games), hidden: [] };
+/**
+ * Default layout: the one shared catalogue order, for every game and for All
+ * games, so a module shared by two games sits in the same place in both bars.
+ * Modules a game lacks simply drop out. Your own changes override this.
+ */
+export function defaultLayout(): LayoutState {
+  return { order: [...MODULE_CATALOG], hidden: [] };
 }
 
 /**
@@ -27,7 +30,7 @@ export function defaultLayout(games: GameContract[], scope: Scope): LayoutState 
 export function slot(games: GameContract[], scope: Scope, layout: LayoutState): ModuleId[] {
   const inScope = scope === 'all' ? games : games.filter((g) => g.id === scope);
   const available = offered(inScope);
-  const base = defaultLayout(games, scope).order;
+  const base = defaultLayout().order;
   const ordered = [
     ...layout.order.filter((m) => available.includes(m)),
     ...base.filter((m) => available.includes(m) && !layout.order.includes(m)),
@@ -78,7 +81,7 @@ export function move(games: GameContract[], scope: Scope, layout: LayoutState, i
   return { ...layout, order: [...next, ...layout.hidden.filter((m) => !next.includes(m))] };
 }
 
-/** "Reset to default": the record's default order, nothing hidden. */
-export function reset(games: GameContract[], scope: Scope): LayoutState {
-  return defaultLayout(games, scope);
+/** "Reset to default": the shared default order, nothing hidden. */
+export function reset(): LayoutState {
+  return defaultLayout();
 }

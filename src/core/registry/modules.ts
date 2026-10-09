@@ -16,6 +16,12 @@ export interface ModuleScreenProps {
   tab?: string | undefined;
   /** The viewer's chosen server per game. */
   servers: Record<GameId, string>;
+  /** Switch to another tab of this module. */
+  openTab: (tab: string) => void;
+  /** Open another module (optionally on a tab), in the same game scope. */
+  open: (module: ModuleId, tab?: string) => void;
+  /** Open the account panel (server, games, sign-in). */
+  openAccount: () => void;
 }
 export type ModuleScreen = ComponentType<ModuleScreenProps>;
 type ScreenLoader = () => Promise<{ default: ModuleScreen }>;

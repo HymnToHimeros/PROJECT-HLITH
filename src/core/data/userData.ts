@@ -1,5 +1,6 @@
 /**
- * Your own game data: bank log and imported pulls, per game. Kept on this
+ * Your own game data, per game: bank log, imported pulls, event and backlog
+ * progress, roster, farm targets, teams and today's ticks. Kept on this
  * device for now (mirrored to the account's bank_ledger and pulls tables next).
  * Append-only: entries and pulls are never edited or removed, only added.
  */
@@ -23,6 +24,35 @@ export interface GameUserData {
   /** Income row id → when that pass runs out. */
   passes: Record<string, string>;
   paidExtras: boolean;
+  /** Event id → your state and claimed login days. Missing = open, nothing claimed. */
+  events: Record<string, EventProgress>;
+  /** Backlog item id → how many done. */
+  backlog: Record<string, number>;
+  /** Backlog categories whose rewards you don't count toward pulls. */
+  backlogOff: string[];
+  /** Character id → owned / wanted / dupes. */
+  roster: Record<string, RosterEntry>;
+  /** Characters you're farming for, in order. */
+  farm: string[];
+  /** Your own teams. */
+  teams: UserTeam[];
+  /** Task id → when you ticked it (Today). A tick counts until the next reset. */
+  ticks: Record<string, string>;
+}
+
+export interface EventProgress {
+  state: 'open' | 'done' | 'skipped';
+  daysClaimed?: number;
+}
+export interface RosterEntry {
+  owned: boolean;
+  wanted: boolean;
+  dupes: number;
+}
+export interface UserTeam {
+  id: string;
+  name: string;
+  members: string[];
 }
 
 interface Store {
@@ -31,7 +61,19 @@ interface Store {
 }
 
 const KEY = 'hlith.userdata';
-export const EMPTY_GAME: GameUserData = { ledger: [], pulls: [], passes: {}, paidExtras: false };
+export const EMPTY_GAME: GameUserData = {
+  ledger: [],
+  pulls: [],
+  passes: {},
+  paidExtras: false,
+  events: {},
+  backlog: {},
+  backlogOff: [],
+  roster: {},
+  farm: [],
+  teams: [],
+  ticks: {},
+};
 
 let unreadable = false;
 
@@ -62,8 +104,16 @@ function save(): void {
   listeners.forEach((l) => l());
 }
 
+const cache = new Map<GameId, { raw: GameUserData | undefined; full: GameUserData }>();
+
+/** Your data for one game. Fields added in later versions start empty; nothing stored is dropped. */
 export function gameData(id: GameId): GameUserData {
-  return store.games[id] ?? EMPTY_GAME;
+  const raw = store.games[id];
+  const hit = cache.get(id);
+  if (hit && hit.raw === raw) return hit.full;
+  const full = raw ? { ...EMPTY_GAME, ...raw } : EMPTY_GAME;
+  cache.set(id, { raw, full });
+  return full;
 }
 
 function update(id: GameId, change: (g: GameUserData) => GameUserData): void {
@@ -96,6 +146,38 @@ export function setPass(game: GameId, rowId: string, until: string | null): void
   update(game, (g) => {
     const rest = Object.fromEntries(Object.entries(g.passes).filter(([k]) => k !== rowId));
     return { ...g, passes: until ? { ...rest, [rowId]: until } : rest };
+  });
+}
+
+export function setEventProgress(game: GameId, eventId: string, progress: EventProgress): void {
+  update(game, (g) => ({ ...g, events: { ...g.events, [eventId]: progress } }));
+}
+
+export function setBacklogDone(game: GameId, itemId: string, done: number): void {
+  update(game, (g) => ({ ...g, backlog: { ...g.backlog, [itemId]: Math.max(0, done) } }));
+}
+
+export function setBacklogCategory(game: GameId, category: string, counted: boolean): void {
+  update(game, (g) => ({ ...g, backlogOff: counted ? g.backlogOff.filter((c) => c !== category) : [...new Set([...g.backlogOff, category])] }));
+}
+
+export function setRosterEntry(game: GameId, characterId: string, entry: RosterEntry): void {
+  update(game, (g) => ({ ...g, roster: { ...g.roster, [characterId]: entry } }));
+}
+
+export function setFarm(game: GameId, characterIds: string[]): void {
+  update(game, (g) => ({ ...g, farm: [...new Set(characterIds)] }));
+}
+
+/** Add or change one of your teams (teams are never removed by list updates). */
+export function saveTeam(game: GameId, team: UserTeam): void {
+  update(game, (g) => ({ ...g, teams: [...g.teams.filter((t) => t.id !== team.id), team] }));
+}
+
+export function setTick(game: GameId, taskId: string, at: string | null): void {
+  update(game, (g) => {
+    const rest = Object.fromEntries(Object.entries(g.ticks).filter(([k]) => k !== taskId));
+    return { ...g, ticks: at ? { ...rest, [taskId]: at } : rest };
   });
 }
 
@@ -132,5 +214,6 @@ export function balances(ledger: LedgerEntry[]): Known<Record<string, number>> {
 /** Test helper. */
 export function resetUserData(): void {
   store = { version: 1, games: {} };
+  cache.clear();
   listeners.forEach((l) => l());
 }
