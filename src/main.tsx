@@ -5,7 +5,7 @@ import './core/theme/tokens.css';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { App } from './App';
-import { registerGame, registerModuleScreen } from './core/registry';
+import { registerGame, registerModuleScreen, registerPanel } from './core/registry';
 import { games } from './games';
 import { SharedTeamRoute } from './tools/share/ShareTeam';
 
@@ -19,6 +19,7 @@ registerModuleScreen('roster', () => import('./tools/roster/RosterScreen'));
 registerModuleScreen('today', () => import('./tools/today/TodayScreen'));
 registerModuleScreen('calendar', () => import('./tools/calendar/CalendarScreen'));
 registerModuleScreen('farm', () => import('./tools/farm/FarmScreen'));
+registerPanel('assistant', () => import('./tools/assistant/AssistantPanel'));
 
 const root = document.getElementById('root');
 if (!root) throw new Error('PROJECT-HLITH: #root element missing from index.html');

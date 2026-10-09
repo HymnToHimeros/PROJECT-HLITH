@@ -11,9 +11,9 @@ so it can't drift from the real code. Never tick a box by hand; add the proof.
 Who builds what: see `docs/WORKSTREAMS.md`.
 
 <!-- roadmap:summary -->
-**50 of 61 done** `████████████████░░░░` 82%
+**53 of 61 done** `█████████████████░░░` 87%
 
-**Next up:** R46 ★ Edit mode (my own events, banners, backlog items)
+**Next up:** R51 ★ Evening message as phone notification
 
 | Phase | Progress | Done |
 |---|---|---|
@@ -23,7 +23,7 @@ Who builds what: see `docs/WORKSTREAMS.md`.
 | Phase 3 · Accounts and data | `██████████` | 5 / 5 |
 | Phase 4 · Engines | `██████████` | 4 / 4 |
 | Phase 5 · Modules | `██████████` | 17 / 17 |
-| Phase 6 · Connections and extras | `██░░░░░░░░` | 3 / 13 |
+| Phase 6 · Connections and extras | `█████░░░░░` | 6 / 13 |
 | Phase 7 · Launch | `███████░░░` | 2 / 3 |
 <!-- /roadmap:summary -->
 
@@ -85,10 +85,10 @@ Who builds what: see `docs/WORKSTREAMS.md`.
 - [x] R45 Intel · proof: `src/tools/intel/Intel.tsx`
 
 ## Phase 6 · Connections and extras
-- [ ] R46 ★ Edit mode (my own events, banners, backlog items) · proof: `src/tools/edit-mode/EditMode.tsx`
+- [x] R46 ★ Edit mode (my own events, banners, backlog items) · proof: `src/tools/edit-mode/EditMode.tsx`
 - [x] R47 ★ HoYoLAB link (stamina, check-in, characters, endgame) · proof: `src/tools/account-links/LinkAccount.tsx`, `supabase/functions/hoyolab/index.ts`
-- [ ] R48 ★ Assistant: own key, chat, cost per message · proof: `src/tools/assistant/Assistant.tsx`, `supabase/functions/assistant/index.ts`
-- [ ] R49 ★ Assistant proposals with approve / undo · proof: `src/tools/assistant/Proposals.tsx`
+- [x] R48 ★ Assistant: own key, chat, cost per message · proof: `src/tools/assistant/Assistant.tsx`, `supabase/functions/assistant/index.ts`
+- [x] R49 ★ Assistant proposals with approve / undo · proof: `src/tools/assistant/Proposals.tsx`
 - [x] R50 ★ Screenshot scan of a character screen · proof: `src/tools/scan/Scan.tsx`
 - [ ] R51 ★ Evening message as phone notification · proof: `supabase/functions/evening-message/index.ts`
 - [ ] R52 ★ Calendar feed · proof: `supabase/functions/ics-feed/index.ts`
