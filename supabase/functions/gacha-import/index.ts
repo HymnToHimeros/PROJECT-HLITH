@@ -1,8 +1,9 @@
 // Supabase Edge Function: read pull history from an in-game history link.
-// Signed-in users only (verify_jwt). Contacts only HoYoverse's gacha log hosts.
+// Signed-in users only (checked here with requireUser). Contacts only HoYoverse's gacha log hosts.
 // Returns raw rows; the app maps them with the game's historyMapping and stores
 // them with row-level security, adding only new pull ids.
 import { fetchHistory, LINK_ERROR_TEXT, parseLink } from '../_shared/hoyoGachaLog.ts';
+import { requireUser } from '../_shared/requireUser.ts';
 
 const cors = {
   'Access-Control-Allow-Origin': '*',
@@ -14,6 +15,12 @@ const json = (body: unknown, status = 200) => new Response(JSON.stringify(body),
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') return new Response('ok', { headers: cors });
   if (req.method !== 'POST') return json({ error: 'POST only' }, 405);
+  const user = await requireUser(
+    req.headers.get('Authorization'),
+    { url: Deno.env.get('SUPABASE_URL'), key: Deno.env.get('SUPABASE_ANON_KEY') },
+    (url, init) => fetch(url, init),
+  );
+  if (!user.ok) return json({ error: 'Sign in to import your history.' }, 401);
   let body: { link?: unknown; knownIds?: unknown };
   try {
     body = await req.json();
