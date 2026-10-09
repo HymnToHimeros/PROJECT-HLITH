@@ -12,9 +12,11 @@ dashboard they come from.
    - **Project URL** (**public**), e.g. `https://abcd1234.supabase.co`
    - **Publishable / anon key** (**public**)
    - Never copy out the **service_role / secret** key (**secret**).
-4. Create the tables: **SQL Editor** → New query → paste
-   `supabase/migrations/0001_init.sql` → **Run**. (Later migrations: run each new
-   file in order. They only ever add.)
+4. Tables are created automatically: Project Settings → **Integrations** →
+   GitHub → repository `HymnToHimeros/PROJECT-HLITH`, working directory `.`,
+   **Deploy to production** on, branch `main` → Enable integration. Every merge
+   to main then applies new files in `supabase/migrations/`. Do **not** also paste
+   them in the SQL Editor, or they run twice. (Enabled 2026-10-09.)
 5. Make yourself owner (after your first sign-in): **Table Editor** → `owners`
    → Insert row → your `user_id` from **Authentication → Users**.
 

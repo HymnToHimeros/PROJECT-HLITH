@@ -79,6 +79,9 @@ Resume with: "continue from PROGRESS.md". Newest entry on top.
   (CLAUDE.md expects them there). Wrote `docs/PLAN.md` and this file.
 
 ## Decisions log
+- 2026-10-09 · Database changes reach Supabase through its GitHub integration
+  (Deploy to production on `main`), not by pasting SQL. `supabase/config.toml`
+  added for it; Supabase ignores its auth/API settings for the live project.
 - 2026-10-09 · This chat's name is FRAME (named by job, not fiction); its
   branches are `frame/<job>`. Other chats pick a job name too.
 - 2026-10-09 · You gave permission for me to open and merge pull requests on my own.
