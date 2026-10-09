@@ -1,1 +1,498 @@
-[]
+[
+  {
+    "id": "1011",
+    "name": "Anby",
+    "rarity": "mid",
+    "element": "electric",
+    "role": "stun",
+    "source": "nanoka.cc"
+  },
+  {
+    "id": "1021",
+    "name": "Nekomata",
+    "rarity": "top",
+    "element": "physical",
+    "role": "attack",
+    "source": "nanoka.cc"
+  },
+  {
+    "id": "1031",
+    "name": "Nicole",
+    "rarity": "mid",
+    "element": "ether",
+    "role": "support",
+    "source": "nanoka.cc"
+  },
+  {
+    "id": "1041",
+    "name": "Soldier 11",
+    "rarity": "top",
+    "element": "fire",
+    "role": "attack",
+    "source": "nanoka.cc"
+  },
+  {
+    "id": "1051",
+    "name": "Yidhari",
+    "rarity": "top",
+    "element": "ice",
+    "role": "rupture",
+    "source": "nanoka.cc"
+  },
+  {
+    "id": "1061",
+    "name": "Corin",
+    "rarity": "mid",
+    "element": "physical",
+    "role": "attack",
+    "source": "nanoka.cc"
+  },
+  {
+    "id": "1071",
+    "name": "Caesar",
+    "rarity": "top",
+    "element": "physical",
+    "role": "defense",
+    "source": "nanoka.cc"
+  },
+  {
+    "id": "1081",
+    "name": "Billy",
+    "rarity": "mid",
+    "element": "physical",
+    "role": "attack",
+    "source": "nanoka.cc"
+  },
+  {
+    "id": "1091",
+    "name": "Miyabi",
+    "rarity": "top",
+    "element": "ice",
+    "role": "anomaly",
+    "source": "nanoka.cc"
+  },
+  {
+    "id": "1101",
+    "name": "Koleda",
+    "rarity": "top",
+    "element": "fire",
+    "role": "stun",
+    "source": "nanoka.cc"
+  },
+  {
+    "id": "1111",
+    "name": "Anton",
+    "rarity": "mid",
+    "element": "electric",
+    "role": "attack",
+    "source": "nanoka.cc"
+  },
+  {
+    "id": "1121",
+    "name": "Ben",
+    "rarity": "mid",
+    "element": "fire",
+    "role": "defense",
+    "source": "nanoka.cc"
+  },
+  {
+    "id": "1131",
+    "name": "Soukaku",
+    "rarity": "mid",
+    "element": "ice",
+    "role": "support",
+    "source": "nanoka.cc"
+  },
+  {
+    "id": "1141",
+    "name": "Lycaon",
+    "rarity": "top",
+    "element": "ice",
+    "role": "stun",
+    "source": "nanoka.cc"
+  },
+  {
+    "id": "1151",
+    "name": "Lucy",
+    "rarity": "mid",
+    "element": "fire",
+    "role": "support",
+    "source": "nanoka.cc"
+  },
+  {
+    "id": "1161",
+    "name": "Lighter",
+    "rarity": "top",
+    "element": "fire",
+    "role": "stun",
+    "source": "nanoka.cc"
+  },
+  {
+    "id": "1171",
+    "name": "Burnice",
+    "rarity": "top",
+    "element": "fire",
+    "role": "anomaly",
+    "source": "nanoka.cc"
+  },
+  {
+    "id": "1181",
+    "name": "Grace",
+    "rarity": "top",
+    "element": "electric",
+    "role": "anomaly",
+    "source": "nanoka.cc"
+  },
+  {
+    "id": "1191",
+    "name": "Ellen",
+    "rarity": "top",
+    "element": "ice",
+    "role": "attack",
+    "source": "nanoka.cc"
+  },
+  {
+    "id": "1201",
+    "name": "Harumasa",
+    "rarity": "top",
+    "element": "electric",
+    "role": "attack",
+    "source": "nanoka.cc"
+  },
+  {
+    "id": "1211",
+    "name": "Rina",
+    "rarity": "top",
+    "element": "electric",
+    "role": "support",
+    "source": "nanoka.cc"
+  },
+  {
+    "id": "1221",
+    "name": "Yanagi",
+    "rarity": "top",
+    "element": "electric",
+    "role": "anomaly",
+    "source": "nanoka.cc"
+  },
+  {
+    "id": "1241",
+    "name": "Zhu Yuan",
+    "rarity": "top",
+    "element": "ether",
+    "role": "attack",
+    "source": "nanoka.cc"
+  },
+  {
+    "id": "1251",
+    "name": "Qingyi",
+    "rarity": "top",
+    "element": "electric",
+    "role": "stun",
+    "source": "nanoka.cc"
+  },
+  {
+    "id": "1261",
+    "name": "Jane",
+    "rarity": "top",
+    "element": "physical",
+    "role": "anomaly",
+    "source": "nanoka.cc"
+  },
+  {
+    "id": "1271",
+    "name": "Seth",
+    "rarity": "mid",
+    "element": "electric",
+    "role": "defense",
+    "source": "nanoka.cc"
+  },
+  {
+    "id": "1281",
+    "name": "Piper",
+    "rarity": "mid",
+    "element": "physical",
+    "role": "anomaly",
+    "source": "nanoka.cc"
+  },
+  {
+    "id": "1291",
+    "name": "Hugo",
+    "rarity": "top",
+    "element": "ice",
+    "role": "attack",
+    "source": "nanoka.cc"
+  },
+  {
+    "id": "1301",
+    "name": "Orphie & Magus",
+    "rarity": "top",
+    "element": "fire",
+    "role": "attack",
+    "source": "nanoka.cc"
+  },
+  {
+    "id": "1311",
+    "name": "Astra Yao",
+    "rarity": "top",
+    "element": "ether",
+    "role": "support",
+    "source": "nanoka.cc"
+  },
+  {
+    "id": "1321",
+    "name": "Evelyn",
+    "rarity": "top",
+    "element": "fire",
+    "role": "attack",
+    "source": "nanoka.cc"
+  },
+  {
+    "id": "1331",
+    "name": "Vivian",
+    "rarity": "top",
+    "element": "ether",
+    "role": "anomaly",
+    "source": "nanoka.cc"
+  },
+  {
+    "id": "1341",
+    "name": "Zhao",
+    "rarity": "top",
+    "element": "ice",
+    "role": "defense",
+    "source": "nanoka.cc"
+  },
+  {
+    "id": "1351",
+    "name": "Pulchra",
+    "rarity": "mid",
+    "element": "physical",
+    "role": "stun",
+    "source": "nanoka.cc"
+  },
+  {
+    "id": "1361",
+    "name": "Trigger",
+    "rarity": "top",
+    "element": "electric",
+    "role": "stun",
+    "source": "nanoka.cc"
+  },
+  {
+    "id": "1371",
+    "name": "Yixuan",
+    "rarity": "top",
+    "element": "ether",
+    "role": "rupture",
+    "source": "nanoka.cc"
+  },
+  {
+    "id": "1381",
+    "name": "Soldier 0 - Anby",
+    "rarity": "top",
+    "element": "electric",
+    "role": "attack",
+    "source": "nanoka.cc"
+  },
+  {
+    "id": "1391",
+    "name": "Ju Fufu",
+    "rarity": "top",
+    "element": "fire",
+    "role": "stun",
+    "source": "nanoka.cc"
+  },
+  {
+    "id": "1401",
+    "name": "Alice",
+    "rarity": "top",
+    "element": "physical",
+    "role": "anomaly",
+    "source": "nanoka.cc"
+  },
+  {
+    "id": "1411",
+    "name": "Yuzuha",
+    "rarity": "top",
+    "element": "physical",
+    "role": "support",
+    "source": "nanoka.cc"
+  },
+  {
+    "id": "1421",
+    "name": "Pan Yinhu",
+    "rarity": "mid",
+    "element": "physical",
+    "role": "defense",
+    "source": "nanoka.cc"
+  },
+  {
+    "id": "1431",
+    "name": "Ye Shunguang",
+    "rarity": "top",
+    "element": "physical",
+    "role": "attack",
+    "source": "nanoka.cc"
+  },
+  {
+    "id": "1441",
+    "name": "Manato",
+    "rarity": "mid",
+    "element": "fire",
+    "role": "rupture",
+    "source": "nanoka.cc"
+  },
+  {
+    "id": "1451",
+    "name": "Lucia",
+    "rarity": "top",
+    "element": "ether",
+    "role": "support",
+    "source": "nanoka.cc"
+  },
+  {
+    "id": "1461",
+    "name": "Seed",
+    "rarity": "top",
+    "element": "electric",
+    "role": "attack",
+    "source": "nanoka.cc"
+  },
+  {
+    "id": "1471",
+    "name": "Banyue",
+    "rarity": "top",
+    "element": "fire",
+    "role": "rupture",
+    "source": "nanoka.cc"
+  },
+  {
+    "id": "1481",
+    "name": "Dialyn",
+    "rarity": "top",
+    "element": "physical",
+    "role": "stun",
+    "source": "nanoka.cc"
+  },
+  {
+    "id": "1491",
+    "name": "Sunna",
+    "rarity": "top",
+    "element": "physical",
+    "role": "support",
+    "source": "nanoka.cc"
+  },
+  {
+    "id": "1501",
+    "name": "Aria",
+    "rarity": "top",
+    "element": "ether",
+    "role": "anomaly",
+    "source": "nanoka.cc"
+  },
+  {
+    "id": "1511",
+    "name": "Nangong Yu",
+    "rarity": "top",
+    "element": "ether",
+    "role": "stun",
+    "source": "nanoka.cc"
+  },
+  {
+    "id": "1521",
+    "name": "Cissia",
+    "rarity": "top",
+    "element": "electric",
+    "role": "attack",
+    "source": "nanoka.cc"
+  },
+  {
+    "id": "1531",
+    "name": "Starlight - Billy",
+    "rarity": "top",
+    "element": "physical",
+    "role": "rupture",
+    "source": "nanoka.cc"
+  },
+  {
+    "id": "1541",
+    "name": "Promeia",
+    "rarity": "top",
+    "element": "ice",
+    "role": "anomaly",
+    "source": "nanoka.cc"
+  },
+  {
+    "id": "1551",
+    "name": "Pyrois",
+    "rarity": "top",
+    "element": "ether",
+    "role": "attack",
+    "source": "nanoka.cc"
+  },
+  {
+    "id": "1561",
+    "name": "Velina",
+    "rarity": "top",
+    "element": "windbite",
+    "role": "anomaly",
+    "source": "nanoka.cc"
+  },
+  {
+    "id": "1571",
+    "name": "Norma",
+    "rarity": "top",
+    "element": "fire",
+    "role": "stun",
+    "source": "nanoka.cc"
+  },
+  {
+    "id": "1581",
+    "name": "Remielle",
+    "rarity": "top",
+    "element": "lumiflux",
+    "role": "anomaly",
+    "source": "nanoka.cc"
+  },
+  {
+    "id": "1591",
+    "name": "Sigrid",
+    "rarity": "top",
+    "element": "ice",
+    "role": "attack",
+    "source": "nanoka.cc"
+  },
+  {
+    "id": "1611",
+    "name": "Claret",
+    "rarity": "top",
+    "element": "electric",
+    "role": "armorer",
+    "source": "nanoka.cc"
+  },
+  {
+    "id": "1621",
+    "name": "Roxy",
+    "rarity": "top",
+    "element": "windbite",
+    "role": "stun",
+    "source": "nanoka.cc"
+  },
+  {
+    "id": "1631",
+    "name": "Severian",
+    "rarity": "top",
+    "element": "windbite",
+    "role": "attack",
+    "source": "nanoka.cc"
+  },
+  {
+    "id": "1641",
+    "name": "Phoenix",
+    "rarity": "top",
+    "element": "fire",
+    "role": "anomaly",
+    "source": "nanoka.cc"
+  }
+]

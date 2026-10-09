@@ -34,6 +34,9 @@ export const zzz: GameContract = {
     { id: 'ice', label: 'Ice', color: '#8FD3F0' },
     { id: 'electric', label: 'Electric', color: '#B98AF0' },
     { id: 'ether', label: 'Ether', color: '#E07AD0' },
+    // Names as the game uses them for these attributes' level-up chips.
+    { id: 'windbite', label: 'Windbite', color: '#6FD3A8' },
+    { id: 'lumiflux', label: 'Lumiflux', color: '#E8D35C' },
   ],
   roles: [
     { id: 'attack', label: 'Attack' },
@@ -42,6 +45,7 @@ export const zzz: GameContract = {
     { id: 'support', label: 'Support' },
     { id: 'defense', label: 'Defense' },
     { id: 'rupture', label: 'Rupture' },
+    { id: 'armorer', label: 'Armorer' },
   ],
   dupes: { prefix: 'M', name: 'Mindscape', max: 6 },
   currencies: [
@@ -130,6 +134,7 @@ export const zzz: GameContract = {
   scan: { screen: 'character', fields: ['level', 'mindscape', 'w-engine', 'drive-discs', 'skills'] },
   rules: {},
   sources: [
+    { what: 'Agent list (names, rank, specialty, attribute)', source: 'nanoka.cc data files, game data 3.3.4, used with permission', entered: '2026-10-09', verified: false },
     { what: 'Pull rates, hard pity, 50/50 and 75/25', source: 'official rates shown on the in-game Signal Search details page', entered: '2026-10-09', verified: false },
     { what: 'Rising odds before hard pity (Exclusive Channel)', source: COMMUNITY, entered: '2026-10-09', verified: false },
     { what: 'Bangboo Channel rate', source: 'not entered yet', entered: '2026-10-09', verified: false },

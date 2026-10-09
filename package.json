@@ -16,7 +16,8 @@
     "test:watch": "vitest",
     "e2e": "playwright test",
     "check": "npm run lint && npm run typecheck && npm run test && npm run build",
-    "roadmap": "node scripts/roadmap.ts"
+    "roadmap": "node scripts/roadmap.ts",
+    "data:nanoka": "node scripts/import-nanoka.ts"
   },
   "dependencies": {
     "@fontsource-variable/archivo": "^5.3.0",
