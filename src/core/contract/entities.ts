@@ -89,6 +89,8 @@ export interface PullRecord {
   name: string;
   rarity: 'top' | 'mid' | 'low';
   time: ISODate;
+  /** For top-rarity results: was it the banner's featured item? Unknown = undefined. */
+  featured?: boolean;
 }
 
 export interface BuildLevel {
