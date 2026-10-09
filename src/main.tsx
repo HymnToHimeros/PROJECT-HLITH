@@ -7,6 +7,7 @@ import { createRoot } from 'react-dom/client';
 import { App } from './App';
 import { registerGame, registerModuleScreen } from './core/registry';
 import { games } from './games';
+import { SharedTeamRoute } from './tools/share/ShareTeam';
 
 for (const game of games) registerGame(game);
 registerModuleScreen('pulls', () => import('./tools/pulls/PullsScreen'));
@@ -25,5 +26,7 @@ if (!root) throw new Error('PROJECT-HLITH: #root element missing from index.html
 createRoot(root).render(
   <StrictMode>
     <App />
+    {/* Opens a shared team link (#team=…) over any page: R54. */}
+    <SharedTeamRoute games={games} />
   </StrictMode>,
 );

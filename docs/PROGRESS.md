@@ -27,6 +27,20 @@ Resume with: "continue from PROGRESS.md". Newest entry on top.
 - CI (`.github/workflows/ci.yml`) runs both on every pull request.
 
 ## Done
+- 2026-10-09 · **R47 HoYoLAB link, roster import, R50 screenshot scan, R54 share
+  a team** (branch `frame/connections`, frames + plumbing). HoYoLAB: a server
+  function (`supabase/functions/hoyolab`, sign-in required, only HoYoLAB hosts)
+  reads live stamina, daily activity, check-in (and can claim it), characters
+  and endgame records. The login values are used once by default; "Remember on
+  this device" keeps them in this browser only (never synced or backed up).
+  **Not yet tested with a real HoYoLAB login**: it follows community docs
+  (genshin.py), and the screens say so. Roster → Characters has "Import from
+  HoYoLAB" (only adds and raises, never removes) and "Scan a screenshot"
+  (manual entry saves owned + dupes now; "Read it for me" waits for the
+  Assistant key). Share: a link with the team inside it (after the #, no
+  server), copy as text, save picture, phone share menu; opening a link shows
+  the team read-only with "Save to my teams". Still to mount: the HoYoLAB card in
+  the Account panel and the Share button on Teams (owners of those screens).
 - 2026-10-09 · **Every module has a real screen (R29–R30, R35–R45).** Today
   (resets, dailies/weeklies with ticks that clear at your server's reset,
   ★ tonight's run, ★ wishlist), Calendar (six-week timeline + coming up),
