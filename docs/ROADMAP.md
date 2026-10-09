@@ -11,16 +11,16 @@ so it can't drift from the real code. Never tick a box by hand; add the proof.
 Who builds what: see `docs/WORKSTREAMS.md`.
 
 <!-- roadmap:summary -->
-**19 of 61 done** `██████░░░░░░░░░░░░░░` 31%
+**23 of 61 done** `████████░░░░░░░░░░░░` 38%
 
-**Next up:** R20 Database tables with per-user walls
+**Next up:** R24 Nightly backups
 
 | Phase | Progress | Done |
 |---|---|---|
 | Phase 0 · Foundation | `██████████` | 5 / 5 |
 | Phase 1 · Look | `██████████` | 3 / 3 |
 | Phase 2 · Skeleton | `██████████` | 11 / 11 |
-| Phase 3 · Accounts and data | `░░░░░░░░░░` | 0 / 5 |
+| Phase 3 · Accounts and data | `████████░░` | 4 / 5 |
 | Phase 4 · Engines | `░░░░░░░░░░` | 0 / 4 |
 | Phase 5 · Modules | `░░░░░░░░░░` | 0 / 17 |
 | Phase 6 · Connections and extras | `░░░░░░░░░░` | 0 / 13 |
@@ -53,10 +53,10 @@ Who builds what: see `docs/WORKSTREAMS.md`.
 - [x] R19 Server picker per game · proof: `src/core/shell/ServerPicker.tsx`
 
 ## Phase 3 · Accounts and data
-- [ ] R20 Database tables with per-user walls · proof: `supabase/migrations/0001_init.sql`
-- [ ] R21 Login: Google, Discord, email link · proof: `src/core/auth/SignIn.tsx`
-- [ ] R22 Local copy and sync status · proof: `src/core/data/sync.ts`
-- [ ] R23 Built-in lists that never touch your progress · proof: `src/core/data/catalog.ts`
+- [x] R20 Database tables with per-user walls · proof: `supabase/migrations/0001_init.sql`
+- [x] R21 Login: Google, Discord, email link · proof: `src/core/auth/SignIn.tsx`
+- [x] R22 Local copy and sync status · proof: `src/core/data/sync.ts`
+- [x] R23 Built-in lists that never touch your progress · proof: `src/core/data/catalog.ts`
 - [ ] R24 Nightly backups · proof: `supabase/functions/backup/index.ts`
 
 ## Phase 4 · Engines

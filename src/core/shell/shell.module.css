@@ -139,6 +139,15 @@
   background: var(--glacier);
   flex: none;
 }
+.syncOk .syncDot {
+  background: var(--ok);
+}
+.syncFailed {
+  color: var(--ember-soft);
+}
+.syncFailed .syncDot {
+  background: var(--ember-soft);
+}
 .assistantBtn {
   display: flex;
   align-items: center;

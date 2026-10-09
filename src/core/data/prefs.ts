@@ -10,6 +10,8 @@ import type { LayoutState, Scope } from '../registry/layout';
 
 export interface Prefs {
   version: 1;
+  /** When these settings last changed (epoch ms). Sync keeps the newer copy. */
+  updatedAt: number;
   /** Games in the switcher, in order. null = every registered game. */
   games: GameId[] | null;
   layouts: Record<Scope, LayoutState>;
@@ -18,7 +20,7 @@ export interface Prefs {
 }
 
 const KEY = 'hlith.prefs';
-const EMPTY: Prefs = { version: 1, games: null, layouts: {}, servers: {}, lastModule: {} };
+const EMPTY: Prefs = { version: 1, updatedAt: 0, games: null, layouts: {}, servers: {}, lastModule: {} };
 
 function read(): Prefs {
   let raw: string | null = null;
@@ -45,7 +47,22 @@ export function getPrefs(): Prefs {
 }
 
 export function updatePrefs(change: (p: Prefs) => Prefs): void {
-  current = change(current);
+  current = { ...change(current), updatedAt: Date.now() };
+  save();
+}
+
+/** Replace the settings with a copy from elsewhere (sync), keeping its timestamp. */
+export function replacePrefs(next: Prefs): void {
+  try {
+    localStorage.setItem(`${KEY}.before-sync`, JSON.stringify(current));
+  } catch {
+    /* nothing to keep */
+  }
+  current = { ...EMPTY, ...next, version: 1 };
+  save();
+}
+
+function save(): void {
   try {
     localStorage.setItem(KEY, JSON.stringify(current));
   } catch {
@@ -54,15 +71,13 @@ export function updatePrefs(change: (p: Prefs) => Prefs): void {
   listeners.forEach((l) => l());
 }
 
+export function subscribePrefs(l: () => void): () => void {
+  listeners.add(l);
+  return () => listeners.delete(l);
+}
+
 export function usePrefs(): Prefs {
-  return useSyncExternalStore(
-    (l) => {
-      listeners.add(l);
-      return () => listeners.delete(l);
-    },
-    getPrefs,
-    getPrefs,
-  );
+  return useSyncExternalStore(subscribePrefs, getPrefs, getPrefs);
 }
 
 /** Test helper: reload from storage. */

@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState, type CSSProperties, type MouseEvent } from 'react';
 import type { GameContract, ModuleId } from '../contract';
 import { updatePrefs, usePrefs } from '../data/prefs';
+import { useSyncStatus, type SyncStatus } from '../data/sync';
 import { defaultLayout, phoneBar, slot, type LayoutState, type Scope } from '../registry/layout';
 import { MODULES } from '../registry/modules';
 import { formatTime, nextDailyReset, serverRule } from '../time/reset';
@@ -15,6 +16,8 @@ import s from './shell.module.css';
 interface Props {
   /** Every registered game. Which ones show is the viewer's choice. */
   games: GameContract[];
+  /** Signed-in account, or null in "this device only" mode. */
+  account?: { email: string; onSignOut: () => void } | null;
 }
 
 type Sheet = null | 'more' | 'edit' | 'account' | 'games' | 'assistant' | 'pick-game';
@@ -25,8 +28,9 @@ const LONG_PRESS_MS = 500;
  * Layer 1: same for every game, never moves, never hides. Knows nothing about
  * servers, resets or currencies; those come from the game record.
  */
-export function Shell({ games: registered }: Props) {
+export function Shell({ games: registered, account = null }: Props) {
   const prefs = usePrefs();
+  const sync = useSyncStatus();
   const path = usePath();
   const now = useNow(60_000);
   const [sheet, setSheet] = useState<Sheet>(null);
@@ -134,10 +138,7 @@ export function Shell({ games: registered }: Props) {
           Edit layout
         </button>
         <div className={s.sideFoot}>
-          <span className={s.sync}>
-            <span className={s.syncDot} aria-hidden="true" />
-            Saved on this device · no sync yet
-          </span>
+          <SyncLine status={sync} />
           <button type="button" className={s.assistantBtn} onClick={() => setSheet('assistant')}>
             Assistant <span className={s.kbd}>⌘K</span>
           </button>
@@ -282,8 +283,18 @@ export function Shell({ games: registered }: Props) {
           ))}
         </div>
         <div className={s.section}>
-          <span className={s.sectionLabel}>SIGN IN · SYNC · BACKUP</span>
-          <p className={s.note}>Not built yet. Until then your settings stay on this device only.</p>
+          <span className={s.sectionLabel}>ACCOUNT · SYNC</span>
+          <SyncLine status={sync} />
+          {account ? (
+            <>
+              <p className={s.note}>Signed in as {account.email}.</p>
+              <button type="button" className={s.linkBtn} onClick={account.onSignOut}>
+                Sign out
+              </button>
+            </>
+          ) : (
+            <p className={s.note}>Sign-in isn’t switched on yet, so your settings stay on this device only.</p>
+          )}
         </div>
       </BottomSheet>
 
@@ -293,6 +304,26 @@ export function Shell({ games: registered }: Props) {
         </p>
       </BottomSheet>
     </div>
+  );
+}
+
+function SyncLine({ status }: { status: SyncStatus }) {
+  const text =
+    status.state === 'synced'
+      ? `Synced ${formatTime(status.at)}`
+      : status.state === 'syncing'
+        ? 'Syncing…'
+        : status.state === 'failed'
+          ? 'Sync failed · saved on this device'
+          : status.state === 'signed-out'
+            ? 'Signed out'
+            : 'Saved on this device only';
+  const tone = status.state === 'synced' ? s.syncOk : status.state === 'failed' ? s.syncFailed : '';
+  return (
+    <span className={`${s.sync} ${tone}`} role="status" title={status.state === 'failed' ? status.message : undefined}>
+      <span className={s.syncDot} aria-hidden="true" />
+      {text}
+    </span>
   );
 }
 
