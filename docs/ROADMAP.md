@@ -11,7 +11,7 @@ so it can't drift from the real code. Never tick a box by hand; add the proof.
 Who builds what: see `docs/WORKSTREAMS.md`.
 
 <!-- roadmap:summary -->
-**45 of 61 done** `███████████████░░░░░` 74%
+**46 of 61 done** `███████████████░░░░░` 75%
 
 **Next up:** R24 Nightly backups
 
@@ -23,7 +23,7 @@ Who builds what: see `docs/WORKSTREAMS.md`.
 | Phase 3 · Accounts and data | `████████░░` | 4 / 5 |
 | Phase 4 · Engines | `██████████` | 4 / 4 |
 | Phase 5 · Modules | `██████████` | 17 / 17 |
-| Phase 6 · Connections and extras | `░░░░░░░░░░` | 0 / 13 |
+| Phase 6 · Connections and extras | `█░░░░░░░░░` | 1 / 13 |
 | Phase 7 · Launch | `███░░░░░░░` | 1 / 3 |
 <!-- /roadmap:summary -->
 
@@ -97,7 +97,7 @@ Who builds what: see `docs/WORKSTREAMS.md`.
 - [ ] R55 ★ Setup checklist and Guide · proof: `src/tools/account/SetupChecklist.tsx`, `src/tools/account/Guide.tsx`
 - [ ] R56 ★ Export my data · proof: `supabase/functions/export-data/index.ts`
 - [ ] R57 ★ Delete my account · proof: `supabase/functions/delete-account/index.ts`
-- [ ] R58 Owner console · proof: `src/tools/owner/OwnerConsole.tsx`
+- [x] R58 Owner console · proof: `src/tools/owner/OwnerConsole.tsx`
 
 ## Phase 7 · Launch
 - [ ] R59 Accessibility and phone pass · proof: `tests/e2e/accessibility.spec.ts`

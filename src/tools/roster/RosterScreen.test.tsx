@@ -65,16 +65,21 @@ function makeGame(withKits: boolean, presets: TeamPreset[] = [preset]): GameCont
   };
 }
 
-const show = async (tab: 'characters' | 'teams', game = makeGame(false)) => {
-  render(<RosterScreen games={[game]} scope="aa" tab={tab} servers={{}} openTab={() => {}} open={() => {}} openAccount={() => {}} />);
-  if (tab === 'characters') await screen.findByRole('list', { name: 'Characters' });
+const show = async (tab: 'characters' | 'teams', game = makeGame(false), games: GameContract[] = [game], scope = 'aa') => {
+  render(<RosterScreen games={games} scope={scope} tab={tab} servers={{}} openTab={() => {}} open={() => {}} openAccount={() => {}} />);
+  if (tab === 'characters') await screen.findByRole('list', { name: /Characters/ });
   else await screen.findByRole('region', { name: 'Recommended teams' });
 };
 
 const tileNames = () =>
-  within(screen.getByRole('list', { name: 'Characters' }))
+  within(screen.getByRole('list', { name: /Characters/ }))
     .getAllByRole('button')
     .map((b) => b.getAttribute('aria-label'));
+
+const openPage = async (name: string) => {
+  fireEvent.click(screen.getByRole('button', { name }));
+  return screen.findByRole('article', { name });
+};
 
 describe('Roster screen', () => {
   beforeEach(() => {
@@ -82,68 +87,112 @@ describe('Roster screen', () => {
     resetUserData();
   });
 
-  it('Characters shows every character, newest first', async () => {
+  it('Characters shows every character, newest first, with "N of M owned"', async () => {
+    setRosterEntry('aa', 'c3', { owned: true, wanted: false, dupes: 2 });
     await show('characters');
-    expect(tileNames()).toEqual(['Newest Star', 'Older Star', 'Helper', 'Shield Friend']);
+    expect(tileNames()).toEqual(['Newest Star', 'Older Star', 'Helper, owned', 'Shield Friend']);
     expect(screen.getAllByText('5★').length).toBeGreaterThan(0);
+    expect(screen.getByText(/of 4 owned/)).toHaveTextContent('1 of 4 owned');
+    expect(screen.getByText('E2')).toBeInTheDocument();
+    expect(screen.getAllByText('NOT OWNED')).toHaveLength(3);
   });
 
-  it('filters by element, owned and name', async () => {
+  it('filters by element, owned / not owned / wanted and name', async () => {
     setRosterEntry('aa', 'c3', { owned: true, wanted: false, dupes: 0 });
+    setRosterEntry('aa', 'c2', { owned: false, wanted: true, dupes: 0 });
     await show('characters');
-    fireEvent.change(screen.getByLabelText('Element'), { target: { value: 'fire' } });
+    fireEvent.change(screen.getByLabelText('Element'), { target: { value: 'Fire' } });
     expect(tileNames()).toEqual(['Newest Star', 'Helper, owned']);
-    fireEvent.change(screen.getByLabelText('Show'), { target: { value: 'owned' } });
+    const showGroup = screen.getByRole('group', { name: 'Show' });
+    fireEvent.click(within(showGroup).getByRole('button', { name: 'Owned' }));
     expect(tileNames()).toEqual(['Helper, owned']);
     fireEvent.click(screen.getByText('Clear filters'));
+    fireEvent.click(within(showGroup).getByRole('button', { name: 'Wanted' }));
+    expect(tileNames()).toEqual(['Older Star, wanted']);
+    fireEvent.click(within(showGroup).getByRole('button', { name: 'All' }));
     fireEvent.change(screen.getByLabelText('Search'), { target: { value: 'shield' } });
     expect(tileNames()).toEqual(['Shield Friend']);
   });
 
-  it('the character page saves owned, wanted and dupes to your data', async () => {
+  it('tap actions mark many at once: owned, copies, and select several', async () => {
     await show('characters');
+    const tap = screen.getByRole('group', { name: 'Tap a character to' });
+    fireEvent.click(within(tap).getByRole('button', { name: 'Mark owned' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Helper' }));
+    expect(gameData('aa').roster.c3?.owned).toBe(true);
+    fireEvent.click(within(tap).getByRole('button', { name: 'Add a copy' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Helper, owned' }));
+    expect(gameData('aa').roster.c3?.dupes).toBe(1);
+    fireEvent.click(within(tap).getByRole('button', { name: 'Select several' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Newest Star' }));
     fireEvent.click(screen.getByRole('button', { name: 'Older Star' }));
-    const page = await screen.findByRole('dialog', { name: 'Older Star' });
-    fireEvent.click(within(page).getByLabelText('Owned'));
-    expect(gameData('aa').roster.c2).toEqual({ owned: true, wanted: false, dupes: 0 });
-    fireEvent.click(within(page).getByRole('button', { name: 'One Eidolon more' }));
-    fireEvent.click(within(page).getByLabelText('Wanted'));
-    expect(gameData('aa').roster.c2).toEqual({ owned: true, wanted: true, dupes: 1 });
-    expect(within(page).getByText('E1')).toBeInTheDocument();
-    // Build and gear have no data in this game: honest "No data yet".
-    expect(within(page).getAllByText('No data yet').length).toBeGreaterThan(1);
+    const bar = screen.getByRole('region', { name: 'Selected characters' });
+    fireEvent.click(within(bar).getByRole('button', { name: 'Wanted' }));
+    expect(gameData('aa').roster.c1?.wanted).toBe(true);
+    expect(gameData('aa').roster.c2?.wanted).toBe(true);
+    // Nothing else changed: your data is only ever added to.
+    expect(gameData('aa').roster.c3).toEqual({ owned: true, wanted: false, dupes: 1 });
   });
 
-  it('Teams shows preset slots with who you own, and leaves the fit score as "No data yet"', async () => {
+  it('the character page replaces the grid, saves owned, wanted and copies, and goes back', async () => {
+    await show('characters');
+    const page = await openPage('Older Star');
+    expect(screen.queryByRole('list', { name: /Characters/ })).not.toBeInTheDocument();
+    fireEvent.click(within(page).getByRole('button', { name: 'Owned' }));
+    expect(gameData('aa').roster.c2).toEqual({ owned: true, wanted: false, dupes: 0 });
+    fireEvent.click(within(page).getByRole('button', { name: 'One Eidolon more' }));
+    fireEvent.click(within(page).getByRole('button', { name: 'Wanted' }));
+    expect(gameData('aa').roster.c2).toEqual({ owned: true, wanted: true, dupes: 1 });
+    expect(within(page).getByText('E1')).toBeInTheDocument();
+    // Build, level and gear have no data in this game: honest "No data yet", plus a marked example preview.
+    expect(within(page).getByText('No build data yet')).toBeInTheDocument();
+    expect(within(page).getAllByText(/No data yet/).length).toBeGreaterThan(2);
+    expect(within(page).getAllByText('EXAMPLE').length).toBeGreaterThan(0);
+    fireEvent.click(within(page).getByRole('button', { name: '← Roster' }));
+    expect(await screen.findByRole('list', { name: /Characters/ })).toBeInTheDocument();
+  });
+
+  it('a character you don’t own shows "If you pull" with pity left honest', async () => {
+    await show('characters');
+    const page = await openPage('Newest Star');
+    expect(within(page).getByRole('heading', { name: 'If you pull' })).toBeInTheDocument();
+    expect(within(page).getByText(/Current pity and 50\/50: no data yet/)).toBeInTheDocument();
+  });
+
+  it('Teams shows preset portraits with who you own, and leaves the fit score as "No data yet"', async () => {
     setRosterEntry('aa', 'c1', { owned: true, wanted: false, dupes: 0 });
     setRosterEntry('aa', 'c3', { owned: false, wanted: true, dupes: 0 });
     await show('teams');
-    const card = screen.getByRole('heading', { name: 'Fire team' }).closest('article') as HTMLElement;
-    expect(within(card.querySelector('[aria-label="Fit with your roster"]') as HTMLElement).getByText('No data yet')).toBeInTheDocument();
+    const card = screen.getByRole('article', { name: 'Fire team' });
+    expect(within(within(card).getByLabelText('Fit with your roster')).getByText('No data yet')).toBeInTheDocument();
     expect(within(card).getByText('Newest Star').nextSibling).toHaveTextContent('owned');
     expect(within(card).getByText('Helper').nextSibling).toHaveTextContent('wanted');
     expect(within(card).getByText('Older Star').nextSibling).toHaveTextContent('not owned');
     expect(within(card).getByText('or Shield Friend')).toBeInTheDocument();
-    expect(screen.queryByText('EXAMPLE')).not.toBeInTheDocument();
+    expect(within(card).queryByText('EXAMPLE')).not.toBeInTheDocument();
+    // No presets of your own yet: the design's empty card.
+    expect(screen.getByText('No team presets yet')).toBeInTheDocument();
   });
 
-  it('without presets, Teams shows example presets with an honest notice', async () => {
+  it('without presets, Teams shows example presets with example scores and an honest notice', async () => {
     await show('teams', makeGame(false, []));
-    expect(screen.getByText(/Real recommended teams still have to be added by us/)).toBeInTheDocument();
+    expect(screen.getByText(/Real recommended teams and scoring still have to be added by us/)).toBeInTheDocument();
     expect(screen.getAllByText('EXAMPLE').length).toBeGreaterThan(1);
-    expect(screen.getByRole('heading', { name: /Newest Star team/ })).toBeInTheDocument();
+    const card = screen.getByRole('article', { name: 'Newest Star team' });
+    expect(within(card).getByText('91')).toBeInTheDocument();
+    expect(within(card).getAllByText('EXAMPLE').length).toBeGreaterThan(0);
   });
 
-  it('you can make your own team from the characters you own', async () => {
+  it('you can make your own preset from the characters you own', async () => {
     setRosterEntry('aa', 'c1', { owned: true, wanted: false, dupes: 0 });
     setRosterEntry('aa', 'c3', { owned: true, wanted: false, dupes: 0 });
     await show('teams');
-    fireEvent.click(screen.getByRole('button', { name: 'New team' }));
-    const sheet = await screen.findByRole('dialog', { name: 'New team' });
+    fireEvent.click(screen.getByRole('button', { name: 'New preset' }));
+    const sheet = await screen.findByRole('dialog', { name: 'New preset' });
     fireEvent.click(within(sheet).getByRole('button', { name: 'Newest Star' }));
     fireEvent.click(within(sheet).getByRole('button', { name: 'Helper' }));
     await act(async () => {
-      fireEvent.click(within(sheet).getByRole('button', { name: 'Save team' }));
+      fireEvent.click(within(sheet).getByRole('button', { name: 'Save preset' }));
     });
     expect(gameData('aa').teams).toHaveLength(1);
     expect(gameData('aa').teams[0]?.members).toEqual(['c1', 'c3']);
@@ -151,18 +200,17 @@ describe('Roster screen', () => {
 
   it('Kit check says "No data yet" when the game has no kit data', async () => {
     await show('characters');
-    fireEvent.click(screen.getByRole('button', { name: 'Newest Star' }));
-    const kit = within(await screen.findByRole('dialog')).getByRole('region', { name: 'Kit check' });
+    const page = await openPage('Newest Star');
+    const kit = within(page).getByRole('region', { name: 'Kit check' });
     expect(within(kit).getByText('No data yet')).toBeInTheDocument();
   });
 
   it('Kit check shows what each skill does with the game text as proof', async () => {
     await show('characters', makeGame(true));
-    fireEvent.click(screen.getByRole('button', { name: 'Newest Star' }));
-    const dialog = await screen.findByRole('dialog');
-    expect(await within(dialog).findByText('Basic Attack: Ember')).toBeInTheDocument();
-    expect(within(dialog).getByText('Swings twice, dealing Fire DMG.')).toBeInTheDocument();
-    expect(within(dialog).getAllByText('fire damage').length).toBeGreaterThan(0);
+    const page = await openPage('Newest Star');
+    expect(await within(page).findByText('Basic Attack: Ember')).toBeInTheDocument();
+    expect(within(page).getByText('Swings twice, dealing Fire DMG.')).toBeInTheDocument();
+    expect(within(page).getAllByText('fire damage').length).toBeGreaterThan(0);
   });
 
   it('Kit check also opens from a team in Teams', async () => {
@@ -172,5 +220,13 @@ describe('Roster screen', () => {
     expect(await within(dialog).findByText('Swings twice, dealing Fire DMG.')).toBeInTheDocument();
     // Members without kit data say so.
     expect(within(dialog).getAllByText('No data yet').length).toBe(2);
+  });
+
+  it('All games: one grid, every tile with its game tag', async () => {
+    const b = { ...makeGame(false), id: 'bb', short: 'BB', name: 'Game B' } as GameContract;
+    await show('characters', makeGame(false), [makeGame(false), b], 'all');
+    expect(tileNames()).toContain('Newest Star (AA)');
+    expect(tileNames()).toContain('Newest Star (BB)');
+    expect(screen.getAllByText('BB').length).toBeGreaterThan(3);
   });
 });

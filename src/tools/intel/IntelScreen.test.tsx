@@ -58,7 +58,11 @@ describe('Intel screen', () => {
 
   it('lists unreleased characters, soonest first, each unverified with its source', async () => {
     show(makeGame(chars, banners));
-    await screen.findByText('NEW AGENTS · 2');
+    await screen.findByText('Soon Star');
+    // Kind filter: only kinds that exist are offered; this game calls characters "Agent".
+    expect(within(screen.getByRole('group', { name: 'Kind' })).getAllByRole('button').map((b) => b.textContent)).toEqual(['All', 'Agent']);
+    // No reliability list yet: honest "No data yet", not a made-up rating.
+    expect(screen.getAllByText('Source reliability')).toHaveLength(2);
     const cards = screen.getAllByRole('article');
     expect(cards.map((c) => c.getAttribute('aria-label'))).toEqual(['Soon Star', 'Leaked Star']);
     expect(within(cards[0] as HTMLElement).getByText('list A')).toBeInTheDocument();
@@ -83,5 +87,8 @@ describe('Intel screen', () => {
     expect(await screen.findByText(/Nothing upcoming is listed for this game yet/)).toBeInTheDocument();
     expect(screen.getByText('A new 5★ agent')).toBeInTheDocument();
     expect(screen.getAllByText('EXAMPLE').length).toBeGreaterThan(1);
+    // The kind filter narrows the list.
+    fireEvent.click(within(screen.getByRole('group', { name: 'Kind' })).getByRole('button', { name: 'Area' }));
+    expect(screen.getAllByRole('article').map((c) => c.getAttribute('aria-label'))).toEqual(['A new map area']);
   });
 });
