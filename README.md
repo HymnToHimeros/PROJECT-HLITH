@@ -41,8 +41,11 @@ src/
   core/      skeleton: shell, contract, registries, saved data, look
   tools/     modules and engines: pulls, roster, events, budget, pity, …
   games/     one folder per game: contract + data
+tests/       unit, architecture and browser tests
+scripts/     roadmap check, game-data import
 supabase/    database migrations and server functions
-docs/        plan, design, roadmap, progress
+config/      tool settings (Vite, tests, lint, TypeScript, public env)
+docs/        plan, roadmap, progress; design/ holds the design files
 ```
 
 ## Working on it
@@ -61,7 +64,7 @@ Adding a game: copy `src/games/_template/`, fill in the contract, register it in
 
 - [`docs/ROADMAP.md`](docs/ROADMAP.md): what's done, which ticks itself off from the code
 - [`docs/PROGRESS.md`](docs/PROGRESS.md): what happened, what's next, decisions
-- [`docs/DESIGN.md`](docs/DESIGN.md) and the design files: how it looks
+- [`docs/DESIGN.md`](docs/DESIGN.md) and [`docs/design/`](docs/design): how it looks
 - [`docs/FEATURES.md`](docs/FEATURES.md): everything HLITH must do
 - [`docs/WORKSTREAMS.md`](docs/WORKSTREAMS.md): who builds what
 - [`docs/DEPLOY.md`](docs/DEPLOY.md) and [`docs/SETUP.md`](docs/SETUP.md): hosting and outside settings
