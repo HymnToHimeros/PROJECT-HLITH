@@ -20,6 +20,11 @@ Resume with: "continue from PROGRESS.md". Newest entry on top.
 - CI (`.github/workflows/ci.yml`) runs both on every pull request.
 
 ## Done
+- 2026-10-09 · **gacha-import requires sign-in.** Checked live after deploy:
+  the function ran for a caller with only the public key (the platform's
+  verify_jwt doesn't stop that with the new key style). It now confirms a
+  signed-in user with Supabase Auth itself (`_shared/requireUser.ts`, 4 tests).
+- 2026-10-09 · R28 merged (pull request #16); function deployed by the integration.
 - 2026-10-09 · **R28 · history from the in-game link.** Server function
   `supabase/functions/gacha-import` (signed-in users only) with its logic in
   `supabase/functions/_shared/hoyoGachaLog.ts`: finds the link in pasted text,
