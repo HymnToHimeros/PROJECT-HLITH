@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>body{margin:0;background:#050607;color:#E6EEF3;font-family:Archivo,system-ui,sans-serif;-webkit-font-smoothing:antialiased}*{box-sizing:border-box}a{color:#7FB4D6;text-decoration:none}a:hover{color:#FF6A1F}::-webkit-scrollbar{width:8px;height:8px}::-webkit-scrollbar-thumb{background:#232A33;border-radius:4px}::-webkit-scrollbar-track{background:transparent}*{scrollbar-width:thin;scrollbar-color:#232A33 transparent}</style>
+</helmet>
+<div data-screen-label="05 Theme swap" style="width:1440px;background:#08090B;padding:56px;display:flex;flex-direction:column;gap:32px">
+  <header style="display:flex;justify-content:space-between;align-items:flex-end;gap:24px;padding-bottom:24px;border-bottom:1px solid #1E242C">
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div style="font:500 12px/1 'JetBrains Mono',monospace;letter-spacing:.14em;color:#6F8494">PROJECT-HLITH · LAYER 3 · THEME SWAP</div>
+      <div style="font-weight:800;font-stretch:118%;font-size:64px;line-height:.95">Theme swap</div>
+      <div style="font-size:17px;color:#A9BBC8;max-width:720px;text-wrap:pretty">The live website, three screens. Switching the game record changes vent, currencies, stamina, dupe naming and game-only features. The shell and modules stay the same.</div>
+    </div>
+    <div style="display:flex;gap:4px;padding:4px;background:#12161B;border-radius:12px">
+      <sc-for list="{{ swaps }}" as="w" hint-placeholder-count="3">
+        <button onClick="{{ w.onClick }}" style="height:48px;padding:0 22px;border:0;border-radius:9px;background:{{ w.bg }};color:{{ w.fg }};font:700 14px 'JetBrains Mono',monospace;cursor:pointer">{{ w.label }}</button>
+      </sc-for>
+    </div>
+  </header>
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px">
+    <sc-for list="{{ diffs }}" as="d" hint-placeholder-count="4">
+      <div style="background:#0E1115;border:1px solid #1E242C;border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:6px">
+        <span style="font:600 11px 'JetBrains Mono',monospace;letter-spacing:.12em;color:#6F8494">{{ d.k }}</span>
+        <span style="font-size:15px;font-weight:600;color:{{ d.color }}">{{ d.v }}</span>
+      </div>
+    </sc-for>
+  </div>
+  <sc-for list="{{ screens }}" as="s" hint-placeholder-count="3">
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <span style="font:600 11px 'JetBrains Mono',monospace;letter-spacing:.12em;color:#A9BBC8">{{ s.label }}</span>
+      <div style="width:1328px;height:820px;border-radius:12px;border:1px solid #232A33;overflow:hidden;background:#08090B;display:flex;flex-direction:column">
+        <div style="flex:none;height:36px;display:flex;align-items:center;gap:8px;padding:0 14px;background:#12161B;border-bottom:1px solid #1E242C">
+          <span style="width:10px;height:10px;border-radius:50%;background:#2A333D"></span><span style="width:10px;height:10px;border-radius:50%;background:#2A333D"></span><span style="width:10px;height:10px;border-radius:50%;background:#2A333D"></span>
+          <span style="margin-left:14px;height:22px;padding:0 12px;border-radius:6px;background:#08090B;font:500 11px/22px 'JetBrains Mono',monospace;color:#6F8494">{{ s.url }}</span>
+        </div>
+        <div style="flex:1;min-height:0">
+          <dc-import name="HLITH App" device="pc" embedded="{{ true }}" game="{{ s.game }}" module="{{ s.module }}" char-id="{{ s.charId }}" hint-size="100%,100%" style="width:100%;height:100%"></dc-import>
+        </div>
+      </div>
+    </div>
+  </sc-for>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { game: 'hsr' };
+  renderVals() {
+    const g = this.state.game;
+    const V = { hsr: '#A99BFF', zzz: '#D4F23A', all: '#CFE3EF' };
+    const swaps = [['hsr','HSR'],['zzz','ZZZ'],['all','ALL']].map(([id,label]) => ({ label, onClick: () => this.setState({ game: id }), bg: g===id ? V[id] : 'transparent', fg: g===id ? '#08090B' : '#6F8494' }));
+    const ch = g === 'zzz' ? 'ellen' : 'acheron';
+    const screens = [
+      { label: 'TODAY', url: `hlith.app/${g}/today`, game: g, module: 'today', charId: '' },
+      { label: 'PULLS · PLANNER', url: `hlith.app/${g}/pulls`, game: g, module: 'pulls', charId: '' },
+      { label: 'CHARACTER PAGE', url: `hlith.app/${g === 'all' ? 'hsr' : g}/roster/${ch}`, game: g, module: 'roster', charId: ch }
+    ];
+    const D = {
+      hsr: [['VENT','#A99BFF'],['CURRENCY','Stellar Jade · Star Rail Pass'],['STAMINA','Trailblaze Power · 240'],['GAME-ONLY','Dispatch Assignments daily']],
+      zzz: [['VENT','#D4F23A'],['CURRENCY','Polychrome · Encrypted Master Tape'],['STAMINA','Battery Charge · no data yet'],['GAME-ONLY','Coff Cafe daily · Kit check']],
+      all: [['VENT','#CFE3EF (neutral)'],['CURRENCY','Both games, tagged'],['STAMINA','One tile per game'],['GAME-ONLY','Shown with HSR / ZZZ tags']]
+    };
+    return { swaps, screens, diffs: D[g].map(([k,v]) => ({ k, v, color: k === 'VENT' ? V[g] : '#E6EEF3' })) };
+  }
+}
+</script>
+</body>
+</html>

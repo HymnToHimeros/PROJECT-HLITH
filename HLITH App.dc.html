@@ -1,0 +1,1107 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>body{margin:0;background:#050607;color:#E6EEF3;font-family:Archivo,system-ui,sans-serif;-webkit-font-smoothing:antialiased;overflow:hidden}*{box-sizing:border-box}a{color:#7FB4D6;text-decoration:none}a:hover{color:#FF6A1F}button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer;text-align:left;-webkit-tap-highlight-color:transparent}input{font:inherit}::-webkit-scrollbar{width:8px;height:8px}::-webkit-scrollbar-thumb{background:#232A33;border-radius:4px}::-webkit-scrollbar-track{background:transparent}*{scrollbar-width:thin;scrollbar-color:#232A33 transparent}</style>
+</helmet>
+<div style="height:{{ rootH }};width:100%;display:flex;justify-content:center;background:#050607">
+<div data-screen-label="HLITH app" style="position:relative;display:flex;width:100%;max-width:{{ rootMax }};height:{{ rootH }};overflow:hidden;background:#08090B;border-left:{{ rootBorder }};border-right:{{ rootBorder }}">
+
+  <sc-if value="{{ isPc }}" hint-placeholder-val="{{ true }}">
+    <aside style="width:248px;flex:none;height:100%;display:flex;flex-direction:column;gap:14px;padding:18px 12px 12px;background:#0B0D10;border-right:1px solid #1A2027">
+      <div style="display:flex;align-items:baseline;justify-content:space-between;padding:0 6px">
+        <span style="font-weight:800;font-stretch:118%;font-size:19px;letter-spacing:.02em">HLITH</span>
+        <span style="font:500 10px/1 'JetBrains Mono',monospace;color:#56677A;letter-spacing:.08em">HLIÐSKJÁLF</span>
+      </div>
+      <div style="display:flex;gap:2px;padding:4px;background:#12161B;border-radius:10px">
+        <sc-for list="{{ games }}" as="g" hint-placeholder-count="3">
+          <button onClick="{{ g.onClick }}" style="flex:1;height:34px;border-radius:7px;background:{{ g.bg }};color:{{ g.fg }};font:600 12px/34px 'JetBrains Mono',monospace;text-align:center">{{ g.short }}</button>
+        </sc-for>
+        <button onClick="{{ openAdd }}" title="Add a game" style="width:34px;height:34px;border-radius:7px;font:600 16px/34px 'JetBrains Mono',monospace;color:#6F8494;text-align:center" style-hover="background:#1A2027;color:#E6EEF3">+</button>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:2px 4px 0 8px">
+        <span style="font:600 10px/1 'JetBrains Mono',monospace;color:#56677A;letter-spacing:.14em">MODULES</span>
+        <button onClick="{{ openEdit }}" style="font-size:12px;font-weight:600;color:#7FB4D6;height:28px;padding:0 8px;border-radius:6px" style-hover="background:#12161B">Edit layout</button>
+      </div>
+      <nav style="display:flex;flex-direction:column;gap:2px;flex:1;min-height:0;overflow:auto;margin-top:-8px">
+        <sc-for list="{{ nav }}" as="n" hint-placeholder-count="8">
+          <button onClick="{{ n.onClick }}" style="position:relative;flex:none;display:flex;align-items:center;gap:10px;height:42px;padding:0 10px;border-radius:8px;background:{{ n.bg }};color:{{ n.color }};font-size:14px;font-weight:600" style-hover="color:#E6EEF3">
+            <span style="position:absolute;left:0;top:11px;bottom:11px;width:3px;border-radius:2px;background:{{ n.marker }}"></span>
+            <span style="width:26px;height:26px;flex:none;border-radius:6px;background:#12161B;border:1px solid #232A33;font:600 10px/24px 'JetBrains Mono',monospace;text-align:center;color:{{ n.glyphColor }}">{{ n.glyph }}</span>
+            <span style="flex:1">{{ n.label }}</span>
+            <sc-if value="{{ n.hasTag }}"><span style="font:700 9px/1 'JetBrains Mono',monospace;padding:3px 5px;border-radius:4px;background:{{ n.tagBg }};color:#08090B">{{ n.tag }}</span></sc-if>
+          </button>
+        </sc-for>
+      </nav>
+      <div style="display:flex;flex-direction:column;gap:4px;padding-top:10px;border-top:1px solid #1A2027">
+        <button onClick="{{ syncNow }}" style="display:flex;align-items:center;gap:10px;height:36px;padding:0 10px;border-radius:8px;font-size:13px;color:#A9BBC8" style-hover="background:#12161B">
+          <span style="width:8px;height:8px;border-radius:50%;background:{{ syncDot }}"></span>{{ syncLabel }}
+        </button>
+        <button onClick="{{ openAssistant }}" style="display:flex;align-items:center;gap:10px;height:44px;padding:0 10px;border-radius:9px;background:#141920;border:1px solid #232A33;font-size:14px;font-weight:700" style-hover="border-color:#FF6A1F">
+          <span style="width:8px;height:8px;border-radius:2px;background:#FF6A1F"></span><span style="flex:1">Assistant</span><span style="font:500 11px 'JetBrains Mono',monospace;color:#6F8494">⌘K</span>
+        </button>
+        <button onClick="{{ openAccount }}" style="display:flex;align-items:center;gap:10px;height:44px;padding:0 10px;border-radius:9px;font-size:14px;color:#A9BBC8" style-hover="background:#12161B;color:#E6EEF3">
+          <span style="width:26px;height:26px;border-radius:50%;background:#232A33;border:1px solid #2F3944"></span><span style="flex:1">Account</span><span style="color:#56677A">···</span>
+        </button>
+      </div>
+    </aside>
+  </sc-if>
+
+  <div style="flex:1;min-width:0;display:flex;flex-direction:column;height:100%">
+    <sc-if value="{{ isPhone }}">
+      <div style="flex:none;display:flex;align-items:center;gap:8px;height:56px;padding:0 6px 0 14px;border-bottom:1px solid #1A2027;background:#0B0D10">
+        <span style="font-weight:800;font-stretch:118%;font-size:15px;margin-right:2px">HLITH</span>
+        <div style="display:flex;gap:2px;padding:3px;background:#12161B;border-radius:9px">
+          <sc-for list="{{ games }}" as="g" hint-placeholder-count="3">
+            <button onClick="{{ g.onClick }}" style="height:34px;min-width:42px;padding:0 6px;border-radius:7px;background:{{ g.bg }};color:{{ g.fg }};font:600 11px/34px 'JetBrains Mono',monospace;text-align:center">{{ g.short }}</button>
+          </sc-for>
+          <button onClick="{{ openAdd }}" style="width:34px;height:34px;font:600 15px/34px 'JetBrains Mono',monospace;color:#6F8494;text-align:center">+</button>
+        </div>
+        <span style="flex:1"></span>
+        <button onClick="{{ syncNow }}" title="{{ syncLabel }}" style="width:36px;height:44px;display:flex;align-items:center;justify-content:center"><span style="width:8px;height:8px;border-radius:50%;background:{{ syncDot }}"></span></button>
+        <button onClick="{{ openAccount }}" style="width:44px;height:44px;display:flex;align-items:center;justify-content:center"><span style="width:28px;height:28px;border-radius:50%;background:#232A33;border:1px solid #2F3944"></span></button>
+      </div>
+    </sc-if>
+
+    <div style="flex:none;display:flex;align-items:center;gap:12px;padding:{{ headPad }};background:{{ ventWash }};border-bottom:1px solid #1A2027">
+      <sc-if value="{{ isChar }}">
+        <button onClick="{{ backToRoster }}" style="height:44px;padding:0 14px 0 10px;border-radius:10px;background:#141920;border:1px solid #232A33;font-size:14px;font-weight:600;color:#CFE3EF;display:flex;align-items:center;gap:6px">← Roster</button>
+      </sc-if>
+      <div style="display:flex;flex-direction:column;gap:6px;min-width:0;flex:1">
+        <div style="font:600 11px/1 'JetBrains Mono',monospace;letter-spacing:.12em;color:{{ ventText }}">{{ scopeLabel }}</div>
+        <div style="font-weight:800;font-stretch:110%;font-size:{{ titleSize }};line-height:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ title }}</div>
+      </div>
+      <span title="Example values for this design. Real values come from sync." style="flex:none;font:600 10px/1 'JetBrains Mono',monospace;letter-spacing:.1em;padding:6px 8px;border-radius:6px;border:1px solid #2A333D;color:#6F8494">SAMPLE DATA</span>
+    </div>
+
+    <div style="flex:1;min-height:0;overflow:auto;padding:{{ pad }}">
+
+      <sc-if value="{{ isToday }}" hint-placeholder-val="{{ true }}">
+        <div style="display:flex;flex-direction:column;gap:18px;max-width:1240px">
+          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax({{ tileMin }},1fr));gap:12px">
+            <sc-for list="{{ today.tiles }}" as="t" hint-placeholder-count="4">
+              <div style="background:#0E1115;border:1px solid #1E242C;border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:10px;min-height:118px">
+                <div style="display:flex;align-items:center;gap:8px;justify-content:space-between"><span style="font-size:13px;color:#A9BBC8">{{ t.label }}</span><sc-if value="{{ t.hasTag }}"><span style="font:700 9px/1 'JetBrains Mono',monospace;padding:3px 5px;border-radius:4px;background:{{ t.tagBg }};color:#08090B">{{ t.tag }}</span></sc-if></div>
+                <div style="font:600 28px/1 'JetBrains Mono',monospace;letter-spacing:-.02em;color:{{ t.valueColor }}">{{ t.value }}</div>
+                <sc-if value="{{ t.hasBar }}"><div style="height:6px;border-radius:3px;background:#1A2027;overflow:hidden"><div style="height:100%;border-radius:3px;width:{{ t.barPct }};background:{{ t.barColor }}"></div></div></sc-if>
+                <div style="font-size:12px;line-height:1.35;color:{{ t.subColor }};margin-top:auto">{{ t.sub }}</div>
+              </div>
+            </sc-for>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:8px">
+            <sc-for list="{{ today.servers }}" as="sv" hint-placeholder-count="1">
+              <button onClick="{{ sv.onClick }}" style="display:inline-flex;align-items:center;gap:8px;height:36px;padding:0 12px 0 8px;border-radius:999px;background:#0E1115;border:1px solid #2A333D;font-size:13px;color:#A9BBC8" style-hover="border-color:#7FB4D6">
+                <span style="font:700 9px/1 'JetBrains Mono',monospace;padding:4px 5px;border-radius:4px;background:{{ sv.vent }};color:#08090B">{{ sv.short }}</span>Server<span style="color:#E6EEF3;font-weight:600">{{ sv.label }}</span><span style="color:#6F8494;font-size:10px">▼</span>
+              </button>
+            </sc-for>
+            <sc-for list="{{ today.currencies }}" as="c" hint-placeholder-count="2">
+              <span style="display:inline-flex;align-items:center;gap:8px;height:36px;padding:0 12px 0 6px;border-radius:999px;background:#0E1115;border:1px solid #1E242C;font-size:13px;color:#A9BBC8">
+                <span style="width:22px;height:22px;border-radius:50%;background:{{ c.dot }}"></span>{{ c.name }}<span style="font:600 14px 'JetBrains Mono',monospace;color:#E6EEF3">{{ c.value }}</span>
+              </span>
+            </sc-for>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:16px;align-items:start">
+            <div style="background:#0E1115;border:1px solid #1E242C;border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:12px">
+              <div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font-weight:700;font-size:17px">Open tasks</span><span style="font:600 13px 'JetBrains Mono',monospace;color:#A9BBC8">{{ today.doneLabel }}</span></div>
+              <div style="height:6px;border-radius:3px;background:#1A2027;overflow:hidden"><div style="height:100%;border-radius:3px;width:{{ today.donePct }};background:{{ vent }}"></div></div>
+              <div style="display:flex;flex-direction:column">
+                <sc-for list="{{ today.tasks }}" as="k" hint-placeholder-count="5">
+                  <button onClick="{{ k.onToggle }}" style="display:flex;align-items:center;gap:12px;min-height:50px;padding:4px 2px;border-bottom:1px solid #161B21;width:100%">
+                    <span style="width:24px;height:24px;flex:none;border-radius:7px;border:1.5px solid {{ k.checkBorder }};background:{{ k.checkBg }};display:flex;align-items:center;justify-content:center;color:#08090B;font-size:14px;font-weight:800">{{ k.mark }}</span>
+                    <span style="flex:1;font-size:14px;line-height:1.35;color:{{ k.labelColor }};text-decoration:{{ k.deco }}">{{ k.label }}</span>
+                    <sc-if value="{{ k.hasTag }}"><span style="font:700 9px/1 'JetBrains Mono',monospace;padding:3px 5px;border-radius:4px;background:{{ k.tagBg }};color:#08090B">{{ k.tag }}</span></sc-if>
+                    <span style="font:500 11px 'JetBrains Mono',monospace;color:#6F8494;width:52px;text-align:right">{{ k.kind }}</span>
+                  </button>
+                </sc-for>
+              </div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:16px">
+              <div style="background:#0E1115;border:1px solid #1E242C;border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:10px">
+                <span style="font-weight:700;font-size:17px">Live banners</span>
+                <sc-for list="{{ today.banners }}" as="b" hint-placeholder-count="2">
+                  <div style="display:flex;gap:12px;align-items:stretch;background:#08090B;border:1px solid #1E242C;border-radius:10px;overflow:hidden;min-height:76px">
+                    <div style="width:72px;flex:none;background:repeating-linear-gradient(135deg,#161B21 0 6px,#111418 6px 12px);border-right:3px solid {{ b.vent }};display:flex;align-items:center;justify-content:center;font:700 16px 'JetBrains Mono',monospace;color:#3A4652">{{ b.initials }}</div>
+                    <div style="flex:1;padding:10px 12px 10px 0;display:flex;flex-direction:column;justify-content:center;gap:4px;min-width:0">
+                      <div style="display:flex;align-items:center;gap:8px"><span style="font-size:12px;color:#6F8494;flex:1">{{ b.kind }}</span><sc-if value="{{ b.hasTag }}"><span style="font:700 9px/1 'JetBrains Mono',monospace;padding:3px 5px;border-radius:4px;background:{{ b.tagBg }};color:#08090B">{{ b.tag }}</span></sc-if></div>
+                      <span style="font-weight:700;font-size:16px">{{ b.title }}</span>
+                      <span style="font:600 12px 'JetBrains Mono',monospace;color:{{ b.endsColor }}">ends in {{ b.ends }}</span>
+                    </div>
+                  </div>
+                </sc-for>
+              </div>
+              <div style="background:#0E1115;border:1px solid #1E242C;border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:4px">
+                <span style="font-weight:700;font-size:17px;margin-bottom:6px">Coming up</span>
+                <sc-for list="{{ today.coming }}" as="e" hint-placeholder-count="3">
+                  <div style="display:flex;align-items:center;gap:10px;min-height:46px;border-bottom:1px solid #161B21">
+                    <span style="width:4px;height:22px;border-radius:2px;flex:none;background:{{ e.vent }}"></span>
+                    <span style="flex:1;font-size:14px;line-height:1.3">{{ e.label }}</span>
+                    <sc-if value="{{ e.unverified }}"><span title="From Intel. Not confirmed by the game." style="font:600 10px/1 'JetBrains Mono',monospace;letter-spacing:.06em;padding:4px 6px;border-radius:5px;border:1px dashed #FF8A4C;color:#FF8A4C">? UNVERIFIED</span></sc-if>
+                    <sc-if value="{{ e.hasTag }}"><span style="font:700 9px/1 'JetBrains Mono',monospace;padding:3px 5px;border-radius:4px;background:{{ e.tagBg }};color:#08090B">{{ e.tag }}</span></sc-if>
+                    <span style="font:500 12px 'JetBrains Mono',monospace;color:#A9BBC8;width:64px;text-align:right">{{ e.when }}</span>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isRosterGrid }}">
+        <div style="display:flex;flex-direction:column;gap:16px;max-width:1240px">
+          <div style="display:flex;gap:4px;padding:4px;background:#0E1115;border:1px solid #1E242C;border-radius:10px;align-self:flex-start">
+            <sc-for list="{{ roster.tabs }}" as="rt" hint-placeholder-count="2">
+              <button onClick="{{ rt.onClick }}" style="height:40px;padding:0 18px;border-radius:7px;background:{{ rt.bg }};color:{{ rt.fg }};font-size:14px;font-weight:700">{{ rt.label }}</button>
+            </sc-for>
+          </div>
+          <sc-if value="{{ roster.isTeams }}">
+            <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,320px),1fr));gap:12px">
+              <sc-for list="{{ roster.presets }}" as="tm" hint-placeholder-count="2">
+                <div style="display:flex;align-items:center;gap:12px;min-height:72px;padding:12px 14px;border-radius:12px;background:#0E1115;border:1px solid #1E242C">
+                  <div style="display:flex;flex-direction:column;gap:8px;flex:1;min-width:0">
+                    <div style="display:flex;align-items:center;gap:8px"><span style="font-size:15px;font-weight:700;flex:1">{{ tm.name }}</span><sc-if value="{{ tm.hasTag }}"><span style="font:700 9px/1 'JetBrains Mono',monospace;padding:3px 5px;border-radius:4px;background:{{ tm.tagBg }};color:#08090B">{{ tm.tag }}</span></sc-if></div>
+                    <div style="display:flex;gap:4px">
+                      <sc-for list="{{ tm.members }}" as="mb" hint-placeholder-count="4">
+                        <span title="{{ mb.name }}" style="width:32px;height:32px;border-radius:50%;background:#1A2027;border:2px solid {{ mb.color }};font:700 10px/28px 'JetBrains Mono',monospace;text-align:center;color:#A9BBC8;opacity:{{ mb.opacity }}">{{ mb.initials }}</span>
+                      </sc-for>
+                    </div>
+                  </div>
+                  <div style="display:flex;flex-direction:column;align-items:flex-end;gap:2px"><span style="font:600 26px/1 'JetBrains Mono',monospace">{{ tm.score }}</span><span style="font-size:11px;color:#6F8494">synergy</span></div>
+                </div>
+              </sc-for>
+            </div>
+            <sc-if value="{{ roster.noPresets }}">
+              <div style="border:1.5px dashed #2A333D;border-radius:14px;padding:28px;display:flex;flex-direction:column;align-items:flex-start;gap:10px">
+                <span style="font:600 11px 'JetBrains Mono',monospace;letter-spacing:.12em;color:#6F8494">NO DATA YET</span>
+                <span style="font-weight:700;font-size:20px">No team presets yet</span>
+                <span style="font-size:14px;line-height:1.5;color:#A9BBC8;max-width:520px">Build a team from your roster and HLITH scores it against recommended teams.</span>
+                <button style="margin-top:6px;height:44px;padding:0 18px;border-radius:10px;background:{{ vent }};color:#08090B;font-weight:700;font-size:14px">New preset</button>
+              </div>
+            </sc-if>
+          </sc-if>
+          <sc-if value="{{ roster.isChars }}">
+          <div style="display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between">
+            <div style="font-size:14px;color:#A9BBC8"><span style="font:700 15px 'JetBrains Mono',monospace;color:#E6EEF3">{{ roster.owned }}</span> of {{ roster.total }} owned</div>
+            <div style="display:flex;gap:4px;padding:4px;background:#0E1115;border:1px solid #1E242C;border-radius:10px">
+              <sc-for list="{{ roster.filters }}" as="f" hint-placeholder-count="3">
+                <button onClick="{{ f.onClick }}" style="height:36px;padding:0 14px;border-radius:7px;background:{{ f.bg }};color:{{ f.fg }};font-size:13px;font-weight:600">{{ f.label }}</button>
+              </sc-for>
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax({{ roster.min }},1fr));gap:14px">
+            <sc-for list="{{ roster.tiles }}" as="c" hint-placeholder-count="8">
+              <button onClick="{{ c.onClick }}" style="display:flex;flex-direction:column;gap:8px;opacity:{{ c.opacity }}">
+                <div style="position:relative;width:100%;aspect-ratio:3/4;border-radius:10px;border:{{ c.border }};background:repeating-linear-gradient(135deg,#141920 0 8px,#101418 8px 16px);overflow:hidden;display:flex;align-items:center;justify-content:center" style-hover="border-color:#7FB4D6">
+                  <span style="font-weight:800;font-stretch:120%;font-size:26px;color:#2F3944">{{ c.initials }}</span>
+                  <span title="{{ c.element }}" style="position:absolute;top:8px;left:8px;width:12px;height:12px;border-radius:50%;background:{{ c.elementColor }};box-shadow:0 0 0 2px #08090B"></span>
+                  <sc-if value="{{ c.hasTag }}"><span style="position:absolute;top:7px;right:7px;font:700 9px/1 'JetBrains Mono',monospace;padding:3px 5px;border-radius:4px;background:{{ c.tagBg }};color:#08090B">{{ c.tag }}</span></sc-if>
+                  <span style="position:absolute;left:8px;bottom:11px;font:700 12px 'JetBrains Mono',monospace;color:{{ c.rarityColor }}">{{ c.rarity }}</span>
+                  <span style="position:absolute;right:7px;bottom:9px;font:600 10px/1 'JetBrains Mono',monospace;padding:4px 6px;border-radius:5px;background:{{ c.dupeBg }};color:{{ c.dupeFg }}">{{ c.dupe }}</span>
+                  <span style="position:absolute;left:0;right:0;bottom:0;height:3px;background:{{ c.rarityColor }}"></span>
+                </div>
+                <div style="display:flex;flex-direction:column;gap:2px;padding:0 2px"><span style="font-weight:700;font-size:14px">{{ c.name }}</span><span style="font-size:12px;color:#6F8494">{{ c.meta }}</span></div>
+              </button>
+            </sc-for>
+          </div>
+          </sc-if>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isChar }}">
+        <div style="display:flex;flex-direction:column;gap:20px;max-width:1240px">
+          <div style="display:grid;grid-template-columns:{{ ch.heroCols }};gap:20px;align-items:end">
+            <div style="position:relative;width:100%;aspect-ratio:3/4;border-radius:14px;border:1px solid #232A33;background:repeating-linear-gradient(135deg,#141920 0 10px,#101418 10px 20px);display:flex;align-items:center;justify-content:center;overflow:hidden">
+              <span style="font-weight:800;font-stretch:120%;font-size:{{ ch.initialSize }};color:#2F3944">{{ ch.initials }}</span>
+              <span style="position:absolute;top:10px;left:10px;font:500 9px/1 'JetBrains Mono',monospace;letter-spacing:.1em;color:#56677A">ART</span>
+              <span style="position:absolute;left:0;right:0;bottom:0;height:4px;background:{{ ch.rarityColor }}"></span>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:14px;min-width:0">
+              <div style="display:flex;flex-wrap:wrap;gap:6px">
+                <span style="display:inline-flex;align-items:center;height:28px;padding:0 10px;border-radius:7px;background:#141920;border:1px solid #232A33;font:700 12px 'JetBrains Mono',monospace;color:{{ ch.rarityColor }}">{{ ch.rarity }}</span>
+                <span style="display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 10px;border-radius:7px;background:#141920;border:1px solid #232A33;font-size:13px"><span style="width:10px;height:10px;border-radius:50%;background:{{ ch.elementColor }}"></span>{{ ch.element }}</span>
+                <span style="display:inline-flex;align-items:center;height:28px;padding:0 10px;border-radius:7px;background:#141920;border:1px solid #232A33;font-size:13px">{{ ch.role }}</span>
+                <span style="display:inline-flex;align-items:center;height:28px;padding:0 10px;border-radius:7px;background:{{ ch.vent }};color:#08090B;font:700 11px 'JetBrains Mono',monospace">{{ ch.gameShort }}</span>
+              </div>
+              <div style="font-weight:800;font-stretch:115%;font-size:{{ ch.nameSize }};line-height:.95;letter-spacing:-.01em">{{ ch.name }}</div>
+              <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px">
+                <sc-for list="{{ ch.stats }}" as="s" hint-placeholder-count="3">
+                  <div style="background:#0E1115;border:1px solid #1E242C;border-radius:12px;padding:12px 14px;display:flex;flex-direction:column;gap:8px">
+                    <span style="font-size:12px;color:#A9BBC8">{{ s.label }}</span>
+                    <span style="font:600 24px/1 'JetBrains Mono',monospace;color:{{ s.valueColor }}">{{ s.value }}</span>
+                    <span style="font-size:12px;color:{{ s.subColor }}">{{ s.sub }}</span>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:16px;align-items:start">
+            <sc-if value="{{ ch.owned }}">
+              <div style="background:#0E1115;border:1px solid #1E242C;border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:14px">
+                <div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font-weight:700;font-size:17px">Build score</span><sc-if value="{{ ch.hasBuild }}"><span style="font-size:12px;color:#6F8494">imported 2 days ago</span></sc-if></div>
+                <sc-if value="{{ ch.hasBuild }}">
+                  <div style="display:flex;align-items:flex-end;gap:10px">
+                    <span style="font:600 56px/.85 'JetBrains Mono',monospace;letter-spacing:-.04em">{{ ch.score }}</span>
+                    <span style="font:500 14px 'JetBrains Mono',monospace;color:#6F8494;padding-bottom:2px">/100</span>
+                    <span style="margin-left:auto;font-weight:800;font-stretch:115%;font-size:22px;width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;background:{{ ch.vent }};color:#08090B">{{ ch.grade }}</span>
+                  </div>
+                  <div style="display:flex;flex-direction:column;gap:10px">
+                    <sc-for list="{{ ch.parts }}" as="p" hint-placeholder-count="4">
+                      <div style="display:grid;grid-template-columns:96px 1fr 34px;align-items:center;gap:10px;font-size:13px">
+                        <span style="color:#A9BBC8">{{ p.label }}</span>
+                        <div style="height:6px;border-radius:3px;background:#1A2027;overflow:hidden"><div style="height:100%;border-radius:3px;width:{{ p.pct }};background:{{ ch.vent }}"></div></div>
+                        <span style="font:600 13px 'JetBrains Mono',monospace;text-align:right">{{ p.val }}</span>
+                      </div>
+                    </sc-for>
+                  </div>
+                </sc-if>
+                <sc-if value="{{ ch.noBuild }}">
+                  <div style="display:flex;flex-direction:column;gap:8px;padding:16px;border:1.5px dashed #2A333D;border-radius:10px">
+                    <span style="font:600 40px/1 'JetBrains Mono',monospace;color:#3A4652">—</span>
+                    <span style="font-weight:700;font-size:15px">No build data yet</span>
+                    <span style="font-size:13px;line-height:1.45;color:#A9BBC8;text-wrap:pretty">Import {{ ch.gearName }} and {{ ch.weaponName }} from your in-game profile to get a score. HLITH shows nothing rather than a guess.</span>
+                    <button style="align-self:flex-start;margin-top:4px;height:44px;padding:0 16px;border-radius:10px;border:1px solid {{ ch.vent }};color:{{ ch.vent }};font-weight:700;font-size:14px">Import build</button>
+                  </div>
+                </sc-if>
+              </div>
+            </sc-if>
+            <sc-if value="{{ ch.notOwned }}">
+              <div style="background:#0E1115;border:1px solid #1E242C;border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:12px">
+                <span style="font-weight:700;font-size:17px">If you pull</span>
+                <div style="display:flex;align-items:baseline;gap:8px"><span style="font:600 44px/1 'JetBrains Mono',monospace">{{ ch.pullsHave }}</span><span style="font:500 14px 'JetBrains Mono',monospace;color:#6F8494">/ 180 worst case</span></div>
+                <div style="height:8px;border-radius:4px;background:#1A2027;overflow:hidden"><div style="height:100%;border-radius:4px;width:{{ ch.pullPct }};background:{{ ch.vent }}"></div></div>
+                <span style="font-size:13px;line-height:1.45;color:#A9BBC8;text-wrap:pretty">{{ ch.pullNote }}</span>
+                <div style="display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;background:#08090B;border:1px dashed #2A333D;font-size:13px"><span style="font:600 16px 'JetBrains Mono',monospace;color:#3A4652">—</span><span style="flex:1;color:#A9BBC8">Current pity and 50/50: no data yet</span><span style="color:#7FB4D6;font-weight:600">Import</span></div>
+              </div>
+            </sc-if>
+            <div style="background:#0E1115;border:1px solid #1E242C;border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:10px">
+              <span style="font-weight:700;font-size:17px">Team fit</span>
+              <sc-if value="{{ ch.teamsNA }}">
+                <div style="display:flex;flex-direction:column;gap:6px;padding:16px;border-radius:10px;background:repeating-linear-gradient(135deg,#12161B 0 6px,#0E1115 6px 12px);border:1px solid #1A2027">
+                  <span style="font:600 11px 'JetBrains Mono',monospace;letter-spacing:.08em;color:#6F8494">TEAMS · LOCKED</span>
+                  <span style="font-size:14px;color:#A9BBC8">Teams is not available for this game yet.</span>
+                </div>
+              </sc-if>
+              <sc-if value="{{ ch.noTeams }}">
+                <span style="font-size:14px;color:#A9BBC8;padding:8px 0">No preset uses this character yet.</span>
+              </sc-if>
+              <sc-for list="{{ ch.teams }}" as="tm" hint-placeholder-count="0">
+                <div style="display:flex;align-items:center;gap:12px;min-height:56px;padding:8px 10px;border-radius:10px;background:#08090B;border:1px solid #1E242C">
+                  <div style="display:flex;flex-direction:column;gap:6px;flex:1;min-width:0">
+                    <span style="font-size:14px;font-weight:700">{{ tm.name }}</span>
+                    <div style="display:flex;gap:4px">
+                      <sc-for list="{{ tm.members }}" as="mb" hint-placeholder-count="4">
+                        <span title="{{ mb.name }}" style="width:28px;height:28px;border-radius:50%;background:#1A2027;border:2px solid {{ mb.color }};font:700 9px/24px 'JetBrains Mono',monospace;text-align:center;color:#A9BBC8;opacity:{{ mb.opacity }}">{{ mb.initials }}</span>
+                      </sc-for>
+                    </div>
+                  </div>
+                  <div style="display:flex;flex-direction:column;align-items:flex-end;gap:2px"><span style="font:600 22px/1 'JetBrains Mono',monospace">{{ tm.score }}</span><span style="font-size:11px;color:#6F8494">synergy</span></div>
+                </div>
+              </sc-for>
+            </div>
+            <sc-if value="{{ ch.hasKit }}">
+              <div style="background:#0E1115;border:1px solid #1E242C;border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:6px">
+                <div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font-weight:700;font-size:17px">Kit check</span><span style="font:700 9px/1 'JetBrains Mono',monospace;padding:3px 5px;border-radius:4px;background:{{ ch.vent }};color:#08090B">ZZZ ONLY</span></div>
+                <span style="font-size:13px;line-height:1.45;color:#A9BBC8;margin-bottom:4px">What each skill does, with the game's own text as proof.</span>
+                <sc-for list="{{ ch.kit }}" as="k" hint-placeholder-count="5">
+                  <div style="display:flex;align-items:center;gap:10px;min-height:44px;border-bottom:1px solid #161B21"><span style="flex:1;font-size:14px;font-weight:600">{{ k.label }}</span><span style="font-size:12px;color:#7FB4D6">Game text: no data yet</span></div>
+                </sc-for>
+              </div>
+            </sc-if>
+            <div style="background:#0E1115;border:1px solid #1E242C;border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:12px">
+              <span style="font-weight:700;font-size:17px">Materials to max</span>
+              <sc-for list="{{ ch.mats }}" as="m" hint-placeholder-count="3">
+                <div style="display:flex;flex-direction:column;gap:6px">
+                  <div style="display:flex;justify-content:space-between;font-size:13px"><span style="color:#A9BBC8">{{ m.label }}</span><span style="font:600 13px 'JetBrains Mono',monospace;color:{{ m.color }}">{{ m.value }}</span></div>
+                  <div style="height:6px;border-radius:3px;background:#1A2027;overflow:hidden"><div style="height:100%;border-radius:3px;width:{{ m.pct }};background:{{ ch.vent }}"></div></div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isCalendar }}">
+        <div style="display:flex;flex-direction:column;gap:16px;max-width:1240px">
+          <div style="display:flex;flex-wrap:wrap;gap:8px 18px;align-items:center;font-size:13px;color:#A9BBC8">
+            <span style="display:flex;align-items:center;gap:8px"><span style="width:28px;height:14px;border-radius:4px;background:#1A2027;border-left:3px solid {{ vent }}"></span>Confirmed</span>
+            <span style="display:flex;align-items:center;gap:8px"><span style="width:28px;height:14px;border-radius:4px;border:1px dashed {{ vent }};background:repeating-linear-gradient(135deg,#232A33 0 4px,transparent 4px 8px)"></span>Leak · unverified</span>
+            <span style="display:flex;align-items:center;gap:8px"><span style="width:28px;height:14px;border-radius:4px;border:1.5px dashed #7FB4D6"></span>Your plan</span>
+            <span style="display:flex;align-items:center;gap:8px"><span style="width:2px;height:16px;background:#E6EEF3"></span>Today</span>
+          </div>
+          <div style="background:#0E1115;border:1px solid #1E242C;border-radius:12px;overflow-x:auto">
+            <div style="position:relative;min-width:{{ cal.minW }};padding:8px 16px 14px">
+              <div style="position:relative;height:30px;border-bottom:1px solid #1A2027">
+                <sc-for list="{{ cal.ticks }}" as="tk" hint-placeholder-count="6"><span style="position:absolute;left:{{ tk.left }};top:9px;font:500 11px/1 'JetBrains Mono',monospace;color:#6F8494;white-space:nowrap;padding-left:5px">{{ tk.label }}</span></sc-for>
+              </div>
+              <div style="position:relative;padding-bottom:4px">
+                <sc-for list="{{ cal.ticks }}" as="tk" hint-placeholder-count="6"><span style="position:absolute;top:0;bottom:0;left:{{ tk.left }};width:1px;background:#161B21"></span></sc-for>
+                <span style="position:absolute;top:-30px;bottom:0;left:{{ cal.todayLeft }};width:2px;background:#E6EEF3;z-index:2"></span>
+                <sc-for list="{{ cal.lanes }}" as="ln" hint-placeholder-count="3">
+                  <div style="position:relative;padding:14px 0 6px;font:600 10px/1 'JetBrains Mono',monospace;letter-spacing:.12em;color:#56677A">{{ ln.label }}</div>
+                  <sc-for list="{{ ln.items }}" as="it" hint-placeholder-count="2">
+                    <div style="position:relative;height:38px">
+                      <div style="position:absolute;top:4px;bottom:4px;left:{{ it.left }};width:{{ it.width }};border-radius:6px;background:{{ it.bg }};border:{{ it.border }};border-left:{{ it.borderLeft }};display:flex;align-items:center;gap:8px;padding:0 8px;white-space:nowrap;font-size:13px;font-weight:600;color:{{ it.color }}">
+                        <span>{{ it.title }}</span><span style="font:500 11px 'JetBrains Mono',monospace;color:#A9BBC8">{{ it.range }}</span>
+                        <sc-if value="{{ it.isLeak }}"><span style="font:600 9px/1 'JetBrains Mono',monospace;letter-spacing:.06em;padding:3px 5px;border-radius:4px;border:1px dashed #FF8A4C;color:#FF8A4C">? UNVERIFIED</span></sc-if>
+                        <sc-if value="{{ it.hasTag }}"><span style="font:700 9px/1 'JetBrains Mono',monospace;padding:3px 5px;border-radius:4px;background:{{ it.tagBg }};color:#08090B">{{ it.tag }}</span></sc-if>
+                      </div>
+                    </div>
+                  </sc-for>
+                </sc-for>
+              </div>
+            </div>
+          </div>
+          <div style="background:#0E1115;border:1px solid #1E242C;border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:2px">
+            <span style="font-weight:700;font-size:17px;margin-bottom:8px">Dates</span>
+            <sc-for list="{{ cal.list }}" as="e" hint-placeholder-count="5">
+              <div style="display:flex;align-items:center;gap:10px;min-height:50px;border-bottom:1px solid #161B21;flex-wrap:wrap;padding:4px 0">
+                <span style="width:4px;height:24px;border-radius:2px;flex:none;background:{{ e.vent }}"></span>
+                <div style="flex:1;min-width:160px;display:flex;flex-direction:column;gap:3px"><span style="font-size:14px;font-weight:600">{{ e.title }}</span><span style="font:500 12px 'JetBrains Mono',monospace;color:#A9BBC8">{{ e.range }}</span></div>
+                <sc-if value="{{ e.isLeak }}"><span style="font:600 10px/1 'JetBrains Mono',monospace;letter-spacing:.06em;padding:4px 6px;border-radius:5px;border:1px dashed #FF8A4C;color:#FF8A4C">? UNVERIFIED</span></sc-if>
+                <sc-if value="{{ e.hasTag }}"><span style="font:700 9px/1 'JetBrains Mono',monospace;padding:3px 5px;border-radius:4px;background:{{ e.tagBg }};color:#08090B">{{ e.tag }}</span></sc-if>
+                <span style="font:500 12px 'JetBrains Mono',monospace;color:#6F8494;min-width:110px;text-align:right">{{ e.when }}</span>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isPulls }}">
+        <div style="display:flex;flex-direction:column;gap:16px;max-width:1240px">
+          <div style="display:flex;gap:4px;padding:4px;background:#0E1115;border:1px solid #1E242C;border-radius:10px;align-self:flex-start;max-width:100%;overflow-x:auto">
+            <sc-for list="{{ pulls.tabs }}" as="pt" hint-placeholder-count="5"><button onClick="{{ pt.onClick }}" style="flex:none;height:40px;padding:0 16px;border-radius:7px;background:{{ pt.bg }};color:{{ pt.fg }};font-size:14px;font-weight:700">{{ pt.label }}</button></sc-for>
+          </div>
+          <sc-if value="{{ pulls.isPlanner }}">
+            <div style="display:flex;align-items:center;gap:10px;padding:12px 14px;border-radius:10px;border:1px dashed #2A333D;font-size:13px;color:#A9BBC8;flex-wrap:wrap"><span style="font:600 16px 'JetBrains Mono',monospace;color:#3A4652">—</span><span style="flex:1;min-width:220px">Chance to win needs your pity and 50/50 state. Pull history: no data yet.</span><span style="color:#7FB4D6;font-weight:700">Import in History</span></div>
+            <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,360px),1fr));gap:14px">
+              <sc-for list="{{ pulls.planner }}" as="b" hint-placeholder-count="3">
+                <div style="background:#0E1115;border:1px solid #1E242C;border-left:3px solid {{ b.vent }};border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:12px">
+                  <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap"><span style="font-size:12px;color:#6F8494;flex:1">{{ b.kind }}</span><sc-if value="{{ b.isLeak }}"><span style="font:600 10px/1 'JetBrains Mono',monospace;letter-spacing:.06em;padding:4px 6px;border-radius:5px;border:1px dashed #FF8A4C;color:#FF8A4C">? UNVERIFIED</span></sc-if><sc-if value="{{ b.hasTag }}"><span style="font:700 9px/1 'JetBrains Mono',monospace;padding:3px 5px;border-radius:4px;background:{{ b.tagBg }};color:#08090B">{{ b.tag }}</span></sc-if></div>
+                  <div style="display:flex;flex-direction:column;gap:4px"><span style="font-weight:800;font-stretch:110%;font-size:22px">{{ b.title }}</span><span style="font:500 12px 'JetBrains Mono',monospace;color:#A9BBC8">{{ b.range }} · {{ b.ends }}</span></div>
+                  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
+                    <div style="display:flex;flex-direction:column;gap:4px"><span style="font-size:12px;color:#6F8494">Have now</span><span style="font:600 24px/1 'JetBrains Mono',monospace">{{ b.have }}</span></div>
+                    <div style="display:flex;flex-direction:column;gap:4px"><span style="font-size:12px;color:#6F8494">By end</span><span style="font:600 24px/1 'JetBrains Mono',monospace">{{ b.by }}</span></div>
+                    <div style="display:flex;flex-direction:column;gap:4px"><span style="font-size:12px;color:#6F8494">Worst case</span><span style="font:600 24px/1 'JetBrains Mono',monospace;color:#A9BBC8">{{ b.worst }}</span></div>
+                  </div>
+                  <div style="position:relative;height:8px;border-radius:4px;background:#1A2027;overflow:hidden"><div style="position:absolute;inset:0 auto 0 0;width:{{ b.pct }};background:{{ b.vent }};opacity:.4"></div><div style="position:absolute;inset:0 auto 0 0;width:{{ b.havePct }};background:{{ b.vent }}"></div></div>
+                  <div style="display:flex;justify-content:space-between;gap:8px;font-size:12px;flex-wrap:wrap"><span style="color:{{ b.verdictColor }};font-weight:600">{{ b.verdict }}</span><span style="color:#6F8494">By end counts daily + weekly income only</span></div>
+                </div>
+              </sc-for>
+            </div>
+          </sc-if>
+          <sc-if value="{{ pulls.isCalc }}">
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:14px;align-items:start">
+              <sc-for list="{{ pulls.calc }}" as="cg" hint-placeholder-count="1">
+                <div style="background:#0E1115;border:1px solid #1E242C;border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:4px">
+                  <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px"><span style="font-weight:700;font-size:17px;flex:1">Budget to version end</span><sc-if value="{{ cg.hasTag }}"><span style="font:700 9px/1 'JetBrains Mono',monospace;padding:3px 5px;border-radius:4px;background:{{ cg.tagBg }};color:#08090B">{{ cg.tag }}</span></sc-if></div>
+                  <span style="font:500 12px 'JetBrains Mono',monospace;color:#A9BBC8;margin-bottom:8px">Version ends in {{ cg.ends }}</span>
+                  <sc-for list="{{ cg.rows }}" as="r" hint-placeholder-count="6">
+                    <div style="display:flex;align-items:center;gap:12px;min-height:54px;border-bottom:1px solid #161B21;padding:4px 0">
+                      <sc-if value="{{ r.isToggle }}"><button onClick="{{ r.onToggle }}" style="position:relative;width:40px;height:24px;flex:none;border-radius:12px;background:{{ r.track }}"><span style="position:absolute;top:2px;left:{{ r.knob }};width:20px;height:20px;border-radius:50%;background:#08090B"></span></button></sc-if>
+                      <div style="flex:1;display:flex;flex-direction:column;gap:3px;min-width:0"><span style="font-size:14px;font-weight:600">{{ r.label }}</span><span style="font-size:12px;color:#6F8494">{{ r.sub }}</span></div>
+                      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:3px"><span style="font:600 15px 'JetBrains Mono',monospace;color:{{ r.valueColor }}">{{ r.value }}</span><span style="font:500 11px 'JetBrains Mono',monospace;color:#56677A">{{ r.jade }}</span></div>
+                    </div>
+                  </sc-for>
+                  <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:12px;padding-top:14px">
+                    <div style="display:flex;flex-direction:column;gap:4px"><span style="font-size:13px;color:#A9BBC8">Known total</span><span style="font:500 12px 'JetBrains Mono',monospace;color:#6F8494">{{ cg.totalJade }} · rows with no data are left out</span></div>
+                    <div style="display:flex;align-items:baseline;gap:6px"><span style="font:600 44px/1 'JetBrains Mono',monospace;letter-spacing:-.03em">{{ cg.total }}</span><span style="font-size:13px;color:#6F8494">pulls</span></div>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+          </sc-if>
+          <sc-if value="{{ pulls.isLog }}">
+            <div style="background:#0E1115;border:1px solid #1E242C;border-radius:12px;padding:8px 16px">
+              <div style="display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:12px;padding:10px 0;border-bottom:1px solid #1E242C;font:600 10px 'JetBrains Mono',monospace;letter-spacing:.12em;color:#56677A"><span>ENTRY</span><span style="text-align:right">CHANGE</span><span style="text-align:right;min-width:72px">BALANCE</span></div>
+              <sc-for list="{{ pulls.log }}" as="l" hint-placeholder-count="5">
+                <div style="display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:12px;align-items:center;min-height:54px;border-bottom:1px solid #161B21">
+                  <div style="display:flex;flex-direction:column;gap:3px;min-width:0"><div style="display:flex;align-items:center;gap:8px"><span style="font-size:14px;font-weight:600">{{ l.label }}</span><sc-if value="{{ l.hasTag }}"><span style="font:700 9px/1 'JetBrains Mono',monospace;padding:3px 5px;border-radius:4px;background:{{ l.tagBg }};color:#08090B">{{ l.tag }}</span></sc-if></div><span style="font:500 11px 'JetBrains Mono',monospace;color:#6F8494">{{ l.date }}</span></div>
+                  <span style="font:600 14px 'JetBrains Mono',monospace;text-align:right;color:{{ l.deltaColor }}">{{ l.delta }}</span>
+                  <span style="font:500 13px 'JetBrains Mono',monospace;text-align:right;color:#A9BBC8;min-width:72px">{{ l.bal }}</span>
+                </div>
+              </sc-for>
+            </div>
+          </sc-if>
+          <sc-if value="{{ pulls.isHistory }}">
+            <div style="border:1.5px dashed #2A333D;border-radius:14px;padding:24px;display:flex;flex-direction:column;align-items:flex-start;gap:10px;background:#0B0D10"><span style="font:600 11px 'JetBrains Mono',monospace;letter-spacing:.12em;color:#6F8494">NO DATA YET</span><span style="font-weight:700;font-size:20px">No pull history yet</span><span style="font-size:14px;line-height:1.5;color:#A9BBC8;max-width:560px;text-wrap:pretty">Import your history once. HLITH then knows your pity and 50/50 state, and the Planner and Luck report fill in. Nothing is estimated before that.</span></div>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:12px">
+              <sc-for list="{{ pulls.imports }}" as="im" hint-placeholder-count="3">
+                <button style="display:flex;flex-direction:column;gap:6px;min-height:96px;padding:16px;border-radius:12px;background:#0E1115;border:1px solid #1E242C" style-hover="border-color:#7FB4D6"><span style="font-size:15px;font-weight:700">{{ im.label }}</span><span style="font-size:13px;line-height:1.45;color:#A9BBC8">{{ im.sub }}</span></button>
+              </sc-for>
+            </div>
+          </sc-if>
+          <sc-if value="{{ pulls.isLuck }}">
+            <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax({{ tileMin }},1fr));gap:12px">
+              <sc-for list="{{ pulls.luck }}" as="t" hint-placeholder-count="4">
+                <div style="background:#0E1115;border:1px solid #1E242C;border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:10px;min-height:110px"><span style="font-size:13px;color:#A9BBC8">{{ t.label }}</span><span style="font:600 28px/1 'JetBrains Mono',monospace;color:#3A4652">—</span><span style="font-size:12px;color:#7FB4D6;margin-top:auto">No data yet · needs History</span></div>
+              </sc-for>
+            </div>
+          </sc-if>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isBanners }}">
+        <div style="display:flex;flex-direction:column;gap:16px;max-width:1240px">
+          <div style="display:flex;align-items:center;gap:10px;font-size:14px;color:#A9BBC8"><button onClick="{{ banners.leakTog.onToggle }}" style="position:relative;width:40px;height:24px;flex:none;border-radius:12px;background:{{ banners.leakTog.track }}"><span style="position:absolute;top:2px;left:{{ banners.leakTog.knob }};width:20px;height:20px;border-radius:50%;background:#08090B"></span></button><span>Show leaks</span><span style="font-size:12px;color:#6F8494">Leaked banners stay marked unverified</span></div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,360px),1fr));gap:14px">
+            <sc-for list="{{ banners.cards }}" as="b" hint-placeholder-count="4">
+              <div style="background:#0E1115;border:1px solid #1E242C;border-radius:12px;overflow:hidden;display:flex;flex-direction:column">
+                <div style="position:relative;aspect-ratio:16/7;background:repeating-linear-gradient(135deg,#141920 0 10px,#101418 10px 20px);border-bottom:3px solid {{ b.vent }};display:flex;align-items:center;justify-content:center"><span style="font-weight:800;font-stretch:120%;font-size:40px;color:#2F3944">{{ b.initials }}</span><span style="position:absolute;top:10px;left:10px;font:500 9px/1 'JetBrains Mono',monospace;letter-spacing:.1em;color:#56677A">BANNER ART</span></div>
+                <div style="padding:14px 16px 16px;display:flex;flex-direction:column;gap:10px">
+                  <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap"><span style="font-size:12px;color:#6F8494;flex:1">{{ b.kind }}</span><sc-if value="{{ b.isLeak }}"><span style="font:600 10px/1 'JetBrains Mono',monospace;letter-spacing:.06em;padding:4px 6px;border-radius:5px;border:1px dashed #FF8A4C;color:#FF8A4C">? UNVERIFIED</span></sc-if><sc-if value="{{ b.hasTag }}"><span style="font:700 9px/1 'JetBrains Mono',monospace;padding:3px 5px;border-radius:4px;background:{{ b.tagBg }};color:#08090B">{{ b.tag }}</span></sc-if></div>
+                  <span style="font-weight:800;font-stretch:110%;font-size:22px">{{ b.title }}</span>
+                  <div style="display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;font:500 12px 'JetBrains Mono',monospace"><span style="color:#A9BBC8">{{ b.range }}</span><span style="color:{{ b.whenColor }}">{{ b.when }}</span></div>
+                  <sc-if value="{{ b.hasOwned }}"><span style="font-size:13px;color:#A9BBC8">{{ b.owned }}</span></sc-if>
+                  <span style="font-size:13px;color:{{ b.fitColor }}">{{ b.fit }}</span>
+                  <button onClick="{{ b.onPlan }}" style="height:44px;padding:0 16px;border-radius:10px;font-weight:700;font-size:14px;align-self:flex-start;border:1px solid {{ b.vent }};color:{{ b.vent }}">Plan pulls</button>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </sc-if>
+      <sc-if value="{{ isEvents }}">
+        <div style="display:flex;flex-direction:column;gap:16px;max-width:1240px">
+          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax({{ tileMin }},1fr));gap:12px"><sc-for list="{{ events.tiles }}" as="t" hint-placeholder-count="3"><div style="background:#0E1115;border:1px solid #1E242C;border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:10px;padding:14px;min-height:108px"><span style="font-size:13px;color:#A9BBC8">{{ t.label }}</span><span style="font:600 28px/1 'JetBrains Mono',monospace;color:{{ t.color }}">{{ t.value }}</span><span style="font-size:12px;color:{{ t.subColor }};margin-top:auto">{{ t.sub }}</span></div></sc-for></div>
+          <div style="background:#0E1115;border:1px solid #1E242C;border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:0;padding:8px 16px">
+            <sc-for list="{{ events.rows }}" as="e" hint-placeholder-count="5">
+              <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;min-height:68px;padding:10px 0;border-bottom:1px solid #161B21">
+                <span style="width:4px;height:32px;border-radius:2px;flex:none;background:{{ e.vent }}"></span>
+                <div style="flex:1;min-width:200px;display:flex;flex-direction:column;gap:4px">
+                  <div style="display:flex;align-items:center;gap:8px"><span style="font-size:15px;font-weight:700">{{ e.name }}</span><span style="font:500 10px 'JetBrains Mono',monospace;color:#6F8494;letter-spacing:.08em">{{ e.type }}</span><sc-if value="{{ e.hasTag }}"><span style="font:700 9px/1 'JetBrains Mono',monospace;padding:3px 5px;border-radius:4px;background:{{ e.tagBg }};color:#08090B">{{ e.tag }}</span></sc-if></div>
+                  <div style="display:flex;gap:12px;flex-wrap:wrap;font-size:12px"><span style="font-family:'JetBrains Mono',monospace;color:#A9BBC8">{{ e.ends }}</span><span style="color:{{ e.rewardColor }}">{{ e.reward }}</span></div>
+                  <sc-if value="{{ e.isLogin }}">
+                    <div style="display:flex;align-items:center;gap:10px;margin-top:4px"><div style="flex:1;max-width:220px;height:6px;border-radius:3px;background:#1A2027;overflow:hidden"><div style="height:100%;width:{{ e.clPct }};background:{{ e.vent }}"></div></div><span style="font:600 12px 'JetBrains Mono',monospace">{{ e.cl }}/{{ e.days }} days</span><button onClick="{{ e.onClaim }}" style="height:32px;padding:0 10px;border-radius:7px;background:#141920;border:1px solid #232A33;font-size:12px;font-weight:700;color:#CFE3EF">+1 day</button></div>
+                  </sc-if>
+                </div>
+                <div style="display:flex;gap:2px;padding:3px;background:#08090B;border:1px solid #1E242C;border-radius:9px">
+                  <sc-for list="{{ e.states }}" as="st" hint-placeholder-count="3"><button onClick="{{ st.onClick }}" style="height:38px;min-width:56px;padding:0 10px;border-radius:7px;background:{{ st.bg }};color:{{ st.fg }};font-size:13px;font-weight:700;text-align:center">{{ st.label }}</button></sc-for>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </sc-if>
+      <sc-if value="{{ isFarm }}">
+        <div style="display:flex;flex-direction:column;gap:16px;max-width:1240px">
+          <div style="background:#0E1115;border:1px solid #1E242C;border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:10px"><span style="font-weight:700;font-size:17px">Farm for</span>
+            <div style="display:flex;flex-wrap:wrap;gap:6px"><sc-for list="{{ farm.chips }}" as="c" hint-placeholder-count="6"><button onClick="{{ c.onClick }}" style="display:flex;align-items:center;gap:6px;height:38px;padding:0 12px;border-radius:999px;background:{{ c.bg }};border:1px solid {{ c.border }};color:{{ c.fg }};font-size:13px;font-weight:600">{{ c.name }}<sc-if value="{{ c.hasTag }}"><span style="font:700 9px/1 'JetBrains Mono',monospace;padding:3px 5px;border-radius:4px;background:{{ c.tagBg }};color:#08090B">{{ c.tag }}</span></sc-if></button></sc-for></div>
+          </div>
+          <sc-if value="{{ farm.noSel }}"><div style="border:1.5px dashed #2A333D;border-radius:14px;padding:24px;display:flex;flex-direction:column;gap:8px"><span style="font:600 11px 'JetBrains Mono',monospace;letter-spacing:.12em;color:#6F8494">NOTHING CHOSEN</span><span style="font-weight:700;font-size:18px">Pick characters above</span><span style="font-size:14px;color:#A9BBC8">Their materials, stamina plan and gear appear here, and Today tells you what to spend stamina on.</span></div></sc-if>
+          <sc-if value="{{ farm.hasSel }}">
+            <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax({{ tileMin }},1fr));gap:12px"><sc-for list="{{ farm.tiles }}" as="t" hint-placeholder-count="3"><div style="background:#0E1115;border:1px solid #1E242C;border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:10px;padding:14px;min-height:108px"><span style="font-size:13px;color:#A9BBC8">{{ t.label }}</span><span style="font:600 28px/1 'JetBrains Mono',monospace;color:{{ t.color }}">{{ t.value }}</span><span style="font-size:12px;color:{{ t.subColor }};margin-top:auto">{{ t.sub }}</span></div></sc-for></div>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:16px;align-items:start">
+              <div style="background:#0E1115;border:1px solid #1E242C;border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:2px"><span style="font-weight:700;font-size:17px;margin-bottom:8px">Materials</span>
+                <sc-for list="{{ farm.rows }}" as="m" hint-placeholder-count="4">
+                  <div style="display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px 12px;padding:10px 0;border-bottom:1px solid #161B21">
+                    <div style="display:flex;align-items:center;gap:8px"><span style="font-size:14px;font-weight:600">{{ m.label }}</span><sc-if value="{{ m.hasTag }}"><span style="font:700 9px/1 'JetBrains Mono',monospace;padding:3px 5px;border-radius:4px;background:{{ m.tagBg }};color:#08090B">{{ m.tag }}</span></sc-if></div><span style="font:600 13px 'JetBrains Mono',monospace;color:{{ m.valueColor }};text-align:right">{{ m.value }}</span>
+                    <div style="height:6px;border-radius:3px;background:#1A2027;overflow:hidden;align-self:center"><div style="height:100%;width:{{ m.pct }};background:{{ m.vent }}"></div></div><span style="font:500 11px 'JetBrains Mono',monospace;color:#6F8494;text-align:right">{{ m.runs }} · {{ m.stamina }} stamina</span>
+                  </div>
+                </sc-for>
+              </div>
+              <div style="background:#0E1115;border:1px solid #1E242C;border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:2px"><span style="font-weight:700;font-size:17px;margin-bottom:8px">Gear to farm</span>
+                <sc-for list="{{ farm.gear }}" as="g" hint-placeholder-count="2">
+                  <div style="display:flex;flex-direction:column;gap:4px;padding:10px 0;border-bottom:1px solid #161B21"><div style="display:flex;align-items:center;gap:8px"><span style="font-size:14px;font-weight:700">{{ g.name }}</span><sc-if value="{{ g.hasTag }}"><span style="font:700 9px/1 'JetBrains Mono',monospace;padding:3px 5px;border-radius:4px;background:{{ g.tagBg }};color:#08090B">{{ g.tag }}</span></sc-if></div><span style="font-size:13px;color:{{ g.color }}">{{ g.gear }}</span></div>
+                </sc-for>
+              </div>
+            </div>
+          </sc-if>
+        </div>
+      </sc-if>
+      <sc-if value="{{ isBacklog }}">
+        <div style="display:flex;flex-direction:column;gap:16px;max-width:1240px">
+          <div style="background:#0E1115;border:1px solid #1E242C;border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:2px;padding:8px 16px">
+            <sc-for list="{{ backlog.cats }}" as="b" hint-placeholder-count="5">
+              <div style="display:flex;align-items:center;gap:14px;min-height:68px;padding:8px 0;border-bottom:1px solid #161B21;flex-wrap:wrap">
+                <div style="flex:1;min-width:200px;display:flex;flex-direction:column;gap:6px">
+                  <div style="display:flex;align-items:center;gap:8px"><span style="font-size:15px;font-weight:700">{{ b.label }}</span><sc-if value="{{ b.hasTag }}"><span style="font:700 9px/1 'JetBrains Mono',monospace;padding:3px 5px;border-radius:4px;background:{{ b.tagBg }};color:#08090B">{{ b.tag }}</span></sc-if></div>
+                  <div style="display:flex;align-items:center;gap:10px"><div style="flex:1;max-width:320px;height:6px;border-radius:3px;background:#1A2027;overflow:hidden"><div style="height:100%;width:{{ b.pct }};background:{{ b.vent }}"></div></div><span style="font:600 12px 'JetBrains Mono',monospace;color:#A9BBC8">{{ b.value }}</span></div>
+                </div>
+                <span style="font:600 13px 'JetBrains Mono',monospace;color:{{ b.rewardColor }};min-width:130px;text-align:right">{{ b.reward }}</span>
+                <sc-if value="{{ b.has }}"><button onClick="{{ b.onToggle }}" style="position:relative;width:40px;height:24px;flex:none;border-radius:12px;background:{{ b.track }}"><span style="position:absolute;top:2px;left:{{ b.knob }};width:20px;height:20px;border-radius:50%;background:#08090B"></span></button></sc-if><sc-if value="{{ b.none }}"><span style="width:40px"></span></sc-if>
+              </div>
+            </sc-for>
+          </div>
+          <div style="background:#0E1115;border:1px solid #1E242C;border-radius:12px;padding:16px;display:flex;flex-direction:column;flex-direction:row;align-items:center;gap:16px;flex-wrap:wrap">
+            <div style="flex:1;min-width:220px;display:flex;flex-direction:column;gap:4px"><span style="font-size:14px;color:#A9BBC8">Backlog could add</span><span style="font-size:12px;color:#6F8494">{{ backlog.note }}</span></div>
+            <span style="font:600 36px/1 'JetBrains Mono',monospace">{{ backlog.total }}</span><span style="font-size:13px;color:#6F8494">pulls</span>
+            <button onClick="{{ backlog.onCalc }}" style="height:44px;padding:0 16px;border-radius:10px;font-weight:700;font-size:14px;background:{{ vent }};color:#08090B">Open calculator</button>
+          </div>
+        </div>
+      </sc-if>
+      <sc-if value="{{ isIntel }}">
+        <div style="display:flex;flex-direction:column;gap:16px;max-width:1240px">
+          <span style="font-size:14px;line-height:1.5;color:#A9BBC8;max-width:640px">New content that no other module covers yet. Everything stays unverified until the game confirms it; banners and dates from leaks also show in Banners and Calendar.</span>
+          <div style="display:flex;gap:4px;padding:4px;background:#0E1115;border:1px solid #1E242C;border-radius:10px;align-self:flex-start;max-width:100%;overflow-x:auto">
+            <sc-for list="{{ intel.types }}" as="t" hint-placeholder-count="5"><button onClick="{{ t.onClick }}" style="flex:none;height:38px;padding:0 14px;border-radius:7px;background:{{ t.bg }};color:{{ t.fg }};font-size:13px;font-weight:700">{{ t.label }}</button></sc-for>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <sc-for list="{{ intel.rows }}" as="r" hint-placeholder-count="4">
+              <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:14px 16px;border-radius:12px;background:#0E1115;border:1px dashed #2A333D;border-left:3px solid {{ r.vent }}">
+                <div style="flex:1;min-width:220px;display:flex;flex-direction:column;gap:5px">
+                  <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap"><span style="font:600 10px 'JetBrains Mono',monospace;letter-spacing:.1em;color:#6F8494">{{ r.type }}</span><span style="font:600 10px/1 'JetBrains Mono',monospace;letter-spacing:.06em;padding:4px 6px;border-radius:5px;border:1px dashed #FF8A4C;color:#FF8A4C">? UNVERIFIED</span><sc-if value="{{ r.hasTag }}"><span style="font:700 9px/1 'JetBrains Mono',monospace;padding:3px 5px;border-radius:4px;background:{{ r.tagBg }};color:#08090B">{{ r.tag }}</span></sc-if></div>
+                  <span style="font-size:16px;font-weight:700">{{ r.label }}</span>
+                  <span style="font-size:12px;color:#6F8494">{{ r.source }} · {{ r.ago }}</span>
+                </div>
+                <div style="display:flex;flex-direction:column;gap:5px;width:140px"><span style="font-size:12px;color:#6F8494">Source reliability</span><div style="display:flex;align-items:center;gap:8px"><div style="flex:1;height:6px;border-radius:3px;background:#1A2027;overflow:hidden"><div style="height:100%;width:{{ r.relPct }};background:#7FB4D6"></div></div><span style="font:600 12px 'JetBrains Mono',monospace;color:{{ r.relColor }}">{{ r.rel }}</span></div></div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </sc-if>
+      <sc-if value="{{ isOwner }}">
+        <div style="display:flex;flex-direction:column;gap:16px;max-width:1240px">
+          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax({{ tileMin }},1fr));gap:12px"><sc-for list="{{ owner.tiles }}" as="t" hint-placeholder-count="3"><div style="background:#0E1115;border:1px solid #1E242C;border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:10px;padding:14px;min-height:108px"><span style="font-size:13px;color:#A9BBC8">{{ t.label }}</span><span style="font:600 28px/1 'JetBrains Mono',monospace;color:{{ t.color }}">{{ t.value }}</span><span style="font-size:12px;color:{{ t.subColor }};margin-top:auto">{{ t.sub }}</span></div></sc-for></div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,460px),1fr));gap:16px;align-items:start">
+            <div style="background:#0E1115;border:1px solid #1E242C;border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:8px"><div style="display:flex;justify-content:space-between;align-items:center"><span style="font-weight:700;font-size:17px">Game records</span><button style="height:36px;padding:0 12px;border-radius:8px;border:1px dashed #3A4652;font-size:13px;font-weight:600;color:#7FB4D6">+ Add game record</button></div>
+              <sc-for list="{{ owner.games }}" as="g" hint-placeholder-count="2">
+                <div style="display:flex;align-items:center;gap:12px;padding:12px;border-radius:10px;background:#08090B;border:1px solid #1E242C">
+                  <span style="width:36px;height:36px;border-radius:9px;background:{{ g.vent }};font:700 10px/36px 'JetBrains Mono',monospace;text-align:center;color:#08090B">{{ g.short }}</span>
+                  <div style="flex:1;display:flex;flex-direction:column;gap:3px;min-width:0"><span style="font-size:15px;font-weight:700">{{ g.name }}</span><span style="font:500 11px 'JetBrains Mono',monospace;color:#6F8494">{{ g.servers }} · reset {{ g.reset }} · {{ g.mods }}</span><span style="font-size:12px;color:#A9BBC8">{{ g.curr }}</span></div>
+                  <button style="height:36px;padding:0 12px;border-radius:8px;background:#141920;border:1px solid #232A33;font-size:13px;font-weight:600">Edit</button>
+                </div>
+              </sc-for>
+              <span style="font-size:12px;line-height:1.45;color:#6F8494">A record sets vent, icon, currencies, servers, reset rule and modules. New vents must pass the 7:1 contrast check.</span>
+            </div>
+            <div style="background:#0E1115;border:1px solid #1E242C;border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:2px"><span style="font-weight:700;font-size:17px;margin-bottom:8px">Built-in lists</span>
+              <sc-for list="{{ owner.lists }}" as="l" hint-placeholder-count="5">
+                <div style="display:flex;align-items:center;gap:12px;min-height:52px;border-bottom:1px solid #161B21"><span style="flex:1;font-size:14px;font-weight:600">{{ l.label }}</span><span style="font:600 14px 'JetBrains Mono',monospace">{{ l.count }}</span><span style="font-size:12px;color:#6F8494;width:110px">{{ l.updated }}</span><button style="height:34px;padding:0 12px;border-radius:7px;background:#141920;border:1px solid #232A33;font-size:12px;font-weight:600">Update</button></div>
+              </sc-for>
+              <span style="font-size:12px;color:#6F8494;margin-top:8px">List updates never change anyone's progress.</span>
+            </div>
+            <div style="background:#0E1115;border:1px solid #1E242C;border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:2px"><span style="font-weight:700;font-size:17px;margin-bottom:8px">Leak sources</span>
+              <sc-for list="{{ owner.sources }}" as="sr" hint-placeholder-count="3">
+                <div style="display:flex;align-items:center;gap:12px;min-height:56px;border-bottom:1px solid #161B21">
+                  <div style="flex:1;display:flex;flex-direction:column;gap:3px"><span style="font-size:14px;font-weight:600">{{ sr.name }}</span><span style="font:500 11px 'JetBrains Mono',monospace;color:#6F8494">{{ sr.games }}</span></div>
+                  <div style="width:90px;height:6px;border-radius:3px;background:#1A2027;overflow:hidden"><div style="height:100%;width:{{ sr.relPct }};background:#7FB4D6"></div></div><span style="font:600 12px 'JetBrains Mono',monospace;width:36px">{{ sr.rel }}</span>
+                  <button onClick="{{ sr.onToggle }}" style="position:relative;width:40px;height:24px;flex:none;border-radius:12px;background:{{ sr.track }}"><span style="position:absolute;top:2px;left:{{ sr.knob }};width:20px;height:20px;border-radius:50%;background:#08090B"></span></button>
+                </div>
+              </sc-for>
+            </div>
+            <div style="background:#0E1115;border:1px solid #1E242C;border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:10px"><span style="font-weight:700;font-size:17px">Announcements</span>
+              <div style="display:flex;gap:8px"><input value="{{ owner.draft }}" onChange="{{ owner.onDraft }}" placeholder="Write to every user…" style="flex:1;min-width:0;height:44px;padding:0 12px;border-radius:10px;background:#141920;border:1px solid #232A33;color:#E6EEF3;font-size:14px;outline:none"><button onClick="{{ owner.onPublish }}" style="height:44px;padding:0 16px;border-radius:10px;font-weight:700;font-size:14px;background:#E6EEF3;color:#08090B">Publish</button></div>
+              <sc-for list="{{ owner.anns }}" as="a" hint-placeholder-count="1"><div style="display:flex;flex-direction:column;gap:4px;padding:10px 12px;border-radius:10px;background:#08090B;border:1px solid #1E242C"><span style="font-size:14px;line-height:1.4">{{ a.t }}</span><span style="font-size:11px;color:#6F8494">{{ a.d }}</span></div></sc-for>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+      <sc-if value="{{ isGeneric }}">
+        <div style="display:flex;flex-direction:column;gap:16px;max-width:960px">
+          <span style="font-size:15px;line-height:1.5;color:#A9BBC8;max-width:600px;text-wrap:pretty">{{ gen.desc }}</span>
+          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax({{ tileMin }},1fr));gap:12px">
+            <sc-for list="{{ gen.tiles }}" as="t" hint-placeholder-count="3">
+              <div style="background:#0E1115;border:1px solid #1E242C;border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:10px;min-height:110px">
+                <span style="font-size:13px;color:#A9BBC8">{{ t }}</span>
+                <span style="font:600 28px/1 'JetBrains Mono',monospace;color:#3A4652">—</span>
+                <span style="font-size:12px;color:#7FB4D6;margin-top:auto">No data yet</span>
+              </div>
+            </sc-for>
+          </div>
+          <sc-for list="{{ gen.rows }}" as="r" hint-placeholder-count="0">
+            <div style="display:flex;align-items:center;gap:12px;min-height:60px;padding:10px 14px;border-radius:12px;background:#0E1115;border:1px solid #1E242C">
+              <span style="width:4px;height:28px;border-radius:2px;flex:none;background:{{ r.vent }}"></span>
+              <div style="flex:1;display:flex;flex-direction:column;gap:3px;min-width:0"><span style="font-size:14px;font-weight:600">{{ r.label }}</span><span style="font-size:12px;color:#6F8494">{{ r.source }}</span></div>
+              <span style="font:600 10px/1 'JetBrains Mono',monospace;letter-spacing:.06em;padding:4px 6px;border-radius:5px;border:1px dashed #FF8A4C;color:#FF8A4C">? UNVERIFIED</span>
+              <sc-if value="{{ r.hasTag }}"><span style="font:700 9px/1 'JetBrains Mono',monospace;padding:3px 5px;border-radius:4px;background:{{ r.tagBg }};color:#08090B">{{ r.tag }}</span></sc-if>
+            </div>
+          </sc-for>
+          <div style="border:1.5px dashed #2A333D;border-radius:14px;padding:28px;display:flex;flex-direction:column;align-items:flex-start;gap:10px">
+            <span style="font:600 11px 'JetBrains Mono',monospace;letter-spacing:.12em;color:#6F8494">NO DATA YET</span>
+            <span style="font-weight:700;font-size:20px">{{ gen.emptyTitle }}</span>
+            <span style="font-size:14px;line-height:1.5;color:#A9BBC8;max-width:520px;text-wrap:pretty">{{ gen.emptyBody }}</span>
+            <button style="margin-top:6px;height:44px;padding:0 18px;border-radius:10px;background:{{ vent }};color:#08090B;font-weight:700;font-size:14px">{{ gen.action }}</button>
+          </div>
+        </div>
+      </sc-if>
+      <div style="height:{{ bottomSpacer }}"></div>
+    </div>
+
+    <sc-if value="{{ isPhone }}">
+      <div style="flex:none;display:grid;grid-template-columns:repeat(5,1fr);gap:2px;padding:6px 6px 12px;background:#0B0D10;border-top:1px solid #1A2027;user-select:none">
+        <sc-for list="{{ bar }}" as="b" hint-placeholder-count="4">
+          <button onClick="{{ b.onClick }}" onPointerDown="{{ b.onDown }}" onPointerUp="{{ barUp }}" onPointerLeave="{{ barUp }}" onContextMenu="{{ noCtx }}" style="height:58px;border-radius:10px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;color:{{ b.color }}">
+            <span style="font:600 10px/1 'JetBrains Mono',monospace;padding:5px 7px;border-radius:7px;background:{{ b.glyphBg }};color:{{ b.glyphFg }}">{{ b.glyph }}</span>
+            <span style="font-size:11px;font-weight:600">{{ b.label }}</span>
+          </button>
+        </sc-for>
+        <button onClick="{{ openMore }}" style="height:58px;border-radius:10px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;color:{{ moreTab.color }}">
+          <span style="font:600 10px/1 'JetBrains Mono',monospace;padding:5px 7px;border-radius:7px;background:{{ moreTab.glyphBg }};color:{{ moreTab.glyphFg }}">···</span>
+          <span style="font-size:11px;font-weight:600">More</span>
+        </button>
+      </div>
+      <button onClick="{{ openAssistant }}" title="Assistant" style="position:absolute;right:16px;bottom:94px;width:56px;height:56px;border-radius:18px;background:#FF6A1F;color:#08090B;font:700 12px/56px 'JetBrains Mono',monospace;text-align:center;box-shadow:0 10px 30px rgba(0,0,0,.55);z-index:20">ASK</button>
+    </sc-if>
+  </div>
+
+  <sc-if value="{{ sheetOpen }}">
+    <div onClick="{{ closeSheet }}" style="position:absolute;inset:0;background:rgba(5,6,7,.62);z-index:60"></div>
+    <div style="position:absolute;z-index:61;left:{{ sg.left }};right:{{ sg.right }};top:{{ sg.top }};bottom:{{ sg.bottom }};width:{{ sg.width }};transform:{{ sg.transform }};border-radius:{{ sg.radius }};background:#0E1115;border:1px solid #232A33;padding:10px 16px 20px;display:flex;flex-direction:column;gap:12px;max-height:85%;overflow:auto;box-shadow:0 -20px 60px rgba(0,0,0,.5)">
+      <span style="align-self:center;width:36px;height:4px;border-radius:2px;background:#2F3944"></span>
+      <sc-if value="{{ isAccount }}">
+        <div style="display:flex;align-items:center;gap:12px">
+          <span style="width:44px;height:44px;border-radius:50%;background:#232A33;border:1px solid #2F3944"></span>
+          <div style="flex:1;display:flex;flex-direction:column;gap:3px"><span style="font-weight:700;font-size:17px">Account</span><span style="font-size:12px;color:#6F8494">Signed in with Google · 2 games</span></div>
+          <button onClick="{{ closeSheet }}" style="width:44px;height:44px;border-radius:10px;font-size:18px;color:#6F8494;text-align:center">✕</button>
+        </div>
+        <sc-for list="{{ accountRows }}" as="r" hint-placeholder-count="6">
+          <button onClick="{{ r.onClick }}" style="display:flex;align-items:center;gap:12px;min-height:56px;padding:6px 14px;border-radius:10px;background:#141920;border:1px solid #1E242C" style-hover="border-color:#2F3944">
+            <span style="flex:1;display:flex;flex-direction:column;gap:3px"><span style="font-size:15px;font-weight:700">{{ r.label }}</span><span style="font-size:12px;color:#6F8494">{{ r.sub }}</span></span>
+            <span style="color:#56677A;font-size:18px">›</span>
+          </button>
+        </sc-for>
+      </sc-if>
+      <sc-if value="{{ isMore }}">
+        <div style="display:flex;align-items:center;justify-content:space-between">
+          <span style="font-weight:700;font-size:18px">More</span>
+          <button onClick="{{ openEdit }}" style="height:40px;padding:0 12px;border-radius:9px;background:#141920;border:1px solid #232A33;font-size:13px;font-weight:600;color:#7FB4D6">Edit layout</button>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
+          <sc-for list="{{ more }}" as="m" hint-placeholder-count="4">
+            <button onClick="{{ m.onClick }}" style="position:relative;height:88px;border-radius:12px;background:#141920;border:1px solid {{ m.border }};display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px">
+              <span style="font:600 10px/1 'JetBrains Mono',monospace;padding:5px 7px;border-radius:7px;background:#08090B;color:{{ m.glyphColor }}">{{ m.glyph }}</span>
+              <span style="font-size:13px;font-weight:700">{{ m.label }}</span>
+              <sc-if value="{{ m.hasTag }}"><span style="position:absolute;top:6px;right:6px;font:700 9px/1 'JetBrains Mono',monospace;padding:3px 5px;border-radius:4px;background:{{ m.tagBg }};color:#08090B">{{ m.tag }}</span></sc-if>
+            </button>
+          </sc-for>
+        </div>
+        <span style="font-size:12px;line-height:1.45;color:#6F8494">Your first 4 modules sit in the bar. Long-press any tab to change the order.</span>
+      </sc-if>
+      <sc-if value="{{ isServer }}">
+        <div style="display:flex;align-items:center;justify-content:space-between"><span style="font-weight:700;font-size:18px">Server · {{ srv.game }}</span><button onClick="{{ closeSheet }}" style="width:44px;height:44px;font-size:18px;color:#6F8494;text-align:center">✕</button></div>
+        <span style="font-size:13px;line-height:1.5;color:#A9BBC8;text-wrap:pretty">Resets follow the game's server, not your clock. Each game keeps its own server and reset rule.</span>
+        <sc-for list="{{ srv.options }}" as="o" hint-placeholder-count="4">
+          <button onClick="{{ o.onClick }}" style="display:flex;align-items:center;gap:12px;min-height:56px;padding:6px 14px;border-radius:10px;background:#141920;border:1px solid {{ o.border }}">
+            <span style="width:20px;height:20px;border-radius:50%;border:2px solid {{ o.ring }};display:flex;align-items:center;justify-content:center"><span style="width:10px;height:10px;border-radius:50%;background:{{ o.dot }}"></span></span>
+            <span style="flex:1;display:flex;flex-direction:column;gap:3px"><span style="font-size:15px;font-weight:700">{{ o.label }}</span><span style="font-size:12px;color:#6F8494">{{ o.sub }}</span></span>
+          </button>
+        </sc-for>
+      </sc-if>
+      <sc-if value="{{ isAdd }}">
+        <div style="display:flex;align-items:center;justify-content:space-between"><span style="font-weight:700;font-size:18px">Add a game</span><button onClick="{{ closeSheet }}" style="width:44px;height:44px;font-size:18px;color:#6F8494;text-align:center">✕</button></div>
+        <span style="font-size:13px;line-height:1.5;color:#A9BBC8;text-wrap:pretty">A game is one record: name, vent colour, icon, currencies, reset times and the modules it supports. The shell stays the same.</span>
+        <sc-for list="{{ addGames }}" as="a" hint-placeholder-count="2">
+          <div style="display:flex;align-items:center;gap:12px;min-height:56px;padding:6px 14px;border-radius:10px;background:#141920;border:1px dashed #2A333D">
+            <span style="width:32px;height:32px;border-radius:8px;border:1.5px dashed #3A4652"></span>
+            <span style="flex:1;font-size:15px;font-weight:600;color:#A9BBC8">{{ a }}</span>
+            <span style="font-size:12px;color:#6F8494">not added yet</span>
+          </div>
+        </sc-for>
+      </sc-if>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ editOpen }}">
+    <div onClick="{{ closeEdit }}" style="position:absolute;top:0;bottom:0;right:0;left:{{ eg.backLeft }};background:rgba(5,6,7,.55);z-index:70"></div>
+    <div style="position:absolute;z-index:71;left:0;top:{{ eg.top }};bottom:0;width:{{ eg.width }};max-height:{{ eg.maxH }};border-radius:{{ eg.radius }};background:#0B0D10;border-right:1px solid #232A33;border-top:{{ eg.borderTop }};display:flex;flex-direction:column;user-select:none">
+      <div style="padding:18px 16px 12px;display:flex;flex-direction:column;gap:6px">
+        <span style="font:600 10px/1 'JetBrains Mono',monospace;letter-spacing:.14em;color:{{ ventText }}">EDIT LAYOUT</span>
+        <span style="font-weight:800;font-stretch:110%;font-size:20px">{{ editScope }}</span>
+        <span style="font-size:12px;line-height:1.45;color:#6F8494">Drag ⋮⋮ to reorder. Saved for this view only.</span>
+      </div>
+      <div style="flex:1;min-height:0;overflow:auto;padding:0 12px 12px">
+        <sc-for list="{{ editVisible }}" as="e" hint-placeholder-count="6">
+          <div data-edit-mod="{{ e.id }}" style="display:flex;align-items:center;gap:6px;height:48px;padding:0 6px 0 0;margin-bottom:4px;border-radius:9px;background:{{ e.bg }};border:1px solid {{ e.border }};box-shadow:{{ e.shadow }}">
+            <span onPointerDown="{{ e.onDrag }}" style="width:40px;height:46px;flex:none;display:flex;align-items:center;justify-content:center;cursor:grab;touch-action:none;color:#7FB4D6;font-size:17px;letter-spacing:-3px">⋮⋮</span>
+            <span style="font:500 11px 'JetBrains Mono',monospace;color:#56677A;width:20px">{{ e.num }}</span>
+            <span style="flex:1;font-size:14px;font-weight:600">{{ e.label }}</span>
+            <sc-if value="{{ e.hasTag }}"><span style="font:700 9px/1 'JetBrains Mono',monospace;padding:3px 5px;border-radius:4px;background:{{ e.tagBg }};color:#08090B">{{ e.tag }}</span></sc-if>
+            <button onClick="{{ e.onHide }}" style="height:34px;padding:0 10px;border-radius:7px;font-size:12px;color:#A9BBC8;background:#08090B" style-hover="color:#E6EEF3">Hide</button>
+          </div>
+          <sc-if value="{{ e.cut }}">
+            <div style="display:flex;align-items:center;gap:8px;margin:8px 0 10px;font:600 9px/1 'JetBrains Mono',monospace;color:#7FB4D6;letter-spacing:.1em"><span style="flex:1;border-top:1px dashed #7FB4D6"></span>PHONE BAR ↑ · MORE ↓<span style="flex:1;border-top:1px dashed #7FB4D6"></span></div>
+          </sc-if>
+        </sc-for>
+        <sc-if value="{{ hasHidden }}">
+          <div style="font:600 10px/1 'JetBrains Mono',monospace;letter-spacing:.12em;color:#56677A;margin:16px 4px 8px">HIDDEN · STILL IN THIS GAME</div>
+          <sc-for list="{{ editHidden }}" as="h" hint-placeholder-count="1">
+            <div style="display:flex;align-items:center;gap:8px;height:48px;padding:0 6px 0 14px;margin-bottom:4px;border-radius:9px;border:1px dashed #3A4652;color:#6F8494">
+              <span style="flex:1;font-size:14px;font-weight:600">{{ h.label }}</span>
+              <button onClick="{{ h.onRestore }}" style="height:34px;padding:0 12px;border-radius:7px;font-size:12px;font-weight:700;color:#7FB4D6;background:#12161B">Restore</button>
+            </div>
+          </sc-for>
+        </sc-if>
+        <sc-if value="{{ hasNA }}">
+          <div style="font:600 10px/1 'JetBrains Mono',monospace;letter-spacing:.12em;color:#56677A;margin:16px 4px 8px">NOT IN THIS GAME</div>
+          <sc-for list="{{ editNA }}" as="x" hint-placeholder-count="1">
+            <div style="display:flex;flex-direction:column;justify-content:center;gap:3px;min-height:52px;padding:6px 14px;margin-bottom:4px;border-radius:9px;background:repeating-linear-gradient(135deg,#12161B 0 5px,#0B0D10 5px 10px);border:1px solid #1A2027;color:#56677A">
+              <span style="font-size:14px;font-weight:600">{{ x.label }}</span>
+              <span style="font-size:11px">Not available for this game yet</span>
+            </div>
+          </sc-for>
+        </sc-if>
+      </div>
+      <div style="display:flex;gap:8px;padding:12px;border-top:1px solid #1A2027">
+        <button onClick="{{ resetLayout }}" style="flex:1;height:44px;border-radius:10px;border:1px solid #2A333D;font-size:13px;font-weight:600;color:#A9BBC8;text-align:center">Reset to default</button>
+        <button onClick="{{ closeEdit }}" style="flex:1;height:44px;border-radius:10px;background:{{ vent }};color:#08090B;font-size:14px;font-weight:700;text-align:center">Done</button>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ isLogin }}">
+    <div style="position:absolute;inset:0;z-index:90;background:#08090B;display:flex;align-items:center;justify-content:center;padding:24px">
+      <div style="width:100%;max-width:400px;display:flex;flex-direction:column;gap:14px">
+        <span style="font:500 11px 'JetBrains Mono',monospace;letter-spacing:.14em;color:#6F8494">PROJECT-HLITH</span>
+        <span style="font-weight:800;font-stretch:118%;font-size:48px;line-height:.95">HLIÐSKJÁLF</span>
+        <span style="font-size:15px;line-height:1.5;color:#A9BBC8;margin-bottom:10px">One seat, every world. Sign in to see your games.</span>
+        <button onClick="{{ signIn }}" style="height:52px;border-radius:12px;background:#E6EEF3;color:#08090B;font-weight:700;font-size:15px;text-align:center">Continue with Google</button>
+        <button onClick="{{ signIn }}" style="height:52px;border-radius:12px;background:#141920;border:1px solid #2A333D;font-weight:700;font-size:15px;text-align:center">Continue with Discord</button>
+        <div style="display:flex;align-items:center;gap:10px;font:500 11px 'JetBrains Mono',monospace;color:#56677A;margin:4px 0"><span style="flex:1;border-top:1px solid #1E242C"></span>OR<span style="flex:1;border-top:1px solid #1E242C"></span></div>
+        <input placeholder="Email" style="height:52px;padding:0 14px;border-radius:12px;background:#0E1115;border:1px solid #232A33;color:#E6EEF3;font-size:15px;outline:none">
+        <button onClick="{{ signIn }}" style="height:52px;border-radius:12px;border:1px solid #7FB4D6;color:#7FB4D6;font-weight:700;font-size:15px;text-align:center">Email me a sign-in link</button>
+        <span style="font-size:12px;line-height:1.5;color:#6F8494">Your data is private to your account. Times show in your local time.</span>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ asstOpen }}">
+    <div onClick="{{ closeAssistant }}" style="position:absolute;inset:0;background:rgba(5,6,7,.45);z-index:80"></div>
+    <div style="position:absolute;z-index:81;top:{{ ag.top }};right:0;bottom:0;left:{{ ag.left }};width:{{ ag.width }};border-radius:{{ ag.radius }};background:#0B0D10;border-left:1px solid #232A33;border-top:1px solid #232A33;display:flex;flex-direction:column;box-shadow:-20px 0 60px rgba(0,0,0,.5)">
+      <div style="display:flex;align-items:center;gap:10px;padding:12px 8px 12px 16px;border-bottom:1px solid #1A2027">
+        <span style="width:10px;height:10px;border-radius:3px;background:#FF6A1F"></span>
+        <div style="flex:1;display:flex;flex-direction:column;gap:3px"><span style="font:600 11px/1 'JetBrains Mono',monospace;letter-spacing:.12em">ASSISTANT</span><span style="font-size:12px;color:#6F8494">Sees {{ scopeLabelSoft }} · answers from your data only</span></div>
+        <button onClick="{{ closeAssistant }}" style="width:44px;height:44px;border-radius:10px;font-size:18px;color:#6F8494;text-align:center">✕</button>
+      </div>
+      <div style="flex:1;min-height:0;overflow:auto;padding:16px;display:flex;flex-direction:column;gap:10px">
+        <sc-for list="{{ msgs }}" as="m" hint-placeholder-count="1">
+          <div style="align-self:{{ m.align }};max-width:86%;padding:10px 13px;border-radius:12px;background:{{ m.bg }};color:{{ m.fg }};font-size:14px;line-height:1.45;white-space:pre-wrap">{{ m.text }}</div>
+        </sc-for>
+        <sc-if value="{{ thinking }}"><div style="align-self:flex-start;padding:10px 13px;border-radius:12px;background:#141920;font:600 14px 'JetBrains Mono',monospace;color:#6F8494">···</div></sc-if>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:6px;padding:0 16px 10px">
+        <sc-for list="{{ suggestions }}" as="q" hint-placeholder-count="3">
+          <button onClick="{{ q.onClick }}" style="min-height:36px;padding:6px 12px;border-radius:999px;border:1px solid #2A333D;font-size:12px;color:#CFE3EF" style-hover="border-color:#7FB4D6">{{ q.text }}</button>
+        </sc-for>
+      </div>
+      <div style="display:flex;gap:8px;padding:12px 16px 16px;border-top:1px solid #1A2027">
+        <input value="{{ draft }}" onChange="{{ onDraft }}" onKeyDown="{{ onKey }}" placeholder="Ask about pulls, builds, farming…" style="flex:1;min-width:0;height:48px;padding:0 14px;border-radius:12px;background:#141920;border:1px solid #232A33;color:#E6EEF3;font-size:14px;outline:none">
+        <button onClick="{{ sendDraft }}" style="height:48px;padding:0 16px;border-radius:12px;background:#FF6A1F;color:#08090B;font-weight:700;font-size:14px">Send</button>
+      </div>
+    </div>
+  </sc-if>
+
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;device&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;auto&quot;,&quot;pc&quot;,&quot;phone&quot;],&quot;default&quot;:&quot;auto&quot;,&quot;tsType&quot;:&quot;'auto'|'pc'|'phone'&quot;}}">
+const MODS={today:{label:'Today',glyph:'TD'},events:{label:'Events',glyph:'EV'},calendar:{label:'Calendar',glyph:'CA'},backlog:{label:'Backlog',glyph:'BL'},pulls:{label:'Pulls',glyph:'PL'},banners:{label:'Banners',glyph:'BN'},roster:{label:'Roster',glyph:'RO'},farm:{label:'Farm',glyph:'FM'},intel:{label:'Intel',glyph:'IN'}};
+const CATALOG=Object.keys(MODS);
+const ALL_VENT='#CFE3EF';
+const SERVERS_HOYO=[{id:'eu',label:'Europe',utc:1},{id:'na',label:'America',utc:-5},{id:'asia',label:'Asia',utc:8},{id:'tw',label:'TW, HK, MO',utc:8}];
+const utcL=u=>`UTC${u>=0?'+':'−'}${Math.abs(u)}`;
+const GAMES={
+  hsr:{id:'hsr',short:'HSR',name:'Honkai: Star Rail',vent:'#A99BFF',rar:{5:'5★',4:'4★'},dupe:'E',dupeName:'Eidolon',maxLvl:80,gear:'Relics',weapon:'Light Cone',skills:'Traces',
+    cur:[['Stellar Jade',14280],['Star Rail Pass',23]],stamina:{name:'Trailblaze Power',cur:212,max:240,min:6},
+    mats:[['Trace materials',12,18],['Ascension materials',65,65],['Credits',null,null]],
+    modules:['today','events','calendar','backlog','pulls','banners','roster','farm','intel'],servers:SERVERS_HOYO,reset:{hour:4,weekday:1}},
+  zzz:{id:'zzz',short:'ZZZ',name:'Zenless Zone Zero',vent:'#D4F23A',rar:{5:'S',4:'A'},dupe:'M',dupeName:'Mindscape',maxLvl:60,gear:'Drive Discs',weapon:'W-Engine',skills:'Skills',
+    cur:[['Polychrome',9840],['Encrypted Master Tape',14]],stamina:{name:'Battery Charge',cur:null,max:240,min:6},
+    mats:[['Skill materials',8,24],['Promotion materials',null,null],['Dennies',null,null]],
+    modules:['today','events','calendar','backlog','pulls','banners','roster','farm','intel'],servers:SERVERS_HOYO,reset:{hour:4,weekday:1}}
+};
+const GIDS=['hsr','zzz'];
+const BASE_ORDER=['today','pulls','calendar','roster','banners','events','farm','backlog','intel'];
+const DEFAULT_ORDER={hsr:BASE_ORDER,zzz:BASE_ORDER,all:BASE_ORDER};
+const ELEM={Fire:'#E8664A',Ice:'#8FD3F0',Lightning:'#B98AF0',Electric:'#B98AF0',Wind:'#6FD3A8',Quantum:'#7C7CF0',Imaginary:'#E8D35C',Physical:'#C9CFD6',Ether:'#E07AD0'};
+const R=(id,game,name,rarity,element,role,owned,dupe,build)=>({id,game,name,rarity,element,role,owned,dupe,build});
+const CHARS=[
+  R('acheron','hsr','Acheron',5,'Lightning','Nihility',1,2,86),R('firefly','hsr','Firefly',5,'Fire','Destruction',1,0,74),R('kafka','hsr','Kafka',5,'Lightning','Nihility',0),
+  R('ruanmei','hsr','Ruan Mei',5,'Ice','Harmony',1,1,null),R('aventurine','hsr','Aventurine',5,'Imaginary','Preservation',1,0,79),R('sparkle','hsr','Sparkle',5,'Quantum','Harmony',1,0,null),
+  R('robin','hsr','Robin',5,'Physical','Harmony',0),R('huohuo','hsr','Huohuo',5,'Wind','Abundance',0),R('jingliu','hsr','Jingliu',5,'Ice','Destruction',0),
+  R('gallagher','hsr','Gallagher',4,'Fire','Abundance',1,6,70),R('pela','hsr','Pela',4,'Ice','Nihility',1,6,77),R('tingyun','hsr','Tingyun',4,'Lightning','Harmony',1,6,null),
+  R('ellen','zzz','Ellen',5,'Ice','Attack',1,0,81),R('miyabi','zzz','Miyabi',5,'Ice','Anomaly',0),R('jane','zzz','Jane Doe',5,'Physical','Anomaly',1,1,69),
+  R('zhuyuan','zzz','Zhu Yuan',5,'Ether','Attack',1,0,null),R('lycaon','zzz','Lycaon',5,'Ice','Stun',1,0,72),R('caesar','zzz','Caesar',5,'Physical','Defense',0),
+  R('burnice','zzz','Burnice',5,'Fire','Anomaly',0),R('qingyi','zzz','Qingyi',5,'Electric','Stun',0),R('lucy','zzz','Lucy',4,'Fire','Support',1,6,null),
+  R('soukaku','zzz','Soukaku',4,'Ice','Support',1,6,75),R('anby','zzz','Anby',4,'Electric','Stun',1,6,null),R('nicole','zzz','Nicole',4,'Ether','Support',1,6,null)
+];
+const TEAMS={hsr:[{name:'Acheron · Nihility',m:['acheron','pela','sparkle','aventurine'],score:91},{name:'Firefly · Break',m:['firefly','ruanmei','gallagher','tingyun'],score:84},{name:'Kafka · DoT',m:['kafka','pela','ruanmei','huohuo'],score:79}]};
+const TASKS={hsr:[['h1','Daily Training · 500 activity','Daily'],['h2','Spend 120 Trailblaze Power','Daily'],['h3','Synthesize a consumable','Daily'],['h4','Echo of War ×3','Weekly'],['h5','Simulated Universe points','Weekly'],['h6','Dispatch Assignments','Daily']],
+  zzz:[['z1','Engagement · 400','Daily'],['z2','Scratch card at the newsstand','Daily'],['z3','Spend 100 Battery Charge','Daily'],['z4','Notorious Hunt ×3','Weekly'],['z5','Hollow Zero weekly','Weekly'],['z6','Coffee at Coff Cafe','Daily']]};
+const BANNERS=[['hsr','Character warp','Acheron',52],['hsr','Light Cone warp','Along the Passing Shore',52],['zzz','Exclusive channel','Miyabi',121],['zzz','W-Engine channel','Hailstorm Shrine',121]];
+const COMING=[['hsr','Memory of Chaos rotates',76,0],['hsr','Next character banner',52,1],['zzz','Shiyu Defense resets',150,0],['zzz','Next version update',290,1]];
+const INTEL=[['hsr','Next version: new 5★ Harmony kit','Community leak · beta build'],['hsr','Rerun banner lineup','Datamine · unconfirmed'],['zzz','Next agent: Fire Attack','Community leak · beta build'],['zzz','New Bangboo in next patch','Datamine · unconfirmed']];
+const CAL=[['hsr','Banners','Acheron',-19,2.17,'ok'],['hsr','Banners','Kafka rerun',2.17,23,'leak'],['zzz','Banners','Miyabi',-16,5.04,'ok'],['zzz','Banners','Next agent: Fire Attack',5.04,26,'leak'],
+  ['hsr','Events','Limited event',-5,10,'ok'],['zzz','Events','Limited event',-3,12,'ok'],['zzz','Events','Version update',12,12,'leakpoint'],
+  ['hsr','Endgame','Memory of Chaos',-38.8,3.17,'ok'],['hsr','Endgame','Memory of Chaos · next cycle',3.17,45,'ok'],['zzz','Endgame','Shiyu Defense',-7.75,6.25,'ok'],['zzz','Endgame','Shiyu Defense · next cycle',6.25,20.25,'ok'],
+  ['hsr','Your plans','Save pulls for Kafka',0,23,'plan']];
+const INCOME={hsr:[['Daily Training','daily',60],['Simulated Universe','weekly',225],['Memory of Chaos','cycle',800,14,3.17],['Express Supply Pass','paid',90]],
+  zzz:[['Daily Engagement','daily',60],['Hollow Zero','weekly',300],['Shiyu Defense','cycle',780,14,6.25],['Inter-Knot Membership','paid',90]]};
+const VER_END={hsr:23,zzz:12};
+const LOG={hsr:[[-0.2,'Daily Training',60],[-1.2,'Daily Training',60],[-1.5,'10 pulls · Acheron',-1600],[-2.2,'Daily Training',60],[-3,'Memory of Chaos',800],[-4.1,'Event reward',420]],
+  zzz:[[-0.3,'Daily Engagement',60],[-1.3,'Daily Engagement',60],[-2,'10 pulls · Miyabi',-1600],[-2.3,'Daily Engagement',60],[-3.5,'Hollow Zero',300]]};
+const EVENTS={hsr:[['he1','Limited event','Event',10,1000],['he2','Login event','Login',6,800,7],['he3','Web event','Web',4,120],['he4','Memory of Chaos','Endgame',3.17,800],['he5','Pure Fiction','Endgame',17,800],['he6','Planar Fissure','Bonus',2,null]],
+  zzz:[['ze1','Limited event','Event',12,960],['ze2','Login event','Login',5,700,7],['ze3','Shiyu Defense','Endgame',6.25,780],['ze4','Deadly Assault','Endgame',9,300],['ze5','Web event','Web',3,null]]};
+const FARM_MATS={hsr:[['Trace materials',12,4,40,1.5],['Ascension boss material',15,9,30,3.5],['Character EXP',60,20,10,6],['Credits (k)',null,null,10,24]],
+  zzz:[['Skill materials',10,3,40,1.5],['Promotion materials',14,null,40,2],['Agent EXP',60,25,20,6],['Dennies (k)',null,null,20,30]]};
+const GEAR={acheron:'Relics: Pioneer Diver set · Planar: Izumo',firefly:'Relics: Iron Cavalry set · Planar: Kalpagni',ellen:'Drive Discs: Woodpecker Electro 4 + Polar Metal 2',jane:'Drive Discs: Fanged Metal 4 + Freedom Blues 2'};
+const BACKLOG={hsr:[['Trailblaze Missions',38,52,60],['Companion Missions',21,40,30],['Adventure Missions',null,null,20],['Exploration chests',1820,2400,5],['Achievements',412,780,5]],
+  zzz:[['Main story',24,30,60],['Agent stories',8,20,40],['Commissions',null,null,20],['Achievements',220,500,5]]};
+const INTELX=[['hsr','Character','New 5★ Harmony kit','Beta build · community leak',1,'mid'],['hsr','Area','New planet zone map','Datamine · file names only',3,'low'],['hsr','System','Relic loadout rework','Beta build · community leak',5,'mid'],
+  ['zzz','Character','Next agent: Fire Attack','Beta build · community leak',2,'mid'],['zzz','Event','Summer festival event','Datamine · unconfirmed',4,'low'],['zzz','System','Hollow Zero rework','Official preview stream',6,'high']];
+const SOURCES=[['Official preview streams',['hsr','zzz'],95],['Beta build leakers',['hsr','zzz'],70],['Datamine file names',['hsr','zzz'],40]];
+const LANES=['Banners','Events','Endgame','Your plans'];
+const GEN={
+  pulls:{desc:'Planner and odds, banners, calculator, pull history and luck report.',tiles:['Current pity','Pulls this version','Luck vs average'],emptyTitle:'No pull history yet',emptyBody:'Import your pull history and HLITH will plan, compute odds and grade your luck. Until then it shows no numbers.',action:'Import pull history'},
+  calendar:{desc:'Events, resets and your own plans on one timeline.',tiles:['Events this week','Plans'],emptyTitle:'No plans yet',emptyBody:'Add a plan, like saving for a banner, and it sits on the timeline next to the resets.',action:'Add a plan'},
+  backlog:{desc:'Story, side quests, exploration and achievements still open.',tiles:['Story left','Exploration','Achievements'],emptyTitle:'Progress not imported',emptyBody:'Import your progress to see what is left. HLITH won’t guess completion.',action:'Import progress'},
+  farm:{desc:'Materials and gear to farm, ordered by what unlocks most.',tiles:['Stamina needed','Days to finish'],emptyTitle:'Nothing to farm yet',emptyBody:'Set a goal on a character page and the materials land here.',action:'Pick a goal'},
+  intel:{desc:'Leaks and what is coming. Everything here stays unverified until the game confirms it.',tiles:[],emptyTitle:'Add a source',emptyBody:'Choose which leak sources to follow. HLITH tags every item with where it came from.',action:'Manage sources'},
+  events:{desc:'Events, endgame cycles and login events. Mark them open, done or skipped; done ones count as already earned in Pulls.',tiles:['Open events','Login days claimed','Rewards left'],emptyTitle:'No event states yet',emptyBody:'Mark events done or skipped and HLITH stops counting their rewards twice.',action:'Review events'},
+  banners:{desc:'Live and upcoming banners, how each character fits your roster, and leaks you can hide.',tiles:['Live now','Upcoming','Best fit'],emptyTitle:'Roster not imported',emptyBody:'Fit scores need your roster. Import it and every banner shows how well its character fits.',action:'Import roster'},
+  kitcheck:{desc:'What each kit really does, with the game text as proof. ZZZ only for now.',tiles:['Agents checked'],emptyTitle:'No kit picked',emptyBody:'Pick an agent to see each skill line by line with the in-game text next to it.',action:'Pick an agent'}
+};
+const hexA=(h,a)=>{const n=parseInt(h.slice(1),16);return `rgba(${n>>16},${(n>>8)&255},${n&255},${a})`;};
+const p2=n=>String(n).padStart(2,'0');
+const fmt=ms=>{if(ms<0)ms=0;const d=Math.floor(ms/864e5),h=Math.floor(ms/36e5)%24,m=Math.floor(ms/6e4)%60,s=Math.floor(ms/1e3)%60;return d>=1?`${d}d ${p2(h)}h`:`${p2(h)}:${p2(m)}:${p2(s)}`;};
+const fmtN=n=>n.toLocaleString('en-US');
+const ini=s=>s.split(/\s+/).map(w=>w[0]).join('').slice(0,2).toUpperCase();
+const LS='hlith.layout.v2';
+
+class Component extends DCLogic {
+  constructor(p){super(p);
+    let saved={};try{saved=JSON.parse(localStorage.getItem(LS)||'{}')}catch(e){}
+    this.t0=Date.now();const P=this.props||{};if(P.embedded)saved={};
+    this.state={now:Date.now(),vw:window.innerWidth,game:P.game||saved.game||'hsr',module:P.module||saved.module||'today',charId:P.charId||null,
+      order:saved.order||{},hidden:saved.hidden||{},
+      done:{h2:1,z2:1},evState:{he3:'done',ze5:'skipped'},claimed:{he2:3,ze2:2},farmSel:{hsr:['acheron','firefly'],zzz:['ellen']},blOn:{},showLeaks:true,intelType:'All',srcOn:{},owner:false,signedIn:true,annDraft:'',anns:[{t:'Maintenance window this Wednesday. Sync pauses for about an hour.',d:'2 days ago'}],pullTab:'planner',paid:false,backlogOn:false,rosterTab:'chars',server:saved.server||{hsr:'eu',zzz:'eu'},serverGame:null,rosterFilter:'all',sheet:null,editOpen:false,asstOpen:false,dragId:null,
+      lastSync:this.t0-2*6e4,syncing:false,draft:'',thinking:false,
+      msgs:[{role:'asst',text:'I see your HSR and ZZZ data. Ask about pulls, builds or what to farm. If I can’t prove something, I’ll say there’s no data yet.'}]};
+  }
+  componentDidUpdate(pp){const P=this.props;if(pp.game!==P.game||pp.module!==P.module||pp.charId!==P.charId)this.setState({game:P.game||this.state.game,module:P.module||this.state.module,charId:P.charId||null})}
+  componentDidMount(){
+    this.tick=setInterval(()=>this.setState({now:Date.now()}),1000);
+    this.onResize=()=>{const w=document.documentElement.clientWidth||window.innerWidth;if(w!==this.state.vw)this.setState({vw:w})};window.addEventListener('resize',this.onResize);this.onResize();requestAnimationFrame(this.onResize);setTimeout(this.onResize,300);
+    if(window.ResizeObserver){this.ro=new ResizeObserver(this.onResize);this.ro.observe(document.documentElement)}
+    this.onKeyG=e=>{if((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==='k'){e.preventDefault();this.setState(s=>({asstOpen:!s.asstOpen}))}if(e.key==='Escape')this.setState({asstOpen:false,editOpen:false,sheet:null})};
+    if(!this.props.embedded)window.addEventListener('keydown',this.onKeyG);
+  }
+  componentWillUnmount(){clearInterval(this.tick);if(this.ro)this.ro.disconnect();window.removeEventListener('resize',this.onResize);window.removeEventListener('keydown',this.onKeyG)}
+  persist(){const s=this.state;if(this.props.embedded)return;try{localStorage.setItem(LS,JSON.stringify({order:s.order,hidden:s.hidden,server:s.server,game:s.game,module:s.module}))}catch(e){}}
+  avail(g){return g==='all'?CATALOG.filter(m=>GIDS.some(id=>GAMES[id].modules.includes(m))):GAMES[g].modules}
+  orderFor(g){const a=this.avail(g);const o=(this.state.order[g]||DEFAULT_ORDER[g]).filter(m=>a.includes(m));a.forEach(m=>{if(!o.includes(m))o.push(m)});return o}
+  hiddenFor(g){return this.state.hidden[g]||[]}
+  go(m){this.setState({module:m,charId:null,sheet:null,owner:false},()=>this.persist())}
+  setGame(g){this.setState({game:g,charId:null,owner:false},()=>this.persist())}
+  hide(m){const g=this.state.game,h=this.hiddenFor(g);const vis=this.orderFor(g).filter(x=>!h.includes(x));if(vis.length<=1)return;this.setState(s=>({hidden:{...s.hidden,[g]:[...h,m]}}),()=>this.persist())}
+  restore(m){const g=this.state.game;this.setState(s=>({hidden:{...s.hidden,[g]:this.hiddenFor(g).filter(x=>x!==m)}}),()=>this.persist())}
+  reset(){const g=this.state.game;this.setState(s=>({order:{...s.order,[g]:DEFAULT_ORDER[g]},hidden:{...s.hidden,[g]:[]}}),()=>this.persist())}
+  moveTo(a,b){const g=this.state.game;const o=this.orderFor(g);const f=o.indexOf(a),t=o.indexOf(b);if(f<0||t<0||f===t)return;o.splice(f,1);o.splice(t,0,a);this.setState(s=>({order:{...s.order,[g]:o}}))}
+  startDrag(id){return e=>{e.preventDefault();this.setState({dragId:id});
+    const move=ev=>{const row=document.elementsFromPoint(ev.clientX,ev.clientY).find(el=>el.dataset&&el.dataset.editMod);if(row&&row.dataset.editMod!==this.state.dragId)this.moveTo(this.state.dragId,row.dataset.editMod)};
+    const up=()=>{window.removeEventListener('pointermove',move);window.removeEventListener('pointerup',up);this.setState({dragId:null},()=>this.persist())};
+    window.addEventListener('pointermove',move);window.addEventListener('pointerup',up);}}
+  backlogJade(gid){let any=false,sum=0;BACKLOG[gid].forEach((b,i)=>{if(b[1]==null)return;if(this.state.blOn[gid+':'+i]===false)return;any=true;sum+=(b[2]-b[1])*b[3]});return any?sum:null}
+  serverOf(gid){const G=GAMES[gid];return G.servers.find(x=>x.id===this.state.server[gid])||G.servers[0]}
+  nextReset(now,weekly,gid){const G=GAMES[gid],sv=this.serverOf(gid),off=sv.utc*36e5,s=new Date(now+off);let t=Date.UTC(s.getUTCFullYear(),s.getUTCMonth(),s.getUTCDate(),G.reset.hour);
+    if(weekly){t-=((s.getUTCDay()-G.reset.weekday+7)%7)*864e5;if(t<=now+off)t+=7*864e5}else if(t<=now+off)t+=864e5;return t-off}
+  pulls(gid){const c=GAMES[gid].cur;return Math.floor(c[0][1]/160)+c[1][1]}
+  stamina(gid,now){const st=GAMES[gid].stamina;if(st.cur==null)return null;const gained=Math.floor((now-this.t0)/(st.min*6e4));const cur=Math.min(st.max,st.cur+gained);return{cur,max:st.max,fullIn:(st.max-cur)*st.min*6e4}}
+  context(){const n=this.state.now;return GIDS.map(id=>{const st=this.stamina(id,n);return `${GAMES[id].name}: ${this.pulls(id)} pulls available; stamina ${st?st.cur+'/'+st.max:'no data'}; owned ${CHARS.filter(c=>c.game===id&&c.owned).map(c=>c.name).join(', ')}; banners ${BANNERS.filter(b=>b[0]===id).map(b=>b[2]+' ends in '+b[3]+'h').join(', ')}; pity: no data`}).join('\n')}
+  async send(text){text=(text??this.state.draft).trim();if(!text||this.state.thinking)return;
+    this.setState(s=>({msgs:[...s.msgs,{role:'user',text}],draft:'',thinking:true}));let reply;
+    try{if(window.claude&&window.claude.complete){reply=await window.claude.complete(`You are the assistant inside HLITH, a personal gacha hub. Answer in under 70 words, plain text. Use only these facts. If a fact is missing, say "no data yet".\n${this.context()}\n\nUser: ${text}`)}
+      else reply='I’m not connected in this preview. Once I am, I answer only from your synced data and say “no data yet” when I can’t prove something.'}
+    catch(e){reply='Couldn’t reach the assistant. Nothing was changed.'}
+    this.setState(s=>({msgs:[...s.msgs,{role:'asst',text:reply}],thinking:false}))}
+
+  renderVals(){
+    const s=this.state,now=s.now,dev=this.props.device??'auto';
+    const isPhone=dev==='phone'||(dev==='auto'&&s.vw<820),isPc=!isPhone;
+    const g=s.game,vent=g==='all'?ALL_VENT:GAMES[g].vent,scope=g==='all'?GIDS:[g];
+    const tagOf=gid=>g==='all'?{hasTag:true,tag:GAMES[gid].short,tagBg:GAMES[gid].vent}:{hasTag:false,tag:'',tagBg:''};
+    const modTag=m=>{if(g!=='all')return tagOf('hsr');const o=GIDS.filter(id=>GAMES[id].modules.includes(m));return o.length===1?tagOf(o[0]):{hasTag:false,tag:'',tagBg:''}};
+    const order=this.orderFor(g),hidden=this.hiddenFor(g),visible=order.filter(m=>!hidden.includes(m));
+    const mod=visible.includes(s.module)?s.module:visible[0];
+    const nav=visible.map(m=>({id:m,...MODS[m],...modTag(m),onClick:()=>this.go(m),bg:m===mod&&!s.owner?'#161B21':'transparent',color:m===mod&&!s.owner?'#E6EEF3':'#A9BBC8',marker:m===mod&&!s.owner?vent:'transparent',glyphColor:m===mod&&!s.owner?vent:'#6F8494'}));
+    const games=[{id:'all',short:'ALL',vent:ALL_VENT},...GIDS.map(id=>({id,short:GAMES[id].short,vent:GAMES[id].vent}))].map(x=>({...x,onClick:()=>this.setGame(x.id),bg:x.id===g?x.vent:'transparent',fg:x.id===g?'#08090B':'#6F8494'}));
+    const bar=nav.slice(0,4).map(n=>({...n,onClick:()=>{if(this.lp){this.lp=false;return}this.go(n.id)},onDown:()=>{this.lp=false;clearTimeout(this.lpT);this.lpT=setTimeout(()=>{this.lp=true;this.setState({editOpen:true,sheet:null});if(navigator.vibrate)navigator.vibrate(12)},500)},color:n.id===mod?'#E6EEF3':'#6F8494',glyphBg:n.id===mod?vent:'#12161B',glyphFg:n.id===mod?'#08090B':'#A9BBC8'}));
+    const moreList=nav.slice(4),moreActive=moreList.some(n=>n.id===mod);
+    const more=moreList.map(n=>({...n,border:n.id===mod?vent:'#1E242C'}));
+    const editVisible=visible.map((m,i)=>({id:m,label:MODS[m].label,num:p2(i+1),...modTag(m),onDrag:this.startDrag(m),onHide:()=>this.hide(m),cut:i===3&&visible.length>4,
+      bg:s.dragId===m?'#1A2027':'#12161B',border:s.dragId===m?vent:'#1E242C',shadow:s.dragId===m?'0 10px 24px rgba(0,0,0,.55)':'none'}));
+    const editHidden=order.filter(m=>hidden.includes(m)).map(m=>({id:m,label:MODS[m].label,onRestore:()=>this.restore(m)}));
+    const editNA=g==='all'?[]:CATALOG.filter(m=>!GAMES[g].modules.includes(m)).map(m=>({id:m,label:MODS[m].label}));
+    const char=mod==='roster'&&s.charId?CHARS.find(c=>c.id===s.charId):null;
+    const isToday=!s.owner&&mod==='today',isRosterGrid=!s.owner&&mod==='roster'&&!char,isChar=!s.owner&&!!char,isOwner=s.owner,isCalendar=!isOwner&&mod==='calendar',isPulls=!isOwner&&mod==='pulls',isBanners=!isOwner&&mod==='banners',isEvents=!isOwner&&mod==='events',isFarm=!isOwner&&mod==='farm',isBacklog=!isOwner&&mod==='backlog',isIntel=!isOwner&&mod==='intel',isGeneric=false;
+    const noTag={hasTag:false,tag:'',tagBg:''};
+    const tile=o=>({...noTag,hasBar:false,barPct:'0%',barColor:vent,valueColor:'#E6EEF3',subColor:'#6F8494',...o});
+    // Today
+    const tiles=[];
+    scope.forEach(id=>{const G=GAMES[id],sv=this.serverOf(id);
+      tiles.push(tile({label:'Daily reset',value:fmt(this.nextReset(now,false,id)-now),sub:`${p2(G.reset.hour)}:00 ${sv.label} server (${utcL(sv.utc)})`,...tagOf(id)}));
+      tiles.push(tile({label:'Weekly reset',value:fmt(this.nextReset(now,true,id)-now),sub:`Monday ${p2(G.reset.hour)}:00 server time`,...tagOf(id)}));
+      tiles.push(tile({label:'Pulls available',value:String(this.pulls(id)),sub:`${fmtN(G.cur[0][1])} ${G.cur[0][0]} ÷ 160 + ${G.cur[1][1]} ${G.cur[1][0].split(' ').slice(-2).join(' ')}`,...tagOf(id)}));
+      const st=this.stamina(id,now);
+      tiles.push(st?tile({label:G.stamina.name,value:`${st.cur}/${st.max}`,hasBar:true,barPct:`${st.cur/st.max*100}%`,barColor:G.vent,sub:st.fullIn>0?`Full in ${fmt(st.fullIn)}`:'Full now. Spend it.',subColor:st.fullIn<36e5?'#FF8A4C':'#6F8494',...tagOf(id)})
+        :tile({label:G.stamina.name,value:'—',valueColor:'#3A4652',sub:'No data yet · Connect account',subColor:'#7FB4D6',...tagOf(id)}));
+    });
+    const tasks=scope.flatMap(id=>TASKS[id].map(([tid,label,kind])=>{const d=!!s.done[tid];return{id:tid,label,kind,...tagOf(id),onToggle:()=>this.setState(st=>({done:{...st.done,[tid]:!st.done[tid]}})),
+      mark:d?'✓':'',checkBg:d?GAMES[id].vent:'transparent',checkBorder:d?GAMES[id].vent:'#3A4652',labelColor:d?'#56677A':'#E6EEF3',deco:d?'line-through':'none'}}));
+    const nDone=tasks.filter(t=>t.mark).length;
+    const banners=BANNERS.filter(b=>scope.includes(b[0])).map(([gid,kind,title,h])=>{const left=this.t0+h*36e5-now;return{kind,title,initials:ini(title),vent:GAMES[gid].vent,...tagOf(gid),ends:fmt(left),endsColor:left<72*36e5?'#FF8A4C':'#A9BBC8'}});
+    const coming=COMING.filter(c=>scope.includes(c[0])).sort((a,b)=>a[2]-b[2]).map(([gid,label,h,u])=>({label,unverified:!!u,vent:GAMES[gid].vent,...tagOf(gid),when:fmt(this.t0+h*36e5-now)}));
+    const currencies=scope.flatMap(id=>GAMES[id].cur.map(([name,v])=>({name,value:fmtN(v),dot:GAMES[id].vent})));
+    // Roster
+    const pool=CHARS.filter(c=>scope.includes(c.game));
+    const shown=pool.filter(c=>s.rosterFilter==='all'||(s.rosterFilter==='owned'?c.owned:!c.owned));
+    const presets=scope.flatMap(id=>(TEAMS[id]||[]).map(t=>({name:t.name,score:String(t.score),...tagOf(id),members:t.m.map(cid=>{const c=CHARS.find(x=>x.id===cid);return{name:c.name,initials:ini(c.name),color:ELEM[c.element],opacity:c.owned?1:.45}})})));
+    const rTabs=[['chars','Characters'],['teams','Teams']].map(([k,l])=>({label:l,onClick:()=>this.setState({rosterTab:k}),bg:s.rosterTab===k?vent:'transparent',fg:s.rosterTab===k?'#08090B':'#A9BBC8'}));
+    const rarCol=r=>r===5?'#E8B85C':'#7FB4D6';
+    const rTiles=shown.map(c=>{const G=GAMES[c.game];return{id:c.id,name:c.name,initials:ini(c.name),element:c.element,elementColor:ELEM[c.element],rarity:G.rar[c.rarity],rarityColor:rarCol(c.rarity),
+      meta:`${c.role} · ${c.element}`,...tagOf(c.game),onClick:()=>this.setState({charId:c.id}),opacity:c.owned?1:.55,border:c.owned?'1px solid #232A33':'1px dashed #3A4652',
+      dupe:c.owned?`${G.dupe}${c.dupe}`:'NOT OWNED',dupeBg:c.owned?'#E6EEF3':'transparent',dupeFg:c.owned?'#08090B':'#6F8494'}});
+    const filters=[['all','All'],['owned','Owned'],['missing','Not owned']].map(([k,l])=>({label:l,onClick:()=>this.setState({rosterFilter:k}),bg:s.rosterFilter===k?'#1A2027':'transparent',fg:s.rosterFilter===k?'#E6EEF3':'#6F8494'}));
+    // Character
+    let ch={};
+    if(char){const G=GAMES[char.game],b=char.build,owned=!!char.owned,cl=v=>Math.max(0,Math.min(100,v));
+      const parts=b?[['Stats',cl(b+2)],[G.gear,cl(b-4)],[G.skills,cl(b+10)],[G.weapon,cl(b-8)]].map(([label,v])=>({label,val:String(v),pct:v+'%'})):[];
+      const hasTeamsMod=true;const kit=char.game==='zzz'?['Basic Attack','Dodge','Assist','Special Attack','Chain Attack','Ultimate','Core Skill'].map(k=>({label:k})):[];
+      const teams=hasTeamsMod?(TEAMS[char.game]||[]).filter(t=>t.m.includes(char.id)).map(t=>({name:t.name,score:String(t.score),members:t.m.map(id=>{const c=CHARS.find(x=>x.id===id);return{name:c.name,initials:ini(c.name),color:ELEM[c.element],opacity:c.owned?1:.45}})})):[];
+      const have=this.pulls(char.game);
+      ch={name:char.name,initials:ini(char.name),rarity:G.rar[char.rarity],rarityColor:rarCol(char.rarity),element:char.element,elementColor:ELEM[char.element],role:char.role,gameShort:G.short,vent:G.vent,
+        heroCols:isPhone?'120px 1fr':'minmax(180px,240px) 1fr',nameSize:isPhone?'34px':'64px',initialSize:isPhone?'34px':'64px',
+        stats:[{label:'Level',value:owned?`${G.maxLvl}/${G.maxLvl}`:'—',sub:owned?'Max level':'Not owned',valueColor:owned?'#E6EEF3':'#3A4652',subColor:'#6F8494'},
+          {label:G.dupeName,value:owned?`${G.dupe}${char.dupe}`:'—',sub:owned?`${6-char.dupe} to max`:'Not owned',valueColor:owned?'#E6EEF3':'#3A4652',subColor:'#6F8494'},
+          {label:'Build score',value:b?String(b):'—',sub:b?'Imported':'No data yet',valueColor:b?'#E6EEF3':'#3A4652',subColor:b?'#6F8494':'#7FB4D6'}],
+        owned,notOwned:!owned,hasBuild:!!b,noBuild:owned&&!b,score:String(b||''),grade:b>=85?'S':b>=75?'A':b>=65?'B':'C',parts,gearName:G.gear,weaponName:G.weapon,
+        teamsNA:!hasTeamsMod,teams,hasKit:kit.length>0,kit,noTeams:hasTeamsMod&&!teams.length,
+        pullsHave:String(have),pullPct:Math.min(100,have/180*100)+'%',pullNote:have>=180?'You hold enough to guarantee this character even after a lost 50/50.':`${180-have} short of the worst case. Hard pity is 90; a lost 50/50 doubles it.`,
+        mats:G.mats.map(([label,h,n])=>h==null?{label,value:'No data yet',color:'#7FB4D6',pct:'0%'}:{label,value:`${h}/${n}`,color:h>=n?'#6FD3A8':'#E6EEF3',pct:Math.min(100,h/n*100)+'%'})};
+    }
+    const openServer=gid=>()=>this.setState({sheet:'server',serverGame:gid});
+    const srvChips=scope.map(id=>({short:GAMES[id].short,vent:GAMES[id].vent,label:this.serverOf(id).label,onClick:openServer(id)}));
+    const sgid=s.serverGame||(g==='all'?'hsr':g),SG=GAMES[sgid];
+    const srv={game:SG.name,options:SG.servers.map(o=>{const sel=this.serverOf(sgid).id===o.id;const off=o.utc*36e5,sx=new Date(now+off);let t=Date.UTC(sx.getUTCFullYear(),sx.getUTCMonth(),sx.getUTCDate(),SG.reset.hour)-off;
+      return{label:o.label,sub:`${utcL(o.utc)} · daily reset at ${new Date(t).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})} your time`,dot:sel?SG.vent:'transparent',ring:sel?SG.vent:'#3A4652',border:sel?SG.vent:'#1E242C',
+        onClick:()=>this.setState(st=>({server:{...st.server,[sgid]:o.id},sheet:null}),()=>this.persist())}})};
+    const day0=(()=>{const d=new Date(now);d.setHours(0,0,0,0);return d.getTime()})(),winS=-7,winE=35,span=winE-winS;
+    const pc=dd=>(Math.max(winS,Math.min(winE,dd))-winS)/span*100,abs=x=>this.t0+x*864e5,dOff=ms=>(ms-day0)/864e5;
+    const mon=ms=>new Date(ms).toLocaleDateString('en-GB',{month:'short'});
+    const rng=(x,y)=>{const A=new Date(x),B=new Date(y);if(x===y)return `${A.getDate()} ${mon(x)}`;return A.getMonth()===B.getMonth()?`${A.getDate()}–${B.getDate()} ${mon(y)}`:`${A.getDate()} ${mon(x)} – ${B.getDate()} ${mon(y)}`};
+    const ticks=[];for(let d=winS;d<=winE;d++){const ms=day0+d*864e5;if(new Date(ms).getDay()===1)ticks.push({left:pc(d)+'%',label:new Date(ms).toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'})})}
+    const calItem=([gid,lane,title,st,en,kind])=>{const v=GAMES[gid].vent,S=abs(st),E=abs(en),l=pc(dOff(S)),r=pc(dOff(E)),pt=kind==='leakpoint',leak=kind==='leak'||pt,plan=kind==='plan';
+      return{title,range:rng(S,E),left:l+'%',width:pt?'12px':Math.max(1,r-l)+'%',isLeak:leak,...tagOf(gid),vent:v,
+        bg:plan?'transparent':leak?`repeating-linear-gradient(135deg,${hexA(v,.18)} 0 6px,transparent 6px 12px)`:hexA(v,.2),
+        border:plan?'1.5px dashed #7FB4D6':leak?`1px dashed ${v}`:`1px solid ${hexA(v,.35)}`,borderLeft:plan?'1.5px dashed #7FB4D6':leak?`1px dashed ${v}`:`3px solid ${v}`,color:plan?'#CFE3EF':'#E6EEF3',end:E,start:S}};
+    const calItems=CAL.filter(c=>scope.includes(c[0])&&abs(c[4])>=day0+winS*864e5).map(calItem);
+    const lanes=LANES.map(L=>({label:L.toUpperCase(),items:CAL.filter(c=>scope.includes(c[0])&&c[1]===L&&abs(c[4])>=day0+winS*864e5).map(calItem)})).filter(l=>l.items.length);
+    const cal={minW:isPhone?'860px':'0',ticks,todayLeft:pc(dOff(now))+'%',lanes,list:calItems.filter(i=>i.end>=now).sort((x,y)=>x.start-y.start).map(i=>({...i,when:i.start>now?'in '+fmt(i.start-now):'ends in '+fmt(i.end-now)}))};
+    const rate=gid=>INCOME[gid].reduce((a,r)=>a+(r[1]==='daily'?r[2]:r[1]==='weekly'?r[2]/7:0),0);
+    const pullsAt=(gid,days)=>{const c=GAMES[gid].cur;return Math.floor((c[0][1]+rate(gid)*Math.max(0,days))/160)+c[1][1]};
+    const PT=[['planner','Planner'],['calc','Calculator'],['log','Bank log'],['history','History'],['luck','Luck report']];
+    const pBan=[];scope.forEach(id=>{BANNERS.filter(b=>b[0]===id).forEach(([gid,kind,title,hrs])=>pBan.push({gid,kind,title,st:-19,en:hrs/24,leak:false}));
+      CAL.filter(c=>c[0]===id&&c[1]==='Banners'&&c[5]==='leak').forEach(c=>pBan.push({gid:id,kind:'Next character banner',title:c[2],st:c[3],en:c[4],leak:true}))});
+    const planner=pBan.map(b=>{const G=GAMES[b.gid],worst=/Light Cone|W-Engine/.test(b.kind)?160:180,have=this.pulls(b.gid),by=pullsAt(b.gid,b.en),short=worst-by;
+      return{title:b.title,kind:b.kind,isLeak:b.leak,...tagOf(b.gid),vent:G.vent,range:rng(abs(b.st),abs(b.en)),ends:b.st>0?'opens in '+fmt(abs(b.st)-now):'ends in '+fmt(abs(b.en)-now),
+        have:String(have),by:String(by),worst:String(worst),pct:Math.min(100,by/worst*100)+'%',havePct:Math.min(100,have/worst*100)+'%',
+        verdict:short<=0?'Covers the worst case':short+' short of worst case',verdictColor:short<=0?'#6FD3A8':'#FF8A4C'}});
+    const calc=scope.map(id=>{const G=GAMES[id],d=VER_END[id],c=G.cur;const rows=[{label:'Bank now',sub:`${fmtN(c[0][1])} ${c[0][0]} + ${c[1][1]} passes`,jade:c[0][1]+c[1][1]*160,on:true}];
+      INCOME[id].forEach(([label,kind,amt,every,next])=>{if(kind==='paid'){rows.push({label,sub:'Paid extra · '+amt+' a day',jade:s.paid?amt*d:0,toggle:true,on:s.paid,onToggle:()=>this.setState(st=>({paid:!st.paid}))});return}
+        let n=kind==='daily'?d:kind==='weekly'?Math.floor(d/7):(d>next?Math.floor((d-next)/every)+1:0);rows.push({label,sub:kind==='cycle'?`${n} reset${n===1?'':'s'} left · if fully cleared`:`${n} × ${amt}`,jade:n*amt,on:true})});
+      rows.push({label:'Events',sub:'Event list not loaded',jade:null,on:true});
+      const blj=this.backlogJade(id);rows.push({label:'Backlog rewards',sub:blj==null?'Backlog not imported':'From categories switched on in Backlog',jade:blj,toggle:true,on:s.backlogOn,onToggle:()=>this.setState(st=>({backlogOn:!st.backlogOn}))});
+      const known=rows.filter(r=>r.on&&r.jade!=null).reduce((a,r)=>a+r.jade,0);
+      return{name:G.name,...tagOf(id),vent:G.vent,ends:fmt(abs(d)-now),total:String(Math.floor(known/160)),totalJade:fmtN(known),
+        rows:rows.map(r=>({label:r.label,sub:r.sub,isToggle:!!r.toggle,onToggle:r.onToggle,knob:r.on?'18px':'2px',track:r.on?G.vent:'#2A333D',
+          value:!r.on?'Off':r.jade==null?'No data yet':'+'+Math.floor(r.jade/160),valueColor:!r.on?'#56677A':r.jade==null?'#7FB4D6':'#E6EEF3',jade:r.on&&r.jade!=null?fmtN(r.jade):''}))}});
+    const log=scope.flatMap(id=>{let bal=GAMES[id].cur[0][1];return LOG[id].map(([dd,label,delta])=>{const row={label,...tagOf(id),date:new Date(abs(dd)).toLocaleDateString(undefined,{day:'numeric',month:'short'})+' · '+new Date(abs(dd)).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'}),
+      delta:(delta>0?'+':'−')+fmtN(Math.abs(delta)),deltaColor:delta>0?'#6FD3A8':'#E6EEF3',bal:fmtN(bal),t:dd};bal-=delta;return row})}).sort((a,b)=>b.t-a.t);
+    const pulls={tabs:PT.map(([k,l])=>({label:l,onClick:()=>this.setState({pullTab:k}),bg:s.pullTab===k?vent:'transparent',fg:s.pullTab===k?'#08090B':'#A9BBC8'})),
+      isPlanner:s.pullTab==='planner',isCalc:s.pullTab==='calc',isLog:s.pullTab==='log',isHistory:s.pullTab==='history',isLuck:s.pullTab==='luck',
+      planner,calc,log,luck:['Average 5★ pity','50/50 won','Free vs paid pulls','Cost per 5★'].map(l=>({label:l})),
+      imports:[['Paste a history link','From the in-game history page. Works on PC.'],['Upload a file','Export from another tracker (.json, .csv).'],['Connect HoYoLAB','Fills roster and stamina; history where available.']].map(([l,sub])=>({label:l,sub}))};
+    const pl=n=>n==null?'No data yet':'+'+Math.floor(n/160);
+    const tog=(on,col,fn)=>({knob:on?'18px':'2px',track:on?col:'#2A333D',onToggle:fn});
+    // Banners
+    const banList=[];scope.forEach(id=>{BANNERS.filter(b=>b[0]===id).forEach(([gid,kind,title,hrs])=>banList.push({gid,kind,title,st:-19,en:hrs/24,leak:false}));
+      CAL.filter(c=>c[0]===id&&c[1]==='Banners'&&c[5]==='leak').forEach(c=>banList.push({gid:id,kind:'Character banner',title:c[2],st:c[3],en:c[4],leak:true}))});
+    const banMod={leakTog:tog(s.showLeaks,vent,()=>this.setState(st=>({showLeaks:!st.showLeaks}))),cards:banList.filter(b=>s.showLeaks||!b.leak).map(b=>{const G=GAMES[b.gid],c=CHARS.find(x=>x.name===b.title);
+      let fit='Fit: no data yet · build a team first',fitColor='#7FB4D6',owned='';if(c){owned=c.owned?'Owned · '+G.dupe+c.dupe:'Not owned';const t=(TEAMS[b.gid]||[]).find(t=>t.m.includes(c.id));if(t){const n=t.m.filter(id=>id!==c.id&&CHARS.find(x=>x.id===id).owned).length;fit='Teammates owned '+n+'/3 · '+t.name;fitColor=n===3?'#6FD3A8':'#E6EEF3'}}
+      else if(!b.leak){fit='Weapon banner · no fit score';fitColor='#6F8494'}
+      return{title:b.title,kind:b.kind,initials:ini(b.title),vent:G.vent,isLeak:b.leak,...tagOf(b.gid),range:rng(abs(b.st),abs(b.en)),when:b.st>0?'opens in '+fmt(abs(b.st)-now):'ends in '+fmt(abs(b.en)-now),whenColor:b.st<=0&&abs(b.en)-now<72*36e5?'#FF8A4C':'#A9BBC8',owned,hasOwned:!!owned,fit,fitColor,onPlan:()=>this.go('pulls')}})};
+    // Events
+    const evRows=scope.flatMap(id=>EVENTS[id].filter(e=>abs(e[3])>now).map(([eid,name,type,end,rew,days])=>{const st=s.evState[eid]||'open',cl=s.claimed[eid]||0,isLogin=type==='Login';
+      const left=rew==null?null:st!=='open'?0:isLogin?Math.round(rew*(1-cl/days)):rew;
+      return{name,type,...tagOf(id),vent:GAMES[id].vent,ends:'ends in '+fmt(abs(end)-now),st,reward:st==='done'?'Earned · counted in bank':st==='skipped'?'Skipped · not counted':rew==null?'Reward: no data yet':pl(left)+' pulls left',rewardColor:st!=='open'?'#6F8494':rew==null?'#7FB4D6':'#E6EEF3',left,
+        isLogin,days:String(days||0),cl:String(cl),clPct:days?cl/days*100+'%':'0%',onClaim:()=>this.setState(x=>({claimed:{...x.claimed,[eid]:Math.min(days,(x.claimed[eid]||0)+1)}})),
+        states:[['open','Open'],['done','Done'],['skipped','Skip']].map(([k,l])=>({label:l,onClick:()=>this.setState(x=>({evState:{...x.evState,[eid]:k}})),bg:st===k?(k==='open'?'#1A2027':GAMES[id].vent):'transparent',fg:st===k&&k!=='open'?'#08090B':st===k?'#E6EEF3':'#6F8494'}))}}));
+    const evLeft=evRows.filter(e=>e.left!=null).reduce((a,e)=>a+e.left,0),evUnknown=evRows.some(e=>e.left==null&&e.st==='open');
+    const events={rows:evRows,tiles:[{label:'Open',value:String(evRows.filter(e=>e.st==='open').length),sub:'events you can still do',color:'#E6EEF3',subColor:'#6F8494'},
+      {label:'Rewards left',value:'+'+Math.floor(evLeft/160),sub:evUnknown?'pulls · some events have no data yet':'pulls · feeds Pulls budget',color:'#E6EEF3',subColor:evUnknown?'#7FB4D6':'#6F8494'}]};
+    // Farm
+    const pool2=CHARS.filter(c=>scope.includes(c.game));const sel=scope.flatMap(id=>s.farmSel[id]||[]);
+    const farmChips=pool2.map(c=>{const on=sel.includes(c.id);return{name:c.name,...tagOf(c.game),bg:on?GAMES[c.game].vent:'#0E1115',fg:on?'#08090B':'#A9BBC8',border:on?GAMES[c.game].vent:'#1E242C',onClick:()=>this.setState(x=>{const a=x.farmSel[c.game]||[];return{farmSel:{...x.farmSel,[c.game]:on?a.filter(i=>i!==c.id):[...a,c.id]}}})}});
+    let staTotal=0,staKnown=true;const farmRows=scope.flatMap(id=>{const n=(s.farmSel[id]||[]).length;if(!n)return[];return FARM_MATS[id].map(([label,per,have,cost,drop])=>{
+      if(per==null||have==null){staKnown=false;return{label,...tagOf(id),value:'No data yet',valueColor:'#7FB4D6',pct:'0%',runs:'—',stamina:'—',vent:GAMES[id].vent}}
+      const need=per*n,miss=Math.max(0,need-have),runs=Math.ceil(miss/drop),sta=runs*cost;staTotal+=sta;
+      return{label,...tagOf(id),value:have+'/'+need,valueColor:miss?'#E6EEF3':'#6FD3A8',pct:Math.min(100,have/need*100)+'%',runs:runs+' runs',stamina:fmtN(sta),vent:GAMES[id].vent}})});
+    const gear=sel.map(id=>{const c=CHARS.find(x=>x.id===id);return{name:c.name,...tagOf(c.game),gear:GEAR[id]||'No data yet · import this build',color:GEAR[id]?'#E6EEF3':'#7FB4D6'}});
+    const farm={chips:farmChips,rows:farmRows,gear,hasSel:sel.length>0,noSel:!sel.length,tiles:[{label:'Stamina needed',value:fmtN(staTotal),sub:staKnown?'for every material listed':'known rows only · some have no data',color:'#E6EEF3',subColor:staKnown?'#6F8494':'#7FB4D6'},
+      {label:'Days to finish',value:String(Math.ceil(staTotal/(scope.length*240))),sub:'at 240 stamina a day'+(scope.length>1?' per game':''),color:'#E6EEF3',subColor:'#6F8494'}]};
+    // Backlog
+    const blCats=scope.flatMap(id=>BACKLOG[id].map(([label,done,total,rew],i)=>{const key=id+':'+i,has=done!=null,on=has&&s.blOn[key]!==false;
+      return{label,...tagOf(id),vent:GAMES[id].vent,has,none:!has,value:has?done+'/'+total:'No data yet',pct:has?done/total*100+'%':'0%',reward:has?pl((total-done)*rew)+' pulls left':'Import progress',rewardColor:has?(on?'#E6EEF3':'#56677A'):'#7FB4D6',...tog(on,GAMES[id].vent,()=>has&&this.setState(x=>({blOn:{...x.blOn,[key]:!on}})))}}));
+    const blSum=scope.reduce((a,id)=>a+(this.backlogJade(id)||0),0);
+    const backlog={cats:blCats,total:'+'+Math.floor(blSum/160),note:s.backlogOn?'Counted in the Pulls calculator':'Not counted yet · switch on Backlog rewards in Pulls → Calculator',onCalc:()=>this.setState({module:'pulls',pullTab:'calc'})};
+    // Intel
+    const IT=['All','Character','Area','Event','System'];
+    const intel={types:IT.map(t=>({label:t,onClick:()=>this.setState({intelType:t}),bg:s.intelType===t?vent:'transparent',fg:s.intelType===t?'#08090B':'#A9BBC8'})),
+      rows:INTELX.filter(r=>scope.includes(r[0])&&(s.intelType==='All'||r[1]===s.intelType)).map(([gid,type,label,source,ago,rel])=>({label,type,source,...tagOf(gid),vent:GAMES[gid].vent,ago:ago+'d ago',rel:rel==='high'?'High':rel==='mid'?'Medium':'Low',relColor:rel==='high'?'#6FD3A8':rel==='mid'?'#E6EEF3':'#A9BBC8',relPct:rel==='high'?'90%':rel==='mid'?'60%':'30%'}))};
+    // Owner
+    const owner={games:GIDS.map(id=>{const G=GAMES[id];return{name:G.name,short:G.short,vent:G.vent,servers:G.servers.length+' servers',reset:p2(G.reset.hour)+':00 · Mon',mods:G.modules.length+' modules',curr:G.cur.map(c=>c[0]).join(' · ')}}),
+      lists:[['Characters',CHARS.length,'2 days ago'],['Banners',BANNERS.length,'2 days ago'],['Events',EVENTS.hsr.length+EVENTS.zzz.length,'today'],['Materials',FARM_MATS.hsr.length+FARM_MATS.zzz.length,'5 days ago'],['Backlog items',BACKLOG.hsr.length+BACKLOG.zzz.length,'5 days ago']].map(([l,n,u])=>({label:l,count:String(n),updated:'updated '+u})),
+      sources:SOURCES.map(([name,gs,rel],i)=>{const on=s.srcOn[i]!==false;return{name,games:gs.map(x=>GAMES[x].short).join(' · '),rel:rel+'%',relPct:rel+'%',...tog(on,'#7FB4D6',()=>this.setState(x=>({srcOn:{...x.srcOn,[i]:!on}})))}}),
+      anns:s.anns,draft:s.annDraft,onDraft:e=>this.setState({annDraft:e.target.value}),onPublish:()=>{const t=s.annDraft.trim();if(t)this.setState(x=>({anns:[{t,d:'just now'},...x.anns],annDraft:''}))},
+      tiles:[{label:'Accounts',value:'—',sub:'No data yet · needs the backend',color:'#3A4652',subColor:'#7FB4D6'},{label:'Active today',value:'—',sub:'No data yet · needs the backend',color:'#3A4652',subColor:'#7FB4D6'},{label:'Sync errors',value:'—',sub:'No data yet · needs the backend',color:'#3A4652',subColor:'#7FB4D6'}]};
+    const gd=GEN[mod]||GEN.pulls;
+    const gen={...gd,rows:mod==='intel'?INTEL.filter(r=>scope.includes(r[0])).map(([gid,label,source])=>({label,source,vent:GAMES[gid].vent,...tagOf(gid)})):[]};
+    const syncAgo=Math.floor((now-s.lastSync)/6e4);
+    const scopeLabel=g==='all'?'ALL GAMES':GAMES[g].name.toUpperCase();
+    const sheetPc={left:'50%',right:'auto',top:'50%',bottom:'auto',width:'440px',transform:'translate(-50%,-50%)',radius:'16px'};
+    const sheetPh={left:'0',right:'0',top:'auto',bottom:'0',width:'auto',transform:'none',radius:'20px 20px 0 0'};
+    const asstSug=(g==='zzz'?['Can I get Miyabi before her banner ends?','What should I farm today?']:g==='hsr'?['How many pulls until Acheron ends?','Which build should I fix first?']:['Where should my pulls go this week?','What resets soonest?']).map(text=>({text,onClick:()=>this.send(text)}));
+    return {
+      isPc,isPhone,rootH:this.props.embedded?'100%':'100vh',rootMax:!this.props.embedded&&dev==='phone'&&s.vw>=520?'430px':'none',rootBorder:!this.props.embedded&&dev==='phone'&&s.vw>=520?'1px solid #1A2027':'0',
+      vent,ventText:vent,ventWash:`linear-gradient(${hexA(vent,.10)},${hexA(vent,.03)})`,
+      games,nav,bar,more,moreTab:{color:moreActive?'#E6EEF3':'#6F8494',glyphBg:moreActive?vent:'#12161B',glyphFg:moreActive?'#08090B':'#A9BBC8'},
+      openAdd:()=>this.setState({sheet:'add'}),openEdit:()=>this.setState({editOpen:true,sheet:null}),closeEdit:()=>this.setState({editOpen:false}),resetLayout:()=>this.reset(),
+      openMore:()=>this.setState({sheet:'more'}),openAccount:()=>this.setState({sheet:'account'}),closeSheet:()=>this.setState({sheet:null}),
+      openAssistant:()=>this.setState({asstOpen:true}),closeAssistant:()=>this.setState({asstOpen:false}),
+      barUp:()=>clearTimeout(this.lpT),noCtx:e=>e.preventDefault(),
+      syncNow:()=>{this.setState({syncing:true});setTimeout(()=>this.setState({syncing:false,lastSync:Date.now()}),1200)},
+      syncDot:s.syncing?'#7FB4D6':'#6FD3A8',syncLabel:s.syncing?'Syncing…':syncAgo<1?'Synced just now':`Synced ${syncAgo} min ago`,
+      headPad:isPc?'18px 28px':'12px 16px',titleSize:isPc?'30px':'24px',pad:isPc?'24px 28px':'16px',bottomSpacer:isPhone?'80px':'24px',tileMin:isPhone?'150px':'200px',
+      scopeLabel:s.owner?'OWNER · ONLY YOU SEE THIS':scopeLabel,scopeLabelSoft:g==='all'?'all games':GAMES[g].name,title:s.owner?'Owner console':char?char.name:MODS[mod].label,
+      isToday,isRosterGrid,isChar,isGeneric,backToRoster:()=>this.setState({charId:null}),
+      today:{servers:srvChips,tiles,tasks,doneLabel:`${nDone}/${tasks.length}`,donePct:(tasks.length?nDone/tasks.length*100:0)+'%',banners,coming,currencies},
+      roster:{tabs:rTabs,isChars:s.rosterTab!=='teams',isTeams:s.rosterTab==='teams',presets,hasPresets:presets.length>0,noPresets:!presets.length,tiles:rTiles,filters,owned:String(pool.filter(c=>c.owned).length),total:String(pool.length),min:isPhone?'104px':'140px'},
+      ch,gen,isCalendar,cal,isPulls,pulls,isBanners,banners:banMod,isEvents,events,isFarm,farm,isBacklog,backlog,isIntel,intel,isOwner,owner,isLogin:!s.signedIn,signIn:()=>this.setState({signedIn:true}),isServer:s.sheet==='server',srv,
+      sheetOpen:!!s.sheet,isAccount:s.sheet==='account',isMore:s.sheet==='more',isAdd:s.sheet==='add',sg:isPc?sheetPc:sheetPh,
+      accountRows:[
+        {label:'Sync',sub:`${s.syncing?'Syncing…':'Last sync '+(syncAgo<1?'just now':syncAgo+' min ago')} · tap to sync now`,onClick:()=>{this.setState({syncing:true});setTimeout(()=>this.setState({syncing:false,lastSync:Date.now()}),1200)}},
+        {label:'Backup',sub:'No backup yet',onClick:()=>{}},
+        {label:'Notifications',sub:'Resets, stamina full, banners ending',onClick:()=>{}},
+        {label:'Game settings',sub:'Server and reset times, per game',onClick:openServer(g==='all'?'hsr':g)},
+        {label:'Guide',sub:'How HLITH works',onClick:()=>{}},
+        {label:'Layout settings',sub:`Edit layout for ${g==='all'?'All games':GAMES[g].short}`,onClick:()=>this.setState({sheet:null,editOpen:true})},
+        {label:'Theme',sub:'Dark · light comes later',onClick:()=>{}},
+        {label:'Owner console',sub:'Only the site owner sees this · games, lists, sources',onClick:()=>this.setState({owner:true,sheet:null,charId:null})},
+        {label:'Sign out',sub:'Your data stays on your account',onClick:()=>this.setState({signedIn:false,sheet:null})}],
+      addGames:['Genshin Impact','Wuthering Waves'],
+      editOpen:s.editOpen,editScope:g==='all'?'All games':GAMES[g].name,editVisible,editHidden,editNA,hasHidden:editHidden.length>0,hasNA:editNA.length>0,
+      eg:isPc?{backLeft:'248px',top:'0',width:'248px',maxH:'100%',radius:'0',borderTop:'0'}:{backLeft:'0',top:'auto',width:'100%',maxH:'85%',radius:'20px 20px 0 0',borderTop:'1px solid #232A33'},
+      asstOpen:s.asstOpen,ag:isPc?{top:'0',left:'auto',width:'420px',radius:'0'}:{top:'48px',left:'0',width:'auto',radius:'20px 20px 0 0'},
+      msgs:s.msgs.map(m=>m.role==='user'?{...m,align:'flex-end',bg:'#1E2630',fg:'#E6EEF3'}:{...m,align:'flex-start',bg:'#141920',fg:'#CFE3EF'}),
+      thinking:s.thinking,suggestions:asstSug,draft:s.draft,onDraft:e=>this.setState({draft:e.target.value}),onKey:e=>{if(e.key==='Enter')this.send()},sendDraft:()=>this.send()
+    };
+  }
+}
+</script>
+</body>
+</html>
