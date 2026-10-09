@@ -12,6 +12,6 @@ export { NoData } from './NoData';
 export { ProgressBar } from './ProgressBar';
 export { Segmented } from './Segmented';
 export { StatTile } from './StatTile';
-export { GameTag, UnverifiedTag } from './Tags';
+export { ExampleTag, GameTag, UnverifiedTag } from './Tags';
 export { Timer } from './Timer';
 export { useNow } from './useNow';

@@ -1,4 +1,4 @@
-import type { ComponentType } from 'react';
+import { lazy, type ComponentType, type LazyExoticComponent } from 'react';
 import { MODULE_IDS, type GameContract, type GameId, type ModuleId } from '../contract';
 
 /** What the shell knows about a module. The screen itself lives in tools/ and is attached by main.tsx. */
@@ -12,6 +12,10 @@ export interface ModuleDef {
 export interface ModuleScreenProps {
   games: GameContract[];
   scope: GameId | 'all';
+  /** The open tab, for modules with tabs (Pulls, Roster). */
+  tab?: string | undefined;
+  /** The viewer's chosen server per game. */
+  servers: Record<GameId, string>;
 }
 export type ModuleScreen = ComponentType<ModuleScreenProps>;
 type ScreenLoader = () => Promise<{ default: ModuleScreen }>;
@@ -49,12 +53,13 @@ export const MODULES: Record<ModuleId, ModuleDef> = {
 
 export const MODULE_CATALOG: readonly ModuleId[] = MODULE_IDS;
 
-const screens = new Map<ModuleId, ScreenLoader>();
+// Each screen is wrapped once, when registered, so the shell never creates components while drawing.
+const screens = new Map<ModuleId, LazyExoticComponent<ModuleScreen>>();
 
 export function registerModuleScreen(id: ModuleId, load: ScreenLoader): void {
-  screens.set(id, load);
+  screens.set(id, lazy(load));
 }
 
-export function moduleScreen(id: ModuleId): ScreenLoader | undefined {
+export function moduleScreen(id: ModuleId): LazyExoticComponent<ModuleScreen> | undefined {
   return screens.get(id);
 }
