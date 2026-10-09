@@ -47,7 +47,7 @@ Supabase → Authentication → URL Configuration (done 2026-10-09): **Site URL*
 to `localhost` and fails.
 
 ## 3. Connect the app (done 2026-10-09)
-The live project's two public values are in `.env.production`:
+The live project's two public values are in `config/.env.production`:
 project `qywvnvwfsknfcxgpbivo`, URL `https://qywvnvwfsknfcxgpbivo.supabase.co`.
 Builds use them; unit and browser tests run without them ("this device only"
 mode). Tables checked live: all 10 exist, and writes without sign-in are refused.

@@ -4,7 +4,7 @@ HLIÐSKJÁLF, Odin's high seat. A personal hub for gacha games on phone and PC. 
 
 Name rule: always PROJECT-HLITH, HLITH, HLIÐSKJÁLF (with Ð and Á). Never "Hlith", "Hlidskjalf" or "Project-Hlith". This includes code, commits and docs.
 
-Files: `HLITH System Diagram.dc.html` (layers) · `HLITH Tokens.dc.html` (tokens + Layer 4) · `HLITH App.dc.html` (working shell, Today, Roster, character page, Calendar) · `HLITH Theme Swap.dc.html` (one record, three screens) · `FEATURES.md` (feature map, must all ship).
+Files (in `docs/design/`): `HLITH System Diagram.dc.html` (layers) · `HLITH Tokens.dc.html` (tokens + Layer 4) · `HLITH App.dc.html` (working shell, Today, Roster, character page, Calendar) · `HLITH Theme Swap.dc.html` (one record, three screens) · `FEATURES.md` (feature map, must all ship).
 
 ---
 
