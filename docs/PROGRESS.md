@@ -28,8 +28,9 @@ Resume with: "continue from PROGRESS.md". Newest entry on top.
 ## Done
 - 2026-10-09 · **R63 Scheduler frame** (branch `frame/scheduler`). Shown to you
   for approval (no design yet, Override 5).
-  - One Cron job (`hlith-scheduler`, every 15 min) is created by migration
-    `0005_scheduler.sql` and calls the `scheduler` function with the Vault
+  - Live since PR #30. One Cron job (`hlith-scheduler`, every 15 min) exists
+    only after the owner presses **Start timer** in Owner console → Scheduler
+    (Stop timer removes it; the migration creates none). It calls the `scheduler` function with the Vault
     secret `scheduler_key`. The function runs each due job (backup 02:40 UTC,
     HoYoLAB daily 16:10 UTC), one at a time inside a 140 s budget, never two
     copies of a job (lock with expiry), one catch-up after missed runs, and
