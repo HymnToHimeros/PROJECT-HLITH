@@ -178,7 +178,7 @@ export function fromRow(row: Partial<ProfileRow> | null | undefined): Profile {
 }
 
 /** Path inside the avatars bucket. The first folder must be your user id (storage policy in 0004_profile.sql). */
-export const storagePath = (userId: string, kind: 'avatar' | 'banner', type = 'image/jpeg') => `${userId}/${kind}.${type === 'image/png' ? 'png' : 'jpg'}`;
+export const storagePath = (userId: string, kind: 'avatar' | 'banner', type = 'image/jpeg') => `${userId}/${kind}.${type === 'image/png' ? 'png' : type === 'image/webp' ? 'webp' : 'jpg'}`;
 
 /** Has the person filled in anything at all? */
 export const isBlank = (p: Profile) => !p.displayName && !p.bio && !p.avatar && !p.banner && Object.keys(p.pinned).length === 0 && p.hiddenCards.length === 0;
@@ -191,8 +191,7 @@ export function checkImage(file: { type: string; size: number }): string | null 
   return null;
 }
 
-/** Final size each picture is shrunk to (cropped to fill, from the centre). */
-export const IMAGE_SIZE = { avatar: { w: 256, h: 256 }, banner: { w: 1200, h: 360 } } as const;
+// Cropping, zoom and the saved sizes live in imageCrop.ts (maths) and imageRender.ts (drawing).
 
 /** The part of a w×h picture that fills a target box (centred crop, like object-fit: cover). */
 export function coverCrop(w: number, h: number, tw: number, th: number): { sx: number; sy: number; sw: number; sh: number } {
@@ -200,21 +199,6 @@ export function coverCrop(w: number, h: number, tw: number, th: number): { sx: n
   const sw = Math.round(tw / scale);
   const sh = Math.round(th / scale);
   return { sx: Math.round((w - sw) / 2), sy: Math.round((h - sh) / 2), sw, sh };
-}
-
-/** Shrink and crop a picture in the browser. Returns a JPEG data URL (small enough for this device's storage). */
-export async function shrinkImage(file: Blob, kind: 'avatar' | 'banner'): Promise<string> {
-  const { w: tw, h: th } = IMAGE_SIZE[kind];
-  const bitmap = await createImageBitmap(file);
-  const canvas = document.createElement('canvas');
-  canvas.width = tw;
-  canvas.height = th;
-  const ctx = canvas.getContext('2d');
-  if (!ctx) throw new Error('This browser can’t resize pictures.');
-  const c = coverCrop(bitmap.width, bitmap.height, tw, th);
-  ctx.drawImage(bitmap, c.sx, c.sy, c.sw, c.sh, 0, 0, tw, th);
-  bitmap.close();
-  return canvas.toDataURL('image/jpeg', kind === 'avatar' ? 0.86 : 0.8);
 }
 
 export function dataUrlToBlob(url: string): Blob {

@@ -55,26 +55,34 @@ mode). Tables checked live: all 10 exist, and writes without sign-in are refused
 ## 4. Later
 - **Resend** (sign-in emails at scale): resend.com → API key (**secret**) →
   Supabase → Authentication → Emails → SMTP settings.
-- **Nightly backups (R24)** — the code is ready (`supabase/functions/backup`,
-  bucket `backups` declared in `supabase/config.toml`); it only needs a nightly
-  schedule. Done together at the end (parked items), with the dashboard checked
-  live at that moment: Supabase → Integrations → Cron → new job, once a night,
-  calling the Edge Function `backup` with header
-  `Authorization: Bearer <service_role key>`. The service key is typed into the
-  Supabase dashboard only, never into chat or the repo. Until then no backup runs.
-- **Automatic HoYoLAB check-in and codes (R62)** — the code is ready
-  (`supabase/functions/hoyolab-daily`, tables and Vault functions in
-  `supabase/migrations/0003_hoyolab_links.sql`, both declared in
-  `supabase/config.toml`). It needs one daily schedule, set up the same way as
-  the backup and at the same time: Supabase → Integrations → Cron → new job,
-  once a day (suggested 16:10 UTC, just after HoYoLAB's check-in day turns over
-  at midnight UTC+8), calling the Edge Function `hoyolab-daily` with header
-  `Authorization: Bearer <service_role key>`. Running it more often is safe: an
-  account already checked in that day is skipped. Check first that **Vault** is
-  on (Database → Vault; on by default for new projects): the migration stores
-  the players' HoYoLAB logins there, encrypted. Until the schedule exists,
-  saved accounts still work and "Run now" in Connected accounts works; only the
-  unattended daily run is missing.
+- **Scheduled jobs (R63): nightly backup (R24), HoYoLAB daily check-in and
+  codes (R62), and every later job.** You do **not** create any Cron job or
+  fill in any schedule form. Nothing runs until **you** press **Start timer** in
+  Owner console → Scheduler: that creates the one Cron job (`hlith-scheduler`,
+  every 15 minutes; **Stop timer** removes it again). It calls the `scheduler` function, which runs each job when its time comes
+  (backup nightly at 02:40 UTC, HoYoLAB daily at 16:10 UTC; the full list is
+  in `supabase/functions/_shared/jobs.ts` and in Owner console → Scheduler).
+  **Your one step:** put the project's secret key into Vault under the name
+  `scheduler_key`, so the Cron job may start the scheduler:
+  1. Supabase → Project Settings → API Keys → copy the **service_role** key
+     (**secret**; under "Legacy API keys" if the page shows both kinds). It goes
+     into Vault only, never into chat or the repo.
+  2. Supabase → Integrations → **Vault** (on by default for new projects) →
+     Add new secret → name `scheduler_key`, secret = that key → Save.
+  3. Owner console → Scheduler → **Start timer**. Until the secret exists the
+  timer card says so, and any run is refused. The exact dashboard labels will be checked live with you when
+  we do this step; the code side is tested, the live run is not yet.
+  Running the HoYoLAB job more often is safe: an account already checked in that
+  day is skipped. Saved accounts and "Run now" in Connected accounts work even
+  before the secret exists; only the unattended runs are missing.
+- **Findings from the external routine (R63)** — leaks, new events and new game
+  data are found by a separate scheduled routine chat, which delivers them to
+  the `findings-intake` function with its **own** key (it can add findings and
+  nothing else). Your one step, when that routine is set up: make a long random
+  string (at least 32 characters, e.g. from a password manager), then Supabase →
+  Integrations → Vault → Add new secret → name `findings_intake_key`, secret =
+  that string. Give the same string to the routine chat (where and how:
+  `docs/ROUTINES.md`). Without it, every delivery is refused.
 
 ## 5. Hosting · Cloudflare (set up 2026-10-09)
 Cloudflare dashboard → Create app → Connect GitHub → `PROJECT-HLITH`.

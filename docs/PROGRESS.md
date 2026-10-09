@@ -10,8 +10,9 @@ Resume with: "continue from PROGRESS.md". Newest entry on top.
 ## Next
 - Show you every screen next to the design; fix what you point out.
 - At the end (parked, needs you): Google login, owner rights (owner check →
-  Owner console row), Resend, the nightly backup schedule, the daily HoYoLAB
-  schedule (SETUP.md §4), phone push keys
+  Owner console row), Resend, the Vault secret `scheduler_key` (starts the
+  backup and HoYoLAB jobs; SETUP.md §4), later `findings_intake_key` for the
+  routine (docs/ROUTINES.md), phone push keys
   (VAPID) for the evening message, finishing account deletions after 30 days.
 - Live checks only possible with real logins: HoYoLAB link, in-game history
   link, Assistant with your Claude key (all built, marked unverified until then).
@@ -25,6 +26,43 @@ Resume with: "continue from PROGRESS.md". Newest entry on top.
 - CI (`.github/workflows/ci.yml`) runs both on every pull request.
 
 ## Done
+- 2026-10-09 · **R63 Scheduler frame** (branch `frame/scheduler`). Shown to you
+  for approval (no design yet, Override 5).
+  - One Cron job (`hlith-scheduler`, every 15 min) is created by migration
+    `0005_scheduler.sql` and calls the `scheduler` function with the Vault
+    secret `scheduler_key`. The function runs each due job (backup 02:40 UTC,
+    HoYoLAB daily 16:10 UTC), one at a time inside a 140 s budget, never two
+    copies of a job (lock with expiry), one catch-up after missed runs, and
+    records every run. Owners can "Run now" one job.
+  - Job list in code: `supabase/functions/_shared/jobs.ts`. leaks-scan,
+    events-scan and game-data-refresh are run by an external routine chat (not
+    Supabase), FRAME until it exists; it delivers to `findings-intake` with its
+    own key `findings_intake_key` (format: `docs/ROUTINES.md`).
+  - Tables: `scheduler_jobs`, `scheduler_runs` (append-only), `scheduler_findings`
+    (inbox; dismiss is a status). Owner-only read; owner may change only a job's
+    switch/cadence and a finding's decision; only the server adds rows.
+  - Owner console now has tabs Overview · Scheduler · Findings. Approve only
+    marks a finding; adding it to the lists is `onApprove` (data workstream).
+  - Checked: all five migrations on PGlite with stubbed auth/storage/vault/cron/
+    net, policies exercised. Not checked live: the Cron call, Vault lookup, the
+    function waiting for backup/hoyolab-daily, background work after the 202.
+- 2026-10-09 · **Adjust your profile picture and banner** (branch
+  `frame/profile-image-editor`). Shown to you for approval (no design yet).
+  - Choosing a file (or "Adjust picture" / "Adjust banner" on one you already
+    have) opens a sheet with the picture inside its exact final shape (circle,
+    or the 4 : 1 banner strip) and the outside dimmed.
+  - Drag (mouse or finger), pinch, mouse wheel, Zoom slider with − / +, Fill,
+    Fit and Reset. Keys: arrows move (Shift = bigger steps), + / − zoom, 0 resets.
+    Fill never leaves gaps; Fit shows the whole picture and the gaps show the
+    default background. Live preview of the profile header. Explained with HowTo.
+  - Saved exactly as shown: 512 × 512 picture, 1600 × 400 banner, JPEG 0.85
+    (WebP/PNG with see-through edges only after Fit). The original file stays
+    in memory only while editing. Same 2 MB / images-only limits and the same
+    save paths (this device or the avatars bucket).
+  - The profile banner is now always the same 4 : 1 shape as the saved banner.
+  - Files: `src/tools/account/imageCrop.ts` (maths), `imageRender.ts`,
+    `ImageAdjust.tsx`, `imageAdjust.module.css`; tests in `imageCrop.test.ts`,
+    `ImageAdjust.test.tsx`, e2e in `tests/e2e/smoke.spec.ts` + accessibility.
 - 2026-10-09 · **Account is its own page, with a customisable Profile** (branch
   `frame/account-page`). Shown to you for approval (no design yet, Override 5).
   - `/account` and `/account/<section>`: a section bar (left column on PC,
@@ -142,7 +180,6 @@ Resume with: "continue from PROGRESS.md". Newest entry on top.
     (one line each) once their builder adds them.
   - Not checked against the live API yet: needs a deployed function and a
     real key (see the report).
-<<<<<<< HEAD
 - 2026-10-09 · **Shell, Account, Today and Calendar drawn to the design
   (`docs/design/HLITH App.dc.html`).** Sidebar (segmented game switcher,
   MODULES with Edit layout beside it, boxed glyphs, sync line, Assistant,
@@ -159,8 +196,6 @@ Resume with: "continue from PROGRESS.md". Newest entry on top.
   settings. Today: tiles, server + currency chips, Open tasks, Live banners,
   Coming up, plus Tonight's run and Wishlist. Calendar: legend, Monday ticks,
   lanes, white today line, Dates list.
-=======
->>>>>>> frame/design-roster-farm
 - 2026-10-09 · **Every module has a real screen (R29–R30, R35–R45).** Today
   (resets, dailies/weeklies with ticks that clear at your server's reset,
   ★ tonight's run, ★ wishlist), Calendar (six-week timeline + coming up),

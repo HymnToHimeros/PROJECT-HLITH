@@ -54,3 +54,14 @@ verify_jwt = true
 # the long random token in the link is checked by the function itself.
 [functions.ics-feed]
 verify_jwt = false
+
+# The scheduler (one entry point for every fixed job): started every 15 minutes by the
+# database cron job in 0005_scheduler.sql with the Vault key scheduler_key, or by an owner
+# ("Run now"). The function checks the key / owner itself, so the platform check is off.
+[functions.scheduler]
+verify_jwt = false
+
+# Findings intake: the external routine delivers findings with its own narrow key
+# (header x-intake-key, Vault secret findings_intake_key), checked by the function itself.
+[functions.findings-intake]
+verify_jwt = false
