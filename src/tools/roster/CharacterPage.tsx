@@ -50,6 +50,18 @@ export function CharacterPage({ data, character: c, several, onBack, openPulls, 
           ← Roster
         </button>
         {several && <GameTag label={game.short} vent={game.vent} />}
+        <span className={r.grow} />
+        <span className={r.howSmall}>
+          <HowTo
+            steps={[
+              <>Press <strong>Owned</strong> if you have this {who}, <strong>Wanted</strong> if you’re saving for them. Press again to undo.</>,
+              dupes ? <>Use − and + under {dupes.name} to set how many extra copies you have (0 to {dupes.max}).</> : <>This game has no extra copies to track.</>,
+              <><strong>Farm for {c.name}</strong> adds their materials to Farm, and Today then tells you what to spend stamina on.</>,
+              <>Build score, level and team fit fill in once you import your build (HoYoLAB link or a screenshot of the {who} screen). Until then HLITH shows “No data yet”, never a guess.</>,
+              <><strong>Kit check</strong> (further down, folded) shows what each skill really does, with the game’s own text as proof.</>,
+            ]}
+          />
+        </span>
       </div>
 
       <div className={r.hero}>
@@ -127,35 +139,11 @@ export function CharacterPage({ data, character: c, several, onBack, openPulls, 
         </div>
       </div>
 
-      <HowTo
-        steps={[
-          <>Press <strong>Owned</strong> if you have this {who}, <strong>Wanted</strong> if you’re saving for them. Press again to undo.</>,
-          dupes ? <>Use − and + under {dupes.name} to set how many extra copies you have (0 to {dupes.max}).</> : <>This game has no extra copies to track.</>,
-          <><strong>Farm for {c.name}</strong> adds their materials to Farm, and Today then tells you what to spend stamina on.</>,
-          <>Build score, level and team fit fill in once you import your build (HoYoLAB link or a screenshot of the {who} screen). Until then HLITH shows “No data yet”, never a guess.</>,
-          <>Kit check shows what each skill really does, with the game’s own text as proof.</>,
-        ]}
-      />
-
+      {/* Design order: Build score (or If you pull), Team fit, Materials. Secondary cards fold away below. */}
       <div className={r.cards}>
         {entry.owned ? <BuildCard data={data} /> : <IfYouPull data={data} openPulls={openPulls} />}
         <TeamFit data={data} character={c} />
-        <section className={r.card} aria-label="Kit check">
-          <KitCheck game={game} characters={[c]} />
-        </section>
         <Materials data={data} character={c} openFarm={openFarm} />
-        <section className={r.card} aria-labelledby={`gear-${c.id}`}>
-          <h3 className={r.cardTitle} id={`gear-${c.id}`}>
-            Recommended build
-          </h3>
-          {/* ROSTER-LOGIC fills recommended gear, weapon and stats from the build guides. */}
-          {[`${game.terms.gear} sets`, game.terms.weapon, 'Main stats', `${game.terms.skill}: level first`].map((label) => (
-            <div key={label} className={r.lineRow}>
-              <span className={r.lineLabel}>{label}</span>
-              <NoData dash={false} />
-            </div>
-          ))}
-        </section>
         {isUpcoming(c) && (
           <section className={r.card} aria-labelledby={`known-${c.id}`}>
             <h3 className={r.cardTitle} id={`known-${c.id}`}>
@@ -169,6 +157,35 @@ export function CharacterPage({ data, character: c, several, onBack, openPulls, 
             <UnverifiedTag source={c.source ?? 'game files'} />
           </section>
         )}
+      </div>
+
+      <div className={r.cards}>
+        <details className={r.fold}>
+          <summary className={r.foldSummary}>
+            Kit check <span className={r.foldNote}>what each skill really does</span>
+          </summary>
+          <div className={r.foldBody}>
+            <section className={r.card} aria-label="Kit check">
+              <KitCheck game={game} characters={[c]} title={false} />
+            </section>
+          </div>
+        </details>
+        <details className={r.fold}>
+          <summary className={r.foldSummary}>
+            Recommended build <span className={r.foldNote}>{game.terms.gear}, {game.terms.weapon}, stats</span>
+          </summary>
+          <div className={r.foldBody}>
+            <section className={r.card} aria-label="Recommended build">
+              {/* ROSTER-LOGIC fills recommended gear, weapon and stats from the build guides. */}
+              {[`${game.terms.gear} sets`, game.terms.weapon, 'Main stats', `${game.terms.skill}: level first`].map((label) => (
+                <div key={label} className={r.lineRow}>
+                  <span className={r.lineLabel}>{label}</span>
+                  <NoData dash={false} />
+                </div>
+              ))}
+            </section>
+          </div>
+        </details>
       </div>
     </article>
   );

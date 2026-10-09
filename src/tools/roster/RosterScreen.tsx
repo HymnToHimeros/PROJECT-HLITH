@@ -1,4 +1,5 @@
-import { useMemo, useState } from 'react';
+import { useMemo, useState, type CSSProperties } from 'react';
+import type { GameContract } from '../../core/contract';
 import type { ModuleScreenProps } from '../../core/registry/modules';
 import { CharacterPage } from './CharacterPage';
 import { Characters } from './Characters';
@@ -9,18 +10,52 @@ import { useRosterLists, type RosterData } from './useRosterData';
 
 type Tab = 'characters' | 'teams';
 
+// Which game Roster shows in All games, remembered on this device (per viewer).
+const GAME_KEY = 'hlith.roster.game';
+const readGame = (): string | null => {
+  try {
+    return localStorage.getItem(GAME_KEY);
+  } catch {
+    return null;
+  }
+};
+const writeGame = (id: string) => {
+  try {
+    localStorage.setItem(GAME_KEY, id);
+  } catch {
+    // Storage blocked (private window): the choice just isn't remembered.
+  }
+};
+
 /**
  * Roster module (design: Roster → Characters | Teams, and the character page).
- * In All games every game shares one grid, each tile carrying its game tag.
+ * Always one game at a time: in All games a game switch at the top picks which.
  * Opening a character replaces the grid with its page, with "← Roster" back.
  */
 export default function RosterScreen({ games, scope, tab, openTab, open }: ModuleScreenProps) {
-  const shown = useMemo(() => (scope === 'all' ? games : games.filter((g) => g.id === scope)), [games, scope]);
+  const inScope = useMemo(() => (scope === 'all' ? games : games.filter((g) => g.id === scope)), [games, scope]);
+  const [picked, setPicked] = useState<string | null>(readGame);
+  const game = inScope.find((g) => g.id === picked) ?? inScope[0];
+  const shown = useMemo(() => (game ? [game] : []), [game]);
   const lists = useRosterLists(shown);
   const current: Tab = tab === 'teams' ? 'teams' : 'characters';
   // The open character belongs to the tab it was opened from; switching tabs goes back to that tab's list.
   const [page, setPage] = useState<{ tab: Tab; game: string; id: string } | null>(null);
-  if (!lists) return <p className={r.muted}>Loading characters…</p>;
+  const choose = (id: string) => {
+    setPicked(id);
+    writeGame(id);
+    setPage(null);
+  };
+
+  const switcher = inScope.length > 1 && game ? <GameSwitch games={inScope} value={game.id} onChange={choose} /> : null;
+  if (!lists) {
+    return (
+      <div className={r.stack}>
+        {switcher}
+        <p className={r.muted}>Loading characters…</p>
+      </div>
+    );
+  }
 
   return (
     <WithUserData games={shown}>
@@ -30,8 +65,7 @@ export default function RosterScreen({ games, scope, tab, openTab, open }: Modul
           const user = users[g.id];
           return l && user ? [{ ...l, game: g, user }] : [];
         });
-        const several = data.length > 1;
-        const openPage = (game: string, id: string) => setPage({ tab: current, game, id });
+        const openPage = (gameId: string, id: string) => setPage({ tab: current, game: gameId, id });
         const pageData = page && page.tab === current ? data.find((d) => d.game.id === page.game) : undefined;
         const character = page && pageData?.byId.get(page.id);
         if (pageData && character) {
@@ -40,19 +74,45 @@ export default function RosterScreen({ games, scope, tab, openTab, open }: Modul
               key={`${pageData.game.id}:${character.id}`}
               data={pageData}
               character={character}
-              several={several}
+              several={false}
               onBack={() => setPage(null)}
               openPulls={pageData.game.modules.includes('pulls') ? (t) => open('pulls', t) : undefined}
               openFarm={pageData.game.modules.includes('farm') ? () => open('farm') : undefined}
             />
           );
         }
-        return current === 'teams' ? (
-          <Teams data={data} several={several} onOpen={openPage} openCharacters={() => openTab('characters')} />
-        ) : (
-          <Characters data={data} several={several} onOpen={openPage} />
+        return (
+          <div className={r.stack}>
+            {switcher}
+            {current === 'teams' ? (
+              <Teams data={data} several={false} onOpen={openPage} openCharacters={() => openTab('characters')} />
+            ) : (
+              <Characters data={data} several={false} onOpen={openPage} />
+            )}
+          </div>
         );
       }}
     </WithUserData>
+  );
+}
+
+/** One game at a time: the game short names, tinted with each game's vent like the shell's switch. */
+function GameSwitch({ games, value, onChange }: { games: GameContract[]; value: string; onChange: (id: string) => void }) {
+  return (
+    <div className={r.gameSwitch} role="group" aria-label="Roster game">
+      {games.map((g) => (
+        <button
+          key={g.id}
+          type="button"
+          className={r.gameSwitchBtn}
+          aria-pressed={g.id === value}
+          title={g.name}
+          style={{ '--game-vent': g.vent } as CSSProperties}
+          onClick={() => onChange(g.id)}
+        >
+          {g.short}
+        </button>
+      ))}
+    </div>
   );
 }

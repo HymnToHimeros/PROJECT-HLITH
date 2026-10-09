@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useId, useMemo, useState } from 'react';
 import type { Character } from '../../core/contract';
 import { setRosterEntry, type RosterEntry } from '../../core/data/userData';
 import { EmptyState, GameTag, HowTo } from '../../core/ui';
@@ -49,8 +49,9 @@ export function Characters({ data, several, onOpen }: Props) {
   const [sort, setSort] = useState<Sort>('newest');
   const [tap, setTap] = useState<Tap>('open');
   const [picked, setPicked] = useState<Set<string>>(new Set());
-  // Open on PC, folded on a phone so the grid comes first (design switch at 820 px).
-  const [moreOpen, setMoreOpen] = useState(() => typeof window !== 'undefined' && typeof window.matchMedia === 'function' && window.matchMedia('(min-width: 821px)').matches);
+  // Search, element / rarity / sort and quick marking live behind one "Filters" button, closed by default.
+  const [filtersOpen, setFiltersOpen] = useState(false);
+  const panelId = useId();
 
   const rows: Row[] = useMemo(() => data.flatMap((d) => d.characters.map((c) => ({ d, c, e: entryOf(d.user.roster, c.id), key: `${d.game.id}:${c.id}` }))), [data]);
   const word = several ? 'character' : (data[0]?.game.terms.character.toLowerCase() ?? 'character');
@@ -109,27 +110,119 @@ export function Characters({ data, several, onOpen }: Props) {
     return <EmptyState title={`No ${word} list yet`} body={`This game’s ${word} list hasn’t been added yet. It appears here as soon as it is.`} />;
   }
 
+  const game = data[0]?.game;
+  const extras = [query, element, rarity, sort !== 'newest', tap !== 'open'].filter(Boolean).length;
+
   return (
     <div className={r.stack}>
-      {/* RosterImport mounts here (account-links builder) */}
-      <div className={r.importRow}>
-        {data.map((d) => (
-          <span key={d.game.id} className={r.importGroup}>
-            {several && <GameTag label={d.game.short} vent={d.game.vent} />}
-            <RosterImport game={d.game} />
-            <ScanEntry game={d.game} />
+      <div className={r.headRow}>
+        {/* RosterImport mounts here (account-links builder) */}
+        {game && (
+          <span className={r.importGroup}>
+            <RosterImport game={game} />
+            <ScanEntry game={game} />
           </span>
-        ))}
+        )}
+        <span className={r.grow} />
+        <button type="button" className={r.filtersBtn} aria-expanded={filtersOpen} aria-controls={panelId} onClick={() => setFiltersOpen((o) => !o)}>
+          Filters
+          {extras > 0 && <span className={r.filtersCount}>{extras}</span>}
+        </button>
+        <span className={r.howSmall}>
+          <HowTo
+            steps={[
+              <>Tap a {word} to open their page. There you mark them <strong>Owned</strong> or <strong>Wanted</strong> and set how many copies you have ({copiesWord(data)}).</>,
+              <>Many at once: open <strong>Filters</strong>, under “Tap a {word} to” pick <strong>Mark owned</strong>, <strong>Mark wanted</strong> or <strong>Add a copy</strong>, then tap tiles. Tap again to undo.</>,
+              <>Or pick <strong>Select several</strong>, tap every {word} you own (or “Select all shown” after filtering) and press Owned.</>,
+              <>Wanted {word}s are the ones you’re saving for. Today and Banners use them to remind you before their banner leaves.</>,
+              <>Filters also has search by name, role or element, and sorting.</>,
+            ]}
+          />
+        </span>
       </div>
-      <HowTo
-        steps={[
-          <>Tap a {word} to open their page. There you mark them <strong>Owned</strong> or <strong>Wanted</strong> and set how many copies you have ({copiesWord(data)}).</>,
-          <>Many at once: under “Tap a {word} to”, pick <strong>Mark owned</strong>, <strong>Mark wanted</strong> or <strong>Add a copy</strong>, then tap tiles. Tap again to undo.</>,
-          <>Or pick <strong>Select several</strong>, tap every {word} you own (or “Select all shown” after filtering) and press Owned.</>,
-          <>Wanted {word}s are the ones you’re saving for. Today and Banners use them to remind you before their banner leaves.</>,
-          <>Filters: search by name, role or element, or show only owned, not owned or wanted.</>,
-        ]}
-      />
+
+      {filtersOpen && (
+        <div className={r.filtersPanel} id={panelId} role="region" aria-label="Filters">
+          <div className={r.tools}>
+            <label className={`${r.field} ${r.searchField}`}>
+              <span className={r.fieldLabel}>Search</span>
+              <input className={r.input} type="search" value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Name, role, element…" />
+            </label>
+            <label className={r.field}>
+              <span className={r.fieldLabel}>Element</span>
+              <select className={r.input} value={element} onChange={(e) => setElement(e.target.value)}>
+                <option value="">Any element</option>
+                {elements.map((e) => (
+                  <option key={e} value={e}>
+                    {e}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label className={r.field}>
+              <span className={r.fieldLabel}>Rarity</span>
+              <select className={r.input} value={rarity} onChange={(e) => setRarity(e.target.value)}>
+                <option value="">Any rarity</option>
+                <option value="top">{rarityWord('top')}</option>
+                <option value="mid">{rarityWord('mid')}</option>
+              </select>
+            </label>
+            <label className={r.field}>
+              <span className={r.fieldLabel}>Sort</span>
+              <select className={r.input} value={sort} onChange={(e) => setSort(e.target.value as Sort)}>
+                <option value="newest">Newest first</option>
+                <option value="name">Name</option>
+                <option value="rarity">Rarity</option>
+                {/* ROSTER-LOGIC fills "Best fit for me" (ranks by fit with your account). */}
+                <option value="fit" disabled>
+                  Best fit for me · no data yet
+                </option>
+              </select>
+            </label>
+          </div>
+
+          <div className={r.tapRow}>
+            <span className={r.fieldLabel} id={`${panelId}-tap`}>
+              Tap a {word} to
+            </span>
+            <div className={r.seg} role="group" aria-labelledby={`${panelId}-tap`}>
+              {TAP.map((o) => (
+                <button
+                  key={o.id}
+                  type="button"
+                  className={r.segBtn}
+                  aria-pressed={tap === o.id}
+                  onClick={() => {
+                    setTap(o.id);
+                    setPicked(new Set());
+                  }}
+                >
+                  {o.label}
+                </button>
+              ))}
+            </div>
+          </div>
+          <div className={r.panelFoot}>
+            <button type="button" className={r.smallBtn} onClick={() => setFiltersOpen(false)}>
+              Done
+            </button>
+            {extras > 0 && (
+              <button
+                type="button"
+                className={r.linkButton}
+                onClick={() => {
+                  clear();
+                  setSort('newest');
+                  setTap('open');
+                  setPicked(new Set());
+                }}
+              >
+                Reset all
+              </button>
+            )}
+          </div>
+        </div>
+      )}
 
       <div className={r.countRow}>
         <p className={r.count}>
@@ -150,74 +243,16 @@ export function Characters({ data, several, onOpen }: Props) {
         </div>
       </div>
 
-      <div className={r.searchRow} role="search">
-        <label className={`${r.field} ${r.searchField}`}>
-          <span className={r.fieldLabel}>Search</span>
-          <input className={r.input} type="search" value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Name, role, element…" />
-        </label>
-      </div>
-
-      <details className={r.more} open={moreOpen} onToggle={(e) => setMoreOpen(e.currentTarget.open)}>
-        <summary className={r.moreSummary}>
-          Filters and quick marking
-          {(element || rarity || sort !== 'newest' || tap !== 'open') && <span className={r.moreOn}>on</span>}
-        </summary>
-        <div className={r.tools}>
-          <label className={r.field}>
-            <span className={r.fieldLabel}>Element</span>
-            <select className={r.input} value={element} onChange={(e) => setElement(e.target.value)}>
-              <option value="">Any element</option>
-              {elements.map((e) => (
-                <option key={e} value={e}>
-                  {e}
-                </option>
-              ))}
-            </select>
-          </label>
-          <label className={r.field}>
-            <span className={r.fieldLabel}>Rarity</span>
-            <select className={r.input} value={rarity} onChange={(e) => setRarity(e.target.value)}>
-              <option value="">Any rarity</option>
-              <option value="top">{rarityWord('top')}</option>
-              <option value="mid">{rarityWord('mid')}</option>
-            </select>
-          </label>
-          <label className={r.field}>
-            <span className={r.fieldLabel}>Sort</span>
-            <select className={r.input} value={sort} onChange={(e) => setSort(e.target.value as Sort)}>
-              <option value="newest">Newest first</option>
-              <option value="name">Name</option>
-              <option value="rarity">Rarity</option>
-              {/* ROSTER-LOGIC fills "Best fit for me" (ranks by fit with your account). */}
-              <option value="fit" disabled>
-                Best fit for me · no data yet
-              </option>
-            </select>
-          </label>
-        </div>
-
-        <div className={r.tapRow}>
-          <span className={r.fieldLabel} id="roster-tap-label">
-            Tap a {word} to
+      {tap !== 'open' && tap !== 'select' && (
+        <p className={r.summary}>
+          <span>
+            Tapping a {word} now: <strong>{TAP.find((o) => o.id === tap)?.label}</strong>
           </span>
-          <div className={r.seg} role="group" aria-labelledby="roster-tap-label">
-            {TAP.map((o) => (
-              <button
-                key={o.id}
-                type="button"
-                className={r.segBtn}
-                aria-pressed={tap === o.id}
-                onClick={() => {
-                  setTap(o.id);
-                  setPicked(new Set());
-                }}
-              >
-                {o.label}
-              </button>
-            ))}
-          </div>
-        </div>
-      </details>
+          <button type="button" className={r.linkButton} onClick={() => setTap('open')}>
+            Back to opening pages
+          </button>
+        </p>
+      )}
 
       {tap === 'select' && (
         <div className={r.selectBar} role="region" aria-label="Selected characters">
