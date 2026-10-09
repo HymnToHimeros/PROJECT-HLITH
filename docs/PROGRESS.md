@@ -8,7 +8,7 @@ Resume with: "continue from PROGRESS.md". Newest entry on top.
   database migrations (`docs/DEPLOY.md`).
 
 ## Next
-- Next build steps: pity engine (R26), history import (R27–R28), then the
+- Next build steps: history import (R27–R28), then the
   module screens, starting with Events, Backlog and Pulls.
 - Parked by your choice (2026-10-09): Google login, owner rights, Resend, R24
   backups. Building the website comes first.
@@ -21,6 +21,14 @@ Resume with: "continue from PROGRESS.md". Newest entry on top.
 - CI (`.github/workflows/ci.yml`) runs both on every pull request.
 
 ## Done
+- 2026-10-09 · **R26 · pity engine.** `src/tools/pity/pity.ts`: chance of getting
+  N featured copies within X pulls, computed exactly by stepping through every
+  state, for any luck model (hard pity + 50/50, spark, none, a game's own rule);
+  two modes, official and community (labelled). Worst case from official hard
+  pity only; unknown when there's no ceiling. Pity, guarantee and luck (average
+  pity, 50/50 record) from imported history. 19 tests incl. a hand-worked exact
+  probability. `PullRecord.featured` added so imports can mark 50/50 wins.
+- 2026-10-09 · R25 merged (pull request #13).
 - 2026-10-09 · **R25 · pull budget engine.** `src/tools/budget/budget.ts`, pure
   functions, 11 rules from PLAN §4, 22 tests: future income only, today/this
   week/this cycle only if not done, events (open/done/skipped/ended), login
