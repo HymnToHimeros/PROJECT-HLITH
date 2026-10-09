@@ -4,7 +4,12 @@ The build plan for HLIÐSKJÁLF V2. It sits on top of `FEATURES.md` (what must
 ship) and `DESIGN.md` (how it looks). Where they disagree, the OVERRIDES in
 `CLAUDE.md` win; this plan already follows them.
 
-Status: **draft, waiting for approval.** No app code exists yet.
+Status: **answers to §9 received 2026-10-09; waiting for go on step 1.** No app code exists yet.
+
+**The shape in one line:** `core/` is the skeleton, `tools/` are the shelves and
+nerves (modules that work for any game), `games/` is the flesh. A new game,
+including one nobody has listed yet, is a new folder in `games/` and nothing else.
+See §2b.
 
 ---
 
@@ -18,8 +23,9 @@ Status: **draft, waiting for approval.** No app code exists yet.
 | Tests | Vitest (logic), Testing Library (components), Playwright (a few end-to-end smoke tests) | Fast, all TypeScript |
 | Database + login + server code | **Supabase** (Postgres, Auth, Edge Functions, Cron) | One service covers email link, Google and Discord login, per-user data walls (row-level security), scheduled jobs and the small server functions HoYoLAB / pull import / Assistant need |
 | Hosting | **Cloudflare Pages** (static site) | Free, unlimited traffic, 500 builds a month is plenty with "few pushes" |
-| Email (sign-in links, evening message) | **Resend** | Supabase's built-in mailer is for testing only (a handful of emails an hour) |
-| Assistant | Claude API, called only from a server function | API key never reaches the browser; every reply logs its cost |
+| Email (sign-in links only) | **Resend** | Supabase's built-in mailer is for testing only (a handful of emails an hour) |
+| Evening message | **Phone notification** (web push) | Free, built into browsers |
+| Assistant | Claude API with **each user's own key** (Account → Assistant). Stored encrypted, used only by a server function | Users pay for their own use; HLITH has no AI bill. Every reply shows its cost |
 
 Costs are in section 7.
 
@@ -59,7 +65,8 @@ PROJECT-HLITH/
 │  │  ├─ budget/               the one pull-budget engine (section 4). Pure functions.
 │  │  ├─ pity/                 pity + 50/50 from history, odds, worst case. Pure.
 │  │  ├─ import/               UIGF / SRGF parsers, in-game history link reader
-│  │  ├─ hoyolab/              client for the HoYoLAB server function
+│  │  ├─ account-links/        generic "linked game account" client; HoYoLAB is
+│  │  │                        the first provider, others plug in by name
 │  │  ├─ scan/                 screenshot scan of a character screen
 │  │  ├─ assistant/            chat UI, proposals, approve / undo
 │  │  ├─ feeds/                calendar feed (.ics) + evening message builders (shared
@@ -87,6 +94,7 @@ PROJECT-HLITH/
 │
 ├─ tests/
 │  ├─ architecture.test.ts     FAILS THE BUILD if core/ or tools/ import from games/
+│  ├─ fixtures/fake-game/      made-up non-HoYoverse game; proves new games need no core change
 │  └─ e2e/                     Playwright smoke tests
 └─ package.json · tsconfig.json · vite.config.ts · eslint.config.js
 ```
@@ -137,7 +145,6 @@ export interface GameContract {
   // ── Words the shell and modules use instead of game names ────────
   terms: {
     rarity: { top: string; mid: string };          // '5★' / '4★' or 'S' / 'A'
-    dupe: { prefix: string; name: string; max: number };  // 'E','Eidolon',6 · 'M','Mindscape',6
     gear: string;                                  // 'Relics' / 'Drive Discs'
     weapon: string;                                // 'Light Cone' / 'W-Engine'
     skill: string;                                 // 'Traces' / 'Skills'
@@ -148,10 +155,11 @@ export interface GameContract {
 
   // ── Economy ──────────────────────────────────────────────────────
   currencies: Currency[];
-  stamina: { name: string; max: number; minutesPerPoint: number; reserveName?: string };
+  stamina: StaminaPool[];              // zero, one or several pools
+  dupes?: { prefix: string; name: string; max: number };   // absent = game has no dupe system
 
   // ── Servers and resets (never in the shell) ──────────────────────
-  servers: { id: string; label: string; utcOffset: number }[];
+  servers: { id: string; label: string; utcOffset: number }[];   // one server = one entry
   reset: { hour: number; weekday: number };        // daily hour + weekly reset day, server time
 
   // ── Modules ──────────────────────────────────────────────────────
@@ -161,17 +169,13 @@ export interface GameContract {
   // ── Pulls ────────────────────────────────────────────────────────
   bannerTypes: BannerType[];
   income: IncomeRow[];                 // this game's income table (section 4)
-  history: {
-    exportFormat: 'SRGF' | 'UIGF';     // HSR: SRGF / UIGF v4 · ZZZ: UIGF v4
-    linkPattern: RegExp;               // recognises the in-game history link
-    gachaTypeToBanner: Record<string, BannerType['id']>;
-  };
+  historyImporters: HistoryImporter[];  // [] = no import; History offers manual entry
 
   // ── Built-in lists (seed data; owner can update them later) ──────
   data: GameDataLoaders;
 
   // ── Optional per-game abilities. Missing = feature shows "No data yet". ──
-  hoyolab?: { gameBiz: string; supports: ('stamina' | 'checkin' | 'roster' | 'endgame')[] };
+  accountLinks?: AccountLink[];        // HSR/ZZZ: [{ provider: 'hoyolab', … }]
   scan?: { screen: 'character'; fields: string[] };   // what a screenshot scan can read
   rules: GameRules;
 }
@@ -189,13 +193,9 @@ export interface BannerType {
   id: string;                          // 'character', 'weapon', 'standard', 'bangboo'
   label: string;
   pullItem: Currency['id'];
-  hardPity: number;                    // 90 / 80
-  hasFiftyFifty: boolean;
-  winRate?: number;                    // 0.5 / 0.75 (official)
-  guaranteeAfterLoss: boolean;
-  /** Odds model. `official` = published numbers only.
-   *  `community` = soft-pity curve from community data, labelled as such in the UI. */
-  odds: { baseRate: number; consolidatedRate: number; softPityFrom?: number; source: 'official' | 'community' };
+  /** How this banner's luck works. One of the shared models, or the game's own
+   *  (see PityModel in §2b), so games with different rules need no core change. */
+  pity: PityModel;
 }
 
 export interface IncomeRow {
@@ -236,6 +236,22 @@ export interface GameRules {
   scoreBuild?(build: CharacterBuild): Known<{ score: number; grade: string }>;
 }
 
+export interface StaminaPool { id: string; name: string; max: number; minutesPerPoint: number }
+
+export interface HistoryImporter {
+  id: string;                          // 'uigf-v4', 'srgf', 'hsr-link'
+  kind: 'file' | 'link';
+  label: string;
+  /** file: parse in the browser · link: sent to the gacha-import server function */
+  parse: (input: string | ArrayBuffer) => Promise<PullRecord[]>;
+}
+
+export interface AccountLink {
+  provider: string;                    // 'hoyolab' today; other companies' services later
+  supports: ('stamina' | 'checkin' | 'roster' | 'endgame')[];
+  config: Record<string, string>;      // e.g. { gameBiz: 'hkrpg_global' }
+}
+
 // Character, Banner, GameEvent, BacklogItem, Material, TeamPreset, Kit, Version,
 // PullRecord, CharacterBuild, BuildLevel, MaterialNeed live in core/contract/entities.ts.
 // Every list item has a stable `id` that never changes, so updates never orphan progress.
@@ -244,6 +260,47 @@ export interface GameRules {
 Game-only things are **features inside modules**, declared by data, not by a
 game-name check: Coffee at Coff Cafe and Dispatch are dailies in the income /
 task data; Kit check appears wherever `data.kits` exists.
+
+---
+
+## 2b. New games, including ones not listed anywhere yet
+
+HSR and ZZZ are the first two games, not the shape of the app. Nothing in
+`core/` or `tools/` may assume HoYoverse rules. Where games differ, the contract
+offers a **shared option or a slot for the game's own rule**:
+
+| Games differ in | How the contract handles it |
+|---|---|
+| Luck rules: hard pity + 50/50, rising odds, spark/exchange after N pulls, no pity at all | `PityModel` (below): shared models plus `custom` |
+| Number of premium currencies, pull items, stamina pools | Lists, not single fields |
+| Dupe systems (Eidolons, Mindscapes, none) | `dupes?` optional; Roster hides the column when absent |
+| Pull history (link, file, nothing) | `historyImporters` list; empty → manual entry |
+| Account services (HoYoLAB, others, none) | `accountLinks` list with a `provider` name; one server function per provider |
+| Servers and resets | Data in the record, never in the shell |
+| Rarity words, elements, roles, gear words | Data in `terms`, `elements`, `roles` |
+
+```ts
+/** Every banner's luck is a small state machine. The pity engine (tools/pity)
+ *  steps through it generically, so chance and worst case work for any game. */
+export type PityModel =
+  | { kind: 'hard-pity'; hardPity: number; baseRate: number;
+      featured?: { winRate: number; guaranteeAfterLoss: boolean };
+      softPity?: { from: number; stepPerPull: number; source: 'community' } }
+  | { kind: 'spark'; sparkAt: number; baseRate: number }          // pick the unit after N pulls
+  | { kind: 'none'; baseRate: number }
+  | { kind: 'custom'; step: (state: PityState) => { topRate: number; next: (won: boolean, featured: boolean) => PityState };
+      worstCase: (state: PityState) => number };                  // written in games/<id>/rules.ts
+```
+
+**Proof it works:** `tests/fixtures/fake-game/` is a made-up game that is
+nothing like HoYoverse (spark instead of pity, no dupes, two stamina pools, no
+history import, no account link). A test registers it and renders every
+module. If adding it ever needs a change in `core/` or `tools/`, the structure
+is wrong and gets fixed there.
+
+Modules stay the shared nine (Override 1). A game that truly can't fill one
+leaves it out of `modules`; the shell shows "Not available for this game yet".
+Anything game-only becomes a **feature** inside a module, switched on by data.
 
 ---
 
@@ -367,7 +424,10 @@ interface Budget {
   Uses only official hard pity, so it is shown even without history
   (assumes pity 0 and a 50/50 still to play; labelled as such).
 - `chance(state, pulls, bannerType)` → exact probability by stepping through
-  pity states. **Locked until history exists** (DESIGN.md).
+  pity states. **Locked until history exists** (DESIGN.md). Shows **two
+  numbers** when the game has soft-pity data: "official rates" (published,
+  pessimistic) and "with community soft-pity data" (labelled as community,
+  since the games don't publish it).
 - `luck(history, ledger)` → avg pity, 50/50 record, free vs paid, cost per top-rarity.
   Lives as a card in History (Override 3).
 
@@ -425,13 +485,18 @@ On the Pro plan this is replaced by Supabase's own daily backups.
 - **Pull history** (Override 2): only from the in-game history link (pasted,
   read by the `gacha-import` server function) or a UIGF / SRGF file (read in
   the browser). Not from HoYoLAB.
-- **Assistant**: server function calls Claude with web search; tools are the
+- **Assistant**: each user pastes their own Claude API key in Account →
+  Assistant. It's stored encrypted (Supabase Vault), never sent back to the
+  browser, and used only by the `assistant` server function. No key → the
+  Assistant shows the setup step instead of a chat. The function calls Claude with web search; tools are the
   same actions the UI has (propose plan, update bank, update backlog, mark
   done). Every write becomes a **proposal** you approve; approved ones can be
   undone. Each message shows its cost from the API's token counts.
 - **Calendar feed**: `ics-feed` function, private link with a token you can reset.
-- **Evening message**: cron job at your chosen local time, built from the same
-  data as Today (Connection 5). Channel: see open question 2.
+- **Evening message**: phone notification (web push) at your chosen local
+  time, sent by a cron job and built from the same data as Today (Connection 5).
+  On iPhone, web push needs HLITH added to the home screen first; the setup
+  checklist says so.
 
 ---
 
@@ -446,14 +511,14 @@ Prices as of October 2026; check each pricing page before signing up.
 | **Cloudflare R2** (nightly backups) | 10 GB stored | Over 10 GB | ~$0.015 per GB/month |
 | **Google login** | Free | — | — |
 | **Discord login** | Free | — | — |
-| **Resend** (sign-in emails, evening message by email) | 3,000 emails/month, 100/day | More than 100 emails a day | $20/month for 50,000 |
+| **Resend** (sign-in emails) | 3,000 emails/month, 100/day | More than 100 emails a day | $20/month for 50,000 |
 | **Web push** (evening message as phone notification) | Free (built into browsers) | — | — |
-| **Claude API** (Assistant) | No free plan; pay per use | Every message | Per million tokens in / out: Haiku 5.5 $0.10 / $0.50 · Sonnet 5.5 $2 / $10 · Opus 5.5 $4 / $20. Web search about $10 per 1,000 searches. A typical chat turn on Sonnet with your data attached: roughly $0.01–0.03. |
+| **Claude API** (Assistant) | Paid by **each user on their own key**, not by HLITH | Every message they send | Per million tokens in / out: Haiku 5.5 $0.10 / $0.50 · Sonnet 5.5 $2 / $10 · Opus 5.5 $4 / $20. Web search about $10 per 1,000 searches. A typical chat turn on Sonnet with your data attached: roughly $0.01–0.03. |
 | **Own domain** (optional) | — | If you want `hlith.something` | ~$10–15/year |
 
-**Likely bill:** $0/month while it's you and a few testers (accept the 7-day
-pause risk, or open it weekly). **$25/month + Assistant usage** once real
-users rely on it.
+**Likely bill:** **$0/month** to start (decided: free Supabase plan, free
+`pages.dev` address). **$25/month** once real users rely on it. Assistant use is
+always on each user's own key.
 
 ---
 
@@ -470,7 +535,8 @@ before moving on.
 2. Tokens (`tokens.css`, ink.5 fixed for Override 4: `#56677A` → **`#6C7F93`**,
    4.83:1 on bg.app, 4.59:1 on bg.card) and Layer 4 components with a preview page.
 3. Game contract types, registries, `_template`, HSR and ZZZ records
-   (identity, currencies, servers, resets, banner types, income table). Vent contrast test.
+   (identity, currencies, servers, resets, banner types, income table). Vent
+   contrast test. Fake-game test (§2b) proving a new game needs no core change.
 4. Time: server reset maths, local time, locale formatting.
 5. Shell: PC sidebar, phone bars, More sheet, game switcher, All games, Edit layout
    (drag, hide, restore, reset, not available), server picker. Local data only.
@@ -498,7 +564,7 @@ before moving on.
 **Connections and extras**
 19. ★ Edit mode (add / change / hide my events, banners, backlog items).
 20. ★ HoYoLAB link + stamina, check-in, character import, endgame records.
-21. ★ Assistant: chat, cost per message, model picker, ★ proposals with approve / undo.
+21. ★ Assistant: own-key setup, chat, cost per message, model picker, ★ proposals with approve / undo.
 22. ★ Screenshot scan of a character screen.
 23. ★ Evening message + calendar feed settings, the feed and the cron job.
 24. ★ Share a team.
@@ -509,19 +575,14 @@ before moving on.
 
 ---
 
-## 9. Open questions for you
+## 9. Answers (2026-10-09)
 
-1. **Assistant bill**: who pays for Assistant messages once other people use
-   HLITH? (a) you pay, with a monthly cap per user, (b) each user pastes their
-   own Claude API key, (c) Assistant is owner-only for now.
-2. **Evening message**: phone notification (free, web push), email (Resend),
-   or Discord message?
-3. **Odds before soft pity**: chance numbers using only official rates are
-   honest but pessimistic. Show a second number from community soft-pity data,
-   clearly labelled "community data"? Or official only?
-4. **Supabase plan**: start free (accepting the 7-day pause) and move to Pro
-   when others join?
-5. **Domain**: stay on the free `pages.dev` address for now?
+1. **Assistant bill** → each user puts their own Claude key in their account.
+2. **Evening message** → phone notification.
+3. **Pull chances** → show both: official rates and community soft-pity data, labelled.
+4. **Supabase** → free plan for now.
+5. **Web address** → the free `project-hlith.pages.dev`-style address for now;
+   a bought domain (~$10–15/year) can be added later without changing anything else.
 
 ## 10. Conflicts I found and how I resolved them
 
