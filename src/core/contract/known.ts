@@ -4,7 +4,7 @@
  */
 export type DataSource = 'official' | 'hoyolab' | 'import' | 'scan' | 'user' | 'assistant' | 'leak';
 
-export type FixAction = 'connect-account' | 'import-history' | 'import-build' | 'enter-manually' | 'scan-screenshot';
+export type FixAction = 'connect-account' | 'import-history' | 'import-build' | 'enter-manually' | 'scan-screenshot' | 'choose-server';
 
 export type Known<T> =
   | { known: true; value: T; source: DataSource; at: string }
@@ -26,4 +26,5 @@ export const FIX_LABEL: Record<FixAction, string> = {
   'import-build': 'Import build',
   'enter-manually': 'Add it',
   'scan-screenshot': 'Scan a screenshot',
+  'choose-server': 'Choose server',
 };
