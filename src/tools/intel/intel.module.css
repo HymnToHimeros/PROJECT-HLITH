@@ -1,83 +1,160 @@
+/* Intel · follows docs/design/HLITH App.dc.html (isIntel). Colours only from tokens.css. */
 .stack {
   display: flex;
   flex-direction: column;
   gap: var(--s-4);
-}
-.toolbar {
-  display: flex;
-  justify-content: flex-end;
-}
-.section {
-  display: flex;
-  flex-direction: column;
-  gap: var(--s-3);
-}
-.sectionLabel {
-  margin: 0;
-  font: 600 11px/1 var(--font-numbers);
-  letter-spacing: 0.12em;
-  color: var(--ink-5);
-}
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: var(--s-3);
-}
-@media (max-width: 420px) {
-  .grid {
-    grid-template-columns: minmax(0, 1fr);
-  }
-}
-/* Everything in Intel is unverified: dashed outline and hatch. */
-.card {
-  border: 1px dashed var(--line-empty);
-  border-radius: var(--r-card);
-  background:
-    repeating-linear-gradient(135deg, transparent 0 10px, color-mix(in srgb, var(--hatch) 35%, transparent) 10px 11px),
-    var(--bg-card);
-  padding: var(--s-4);
-  display: flex;
-  flex-direction: column;
-  gap: var(--s-2);
   min-width: 0;
 }
-.tags {
+.muted {
+  color: var(--ink-4);
+  font-size: 13px;
+}
+.intro {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--s-3) var(--s-5);
+}
+.lead {
+  margin: 0;
+  max-width: 640px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--ink-3);
+}
+.seg {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  padding: 4px;
+  align-self: flex-start;
+  max-width: 100%;
+  background: var(--bg-card);
+  border: 1px solid var(--line-default);
+  border-radius: var(--r-button);
+}
+.segBtn {
+  min-height: 38px;
+  padding: 0 14px;
+  border: 0;
+  border-radius: var(--r-segment);
+  background: transparent;
+  color: var(--ink-3);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.segBtn[aria-pressed='true'] {
+  background: var(--vent);
+  color: var(--on-vent);
+}
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+  border-radius: var(--r-card);
+  background: var(--bg-card);
+  border: 1px dashed var(--line-strong);
+  border-left: 3px solid var(--row-vent, var(--vent));
+}
+.main {
+  flex: 1;
+  min-width: min(100%, 220px);
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.meta {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: var(--s-2);
 }
+.kind {
+  font: 600 10px var(--font-numbers);
+  letter-spacing: 0.1em;
+  color: var(--ink-4);
+  text-transform: uppercase;
+}
+.unverified {
+  font: 600 10px/1 var(--font-numbers);
+  letter-spacing: 0.06em;
+  padding: 4px 6px;
+  border-radius: 5px;
+  border: 1px dashed var(--ember-soft);
+  color: var(--ember-soft);
+  white-space: nowrap;
+}
 .title {
-  margin: var(--s-1) 0 0;
-  font-size: 17px;
+  margin: 0;
+  font-size: 16px;
   font-weight: 700;
-  line-height: 1.25;
 }
 .detail {
   font-size: 13px;
   color: var(--ink-3);
 }
-.facts {
-  margin: var(--s-2) 0 0;
-  padding-top: var(--s-3);
-  border-top: 1px solid var(--line-subtle);
-  display: grid;
-  gap: var(--s-2);
-}
-.facts > div {
+.source {
   display: flex;
-  justify-content: space-between;
+  flex-wrap: wrap;
   align-items: baseline;
-  gap: var(--s-3);
-}
-.facts dt {
+  gap: 0 4px;
   font-size: 12px;
   color: var(--ink-4);
 }
-.facts dd {
-  margin: 0;
-  font-size: 13px;
+.rel {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  width: 160px;
+}
+.relLabel {
+  font-size: 12px;
+  color: var(--ink-4);
+}
+.relBar {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+}
+.track {
+  flex: 1;
+  display: block;
+  height: 6px;
+  border-radius: 3px;
+  background: var(--bg-track);
+  overflow: hidden;
+}
+.fill {
+  display: block;
+  height: 100%;
+  background: var(--glacier);
+}
+.relValue {
+  font: 600 12px var(--font-numbers);
   color: var(--ink-1);
-  text-align: right;
-  font-variant-numeric: tabular-nums;
+}
+.relValue[data-rel='high'] {
+  color: var(--ok);
+}
+.relValue[data-rel='low'] {
+  color: var(--ink-3);
+}
+@media (max-width: 820px) {
+  .rel {
+    width: 100%;
+  }
 }

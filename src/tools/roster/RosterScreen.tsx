@@ -1,67 +1,58 @@
-import { useCallback, useState } from 'react';
-import type { GameContract, ModuleId } from '../../core/contract';
+import { useMemo, useState } from 'react';
 import type { ModuleScreenProps } from '../../core/registry/modules';
-import { BottomSheet, Button, ExampleNotice, type ExampleAction } from '../../core/ui';
 import { CharacterPage } from './CharacterPage';
 import { Characters } from './Characters';
 import r from './roster.module.css';
-import { entryOf, GameHeading } from './shared';
+import { WithUserData } from './shared';
 import { Teams } from './Teams';
-import { useRosterData } from './useRosterData';
+import { useRosterLists, type RosterData } from './useRosterData';
 
-/** Roster module: Characters and Teams tabs. One block per game in scope. */
+type Tab = 'characters' | 'teams';
+
+/**
+ * Roster module (design: Roster → Characters | Teams, and the character page).
+ * In All games every game shares one grid, each tile carrying its game tag.
+ * Opening a character replaces the grid with its page, with "← Roster" back.
+ */
 export default function RosterScreen({ games, scope, tab, openTab, open }: ModuleScreenProps) {
-  const shown = scope === 'all' ? games : games.filter((g) => g.id === scope);
-  return (
-    <div className={r.stack}>
-      {shown.map((g) => (
-        <GameRoster key={g.id} game={g} tab={tab === 'teams' ? 'teams' : 'characters'} heading={shown.length > 1} openTab={openTab} open={open} />
-      ))}
-    </div>
-  );
-}
-
-interface Props {
-  game: GameContract;
-  tab: 'characters' | 'teams';
-  heading: boolean;
-  openTab: (tab: string) => void;
-  open: (module: ModuleId, tab?: string) => void;
-}
-
-function GameRoster({ game, tab, heading, openTab, open }: Props) {
-  const data = useRosterData(game);
-  const [selected, setSelected] = useState<string | null>(null);
-  // Stable, so the open sheet keeps focus where you are while you change things in it.
-  const close = useCallback(() => setSelected(null), []);
-  if (data.loading) return null;
-  const character = selected ? data.byId.get(selected) : undefined;
-
-  const actions: ExampleAction[] = [];
-  const ownsAnyone = data.characters.some((c) => entryOf(data.user.roster, c.id).owned);
-  if (!ownsAnyone) actions.push({ label: 'Mark who I own', onClick: () => openTab('characters') });
+  const shown = useMemo(() => (scope === 'all' ? games : games.filter((g) => g.id === scope)), [games, scope]);
+  const lists = useRosterLists(shown);
+  const current: Tab = tab === 'teams' ? 'teams' : 'characters';
+  // The open character belongs to the tab it was opened from; switching tabs goes back to that tab's list.
+  const [page, setPage] = useState<{ tab: Tab; game: string; id: string } | null>(null);
+  if (!lists) return <p className={r.muted}>Loading characters…</p>;
 
   return (
-    <section className={r.stack} aria-label={game.name}>
-      <GameHeading game={game} show={heading} />
-      {tab === 'teams' && data.presets.example && data.presets.list.length > 0 && (
-        <ExampleNotice actions={actions}>
-          The recommended teams are examples built from the {game.terms.character.toLowerCase()} list (a {game.terms.rarity.top} {game.terms.character.toLowerCase()} with others of the same element), not advice. Real recommended teams still have to be added by us. Your roster and your own teams are always yours.
-        </ExampleNotice>
-      )}
-      {tab === 'characters' && <Characters game={game} data={data} onOpen={setSelected} />}
-      {tab === 'teams' && <Teams game={game} data={data} onOpen={setSelected} openCharacters={() => openTab('characters')} />}
-      <BottomSheet open={Boolean(character)} side title={character?.name ?? ''} onClose={close}>
-        {character && (
-          <div className={r.sheetBar}>
-            <span className={r.muted}>{game.terms.character}</span>
-            <Button variant="quiet" onClick={close}>
-              Close
-            </Button>
-          </div>
-        )}
-        {character && <CharacterPage game={game} data={data} character={character} openPulls={game.modules.includes('pulls') ? () => open('pulls', 'planner') : undefined} />}
-      </BottomSheet>
-    </section>
+    <WithUserData games={shown}>
+      {(users) => {
+        const data: RosterData[] = shown.flatMap((g) => {
+          const l = lists[g.id];
+          const user = users[g.id];
+          return l && user ? [{ ...l, game: g, user }] : [];
+        });
+        const several = data.length > 1;
+        const openPage = (game: string, id: string) => setPage({ tab: current, game, id });
+        const pageData = page && page.tab === current ? data.find((d) => d.game.id === page.game) : undefined;
+        const character = page && pageData?.byId.get(page.id);
+        if (pageData && character) {
+          return (
+            <CharacterPage
+              key={`${pageData.game.id}:${character.id}`}
+              data={pageData}
+              character={character}
+              several={several}
+              onBack={() => setPage(null)}
+              openPulls={pageData.game.modules.includes('pulls') ? (t) => open('pulls', t) : undefined}
+              openFarm={pageData.game.modules.includes('farm') ? () => open('farm') : undefined}
+            />
+          );
+        }
+        return current === 'teams' ? (
+          <Teams data={data} several={several} onOpen={openPage} openCharacters={() => openTab('characters')} />
+        ) : (
+          <Characters data={data} several={several} onOpen={openPage} />
+        );
+      }}
+    </WithUserData>
   );
 }

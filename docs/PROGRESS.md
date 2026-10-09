@@ -31,6 +31,18 @@ Resume with: "continue from PROGRESS.md". Newest entry on top.
 - CI (`.github/workflows/ci.yml`) runs both on every pull request.
 
 ## Done
+- 2026-10-09 · **Roster, Farm and Intel follow the design; Owner console frame
+  (R58).** Branch `frame/design-roster-farm`. Roster: one grid in All games
+  with game tags, design tiles with an art slot (hatched placeholder until art
+  exists), All / Owned / Not owned / Wanted, quick marking and "Select
+  several". Character page opens in place with "← Roster": Level, copies,
+  Build score tiles, Build score (or If you pull), Team fit, Kit check,
+  Materials to max, Recommended build. Teams: your presets, recommended teams
+  with portraits and a score spot, ideas (teams you can build, if you pull,
+  endgame record). Farm: "Farm for" chips, stamina tiles, Materials, Gear to
+  farm. Intel: kind filter, dashed rows with source reliability. Owner
+  console: built, not reachable until there is an owner check. Logic slots
+  show "No data yet" or EXAMPLE values. Every screen has "How to use this".
 - 2026-10-09 · **R47 HoYoLAB link, roster import, R50 screenshot scan, R54 share
   a team** (branch `frame/connections`, frames + plumbing). HoYoLAB: a server
   function (`supabase/functions/hoyolab`, sign-in required, only HoYoLAB hosts)
@@ -72,6 +84,7 @@ Resume with: "continue from PROGRESS.md". Newest entry on top.
     (one line each) once their builder adds them.
   - Not checked against the live API yet: needs a deployed function and a
     real key (see the report).
+<<<<<<< HEAD
 - 2026-10-09 · **Shell, Account, Today and Calendar drawn to the design
   (`docs/design/HLITH App.dc.html`).** Sidebar (segmented game switcher,
   MODULES with Edit layout beside it, boxed glyphs, sync line, Assistant,
@@ -88,6 +101,8 @@ Resume with: "continue from PROGRESS.md". Newest entry on top.
   settings. Today: tiles, server + currency chips, Open tasks, Live banners,
   Coming up, plus Tonight's run and Wishlist. Calendar: legend, Monday ticks,
   lanes, white today line, Dates list.
+=======
+>>>>>>> frame/design-roster-farm
 - 2026-10-09 · **Every module has a real screen (R29–R30, R35–R45).** Today
   (resets, dailies/weeklies with ticks that clear at your server's reset,
   ★ tonight's run, ★ wishlist), Calendar (six-week timeline + coming up),

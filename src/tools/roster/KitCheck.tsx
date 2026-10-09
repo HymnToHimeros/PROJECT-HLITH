@@ -7,6 +7,8 @@ interface Props {
   game: GameContract;
   /** One character (character page) or a whole team (Teams). */
   characters: Character[];
+  /** Show the "Kit check" title (off when the sheet title already says it). */
+  title?: boolean;
 }
 
 /*
@@ -19,20 +21,18 @@ interface Props {
  * Kit check (Override 1): for any game whose record has kit data, what each
  * skill does (tags) with the game's own text as proof. Without data: "No data yet".
  */
-export function KitCheck({ game, characters }: Props) {
+export function KitCheck({ game, characters, title = true }: Props) {
   const kits = useKits(game);
   return (
-    <section className={r.kitCheck} aria-label="Kit check">
-      <div className={r.sectionHead}>
-        <h3 className={r.sectionTitle}>Kit check</h3>
-        <span className={r.muted}>What each skill does, with the game’s own text as proof.</span>
-      </div>
+    <div className={r.kit}>
+      {title && <h3 className={r.cardTitle}>Kit check</h3>}
+      <span className={r.cardText}>What each skill does, with the game’s own text as proof. Tap a skill to read the text.</span>
       {kits === null ? (
         <p className={r.muted}>Loading kit text…</p>
       ) : (
         characters.map((c) => <OneKit key={c.id} who={c} kit={kits.find((k) => k.characterId === c.id)} showName={characters.length > 1} game={game} />)
       )}
-    </section>
+    </div>
   );
 }
 
@@ -41,8 +41,10 @@ function OneKit({ who, kit, showName, game }: { who: Character; kit: Kit | undef
     return (
       <div className={r.kitBlock}>
         {showName && <h4 className={r.kitName}>{who.name}</h4>}
-        <NoData />
-        <p className={r.muted}>Kit text for this {game.terms.character.toLowerCase()} hasn’t been added yet.</p>
+        <div className={r.kitEmpty}>
+          <NoData />
+          <span className={r.muted}>Kit text for this {game.terms.character.toLowerCase()} hasn’t been added yet.</span>
+        </div>
       </div>
     );
   }

@@ -6,8 +6,12 @@
  */
 import type { Banner, Character, GameContract } from '../../core/contract';
 
+export type IntelKind = 'character' | 'weapon' | 'area' | 'event' | 'system';
+
 export interface IntelItem {
   id: string;
+  /** What kind of new content it is (design: Character · Area · Event · System). */
+  kind: IntelKind;
   /** Heading it's grouped under, in the game's own words ("Characters", "Agents"…). */
   group: string;
   title: string;
@@ -36,7 +40,7 @@ export function intelItems(game: GameContract, characters: Character[], banners:
       if (!had.sources.includes(source)) had.sources.push(source);
       return;
     }
-    items.set(c.id, { id: `character-${c.id}`, group, title: c.name, detail: characterDetail(game, c), when, whenLabel, sources: [source], characterId: c.id });
+    items.set(c.id, { id: `character-${c.id}`, kind: 'character', group, title: c.name, detail: characterDetail(game, c), when, whenLabel, sources: [source], characterId: c.id });
   };
 
   const released = (c: Character) => c.releasedAt !== undefined && Date.parse(c.releasedAt) <= now;
@@ -60,27 +64,38 @@ export function intelItems(game: GameContract, characters: Character[], banners:
 
 const DAY = 86_400_000;
 
-/** Two example cards that only show what Intel looks like. Generic on purpose: no real names. */
+/** Words for each kind, in the game's own terms when it has them. */
+export const kindLabel = (game: GameContract | null, kind: IntelKind): string =>
+  kind === 'character' ? (game?.terms.character ?? 'Character') : kind === 'weapon' ? (game?.terms.weapon ?? 'Weapon') : kind === 'area' ? 'Area' : kind === 'event' ? 'Event' : 'System';
+
+/** Example reliability for example cards only (real reliability comes from the owner's leak-source list). */
+export type Reliability = 'high' | 'mid' | 'low';
+export const exampleReliability: Record<string, Reliability> = {
+  'example-intel-character': 'mid',
+  'example-intel-weapon': 'mid',
+  'example-intel-area': 'low',
+  'example-intel-event': 'low',
+  'example-intel-system': 'high',
+};
+
+/** Example cards that only show what Intel looks like, one per kind. Generic on purpose: no real names. */
 export function exampleIntel(game: GameContract, now: number): IntelItem[] {
   const top = game.terms.rarity.top;
+  const card = (kind: IntelKind, title: string, detail: string, days: number | null, source: string): IntelItem => ({
+    id: `example-intel-${kind}`,
+    kind,
+    group: kindLabel(game, kind),
+    title,
+    detail,
+    when: days === null ? null : now + days * DAY,
+    whenLabel: 'Expected',
+    sources: [source],
+  });
   return [
-    {
-      id: 'example-intel-character',
-      group: `${game.terms.character}s`,
-      title: `A new ${top} ${game.terms.character.toLowerCase()}`,
-      detail: 'Name, element and role show here',
-      when: now + 30 * DAY,
-      whenLabel: 'Expected',
-      sources: ['example source'],
-    },
-    {
-      id: 'example-intel-weapon',
-      group: `${game.terms.weapon}s`,
-      title: `A new ${top} ${game.terms.weapon}`,
-      detail: 'Who it is made for shows here',
-      when: now + 30 * DAY,
-      whenLabel: 'Expected',
-      sources: ['example source'],
-    },
+    card('character', `A new ${top} ${game.terms.character.toLowerCase()}`, 'Name, element and role show here', 30, 'Example source · beta build'),
+    card('weapon', `A new ${top} ${game.terms.weapon}`, 'Who it is made for shows here', 30, 'Example source · beta build'),
+    card('area', 'A new map area', 'Where it is and what it unlocks', null, 'Example source · file names only'),
+    card('event', 'A new limited event', 'Rewards and dates show here', 44, 'Example source · unconfirmed'),
+    card('system', 'A change to an existing mode', 'What changes and when', null, 'Example source · official preview'),
   ];
 }
