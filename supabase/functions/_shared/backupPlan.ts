@@ -22,6 +22,9 @@ export const BACKUP_TABLES = [
   'hoyolab_redemptions',
   'hoyolab_my_codes',
   'hoyolab_codes',
+  'scheduler_jobs',
+  'scheduler_runs',
+  'scheduler_findings',
 ] as const;
 
 export const BACKUP_BUCKET = 'backups';
