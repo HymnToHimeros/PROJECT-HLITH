@@ -3,11 +3,11 @@
 Resume with: "continue from PROGRESS.md". Newest entry on top.
 
 ## Now
-- **Step 3 (R09–R15) done**, in review: game contract, registries, layout rules,
-  template, HSR and ZZZ records, made-up test game.
+- **Step 4 (R16) done**, in review: server resets and local time.
 
 ## Next
-- Step 4 — Server resets, local time, locale formats (R16), then the shell (R17–R19).
+- Step 5 — The shell: PC sidebar, phone bars, More sheet, game switcher, Edit
+  layout, server picker (R17–R19). Uses local storage until accounts exist (R20+).
 
 ## How to check everything
 - `npm run check` = lint + typecheck + unit tests + build.
@@ -15,6 +15,12 @@ Resume with: "continue from PROGRESS.md". Newest entry on top.
 - CI (`.github/workflows/ci.yml`) runs both on every pull request.
 
 ## Done
+- 2026-10-09 · **Step 4 (R16).** `src/core/time/reset.ts`: game day and week
+  start, next daily/weekly reset, resets counted in a window (for the pull
+  budget), all from the game record's server offset and reset rule. Display
+  in the viewer's own time zone and locale. Tested on Europe, America and Asia
+  servers, incl. Asia's Monday reset falling on Sunday evening UTC.
+- 2026-10-09 · Step 3 merged (pull request #5).
 - 2026-10-09 · **Step 3 (R09–R15).** `src/core/contract/` (contract, list item
   types, honest-data type), `src/core/registry/` (modules with Pulls' four tabs and
   Roster's two, data-driven features, game registration that rejects broken
