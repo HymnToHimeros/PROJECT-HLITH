@@ -3,3 +3,7 @@
 # live project. Per Supabase's docs, auth, API and seed settings here are NOT applied
 # to the live project; only migrations (and declared edge functions / storage buckets).
 project_id = "PROJECT-HLITH"
+
+# Server functions deployed by the GitHub integration on merge to main.
+[functions.gacha-import]
+verify_jwt = true
