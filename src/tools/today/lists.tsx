@@ -4,7 +4,7 @@
  * several games at the same time.
  */
 import { useEffect, useState, type ReactNode } from 'react';
-import type { Banner, Character, GameContract, GameEvent, GameId, Material, Version } from '../../core/contract';
+import type { Banner, Character, GameContract, GameEvent, GameId, Material, SampleArt, Version } from '../../core/contract';
 import { useGameData, type GameUserData } from '../../core/data/userData';
 
 export interface GameLists {
@@ -13,6 +13,8 @@ export interface GameLists {
   events: GameEvent[];
   versions: Version[];
   materials: Material[];
+  /** Art for EXAMPLE items only (never on real data). */
+  sampleArt?: SampleArt[];
 }
 
 /** Built-in lists per game id; null while loading. */
@@ -24,14 +26,15 @@ export function useGameLists(games: GameContract[]): Record<GameId, GameLists> |
     let alive = true;
     void Promise.all(
       games.map(async (g) => {
-        const [characters, banners, events, versions, materials] = await Promise.all([
+        const [characters, banners, events, versions, materials, sampleArt] = await Promise.all([
           g.data.characters(),
           g.data.banners(),
           g.data.events(),
           g.data.versions(),
           g.data.materials ? g.data.materials() : Promise.resolve([]),
+          g.data.sampleArt ? g.data.sampleArt() : Promise.resolve([]),
         ]);
-        return [g.id, { characters, banners, events, versions, materials }] as const;
+        return [g.id, { characters, banners, events, versions, materials, sampleArt }] as const;
       }),
     ).then((rows) => {
       if (alive) setLists({ for: rows.map(([id]) => id).join(','), value: Object.fromEntries(rows) });

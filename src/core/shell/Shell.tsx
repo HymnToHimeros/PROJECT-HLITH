@@ -1,41 +1,50 @@
 import { createElement, Suspense, useCallback, useEffect, useRef, useState, type CSSProperties, type MouseEvent } from 'react';
-import type { GameContract, ModuleId } from '../contract';
+import type { GameContract, GameId, ModuleId } from '../contract';
 import { updatePrefs, usePrefs } from '../data/prefs';
-import { useSyncStatus, type SyncStatus } from '../data/sync';
+import { canSync, syncNow, useSyncStatus, type SyncStatus } from '../data/sync';
 import { defaultLayout, phoneBar, slot, type LayoutState, type Scope } from '../registry/layout';
 import { moduleScreen, MODULES, type ModuleScreenProps } from '../registry/modules';
-import { panel, type PanelId, type PanelProps } from '../registry/panels';
-import { formatTime, nextDailyReset, serverRule } from '../time/reset';
+import { panel, type PanelAccount, type PanelId, type PanelProps } from '../registry/panels';
+import { useTheme } from '../theme/theme';
+import { formatTime, serverRule } from '../time/reset';
 import { BottomSheet } from '../ui/BottomSheet';
+import { useSampleShown } from '../ui/sampleMarker';
 import { Segmented } from '../ui/Segmented';
 import { useNow } from '../ui/useNow';
 import { EditLayout } from './EditLayout';
 import { navigate, parseRoute, routePath, usePath } from './route';
 import { ServerPicker } from './ServerPicker';
+import { useIsPhone } from './useIsPhone';
 import s from './shell.module.css';
 
 interface Props {
   /** Every registered game. Which ones show is the viewer's choice. */
   games: GameContract[];
   /** Signed-in account, or null in "this device only" mode. */
-  account?: { email: string; onSignOut: () => void } | null;
+  account?: PanelAccount | null;
 }
 
-type Sheet = null | 'more' | 'edit' | 'account' | 'games' | 'assistant' | 'pick-game';
+type Sheet = null | 'more' | 'edit' | 'account' | 'games' | 'assistant' | 'server';
 
 const LONG_PRESS_MS = 500;
-
 
 /**
  * Layer 1: same for every game, never moves, never hides. Knows nothing about
  * servers, resets or currencies; those come from the game record.
+ * Drawn to docs/design/HLITH App.dc.html: PC sidebar 248 px; phone top bar,
+ * bottom bar with the first four modules + More, and a floating ASK button.
  */
 export function Shell({ games: registered, account = null }: Props) {
   const prefs = usePrefs();
   const sync = useSyncStatus();
   const path = usePath();
   const now = useNow(60_000);
+  const phone = useIsPhone();
+  const sample = useSampleShown();
+  useTheme();
   const [sheet, setSheet] = useState<Sheet>(null);
+  const [serverGame, setServerGame] = useState<GameId | null>(null);
+  const [accountPage, setAccountPage] = useState<string | undefined>(undefined);
   const [tabs, setTabs] = useState<Record<string, string>>({});
 
   // Games in the switcher: the viewer's choice, else all. Never empty.
@@ -81,6 +90,23 @@ export function Shell({ games: registered, account = null }: Props) {
   }, []);
 
   const close = useCallback(() => setSheet(null), []);
+  const openAccount = (page?: unknown) => {
+    // Screens often pass this straight to onClick, so ignore anything that isn't a page name.
+    setAccountPage(typeof page === 'string' ? page : undefined);
+    setSheet('account');
+  };
+  const openServer = (id: GameId) => {
+    setServerGame(id);
+    setSheet('server');
+  };
+  const go = (nextScope: Scope, module?: ModuleId) => (e?: MouseEvent) => {
+    e?.preventDefault();
+    const nextLayout = prefs.layouts[nextScope] ?? defaultLayout();
+    const nextVisible = slot(games, nextScope, nextLayout);
+    const target = module ?? (prefs.lastModule[nextScope] && nextVisible.includes(prefs.lastModule[nextScope]) ? prefs.lastModule[nextScope] : nextVisible[0]);
+    if (target) navigate(routePath(nextScope, target));
+    setSheet(null);
+  };
   const panelProps: PanelProps = {
     games,
     allGames: registered,
@@ -93,115 +119,129 @@ export function Shell({ games: registered, account = null }: Props) {
       go(scope, m)();
     },
     editLayout: () => setSheet('edit'),
+    // Owner check hook: no owner check exists in the app yet (server side it is public.is_owner()).
+    isOwner: false,
+    startPage: accountPage,
   };
   const setLayout = (next: LayoutState) => updatePrefs((p) => ({ ...p, layouts: { ...p.layouts, [scope]: next } }));
   const setServer = (gameId: string, serverId: string) => updatePrefs((p) => ({ ...p, servers: { ...p.servers, [gameId]: serverId } }));
-  const go = (nextScope: Scope, module?: ModuleId) => (e?: MouseEvent) => {
-    e?.preventDefault();
-    const nextLayout = prefs.layouts[nextScope] ?? defaultLayout();
-    const nextVisible = slot(games, nextScope, nextLayout);
-    const target = module ?? (prefs.lastModule[nextScope] && nextVisible.includes(prefs.lastModule[nextScope]) ? prefs.lastModule[nextScope] : nextVisible[0]);
-    if (target) navigate(routePath(nextScope, target));
-    setSheet(null);
+  const onSyncClick = () => {
+    if (canSync()) void syncNow();
+    else openAccount('sync');
   };
 
   const ventOf = (sc: Scope) => (sc === 'all' ? 'var(--vent-all)' : (games.find((g) => g.id === sc)?.vent ?? 'var(--vent-all)'));
   const labelOf = (sc: Scope) => (sc === 'all' ? 'ALL' : (games.find((g) => g.id === sc)?.short ?? sc));
   const scopeName = game ? game.name : 'All games';
   const moduleDef = active ? MODULES[active] : undefined;
-  const serverId = game ? prefs.servers[game.id] : undefined;
-  const server = game?.servers.find((sv) => sv.id === serverId);
+  const serverFor = (g: GameContract) => g.servers.find((sv) => sv.id === prefs.servers[g.id]);
+  const clockGames = prefs.showServerTime ? (game ? [game] : games).filter((g) => serverFor(g)) : [];
+  const pickerGame = games.find((g) => g.id === serverGame) ?? game ?? games[0];
+
+  const switcher = (
+    <div className={s.switcher} role="group" aria-label="Game">
+      {scopes.map((sc) => (
+        <button
+          key={sc}
+          type="button"
+          className={s.gameBtn}
+          aria-pressed={sc === scope}
+          style={{ '--game-vent': ventOf(sc) } as CSSProperties}
+          onClick={go(sc)}
+          title={sc === 'all' ? 'All games' : games.find((g) => g.id === sc)?.name}
+        >
+          {labelOf(sc)}
+        </button>
+      ))}
+      <button type="button" className={s.addBtn} aria-label="Add or remove games" title="Add a game" onClick={() => setSheet('games')}>
+        +
+      </button>
+    </div>
+  );
+  const avatar = (size: 'sm' | 'md' | 'lg') => (
+    <span className={`${s.avatar} ${size === 'lg' ? s.avatarLg : size === 'md' ? s.avatarMd : ''}`} aria-hidden="true">
+      {account?.email.charAt(0).toUpperCase()}
+    </span>
+  );
 
   return (
     <div className={s.root} style={{ '--vent': ventOf(scope) } as CSSProperties}>
-      {/* ── PC sidebar ── */}
-      <aside className={s.sidebar} aria-label="Main">
-        <div className={s.brand}>
-          <span className={s.wordmark}>HLITH</span>
-          <span className={s.brandSub}>HLIÐSKJÁLF</span>
-        </div>
-        <div className={s.switcher} role="group" aria-label="Game">
-          {scopes.map((sc) => (
-            <button
-              key={sc}
-              type="button"
-              className={s.gameBtn}
-              aria-pressed={sc === scope}
-              style={{ '--game-vent': ventOf(sc) } as CSSProperties}
-              onClick={go(sc)}
-              title={sc === 'all' ? 'All games' : games.find((g) => g.id === sc)?.name}
-            >
-              {labelOf(sc)}
+      {!phone && (
+        <aside className={s.sidebar} aria-label="Main">
+          <div className={s.brand}>
+            <span className={s.wordmark}>HLITH</span>
+            <span className={s.brandSub}>HLIÐSKJÁLF</span>
+          </div>
+          {switcher}
+          <div className={s.navHead}>
+            <span className={s.navLabel}>MODULES</span>
+            <button type="button" className={s.editLink} onClick={() => setSheet('edit')}>
+              Edit layout
             </button>
-          ))}
-          <button type="button" className={s.gameBtn} aria-label="Add or remove games" onClick={() => setSheet('games')}>
-            +
-          </button>
-        </div>
-        <span className={s.navLabel}>MODULES</span>
-        <nav className={s.nav} aria-label="Modules">
-          {visible.map((id) => (
-            <a key={id} href={routePath(scope, id)} className={s.navItem} aria-current={id === active ? 'page' : undefined} onClick={go(scope, id)}>
-              <span className={s.glyph} aria-hidden="true">
-                {MODULES[id].glyph}
+          </div>
+          <nav className={s.nav} aria-label="Modules">
+            {visible.map((id) => (
+              <a key={id} href={routePath(scope, id)} className={s.navItem} aria-current={id === active ? 'page' : undefined} onClick={go(scope, id)}>
+                <span className={s.glyph} aria-hidden="true">
+                  {MODULES[id].glyph}
+                </span>
+                {MODULES[id].label}
+              </a>
+            ))}
+          </nav>
+          <div className={s.sideFoot}>
+            <SyncLine status={sync} now={now} onClick={onSyncClick} />
+            <button type="button" className={s.assistantBtn} onClick={() => setSheet('assistant')}>
+              <span className={s.emberMark} aria-hidden="true" />
+              <span className={s.grow}>Assistant</span>
+              <span className={s.kbd} aria-hidden="true">
+                ⌘K
               </span>
-              {MODULES[id].label}
-            </a>
-          ))}
-        </nav>
-        <button type="button" className={s.linkBtn} onClick={() => setSheet('edit')}>
-          Edit layout
-        </button>
-        <div className={s.sideFoot}>
-          <SyncLine status={sync} />
-          <button type="button" className={s.assistantBtn} onClick={() => setSheet('assistant')}>
-            Assistant <span className={s.kbd}>⌘K</span>
-          </button>
-          <button type="button" className={s.accountBtn} onClick={() => setSheet('account')}>
-            Account
-          </button>
-        </div>
-      </aside>
+            </button>
+            <button type="button" className={s.accountBtn} onClick={() => openAccount()}>
+              {avatar('sm')}
+              <span className={s.grow}>Account</span>
+              <span className={s.dots} aria-hidden="true">
+                ···
+              </span>
+            </button>
+          </div>
+        </aside>
+      )}
 
-      {/* ── Phone top bar ── */}
-      <header className={s.topBar}>
-        <button type="button" className={s.gamePick} onClick={() => setSheet('pick-game')} aria-label={`Game: ${scopeName}. Change game`}>
-          <span className={s.gamePickDot} aria-hidden="true" />
-          {labelOf(scope)} ▾
-        </button>
-        <span className={s.topSpacer} />
-        <button type="button" className={s.iconBtn} onClick={() => setSheet('account')}>
-          Account
-        </button>
-        <button type="button" className={s.askBtn} onClick={() => setSheet('assistant')}>
-          Ask
-        </button>
-      </header>
+      {phone && (
+        <header className={s.topBar}>
+          <span className={s.topWordmark}>HLITH</span>
+          {switcher}
+          <span className={s.topSpacer} />
+          <SyncDot status={sync} now={now} onClick={onSyncClick} />
+          <button type="button" className={s.avatarBtn} onClick={() => openAccount()} aria-label="Account">
+            {avatar('md')}
+          </button>
+        </header>
+      )}
 
       {/* ── Module slot ── */}
       <main className={s.main}>
         <div className={s.header}>
-          <div className={s.headerInner}>
-            <div>
-              <div className="t-label">{scopeName.toUpperCase()}</div>
-              <h1 className={s.title}>{moduleDef?.label}</h1>
-            </div>
-            {game &&
-              (server ? (
-                <button type="button" className={s.serverChip} onClick={() => setSheet('account')}>
-                  {server.label} · reset {formatTime(nextDailyReset(now, serverRule(game, server.id)))} your time
-                </button>
-              ) : (
-                <button type="button" className={`${s.serverChip} ${s.serverChipEmpty}`} onClick={() => setSheet('account')}>
-                  Choose your {game.short} server
-                </button>
-              ))}
+          <div className={s.headerText}>
+            <div className={s.scopeLabel}>{scopeName.toUpperCase()}</div>
+            <h1 className={s.title}>{moduleDef?.label}</h1>
           </div>
+          {clockGames.map((g) => (
+            <ServerClock key={g.id} game={g} serverId={serverFor(g)?.id ?? ''} now={now} tag={!game} />
+          ))}
+          {sample && (
+            <span className={s.sampleMark} title="Example values stand in until your own data or the game’s lists arrive. Look for the EXAMPLE notice on the page.">
+              SAMPLE DATA
+            </span>
+          )}
         </div>
         <div className={s.content}>
           {moduleDef?.tabs && (
             <Segmented
               label={moduleDef.label}
+              tone="vent"
               options={moduleDef.tabs}
               value={tabs[moduleDef.id] ?? moduleDef.tabs[0]?.id ?? ''}
               onChange={(t) => setTabs((cur) => ({ ...cur, [moduleDef.id]: t }))}
@@ -220,7 +260,8 @@ export function Shell({ games: registered, account = null }: Props) {
                   if (t) setTabs((cur) => ({ ...cur, [m]: t }));
                   go(scope, m)();
                 }}
-                openAccount={() => setSheet('account')}
+                openAccount={() => openAccount()}
+                openServer={openServer}
               />
             </Suspense>
           ) : (
@@ -235,107 +276,129 @@ export function Shell({ games: registered, account = null }: Props) {
         </div>
       </main>
 
-      {/* ── Phone bottom bar ── */}
-      <nav className={s.bottomBar} aria-label="Modules (phone)">
-        {bar.map((id) => (
-          <PhoneTab key={id} id={id} current={id === active} onOpen={go(scope, id)} onLongPress={() => setSheet('edit')} />
-        ))}
-        <button type="button" className={s.tab} aria-current={active && more.includes(active) ? 'page' : undefined} onClick={() => setSheet('more')}>
-          <span className={s.glyph} aria-hidden="true">
-            ···
-          </span>
-          More
-        </button>
-      </nav>
+      {phone && (
+        <>
+          <nav className={s.bottomBar} aria-label="Modules (phone)">
+            {bar.map((id) => (
+              <PhoneTab key={id} id={id} current={id === active} onOpen={go(scope, id)} onLongPress={() => setSheet('edit')} />
+            ))}
+            <button type="button" className={s.tab} aria-current={active && more.includes(active) ? 'page' : undefined} onClick={() => setSheet('more')}>
+              <span className={s.tabGlyph} aria-hidden="true">
+                ···
+              </span>
+              More
+            </button>
+          </nav>
+          <button type="button" className={s.askFab} onClick={() => setSheet('assistant')} aria-label="Assistant">
+            ASK
+          </button>
+        </>
+      )}
 
       {/* ── Sheets ── */}
-      <BottomSheet open={sheet === 'more'} title="More" onClose={close}>
+      <BottomSheet
+        open={sheet === 'more'}
+        title="More"
+        onClose={close}
+        placement="center"
+        headerAction={
+          <button type="button" className={s.sheetBtn} onClick={() => setSheet('edit')}>
+            Edit layout
+          </button>
+        }
+      >
         <div className={s.sheetGrid}>
           {more.map((id) => (
             <a key={id} href={routePath(scope, id)} className={s.sheetTile} aria-current={id === active ? 'page' : undefined} onClick={go(scope, id)}>
+              <span className={s.tileGlyph} aria-hidden="true">
+                {MODULES[id].glyph}
+              </span>
               {MODULES[id].label}
             </a>
           ))}
         </div>
-        <button type="button" className={s.linkBtn} onClick={() => setSheet('edit')}>
-          Edit layout
-        </button>
+        <p className={s.note}>Your first 4 modules sit in the bar. Long-press any tab to change the order.</p>
       </BottomSheet>
 
-      <BottomSheet open={sheet === 'pick-game'} title="Game" onClose={close}>
-        <div className={s.sheetGrid}>
-          {scopes.map((sc) => (
-            <button key={sc} type="button" className={s.sheetTile} aria-current={sc === scope ? 'page' : undefined} onClick={go(sc)} style={{ '--vent': ventOf(sc) } as CSSProperties}>
-              {labelOf(sc)}
-            </button>
-          ))}
-        </div>
-        <button type="button" className={s.linkBtn} onClick={() => setSheet('games')}>
-          Add or remove games
-        </button>
+      <BottomSheet open={sheet === 'edit'} title={`Edit layout · ${scopeName}`} onClose={close} placement="left" hideTitle>
+        <EditLayout games={games} scope={scope} layout={layout} onChange={setLayout} onDone={close} scopeName={scopeName} />
       </BottomSheet>
 
-      <BottomSheet open={sheet === 'edit'} title={`Edit layout · ${scopeName}`} onClose={close} side>
-        <EditLayout games={games} scope={scope} layout={layout} onChange={setLayout} onDone={close} />
+      <BottomSheet open={sheet === 'server' && Boolean(pickerGame)} title={`Server · ${pickerGame?.name ?? ''}`} onClose={close} placement="center" closeButton>
+        <p className={s.sheetText}>Resets follow the game’s server, not your clock. Each game keeps its own server and reset rule.</p>
+        {pickerGame && (
+          <ServerPicker
+            game={pickerGame}
+            value={prefs.servers[pickerGame.id]}
+            now={now}
+            onChange={(id) => {
+              setServer(pickerGame.id, id);
+              close();
+            }}
+          />
+        )}
       </BottomSheet>
 
-      <BottomSheet open={sheet === 'games'} title="Your games" onClose={close} side>
-        <p className={s.note}>Pick which games appear in the switcher. Turning a game off never deletes its data.</p>
+      <BottomSheet open={sheet === 'games'} title="Add a game" onClose={close} placement="center" closeButton>
+        <p className={s.sheetText}>
+          A game is one record: name, vent colour, icon, currencies, reset times and the modules it supports. The shell stays the same. Turning a game off
+          never deletes its data.
+        </p>
         {registered.map((g) => {
           const on = chosen.includes(g.id);
+          const last = on && chosen.length === 1;
           return (
-            <label key={g.id} className={s.gameRow} style={{ '--game-vent': g.vent } as CSSProperties}>
-              <input
-                type="checkbox"
-                checked={on}
-                disabled={on && chosen.length === 1}
-                onChange={() =>
-                  updatePrefs((p) => ({
-                    ...p,
-                    games: on ? chosen.filter((id) => id !== g.id) : registered.map((r) => r.id).filter((id) => id === g.id || chosen.includes(id)),
-                  }))
-                }
-              />
-              {g.name}
-            </label>
+            <div key={g.id} className={on ? s.gameRow : `${s.gameRow} ${s.gameRowOff}`} style={{ '--game-vent': g.vent } as CSSProperties}>
+              <span className={s.gameIcon} aria-hidden="true">
+                {g.short}
+              </span>
+              <span className={s.grow}>
+                <span className={s.gameName}>{g.name}</span>
+                <span className={s.gameMeta}>{on ? 'In your switcher' : 'not added yet'}</span>
+              </span>
+              <label className={s.switchLabel}>
+                <input
+                  type="checkbox"
+                  role="switch"
+                  className={s.switchInput}
+                  checked={on}
+                  disabled={last}
+                  aria-label={g.name}
+                  onChange={() =>
+                    updatePrefs((p) => ({
+                      ...p,
+                      games: on ? chosen.filter((id) => id !== g.id) : registered.map((r) => r.id).filter((id) => id === g.id || chosen.includes(id)),
+                    }))
+                  }
+                />
+                <span className={s.switchTrack} aria-hidden="true" />
+              </label>
+            </div>
           );
         })}
+        <p className={s.note}>More games arrive as their records are added. Nothing else changes.</p>
       </BottomSheet>
 
-      <BottomSheet open={sheet === 'account'} title="Account" onClose={close} side>
+      <BottomSheet open={sheet === 'account'} title="Account" onClose={close} placement="center" hideTitle={Boolean(panel('settings'))} closeButton>
         {panel('settings') ? (
           <Suspense fallback={<p className={s.note}>Loading…</p>}>
             <PanelSlot id="settings" {...panelProps} />
           </Suspense>
         ) : (
-        <>
-        <div className={s.section}>
-          <span className={s.sectionLabel}>LAYOUT</span>
-          <button type="button" className={s.linkBtn} onClick={() => setSheet('edit')}>
-            Edit layout for {scopeName}
-          </button>
-        </div>
-        <div className={s.section}>
-          <span className={s.sectionLabel}>GAME SETTINGS</span>
-          {games.map((g) => (
-            <ServerPicker key={g.id} game={g} value={prefs.servers[g.id]} onChange={(id) => setServer(g.id, id)} now={now} />
-          ))}
-        </div>
-        <div className={s.section}>
-          <span className={s.sectionLabel}>ACCOUNT · SYNC</span>
-          <SyncLine status={sync} />
-          {account ? (
-            <>
-              <p className={s.note}>Signed in as {account.email}.</p>
-              <button type="button" className={s.linkBtn} onClick={account.onSignOut}>
-                Sign out
-              </button>
-            </>
-          ) : (
-            <p className={s.note}>Sign-in isn’t switched on yet, so your settings stay on this device only.</p>
-          )}
-        </div>
-        </>
+          <>
+            <button type="button" className={s.sheetRow} onClick={() => setSheet('edit')}>
+              <span className={s.grow}>
+                <span className={s.rowTitle}>Layout settings</span>
+                <span className={s.rowSub}>Edit layout for {scope === 'all' ? 'All games' : labelOf(scope)}</span>
+              </span>
+              <span className={s.chev} aria-hidden="true">
+                ›
+              </span>
+            </button>
+            {games.map((g) => (
+              <ServerPicker key={g.id} game={g} value={prefs.servers[g.id]} onChange={(id) => setServer(g.id, id)} now={now} legend />
+            ))}
+          </>
         )}
       </BottomSheet>
 
@@ -354,7 +417,7 @@ export function Shell({ games: registered, account = null }: Props) {
   );
 }
 
-/** Draws a registered side panel. */
+/** Draws a registered panel. */
 function PanelSlot({ id, ...props }: { id: PanelId } & PanelProps) {
   const p = panel(id);
   return p ? createElement(p, props) : null;
@@ -366,22 +429,48 @@ function ModuleSlot({ id, ...props }: { id: ModuleId } & ModuleScreenProps) {
   return screen ? createElement(screen, props) : null;
 }
 
-function SyncLine({ status }: { status: SyncStatus }) {
-  const text =
-    status.state === 'synced'
-      ? `Synced ${formatTime(status.at)}`
-      : status.state === 'syncing'
-        ? 'Syncing…'
-        : status.state === 'failed'
-          ? 'Sync failed · saved on this device'
-          : status.state === 'signed-out'
-            ? 'Signed out'
-            : 'Saved on this device only';
-  const tone = status.state === 'synced' ? s.syncOk : status.state === 'failed' ? s.syncFailed : '';
+export function syncText(status: SyncStatus, now: number): string {
+  if (status.state === 'synced') {
+    const min = Math.floor((now - status.at) / 60_000);
+    return min < 1 ? 'Synced just now' : min < 60 ? `Synced ${min} min ago` : `Synced ${formatTime(status.at)}`;
+  }
+  if (status.state === 'syncing') return 'Syncing…';
+  if (status.state === 'failed') return 'Sync failed · saved on this device';
+  if (status.state === 'signed-out') return 'Signed out';
+  return 'Saved on this device only';
+}
+
+const syncTone = (status: SyncStatus) => (status.state === 'synced' ? s.syncOk : status.state === 'failed' ? s.syncFailed : '');
+
+function SyncLine({ status, now, onClick }: { status: SyncStatus; now: number; onClick: () => void }) {
   return (
-    <span className={`${s.sync} ${tone}`} role="status" title={status.state === 'failed' ? status.message : undefined}>
+    <button type="button" className={`${s.sync} ${syncTone(status)}`} onClick={onClick} title={status.state === 'failed' ? status.message : 'Sync now'}>
       <span className={s.syncDot} aria-hidden="true" />
-      {text}
+      <span role="status">{syncText(status, now)}</span>
+    </button>
+  );
+}
+
+function SyncDot({ status, now, onClick }: { status: SyncStatus; now: number; onClick: () => void }) {
+  const text = syncText(status, now);
+  return (
+    <button type="button" className={`${s.syncDotBtn} ${syncTone(status)}`} onClick={onClick} title={text} aria-label={text}>
+      <span className={s.syncDot} aria-hidden="true" />
+    </button>
+  );
+}
+
+/** "HSR 14:32 server time" next to the title (Account → Game settings → Show server time). */
+function ServerClock({ game, serverId, now, tag }: { game: GameContract; serverId: string; now: number; tag: boolean }) {
+  const rule = serverRule(game, serverId);
+  const offset = rule.utcOffset * 3_600_000;
+  const t = new Date(now + offset);
+  const hh = String(t.getUTCHours()).padStart(2, '0');
+  const mm = String(t.getUTCMinutes()).padStart(2, '0');
+  return (
+    <span className={s.serverClock} title={`${game.name}: time on your server`}>
+      {tag ? `${game.short} ` : ''}
+      {hh}:{mm} server time
     </span>
   );
 }
@@ -415,7 +504,7 @@ function PhoneTab({ id, current, onOpen, onLongPress }: { id: ModuleId; current:
         if (!fired.current) onOpen();
       }}
     >
-      <span className={s.glyph} aria-hidden="true">
+      <span className={s.tabGlyph} aria-hidden="true">
         {MODULES[id].glyph}
       </span>
       {MODULES[id].label}

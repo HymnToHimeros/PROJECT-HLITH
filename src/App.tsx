@@ -35,6 +35,7 @@ function Root() {
   if (client && session === null) {
     return <SignIn onProvider={(p) => signInWith(client, p)} onEmail={(email) => sendEmailLink(client, email)} />;
   }
-  const account = client && session ? { email: session.user.email ?? 'your account', onSignOut: () => void signOut(client) } : null;
+  const provider = typeof session?.user.app_metadata.provider === 'string' ? session.user.app_metadata.provider : undefined;
+  const account = client && session ? { email: session.user.email ?? 'your account', provider, onSignOut: () => void signOut(client) } : null;
   return <Shell games={listGames()} account={account} />;
 }

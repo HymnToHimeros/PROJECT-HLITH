@@ -1,42 +1,99 @@
-.fieldset {
-  border: 0;
-  margin: 0;
-  padding: 0;
+/* Server picker and Edit layout rows (design: Server sheet, Edit layout panel). */
+.group {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: var(--s-2);
 }
-.fieldset legend {
-  margin-bottom: var(--s-2);
+.legend {
+  composes: t-label from global;
+  color: var(--ink-4); /* ink-5 is too faint on raised cards */
+  margin-top: var(--s-2);
 }
 .option {
-  display: grid;
-  grid-template-columns: auto 1fr auto;
+  display: flex;
   align-items: center;
   gap: var(--s-3);
-  min-height: var(--tap-min);
-  padding: 0 var(--s-3);
-  border-radius: var(--r-row);
-  background: var(--bg-inset);
+  min-height: 56px;
+  padding: 6px 14px;
+  border-radius: var(--r-button);
+  background: var(--bg-raised);
   border: 1px solid var(--line-default);
+  color: var(--ink-1);
+  text-align: left;
   cursor: pointer;
 }
-.option:has(input:checked) {
-  border-color: var(--vent);
+.option:hover {
+  border-color: var(--ghost);
 }
-.option input {
-  accent-color: var(--vent);
-  width: 18px;
-  height: 18px;
-  margin: 0;
+.option[aria-checked='true'] {
+  border-color: var(--game-vent, var(--vent));
+}
+.ring {
+  width: 20px;
+  height: 20px;
+  flex: none;
+  border-radius: 50%;
+  border: 2px solid var(--line-empty);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+.option[aria-checked='true'] .ring {
+  border-color: var(--game-vent, var(--vent));
+}
+.option[aria-checked='true'] .dot {
+  background: var(--game-vent, var(--vent));
+}
+.optionText {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
 }
 .optionLabel {
-  font-size: 14px;
-  font-weight: 600;
+  font-size: 15px;
+  font-weight: 700;
 }
 .optionMeta {
-  font: 500 12px var(--font-numbers);
+  font-size: 12px;
   color: var(--ink-4);
+}
+
+/* ── Edit layout ── */
+.editHead {
+  padding: 18px var(--s-4) var(--s-3);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.editLabel {
+  font: 600 10px/1 var(--font-numbers);
+  letter-spacing: 0.14em;
+  color: var(--vent);
+}
+.editTitle {
+  font-weight: 800;
+  font-stretch: 110%;
+  font-size: 20px;
+  margin: 0;
+}
+.editNote {
+  font-size: 12px;
+  line-height: 1.45;
+  color: var(--ink-4);
+  margin: 0;
+}
+.editBody {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  padding: 0 var(--s-3) var(--s-3);
 }
 .rows {
   display: flex;
@@ -47,9 +104,9 @@
   display: flex;
   align-items: center;
   gap: var(--s-2);
-  margin: 6px 0;
-  font: 600 10px var(--font-numbers);
-  letter-spacing: 0.12em;
+  margin: 8px 0 10px;
+  font: 600 9px/1 var(--font-numbers);
+  letter-spacing: 0.1em;
   color: var(--glacier);
 }
 .cut::before,
@@ -58,9 +115,25 @@
   flex: 1;
   border-top: 1px dashed var(--glacier);
 }
+.editSection {
+  composes: t-label from global;
+  display: block;
+  margin: var(--s-4) 4px var(--s-2);
+}
 .actions {
   display: flex;
-  justify-content: space-between;
   gap: var(--s-2);
-  padding-top: var(--s-3);
+  padding: var(--s-3);
+  border-top: 1px solid var(--line-subtle);
+}
+.actions > * {
+  flex: 1;
+}
+:root[data-theme='light'] .editLabel {
+  color: var(--ink-3);
+}
+.actions > :first-child {
+  font-size: 13px;
+  font-weight: 600;
+  padding: 0 8px;
 }

@@ -17,3 +17,4 @@ export { Timer } from './Timer';
 export { useNow } from './useNow';
 export { ExampleNotice, type ExampleAction } from './ExampleNotice';
 export { HowTo } from './HowTo';
+export { useMarkSample, useSampleShown } from './sampleMarker';

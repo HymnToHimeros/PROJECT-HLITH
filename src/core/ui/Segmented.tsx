@@ -6,10 +6,12 @@ interface Props<T extends string> {
   options: { id: T; label: string }[];
   value: T;
   onChange: (id: T) => void;
+  /** quiet (default): raised chip with a vent underline. vent: the design's module tabs, filled with the vent. */
+  tone?: 'quiet' | 'vent';
 }
 
 /** Tabs like Pulls' Planner · Calculator · Bank log · History. Arrow keys move between them. */
-export function Segmented<T extends string>({ label, options, value, onChange }: Props<T>) {
+export function Segmented<T extends string>({ label, options, value, onChange, tone = 'quiet' }: Props<T>) {
   const refs = useRef<(HTMLButtonElement | null)[]>([]);
   const move = (e: KeyboardEvent, i: number) => {
     const step = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
@@ -22,7 +24,7 @@ export function Segmented<T extends string>({ label, options, value, onChange }:
     refs.current[next]?.focus();
   };
   return (
-    <div className={s.segmented} role="tablist" aria-label={label}>
+    <div className={tone === 'vent' ? `${s.segmented} ${s.segmentedVent}` : s.segmented} role="tablist" aria-label={label}>
       {options.map((o, i) => (
         <button
           key={o.id}

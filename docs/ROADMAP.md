@@ -11,9 +11,9 @@ so it can't drift from the real code. Never tick a box by hand; add the proof.
 Who builds what: see `docs/WORKSTREAMS.md`.
 
 <!-- roadmap:summary -->
-**53 of 61 done** `█████████████████░░░` 87%
+**60 of 61 done** `████████████████████` 98%
 
-**Next up:** R51 ★ Evening message as phone notification
+**Next up:** R58 Owner console
 
 | Phase | Progress | Done |
 |---|---|---|
@@ -23,8 +23,8 @@ Who builds what: see `docs/WORKSTREAMS.md`.
 | Phase 3 · Accounts and data | `██████████` | 5 / 5 |
 | Phase 4 · Engines | `██████████` | 4 / 4 |
 | Phase 5 · Modules | `██████████` | 17 / 17 |
-| Phase 6 · Connections and extras | `█████░░░░░` | 6 / 13 |
-| Phase 7 · Launch | `███████░░░` | 2 / 3 |
+| Phase 6 · Connections and extras | `█████████░` | 12 / 13 |
+| Phase 7 · Launch | `██████████` | 3 / 3 |
 <!-- /roadmap:summary -->
 
 ## Phase 0 · Foundation
@@ -90,16 +90,16 @@ Who builds what: see `docs/WORKSTREAMS.md`.
 - [x] R48 ★ Assistant: own key, chat, cost per message · proof: `src/tools/assistant/Assistant.tsx`, `supabase/functions/assistant/index.ts`
 - [x] R49 ★ Assistant proposals with approve / undo · proof: `src/tools/assistant/Proposals.tsx`
 - [x] R50 ★ Screenshot scan of a character screen · proof: `src/tools/scan/Scan.tsx`
-- [ ] R51 ★ Evening message as phone notification · proof: `supabase/functions/evening-message/index.ts`
-- [ ] R52 ★ Calendar feed · proof: `supabase/functions/ics-feed/index.ts`
-- [ ] R53 ★ Evening message and calendar feed settings · proof: `src/tools/feeds/FeedSettings.tsx`
+- [x] R51 ★ Evening message as phone notification · proof: `supabase/functions/evening-message/index.ts`
+- [x] R52 ★ Calendar feed · proof: `supabase/functions/ics-feed/index.ts`
+- [x] R53 ★ Evening message and calendar feed settings · proof: `src/tools/feeds/FeedSettings.tsx`
 - [x] R54 ★ Share a team · proof: `src/tools/share/ShareTeam.tsx`
-- [ ] R55 ★ Setup checklist and Guide · proof: `src/tools/account/SetupChecklist.tsx`, `src/tools/account/Guide.tsx`
-- [ ] R56 ★ Export my data · proof: `supabase/functions/export-data/index.ts`
-- [ ] R57 ★ Delete my account · proof: `supabase/functions/delete-account/index.ts`
+- [x] R55 ★ Setup checklist and Guide · proof: `src/tools/account/SetupChecklist.tsx`, `src/tools/account/Guide.tsx`
+- [x] R56 ★ Export my data · proof: `supabase/functions/export-data/index.ts`
+- [x] R57 ★ Delete my account · proof: `supabase/functions/delete-account/index.ts`
 - [ ] R58 Owner console · proof: `src/tools/owner/OwnerConsole.tsx`
 
 ## Phase 7 · Launch
 - [x] R59 Accessibility and phone pass · proof: `tests/e2e/accessibility.spec.ts`
 - [x] R60 Live on the web (Cloudflare Pages) · proof: `docs/DEPLOY.md`
-- [ ] R61 Light theme (after it's designed) · proof: `src/core/theme/tokens-light.css`
+- [x] R61 Light theme (after it's designed) · proof: `src/core/theme/tokens-light.css`

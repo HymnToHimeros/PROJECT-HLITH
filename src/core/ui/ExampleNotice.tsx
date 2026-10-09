@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
 import { Button } from './Button';
+import { useMarkSample } from './sampleMarker';
 import { ExampleTag } from './Tags';
 import s from './ui.module.css';
 
@@ -13,6 +14,7 @@ export interface ExampleAction {
  * do to replace it, with a button that goes straight there.
  */
 export function ExampleNotice({ children, actions = [] }: { children: ReactNode; actions?: ExampleAction[] }) {
+  useMarkSample();
   return (
     <div className={s.exampleNotice} role="note">
       <ExampleTag />

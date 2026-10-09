@@ -7,6 +7,7 @@
 import { useSyncExternalStore } from 'react';
 import type { BacklogItem, Banner, GameEvent, GameId, PullRecord } from '../contract';
 import { known, unknown, type Known } from '../contract/known';
+import { mergeAdd } from './merge';
 
 export interface LedgerEntry {
   id: string;
@@ -320,6 +321,30 @@ export function balances(ledger: LedgerEntry[]): Known<Record<string, number>> {
     latest = e.at;
   }
   return Object.keys(out).length ? known(out, 'user', latest) : unknown('enter-manually');
+}
+
+/** Everything stored, exactly as saved (Account → Backup → Export my data). */
+export function allUserData(): { version: 1; games: Record<GameId, GameUserData> } {
+  return store;
+}
+
+/**
+ * Restore from a backup: adds what's missing, never removes or overwrites
+ * (see merge.ts). Returns how many items were added.
+ */
+export function mergeIntoUserData(games: Record<GameId, unknown>): number {
+  const count = { added: 0 };
+  let next = store.games;
+  for (const [id, incoming] of Object.entries(games)) {
+    if (typeof incoming !== 'object' || incoming === null || Array.isArray(incoming)) continue;
+    const merged = mergeAdd(store.games[id] ?? ({} as GameUserData), incoming, count);
+    if (merged !== store.games[id]) next = { ...next, [id]: merged };
+  }
+  if (next !== store.games) {
+    store = { ...store, games: next };
+    save();
+  }
+  return count.added;
 }
 
 /** Test helper. */
