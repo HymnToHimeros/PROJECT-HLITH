@@ -113,13 +113,8 @@ export function Characters({ data, several, onOpen }: Props) {
     <div className={r.stack}>
       {/* RosterImport mounts here (account-links builder) */}
       <div className={r.importRow}>
-        {data.map((d) => (
-          <span key={d.game.id} className={r.importGroup}>
-            {several && <GameTag label={d.game.short} vent={d.game.vent} />}
-            <RosterImport game={d.game} />
-            <ScanEntry game={d.game} />
-          </span>
-        ))}
+        <RosterImport games={data.map((d) => d.game)} />
+        <ScanEntry games={data.map((d) => d.game)} />
       </div>
       <HowTo
         steps={[

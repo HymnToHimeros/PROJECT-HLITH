@@ -1,31 +1,41 @@
 import { useCallback, useEffect, useId, useState, type ClipboardEvent, type DragEvent, type FormEvent } from 'react';
 import type { GameContract } from '../../core/contract';
 import { useGameData } from '../../core/data/userData';
-import { BottomSheet, Button, ExampleTag, HowTo } from '../../core/ui';
+import { BottomSheet, Button, ExampleTag, HowTo, Segmented } from '../../core/ui';
 import c from '../account-links/connections.module.css';
 import { useCharacters } from '../account-links/RosterImport';
 import { checkValues, fieldsFor, saveScan, type ScanReader, type ScanValues } from './scan';
 
-/** Roster → "Scan a screenshot": opens the scan sheet. */
-export function ScanEntry({ game, reader }: { game: GameContract; reader?: ScanReader | undefined }) {
+/**
+ * Roster → ONE "Scan a screenshot" button for every game in view. The sheet asks
+ * which game the screenshot is from (when there's more than one), and saves only
+ * to that game's roster.
+ */
+export function ScanEntry({ games, reader }: { games: GameContract[]; reader?: ScanReader | undefined }) {
   const [open, setOpen] = useState(false);
   const close = useCallback(() => setOpen(false), []);
-  const can = Boolean(game.scan);
+  const scannable = games.filter((g) => g.scan);
+  const [gameId, setGameId] = useState(scannable[0]?.id ?? '');
+  const game = scannable.find((g) => g.id === gameId) ?? scannable[0];
   return (
     <>
-      <Button onClick={() => setOpen(true)} disabled={!can} title={can ? undefined : 'This game has no screenshot scan'}>
+      <Button onClick={() => setOpen(true)} disabled={!game} title={game ? undefined : 'None of these games has a screenshot scan'}>
         Scan a screenshot
       </Button>
-      <BottomSheet open={open} side title={`Scan a ${game.terms.character.toLowerCase()} screen`} onClose={close}>
-        {open && (
+      <BottomSheet open={open} side title="Scan a screenshot" onClose={close}>
+        {open && game && (
           <>
             <div className={c.sheetBar}>
-              <span className={c.muted}>{game.name}</span>
+              {scannable.length > 1 ? (
+                <Segmented label="Which game is the screenshot from" value={game.id} onChange={setGameId} options={scannable.map((g) => ({ id: g.id, label: g.short }))} />
+              ) : (
+                <span className={c.muted}>{game.name}</span>
+              )}
               <Button variant="quiet" onClick={close}>
                 Close
               </Button>
             </div>
-            <Scan game={game} reader={reader} />
+            <Scan key={game.id} game={game} reader={reader} />
           </>
         )}
       </BottomSheet>

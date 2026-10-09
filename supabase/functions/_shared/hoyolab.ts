@@ -311,6 +311,14 @@ async function call(deps: Deps, login: Login, url: string, opts: { method?: 'GET
   return { ok: true, data: obj(body.data) };
 }
 
+/** "20 × Stellar Jade" from a monthly reward entry ({ name, cnt }), or null when it has neither. */
+export function rewardText(award: Record<string, unknown>): string | null {
+  const name = str(award.name).trim();
+  const count = num(award.cnt);
+  if (!name) return null;
+  return count !== null && count > 0 ? `${count} × ${name}` : name;
+}
+
 const withQuery = (base: string, q: Record<string, string>) => `${base}?${new URLSearchParams(q).toString()}`;
 
 /** genshin.py models: StarRailPartialCharacter (id, name, level, rank, equip) and ZZZPartialAgent (id, name_mi18n, level, rank). */
@@ -345,7 +353,8 @@ export interface Answer {
   readAt: string;
   stamina?: Stamina | null;
   dailies?: Daily | null;
-  checkin?: { checkedInToday: boolean; daysThisMonth: number | null; claimedNow: boolean };
+  /** `reward` only when HoYoLAB's monthly list said what today's claim gave ("20 × Stellar Jade"). */
+  checkin?: { checkedInToday: boolean; daysThisMonth: number | null; claimedNow: boolean; reward?: string };
   roster?: ImportedCharacter[];
   endgame?: EndgameRecord[];
   /** Parts that failed, with a plain reason. The rest still came through. */
@@ -365,17 +374,30 @@ export function parseRequest(body: unknown): { ok: true; request: Request } | { 
   return { ok: true, request: { gameBiz, login, ...(uid ? { uid } : {}), want: want.length ? [...new Set(want)] : ['account'], claim: o.claim === true } };
 }
 
+/** A game account on this login, with the region HoYoLAB uses for it. */
+export interface FoundAccount {
+  account: Account;
+  region: string;
+}
+
+/** Every account this login has for one game (GenshinAccount in genshin.py: game_biz, region, game_uid, nickname, level, region_name). */
+export async function findAccounts(login: Login, gameBiz: GameBiz, deps: Deps): Promise<{ ok: true; accounts: FoundAccount[] } | { ok: false; error: HoyoError }> {
+  const roles = await call(deps, login, withQuery(ROLES_URL, { game_biz: gameBiz }));
+  if (!roles.ok) return { ok: false, error: roles.error };
+  const accounts = arr(roles.data.list)
+    .map(obj)
+    .filter((r) => !r.game_biz || str(r.game_biz) === gameBiz)
+    .map((r) => ({ account: { uid: str(r.game_uid), nickname: str(r.nickname), level: num(r.level), server: str(r.region_name) || str(r.region) }, region: str(r.region) }))
+    .filter((r) => r.account.uid && r.region);
+  return { ok: true, accounts };
+}
+
 /** Read everything the request wants. Parts fail on their own; a bad login fails the whole request. */
 export async function readHoyolab(req: Request, deps: Deps): Promise<{ ok: true; answer: Answer } | { ok: false; error: HoyoError; accounts?: Account[] }> {
   const cfg = GAMES[req.gameBiz];
-  const roles = await call(deps, req.login, withQuery(ROLES_URL, { game_biz: req.gameBiz }));
-  if (!roles.ok) return { ok: false, error: roles.error };
-  // GenshinAccount in genshin.py: game_biz, region, game_uid, nickname, level, region_name.
-  const accounts = arr(roles.data.list)
-    .map(obj)
-    .filter((r) => !r.game_biz || str(r.game_biz) === req.gameBiz)
-    .map((r) => ({ account: { uid: str(r.game_uid), nickname: str(r.nickname), level: num(r.level), server: str(r.region_name) || str(r.region) }, region: str(r.region) }))
-    .filter((r) => r.account.uid && r.region);
+  const found = await findAccounts(req.login, req.gameBiz, deps);
+  if (!found.ok) return { ok: false, error: found.error };
+  const accounts = found.accounts;
   if (accounts.length === 0) return { ok: false, error: 'no-account' };
   const picked = req.uid ? accounts.find((a) => a.account.uid === req.uid) : accounts.length === 1 ? accounts[0] : undefined;
   if (!picked) return { ok: false, error: req.uid ? 'no-account' : 'pick-uid', accounts: accounts.map((a) => a.account) };
@@ -403,16 +425,22 @@ export async function readHoyolab(req: Request, deps: Deps): Promise<{ ok: true;
       let checkedInToday = info.data.is_sign === true;
       let days = num(info.data.total_sign_day);
       let claimedNow = false;
+      let rewardNow: string | null = null;
       if (req.claim && !checkedInToday) {
         const sign = await call(deps, req.login, withQuery(`${cfg.checkin.url}/sign`, q), { method: 'POST', signgame: cfg.checkin.signgame });
         const risky = sign.ok && obj(sign.data.gt_result).is_risk === true;
         if (sign.ok && !risky) {
           claimedNow = true;
           checkedInToday = true;
+          // Today's reward is the next one in the month's list ("home": awards[total_sign_day], as genshin.py's claim_daily_reward).
+          const home = await call(deps, req.login, withQuery(`${cfg.checkin.url}/home`, q), { signgame: cfg.checkin.signgame });
+          const award = home.ok && days !== null ? obj(arr(home.data.awards)[days]) : {};
+          const reward = rewardText(award);
+          if (reward) rewardNow = reward;
           days = days === null ? null : days + 1;
         } else fail('checkin', risky ? 'captcha' : sign.ok ? 'server' : sign.error);
       }
-      answer.checkin = { checkedInToday, daysThisMonth: days, claimedNow };
+      answer.checkin = { checkedInToday, daysThisMonth: days, claimedNow, ...(rewardNow ? { reward: rewardNow } : {}) };
     }
   }
 
