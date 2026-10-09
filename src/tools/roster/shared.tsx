@@ -1,4 +1,4 @@
-import type { Character, GameContract, TeamPreset } from '../../core/contract';
+import type { Character, GameContract } from '../../core/contract';
 import type { RosterEntry } from '../../core/data/userData';
 import { GameTag } from '../../core/ui';
 import r from './roster.module.css';
