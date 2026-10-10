@@ -132,4 +132,11 @@ team size and order, and the owner's ZZZ method's own counting.
     Acceptance test (team.test.ts): owning Phainon, Sunday, Cerydra and Dan Heng • Permansor Terrae, his one team
     is exactly those four; no March 7th / Asta / Bronya team, and none of them (nor Tingyun, Sparkle) is suggested.
     ZZZ has no game team lists in its data, so its squads stay from the check (zzz-decisions 55), filled the same way.
+31. **The owner's own team lists (option (b), after decision 30).** The owner can edit a game team's slot lists
+    (add a teammate, reorder, remove), stored with their account per team (`teamLists`, preset id → slot lists in
+    the card's order). Where edited, their lists decide who can join that carry everywhere teams are made, and the
+    card is filled from them in their order; the Why says "Team lists for X edited by you". It adjusts, it never
+    patches wrong logic: unedited teams stay the game's own (decision 30). Example: the game's page for Phainon
+    doesn't list Robin • Summeretto; with her added to slot 3 the card fills Phainon, Cerydra, Robin • Summeretto,
+    Dan Heng • Permansor Terrae. ZZZ's cards read edits the same way (mirror rule).
 

@@ -288,3 +288,25 @@ describe('HSR: the owner’s Phainon test (report 2026-10-10: no mix-matching, t
     for (const n of ['Tingyun', 'Sparkle', 'March 7th', 'Asta', 'Bronya']) expect(v.bestMembers.map((m) => lib.names.get(m)), n).not.toContain(n);
   });
 });
+
+describe('HSR: the owner’s own team lists (decision 31)', () => {
+  const owned = ['Phainon', 'Sunday', 'Cerydra', 'Dan Heng • Permansor Terrae', 'Robin • Summeretto'];
+  const phainon = () => gameTeams(teamsJson as TeamPreset[]).find((t) => t.id === 'game-1408-1');
+  // The card shows Phainon's slot first, then Cerydra's, Cyrene's and the sustain slot; the owner puts Robin • Summeretto first in slot 3.
+  const list = () => (phainon()?.slots ?? []).map((s, i) => (i === 2 ? [id('Robin • Summeretto'), ...s.characters] : s.characters));
+  const withList = () => ({ ...own(owned), teamList: (p: string) => (p === 'game-1408-1' ? list() : undefined) });
+  it('without an edit Robin • Summeretto is never suggested for Phainon (the game’s page doesn’t list her)', () => {
+    expect(whoFits([id('Phainon')], own(owned)).some((f) => f.id === id('Robin • Summeretto'))).toBe(false);
+  });
+  it('with the owner’s list, the card fills Phainon, Cerydra, Robin • Summeretto, Dan Heng • Permansor Terrae', () => {
+    const t = phainon();
+    if (!t) throw new Error('no Phainon team');
+    expect(hsrTeamRules.fill?.(t, withList())).toEqual(['Phainon', 'Cerydra', 'Robin • Summeretto', 'Dan Heng • Permansor Terrae'].map(id));
+  });
+  it('and she becomes a teammate everywhere teams are made, with the Why saying the list is the owner’s', () => {
+    expect(whoFits([id('Phainon')], withList()).some((f) => f.id === id('Robin • Summeretto'))).toBe(true);
+    const v = verdict(['Phainon', 'Cerydra', 'Robin • Summeretto', 'Dan Heng • Permansor Terrae'].map(id), withList());
+    if (!v.rated) throw new Error(v.why);
+    expect(v.notes.some((n) => /edited by you/.test(n))).toBe(true);
+  });
+});

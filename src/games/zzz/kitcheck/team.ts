@@ -3,7 +3,7 @@
  * presets, Line-ups, Who fits and "If you pull…" %. Decisions the method leaves
  * open are written down in docs/logic/zzz-decisions.md.
  */
-import { fillTeam } from '../../../core/rules/fillTeam';
+import { fillTeam, withOwnerLists } from '../../../core/rules/fillTeam';
 import type { FitOptions, FitSuggestion, PullValue, TeamAccount, TeamIdea, TeamPreset, TeamReason, TeamRules, TeamVerdict, TeamWant } from '../../../core/contract';
 import { BUILD_STAT_WORD, buildFit } from '../../../core/rules/buildFit';
 import { GEAR_SLOTS } from '../gear';
@@ -257,7 +257,7 @@ export function ifYouPull(id: string, a: TeamAccount, lib: Library = library()):
 
 export const zzzTeamRules: TeamRules = {
   method: METHOD,
-  fill: (p, a) => fillTeam(p, a.owned),
+  fill: (p, a) => fillTeam(withOwnerLists(p, a), a.owned),
   rated: (id) => library().sheets.has(id),
   verdict: (m, a) => verdict(m, a),
   whoFits: (m, a, o) => whoFits(m, a, library(), o),
