@@ -93,8 +93,8 @@ export interface Entry {
   limits?: Limits;
   /** Q5: this entry makes an event happen for someone… */
   causes?: { event: GameEventKind; whose: Whose };
-  /** …or reacts when this character does that event. */
-  reacts?: GameEventKind;
+  /** …or reacts when this character does that event (or any of these events). */
+  reacts?: GameEventKind | GameEventKind[];
   /** Q6: what must be set up in the fight, or why nothing is needed. */
   setup: string;
   /** Q7: "does not stack with similar effects": entries sharing this key count once. */

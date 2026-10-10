@@ -106,3 +106,17 @@ Each one can be changed: tell LOGIC-CORE which.
     7 then, 5 now; Cissia + Dialyn + Rina: 5 then, 6 now). The worked examples
     in the method (Billy 9 and 10, Banyue 9, Ye 9) all match exactly; the others
     came from the old app's own reading and can't be checked line by line.
+
+## Added with group D
+32. **One ability can react to several events** (Manato's Remnant Flame: his
+    Ultimate and his Chain Attack).
+33. **Claret's damage ignores ATK and CRIT DMG buffs**: "skill DMG Multipliers
+    are based on DEF" and she "doesn't receive the CRIT DMG Bonus". The ATK
+    part is a reading of the DEF sentence.
+34. **Some kits score high because their Additional Ability is several
+    entries** (Yixuan: four). That is decision 2 as the method is written; the
+    method's own "rebuild" list (weights by kind) is the real fix.
+35. **Text that says "attacks ignore … RES" without saying whose is
+    unverified** (Yixuan M2, Claret M2), as Roxy M6.
+36. **Abilities that work "within Ether Veil: Wellspring"** (Yidhari) are not
+    reactions to every Ether Veil: other characters' Veils have other names.

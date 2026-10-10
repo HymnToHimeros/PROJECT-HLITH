@@ -233,7 +233,7 @@ export function checkOrder(order: string[], dd: string, lib: Library, account: A
           lines.push({ ...base, kind: 'possible', why: `a ${eventWord(c.event)}, but the text does not say whose`, points: 0 });
         } else {
           const target = c.whose === 'previous' ? before(order, who) : c.whose === 'next' ? after(order, who) : dd;
-          const reaction = ddSheet?.entries.find((x) => x.reacts === c.event && statuses.get(key(dd, x))?.status === 'on');
+          const reaction = ddSheet?.entries.find((x) => [x.reacts].flat().includes(c.event) && statuses.get(key(dd, x))?.status === 'on');
           if (target !== dd) lines.push({ ...base, kind: 'not-counted', why: `the ${eventWord(c.event)} goes to ${name(target)}, not ${name(dd)}`, points: 0 });
           else if (!reaction) lines.push({ ...base, kind: 'not-counted', why: `${name(dd)}'s kit has nothing switched on that reacts to a ${eventWord(c.event)}`, points: 0 });
           else {
