@@ -3,7 +3,8 @@
  * Fixed rules, no guessing: the same squad always gets the same answer, and
  * every point comes with the entry (and its quote) that earned it.
  */
-import { GENERAL_STATS, SPECIFIC_STATS, SUPPORT_STATS, type CharacterSheet, type Condition, type Entry, type Specialty } from './types';
+import { BUILD_STAT_WORD, BUILT_POINTS, FIT_WORD, type BuildFit, type BuildStat } from '../../../core/rules/buildFit';
+import { GENERAL_STATS, SPECIFIC_STATS, SUPPORT_STATS, type CharacterSheet, type Condition, type Entry, type Specialty, type Stat } from './types';
 
 export interface Profile {
   characterId: string;
@@ -22,21 +23,51 @@ export interface Library {
   /** Kit piece → its label ("Additional Ability: External Line"), per character. */
   pieceLabels: Map<string, Map<string, string>>;
   names: Map<string, string>;
+  /**
+   * Every W-Engine the check can read (T18 step 4): its specialty, its entries (piece `weapon:<id>`) and its label.
+   * A signature's entries come from its agent's sheet; `madeFor` marks it (that agent reads it as a kit piece).
+   */
+  weapons: Map<string, { name: string; role: string; madeFor?: string; label: string; entries: Entry[] }>;
+}
+
+/** The piece a weapon's entries carry: `weapon:<id>`. */
+export const weaponPiece = (id: string) => `weapon:${id}`;
+
+/** A kit piece's label, or an equipped W-Engine's ("W-Engine: Steel Cushion"). */
+export const labelOf = (lib: Library, who: string, piece: string) => (piece.startsWith('weapon:') ? lib.weapons.get(piece.slice(7))?.label : lib.pieceLabels.get(who)?.get(piece)) ?? piece;
+
+/**
+ * Everything an agent brings: their sheet, plus the W-Engine in their saved build when its specialty is theirs (a
+ * W-Engine's effect only works for its specialty) and it isn't their own signature (read as a kit piece already).
+ */
+export function entriesOf(who: string, lib: Library, account: Account): Entry[] {
+  const own = lib.sheets.get(who)?.entries ?? [];
+  const id = account.weapon?.(who)?.id;
+  const w = id ? lib.weapons.get(id) : undefined;
+  if (!w || w.madeFor === who || w.role !== lib.profiles.get(who)?.specialty) return own;
+  return [...own, ...w.entries];
 }
 
 /** Your account: Mindscape per character (not owned = 0), Potential when known. */
 export interface Account {
   mindscape: (id: string) => number;
   /** undefined = not saved. */
-  potential: (id: string) => number | undefined;  /** The weapon in the saved build (signature weapons); undefined = none saved. */
+  potential: (id: string) => number | undefined;
+  /** The weapon in the saved build (signature weapons); undefined = none saved. */
   weapon?: (id: string) => { id?: string; name: string } | undefined;
+  /** How the saved build fits one stat (T18); undefined = no build saved. */
+  buildFit?: (id: string, stat: BuildStat) => BuildFit | undefined;
+  /** Assume every member is built for what the team wants: the best team found (decision 26). */
+  ideal?: boolean;
 }
 
 export type Status = 'on' | 'off' | 'locked' | 'unknown' | 'replaced';
 
 /** One line of the explanation. `points` is what it adds to the count (0 for tie-break and not counted). */
 export interface Line {
-  kind: 'switched-on' | 'buff' | 'chain' | 'off' | 'duplicate' | 'weak-fit' | 'support' | 'possible' | 'not-counted' | 'locked' | 'unknown' | 'replaced';
+  kind: 'switched-on' | 'buff' | 'chain' | 'off' | 'duplicate' | 'weak-fit' | 'support' | 'possible' | 'not-counted' | 'locked' | 'unknown' | 'replaced' | 'build';
+  /** For a build line: the stat the team wants on them and how their saved build fits. */
+  build?: { stat: BuildStat; fit: BuildFit['fit']; have: string; max: number };
   who: string;
   /** Entry id (absent for weak fits). */
   entry?: string;
@@ -154,7 +185,7 @@ export function conditionWords(c: Condition | undefined, lib: Library): string {
   return `another member is ${parts.join(', or shares ')}`;
 }
 
-type Reach = { kind: 'buff' | 'support'; why: string } | { kind: 'no'; why: string };
+type Reach = { kind: 'buff'; why: string; used: Stat[] } | { kind: 'support'; why: string } | { kind: 'no'; why: string };
 
 /** Part B step 4: does this buff reach the damage dealer? */
 function reach(e: Entry, giver: string, dd: string, order: string[], lib: Library): Reach {
@@ -173,7 +204,7 @@ function reach(e: Entry, giver: string, dd: string, order: string[], lib: Librar
   }
   const stats = e.gives.map((g) => g.stat);
   const used = stats.filter((s) => (GENERAL_STATS.includes(s) && !notes?.ignores.includes(s)) || (SPECIFIC_STATS.includes(s) && !!notes?.uses.includes(s)));
-  if (used.length) return { kind: 'buff', why: `reaches ${name(dd)}` };
+  if (used.length) return { kind: 'buff', why: `reaches ${name(dd)}`, used };
   if (stats.some((s) => SUPPORT_STATS.includes(s))) return { kind: 'support', why: 'team support' };
   return { kind: 'no', why: `${name(dd)}'s damage doesn't use ${list([...new Set(stats)])}` };
 }
@@ -184,15 +215,14 @@ export function checkOrder(order: string[], dd: string, lib: Library, account: A
   const lines: Line[] = [];
   const contributed = new Set<string>();
   const seenNoStack = new Map<string, string>();
+  const wants = new Map<string, { who: string; e: Entry & { scales: NonNullable<Entry['scales']> } }>();
   const statuses = new Map<string, { status: Status; why: string }>();
   const key = (who: string, e: Entry) => `${who}:${e.id}`;
-  for (const who of order) for (const e of lib.sheets.get(who)?.entries ?? []) statuses.set(key(who, e), statusOf(e, who, order, lib, account));
-  const ddSheet = lib.sheets.get(dd);
+  const entries = new Map(order.map((who) => [who, entriesOf(who, lib, account)]));
+  for (const who of order) for (const e of entries.get(who) ?? []) statuses.set(key(who, e), statusOf(e, who, order, lib, account));
 
   for (const who of order) {
-    const sheet = lib.sheets.get(who);
-    if (!sheet) continue;
-    for (const e of sheet.entries) {
+    for (const e of entries.get(who) ?? []) {
       const st = statuses.get(key(who, e)) ?? { status: 'unknown', why: '' };
       const base = { who, entry: e.id, tag: e.tag, piece: e.piece, quote: e.quote };
       if (st.status === 'locked') {
@@ -241,7 +271,7 @@ export function checkOrder(order: string[], dd: string, lib: Library, account: A
           lines.push({ ...base, kind: 'possible', why: `a ${eventWord(c.event)}, but the text does not say whose`, points: 0 });
         } else {
           const target = c.whose === 'previous' ? before(order, who) : c.whose === 'next' ? after(order, who) : dd;
-          const reaction = ddSheet?.entries.find((x) => [x.reacts].flat().includes(c.event) && statuses.get(key(dd, x))?.status === 'on');
+          const reaction = entries.get(dd)?.find((x) => [x.reacts].flat().includes(c.event) && statuses.get(key(dd, x))?.status === 'on');
           if (target !== dd) lines.push({ ...base, kind: 'not-counted', why: `the ${eventWord(c.event)} goes to ${name(target)}, not ${name(dd)}`, points: 0 });
           else if (!reaction) lines.push({ ...base, kind: 'not-counted', why: `${name(dd)}'s kit has nothing switched on that reacts to a ${eventWord(c.event)}`, points: 0 });
           else {
@@ -256,9 +286,30 @@ export function checkOrder(order: string[], dd: string, lib: Library, account: A
       if (r.kind === 'buff') {
         contributed.add(who);
         lines.push({ ...base, kind: 'buff', why: r.why, points: 1 });
+        // T18: a counted buff that grows with the giver's stat makes the team want that build on them.
+        const sc = e.scales;
+        if (sc && (!sc.gives || r.used.some((u) => sc.gives?.includes(u))) && !wants.has(`${who}|${sc.stat}`)) wants.set(`${who}|${sc.stat}`, { who, e: { ...e, scales: sc } });
       } else if (r.kind === 'support') lines.push({ ...base, kind: 'support', why: r.why, points: 0 });
       else lines.push({ ...base, kind: 'not-counted', why: r.why, points: 0 });
     }
+  }
+
+  // T18 (owner's ruling 2026-10-10, zzz-decisions.md): each wanted build, read roughly from the saved build, counts on
+  // top of the method as in HSR; the best team found assumes it built.
+  for (const { who, e } of wants.values()) {
+    const fit: BuildFit = account.ideal ? { fit: 'built', points: BUILT_POINTS, have: 'assumed built for it' } : (account.buildFit?.(who, e.scales.stat) ?? { fit: 'no-build', points: 0, have: 'no build saved' });
+    const word = BUILD_STAT_WORD[e.scales.stat];
+    lines.push({
+      kind: 'build',
+      who,
+      entry: e.id,
+      tag: `${word} build on ${name(who)}`,
+      why: `${e.tag} grows with ${name(who)}'s ${word}. Yours: ${fit.have}: ${FIT_WORD[fit.fit]}`,
+      piece: e.piece,
+      quote: e.scales.quote,
+      points: fit.points,
+      build: { stat: e.scales.stat, fit: fit.fit, have: fit.have, max: BUILT_POINTS },
+    });
   }
 
   // Step 7: weak fits for Rupture, Armorer and Anomaly damage dealers.

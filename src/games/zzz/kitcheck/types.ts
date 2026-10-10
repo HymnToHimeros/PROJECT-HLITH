@@ -1,3 +1,4 @@
+import type { BuildStat } from '../../../core/rules/buildFit';
 /**
  * The ZZZ cheat sheet: every kit cut into pieces, each answering the seven
  * questions of docs/logic/zzz-method.md (Part A). Plain data; the check
@@ -106,6 +107,12 @@ export interface Entry {
   /** Q7: this strengthens another entry (id). Counted as its own entry, as the method is written. */
   upgrades?: string;
   /** Q7: unclear text; shown, never counted. Says why. */
+  /**
+   * The amount grows with the giver's own stat ("equal to 16% of Robin • Summeretto's Max HP"): a team where this
+   * counts wants that build on them (T18, decisions 25–26). `quote` is word for word from the piece; `gives` limits it
+   * to those stats of the entry (absent = all).
+   */
+  scales?: { stat: BuildStat; quote: string; gives?: Stat[] };
   unverified?: string;
 }
 
@@ -125,4 +132,17 @@ export interface CharacterSheet {
   entries: Entry[];
   /** Pieces with nothing for the squad: piece id → why (e.g. "Deals Physical DMG only"). Every kit piece is either here or has entries. */
   nothing: Record<string, string>;
+}
+
+/**
+ * An equipped weapon's effect, read like a kit piece (T18 step 4): every entry's `piece` is 'effect' and quotes
+ * the weapon's effect text (weapons.json) word for word. It counts for whoever has it in their saved build, when
+ * their specialty matches the weapon's. Signature weapons are read in their character's sheet instead.
+ */
+export interface WeaponSheet {
+  weaponId: string;
+  name: string;
+  entries: Entry[];
+  /** Why it gives the team nothing (only the wearer's own stats…); required when there are no entries. */
+  nothing?: string;
 }

@@ -627,6 +627,8 @@ export const jane: CharacterSheet = {
         { stat: 'anomaly-dmg', amount: "40%, +0.16% per point of Jane's Anomaly Proficiency" },
         { stat: 'anomaly-dmg', amount: '50%' },
       ],
+      // Judgement call: only the CRIT Rate half grows with Jane's Anomaly Proficiency; both halves are anomaly-dmg, so gives cannot split them.
+      scales: { stat: 'anomaly-proficiency', quote: "Each point of Jane's Anomaly Proficiency further increases this CRIT Rate by 0.16%." },
       to: 'enemy',
       limits: { attributes: ['physical'] },
       setup: "Jane's attacks hit the enemy (Gnawed, 10s), then anyone's Assault on it.",

@@ -31,6 +31,10 @@ export interface Weapon {
   icon?: string;
   /** The character it is made for (their signature weapon), when the game data says so. */
   madeFor?: string;
+  /** The path (HSR) or specialty (ZZZ) whose wearers get its effect, as `Character.role` (LOGIC-CORE, T18). */
+  role?: string;
+  /** Its effect at the first refinement, in the game's words (LOGIC-CORE: the kit check reads it). */
+  effect?: { name: string; text: string };
   source?: string;
 }
 

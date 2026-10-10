@@ -274,4 +274,81 @@ describe('Backlog screen', () => {
     fireEvent.change(screen.getByLabelText('Category'), { target: { value: 'story' } });
     expect(screen.getByRole('radio', { name: /Tick box/ })).toBeChecked();
   });
+
+  const chapters = Array.from({ length: 27 }, (_, i) => `Chapter ${i + 1}`);
+  const story = (reward: number | null = 2700): BacklogItem => ({ id: 's1', category: 'story', title: 'Main story', total: 27, reward, currency: 'gem', steps: chapters });
+  const stepButtons = () => within(screen.getByRole('group', { name: 'Main story' })).getAllByRole('button', { name: /^Chapter \d+/ });
+
+  it('a long story starts folded: where you are, how far along and the reward left lead; the rest is one tap away', async () => {
+    act(() => setBacklogDone('aa', 's1', 11));
+    await show(makeGame([story()]));
+    const group = screen.getByRole('group', { name: 'Main story' });
+    expect(within(group).getByText('You are at: Chapter 12')).toBeInTheDocument();
+    expect(within(group).getByText('11 of 27 done')).toBeInTheDocument();
+    // 16 of 27 chapters left of 2,700 Gem → 1,600 Gem still on the table.
+    expect(within(group).getByText(/≈ 1,600 Gem left/)).toBeInTheDocument();
+    // Folded: only the last done chapter, the one you are on and the next.
+    expect(stepButtons().map((b) => b.textContent)).toEqual(['✓Chapter 1111', '•Chapter 12you are here12', 'Chapter 1313']);
+    const toggle = within(group).getByRole('button', { name: 'Show all 27 chapters' });
+    expect(toggle).toHaveAttribute('aria-expanded', 'false');
+    fireEvent.click(toggle);
+    expect(stepButtons()).toHaveLength(27);
+    expect(within(group).getByRole('button', { name: 'Show fewer chapters' })).toHaveAttribute('aria-expanded', 'true');
+    // Ticking still works from the full list, and from the folded one.
+    fireEvent.click(within(group).getByRole('button', { name: /^Chapter 20/ }));
+    expect(gameData('aa').backlog.s1).toBe(19);
+    fireEvent.click(within(group).getByRole('button', { name: 'Show fewer chapters' }));
+    expect(stepButtons()).toHaveLength(3);
+    fireEvent.click(within(group).getByRole('button', { name: /^Chapter 21/ }));
+    expect(gameData('aa').backlog.s1).toBe(20);
+    expect(within(group).getByText('You are at: Chapter 21')).toBeInTheDocument();
+  });
+
+  it('a long story with no progress yet says so (never 0 of 27) and offers the first chapters to tap', async () => {
+    await show(makeGame([story(null)]));
+    const group = screen.getByRole('group', { name: 'Main story' });
+    expect(within(group).getByText(/Where you are:/)).toHaveTextContent('Where you are: No data yet');
+    expect(within(group).queryByText(/of 27 done/)).not.toBeInTheDocument();
+    expect(within(group).getByText(/Reward:/)).toHaveTextContent('No data yet');
+    expect(stepButtons()).toHaveLength(3);
+    fireEvent.click(stepButtons()[0] as HTMLElement);
+    expect(gameData('aa').backlog.s1).toBe(0);
+    expect(within(group).getByText('0 of 27 done')).toBeInTheDocument();
+  });
+
+  it('the folded story stays editable: Change and Hide work while it is folded', async () => {
+    await show(makeGame([story()]));
+    fireEvent.click(screen.getByRole('button', { name: 'Edit Game A backlog' }));
+    expect(screen.getByRole('button', { name: 'Show all 27 chapters' })).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'Change Main story' }));
+    fireEvent.change(screen.getByLabelText(/Reward for all of it/), { target: { value: '5400' } });
+    fireEvent.click(screen.getByRole('button', { name: 'Save change' }));
+    expect(gameData('aa').ownItems.backlog.s1?.fields).toEqual({ reward: 5400 });
+    fireEvent.click(screen.getByRole('button', { name: 'Hide Main story' }));
+    expect(screen.queryByRole('group', { name: 'Main story' })).not.toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'Show hidden (1)' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Show Main story again' }));
+    expect(screen.getByRole('group', { name: 'Main story' })).toBeInTheDocument();
+  });
+
+  it('a long plain list shows its first rows and folds the rest; unfolding shows every row and ticking still works', async () => {
+    const quests = Array.from({ length: 10 }, (_, i): BacklogItem => ({ id: `q${i + 1}`, category: 'side-quests', title: `Quest ${i + 1}`, total: 1, reward: 20, currency: 'gem' }));
+    await show(makeGame(quests));
+    const quest = () => within(panel('Side quests')).queryAllByRole('checkbox');
+    expect(quest()).toHaveLength(6);
+    const toggle = within(panel('Side quests')).getByRole('button', { name: 'Show all 10 · 4 more, 4 still open' });
+    fireEvent.click(toggle);
+    expect(quest()).toHaveLength(10);
+    fireEvent.click(screen.getByRole('checkbox', { name: 'Quest 9 done' }));
+    expect(gameData('aa').backlog.q9).toBe(1);
+    fireEvent.click(within(panel('Side quests')).getByRole('button', { name: 'Show fewer' }));
+    expect(quest()).toHaveLength(6);
+    expect(within(panel('Side quests')).getByRole('button', { name: /Show all 10 · 4 more, 3 still open/ })).toBeInTheDocument();
+  });
+
+  it('the pulls switch has a visible label next to it', async () => {
+    await show(makeGame([{ id: 'm1', category: 'modes', title: 'Mode', total: 100, reward: 3200, currency: 'gem' }]));
+    expect(within(panel('Modes')).getByText('Counts toward pulls')).toBeInTheDocument();
+    expect(within(panel('Modes')).getByRole('switch', { name: 'Count Modes toward pulls' })).toBeInTheDocument();
+  });
 });

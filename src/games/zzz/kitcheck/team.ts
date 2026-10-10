@@ -3,10 +3,13 @@
  * presets, Line-ups, Who fits and "If you pull…" %. Decisions the method leaves
  * open are written down in docs/logic/zzz-decisions.md.
  */
-import type { FitOptions, FitSuggestion, PullValue, TeamAccount, TeamIdea, TeamPreset, TeamReason, TeamRules, TeamVerdict } from '../../../core/contract';
-import { checkSquad, compare, DD_ORDER, type Account, type Library, type Line, type SquadResult } from './check';
+import { fillTeam } from '../../../core/rules/fillTeam';
+import type { FitOptions, FitSuggestion, PullValue, TeamAccount, TeamIdea, TeamPreset, TeamReason, TeamRules, TeamVerdict, TeamWant } from '../../../core/contract';
+import { BUILD_STAT_WORD, buildFit } from '../../../core/rules/buildFit';
+import { GEAR_SLOTS } from '../gear';
+import { checkSquad, compare, DD_ORDER, labelOf, type Account, type Library, type Line, type SquadResult } from './check';
 import { library } from './library';
-import { accountNotes } from '../../../core/rules/accountNotes';
+import { accountNotes, type AccountFacts } from '../../../core/rules/accountNotes';
 import { SIGNATURE_PIECE } from '../../../core/rules/signatureWeapons';
 import { explainTeam, memberPhrase } from '../../../core/rules/teamExplain';
 
@@ -14,7 +17,16 @@ export const METHOD = 'ZZZ Kit Check method (docs/logic/zzz-method.md)';
 /** Partners kept per damage dealer before trios are tried, once the pool is bigger than this (method: Line-ups step 2). */
 const PAIR_LIMIT = 10;
 
-const toAccount = (a: TeamAccount): Account => ({ mindscape: (id) => (a.owned(id) ? a.dupes(id) : 0), potential: (id) => a.potential?.(id), weapon: (id) => (a.owned(id) ? a.weapon?.(id) : undefined) });
+const toAccount = (a: TeamAccount): Account => ({
+  mindscape: (id) => (a.owned(id) ? a.dupes(id) : 0),
+  potential: (id) => a.potential?.(id),
+  weapon: (id) => (a.owned(id) ? a.weapon?.(id) : undefined),
+  // T18: a saved build is read only for agents you own; undefined = no build saved.
+  buildFit: (id, stat) => {
+    const b = a.owned(id) ? a.build?.(id) : undefined;
+    return b ? buildFit(b, stat, GEAR_SLOTS) : undefined;
+  },
+});
 
 export function synergyLabel(percent: number, members: number): string {
   if (members < 3) return 'Incomplete';
@@ -36,7 +48,8 @@ export function bestFor(dd: string, pool: string[], lib: Library, account: Accou
   const key = `${dd}|${[...new Set(pool)].sort().map((id) => `${id}:${account.mindscape(id)}:${account.potential(id) ?? '-'}`).join(',')}|${account.mindscape(dd)}:${account.potential(dd) ?? '-'}`;
   if (bestCache.has(key)) return bestCache.get(key);
   if (bestCache.size > 2000) bestCache.clear();
-  const found = findBest(dd, pool, lib, account);
+  // The best team found assumes every member is built for what the team wants (decision 26): 100% includes builds.
+  const found = findBest(dd, pool, lib, { ...account, ideal: true });
   bestCache.set(key, found);
   return found;
 }
@@ -69,7 +82,7 @@ const ownedRead = (a: TeamAccount, lib: Library) => [...lib.sheets.keys()].filte
 function reasonOf(l: Line, lib: Library): TeamReason {
   const name = (id: string) => lib.names.get(id) ?? id;
   const group: TeamReason['group'] = l.kind === 'support' ? 'tie-break' : l.points !== 0 ? 'counted' : 'not-counted';
-  const proof = l.piece && l.quote ? { who: name(l.who), skill: lib.pieceLabels.get(l.who)?.get(l.piece) ?? l.piece, quote: l.quote } : undefined;
+  const proof = l.piece && l.quote ? { who: name(l.who), skill: labelOf(lib, l.who, l.piece), quote: l.quote } : undefined;
   return { points: l.points, group, text: `${name(l.who)} · ${l.tag}: ${l.why}`, ...(proof ? { proof } : {}) };
 }
 
@@ -114,6 +127,7 @@ export function verdict(members: string[], a: TeamAccount, lib: Library = librar
     bestMembers: top.order,
     order: mine.order,
     reasons: mine.lines.map((l) => reasonOf(l, lib)),
+    ...(wantsOf(mine, lib).length ? { wants: wantsOf(mine, lib) } : {}),
     explain: explainTeam({ members: mine.order, dd: mine.dd, count: mine.count, lines: mine.lines }, { members: top.order, dd: top.dd, count: top.count, lines: top.lines }, name),
     notes: [summary(mine), ...notes],
   };
@@ -122,7 +136,7 @@ export function verdict(members: string[], a: TeamAccount, lib: Library = librar
 /** How a candidate connects in a checked squad, in words; empty = not at all. */
 function connections(r: SquadResult, c: string, lib: Library): string[] {
   const name = (id: string) => lib.names.get(id) ?? id;
-  const piece = (who: string, p?: string) => (p ? (lib.pieceLabels.get(who)?.get(p) ?? p) : '');
+  const piece = (who: string, p?: string) => (p ? labelOf(lib, who, p) : '');
   const how: string[] = [];
   for (const l of r.lines) {
     if (l.kind === 'switched-on' && (l.helpers?.includes(c) || (r.dd === c && l.helpers?.length))) how.push(`turns on ${name(r.dd)}'s ${piece(r.dd, l.piece)}`);
@@ -157,7 +171,8 @@ export function whoFits(members: string[], a: TeamAccount, lib: Library = librar
     const sigId = lib.unlocks.get(c)?.get(SIGNATURE_PIECE)?.weapon;
     const sigLabel = lib.pieceLabels.get(c)?.get(SIGNATURE_PIECE);
     const signature = sigId && sigLabel ? { id: sigId, name: sigLabel.replace(/^Signature [^:]+: /, '').replace(/ · .*$/, '') } : undefined;
-    const { notes, theory } = accountNotes(c, a, { dupePrefix: 'M', ...(hasTrack ? { track: 'Agent Potential', trackLevels: true } : {}), locked, ...(signature ? { signature } : {}) });
+    const equipped = equippedFact(c, a, lib);
+    const { notes, theory } = accountNotes(c, a, { dupePrefix: 'M', ...(hasTrack ? { track: 'Agent Potential', trackLevels: true } : {}), locked, ...(signature ? { signature } : {}), ...(equipped ? { equipped } : {}) });
     out.push({ id: c, count: r.count, how, withEveryone, percent, fromAccount: notes, theory });
   }
   return out.sort((x, y) => (y.percent ?? 0) - (x.percent ?? 0) || Number(y.withEveryone) - Number(x.withEveryone) || y.count - x.count);
@@ -242,6 +257,7 @@ export function ifYouPull(id: string, a: TeamAccount, lib: Library = library()):
 
 export const zzzTeamRules: TeamRules = {
   method: METHOD,
+  fill: (p, a) => fillTeam(p, a.owned),
   rated: (id) => library().sheets.has(id),
   verdict: (m, a) => verdict(m, a),
   whoFits: (m, a, o) => whoFits(m, a, library(), o),
@@ -286,4 +302,35 @@ export function recommendedTeams(lib: Library = library()): TeamPreset[] {
     });
   }
   return out;
+}
+
+/** What the check makes of the W-Engine in an agent's saved build (for the account notes). */
+function equippedFact(c: string, a: TeamAccount, lib: Library): AccountFacts['equipped'] {
+  const w = a.owned(c) ? a.weapon?.(c) : undefined;
+  if (!w) return undefined;
+  if (!w.id) return { is: 'unknown' };
+  const sheet = lib.weapons.get(w.id);
+  if (!sheet) return { is: 'unread' };
+  const specialty = lib.profiles.get(c)?.specialty;
+  return sheet.madeFor === c || sheet.role === specialty ? { is: 'counts' } : { is: 'wrong-role', role: sheet.role.charAt(0).toUpperCase() + sheet.role.slice(1) };
+}
+
+/** The builds this team wants on its members (T18), from its build lines. */
+function wantsOf(r: SquadResult, lib: Library): TeamWant[] {
+  return r.lines.flatMap((l) =>
+    l.kind === 'build' && l.build
+      ? [
+          {
+            who: l.who,
+            stat: BUILD_STAT_WORD[l.build.stat],
+            label: l.tag,
+            have: l.build.have,
+            fit: l.build.fit,
+            points: l.points,
+            max: l.build.max,
+            proof: { skill: l.piece ? labelOf(lib, l.who, l.piece) : '', quote: l.quote ?? '' },
+          },
+        ]
+      : [],
+  );
 }

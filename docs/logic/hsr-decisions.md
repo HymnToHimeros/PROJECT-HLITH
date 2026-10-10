@@ -4,6 +4,13 @@ Calls made while reading the kits and building the check, where the theory
 (`hsr-theory.md`) left room. Each one is applied the same way to every kit.
 Numbered so later changes can point at them.
 
+## Standing rule: both games mirror each other (owner, 2026-10-10)
+The owner, word for word: "what goes for zzz or hsr goes for the other too logic core mirrors each other perfectly
+up to the point where it gets game specific (aka elemtns or class or whatever u get my point no)".
+So every logic rule (account notes, signature and equipped weapons, builds a team wants, the plain-words "Why",
+best team found) is the same in HSR and ZZZ. Only game facts differ: elements / attributes, paths / specialties,
+team size and order, and the owner's ZZZ method's own counting.
+
 ## Engine
 
 1. **A DoT is a debuff.** A reaction to debuffs (Acheron's Talent) also takes
@@ -86,3 +93,43 @@ Numbered so later changes can point at them.
     included). A weapon line that repeats an event the kit already causes
     is not a second event source. Pearl's Colors for Tomorrow has no effect
     text yet, so it isn't read; it will be once the text exists.
+25. **A bigger stat on a teammate raises the team score, roughly (owner, T18).** Buffs that grow with the giver's
+    stat carry `scales`; when they count, the team wants that build. The saved build is read in bands (built +2,
+    partly +1, not 0, no build 0 and said), never as damage math. Per team: Robin • Summeretto is an HP build with
+    Phainon because her "Deviated Chords" ATK buff is "(16% + Vibes × 0.4%) of Robin • Summeretto's Max HP".
+26. **The best team found assumes ideal builds.** So 100% = the right members and built right; an unbuilt team says
+    which builds would close the gap. A team you haven't built scores lower than before this rule; that is the
+    owner's "the value increases" read from the other side.
+27. **Thresholds count as wants when the stat is clearly the giver's.** Ruan Mei's and Lingsha's Light Cones (150%
+    Break Effect), Fugue's 220% Break Effect, Cyrene's 180 SPD: the team wants that stat on them, so they are wants;
+    whether the threshold is reached is not checked (no total stats saved yet).
+28. **ZZZ counts builds too (owner's ruling 2026-10-10, see the standing rule above).** Same bands, same wants,
+    same "Why"; ZZZ's 28 scaling lines (Astra Yao's ATK, Lucia's HP, Pan Yinhu's ATK…) count as HSR's do. The
+    method's worked examples hold at base builds (zzz-decisions.md 56).
+29. **Whatever weapon is equipped counts, when its path or specialty is the wearer's (T18 step 4, both games).**
+    Every Light Cone (109) and W-Engine (55) that isn't a signature is read like a kit piece, quote for quote
+    (`src/games/<game>/kitcheck/weapons/`). In the game an HSR Light Cone's effect only works on its path and a
+    W-Engine's only for its specialty, so a weapon on the wrong wearer adds nothing and the account note says so
+    ("X: works only for Destruction characters, not counted."). A signature on someone else of its path (Robin's
+    Flowing Nightglow on Sparkle) brings the entries read in its owner's sheet. Same rules as kits: the wearer's own
+    stats with no team condition give the team nothing; unclear text is shown, never counted ("Unto Tomorrow's
+    Morrow" doesn't say whose DMG rises; Planetary Rendezvous and Poised to Bloom depend on the wearer's element /
+    a shared path the sheet can't name). ZZZ's "less DMG taken" is read as `heal` (tie-break only), as Lucia's
+    shield is.
+30. **Only a carry's own game team is a team; no mix-matching (owner's report 2026-10-10).** The owner: "the march
+    team once again as example is bs no one runs march with phainon … I don't want random mix matching … if units
+    exist that do a job better obviously they should be picked". Cause: every character's page in the game shows a
+    starter line-up that forces that character beside today's top carry (March 7th's page: Phainon, March 7th, …);
+    decision 22 showed them as the carry's teams. Now:
+    - a team is shown only from its carry's own page (the page's character is a carry, in the team, and no other
+      carry is fixed alone in a slot: that marks a partner's page, e.g. Topaz's "Feixiao | Topaz | …");
+    - each slot is filled from your roster in the game's order: the first listed character you own, never one
+      twice (`src/core/rules/fillTeam.ts`, both games); a slot with none of yours shows its first pick;
+    - a carry's teammates are only the characters its own game team lists, in every place teams are made: best
+      team found, Who fits, Line-ups, If you pull. A team you made yourself is compared with the best team that can
+      also include its own members. 51 of 53 carries have an own team; Trailblazer · Destruction (Stelle) and
+      Aeon ★ Aha fall back to the pairing rule (decision 21) until the game lists one.
+    Acceptance test (team.test.ts): owning Phainon, Sunday, Cerydra and Dan Heng • Permansor Terrae, his one team
+    is exactly those four; no March 7th / Asta / Bronya team, and none of them (nor Tingyun, Sparkle) is suggested.
+    ZZZ has no game team lists in its data, so its squads stay from the check (zzz-decisions 55), filled the same way.
+

@@ -3,10 +3,13 @@
  * teams, Line-ups, Who fits, "If you pull…" % and recommended teams. Same
  * shape as ZZZ (src/games/zzz/kitcheck/team.ts), with teams of four and no order.
  */
-import type { FitOptions, FitSuggestion, PullValue, TeamAccount, TeamIdea, TeamPreset, TeamReason, TeamRules, TeamVerdict } from '../../../core/contract';
-import { canCarry, canPartner, check, compare, damageDealers, isCentre, type Account, type Library, type Line, type TeamResult } from './check';
-import { centreOf, library, pageOf } from './library';
-import { accountNotes } from '../../../core/rules/accountNotes';
+import type { FitOptions, FitSuggestion, PullValue, TeamAccount, TeamIdea, TeamPreset, TeamReason, TeamRules, TeamVerdict, TeamWant } from '../../../core/contract';
+import { BUILD_STAT_WORD, buildFit } from '../../../core/rules/buildFit';
+import { GEAR_SLOTS } from '../gear';
+import { canCarry, canPartner, check, compare, damageDealers, isCentre, labelOf, type Account, type Library, type Line, type TeamResult } from './check';
+import { isOwnTeam, library, pageOf } from './library';
+import { fillTeam } from '../../../core/rules/fillTeam';
+import { accountNotes, type AccountFacts } from '../../../core/rules/accountNotes';
 import { SIGNATURE_PIECE } from '../../../core/rules/signatureWeapons';
 import { explainTeam, memberPhrase } from '../../../core/rules/teamExplain';
 
@@ -15,7 +18,16 @@ export const METHOD = 'HSR Kit Check theory v2 (docs/logic/hsr-theory.md)';
 const PAIR_LIMIT = 10;
 const SIZE = 4;
 
-const toAccount = (a: TeamAccount): Account => ({ eidolon: (id) => (a.owned(id) ? a.dupes(id) : 0), enhanced: (id) => a.potential?.(id), weapon: (id) => (a.owned(id) ? a.weapon?.(id) : undefined) });
+const toAccount = (a: TeamAccount): Account => ({
+  eidolon: (id) => (a.owned(id) ? a.dupes(id) : 0),
+  enhanced: (id) => a.potential?.(id),
+  weapon: (id) => (a.owned(id) ? a.weapon?.(id) : undefined),
+  // T18: a saved build is read only for characters you own; undefined = no build saved.
+  buildFit: (id, stat) => {
+    const b = a.owned(id) ? a.build?.(id) : undefined;
+    return b ? buildFit(b, stat, GEAR_SLOTS) : undefined;
+  },
+});
 
 /** The Trailblazer is one character: at most one of their forms (ids 8001–8010) in a team. */
 const isTrailblazer = (id: string) => id.startsWith('80') && id.length === 4;
@@ -40,15 +52,20 @@ function combos(xs: string[], k: number): string[][] {
 const bestCache = new Map<string, TeamResult | undefined>();
 let cacheLib: Library | undefined;
 
-export function bestFor(dd: string, pool: string[], lib: Library, account: Account): TeamResult | undefined {
+/**
+ * `also`: characters tried beside `dd` even when their own game team doesn't list them: a team you made yourself is
+ * compared with the best team that could include its own members (decision 30).
+ */
+export function bestFor(dd: string, pool: string[], lib: Library, account: Account, also: string[] = []): TeamResult | undefined {
   if (cacheLib !== lib) {
     bestCache.clear();
     cacheLib = lib;
   }
-  const key = `${dd}|${[...new Set(pool)].sort().map((id) => `${id}:${account.eidolon(id)}:${account.enhanced(id) ?? '-'}`).join(',')}|${account.eidolon(dd)}:${account.enhanced(dd) ?? '-'}`;
+  const key = `${dd}|${[...new Set(pool)].sort().map((id) => `${id}:${account.eidolon(id)}:${account.enhanced(id) ?? '-'}`).join(',')}|${account.eidolon(dd)}:${account.enhanced(dd) ?? '-'}|${[...also].sort().join(',')}`;
   if (bestCache.has(key)) return bestCache.get(key);
   if (bestCache.size > 2000) bestCache.clear();
-  const found = findBest(dd, pool, lib, account);
+  // The best team found assumes every member is built for what the team wants (decision 26): 100% includes builds.
+  const found = findBest(dd, pool, lib, { ...account, ideal: true }, also);
   bestCache.set(key, found);
   return found;
 }
@@ -75,8 +92,8 @@ function shortlist(dd: string, partners: string[], lib: Library, account: Accoun
   return [...top, ...sustain];
 }
 
-function findBest(dd: string, pool: string[], lib: Library, account: Account): TeamResult | undefined {
-  let partners = pool.filter((id) => id !== dd && lib.sheets.has(id) && fits([dd, id]) && canPartner(id, dd, lib));
+function findBest(dd: string, pool: string[], lib: Library, account: Account, also: string[] = []): TeamResult | undefined {
+  let partners = pool.filter((id) => id !== dd && lib.sheets.has(id) && fits([dd, id]) && (canPartner(id, dd, lib) || also.includes(id)));
   if (!lib.sheets.has(dd) || !canCarry(dd, lib) || !partners.length) return undefined;
   partners = shortlist(dd, partners, lib, account);
   let best: TeamResult | undefined;
@@ -103,7 +120,7 @@ const ownedRead = (a: TeamAccount, lib: Library) => [...lib.sheets.keys()].filte
 function reasonOf(l: Line, lib: Library): TeamReason {
   const name = (id: string) => lib.names.get(id) ?? id;
   const group: TeamReason['group'] = l.kind === 'support' ? 'tie-break' : l.points !== 0 ? 'counted' : 'not-counted';
-  const proof = l.piece && l.quote ? { who: name(l.who), skill: lib.pieceLabels.get(l.who)?.get(l.piece) ?? l.piece, quote: l.quote } : undefined;
+  const proof = l.piece && l.quote ? { who: name(l.who), skill: labelOf(lib, l.who, l.piece), quote: l.quote } : undefined;
   return { points: l.points, group, text: `${name(l.who)} · ${l.tag}: ${l.why}`, ...(proof ? { proof } : {}) };
 }
 
@@ -135,7 +152,7 @@ export function verdict(members: string[], a: TeamAccount, lib: Library = librar
     pool = [...lib.sheets.keys()];
     notes.push('You own fewer than four characters whose kits have been read, so this compares with every character instead.');
   } else pool = [...new Set([...owned, ...members])];
-  const best = bestFor(mine.dd, pool, lib, account);
+  const best = bestFor(mine.dd, pool, lib, account, mine.members);
   const top = best && compare(best, mine) > 0 ? best : mine;
   if (top.count <= 0) return { rated: false, why: `No team the check can find connects for ${name(mine.dd)} yet (best count ${top.count}).` };
   const percent = Math.max(0, Math.round((mine.count / top.count) * 100));
@@ -157,15 +174,47 @@ export function verdict(members: string[], a: TeamAccount, lib: Library = librar
     order: mine.members,
     unordered: true,
     reasons: mine.lines.map((l) => reasonOf(l, lib)),
+    ...(wantsOf(mine, lib).length ? { wants: wantsOf(mine, lib) } : {}),
     explain: explainTeam({ members: mine.members, dd: mine.dd, count: mine.count, lines: mine.lines }, { members: top.members, dd: top.dd, count: top.count, lines: top.lines }, name),
     notes: [summary(mine), ...notes],
   };
 }
 
+/** What the check makes of the Light Cone in a character's saved build (for the account notes). */
+function equippedFact(c: string, a: TeamAccount, lib: Library): AccountFacts['equipped'] {
+  const w = a.owned(c) ? a.weapon?.(c) : undefined;
+  if (!w) return undefined;
+  if (!w.id) return { is: 'unknown' };
+  const sheet = lib.weapons.get(w.id);
+  if (!sheet) return { is: 'unread' };
+  const path = lib.profiles.get(c)?.path;
+  return sheet.madeFor === c || sheet.role === path ? { is: 'counts' } : { is: 'wrong-role', role: sheet.role.charAt(0).toUpperCase() + sheet.role.slice(1) };
+}
+
+/** The builds this team wants on its members (T18), from its build lines. */
+function wantsOf(r: TeamResult, lib: Library): TeamWant[] {
+  return r.lines.flatMap((l) =>
+    l.kind === 'build' && l.build
+      ? [
+          {
+            who: l.who,
+            stat: BUILD_STAT_WORD[l.build.stat],
+            label: l.tag,
+            have: l.build.have,
+            fit: l.build.fit,
+            points: l.points,
+            max: l.build.max,
+            proof: { skill: l.piece ? labelOf(lib, l.who, l.piece) : '', quote: l.quote ?? '' },
+          },
+        ]
+      : [],
+  );
+}
+
 /** How a candidate connects in a checked team, in words; empty = not at all. */
 function connections(r: TeamResult, c: string, lib: Library): string[] {
   const name = (id: string) => lib.names.get(id) ?? id;
-  const piece = (who: string, p?: string) => (p ? (lib.pieceLabels.get(who)?.get(p) ?? p) : '');
+  const piece = (who: string, p?: string) => (p ? labelOf(lib, who, p) : '');
   const how: string[] = [];
   for (const l of r.lines) {
     if (l.kind === 'switched-on' && (l.helpers?.includes(c) || (r.dd === c && l.helpers?.length))) how.push(`turns on ${name(r.dd)}'s ${piece(r.dd, l.piece)}`);
@@ -186,6 +235,8 @@ export function whoFits(members: string[], a: TeamAccount, lib: Library = librar
     const res = check([...members, c], lib, account, leadOf([...members, c], lib));
     if (!res.rated) continue;
     const r = res.best;
+    // Only teammates the carry's own game team lists (decision 30): no mix-matching.
+    if (r.members.some((m) => m !== r.dd && !canPartner(m, r.dd, lib))) continue;
     if (r.lines.some((l) => l.kind === 'weak-fit' && l.who === c)) continue;
     const how = connections(r, c, lib);
     if (!how.length) continue;
@@ -200,7 +251,8 @@ export function whoFits(members: string[], a: TeamAccount, lib: Library = librar
     const sigId = lib.unlocks.get(c)?.get(SIGNATURE_PIECE)?.weapon;
     const sigLabel = lib.pieceLabels.get(c)?.get(SIGNATURE_PIECE);
     const signature = sigId && sigLabel ? { id: sigId, name: sigLabel.replace(/^Signature [^:]+: /, '').replace(/ · .*$/, '') } : undefined;
-    const { notes, theory } = accountNotes(c, a, { dupePrefix: 'E', ...(hasTrack ? { track: 'Enhanced kit' } : {}), locked, ...(signature ? { signature } : {}) });
+    const equipped = equippedFact(c, a, lib);
+    const { notes, theory } = accountNotes(c, a, { dupePrefix: 'E', ...(hasTrack ? { track: 'Enhanced kit' } : {}), locked, ...(signature ? { signature } : {}), ...(equipped ? { equipped } : {}) });
     out.push({ id: c, count: r.count, how, withEveryone, percent, fromAccount: notes, theory });
   }
   return out.sort((x, y) => (y.percent ?? 0) - (x.percent ?? 0) || Number(y.withEveryone) - Number(x.withEveryone) || y.count - x.count);
@@ -276,6 +328,7 @@ export function ifYouPull(id: string, a: TeamAccount, lib: Library = library()):
 
 export const hsrTeamRules: TeamRules = {
   method: METHOD,
+  fill: (p, a) => fillTeam(p, a.owned, (team, id) => fits([...team, id])),
   rated: (id) => library().sheets.has(id),
   verdict: (m, a) => verdict(m, a),
   whoFits: (m, a, o) => whoFits(m, a, library(), o),
@@ -341,17 +394,20 @@ export function gameTeams(raw: TeamPreset[], lib: Library = library()): TeamPres
   const name = (id: string) => lib.names.get(id) ?? id;
   const carries = new Set([...lib.sheets.values()].filter((s) => s.damage).map((s) => s.characterId));
   const seen = new Set<string>();
+  const made = new Map<string, number>();
   const out: TeamPreset[] = [];
   for (const t of raw) {
-    const centre = centreOf(t, carries);
-    const at = centre ? t.slots.findIndex((s) => s.characters[0] === centre) : -1;
+    // Only a carry's own team (decision 30): other pages' starter line-ups are never shown as teams.
+    if (!isOwnTeam(t, carries)) continue;
+    const page = pageOf(t) ?? '';
+    const at = t.slots.findIndex((s) => s.characters.includes(page));
     const slots = at > 0 ? [t.slots[at], ...t.slots.filter((_, i) => i !== at)].filter((s): s is TeamPreset['slots'][number] => !!s) : t.slots;
-    const key = slots.map((s) => s.characters[0]).sort().join(',');
+    const key = slots.map((s) => s.characters.join('+')).join(',');
     if (seen.has(key)) continue;
     seen.add(key);
-    const page = pageOf(t);
-    const lead = slots[0]?.characters[0];
-    out.push({ ...t, slots, name: lead ? `${name(lead)} team${page && page !== lead ? ` · with ${name(page)}` : ''}` : t.name });
+    const n = (made.get(page) ?? 0) + 1;
+    made.set(page, n);
+    out.push({ ...t, slots, name: `${name(page)} team${n > 1 ? ` ${n}` : ''}` });
   }
   return out;
 }

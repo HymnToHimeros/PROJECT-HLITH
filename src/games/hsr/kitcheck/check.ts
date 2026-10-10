@@ -3,6 +3,7 @@
  * guessing: the same team always gets the same answer, and every point comes
  * with the entry (and its quote) that earned it. HSR has no team order.
  */
+import { BUILD_STAT_WORD, BUILT_POINTS, FIT_WORD, type BuildFit, type BuildStat } from '../../../core/rules/buildFit';
 import { GENERAL_STATS, SPECIFIC_STATS, SUPPORT_STATS, SUSTAIN_STATS, type CharacterSheet, type Condition, type DamageKind, type Element, type Entry, type GameEventKind, type Path, type Stat } from './types';
 
 export interface Profile {
@@ -27,22 +28,57 @@ export interface Library {
   centres: Set<string>;
   /** Who the game's own teams put together (every pick and backup of a team), per character. */
   pairedWith: Map<string, Set<string>>;
+  /**
+   * Per carry with an own game team: everyone its own teams list in any slot. They are the only teammates the check
+   * tries for that carry (decision 30); a carry without one falls back to the pairing rule.
+   */
+  allowed: Map<string, Set<string>>;
+  /**
+   * Every Light Cone the check can read (T18 step 4): its path, its entries (piece `weapon:<id>`) and its label.
+   * A signature's entries come from its character's sheet; `madeFor` marks it (that character reads it as a kit piece).
+   */
+  weapons: Map<string, { name: string; role: string; madeFor?: string; label: string; entries: Entry[] }>;
+}
+
+/** The piece a weapon's entries carry: `weapon:<id>`. */
+export const weaponPiece = (id: string) => `weapon:${id}`;
+
+/** A kit piece's label, or an equipped Light Cone's ("Light Cone: Night on the Milky Way"). */
+export const labelOf = (lib: Library, who: string, piece: string) => (piece.startsWith('weapon:') ? lib.weapons.get(piece.slice(7))?.label : lib.pieceLabels.get(who)?.get(piece)) ?? piece;
+
+/**
+ * Everything a member brings: their sheet, plus the Light Cone in their saved build when its path is theirs (an HSR
+ * Light Cone's effect only works on its path) and it isn't their own signature (read as a kit piece already).
+ */
+export function entriesOf(who: string, lib: Library, account: Account): Entry[] {
+  const own = lib.sheets.get(who)?.entries ?? [];
+  const id = account.weapon?.(who)?.id;
+  const w = id ? lib.weapons.get(id) : undefined;
+  if (!w || w.madeFor === who || w.role !== lib.profiles.get(who)?.path) return own;
+  return [...own, ...w.entries];
 }
 
 /** Your account: Eidolon per character (not owned = 0), Enhanced when known. */
 export interface Account {
   eidolon: (id: string) => number;
   /** 1 = has the Enhanced kit, 0 = not; undefined = not saved. */
-  enhanced: (id: string) => number | undefined;  /** The weapon in the saved build (signature weapons); undefined = none saved. */
+  enhanced: (id: string) => number | undefined;
+  /** The weapon in the saved build (signature weapons); undefined = none saved. */
   weapon?: (id: string) => { id?: string; name: string } | undefined;
+  /** How the saved build fits one stat (T18); undefined = no build saved. */
+  buildFit?: (id: string, stat: BuildStat) => BuildFit | undefined;
+  /** Assume every member is built for what the team wants: the best team found (decision 26). */
+  ideal?: boolean;
 }
 
 export type Status = 'on' | 'off' | 'locked' | 'unknown' | 'replaced';
 
 /** One line of the explanation. `points` is what it adds to the count (0 for tie-break and not counted). */
 export interface Line {
-  kind: 'switched-on' | 'buff' | 'chain' | 'off' | 'duplicate' | 'weak-fit' | 'support' | 'not-counted' | 'locked' | 'unknown' | 'replaced';
+  kind: 'switched-on' | 'buff' | 'chain' | 'off' | 'duplicate' | 'weak-fit' | 'support' | 'not-counted' | 'locked' | 'unknown' | 'replaced' | 'build';
   who: string;
+  /** For a build line: the stat the team wants on them and how their saved build fits. */
+  build?: { stat: BuildStat; fit: BuildFit['fit']; have: string; max: number };
   entry?: string;
   tag: string;
   why: string;
@@ -89,7 +125,12 @@ export const isCentre = (id: string, lib: Library) => canCarry(id, lib) && (lib.
  * Can this character be a partner on a team built around `dd`? Anyone who isn't a centre themself; another
  * centre only when the game's own teams put the two together (Saber with Gilgamesh, Mortenax Blade with Rin).
  */
-export const canPartner = (id: string, dd: string, lib: Library) => !isCentre(id, lib) || lib.centres.size === 0 || !!lib.pairedWith.get(dd)?.has(id);
+export const canPartner = (id: string, dd: string, lib: Library) => {
+  // A carry with its own game team only gets teammates that team lists (no mix-matching, owner's report 2026-10-10).
+  const allowed = lib.allowed.get(dd);
+  if (allowed) return allowed.has(id);
+  return !isCentre(id, lib) || lib.centres.size === 0 || !!lib.pairedWith.get(dd)?.has(id);
+};
 
 type CondResult = 'met' | 'not-met' | 'unknown';
 
@@ -204,17 +245,17 @@ export function checkTeam(members: string[], dd: string, lib: Library, account: 
   const seenNoStack = new Map<string, { who: string; what: string }>();
   const chained = new Set<string>();
   const countedStats = new Set<string>();
+  const wants = new Map<string, { who: string; e: Entry & { scales: NonNullable<Entry['scales']> } }>();
   const statuses = new Map<string, { status: Status; why: string }>();
   const key = (who: string, e: Entry) => `${who}:${e.id}`;
-  for (const who of team) for (const e of lib.sheets.get(who)?.entries ?? []) statuses.set(key(who, e), statusOf(e, who, team, lib, account));
-  const ddSheet = lib.sheets.get(dd);
-  const reactions = (ddSheet?.entries ?? []).filter((x) => x.reacts && x.reacts.from !== 'self' && statuses.get(key(dd, x))?.status === 'on');
+  const entries = new Map(team.map((who) => [who, entriesOf(who, lib, account)]));
+  for (const who of team) for (const e of entries.get(who) ?? []) statuses.set(key(who, e), statusOf(e, who, team, lib, account));
+  const reactions = (entries.get(dd) ?? []).filter((x) => x.reacts && x.reacts.from !== 'self' && statuses.get(key(dd, x))?.status === 'on');
   let sustain = team.some((id) => ['preservation', 'abundance'].includes(lib.profiles.get(id)?.path ?? ''));
 
   for (const who of team) {
-    const sheet = lib.sheets.get(who);
-    if (!sheet) continue;
-    for (const e of sheet.entries) {
+    const own = entries.get(who) ?? [];
+    for (const e of own) {
       const st = statuses.get(key(who, e)) ?? { status: 'unknown', why: '' };
       const base = { who, entry: e.id, tag: e.tag, piece: e.piece, quote: e.quote };
       if (st.status === 'locked' || st.status === 'replaced' || st.status === 'unknown') {
@@ -223,7 +264,7 @@ export function checkTeam(members: string[], dd: string, lib: Library, account: 
       }
       if (st.status === 'off') {
         // An option of the same kit that is on (an Eidolon that drops the condition) covers it: not a loss.
-        const cover = e.noStack ? sheet.entries.find((x) => x !== e && x.noStack === e.noStack && statuses.get(key(who, x))?.status === 'on') : undefined;
+        const cover = e.noStack ? own.find((x) => x !== e && x.noStack === e.noStack && statuses.get(key(who, x))?.status === 'on') : undefined;
         if (cover) lines.push({ ...base, kind: 'not-counted', why: `${st.why}; ${cover.tag} applies instead`, points: 0 });
         else lines.push({ ...base, kind: 'off', why: st.why, points: -1 });
         continue;
@@ -275,13 +316,35 @@ export function checkTeam(members: string[], dd: string, lib: Library, account: 
         // Step 4b: each teammate counts each stat once, however many sentences give it.
         const fresh = r.used.filter((u) => !countedStats.has(`${who}|${u}`));
         for (const u of r.used) countedStats.add(`${who}|${u}`);
-        if (fresh.length) lines.push({ ...base, kind: 'buff', why: r.why, points: 1 });
+        if (fresh.length) {
+          lines.push({ ...base, kind: 'buff', why: r.why, points: 1 });
+          // T18: a counted buff that grows with the giver's stat makes the team want that build on them.
+          const sc = e.scales;
+          if (sc && (!sc.gives || fresh.some((u) => sc.gives?.includes(u.split(':')[0] as Stat))) && !wants.has(`${who}|${sc.stat}`)) wants.set(`${who}|${sc.stat}`, { who, e: { ...e, scales: sc } });
+        }
         else lines.push({ ...base, kind: 'not-counted', why: `${r.why}, but ${name(who)}'s ${list([...new Set(r.used.map((u) => statWord(u.split(':')[0] as Stat)))], 'and')} already counts once`, points: 0 });
       } else if (r.kind === 'support') {
         contributed.add(who);
         lines.push({ ...base, kind: 'support', why: r.why, points: 0 });
       } else lines.push({ ...base, kind: 'not-counted', why: r.why, points: 0 });
     }
+  }
+
+  // T18 (decisions 25–26): each wanted build, read roughly from the saved build; the best team found assumes it built.
+  for (const { who, e } of wants.values()) {
+    const fit: BuildFit = account.ideal ? { fit: 'built', points: BUILT_POINTS, have: 'assumed built for it' } : (account.buildFit?.(who, e.scales.stat) ?? { fit: 'no-build', points: 0, have: 'no build saved' });
+    const word = BUILD_STAT_WORD[e.scales.stat];
+    lines.push({
+      kind: 'build',
+      who,
+      entry: e.id,
+      tag: `${word} build on ${name(who)}`,
+      why: `${e.tag} grows with ${name(who)}'s ${word}. Yours: ${fit.have}: ${FIT_WORD[fit.fit]}`,
+      piece: e.piece,
+      quote: e.scales.quote,
+      points: fit.points,
+      build: { stat: e.scales.stat, fit: fit.fit, have: fit.have, max: BUILT_POINTS },
+    });
   }
 
   // Step 7: a teammate who brings nothing for the damage dealer and no team support is a weak fit.

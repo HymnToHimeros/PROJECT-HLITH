@@ -11,6 +11,7 @@ import builds from './data/builds.json';
 import weapons from './data/weapons.json';
 import { scoreBuild } from '../../core/rules/buildScore';
 import { materialsFor } from './costs';
+import { GEAR_SLOTS } from './gear';
 import materials from './data/materials.json';
 import teams from './data/teams.json';
 import sampleArt from './data/sample-art.json';
@@ -57,22 +58,23 @@ export const hsr: GameContract = {
   ],
   dupes: { prefix: 'E', name: 'Eidolon', max: 6 },
   potential: { name: 'Enhanced', max: 1 },
+  // The Trailblazer: one entry per Path for each, named "Trailblazer · Harmony (Caelus)" in characters.json.
+  protagonist: {
+    label: 'Trailblazer',
+    options: [
+      { id: 'caelus', name: 'Caelus' },
+      { id: 'stelle', name: 'Stelle' },
+    ],
+    of: (c) => {
+      const m = /^(Trailblazer · .+) \((Caelus|Stelle)\)$/.exec(c.name);
+      return m?.[1] && m[2] ? { option: m[2].toLowerCase(), form: m[1] } : undefined;
+    },
+  },
   build: {
     levelMax: 80,
     weaponLevelMax: 80,
     refine: { name: 'Superimposition', max: 5 },
-    slots: [
-      { id: 'Head', label: 'Head', mains: ['HP'] },
-      { id: 'Hands', label: 'Hands', mains: ['ATK'] },
-      { id: 'Body', label: 'Body', mains: ['HP %', 'ATK %', 'DEF %', 'CRIT Rate', 'CRIT DMG', 'Outgoing Healing Boost', 'Effect Hit Rate'] },
-      { id: 'Feet', label: 'Feet', mains: ['HP %', 'ATK %', 'DEF %', 'SPD'] },
-      {
-        id: 'Planar Sphere',
-        label: 'Planar Sphere',
-        mains: ['HP %', 'ATK %', 'DEF %', 'Physical DMG Boost', 'Fire DMG Boost', 'Ice DMG Boost', 'Lightning DMG Boost', 'Wind DMG Boost', 'Quantum DMG Boost', 'Imaginary DMG Boost'],
-      },
-      { id: 'Link Rope', label: 'Link Rope', mains: ['HP %', 'ATK %', 'DEF %', 'Break Effect', 'Energy Regeneration Rate'] },
-    ],
+    slots: GEAR_SLOTS,
     subStats: ['HP', 'ATK', 'DEF', 'HP %', 'ATK %', 'DEF %', 'SPD', 'CRIT Rate', 'CRIT DMG', 'Effect Hit Rate', 'Effect RES', 'Break Effect'],
     skills: [
       { name: 'Basic ATK', max: 7 },

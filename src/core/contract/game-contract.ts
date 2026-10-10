@@ -61,6 +61,13 @@ export interface GameContract {
   potential?: { name: string; max: number };
   /** What a saved build holds for this game (character page form, scan). Missing = builds can't be saved. */
   build?: BuildRules;
+  /**
+   * A main character the player picks once, who comes in several forms (HSR: the Trailblazer,
+   * Caelus or Stelle, one entry per Path). `of` says which option and which form an entry is;
+   * undefined = not the main character. Once picked, the other option's entries are hidden
+   * everywhere and the picked one's count as owned. Missing = the game has no such choice.
+   */
+  protagonist?: { label: string; options: { id: string; name: string }[]; of: (c: Character) => { option: string; form: string } | undefined };
 
   // ── Economy ────────────────────────────────────────────────────
   currencies: Currency[];
@@ -254,6 +261,8 @@ export interface TeamAccount {
   potential?: (id: string) => number | undefined;
   /** The weapon in the character's saved build, when one is saved (signature weapons). */
   weapon?: (id: string) => { id?: string; name: string; refine?: number } | undefined;
+  /** The character's saved build (owned characters only): team rules read which stats it is built for (T18). */
+  build?: (id: string) => CharacterBuild | undefined;
 }
 
 /** One reason behind a team score. */
@@ -275,6 +284,26 @@ export interface TeamExplain {
   missing: string[];
 }
 
+/**
+ * A build this team wants on a member (LOGIC-CORE, T18): their buff to the damage dealer grows with their own stat,
+ * so the team wants them built for it. `points` are already inside the verdict's count.
+ */
+export interface TeamWant {
+  who: string;
+  /** The stat in words, e.g. "HP". */
+  stat: string;
+  /** e.g. "HP build on Robin • Summeretto". */
+  label: string;
+  /** What the saved build has, e.g. "HP main stat on Body, Feet (of 4 slots that can have it), 7 HP sub-stat rolls" or "no build saved". */
+  have: string;
+  fit: 'built' | 'partly' | 'not' | 'no-build';
+  points: number;
+  /** The most a fully built member adds (the best team found assumes it). */
+  max: number;
+  /** The kit line that makes the buff scale, word for word, and its piece. */
+  proof: { skill: string; quote: string };
+}
+
 export type TeamVerdict =
   | {
       rated: true;
@@ -292,6 +321,8 @@ export type TeamVerdict =
       notes: string[];
       /** The score in plain words, before the proof list. */
       explain?: TeamExplain;
+      /** Builds this team wants on its members (stat-scaling buffs), with how the saved builds fit. */
+      wants?: TeamWant[];
     }
   | { rated: false; why: string };
 
@@ -339,4 +370,9 @@ export interface TeamRules {
   lineUps: (account: TeamAccount) => TeamIdea[];
   /** What a character adds to the account; null = not rated. */
   ifYouPull: (id: string, account: TeamAccount) => PullValue | null;
+  /**
+   * The members to show for one of the game's teams: per slot, the first listed character you own, in the game's
+   * order (LOGIC-CORE). Absent = each slot's first pick.
+   */
+  fill?: (preset: TeamPreset, account: TeamAccount) => string[];
 }
