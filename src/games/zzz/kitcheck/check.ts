@@ -38,9 +38,6 @@ export interface Account {
   ideal?: boolean;
 }
 
-/** Builds add points only once the owner adds them to the ZZZ method (decision 25 holds for HSR now). */
-const COUNTS_BUILDS = false;
-
 export type Status = 'on' | 'off' | 'locked' | 'unknown' | 'replaced';
 
 /** One line of the explanation. `points` is what it adds to the count (0 for tie-break and not counted). */
@@ -276,22 +273,21 @@ export function checkOrder(order: string[], dd: string, lib: Library, account: A
     }
   }
 
-  // T18 (decision 25): each wanted build, read roughly from the saved build. The owner's ZZZ method (docs/logic/zzz-method.md)
-  // is exact and doesn't count builds, so here they are shown, not counted, until the owner adds them to the method.
+  // T18 (owner's ruling 2026-10-10, zzz-decisions.md): each wanted build, read roughly from the saved build, counts on
+  // top of the method as in HSR; the best team found assumes it built.
   for (const { who, e } of wants.values()) {
-    const read: BuildFit = account.ideal ? { fit: 'built', points: BUILT_POINTS, have: 'assumed built for it' } : (account.buildFit?.(who, e.scales.stat) ?? { fit: 'no-build', points: 0, have: 'no build saved' });
-    const fit: BuildFit = COUNTS_BUILDS ? read : { ...read, points: 0 };
+    const fit: BuildFit = account.ideal ? { fit: 'built', points: BUILT_POINTS, have: 'assumed built for it' } : (account.buildFit?.(who, e.scales.stat) ?? { fit: 'no-build', points: 0, have: 'no build saved' });
     const word = BUILD_STAT_WORD[e.scales.stat];
     lines.push({
       kind: 'build',
       who,
       entry: e.id,
       tag: `${word} build on ${name(who)}`,
-      why: `${e.tag} grows with ${name(who)}'s ${word}. Yours: ${fit.have}: ${FIT_WORD[fit.fit]}${COUNTS_BUILDS ? '' : ' (shown; the ZZZ method doesn’t count builds yet)'}`,
+      why: `${e.tag} grows with ${name(who)}'s ${word}. Yours: ${fit.have}: ${FIT_WORD[fit.fit]}`,
       piece: e.piece,
       quote: e.scales.quote,
       points: fit.points,
-      build: { stat: e.scales.stat, fit: fit.fit, have: fit.have, max: COUNTS_BUILDS ? BUILT_POINTS : 0 },
+      build: { stat: e.scales.stat, fit: fit.fit, have: fit.have, max: BUILT_POINTS },
     });
   }
 
