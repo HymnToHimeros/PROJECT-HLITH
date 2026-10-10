@@ -28,13 +28,13 @@ do tonight**, **how many pulls you'll have** when the banner you want arrives, a
 
 | | |
 |---|---|
-| 🌅 **Today** | Your evening in order: dailies and weeklies that reset at *your server's* reset, events about to end, stamina, live banners, and a wishlist of banners for characters you want. Tick things off; ticks reset by themselves. |
+| 🌅 **Today** | Your evening in order: dailies and weeklies that reset at *your server's* reset, events about to end, live stamina from HoYoLAB, live banners, and a wishlist of banners for characters you want. Tick things off (HoYoLAB ticks what it can prove, like stamina spent); ticks reset by themselves. |
 | 🎟️ **Pulls** | **Planner** (pulls by each banner, chance to win, worst case) · **Calculator** (every source of currency until the version ends) · **Bank log** (what you have, earned, bought, spent) · **History** (import your real pulls → pity, 50/50 state and a Luck report). |
 | 🗓️ **Calendar** | Banners, events, endgame resets and your own plans on one timeline, with a link to put it in your phone's calendar. |
 | 🎪 **Events** | What's running, what you've done or skipped, login days claimed, and how much currency is still on the table. |
 | 📚 **Backlog** | Permanent content that still pays out: tap where you are in the story, tick side quests, count up modes and achievements. Switch a category on and it counts toward your pulls. |
 | 🎴 **Banners** | Live and upcoming banners, leaks (clearly marked, and hideable), and how each one fits your account. |
-| 🧑‍🤝‍🧑 **Roster** | Every character: owned, wanted, copies. Character pages, your own teams, recommended teams, share a team with a link, and a kit check. |
+| 🧑‍🤝‍🧑 **Roster** | Every character, newest first: owned, wanted, copies, Enhanced / Agent Potential, and the build you saved (level, weapon, gear, skills). Kit check reads every kit; teams get a synergy % that explains itself, with "who fits" and "if you pull". Your own teams, recommended teams, share a team with a link, and how to build each character. |
 | 🌾 **Farm** | Pick who you're building; see the materials, the stamina and the days it takes. |
 | 🔭 **Intel** | New content no other screen covers yet, always marked unverified. |
 | ✨ **Assistant** | Ask in plain words. It can propose plans and changes, and you approve or undo each one. |
@@ -50,8 +50,9 @@ do tonight**, **how many pulls you'll have** when the banner you want arrives, a
 
 **And around it:** sign in with Google, Discord or an email link · everything syncs
 between your devices · HoYoLAB link for live stamina, automatic daily check-in and code
-redemption, for several accounts at once · a profile page with picture, banner, bio and
-showcase · backups you can download · an evening message and a calendar feed.
+redemption, for several accounts at once · themes with their own art · a profile with
+picture, banner, bio and showcase · backups you can download · an evening message and
+a calendar feed · an owner console for the lists, findings and announcements.
 
 ## Yours to change
 
@@ -100,7 +101,9 @@ flowchart LR
 
 ## Who builds what
 
-HLITH is built by several focused workstreams, each with its own brief:
+HLITH is built by five chats that talk to each other directly and agree together
+before anything goes live ([how](docs/RELEASES.md)). The owner talks to MANAGER;
+MANAGER sends each job where it belongs.
 
 | Workstream | Builds |
 |---|---|
@@ -140,12 +143,8 @@ permission.
 
 ## Docs
 
-| | |
-|---|---|
-| [FEATURES](docs/FEATURES.md) | Everything HLITH must do |
-| [ROADMAP](docs/ROADMAP.md) | What's done (ticks itself from the code) |
-| [PROGRESS](docs/PROGRESS.md) · [HISTORY](docs/HISTORY.md) | Latest work and what's next · everything before |
-| [DESIGN](docs/DESIGN.md) · [design files](docs/design) | How it looks |
-| [WORKSTREAMS](docs/WORKSTREAMS.md) · [RELEASES](docs/RELEASES.md) | Who builds what · how the chats agree an update goes live |
-| [SETUP](docs/SETUP.md) · [DEPLOY](docs/DEPLOY.md) | Outside settings and hosting |
-| [ROUTINES](docs/ROUTINES.md) | How the research routine delivers findings |
+Everything is sorted in **[docs/README.md](docs/README.md)**: what HLITH must do
+([FEATURES](docs/FEATURES.md), [DESIGN](docs/DESIGN.md)), where it stands
+([PROGRESS](docs/PROGRESS.md), [ROADMAP](docs/ROADMAP.md)), who builds what
+([WORKSTREAMS](docs/WORKSTREAMS.md), [RELEASES](docs/RELEASES.md)) and how it runs
+([SETUP](docs/SETUP.md), [DEPLOY](docs/DEPLOY.md)).
