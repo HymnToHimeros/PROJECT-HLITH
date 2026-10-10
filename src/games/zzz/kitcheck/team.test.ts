@@ -61,13 +61,17 @@ describe('Line-ups', () => {
 describe('Who fits', () => {
   it('for Starlight Billy: only agents whose kits connect, saying how', () => {
     const fits = whoFits([BILLY], all);
-    expect(fits.map((f) => f.id).sort()).toEqual([DIALYN, LUCIA, PAN].sort());
+    expect(fits.map((f) => f.id)).toEqual(expect.arrayContaining([DIALYN, LUCIA, PAN]));
+    // Lighter (Stun) switches on Billy's Starlight, but his Ice and Fire buffs never count for a Physical Billy.
+    const lighter = fits.find((f) => f.id === '1161');
+    expect(lighter?.how.join(' | ')).toContain("turns on Starlight - Billy's Additional Ability");
+    expect(lighter?.how.join(' | ')).not.toMatch(/Ice and Fire/);
     const dialyn = fits.find((f) => f.id === DIALYN);
     expect(dialyn?.how.join(' | ')).toContain("turns on Starlight - Billy's Additional Ability: Blazing Starlight");
   });
 
   it('for Billy and Dialyn: Pan Yinhu and Lucia both connect', () => {
-    expect(whoFits([BILLY, DIALYN], all).map((f) => f.id).sort()).toEqual([LUCIA, PAN].sort());
+    expect(whoFits([BILLY, DIALYN], all).map((f) => f.id)).toEqual(expect.arrayContaining([LUCIA, PAN]));
   });
 });
 

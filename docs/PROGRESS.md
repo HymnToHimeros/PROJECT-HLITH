@@ -28,6 +28,25 @@ Resume with: "continue from PROGRESS.md". Newest entry on top. Older entries:
 - CI (`.github/workflows/ci.yml`) runs both on every pull request.
 
 ## Done
+- 2026-10-10 · **LOGIC-CORE: ZZZ groups B to E, HSR kit text and theory** (branch `logic-core/zzz-groups-d-e`, replaces PR #41).
+  - ZZZ group D read (Yixuan, Ju Fufu, Yidhari, Manato, Claret, Astra Yao,
+    Yuzuha) and group E (Miyabi, Yanagi, Burnice, Jane, Vivian, Alice, Piper).
+    New stat "Anomaly DMG": Disorder / Assault / Attribute Anomaly buffs count
+    only for damage dealers whose own text proves they deal it. 33 of 62 ZZZ
+    agents are read now.
+  - ZZZ group B read (Lycaon, Lighter, Roxy, Hugo, Sunna, Ye Shunguang, Zhao) and
+    group C (Banyue, Norma, Cissia, Harumasa, Lucy, Seed, Rina, Anton). Tests
+    from the method: Ye + Sunna + Zhao = 9, Lighter's Ice/Fire buffs don't reach
+    a Physical damage dealer, Dialyn's and Roxy's +2s Stun don't stack.
+  - Importer: Agent Potential (base text "Replaced" once Potential is saved),
+    live text for released agents (beta only for unreleased), blank glossary
+    words filled from zzz.gachabase.net, every formula shape.
+  - HSR: `npm run data:hsr-kits` imports group A's kit text (13 characters:
+    Feixiao, Topaz, Robin, Aventurine, Acheron, Jiaoqiu, Pela, Silver Wolf,
+    Firefly, Ruan Mei, Harmony Trailblazer ×2, Lingsha), with Traces,
+    Eidolons, memosprites and Enhanced kits. Kit check shows it.
+  - `docs/logic/hsr-theory.md`: the HSR theory, waiting for the owner's OK.
+    No HSR scoring code until then.
 - 2026-10-10 · **LOGIC-CORE steps 2–3 for group A: Kit check tags and team scores** (branch `logic-core/zzz-kit-check-a`).
   - Cheat sheet (Part A) for Starlight Billy, Dialyn, Lucia, Pan Yinhu:
     `src/games/zzz/kitcheck/sheet/groupA.ts`. Every entry answers the seven
