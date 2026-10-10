@@ -28,6 +28,11 @@ Resume with: "continue from PROGRESS.md". Newest entry on top. Older entries:
 - CI (`.github/workflows/ci.yml`) runs both on every pull request.
 
 ## Done
+- 2026-10-10 · **MANAGER is on** (branch `manager/jobs-list`). `docs/TASKS.md` holds every
+  open owner job with who has it and its state; the owner's screenshots are in
+  `docs/owner-reports/2026-10-10/`. Owner's rule: MANAGER approves and merges every PR
+  (`docs/RELEASES.md` routine, `docs/WORKSTREAMS.md` rule 9); chats send `READY` and
+  no longer merge their own PRs.
 - 2026-10-10 · **LOGIC-CORE: HSR character EXP counted** (branch `logic-core/hsr-exp`).
   Farm and "Materials to max" now include character EXP 1 → 80 for HSR:
   5,797,920 EXP = 290 Traveler's Guides, from the game's own EXP table
