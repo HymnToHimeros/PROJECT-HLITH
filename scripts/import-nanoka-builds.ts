@@ -179,7 +179,7 @@ interface HsrDetail {
     sub_affix_property_list?: string[];
   };
   lightcones?: number[];
-  teams?: { team_id: number; member_list: number[]; backup_list1?: number[]; backup_list2?: number[]; backup_list3?: number[] }[];
+  teams?: { team_id: number; position?: number; member_list: number[]; backup_list1?: number[]; backup_list2?: number[]; backup_list3?: number[] }[];
 }
 
 async function hsr(): Promise<{ builds: Build[]; teams: unknown[] }> {
@@ -242,10 +242,12 @@ async function hsr(): Promise<{ builds: Build[]; teams: unknown[] }> {
         items,
       });
     }
-    // The game's first recommended team per character (the Teams screen lists every one).
-    for (const t of (d.teams ?? []).slice(0, 1)) {
-      // The lead plus the three places; each place lists the game's first pick, then its backups.
-      const places = [[Number(id)], ...[0, 1, 2].map((i) => [t.member_list[i], ...((i === 0 ? t.backup_list1 : i === 1 ? t.backup_list2 : t.backup_list3) ?? [])].filter((x): x is number => typeof x === 'number'))];
+    // Every team the game recommends on this character's page, in the game's own order: the three members, with the
+    // page's character placed where the game puts them (`position`). Each place lists the game's pick, then its backups.
+    // Who the team is built around is decided from the kits (src/games/hsr/kitcheck/team.ts), not here.
+    for (const t of d.teams ?? []) {
+      const places = [0, 1, 2].map((i) => [t.member_list[i], ...((i === 0 ? t.backup_list1 : i === 1 ? t.backup_list2 : t.backup_list3) ?? [])].filter((x): x is number => typeof x === 'number'));
+      places.splice(Math.min(t.position ?? 0, places.length), 0, [Number(id)]);
       const slots = places.map((p) => ({ characters: [...new Set(p.map(String))].filter((c) => c in list) })).filter((s) => s.characters.length);
       if (slots.length < 2) continue;
       teams.push({ id: `game-${id}-${t.team_id}`, name: `${plain(d.name)} team${t.team_id > 1 ? ` ${t.team_id}` : ''}`, slots, source: "the game's own recommended team (nanoka.cc)" });

@@ -3,8 +3,10 @@
 import { describe, expect, it } from 'vitest';
 import type { TeamAccount } from '../../../core/contract';
 import { check, type Line } from './check';
+import teamsJson from '../data/teams.json';
+import type { TeamPreset } from '../../../core/contract';
 import { buildLibrary, library, SHEETS } from './library';
-import { ifYouPull, lineUps, recommendedTeams, synergyLabel, verdict, whoFits } from './team';
+import { gameTeams, ifYouPull, lineUps, recommendedTeams, synergyLabel, verdict, whoFits } from './team';
 
 const lib = library();
 const id = (name: string) => {
@@ -119,3 +121,29 @@ describe('HSR team rules for the Roster', () => {
     expect(pull?.percent).toBeGreaterThan(0);
   });
 });
+
+describe('HSR: teams are built around real damage dealers (T19)', () => {
+  it("the game builds teams around Feixiao, never around March 7th (Hunt), Topaz or Moze, who are Feixiao's partners", () => {
+    for (const c of ['Feixiao', 'Acheron', 'Firefly', 'Kafka', 'The Herta']) expect(lib.centres.has(id(c)), c).toBe(true);
+    for (const c of ['March 7th', 'Topaz & Numby', 'Moze', 'Dr. Ratio', 'Black Swan']) expect(lib.centres.has([...lib.names].find(([k, n]) => n === c && lib.sheets.get(k)?.damage)?.[0] ?? ''), c).toBe(false);
+  });
+
+  it("the game's team from March 7th (Hunt)'s page leads with Feixiao and is named after her", () => {
+    const t = gameTeams(teamsJson as TeamPreset[]).find((x) => x.id === 'game-1224-1');
+    expect(t?.slots[0]?.characters[0]).toBe(id('Feixiao'));
+    expect(t?.name).toBe('Feixiao team · with March 7th');
+  });
+
+  it('in a team with March 7th (Hunt) and Feixiao, Feixiao is the damage dealer, whoever is listed first', () => {
+    const v = verdict(['1224', id('Feixiao'), id('Robin'), id('Aventurine')], own([]));
+    expect(v.rated && v.order[0]).toBe(id('Feixiao'));
+  });
+
+  it('kit-check teams are only built around centres, and never use another centre the game never pairs with them', () => {
+    const teams = recommendedTeams();
+    for (const p of teams) expect(lib.centres.has(p.slots[0]?.characters[0] ?? ''), p.name).toBe(true);
+    const fei = teams.find((p) => p.slots[0]?.characters[0] === id('Feixiao'));
+    expect(fei?.slots.flatMap((s) => s.characters)).not.toContain(id('Castorice'));
+  });
+});
+

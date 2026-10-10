@@ -18,7 +18,7 @@ import sampleArt from './data/sample-art.json';
 import versions from './data/versions.json';
 import { SHEETS } from './kitcheck/library';
 import { withTags } from './kitcheck/tags';
-import { hsrTeamRules, recommendedTeams } from './kitcheck/team';
+import { gameTeams, hsrTeamRules } from './kitcheck/team';
 
 const list = <T>(rows: unknown) => async () => rows as T[];
 const COMMUNITY = 'community pull-log statistics (not published by the game)';
@@ -186,8 +186,9 @@ export const hsr: GameContract = {
     events: list<GameEvent>(events),
     backlog: list<BacklogItem>(backlog),
     materials: list<Material>(materials),
-    // The game's own recommended teams, then the best teams the kit check finds for each damage dealer (docs/logic/hsr-theory.md).
-    teams: async () => [...(teams as TeamPreset[]), ...recommendedTeams()],
+    // The game's own recommended teams, built around their real carry and scored by the kit check (docs/logic/hsr-theory.md).
+    // The kit check's own "best" teams aren't listed for HSR: the game's teams are the ones players run (decision 21).
+    teams: async () => gameTeams(teams as TeamPreset[]),
     sampleArt: async () => sampleArt as SampleArt[],
     versions: list<Version>(versions),
     // Kit text (npm run data:hsr-kits) with the cheat sheet's tags (docs/logic/hsr-theory.md, Part A).
