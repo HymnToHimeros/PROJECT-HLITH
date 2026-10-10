@@ -28,6 +28,14 @@ Resume with: "continue from PROGRESS.md". Newest entry on top. Older entries:
 - CI (`.github/workflows/ci.yml`) runs both on every pull request.
 
 ## Done
+- 2026-10-10 · **Calmer Calendar (T20, Calendar part)** (branch `frame/calm-calendar`).
+  Nothing removed, only folded and merged. Timeline: bars that don't overlap share a
+  row, rows grouped by lane then game, thinner rows, a busy lane shows up to 4 rows
+  per game (what changes soonest) with "Show N more"; the date scale with a TODAY
+  mark stays in view while scrolling on a PC; lane names and "Show more" stay in view
+  when the phone timeline scrolls sideways. Dates: soonest change first, grouped
+  "Next 7 days" / "In 1–2 weeks", up to 8 shown, "Show N more dates" opens every
+  date (with "Later"). All games at 1440px: 4,978 → 1,841 px tall; HSR: 2,752 → 1,455.
 - 2026-10-10 · **Two more chats: MANAGER and ERROR-FIX** (branch `frame/manager-error-fix`).
   `docs/WORKSTREAMS.md`: rules 7–8, both in Who's who, a routing table (which job goes
   to which chat). `docs/briefs/MANAGER.md` (the owner's front desk: routes every
