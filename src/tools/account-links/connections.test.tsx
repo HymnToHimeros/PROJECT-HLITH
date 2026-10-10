@@ -161,7 +161,7 @@ describe('roster import', () => {
     ]);
   });
 
-  it('only adds: never removes, never un-owns, never lowers dupes, keeps wanted', () => {
+  it('only adds: never removes, never un-owns, never lowers dupes; a newly owned character leaves the wanted list', () => {
     setRosterEntry('aa', '1001', { owned: true, wanted: true, dupes: 5 }); // higher than HoYoLAB says
     setRosterEntry('aa', '1004', { owned: true, wanted: false, dupes: 2 }); // not on HoYoLAB at all
     setRosterEntry('aa', '1003', { owned: false, wanted: true, dupes: 0 }); // wanted, now owned
@@ -180,7 +180,7 @@ describe('roster import', () => {
     expect(counts).toEqual({ added: 1, updated: 0 });
     expect(after['1001']).toEqual({ owned: true, wanted: true, dupes: 5 });
     expect(after['1004']).toEqual({ owned: true, wanted: false, dupes: 2 });
-    expect(after['1003']).toEqual({ owned: true, wanted: true, dupes: 6 });
+    expect(after['1003']).toEqual({ owned: true, wanted: false, dupes: 6 });
     expect(Object.keys(after).sort()).toEqual(['1001', '1003', '1004']);
   });
 

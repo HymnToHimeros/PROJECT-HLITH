@@ -29,7 +29,7 @@ describe('scan fields', () => {
 describe('Scan', () => {
   beforeEach(() => resetUserData());
 
-  it('saves what you typed: owned + dupes, keeping wanted', async () => {
+  it('saves what you typed: owned + dupes; newly owned leaves the wanted list', async () => {
     setRosterEntry('aa', '1003', { owned: false, wanted: true, dupes: 0 });
     render(<Scan game={game} />);
     const who = await screen.findByLabelText('Character');
@@ -37,7 +37,7 @@ describe('Scan', () => {
     fireEvent.change(who, { target: { value: '1003' } });
     fireEvent.change(screen.getByLabelText(/Eidolon/), { target: { value: '2' } });
     fireEvent.click(screen.getByRole('button', { name: 'Save to my roster' }));
-    await waitFor(() => expect(gameData('aa').roster['1003']).toEqual({ owned: true, wanted: true, dupes: 2 }));
+    await waitFor(() => expect(gameData('aa').roster['1003']).toEqual({ owned: true, wanted: false, dupes: 2 }));
     expect(screen.getByRole('status')).toHaveTextContent('Fire Queen is owned, E2');
   });
 

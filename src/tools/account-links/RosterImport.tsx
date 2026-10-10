@@ -115,7 +115,7 @@ function ImportSheet({ games, onClose }: { games: GameContract[]; onClose: () =>
           <>Pick which HoYoLAB account reads each game (if you linked more than one, e.g. a main and an alt). Accounts are added in Account → Connected accounts. For one game you can also paste a login just for this import.</>,
           <>Press “Find my characters”. HLITH asks HoYoLAB which characters each account has, with their dupes and level.</>,
           <>Check each list. NEW = not marked as owned yet. RAISE = a higher dupe count than in HLITH.</>,
-          <>Press “Add” under a game. It only adds and raises: nothing you marked is removed or lowered, and wanted marks stay.</>,
+          <>Press “Add” under a game. It only adds and raises: nothing you marked is removed or lowered. Characters you now own leave your wanted list.</>,
         ]}
       >
         <p className={c.body}>HoYoLAB only shows characters you own. Anyone HoYoLAB lists that isn’t in HLITH’s list yet is shown but not added. Level and weapon are shown but not saved yet: HLITH doesn’t store builds yet.</p>

@@ -19,7 +19,7 @@ describe('Roster import: Add to my roster', () => {
     render(<GameImport game={game} imported={found} who="test account" />);
     fireEvent.click(await screen.findByRole('button', { name: /Add to my AA roster \(2\)/ }));
     expect(gameData('aa').roster['1001']).toEqual({ owned: true, wanted: false, dupes: 2 });
-    expect(gameData('aa').roster['1003']).toEqual({ owned: true, wanted: true, dupes: 0 });
+    expect(gameData('aa').roster['1003']).toEqual({ owned: true, wanted: false, dupes: 0 });
     fireEvent.click(screen.getByRole('button', { name: 'Undo' }));
     expect(gameData('aa').roster['1001']).toEqual({ owned: true, wanted: false, dupes: 0 });
     expect(gameData('aa').roster['1003']).toEqual({ owned: false, wanted: true, dupes: 0 });
