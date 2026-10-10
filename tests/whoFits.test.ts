@@ -23,8 +23,8 @@ describe('Who fits from your account (T18)', () => {
     expect([...percents].sort((a, b) => b - a)).toEqual(percents);
     const robin = fits.find((f) => f.id === idOf(h, 'Robin'));
     expect(robin?.theory).toBe(false);
-    expect(robin?.fromAccount).toContain('E2 counted.');
-    expect(robin?.fromAccount?.some((n) => /No weapon saved/.test(n))).toBe(true);
+    expect(robin?.fromAccount?.[0]).toBe('Counted: E2.');
+    expect(robin?.fromAccount?.some((n) => /Signature Flowing Nightglow not saved: not counted/.test(n))).toBe(true);
   });
 
   it('"Include characters I don’t own" adds the rest, marked as theory', () => {
@@ -34,10 +34,14 @@ describe('Who fits from your account (T18)', () => {
     expect(topaz?.fromAccount?.[0]).toMatch(/^Not owned: scored as theory at E0/);
   });
 
-  it('a saved weapon is named, and said not to be counted yet (no guessing)', () => {
-    const withWeapon = account({ [fei]: 0, [idOf(h, 'Robin')]: 0 }, { weapon: (id) => (id === idOf(h, 'Robin') ? { name: 'Flowing Nightglow' } : undefined) });
-    const robin = hsrFits([fei], withWeapon, h).find((f) => f.id === idOf(h, 'Robin'));
-    expect(robin?.fromAccount).toContain("Weapon in your build: Flowing Nightglow. Its effect isn't counted yet.");
+  it('the signature weapon counts only when the saved build has it; another weapon is named and not counted', () => {
+    const robinId = idOf(h, 'Robin');
+    const nightglow = h.unlocks.get(robinId)?.get('signature-weapon')?.weapon ?? '';
+    const withSig = account({ [fei]: 0, [robinId]: 0 }, { weapon: (id) => (id === robinId ? { id: nightglow, name: 'Flowing Nightglow' } : undefined) });
+    const robin = hsrFits([fei], withSig, h).find((f) => f.id === robinId);
+    expect(robin?.fromAccount).toContain('Counted: E0 (no copies saved), signature Flowing Nightglow.');
+    const other = account({ [fei]: 0, [robinId]: 0 }, { weapon: (id) => (id === robinId ? { name: 'Dance! Dance! Dance!' } : undefined) });
+    expect(hsrFits([fei], other, h).find((f) => f.id === robinId)?.fromAccount).toContain('Dance! Dance! Dance! saved, not signature Flowing Nightglow: not counted.');
   });
 
   it('ZZZ: Mindscapes and Agent Potential from the account', () => {
@@ -46,6 +50,6 @@ describe('Who fits from your account (T18)', () => {
     const lucia = idOf(z, 'Lucia');
     const fits = zzzFits([billy], account({ [billy]: 0, [lucia]: 1 }), z);
     const l = fits.find((f) => f.id === lucia);
-    expect(l?.fromAccount).toContain('M1 counted.');
+    expect(l?.fromAccount?.[0]).toMatch(/^Counted: M1/);
   });
 });

@@ -1,7 +1,7 @@
 /**
  * What a team score took from your account, in plain words (owner's job T18):
  * dupes, the second upgrade track (HSR Enhanced, ZZZ Agent Potential) and the
- * saved weapon. Honest: what isn't saved is said, and scored at base.
+ * signature weapon in the saved build. Honest: what isn't saved is said, and scored at base.
  */
 import type { TeamAccount } from '../contract';
 
@@ -14,20 +14,29 @@ export interface AccountFacts {
   trackLevels?: boolean;
   /** Pieces of this character's kit the check left locked. */
   locked: number;
+  /** Their signature weapon (id and name), when they have one. */
+  signature?: { id: string; name: string };
 }
 
 export function accountNotes(id: string, account: TeamAccount, facts: AccountFacts): { notes: string[]; theory: boolean } {
   if (!account.owned(id)) return { notes: [`Not owned: scored as theory at ${facts.dupePrefix}0${facts.track ? `, without the ${facts.track}` : ''}.`], theory: true };
-  const notes: string[] = [];
+  // What counted leads, in one short line (FRAME shows two lines per suggestion); what's missing follows.
+  const counted: string[] = [];
+  const missing: string[] = [];
   const dupes = account.dupes(id);
-  notes.push(dupes > 0 ? `${facts.dupePrefix}${dupes} counted.` : `${facts.dupePrefix}0 counted (no copies saved).`);
+  counted.push(dupes > 0 ? `${facts.dupePrefix}${dupes}` : `${facts.dupePrefix}0 (no copies saved)`);
   if (facts.track) {
     const p = account.potential?.(id);
-    const level = facts.trackLevels ? ` ${p}` : '';
-    notes.push(p === undefined ? `${facts.track}: not saved, scored without it.` : p > 0 ? `${facts.track}${level} counted.` : `${facts.track}: none, scored without it.`);
+    if (p === undefined) missing.push(`${facts.track} not saved: scored without it.`);
+    else if (p > 0) counted.push(`${facts.track}${facts.trackLevels ? ` ${p}` : ''}`);
+    else missing.push(`No ${facts.track}: scored without it.`);
   }
-  if (facts.locked) notes.push(`${facts.locked} kit piece${facts.locked === 1 ? '' : 's'} still locked at this level.`);
   const w = account.weapon?.(id);
-  notes.push(w ? `Weapon in your build: ${w.name}. Its effect isn't counted yet.` : 'No weapon saved: weapon effects aren’t counted.');
+  const sig = facts.signature;
+  if (sig && w && w.id === sig.id) counted.push(`signature ${sig.name}`);
+  else if (sig) missing.push(w ? `${w.name} saved, not signature ${sig.name}: not counted.` : `Signature ${sig.name} not saved: not counted.`);
+  else missing.push(w ? `${w.name}: only signature weapons count.` : 'No signature weapon to count.');
+  const notes = [`Counted: ${counted.join(', ')}.`, ...missing];
+  if (facts.locked) notes.push(`${facts.locked} kit piece${facts.locked === 1 ? '' : 's'} still locked.`);
   return { notes, theory: false };
 }

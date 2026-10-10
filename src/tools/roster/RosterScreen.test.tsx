@@ -2,7 +2,7 @@ import { act, cleanup, fireEvent, render, screen, within } from '@testing-librar
 import { useState } from 'react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import type { Character, GameContract, Kit, TeamPreset, TeamRules } from '../../core/contract';
-import { gameData, resetUserData, saveTeam, setRosterEntry } from '../../core/data/userData';
+import { gameData, resetUserData, saveTeam, setBuild, setRosterEntry } from '../../core/data/userData';
 import RosterScreen from './RosterScreen';
 
 const chars: Character[] = [
@@ -418,6 +418,40 @@ describe('Roster screen', () => {
     page = await openPage('Older Star');
     await within(page).findByText('Eidolon');
     expect(within(page).queryByLabelText('Enhanced')).not.toBeInTheDocument();
+  });
+
+  it('Build score shows the score, its grade and every checked part with its reason; parts with no data are not counted', async () => {
+    const base = makeGame(false);
+    const scoreBuild = vi.fn(() => ({
+      known: true as const,
+      source: 'user' as const,
+      at: '2026-10-10T00:00:00Z',
+      value: {
+        score: 75,
+        grade: 'A',
+        basis: "Average of 2 checked parts against the game's own recommendation; 1 part with no data yet not counted.",
+        parts: [
+          { label: 'Level', value: 100, detail: 'Level 80 of 80.' },
+          { label: 'Weapon', value: 50, detail: 'Spark Cone is recommended.' },
+          { label: '4-piece set', value: null, detail: 'No sets entered.' },
+        ],
+      },
+    }));
+    const game: GameContract = { ...base, build: { levelMax: 80, weaponLevelMax: 80, refine: { name: 'Superimposition', max: 5 }, slots: [], subStats: [], skills: [] }, rules: { scoreBuild } };
+    setRosterEntry('aa', 'c2', { owned: true, wanted: false, dupes: 0 });
+    setBuild('aa', 'c2', { level: 80, weapon: { name: 'Spark Cone', refine: 2 }, gear: [{ slot: 'Head', set: 'Ember Set', subs: [{ stat: 'SPD', value: 4, rolls: 2 }] }], source: 'manual', updatedAt: '2026-10-10T00:00:00Z' });
+    await show('characters', game);
+    fireEvent.click(screen.getByRole('button', { name: /^Older Star/ }));
+    const page = await screen.findByRole('article', { name: 'Older Star' });
+    expect(within(page).getByText('75')).toBeInTheDocument();
+    expect(within(page).getByText('A')).toBeInTheDocument();
+    fireEvent.click(within(page).getByText(/^Why 75:/));
+    expect(within(page).getByText('Spark Cone is recommended.')).toBeInTheDocument();
+    expect(within(page).getByText('No data yet · No sets entered.')).toBeInTheDocument();
+    // The whole saved build reaches the score: set, rolls and refinement included.
+    expect(scoreBuild).toHaveBeenCalledWith(
+      expect.objectContaining({ weapon: { name: 'Spark Cone', refine: 2 }, gear: [{ slot: 'Head', main: '', subs: { SPD: 4 }, set: 'Ember Set', rolls: { SPD: 2 } }] }),
+    );
   });
 
   it('Build score: enter a build, see it on the page, fix a wrong number, edit, clear with Undo', async () => {

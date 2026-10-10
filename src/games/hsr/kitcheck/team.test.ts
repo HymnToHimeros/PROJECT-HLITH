@@ -147,3 +147,28 @@ describe('HSR: teams are built around real damage dealers (T19)', () => {
   });
 });
 
+
+describe('HSR: signature Light Cones count only when equipped (T18)', () => {
+  const team = ['Feixiao', 'Topaz & Numby', 'Robin', 'Aventurine'];
+  const robin = (lines: Line[]) => lines.find((l) => lib.names.get(l.who) === 'Robin' && l.entry === 'lc-cadenza');
+  it('no Light Cone saved: Robin\'s signature is locked and earns nothing', () => {
+    const r = check(team.map(id), lib, e0, id('Feixiao'));
+    if (!r.rated) throw new Error(r.why);
+    expect(robin(r.best.lines)?.kind).toBe('locked');
+    expect(robin(r.best.lines)?.points).toBe(0);
+  });
+  it('another Light Cone saved: still locked, and says which one is saved', () => {
+    const r = check(team.map(id), lib, { ...e0, weapon: () => ({ id: '21000', name: 'Post-Op Conversation' }) }, id('Feixiao'));
+    if (!r.rated) throw new Error(r.why);
+    expect(robin(r.best.lines)?.kind).toBe('locked');
+    expect(robin(r.best.lines)?.why).toMatch(/Post-Op Conversation/);
+  });
+  it('Flowing Nightglow saved on Robin: the piece is read and the team count does not drop', () => {
+    const without = check(team.map(id), lib, e0, id('Feixiao'));
+    const withIt = check(team.map(id), lib, { ...e0, weapon: (x) => (x === id('Robin') ? { id: '23026', name: 'Flowing Nightglow' } : undefined) }, id('Feixiao'));
+    if (!without.rated || !withIt.rated) throw new Error('not rated');
+    const line = robin(withIt.best.lines);
+    expect(line?.kind).not.toBe('locked');
+    expect(withIt.best.count).toBeGreaterThanOrEqual(without.best.count);
+  });
+});

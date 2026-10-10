@@ -1,15 +1,16 @@
-import type { CSSProperties } from 'react';
+import { useState, type CSSProperties } from 'react';
 import type { Banner, GameContract, GameEvent, GameId, ModuleId, Version } from '../../core/contract';
 import { known, unknown } from '../../core/contract/known';
 import { getPrefs, useExamplesShown, usePrefs } from '../../core/data/prefs';
 import { balances, EMPTY_GAME, setTick, type GameUserData } from '../../core/data/userData';
 import { formatNumber } from '../../core/time/format';
 import { formatTime, nextDailyReset, nextWeeklyReset, serverRule } from '../../core/time/reset';
-import { BannerCard, CurrencyChip, ExampleNotice, ExampleTag, GameTag, HowTo, StatTile, Timer, UnverifiedTag } from '../../core/ui';
+import { BannerCard, CurrencyChip, ExampleNotice, ExampleTag, GameTag, HowTo, NoData, StatTile, Timer, UnverifiedTag } from '../../core/ui';
 import { cx } from '../../core/ui/cx';
 import { clock, fullInText, projectStamina, type LiveStamina } from '../account-links/liveStamina';
 import { pullsFor } from '../budget/budget';
 import { AddOwnButton, examplesFor } from './AddOwn';
+import { autoTickWhy } from './autoTick';
 import type { GameLists } from './lists';
 import { buildTasks, type Task } from './tasks';
 import { TonightsRun } from './TonightsRun';
@@ -82,8 +83,8 @@ export function Today({ games, servers, lists, user, now, open, openAccount, ope
     <div className={t.page}>
       {anyExample && (
         <ExampleNotice>
-          Banners and events marked EXAMPLE stand in until {tags ? 'the games’' : 'the game’s'} banner and event lists are added (that part is on us, not you).
-          Your ticks, wanted characters and Farm list are always your own.
+          Banners and events marked EXAMPLE stand in until {tags ? 'the games’' : 'the game’s'} banner and event lists are added (that part is on us, not you). Your ticks, wanted characters and Farm
+          list are always your own.
         </ExampleNotice>
       )}
 
@@ -104,28 +105,30 @@ export function Today({ games, servers, lists, user, now, open, openAccount, ope
       </div>
 
       <div className={t.chipRow}>
+        {days
+          .filter((d) => d.serverId)
+          .map((d) => (
+            <ServerChip key={d.game.id} game={d.game} serverId={d.serverId} onClick={() => chooseServer(d.game.id)} />
+          ))}
         {days.map((d) => (
-          <ServerChip key={d.game.id} game={d.game} serverId={d.serverId} onClick={() => chooseServer(d.game.id)} />
-        ))}
-        {days.map((d) => (
-          <Currencies key={d.game.id} day={d} />
+          <Currencies key={d.game.id} day={d} tag={tags} openLog={() => open('pulls', 'log')} />
         ))}
       </div>
 
       <div className={t.columns}>
         <div className={t.stack}>
-          <OpenTasks days={days} tags={tags} now={now} hideTicked={Boolean(prefs.hideTicked)} chooseServer={chooseServer} />
-          <TonightsRun tasks={days.flatMap((d) => d.tasks)} noServer={noServer} tags={tags} now={now} openAccount={noServer[0] ? () => chooseServer(noServer[0]?.id ?? '') : openAccount} />
-        </div>
-        <div className={t.stack}>
-          <LiveBanners days={days} tags={tags} now={now} showExamples={showExamples} />
-          <ComingUp days={days} tags={tags} now={now} showExamples={showExamples} />
+          <OpenTasks days={days} tags={tags} now={now} hideTicked={Boolean(prefs.hideTicked)} />
+          <TonightsRun tasks={days.flatMap((d) => d.tasks)} noServer={noServer} tags={tags} now={now} />
           <Wishlist
             games={days.map((d) => ({ game: d.game, user: d.user, characters: d.lists.characters, banners: d.banners.list, example: d.banners.example, exampleIds: d.lists.exampleIds }))}
             tags={tags}
             now={now}
             openRoster={() => open('roster', 'characters')}
           />
+        </div>
+        <div className={t.stack}>
+          <LiveBanners days={days} tags={tags} now={now} showExamples={showExamples} />
+          <ComingUp days={days} tags={tags} now={now} showExamples={showExamples} />
         </div>
       </div>
 
@@ -177,24 +180,37 @@ function Tiles({
       : undefined;
   return (
     <>
-      <div className={t.bigTime}>
-        <StatTile
-          label="Daily reset"
-          tag={tag}
-          value={daily ? known(<Timer to={daily} />, 'official') : unknown('choose-server')}
-          caption={server && daily ? `${two(game.reset.hour)}:00 ${server.label} server (${utc(server.utcOffset)}) · ${formatTime(daily)} your time` : undefined}
-          onFix={chooseServer}
-        />
-      </div>
-      <div className={t.bigTime}>
-        <StatTile
-          label="Weekly reset"
-          tag={tag}
-          value={weekly ? known(<Timer to={weekly} />, 'official') : unknown('choose-server')}
-          caption={weekly ? `${WEEKDAYS[game.reset.weekday] ?? ''} ${two(game.reset.hour)}:00 server time` : undefined}
-          onFix={chooseServer}
-        />
-      </div>
+      {!server ? (
+        // One clear step instead of two empty reset tiles: resets, ticks and tonight's order all need the server.
+        <div className={t.setupTile}>
+          <span className={t.setupLabel}>{tag && <GameTag {...tag} />} Daily and weekly reset</span>
+          <p className={t.setupText}>Pick the server you play on: resets, ticks and tonight’s order all follow it.</p>
+          <button type="button" className={t.promptBtn} onClick={chooseServer}>
+            Choose {game.short} server
+          </button>
+        </div>
+      ) : (
+        <>
+          <div className={t.bigTime}>
+            <StatTile
+              label="Daily reset"
+              tag={tag}
+              value={daily ? known(<Timer to={daily} />, 'official') : unknown('choose-server')}
+              caption={server && daily ? `${two(game.reset.hour)}:00 ${server.label} server (${utc(server.utcOffset)}) · ${formatTime(daily)} your time` : undefined}
+              onFix={chooseServer}
+            />
+          </div>
+          <div className={t.bigTime}>
+            <StatTile
+              label="Weekly reset"
+              tag={tag}
+              value={weekly ? known(<Timer to={weekly} />, 'official') : unknown('choose-server')}
+              caption={weekly ? `${WEEKDAYS[game.reset.weekday] ?? ''} ${two(game.reset.hour)}:00 server time` : undefined}
+              onFix={chooseServer}
+            />
+          </div>
+        </>
+      )}
       {main && (
         <StatTile
           label="Pulls available"
@@ -299,10 +315,20 @@ function ServerChip({ game, serverId, onClick }: { game: GameContract; serverId:
   );
 }
 
-function Currencies({ day }: { day: GameToday }) {
+function Currencies({ day, tag, openLog }: { day: GameToday; tag: boolean; openLog: () => void }) {
   const { game } = day;
   const bank = balances(day.user.ledger);
   const shown = game.currencies.filter((c) => (c.perPull && !c.paid) || c.pullItemFor?.length).slice(0, 2);
+  // Nothing in the Bank log yet: one quiet chip for the game instead of one "No data yet" per currency.
+  if (!shown.some((c) => bank.known && c.id in bank.value)) {
+    return (
+      <span style={{ '--vent': game.vent } as CSSProperties} className={cx(t.chipWrap, t.currencyNone)}>
+        {tag && <GameTag label={game.short} vent={game.vent} />}
+        <span>{shown.map((c) => c.name).join(' · ') || 'Currencies'}</span>
+        <NoData dash={false} fix="enter-manually" onFix={openLog} />
+      </span>
+    );
+  }
   return (
     <>
       {shown.map((c) => (
@@ -314,7 +340,7 @@ function Currencies({ day }: { day: GameToday }) {
   );
 }
 
-function OpenTasks({ days, tags, now, hideTicked, chooseServer }: { days: GameToday[]; tags: boolean; now: number; hideTicked: boolean; chooseServer: (id: GameId) => void }) {
+function OpenTasks({ days, tags, now, hideTicked }: { days: GameToday[]; tags: boolean; now: number; hideTicked: boolean }) {
   // Without a server the tasks are listed but can't be ticked: we wouldn't know when to clear them.
   const rows = days.flatMap((d) => {
     const fallback = d.game.servers[0]?.id;
@@ -360,6 +386,11 @@ function OpenTasks({ days, tags, now, hideTicked, chooseServer }: { days: GameTo
               <span className={t.taskLabel}>
                 {task.label}
                 {task.reward && <span className={t.reward}>{task.reward}</span>}
+                {isDone && d.serverId && autoTickWhy(d.game.id, task.id, serverRule(d.game, d.serverId), now) && (
+                  <span className={t.autoTick} title={autoTickWhy(d.game.id, task.id, serverRule(d.game, d.serverId), now) ?? undefined}>
+                    ticked from HoYoLAB
+                  </span>
+                )}
               </span>
               {tags && <GameTag label={d.game.short} vent={d.game.vent} />}
               <span className={t.kind}>{task.kind === 'event' ? 'Event' : task.period === 'weekly' ? 'Weekly' : 'Daily'}</span>
@@ -367,15 +398,12 @@ function OpenTasks({ days, tags, now, hideTicked, chooseServer }: { days: GameTo
           </li>
         ))}
       </ul>
-      {hideTicked && done > 0 && <p className={t.muted}>{done} ticked task{done === 1 ? '' : 's'} hidden (Account → Game settings).</p>}
-      {missing.map((d) => (
-        <div key={d.game.id} className={t.prompt}>
-          <p>Choose your {d.game.short} server so ticks clear at your reset.</p>
-          <button type="button" className={t.promptBtn} onClick={() => chooseServer(d.game.id)}>
-            Choose server
-          </button>
-        </div>
-      ))}
+      {hideTicked && done > 0 && (
+        <p className={t.muted}>
+          {done} ticked task{done === 1 ? '' : 's'} hidden (Account → Game settings).
+        </p>
+      )}
+      {missing.length > 0 && <p className={t.muted}>{missing.map((d) => d.game.short).join(' and ')}: tasks are listed but can’t be ticked until you choose your server (top of the page).</p>}
     </section>
   );
 }
@@ -389,7 +417,11 @@ function AddOwn({ days, kinds, tags, now, showExamples }: { days: GameToday[]; k
   );
 }
 
+/** Live banners shown at first; the rest are one tap away. */
+const LIVE_FIRST = 4;
+
 function LiveBanners({ days, tags, now, showExamples }: { days: GameToday[]; tags: boolean; now: number; showExamples: boolean }) {
+  const [all, setAll] = useState(false);
   const rows = days.flatMap((d) => d.banners.list.map((b) => ({ d, b, example: Boolean(d.lists.exampleIds?.has(b.id)) })));
   const live = rows.filter(({ b }) => !b.permanent && Date.parse(b.start) <= now && Date.parse(b.end) > now).sort((x, y) => Date.parse(x.b.end) - Date.parse(y.b.end));
   const typeLabel = (g: GameContract, id: string) => g.bannerTypes.find((x) => x.id === id)?.label ?? id;
@@ -402,9 +434,16 @@ function LiveBanners({ days, tags, now, showExamples }: { days: GameToday[]; tag
       <h3 className={t.cardTitle}>Live banners</h3>
       {live.length > 0 ? (
         <div className={t.banners}>
-          {live.map(({ d, b, example }) => (
+          {(all ? live : live.slice(0, LIVE_FIRST)).map(({ d, b, example }) => (
             <div key={`${d.game.id}:${b.id}`} className={t.exWrap} style={{ '--vent': d.game.vent } as CSSProperties}>
-              <BannerCard kind={typeLabel(d.game, b.type)} title={b.title} ends={Date.parse(b.end)} art={artFor(d, b, example)} tag={tags ? { label: d.game.short, vent: d.game.vent } : undefined} unverified={b.leak} />
+              <BannerCard
+                kind={typeLabel(d.game, b.type)}
+                title={b.title}
+                ends={Date.parse(b.end)}
+                art={artFor(d, b, example)}
+                tag={tags ? { label: d.game.short, vent: d.game.vent } : undefined}
+                unverified={b.leak}
+              />
               {example && (
                 <span className={t.exCorner}>
                   <ExampleTag />
@@ -412,6 +451,11 @@ function LiveBanners({ days, tags, now, showExamples }: { days: GameToday[]; tag
               )}
             </div>
           ))}
+          {live.length > LIVE_FIRST && (
+            <button type="button" className={t.moreBtn} onClick={() => setAll((v) => !v)} aria-expanded={all}>
+              {all ? 'Show fewer' : `Show ${live.length - LIVE_FIRST} more`}
+            </button>
+          )}
         </div>
       ) : (
         <>
@@ -438,14 +482,17 @@ function ComingUp({ days, tags, now, showExamples }: { days: GameToday[]; tags: 
     const typeLabel = (id: string) => d.game.bannerTypes.find((x) => x.id === id)?.label ?? id;
     for (const b of d.banners.list) {
       const start = Date.parse(b.start);
-      if (start > now && start - now <= 42 * DAY) items.push({ key: `b:${b.id}`, game: d.game, label: `${b.title} · ${typeLabel(b.type)} opens`, at: start, leak: b.leak, example: Boolean(d.lists.exampleIds?.has(b.id)) });
+      if (start > now && start - now <= 42 * DAY)
+        items.push({ key: `b:${b.id}`, game: d.game, label: `${b.title} · ${typeLabel(b.type)} opens`, at: start, leak: b.leak, example: Boolean(d.lists.exampleIds?.has(b.id)) });
     }
     for (const e of d.events.list) {
       const start = Date.parse(e.start);
       const end = Date.parse(e.end);
       const state = d.user.events[e.id]?.state ?? 'open';
-      if (start <= now && end > now && state === 'open') items.push({ key: `e:${e.id}`, game: d.game, label: `${e.title} ends`, at: end, leak: e.leak, example: Boolean(d.lists.exampleIds?.has(e.id)) });
-      else if (start > now && start - now <= 42 * DAY) items.push({ key: `s:${e.id}`, game: d.game, label: `${e.title} starts`, at: start, leak: e.leak, example: Boolean(d.lists.exampleIds?.has(e.id)) });
+      if (start <= now && end > now && state === 'open')
+        items.push({ key: `e:${e.id}`, game: d.game, label: `${e.title} ends`, at: end, leak: e.leak, example: Boolean(d.lists.exampleIds?.has(e.id)) });
+      else if (start > now && start - now <= 42 * DAY)
+        items.push({ key: `s:${e.id}`, game: d.game, label: `${e.title} starts`, at: start, leak: e.leak, example: Boolean(d.lists.exampleIds?.has(e.id)) });
     }
     const version = currentVersion(d.lists.versions, now);
     if (version) items.push({ key: `v:${version.id}`, game: d.game, label: `Version ${version.id} ends`, at: Date.parse(version.end), example: false });

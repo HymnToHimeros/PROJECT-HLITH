@@ -28,30 +28,24 @@ Resume with: "continue from PROGRESS.md". Newest entry on top. Older entries:
 - CI (`.github/workflows/ci.yml`) runs both on every pull request.
 
 ## Done
-- 2026-10-10 · **FRAME: Make a team suggests teammates by %** (branch `frame/my-teams`, owner job T18; on LOGIC-CORE's `logic-core/account-fits`).
-  After the first pick, "Suggested teammates" lists who to add, best first, with the team's
-  % and what was counted from the account (copies, Enhanced / Potential, saved weapon).
-  Owned only by default; "Include characters I don't own" adds the rest as theory (marked).
-  Tap to add; "Team now: N%" updates as you pick.
-- 2026-10-10 · **FRAME: My teams at the top of Teams** (branch `frame/my-teams`, owner job T18).
-  The team builder existed but sat under 146 recommended teams and was called "presets".
-  Now "My teams" comes first in Roster → Teams with "Make a team" (and "Make my first
-  team" in the empty card); "preset" is "team" everywhere. Your own teams get the same
-  synergy % and Why as recommended ones; edit, share, delete with Undo as before.
-  Fixed a test that read the Characters grid before it redrew (leaked.test.tsx).
-- 2026-10-10 · **LOGIC-CORE: team suggestions from your account (T18, step 1)** (branch `logic-core/account-fits`).
-  Who fits takes options: by default only characters you own, ranked by the team's %,
-  counting your Eidolons / Mindscapes and Enhanced / Agent Potential; "include characters
-  I don't own" adds the rest as theory. Each suggestion says what came from your account
-  ("E2 counted", "Enhanced kit: not saved, scored without it", "Weapon in your build: …,
-  its effect isn't counted yet"). Next: signature weapon effects read into the cheat sheets.
-- 2026-10-10 · **LOGIC-CORE: scores explain themselves in plain words (T17)** (branch `logic-core/plain-reasons`).
-  Every team's "Why" now opens with a sentence (who deals the damage, who connects
-  with their kit), one line per member (what they give the damage dealer, what they
-  set off, points), and "To reach 100%" (points lost, the best team found and what
-  its members would bring). The kit lines that prove it are one tap below. "If you
-  pull" says what the character would give; Kit check notes are full sentences
-  (who gets it, when it's on, what it sets off, what you must do). Both games.
+- 2026-10-10 · **Eight more themes** (branch `worktree-agent-a9e6d8c564b992b99`). Account → Theme now offers
+  Noctune Bloom, Astral Lagoon, Crimson Haze, Jade Whisper, Velvet Twilight, Midnight Sakura and two light
+  ones, Ethereal Dune and Amber Mirage, each from the owner's palette with its own background art and emblem
+  (`src/core/theme/tokens-themes.css`, `ThemeArt.tsx`, `themes.ts`). Same contrast tests as the first six
+  (tests/themes.test.ts) and the theme accessibility browser test; the six existing themes look the same.
+- 2026-10-10 · **FRAME: GitHub tidy and README** (branch `frame/tidy-readme`, owner job T24).
+  `docs/README.md` sorts every doc by what you'd open it for (files stay where they are:
+  code, migrations and the chats' rules point at them). README brought up to date
+  (HoYoLAB ticks, builds, Enhanced / Potential, themes, owner console, five chats) with
+  fresh screenshots. A stray `preview.log` removed and `*.log` ignored. Merged branches
+  are auto-deleted by GitHub; two stale ones are left for the owner to delete.
+- 2026-10-10 · **FRAME: live banner art the same size; HoYoLAB ticks dailies** (branch `frame/owner-jobs-1`, owner jobs T16, T22).
+  Today's live banners: every card is the same height, so every art box is the same
+  size and crops the same way (titles stop at two lines). Each live stamina read now
+  ticks what HoYoLAB proves (`src/tools/today/autoTick.ts`): stamina lower than the
+  last read counted forward = spent ("Spend …" ticked, only when the last read was the
+  same game day); daily activity full = the daily income row (Daily Training / Daily
+  Engagement) ticked. Ticked rows say "ticked from HoYoLAB"; untick and it stays unticked.
 - 2026-10-10 · **LOGIC-CORE: HSR teams built around real damage dealers (T19)** (branch `logic-core/hsr-real-teams`).
   Cause: the check let any Hunt/Erudition character be a team's centre, and the game's
   team for March 7th (Hunt) was imported with her first, though the game builds it
@@ -59,6 +53,20 @@ Resume with: "continue from PROGRESS.md". Newest entry on top. Older entries:
   Moze, Dr. Ratio, Herta, Serval, Jade, Black Swan are partners), the game's teams are
   listed led by their centre, and HSR no longer lists made-up "best by kit check" teams.
   Decisions 21–23 in `docs/logic/hsr-decisions.md`.
+- 2026-10-10 · **LOGIC-CORE: build score** (branch `logic-core/build-score`).
+  A saved build is checked against the game's own recommended build: level,
+  weapon, sets, main stat per slot, sub stats. Score and grade with every part
+  and its reason on the character page; parts with nothing entered say "No data
+  yet" and aren't counted. Rules: `docs/logic/build-score.md`.
+- 2026-10-10 · **MANAGER is on** (branch `manager/jobs-list`). `docs/TASKS.md` holds every
+  open owner job with who has it and its state; the owner's screenshots are in
+  `docs/owner-reports/2026-10-10/`. Owner's rule: MANAGER approves and merges every PR
+  (`docs/RELEASES.md` routine, `docs/WORKSTREAMS.md` rule 9); chats send `READY` and
+  no longer merge their own PRs.
+- 2026-10-10 · **LOGIC-CORE: HSR character EXP counted** (branch `logic-core/hsr-exp`).
+  Farm and "Materials to max" now include character EXP 1 → 80 for HSR:
+  5,797,920 EXP = 290 Traveler's Guides, from the game's own EXP table
+  (DimbreathBot/TurnBasedGameData). No HSR material amount is missing any more.
 - 2026-10-10 · **Two more chats: MANAGER and ERROR-FIX** (branch `frame/manager-error-fix`).
   `docs/WORKSTREAMS.md`: rules 7–8, both in Who's who, a routing table (which job goes
   to which chat). `docs/briefs/MANAGER.md` (the owner's front desk: routes every
@@ -104,9 +112,7 @@ Resume with: "continue from PROGRESS.md". Newest entry on top. Older entries:
     list). Now `weapons.json` (172 Light Cones, 103 W-Engines, every one with
     a picture) and each weapon on a banner shows its picture, name and who
     it's made for, with your roster fit. SCHEDULER's banner art stays.
-  - Next: HSR character EXP (no source yet), Enhanced kits need a saved
-    "Enhanced" flag (shown as locked until then), build score needs FRAME's
-    build store.
+  - Next: build score on FRAME's build store.
 - 2026-10-10 · **SCHEDULER step 2: server times, weapon banner art** (branch `scheduler/server-times-weapon-art`).
   Uses FRAME's new fields (#40): every banner and event time the game gives in "server
   time" now carries `serverTime { base: 8, start/end }`, so screens show it on the user's

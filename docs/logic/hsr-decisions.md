@@ -77,3 +77,12 @@ Numbered so later changes can point at them.
     If you pull, and another centre is only a teammate where the game pairs
     them.
 
+24. **Signature weapons are kit pieces, counted only when equipped (T18, both
+    games).** Each signature Light Cone / W-Engine effect is read like any
+    other piece, quote for quote. It is locked unless that exact weapon is in
+    the character's saved build; the "Why" says which weapon was saved
+    instead. Effects that only raise the wearer's own stats are listed as
+    read with "nothing for the team" (a support's own Energy, Daze or Impact
+    included). A weapon line that repeats an event the kit already causes
+    is not a second event source. Pearl's Colors for Tomorrow has no effect
+    text yet, so it isn't read; it will be once the text exists.

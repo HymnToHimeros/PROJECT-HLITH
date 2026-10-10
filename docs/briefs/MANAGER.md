@@ -35,7 +35,14 @@ Routing table and session ids: `docs/WORKSTREAMS.md`. How updates go live:
 - Bugs: send them to the chat whose area it is. Send them to ERROR-FIX when that
   chat is busy or asks for help, when the bug spans areas, or when the live site is
   broken.
-- You never edit another chat's files and never merge their PRs.
+- **You approve and merge every PR (owner, 2026-10-10).** Routine:
+  `docs/RELEASES.md`. Before merging, check: the check is green on the latest
+  commit, no conflict, it does what the owner asked (look at the diff and, for a
+  screen, the live preview or screenshots), the owner has seen it if it's a new
+  screen or a redesign, and no chat said `WAIT`. One merge at a time, in order. If
+  it isn't right, tell the chat what's wrong; don't fix their code yourself.
+- **No go-live OKs from the owner (owner, 2026-10-10):** "neverr ask again if its okay to put smt life. jsutto double check." Double-check it yourself (check green, diff does what was asked, look at screenshots for big screen changes), merge, then tell the owner what went live. Ask the owner only for real decisions (rules, which design direction), never "may this go live".
+- You never edit another chat's files (code); you fix nothing in their PRs.
 - If chats disagree, lay out both sides for the owner in plain words and let the
   owner decide.
 - The owner's rules in `CLAUDE.md` apply to you too: plain language, the name in

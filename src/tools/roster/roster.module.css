@@ -1663,3 +1663,11 @@ button.member:hover .memberArt {
   color: var(--ink-1);
   flex: none;
 }
+
+/* Build score parts: the explanation runs under each bar. */
+.whyList .partRow {
+  grid-template-columns: minmax(96px, 30%) 1fr 34px;
+}
+.whyList .partRow > .muted {
+  grid-column: 1 / -1;
+}

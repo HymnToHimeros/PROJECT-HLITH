@@ -2,20 +2,20 @@
  * Honkai: Star Rail. Numbers here are checked against the sources listed at the
  * bottom; anything not confirmed stays null and shows "No data yet".
  */
-import type { BacklogItem, Banner, Character, GameContract, GameEvent, Kit, RecommendedBuild, Material, SampleArt, TeamPreset, Version, Weapon } from '../../core/contract';
+import type { BacklogItem, Banner, Character, GameContract, GameEvent, RecommendedBuild, Material, SampleArt, TeamPreset, Version, Weapon } from '../../core/contract';
 import backlog from './data/backlog.json';
 import banners from './data/banners.json';
 import characters from './data/characters.json';
 import events from './data/events.json';
 import builds from './data/builds.json';
 import weapons from './data/weapons.json';
-import kits from './data/kits.json';
+import { scoreBuild } from '../../core/rules/buildScore';
 import { materialsFor } from './costs';
 import materials from './data/materials.json';
 import teams from './data/teams.json';
 import sampleArt from './data/sample-art.json';
 import versions from './data/versions.json';
-import { SHEETS } from './kitcheck/library';
+import { KITS, SHEETS } from './kitcheck/library';
 import { withTags } from './kitcheck/tags';
 import { gameTeams, hsrTeamRules } from './kitcheck/team';
 
@@ -191,7 +191,7 @@ export const hsr: GameContract = {
     sampleArt: async () => sampleArt as SampleArt[],
     versions: list<Version>(versions),
     // Kit text (npm run data:hsr-kits) with the cheat sheet's tags (docs/logic/hsr-theory.md, Part A).
-    kits: async () => withTags(kits as Kit[], SHEETS),
+    kits: async () => withTags(KITS, SHEETS),
     // The game's own recommended builds (npm run data:builds).
     builds: list<RecommendedBuild>(builds),
     // Every Light Cone / W-Engine with its picture (npm run data:builds); weapon banners show them.
@@ -201,9 +201,16 @@ export const hsr: GameContract = {
   scan: { screen: 'character', fields: ['level', 'eidolon', 'light-cone', 'relics', 'traces'] },
   // Level-up costs from nanoka.cc; team scoring waits for the owner's OK on docs/logic/hsr-theory.md.
   rules: {
+    // Build score: the saved build against the game's own recommendation (docs/logic/build-score.md).
+    scoreBuild: (b) =>
+      scoreBuild(
+        b,
+        (builds as unknown as RecommendedBuild[]).find((x) => x.characterId === b.characterId),
+        { levelMax: 80, weaponLevelMax: 80, setSlots: (pieces) => (pieces === 4 ? ['Head', 'Hands', 'Body', 'Feet'] : ['Planar Sphere', 'Link Rope']) },
+      ),
     teams: hsrTeamRules,
     materialsFor,
-    materialsNote: "From the game data (nanoka.cc): ascension, every skill and every Trace to max. Character EXP isn't counted yet: the per-level EXP table isn't in the data HLITH reads.",
+    materialsNote: "From the game data (nanoka.cc): ascension, every skill and every Trace to max. Character EXP 1 → 80 (5,797,920, from the game's own EXP table) is counted as Traveler's Guides (20,000 EXP each).",
   },
   sources: [
     { what: 'Character list (names, rarity, path, element, release date)', source: 'nanoka.cc data files, game data 4.6.51, used with permission', entered: '2026-10-09', verified: false },

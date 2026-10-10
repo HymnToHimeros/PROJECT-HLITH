@@ -2,20 +2,20 @@
  * Zenless Zone Zero. Numbers here are checked against the sources listed at the
  * bottom; anything not confirmed stays null and shows "No data yet".
  */
-import type { BacklogItem, Banner, Character, GameContract, GameEvent, Kit, RecommendedBuild, Material, TeamPreset, Version, SampleArt, Weapon } from '../../core/contract';
+import type { BacklogItem, Banner, Character, GameContract, GameEvent, RecommendedBuild, Material, TeamPreset, Version, SampleArt, Weapon } from '../../core/contract';
 import backlog from './data/backlog.json';
 import banners from './data/banners.json';
 import characters from './data/characters.json';
 import events from './data/events.json';
 import builds from './data/builds.json';
 import weapons from './data/weapons.json';
-import kits from './data/kits.json';
+import { scoreBuild } from '../../core/rules/buildScore';
 import materials from './data/materials.json';
 import teams from './data/teams.json';
 import sampleArt from './data/sample-art.json';
 import versions from './data/versions.json';
 import { materialsFor } from './costs';
-import { SHEETS } from './kitcheck/library';
+import { KITS, SHEETS } from './kitcheck/library';
 import { withTags } from './kitcheck/tags';
 import { recommendedTeams, zzzTeamRules } from './kitcheck/team';
 
@@ -161,7 +161,7 @@ export const zzz: GameContract = {
     sampleArt: async () => sampleArt as SampleArt[],
     versions: list<Version>(versions),
     // Kit text with the cheat sheet's tags (docs/logic/zzz-method.md, Part A).
-    kits: async () => withTags(kits as Kit[], SHEETS),
+    kits: async () => withTags(KITS, SHEETS),
     // The game's own recommended builds (npm run data:builds).
     builds: list<RecommendedBuild>(builds),
     // Every Light Cone / W-Engine with its picture (npm run data:builds); weapon banners show them.
@@ -170,6 +170,13 @@ export const zzz: GameContract = {
   accountLinks: [{ provider: 'hoyolab', supports: ['stamina', 'checkin', 'roster', 'endgame'], config: { gameBiz: 'nap_global' } }],
   scan: { screen: 'character', fields: ['level', 'mindscape', 'w-engine', 'drive-discs', 'skills'] },
   rules: {
+    // Build score: the saved build against the game's own recommendation (docs/logic/build-score.md).
+    scoreBuild: (b) =>
+      scoreBuild(
+        b,
+        (builds as unknown as RecommendedBuild[]).find((x) => x.characterId === b.characterId),
+        { levelMax: 60, weaponLevelMax: 60, setSlots: () => [] },
+      ),
     teams: zzzTeamRules,
     materialsFor,
     materialsNote: 'From the game data (nanoka.cc): ascension, every skill and the Core Skill to max. Agent EXP is counted as Senior Investigator Logs (3,000 EXP each).',
