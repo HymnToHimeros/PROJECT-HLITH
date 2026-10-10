@@ -401,7 +401,7 @@ function BuildCard({ data, character: c }: { data: RosterData; character: Charac
       characterId: c.id,
       level: saved.level,
       dupes: entry.dupes,
-      ...(saved.weapon?.id && saved.weapon.level !== undefined ? { weapon: { id: saved.weapon.id, level: saved.weapon.level } } : {}),
+      ...(saved.weapon ? { weapon: { name: saved.weapon.name, ...(saved.weapon.id ? { id: saved.weapon.id } : {}), ...(saved.weapon.level !== undefined ? { level: saved.weapon.level } : {}) } } : {}),
       gear: saved.gear.filter((g) => g.main).map((g) => ({ slot: g.slot, main: g.main ?? '', subs: Object.fromEntries(g.subs.map((x) => [x.stat, x.value])) })),
     };
     return rate(build);

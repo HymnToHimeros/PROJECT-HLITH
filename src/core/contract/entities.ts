@@ -221,6 +221,7 @@ export interface CharacterBuild {
   characterId: string;
   level: number;
   dupes: number;
-  weapon?: { id: string; level: number };
+  /** The weapon by name; `id` when it matches the game's list, `level` when entered. */
+  weapon?: { name: string; id?: string; level?: number };
   gear: { slot: string; main: string; subs: Record<string, number> }[];
 }

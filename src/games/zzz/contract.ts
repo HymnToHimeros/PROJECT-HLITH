@@ -65,7 +65,7 @@ export const zzz: GameContract = {
       { id: 'Disc 2', label: 'Disc 2', mains: ['ATK'] },
       { id: 'Disc 3', label: 'Disc 3', mains: ['DEF'] },
       { id: 'Disc 4', label: 'Disc 4', mains: ['HP %', 'ATK %', 'DEF %', 'CRIT Rate', 'CRIT DMG', 'Anomaly Proficiency'] },
-      { id: 'Disc 5', label: 'Disc 5', mains: ['HP %', 'ATK %', 'DEF %', 'PEN Ratio', 'Physical DMG Bonus', 'Fire DMG Bonus', 'Ice DMG Bonus', 'Electric DMG Bonus', 'Ether DMG Bonus'] },
+      { id: 'Disc 5', label: 'Disc 5', mains: ['HP %', 'ATK %', 'DEF %', 'PEN Ratio', 'Physical DMG Bonus', 'Fire DMG Bonus', 'Ice DMG Bonus', 'Electric DMG Bonus', 'Ether DMG Bonus', 'Wind DMG Bonus'] },
       { id: 'Disc 6', label: 'Disc 6', mains: ['HP %', 'ATK %', 'DEF %', 'Anomaly Mastery', 'Impact', 'Energy Regen'] },
     ],
     subStats: ['HP', 'ATK', 'DEF', 'HP %', 'ATK %', 'DEF %', 'CRIT Rate', 'CRIT DMG', 'PEN', 'Anomaly Proficiency'],
