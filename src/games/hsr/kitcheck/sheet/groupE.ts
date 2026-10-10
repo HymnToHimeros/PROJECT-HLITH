@@ -10,6 +10,7 @@
  */
 import type { CharacterSheet } from '../types';
 
+const WEARER = "Raises the wearer's own stats; nothing for the team.";
 const TECH = 'Used before battle; not counted.';
 const HIS_LEVELS = 'Raises his own skill levels; nothing for the team.';
 const HER_LEVELS = 'Raises her own skill levels; nothing for the team.';
@@ -118,6 +119,7 @@ const welt: CharacterSheet = {
     'eidolon-3-enhanced': HIS_LEVELS,
     'eidolon-5-enhanced': HIS_LEVELS,
     'eidolon-6-enhanced': HIM_ONLY,
+    'signature-weapon': WEARER,
   },
 };
 
@@ -262,6 +264,7 @@ const kafka: CharacterSheet = {
     'eidolon-4-enhanced': HER_ENERGY,
     'eidolon-5-enhanced': HER_LEVELS,
     'eidolon-6-enhanced': 'Makes her own Shock stronger and longer; nothing for the team.',
+    'signature-weapon': "Raises the wearer's own stats and adds her own Shock-type DoT (Erode); her DoT event is counted with her Ultimate. Nothing more for the team.",
   },
 };
 
@@ -518,6 +521,16 @@ const fugue: CharacterSheet = {
       limits: { kinds: ['break', 'super-break'] },
       setup: 'Use her Skill on the damage dealer.',
     },
+    {
+      id: 'lc-charring',
+      piece: 'signature-weapon',
+      quote: 'there is a 100% base chance to inflict the "Charring" state on it, which increases its Break DMG taken by 18%',
+      tag: 'Enemy: Break DMG taken +18% (Charring)',
+      gives: [{ stat: 'vulnerability', amount: '+18% per stack, up to 2' }],
+      to: 'enemy',
+      limits: { kinds: ['break', 'super-break'] },
+      setup: "An enemy's Weakness is broken (by anyone); 2 turns, stacks up to 2.",
+    },
   ],
   nothing: {
     'skill-basic-atk-radiant-streak': FIRE,
@@ -669,6 +682,16 @@ const blackSwan: CharacterSheet = {
       gives: [{ stat: 'vulnerability', amount: '+20%' }],
       to: 'enemy',
       setup: 'Enemy in Epiphany (after her Ultimate, 2 turns).',
+    },
+    {
+      id: 'lc-prophet',
+      piece: 'signature-weapon',
+      quote: 'When the wearer deals DMG to an enemy inflicted with Wind Shear, Burn, Shock, or Bleed, each respectively grants 1 stack of Prophet, stacking up to 4 time(s).',
+      tag: 'Prophet: her ATK and DoT DEF ignore per DoT type on the enemy',
+      gives: [{ stat: 'atk', amount: '+5% per stack, up to 4' }, { stat: 'def-shred', amount: '7.2% per stack for her DoT, up to 4' }],
+      to: 'self',
+      reacts: { event: 'dot', from: 'any' },
+      setup: 'Enemies carry Wind Shear, Burn, Shock or Bleed (1 stack per DoT type per battle).',
     },
   ],
   nothing: {
@@ -836,6 +859,25 @@ const theDahlia: CharacterSheet = {
       to: 'chosen-ally',
       setup: "The damage dealer is her Dance Partner; on her Talent's Follow-Up ATK.",
     },
+    {
+      id: 'lc-break-dmg',
+      piece: 'signature-weapon',
+      quote: 'When entering combat, increases Break DMG dealt by the wearer and another teammate who triggered combat by 32%.',
+      tag: 'One ally: Break DMG +32%',
+      gives: [{ stat: 'dmg', amount: '+32%' }],
+      to: 'chosen-ally',
+      limits: { kinds: ['break', 'super-break'] },
+      setup: 'That ally triggers combat (with no one, it goes to the teammate with the highest Break Effect).',
+    },
+    {
+      id: 'lc-weakness-sp',
+      piece: 'signature-weapon',
+      quote: 'When the wearer applies Weakness to an enemy target, recovers 1 Skill Point.',
+      tag: 'Team: +1 Skill Point',
+      gives: [{ stat: 'skill-points', amount: '+1, once per Ultimate' }],
+      to: 'allies',
+      setup: 'The Dahlia applies a Weakness to an enemy; again after each of her Ultimates.',
+    },
   ],
   nothing: {
     'skill-basic-atk-fiddle-fissured-memory': FIRE,
@@ -886,6 +928,24 @@ const cipher: CharacterSheet = {
       gives: [{ stat: 'vulnerability', amount: '+30%' }],
       to: 'enemy',
       setup: 'Cipher hits the enemy; 2 turns.',
+    },
+    {
+      id: 'lc-bamboozle',
+      piece: 'signature-weapon',
+      quote: 'While under the "Bamboozle" state, enemy targets have their DEF decreased by 16% for 2 turn(s).',
+      tag: 'Enemy: DEF −16% (Bamboozle)',
+      gives: [{ stat: 'def-shred', amount: '16%' }],
+      to: 'enemy',
+      setup: 'Cipher attacks (120% base chance on every enemy); 2 turns.',
+    },
+    {
+      id: 'lc-theft',
+      piece: 'signature-weapon',
+      quote: 'While under the "Theft" state, enemy targets have their DEF decreased by 8% for 2 turn(s).',
+      tag: 'Enemy: DEF −8% more (Theft)',
+      gives: [{ stat: 'def-shred', amount: '8%' }],
+      to: 'enemy',
+      setup: "Cipher's SPD is 170 or higher when she attacks; 2 turns.",
     },
   ],
   nothing: {
@@ -981,6 +1041,25 @@ const hysilens: CharacterSheet = {
       gives: [{ stat: 'res-pen', amount: '20%' }],
       to: 'enemy',
       setup: 'Her Zone is up.',
+    },
+    {
+      id: 'lc-enthrallment',
+      piece: 'signature-weapon',
+      quote: "for every 1 debuff applied by the wearer on the target, increases the target's received DoT by 5.0%, stacking up to 6 time(s).",
+      tag: 'Enemy: DoT taken +5% per debuff of hers',
+      gives: [{ stat: 'vulnerability', amount: '+5% per debuff she applied, up to 6' }],
+      to: 'enemy',
+      limits: { kinds: ['dot'] },
+      setup: 'Hysilens debuffs the enemy (80% base chance of "Enthrallment", 3 turns).',
+    },
+    {
+      id: 'lc-enthrallment-spd',
+      piece: 'signature-weapon',
+      quote: "When the target gets attacked by an ally, increases the attacker's SPD by 10.0% for 3 turn(s).",
+      tag: 'Allies: +10% SPD when hitting an Enthralled enemy',
+      gives: [{ stat: 'spd', amount: '+10%' }],
+      to: 'allies',
+      setup: 'Attack an enemy in "Enthrallment"; 3 turns.',
     },
   ],
   nothing: {
@@ -1116,6 +1195,15 @@ const mortenaxBlade: CharacterSheet = {
       gives: [{ stat: 'dmg', amount: '+50%' }],
       to: 'allies',
       setup: 'His Zone is up (after his Ultimate).',
+    },
+    {
+      id: 'lc-purgatory',
+      piece: 'signature-weapon',
+      quote: 'While in the "Purgatory" state, the target receives 30% increased CRIT DMG',
+      tag: 'Enemy: CRIT DMG taken +30% (Purgatory)',
+      gives: [{ stat: 'crit-dmg', amount: '+30%' }],
+      to: 'enemy',
+      setup: 'Mortenax Blade uses his Skill to attack the target; 2 turns.',
     },
   ],
   nothing: {

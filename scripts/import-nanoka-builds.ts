@@ -262,6 +262,8 @@ interface WeaponOut {
   rarity: 'top' | 'mid' | 'low';
   icon?: string;
   madeFor?: string;
+  /** A signature weapon's effect at its first refinement, in the game's words (the kit check reads it). */
+  effect?: { name: string; text: string };
   source: string;
 }
 const RARITY: Record<number, WeaponOut['rarity']> = { 5: 'top', 4: 'mid', 3: 'low' };
@@ -278,7 +280,14 @@ async function zzzWeapons(): Promise<WeaponOut[]> {
     if (!rarity) throw new Error(`zzz weapon ${id}: unknown rank ${w.rank}`);
     const icon = await loads(`${ASSETS}/zzz/${w.icon}.webp`);
     const agent = /^Weapon_S_(\d+)$/.exec(w.icon)?.[1];
-    out.push({ id, name: plain(w.en), rarity, ...(icon ? { icon } : {}), ...(agent && agents.has(agent) ? { madeFor: agent } : {}), source: 'nanoka.cc' });
+    const madeFor = agent && agents.has(agent) ? agent : undefined;
+    let effect: WeaponOut['effect'];
+    if (madeFor) {
+      const d = await getJson<{ talents: Record<string, { name: string; desc: string }> }>(`${BASE}/zzz/${v}/en/weapon/${id}.json`);
+      const t = d.talents['1'];
+      if (t) effect = { name: plain(t.name), text: plain(t.desc) };
+    }
+    out.push({ id, name: plain(w.en), rarity, ...(icon ? { icon } : {}), ...(madeFor ? { madeFor } : {}), ...(effect ? { effect } : {}), source: 'nanoka.cc' });
   }
   return out;
 }
@@ -305,7 +314,14 @@ async function hsrWeapons(): Promise<WeaponOut[]> {
     if (!rarity) throw new Error(`hsr Light Cone ${id}: unknown rarity ${c.rank}`);
     const icon = await loads(`${ASSETS}/hsr/lightconemediumicon/${id}.webp`);
     const who = firstFor.get(id);
-    out.push({ id, name: plain(c.en), rarity, ...(icon ? { icon } : {}), ...(stars === 5 && who?.length === 1 && who[0] ? { madeFor: who[0] } : {}), source: 'nanoka.cc' });
+    const madeFor = stars === 5 && who?.length === 1 && who[0] ? who[0] : undefined;
+    let effect: WeaponOut['effect'];
+    if (madeFor) {
+      const d = await getJson<{ refinements: { name: string; desc: string; level: Record<string, { param_list: number[] }> } }>(`${BASE}/hsr/${v}/en/lightcone/${id}.json`);
+      if (d.refinements?.desc) effect = { name: plain(d.refinements.name), text: plain(fill(d.refinements.desc, d.refinements.level['1']?.param_list ?? [])) };
+      else console.log(`  hsr Light Cone ${id} (${plain(c.en)}): no effect text in the files yet, left out`);
+    }
+    out.push({ id, name: plain(c.en), rarity, ...(icon ? { icon } : {}), ...(madeFor ? { madeFor } : {}), ...(effect ? { effect } : {}), source: 'nanoka.cc' });
   }
   return out;
 }
