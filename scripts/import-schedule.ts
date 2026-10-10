@@ -22,6 +22,7 @@ import { resolve } from 'node:path';
 import type { BacklogItem, Banner, GameEvent, Version } from '../src/core/contract/entities.ts';
 import { amountOf, at, nameKey, noticeText, serverMark, slug, spanIn, versionFromNotice, type VersionTimes } from './schedule/text.ts';
 import { fetchWiki, infobox, mainBox, poolBox, poolFeatured, rewardTotal, sectionLinks, statedTotal, wikiPrefix, wikiServer, wikiTime, type WikiPage } from './schedule/wiki.ts';
+import type { Signal, SignalLog } from './schedule/rhythm.ts';
 
 const ROOT = resolve(import.meta.dirname, '..');
 const DAY = 86_400_000;
@@ -100,9 +101,11 @@ interface SiteItem {
   iInfoId: number;
   sTitle: string;
   sContent?: string;
+  /** When the post went up, UTC+8 ("2026-09-07 12:05:00"). */
+  dtStartTime?: string;
 }
 
-async function siteVersions(g: Game): Promise<{ versions: Map<string, VersionTimes>; texts: Map<string, string> }> {
+async function siteVersions(g: Game): Promise<{ versions: Map<string, VersionTimes>; texts: Map<string, string>; items: SiteItem[] }> {
   const base = `https://sg-public-api-static.hoyoverse.com/content_v2_user/app/${g.site.app}`;
   const items: SiteItem[] = [];
   for (let page = 1; page <= 20; page++) {
@@ -134,7 +137,34 @@ async function siteVersions(g: Game): Promise<{ versions: Map<string, VersionTim
     const next = sorted[i + 1];
     if (!v.end && next) v.end = next.start;
   });
-  return { versions: new Map(sorted.map((v) => [v.id, v])), texts };
+  return { versions: new Map(sorted.map((v) => [v.id, v])), texts, items };
+}
+
+/**
+ * When each version's notices really went up, as hours from that version's patch start:
+ * the special program announcement and the pre-download notice. The check schedule
+ * (scripts/schedule/rhythm.ts) expects the next ones from these. Kept, never dropped.
+ */
+function learnRhythm(g: Game, items: SiteItem[], versions: Map<string, VersionTimes>) {
+  const path = resolve(ROOT, 'scripts/schedule/rhythm.json');
+  const all = JSON.parse(readFileSync(path, 'utf8')) as Record<string, SignalLog>;
+  const log = (all[g.id] ??= {});
+  const kinds: [Signal, RegExp][] = [
+    ['program', /Special Program/i],
+    ['preDownload', /Pre-Download/i],
+  ];
+  for (const it of items) {
+    const id = /Version (\d+\.\d+)\b/.exec(it.sTitle)?.[1];
+    const v = id ? versions.get(id) : undefined;
+    const kind = kinds.find(([, re]) => re.test(it.sTitle))?.[0];
+    if (!id || !v || !kind || !it.dtStartTime) continue;
+    const hours = Math.round(((Date.parse(at(it.dtStartTime.replace(/-/g, '/'), 8)) - Date.parse(v.start)) / 3_600_000) * 10) / 10;
+    // A notice weeks away from its patch is about something else (a later re-run); leave it out.
+    if (hours > 0 || hours < -24 * 30) continue;
+    const seen = (log[kind] ??= {});
+    seen[id] ??= hours;
+  }
+  writeFileSync(path, `${JSON.stringify(all, null, 2)}\n`);
 }
 
 // ── 2. The in-game notice board (current notices only) ─────────────────
@@ -602,7 +632,8 @@ function merge<T extends { id: string; start?: string }>(file: string, fresh: T[
 
 for (const g of GAMES) {
   console.log(`${g.id}:`);
-  const { versions, texts } = await siteVersions(g);
+  const { versions, texts, items } = await siteVersions(g);
+  learnRhythm(g, items, versions);
   // Only notices about what runs now: old version notices reuse the same names for older runs.
   const current = [...versions.values()].filter((v) => !v.end || Date.parse(v.end) > NOW).map((v) => texts.get(v.id) ?? '');
   const notices = [...(await inGameNotices(g)), ...current];
