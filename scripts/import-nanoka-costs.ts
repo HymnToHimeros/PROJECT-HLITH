@@ -7,8 +7,10 @@
  * - ascension / promotion costs per level cap,
  * - every skill level, Core Skill (ZZZ) and Trace (HSR) cost,
  * - ZZZ Agent EXP per level (nanoka's level table) in Senior Investigator Logs.
- * HSR character EXP per level is not in nanoka.cc's files (nor Yatta's); it is
- * left out and the Farm says so, never guessed.
+ * HSR character EXP per level is not in nanoka.cc's files; it comes from the
+ * game's own data tables as published in DimbreathBot/TurnBasedGameData
+ * (ExpType, AvatarConfig ExpGroup, AvatarExpItemConfig), counted in Traveler's
+ * Guides. The script stops if characters use different EXP tables.
  *
  * Writes src/games/<game>/data/costs.json and materials.json (every item used,
  * with its picture when nanoka.cc has one).
@@ -122,13 +124,31 @@ interface HsrDetail {
 }
 const HSR_CAPS = [20, 30, 40, 50, 60, 70];
 
+/** HSR character EXP: the game's own tables (DimbreathBot/TurnBasedGameData), counted in Traveler's Guides (item 213). */
+const HSR_DATA = 'https://raw.githubusercontent.com/DimbreathBot/TurnBasedGameData/main/ExcelOutput';
+const HSR_EXP_ITEM = '213';
+async function hsrExp(): Promise<Costs['exp']> {
+  const types = await getJson<{ TypeID: number; Level: number; Exp: number }[]>(`${HSR_DATA}/ExpType.json`);
+  const avatars = await getJson<{ AvatarID: number; ExpGroup: number }[]>(`${HSR_DATA}/AvatarConfig.json`);
+  const items = await getJson<{ ItemID: number; Exp: number }[]>(`${HSR_DATA}/AvatarExpItemConfig.json`);
+  const groups = [...new Set(avatars.map((a) => a.ExpGroup))];
+  const table = (g: number) => types.filter((t) => t.TypeID === g && t.Level < 80).sort((a, b) => a.Level - b.Level).map((t) => t.Exp);
+  const first = table(groups[0] ?? 1);
+  // Every character must level on the same table, or one total for all would be wrong.
+  for (const g of groups) if (JSON.stringify(table(g)) !== JSON.stringify(first)) throw new Error(`hsr: EXP group ${g} differs; the importer assumes one table for everyone.`);
+  const guide = items.find((i) => String(i.ItemID) === HSR_EXP_ITEM);
+  if (first.length !== 79 || !guide) throw new Error(`hsr: EXP table has ${first.length} levels (want 79) or no Traveler's Guide EXP.`);
+  return { perLevel: first, item: HSR_EXP_ITEM, itemExp: guide.Exp, source: "the game's own data tables (DimbreathBot/TurnBasedGameData: ExpType, AvatarConfig, AvatarExpItemConfig)" };
+}
+
 async function hsr(): Promise<{ costs: Costs; names: Named }> {
   const manifest = await getJson<{ hsr: { live: string } }>(`${BASE}/manifest.json`);
   const v = manifest.hsr.live;
   const list = await getJson<Record<string, unknown>>(`${BASE}/hsr/${v}/character.json`);
   const items = await getJson<Record<string, { item_name: string; item_sub_type: string; item_figure_icon_path?: string }>>(`${BASE}/hsr/${v}/en/item.json`);
-  const costs: Costs = { source: 'nanoka.cc', version: v, exp: null, characters: {} };
+  const costs: Costs = { source: 'nanoka.cc', version: v, exp: await hsrExp(), characters: {} };
   const used = new Set<string>();
+  if (costs.exp) used.add(costs.exp.item);
   const toItems = (l: { item_id: number; item_num: number }[]) => clean(Object.fromEntries(l.map((x) => [String(x.item_id), x.item_num])));
   for (const id of Object.keys(list)) {
     const d = await getJson<HsrDetail>(`${BASE}/hsr/${v}/en/character/${id}.json`);
@@ -150,7 +170,7 @@ async function hsr(): Promise<{ costs: Costs; names: Named }> {
   for (const i of [...used]) {
     const it = items[i];
     if (!it) throw new Error(`hsr: item ${i} is not in nanoka.cc's item list.`);
-    names.set(i, { name: it.item_name, kind: it.item_sub_type === 'Virtual' ? 'currency' : 'upgrade', icon: await loads(hsrItemIcon(it.item_figure_icon_path)) });
+    names.set(i, { name: it.item_name, kind: it.item_sub_type === 'Virtual' ? 'currency' : it.item_sub_type === 'AvatarExp' ? 'exp' : 'upgrade', icon: await loads(hsrItemIcon(it.item_figure_icon_path)) });
   }
   return { costs, names };
 }
@@ -165,4 +185,4 @@ console.log(`zzz: costs for ${Object.keys(z.costs.characters).length} agents, ${
 const h = await hsr();
 write('hsr', 'costs.json', h.costs);
 write('hsr', 'materials.json', materialsOf(h.names));
-console.log(`hsr: costs for ${Object.keys(h.costs.characters).length} characters, ${h.names.size} materials (character EXP: no data yet)`);
+console.log(`hsr: costs for ${Object.keys(h.costs.characters).length} characters, ${h.names.size} materials, character EXP ${h.costs.exp ? `${h.costs.exp.perLevel.reduce((a, b) => a + b, 0)} to level 80` : 'no data'}`);

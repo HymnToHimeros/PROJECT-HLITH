@@ -178,7 +178,7 @@ export const hsr: GameContract = {
   rules: {
     teams: hsrTeamRules,
     materialsFor,
-    materialsNote: "From the game data (nanoka.cc): ascension, every skill and every Trace to max. Character EXP isn't counted yet: the per-level EXP table isn't in the data HLITH reads.",
+    materialsNote: "From the game data (nanoka.cc): ascension, every skill and every Trace to max. Character EXP 1 → 80 (5,797,920, from the game's own EXP table) is counted as Traveler's Guides (20,000 EXP each).",
   },
   sources: [
     { what: 'Character list (names, rarity, path, element, release date)', source: 'nanoka.cc data files, game data 4.6.51, used with permission', entered: '2026-10-09', verified: false },

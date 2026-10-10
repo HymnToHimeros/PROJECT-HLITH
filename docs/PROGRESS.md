@@ -28,6 +28,10 @@ Resume with: "continue from PROGRESS.md". Newest entry on top. Older entries:
 - CI (`.github/workflows/ci.yml`) runs both on every pull request.
 
 ## Done
+- 2026-10-10 · **LOGIC-CORE: HSR character EXP counted** (branch `logic-core/hsr-exp`).
+  Farm and "Materials to max" now include character EXP 1 → 80 for HSR:
+  5,797,920 EXP = 290 Traveler's Guides, from the game's own EXP table
+  (DimbreathBot/TurnBasedGameData). No HSR material amount is missing any more.
 - 2026-10-10 · **FRAME: Enhanced / Agent Potential per character** (branch `frame/potential-field`).
   For LOGIC-CORE: the character page has an "Enhanced" (HSR: Not set / No / Yes) or
   "Agent Potential" (ZZZ: Not set / 0–6) picker, only for characters whose kit has pieces
@@ -60,9 +64,7 @@ Resume with: "continue from PROGRESS.md". Newest entry on top. Older entries:
     list). Now `weapons.json` (172 Light Cones, 103 W-Engines, every one with
     a picture) and each weapon on a banner shows its picture, name and who
     it's made for, with your roster fit. SCHEDULER's banner art stays.
-  - Next: HSR character EXP (no source yet), Enhanced kits need a saved
-    "Enhanced" flag (shown as locked until then), build score needs FRAME's
-    build store.
+  - Next: build score on FRAME's build store.
 - 2026-10-10 · **SCHEDULER step 2: server times, weapon banner art** (branch `scheduler/server-times-weapon-art`).
   Uses FRAME's new fields (#40): every banner and event time the game gives in "server
   time" now carries `serverTime { base: 8, start/end }`, so screens show it on the user's
