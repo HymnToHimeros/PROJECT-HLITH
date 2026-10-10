@@ -28,6 +28,11 @@ export interface Library {
   centres: Set<string>;
   /** Who the game's own teams put together (every pick and backup of a team), per character. */
   pairedWith: Map<string, Set<string>>;
+  /**
+   * Per carry with an own game team: everyone its own teams list in any slot. They are the only teammates the check
+   * tries for that carry (decision 30); a carry without one falls back to the pairing rule.
+   */
+  allowed: Map<string, Set<string>>;
 }
 
 /** Your account: Eidolon per character (not owned = 0), Enhanced when known. */
@@ -97,7 +102,12 @@ export const isCentre = (id: string, lib: Library) => canCarry(id, lib) && (lib.
  * Can this character be a partner on a team built around `dd`? Anyone who isn't a centre themself; another
  * centre only when the game's own teams put the two together (Saber with Gilgamesh, Mortenax Blade with Rin).
  */
-export const canPartner = (id: string, dd: string, lib: Library) => !isCentre(id, lib) || lib.centres.size === 0 || !!lib.pairedWith.get(dd)?.has(id);
+export const canPartner = (id: string, dd: string, lib: Library) => {
+  // A carry with its own game team only gets teammates that team lists (no mix-matching, owner's report 2026-10-10).
+  const allowed = lib.allowed.get(dd);
+  if (allowed) return allowed.has(id);
+  return !isCentre(id, lib) || lib.centres.size === 0 || !!lib.pairedWith.get(dd)?.has(id);
+};
 
 type CondResult = 'met' | 'not-met' | 'unknown';
 

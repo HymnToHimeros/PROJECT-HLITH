@@ -363,4 +363,9 @@ export interface TeamRules {
   lineUps: (account: TeamAccount) => TeamIdea[];
   /** What a character adds to the account; null = not rated. */
   ifYouPull: (id: string, account: TeamAccount) => PullValue | null;
+  /**
+   * The members to show for one of the game's teams: per slot, the first listed character you own, in the game's
+   * order (LOGIC-CORE). Absent = each slot's first pick.
+   */
+  fill?: (preset: TeamPreset, account: TeamAccount) => string[];
 }
