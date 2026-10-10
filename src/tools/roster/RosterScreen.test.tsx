@@ -153,7 +153,7 @@ describe('Roster screen', () => {
     expect(gameData('aa').roster.c2).toEqual({ owned: true, wanted: true, dupes: 1 });
     expect(within(page).getByText('E1')).toBeInTheDocument();
     // Build, level and gear have no data in this game: honest "No data yet", plus a marked example preview.
-    expect(within(page).getByText('No build data yet')).toBeInTheDocument();
+    expect(within(page).getByText('No build saved yet')).toBeInTheDocument();
     expect(within(page).getAllByText(/No data yet/).length).toBeGreaterThan(2);
     expect(within(page).getAllByText('EXAMPLE').length).toBeGreaterThan(0);
     fireEvent.click(within(page).getByRole('button', { name: '← Roster' }));
@@ -418,6 +418,67 @@ describe('Roster screen', () => {
     page = await openPage('Older Star');
     await within(page).findByText('Eidolon');
     expect(within(page).queryByLabelText('Enhanced')).not.toBeInTheDocument();
+  });
+
+  it('Build score: enter a build, see it on the page, fix a wrong number, edit, clear with Undo', async () => {
+    const base = makeGame(false);
+    const game: GameContract = {
+      ...base,
+      build: {
+        levelMax: 80,
+        weaponLevelMax: 80,
+        refine: { name: 'Superimposition', max: 5 },
+        slots: [
+          { id: 'Head', label: 'Head', mains: ['HP'] },
+          { id: 'Body', label: 'Body', mains: ['CRIT Rate', 'CRIT DMG'] },
+        ],
+        subStats: ['SPD', 'CRIT Rate'],
+        skills: [{ name: 'Skill', max: 15 }],
+      },
+    };
+    setRosterEntry('aa', 'c2', { owned: true, wanted: false, dupes: 0 });
+    await show('characters', game);
+    fireEvent.click(screen.getByRole('button', { name: /^Older Star/ }));
+    const page = await screen.findByRole('article', { name: 'Older Star' });
+    expect(within(page).getByText('No build saved yet')).toBeInTheDocument();
+    expect(within(page).getByText('No data yet · enter it in Build score')).toBeInTheDocument();
+    fireEvent.click(within(page).getByRole('button', { name: 'Enter build' }));
+    const form = await screen.findByRole('form', { name: 'Edit build of Older Star' });
+    fireEvent.change(within(form).getByLabelText('Older Star’s level (1–80)'), { target: { value: '99' } });
+    fireEvent.change(within(form).getByLabelText('Cone'), { target: { value: 'Night on the Milky Way' } });
+    fireEvent.change(within(form).getByLabelText('Superimposition'), { target: { value: '2' } });
+    fireEvent.change(within(form).getByLabelText('Body extra stat 1'), { target: { value: 'SPD' } });
+    fireEvent.change(within(form).getByLabelText('Body extra stat 1 value'), { target: { value: '7.2' } });
+    fireEvent.change(within(form).getAllByLabelText('Main stat')[1] as HTMLElement, { target: { value: 'CRIT Rate' } });
+    fireEvent.change(within(form).getByLabelText('Skill (1–15)'), { target: { value: '10' } });
+    fireEvent.click(within(form).getByRole('button', { name: 'Save build' }));
+    // A wrong number is named, and nothing is saved.
+    expect(within(form).getByRole('alert')).toHaveTextContent('Level must be a whole number from 1 to 80.');
+    expect(gameData('aa').builds?.c2).toBeUndefined();
+    fireEvent.change(within(form).getByLabelText('Older Star’s level (1–80)'), { target: { value: '80' } });
+    fireEvent.click(within(form).getByRole('button', { name: 'Save build' }));
+    expect(gameData('aa').builds?.c2).toMatchObject({
+      level: 80,
+      weapon: { name: 'Night on the Milky Way', refine: 2 },
+      gear: [{ slot: 'Body', main: 'CRIT Rate', subs: [{ stat: 'SPD', value: 7.2 }] }],
+      skills: { Skill: 10 },
+      source: 'manual',
+    });
+    // On the page: level in the header, the build in Build score; no score until scoring exists.
+    expect(within(page).getByText('of 80')).toBeInTheDocument();
+    expect(within(page).getByText('CRIT Rate · SPD 7.2')).toBeInTheDocument();
+    expect(within(page).getByText('No score yet · scoring is being built')).toBeInTheDocument();
+    // Edit opens with what was saved.
+    fireEvent.click(within(page).getByRole('button', { name: 'Edit build' }));
+    const again = await screen.findByRole('form', { name: 'Edit build of Older Star' });
+    expect(within(again).getByLabelText('Older Star’s level (1–80)')).toHaveValue('80');
+    fireEvent.click(within(again).getByRole('button', { name: 'Cancel' }));
+    // Clear, then Undo puts it back exactly.
+    const before = gameData('aa').builds?.c2;
+    fireEvent.click(within(page).getByRole('button', { name: 'Clear build' }));
+    expect(gameData('aa').builds?.c2).toBeUndefined();
+    fireEvent.click(within(page).getByRole('button', { name: 'Undo' }));
+    expect(gameData('aa').builds?.c2).toEqual(before);
   });
 
   it('a game with team rules shows the synergy % and, on tap, every reason with its proof', async () => {

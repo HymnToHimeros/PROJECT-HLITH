@@ -89,3 +89,24 @@ test('no serious accessibility problems · account', async ({ page }) => {
   await scan('/account (adjust banner)');
   expect(problems, problems.join('\n')).toEqual([]);
 });
+
+// The character page's Enhanced picker and the Edit build form (HSR, Kafka has an Enhanced kit).
+test('no serious accessibility problems · character page and build form', async ({ page }) => {
+  await page.goto('/hsr/roster');
+  await page.getByRole('button', { name: /^Kafka/ }).first().click();
+  const article = page.getByRole('article', { name: 'Kafka' });
+  await article.getByRole('button', { name: 'Owned' }).click();
+  await expect(article.getByLabel('Enhanced')).toBeVisible();
+  await article.getByRole('button', { name: 'Enter build' }).click();
+  const form = page.getByRole('form', { name: 'Edit build of Kafka' });
+  await expect(form).toBeVisible();
+  await form.getByLabel('Kafka’s level (1–80)').fill('80');
+  await page.waitForLoadState('networkidle');
+  const result = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa']).analyze();
+  const problems = result.violations
+    .filter((v) => v.impact === 'serious' || v.impact === 'critical')
+    .map((v) => `build form: ${v.id} (${v.nodes.length}) ${v.help} → ${v.nodes[0]?.target.join(' ')}`);
+  expect(problems, problems.join('\n')).toEqual([]);
+  await form.getByRole('button', { name: 'Save build' }).click();
+  await expect(article.getByText('of 80')).toBeVisible();
+});

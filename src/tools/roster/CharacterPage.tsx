@@ -1,12 +1,13 @@
 import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
-import type { Character, Material, TeamPreset } from '../../core/contract';
+import type { Character, CharacterBuild, Material, SavedBuild, TeamPreset } from '../../core/contract';
 import { useExamplesShown } from '../../core/data/prefs';
-import { setFarm, setRosterEntry } from '../../core/data/userData';
+import { clearBuild, setBuild, setFarm, setRosterEntry } from '../../core/data/userData';
 import { formatNumber } from '../../core/time/format';
-import { ExampleTag, GameTag, HowTo, NoData, UnverifiedTag } from '../../core/ui';
+import { Button, ExampleTag, GameTag, HowTo, NoData, UnverifiedTag } from '../../core/ui';
 import { exampleNeeds } from '../farm/examples';
 import { farmPlan } from '../farm/plan';
 import { exampleBuild, exampleScore } from './examples';
+import { BuildEditor } from './BuildEditor';
 import { KitCheck } from './KitCheck';
 import r from './roster.module.css';
 import { artOf, CharArt, dupesLabel, elementOf, entryOf, isUpcoming, rarityColor, roleLabel } from './shared';
@@ -134,11 +135,12 @@ export function CharacterPage({ data, character: c, several, onBack, openPulls, 
           <div className={r.heroStats}>
             <div className={r.stat}>
               <span className={r.statLabel}>Level</span>
-              <span className={r.statValue} data-empty="true">
-                —
+              <span className={r.statValue} data-empty={user.builds?.[c.id]?.level === undefined}>
+                {user.builds?.[c.id]?.level ?? '—'}
               </span>
-              {/* ROSTER-LOGIC adds a build store; until then no level is saved anywhere. */}
-              <span className={entry.owned ? r.statNoData : r.statSub}>{entry.owned ? 'No data yet · levels aren’t saved yet' : 'Not owned'}</span>
+              <span className={entry.owned && user.builds?.[c.id]?.level === undefined ? r.statNoData : r.statSub}>
+                {!entry.owned ? 'Not owned' : user.builds?.[c.id]?.level !== undefined ? `of ${game.build?.levelMax ?? '…'}` : game.build ? 'No data yet · enter it in Build score' : 'No data yet · levels aren’t saved yet'}
+              </span>
             </div>
             {dupes && (
               <div className={r.stat}>
@@ -176,7 +178,7 @@ export function CharacterPage({ data, character: c, several, onBack, openPulls, 
 
       {/* Design order: Build score (or If you pull), Team fit, Materials. Secondary cards fold away below. */}
       <div className={r.cards}>
-        {entry.owned ? <BuildCard data={data} /> : <IfYouPull data={data} character={c} openPulls={openPulls} />}
+        {entry.owned ? <BuildCard data={data} character={c} /> : <IfYouPull data={data} character={c} openPulls={openPulls} />}
         <TeamFit data={data} character={c} makePreset={makePreset} />
         <section className={r.card} aria-labelledby={`how-to-build-${c.id}`}>
           <h3 className={r.cardTitle} id={`how-to-build-${c.id}`}>
@@ -384,33 +386,132 @@ function BuildGuide({ data, character: c }: { data: RosterData; character: Chara
   );
 }
 
-function BuildCard({ data }: { data: RosterData }) {
-  const { game } = data;
+function BuildCard({ data, character: c }: { data: RosterData; character: Character }) {
+  const { game, user } = data;
   const ex = exampleBuild(game);
   const showExamples = useExamplesShown();
+  const saved = user.builds?.[c.id];
+  const [editing, setEditing] = useState(false);
+  const [cleared, setCleared] = useState<SavedBuild | null>(null);
+  const entry = entryOf(user.roster, c.id);
+  const score = useMemo(() => {
+    const rate = game.rules.scoreBuild;
+    if (!rate || !saved || saved.level === undefined) return null;
+    const build: CharacterBuild = {
+      characterId: c.id,
+      level: saved.level,
+      dupes: entry.dupes,
+      ...(saved.weapon?.id && saved.weapon.level !== undefined ? { weapon: { id: saved.weapon.id, level: saved.weapon.level } } : {}),
+      gear: saved.gear.filter((g) => g.main).map((g) => ({ slot: g.slot, main: g.main ?? '', subs: Object.fromEntries(g.subs.map((x) => [x.stat, x.value])) })),
+    };
+    return rate(build);
+  }, [game.rules, saved, c.id, entry.dupes]);
+  const t = game.terms;
   return (
     <section className={r.card} aria-labelledby="build-score">
       <div className={r.cardHead}>
         <h3 className={r.cardTitle} id="build-score">
           Build score
         </h3>
+        {game.build && saved && (
+          <Button variant="quiet" onClick={() => setEditing(true)}>
+            Edit build
+          </Button>
+        )}
       </div>
-      {/* ROSTER-LOGIC fills the real score (game.rules.scoreBuild) from an imported build. */}
-      <div className={r.noBuild}>
-        <span className={r.bigDash} aria-hidden="true">
-          —
-        </span>
-        <span className={r.noBuildTitle}>No build data yet</span>
-        <span className={r.cardText}>
-          HLITH can’t save builds ({game.terms.gear}, {game.terms.weapon}, level) yet, so there’s nothing to score. It shows nothing rather than a guess.
-        </span>
-        {/* Import build mounts here once ROSTER-LOGIC adds a build store (HoYoLAB import / screenshot scan). */}
-      </div>
-      {showExamples && (
+      {cleared && (
+        <p className={r.undoRow} role="status">
+          <span className={r.grow}>Build cleared.</span>
+          <Button
+            onClick={() => {
+              setBuild(game.id, c.id, cleared);
+              setCleared(null);
+            }}
+          >
+            Undo
+          </Button>
+        </p>
+      )}
+      {saved ? (
+        <>
+          {score?.known ? (
+            <div className={r.scoreRow}>
+              <span className={r.scoreBig}>{score.value.score}</span>
+              <span className={r.scoreOf}>/100</span>
+              <span className={r.grade}>{score.value.grade}</span>
+            </div>
+          ) : (
+            <p className={r.statNoData}>{saved.level === undefined ? 'No score yet · add the level to score this build' : 'No score yet · scoring is being built'}</p>
+          )}
+          <dl className={r.buildSummary}>
+            <div>
+              <dt>Level</dt>
+              <dd>{saved.level ?? '—'}</dd>
+            </div>
+            <div>
+              <dt>{t.weapon}</dt>
+              <dd>
+                {saved.weapon
+                  ? [saved.weapon.name, saved.weapon.level !== undefined && `Lv ${saved.weapon.level}`, saved.weapon.refine !== undefined && game.build && `${game.build.refine.name} ${saved.weapon.refine}`]
+                      .filter(Boolean)
+                      .join(' · ')
+                  : '—'}
+              </dd>
+            </div>
+            {(game.build?.slots ?? []).map((slot) => {
+              const g = saved.gear.find((x) => x.slot === slot.id);
+              return (
+                <div key={slot.id}>
+                  <dt>{slot.label}</dt>
+                  <dd>
+                    {g ? [g.set, g.main, g.subs.map((x) => `${x.stat} ${x.value}`).join(', ')].filter(Boolean).join(' · ') : '—'}
+                  </dd>
+                </div>
+              );
+            })}
+            {saved.skills && (
+              <div>
+                <dt>{t.skill}</dt>
+                <dd>
+                  {Object.entries(saved.skills)
+                    .map(([k, v]) => `${k} ${v}`)
+                    .join(' · ')}
+                </dd>
+              </div>
+            )}
+          </dl>
+          <div className={r.tapRow}>
+            <span className={`${r.muted} ${r.grow}`}>
+              Saved {new Date(saved.updatedAt).toLocaleDateString()} · {saved.source === 'scan' ? 'from a screenshot scan' : saved.source === 'hoyolab' ? 'from HoYoLAB' : 'entered by you'}
+            </span>
+            <Button variant="quiet" onClick={() => setCleared(clearBuild(game.id, c.id))}>
+              Clear build
+            </Button>
+          </div>
+        </>
+      ) : (
+        <div className={r.noBuild}>
+          <span className={r.bigDash} aria-hidden="true">
+            —
+          </span>
+          <span className={r.noBuildTitle}>No build saved yet</span>
+          <span className={r.cardText}>
+            {game.build
+              ? `Enter ${c.name}’s level, ${t.weapon} and ${t.gear} and HLITH keeps them here. It shows nothing rather than a guess.`
+              : `HLITH can’t save builds for this game yet, so there’s nothing to score. It shows nothing rather than a guess.`}
+          </span>
+          {game.build && (
+            <Button variant="primary" onClick={() => setEditing(true)}>
+              Enter build
+            </Button>
+          )}
+        </div>
+      )}
+      {!saved && showExamples && (
         <div className={r.preview} role="group" aria-label="Example build score">
           <div className={r.previewHead}>
             <ExampleTag />
-            <span className={r.muted}>What a score looks like once a build is imported</span>
+            <span className={r.muted}>What a score looks like once a build is saved</span>
           </div>
           <div className={r.scoreRow}>
             <span className={r.scoreBig}>{ex.score}</span>
@@ -428,6 +529,7 @@ function BuildCard({ data }: { data: RosterData }) {
           ))}
         </div>
       )}
+      <BuildEditor game={game} character={c} saved={saved} open={editing} onClose={() => setEditing(false)} />
     </section>
   );
 }
