@@ -23,6 +23,8 @@ export interface Library {
   /** Kit piece → its label ("Additional Ability: External Line"), per character. */
   pieceLabels: Map<string, Map<string, string>>;
   names: Map<string, string>;
+  /** Leaked characters (beta kit text) and where the leak came from (T39). */
+  leaks?: Map<string, string>;
   /**
    * Every W-Engine the check can read (T18 step 4): its specialty, its entries (piece `weapon:<id>`) and its label.
    * A signature's entries come from its agent's sheet; `madeFor` marks it (that agent reads it as a kit piece).

@@ -54,6 +54,7 @@ export function buildLibrary(sheets: CharacterSheet[] = SHEETS, kitList: Kit[] =
     ),
     pieceLabels: new Map(kitList.map((k) => [k.characterId, new Map(k.skills.map((s) => [s.id, s.label] as const))])),
     names: new Map(characters.map((c) => [c.id, c.name])),
+    leaks: new Map((characters as { id: string; leak?: { source: string } }[]).flatMap((c) => (c.leak ? [[c.id, c.leak.source] as const] : []))),
     weapons: weaponLibrary(sheets),
   };
 }

@@ -14,6 +14,7 @@ import { SIGNATURE_PIECE } from '../../../core/rules/signatureWeapons';
 import { assumedLine, assumedWords } from '../../../core/rules/averageBuild';
 import { assume } from '../assumed';
 import { explainTeam, memberPhrase } from '../../../core/rules/teamExplain';
+import { leakLines, noListLine, usable } from '../../../core/rules/leaks';
 
 export const METHOD = 'HSR Kit Check theory v2 (docs/logic/hsr-theory.md)';
 /** Partners kept per damage dealer before teams of four are tried, once the pool is bigger than this. */
@@ -116,7 +117,8 @@ const centresIn = (ids: string[], lib: Library) => {
 const asExplain = (r: TeamResult) => ({ members: r.members, dd: r.dd, count: r.count, lines: r.lines, ...(r.coDds ? { coDds: r.coDds } : {}) });
 
 /** Every read character the account doesn't hide (the unpicked Trailblazer: `skip`, FRAME's protagonist setting). */
-const readable = (lib: Library, a: TeamAccount) => [...lib.sheets.keys()].filter((id) => !a.skip?.(id));
+/** Everyone the check may use: no one the owner hid, and leaks only when the owner shows them (T39). */
+const readable = (lib: Library, a: TeamAccount) => usable(lib.sheets.keys(), a, lib.leaks);
 const ownedRead = (a: TeamAccount, lib: Library) => readable(lib, a).filter((id) => a.owned(id));
 
 function reasonOf(l: Line, lib: Library): TeamReason {
@@ -166,7 +168,11 @@ export function verdict(members: string[], a: TeamAccount, lib: Library = librar
   if ((lib.ownTeams.get(mine.dd) ?? []).some((t) => account.teamList?.(t.id))) notes.push(`Team lists for ${name(mine.dd)} edited by you: teammates come from your lists.`);
   notes.push('Traces count as unlocked. A higher count means more of the kits connect, not more damage.');
   const assumedNote = assumedLine(mine.members, a, name);
-  if (assumedNote) notes.push(assumedNote);
+  // T39: a leak in the team says so; a leaked carry has no game team list yet.
+  const leakNote = [...leakLines(mine.members, lib.leaks, name), ...(lib.leaks?.has(mine.dd) && !lib.ownTeams.get(mine.dd)?.length ? [noListLine(name(mine.dd))] : [])];
+  // T34's assumed builds, then T39's leak lines: in the notes and at the end of the plain words.
+  const extraNotes = [...(assumedNote ? [assumedNote] : []), ...leakNote];
+  notes.push(...extraNotes);
   const explain = explainTeam(asExplain(mine), asExplain(top), name);
   const label = synergyLabel(percent, members.length);
   return {
@@ -180,7 +186,7 @@ export function verdict(members: string[], a: TeamAccount, lib: Library = librar
     unordered: true,
     reasons: mine.lines.map((l) => reasonOf(l, lib)),
     ...(wantsOf(mine, lib).length ? { wants: wantsOf(mine, lib) } : {}),
-    explain: assumedNote ? { ...explain, missing: [...explain.missing, assumedNote] } : explain,
+    explain: extraNotes.length ? { ...explain, missing: [...explain.missing, ...extraNotes] } : explain,
     notes: [summary(mine), ...notes],
   };
 }
@@ -258,7 +264,9 @@ export function whoFits(members: string[], a: TeamAccount, lib: Library = librar
     const signature = sigId && sigLabel ? { id: sigId, name: sigLabel.replace(/^Signature [^:]+: /, '').replace(/ · .*$/, '') } : undefined;
     const equipped = equippedFact(c, a, lib);
     const { notes, theory } = accountNotes(c, a, { dupePrefix: 'E', ...(hasTrack ? { track: 'Enhanced kit' } : {}), locked, ...(signature ? { signature } : {}), ...(equipped ? { equipped } : {}) });
-    out.push({ id: c, count: r.count, how, withEveryone, percent, fromAccount: notes, theory });
+    // T39: a leak is never owned, so it only shows as theory, marked unverified.
+    const leak = leakLines([c], lib.leaks, (x) => lib.names.get(x) ?? x);
+    out.push({ id: c, count: r.count, how, withEveryone, percent, fromAccount: [...leak, ...notes], theory });
   }
   return out.sort((x, y) => (y.percent ?? 0) - (x.percent ?? 0) || Number(y.withEveryone) - Number(x.withEveryone) || y.count - x.count);
 }
@@ -298,12 +306,14 @@ export function lineUps(a: TeamAccount, lib: Library = library()): TeamIdea[] {
 export function ifYouPull(id: string, a: TeamAccount, lib: Library = library()): PullValue | null {
   if (!lib.sheets.has(id)) return null;
   const account = toAccount(a);
-  const all = readable(lib, a);
+  // The character asked about is always in the pool, a hidden leak included (pre-pull, T39).
+  const all = [...new Set([...readable(lib, a), id])];
   const base = ownedRead(a, lib).filter((x) => x !== id);
   const name = (x: string) => lib.names.get(x) ?? x;
   const why: string[] = [];
   let percent = 0;
-  if (isCentre(id, lib)) {
+  // A leaked carry has no game team yet, so isn't a centre; pre-pull still asks what they'd carry (T39).
+  if (isCentre(id, lib) || (lib.leaks?.has(id) && canCarry(id, lib))) {
     const withYours = bestFor(id, [...base, id], lib, account);
     const withAll = bestFor(id, all, lib, account);
     if (withYours && withAll && withAll.count > 0) {
@@ -328,6 +338,8 @@ export function ifYouPull(id: string, a: TeamAccount, lib: Library = library()):
     }
   }
   if (!why.length) why.push('No gain: no team of yours gets a higher count with them.');
+  // T39: a leak says so first; a leaked carry has no game team list yet.
+  if (lib.leaks?.has(id)) why.unshift(...leakLines([id], lib.leaks, name), ...(canCarry(id, lib) && !lib.ownTeams.get(id)?.length ? [noListLine(name(id))] : []));
   return { percent, why };
 }
 
@@ -361,7 +373,8 @@ export function recommendedTeams(lib: Library = library()): TeamPreset[] {
 function findRecommended(lib: Library): TeamPreset[] {
   const name = (id: string) => lib.names.get(id) ?? id;
   const e0: Account = { eidolon: () => 0, enhanced: () => undefined };
-  const all = [...lib.sheets.keys()];
+  // Recommended teams are the same for everyone: leaks (unverified) stay out of them (T39).
+  const all = [...lib.sheets.keys()].filter((id) => !lib.leaks?.has(id));
   const out: TeamPreset[] = [];
   for (const dd of all.filter((id) => isCentre(id, lib))) {
     const first = bestFor(dd, all, lib, e0);

@@ -307,6 +307,11 @@ export interface TeamAccount {
   /** Characters the owner hid (the unpicked Trailblazer, FRAME's protagonist setting): never used in any team (LOGIC-CORE). */
   skip?: (id: string) => boolean;
   /**
+   * Leaked characters may join teams of released ones (Roster's "Show leaked" on and Banners' "Hide leaks" off; T39).
+   * A team or "If you pull" that names a leak always reads it, marked unverified.
+   */
+  showLeaks?: boolean;
+  /**
    * The owner's "Assume signature + average build" switch (T34, saved with the account): owned characters with no
    * saved build are scored with their signature weapon and an average build. Off or missing = scored at base.
    */

@@ -28,6 +28,13 @@ Resume with: "continue from PROGRESS.md". Newest entry on top. Older entries:
 - CI (`.github/workflows/ci.yml`) runs both on every pull request.
 
 ## Done
+- 2026-10-10 · **LOGIC-CORE: leaked characters in teams (T39)** (branch `logic-core/leaks-in-teams`).
+  A leaked character (today HSR Nihilux) can be pre-pulled: "If you pull" shows their best team from your
+  characters, and they can be put in teams. Everything that names a leak says "Leak: unverified beta kit,
+  may change"; a leaked carry has "No game team list yet" (teammates come from their kit lines). Leaks
+  join every-character lists only with "Show leaked" on. Both games. FRAME passes `showLeaks`.
+  The kit importers now read every unreleased new character on each run (SCHEDULER keeps leak data
+  current); raw beta name keys (ZZZ Severian / Phoenix Mindscapes) show "No name yet".
 - 2026-10-10 · **LOGIC-CORE: target stats to build towards (T35)** (branch `logic-core/stat-targets`).
   Each character page can show the end stats to aim for, only where the game text states a number:
   their kit (e.g. Jiaoqiu 140% Effect Hit Rate, Lucia 24,000 initial Max HP), their signature weapon,

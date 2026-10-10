@@ -165,3 +165,15 @@ team size and order, and the owner's ZZZ method's own counting.
 35. **Target stats come only from numbers the game text states (owner's job T35, both games, ZZZ decision 59 mirrors it).**
     Kit, signature weapon and the recommended sets' own conditions, each quoted word for word with the working shown;
     no number in the text = "No data yet". Rules in `build-score.md`, "Target stats".
+36. **Leaked characters in teams (owner's job T39, both games, ZZZ decision 60 mirrors it).** The owner: "leaked charchter cna
+    also be used to build teams with. so u also know based on the leaked kit what charchter are good for it therfore u
+    cna for exmaple pre upll a chacrhter". A leak (`Character.leak`) is read from its beta kit text like anyone else.
+    Every team, Who fits suggestion and "If you pull" that names one says "Leak: X: unverified beta kit, may change
+    (source)". A leaked carry has no game team list yet, so its teammates are whoever connects with its kit, and the
+    Why says "No game team list yet". Leaks join every-character pools only when the owner shows leaks
+    (`TeamAccount.showLeaks`: Roster's "Show leaked" on, Banners' "Hide leaks" off); never in the check's recommended
+    teams. A released carry's own game lists don't name leaks, so a leak joins their team only if the owner adds it
+    to the lists (decision 31). No new scoring. The kit importers (`scripts/import-nanoka*-kits.ts`) read every new,
+    unreleased character in nanoka.cc's manifest on each run, so a new leak gets its beta kit text without a code
+    change (its kit check sheet is still read by hand before it is rated). A raw text key in a beta file where a name
+    belongs (ZZZ "Severian_Talent_01_Title") shows "No name yet"; the game text stays.
