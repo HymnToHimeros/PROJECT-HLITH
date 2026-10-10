@@ -10,6 +10,7 @@ import type {
   BuildLevel,
   Character,
   CharacterBuild,
+  BuildScorePart,
   GameEvent,
   ISODate,
   Kit,
@@ -227,7 +228,7 @@ export interface GameRules {
   materialsFor?: (characterId: string, from: BuildLevel, to: BuildLevel) => MaterialNeed[];
   /** What the material amounts include or leave out, in plain words (shown with them). */
   materialsNote?: string;
-  scoreBuild?: (build: CharacterBuild) => Known<{ score: number; grade: string }>;
+  scoreBuild?: (build: CharacterBuild) => Known<{ score: number; grade: string; parts?: BuildScorePart[]; basis?: string }>;
   /** Team scoring from kits (LOGIC-CORE). Every score explains itself with kit text. */
   teams?: TeamRules;
 }
