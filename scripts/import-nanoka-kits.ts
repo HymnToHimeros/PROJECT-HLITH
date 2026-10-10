@@ -35,6 +35,10 @@ const GROUPS: Record<string, string[]> = {
   B: ['1141', '1161', '1621', '1291', '1491', '1431', '1341'],
   // The method's "If you pull…" examples: Banyue, Norma, Cissia, Harumasa, Lucy, Seed, Rina, Anton.
   C: ['1471', '1571', '1521', '1201', '1151', '1461', '1211', '1111'],
+  // Rupture and Armorer damage dealers and their supports: Yixuan, Ju Fufu, Yidhari, Manato, Claret, Astra Yao, Yuzuha.
+  D: ['1371', '1391', '1051', '1441', '1611', '1311', '1411'],
+  // Anomaly: Miyabi, Yanagi, Burnice, Jane, Vivian, Alice, Piper.
+  E: ['1091', '1221', '1171', '1261', '1331', '1401', '1281'],
 };
 
 // Specialty and attribute codes, as in scripts/import-nanoka.ts.
