@@ -5,7 +5,10 @@
     "rarity": "mid",
     "element": "electric",
     "role": "stun",
-    "source": "nanoka.cc"
+    "art": "https://static.nanoka.cc/assets/zzz/IconRole01.webp",
+    "portrait": "https://static.nanoka.cc/assets/zzz/IconRoleCrop01.webp",
+    "source": "nanoka.cc",
+    "releasedAt": "2024-07-04T04:00:00.000Z"
   },
   {
     "id": "1021",
@@ -13,7 +16,10 @@
     "rarity": "top",
     "element": "physical",
     "role": "attack",
-    "source": "nanoka.cc"
+    "art": "https://static.nanoka.cc/assets/zzz/IconRole11.webp",
+    "portrait": "https://static.nanoka.cc/assets/zzz/IconRoleCrop11.webp",
+    "source": "nanoka.cc",
+    "releasedAt": "2024-07-04T04:00:00.000Z"
   },
   {
     "id": "1031",
@@ -21,7 +27,10 @@
     "rarity": "mid",
     "element": "ether",
     "role": "support",
-    "source": "nanoka.cc"
+    "art": "https://static.nanoka.cc/assets/zzz/IconRole12.webp",
+    "portrait": "https://static.nanoka.cc/assets/zzz/IconRoleCrop12.webp",
+    "source": "nanoka.cc",
+    "releasedAt": "2024-07-04T04:00:00.000Z"
   },
   {
     "id": "1041",
@@ -29,7 +38,10 @@
     "rarity": "top",
     "element": "fire",
     "role": "attack",
-    "source": "nanoka.cc"
+    "art": "https://static.nanoka.cc/assets/zzz/IconRole05.webp",
+    "portrait": "https://static.nanoka.cc/assets/zzz/IconRoleCrop05.webp",
+    "source": "nanoka.cc",
+    "releasedAt": "2024-07-04T04:00:00.000Z"
   },
   {
     "id": "1051",
@@ -37,7 +49,10 @@
     "rarity": "top",
     "element": "ice",
     "role": "rupture",
-    "source": "nanoka.cc"
+    "art": "https://static.nanoka.cc/assets/zzz/IconRole52.webp",
+    "portrait": "https://static.nanoka.cc/assets/zzz/IconRoleCrop52.webp",
+    "source": "nanoka.cc",
+    "releasedAt": "2025-11-05T04:00:00.000Z"
   },
   {
     "id": "1061",
@@ -45,7 +60,10 @@
     "rarity": "mid",
     "element": "physical",
     "role": "attack",
-    "source": "nanoka.cc"
+    "art": "https://static.nanoka.cc/assets/zzz/IconRole09.webp",
+    "portrait": "https://static.nanoka.cc/assets/zzz/IconRoleCrop09.webp",
+    "source": "nanoka.cc",
+    "releasedAt": "2024-07-04T04:00:00.000Z"
   },
   {
     "id": "1071",
@@ -53,7 +71,10 @@
     "rarity": "top",
     "element": "physical",
     "role": "defense",
-    "source": "nanoka.cc"
+    "art": "https://static.nanoka.cc/assets/zzz/IconRole25.webp",
+    "portrait": "https://static.nanoka.cc/assets/zzz/IconRoleCrop25.webp",
+    "source": "nanoka.cc",
+    "releasedAt": "2024-09-25T04:00:00.000Z"
   },
   {
     "id": "1081",
@@ -61,7 +82,10 @@
     "rarity": "mid",
     "element": "physical",
     "role": "attack",
-    "source": "nanoka.cc"
+    "art": "https://static.nanoka.cc/assets/zzz/IconRole10.webp",
+    "portrait": "https://static.nanoka.cc/assets/zzz/IconRoleCrop10.webp",
+    "source": "nanoka.cc",
+    "releasedAt": "2024-07-04T04:00:00.000Z"
   },
   {
     "id": "1091",
@@ -69,7 +93,10 @@
     "rarity": "top",
     "element": "ice",
     "role": "anomaly",
-    "source": "nanoka.cc"
+    "art": "https://static.nanoka.cc/assets/zzz/IconRole13.webp",
+    "portrait": "https://static.nanoka.cc/assets/zzz/IconRoleCrop13.webp",
+    "source": "nanoka.cc",
+    "releasedAt": "2024-12-18T04:00:00.000Z"
   },
   {
     "id": "1101",
@@ -77,7 +104,10 @@
     "rarity": "top",
     "element": "fire",
     "role": "stun",
-    "source": "nanoka.cc"
+    "art": "https://static.nanoka.cc/assets/zzz/IconRole14.webp",
+    "portrait": "https://static.nanoka.cc/assets/zzz/IconRoleCrop14.webp",
+    "source": "nanoka.cc",
+    "releasedAt": "2024-07-04T04:00:00.000Z"
   },
   {
     "id": "1111",
@@ -85,7 +115,10 @@
     "rarity": "mid",
     "element": "electric",
     "role": "attack",
-    "source": "nanoka.cc"
+    "art": "https://static.nanoka.cc/assets/zzz/IconRole15.webp",
+    "portrait": "https://static.nanoka.cc/assets/zzz/IconRoleCrop15.webp",
+    "source": "nanoka.cc",
+    "releasedAt": "2024-07-04T04:00:00.000Z"
   },
   {
     "id": "1121",
@@ -93,7 +126,10 @@
     "rarity": "mid",
     "element": "fire",
     "role": "defense",
-    "source": "nanoka.cc"
+    "art": "https://static.nanoka.cc/assets/zzz/IconRole16.webp",
+    "portrait": "https://static.nanoka.cc/assets/zzz/IconRoleCrop16.webp",
+    "source": "nanoka.cc",
+    "releasedAt": "2024-07-04T04:00:00.000Z"
   },
   {
     "id": "1131",
@@ -101,7 +137,10 @@
     "rarity": "mid",
     "element": "ice",
     "role": "support",
-    "source": "nanoka.cc"
+    "art": "https://static.nanoka.cc/assets/zzz/IconRole17.webp",
+    "portrait": "https://static.nanoka.cc/assets/zzz/IconRoleCrop17.webp",
+    "source": "nanoka.cc",
+    "releasedAt": "2024-07-04T04:00:00.000Z"
   },
   {
     "id": "1141",
@@ -109,7 +148,10 @@
     "rarity": "top",
     "element": "ice",
     "role": "stun",
-    "source": "nanoka.cc"
+    "art": "https://static.nanoka.cc/assets/zzz/IconRole18.webp",
+    "portrait": "https://static.nanoka.cc/assets/zzz/IconRoleCrop18.webp",
+    "source": "nanoka.cc",
+    "releasedAt": "2024-07-04T04:00:00.000Z"
   },
   {
     "id": "1151",
@@ -117,7 +159,10 @@
     "rarity": "mid",
     "element": "fire",
     "role": "support",
-    "source": "nanoka.cc"
+    "art": "https://static.nanoka.cc/assets/zzz/IconRole27.webp",
+    "portrait": "https://static.nanoka.cc/assets/zzz/IconRoleCrop27.webp",
+    "source": "nanoka.cc",
+    "releasedAt": "2024-07-04T04:00:00.000Z"
   },
   {
     "id": "1161",
@@ -125,7 +170,10 @@
     "rarity": "top",
     "element": "fire",
     "role": "stun",
-    "source": "nanoka.cc"
+    "art": "https://static.nanoka.cc/assets/zzz/IconRole26.webp",
+    "portrait": "https://static.nanoka.cc/assets/zzz/IconRoleCrop26.webp",
+    "source": "nanoka.cc",
+    "releasedAt": "2024-11-27T04:00:00.000Z"
   },
   {
     "id": "1171",
@@ -133,7 +181,10 @@
     "rarity": "top",
     "element": "fire",
     "role": "anomaly",
-    "source": "nanoka.cc"
+    "art": "https://static.nanoka.cc/assets/zzz/IconRole32.webp",
+    "portrait": "https://static.nanoka.cc/assets/zzz/IconRoleCrop32.webp",
+    "source": "nanoka.cc",
+    "releasedAt": "2024-10-16T04:00:00.000Z"
   },
   {
     "id": "1181",
@@ -141,7 +192,10 @@
     "rarity": "top",
     "element": "electric",
     "role": "anomaly",
-    "source": "nanoka.cc"
+    "art": "https://static.nanoka.cc/assets/zzz/IconRole20.webp",
+    "portrait": "https://static.nanoka.cc/assets/zzz/IconRoleCrop20.webp",
+    "source": "nanoka.cc",
+    "releasedAt": "2024-07-04T04:00:00.000Z"
   },
   {
     "id": "1191",
@@ -149,7 +203,10 @@
     "rarity": "top",
     "element": "ice",
     "role": "attack",
-    "source": "nanoka.cc"
+    "art": "https://static.nanoka.cc/assets/zzz/IconRole21.webp",
+    "portrait": "https://static.nanoka.cc/assets/zzz/IconRoleCrop21.webp",
+    "source": "nanoka.cc",
+    "releasedAt": "2024-07-04T04:00:00.000Z"
   },
   {
     "id": "1201",
@@ -157,7 +214,10 @@
     "rarity": "top",
     "element": "electric",
     "role": "attack",
-    "source": "nanoka.cc"
+    "art": "https://static.nanoka.cc/assets/zzz/IconRole35.webp",
+    "portrait": "https://static.nanoka.cc/assets/zzz/IconRoleCrop35.webp",
+    "source": "nanoka.cc",
+    "releasedAt": "2024-12-18T04:00:00.000Z"
   },
   {
     "id": "1211",
@@ -165,7 +225,10 @@
     "rarity": "top",
     "element": "electric",
     "role": "support",
-    "source": "nanoka.cc"
+    "art": "https://static.nanoka.cc/assets/zzz/IconRole22.webp",
+    "portrait": "https://static.nanoka.cc/assets/zzz/IconRoleCrop22.webp",
+    "source": "nanoka.cc",
+    "releasedAt": "2024-07-04T04:00:00.000Z"
   },
   {
     "id": "1221",
@@ -173,7 +236,10 @@
     "rarity": "top",
     "element": "electric",
     "role": "anomaly",
-    "source": "nanoka.cc"
+    "art": "https://static.nanoka.cc/assets/zzz/IconRole31.webp",
+    "portrait": "https://static.nanoka.cc/assets/zzz/IconRoleCrop31.webp",
+    "source": "nanoka.cc",
+    "releasedAt": "2024-11-06T04:00:00.000Z"
   },
   {
     "id": "1241",
@@ -181,7 +247,10 @@
     "rarity": "top",
     "element": "ether",
     "role": "attack",
-    "source": "nanoka.cc"
+    "art": "https://static.nanoka.cc/assets/zzz/IconRole23.webp",
+    "portrait": "https://static.nanoka.cc/assets/zzz/IconRoleCrop23.webp",
+    "source": "nanoka.cc",
+    "releasedAt": "2024-07-24T04:00:00.000Z"
   },
   {
     "id": "1251",
@@ -189,7 +258,10 @@
     "rarity": "top",
     "element": "electric",
     "role": "stun",
-    "source": "nanoka.cc"
+    "art": "https://static.nanoka.cc/assets/zzz/IconRole29.webp",
+    "portrait": "https://static.nanoka.cc/assets/zzz/IconRoleCrop29.webp",
+    "source": "nanoka.cc",
+    "releasedAt": "2024-08-14T04:00:00.000Z"
   },
   {
     "id": "1261",
@@ -197,7 +269,10 @@
     "rarity": "top",
     "element": "physical",
     "role": "anomaly",
-    "source": "nanoka.cc"
+    "art": "https://static.nanoka.cc/assets/zzz/IconRole24.webp",
+    "portrait": "https://static.nanoka.cc/assets/zzz/IconRoleCrop24.webp",
+    "source": "nanoka.cc",
+    "releasedAt": "2024-09-04T04:00:00.000Z"
   },
   {
     "id": "1271",
@@ -205,7 +280,10 @@
     "rarity": "mid",
     "element": "electric",
     "role": "defense",
-    "source": "nanoka.cc"
+    "art": "https://static.nanoka.cc/assets/zzz/IconRole30.webp",
+    "portrait": "https://static.nanoka.cc/assets/zzz/IconRoleCrop30.webp",
+    "source": "nanoka.cc",
+    "releasedAt": "2024-09-04T04:00:00.000Z"
   },
   {
     "id": "1281",
@@ -213,7 +291,10 @@
     "rarity": "mid",
     "element": "physical",
     "role": "anomaly",
-    "source": "nanoka.cc"
+    "art": "https://static.nanoka.cc/assets/zzz/IconRole28.webp",
+    "portrait": "https://static.nanoka.cc/assets/zzz/IconRoleCrop28.webp",
+    "source": "nanoka.cc",
+    "releasedAt": "2024-07-04T04:00:00.000Z"
   },
   {
     "id": "1291",
@@ -221,7 +302,10 @@
     "rarity": "top",
     "element": "ice",
     "role": "attack",
-    "source": "nanoka.cc"
+    "art": "https://static.nanoka.cc/assets/zzz/IconRole42.webp",
+    "portrait": "https://static.nanoka.cc/assets/zzz/IconRoleCrop42.webp",
+    "source": "nanoka.cc",
+    "releasedAt": "2025-05-14T04:00:00.000Z"
   },
   {
     "id": "1301",
@@ -229,7 +313,10 @@
     "rarity": "top",
     "element": "fire",
     "role": "attack",
-    "source": "nanoka.cc"
+    "art": "https://static.nanoka.cc/assets/zzz/IconRole49.webp",
+    "portrait": "https://static.nanoka.cc/assets/zzz/IconRoleCrop49.webp",
+    "source": "nanoka.cc",
+    "releasedAt": "2025-09-24T04:00:00.000Z"
   },
   {
     "id": "1311",
@@ -237,7 +324,10 @@
     "rarity": "top",
     "element": "ether",
     "role": "support",
-    "source": "nanoka.cc"
+    "art": "https://static.nanoka.cc/assets/zzz/IconRole36.webp",
+    "portrait": "https://static.nanoka.cc/assets/zzz/IconRoleCrop36.webp",
+    "source": "nanoka.cc",
+    "releasedAt": "2025-01-22T04:00:00.000Z"
   },
   {
     "id": "1321",
@@ -245,7 +335,10 @@
     "rarity": "top",
     "element": "fire",
     "role": "attack",
-    "source": "nanoka.cc"
+    "art": "https://static.nanoka.cc/assets/zzz/IconRole37.webp",
+    "portrait": "https://static.nanoka.cc/assets/zzz/IconRoleCrop37.webp",
+    "source": "nanoka.cc",
+    "releasedAt": "2025-02-12T04:00:00.000Z"
   },
   {
     "id": "1331",
@@ -253,7 +346,10 @@
     "rarity": "top",
     "element": "ether",
     "role": "anomaly",
-    "source": "nanoka.cc"
+    "art": "https://static.nanoka.cc/assets/zzz/IconRole41.webp",
+    "portrait": "https://static.nanoka.cc/assets/zzz/IconRoleCrop41.webp",
+    "source": "nanoka.cc",
+    "releasedAt": "2025-04-23T04:00:00.000Z"
   },
   {
     "id": "1341",
@@ -261,7 +357,10 @@
     "rarity": "top",
     "element": "ice",
     "role": "defense",
-    "source": "nanoka.cc"
+    "art": "https://static.nanoka.cc/assets/zzz/IconRole56.webp",
+    "portrait": "https://static.nanoka.cc/assets/zzz/IconRoleCrop56.webp",
+    "source": "nanoka.cc",
+    "releasedAt": "2025-12-30T04:00:00.000Z"
   },
   {
     "id": "1351",
@@ -269,7 +368,10 @@
     "rarity": "mid",
     "element": "physical",
     "role": "stun",
-    "source": "nanoka.cc"
+    "art": "https://static.nanoka.cc/assets/zzz/IconRole38.webp",
+    "portrait": "https://static.nanoka.cc/assets/zzz/IconRoleCrop38.webp",
+    "source": "nanoka.cc",
+    "releasedAt": "2025-03-12T04:00:00.000Z"
   },
   {
     "id": "1361",
@@ -277,7 +379,10 @@
     "rarity": "top",
     "element": "electric",
     "role": "stun",
-    "source": "nanoka.cc"
+    "art": "https://static.nanoka.cc/assets/zzz/IconRole39.webp",
+    "portrait": "https://static.nanoka.cc/assets/zzz/IconRoleCrop39.webp",
+    "source": "nanoka.cc",
+    "releasedAt": "2025-04-02T04:00:00.000Z"
   },
   {
     "id": "1371",
@@ -285,7 +390,10 @@
     "rarity": "top",
     "element": "ether",
     "role": "rupture",
-    "source": "nanoka.cc"
+    "art": "https://static.nanoka.cc/assets/zzz/IconRole44.webp",
+    "portrait": "https://static.nanoka.cc/assets/zzz/IconRoleCrop44.webp",
+    "source": "nanoka.cc",
+    "releasedAt": "2025-06-06T04:00:00.000Z"
   },
   {
     "id": "1381",
@@ -293,7 +401,10 @@
     "rarity": "top",
     "element": "electric",
     "role": "attack",
-    "source": "nanoka.cc"
+    "art": "https://static.nanoka.cc/assets/zzz/IconRole40.webp",
+    "portrait": "https://static.nanoka.cc/assets/zzz/IconRoleCrop40.webp",
+    "source": "nanoka.cc",
+    "releasedAt": "2025-03-12T04:00:00.000Z"
   },
   {
     "id": "1391",
@@ -301,7 +412,10 @@
     "rarity": "top",
     "element": "fire",
     "role": "stun",
-    "source": "nanoka.cc"
+    "art": "https://static.nanoka.cc/assets/zzz/IconRole43.webp",
+    "portrait": "https://static.nanoka.cc/assets/zzz/IconRoleCrop43.webp",
+    "source": "nanoka.cc",
+    "releasedAt": "2025-06-25T04:00:00.000Z"
   },
   {
     "id": "1401",
@@ -309,7 +423,10 @@
     "rarity": "top",
     "element": "physical",
     "role": "anomaly",
-    "source": "nanoka.cc"
+    "art": "https://static.nanoka.cc/assets/zzz/IconRole46.webp",
+    "portrait": "https://static.nanoka.cc/assets/zzz/IconRoleCrop46.webp",
+    "source": "nanoka.cc",
+    "releasedAt": "2025-08-06T04:00:00.000Z"
   },
   {
     "id": "1411",
@@ -317,7 +434,10 @@
     "rarity": "top",
     "element": "physical",
     "role": "support",
-    "source": "nanoka.cc"
+    "art": "https://static.nanoka.cc/assets/zzz/IconRole47.webp",
+    "portrait": "https://static.nanoka.cc/assets/zzz/IconRoleCrop47.webp",
+    "source": "nanoka.cc",
+    "releasedAt": "2025-07-16T04:00:00.000Z"
   },
   {
     "id": "1421",
@@ -325,7 +445,10 @@
     "rarity": "mid",
     "element": "physical",
     "role": "defense",
-    "source": "nanoka.cc"
+    "art": "https://static.nanoka.cc/assets/zzz/IconRole45.webp",
+    "portrait": "https://static.nanoka.cc/assets/zzz/IconRoleCrop45.webp",
+    "source": "nanoka.cc",
+    "releasedAt": "2025-06-06T04:00:00.000Z"
   },
   {
     "id": "1431",
@@ -333,7 +456,10 @@
     "rarity": "top",
     "element": "physical",
     "role": "attack",
-    "source": "nanoka.cc"
+    "art": "https://static.nanoka.cc/assets/zzz/IconRole55.webp",
+    "portrait": "https://static.nanoka.cc/assets/zzz/IconRoleCrop55.webp",
+    "source": "nanoka.cc",
+    "releasedAt": "2025-12-30T04:00:00.000Z"
   },
   {
     "id": "1441",
@@ -341,7 +467,10 @@
     "rarity": "mid",
     "element": "fire",
     "role": "rupture",
-    "source": "nanoka.cc"
+    "art": "https://static.nanoka.cc/assets/zzz/IconRole51.webp",
+    "portrait": "https://static.nanoka.cc/assets/zzz/IconRoleCrop51.webp",
+    "source": "nanoka.cc",
+    "releasedAt": "2025-10-15T04:00:00.000Z"
   },
   {
     "id": "1451",
@@ -349,7 +478,10 @@
     "rarity": "top",
     "element": "ether",
     "role": "support",
-    "source": "nanoka.cc"
+    "art": "https://static.nanoka.cc/assets/zzz/IconRole50.webp",
+    "portrait": "https://static.nanoka.cc/assets/zzz/IconRoleCrop50.webp",
+    "source": "nanoka.cc",
+    "releasedAt": "2025-10-15T04:00:00.000Z"
   },
   {
     "id": "1461",
@@ -357,7 +489,10 @@
     "rarity": "top",
     "element": "electric",
     "role": "attack",
-    "source": "nanoka.cc"
+    "art": "https://static.nanoka.cc/assets/zzz/IconRole48.webp",
+    "portrait": "https://static.nanoka.cc/assets/zzz/IconRoleCrop48.webp",
+    "source": "nanoka.cc",
+    "releasedAt": "2025-09-04T04:00:00.000Z"
   },
   {
     "id": "1471",
@@ -365,7 +500,10 @@
     "rarity": "top",
     "element": "fire",
     "role": "rupture",
-    "source": "nanoka.cc"
+    "art": "https://static.nanoka.cc/assets/zzz/IconRole53.webp",
+    "portrait": "https://static.nanoka.cc/assets/zzz/IconRoleCrop53.webp",
+    "source": "nanoka.cc",
+    "releasedAt": "2025-12-17T04:00:00.000Z"
   },
   {
     "id": "1481",
@@ -373,7 +511,10 @@
     "rarity": "top",
     "element": "physical",
     "role": "stun",
-    "source": "nanoka.cc"
+    "art": "https://static.nanoka.cc/assets/zzz/IconRole54.webp",
+    "portrait": "https://static.nanoka.cc/assets/zzz/IconRoleCrop54.webp",
+    "source": "nanoka.cc",
+    "releasedAt": "2025-11-26T04:00:00.000Z"
   },
   {
     "id": "1491",
@@ -381,7 +522,10 @@
     "rarity": "top",
     "element": "physical",
     "role": "support",
-    "source": "nanoka.cc"
+    "art": "https://static.nanoka.cc/assets/zzz/IconRole58.webp",
+    "portrait": "https://static.nanoka.cc/assets/zzz/IconRoleCrop58.webp",
+    "source": "nanoka.cc",
+    "releasedAt": "2026-02-06T04:00:00.000Z"
   },
   {
     "id": "1501",
@@ -389,7 +533,10 @@
     "rarity": "top",
     "element": "ether",
     "role": "anomaly",
-    "source": "nanoka.cc"
+    "art": "https://static.nanoka.cc/assets/zzz/IconRole57.webp",
+    "portrait": "https://static.nanoka.cc/assets/zzz/IconRoleCrop57.webp",
+    "source": "nanoka.cc",
+    "releasedAt": "2026-03-04T04:00:00.000Z"
   },
   {
     "id": "1511",
@@ -397,7 +544,10 @@
     "rarity": "top",
     "element": "ether",
     "role": "stun",
-    "source": "nanoka.cc"
+    "art": "https://static.nanoka.cc/assets/zzz/IconRole59.webp",
+    "portrait": "https://static.nanoka.cc/assets/zzz/IconRoleCrop59.webp",
+    "source": "nanoka.cc",
+    "releasedAt": "2026-03-24T04:00:00.000Z"
   },
   {
     "id": "1521",
@@ -405,7 +555,10 @@
     "rarity": "top",
     "element": "electric",
     "role": "attack",
-    "source": "nanoka.cc"
+    "art": "https://static.nanoka.cc/assets/zzz/IconRole60.webp",
+    "portrait": "https://static.nanoka.cc/assets/zzz/IconRoleCrop60.webp",
+    "source": "nanoka.cc",
+    "releasedAt": "2026-04-15T04:00:00.000Z"
   },
   {
     "id": "1531",
@@ -413,7 +566,10 @@
     "rarity": "top",
     "element": "physical",
     "role": "rupture",
-    "source": "nanoka.cc"
+    "art": "https://static.nanoka.cc/assets/zzz/IconRole62.webp",
+    "portrait": "https://static.nanoka.cc/assets/zzz/IconRoleCrop62.webp",
+    "source": "nanoka.cc",
+    "releasedAt": "2026-05-27T04:00:00.000Z"
   },
   {
     "id": "1541",
@@ -421,7 +577,10 @@
     "rarity": "top",
     "element": "ice",
     "role": "anomaly",
-    "source": "nanoka.cc"
+    "art": "https://static.nanoka.cc/assets/zzz/IconRole61.webp",
+    "portrait": "https://static.nanoka.cc/assets/zzz/IconRoleCrop61.webp",
+    "source": "nanoka.cc",
+    "releasedAt": "2026-05-06T04:00:00.000Z"
   },
   {
     "id": "1551",
@@ -429,7 +588,10 @@
     "rarity": "top",
     "element": "ether",
     "role": "attack",
-    "source": "nanoka.cc"
+    "art": "https://static.nanoka.cc/assets/zzz/IconRole63.webp",
+    "portrait": "https://static.nanoka.cc/assets/zzz/IconRoleCrop63.webp",
+    "source": "nanoka.cc",
+    "releasedAt": "2026-06-17T04:00:00.000Z"
   },
   {
     "id": "1561",
@@ -437,7 +599,10 @@
     "rarity": "top",
     "element": "windbite",
     "role": "anomaly",
-    "source": "nanoka.cc"
+    "art": "https://static.nanoka.cc/assets/zzz/IconRole64.webp",
+    "portrait": "https://static.nanoka.cc/assets/zzz/IconRoleCrop64.webp",
+    "source": "nanoka.cc",
+    "releasedAt": "2026-06-17T04:00:00.000Z"
   },
   {
     "id": "1571",
@@ -445,7 +610,10 @@
     "rarity": "top",
     "element": "fire",
     "role": "stun",
-    "source": "nanoka.cc"
+    "art": "https://static.nanoka.cc/assets/zzz/IconRole65.webp",
+    "portrait": "https://static.nanoka.cc/assets/zzz/IconRoleCrop65.webp",
+    "source": "nanoka.cc",
+    "releasedAt": "2026-07-08T04:00:00.000Z"
   },
   {
     "id": "1581",
@@ -453,7 +621,10 @@
     "rarity": "top",
     "element": "lumiflux",
     "role": "anomaly",
-    "source": "nanoka.cc"
+    "art": "https://static.nanoka.cc/assets/zzz/IconRole67.webp",
+    "portrait": "https://static.nanoka.cc/assets/zzz/IconRoleCrop67.webp",
+    "source": "nanoka.cc",
+    "releasedAt": "2026-07-29T04:00:00.000Z"
   },
   {
     "id": "1591",
@@ -461,7 +632,10 @@
     "rarity": "top",
     "element": "ice",
     "role": "attack",
-    "source": "nanoka.cc"
+    "art": "https://static.nanoka.cc/assets/zzz/IconRole66.webp",
+    "portrait": "https://static.nanoka.cc/assets/zzz/IconRoleCrop66.webp",
+    "source": "nanoka.cc",
+    "releasedAt": "2026-08-19T04:00:00.000Z"
   },
   {
     "id": "1611",
@@ -469,7 +643,10 @@
     "rarity": "top",
     "element": "electric",
     "role": "armorer",
-    "source": "nanoka.cc"
+    "art": "https://static.nanoka.cc/assets/zzz/IconRole1611.webp",
+    "portrait": "https://static.nanoka.cc/assets/zzz/IconRoleCrop1611.webp",
+    "source": "nanoka.cc",
+    "releasedAt": "2026-09-09T04:00:00.000Z"
   },
   {
     "id": "1621",
@@ -477,7 +654,10 @@
     "rarity": "top",
     "element": "windbite",
     "role": "stun",
-    "source": "nanoka.cc"
+    "art": "https://static.nanoka.cc/assets/zzz/IconRole68.webp",
+    "portrait": "https://static.nanoka.cc/assets/zzz/IconRoleCrop68.webp",
+    "source": "nanoka.cc",
+    "releasedAt": "2026-09-30T04:00:00.000Z"
   },
   {
     "id": "1631",
@@ -485,7 +665,10 @@
     "rarity": "top",
     "element": "windbite",
     "role": "attack",
-    "source": "nanoka.cc"
+    "source": "nanoka.cc",
+    "art": "https://static.wikia.nocookie.net/zenless-zone-zero/images/2/27/Agent_Severian_Lowell_Portrait.png/revision/latest?cb=20260912041405",
+    "portrait": "https://static.wikia.nocookie.net/zenless-zone-zero/images/b/b1/Agent_Severian_Lowell_Icon.png/revision/latest?cb=20260912041555",
+    "releasedAt": "2026-11-11T04:00:00.000Z"
   },
   {
     "id": "1641",
@@ -493,6 +676,9 @@
     "rarity": "top",
     "element": "fire",
     "role": "anomaly",
-    "source": "nanoka.cc"
+    "source": "nanoka.cc",
+    "art": "https://static.wikia.nocookie.net/zenless-zone-zero/images/0/03/Agent_Phoenix_Reffaella_Portrait.png/revision/latest?cb=20260912031158",
+    "portrait": "https://static.wikia.nocookie.net/zenless-zone-zero/images/c/c9/Agent_Phoenix_Reffaella_Icon.png/revision/latest?cb=20260912031643",
+    "releasedAt": "2026-10-21T04:00:00.000Z"
   }
 ]

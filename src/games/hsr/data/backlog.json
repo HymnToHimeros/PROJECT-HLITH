@@ -1,1 +1,39 @@
-[]
+[
+  {
+    "id": "hsr.main-story",
+    "category": "story",
+    "title": "Trailblaze Missions (main story)",
+    "total": 26,
+    "reward": null,
+    "currency": "stellar-jade",
+    "steps": [
+      "Herta Space Station: Today Is Yesterday's Tomorrow",
+      "Jarilo-VI: In the Withering Wintry Night",
+      "Jarilo-VI: In the Sweltering Morning Sun",
+      "The Xianzhou Luofu: Windswept Wanderlust",
+      "The Xianzhou Luofu: Topclouded Towerthrust",
+      "The Xianzhou Luofu: Karmic Clouds Faded, War Banners Folded",
+      "Penacony: The Sound and the Fury",
+      "Penacony: Cat Among Pigeons",
+      "Penacony: In Our Time",
+      "Penacony: Farewell, Penacony",
+      "Penacony: A New Venture on the Eighth Dawn",
+      "Amphoreus: Heroic Saga of Flame-Chase",
+      "Amphoreus: Light Slips the Gate, Shadow Greets the Throne",
+      "Amphoreus: Through the Petals in the Land of Repose",
+      "Amphoreus: The Fall at Dawn's Rise",
+      "Amphoreus: For the Sun is Set to Die",
+      "Amphoreus: Before Their Deaths",
+      "Amphoreus: Back to Earth in Evernight",
+      "Amphoreus: As Tomorrow Became Yesterday",
+      "Planarcadia: Welcome to Arcadia",
+      "Planarcadia: Unraveled for Daybreak",
+      "Planarcadia: So Laughed the Masses",
+      "Planarcadia: The Lethe Below the Living",
+      "Planarcadia: In Ravages Does the Whistle Sound",
+      "Planarcadia: To Roll the Stars in Astropolis",
+      "Planarcadia: Dance With the Beast Before Moonrise"
+    ],
+    "note": "Chapters from honkai-star-rail.fandom.com/wiki/Trailblaze_Mission. Rewards per chapter: no data yet."
+  }
+]
