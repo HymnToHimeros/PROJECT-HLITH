@@ -8,6 +8,7 @@
 export const USER_TABLES = [
   'profiles',
   'user_settings',
+  'user_game_data',
   'user_items',
   'roster',
   'progress',

@@ -34,7 +34,7 @@ export function setupSteps(games: GameContract[], servers: Record<GameId, string
     // Ticks when a HoYoLAB login is remembered on this device (the default is use-once, so it can stay open).
     { id: 'hoyolab', title: 'Connect HoYoLAB', why: 'Live stamina, the daily check-in and character import.', done: games.some((g) => hoyolabLink(g) && savedLogin(g.id)), action: { label: 'Open Connected accounts', onClick: () => act.goTo('connections') } },
     { id: 'notify', title: 'Set up notifications', why: 'An evening message and a calendar feed so nothing ends unseen.', done: extra.notify, action: { label: 'Open Notifications', onClick: () => act.goTo('notifications') } },
-    { id: 'backup', title: 'Download a backup', why: 'Your game data lives on this device: a backup keeps it safe.', done: extra.backup, action: { label: 'Open Backup', onClick: () => act.goTo('backup') } },
+    { id: 'backup', title: 'Download a backup', why: 'A backup file is a copy you hold yourself, on top of sync.', done: extra.backup, action: { label: 'Open Backup', onClick: () => act.goTo('backup') } },
   ];
 }
 

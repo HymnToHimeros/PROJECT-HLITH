@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { currentProvider, sendEmailLink, signInWith, signOut, useSession } from './core/auth/session';
 import { SignIn } from './core/auth/SignIn';
 import { backend } from './core/data/backend';
-import { supabaseSettings } from './core/data/supabaseSettings';
+import { supabaseGameData, supabaseSettings } from './core/data/supabaseSettings';
 import { markDeviceOnly, markSignedOut, startSync } from './core/data/sync';
 import { listGames } from './core/registry';
 import { Shell } from './core/shell/Shell';
@@ -37,7 +37,7 @@ function Root() {
     if (!userId) return;
     let stop: (() => void) | undefined;
     let cancelled = false;
-    void startSync(supabaseSettings(backend, userId)).then((s) => (cancelled ? s() : (stop = s)));
+    void startSync(supabaseSettings(backend, userId), 1500, supabaseGameData(backend, userId)).then((s) => (cancelled ? s() : (stop = s)));
     return () => {
       cancelled = true;
       stop?.();

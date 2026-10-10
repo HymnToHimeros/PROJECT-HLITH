@@ -122,6 +122,8 @@ export interface UserTeam {
 
 interface Store {
   version: 1;
+  /** When this data last changed (epoch ms). Sync keeps the newer copy; missing = never changed. */
+  updatedAt?: number;
   games: Record<GameId, GameUserData>;
 }
 
@@ -185,7 +187,7 @@ export function gameData(id: GameId): GameUserData {
 }
 
 function update(id: GameId, change: (g: GameUserData) => GameUserData): void {
-  store = { ...store, games: { ...store.games, [id]: change(gameData(id)) } };
+  store = { ...store, updatedAt: Date.now(), games: { ...store.games, [id]: change(gameData(id)) } };
   save();
 }
 
@@ -353,10 +355,35 @@ export function mergeIntoUserData(games: Record<GameId, unknown>): number {
     if (merged !== store.games[id]) next = { ...next, [id]: merged };
   }
   if (next !== store.games) {
-    store = { ...store, games: next };
+    store = { ...store, updatedAt: Date.now(), games: next };
     save();
   }
   return count.added;
+}
+
+/** When your game data last changed (epoch ms); 0 = never. */
+export const userDataUpdatedAt = (): number => store.updatedAt ?? 0;
+
+/** Something in your game data changed (for sync). Returns an unsubscribe function. */
+export function subscribeUserData(l: () => void): () => void {
+  listeners.add(l);
+  return () => listeners.delete(l);
+}
+
+/**
+ * Sync: take your account's newer copy. The copy on this device is kept under a backup
+ * key first (never thrown away), so nothing is lost if the other copy was the wrong one.
+ */
+export function replaceUserData(next: { games: Record<GameId, unknown>; updatedAt?: number }): void {
+  try {
+    localStorage.setItem(`${KEY}.backup.${Date.now()}`, JSON.stringify(store));
+  } catch {
+    /* storage full or private mode: nothing to keep */
+  }
+  store = { version: 1, updatedAt: next.updatedAt ?? Date.now(), games: (next.games ?? {}) as Record<GameId, GameUserData> };
+  cache.clear();
+  unreadable = false;
+  save();
 }
 
 /** Test helper. */
