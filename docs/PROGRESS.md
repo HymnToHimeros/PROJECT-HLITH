@@ -67,6 +67,17 @@ Resume with: "continue from PROGRESS.md". Newest entry on top. Older entries:
     HoYoLAB accounts, findings waiting, last run per job); "No data yet" if the
     call fails. Migration 0008 tested on local Postgres (non-owners can't write,
     everyone signed in reads, `owner_stats` refuses non-owners).
+- 2026-10-10 · **Themes and background art** (branch `frame/themes`, not pushed).
+  - Six themes in Account → Theme, each a full colour set plus its own art:
+    Glacier (the old Dark, still the default), Candlelight (owner's palette A),
+    Crimson Rose (palette B), Bifröst (starry night), Ascendant (light marble and
+    gold) and Light. Cards with a live preview; applies at once; synced.
+  - Background art drawn in code (wings, halo, rays, rings, runes, the nine
+    worlds, ravens, thorns, roses, sigil, stars), behind the page, very faint.
+    Tests check every theme's text contrast, including over the art.
+  - Sidebar account row is now a profile card: your banner fading into the
+    sidebar, a bigger picture, your name. Falls back to initials and the theme glow.
+  - Account → Profile: the banner melts into the card and glows softly past it.
 - 2026-10-10 · **Whole-site audit: about 70 flaws fixed** (branch `frame/audit-fixes`).
   Five audits (Today/Calendar/Events/Intel, Pulls/Banners, Roster/Farm/Scan,
   Account/Assistant/shell, Backlog/Edit mode), then fixes:

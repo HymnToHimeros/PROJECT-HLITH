@@ -4,7 +4,8 @@ import { BACKUP_EVERY_DAYS, daysSinceBackup, downloadBackup, parseBackup, restor
 import { updatePrefs, usePrefs } from '../../core/data/prefs';
 import { canSync, syncNow, type SyncStatus } from '../../core/data/sync';
 import { ServerPicker } from '../../core/shell/ServerPicker';
-import { setTheme } from '../../core/theme/theme';
+import { setTheme, THEMES, themeInfo } from '../../core/theme/theme';
+import { ThemeMotif } from '../../core/theme/ThemeArt';
 import { formatDate, formatTime } from '../../core/time/reset';
 import { Button, HowTo } from '../../core/ui';
 import { callFunction, hasServer, type DeletionRequest } from '../feeds/server';
@@ -364,26 +365,41 @@ export function ExamplesPage() {
 }
 
 export function ThemePage() {
-  const theme = usePrefs().theme ?? 'dark';
-  const options = [
-    { id: 'dark' as const, label: 'Dark', sub: 'Glacier over basalt. The designed look.', swatch: '#08090B' },
-    { id: 'light' as const, label: 'Light', sub: 'Built from the same tokens; the full light design comes later.', swatch: '#F3F6F8' },
-  ];
+  const theme = themeInfo(usePrefs().theme).id;
   return (
     <>
-      <div className={a.stack} role="radiogroup" aria-label="Theme">
-        {options.map((o) => (
-          <button key={o.id} type="button" role="radio" aria-checked={theme === o.id} className={a.option} onClick={() => setTheme(o.id)}>
-            <span className={a.ring} aria-hidden="true" />
-            <span className={a.rowText}>
-              <span className={a.rowTitle}>{o.label}</span>
-              <span className={a.rowSub}>{o.sub}</span>
+      <div className={a.themeGrid} role="radiogroup" aria-label="Theme">
+        {THEMES.map((t) => (
+          <button key={t.id} type="button" role="radio" aria-checked={theme === t.id} className={a.themeCard} onClick={() => setTheme(t.id)}>
+            {/* A small live preview, drawn with that theme's own colours. */}
+            <span className={a.themePreview} data-theme-preview={t.id} aria-hidden="true">
+              <ThemeMotif theme={t.id} className={a.themeMotif} />
+              <span className={a.miniCard}>
+                <span className={a.miniTitle}>Aa</span>
+                <span className={a.miniLine} />
+                <span className={`${a.miniLine} ${a.miniShort}`} />
+                <span className={a.miniDots}>
+                  <i style={{ background: 'var(--vent-all)' }} />
+                  <i style={{ background: 'var(--glacier)' }} />
+                  <i style={{ background: 'var(--ok)' }} />
+                  <i style={{ background: 'var(--ember)' }} />
+                </span>
+              </span>
             </span>
-            <span className={a.swatch} style={{ background: o.swatch }} aria-hidden="true" />
+            <span className={a.themeMeta}>
+              <span className={a.ring} aria-hidden="true" />
+              <span className={a.rowText}>
+                <span className={a.rowTitle}>{t.name}</span>
+                <span className={a.rowSub}>{t.mood}</span>
+              </span>
+            </span>
           </button>
         ))}
       </div>
-      <p className={a.small}>Saved with your settings, so it follows you to other devices once you sign in. Game colours stay the same in both.</p>
+      <p className={a.small}>
+        Changes straight away. Saved with your settings, so it follows you to other devices once you sign in. Game colours stay the same in every theme, and
+        the background art never sits under your cards or makes text harder to read.
+      </p>
     </>
   );
 }

@@ -157,7 +157,19 @@ Elements: Fire #E8664A · Ice #8FD3F0 · Lightning/Electric #B98AF0 · Wind #6FD
 - **Owner console** (Account → Owner console): game records, built-in lists, leak sources on/off, announcements, user stats (no data yet until backend).
 - **Login**: Google, Discord, email link (Account → Sign out to see it).
 
-Still to design: light theme.
+### Themes (Account → Theme)
+A theme is a full set of colour tokens plus its own background art. Picked in Account → Theme (a card per theme with a live preview), applied at once as `<html data-theme data-tone>`, saved in settings (synced). Unknown saved values show Glacier.
+
+| id | Name | Mood | Main colours |
+|---|---|---|---|
+| `dark` (default) | Glacier | Ice over dark stone; rings, the nine worlds, ravens | #08090B · #0E1115 · #E6EEF3 · #7FB4D6 |
+| `candlelight` | Candlelight | Candle glow over near-black; wings, halo, rays (owner's palette A) | #110706 · #1C0D0A · #F4D59F · #B78861 · #B2493E |
+| `crimson` | Crimson Rose | Dark roses, crown of thorns, sigil (owner's palette B) | #130F0D · #1D1413 · #C4C1B8 · #551F22 · #E0959A |
+| `bifrost` | Bifröst | Starry night, aurora, astrolabe rings, ravens | #060A16 · #0C1428 · #EAF0FF · #8FB8FF · #6B5BD6 |
+| `ascendant` | Ascendant (light) | Marble and gold; wings, halo, light rays through clouds | #EFEBE3 · #FBF9F5 · #17130D · #75560F |
+| `light` | Light | Cool paper, dark ink, faint rings | #F3F6F8 · #FFFFFF · #0B1117 · #1D5F8C |
+
+Rules: every theme defines every colour token tokens.css defines (tests/themes.test.ts); text colours reach 4.5:1 on every surface (ink.5 on bg.app, bg.card, bg.shell: Override 4); game vents stay readable on every dark theme; light themes (`data-tone='light'`) show game names in ink. Background art (`src/core/theme/ThemeArt.tsx`) is drawn in code (no image files), fixed behind the page right of the sidebar, at `--art-opacity`; the test checks text still reaches 4.5:1 where the art is strongest. Cards keep solid backgrounds. Motion is very slow and stops with reduced motion. The sidebar's empty space shows the theme's emblem; the account row is a profile card (banner fading into the sidebar, picture, name).
 
 ## 5. Product rules
 - Multi-user, worldwide. Each user's data is separate. Community features (public plans, shared teams) possible later.
