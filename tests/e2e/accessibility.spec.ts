@@ -108,5 +108,5 @@ test('no serious accessibility problems · character page and build form', async
     .map((v) => `build form: ${v.id} (${v.nodes.length}) ${v.help} → ${v.nodes[0]?.target.join(' ')}`);
   expect(problems, problems.join('\n')).toEqual([]);
   await form.getByRole('button', { name: 'Save build' }).click();
-  await expect(article.getByText('of 80')).toBeVisible();
+  await expect(article.getByText('of 80', { exact: true })).toBeVisible();
 });

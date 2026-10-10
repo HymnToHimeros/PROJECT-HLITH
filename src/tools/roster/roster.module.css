@@ -1570,3 +1570,11 @@ button.member:hover .memberArt {
   padding: var(--s-2) 0;
   background: var(--bg-card);
 }
+
+/* Build score parts: the explanation runs under each bar. */
+.whyList .partRow {
+  grid-template-columns: minmax(96px, 30%) 1fr 34px;
+}
+.whyList .partRow > .muted {
+  grid-column: 1 / -1;
+}
