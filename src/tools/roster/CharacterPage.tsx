@@ -600,7 +600,8 @@ function TeamFit({ data, character: c, makePreset }: { data: RosterData; charact
   const { game, user, presets } = data;
   const [all, setAll] = useState(false);
   const inPreset = (p: TeamPreset) => p.slots.some((s) => s.characters.includes(c.id));
-  const firstsOf = (p: TeamPreset) => p.slots.map((s) => s.characters[0]).filter((x): x is string => Boolean(x));
+  // A game team as you'd field it (the game's team rules fill each slot from your roster); else each slot's first pick.
+  const firstsOf = (p: TeamPreset) => (!presets.example && game.rules.teams?.fill?.(p, teamAccount(data))) || p.slots.map((s) => s.characters[0]).filter((x): x is string => Boolean(x));
   const missing = (ids: string[]) => ids.filter((id) => !entryOf(user.roster, id).owned).length;
   // Their own team first (they lead it), then teams they're a first pick in, then fewest missing.
   const recommended = presets.list

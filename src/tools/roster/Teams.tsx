@@ -49,6 +49,8 @@ const TEAMS_FIRST = 6;
 const TEAMS_MORE = 12;
 
 const firsts = (p: TeamPreset) => p.slots.map((s) => s.characters[0]).filter((x): x is string => Boolean(x));
+/** A game team as you'd field it: per slot, the first listed character you own (the game's team rules); else each slot's first pick. */
+const membersOf = (d: RosterData, p: TeamPreset) => (d.presets.example ? firsts(p) : (d.game.rules.teams?.fill?.(p, teamAccount(d)) ?? firsts(p)));
 
 /** Roster → Teams (design): preset cards with portraits and a score, your own presets, ideas and Kit check. */
 export function Teams({ data, several, onOpen, openCharacters, openAccount, draft, onDraftUsed }: Props) {
@@ -64,13 +66,13 @@ export function Teams({ data, several, onOpen, openCharacters, openAccount, draf
   const [removed, setRemoved] = useState<{ game: string; team: UserTeam } | null>(null);
   const closeKit = useCallback(() => setKitFor(null), []);
   const closeEditor = useCallback(() => setEditing(null), []);
-  const copyPreset = (d: RosterData, p: TeamPreset) => setEditing({ data: d, team: null, draft: { name: p.name, members: firsts(p) } });
+  const copyPreset = (d: RosterData, p: TeamPreset) => setEditing({ data: d, team: null, draft: { name: p.name, members: membersOf(d, p) } });
   const anyExample = data.some((d) => d.presets.example && d.presets.list.length > 0);
   const ownsAnyone = data.some((d) => Object.values(d.user.roster).some((e) => e.owned));
   const mine = data.flatMap((d) => d.user.teams.map((t) => ({ d, t })));
   const [query, setQuery] = useState('');
   const [shown, setShown] = useState(TEAMS_FIRST);
-  const allRecommended = data.flatMap((d) => d.presets.list.map((p, i) => ({ d, p, i, missing: missingFrom(d, firsts(p)) })));
+  const allRecommended = data.flatMap((d) => d.presets.list.map((p, i) => ({ d, p, i, members: membersOf(d, p), missing: missingFrom(d, membersOf(d, p)) })));
   // Ready-to-play teams first, then the fewest missing; the game's own order inside each.
   const q = query.trim().toLowerCase();
   const matching = allRecommended
@@ -186,20 +188,20 @@ export function Teams({ data, several, onOpen, openCharacters, openAccount, draf
           <p className={r.muted}>No recommended team has “{query}” in it.</p>
         ) : (
           <div className={r.teamGrid}>
-            {recommended.map(({ d, p, i }) => (
+            {recommended.map(({ d, p, i, members }) => (
               <TeamCard
                 key={`${d.game.id}:${p.id}`}
                 data={d}
                 several={several}
                 name={p.name}
-                members={firsts(p)}
+                members={members}
                 preset={p}
                 example={d.presets.example}
                 score={d.presets.example ? exampleScore(i) : null}
                 onOpen={(id) => onOpen(d.game.id, id)}
                 actions={
                   <>
-                    <Button onClick={() => setKitFor({ data: d, name: p.name, members: firsts(p) })}>Kit check</Button>
+                    <Button onClick={() => setKitFor({ data: d, name: p.name, members })}>Kit check</Button>
                     <Button onClick={() => copyPreset(d, p)}>Save as my team</Button>
                   </>
                 }
