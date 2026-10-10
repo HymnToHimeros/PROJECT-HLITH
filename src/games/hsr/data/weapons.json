@@ -705,6 +705,10 @@
   "rarity": "top",
   "icon": "https://static.nanoka.cc/assets/hsr/lightconemediumicon/23001.webp",
   "madeFor": "1102",
+  "effect": {
+   "name": "Flowers and Butterflies",
+   "text": "Increases the wearer's CRIT Rate by 18%. While the wearer is in battle, for every 10 SPD that exceeds 100, increases DMG dealt by Basic ATK and Skill by 6%. At the same time, increases the CRIT DMG of Ultimate by 12%. This effect can stack up to 6 time(s)."
+  },
   "source": "nanoka.cc"
  },
  {
@@ -713,6 +717,10 @@
   "rarity": "top",
   "icon": "https://static.nanoka.cc/assets/hsr/lightconemediumicon/23002.webp",
   "madeFor": "1107",
+  "effect": {
+   "name": "Kinship",
+   "text": "Increases the wearer's ATK by 24%. When the wearer defeats an enemy or is hit, immediately restores HP equal to 8% of the wearer's ATK. At the same time, the wearer's DMG is increased by 24% until the end of their next turn. This effect cannot stack and can only trigger 1 time per turn."
+  },
   "source": "nanoka.cc"
  },
  {
@@ -721,6 +729,10 @@
   "rarity": "top",
   "icon": "https://static.nanoka.cc/assets/hsr/lightconemediumicon/23003.webp",
   "madeFor": "1101",
+  "effect": {
+   "name": "Heir",
+   "text": "Increases the wearer's Energy Regeneration Rate by 10% and regenerates 1 Skill Point when the wearer uses their Ultimate on an ally. This effect can be triggered once after every 2 uses of the wearer's Ultimate. When the wearer uses their Skill, the next ally taking action (except the wearer) deals 30% more DMG for 1 turn(s)."
+  },
   "source": "nanoka.cc"
  },
  {
@@ -729,6 +741,10 @@
   "rarity": "top",
   "icon": "https://static.nanoka.cc/assets/hsr/lightconemediumicon/23004.webp",
   "madeFor": "1004",
+  "effect": {
+   "name": "Inheritor",
+   "text": "Increases the wearer's DMG to debuffed enemies by 24%. When the wearer uses their Skill, the Effect Hit Rate for this attack increases by 18%, and ATK increases by 24%."
+  },
   "source": "nanoka.cc"
  },
  {
@@ -744,6 +760,10 @@
   "rarity": "top",
   "icon": "https://static.nanoka.cc/assets/hsr/lightconemediumicon/23006.webp",
   "madeFor": "1005",
+  "effect": {
+   "name": "Spider Web",
+   "text": "Increases DMG dealt by the wearer by 24%. After every attack launched by wearer, their SPD increases by 4.8%, stacking up to 3 times.\nIf the wearer hits an enemy target that is not afflicted by Erode, there is a 100% base chance to inflict Erode to the target. Enemies afflicted with Erode are also considered to be Shocked and will receive Lightning DoT at the start of each turn equal to 60% of the wearer's ATK, lasting for 1 turn(s)."
+  },
   "source": "nanoka.cc"
  },
  {
@@ -752,6 +772,10 @@
   "rarity": "top",
   "icon": "https://static.nanoka.cc/assets/hsr/lightconemediumicon/23007.webp",
   "madeFor": "1006",
+  "effect": {
+   "name": "Mirage of Reality",
+   "text": "Increases the wearer's Effect Hit Rate by 24%. When the wearer deals DMG to an enemy that currently has 3 or more debuffs, increases the wearer's CRIT Rate by 12%. After the wearer uses their Basic ATK, Skill, or Ultimate, there is a 100% base chance to implant Aether Code on a random hit target that does not yet have it. Targets with Aether Code receive 12% increased DMG for 1 turn."
+  },
   "source": "nanoka.cc"
  },
  {
@@ -760,6 +784,10 @@
   "rarity": "top",
   "icon": "https://static.nanoka.cc/assets/hsr/lightconemediumicon/23008.webp",
   "madeFor": "1203",
+  "effect": {
+   "name": "Thorns",
+   "text": "Increases the wearer's ATK by 24%. After the wearer uses an attack, for each different enemy target the wearer hits, regenerates 3.0 Energy. Each attack can regenerate Energy up to 3 time(s) this way. After the wearer uses their Ultimate, all allies gain 12 SPD for 1 turn."
+  },
   "source": "nanoka.cc"
  },
  {
@@ -768,6 +796,10 @@
   "rarity": "top",
   "icon": "https://static.nanoka.cc/assets/hsr/lightconemediumicon/23009.webp",
   "madeFor": "1205",
+  "effect": {
+   "name": "Unfulfilled Yearning",
+   "text": "Increases the wearer's CRIT Rate by 18% and increases their Max HP by 18%. When the wearer is attacked or consumes their own HP, their DMG increases by 24%. This effect is removed after the wearer uses an attack."
+  },
   "source": "nanoka.cc"
  },
  {
@@ -776,6 +808,10 @@
   "rarity": "top",
   "icon": "https://static.nanoka.cc/assets/hsr/lightconemediumicon/23010.webp",
   "madeFor": "1204",
+  "effect": {
+   "name": "Long Night",
+   "text": "Increases the wearer's CRIT DMG by 36%. Increases DMG dealt by the wearer's Skill and Ultimate by 18%. After the wearer uses Skill or Ultimate, gains \"Somnus Corpus.\" Upon triggering a Follow-Up ATK, consumes \"Somnus Corpus,\" and increases DMG dealt by Follow-Up ATK by 48%."
+  },
   "source": "nanoka.cc"
  },
  {
@@ -784,6 +820,10 @@
   "rarity": "top",
   "icon": "https://static.nanoka.cc/assets/hsr/lightconemediumicon/23011.webp",
   "madeFor": "1208",
+  "effect": {
+   "name": "Visioscape",
+   "text": "Increases the wearer's Max HP by 24% and Energy Regeneration Rate by 12%. When the wearer's HP is reduced, all allies' DMG dealt increases by 9.0%, lasting for 2 turn(s).\nAt the start of every wave, restores HP to all allies by an amount equal to 80% of their respective lost HP."
+  },
   "source": "nanoka.cc"
  },
  {
@@ -799,6 +839,10 @@
   "rarity": "top",
   "icon": "https://static.nanoka.cc/assets/hsr/lightconemediumicon/23013.webp",
   "madeFor": "1211",
+  "effect": {
+   "name": "Morn, Noon, Dusk, and Night",
+   "text": "Increases the wearer's Max HP by 18% and Outgoing Healing by 12%. When the wearer heals allies, record the amount of Outgoing Healing. When any ally launches an attack, a random attacked enemy takes Additional DMG equal to 36% of the recorded Outgoing Healing value. The type of this Additional DMG is of the same Type as the wearer's. This Additional DMG is not affected by other buffs, and can only occur 1 time per turn."
+  },
   "source": "nanoka.cc"
  },
  {
@@ -807,6 +851,10 @@
   "rarity": "top",
   "icon": "https://static.nanoka.cc/assets/hsr/lightconemediumicon/23014.webp",
   "madeFor": "1212",
+  "effect": {
+   "name": "With This Evening Jade",
+   "text": "Increases the wearer's CRIT DMG by 20%. When a teammate gets attacked or loses HP, the wearer gains 1 stack of Eclipse, up to a max of 3 stack(s). Each stack of Eclipse increases the DMG of the wearer's next attack by 14.0%. When 3 stack(s) are reached, additionally enables that attack to ignore 12% of the enemy's DEF. This effect will be removed after the wearer uses an attack."
+  },
   "source": "nanoka.cc"
  },
  {
@@ -822,6 +870,10 @@
   "rarity": "top",
   "icon": "https://static.nanoka.cc/assets/hsr/lightconemediumicon/23016.webp",
   "madeFor": "1112",
+  "effect": {
+   "name": "One At A Time",
+   "text": "Increase the wearer's CRIT Rate by 18% and increases DMG dealt by Follow-Up ATK by 30%. After the wearer uses a Follow-Up ATK, inflicts the target with the \"Tame\" state, stacking up to 2 time(s). When allies hit enemy targets under the \"Tame\" state, each \"Tame\" stack increases the CRIT DMG dealt by 12%."
+  },
   "source": "nanoka.cc"
  },
  {
@@ -830,6 +882,10 @@
   "rarity": "top",
   "icon": "https://static.nanoka.cc/assets/hsr/lightconemediumicon/23017.webp",
   "madeFor": "1217",
+  "effect": {
+   "name": "Deep, Deep Breaths",
+   "text": "Increases the wearer's Energy Regeneration Rate by 12%. When any ally uses their Ultimate, the wearer restores HP for the ally currently with the lowest HP percentage by an amount equal to 10% of the healed ally's Max HP. When the wearer provides healing for an ally, increases the healed ally's ATK by 2.4%. This effect can stack up to 5 times and lasts for 2 turn(s)."
+  },
   "source": "nanoka.cc"
  },
  {
@@ -838,6 +894,10 @@
   "rarity": "top",
   "icon": "https://static.nanoka.cc/assets/hsr/lightconemediumicon/23018.webp",
   "madeFor": "1302",
+  "effect": {
+   "name": "A Knight's Pilgrimage",
+   "text": "Increases the wearer's CRIT DMG by 36%. When the wearer uses Ultimate, increases DMG dealt by the wearer's Ultimate based on their Max Energy. Each point of Energy increases DMG dealt by Ultimate by 0.36%. A max of 180 points of Energy will be taken into account for this."
+  },
   "source": "nanoka.cc"
  },
  {
@@ -846,6 +906,10 @@
   "rarity": "top",
   "icon": "https://static.nanoka.cc/assets/hsr/lightconemediumicon/23019.webp",
   "madeFor": "1303",
+  "effect": {
+   "name": "The Plum Fragrance In My Bones",
+   "text": "Increases the wearer's Break Effect by 60%. When the wearer uses their Ultimate, increases all allies' DMG by 24%, lasting for 3 turn(s). If the wearer's Break Effect exceeds or equals 150%, 1 Skill Point will be recovered.\nAt the start of each wave, all allies regenerate 10.0 Energy immediately. Abilities of the same type cannot stack."
+  },
   "source": "nanoka.cc"
  },
  {
@@ -854,6 +918,10 @@
   "rarity": "top",
   "icon": "https://static.nanoka.cc/assets/hsr/lightconemediumicon/23020.webp",
   "madeFor": "1305",
+  "effect": {
+   "name": "Mental Training",
+   "text": "Increases the wearer's CRIT DMG by 20%. For every debuff on the enemy target, the wearer's CRIT DMG dealt against this target additionally increases by 8%, stacking up to 3 times. When using Ultimate to attack the enemy target, the wearer receives the \"Disputation\" effect, which increases DMG dealt by 36% and enables their Follow-Up ATKs to ignore 24% of the target's DEF. This effect lasts for 2 turns."
+  },
   "source": "nanoka.cc"
  },
  {
@@ -862,6 +930,10 @@
   "rarity": "top",
   "icon": "https://static.nanoka.cc/assets/hsr/lightconemediumicon/23021.webp",
   "madeFor": "1306",
+  "effect": {
+   "name": "Capriciousness",
+   "text": "Increases the wearer's CRIT DMG by 32%. At the start of the battle, the wearer gains Mask, lasting for 3 turn(s). While the wearer has Mask, the wearer's teammates have their CRIT Rate increased by 10% and their CRIT DMG increased by 28%. For every 1 Skill Point the wearer recovers (including Skill Points that exceed the limit), they gain 1 stack of Radiant Flame. And when the wearer has 4 stacks of Radiant Flame, all the stacks are removed, and they gain Mask, lasting for 4 turn(s)."
+  },
   "source": "nanoka.cc"
  },
  {
@@ -870,6 +942,10 @@
   "rarity": "top",
   "icon": "https://static.nanoka.cc/assets/hsr/lightconemediumicon/23022.webp",
   "madeFor": "1307",
+  "effect": {
+   "name": "Crystallize",
+   "text": "Increases the wearer's Effect Hit Rate by 40%. When the wearer deals DMG to an enemy inflicted with Wind Shear, Burn, Shock, or Bleed, each respectively grants 1 stack of Prophet, stacking up to 4 time(s). In a single battle, only 1 stack of Prophet can be granted for each type of DoT. Every stack of Prophet increases wearer's ATK by 5% and enables the DoT dealt to ignore 7.2% of the target's DEF."
+  },
   "source": "nanoka.cc"
  },
  {
@@ -878,6 +954,10 @@
   "rarity": "top",
   "icon": "https://static.nanoka.cc/assets/hsr/lightconemediumicon/23023.webp",
   "madeFor": "1304",
+  "effect": {
+   "name": "All-In",
+   "text": "Increases the wearer's DEF by 40%. When the wearer provides a Shield to an ally, the wearer's CRIT DMG increases by 40%, lasting for 2 turn(s). When the wearer's Follow-Up ATK hits an enemy target, there is a 100% base chance to increase the DMG taken by the attacked enemy target by 10.0%, lasting for 2 turn(s)."
+  },
   "source": "nanoka.cc"
  },
  {
@@ -886,6 +966,10 @@
   "rarity": "top",
   "icon": "https://static.nanoka.cc/assets/hsr/lightconemediumicon/23024.webp",
   "madeFor": "1308",
+  "effect": {
+   "name": "Steerer",
+   "text": "Increases the wearer's CRIT DMG by 36%. When the wearer hits an enemy target, inflicts Mirage Fizzle on the enemy, lasting for 1 turn. Each time the wearer attacks, this effect can only trigger 1 time on each target. The wearer deals 24% increased DMG to targets afflicted with Mirage Fizzle, and the DMG dealt by Ultimate additionally increases by 24%."
+  },
   "source": "nanoka.cc"
  },
  {
@@ -894,6 +978,10 @@
   "rarity": "top",
   "icon": "https://static.nanoka.cc/assets/hsr/lightconemediumicon/23025.webp",
   "madeFor": "1310",
+  "effect": {
+   "name": "Metamorphosis",
+   "text": "Increases the wearer's Break Effect by 60%. When the wearer deals Break DMG to an enemy target, inflicts Routed on the enemy, lasting for 2 turn(s). Targets afflicted with Routed receive 24.0% increased Break DMG from the wearer, and their SPD is lowered by 20%. Effects of the same type cannot be stacked."
+  },
   "source": "nanoka.cc"
  },
  {
@@ -902,6 +990,10 @@
   "rarity": "top",
   "icon": "https://static.nanoka.cc/assets/hsr/lightconemediumicon/23026.webp",
   "madeFor": "1309",
+  "effect": {
+   "name": "Pacify",
+   "text": "Every time an ally attacks, the wearer gains 1 stack of Cantillation. Each stack of Cantillation increases the wearer's Energy Regeneration Rate by 3.0%, stacking up to 5 time(s). When the wearer uses their Ultimate, removes Cantillation and gains Cadenza. Cadenza increases the Wearer's ATK by 48% and increases all allies' DMG dealt by 24%, lasting for 1 turn(s)."
+  },
   "source": "nanoka.cc"
  },
  {
@@ -910,6 +1002,10 @@
   "rarity": "top",
   "icon": "https://static.nanoka.cc/assets/hsr/lightconemediumicon/23027.webp",
   "madeFor": "1315",
+  "effect": {
+   "name": "Rough Water",
+   "text": "Increases the wearer's Break Effect by 60%. The Break DMG dealt by the wearer ignores 20% of the target's DEF. When the wearer's Break Effect in battle is at 150% or greater, increases their SPD by 12%."
+  },
   "source": "nanoka.cc"
  },
  {
@@ -918,6 +1014,10 @@
   "rarity": "top",
   "icon": "https://static.nanoka.cc/assets/hsr/lightconemediumicon/23028.webp",
   "madeFor": "1314",
+  "effect": {
+   "name": "Promise",
+   "text": "Increases the wearer's CRIT Rate by 16%. While the wearer is in battle, for every 20% CRIT DMG that exceeds 120%, the DMG dealt by Follow-Up ATK increases by 12%. This effect can stack up to 4 time(s). When the battle starts or after the wearer uses their Basic ATK, enables the DMG dealt by Ultimate or Follow-Up ATK to ignore 20% of the target's DEF, lasting for 2 turn(s)."
+  },
   "source": "nanoka.cc"
  },
  {
@@ -926,6 +1026,10 @@
   "rarity": "top",
   "icon": "https://static.nanoka.cc/assets/hsr/lightconemediumicon/23029.webp",
   "madeFor": "1218",
+  "effect": {
+   "name": "Worldly Affairs Leave No Mark",
+   "text": "Increases the wearer's Effect Hit Rate by 60%. After the wearer uses Basic ATK, Skill, or Ultimate to attack an enemy target, there is a 60% base chance to inflict \"Unarmored\" on the target. While in the Unarmored state, the enemy target receives 10% increased DMG, lasting for 2 turn(s). If the target is under a DoT state inflicted by the wearer, there is a 60% base chance to upgrade the \"Unarmored\" state inflicted by the wearer to the \"Cornered\" state, which additionally increases the DMG the enemy target receives by 14%, lasting for 2 turn(s). During this period, the wearer cannot inflict \"Unarmored\" on the target."
+  },
   "source": "nanoka.cc"
  },
  {
@@ -934,6 +1038,10 @@
   "rarity": "top",
   "icon": "https://static.nanoka.cc/assets/hsr/lightconemediumicon/23030.webp",
   "madeFor": "1221",
+  "effect": {
+   "name": "Deeply Engrossed",
+   "text": "Greatly increases the wearer's chance of getting attacked and increases CRIT DMG by 36%. After the wearer uses Ultimate, receives 1 stack of \"Firedance,\" lasting for 2 turns and stacking up to 2 time(s). Each stack of \"Firedance\" increases the DMG dealt by the wearer's Follow-Up ATK by 36%."
+  },
   "source": "nanoka.cc"
  },
  {
@@ -942,6 +1050,10 @@
   "rarity": "top",
   "icon": "https://static.nanoka.cc/assets/hsr/lightconemediumicon/23031.webp",
   "madeFor": "1220",
+  "effect": {
+   "name": "Intimidation",
+   "text": "Increases the wearer's CRIT Rate by 15.0%. When the wearer launches a Follow-Up ATK, gains 1 stack of \"Luminflux,\" stacking up to 2 time(s). Each stack of \"Luminflux\" enables the Ultimate DMG dealt by the wearer to ignore 27% of the target's DEF. When the wearer's turn ends, removes 1 stack of \"Luminflux.\""
+  },
   "source": "nanoka.cc"
  },
  {
@@ -950,6 +1062,10 @@
   "rarity": "top",
   "icon": "https://static.nanoka.cc/assets/hsr/lightconemediumicon/23032.webp",
   "madeFor": "1222",
+  "effect": {
+   "name": "Contentment",
+   "text": "Increases the wearer's Break Effect by 60%. After the wearer uses Ultimate to attack enemy targets, inflicts the targets with the \"Woefree\" state, lasting for 2 turn(s). While in \"Woefree,\" enemy targets take 10% increased DMG. The effect of increasing DMG taken is additionally boosted by 8% if the wearer's current Break Effect is 150% or higher."
+  },
   "source": "nanoka.cc"
  },
  {
@@ -958,6 +1074,10 @@
   "rarity": "top",
   "icon": "https://static.nanoka.cc/assets/hsr/lightconemediumicon/23033.webp",
   "madeFor": "1317",
+  "effect": {
+   "name": "Exorcism",
+   "text": "Increases the wearer's Break Effect by 60%. When entering battle, immediately regenerates 30.0 Energy. After the wearer uses Ultimate, obtains \"Raiton.\" After using 2 Basic ATKs, advances the wearer's action by 50% and removes \"Raiton.\" After the wearer uses Ultimate, resets \"Raiton.\""
+  },
   "source": "nanoka.cc"
  },
  {
@@ -966,6 +1086,10 @@
   "rarity": "top",
   "icon": "https://static.nanoka.cc/assets/hsr/lightconemediumicon/23034.webp",
   "madeFor": "1313",
+  "effect": {
+   "name": "Departing Anew",
+   "text": "After the wearer uses Skill or Ultimate on one ally character, the wearer regenerates 6.0 Energy and the ability's target receives 1 stack of \"Hymn\" for 3 turn(s), stacking up to 3 time(s). Each stack of \"Hymn\" increases its holder's DMG dealt by 15%. After every 2 instance(s) of Skill or Ultimate the wearer uses on one ally character, recovers 1 Skill Point."
+  },
   "source": "nanoka.cc"
  },
  {
@@ -974,6 +1098,10 @@
   "rarity": "top",
   "icon": "https://static.nanoka.cc/assets/hsr/lightconemediumicon/23035.webp",
   "madeFor": "1225",
+  "effect": {
+   "name": "Rebirth",
+   "text": "Increases the wearer's Break Effect by 60%. When an enemy target's Weakness gets broken, there is a 100% base chance to inflict the \"Charring\" state on it, which increases its Break DMG taken by 18%, lasting for 2 turn(s). This effect can stack 2 time(s)."
+  },
   "source": "nanoka.cc"
  },
  {
@@ -982,6 +1110,10 @@
   "rarity": "top",
   "icon": "https://static.nanoka.cc/assets/hsr/lightconemediumicon/23036.webp",
   "madeFor": "1402",
+  "effect": {
+   "name": "Establishment",
+   "text": "Increases the wearer's base SPD by 12. After the wearer and the wearer's memosprite attacks, the wearer gains 1 stack of \"Brocade.\" Each stack of \"Brocade\" increases the wearer's and their memosprite's CRIT DMG by 9.0%, stacking up to 6 time(s). When reaching maximum stacks, each \"Brocade\" stack additionally increases Basic ATK DMG dealt by 9.0%."
+  },
   "source": "nanoka.cc"
  },
  {
@@ -990,6 +1122,10 @@
   "rarity": "top",
   "icon": "https://static.nanoka.cc/assets/hsr/lightconemediumicon/23037.webp",
   "madeFor": "1401",
+  "effect": {
+   "name": "Mind Game",
+   "text": "Increases the wearer's CRIT Rate by 12%. When the wearer uses their Ultimate, increases the wearer's Skill DMG and Ultimate DMG dealt by 60%, lasting for 3 turn(s). After the wearer uses their Ultimate, if this Ultimate consumed 140 or more Energy, recovers 1 Skill Point."
+  },
   "source": "nanoka.cc"
  },
  {
@@ -998,6 +1134,10 @@
   "rarity": "top",
   "icon": "https://static.nanoka.cc/assets/hsr/lightconemediumicon/23038.webp",
   "madeFor": "1403",
+  "effect": {
+   "name": "Aspiration",
+   "text": "Increases the wearer's CRIT DMG by 36%. After the wearer launches Follow-Up ATK, additionally regenerates 12 Energy and gains \"Presage,\" lasting for 2 turn(s). While the wearer has \"Presage,\" all ally targets' CRIT DMG increases by 48%. When entering battle, the wearer regenerates 21 Energy and gains \"Presage,\" lasting for 2 turn(s)."
+  },
   "source": "nanoka.cc"
  },
  {
@@ -1006,6 +1146,10 @@
   "rarity": "top",
   "icon": "https://static.nanoka.cc/assets/hsr/lightconemediumicon/23039.webp",
   "madeFor": "1404",
+  "effect": {
+   "name": "Vista",
+   "text": "Increases the wearer's Max HP by 18% and Incoming Healing by 20%. When using Skill or Ultimate, consumes HP equal to 6.0% of the wearer's Max HP and increases the DMG dealt by this attack by 30%. If this effect's consumed HP is greater than 500, the DMG additionally increases by 30%.\nIf the current HP is not sufficient, this effect reduces the wearer's current HP down to 1."
+  },
   "source": "nanoka.cc"
  },
  {
@@ -1014,6 +1158,10 @@
   "rarity": "top",
   "icon": "https://static.nanoka.cc/assets/hsr/lightconemediumicon/23040.webp",
   "madeFor": "1407",
+  "effect": {
+   "name": "Engrave",
+   "text": "Increases the wearer's Max HP by 30%. When the wearer or their memosprite loses HP during their own turn, the wearer gains \"Death Flower.\" \"Death Flower\" allows the wearer and their memosprite to ignore 30% of the target's DEF when dealing DMG, lasting for 2 turn(s).\nWhen the wearer's memosprite disappears, advances the wearer's action by 12%. This effect can only trigger up to 1 time, and the trigger count resets every time the wearer uses Ultimate."
+  },
   "source": "nanoka.cc"
  },
  {
@@ -1022,6 +1170,10 @@
   "rarity": "top",
   "icon": "https://static.nanoka.cc/assets/hsr/lightconemediumicon/23041.webp",
   "madeFor": "1405",
+  "effect": {
+   "name": "Smelt",
+   "text": "When the wearer's turn starts, regenerates 10 Energy. If the enemy target has a Weakness implanted by the wearer, increases the wearer's DMG dealt to it by 60%.\nWhen an enemy target gets attacked by the wearer, the wearer decreases the target's DEF by 12%, lasting for 2 turn(s). The same types of effects cannot stack."
+  },
   "source": "nanoka.cc"
  },
  {
@@ -1030,6 +1182,10 @@
   "rarity": "top",
   "icon": "https://static.nanoka.cc/assets/hsr/lightconemediumicon/23042.webp",
   "madeFor": "1409",
+  "effect": {
+   "name": "Tolerant",
+   "text": "Increases the wearer's SPD by 18%. When the wearer uses Basic ATK, Skill, or Ultimate, consumes all allies' HP equal to 1.0% of their current HP, and after the next attack of the wearer's memosprite, enables it to additionally deal 1 instance of Additional DMG equal to 250.0% of the total consumed HP to the attacked target, with the damage type based on the memosprite's type. Then, the total consumed HP is reset. When the wearer's memosprite uses Memosprite Skill, increases the DMG taken by all enemies by 18.0%, lasting for 2 turn(s). Effects of the same type cannot stack."
+  },
   "source": "nanoka.cc"
  },
  {
@@ -1038,6 +1194,10 @@
   "rarity": "top",
   "icon": "https://static.nanoka.cc/assets/hsr/lightconemediumicon/23043.webp",
   "madeFor": "1406",
+  "effect": {
+   "name": "Deceit",
+   "text": "Increases the wearer's SPD by 18%. After the wearer uses an attack, there is a 120% base chance to inflict the \"Bamboozle\" state on every enemy target. While under the \"Bamboozle\" state, enemy targets have their DEF decreased by 16% for 2 turn(s). If the wearer's SPD is higher than or equal to 170, there is a 120% base chance to inflict the \"Theft\" state on every enemy target. While under the \"Theft\" state, enemy targets have their DEF decreased by 8% for 2 turn(s). When \"Bamboozle\" or \"Theft\" is repeatedly inflicted, only the most recently inflicted instance takes effect."
+  },
   "source": "nanoka.cc"
  },
  {
@@ -1046,6 +1206,10 @@
   "rarity": "top",
   "icon": "https://static.nanoka.cc/assets/hsr/lightconemediumicon/23044.webp",
   "madeFor": "1408",
+  "effect": {
+   "name": "Dispossession",
+   "text": "The wearer's base SPD increases by 12. When dealing DMG, ignores 18% of the target's DEF. After the wearer uses Ultimate, gains \"Blazing Sun,\" which is removed at the start of the turn. While holding \"Blazing Sun,\" increases the wearer's DMG dealt by 60%."
+  },
   "source": "nanoka.cc"
  },
  {
@@ -1054,6 +1218,10 @@
   "rarity": "top",
   "icon": "https://static.nanoka.cc/assets/hsr/lightconemediumicon/23045.webp",
   "madeFor": "1014",
+  "effect": {
+   "name": "King of Knights",
+   "text": "Increases the wearer's CRIT DMG by 36%. When using Ultimate, increases the wearer's ATK by 40%, and if the wearer's Max Energy is greater than or equal to 300, regenerates a fixed amount of Energy equal to 10% of the wearer's Max Energy and once again increases the wearer's ATK by 40%, lasting for 2 turns."
+  },
   "source": "nanoka.cc"
  },
  {
@@ -1062,6 +1230,10 @@
   "rarity": "top",
   "icon": "https://static.nanoka.cc/assets/hsr/lightconemediumicon/23046.webp",
   "madeFor": "1015",
+  "effect": {
+   "name": "Hrunting",
+   "text": "Increases the wearer's CRIT Rate by 16%. When entering combat, if the allies' Skill Points limit is 6 or higher, increases the wearer's ATK by 40%. After each use of the wearer's Skill, increases the wearer's ATK by 10%, stacking up to 4 time(s)."
+  },
   "source": "nanoka.cc"
  },
  {
@@ -1070,6 +1242,10 @@
   "rarity": "top",
   "icon": "https://static.nanoka.cc/assets/hsr/lightconemediumicon/23047.webp",
   "madeFor": "1410",
+  "effect": {
+   "name": "Solo",
+   "text": "Increases the wearer's Effect Hit Rate by 40%. When an enemy target gets inflicted with a debuff by the wearer, there is a 80% base chance for them to enter \"Enthrallment,\" lasting for 3 turn(s). Effects of the same type cannot stack. While the target is in \"Enthrallment,\" for every 1 debuff applied by the wearer on the target, increases the target's received DoT by 5.0%, stacking up to 6 time(s). When the target gets attacked by an ally, increases the attacker's SPD by 10.0% for 3 turn(s). When the wearer gets knocked down, removes all \"Enthrallment.\""
+  },
   "source": "nanoka.cc"
  },
  {
@@ -1078,6 +1254,10 @@
   "rarity": "top",
   "icon": "https://static.nanoka.cc/assets/hsr/lightconemediumicon/23048.webp",
   "madeFor": "1412",
+  "effect": {
+   "name": "Conquer",
+   "text": "Increases the wearer's ATK by 64%. After using Ultimate to attack, recovers 1 Skill Point(s). After the wearer uses their Skill on one ally character, increases the Skill DMG dealt by the target by 54.0% for 3 turn(s)."
+  },
   "source": "nanoka.cc"
  },
  {
@@ -1086,6 +1266,10 @@
   "rarity": "top",
   "icon": "https://static.nanoka.cc/assets/hsr/lightconemediumicon/23049.webp",
   "madeFor": "1413",
+  "effect": {
+   "name": "Sleepless",
+   "text": "Increases the wearer's Max HP by 30%. When the wearer's memosprite uses an ability, the wearer gains \"Noctis.\" While the wearer has \"Noctis,\" the DMG dealt by all ally memosprites ignores 20% of the targets' DEF. Increases the DMG dealt by the wearer and their memosprite by 30%. When the wearer's memosprite disappears, the wearer recovers 8 Energy. Effects of the same type cannot stack."
+  },
   "source": "nanoka.cc"
  },
  {
@@ -1094,6 +1278,10 @@
   "rarity": "top",
   "icon": "https://static.nanoka.cc/assets/hsr/lightconemediumicon/23050.webp",
   "madeFor": "1321",
+  "effect": {
+   "name": "Immolation",
+   "text": "Increases the wearer's Break Effect by 60%. When entering combat, increases Break DMG dealt by the wearer and another teammate who triggered combat by 32%. If there is no teammate who triggered combat, applies this effect to the wearer and the teammate with the highest Break Effect. Effects of the same type cannot be stacked. When the wearer applies Weakness to an enemy target, recovers 1 Skill Point. This effect can only trigger once. And resets this trigger count when using Ultimate."
+  },
   "source": "nanoka.cc"
  },
  {
@@ -1102,6 +1290,10 @@
   "rarity": "top",
   "icon": "https://static.nanoka.cc/assets/hsr/lightconemediumicon/23051.webp",
   "madeFor": "1414",
+  "effect": {
+   "name": "New Scale",
+   "text": "Increases the wearer's ATK by 64%. When the wearer uses Ultimate, restores HP equal to 10% of the wearer's ATK for all allies, and additionally restores HP equal to 10% of the wearer's ATK for the character with the lowest current HP, and grants \"Redoubt\" to all allies for 3 turn(s). Targets with \"Redoubt\" deal 24% increased DMG, which further increases by 12% if the targets have summons."
+  },
   "source": "nanoka.cc"
  },
  {
@@ -1110,6 +1302,10 @@
   "rarity": "top",
   "icon": "https://static.nanoka.cc/assets/hsr/lightconemediumicon/23052.webp",
   "madeFor": "1415",
+  "effect": {
+   "name": "A Promise",
+   "text": "Increases the wearer's SPD by 18%. When the wearer's memosprite uses Memosprite Skill on one ally, gains \"Blank,\" which increases DMG taken by all enemies by 10%. When the wearer's memosprite uses Memosprite Skill on an enemy, gains \"Verse,\" which increases CRIT DMG of all allies by 16%. When the wearer's memosprite has both \"Blank\" and \"Verse,\" increases the effects of both \"Blank\" and \"Verse\" by 60%."
+  },
   "source": "nanoka.cc"
  },
  {
@@ -1118,6 +1314,10 @@
   "rarity": "top",
   "icon": "https://static.nanoka.cc/assets/hsr/lightconemediumicon/23053.webp",
   "madeFor": "1501",
+  "effect": {
+   "name": "Center of Attention",
+   "text": "Increases the wearer's CRIT DMG by 48%. While the wearer is on the field, for every 1 Elation character in the team, increases the Skill Point upper limit by 1, up to a max increase of 3. For every 1 Skill Point the wearer consumes, enables the Elation DMG dealt by this unit to ignore 5.0% of enemy targets' DEF, stacking up to 4 times. If 4 or more Skill Points are consumed in the same turn, the wearer gains \"Stream Promo,\" which increases all allies' Elation by 20%. Light Cone effects of the same type cannot stack."
+  },
   "source": "nanoka.cc"
  },
  {
@@ -1141,6 +1341,10 @@
   "rarity": "top",
   "icon": "https://static.nanoka.cc/assets/hsr/lightconemediumicon/23056.webp",
   "madeFor": "1504",
+  "effect": {
+   "name": "Subsume",
+   "text": "Increases the wearer's CRIT Rate by 18%. At the start of battle or for every 4 instance(s) of Follow-Up ATK the wearer uses, the wearer gains \"Umbra Devourer,\" lasting for 3 turn(s). While the wearer holds \"Umbra Devourer,\" increases ATK by 40% and increases the DMG taken by all enemies by 20%. Effects of the same type cannot stack."
+  },
   "source": "nanoka.cc"
  },
  {
@@ -1149,6 +1353,10 @@
   "rarity": "top",
   "icon": "https://static.nanoka.cc/assets/hsr/lightconemediumicon/23057.webp",
   "madeFor": "1506",
+  "effect": {
+   "name": "Guaranteed Victory",
+   "text": "Increases the wearer's SPD by 18%. The Elation DMG dealt ignores 20% of the target's DEF. When the wearer uses Ultimate on themselves, gains 20 point(s) of \"Punchline.\" This effect can be triggered up to 1 time. And resets this trigger count after using Basic ATK 3 time(s)."
+  },
   "source": "nanoka.cc"
  },
  {
@@ -1157,6 +1365,10 @@
   "rarity": "top",
   "icon": "https://static.nanoka.cc/assets/hsr/lightconemediumicon/23058.webp",
   "madeFor": "1505",
+  "effect": {
+   "name": "Daydream",
+   "text": "Increases the wearer's CRIT DMG by 60% and Energy Regeneration Rate by 10.0%. When the wearer's Max Energy is greater than 120, for every 10 points of Max Energy that exceeds this amount, further increases Energy Regeneration Rate by 0.3%. Up to a maximum of 360 points of excess Max Energy can be taken into account. When the wearer uses Elation Skill, increases the DMG received by all enemies by 15.0% for 2 turn(s). Effects of the same type cannot stack."
+  },
   "source": "nanoka.cc"
  },
  {
@@ -1165,6 +1377,10 @@
   "rarity": "top",
   "icon": "https://static.nanoka.cc/assets/hsr/lightconemediumicon/23059.webp",
   "madeFor": "1507",
+  "effect": {
+   "name": "Tempering",
+   "text": "Increases the wearer's Max HP by 30%. At the start of the wearer's turn, regenerates a fixed amount of 20 Energy. This effect can trigger 1 time each wave. After the wearer uses Skill to attack, inflicts the target with the \"Purgatory\" state, lasting for 2 turn(s). While in the \"Purgatory\" state, the target receives 30% increased CRIT DMG and 30% additionally increased CRIT DMG from the wearer."
+  },
   "source": "nanoka.cc"
  },
  {
@@ -1173,6 +1389,10 @@
   "rarity": "top",
   "icon": "https://static.nanoka.cc/assets/hsr/lightconemediumicon/23060.webp",
   "madeFor": "1510",
+  "effect": {
+   "name": "First Wish",
+   "text": "The wearer ignores 32% of the target's DEF when dealing DMG. When the wearer uses Assist Skill, they regenerate 6 Energy and gain \"Sail,\" lasting for 2 turns and stacking up to 3 time(s). Each stack of \"Sail\" increases Assist Skill DMG by 20%. When \"Sail\" reaches 3 stacks, each stack of \"Sail\" increases Ultimate DMG by 20%."
+  },
   "source": "nanoka.cc"
  },
  {
@@ -1181,6 +1401,10 @@
   "rarity": "top",
   "icon": "https://static.nanoka.cc/assets/hsr/lightconemediumicon/23061.webp",
   "madeFor": "1508",
+  "effect": {
+   "name": "Sprout",
+   "text": "Increases the wearer's CRIT Rate by 18%. When any ally character consumes a total of 4 or more Skill Points in a single turn, the wearer gains \"Radiant Crown,\" lasting for 3 turn(s). While the wearer holds \"Radiant Crown,\" all allies' DMG dealt ignores 20% of the target's DEF, and the Skill DMG dealt by the wearer increases by 72%. Effects of the same type cannot stack."
+  },
   "source": "nanoka.cc"
  },
  {
@@ -1189,6 +1413,10 @@
   "rarity": "top",
   "icon": "https://static.nanoka.cc/assets/hsr/lightconemediumicon/23062.webp",
   "madeFor": "1509",
+  "effect": {
+   "name": "At Will",
+   "text": "Increases the wearer's ATK by 18% and Energy Regeneration Rate by 10.0%. When the wearer uses Ultimate, for every 1 Energy consumed, increases the Ultimate DMG dealt this time by 0.20%, up to a max increase of 72%. When the wearer enters combat or uses Ultimate, the wearer gains \"King's Entertainment,\" lasting for 3 turn(s). While the wearer holds \"King's Entertainment,\" increases all allies' CRIT DMG by 24%. Effects of the same type cannot stack."
+  },
   "source": "nanoka.cc"
  },
  {
@@ -1197,6 +1425,10 @@
   "rarity": "top",
   "icon": "https://static.nanoka.cc/assets/hsr/lightconemediumicon/23063.webp",
   "madeFor": "1512",
+  "effect": {
+   "name": "Improvisation",
+   "text": "Increases the wearer's Max HP by 30%. After the wearer uses their Ultimate, recovers 1 Skill Point for allies. When entering combat, advances the wearer's action by 30% and grants the wearer \"New Melody\" for 2 turn(s). While the wearer has \"New Melody,\" all allies' SPD increases by 20%."
+  },
   "source": "nanoka.cc"
  },
  {
@@ -1205,6 +1437,10 @@
   "rarity": "top",
   "icon": "https://static.nanoka.cc/assets/hsr/lightconemediumicon/23064.webp",
   "madeFor": "1513",
+  "effect": {
+   "name": "Waveriding",
+   "text": "Increases the wearer's CRIT Rate by 18%. When the wearer uses Elation Skill, gains \"Updraft,\" which increases the wearer's SPD by 24%. If the Elation Skill used is different from the one used last time, additionally gains \"Uptrend,\" which increases the wearer's Elation by 40%.\nWhen every wave starts or after the wearer uses Elation Skill 3 time(s), recovers 1 Skill Point."
+  },
   "source": "nanoka.cc"
  },
  {
@@ -1213,6 +1449,10 @@
   "rarity": "top",
   "icon": "https://static.nanoka.cc/assets/hsr/lightconemediumicon/23065.webp",
   "madeFor": "1511",
+  "effect": {
+   "name": "Improv Tour",
+   "text": "Increases the wearer's base Speed by 12. When using a Skill on one other ally, gains 10 Punchline. This effect can trigger at most once every 2 turn(s). Then, causes all allies to ignore 16% of the enemy target's DEF when dealing DMG during this combat. This effect cannot be stacked."
+  },
   "source": "nanoka.cc"
  },
  {
@@ -1221,6 +1461,10 @@
   "rarity": "top",
   "icon": "https://static.nanoka.cc/assets/hsr/lightconemediumicon/24000.webp",
   "madeFor": "1312",
+  "effect": {
+   "name": "Moth to Flames",
+   "text": "When the wearer attacks, increases their ATK by 8% in this battle. This effect can stack up to 4 time(s). After the wearer breaks an enemy's Weakness, increases DMG dealt by 12%, lasting for 2 turn(s)."
+  },
   "source": "nanoka.cc"
  },
  {
@@ -1229,6 +1473,10 @@
   "rarity": "top",
   "icon": "https://static.nanoka.cc/assets/hsr/lightconemediumicon/24001.webp",
   "madeFor": "1002",
+  "effect": {
+   "name": "Chase",
+   "text": "Increases the wearer's CRIT Rate by 8%, and increases their CRIT Rate against enemies with HP percentage 50% or less by an extra 8%. When the wearer defeats an enemy, their ATK is increased by 20% for 2 turn(s)."
+  },
   "source": "nanoka.cc"
  },
  {

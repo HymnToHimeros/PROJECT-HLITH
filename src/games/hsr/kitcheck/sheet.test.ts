@@ -2,8 +2,7 @@
 /** The cheat sheet's honesty tests (docs/logic/hsr-theory.md, Part A step 6). */
 import { describe, expect, it } from 'vitest';
 import characters from '../data/characters.json';
-import kits from '../data/kits.json';
-import { SHEETS } from './library';
+import { KITS as kits, SHEETS } from './library';
 import { GENERAL_STATS, SPECIFIC_STATS, SUPPORT_STATS } from './types';
 
 type K = { characterId: string; skills: { id: string; gameText: string }[] };
