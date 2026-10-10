@@ -1,7 +1,8 @@
 import { useEffect, useMemo, useState } from 'react';
 import type { Banner, Character, GameContract, PullRecord, Version } from '../../core/contract';
 import type { Known } from '../../core/contract/known';
-import { useExamplesShown } from '../../core/data/prefs';
+import { useExamplesShown, useServerOffset } from '../../core/data/prefs';
+import { listAtServer } from '../../core/time/serverTime';
 import { balances, useGameData, type GameUserData } from '../../core/data/userData';
 import { backlogForBudget, categories, type CategoryView } from '../backlog/backlog';
 import { useBacklogData } from '../backlog/useBacklogData';
@@ -36,6 +37,7 @@ export interface PullsData {
 export function usePullsData(game: GameContract, now: number): PullsData {
   const user = useGameData(game.id);
   const showExamples = useExamplesShown();
+  const offset = useServerOffset(game);
   const hideLeaks = useHideLeaks();
   const [lists, setLists] = useState<{
     characters: Character[];
@@ -71,7 +73,7 @@ export function usePullsData(game: GameContract, now: number): PullsData {
   const current = (lists?.versions ?? []).find((v) => Date.parse(v.start) <= now && now < Date.parse(v.end));
   const builtInBanners = lists?.banners ?? NO_BANNERS;
   const exampleList = useMemo(() => exampleBannerSchedule(game, characters, now, lists?.withArt), [game, characters, now, lists?.withArt]);
-  const mixed = mixExamples('banners', builtInBanners, user.ownItems.banners, exampleList, showExamples);
+  const mixed = mixExamples('banners', listAtServer(builtInBanners, offset), user.ownItems.banners, exampleList, showExamples);
   // "Hide leaks" (Intel) hides leaked banners here too.
   const shownBanners = hideLeaks ? mixed.list.filter((b) => !b.leak) : mixed.list;
   return {

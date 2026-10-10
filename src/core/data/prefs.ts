@@ -131,3 +131,9 @@ export function reloadPrefs(): void {
 export function useExamplesShown(): boolean {
   return !usePrefs().hideExamples;
 }
+
+/** UTC offset of the user's chosen server for a game (undefined = none chosen). Used to show "server time" ends at the right moment. */
+export function useServerOffset(game: { id: string; servers: { id: string; utcOffset: number }[] }): number | undefined {
+  const servers = usePrefs().servers;
+  return game.servers.find((s) => s.id === servers[game.id])?.utcOffset;
+}

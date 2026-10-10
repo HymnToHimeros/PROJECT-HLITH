@@ -21,5 +21,5 @@ export default function TodayScreen({ games, scope, servers, open, openAccount, 
   const hideLeaks = useHideLeaks();
   const live = useLiveStamina(shown);
   if (!lists) return null;
-  return <WithUserData games={shown}>{(user) => <Today games={shown} servers={servers} lists={withOwnItems(shown, lists, user, { showExamples, hideLeaks, now })} user={user} now={now} open={open} openAccount={openAccount} openServer={openServer} stamina={live.stamina} retryStamina={live.retry} />}</WithUserData>;
+  return <WithUserData games={shown}>{(user) => <Today games={shown} servers={servers} lists={withOwnItems(shown, lists, user, { showExamples, hideLeaks, now, servers })} user={user} now={now} open={open} openAccount={openAccount} openServer={openServer} stamina={live.stamina} retryStamina={live.retry} />}</WithUserData>;
 }

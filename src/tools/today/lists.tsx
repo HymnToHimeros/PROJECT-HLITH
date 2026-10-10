@@ -6,6 +6,7 @@
 import { useEffect, useState, type ReactNode } from 'react';
 import type { Banner, Character, GameContract, GameEvent, GameId, Material, SampleArt, Version } from '../../core/contract';
 import { useGameData, type GameUserData } from '../../core/data/userData';
+import { listAtServer, serverOffset } from '../../core/time/serverTime';
 import { mixExamples } from '../edit-mode/examples';
 import { exampleEvents } from '../events/examples';
 import { exampleBannerSchedule } from '../pulls/examples';
@@ -84,16 +85,23 @@ export const tagFor = (game: GameContract, show: boolean) => (show ? { label: ga
  * (the same examples Events, Banners and Pulls use, so a tick or hide on one shows everywhere).
  * Leaks are left out while "Hide leaks" is on.
  */
-export function withOwnItems(games: GameContract[], lists: Record<GameId, GameLists>, user: Record<GameId, GameUserData>, opts: { showExamples: boolean; hideLeaks: boolean; now: number }): Record<GameId, GameLists> {
-  const { showExamples, hideLeaks, now } = opts;
+export function withOwnItems(
+  games: GameContract[],
+  lists: Record<GameId, GameLists>,
+  user: Record<GameId, GameUserData>,
+  opts: { showExamples: boolean; hideLeaks: boolean; now: number; servers?: Record<string, string> },
+): Record<GameId, GameLists> {
+  const { showExamples, hideLeaks, now, servers = {} } = opts;
   const noLeaks = <T extends { leak?: unknown }>(list: T[]) => (hideLeaks ? list.filter((x) => !x.leak) : list);
   return Object.fromEntries(
     Object.entries(lists).map(([id, l]) => {
       const game = games.find((g) => g.id === id);
       const own = user[id]?.ownItems;
       const art = (l.sampleArt ?? []).map((a) => a.characterId);
-      const banners = mixExamples('banners', l.banners, own?.banners, game ? exampleBannerSchedule(game, l.characters, now, art) : [], showExamples);
-      const events = mixExamples('events', l.events, own?.events, game ? exampleEvents(game, now) : [], showExamples);
+      // "Server time" ends move to the user's server.
+      const offset = game ? serverOffset(game, servers) : undefined;
+      const banners = mixExamples('banners', listAtServer(l.banners, offset), own?.banners, game ? exampleBannerSchedule(game, l.characters, now, art) : [], showExamples);
+      const events = mixExamples('events', listAtServer(l.events, offset), own?.events, game ? exampleEvents(game, now) : [], showExamples);
       return [id, { ...l, banners: noLeaks(banners.list), events: noLeaks(events.list), exampleIds: new Set([...banners.exampleIds, ...events.exampleIds]), real: { banners: banners.real, events: events.real } }];
     }),
   );

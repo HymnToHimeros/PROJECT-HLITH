@@ -394,7 +394,9 @@ function LiveBanners({ days, tags, now, showExamples }: { days: GameToday[]; tag
   const live = rows.filter(({ b }) => Date.parse(b.start) <= now && Date.parse(b.end) > now).sort((x, y) => Date.parse(x.b.end) - Date.parse(y.b.end));
   const typeLabel = (g: GameContract, id: string) => g.bannerTypes.find((x) => x.id === id)?.label ?? id;
   // Sample art only ever decorates EXAMPLE banners.
-  const artFor = (d: GameToday, b: Banner, example: boolean) => (example ? d.lists.sampleArt?.find((s) => b.featured.includes(s.characterId))?.portrait : undefined);
+  // Sample art only on examples; real banners use their own art or the lead character's portrait.
+  const artFor = (d: GameToday, b: Banner, example: boolean) =>
+    example ? d.lists.sampleArt?.find((s) => b.featured.includes(s.characterId))?.portrait : (b.art ?? d.lists.characters.find((c) => c.id === b.featured[0])?.portrait);
   return (
     <section className={t.card} aria-label="Live banners">
       <h3 className={t.cardTitle}>Live banners</h3>
