@@ -1,0 +1,2031 @@
+[
+  {
+    "characterId": "1006",
+    "source": "nanoka.cc",
+    "version": "4.6",
+    "skills": [
+      {
+        "id": "skill-basic-atk-system-warning",
+        "label": "Basic ATK: System Warning (Lv. 6)",
+        "kind": "skill",
+        "does": [],
+        "gameText": "Deals Quantum DMG equal to 100% of Silver Wolf's ATK to one designated enemy.",
+        "replacedAt": {
+          "potential": 1
+        }
+      },
+      {
+        "id": "skill-skill-allow-changes",
+        "label": "Skill: Allow Changes? (Lv. 10)",
+        "kind": "skill",
+        "does": [],
+        "gameText": "There is a 85% base chance to add 1 Weakness of an on-field character's Type to the target enemy. This also reduces the enemy's DMG RES to that Weakness Type by 20% for 2 turn(s). If the enemy already has that Type Weakness, the effect of DMG RES reduction to that Weakness Type will not be triggered.\nEach enemy can only have 1 Weakness implanted by Silver Wolf. When Silver Wolf implants another Weakness to the target, only the most recent implanted Weakness will be kept.\nIn addition, there is a 100% base chance to further reduce the All-Type RES of the enemy by 10.0% for 2 turn(s).\nDeals Quantum DMG equal to 196% of Silver Wolf's ATK to this enemy.",
+        "replacedAt": {
+          "potential": 1
+        }
+      },
+      {
+        "id": "skill-ultimate-user-banned",
+        "label": "Ultimate: User Banned (Lv. 10)",
+        "kind": "skill",
+        "does": [],
+        "gameText": "There's a 100% base chance to decrease the target enemy's DEF by 45.0% for 3 turn(s). And at the same time, deals Quantum DMG equal to 380% of Silver Wolf's ATK to the target enemy.",
+        "replacedAt": {
+          "potential": 1
+        }
+      },
+      {
+        "id": "skill-talent-awaiting-system-response",
+        "label": "Talent: Awaiting System Response... (Lv. 10)",
+        "kind": "skill",
+        "does": [],
+        "gameText": "Silver Wolf can create three types of Bugs: Reduce ATK by 10.0%, reduce DEF by 8.0%, and reduce SPD by 6.0%.\nEvery time Silver Wolf attacks, she has a 72% base chance to implant a random Bug that lasts for 3 turn(s) in an enemy target.",
+        "replacedAt": {
+          "potential": 1
+        }
+      },
+      {
+        "id": "skill-technique-force-quit-program",
+        "label": "Technique: Force Quit Program",
+        "kind": "skill",
+        "does": [],
+        "gameText": "Immediately attacks the enemy. After entering battle, deals Quantum DMG equal to 80% of Silver Wolf's ATK to all enemies, and ignores Weakness Types and reduces Toughness from all enemies. Enemies with their Weakness Broken in this way will trigger the Quantum Weakness Break effect.",
+        "replacedAt": {
+          "potential": 1
+        }
+      },
+      {
+        "id": "trace-generate",
+        "label": "Trace: Generate",
+        "kind": "trace",
+        "does": [],
+        "gameText": "The duration of \"Bug\" is extended by 1 turn(s). Every time an enemy is inflicted with Weakness Break, Silver Wolf has a 65% base chance of implanting a random \"Bug\" on that target.",
+        "replacedAt": {
+          "potential": 1
+        }
+      },
+      {
+        "id": "trace-inject",
+        "label": "Trace: Inject",
+        "kind": "trace",
+        "does": [],
+        "gameText": "The duration of the Weakness implanted by Silver Wolf's Skill increases by 1 turn(s).",
+        "replacedAt": {
+          "potential": 1
+        }
+      },
+      {
+        "id": "trace-side-note",
+        "label": "Trace: Side Note",
+        "kind": "trace",
+        "does": [],
+        "gameText": "If there are 3 or more debuff(s) affecting the enemy when the Skill is used, then the Skill decreases the enemy's All-Type RES by an additional 3%.",
+        "replacedAt": {
+          "potential": 1
+        }
+      },
+      {
+        "id": "eidolon-1",
+        "label": "Eidolon 1: Social Engineering",
+        "kind": "eidolon",
+        "unlock": {
+          "dupes": 1
+        },
+        "does": [],
+        "gameText": "After using her Ultimate to attack enemies, Silver Wolf regenerates 7 Energy for every debuff that the target enemy currently has. This effect can be triggered up to 5 time(s) in each use of her Ultimate.",
+        "replacedAt": {
+          "potential": 1
+        }
+      },
+      {
+        "id": "eidolon-2",
+        "label": "Eidolon 2: Zombie Network",
+        "kind": "eidolon",
+        "unlock": {
+          "dupes": 2
+        },
+        "does": [],
+        "gameText": "When an enemy enters combat, reduces their Effect RES by 20%.",
+        "replacedAt": {
+          "potential": 1
+        }
+      },
+      {
+        "id": "eidolon-3",
+        "label": "Eidolon 3: Payload",
+        "kind": "eidolon",
+        "unlock": {
+          "dupes": 3
+        },
+        "does": [],
+        "gameText": "Skill Lv. +2, up to a maximum of Lv. 15.\nTalent Lv. +2, up to a maximum of Lv. 15.",
+        "replacedAt": {
+          "potential": 1
+        }
+      },
+      {
+        "id": "eidolon-4",
+        "label": "Eidolon 4: Bounce Attack",
+        "kind": "eidolon",
+        "unlock": {
+          "dupes": 4
+        },
+        "does": [],
+        "gameText": "After using her Ultimate to attack enemies, deals Quantum Additional DMG equal to 20% of Silver Wolf's ATK for every debuff currently on the enemy target. This effect can be triggered for a maximum of 5 time(s) during each use of her Ultimate.",
+        "replacedAt": {
+          "potential": 1
+        }
+      },
+      {
+        "id": "eidolon-5",
+        "label": "Eidolon 5: Brute Force Attack",
+        "kind": "eidolon",
+        "unlock": {
+          "dupes": 5
+        },
+        "does": [],
+        "gameText": "Ultimate Lv. +2, up to a maximum of Lv. 15.\nBasic ATK Lv. +1, up to a maximum of Lv. 10.",
+        "replacedAt": {
+          "potential": 1
+        }
+      },
+      {
+        "id": "eidolon-6",
+        "label": "Eidolon 6: Overlay Network",
+        "kind": "eidolon",
+        "unlock": {
+          "dupes": 6
+        },
+        "does": [],
+        "gameText": "For every debuff the enemy target has, the DMG dealt by Silver Wolf to it increases by 20%, up to a max increase of 100%.",
+        "replacedAt": {
+          "potential": 1
+        }
+      },
+      {
+        "id": "skill-basic-atk-system-warning-enhanced",
+        "label": "Basic ATK: System Warning (Lv. 6) (Enhanced)",
+        "kind": "skill",
+        "does": [],
+        "gameText": "Deals Quantum DMG equal to 100% of Silver Wolf's ATK to one designated enemy.",
+        "unlock": {
+          "potential": 1
+        }
+      },
+      {
+        "id": "skill-skill-allow-changes-enhanced",
+        "label": "Skill: Allow Changes? (Lv. 10) (Enhanced)",
+        "kind": "skill",
+        "does": [],
+        "gameText": "There is a 120% base chance to add 1 Weakness of an on-field ally target's Type to one designated enemy target (prioritizing the implant of a Weakness that matches the first character in the team lineup). This also reduces the enemy target's RES to that Weakness Type by 20% for 3 turn(s). If the enemy target already has that Type of Weakness, the RES reduction effect to that Type will not be triggered.\nEach enemy target can only have 1 Weakness implanted by Silver Wolf. When Silver Wolf implants another Weakness to the target, only the most recent implanted Weakness will be retained.\nIn addition, there is a 100% base chance to further reduce the target's All-Type RES by 13.0% for 2 turn(s).\nDeals Quantum DMG equal to 196% of Silver Wolf's ATK to this target.",
+        "unlock": {
+          "potential": 1
+        }
+      },
+      {
+        "id": "skill-ultimate-user-banned-enhanced",
+        "label": "Ultimate: User Banned (Lv. 10) (Enhanced)",
+        "kind": "skill",
+        "does": [],
+        "gameText": "Has a 120% base chance to reduce the DEF of all enemies by 45.0% for 3 turn(s). At the same time, deals Quantum DMG equal to 380% of Silver Wolf's ATK to all enemies.",
+        "unlock": {
+          "potential": 1
+        }
+      },
+      {
+        "id": "skill-talent-awaiting-system-response-enhanced",
+        "label": "Talent: Awaiting System Response... (Lv. 10) (Enhanced)",
+        "kind": "skill",
+        "does": [],
+        "gameText": "Silver Wolf can create three types of \"Bugs\": Reduce ATK by 10.0%, reduce DEF by 12.0%, and reduce SPD by 6.0%.\nAfter every attack launched by Silver Wolf, she has a 100% base chance to implant 1 random \"Bug\" that lasts for 3 turn(s) in the attacked enemy target.\nWhen the enemy target gets defeated, the Weakness Silver Wolf implanted on it will be transferred to another surviving enemy on the field that hasn't been implanted with Weakness by Silver Wolf, prioritizing targets at Elite-level and above.",
+        "unlock": {
+          "potential": 1
+        }
+      },
+      {
+        "id": "skill-technique-force-quit-program-enhanced",
+        "label": "Technique: Force Quit Program (Enhanced)",
+        "kind": "skill",
+        "does": [],
+        "gameText": "Immediately attacks the enemy. After entering combat, deals Quantum DMG equal to 80% of Silver Wolf's ATK to all enemies, and reduces Toughness of all enemies regardless of Weakness Types. Enemies with their Weakness Broken in this way will trigger the Quantum Weakness Break effect.",
+        "unlock": {
+          "potential": 1
+        }
+      },
+      {
+        "id": "trace-generate-enhanced",
+        "label": "Trace: Generate (Enhanced)",
+        "kind": "trace",
+        "does": [],
+        "gameText": "The duration of \"Bug\" is extended by 1 turn(s). Every time an enemy's Weakness gets broken, Silver Wolf has a 100% base chance of implanting a random \"Bug\" on that target.",
+        "unlock": {
+          "potential": 1
+        }
+      },
+      {
+        "id": "trace-inject-enhanced",
+        "label": "Trace: Inject (Enhanced)",
+        "kind": "trace",
+        "does": [],
+        "gameText": "When the battle starts, immediately regenerates 20 Energy. When Silver Wolf's turn starts, she regenerates 5 Energy.",
+        "unlock": {
+          "potential": 1
+        }
+      },
+      {
+        "id": "trace-side-note-enhanced",
+        "label": "Trace: Side Note (Enhanced)",
+        "kind": "trace",
+        "does": [],
+        "gameText": "For every 10% Effect Hit Rate that Silver Wolf has, additionally increases her ATK by 10%, up to a max of 50%.",
+        "unlock": {
+          "potential": 1
+        }
+      },
+      {
+        "id": "eidolon-1-enhanced",
+        "label": "Eidolon 1: Social Engineering (Enhanced)",
+        "kind": "eidolon",
+        "unlock": {
+          "dupes": 1,
+          "potential": 1
+        },
+        "does": [],
+        "gameText": "After using Ultimate to attack an enemy target, Silver Wolf regenerates 7 Energy for every debuff on the target. This effect can trigger up to 5 time(s) in each use of Ultimate."
+      },
+      {
+        "id": "eidolon-2-enhanced",
+        "label": "Eidolon 2: Zombie Network (Enhanced)",
+        "kind": "eidolon",
+        "unlock": {
+          "dupes": 2,
+          "potential": 1
+        },
+        "does": [],
+        "gameText": "When an enemy target enters combat, increases their DMG taken by 20%. When an enemy target gets attacked by ally targets, Silver Wolf has a 100% base chance to implant 1 random \"Bug\" on the attacked enemy target."
+      },
+      {
+        "id": "eidolon-3-enhanced",
+        "label": "Eidolon 3: Payload (Enhanced)",
+        "kind": "eidolon",
+        "unlock": {
+          "dupes": 3,
+          "potential": 1
+        },
+        "does": [],
+        "gameText": "Skill Lv. +2, up to a maximum of Lv. 15.\nTalent Lv. +2, up to a maximum of Lv. 15."
+      },
+      {
+        "id": "eidolon-4-enhanced",
+        "label": "Eidolon 4: Bounce Attack (Enhanced)",
+        "kind": "eidolon",
+        "unlock": {
+          "dupes": 4,
+          "potential": 1
+        },
+        "does": [],
+        "gameText": "After using Ultimate to attack an enemy target, deals Quantum Additional DMG equal to 20% of Silver Wolf's ATK for every debuff on the target. This effect can trigger up to 5 time(s) per target during each use of Ultimate."
+      },
+      {
+        "id": "eidolon-5-enhanced",
+        "label": "Eidolon 5: Brute Force Attack (Enhanced)",
+        "kind": "eidolon",
+        "unlock": {
+          "dupes": 5,
+          "potential": 1
+        },
+        "does": [],
+        "gameText": "Ultimate Lv. +2, up to a maximum of Lv. 15.\nBasic ATK Lv. +1, up to a maximum of Lv. 10."
+      },
+      {
+        "id": "eidolon-6-enhanced",
+        "label": "Eidolon 6: Overlay Network (Enhanced)",
+        "kind": "eidolon",
+        "unlock": {
+          "dupes": 6,
+          "potential": 1
+        },
+        "does": [],
+        "gameText": "For every debuff the enemy target has, the DMG dealt by Silver Wolf to it increases by 20%, up to a max increase of 100%."
+      }
+    ]
+  },
+  {
+    "characterId": "1106",
+    "source": "nanoka.cc",
+    "version": "4.6",
+    "skills": [
+      {
+        "id": "skill-basic-atk-frost-shot",
+        "label": "Basic ATK: Frost Shot (Lv. 6)",
+        "kind": "skill",
+        "does": [],
+        "gameText": "Deals Ice DMG equal to 100% of Pela's ATK to one designated enemy target."
+      },
+      {
+        "id": "skill-skill-frostbite",
+        "label": "Skill: Frostbite (Lv. 10)",
+        "kind": "skill",
+        "does": [],
+        "gameText": "Removes 1 buff(s) and deals Ice DMG equal to 210% of Pela's ATK to one designated target enemy."
+      },
+      {
+        "id": "skill-ultimate-zone-suppression",
+        "label": "Ultimate: Zone Suppression (Lv. 10)",
+        "kind": "skill",
+        "does": [],
+        "gameText": "Deals Ice DMG equal to 100% of Pela's ATK to all enemies, with a 100% base chance to inflict Exposed on all enemies.\nWhen Exposed, enemies' DEF is reduced by 40% for 2 turn(s)."
+      },
+      {
+        "id": "skill-talent-data-collecting",
+        "label": "Talent: Data Collecting (Lv. 10)",
+        "kind": "skill",
+        "does": [],
+        "gameText": "If the enemy is debuffed after Pela's attack, Pela will restore 10.0 additional Energy. This effect can only be triggered 1 time per attack."
+      },
+      {
+        "id": "skill-technique-preemptive-strike",
+        "label": "Technique: Preemptive Strike",
+        "kind": "skill",
+        "does": [],
+        "gameText": "Immediately attacks the enemy. Upon entering battle, Pela deals Ice DMG equal to 80% of her ATK to a random enemy, with a 100% base chance of lowering the DEF of all enemies by 20% for 2 turn(s)."
+      },
+      {
+        "id": "trace-bash",
+        "label": "Trace: Bash",
+        "kind": "trace",
+        "does": [],
+        "gameText": "Deals 20% more DMG to debuffed enemy targets."
+      },
+      {
+        "id": "trace-the-secret-strategy",
+        "label": "Trace: The Secret Strategy",
+        "kind": "trace",
+        "does": [],
+        "gameText": "When Pela is on the battlefield, all allies' Effect Hit Rate increases by 10%."
+      },
+      {
+        "id": "trace-wipe-out",
+        "label": "Trace: Wipe Out",
+        "kind": "trace",
+        "does": [],
+        "gameText": "When using Skill to dispel buff(s), increases the DMG dealt by the next attack by 20%."
+      },
+      {
+        "id": "eidolon-1",
+        "label": "Eidolon 1: Victory Report",
+        "kind": "eidolon",
+        "unlock": {
+          "dupes": 1
+        },
+        "does": [],
+        "gameText": "When an enemy is defeated, Pela regenerates 5 Energy."
+      },
+      {
+        "id": "eidolon-2",
+        "label": "Eidolon 2: Adamant Charge",
+        "kind": "eidolon",
+        "unlock": {
+          "dupes": 2
+        },
+        "does": [],
+        "gameText": "Using Skill to dispel buff(s) increases SPD by 10% for 2 turn(s)."
+      },
+      {
+        "id": "eidolon-3",
+        "label": "Eidolon 3: Suppressive Force",
+        "kind": "eidolon",
+        "unlock": {
+          "dupes": 3
+        },
+        "does": [],
+        "gameText": "Skill Lv. +2, up to a maximum of Lv. 15.\nBasic ATK Lv. +1, up to a maximum of Lv. 10."
+      },
+      {
+        "id": "eidolon-4",
+        "label": "Eidolon 4: Full Analysis",
+        "kind": "eidolon",
+        "unlock": {
+          "dupes": 4
+        },
+        "does": [],
+        "gameText": "When using Skill, there is a 100% base chance to reduce the target enemy's Ice RES by 12% for 2 turn(s)."
+      },
+      {
+        "id": "eidolon-5",
+        "label": "Eidolon 5: Absolute Jeopardy",
+        "kind": "eidolon",
+        "unlock": {
+          "dupes": 5
+        },
+        "does": [],
+        "gameText": "Ultimate Lv. +2, up to a maximum of Lv. 15.\nTalent Lv. +2, up to a maximum of Lv. 15."
+      },
+      {
+        "id": "eidolon-6",
+        "label": "Eidolon 6: Feeble Pursuit",
+        "kind": "eidolon",
+        "unlock": {
+          "dupes": 6
+        },
+        "does": [],
+        "gameText": "After Pela attacks, if the enemy target is debuffed, deals Ice Additional DMG equal to 40% of Pela's ATK to the enemy."
+      }
+    ]
+  },
+  {
+    "characterId": "1112",
+    "source": "nanoka.cc",
+    "version": "4.6",
+    "skills": [
+      {
+        "id": "skill-basic-atk-deficit",
+        "label": "Basic ATK: Deficit... (Lv. 6)",
+        "kind": "skill",
+        "does": [],
+        "gameText": "Deals Fire DMG equal to 100% of Topaz's ATK to one designated enemy."
+      },
+      {
+        "id": "skill-skill-difficulty-paying",
+        "label": "Skill: Difficulty Paying? (Lv. 10)",
+        "kind": "skill",
+        "does": [],
+        "gameText": "Inflicts one designated enemy target with a \"Proof of Debt\" state, increasing the Follow-Up ATK DMG it receives by 50%. \"Proof of Debt\" only takes effect on the most recent target it is applied to. If there are no enemies inflicted with \"Proof of Debt\" on the field when an ally's turn starts or when an ally takes action, Topaz will inflict a random enemy with \"Proof of Debt.\"\nNumby deals Fire DMG equal to 150% of Topaz's ATK to this target. Using this Skill to deal DMG is considered as launching a Follow-Up ATK."
+      },
+      {
+        "id": "skill-ultimate-turn-a-profit",
+        "label": "Ultimate: Turn a Profit! (Lv. 10)",
+        "kind": "skill",
+        "does": [],
+        "gameText": "Numby enters the Windfall Bonanza! state and its DMG multiplier increases by 150% and CRIT DMG increases by 25%. Also, when enemies with Proof of Debt are hit by an ally's Basic ATK, Skill, or Ultimate, Numby's action is Advanced Forward by 50%. Numby exits the Windfall Bonanza! state after using 2 attacks."
+      },
+      {
+        "id": "skill-talent-trotter-market",
+        "label": "Talent: Trotter Market!? (Lv. 10)",
+        "kind": "skill",
+        "does": [],
+        "gameText": "Summons Numby at the start of battle. Numby has 80 SPD by default. When taking action, Numby launches Follow-Up ATKs on one enemy target afflicted with \"Proof of Debt,\" dealing Fire DMG equal to 150% of Topaz's ATK.\nWhen enemies afflicted with \"Proof of Debt\" receive an ally's Follow-Up ATKs, Numby's action is Advanced Forward by 50%. The action Advance Forward effect cannot be triggered during Numby's own turn.\nWhen Topaz is downed, Numby disappears."
+      },
+      {
+        "id": "skill-technique-explicit-subsidy",
+        "label": "Technique: Explicit Subsidy",
+        "kind": "skill",
+        "does": [],
+        "gameText": "Summons Numby when Topaz enters the overworld. Numby will automatically search for Basic Treasures and Trotters within a set radius.\nUsing her Technique will regenerate 60 Energy for Topaz after Numby's first attack in the next battle.\nIf Topaz is still in the team after using her Technique and defeating overworld enemies, a small bonus amount of credits will be added to the earned credits. A maximum of 10000 bonus credits can be received per calendar day.\nAfter using her Technique and defeating enemies in Simulated Universe or Divergent Universe, additionally receive a small amount of Cosmic Fragments with a small chance to obtain 1 random Curio."
+      },
+      {
+        "id": "trace-overdraft",
+        "label": "Trace: Overdraft",
+        "kind": "trace",
+        "does": [],
+        "gameText": "When Topaz uses Basic ATK to deal DMG, it is considered as a Follow-Up ATK."
+      },
+      {
+        "id": "trace-financial-turmoil",
+        "label": "Trace: Financial Turmoil",
+        "kind": "trace",
+        "does": [],
+        "gameText": "Increases Topaz & Numby's DMG dealt to enemy targets with Fire Weakness by 15%."
+      },
+      {
+        "id": "trace-stonks-market",
+        "label": "Trace: Stonks Market",
+        "kind": "trace",
+        "does": [],
+        "gameText": "After Numby uses an attack while in the Windfall Bonanza! state, Topaz additionally regenerates 10 Energy."
+      },
+      {
+        "id": "eidolon-1",
+        "label": "Eidolon 1: Future Market",
+        "kind": "eidolon",
+        "unlock": {
+          "dupes": 1
+        },
+        "does": [],
+        "gameText": "When enemies afflicted with \"Proof of Debt\" receive Follow-Up ATKs, they will enter the \"Debtor\" state. This can take effect only once within a single attack.\nThe \"Debtor\" state increases the CRIT DMG of Follow-Up ATKs inflicted on the enemy target by 25%, stacking up to 2 time(s). When \"Proof of Debt\" is removed, the \"Debtor\" state is also removed."
+      },
+      {
+        "id": "eidolon-2",
+        "label": "Eidolon 2: Bona Fide Acquisition",
+        "kind": "eidolon",
+        "unlock": {
+          "dupes": 2
+        },
+        "does": [],
+        "gameText": "After Numby takes action and launches an attack, Topaz regenerates 5 Energy."
+      },
+      {
+        "id": "eidolon-3",
+        "label": "Eidolon 3: Seize the Big and Free the Small",
+        "kind": "eidolon",
+        "unlock": {
+          "dupes": 3
+        },
+        "does": [],
+        "gameText": "Skill Lv. +2, up to a maximum of Lv. 15.\nBasic ATK Lv. +1, up to a maximum of Lv. 10."
+      },
+      {
+        "id": "eidolon-4",
+        "label": "Eidolon 4: Agile Operation",
+        "kind": "eidolon",
+        "unlock": {
+          "dupes": 4
+        },
+        "does": [],
+        "gameText": "After Numby's turn begins, Topaz's action advances by 20%."
+      },
+      {
+        "id": "eidolon-5",
+        "label": "Eidolon 5: Inflationary Demand",
+        "kind": "eidolon",
+        "unlock": {
+          "dupes": 5
+        },
+        "does": [],
+        "gameText": "Ultimate Lv. +2, up to a maximum of Lv. 15.\nTalent Lv. +2, up to a maximum of Lv. 15."
+      },
+      {
+        "id": "eidolon-6",
+        "label": "Eidolon 6: Incentive Mechanism",
+        "kind": "eidolon",
+        "unlock": {
+          "dupes": 6
+        },
+        "does": [],
+        "gameText": "Numby's attack count during the \"Windfall Bonanza!\" state increases by 1, and its Fire RES PEN increases by 10% when it attacks."
+      }
+    ]
+  },
+  {
+    "characterId": "1218",
+    "source": "nanoka.cc",
+    "version": "4.6",
+    "skills": [
+      {
+        "id": "skill-basic-atk-heart-afire",
+        "label": "Basic ATK: Heart Afire (Lv. 6)",
+        "kind": "skill",
+        "does": [],
+        "gameText": "Deals Fire DMG equal to 100% of Jiaoqiu's ATK to one designated enemy target."
+      },
+      {
+        "id": "skill-skill-scorch-onslaught",
+        "label": "Skill: Scorch Onslaught (Lv. 10)",
+        "kind": "skill",
+        "does": [],
+        "gameText": "Deals Fire DMG equal to 150% of Jiaoqiu's ATK to one designated enemy target and Fire DMG equal to 90% of Jiaoqiu's ATK to adjacent targets, with a 100% base chance to inflict 1 stack of \"Ashen Roast\" on the primary target."
+      },
+      {
+        "id": "skill-ultimate-pyrograph-arcanum",
+        "label": "Ultimate: Pyrograph Arcanum (Lv. 10)",
+        "kind": "skill",
+        "does": [],
+        "gameText": "Sets the number of \"Ashen Roast\" stacks on enemy targets to the highest number of \"Ashen Roast\" stacks present on the battlefield. Then, activates a Zone and deals Fire DMG equal to 100% of Jiaoqiu's ATK to all enemies.\nWhile inside the Zone, enemy targets receive 15.0% increased Ultimate DMG, with a 60% base chance of being inflicted with 1 stack of Ashen Roast when taking action. While the Zone exists, this effect can trigger up to 6 time(s). And for each enemy target, it can only trigger once per turn. This trigger count resets every time Jiaoqiu uses Ultimate.\nThe Zone lasts for 3 turn(s), and its duration decreases by 1 at the start of this unit's every turn. If Jiaoqiu gets knocked down, the Zone will also be dispelled."
+      },
+      {
+        "id": "skill-talent-quartet-finesse-octave-finery",
+        "label": "Talent: Quartet Finesse, Octave Finery (Lv. 10)",
+        "kind": "skill",
+        "does": [],
+        "gameText": "When Jiaoqiu hits an enemy with Basic ATK, Skill or Ultimate, there is a 100% base chance to inflict 1 stack of Ashen Roast on them. At 1 stack, increases DMG received by the enemy by 15.0%. Then, each subsequent stack increases this by 5.0%.\nAshen Roast is capped at 5 stack(s) and lasts for 2 turn(s).\nWhen an enemy target is afflicted with Ashen Roast, they are also considered as being Burned at the same time, taking Fire DoT equal to 180% of Jiaoqiu's ATK at the start of each turn."
+      },
+      {
+        "id": "skill-technique-fiery-queller",
+        "label": "Technique: Fiery Queller",
+        "kind": "skill",
+        "does": [],
+        "gameText": "After using Technique, creates a Special Dimension that lasts for 15 second(s). After entering combat with enemies in this Special Dimension, deals Fire DMG equal to 100% of Jiaoqiu's ATK to all enemies, with a 100% base chance of applying 1 \"Ashen Roast\" stack. Only 1 dimension created by allies can exist at the same time."
+      },
+      {
+        "id": "trace-pyre-cleanse",
+        "label": "Trace: Pyre Cleanse",
+        "kind": "trace",
+        "does": [],
+        "gameText": "When battle starts, immediately regenerates 15 Energy."
+      },
+      {
+        "id": "trace-hearth-kindle",
+        "label": "Trace: Hearth Kindle",
+        "kind": "trace",
+        "does": [],
+        "gameText": "For every 15% of Jiaoqiu's Effect Hit Rate that exceeds 80%, additionally increases ATK by 60%, up to 240%."
+      },
+      {
+        "id": "trace-seared-scent",
+        "label": "Trace: Seared Scent",
+        "kind": "trace",
+        "does": [],
+        "gameText": "While the Zone exists, enemies entering combat will be inflicted with Ashen Roast. The number of stacks applied will match the highest number of \"Ashen Roast\" stacks possessed by any unit while the Zone is active, with a minimum of 1 stack(s)."
+      },
+      {
+        "id": "eidolon-1",
+        "label": "Eidolon 1: Pentapathic Transference",
+        "kind": "eidolon",
+        "unlock": {
+          "dupes": 1
+        },
+        "does": [],
+        "gameText": "Allies deal 40% increased DMG to enemy targets afflicted with Ashen Roast. Whenever inflicting Ashen Roast on an enemy target via triggering the Talent's effect, additionally increases the number of \"Ashen Roast\" stacks applied this time by 1."
+      },
+      {
+        "id": "eidolon-2",
+        "label": "Eidolon 2: From Savor Comes Suffer",
+        "kind": "eidolon",
+        "unlock": {
+          "dupes": 2
+        },
+        "does": [],
+        "gameText": "When an enemy target is afflicted with Ashen Roast, increases the multiplier for the Fire DoT dealt by Ashen Roast to this target by 300%."
+      },
+      {
+        "id": "eidolon-3",
+        "label": "Eidolon 3: Flavored Euphony Reigns Supreme",
+        "kind": "eidolon",
+        "unlock": {
+          "dupes": 3
+        },
+        "does": [],
+        "gameText": "Skill Lv. +2, up to a maximum of Lv. 15.\nBasic ATK Lv. +1, up to a maximum of Lv. 10."
+      },
+      {
+        "id": "eidolon-4",
+        "label": "Eidolon 4: Leisure In, Luster Out",
+        "kind": "eidolon",
+        "unlock": {
+          "dupes": 4
+        },
+        "does": [],
+        "gameText": "When the Zone exists, reduces enemy target's ATK by 15%."
+      },
+      {
+        "id": "eidolon-5",
+        "label": "Eidolon 5: Duel in Dawn, Dash in Dusk",
+        "kind": "eidolon",
+        "unlock": {
+          "dupes": 5
+        },
+        "does": [],
+        "gameText": "Ultimate Lv. +2, up to a maximum of Lv. 15.\nTalent Lv. +2, up to a maximum of Lv. 15."
+      },
+      {
+        "id": "eidolon-6",
+        "label": "Eidolon 6: Nonamorphic Pyrobind",
+        "kind": "eidolon",
+        "unlock": {
+          "dupes": 6
+        },
+        "does": [],
+        "gameText": "When an enemy target gets defeated, their accumulated \"Ashen Roast\" stacks will transfer to the enemy with the lowest number of \"Ashen Roast\" stacks on the battlefield. The maximum stack limit of Ashen Roast increases to 9, and each \"Ashen Roast\" stack reduces the target's All-Type RES by 3%."
+      }
+    ]
+  },
+  {
+    "characterId": "1220",
+    "source": "nanoka.cc",
+    "version": "4.6",
+    "skills": [
+      {
+        "id": "skill-basic-atk-boltsunder",
+        "label": "Basic ATK: Boltsunder (Lv. 6)",
+        "kind": "skill",
+        "does": [],
+        "gameText": "Deals Wind DMG equal to 100% of Feixiao's ATK to one designated enemy target."
+      },
+      {
+        "id": "skill-skill-waraxe",
+        "label": "Skill: Waraxe (Lv. 10)",
+        "kind": "skill",
+        "does": [],
+        "gameText": "Deals Wind DMG equal to 200% of Feixiao's ATK to one designated enemy target. Then, immediately launches 1 extra instance of Talent's Follow-Up ATK against the target."
+      },
+      {
+        "id": "skill-ultimate-terrasplit",
+        "label": "Ultimate: Terrasplit (Lv. 10)",
+        "kind": "skill",
+        "does": [],
+        "gameText": "Deals Wind DMG to one designated enemy target, up to 700% of Feixiao's ATK. During this time, can ignore Weakness Type to reduce the target's Toughness. When the target is not Weakness Broken, Feixiao's Weakness Break Efficiency increases by 100%.\nDuring the attack, Feixiao first launches \"Boltsunder Blitz\" or \"Waraxe Skyward\" on the target, for a total of 6 time(s). At the end, deals Wind DMG equal to 160% of Feixiao's ATK to the target."
+      },
+      {
+        "id": "skill-talent-thunderhunt",
+        "label": "Talent: Thunderhunt (Lv. 10)",
+        "kind": "skill",
+        "does": [],
+        "gameText": "Can activate Ultimate when \"Flying Aureus\" reaches 6 points, accumulating up to 12 points. Feixiao gains 1 point of \"Flying Aureus\" for every 2 attacks by ally targets. Feixiao's Ultimate attacks do not count towards this number.\nAfter Feixiao's teammates attack an Enemy target, Feixiao immediately launches Follow-Up ATK against the primary target, dealing Wind DMG equal to 110% of Feixiao's ATK. If there is no primary target available to attack, Feixiao attacks a single random enemy instead. This effect can only trigger once per turn and the trigger count resets at the start of Feixiao's turn. When using this attack, increases DMG dealt by this unit by 60%, lasting for 2 turn(s)."
+      },
+      {
+        "id": "skill-technique-stormborn",
+        "label": "Technique: Stormborn",
+        "kind": "skill",
+        "does": [],
+        "gameText": "After using Technique, enters the \"Onrush\" state, lasting for 20 seconds. While in \"Onrush,\" pulls in enemies within a certain range, and increases this unit's movement speed by 50%. After entering battle, gains 1 point(s) of \"Flying Aureus.\"\nWhile in \"Onrush,\" actively attacking will start battle with all pulled enemies. After entering battle, deals Wind DMG equal to 200% of Feixiao's ATK to all enemies at the start of each wave. This DMG is guaranteed to CRIT. If more than 1 enemy is pulled in, increases the multiplier of this DMG by 100% for each additional enemy pulled in, up to a maximum of 1000%."
+      },
+      {
+        "id": "skill-ultimate-boltsunder-blitz",
+        "label": "Ultimate: Boltsunder Blitz (Lv. 10)",
+        "kind": "skill",
+        "does": [],
+        "gameText": "Deals Wind DMG equal to 60% of Feixiao's ATK to the chosen target. If the target is Weakness Broken, the DMG multiplier increases by 30%."
+      },
+      {
+        "id": "skill-ultimate-waraxe-skyward",
+        "label": "Ultimate: Waraxe Skyward (Lv. 10)",
+        "kind": "skill",
+        "does": [],
+        "gameText": "Deals Wind DMG equal to 60% of Feixiao's ATK to the chosen target. If the target is not Weakness Broken, the DMG multiplier increases by 30%."
+      },
+      {
+        "id": "trace-heavenpath",
+        "label": "Trace: Heavenpath",
+        "kind": "trace",
+        "does": [],
+        "gameText": "When the battle starts, gains 3 point(s) of \"Flying Aureus.\"\nAt the start of a turn, if no Follow-Up ATK was launched via Talent in the previous turn, then this counts as 1 toward the number of attacks required to gain \"Flying Aureus.\""
+      },
+      {
+        "id": "trace-formshift",
+        "label": "Trace: Formshift",
+        "kind": "trace",
+        "does": [],
+        "gameText": "When using Ultimate to deal DMG to an enemy target, it is considered as a Follow-Up ATK. Follow-Up ATKs' CRIT DMG increases by 36%."
+      },
+      {
+        "id": "trace-boltcatch",
+        "label": "Trace: Boltcatch",
+        "kind": "trace",
+        "does": [],
+        "gameText": "When using Skill, increases ATK by 48%, lasting for 3 turn(s)."
+      },
+      {
+        "id": "eidolon-1",
+        "label": "Eidolon 1: Skyward I Quell",
+        "kind": "eidolon",
+        "unlock": {
+          "dupes": 1
+        },
+        "does": [],
+        "gameText": "After launching \"Boltsunder Blitz\" or \"Waraxe Skyward,\" additionally increases the Ultimate DMG dealt by Feixiao by an amount equal to 10% of the original DMG, stacking up to 5 time(s) and lasting until the end of the Ultimate action."
+      },
+      {
+        "id": "eidolon-2",
+        "label": "Eidolon 2: Moonward I Wish",
+        "kind": "eidolon",
+        "unlock": {
+          "dupes": 2
+        },
+        "does": [],
+        "gameText": "In the Talent's effect, for every 1 instance of Follow-Up ATK launched by ally targets, Feixiao gains 1 point of \"Flying Aureus.\" This effect can trigger up to 6 time(s) per turn."
+      },
+      {
+        "id": "eidolon-3",
+        "label": "Eidolon 3: Starward I Bode",
+        "kind": "eidolon",
+        "unlock": {
+          "dupes": 3
+        },
+        "does": [],
+        "gameText": "Ultimate Lv. +2, up to a maximum of Lv. 15.\nBasic ATK Lv. +1, up to a maximum of Lv. 10."
+      },
+      {
+        "id": "eidolon-4",
+        "label": "Eidolon 4: Stormward I Hear",
+        "kind": "eidolon",
+        "unlock": {
+          "dupes": 4
+        },
+        "does": [],
+        "gameText": "The Toughness Reduction from the Talent's Follow-Up ATK increases by 100% and, when launched, increases this unit's SPD by 8%, lasting for 2 turn(s)."
+      },
+      {
+        "id": "eidolon-5",
+        "label": "Eidolon 5: Heavenward I Leap",
+        "kind": "eidolon",
+        "unlock": {
+          "dupes": 5
+        },
+        "does": [],
+        "gameText": "Skill Lv. +2, up to a maximum of Lv. 15.\nTalent Lv. +2, up to a maximum of Lv. 15."
+      },
+      {
+        "id": "eidolon-6",
+        "label": "Eidolon 6: Homeward I Near",
+        "kind": "eidolon",
+        "unlock": {
+          "dupes": 6
+        },
+        "does": [],
+        "gameText": "Increases the All-Type RES PEN of Ultimate DMG dealt by Feixiao by 20%. Talent's Follow-Up ATK DMG is considered as Ultimate DMG at the same time, and its DMG multiplier increases by 140%."
+      }
+    ]
+  },
+  {
+    "characterId": "1222",
+    "source": "nanoka.cc",
+    "version": "4.6",
+    "skills": [
+      {
+        "id": "skill-basic-atk-votive-incense",
+        "label": "Basic ATK: Votive Incense (Lv. 6)",
+        "kind": "skill",
+        "does": [],
+        "gameText": "Deals Fire DMG equal to 100% of Lingsha's ATK to one designated enemy target."
+      },
+      {
+        "id": "skill-skill-smoke-and-splendor",
+        "label": "Skill: Smoke and Splendor (Lv. 10)",
+        "kind": "skill",
+        "does": [],
+        "gameText": "Deals Fire DMG equal to 80% of Lingsha's ATK to all enemies and at the same time, restores HP equal to 14.0% of Lingsha's ATK plus 420 for all allies. Fuyuan's action advances by 20%."
+      },
+      {
+        "id": "skill-ultimate-dripping-mistscape",
+        "label": "Ultimate: Dripping Mistscape (Lv. 10)",
+        "kind": "skill",
+        "does": [],
+        "gameText": "Inflicts \"Befog\" on all enemies. While in \"Befog,\" targets receive 25% increased Break DMG, lasting for 2 turn(s).\nDeals Fire DMG equal to 150% of Lingsha's ATK to all enemies, and at the same time restores HP equal to 12.0% of Lingsha's ATK plus 360 for all allies. Fuyuan's action advances by 100%."
+      },
+      {
+        "id": "skill-talent-mistdance-manifest",
+        "label": "Talent: Mistdance Manifest (Lv. 10)",
+        "kind": "skill",
+        "does": [],
+        "gameText": "When using Skill, summons \"Fuyuan,\" with an initial SPD of 90 and an initial action count of 3.\nWhen taking action, \"Fuyuan\" launches Follow-Up ATK, dealing Fire DMG equal to 75% of Lingsha's ATK to all enemies. Additionally deals Fire DMG equal to 75% of Lingsha's ATK to one random enemy, and this DMG prioritizes targets that have both Toughness greater than 0 and Fire Weakness. Dispels 1 debuff(s) from all allies and restores HP equal to 12.0% of Lingsha's ATK plus 360.\n\"Fuyuan's\" action count can accumulate up to 5. When the action count reaches 0 or when Lingsha is knocked down, \"Fuyuan\" disappears.\nWhile \"Fuyuan\" is on the field, using Skill can increase \"Fuyuan's\" action count by 3."
+      },
+      {
+        "id": "skill-technique-wisps-of-aurora",
+        "label": "Technique: Wisps of Aurora",
+        "kind": "skill",
+        "does": [],
+        "gameText": "After using Technique, immediately summons Fuyuan at the start of the next battle and inflicts \"Befog\" on all enemies, lasting for 2 turn(s)."
+      },
+      {
+        "id": "trace-vermilion-waft",
+        "label": "Trace: Vermilion Waft",
+        "kind": "trace",
+        "does": [],
+        "gameText": "Increases this unit's ATK or Outgoing Healing by an amount equal to 25%/10% of Break Effect, up to a maximum increase of 50%/20% respectively."
+      },
+      {
+        "id": "trace-sylvan-smoke",
+        "label": "Trace: Sylvan Smoke",
+        "kind": "trace",
+        "does": [],
+        "gameText": "When using Basic ATK, additionally regenerates 10 Energy."
+      },
+      {
+        "id": "trace-ember-s-echo",
+        "label": "Trace: Ember's Echo",
+        "kind": "trace",
+        "does": [],
+        "gameText": "While \"Fuyuan\" is on the field and any ally character takes DMG or consumes HP, if a character in the team has their current HP percentage lower than or equal to 60%, \"Fuyuan\" will immediately launch the Talent's Follow-Up ATK against enemies. This does not consume Fuyuan's action count. This effect can trigger again after 2 turn(s)."
+      },
+      {
+        "id": "eidolon-1",
+        "label": "Eidolon 1: Bloom on Vileward Bouquet",
+        "kind": "eidolon",
+        "unlock": {
+          "dupes": 1
+        },
+        "does": [],
+        "gameText": "Lingsha's Weakness Break Efficiency increases by 50%. When an enemy unit's Weakness is Broken, reduces their DEF by 20%."
+      },
+      {
+        "id": "eidolon-2",
+        "label": "Eidolon 2: Leisure in Carmine Smokeveil",
+        "kind": "eidolon",
+        "unlock": {
+          "dupes": 2
+        },
+        "does": [],
+        "gameText": "When using Ultimate, increases all allies' Break Effect by 40%, lasting for 3 turn(s)."
+      },
+      {
+        "id": "eidolon-3",
+        "label": "Eidolon 3: Shine of Floral Wick",
+        "kind": "eidolon",
+        "unlock": {
+          "dupes": 3
+        },
+        "does": [],
+        "gameText": "Ultimate Lv. +2, up to a maximum of Lv. 15.\nTalent Lv. +2, up to a maximum of Lv. 15."
+      },
+      {
+        "id": "eidolon-4",
+        "label": "Eidolon 4: Redolence from Canopied Banquet",
+        "kind": "eidolon",
+        "unlock": {
+          "dupes": 4
+        },
+        "does": [],
+        "gameText": "When Fuyuan takes action, restores HP equal to 40% of Lingsha's ATK for the ally target whose current HP is the lowest."
+      },
+      {
+        "id": "eidolon-5",
+        "label": "Eidolon 5: Poise Atop Twists and Turns",
+        "kind": "eidolon",
+        "unlock": {
+          "dupes": 5
+        },
+        "does": [],
+        "gameText": "Skill Lv. +2, up to a maximum of Lv. 15.\nBasic ATK Lv. +1, up to a maximum of Lv. 10."
+      },
+      {
+        "id": "eidolon-6",
+        "label": "Eidolon 6: Arcadia Under Deep Seclusion",
+        "kind": "eidolon",
+        "unlock": {
+          "dupes": 6
+        },
+        "does": [],
+        "gameText": "While \"Fuyuan\" is on the field, reduces all enemies' All-Type RES by 20%. When \"Fuyuan\" attacks, additionally deals 4 instance(s) of DMG, with each instance dealing Fire DMG equal to 50% of Lingsha's ATK and 5 Toughness Reduction to one random enemy. This prioritizes targets with both Toughness greater than 0 and Fire Weakness."
+      }
+    ]
+  },
+  {
+    "characterId": "1303",
+    "source": "nanoka.cc",
+    "version": "4.6",
+    "skills": [
+      {
+        "id": "skill-basic-atk-threading-fragrance",
+        "label": "Basic ATK: Threading Fragrance (Lv. 6)",
+        "kind": "skill",
+        "does": [],
+        "gameText": "Deals Ice DMG equal to 100% of Ruan Mei's ATK to one designated enemy target."
+      },
+      {
+        "id": "skill-skill-string-sings-slow-swirls",
+        "label": "Skill: String Sings Slow Swirls (Lv. 10)",
+        "kind": "skill",
+        "does": [],
+        "gameText": "After using her Skill, Ruan Mei gains Overtone, lasting for 3 turn(s). This duration decreases by 1 at the start of Ruan Mei's every turn. When Ruan Mei has Overtone, all allies' DMG increases by 32.0% and Weakness Break Efficiency increases by 50%."
+      },
+      {
+        "id": "skill-ultimate-petals-to-stream-repose-in-dream",
+        "label": "Ultimate: Petals to Stream, Repose in Dream (Lv. 10)",
+        "kind": "skill",
+        "does": [],
+        "gameText": "Ruan Mei deploys a Zone that lasts for 2 turns. The Zone's duration decreases by 1 at the start of her turn.\nWhile inside the Zone, all allies' All-Type RES PEN increases by 25.0% and their attacks apply Thanatoplum Rebloom to the enemies hit.\nWhen these enemies attempt to recover from Weakness Break, Thanatoplum Rebloom is triggered, extending the duration of their Weakness Break, delaying their action by an amount equal to 20% of Ruan Mei's Break Effect plus 10%, and dealing Break DMG equal to 50% of Ruan Mei's Ice Break DMG.\nEnemy targets cannot have Thanatoplum Rebloom re-applied to them until they recover from Weakness Break."
+      },
+      {
+        "id": "skill-talent-somatotypical-helix",
+        "label": "Talent: Somatotypical Helix (Lv. 10)",
+        "kind": "skill",
+        "does": [],
+        "gameText": "Increases SPD by 10.0% for all teammates (i.e., excluding this unit). When allies Break an enemy target's Weakness, Ruan Mei deals to this enemy target Break DMG equal to 120.0% of her Ice Break DMG."
+      },
+      {
+        "id": "skill-technique-silken-serenade",
+        "label": "Technique: Silken Serenade",
+        "kind": "skill",
+        "does": [],
+        "gameText": "After using the Technique, gains Silken Serenade. At the start of the next battle, automatically triggers the Skill for 1 time(s) without consuming Skill Points.\nIn Simulated Universe or Divergent Universe, when Ruan Mei has Silken Serenade, the team actively attacking enemies will always be regarded as attacking their Weakness to enter combat, and this attack can reduce all enemies' Toughness regardless of Weakness types. When breaking Weakness, triggers Weakness Break Effect corresponding to the attacker's Type. For every Blessing in possession (up to a max of 20 Blessings will be taken into account), additionally increases the Toughness Reduction of this attack by 100%. After breaking an enemy target's Weakness, additionally deals to the enemy target Break DMG equal to 100% of Ruan Mei's Ice Break DMG."
+      },
+      {
+        "id": "trace-inert-respiration",
+        "label": "Trace: Inert Respiration",
+        "kind": "trace",
+        "does": [],
+        "gameText": "Increases Break Effect by 20% for all allies."
+      },
+      {
+        "id": "trace-days-wane-thoughts-wax",
+        "label": "Trace: Days Wane, Thoughts Wax",
+        "kind": "trace",
+        "does": [],
+        "gameText": "Ruan Mei regenerates 5 Energy at the start of her turn."
+      },
+      {
+        "id": "trace-candle-lights-on-still-waters",
+        "label": "Trace: Candle Lights on Still Waters",
+        "kind": "trace",
+        "does": [],
+        "gameText": "In battle, for every 10% of Ruan Mei's Break Effect that exceeds 120%, her Skill additionally increases allies' DMG by 6%, up to a maximum of 36%."
+      },
+      {
+        "id": "eidolon-1",
+        "label": "Eidolon 1: Neuronic Embroidery",
+        "kind": "eidolon",
+        "unlock": {
+          "dupes": 1
+        },
+        "does": [],
+        "gameText": "While the Ultimate's Zone is deployed, the DMG dealt by all allies ignores 20% of the target's DEF."
+      },
+      {
+        "id": "eidolon-2",
+        "label": "Eidolon 2: Reedside Promenade",
+        "kind": "eidolon",
+        "unlock": {
+          "dupes": 2
+        },
+        "does": [],
+        "gameText": "While Ruan Mei is on the field, all allies increase their ATK by 40% when dealing DMG to enemies that are Weakness Broken."
+      },
+      {
+        "id": "eidolon-3",
+        "label": "Eidolon 3: Viridescent Pirouette",
+        "kind": "eidolon",
+        "unlock": {
+          "dupes": 3
+        },
+        "does": [],
+        "gameText": "Ultimate Lv. +2, up to a maximum of Lv. 15.\nTalent Lv. +2, up to a maximum of Lv. 15."
+      },
+      {
+        "id": "eidolon-4",
+        "label": "Eidolon 4: Chatoyant Éclat",
+        "kind": "eidolon",
+        "unlock": {
+          "dupes": 4
+        },
+        "does": [],
+        "gameText": "When an enemy target's Weakness is Broken, Ruan Mei's Break Effect increases by 100% for 3 turn(s)."
+      },
+      {
+        "id": "eidolon-5",
+        "label": "Eidolon 5: Languid Barrette",
+        "kind": "eidolon",
+        "unlock": {
+          "dupes": 5
+        },
+        "does": [],
+        "gameText": "Skill Lv. +2, up to a maximum of Lv. 15.\nBasic ATK Lv. +1, up to a maximum of Lv. 10."
+      },
+      {
+        "id": "eidolon-6",
+        "label": "Eidolon 6: Sash Cascade",
+        "kind": "eidolon",
+        "unlock": {
+          "dupes": 6
+        },
+        "does": [],
+        "gameText": "Extends the duration of the Ultimate's Zone by 1 turn(s). The Talent's Break DMG multiplier additionally increases by 200%."
+      }
+    ]
+  },
+  {
+    "characterId": "1304",
+    "source": "nanoka.cc",
+    "version": "4.6",
+    "skills": [
+      {
+        "id": "skill-basic-atk-straight-bet",
+        "label": "Basic ATK: Straight Bet (Lv. 6)",
+        "kind": "skill",
+        "does": [],
+        "gameText": "Deals Imaginary DMG equal to 100% of Aventurine's DEF to one designated enemy target."
+      },
+      {
+        "id": "skill-skill-cornerstone-deluxe",
+        "label": "Skill: Cornerstone Deluxe (Lv. 10)",
+        "kind": "skill",
+        "does": [],
+        "gameText": "Provides all allies with a Fortified Wager shield that can block DMG equal to 24.0% of Aventurine's DEF plus 320, lasting for 3 turn(s). When Fortified Wager is gained repeatedly, the Shield Effect can stack, up to 200% of the current Shield Effect provided by the Skill."
+      },
+      {
+        "id": "skill-ultimate-roulette-shark",
+        "label": "Ultimate: Roulette Shark (Lv. 10)",
+        "kind": "skill",
+        "does": [],
+        "gameText": "Randomly gains 1 to 7 points of \"Blind Bet.\" Then, inflicts \"Unnerved\" on one designated enemy target for 3 turn(s) and deals Imaginary DMG equal to 270% of Aventurine's DEF to that enemy target. When an ally hits an \"Unnerved\" enemy target, the CRIT DMG dealt increases by 15.0%."
+      },
+      {
+        "id": "skill-talent-shot-loaded-right",
+        "label": "Talent: Shot Loaded Right (Lv. 10)",
+        "kind": "skill",
+        "does": [],
+        "gameText": "For any single ally with \"Fortified Wager,\" their Effect RES increases by 50.0%, and when they get attacked, Aventurine gains 1 point of \"Blind Bet.\" When Aventurine has \"Fortified Wager,\" he can resist Crowd Control debuffs. This effect can trigger again after 2 turn(s). Aventurine additionally gains 1 point(s) of \"Blind Bet\" after getting attacked. Upon reaching 7 points of \"Blind Bet,\" Aventurine consumes the 7 points to launch a 7-hit Follow-Up ATK, with each hit dealing Imaginary DMG equal to 25% of Aventurine's DEF to one random enemy. \"Blind Bet\" is capped at 10 points."
+      },
+      {
+        "id": "skill-technique-the-red-or-the-black",
+        "label": "Technique: The Red or the Black",
+        "kind": "skill",
+        "does": [],
+        "gameText": "After using the Technique, 1 of the following effects will be granted:\nThere is a chance for DEF to increase by 24%.\nThere is a high chance for DEF to increase by 36%.\nThere is a small chance for DEF to increase by 60%.\n\nWhen this Technique is used repeatedly, the acquired effect with the highest buff value is retained.\nWhen the next battle starts, increases all allies' DEF by the corresponding value, lasting for 3 turn(s)."
+      },
+      {
+        "id": "trace-leverage",
+        "label": "Trace: Leverage",
+        "kind": "trace",
+        "does": [],
+        "gameText": "For every 100 of Aventurine's DEF that exceeds 1600, increases his own CRIT Rate by 2%, up to a maximum increase of 48%."
+      },
+      {
+        "id": "trace-hot-hand",
+        "label": "Trace: Hot Hand",
+        "kind": "trace",
+        "does": [],
+        "gameText": "When battle starts, grants all allies a Fortified Wager shield, whose Shield Effect is equal to 100% of the one provided by the Skill, lasting for 3 turn(s)."
+      },
+      {
+        "id": "trace-bingo",
+        "label": "Trace: Bingo!",
+        "kind": "trace",
+        "does": [],
+        "gameText": "After a teammate with \"Fortified Wager\" launches Follow-Up ATK, Aventurine accumulates 1 \"Blind Bet\" point. This effect can trigger up to 3 time(s). Its trigger count resets at the start of Aventurine's turn. After Aventurine launches his Talent's Follow-Up ATK, provides all ally targets with a \"Fortified Wager\" that can offset DMG equal to 7.2% of Aventurine's DEF plus 96, and additionally grants a \"Fortified Wager\" that can block DMG equal to 7.2% of Aventurine's DEF plus 96 to the ally with the lowest Shield Effect, lasting for 3 turns."
+      },
+      {
+        "id": "eidolon-1",
+        "label": "Eidolon 1: Prisoner's Dilemma",
+        "kind": "eidolon",
+        "unlock": {
+          "dupes": 1
+        },
+        "does": [],
+        "gameText": "Increases CRIT DMG by 20% for ally targets with Fortified Wager. After using the Ultimate, provides all allies with a Fortified Wager shield, whose Shield Effect is equal to 100% of the one provided by the Skill, lasting for 3 turn(s)."
+      },
+      {
+        "id": "eidolon-2",
+        "label": "Eidolon 2: Bounded Rationality",
+        "kind": "eidolon",
+        "unlock": {
+          "dupes": 2
+        },
+        "does": [],
+        "gameText": "When using the Basic ATK, reduces the target's All-Type RES by 12% for 3 turn(s)."
+      },
+      {
+        "id": "eidolon-3",
+        "label": "Eidolon 3: Droprate Maxing",
+        "kind": "eidolon",
+        "unlock": {
+          "dupes": 3
+        },
+        "does": [],
+        "gameText": "Ultimate Lv. +2, up to a maximum of Lv. 15.\nBasic ATK Lv. +1, up to a maximum of Lv. 10."
+      },
+      {
+        "id": "eidolon-4",
+        "label": "Eidolon 4: Unexpected Hanging Paradox",
+        "kind": "eidolon",
+        "unlock": {
+          "dupes": 4
+        },
+        "does": [],
+        "gameText": "When triggering his Talent's Follow-Up ATK, first increases Aventurine's DEF by 40% for 2 turn(s), and additionally increases the Hits Per Action for his talent's Follow-Up ATK by 3."
+      },
+      {
+        "id": "eidolon-5",
+        "label": "Eidolon 5: Ambiguity Aversion",
+        "kind": "eidolon",
+        "unlock": {
+          "dupes": 5
+        },
+        "does": [],
+        "gameText": "Skill Lv. +2, up to a maximum of Lv. 15.\nTalent Lv. +2, up to a maximum of Lv. 15."
+      },
+      {
+        "id": "eidolon-6",
+        "label": "Eidolon 6: Stag Hunt Game",
+        "kind": "eidolon",
+        "unlock": {
+          "dupes": 6
+        },
+        "does": [],
+        "gameText": "For every teammate that holds a Shield, the DMG dealt by Aventurine increases by 50%, up to a maximum of 150%."
+      }
+    ]
+  },
+  {
+    "characterId": "1308",
+    "source": "nanoka.cc",
+    "version": "4.6",
+    "skills": [
+      {
+        "id": "skill-basic-atk-trilateral-wiltcross",
+        "label": "Basic ATK: Trilateral Wiltcross (Lv. 6)",
+        "kind": "skill",
+        "does": [],
+        "gameText": "Deals Lightning DMG equal to 100% of Acheron's ATK to one designated enemy target."
+      },
+      {
+        "id": "skill-skill-octobolt-flash",
+        "label": "Skill: Octobolt Flash (Lv. 10)",
+        "kind": "skill",
+        "does": [],
+        "gameText": "Gains 1 point(s) of \"Slashed Dream.\" Inflicts 1 stack(s) of \"Crimson Knot\" on one designated enemy target, dealing Lightning DMG equal to 160% of Acheron's ATK to this target, as well as Lightning DMG equal to 60% of Acheron's ATK to adjacent targets."
+      },
+      {
+        "id": "skill-ultimate-slashed-dream-cries-in-red",
+        "label": "Ultimate: Slashed Dream Cries in Red (Lv. 10)",
+        "kind": "skill",
+        "does": [],
+        "gameText": "Sequentially unleash \"Rainblade\" 3 times and \"Stygian Resurge\" 1 time, dealing Lightning DMG up to 372% of Acheron's ATK to one designated enemy target, as well as Lightning DMG up to 300% of Acheron's ATK to other targets.\n\"Rainblade\": Deals Lightning DMG equal to 24.0% of Acheron's ATK to one designated enemy target and removes up to 3 stacks of \"Crimson Knot\" from the target. When \"Crimson Knot\" is removed, immediately deals Lightning DMG equal to 15.0% of Acheron's ATK to all enemies. For every stack of \"Crimson Knot\" removed, this DMG Multiplier is additionally increased, up to a maximum of 60.0%.\n\"Stygian Resurge\": Deals Lightning DMG equal to 120% of Acheron's ATK to all enemies and remove all \"Crimson Knots.\"\n\"Crimson Knot\" cannot be applied to enemies during the Ultimate."
+      },
+      {
+        "id": "skill-talent-atop-rainleaf-hangs-oneness",
+        "label": "Talent: Atop Rainleaf Hangs Oneness (Lv. 10)",
+        "kind": "skill",
+        "does": [],
+        "gameText": "When Slashed Dream reaches 9 point(s), the Ultimate can be activated. During the Ultimate, reduces enemies' Toughness regardless of Weakness Types and reduces all enemies' All-Type RES by 20%, lasting until the end of the Ultimate.\nWhen any unit inflicts debuffs on an enemy target while using their ability, Acheron gains 1 point of Slashed Dream and inflicts 1 stack of Crimson Knot on a target. If debuffs are inflicted on multiple targets, then the 1 stack of Crimson Knot will be inflicted on the enemy target with the most Crimson Knot stacks. This effect can only trigger once for every ability use.\nAfter an enemy target exits the field or gets defeated by any unit while Acheron is on the field, their Crimson Knot stacks will be transferred to the enemy target with the most Crimson Knot stacks on the whole field."
+      },
+      {
+        "id": "skill-technique-quadrivalent-ascendance",
+        "label": "Technique: Quadrivalent Ascendance",
+        "kind": "skill",
+        "does": [],
+        "gameText": "Immediately attacks the enemy. At the start of each wave, gains Quadrivalent Ascendance, dealing Lightning DMG equal to 200% of Acheron's ATK to all enemies and reducing Toughness of all enemies irrespective of Weakness Types. When breaking Weaknesses, triggers the Lightning Weakness Break effect.\nQuadrivalent Ascendance: After using the Ultimate, Acheron gains 1 point(s) of Slashed Dream and inflicts 1 stack(s) of Crimson Knot on a single random enemy.\nIf attacking a normal enemy, immediately defeats them without entering combat. When not hitting enemies, no Technique Points are consumed."
+      },
+      {
+        "id": "trace-red-oni",
+        "label": "Trace: Red Oni",
+        "kind": "trace",
+        "does": [],
+        "gameText": "When battle starts, immediately gains 5 point(s) of Slashed Dream and applies 5 stack(s) of Crimson Knot to a random enemy. When Slashed Dream reaches its upper limit, for every point of Slashed Dream that exceeds the limit, gains 1 stack of Quadrivalent Ascendance. Enables Quadrivalent Ascendance to stack up to 3 time(s)."
+      },
+      {
+        "id": "trace-the-abyss",
+        "label": "Trace: The Abyss",
+        "kind": "trace",
+        "does": [],
+        "gameText": "When there are 1 or 2 Nihility characters other than Acheron in the team, the DMG dealt by Acheron's Basic ATK, Skill, and Ultimate increases to 115% or 160% of the original DMG respectively."
+      },
+      {
+        "id": "trace-thunder-core",
+        "label": "Trace: Thunder Core",
+        "kind": "trace",
+        "does": [],
+        "gameText": "When the Ultimate's Rainblade hits enemy targets that have Crimson Knot, the DMG dealt by Acheron increases by 30%, stacking up to 3 time(s) and lasting for 3 turn(s). And when Stygian Resurge triggers, additionally deals DMG for 6 times. Each time deals Lightning DMG equal to 25% of Acheron's ATK to a single random enemy and is considered as Ultimate DMG."
+      },
+      {
+        "id": "eidolon-1",
+        "label": "Eidolon 1: Silenced Sky Spake Sooth",
+        "kind": "eidolon",
+        "unlock": {
+          "dupes": 1
+        },
+        "does": [],
+        "gameText": "When dealing DMG to debuffed enemies, increases CRIT Rate by 18%."
+      },
+      {
+        "id": "eidolon-2",
+        "label": "Eidolon 2: Mute Thunder in Still Tempest",
+        "kind": "eidolon",
+        "unlock": {
+          "dupes": 2
+        },
+        "does": [],
+        "gameText": "The number of Nihility characters required for the Trace \"The Abyss\" to achieve its highest possible effect is reduced by 1. When this unit's turn starts, gains 1 point of Slashed Dream and inflicts 1 stack of Crimson Knot on the enemy with the most Crimson Knot stacks."
+      },
+      {
+        "id": "eidolon-3",
+        "label": "Eidolon 3: Frost Bites in Death",
+        "kind": "eidolon",
+        "unlock": {
+          "dupes": 3
+        },
+        "does": [],
+        "gameText": "Ultimate Lv. +2, up to a maximum of Lv. 15.\nBasic ATK Lv. +1, up to a maximum of Lv. 10."
+      },
+      {
+        "id": "eidolon-4",
+        "label": "Eidolon 4: Shrined Fire for Mirrored Soul",
+        "kind": "eidolon",
+        "unlock": {
+          "dupes": 4
+        },
+        "does": [],
+        "gameText": "When enemy targets enter combat, inflicts them with the Ultimate DMG Vulnerability, increasing the amount of Ultimate DMG they take by 8%."
+      },
+      {
+        "id": "eidolon-5",
+        "label": "Eidolon 5: Strewn Souls on Erased Earths",
+        "kind": "eidolon",
+        "unlock": {
+          "dupes": 5
+        },
+        "does": [],
+        "gameText": "Skill Lv. +2, up to a maximum of Lv. 15.\nTalent Lv. +2, up to a maximum of Lv. 15."
+      },
+      {
+        "id": "eidolon-6",
+        "label": "Eidolon 6: Apocalypse, the Emancipator",
+        "kind": "eidolon",
+        "unlock": {
+          "dupes": 6
+        },
+        "does": [],
+        "gameText": "Increases the All-Type RES PEN for the Ultimate DMG dealt by Acheron by 20%. The DMG dealt by Basic ATK and Skill will also be considered as Ultimate DMG and can Reduce enemy Toughness regardless of Weakness Types. When breaking Weaknesses, triggers the Lightning Weakness Break effect."
+      }
+    ]
+  },
+  {
+    "characterId": "1309",
+    "source": "nanoka.cc",
+    "version": "4.6",
+    "skills": [
+      {
+        "id": "skill-basic-atk-wingflip-white-noise",
+        "label": "Basic ATK: Wingflip White Noise (Lv. 6)",
+        "kind": "skill",
+        "does": [],
+        "gameText": "Deals Physical DMG equal to 100% of Robin's ATK to one designated enemy target."
+      },
+      {
+        "id": "skill-skill-pinion-s-aria",
+        "label": "Skill: Pinion's Aria (Lv. 10)",
+        "kind": "skill",
+        "does": [],
+        "gameText": "Increase DMG dealt by all allies by 50%, lasting for 3 turn(s). This duration decreases by 1 at the start of Robin's every turn."
+      },
+      {
+        "id": "skill-ultimate-vox-harmonique-opus-cosmique",
+        "label": "Ultimate: Vox Harmonique, Opus Cosmique (Lv. 10)",
+        "kind": "skill",
+        "does": [],
+        "gameText": "Robin enters the \"Concerto\" state and makes all teammates (i.e., excluding this unit) immediately take action.\nWhile in the \"Concerto\" state, increases all allies' ATK by 22.8% of Robin's ATK plus 200. Moreover, after every attack by ally targets, Robin deals Physical Additional DMG equal to 120% of her ATK for 1 time, with a fixed CRIT Rate for this damage set at 100% and fixed CRIT DMG set at 150%.\nWhile in the \"Concerto\" state, Robin is immune to Crowd Control debuffs and cannot enter her turn or take action until the \"Concerto\" state ends.\nA \"Concerto\" countdown appears in the Action Order. When the countdown's turn begins, Robin exits the \"Concerto\" state and immediately takes action. The countdown has its own fixed SPD of 90."
+      },
+      {
+        "id": "skill-talent-tonal-resonance",
+        "label": "Talent: Tonal Resonance (Lv. 10)",
+        "kind": "skill",
+        "does": [],
+        "gameText": "Increase all allies' CRIT DMG by 20.0%. Moreover, after allies attack enemy targets, Robin additionally regenerates 2 Energy for herself."
+      },
+      {
+        "id": "skill-technique-overture-of-inebriation",
+        "label": "Technique: Overture of Inebriation",
+        "kind": "skill",
+        "does": [],
+        "gameText": "After using Technique, creates a Special Dimension around the character that lasts for 15 seconds. Enemies within this dimension will not attack Robin and will follow Robin while the dimension is active. After entering battle while the dimension is active, Robin regenerates 5 Energy at the start of each wave. Only 1 Dimension Effect created by allies can exist at the same time."
+      },
+      {
+        "id": "trace-coloratura-cadenza",
+        "label": "Trace: Coloratura Cadenza",
+        "kind": "trace",
+        "does": [],
+        "gameText": "When the battle begins, action advances this character by 25%."
+      },
+      {
+        "id": "trace-impromptu-flourish",
+        "label": "Trace: Impromptu Flourish",
+        "kind": "trace",
+        "does": [],
+        "gameText": "While the \"Concerto\" state is active, the CRIT DMG dealt when all allies launch Follow-Up ATK increases by 25%."
+      },
+      {
+        "id": "trace-sequential-passage",
+        "label": "Trace: Sequential Passage",
+        "kind": "trace",
+        "does": [],
+        "gameText": "When using Skill, additionally regenerates 5 Energy."
+      },
+      {
+        "id": "eidolon-1",
+        "label": "Eidolon 1: Land of Smiles",
+        "kind": "eidolon",
+        "unlock": {
+          "dupes": 1
+        },
+        "does": [],
+        "gameText": "While the \"Concerto\" state is active, all allies' All-Type RES PEN increases by 24%."
+      },
+      {
+        "id": "eidolon-2",
+        "label": "Eidolon 2: Afternoon Tea For Two",
+        "kind": "eidolon",
+        "unlock": {
+          "dupes": 2
+        },
+        "does": [],
+        "gameText": "While the \"Concerto\" state is active, all allies' SPD increases by 16%. The Talent's Energy Regeneration effect additionally increases by 1."
+      },
+      {
+        "id": "eidolon-3",
+        "label": "Eidolon 3: Inverted Tuning",
+        "kind": "eidolon",
+        "unlock": {
+          "dupes": 3
+        },
+        "does": [],
+        "gameText": "Skill Lv. +2, up to a maximum of Lv. 15.\nUltimate Lv. +2, up to a maximum of Lv. 15."
+      },
+      {
+        "id": "eidolon-4",
+        "label": "Eidolon 4: Raindrop Key",
+        "kind": "eidolon",
+        "unlock": {
+          "dupes": 4
+        },
+        "does": [],
+        "gameText": "When using the Ultimate, dispels Crowd Control debuffs from all allies. While Robin is in the \"Concerto\" state, increases the Effect RES of all allies by 50%."
+      },
+      {
+        "id": "eidolon-5",
+        "label": "Eidolon 5: Lonestar's Lament",
+        "kind": "eidolon",
+        "unlock": {
+          "dupes": 5
+        },
+        "does": [],
+        "gameText": "Basic ATK Lv. +1, up to a maximum of Lv. 10.\nTalent Lv. +2, up to a maximum of Lv. 15."
+      },
+      {
+        "id": "eidolon-6",
+        "label": "Eidolon 6: Moonless Midnight",
+        "kind": "eidolon",
+        "unlock": {
+          "dupes": 6
+        },
+        "does": [],
+        "gameText": "While the \"Concerto\" state is active, the CRIT DMG for the Physical Additional DMG caused by the Ultimate increases by 450%. The effect of \"Moonless Midnight\" can trigger up to 8 time(s) and the trigger count resets each time the Ultimate is used."
+      }
+    ]
+  },
+  {
+    "characterId": "1310",
+    "source": "nanoka.cc",
+    "version": "4.6",
+    "skills": [
+      {
+        "id": "skill-basic-atk-order-flare-propulsion",
+        "label": "Basic ATK: Order: Flare Propulsion (Lv. 6)",
+        "kind": "skill",
+        "does": [],
+        "gameText": "Deals Fire DMG equal to 100% of SAM's ATK to one designated enemy.",
+        "replacedAt": {
+          "potential": 1
+        }
+      },
+      {
+        "id": "skill-skill-order-aerial-bombardment",
+        "label": "Skill: Order: Aerial Bombardment (Lv. 10)",
+        "kind": "skill",
+        "does": [],
+        "gameText": "Consumes HP equal to 40% of this unit's Max HP and regenerates a fixed amount of Energy equal to 60% of this unit's Max Energy. Deals Fire DMG equal to 200% of SAM's ATK to one designated enemy. If the current HP is not sufficient, reduces SAM's HP to 1 when using this Skill. Advances this unit's next Action by 25%.",
+        "replacedAt": {
+          "potential": 1
+        }
+      },
+      {
+        "id": "skill-ultimate-fyrefly-type-iv-complete-combustion",
+        "label": "Ultimate: Fyrefly Type-IV: Complete Combustion (Lv. 10)",
+        "kind": "skill",
+        "does": [],
+        "gameText": "Enters the Complete Combustion state, advances this unit's Action by 100%, and gains Enhanced Basic ATK and Enhanced Skill. While in Complete Combustion, increases SPD by 60, and when using the Enhanced Basic ATK or Enhanced Skill, increases this unit's Weakness Break Efficiency by 50% and increases the Break DMG dealt by SAM to the enemy targets by 20.0%, lasting until this current attack ends.\nA countdown timer for the Complete Combustion state appears in the Action Order. When the countdown timer's turn starts, SAM exits the Complete Combustion state. The countdown timer has a fixed SPD of 70.\nSAM cannot use Ultimate while in Complete Combustion.",
+        "replacedAt": {
+          "potential": 1
+        }
+      },
+      {
+        "id": "skill-talent-chrysalid-pyronexus",
+        "label": "Talent: Chrysalid Pyronexus (Lv. 10)",
+        "kind": "skill",
+        "does": [],
+        "gameText": "The lower the HP, the less DMG received. When HP is 20% or lower, the DMG Reduction reaches its maximum effect, reducing up to 40%. During the Complete Combustion, the DMG Reduction remains at its maximum effect, and the Effect RES increases by 30%.\nIf Energy is lower than 50% when the battle starts, regenerates Energy to 50%. Once Energy is regenerated to its maximum, dispels all debuffs on this unit.",
+        "replacedAt": {
+          "potential": 1
+        }
+      },
+      {
+        "id": "skill-technique-order-meteoric-incineration",
+        "label": "Technique: Δ Order: Meteoric Incineration",
+        "kind": "skill",
+        "does": [],
+        "gameText": "Leaps into the air and moves about freely for 5 seconds, which can be ended early by launching a plunging attack. When the duration ends, plunges and immediately attacks all enemies within a set area. At the start of each wave, applies a Fire Weakness to all enemies, lasting for 2 turn(s). Then, deals Fire DMG equal to 200% of SAM's ATK to all enemies.",
+        "replacedAt": {
+          "potential": 1
+        }
+      },
+      {
+        "id": "skill-basic-atk-fyrefly-type-iv-pyrogenic-decimation",
+        "label": "Basic ATK: Fyrefly Type-IV: Pyrogenic Decimation (Lv. 6)",
+        "kind": "skill",
+        "does": [],
+        "gameText": "Restores HP by an amount equal to 20% of this unit's Max HP. Deals Fire DMG equal to 200% of SAM's ATK to one designated enemy.",
+        "replacedAt": {
+          "potential": 1
+        }
+      },
+      {
+        "id": "skill-skill-fyrefly-type-iv-deathstar-overload",
+        "label": "Skill: Fyrefly Type-IV: Deathstar Overload (Lv. 10)",
+        "kind": "skill",
+        "does": [],
+        "gameText": "Restores HP by an amount equal to 25% of this unit's Max HP. Applies Fire Weakness to one designated enemy, lasting for 2 turn(s). Deals Fire DMG equal to (0.2 × Break Effect + 200.0%) of SAM's ATK to this target. At the same time, deals Fire DMG equal to (0.1 × Break Effect + 100.0%) of SAM's ATK to adjacent targets. The Break Effect taken into the calculation is capped at 360%.",
+        "replacedAt": {
+          "potential": 1
+        }
+      },
+      {
+        "id": "trace-module-antilag-outburst",
+        "label": "Trace: Module α: Antilag Outburst",
+        "kind": "trace",
+        "does": [],
+        "gameText": "During the Complete Combustion, attacking enemies that have no Fire Weakness can also reduce their Toughness, with the effect being equivalent to 55% of the original Toughness Reduction from abilities.",
+        "replacedAt": {
+          "potential": 1
+        }
+      },
+      {
+        "id": "trace-module-autoreactive-armor",
+        "label": "Trace: Module β: Autoreactive Armor",
+        "kind": "trace",
+        "does": [],
+        "gameText": "When SAM is in Complete Combustion with a Break Effect that is equal to or greater than 200%/360%, attacking a Weakness-Broken enemy target will convert the Toughness Reduction of this attack into 1 instance of 35%/50% Super Break DMG.",
+        "replacedAt": {
+          "potential": 1
+        }
+      },
+      {
+        "id": "trace-module-core-overload",
+        "label": "Trace: Module γ: Core Overload",
+        "kind": "trace",
+        "does": [],
+        "gameText": "For every 10 point(s) of SAM's ATK that exceeds 1800, increases this unit's Break Effect by 0.8%.",
+        "replacedAt": {
+          "potential": 1
+        }
+      },
+      {
+        "id": "eidolon-1",
+        "label": "Eidolon 1: In Reddened Chrysalis, I Once Rest",
+        "kind": "eidolon",
+        "unlock": {
+          "dupes": 1
+        },
+        "does": [],
+        "gameText": "When using the Enhanced Skill, ignores 15% of the target's DEF. The Enhanced Skill does not consume Skill Points.",
+        "replacedAt": {
+          "potential": 1
+        }
+      },
+      {
+        "id": "eidolon-2",
+        "label": "Eidolon 2: From Shattered Sky, I Free Fall",
+        "kind": "eidolon",
+        "unlock": {
+          "dupes": 2
+        },
+        "does": [],
+        "gameText": "While in Complete Combustion, using the Enhanced Basic ATK or the Enhanced Skill to defeat an enemy target or to Break their Weakness allows SAM to immediately gain 1 extra turn. This effect can trigger again after 1 turn(s).",
+        "replacedAt": {
+          "potential": 1
+        }
+      },
+      {
+        "id": "eidolon-3",
+        "label": "Eidolon 3: Amidst Silenced Stars, I Deep Sleep",
+        "kind": "eidolon",
+        "unlock": {
+          "dupes": 3
+        },
+        "does": [],
+        "gameText": "Skill Lv. +2, up to a maximum of Lv. 15.\nBasic ATK Lv. +1, up to a maximum of Lv. 10.",
+        "replacedAt": {
+          "potential": 1
+        }
+      },
+      {
+        "id": "eidolon-4",
+        "label": "Eidolon 4: Upon Lighted Fyrefly, I Soon Gaze",
+        "kind": "eidolon",
+        "unlock": {
+          "dupes": 4
+        },
+        "does": [],
+        "gameText": "While in Complete Combustion, increases SAM's Effect RES by 50%.",
+        "replacedAt": {
+          "potential": 1
+        }
+      },
+      {
+        "id": "eidolon-5",
+        "label": "Eidolon 5: From Undreamt Night, I Thence Shine",
+        "kind": "eidolon",
+        "unlock": {
+          "dupes": 5
+        },
+        "does": [],
+        "gameText": "Ultimate Lv. +2, up to a maximum of Lv. 15.\nTalent Lv. +2, up to a maximum of Lv. 15.",
+        "replacedAt": {
+          "potential": 1
+        }
+      },
+      {
+        "id": "eidolon-6",
+        "label": "Eidolon 6: In Finalized Morrow, I Full Bloom",
+        "kind": "eidolon",
+        "unlock": {
+          "dupes": 6
+        },
+        "does": [],
+        "gameText": "While in Complete Combustion, increases SAM's Fire RES PEN by 20%. When using the Enhanced Basic ATK or Enhanced Skill, increases Weakness Break Efficiency by 50%.",
+        "replacedAt": {
+          "potential": 1
+        }
+      },
+      {
+        "id": "skill-basic-atk-order-flare-propulsion-enhanced",
+        "label": "Basic ATK: Order: Flare Propulsion (Lv. 6) (Enhanced)",
+        "kind": "skill",
+        "does": [],
+        "gameText": "Deals Fire DMG equal to 100% of SAM's ATK to one designated enemy.",
+        "unlock": {
+          "potential": 1
+        }
+      },
+      {
+        "id": "skill-skill-order-aerial-bombardment-enhanced",
+        "label": "Skill: Order: Aerial Bombardment (Lv. 10) (Enhanced)",
+        "kind": "skill",
+        "does": [],
+        "gameText": "Consumes HP equal to 40% of this unit's Max HP and regenerates a fixed amount of Energy equal to 60% of this unit's Max Energy. Deals Fire DMG equal to 200% of SAM's ATK to one designated enemy. If the current HP is not sufficient, reduces SAM's HP to 1 when using this Skill. Advances this unit's next Action by 25%.",
+        "unlock": {
+          "potential": 1
+        }
+      },
+      {
+        "id": "skill-ultimate-fyrefly-type-iv-complete-combustion-enhanced",
+        "label": "Ultimate: Fyrefly Type-IV: Complete Combustion (Lv. 10) (Enhanced)",
+        "kind": "skill",
+        "does": [],
+        "gameText": "Enters the Complete Combustion state, advances this unit's Action by 100%, and gains Enhanced Basic ATK and Enhanced Skill. While in Complete Combustion, increases SPD by 60, and when using the Enhanced Basic ATK or Enhanced Skill, increases this unit's Weakness Break Efficiency by 50% and increases the Break DMG dealt by SAM to the enemy targets by 20.0%, lasting until this current attack ends.\nA countdown timer for the Complete Combustion state appears in the Action Order. When the countdown timer's turn starts, SAM exits the Complete Combustion state. The countdown timer has a fixed SPD of 70.\nSAM cannot use Ultimate while in Complete Combustion.",
+        "unlock": {
+          "potential": 1
+        }
+      },
+      {
+        "id": "skill-talent-chrysalid-pyronexus-enhanced",
+        "label": "Talent: Chrysalid Pyronexus (Lv. 10) (Enhanced)",
+        "kind": "skill",
+        "does": [],
+        "gameText": "The lower the HP, the less DMG received. When HP is 20% or lower, the DMG Reduction reaches its maximum effect, reducing up to 40%. During the Complete Combustion, the DMG Reduction remains at its maximum effect, and the Effect RES increases by 30%.\nIf Energy is lower than 50% when the battle starts, regenerates Energy to 50%. Once Energy is regenerated to its maximum, dispels all debuffs on this unit.",
+        "unlock": {
+          "potential": 1
+        }
+      },
+      {
+        "id": "skill-technique-order-meteoric-incineration-enhanced",
+        "label": "Technique: Δ Order: Meteoric Incineration (Enhanced)",
+        "kind": "skill",
+        "does": [],
+        "gameText": "Leaps into the air and moves about freely for 5 seconds, which can be ended early by launching a plunging attack. When the duration ends, plunges and immediately attacks all enemies within a set area. At the start of each wave, applies a Fire Weakness to all enemies, lasting for 2 turn(s). Then, deals Fire DMG equal to 200% of SAM's ATK to all enemies.",
+        "unlock": {
+          "potential": 1
+        }
+      },
+      {
+        "id": "skill-basic-atk-fyrefly-type-iv-pyrogenic-decimation-enhanced",
+        "label": "Basic ATK: Fyrefly Type-IV: Pyrogenic Decimation (Lv. 6) (Enhanced)",
+        "kind": "skill",
+        "does": [],
+        "gameText": "Restores HP by an amount equal to 20% of this unit's Max HP. Deals Fire DMG equal to 200% of SAM's ATK to one designated enemy.",
+        "unlock": {
+          "potential": 1
+        }
+      },
+      {
+        "id": "skill-skill-fyrefly-type-iv-deathstar-overload-enhanced",
+        "label": "Skill: Fyrefly Type-IV: Deathstar Overload (Lv. 10) (Enhanced)",
+        "kind": "skill",
+        "does": [],
+        "gameText": "Restores HP by an amount equal to 25% of this unit's Max HP. Adds Fire Weakness to one designated enemy and its adjacent targets, lasting for 2 turns. Deals Fire DMG equal to (0.2 × Break Effect + 200.0%) of SAM's ATK to this target. At the same time, deals Fire DMG equal to (0.1 × Break Effect + 100.0%) of SAM's ATK to adjacent targets. The Break Effect taken into the calculation is capped at 360%.",
+        "unlock": {
+          "potential": 1
+        }
+      },
+      {
+        "id": "trace-module-antilag-outburst-enhanced",
+        "label": "Trace: Module α: Antilag Outburst (Enhanced)",
+        "kind": "trace",
+        "does": [],
+        "gameText": "While in the Complete Combustion state, SAM's Break Effect increases by 25%. When using Enhanced Basic ATK or Enhanced Skill to inflict Weakness Break on a target, the Complete Combustion countdown is delayed by 10%. This effect can trigger a maximum of 3 time(s) during each Complete Combustion state.",
+        "unlock": {
+          "potential": 1
+        }
+      },
+      {
+        "id": "trace-module-autoreactive-armor-enhanced",
+        "label": "Trace: Module β: Autoreactive Armor (Enhanced)",
+        "kind": "trace",
+        "does": [],
+        "gameText": "When SAM is in Complete Combustion with a Break Effect that is equal to or greater than 150%/300%, attacking a Weakness-Broken enemy target will convert the Toughness Reduction of this attack into 1 instance of 100%/150% Super Break DMG.",
+        "unlock": {
+          "potential": 1
+        }
+      },
+      {
+        "id": "trace-module-core-overload-enhanced",
+        "label": "Trace: Module γ: Core Overload (Enhanced)",
+        "kind": "trace",
+        "does": [],
+        "gameText": "For every 10 point(s) of SAM's ATK that exceeds 1800, increases this unit's Break Effect by 0.8%.",
+        "unlock": {
+          "potential": 1
+        }
+      },
+      {
+        "id": "eidolon-1-enhanced",
+        "label": "Eidolon 1: In Reddened Chrysalis, I Once Rest (Enhanced)",
+        "kind": "eidolon",
+        "unlock": {
+          "dupes": 1,
+          "potential": 1
+        },
+        "does": [],
+        "gameText": "When using the Enhanced Skill, ignores 15% of the target's DEF. The Enhanced Skill does not consume Skill Points."
+      },
+      {
+        "id": "eidolon-2-enhanced",
+        "label": "Eidolon 2: From Shattered Sky, I Free Fall (Enhanced)",
+        "kind": "eidolon",
+        "unlock": {
+          "dupes": 2,
+          "potential": 1
+        },
+        "does": [],
+        "gameText": "While in Complete Combustion, using the Enhanced Basic ATK or the Enhanced Skill to defeat an enemy target or to Break their Weakness allows SAM to immediately gain 1 extra turn. This effect can only trigger 1 time per turn, and the trigger count resets at the start of SAM's turn."
+      },
+      {
+        "id": "eidolon-3-enhanced",
+        "label": "Eidolon 3: Amidst Silenced Stars, I Deep Sleep (Enhanced)",
+        "kind": "eidolon",
+        "unlock": {
+          "dupes": 3,
+          "potential": 1
+        },
+        "does": [],
+        "gameText": "Skill Lv. +2, up to a maximum of Lv. 15.\nBasic ATK Lv. +1, up to a maximum of Lv. 10."
+      },
+      {
+        "id": "eidolon-4-enhanced",
+        "label": "Eidolon 4: Upon Lighted Fyrefly, I Soon Gaze (Enhanced)",
+        "kind": "eidolon",
+        "unlock": {
+          "dupes": 4,
+          "potential": 1
+        },
+        "does": [],
+        "gameText": "While in Complete Combustion, increases SAM's Effect RES by 50%."
+      },
+      {
+        "id": "eidolon-5-enhanced",
+        "label": "Eidolon 5: From Undreamt Night, I Thence Shine (Enhanced)",
+        "kind": "eidolon",
+        "unlock": {
+          "dupes": 5,
+          "potential": 1
+        },
+        "does": [],
+        "gameText": "Ultimate Lv. +2, up to a maximum of Lv. 15.\nTalent Lv. +2, up to a maximum of Lv. 15."
+      },
+      {
+        "id": "eidolon-6-enhanced",
+        "label": "Eidolon 6: In Finalized Morrow, I Full Bloom (Enhanced)",
+        "kind": "eidolon",
+        "unlock": {
+          "dupes": 6,
+          "potential": 1
+        },
+        "does": [],
+        "gameText": "While in Complete Combustion, increases SAM's Fire RES PEN by 20%. When using the Enhanced Basic ATK or Enhanced Skill, increases Weakness Break Efficiency by 50%."
+      }
+    ]
+  },
+  {
+    "characterId": "8005",
+    "source": "nanoka.cc",
+    "version": "4.6",
+    "skills": [
+      {
+        "id": "skill-basic-atk-swing-dance-etiquette",
+        "label": "Basic ATK: Swing Dance Etiquette (Lv. 6)",
+        "kind": "skill",
+        "does": [],
+        "gameText": "Deals Imaginary DMG equal to 100% of the Trailblazer's ATK to one designated enemy target."
+      },
+      {
+        "id": "skill-skill-halftime-to-make-it-rain",
+        "label": "Skill: Halftime to Make It Rain (Lv. 10)",
+        "kind": "skill",
+        "does": [],
+        "gameText": "Deals Imaginary DMG equal to 50% of the Trailblazer's ATK to one designated enemy target and additionally deals DMG for 4 times, with each time dealing Imaginary DMG equal to 50% of the Trailblazer's ATK to a random enemy."
+      },
+      {
+        "id": "skill-ultimate-all-out-footlight-parade",
+        "label": "Ultimate: All-Out Footlight Parade (Lv. 10)",
+        "kind": "skill",
+        "does": [],
+        "gameText": "Grants all allies the Backup Dancer effect, lasting for 3 turn(s). This duration decreases by 1 at the start of Trailblazer's every turn. Allies with the Backup Dancer effect have their Break Effect increased by 30%. And when they attack enemy targets that are in the Weakness Broken state, the Toughness Reduction of the attack will be converted into 1 instance of Super Break DMG."
+      },
+      {
+        "id": "skill-talent-full-on-aerial-dance",
+        "label": "Talent: Full-on Aerial Dance (Lv. 10)",
+        "kind": "skill",
+        "does": [],
+        "gameText": "The Trailblazer immediately regenerates 10.0 Energy when an enemy target's Weakness is Broken."
+      },
+      {
+        "id": "skill-technique-now-i-m-the-band",
+        "label": "Technique: Now! I'm the Band!",
+        "kind": "skill",
+        "does": [],
+        "gameText": "After the Technique is used, at the start of the next battle, all allies' Break Effect increases by 30%, lasting for 2 turn(s)."
+      },
+      {
+        "id": "trace-dance-with-the-one",
+        "label": "Trace: Dance With the One",
+        "kind": "trace",
+        "does": [],
+        "gameText": "When the number of enemy targets on the field is (≥5)/4/3/2/1, the Super Break DMG triggered by the Backup Dancer effect increases by 20%/30%/40%/50%/60%."
+      },
+      {
+        "id": "trace-shuffle-along",
+        "label": "Trace: Shuffle Along",
+        "kind": "trace",
+        "does": [],
+        "gameText": "When using Skill, additionally increases the Toughness Reduction of the first instance of DMG by 100%."
+      },
+      {
+        "id": "trace-hat-of-the-theater",
+        "label": "Trace: Hat of the Theater",
+        "kind": "trace",
+        "does": [],
+        "gameText": "After ally targets break weakness, additionally delays the action of the enemy target by 30%."
+      },
+      {
+        "id": "eidolon-1",
+        "label": "Eidolon 1: Best Seat in the House",
+        "kind": "eidolon",
+        "unlock": {
+          "dupes": 1
+        },
+        "does": [],
+        "gameText": "After using Skill for the first time, immediately recovers 1 Skill Point(s)."
+      },
+      {
+        "id": "eidolon-2",
+        "label": "Eidolon 2: Jailbreaking Rainbowwalk",
+        "kind": "eidolon",
+        "unlock": {
+          "dupes": 2
+        },
+        "does": [],
+        "gameText": "When the battle starts, the Trailblazer's Energy Regeneration Rate increases by 25%, lasting for 3 turn(s)."
+      },
+      {
+        "id": "eidolon-3",
+        "label": "Eidolon 3: Sanatorium for Rest Notes",
+        "kind": "eidolon",
+        "unlock": {
+          "dupes": 3
+        },
+        "does": [],
+        "gameText": "Skill Lv. +2, up to a maximum of Lv. 15.\nTalent Lv. +2, up to a maximum of Lv. 15."
+      },
+      {
+        "id": "eidolon-4",
+        "label": "Eidolon 4: Dove in Tophat",
+        "kind": "eidolon",
+        "unlock": {
+          "dupes": 4
+        },
+        "does": [],
+        "gameText": "While the Trailblazer is on the field, increases the Break Effect of all teammates (excluding the Trailblazer), by an amount equal to 15% of the Trailblazer's Break Effect."
+      },
+      {
+        "id": "eidolon-5",
+        "label": "Eidolon 5: Poem Favors Rhythms of Old",
+        "kind": "eidolon",
+        "unlock": {
+          "dupes": 5
+        },
+        "does": [],
+        "gameText": "Ultimate Lv. +2, up to a maximum of Lv. 15.\nBasic ATK Lv. +1, up to a maximum of Lv. 10."
+      },
+      {
+        "id": "eidolon-6",
+        "label": "Eidolon 6: Tomorrow, Rest in Spotlight",
+        "kind": "eidolon",
+        "unlock": {
+          "dupes": 6
+        },
+        "does": [],
+        "gameText": "The number of additional DMG applications by the Skill increases by 2."
+      }
+    ]
+  },
+  {
+    "characterId": "8006",
+    "source": "nanoka.cc",
+    "version": "4.6",
+    "skills": [
+      {
+        "id": "skill-basic-atk-swing-dance-etiquette",
+        "label": "Basic ATK: Swing Dance Etiquette (Lv. 6)",
+        "kind": "skill",
+        "does": [],
+        "gameText": "Deals Imaginary DMG equal to 100% of the Trailblazer's ATK to one designated enemy."
+      },
+      {
+        "id": "skill-skill-halftime-to-make-it-rain",
+        "label": "Skill: Halftime to Make It Rain (Lv. 10)",
+        "kind": "skill",
+        "does": [],
+        "gameText": "Deals Imaginary DMG equal to 50% of the Trailblazer's ATK to one designated enemy target and additionally deals DMG for 4 times, with each time dealing Imaginary DMG equal to 50% of the Trailblazer's ATK to a random enemy."
+      },
+      {
+        "id": "skill-ultimate-all-out-footlight-parade",
+        "label": "Ultimate: All-Out Footlight Parade (Lv. 10)",
+        "kind": "skill",
+        "does": [],
+        "gameText": "Grants all allies the Backup Dancer effect, lasting for 3 turn(s). This duration decreases by 1 at the start of Trailblazer's every turn. Allies with the Backup Dancer effect have their Break Effect increased by 30%. And when they attack enemy targets that are in the Weakness Broken state, the Toughness Reduction of the attack will be converted into 1 instance of Super Break DMG."
+      },
+      {
+        "id": "skill-talent-full-on-aerial-dance",
+        "label": "Talent: Full-on Aerial Dance (Lv. 10)",
+        "kind": "skill",
+        "does": [],
+        "gameText": "The Trailblazer immediately regenerates 10.0 Energy when an enemy target's Weakness is Broken."
+      },
+      {
+        "id": "skill-technique-now-i-m-the-band",
+        "label": "Technique: Now! I'm the Band!",
+        "kind": "skill",
+        "does": [],
+        "gameText": "After the Technique is used, at the start of the next battle, all allies' Break Effect increases by 30%, lasting for 2 turn(s)."
+      },
+      {
+        "id": "trace-dance-with-the-one",
+        "label": "Trace: Dance With the One",
+        "kind": "trace",
+        "does": [],
+        "gameText": "When the number of enemy targets on the field is (≥5)/4/3/2/1, the Super Break DMG triggered by the Backup Dancer effect increases by 20%/30%/40%/50%/60%."
+      },
+      {
+        "id": "trace-shuffle-along",
+        "label": "Trace: Shuffle Along",
+        "kind": "trace",
+        "does": [],
+        "gameText": "When using Skill, additionally increases the Toughness Reduction of the first instance of DMG by 100%."
+      },
+      {
+        "id": "trace-hat-of-the-theater",
+        "label": "Trace: Hat of the Theater",
+        "kind": "trace",
+        "does": [],
+        "gameText": "After ally targets break weakness, additionally delays the action of the enemy target by 30%."
+      },
+      {
+        "id": "eidolon-1",
+        "label": "Eidolon 1: Best Seat in the House",
+        "kind": "eidolon",
+        "unlock": {
+          "dupes": 1
+        },
+        "does": [],
+        "gameText": "After using Skill for the first time, immediately recovers 1 Skill Point(s)."
+      },
+      {
+        "id": "eidolon-2",
+        "label": "Eidolon 2: Jailbreaking Rainbowwalk",
+        "kind": "eidolon",
+        "unlock": {
+          "dupes": 2
+        },
+        "does": [],
+        "gameText": "When the battle starts, the Trailblazer's Energy Regeneration Rate increases by 25%, lasting for 3 turn(s)."
+      },
+      {
+        "id": "eidolon-3",
+        "label": "Eidolon 3: Sanatorium for Rest Notes",
+        "kind": "eidolon",
+        "unlock": {
+          "dupes": 3
+        },
+        "does": [],
+        "gameText": "Skill Lv. +2, up to a maximum of Lv. 15.\nTalent Lv. +2, up to a maximum of Lv. 15."
+      },
+      {
+        "id": "eidolon-4",
+        "label": "Eidolon 4: Dove in Tophat",
+        "kind": "eidolon",
+        "unlock": {
+          "dupes": 4
+        },
+        "does": [],
+        "gameText": "While the Trailblazer is on the field, increases the Break Effect of all teammates (excluding the Trailblazer), by an amount equal to 15% of the Trailblazer's Break Effect."
+      },
+      {
+        "id": "eidolon-5",
+        "label": "Eidolon 5: Poem Favors Rhythms of Old",
+        "kind": "eidolon",
+        "unlock": {
+          "dupes": 5
+        },
+        "does": [],
+        "gameText": "Ultimate Lv. +2, up to a maximum of Lv. 15.\nBasic ATK Lv. +1, up to a maximum of Lv. 10."
+      },
+      {
+        "id": "eidolon-6",
+        "label": "Eidolon 6: Tomorrow, Rest in Spotlight",
+        "kind": "eidolon",
+        "unlock": {
+          "dupes": 6
+        },
+        "does": [],
+        "gameText": "The number of additional DMG applications by the Skill increases by 2."
+      }
+    ]
+  }
+]

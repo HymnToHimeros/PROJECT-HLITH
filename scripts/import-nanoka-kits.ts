@@ -33,6 +33,8 @@ const GROUPS: Record<string, string[]> = {
   A: ['1531', '1481', '1451', '1421'],
   // The other characters the method uses as examples: Lycaon, Lighter, Roxy, Hugo, Sunna, Ye Shunguang, Zhao.
   B: ['1141', '1161', '1621', '1291', '1491', '1431', '1341'],
+  // The method's "If you pull…" examples: Banyue, Norma, Cissia, Harumasa, Lucy, Seed, Rina, Anton.
+  C: ['1471', '1571', '1521', '1201', '1151', '1461', '1211', '1111'],
 };
 
 // Specialty and attribute codes, as in scripts/import-nanoka.ts.
@@ -46,6 +48,7 @@ const ICON: Record<string, string> = {
   Icon_Special: 'Special Attack button',
   Icon_SpecialReady: 'EX Special Attack button',
   Icon_SpecialReady_Rp: 'EX Special Attack button',
+  Icon_SpecialReady_Ep: 'EX Special Attack button',
   Icon_Evade: 'Dodge button',
   Icon_Switch: 'Switch button',
   Icon_UltimateReady: 'Ultimate button',
@@ -55,12 +58,28 @@ const ICON: Record<string, string> = {
  * text as shown on zzz.gachabase.net (another game-data site), matched by context.
  */
 const TERM: Record<string, string> = {
+  1000023: 'Anomaly Effect Strength', // Remielle: "Voidflare based on the enhanced Anomaly Effect Strength of the current Attribute Anomaly"
+  1000024: 'Purr Energy', // Nekomata: "Nekomata gains 40 Purr Energy upon entering the battlefield"
+  1000025: 'Pawpad Ambush', // Nekomata: "Nekomata enters the Pawpad Ambush state for 40s"
+  1000026: 'Fright', // Rina: "When Fright reaches 6 stacks"
+  1000028: 'Formation Breaker', // Sigrid: "reset before entering the Formation Breaker state"
+  1000029: 'Unbridled Spear', // Sigrid: "is considered an Unbridled Spear attack"
+  1000030: 'Aerial Patrol Spear', // Sigrid: "While in the Aerial Patrol Spear state"
+  1000031: 'Refringe', // Remielle: "If Remielle triggers 3 Refringe reactions"
+  1000032: 'Floating Radiance', // Remielle: "gains Floating Radiance after the skill ends"
+  1000033: 'Voidflare', // Remielle: "When Remielle has stored Voidflare"
+  1000034: 'Luminize', // Remielle: "triggers the Luminize effect after the skill ends"
+  1000035: 'Phase Flow', // Remielle: "Voidflares are cleared when Remielle enters the Phase Flow state"
+  1000036: 'Crimson Inscription', // Claret: "while in the Crimson Inscription state to activate"
+  1000041: 'Flowing Breath', // Severian (beta): "accumulate 20 Flowing Breath"
+  1000042: 'Flickershade', // Severian (beta): "gaining 1 stack of Flickershade"
+  1000043: 'Windrider', // Severian (beta): "grants one stack of Windrider"
   1000038: 'Cleanse', // Roxy: "it triggers Cleanse, reverting Contamination"
   1000039: 'Wind Energy', // Roxy: "Gain 1 point of Wind Energy for every 25 Energy consumed"
   1000040: 'Eye of the Storm', // Roxy: "generates 1 Eye of the Storm at the current position"
 };
 /** AvatarSkillLevel(n) in level formulas: which skill's level the number follows. */
-const SKILL_LEVEL: Record<string, string> = { 0: 'Basic Attack', 1: 'Special Attack', 3: 'Chain Attack' };
+const SKILL_LEVEL: Record<string, string> = { 0: 'Basic Attack', 1: 'Special Attack', 2: 'Dodge', 3: 'Chain Attack', 6: 'Assist' };
 /** Skill groups in the order the game lists them. */
 const SKILL_GROUPS = ['basic', 'dodge', 'special', 'chain', 'assist'] as const;
 
@@ -86,6 +105,34 @@ const slug = (s: string) =>
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/^-|-$/g, '');
 
+const num = (x: number) => String(Number(x.toPrecision(10)));
+
+/**
+ * A level formula, written the way the game computes it ("(34 + 3 × Special Attack level)"),
+ * or a fixed sum worked out (2*20*0.8 → 32). `mult` scales the result (100 = shown as a percent).
+ */
+function formula(expr: string, mult: number, decimals: number, who: string): string {
+  const linear = /^(-?[0-9.]+)\+AvatarSkillLevel\((\d+)\)\*([0-9.]+)$/.exec(expr);
+  if (linear) {
+    const [, a = '0', n = '', b = '0'] = linear;
+    return `(${num(Number(a) * mult)} + ${num(Number(b) * mult)} × ${need(SKILL_LEVEL, n, 'skill level in a formula', who)} level)`;
+  }
+  const offset = /^(-?[0-9.]+)\+([0-9.]+)\*\(AvatarSkillLevel\((\d+)\)-([0-9.]+)\)$/.exec(expr);
+  if (offset) {
+    const [, a = '0', b = '0', n = '', c = '0'] = offset;
+    return `(${num(Number(a) * mult)} + ${num(Number(b) * mult)} × (${need(SKILL_LEVEL, n, 'skill level in a formula', who)} level − ${c}))`;
+  }
+  // Only numbers, + and *: a fixed value.
+  if (/^-?[0-9.]+([+*]-?[0-9.]+)*$/.test(expr)) {
+    const value = expr
+      .split('+')
+      .map((term) => term.split('*').reduce((p, x) => p * Number(x), 1))
+      .reduce((a, b) => a + b, 0);
+    return num(Number((value * mult).toFixed(decimals)));
+  }
+  throw new Error(`Unrecognised formula "${expr}" for ${who}. Teach formula() in scripts/import-nanoka-kits.ts.`);
+}
+
 /** Game text with its markup turned into plain words. Exported for the tests. */
 export function plainText(raw: string, who: string): string {
   let t = raw
@@ -94,10 +141,7 @@ export function plainText(raw: string, who: string): string {
     .replace(/<IconMap:([A-Za-z_]+)>/g, (_m, icon: string) => `[${need(ICON, icon, 'button icon', who)}]`)
     .replace(/\{LAYOUT_[A-Z]+#[^}]*\}(?=\{LAYOUT_)/g, '')
     .replace(/\{LAYOUT_FALLBACK#([^}]*)\}/g, '$1')
-    .replace(/\{CAL:(-?[0-9.]+)\+AvatarSkillLevel\((\d+)\)\*([0-9.]+),(\d+),\d+\}/g, (_m, a: string, n: string, b: string, mult: string) => {
-      const scale = (x: string) => String(Number((Number(x) * Number(mult)).toPrecision(10)));
-      return `(${scale(a)} + ${scale(b)} × ${need(SKILL_LEVEL, n, 'skill level in a formula', who)} level)`;
-    });
+    .replace(/\{CAL:([^,}]+),(\d+),(\d+)\}/g, (_m, expr: string, mult: string, decimals: string) => formula(expr, Number(mult), Number(decimals), who));
   t = t.replace(/[ \t]+\n/g, '\n').trim();
   const left = /<[^>]+>|\{[^}]*\}/.exec(t);
   if (left) throw new Error(`Unrecognised markup "${left[0]}" for ${who}. Teach plainText in scripts/import-nanoka-kits.ts.`);

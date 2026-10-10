@@ -26,10 +26,11 @@ describe('ZZZ profiles (docs/logic/zzz-method.md: every character needs one)', (
 });
 
 describe('ZZZ kit text', () => {
-  it('groups A and B are in, and no one else (group by group, never all at once)', () => {
+  it('groups A, B and C are in, and no one else (group by group, never all at once)', () => {
     const groupA = ['1421', '1451', '1481', '1531']; // Pan Yinhu, Lucia, Dialyn, Starlight Billy
     const groupB = ['1141', '1161', '1291', '1341', '1431', '1491', '1621']; // Lycaon, Lighter, Hugo, Zhao, Ye Shunguang, Sunna, Roxy
-    expect(kits.map((k) => k.characterId).sort()).toEqual([...groupA, ...groupB].sort());
+    const groupC = ['1111', '1151', '1201', '1211', '1461', '1471', '1521', '1571']; // Anton, Lucy, Harumasa, Rina, Seed, Banyue, Cissia, Norma
+    expect(kits.map((k) => k.characterId).sort()).toEqual([...groupA, ...groupB, ...groupC].sort());
   });
 
   it('released agents are read from the live version, not beta text', () => {
