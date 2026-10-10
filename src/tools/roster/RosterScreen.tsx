@@ -1,6 +1,8 @@
 import { useCallback, useMemo, useState, type CSSProperties } from 'react';
 import type { GameContract } from '../../core/contract';
 import type { ModuleScreenProps } from '../../core/registry/modules';
+import { usePrefs } from '../../core/data/prefs';
+import { ProtagonistPicker } from '../../core/shell/ProtagonistPicker';
 import { CharacterPage } from './CharacterPage';
 import { Characters } from './Characters';
 import r from './roster.module.css';
@@ -92,6 +94,7 @@ export default function RosterScreen({ games, scope, tab, openTab, open, openAcc
         return (
           <div className={r.stack}>
             {switcher}
+            {game && <MainCharacterPrompt game={game} />}
             {current === 'teams' ? (
               <Teams data={data} several={false} onOpen={openPage} openCharacters={() => openTab('characters')} openAccount={openAccount} draft={draft} onDraftUsed={draftUsed} />
             ) : (
@@ -101,6 +104,20 @@ export default function RosterScreen({ games, scope, tab, openTab, open, openAcc
         );
       }}
     </WithUserData>
+  );
+}
+
+/** Until you pick your main character (HSR: Caelus or Stelle), both show; this asks once, at the top. */
+function MainCharacterPrompt({ game }: { game: GameContract }) {
+  const picked = usePrefs().protagonists?.[game.id];
+  if (!game.protagonist || picked) return null;
+  return (
+    <section className={r.mainPick} aria-label={`Pick your ${game.protagonist.label}`}>
+      <p className={r.mainPickText}>
+        <strong>Which {game.protagonist.label} is yours?</strong> Pick one: their entries count as owned, and the other one is hidden everywhere. You can switch in Account → Game settings.
+      </p>
+      <ProtagonistPicker game={game} />
+    </section>
   );
 }
 

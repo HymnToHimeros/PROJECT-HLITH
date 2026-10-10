@@ -1,5 +1,6 @@
 import { createElement, Suspense, useCallback, useEffect, useRef, useState, type CSSProperties, type MouseEvent } from 'react';
 import type { GameContract, GameId, ModuleId } from '../contract';
+import { withProtagonist } from '../data/protagonist';
 import { updatePrefs, usePrefs } from '../data/prefs';
 import { canSync, syncNow, useSyncStatus, type SyncStatus } from '../data/sync';
 import { defaultLayout, hiddenIn, phoneBar, restore, slot, type LayoutState, type Scope } from '../registry/layout';
@@ -65,7 +66,8 @@ export function Shell({ games: registered, account = null, isOwner = false, owne
 
   // Games in the switcher: the viewer's choice, else all. Never empty.
   const chosen = (prefs.games ?? registered.map((g) => g.id)).filter((id) => registered.some((g) => g.id === id));
-  const games = chosen.length ? chosen.map((id) => registered.find((g) => g.id === id) as GameContract) : registered;
+  // Each game as you see it: with your main character picked, the other one is hidden everywhere (protagonist.ts).
+  const games = (chosen.length ? chosen.map((id) => registered.find((g) => g.id === id) as GameContract) : registered).map((g) => withProtagonist(g, prefs.protagonists?.[g.id]));
   const scopes: Scope[] = games.length > 1 ? ['all', ...games.map((g) => g.id)] : games.map((g) => g.id);
 
   const acct = parseAccountRoute(path);

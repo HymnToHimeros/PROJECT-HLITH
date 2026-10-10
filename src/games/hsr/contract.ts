@@ -58,6 +58,18 @@ export const hsr: GameContract = {
   ],
   dupes: { prefix: 'E', name: 'Eidolon', max: 6 },
   potential: { name: 'Enhanced', max: 1 },
+  // The Trailblazer: one entry per Path for each, named "Trailblazer · Harmony (Caelus)" in characters.json.
+  protagonist: {
+    label: 'Trailblazer',
+    options: [
+      { id: 'caelus', name: 'Caelus' },
+      { id: 'stelle', name: 'Stelle' },
+    ],
+    of: (c) => {
+      const m = /^(Trailblazer · .+) \((Caelus|Stelle)\)$/.exec(c.name);
+      return m?.[1] && m[2] ? { option: m[2].toLowerCase(), form: m[1] } : undefined;
+    },
+  },
   build: {
     levelMax: 80,
     weaponLevelMax: 80,
