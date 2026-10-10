@@ -23,7 +23,22 @@ for (const scope of ['all', 'hsr', 'zzz']) {
 }
 
 // Every theme: Today, Account → Profile and Account → Theme, with the theme's background art showing.
-const THEMES = ['dark', 'light', 'candlelight', 'crimson', 'bifrost', 'ascendant'];
+const THEMES = [
+  'dark',
+  'light',
+  'candlelight',
+  'crimson',
+  'bifrost',
+  'ascendant',
+  'noctune-bloom',
+  'ethereal-dune',
+  'astral-lagoon',
+  'crimson-haze',
+  'jade-whisper',
+  'velvet-twilight',
+  'amber-mirage',
+  'midnight-sakura',
+];
 
 for (const theme of THEMES) {
   test(`no serious accessibility problems · theme ${theme}`, async ({ page }) => {
