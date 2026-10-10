@@ -49,6 +49,9 @@ Resume with: "continue from PROGRESS.md". Newest entry on top. Older entries:
   - HSR kit text for every released character (98), imported group by group
     (A, then one group per path). Kit check shows it; tags and scores wait for
     the owner's OK on `docs/logic/hsr-theory.md`.
+  - ZZZ recommended teams from the kit check: the best squad per damage dealer
+    from every agent at Mindscape 0, two alternatives per place, each scored
+    against your roster (a team is scored for its first member).
   - HSR recommended teams: the game's own (first team per character, 93),
     each place with its backups. Their scores wait for the HSR theory OK.
 - 2026-10-10 · **LOGIC-CORE: ZZZ groups B to E, HSR kit text and theory** (branch `logic-core/zzz-groups-d-e`, replaces PR #41).
