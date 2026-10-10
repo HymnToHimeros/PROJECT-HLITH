@@ -66,16 +66,16 @@ let cacheLib: Library | undefined;
  * `also`: characters tried beside `dd` even when their own game team doesn't list them: a team you made yourself is
  * compared with the best team that could include its own members (decision 30).
  */
-export function bestFor(dd: string, pool: string[], lib: Library, account: Account, also: string[] = []): TeamResult | undefined {
+export function bestFor(dd: string, pool: string[], lib: Library, account: Account, also: string[] = [], likeFor?: TeamResult): TeamResult | undefined {
   if (cacheLib !== lib) {
     bestCache.clear();
     cacheLib = lib;
   }
-  const key = `${dd}|${[...new Set(pool)].sort().map((id) => `${id}:${account.eidolon(id)}:${account.enhanced(id) ?? '-'}`).join(',')}|${account.eidolon(dd)}:${account.enhanced(dd) ?? '-'}|${[...also].sort().join(',')}|${(lib.ownTeams.get(dd) ?? []).map((t) => JSON.stringify(account.teamList?.(t.id) ?? null)).join(';')}`;
+  const key = `${dd}|${[...new Set(pool)].sort().map((id) => `${id}:${account.eidolon(id)}:${account.enhanced(id) ?? '-'}`).join(',')}|${account.eidolon(dd)}:${account.enhanced(dd) ?? '-'}|${[...also].sort().join(',')}|${(lib.ownTeams.get(dd) ?? []).map((t) => JSON.stringify(account.teamList?.(t.id) ?? null)).join(';')}|${likeFor?.sustain ? 'sustain' : ''}`;
   if (bestCache.has(key)) return bestCache.get(key);
   if (bestCache.size > 2000) bestCache.clear();
   // The best team found assumes every member is built for what the team wants (decision 26): 100% includes builds.
-  const found = findBest(dd, pool, lib, { ...account, ideal: true }, also);
+  const found = findBest(dd, pool, lib, { ...account, ideal: true }, also, !!likeFor?.sustain);
   bestCache.set(key, found);
   return found;
 }
@@ -94,7 +94,7 @@ function shortlist(dd: string, partners: string[], lib: Library, account: Accoun
     .map((x) => x.p);
 }
 
-function findBest(dd: string, pool: string[], lib: Library, account: Account, also: string[] = []): TeamResult | undefined {
+function findBest(dd: string, pool: string[], lib: Library, account: Account, also: string[] = [], needSustain = false): TeamResult | undefined {
   let partners = pool.filter((id) => id !== dd && lib.sheets.has(id) && fits([dd, id]) && (canPartner(id, dd, lib, account) || also.includes(id)));
   if (!lib.sheets.has(dd) || !canCarry(dd, lib) || !partners.length) return undefined;
   partners = shortlist(dd, partners, lib, account);
@@ -102,7 +102,7 @@ function findBest(dd: string, pool: string[], lib: Library, account: Account, al
   for (const others of combos(partners, Math.min(SIZE - 1, partners.length))) {
     if (!fits([dd, ...others])) continue;
     const out = check([dd, ...others], lib, account, dd);
-    if (out.rated && (!best || compare(out.best, best) > 0)) best = out.best;
+    if (out.rated && (!needSustain || out.best.sustain) && (!best || compare(out.best, best) > 0)) best = out.best;
   }
   return best;
 }
