@@ -120,3 +120,13 @@ Each one can be changed: tell LOGIC-CORE which.
     unverified** (Yixuan M2, Claret M2), as Roxy M6.
 36. **Abilities that work "within Ether Veil: Wellspring"** (Yidhari) are not
     reactions to every Ether Veil: other characters' Veils have other names.
+
+## Added with group E
+37. **"Anomaly DMG" is a stat only some damage dealers use** (method question
+    4: "a stat only some damage dealers use"). Buffs to Attribute Anomaly,
+    Disorder, Assault, Burn or Corruption DMG count only when the damage
+    dealer's own notes prove they deal it (Piper: "Piper's Physical Anomaly
+    Buildup Rate increases"). Assault buffs stay Physical-only.
+38. **Disorder and Attribute Anomaly buffs have no specialty limit** when the
+    text sets none; the Anomaly DMG stat already keeps them from Attack and
+    Rupture damage dealers.

@@ -222,3 +222,16 @@ describe('Group C', () => {
     expect(checkOrder([BANYUE, PAN, LUCIA], BANYUE, lib, owner).count).toBe(9);
   });
 });
+
+describe('Group E: Anomaly DMG is a stat only some damage dealers use', () => {
+  const PIPER = '1281';
+  const JANE = '1261';
+  const m0: Account = { mindscape: () => 0, potential: () => undefined };
+
+  it("Jane's Assault CRIT doesn't count for Starlight Billy (his damage is Sheer DMG), but does for Piper", () => {
+    const billy = checkOrder([BILLY, PIPER, JANE], BILLY, lib, m0);
+    expect(billy.lines.find((l) => l.entry === 'gnawed-assault-crit')).toMatchObject({ kind: 'not-counted', points: 0 });
+    const piper = checkOrder([PIPER, JANE, LUCIA], PIPER, lib, m0);
+    expect(piper.lines.find((l) => l.entry === 'gnawed-assault-crit')).toMatchObject({ kind: 'buff', points: 1 });
+  });
+});
