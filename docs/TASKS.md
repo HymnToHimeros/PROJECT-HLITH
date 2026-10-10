@@ -30,6 +30,7 @@ doing it said `LIVE`. Newest jobs at the bottom; live jobs move to Done.
 | T37 | BUG: typing in the Roster build form triggers other page elements, so the form is unusable | ERROR-FIX | sent | High priority; test for every form. |
 | T36 | README made attractive for public visitors | FRAME | sent | |
 | T38 | ZZZ teams: two supports doing the same job (Lucia + Pan Yinhu for Starlight Billy) scored above a complementary team (Dialyn + Lucia). Scoring must handle overlap and role coverage | LOGIC-CORE | sent | Part of T30 + blind test. |
+| T39 | Leaked characters usable in teams (beta kit text), Who fits, If you pull, so pre-pulling can be judged; marked leak/unverified | LOGIC-CORE | sent | Queued for after the owner's break. |
 
 ## Done
 | # | Job | Who | Live on |
