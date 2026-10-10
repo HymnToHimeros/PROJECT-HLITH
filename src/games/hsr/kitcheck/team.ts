@@ -274,7 +274,18 @@ export const hsrTeamRules: TeamRules = {
  * the best team of four from every character at Eidolon 0. Each place lists the
  * best pick first, then the two that score best beside the rest.
  */
+const recommendedCache = new WeakMap<Library, TeamPreset[]>();
+
+/** Same library, same answer: the search runs once per library (it checks thousands of teams). */
 export function recommendedTeams(lib: Library = library()): TeamPreset[] {
+  const hit = recommendedCache.get(lib);
+  if (hit) return hit;
+  const found = findRecommended(lib);
+  recommendedCache.set(lib, found);
+  return found;
+}
+
+function findRecommended(lib: Library): TeamPreset[] {
   const name = (id: string) => lib.names.get(id) ?? id;
   const e0: Account = { eidolon: () => 0, enhanced: () => undefined };
   const all = [...lib.sheets.keys()];
