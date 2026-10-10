@@ -66,7 +66,7 @@ export function EditMode({ game, kind, examples }: { game: GameContract; kind: O
           `Add ${noun.one}s the list doesn’t have yet with “Add ${noun.one}”. They show up in ${noun.list} next to the built-in ones, marked YOURS.`,
           `Change any ${noun.one} with “Change”. Your version wins; the list’s own entry is kept underneath, marked CHANGED.`,
           `Hide anything you don’t want to see with “Hide”. Nothing is deleted: “Show hidden” brings it back.`,
-          `Items marked EXAMPLE stand in while the game’s list is empty. Change one and it becomes yours; your own items then replace the examples.`,
+          `Items marked EXAMPLE stand in while the game’s list is empty. Change one and it becomes yours; the others stay until you hide them.`,
           `When the list is updated, your own items, changes and hides stay exactly as you left them.`,
         ]}
       />
@@ -97,8 +97,8 @@ export function EditMode({ game, kind, examples }: { game: GameContract; kind: O
         <p className={s.note}>Loading the list…</p>
       ) : list.length === 0 ? (
         <p className={s.note}>
-          {game.name} has no built-in {noun.list.toLowerCase()} list yet, so only your own items are here. (The {noun.list} screen shows clearly marked examples
-          until there is real data.)
+          {game.name} has no built-in {noun.list.toLowerCase()} list yet.{' '}
+          {exampleRows.length > 0 ? 'The rows marked EXAMPLE stand in for it: change one to make it yours, or hide it.' : 'Add your own with the button above.'}
         </p>
       ) : null}
       {shown.length > 0 && (
@@ -239,7 +239,7 @@ function ItemForm({ game, kind, row, onCancel, onSave }: FormProps) {
     <form className={s.form} onSubmit={submit} aria-label={row ? `Change ${row.item.title}` : `Add ${noun}`}>
       <h3 className={s.formTitle}>{row ? `Change “${row.item.title}”` : `Add your own ${noun}`}</h3>
       {row && !isMine && <p className={s.note}>This is a built-in {noun}. Your changes sit on top; the list’s own version is kept.</p>}
-      {row?.origin === 'example' && <p className={s.note}>This is an example. Saving makes it your own {noun}; your own items then replace the examples.</p>}
+      {row?.origin === 'example' && <p className={s.note}>This is an example. Saving makes it your own {noun}; anything you marked on it stays.</p>}
       <div className={s.grid}>
         <label className={`${s.field} ${s.wide}`} htmlFor={f('title')}>
           Name

@@ -9,8 +9,10 @@ export interface WishlistGame {
   user: GameUserData;
   characters: Character[];
   banners: Banner[];
-  /** The banners are examples (the game's list is still empty). */
+  /** Any banner is an example. */
   example: boolean;
+  /** Which banners are examples. */
+  exampleIds?: ReadonlySet<string> | undefined;
 }
 
 interface Props {
@@ -23,13 +25,13 @@ interface Props {
 /** Live and upcoming banners that feature any character on your wanted list, soonest first. */
 export function wishlistRows(games: WishlistGame[], now: number) {
   return games
-    .flatMap(({ game, user, characters, banners, example }) =>
+    .flatMap(({ game, user, characters, banners, exampleIds }) =>
       banners
         .filter((b) => Date.parse(b.end) > now)
         .flatMap((b) =>
           b.featured
             .filter((id) => user.roster[id]?.wanted)
-            .map((id) => ({ game, banner: b, character: characters.find((c) => c.id === id), characterId: id, example })),
+            .map((id) => ({ game, banner: b, character: characters.find((c) => c.id === id), characterId: id, example: Boolean(exampleIds?.has(b.id)) })),
         ),
     )
     .sort((a, b) => Date.parse(a.banner.start) - Date.parse(b.banner.start) || Date.parse(a.banner.end) - Date.parse(b.banner.end));

@@ -84,8 +84,9 @@ function BannerItem({ game, banner, state, data, tagged, open }: ItemProps) {
   const end = Date.parse(banner.end);
   const featured = banner.featured.map((id) => data.characters.get(id)).filter((c): c is Character => Boolean(c));
   const lead = featured[0];
+  const isExample = data.banners.exampleIds.has(banner.id);
   // Sample art only ever illustrates example banners; real banners use the character's own art.
-  const art = lead ? (data.banners.example ? (data.sampleArt.get(lead.id) ?? lead.art) : lead.art) : undefined;
+  const art = lead ? (isExample ? (data.sampleArt.get(lead.id) ?? lead.art) : lead.art) : undefined;
   const element = lead ? game.elements.find((e) => e.id === lead.element) : undefined;
   const isWeapon = type?.target === 'weapon';
   const rerun = !isWeapon && lead?.releasedAt ? (Date.parse(lead.releasedAt) < start - 7 * DAY ? 'Rerun' : 'New') : null;
@@ -99,7 +100,7 @@ function BannerItem({ game, banner, state, data, tagged, open }: ItemProps) {
             {lead?.name ?? banner.title}
           </span>
         )}
-        <span className={b.artLabel}>{art ? (data.banners.example ? 'SAMPLE ART' : '') : 'NO ART YET'}</span>
+        <span className={b.artLabel}>{art ? (isExample ? 'SAMPLE ART' : '') : 'NO ART YET'}</span>
       </div>
       <div className={b.body}>
         <div className={b.kindRow}>
@@ -107,7 +108,7 @@ function BannerItem({ game, banner, state, data, tagged, open }: ItemProps) {
             {type?.label ?? 'Banner'}
             {rerun && ` · ${rerun}`}
           </span>
-          {data.banners.example && <ExampleTag />}
+          {isExample && <ExampleTag />}
           {banner.leak && <UnverifiedTag source={banner.leak.source} />}
           {tagged && <GameTag label={game.short} vent={game.vent} />}
         </div>
@@ -170,7 +171,7 @@ function LatestChanges({ data, game, now }: { data: BannersData; game: GameContr
   if (!data.banners.example) {
     return <Strip>Latest changes to the banner list: no data yet. They appear here once list updates keep a change log.</Strip>;
   }
-  const next = data.banners.list.filter((x) => Date.parse(x.start) > now);
+  const next = data.banners.list.filter((x) => data.banners.exampleIds.has(x.id) && Date.parse(x.start) > now);
   const items = next.slice(0, 2).map((x) => ({ id: x.id, kind: x.leak ? 'Leak' : 'Official', text: `${x.title} ${x.leak ? 'rumoured' : 'confirmed'} for ${formatRange(Date.parse(x.start), Date.parse(x.end))}` }));
   if (items.length === 0) return null;
   return (

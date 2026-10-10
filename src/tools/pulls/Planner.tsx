@@ -126,7 +126,7 @@ function PlanCard({ game, banner: b, type, data, serverId, now, tagged, whatIf }
     <article className={cx(p.planCard, b.leak && p.leakCard)} style={{ '--vent': game.vent } as CSSProperties} aria-label={b.title}>
       <div className={p.kindRow}>
         <span className={p.kind}>{type.label}</span>
-        {(data.banners.example || exampleNumbers) && <ExampleTag />}
+        {(data.banners.exampleIds.has(b.id) || exampleNumbers) && <ExampleTag />}
         {b.leak && <UnverifiedTag source={b.leak.source} />}
         {tagged && <GameTag label={game.short} vent={game.vent} />}
       </div>

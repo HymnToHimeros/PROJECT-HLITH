@@ -4,17 +4,20 @@ import { useExamplesShown } from '../../core/data/prefs';
 import { useGameData, type GameUserData } from '../../core/data/userData';
 import { exampleVersionEnd } from '../pulls/examples';
 import { exampleEvents } from './examples';
-import { useWithOwnItems } from '../edit-mode/useWithOwnItems';
+import { mixExamples } from '../edit-mode/examples';
 
 const NO_EVENTS: GameEvent[] = [];
 
 export interface EventsData {
   user: GameUserData;
-  /** The game's real events, or examples while its list is empty. */
-  events: { list: GameEvent[]; example: boolean };
+  /**
+   * `list`: the game's events with your changes and own events, plus examples (each in
+   * `exampleIds`) while the game's list is empty. `real`: never examples (budgets, tasks).
+   */
+  events: { list: GameEvent[]; example: boolean; exampleIds: ReadonlySet<string>; real: GameEvent[] };
   /** null = unknown (no version list, and examples are hidden in Account → Example data). */
   versionEnd: { at: number | null; example: boolean };
-  /** Every example event (hidden ones too), for Edit mode, while examples stand in for the list; else undefined. */
+  /** Every example event (hidden ones too), for Edit mode, while the game's list is empty; else undefined. */
   examples: GameEvent[] | undefined;
   loading: boolean;
 }
@@ -39,13 +42,13 @@ export function useEventsData(game: GameContract, now: number): EventsData {
   const current = (lists?.versions ?? []).find((v) => Date.parse(v.start) <= now && now < Date.parse(v.end));
   const at = lists?.at ?? now;
   const examples = useMemo(() => exampleEvents(game, at), [game, at]);
-  // Built-in events plus your own from Edit mode (hidden ones left out).
-  const events = useWithOwnItems(game, 'events', lists?.events ?? NO_EVENTS);
+  const builtIn = lists?.events ?? NO_EVENTS;
+  // Built-in events with your changes, your own events, and examples one by one (until you hide or change them).
+  const mixed = useMemo(() => mixExamples('events', builtIn, user.ownItems.events, examples, showExamples), [builtIn, user.ownItems.events, examples, showExamples]);
   return {
     user,
-    // Examples you hid in Edit mode stay hidden.
-    events: events.length || !showExamples ? { list: events, example: false } : { list: examples.filter((e) => !user.ownItems.events[e.id]?.hidden), example: true },
-    examples: events.length || !showExamples ? undefined : examples,
+    events: { list: mixed.list, example: mixed.example, exampleIds: mixed.exampleIds, real: mixed.real },
+    examples: builtIn.length || !showExamples ? undefined : examples,
     versionEnd: current ? { at: Date.parse(current.end), example: false } : showExamples ? { at: exampleVersionEnd(at), example: true } : { at: null, example: false },
     loading: lists === null,
   };

@@ -3,7 +3,8 @@ import type { BacklogItem, GameContract } from '../../core/contract';
 import { useExamplesShown } from '../../core/data/prefs';
 import { useGameData, type GameUserData } from '../../core/data/userData';
 import { exampleBacklog } from './examples';
-import { mergeRows, type Origin } from '../edit-mode/merge';
+import { mixExamples } from '../edit-mode/examples';
+import type { Origin } from '../edit-mode/merge';
 
 const NO_ITEMS: BacklogItem[] = [];
 
@@ -58,25 +59,12 @@ export function useBacklogData(game: GameContract): BacklogData {
   const own = user.ownItems.backlog;
 
   return useMemo(() => {
-    const builtIn = list ?? NO_ITEMS;
-    const merged = mergeRows('backlog', builtIn, own);
-    const real = merged.filter((r) => !r.hidden).map((r) => r.item);
-    const useExamples = builtIn.length === 0 && showExamples;
-    // An example you changed (now your own item) or hid is no longer shown as an example.
-    const taken = (id: string) => Boolean(own[id]?.mine || own[id]?.hidden);
-    const shownExamples = useExamples ? examples.items.filter((e) => !taken(e.id)) : [];
-    const hiddenExamples = useExamples ? examples.items.filter((e) => own[e.id]?.hidden && !own[e.id]?.mine) : [];
-    const exampleIds = new Set(shownExamples.map((e) => e.id));
-    const exampleDone = Object.fromEntries(Object.entries(examples.done).filter(([id]) => exampleIds.has(id)));
-    const rows: BacklogRow[] = [
-      ...shownExamples.map((item) => ({ item, origin: 'example' as const, hidden: false })),
-      ...hiddenExamples.map((item) => ({ item, origin: 'example' as const, hidden: true })),
-      ...merged,
-    ];
+    const mixed = mixExamples('backlog', list ?? NO_ITEMS, own, examples.items, showExamples);
+    const exampleDone = Object.fromEntries(Object.entries(examples.done).filter(([id]) => mixed.exampleIds.has(id)));
     return {
       user,
-      items: { list: [...shownExamples, ...real], example: shownExamples.length > 0, exampleIds, exampleDone, real },
-      rows,
+      items: { list: mixed.list, example: mixed.example, exampleIds: mixed.exampleIds, exampleDone, real: mixed.real },
+      rows: mixed.rows,
       loading: list === null,
     };
   }, [list, own, showExamples, examples, user]);

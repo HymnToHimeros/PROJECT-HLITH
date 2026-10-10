@@ -59,7 +59,7 @@ export function Calendar({ games, servers, lists, now, openAccount, openServer, 
   const showExamples = useExamplesShown();
   const timelines = games.map((game) => {
     const l = lists[game.id] ?? { characters: [], banners: [], events: [], versions: [], materials: [] };
-    return { game, timeline: gameTimeline({ game, serverId: servers[game.id], characters: l.characters, banners: l.banners, events: l.events, versions: l.versions, now, from, to, examples: showExamples }) };
+    return { game, timeline: gameTimeline({ game, serverId: servers[game.id], characters: l.characters, banners: l.banners, events: l.events, versions: l.versions, now, from, to, examples: showExamples, exampleIds: l.exampleIds }) };
   });
   const laneExample = (lane: Lane) => timelines.some(({ timeline }) => timeline.example[lane]);
   // Your plans; with none yet, one EXAMPLE plan shows the look.

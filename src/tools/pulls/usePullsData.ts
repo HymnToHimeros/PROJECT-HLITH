@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import type { Banner, Character, GameContract, PullRecord, Version } from '../../core/contract';
 import type { Known } from '../../core/contract/known';
 import { useExamplesShown } from '../../core/data/prefs';
@@ -9,15 +9,16 @@ import type { BudgetInput } from '../budget/budget';
 import { eventsForBudget } from '../events/events';
 import { useEventsData } from '../events/useEventsData';
 import { exampleBank, exampleBannerSchedule, exampleHistory, exampleVersionEnd } from './examples';
-import { useWithOwnItems } from '../edit-mode/useWithOwnItems';
+import { mixExamples } from '../edit-mode/examples';
+import { useHideLeaks } from '../banners/leakPref';
 
 const NO_BANNERS: Banner[] = [];
 
 export interface PullsData {
   user: GameUserData;
   characters: Character[];
-  /** Real banners, or examples when the list is empty. */
-  banners: { list: Banner[]; example: boolean };
+  /** The game's banners with your changes and own banners, plus examples (each in `exampleIds`) while the list is empty. Leaks left out while hidden. */
+  banners: { list: Banner[]; example: boolean; exampleIds: ReadonlySet<string> };
   bank: { value: Known<Record<string, number>>; example: boolean };
   history: { list: PullRecord[]; example: boolean };
   /** null = unknown (no version list, and examples are hidden in Account → Example data). */
@@ -35,6 +36,7 @@ export interface PullsData {
 export function usePullsData(game: GameContract, now: number): PullsData {
   const user = useGameData(game.id);
   const showExamples = useExamplesShown();
+  const hideLeaks = useHideLeaks();
   const [lists, setLists] = useState<{
     characters: Character[];
     banners: Banner[];
@@ -54,23 +56,30 @@ export function usePullsData(game: GameContract, now: number): PullsData {
 
   const events = useEventsData(game, now);
   const backlog = useBacklogData(game);
-  const characters = lists?.characters ?? [];
+  const characters = useMemo(() => lists?.characters ?? [], [lists]);
   // Only real items count (the game's list and yours), never examples.
   const backlogCats = categories(game, backlog.items.real, user);
   const backlogNotCounted = backlog.items.real.length === 0 && backlog.items.example;
+  // Examples are never counted; with only examples, the Calculator says so.
+  const eventsNotCounted = events.events.real.length === 0 && events.events.example;
   const budgetExtras = (until: number): Partial<BudgetInput> => ({
-    ...(events.events.example ? {} : eventsForBudget(game, events.events.list, user, now, until)),
+    ...(eventsNotCounted ? {} : eventsForBudget(game, events.events.real, user, now, until)),
     ...(backlogNotCounted ? {} : { backlog: backlogForBudget(backlogCats) }),
   });
-  const notCounted = [events.events.example && 'Events', backlogNotCounted && 'Backlog'].filter((x): x is string => Boolean(x));
+  const notCounted = [eventsNotCounted && 'Events', backlogNotCounted && 'Backlog'].filter((x): x is string => Boolean(x));
   const realBank = balances(user.ledger);
   const current = (lists?.versions ?? []).find((v) => Date.parse(v.start) <= now && now < Date.parse(v.end));
-  const ownBanners = useWithOwnItems(game, 'banners', lists?.banners ?? NO_BANNERS);
+  const builtInBanners = lists?.banners ?? NO_BANNERS;
+  const exampleList = useMemo(() => exampleBannerSchedule(game, characters, now, lists?.withArt), [game, characters, now, lists?.withArt]);
+  const mixed = mixExamples('banners', builtInBanners, user.ownItems.banners, exampleList, showExamples);
+  // "Hide leaks" (Intel) hides leaked banners here too.
+  const shownBanners = hideLeaks ? mixed.list.filter((b) => !b.leak) : mixed.list;
   return {
     user,
     characters,
-    banners: ownBanners.length || !showExamples ? { list: ownBanners, example: false } : { list: exampleBannerSchedule(game, characters, now, lists?.withArt), example: true },
-    bank: realBank.known || !showExamples ? { value: realBank, example: false } : { value: exampleBank(game), example: true },
+    banners: { list: shownBanners, example: shownBanners.some((b) => mixed.exampleIds.has(b.id)), exampleIds: mixed.exampleIds },
+    // Your first bank log entry replaces the example bank, even before a balance check.
+    bank: realBank.known || user.ledger.length > 0 || !showExamples ? { value: realBank, example: false } : { value: exampleBank(game), example: true },
     history: user.pulls.length || !showExamples ? { list: user.pulls, example: false } : { list: exampleHistory(game, characters, now), example: true },
     versionEnd: current ? { at: Date.parse(current.end), example: false } : showExamples ? { at: exampleVersionEnd(now), example: true } : { at: null, example: false },
     budgetExtras,

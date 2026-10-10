@@ -1,17 +1,17 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import type { Banner, Character, GameContract, SampleArt } from '../../core/contract';
 import { useExamplesShown } from '../../core/data/prefs';
 import { useGameData, type GameUserData } from '../../core/data/userData';
 import { exampleBanners } from './examples';
-import { useWithOwnItems } from '../edit-mode/useWithOwnItems';
+import { mixExamples } from '../edit-mode/examples';
 
 const NO_BANNERS: Banner[] = [];
 
 export interface BannersData {
   user: GameUserData;
   characters: Map<string, Character>;
-  /** Real banners, or examples when the game's list is empty. */
-  banners: { list: Banner[]; example: boolean };
+  /** The game's banners with your changes and own banners, plus examples (each in `exampleIds`) while the game's list is empty. */
+  banners: { list: Banner[]; example: boolean; exampleIds: ReadonlySet<string>; real: Banner[] };
   /** Character id → sample art. Only for illustrating example banners, never real ones. */
   sampleArt: Map<string, string>;
   /** Every example banner (hidden ones too), for Edit mode, while examples stand in for the list; else undefined. */
@@ -35,17 +35,16 @@ export function useBannersData(game: GameContract, now: number): BannersData {
     };
   }, [game]);
 
-  const characters = lists?.characters ?? [];
-  const art = lists?.art ?? [];
-  const banners = useWithOwnItems(game, 'banners', lists?.banners ?? NO_BANNERS);
-  const useExamples = !banners.length && showExamples;
-  const examples = useExamples ? exampleBanners(game, characters, now, art.map((a) => a.characterId)) : undefined;
+  const characters = useMemo(() => lists?.characters ?? [], [lists]);
+  const art = useMemo(() => lists?.art ?? [], [lists]);
+  const builtIn = lists?.banners ?? NO_BANNERS;
+  const examples = useMemo(() => exampleBanners(game, characters, now, art.map((a) => a.characterId)), [game, characters, now, art]);
+  const mixed = mixExamples('banners', builtIn, user.ownItems.banners, examples, showExamples);
   return {
     user,
     characters: new Map(characters.map((c) => [c.id, c])),
-    // Examples you hid in Edit mode stay hidden.
-    banners: examples ? { list: examples.filter((x) => !user.ownItems.banners[x.id]?.hidden), example: true } : { list: banners, example: false },
-    examples,
+    banners: { list: mixed.list, example: mixed.example, exampleIds: mixed.exampleIds, real: mixed.real },
+    examples: builtIn.length || !showExamples ? undefined : examples,
     sampleArt: new Map(art.map((a) => [a.characterId, a.art])),
     loading: lists === null,
   };

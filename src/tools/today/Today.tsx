@@ -8,8 +8,6 @@ import { formatTime, nextDailyReset, nextWeeklyReset, serverRule } from '../../c
 import { BannerCard, CurrencyChip, ExampleNotice, ExampleTag, GameTag, HowTo, StatTile, Timer, UnverifiedTag } from '../../core/ui';
 import { cx } from '../../core/ui/cx';
 import { pullsFor } from '../budget/budget';
-import { exampleEvents } from '../calendar/examples';
-import { exampleBanners } from '../pulls/examples';
 import type { GameLists } from './lists';
 import { buildTasks, type Task } from './tasks';
 import { TonightsRun } from './TonightsRun';
@@ -51,7 +49,6 @@ interface GameToday {
 export function Today({ games, servers, lists, user, now, open, openAccount, openServer }: TodayProps) {
   const tags = games.length > 1;
   const prefs = usePrefs();
-  const showExamples = !prefs.hideExamples;
   const chooseServer = (id: GameId) => (openServer ? openServer(id) : openAccount());
   const days: GameToday[] = games.map((game) => {
     const l = lists[game.id] ?? { characters: [], banners: [], events: [], versions: [], materials: [] };
@@ -60,14 +57,14 @@ export function Today({ games, servers, lists, user, now, open, openAccount, ope
     const serverId = game.servers.some((s) => s.id === chosen) ? chosen : undefined;
     const farmNames = u.farm.map((id) => l.characters.find((c) => c.id === id)?.name ?? id);
     const hidden = new Set(prefs.hiddenTasks?.[game.id] ?? []);
-    const tasks = serverId ? buildTasks({ game, serverId, user: u, events: l.events, farmNames, now }).filter((x) => !hidden.has(x.id)) : [];
+    const tasks = serverId ? buildTasks({ game, serverId, user: u, events: l.real?.events ?? l.events, farmNames, now }).filter((x) => !hidden.has(x.id)) : [];
     return {
       game,
       user: u,
       lists: l,
       serverId,
-      banners: l.banners.length || !showExamples ? { list: l.banners, example: false } : { list: exampleBanners(game, l.characters, now), example: true },
-      events: l.events.length || !showExamples ? { list: l.events, example: false } : { list: exampleEvents(game, now), example: true },
+      banners: { list: l.banners, example: l.banners.some((b) => l.exampleIds?.has(b.id)) },
+      events: { list: l.events, example: l.events.some((e) => l.exampleIds?.has(e.id)) },
       tasks,
     };
   });
@@ -107,7 +104,7 @@ export function Today({ games, servers, lists, user, now, open, openAccount, ope
           <LiveBanners days={days} tags={tags} now={now} />
           <ComingUp days={days} tags={tags} now={now} />
           <Wishlist
-            games={days.map((d) => ({ game: d.game, user: d.user, characters: d.lists.characters, banners: d.banners.list, example: d.banners.example }))}
+            games={days.map((d) => ({ game: d.game, user: d.user, characters: d.lists.characters, banners: d.banners.list, example: d.banners.example, exampleIds: d.lists.exampleIds }))}
             tags={tags}
             now={now}
             openRoster={() => open('roster', 'characters')}
@@ -279,7 +276,7 @@ function OpenTasks({ days, tags, now, hideTicked, chooseServer }: { days: GameTo
 }
 
 function LiveBanners({ days, tags, now }: { days: GameToday[]; tags: boolean; now: number }) {
-  const rows = days.flatMap((d) => d.banners.list.map((b) => ({ d, b, example: d.banners.example })));
+  const rows = days.flatMap((d) => d.banners.list.map((b) => ({ d, b, example: Boolean(d.lists.exampleIds?.has(b.id)) })));
   const live = rows.filter(({ b }) => Date.parse(b.start) <= now && Date.parse(b.end) > now).sort((x, y) => Date.parse(x.b.end) - Date.parse(y.b.end));
   const typeLabel = (g: GameContract, id: string) => g.bannerTypes.find((x) => x.id === id)?.label ?? id;
   // Sample art only ever decorates EXAMPLE banners.
@@ -322,14 +319,14 @@ function ComingUp({ days, tags, now }: { days: GameToday[]; tags: boolean; now: 
     const typeLabel = (id: string) => d.game.bannerTypes.find((x) => x.id === id)?.label ?? id;
     for (const b of d.banners.list) {
       const start = Date.parse(b.start);
-      if (start > now && start - now <= 42 * DAY) items.push({ key: `b:${b.id}`, game: d.game, label: `${b.title} · ${typeLabel(b.type)} opens`, at: start, leak: b.leak, example: d.banners.example });
+      if (start > now && start - now <= 42 * DAY) items.push({ key: `b:${b.id}`, game: d.game, label: `${b.title} · ${typeLabel(b.type)} opens`, at: start, leak: b.leak, example: Boolean(d.lists.exampleIds?.has(b.id)) });
     }
     for (const e of d.events.list) {
       const start = Date.parse(e.start);
       const end = Date.parse(e.end);
       const state = d.user.events[e.id]?.state ?? 'open';
-      if (start <= now && end > now && state === 'open') items.push({ key: `e:${e.id}`, game: d.game, label: `${e.title} ends`, at: end, leak: e.leak, example: d.events.example });
-      else if (start > now && start - now <= 42 * DAY) items.push({ key: `s:${e.id}`, game: d.game, label: `${e.title} starts`, at: start, leak: e.leak, example: d.events.example });
+      if (start <= now && end > now && state === 'open') items.push({ key: `e:${e.id}`, game: d.game, label: `${e.title} ends`, at: end, leak: e.leak, example: Boolean(d.lists.exampleIds?.has(e.id)) });
+      else if (start > now && start - now <= 42 * DAY) items.push({ key: `s:${e.id}`, game: d.game, label: `${e.title} starts`, at: start, leak: e.leak, example: Boolean(d.lists.exampleIds?.has(e.id)) });
     }
     const version = currentVersion(d.lists.versions, now);
     if (version) items.push({ key: `v:${version.id}`, game: d.game, label: `Version ${version.id} ends`, at: Date.parse(version.end), example: false });
