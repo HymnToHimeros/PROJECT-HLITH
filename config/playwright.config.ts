@@ -7,6 +7,8 @@ const PORT = Number(process.env.E2E_PORT ?? 4400);
 
 export default defineConfig({
   testDir: '../tests/e2e',
+  // Every test on its own, so CI can split them over several machines (--shard).
+  fullyParallel: true,
   use: {
     baseURL: `http://localhost:${PORT}`,
     launchOptions: existsSync(localChromium) ? { executablePath: localChromium } : {},

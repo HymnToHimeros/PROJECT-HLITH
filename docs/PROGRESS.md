@@ -28,6 +28,12 @@ Resume with: "continue from PROGRESS.md". Newest entry on top. Older entries:
 - CI (`.github/workflows/ci.yml`) runs both on every pull request.
 
 ## Done
+- 2026-10-10 · **FRAME: faster check, shared release routine** (branch `frame/faster-checks-and-releases`).
+  `docs/RELEASES.md`: the three chats agree together before anything goes live
+  (READY / OK / WAIT, merge order, one at a time). CI: notes-only changes skip the
+  code checks; browser tests split over four machines; a newer push stops the older
+  run; the long browser tests are one test per screen and theme (same checks), so they
+  run side by side. About 5 minutes instead of 11.
 - 2026-10-10 · **SCHEDULER step 2: server times, weapon banner art** (branch `scheduler/server-times-weapon-art`).
   Uses FRAME's new fields (#40): every banner and event time the game gives in "server
   time" now carries `serverTime { base: 8, start/end }`, so screens show it on the user's
