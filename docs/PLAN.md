@@ -4,7 +4,7 @@ The build plan for HLIÐSKJÁLF V2. It sits on top of `FEATURES.md` (what must
 ship) and `DESIGN.md` (how it looks). Where they disagree, the OVERRIDES in
 `CLAUDE.md` win; this plan already follows them.
 
-Status: **answers to §9 received 2026-10-09; waiting for go on step 1.** No app code exists yet.
+Status: **built and live** (https://project-hlith.hliskjlf.workers.dev). This is the original build plan, kept as the reference for how the app is put together; what happened since is in `PROGRESS.md`.
 
 **The shape in one line:** `core/` is the skeleton, `tools/` are the shelves and
 nerves (modules that work for any game), `games/` is the flesh. A new game,
