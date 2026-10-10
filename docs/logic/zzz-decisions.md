@@ -181,3 +181,9 @@ Each one can be changed: tell LOGIC-CORE which.
 53. **Build score and saving a scanned build** need a place to save builds,
     which the app doesn't have yet (FRAME's saved data). Until then the
     character page keeps saying "No build data yet".
+54. **A team's first member is its damage dealer** when they can be one (the
+    lead of a preset or recommended team); otherwise the method's step 1 picks.
+    So "Cissia team" is scored for Cissia, not for Seed in the same squad.
+55. **Recommended teams (ZZZ) come from the check itself**: for every damage
+    dealer, the best squad from every agent at Mindscape 0, with the two best
+    alternatives per place. Source named on each card.

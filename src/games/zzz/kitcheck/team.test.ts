@@ -2,7 +2,7 @@
 import { describe, expect, it } from 'vitest';
 import type { TeamAccount } from '../../../core/contract';
 import { buildLibrary, SHEETS } from './library';
-import { ifYouPull, lineUps, synergyLabel, verdict, whoFits } from './team';
+import { ifYouPull, lineUps, recommendedTeams, synergyLabel, verdict, whoFits } from './team';
 
 /** Every agent is read now; leave one sheet out on purpose to test "not read yet". */
 const unreadAnby = buildLibrary(SHEETS.filter((s) => s.characterId !== '1011'));
@@ -97,5 +97,17 @@ describe('If you pull…', () => {
 
   it('unread agents are not rated', () => {
     expect(ifYouPull('1011', all, unreadAnby)).toBeNull();
+  });
+});
+
+describe('Recommended teams from the check', () => {
+  it("Starlight Billy's is Billy > Dialyn > Lucia at Mindscape 0 (count 9), with alternatives per place", () => {
+    const t0 = Date.now();
+    const teams = recommendedTeams();
+    expect(Date.now() - t0).toBeLessThan(8000);
+    const billy = teams.find((t) => t.id === `kit-check-${BILLY}`);
+    expect(billy?.slots.map((s) => s.characters[0])).toEqual([BILLY, DIALYN, LUCIA]);
+    expect(billy?.source).toContain('(9)');
+    expect(billy?.slots[1]?.characters.length).toBeGreaterThan(1);
   });
 });

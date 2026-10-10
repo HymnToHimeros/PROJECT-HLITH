@@ -16,7 +16,7 @@ import versions from './data/versions.json';
 import { materialsFor } from './costs';
 import { SHEETS } from './kitcheck/library';
 import { withTags } from './kitcheck/tags';
-import { zzzTeamRules } from './kitcheck/team';
+import { recommendedTeams, zzzTeamRules } from './kitcheck/team';
 
 const list = <T>(rows: unknown) => async () => rows as T[];
 const COMMUNITY = 'community pull-log statistics (not published by the game)';
@@ -132,7 +132,8 @@ export const zzz: GameContract = {
     events: list<GameEvent>(events),
     backlog: list<BacklogItem>(backlog),
     materials: list<Material>(materials),
-    teams: list<TeamPreset>(teams),
+    // Recommended teams: the best squads the kit check finds for each damage dealer (docs/logic/zzz-method.md).
+    teams: async () => [...(teams as TeamPreset[]), ...recommendedTeams()],
     sampleArt: async () => sampleArt as SampleArt[],
     versions: list<Version>(versions),
     // Kit text with the cheat sheet's tags (docs/logic/zzz-method.md, Part A).
