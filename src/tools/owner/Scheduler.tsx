@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { runnerOf } from '../../../supabase/functions/_shared/jobs.ts';
-import { describeCadence, dueJobs, effectiveCadence, lastSlot, nextSlot, runnable } from '../../../supabase/functions/_shared/scheduler.ts';
+import { describeCadence, dueJobs, effectiveCadence, externalNext, nextSlot, runnable, selfAdjusting } from '../../../supabase/functions/_shared/scheduler.ts';
 import { ExampleNotice, ExampleTag, HowTo, NoData } from '../../core/ui';
 import o from './owner.module.css';
 import { JOBS, jobLabel, runJobNow, setJobEnabled, setTimer, timerStatus, type TimerStatus, type JobDef, type JobRowFull, type RunView, type SchedulerData } from './schedulerData';
@@ -111,8 +111,10 @@ function JobRow({ job, row, now, example, reload }: { job: JobDef; row: JobRowFu
   const included = job.target.kind === 'included';
   const enabled = row ? row.enabled : true;
   const lastRun = row?.last_run_at ?? null;
-  const due = !included && enabled && row !== undefined && (external ? Boolean(lastRun) && Date.parse(lastRun ?? '') < lastSlot(eff.cadence, now) : dueJobs([job], [row], now).length > 0);
-  const nextAt = nextSlot(eff.cadence, now);
+  // A routine's job is expected when its last delivery said (next_at), else on its fallback cadence.
+  const ext = external ? externalNext(job, row, now) : null;
+  const due = !included && enabled && row !== undefined && (ext ? ext.overdue : dueJobs([job], [row], now).length > 0);
+  const nextAt = ext ? ext.at : nextSlot(eff.cadence, now);
 
   const toggle = async () => {
     setBusy(true);
@@ -151,7 +153,11 @@ function JobRow({ job, row, now, example, reload }: { job: JobDef; row: JobRowFu
         <div>
           <dt>{external ? 'Expected' : 'Cadence'}</dt>
           <dd>
-            {included && job.target.kind === 'included' ? `With ${jobLabel(job.target.in)}` : describeCadence(eff.cadence)}
+            {included && job.target.kind === 'included'
+              ? `With ${jobLabel(job.target.in)}`
+              : selfAdjusting(job) && !eff.overridden
+                ? 'Self-adjusting: the routine says when it runs next'
+                : describeCadence(eff.cadence)}
             {eff.overridden && ' (your change)'}
             {eff.badOverride && ' (your change could not be read; using the default)'}
           </dd>
@@ -174,7 +180,7 @@ function JobRow({ job, row, now, example, reload }: { job: JobDef; row: JobRowFu
         {!included && (
           <div>
             <dt>{external ? 'Next expected' : 'Next due'}</dt>
-            <dd>{!enabled ? 'Switched off' : due ? (external ? 'Overdue' : 'Due now (next tick)') : when(new Date(nextAt).toISOString())}</dd>
+            <dd>{!enabled ? 'Switched off' : due ? (external ? 'Overdue' : 'Due now (next tick)') : nextAt === null ? 'After its first delivery' : when(new Date(nextAt).toISOString())}</dd>
           </div>
         )}
         <div>
