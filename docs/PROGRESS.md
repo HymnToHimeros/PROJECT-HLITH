@@ -28,6 +28,11 @@ Resume with: "continue from PROGRESS.md". Newest entry on top. Older entries:
 - CI (`.github/workflows/ci.yml`) runs both on every pull request.
 
 ## Done
+- 2026-10-10 · **FRAME: Enhanced / Agent Potential per character** (branch `frame/potential-field`).
+  For LOGIC-CORE: the character page has an "Enhanced" (HSR: Not set / No / Yes) or
+  "Agent Potential" (ZZZ: Not set / 0–6) picker, only for characters whose kit has pieces
+  that need it. Saved with the roster and synced; team scores and Kit check read it
+  through `TeamAccount.potential`. "Not set" keeps those pieces locked, as before.
 - 2026-10-10 · **LOGIC-CORE: HSR scoring, build guide with pictures, shorter team lists** (branch `logic-core/roster-polish-hsr-scoring`).
   - HSR now scores like ZZZ: synergy % with Why (every point with its quote),
     Line-ups, Who fits, If you pull, and best teams by kit check. Rules:

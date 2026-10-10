@@ -54,12 +54,16 @@ export function Member({ data, id, example, size = 'md', showName = false, onOpe
   );
 }
 
-/** What the game's team rules may know about you: who you own and their dupes. */
+/** What the game's team rules may know about you: who you own, their dupes and (when set) their potential. */
 export const teamAccount = (data: RosterData): TeamAccount => rosterAccount(data.user.roster);
 
 const rosterAccount = (roster: RosterData['user']['roster']): TeamAccount => ({
   owned: (id) => entryOf(roster, id).owned,
   dupes: (id) => entryOf(roster, id).dupes,
+  potential: (id) => {
+    const e = entryOf(roster, id);
+    return e.owned ? e.potential : undefined;
+  },
 });
 
 /** The game's verdict on a team, from its team rules (LOGIC-CORE); null when the game has none. */

@@ -56,6 +56,7 @@ export const hsr: GameContract = {
     { id: 'elation', label: 'Elation' },
   ],
   dupes: { prefix: 'E', name: 'Eidolon', max: 6 },
+  potential: { name: 'Enhanced', max: 1 },
   currencies: [
     { id: 'stellar-jade', name: 'Stellar Jade', perPull: 160 },
     { id: 'special-pass', name: 'Star Rail Special Pass', pullItemFor: ['character', 'light-cone'] },

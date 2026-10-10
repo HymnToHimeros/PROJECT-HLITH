@@ -120,6 +120,8 @@ export interface RosterEntry {
   owned: boolean;
   wanted: boolean;
   dupes: number;
+  /** The game's second upgrade track (`GameContract.potential`); missing = not set. */
+  potential?: number;
 }
 export interface UserTeam {
   id: string;

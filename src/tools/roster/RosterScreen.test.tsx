@@ -373,6 +373,53 @@ describe('Roster screen', () => {
     expect(within(page).getByText(/Not read yet: what each skill does is added next\./)).toBeInTheDocument();
   });
 
+  it('Enhanced / Potential: only for kits that need it, saved per character, read by team rules, and can go back to "Not set"', async () => {
+    const seen: (number | undefined)[] = [];
+    const base = makeGame(false);
+    const game: GameContract = {
+      ...base,
+      potential: { name: 'Enhanced', max: 1 },
+      data: {
+        ...base.data,
+        kits: async () => [
+          { characterId: 'c1', skills: [{ id: 'c1-e', label: 'Enhanced Skill', does: [], gameText: 'Enhanced.', unlock: { potential: 1 } }] },
+          { characterId: 'c2', skills: [{ id: 'c2-b', label: 'Basic', does: [], gameText: 'Hits.' }] },
+        ],
+      },
+      rules: {
+        teams: {
+          method: 'Test method',
+          rated: () => true,
+          verdict: () => ({ rated: false, why: 'not rated yet' }),
+          whoFits: (_m, a) => {
+            seen.push(a.potential?.('c1'));
+            return [];
+          },
+          lineUps: () => [],
+          ifYouPull: () => null,
+        },
+      },
+    };
+    setRosterEntry('aa', 'c1', { owned: true, wanted: false, dupes: 0 });
+    await show('characters', game);
+    fireEvent.click(screen.getByRole('button', { name: /^Newest Star/ }));
+    let page = await screen.findByRole('article', { name: 'Newest Star' });
+    const pick = await within(page).findByLabelText('Enhanced');
+    expect(within(page).getByText(/keeps Enhanced parts locked until you set it/)).toBeInTheDocument();
+    fireEvent.change(pick, { target: { value: '1' } });
+    expect(gameData('aa').roster.c1).toEqual({ owned: true, wanted: false, dupes: 0, potential: 1 });
+    expect(within(page).getByRole('option', { name: 'Yes' })).toHaveProperty('selected', true);
+    expect(seen.at(-1)).toBe(1);
+    fireEvent.change(pick, { target: { value: '' } });
+    expect(gameData('aa').roster.c1).toEqual({ owned: true, wanted: false, dupes: 0 });
+    // A character whose kit has no Enhanced pieces gets no Enhanced control.
+    fireEvent.click(within(page).getByRole('button', { name: '← Roster' }));
+    await screen.findByRole('list', { name: /Characters/ });
+    page = await openPage('Older Star');
+    await within(page).findByText('Eidolon');
+    expect(within(page).queryByLabelText('Enhanced')).not.toBeInTheDocument();
+  });
+
   it('a game with team rules shows the synergy % and, on tap, every reason with its proof', async () => {
     const base = makeGame(false);
     const rules: TeamRules = {
