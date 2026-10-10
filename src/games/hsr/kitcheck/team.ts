@@ -11,6 +11,8 @@ import { isOwnTeam, library, pageOf } from './library';
 import { fillTeam, withOwnerLists } from '../../../core/rules/fillTeam';
 import { accountNotes, type AccountFacts } from '../../../core/rules/accountNotes';
 import { SIGNATURE_PIECE } from '../../../core/rules/signatureWeapons';
+import { assumedLine, assumedWords } from '../../../core/rules/averageBuild';
+import { assume } from '../assumed';
 import { explainTeam, memberPhrase } from '../../../core/rules/teamExplain';
 import { leakLines, noListLine, usable } from '../../../core/rules/leaks';
 
@@ -30,7 +32,9 @@ const toAccount = (a: TeamAccount): Account => ({
   // T18: a saved build is read only for characters you own; undefined = no build saved.
   buildFit: (id, stat) => {
     const b = a.owned(id) ? a.build?.(id) : undefined;
-    return b ? buildFit(b, stat, GEAR_SLOTS) : undefined;
+    const fit = b ? buildFit(b, stat, GEAR_SLOTS) : undefined;
+    // T34: an assumed build says so wherever its fit is shown.
+    return fit && a.assumed?.(id) ? { ...fit, have: `${assumedWords(a.weapon?.(id)?.name)}: ${fit.have}` } : fit;
   },
 });
 
@@ -163,9 +167,12 @@ export function verdict(members: string[], a: TeamAccount, lib: Library = librar
   if (out.other && !lead) notes.push(`With ${name(out.other.dd)} as the damage dealer it counts ${out.other.count}.`);
   if ((lib.ownTeams.get(mine.dd) ?? []).some((t) => account.teamList?.(t.id))) notes.push(`Team lists for ${name(mine.dd)} edited by you: teammates come from your lists.`);
   notes.push('Traces count as unlocked. A higher count means more of the kits connect, not more damage.');
+  const assumedNote = assumedLine(mine.members, a, name);
   // T39: a leak in the team says so; a leaked carry has no game team list yet.
   const leakNote = [...leakLines(mine.members, lib.leaks, name), ...(lib.leaks?.has(mine.dd) && !lib.ownTeams.get(mine.dd)?.length ? [noListLine(name(mine.dd))] : [])];
-  notes.push(...leakNote);
+  // T34's assumed builds, then T39's leak lines: in the notes and at the end of the plain words.
+  const extraNotes = [...(assumedNote ? [assumedNote] : []), ...leakNote];
+  notes.push(...extraNotes);
   const explain = explainTeam(asExplain(mine), asExplain(top), name);
   const label = synergyLabel(percent, members.length);
   return {
@@ -179,7 +186,7 @@ export function verdict(members: string[], a: TeamAccount, lib: Library = librar
     unordered: true,
     reasons: mine.lines.map((l) => reasonOf(l, lib)),
     ...(wantsOf(mine, lib).length ? { wants: wantsOf(mine, lib) } : {}),
-    explain: leakNote.length ? { ...explain, missing: [...explain.missing, ...leakNote] } : explain,
+    explain: extraNotes.length ? { ...explain, missing: [...explain.missing, ...extraNotes] } : explain,
     notes: [summary(mine), ...notes],
   };
 }
@@ -340,10 +347,11 @@ export const hsrTeamRules: TeamRules = {
   method: METHOD,
   fill: (p, a) => fillTeam(withOwnerLists(p, a), a.owned, (team, id) => !a.skip?.(id) && fits([...team, id])),
   rated: (id) => library().sheets.has(id),
-  verdict: (m, a) => verdict(m, a),
-  whoFits: (m, a, o) => whoFits(m, a, library(), o),
-  lineUps: (a) => lineUps(a),
-  ifYouPull: (id, a) => ifYouPull(id, a),
+  // T34: the owner's "assume signature + average build" switch is applied once, here, for every question.
+  verdict: (m, a) => verdict(m, assume(a)),
+  whoFits: (m, a, o) => whoFits(m, assume(a), library(), o),
+  lineUps: (a) => lineUps(assume(a)),
+  ifYouPull: (id, a) => ifYouPull(id, assume(a)),
 };
 
 /**

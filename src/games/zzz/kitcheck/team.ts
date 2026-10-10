@@ -11,6 +11,8 @@ import { checkSquad, compare, DD_ORDER, labelOf, type Account, type Library, typ
 import { library } from './library';
 import { accountNotes, type AccountFacts } from '../../../core/rules/accountNotes';
 import { SIGNATURE_PIECE } from '../../../core/rules/signatureWeapons';
+import { assumedLine, assumedWords } from '../../../core/rules/averageBuild';
+import { assume } from '../assumed';
 import { explainTeam, memberPhrase } from '../../../core/rules/teamExplain';
 import { leakLines, usable } from '../../../core/rules/leaks';
 
@@ -25,7 +27,9 @@ const toAccount = (a: TeamAccount): Account => ({
   // T18: a saved build is read only for agents you own; undefined = no build saved.
   buildFit: (id, stat) => {
     const b = a.owned(id) ? a.build?.(id) : undefined;
-    return b ? buildFit(b, stat, GEAR_SLOTS) : undefined;
+    const fit = b ? buildFit(b, stat, GEAR_SLOTS) : undefined;
+    // T34: an assumed build says so wherever its fit is shown.
+    return fit && a.assumed?.(id) ? { ...fit, have: `${assumedWords(a.weapon?.(id)?.name)}: ${fit.have}` } : fit;
   },
 });
 
@@ -122,9 +126,12 @@ export function verdict(members: string[], a: TeamAccount, lib: Library = librar
   if (every && every.count > top.count) notes.push(`From every agent, ${every.order.map(name).join(' > ')} counts ${every.count}.`);
   if (out.other && out.other.count !== mine.count) notes.push(`The other order, ${out.other.order.map(name).join(' > ')}, counts ${out.other.count}.`);
   notes.push('A higher count means more of the kits connect, not more damage.');
+  const assumedNote = assumedLine(mine.order, a, name);
   // T39: a leak in the squad says so (ZZZ has no game team lists to lack, so only the leak line).
   const leakNote = leakLines(mine.order, lib.leaks, name);
-  notes.push(...leakNote);
+  // T34's assumed builds, then T39's leak lines: in the notes and at the end of the plain words.
+  const extraNotes = [...(assumedNote ? [assumedNote] : []), ...leakNote];
+  notes.push(...extraNotes);
   const explain = explainTeam({ members: mine.order, dd: mine.dd, count: mine.count, lines: mine.lines }, { members: top.order, dd: top.dd, count: top.count, lines: top.lines }, name);
   return {
     rated: true,
@@ -136,7 +143,7 @@ export function verdict(members: string[], a: TeamAccount, lib: Library = librar
     order: mine.order,
     reasons: mine.lines.map((l) => reasonOf(l, lib)),
     ...(wantsOf(mine, lib).length ? { wants: wantsOf(mine, lib) } : {}),
-    explain: leakNote.length ? { ...explain, missing: [...explain.missing, ...leakNote] } : explain,
+    explain: extraNotes.length ? { ...explain, missing: [...explain.missing, ...extraNotes] } : explain,
     notes: [summary(mine), ...notes],
   };
 }
@@ -272,10 +279,11 @@ export const zzzTeamRules: TeamRules = {
   method: METHOD,
   fill: (p, a) => fillTeam(withOwnerLists(p, a), a.owned, (_team, id) => !a.skip?.(id)),
   rated: (id) => library().sheets.has(id),
-  verdict: (m, a) => verdict(m, a),
-  whoFits: (m, a, o) => whoFits(m, a, library(), o),
-  lineUps: (a) => lineUps(a),
-  ifYouPull: (id, a) => ifYouPull(id, a),
+  // T34: the owner's "assume signature + average build" switch is applied once, here, for every question.
+  verdict: (m, a) => verdict(m, assume(a)),
+  whoFits: (m, a, o) => whoFits(m, assume(a), library(), o),
+  lineUps: (a) => lineUps(assume(a)),
+  ifYouPull: (id, a) => ifYouPull(id, assume(a)),
 };
 
 /**

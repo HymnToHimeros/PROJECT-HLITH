@@ -11,3 +11,7 @@ export const GEAR_SLOTS: { id: string; label: string; mains: string[] }[] = [
   },
   { id: 'Link Rope', label: 'Link Rope', mains: ['HP %', 'ATK %', 'DEF %', 'Break Effect', 'Energy Regeneration Rate'] },
 ];
+
+/** Which slots a set of this many pieces goes on: cavern relics (4) on Head–Feet, planar ornaments (2) on Sphere and Rope. */
+export const SET_SLOTS = (pieces: number) => (pieces === 4 ? ['Head', 'Hands', 'Body', 'Feet'] : ['Planar Sphere', 'Link Rope']);
+export const LEVEL_MAX = 80;

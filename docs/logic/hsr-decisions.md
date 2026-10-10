@@ -158,6 +158,13 @@ team size and order, and the owner's ZZZ method's own counting.
       team that lists another carry alone further along (Aventurine • Waveflair's team 3) is kept.
     ZZZ: no game team lists and no solo-mode readings in its sheets, so nothing changes there (mirror rule: the
     same rules apply once ZZZ has the facts).
+34. **Assume signature + average build (owner's job T34, both games, ZZZ decision 58 mirrors it).** With the owner's
+    switch on, owned characters with no saved build are scored with their signature weapon and an average build made
+    from the game's own recommendation (rules in `build-score.md`, "Assumed builds"). It is said in the Why; a saved
+    build always wins; switch off = scored at base, as before.
+35. **Target stats come only from numbers the game text states (owner's job T35, both games, ZZZ decision 59 mirrors it).**
+    Kit, signature weapon and the recommended sets' own conditions, each quoted word for word with the working shown;
+    no number in the text = "No data yet". Rules in `build-score.md`, "Target stats".
 36. **Leaked characters in teams (owner's job T39, both games, ZZZ decision 60 mirrors it).** The owner: "leaked charchter cna
     also be used to build teams with. so u also know based on the leaked kit what charchter are good for it therfore u
     cna for exmaple pre upll a chacrhter". A leak (`Character.leak`) is read from its beta kit text like anyone else.

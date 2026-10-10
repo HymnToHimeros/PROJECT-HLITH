@@ -1742,3 +1742,24 @@ button.member:hover .memberArt {
   border: 1px solid color-mix(in srgb, var(--glacier) 55%, transparent);
   color: var(--glacier);
 }
+
+/* Roster → Teams: "Assume signature + average build" (T34). */
+.assumeRow {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--s-3);
+  padding: var(--s-3);
+  border-radius: var(--r-card);
+  border: 1px solid var(--line-default);
+  background: var(--bg-card);
+}
+.assumeText {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 13px;
+}
+.assumeLabel {
+  font-weight: 600;
+  color: var(--ink-1);
+}
