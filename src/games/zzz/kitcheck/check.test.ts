@@ -145,3 +145,93 @@ describe('Part B rules', () => {
     expect(r.lines.filter((l) => l.kind === 'weak-fit')).toEqual([]);
   });
 });
+
+describe('Group B: the method’s other examples', () => {
+  const YE = '1431';
+  const SUNNA = '1491';
+  const ZHAO = '1341';
+  const LIGHTER = '1161';
+  const ROXY = '1621';
+  const HUGO = '1291';
+  const LYCAON = '1141';
+  const m0: Account = { mindscape: () => 0, potential: () => undefined };
+
+  it('Ye Shunguang + Sunna + Zhao counts 9 at M0 (method: "Ye Shunguang goes from 6 to 9")', () => {
+    const out = checkSquad([YE, SUNNA, ZHAO], lib, m0);
+    expect(out.rated && out.best.count).toBe(9);
+    // Both teammates' Ether Veils set off Ye's Additional Ability: two chains.
+    expect(out.rated && out.best.lines.filter((l) => l.kind === 'chain').map((l) => l.who).sort()).toEqual([ZHAO, SUNNA].sort());
+    // Zhao's +5% Max HP doesn't count: Ye's damage doesn't use Max HP.
+    expect(out.rated && out.best.lines.find((l) => l.entry === 'wellspring-hp' && l.who === ZHAO)).toMatchObject({ kind: 'not-counted', points: 0 });
+  });
+
+  it('wrong attribute: Lighter’s Ice and Fire buffs on a Physical damage dealer don’t count', () => {
+    const r = checkOrder([BILLY, LIGHTER, LUCIA], BILLY, lib, m0);
+    expect(r.lines.find((l) => l.entry === 'ice-fire-res')).toMatchObject({ kind: 'not-counted', why: expect.stringContaining('only for ice or fire') });
+    // His Elation is off: no Attack teammate and no shared faction.
+    expect(r.lines.find((l) => l.entry === 'elation')).toMatchObject({ kind: 'off', points: -1 });
+  });
+
+  it('wrong specialty: Roxy’s Armorer-only buff doesn’t reach Billy, her non-Armorer one does', () => {
+    const r = checkOrder([BILLY, ROXY, LUCIA], BILLY, lib, m0);
+    expect(r.lines.find((l) => l.entry === 'contamination-laceration')).toMatchObject({ kind: 'not-counted' });
+    expect(r.lines.find((l) => l.entry === 'contamination-crit')).toMatchObject({ kind: 'buff', points: 1 });
+  });
+
+  it('Dialyn’s and Roxy’s +2s Stun do not stack: the second is a duplicate (−1)', () => {
+    const r = checkOrder([BILLY, DIALYN, ROXY], BILLY, lib, m0);
+    const dup = r.lines.filter((l) => l.kind === 'duplicate');
+    expect(dup).toHaveLength(1);
+    expect(dup[0]).toMatchObject({ who: ROXY, entry: 'stun-duration', points: -1 });
+  });
+
+  it('a count condition: Hugo with two Stun characters switches on both ATK tiers', () => {
+    const r = checkOrder([HUGO, LYCAON, LIGHTER], HUGO, lib, m0);
+    expect(r.lines.filter((l) => l.kind === 'switched-on').map((l) => l.entry)).toEqual(['stun-atk', 'stun-atk-two', 'chain-totalize-dmg']);
+  });
+
+  it('Agent Potential: not saved = base kit counts, Potential pieces locked; at Potential 6 the base is replaced', () => {
+    const unsaved = checkOrder([HUGO, LYCAON, ZHAO], HUGO, lib, m0);
+    expect(unsaved.lines.find((l) => l.entry === 'ice-res-down')).toMatchObject({ kind: 'buff' });
+    expect(unsaved.lines.find((l) => l.entry === 'p-other-attributes')).toMatchObject({ kind: 'locked', why: expect.stringContaining("Potential isn't saved yet") });
+    const p6: Account = { mindscape: () => 0, potential: (id) => (id === LYCAON ? 6 : undefined) };
+    const full = checkOrder([HUGO, LYCAON, ZHAO], HUGO, lib, p6);
+    expect(full.lines.find((l) => l.entry === 'ice-res-down')).toMatchObject({ kind: 'replaced', points: 0 });
+    expect(full.lines.find((l) => l.entry === 'p-ice-res-down')).toMatchObject({ kind: 'buff' });
+    // "+30% DMG from other attributes" doesn't reach an Ice damage dealer.
+    expect(full.lines.find((l) => l.entry === 'p-other-attributes')).toMatchObject({ kind: 'not-counted' });
+  });
+});
+
+describe('Group C', () => {
+  const SEED = '1461';
+  const CISSIA = '1521';
+  const SUNNA = '1491';
+  const BANYUE = '1471';
+  const m0: Account = { mindscape: () => 0, potential: () => undefined };
+  const owner: Account = { mindscape: (id) => ({ [BILLY]: 1, [PAN]: 6 })[id] ?? 0, potential: () => undefined };
+
+  it("a damage dealer's ability that goes to a teammate is not 'theirs switched on' (Seed's Vanguard buff)", () => {
+    const asSeed = checkOrder([SEED, CISSIA, SUNNA], SEED, lib, m0);
+    expect(asSeed.lines.find((l) => l.who === SEED && l.entry === 'direct-strike')).toMatchObject({ kind: 'not-counted', points: 0 });
+    const asCissia = checkOrder([CISSIA, SEED, SUNNA], CISSIA, lib, m0);
+    expect(asCissia.lines.find((l) => l.who === SEED && l.entry === 'direct-strike')).toMatchObject({ kind: 'buff', points: 1 });
+  });
+
+  it('the method’s example: Banyue > Pan Yinhu > Lucia counts 9', () => {
+    expect(checkOrder([BANYUE, PAN, LUCIA], BANYUE, lib, owner).count).toBe(9);
+  });
+});
+
+describe('Group E: Anomaly DMG is a stat only some damage dealers use', () => {
+  const PIPER = '1281';
+  const JANE = '1261';
+  const m0: Account = { mindscape: () => 0, potential: () => undefined };
+
+  it("Jane's Assault CRIT doesn't count for Starlight Billy (his damage is Sheer DMG), but does for Piper", () => {
+    const billy = checkOrder([BILLY, PIPER, JANE], BILLY, lib, m0);
+    expect(billy.lines.find((l) => l.entry === 'gnawed-assault-crit')).toMatchObject({ kind: 'not-counted', points: 0 });
+    const piper = checkOrder([PIPER, JANE, LUCIA], PIPER, lib, m0);
+    expect(piper.lines.find((l) => l.entry === 'gnawed-assault-crit')).toMatchObject({ kind: 'buff', points: 1 });
+  });
+});

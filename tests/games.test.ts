@@ -78,7 +78,8 @@ describe('a new, unlike game needs no core change (PLAN §2b)', () => {
       return g ? featuresAt('roster', 'character-page', g)[0]?.available : undefined;
     };
     expect(at('zzz')).toBe(true);
-    expect(at('hsr')).toBe(false);
+    // HSR has kit data since LOGIC-CORE's group A (Override 1: "HSR later"); a game without it stays off.
+    expect(at('hsr')).toBe(true);
     expect(at('fake-quest')).toBe(false);
   });
 });

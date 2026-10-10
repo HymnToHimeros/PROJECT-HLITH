@@ -9,6 +9,7 @@ const WHO: Record<Entry['to'], string> = {
   previous: 'for the character before them',
   next: 'for the character after them',
   'switch-in': 'for whoever switches in',
+  teammate: 'for one teammate',
 };
 
 function noteOf(e: Entry): string {

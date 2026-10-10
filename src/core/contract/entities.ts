@@ -108,6 +108,8 @@ export interface KitSkill {
   kind?: 'skill' | 'core' | 'additional' | 'mindscape' | 'potential' | 'trace' | 'eidolon';
   /** Only active from this dupe level (1–6) or potential level; absent = base kit. */
   unlock?: { dupes?: number; potential?: number };
+  /** No longer applies from this level: a stronger version (`unlock` at the same level) replaces it. */
+  replacedAt?: { potential: number };
   /** What it does, in a few words. Empty until the kit has been read. */
   does: string[];
   /** Each tag with the exact words of `gameText` that prove it. */

@@ -18,7 +18,7 @@ export interface Library {
   profiles: Map<string, Profile>;
   sheets: Map<string, CharacterSheet>;
   /** Kit piece → unlock level, per character. */
-  unlocks: Map<string, Map<string, { dupes?: number; potential?: number }>>;
+  unlocks: Map<string, Map<string, { dupes?: number; potential?: number; replacedAt?: number }>>;
   /** Kit piece → its label ("Additional Ability: External Line"), per character. */
   pieceLabels: Map<string, Map<string, string>>;
   names: Map<string, string>;
@@ -31,11 +31,11 @@ export interface Account {
   potential: (id: string) => number | undefined;
 }
 
-export type Status = 'on' | 'off' | 'locked' | 'unknown';
+export type Status = 'on' | 'off' | 'locked' | 'unknown' | 'replaced';
 
 /** One line of the explanation. `points` is what it adds to the count (0 for tie-break and not counted). */
 export interface Line {
-  kind: 'switched-on' | 'buff' | 'chain' | 'off' | 'duplicate' | 'weak-fit' | 'support' | 'possible' | 'not-counted' | 'locked' | 'unknown';
+  kind: 'switched-on' | 'buff' | 'chain' | 'off' | 'duplicate' | 'weak-fit' | 'support' | 'possible' | 'not-counted' | 'locked' | 'unknown' | 'replaced';
   who: string;
   /** Entry id (absent for weak fits). */
   entry?: string;
@@ -118,6 +118,10 @@ export function statusOf(e: Entry, who: string, order: string[], lib: Library, a
     if (p === undefined) return { status: 'locked', why: `locked: needs Potential ${unlock.potential}; Potential isn't saved yet` };
     if (p < unlock.potential) return { status: 'locked', why: `locked: needs Potential ${unlock.potential}, you have ${p}` };
   }
+  if (unlock?.replacedAt) {
+    const p = account.potential(who);
+    if (p !== undefined && p >= unlock.replacedAt) return { status: 'replaced', why: `replaced: the Agent Potential ${unlock.replacedAt}+ version is on` };
+  }
   if (e.unverified) return { status: 'unknown', why: `unclear text: ${e.unverified}` };
   const r = evalCondition(e.on, who, order, lib);
   if (r === 'unknown') return { status: 'unknown', why: 'its condition cannot be checked from profiles' };
@@ -187,6 +191,10 @@ export function checkOrder(order: string[], dd: string, lib: Library, account: A
         lines.push({ ...base, kind: 'locked', why: st.why, points: 0 });
         continue;
       }
+      if (st.status === 'replaced') {
+        lines.push({ ...base, kind: 'replaced', why: st.why, points: 0 });
+        continue;
+      }
       if (st.status === 'unknown') {
         lines.push({ ...base, kind: 'unknown', why: st.why, points: 0 });
         continue;
@@ -205,6 +213,11 @@ export function checkOrder(order: string[], dd: string, lib: Library, account: A
         seenNoStack.set(e.noStack, `${name(who)}'s ${e.tag}`);
       }
       if (who === dd) {
+        // Only an ability that helps the damage dealer counts as "theirs switched on" (decision 28).
+        if (e.on && (e.to === 'teammate' || e.to === 'previous' || e.to === 'next')) {
+          lines.push({ ...base, kind: 'not-counted', why: `${st.why}, but it goes to a teammate, not to ${name(dd)}`, points: 0 });
+          continue;
+        }
         if (e.on) {
           // Who switches it on: each teammate who would meet the condition alone.
           const helpers = order.filter((id) => id !== dd && evalCondition(e.on, dd, [dd, id], lib) === 'met');
@@ -220,7 +233,7 @@ export function checkOrder(order: string[], dd: string, lib: Library, account: A
           lines.push({ ...base, kind: 'possible', why: `a ${eventWord(c.event)}, but the text does not say whose`, points: 0 });
         } else {
           const target = c.whose === 'previous' ? before(order, who) : c.whose === 'next' ? after(order, who) : dd;
-          const reaction = ddSheet?.entries.find((x) => x.reacts === c.event && statuses.get(key(dd, x))?.status === 'on');
+          const reaction = ddSheet?.entries.find((x) => [x.reacts].flat().includes(c.event) && statuses.get(key(dd, x))?.status === 'on');
           if (target !== dd) lines.push({ ...base, kind: 'not-counted', why: `the ${eventWord(c.event)} goes to ${name(target)}, not ${name(dd)}`, points: 0 });
           else if (!reaction) lines.push({ ...base, kind: 'not-counted', why: `${name(dd)}'s kit has nothing switched on that reacts to a ${eventWord(c.event)}`, points: 0 });
           else {
