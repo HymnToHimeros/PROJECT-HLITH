@@ -242,6 +242,6 @@ team size and order, and the owner's ZZZ method's own counting.
 64. **"Best found from your characters" cards (mirrors HSR decision 40, T41).** The same rule: a damage dealer
     whose squads all stay under 90% gets their best squad found from your agents as its own card. ZZZ squads have no
     healer-only slot, so the "carry is the sustain" part has nothing to change. On the owner's roster: Hugo,
-    Harumasa, Anton, Promeia, Remielle, Orphie & Magus, Pyrois and Corin get one (most of their squads miss an agent
+    Harumasa, Anton, Promeia, Remielle, Pyrois and Corin get one (most of their squads miss an agent
     the owner lacks).
 

@@ -388,7 +388,12 @@ export function bestCards(presets: TeamPreset[], a: TeamAccount, lib: Library = 
     const v = verdict(members, assumed, lib);
     return v.rated ? [{ dd: out.best.dd, members, percent: v.percent }] : [];
   });
-  return bestFoundCards(cards, (dd) => best(dd)?.members, (id) => lib.names.get(id) ?? id, SIZE);
+  const found = (dd: string) => {
+    const members = best(dd)?.members;
+    const v = members ? verdict(members, assumed, lib) : undefined;
+    return members && v?.rated ? { members, percent: v.percent } : undefined;
+  };
+  return bestFoundCards(cards, found, (id) => lib.names.get(id) ?? id, SIZE);
 }
 
 export const hsrTeamRules: TeamRules = {

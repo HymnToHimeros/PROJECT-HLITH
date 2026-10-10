@@ -282,7 +282,7 @@ team size and order, and the owner's ZZZ method's own counting.
       source for him.
     - **Best-found card:** when every card of a damage dealer you own stays under 90% (each card's own %, like with
       like as shown), and their best team found from your characters (any line-up, full team size) is a line-up no
-      card shows, that team gets its own card. It is tagged "Best found", with no game team list to edit, and its
+      card shows, and its own % on your builds is above their best card's, that team gets its own card. It is tagged "Best found", with no game team list to edit, and its
       source line says it comes from the kit check. The 90% is MANAGER's "under ~90%". It doesn't trigger off a
       healer team's like-with-like %: Phainon's 91% card keeps his owner's team, and no healer-free card is added
       beside it.

@@ -19,14 +19,20 @@ export interface ShownCard {
 
 const same = (a: string[], b: string[]) => a.length === b.length && a.every((id) => b.includes(id));
 
-/** `size`: the game's team size; a best team found that can't fill it (a carry whose lists name too few of yours) gets no card. */
-export function bestFoundCards(cards: ShownCard[], bestOf: (dd: string) => string[] | undefined, name: (id: string) => string, size: number): TeamPreset[] {
+/**
+ * `bestOf`: the damage dealer's best team found from your characters and its own % on your builds, as its card would
+ * show it. `size`: the game's team size; a best team found that can't fill it (a carry whose lists name too few of
+ * yours) gets no card, and neither does one whose % on your builds isn't above their best card's.
+ */
+export function bestFoundCards(cards: ShownCard[], bestOf: (dd: string) => { members: string[]; percent: number } | undefined, name: (id: string) => string, size: number): TeamPreset[] {
   const out: TeamPreset[] = [];
   for (const dd of [...new Set(cards.map((c) => c.dd))]) {
     const mine = cards.filter((c) => c.dd === dd);
-    if (Math.max(...mine.map((c) => c.percent)) >= BEST_CARD_BELOW) continue;
-    const best = bestOf(dd);
-    if (!best || best.length < size || mine.some((c) => same(c.members, best))) continue;
+    const top = Math.max(...mine.map((c) => c.percent));
+    if (top >= BEST_CARD_BELOW) continue;
+    const found = bestOf(dd);
+    const best = found?.members;
+    if (!found || !best || best.length < size || found.percent <= top || mine.some((c) => same(c.members, best))) continue;
     out.push({ id: `${BEST_FOUND}-${dd}`, name: `${name(dd)} · best found from your characters`, slots: best.map((id) => ({ characters: [id] })), source: BEST_FOUND });
   }
   return out;

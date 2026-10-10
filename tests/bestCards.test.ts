@@ -15,13 +15,15 @@ const presets = gameTeams(hsrTeams as TeamPreset[]);
 describe('core: when a best-found card is added', () => {
   const name = (x: string) => x;
   it('only when every card of that damage dealer is under 90% and none shows the best line-up', () => {
-    expect(bestFoundCards([{ dd: 'a', members: ['a', 'b'], percent: 88 }], () => ['a', 'c'], name, 2)).toEqual([
+    expect(bestFoundCards([{ dd: 'a', members: ['a', 'b'], percent: 88 }], () => ({ members: ['a', 'c'], percent: 100 }), name, 2)).toEqual([
       { id: `${BEST_FOUND}-a`, name: 'a · best found from your characters', slots: [{ characters: ['a'] }, { characters: ['c'] }], source: BEST_FOUND },
     ]);
-    expect(bestFoundCards([{ dd: 'a', members: ['a', 'b'], percent: 88 }, { dd: 'a', members: ['a', 'd'], percent: 90 }], () => ['a', 'c'], name, 2)).toEqual([]);
-    expect(bestFoundCards([{ dd: 'a', members: ['a', 'b'], percent: 50 }, { dd: 'a', members: ['b', 'a'], percent: 40 }], () => ['a', 'b'], name, 2)).toEqual([]);
+    expect(bestFoundCards([{ dd: 'a', members: ['a', 'b'], percent: 88 }, { dd: 'a', members: ['a', 'd'], percent: 90 }], () => ({ members: ['a', 'c'], percent: 100 }), name, 2)).toEqual([]);
+    expect(bestFoundCards([{ dd: 'a', members: ['a', 'b'], percent: 50 }, { dd: 'a', members: ['b', 'a'], percent: 40 }], () => ({ members: ['a', 'b'], percent: 100 }), name, 2)).toEqual([]);
+    // One that scores no better on your builds than the best card gets none either.
+    expect(bestFoundCards([{ dd: 'a', members: ['a', 'b'], percent: 86 }], () => ({ members: ['a', 'c'], percent: 73 }), name, 2)).toEqual([]);
     // A best team that can't fill the team size gets no card.
-    expect(bestFoundCards([{ dd: 'a', members: ['a', 'b', 'c'], percent: 50 }], () => ['a', 'd'], name, 3)).toEqual([]);
+    expect(bestFoundCards([{ dd: 'a', members: ['a', 'b', 'c'], percent: 50 }], () => ({ members: ['a', 'd'], percent: 100 }), name, 3)).toEqual([]);
   });
 });
 
