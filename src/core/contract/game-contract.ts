@@ -430,4 +430,10 @@ export interface TeamRules {
    * highest kit value, scored as My teams scores it (LOGIC-CORE, T40). Absent = each slot's first pick.
    */
   fill?: (preset: TeamPreset, account: TeamAccount) => string[];
+  /**
+   * Extra cards to show after the game's teams (LOGIC-CORE, T41): for a damage dealer whose cards all stay under 90%,
+   * their best team found from your characters when no card shows that line-up. `source` is 'best-found'
+   * (`BEST_FOUND`): no game team list to edit.
+   */
+  bestCards?: (presets: TeamPreset[], account: TeamAccount) => TeamPreset[];
 }

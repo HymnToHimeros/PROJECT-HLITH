@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useState, type FormEvent, type ReactNo
 import type { Character, TeamPreset } from '../../core/contract';
 import { deleteTeam, saveTeam, setAssumeAverageBuilds, type UserTeam } from '../../core/data/userData';
 import { BottomSheet, Button, ExampleNotice, ExampleTag, GameTag, HowTo, NoData } from '../../core/ui';
+import { BEST_FOUND } from '../../core/rules/bestCards';
 import { exampleScore } from './examples';
 import { ShareTeam } from '../share/ShareTeam';
 import { KitCheck } from './KitCheck';
@@ -76,7 +77,9 @@ export function Teams({ data, several, onOpen, openCharacters, openAccount, draf
   const mine = data.flatMap((d) => d.user.teams.map((t) => ({ d, t })));
   const [query, setQuery] = useState('');
   const [shown, setShown] = useState(TEAMS_FIRST);
-  const allRecommended = data.flatMap((d) => d.presets.list.map((p, i) => ({ d, p, i, members: membersOf(d, p), missing: missingFrom(d, membersOf(d, p)) })));
+  // T41 (LOGIC-CORE): "Best found from your characters" cards after each game's own teams, when its rules give any.
+  const found = useMemo(() => new Map(data.map((d) => [d.game.id, d.presets.example ? [] : (d.game.rules.teams?.bestCards?.(d.presets.list, teamAccount(d)) ?? [])])), [data]);
+  const allRecommended = data.flatMap((d) => [...d.presets.list, ...(found.get(d.game.id) ?? [])].map((p, i) => ({ d, p, i, members: membersOf(d, p), missing: missingFrom(d, membersOf(d, p)) })));
   // Ready-to-play teams first, then the fewest missing; the game's own order inside each.
   const q = query.trim().toLowerCase();
   const matching = allRecommended
@@ -225,7 +228,7 @@ export function Teams({ data, several, onOpen, openCharacters, openAccount, draf
                   <>
                     <Button onClick={() => setKitFor({ data: d, name: p.name, members })}>Kit check</Button>
                     <Button onClick={() => copyPreset(d, p)}>Save as my team</Button>
-                    {!d.presets.example && <Button onClick={() => setListFor({ data: d, preset: p })}>Edit team list</Button>}
+                    {!d.presets.example && p.source !== BEST_FOUND && <Button onClick={() => setListFor({ data: d, preset: p })}>Edit team list</Button>}
                   </>
                 }
               />
@@ -329,6 +332,7 @@ function TeamCard({
             {example && <ExampleTag />}
             {tag && <GameTag {...tag} />}
             {edited && <span className={r.editedTag}>Edited by you</span>}
+            {preset?.source === BEST_FOUND && <span className={r.editedTag}>Best found</span>}
           </h4>
           <div className={r.members}>
             {members.map((id) => (
@@ -351,7 +355,11 @@ function TeamCard({
           )}
         </ol>
       )}
-      {preset && !example && <span className={r.muted}>Source: {preset.source}{edited ? ' · slot lists edited by you' : ''}</span>}
+      {preset && !example && (
+        <span className={r.muted}>
+          {preset.source === BEST_FOUND ? 'Source: the kit check, from your characters (no game team list has this line-up)' : `Source: ${preset.source}${edited ? ' · slot lists edited by you' : ''}`}
+        </span>
+      )}
       <div className={r.cardActions}>{actions}</div>
     </article>
   );

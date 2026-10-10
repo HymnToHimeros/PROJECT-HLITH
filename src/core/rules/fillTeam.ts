@@ -30,12 +30,16 @@ const FILL_CACHE_MAX = 2000;
 
 /** What a fill depends on, for one preset: its slots and, for every character in them, what the account says. */
 export function fillKey(preset: TeamPreset, account: TeamAccount): string {
-  const ids = [...new Set(preset.slots.flatMap((s) => s.characters))];
+  return `${preset.id}|${JSON.stringify(preset.slots.map((s) => s.characters))}|${accountKey([...new Set(preset.slots.flatMap((s) => s.characters))], account)}`;
+}
+
+/** What the account says about these characters (owned, levels, weapon, build, hidden) and its switches: a cache key. */
+export function accountKey(ids: string[], account: TeamAccount): string {
   const facts = ids.map((id) => {
     if (!account.owned(id)) return `${id}:-${account.skip?.(id) ? 's' : ''}`;
     return `${id}:${account.dupes(id)}:${account.potential?.(id) ?? ''}:${account.weapon?.(id)?.id ?? ''}:${account.skip?.(id) ? 's' : ''}:${JSON.stringify(account.build?.(id) ?? null)}`;
   });
-  return `${preset.id}|${JSON.stringify(preset.slots.map((s) => s.characters))}|${account.assumeAverage ? 'a' : ''}${account.showLeaks ? 'l' : ''}|${facts.join(',')}`;
+  return `${account.assumeAverage ? 'a' : ''}${account.showLeaks ? 'l' : ''}|${facts.join(',')}`;
 }
 
 /**

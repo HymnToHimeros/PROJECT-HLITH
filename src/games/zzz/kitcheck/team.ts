@@ -4,6 +4,7 @@
  * open are written down in docs/logic/zzz-decisions.md.
  */
 import { bestFill, withOwnerLists } from '../../../core/rules/fillTeam';
+import { bestFoundCards, cachedCards } from '../../../core/rules/bestCards';
 import type { FitOptions, FitSuggestion, PullValue, TeamAccount, TeamIdea, TeamPreset, TeamReason, TeamRules, TeamVerdict, TeamWant } from '../../../core/contract';
 import { BUILD_STAT_WORD, buildFit } from '../../../core/rules/buildFit';
 import { GEAR_SLOTS } from '../gear';
@@ -281,6 +282,30 @@ export function ifYouPull(id: string, a: TeamAccount, lib: Library = library()):
   return { percent, why };
 }
 
+/** T41, mirrors HSR: a "Best found from your characters" card when every recommended squad of a damage dealer stays under 90%. */
+export function bestCards(presets: TeamPreset[], a: TeamAccount, lib: Library = library()): TeamPreset[] {
+  const assumed = assume(a);
+  const owned = ownedRead(assumed, lib);
+  if (owned.length < 3) return [];
+  const account = toAccount(assumed);
+  // As HSR: the trigger is the card's own %; the card added is the best squad found with any line-up.
+  const best = (dd: string) => bestFor(dd, owned, lib, account);
+  const cards = presets.flatMap((p) => {
+    const members = zzzTeamRules.fill?.(p, a) ?? [];
+    const lead = members[0] && isDamageDealer(members[0], lib) ? members[0] : undefined;
+    const out = members.length ? checkSquad(members, lib, account, lead) : undefined;
+    if (!out?.rated || !a.owned(out.best.dd)) return [];
+    const v = verdict(members, assumed, lib);
+    return v.rated ? [{ dd: out.best.dd, members, percent: v.percent }] : [];
+  });
+  const found = (dd: string) => {
+    const members = best(dd)?.order;
+    const v = members ? verdict(members, assumed, lib) : undefined;
+    return members && v?.rated ? { members, percent: v.percent } : undefined;
+  };
+  return bestFoundCards(cards, found, (id) => lib.names.get(id) ?? id, 3);
+}
+
 export const zzzTeamRules: TeamRules = {
   method: METHOD,
   // T40: the better unit is picked for each slot, by the kit value My teams scores with (same account, same check).
@@ -299,6 +324,7 @@ export const zzzTeamRules: TeamRules = {
   whoFits: (m, a, o) => whoFits(m, assume(a), library(), o),
   lineUps: (a) => lineUps(assume(a)),
   ifYouPull: (id, a) => ifYouPull(id, assume(a)),
+  bestCards: (ps, a) => cachedCards('zzz', ps, readable(library(), a).filter((id) => a.owned(id)), a, () => bestCards(ps, a)),
 };
 
 /**

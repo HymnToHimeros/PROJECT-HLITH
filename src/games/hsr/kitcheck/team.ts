@@ -7,8 +7,10 @@ import type { FitOptions, FitSuggestion, PullValue, TeamAccount, TeamIdea, TeamP
 import { BUILD_STAT_WORD, buildFit } from '../../../core/rules/buildFit';
 import { GEAR_SLOTS } from '../gear';
 import { canCarry, canPartner, check, compare, damageDealers, isCentre, labelOf, type Account, type Library, type Line, type TeamResult } from './check';
+import { SUSTAIN_STATS } from './types';
 import { isOwnTeam, library, pageOf } from './library';
 import { bestFill, withOwnerLists } from '../../../core/rules/fillTeam';
+import { bestFoundCards, cachedCards } from '../../../core/rules/bestCards';
 import { accountNotes, type AccountFacts } from '../../../core/rules/accountNotes';
 import { SIGNATURE_PIECE } from '../../../core/rules/signatureWeapons';
 import { assumedLine, assumedWords } from '../../../core/rules/averageBuild';
@@ -106,6 +108,24 @@ function findBest(dd: string, pool: string[], lib: Library, account: Account, al
     if (out.rated && (!needSustain || out.best.sustain) && (!best || compare(out.best, best) > 0)) best = out.best;
   }
   return best;
+}
+
+/** A damage dealer whose own kit heals or shields allies (Castorice: "Allies: heal"); Eidolons don't count. */
+const healsAllies = (dd: string, lib: Library) =>
+  (lib.sheets.get(dd)?.entries ?? []).some((e) => !e.piece.startsWith('eidolon-') && e.to !== 'enemy' && e.to !== 'self' && e.gives.some((g) => SUSTAIN_STATS.includes(g.stat)));
+const SUSTAIN_PATHS = ['preservation', 'abundance'];
+
+/**
+ * T41: when the damage dealer heals or shields allies themself, they are the team's sustain, so a slot that lists only
+ * healers and shielders may also take anyone their own game teams list (a better unit for that place).
+ */
+function withOwnSustain(p: TeamPreset, lib: Library): TeamPreset {
+  const dd = p.slots.find((s) => s.characters.length === 1 && isCentre(s.characters[0] ?? '', lib))?.characters[0];
+  if (!dd || !healsAllies(dd, lib)) return p;
+  // A healer or shielder: their path, or their own kit (Hyacine is Remembrance and heals).
+  const sustain = (id: string) => SUSTAIN_PATHS.includes(lib.profiles.get(id)?.path ?? '') || healsAllies(id, lib);
+  const listed = [...new Set((lib.ownTeams.get(dd) ?? []).flatMap((t) => t.slots.flat()))].filter((id) => id !== dd);
+  return { ...p, slots: p.slots.map((s) => (s.characters.length && s.characters.every(sustain) ? { characters: [...s.characters, ...listed.filter((id) => !s.characters.includes(id))] } : s)) };
 }
 
 /** The first member leads when the check would pick them as the damage dealer. */
@@ -350,13 +370,39 @@ export function ifYouPull(id: string, a: TeamAccount, lib: Library = library()):
   return { percent, why };
 }
 
+/**
+ * T41: a "Best found from your characters" card for each damage dealer you own whose recommended cards all stay under
+ * 90% while their best team found (from your characters, any line-up) is one no card shows.
+ */
+export function bestCards(presets: TeamPreset[], a: TeamAccount, lib: Library = library()): TeamPreset[] {
+  const assumed = assume(a);
+  const owned = ownedRead(assumed, lib);
+  if (owned.length < SIZE) return [];
+  const account = toAccount(assumed);
+  // The trigger is the card's own % (like with like, as shown); the card added is the best team found with any line-up.
+  const best = (dd: string) => bestFor(dd, owned, lib, account);
+  const cards = presets.flatMap((p) => {
+    const members = hsrTeamRules.fill?.(p, a) ?? [];
+    const out = members.length ? check(members, lib, account, leadOf(members, lib)) : undefined;
+    if (!out?.rated || !a.owned(out.best.dd)) return [];
+    const v = verdict(members, assumed, lib);
+    return v.rated ? [{ dd: out.best.dd, members, percent: v.percent }] : [];
+  });
+  const found = (dd: string) => {
+    const members = best(dd)?.members;
+    const v = members ? verdict(members, assumed, lib) : undefined;
+    return members && v?.rated ? { members, percent: v.percent } : undefined;
+  };
+  return bestFoundCards(cards, found, (id) => lib.names.get(id) ?? id, SIZE);
+}
+
 export const hsrTeamRules: TeamRules = {
   method: METHOD,
   // T40: the better unit is picked for each slot, by the kit value My teams scores with (same account, same check).
   fill: (p, a) => {
     const lib = library();
     const account = toAccount(assume(a));
-    return bestFill(withOwnerLists(p, a), a, (team, id) => !a.skip?.(id) && fits([...team, id]), (team, dd) => {
+    return bestFill(withOwnSustain(withOwnerLists(p, a), lib), a, (team, id) => !a.skip?.(id) && fits([...team, id]), (team, dd) => {
       const out = check(team, lib, account, dd ?? leadOf(team, lib));
       return out.rated ? { value: out.best.value, dd: out.best.dd } : undefined;
     });
@@ -367,6 +413,7 @@ export const hsrTeamRules: TeamRules = {
   whoFits: (m, a, o) => whoFits(m, assume(a), library(), o),
   lineUps: (a) => lineUps(assume(a)),
   ifYouPull: (id, a) => ifYouPull(id, assume(a)),
+  bestCards: (ps, a) => cachedCards('hsr', ps, readable(library(), a).filter((id) => a.owned(id)), a, () => bestCards(ps, a)),
 };
 
 /**

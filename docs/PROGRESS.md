@@ -28,6 +28,10 @@ Resume with: "continue from PROGRESS.md". Newest entry on top. Older entries:
 - CI (`.github/workflows/ci.yml`) runs both on every pull request.
 
 ## Done
+- 2026-10-10 · **LOGIC-CORE: "Best found from your characters" cards (T41)** (branch `logic-core/best-found-card`).
+  A damage dealer whose recommended cards all stay under 90% gets their best team found from your characters as a
+  card of its own, tagged "Best found" (both games; Teams.tsx shows them). A carry who heals allies (Castorice) is
+  the team's sustain, so her healer slot can take anyone her lists name. hsr-decisions 40, zzz-decisions 64.
 - 2026-10-10 · **LOGIC-CORE: recommended cards pick the better unit (T40)** (same branch). My teams and the cards
   were scored the same way; the cards filled each slot with the first owned in list order. Now each slot takes the
   owned pick with the highest kit value (both games). Phainon's card on the owner's roster: Phainon + Cerydra +

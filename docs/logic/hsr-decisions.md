@@ -274,4 +274,23 @@ team size and order, and the owner's ZZZ method's own counting.
       found (91% Excellent: full builds would add the rest). With every character owned and full builds, against
       Dan Heng PT: standard Robin 88%, Huohuo 76%, Robin • Summeretto 74%. Sunday + Cerydra + Cyrene comes to 112%
       with no healer or shielder; like with like keeps the owner's team the best found for a team with one.
+40. **"Best found from your characters" cards; a carry who heals is the team's sustain (owner's job T41, both games,
+    ZZZ decision 64 mirrors it).** MANAGER: Aventurine • Waveflair's three cards never show the owner's team.
+    - No game list for him has Mortenax Blade, Ashveil and Robin • Summeretto together, so no fill can show it.
+      Separately, his kit text has no heal or Shield (he is Elation, not Preservation). The only related line is
+      "Gains its own 'Wishpower' from teammates' healing or shields", so "the carry is his own sustain" has no
+      source for him.
+    - **Best-found card:** when every card of a damage dealer you own stays under 90% (each card's own %, like with
+      like as shown), and their best team found from your characters (any line-up, full team size) is a line-up no
+      card shows, and its own % on your builds is above their best card's, that team gets its own card. It is tagged "Best found", with no game team list to edit, and its
+      source line says it comes from the kit check. The 90% is MANAGER's "under ~90%". It doesn't trigger off a
+      healer team's like-with-like %: Phainon's 91% card keeps his owner's team, and no healer-free card is added
+      beside it.
+    - **A carry who heals or shields allies themself** (their own kit, Eidolons not counted; today only Castorice,
+      "Allies: heal") is the team's sustain. A slot that lists only healers and shielders (by path, or by their own
+      kit: Hyacine heals) may then also take anyone the carry's own game teams list.
+    - Result on the owner's roster: Castorice's card becomes Castorice + Cyrene + Tribbie + Trailblazer
+      (Remembrance), 100% (was 83% with Huohuo). Best-found cards for Aventurine • Waveflair (Waveflair + Ashveil
+      + Sunday + Robin • Summeretto, 91%: on the owner's Eidolons Sunday edges Mortenax Blade) and Silver Wolf
+      LV.999. Every other HSR card is unchanged.
 
