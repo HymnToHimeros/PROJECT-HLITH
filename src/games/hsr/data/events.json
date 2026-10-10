@@ -28,7 +28,7 @@
     "kind": "event",
     "start": "2026-07-15T03:00:00.000Z",
     "end": "2026-08-25T22:00:00.000Z",
-    "reward": null,
+    "reward": 0,
     "currency": "stellar-jade"
   },
   {
@@ -37,7 +37,7 @@
     "kind": "event",
     "start": "2026-07-15T03:00:00.000Z",
     "end": "2026-08-25T22:00:00.000Z",
-    "reward": null,
+    "reward": 0,
     "currency": "stellar-jade"
   },
   {
@@ -74,7 +74,7 @@
     "kind": "event",
     "start": "2026-07-24T04:00:00.000Z",
     "end": "2026-11-10T23:00:00.000Z",
-    "reward": null,
+    "reward": 0,
     "currency": "stellar-jade",
     "serverTime": {
       "base": 8,
@@ -255,7 +255,7 @@
     "kind": "event",
     "start": "2026-09-28T03:00:00.000Z",
     "end": "2026-11-10T22:00:00.000Z",
-    "reward": null,
+    "reward": 0,
     "currency": "stellar-jade"
   },
   {
@@ -264,7 +264,7 @@
     "kind": "event",
     "start": "2026-09-28T03:00:00.000Z",
     "end": "2026-11-10T20:00:00.000Z",
-    "reward": null,
+    "reward": 0,
     "currency": "stellar-jade"
   },
   {
@@ -273,7 +273,7 @@
     "kind": "event",
     "start": "2026-09-28T03:00:00.000Z",
     "end": "2026-11-10T20:00:00.000Z",
-    "reward": null,
+    "reward": 0,
     "currency": "stellar-jade"
   },
   {
@@ -361,6 +361,19 @@
       "base": 8,
       "start": true,
       "end": true
+    }
+  },
+  {
+    "id": "interastral-peace-gala-one-take-2026-10-21",
+    "title": "Interastral Peace Gala: One Take",
+    "kind": "event",
+    "start": "2026-10-21T04:00:00.000Z",
+    "end": "2026-11-10T19:59:00.000Z",
+    "reward": null,
+    "currency": "stellar-jade",
+    "serverTime": {
+      "base": 8,
+      "start": true
     }
   },
   {

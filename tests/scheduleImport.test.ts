@@ -101,6 +101,11 @@ describe('reading the wikis', () => {
     expect(rewardTotal('{{Event Rewards\n|Polychrome = 300\n}}', 'Polychrome')).toBe(300);
     expect(rewardTotal('{{Card List|Polychrome; Boopon; Denny}}', 'Polychrome')).toBeNull();
     expect(rewardTotal('{{Card List|Boopon*2}}', 'Polychrome')).toBe(0);
+    // A stated total is never added to the rows above it; an item missing from it is 0.
+    const page = '==Rewards==\n{{Card List|Polychrome*20; Log*5}}\n{{Card List|Polychrome*20; Log*5}}\n\n\'\'\'Total Rewards:\'\'\'\n{{Card List|Polychrome*40; Log*10}}\n==Other==';
+    expect(rewardTotal(page, 'Polychrome')).toBe(40);
+    expect(rewardTotal('==Total Rewards==\n{{Event Rewards\n|Tracks of Destiny = 1\n}}', 'Stellar Jade')).toBe(0);
+    expect(rewardTotal('===Total Rewards===\n{{Card\n|Boopon\n|10\n|rank=S\n}}', 'Boopon')).toBe(10);
   });
 });
 

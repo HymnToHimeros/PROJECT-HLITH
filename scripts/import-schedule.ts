@@ -21,7 +21,7 @@ import { readFileSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import type { BacklogItem, Banner, GameEvent, Version } from '../src/core/contract/entities.ts';
 import { amountOf, nameKey, noticeText, serverMark, slug, spanIn, versionFromNotice, type VersionTimes } from './schedule/text.ts';
-import { fetchWiki, infobox, mainBox, poolBox, poolFeatured, rewardTotal, sectionLinks, wikiPrefix, wikiServer, wikiTime, type WikiPage } from './schedule/wiki.ts';
+import { fetchWiki, infobox, mainBox, poolBox, poolFeatured, rewardTotal, sectionLinks, statedTotal, wikiPrefix, wikiServer, wikiTime, type WikiPage } from './schedule/wiki.ts';
 
 const ROOT = resolve(import.meta.dirname, '..');
 const DAY = 86_400_000;
@@ -166,6 +166,17 @@ async function idIndex(g: Game, wikiPages: Map<string, WikiPage>): Promise<{ ind
     const art = g.id === 'hsr' ? `https://static.nanoka.cc/assets/hsr/lightconemaxfigures/${id}.webp` : w.icon ? `https://static.nanoka.cc/assets/zzz/${w.icon}.webp` : undefined;
     if (art) weaponArt.set(id, art);
   }
+  // Unreleased ZZZ W-Engines carry a working name in the game files ("Nirvana's First Plume" before it
+  // was announced as "Plume of Rebirth"). The wiki names the agent it belongs to, and the game files
+  // name its picture after that agent (Weapon_S_<agent id>), which ties the two together.
+  const byIcon = new Map(Object.entries(weapons).map(([id, w]) => [w.icon, id]));
+  for (const page of wikiPages.values()) {
+    if (index.has(nameKey(page.title))) continue;
+    const agent = /\[\[([^\]|]+)(?:\|[^\]]*)?\]\]'s \[\[Exclusive W-Engine/.exec(page.text)?.[1];
+    const agentId = agent ? index.get(nameKey(agent)) : undefined;
+    const weaponId = agentId ? byIcon.get(`Weapon_S_${agentId}`) : undefined;
+    if (weaponId) index.set(nameKey(page.title), weaponId);
+  }
   return { index, weaponArt };
 }
 
@@ -252,6 +263,8 @@ async function fromWiki(g: Game, versions: Map<string, VersionTimes>, notices: s
     if (!p) continue;
     const tabBox = /\{\{Event Tabs/.test(p.text) ? infobox(p.text.slice(p.text.indexOf('{{Event Tabs'))) : {};
     for (const [k, v] of Object.entries(tabBox)) if (/^subpage\d+$/.test(k) && v) tabs.push(`${baseOf(t)}/${v}`);
+    // Some events keep their full reward table on a "/Rewards" page.
+    tabs.push(`${baseOf(t)}/Rewards`);
   }
   const tabPages = await fetchWiki(g.wiki, tabs);
 
@@ -327,8 +340,8 @@ async function fromWiki(g: Game, versions: Map<string, VersionTimes>, notices: s
     let endServer = wikiServer(box, 'end');
     const day = dateOf(t);
     const near = start ?? (day ? new Date(`${day}T12:00:00+08:00`).toISOString() : undefined);
-    // Without a page and without a date there is nothing to tie a notice period to.
-    const official = near || pages.has(t) ? officialSpan(title, notices, versions, near) : undefined;
+    // Only current notices are searched, so a name found there is this run even without a date.
+    const official = officialSpan(title, notices, versions, near);
     if (official) {
       if (end && Math.abs(Date.parse(official.end) - Date.parse(end)) > 60_000) warn(g.id, `${title}: wiki end ${end}, official ${official.end} (official used)`);
       ({ start, end, startServer, endServer } = official);
@@ -337,14 +350,27 @@ async function fromWiki(g: Game, versions: Map<string, VersionTimes>, notices: s
       warn(g.id, `event "${title}" left out: no start or end yet (${pages.has(t) ? 'wiki page has none' : 'no wiki page yet'}, no official period)`);
       continue;
     }
+    // Outfit sales ("a discount Event") cost currency and give none: a shop, not something to do.
+    if (/is an? discount \[\[Event/i.test(p.text)) continue;
     const kind = kindOf(g, title, box, p.text);
-    const all = [p.text, ...tabs.filter((x) => x.startsWith(`${baseOf(t)}/`)).map((x) => tabPages.get(x)?.text ?? '')].join('\n');
+    // The event page and its sub-pages. A page that states its own total wins (main page first,
+    // then "/Rewards"), so rows and totals are never added together; otherwise every reward row counts.
+    const subs = [`${baseOf(t)}/Rewards`, ...tabs.filter((x) => x.startsWith(`${baseOf(t)}/`) && !x.endsWith('/Rewards'))];
+    const texts = [p.text, ...subs.map((x) => tabPages.get(x)?.text ?? '')].filter(Boolean);
+    const withTotal = texts.slice(0, 2).find((x) => [g.premium.item, ...g.pullItems.map((i) => i.item)].some((item) => statedTotal(x, item) !== undefined));
+    const all = withTotal ?? texts.join('\n');
+    const override = REWARD_OVERRIDE[g.id]?.[title];
     // Double-drop events give no currency of their own; a page without any reward list is unknown, not zero.
-    const { reward, currency } =
-      kind === 'bonus' ? { reward: 0, currency: g.premium.id } : /\{\{Card/.test(all) ? rewardOf(g, all) : { reward: null, currency: g.premium.id };
+    const { reward, currency } = override
+      ? { reward: override.reward, currency: g.premium.id }
+      : kind === 'bonus'
+        ? { reward: 0, currency: g.premium.id }
+        : /\{\{Card|\{\{Event Rewards/.test(all)
+          ? rewardOf(g, all)
+          : { reward: null, currency: g.premium.id };
     const ev: GameEvent = { id: `${slug(title)}-${dateOf(t) ?? start.slice(0, 10)}`, title, kind, start, end, reward, currency, ...serverMark(startServer, endServer) };
     if (kind === 'login') {
-      const days = Math.max(0, ...[...p.text.matchAll(/^\|\s*(?:Day\s*)?(\d+)\s*\|\||caption:Day (\d+)\}/gim)].map((m) => Number(m[1] ?? m[2])));
+      const days = Math.max(0, ...[...p.text.matchAll(/^\|\s*(?:Day\s*)?(\d+)\s*\|\||caption[:=]\s*Day (\d+)\}/gim)].map((m) => Number(m[1] ?? m[2])));
       const stated = /(?:for|total of)\s+(\d+)\s+days/i.exec(p.text)?.[1] ?? /(\d+)\s+days\b/i.exec(/\{\{Description\|([^}]*)\}\}/.exec(p.text)?.[1] ?? '')?.[1];
       const n = days || Number(stated ?? 0);
       if (n > 0) ev.loginDays = n;
@@ -376,6 +402,18 @@ function announce(g: Game, list: { id?: string; name: string; day: string }[]) {
   }
   if (changed) writeFileSync(path, `${JSON.stringify(chars, null, 2)}\n`);
 }
+
+/**
+ * Premium currency for events whose reward list the wiki shows without amounts, from the
+ * next best source that does. Each entry names its source; the wiki's own numbers win once it has them
+ * (delete the entry then).
+ */
+const REWARD_OVERRIDE: Record<string, Record<string, { reward: number; source: string }>> = {
+  zzz: {
+    // 5 commissions plus the all-done reward; the official notice shows the rewards only as pictures.
+    'Chronicles of the Hobbling Crow': { reward: 360, source: 'game8.co/games/Zenless-Zone-Zero/archives/618201' },
+  },
+};
 
 // ── 5. Endgame cycles ──────────────────────────────────────────────────
 

@@ -35,6 +35,17 @@ Resume with: "continue from PROGRESS.md". Newest entry on top. Older entries:
   W-Engine banners get their picture (`Banner.art`, nanoka; each link checked).
   HSR collaboration warps stay out: the game runs them with no end date ("time_end = none"
   on the wiki, notice shown until 2036), and a banner needs an end. Told FRAME.
+  - **Rewards fixed:** a wiki page's own "Total Rewards" now wins over adding up its rows
+    (The Final Callback was counted twice: 80 → 40), "/Rewards" sub-pages are read
+    (Clink, Clank, Pinball Knight! 800, Diary of an Orbie Parent 300), multi-line reward
+    cards count ("En-Nah" 10 Boopons), totals without the currency mean 0 (Fate Contract,
+    Astral Imagea Park). Chronicles of the Hobbling Crow 360 from game8 (the wiki and the
+    official notice show only pictures; `REWARD_OVERRIDE` in the script names the source).
+    Only HSR "Interastral Peace Gala" (starts 21 Oct) stays unknown: sources say 500 or 60.
+  - ZZZ 3.3 banners (21 Oct and 11 Nov) are in, now that the wiki has them; new W-Engines
+    are matched to the game files through their agent (beta names differ).
+  - Outfit sales ("discount" events) are no longer added; the two already listed stay
+    (ids are never removed).
 - 2026-10-10 · **LOGIC-CORE: every ZZZ agent read; materials for both games** (branch `logic-core/zzz-groups-f-i`).
   - ZZZ groups F (Aria, Promeia, Velina, Remielle, Grace, Nangong Yu, Pulchra),
     G (Ellen, Soukaku, Zhu Yuan, Qingyi, Nicole, Evelyn, Seth), H (Soldier 0 -

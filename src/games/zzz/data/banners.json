@@ -270,5 +270,125 @@
       "end": true
     },
     "art": "https://static.nanoka.cc/assets/zzz/Weapon_S_1541.webp"
+  },
+  {
+    "id": "graceful-gale-2026-10-21",
+    "type": "exclusive",
+    "title": "Graceful Gale",
+    "featured": [
+      "1561"
+    ],
+    "start": "2026-10-21T03:00:00.000Z",
+    "end": "2026-11-11T03:59:59.000Z",
+    "serverTime": {
+      "base": 8,
+      "end": true
+    }
+  },
+  {
+    "id": "into-the-flames-of-life-2026-10-21",
+    "type": "exclusive",
+    "title": "Into the Flames of Life",
+    "featured": [
+      "1641"
+    ],
+    "start": "2026-10-21T03:00:00.000Z",
+    "end": "2026-11-11T03:59:59.000Z",
+    "serverTime": {
+      "base": 8,
+      "end": true
+    }
+  },
+  {
+    "id": "joyau-dore-2026-10-21",
+    "type": "w-engine",
+    "title": "Joyau Dore",
+    "featured": [
+      "14156"
+    ],
+    "start": "2026-10-21T03:00:00.000Z",
+    "end": "2026-11-11T03:59:59.000Z",
+    "serverTime": {
+      "base": 8,
+      "end": true
+    },
+    "art": "https://static.nanoka.cc/assets/zzz/Weapon_S_1561.webp"
+  },
+  {
+    "id": "plume-of-rebirth-2026-10-21",
+    "type": "w-engine",
+    "title": "Plume of Rebirth",
+    "featured": [
+      "14164"
+    ],
+    "start": "2026-10-21T03:00:00.000Z",
+    "end": "2026-11-11T03:59:59.000Z",
+    "serverTime": {
+      "base": 8,
+      "end": true
+    },
+    "art": "https://static.nanoka.cc/assets/zzz/Weapon_S_1641.webp"
+  },
+  {
+    "id": "answers-in-the-wind-2026-11-11",
+    "type": "exclusive",
+    "title": "Answers in the Wind",
+    "featured": [
+      "1631"
+    ],
+    "start": "2026-11-11T04:00:00.000Z",
+    "end": "2026-12-01T06:59:59.000Z",
+    "serverTime": {
+      "base": 8,
+      "start": true,
+      "end": true
+    }
+  },
+  {
+    "id": "chief-sidekick-2026-11-11",
+    "type": "w-engine",
+    "title": "Chief Sidekick",
+    "featured": [
+      "14157"
+    ],
+    "start": "2026-11-11T04:00:00.000Z",
+    "end": "2026-12-01T06:59:59.000Z",
+    "serverTime": {
+      "base": 8,
+      "start": true,
+      "end": true
+    },
+    "art": "https://static.nanoka.cc/assets/zzz/Weapon_S_1571.webp"
+  },
+  {
+    "id": "incarcerating-grip-2026-11-11",
+    "type": "w-engine",
+    "title": "Incarcerating Grip",
+    "featured": [
+      "14163"
+    ],
+    "start": "2026-11-11T04:00:00.000Z",
+    "end": "2026-12-01T06:59:59.000Z",
+    "serverTime": {
+      "base": 8,
+      "start": true,
+      "end": true
+    },
+    "art": "https://static.nanoka.cc/assets/zzz/Weapon_S_1631.webp"
+  },
+  {
+    "id": "outlier-of-prodigies-2026-11-11",
+    "type": "exclusive",
+    "title": "Outlier of Prodigies",
+    "featured": [
+      "1571"
+    ],
+    "start": "2026-11-11T04:00:00.000Z",
+    "end": "2026-12-01T06:59:59.000Z",
+    "serverTime": {
+      "base": 8,
+      "start": true,
+      "end": true
+    }
   }
 ]
