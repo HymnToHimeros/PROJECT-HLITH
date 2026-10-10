@@ -18,16 +18,20 @@ export interface AccountFacts {
 
 export function accountNotes(id: string, account: TeamAccount, facts: AccountFacts): { notes: string[]; theory: boolean } {
   if (!account.owned(id)) return { notes: [`Not owned: scored as theory at ${facts.dupePrefix}0${facts.track ? `, without the ${facts.track}` : ''}.`], theory: true };
-  const notes: string[] = [];
+  // What counted leads, in one short line (FRAME shows two lines per suggestion); what's missing follows.
+  const counted: string[] = [];
+  const missing: string[] = [];
   const dupes = account.dupes(id);
-  notes.push(dupes > 0 ? `${facts.dupePrefix}${dupes} counted.` : `${facts.dupePrefix}0 counted (no copies saved).`);
+  counted.push(dupes > 0 ? `${facts.dupePrefix}${dupes}` : `${facts.dupePrefix}0 (no copies saved)`);
   if (facts.track) {
     const p = account.potential?.(id);
-    const level = facts.trackLevels ? ` ${p}` : '';
-    notes.push(p === undefined ? `${facts.track}: not saved, scored without it.` : p > 0 ? `${facts.track}${level} counted.` : `${facts.track}: none, scored without it.`);
+    if (p === undefined) missing.push(`${facts.track} not saved: scored without it.`);
+    else if (p > 0) counted.push(`${facts.track}${facts.trackLevels ? ` ${p}` : ''}`);
+    else missing.push(`No ${facts.track}: scored without it.`);
   }
-  if (facts.locked) notes.push(`${facts.locked} kit piece${facts.locked === 1 ? '' : 's'} still locked at this level.`);
+  const notes = [`Counted: ${counted.join(', ')}.`, ...missing];
+  if (facts.locked) notes.push(`${facts.locked} kit piece${facts.locked === 1 ? '' : 's'} still locked.`);
   const w = account.weapon?.(id);
-  notes.push(w ? `Weapon in your build: ${w.name}. Its effect isn't counted yet.` : 'No weapon saved: weapon effects aren’t counted.');
+  notes.push(w ? `Weapon ${w.name}: effect not counted yet.` : 'No weapon saved.');
   return { notes, theory: false };
 }

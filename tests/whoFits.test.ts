@@ -23,7 +23,7 @@ describe('Who fits from your account (T18)', () => {
     expect([...percents].sort((a, b) => b - a)).toEqual(percents);
     const robin = fits.find((f) => f.id === idOf(h, 'Robin'));
     expect(robin?.theory).toBe(false);
-    expect(robin?.fromAccount).toContain('E2 counted.');
+    expect(robin?.fromAccount?.[0]).toBe('Counted: E2.');
     expect(robin?.fromAccount?.some((n) => /No weapon saved/.test(n))).toBe(true);
   });
 
@@ -37,7 +37,7 @@ describe('Who fits from your account (T18)', () => {
   it('a saved weapon is named, and said not to be counted yet (no guessing)', () => {
     const withWeapon = account({ [fei]: 0, [idOf(h, 'Robin')]: 0 }, { weapon: (id) => (id === idOf(h, 'Robin') ? { name: 'Flowing Nightglow' } : undefined) });
     const robin = hsrFits([fei], withWeapon, h).find((f) => f.id === idOf(h, 'Robin'));
-    expect(robin?.fromAccount).toContain("Weapon in your build: Flowing Nightglow. Its effect isn't counted yet.");
+    expect(robin?.fromAccount).toContain('Weapon Flowing Nightglow: effect not counted yet.');
   });
 
   it('ZZZ: Mindscapes and Agent Potential from the account', () => {
@@ -46,6 +46,6 @@ describe('Who fits from your account (T18)', () => {
     const lucia = idOf(z, 'Lucia');
     const fits = zzzFits([billy], account({ [billy]: 0, [lucia]: 1 }), z);
     const l = fits.find((f) => f.id === lucia);
-    expect(l?.fromAccount).toContain('M1 counted.');
+    expect(l?.fromAccount?.[0]).toMatch(/^Counted: M1/);
   });
 });
