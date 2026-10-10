@@ -42,6 +42,20 @@ Resume with: "continue from PROGRESS.md". Newest entry on top. Older entries:
   Moze, Dr. Ratio, Herta, Serval, Jade, Black Swan are partners), the game's teams are
   listed led by their centre, and HSR no longer lists made-up "best by kit check" teams.
   Decisions 21–23 in `docs/logic/hsr-decisions.md`.
+- 2026-10-10 · **LOGIC-CORE: build score** (branch `logic-core/build-score`).
+  A saved build is checked against the game's own recommended build: level,
+  weapon, sets, main stat per slot, sub stats. Score and grade with every part
+  and its reason on the character page; parts with nothing entered say "No data
+  yet" and aren't counted. Rules: `docs/logic/build-score.md`.
+- 2026-10-10 · **MANAGER is on** (branch `manager/jobs-list`). `docs/TASKS.md` holds every
+  open owner job with who has it and its state; the owner's screenshots are in
+  `docs/owner-reports/2026-10-10/`. Owner's rule: MANAGER approves and merges every PR
+  (`docs/RELEASES.md` routine, `docs/WORKSTREAMS.md` rule 9); chats send `READY` and
+  no longer merge their own PRs.
+- 2026-10-10 · **LOGIC-CORE: HSR character EXP counted** (branch `logic-core/hsr-exp`).
+  Farm and "Materials to max" now include character EXP 1 → 80 for HSR:
+  5,797,920 EXP = 290 Traveler's Guides, from the game's own EXP table
+  (DimbreathBot/TurnBasedGameData). No HSR material amount is missing any more.
 - 2026-10-10 · **Two more chats: MANAGER and ERROR-FIX** (branch `frame/manager-error-fix`).
   `docs/WORKSTREAMS.md`: rules 7–8, both in Who's who, a routing table (which job goes
   to which chat). `docs/briefs/MANAGER.md` (the owner's front desk: routes every
@@ -87,9 +101,7 @@ Resume with: "continue from PROGRESS.md". Newest entry on top. Older entries:
     list). Now `weapons.json` (172 Light Cones, 103 W-Engines, every one with
     a picture) and each weapon on a banner shows its picture, name and who
     it's made for, with your roster fit. SCHEDULER's banner art stays.
-  - Next: HSR character EXP (no source yet), Enhanced kits need a saved
-    "Enhanced" flag (shown as locked until then), build score needs FRAME's
-    build store.
+  - Next: build score on FRAME's build store.
 - 2026-10-10 · **SCHEDULER step 2: server times, weapon banner art** (branch `scheduler/server-times-weapon-art`).
   Uses FRAME's new fields (#40): every banner and event time the game gives in "server
   time" now carries `serverTime { base: 8, start/end }`, so screens show it on the user's
