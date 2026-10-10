@@ -1,4 +1,4 @@
-import { useId, useState, type ReactNode } from 'react';
+import { useEffect, useId, useRef, useState, type ReactNode } from 'react';
 import type { GameContract } from '../../core/contract';
 import { known, unknown } from '../../core/contract/known';
 import { backend } from '../../core/data/backend';
@@ -6,6 +6,7 @@ import { Button, EmptyState, ExampleTag, GameTag, HowTo, StatTile, UnverifiedTag
 import { Switch } from '../account/parts';
 import {
   addCodes,
+  codeLoginRefused,
   forgetOnServer,
   latestRedemptions,
   lastCheckinLine,
@@ -15,6 +16,7 @@ import {
   readRedeemLogin,
   REDEEM_WORD,
   runNow,
+  sameAccount,
   saveOnServer,
   setRedeemLogin,
   updateAccount,
@@ -386,6 +388,7 @@ function AutoSwitches({ account, server, blocker, refresh }: { account: LinkedAc
     refresh();
   };
   const recent = server ? latestRedemptions(server.redemptions, account.id) : [];
+  const refused = account.hasRedeemLogin && server ? codeLoginRefused(server.redemptions, account.id) : null;
 
   return (
     <div className={c.tight}>
@@ -428,9 +431,25 @@ function AutoSwitches({ account, server, blocker, refresh }: { account: LinkedAc
           )}
         </div>
       )}
+      {refused && !addCodeLogin && (
+        <div className={c.notBuilt} role="alert">
+          <span>
+            <strong>Codes are stopped on this account: HoYoverse didn’t accept the code login.</strong> {refused.message}
+          </span>
+          <span>
+            Either the code login has ended (pressing Log out on the gift page ends it), or the three values come from two different accounts. Copy all three again from the gift page while logged in with this account (HoYoLAB ID {maskId(account.hoyolabId)}).
+          </span>
+          <div className={c.row}>
+            <Button disabled={off} onClick={() => setAddCodeLogin(true)}>
+              Replace code login
+            </Button>
+          </div>
+        </div>
+      )}
       {addCodeLogin && (
         <CodeLoginForm
           linkId={account.id}
+          hoyolabId={account.hoyolabId}
           blocker={blocker}
           onDone={(text) => {
             setAddCodeLogin(false);
@@ -476,14 +495,24 @@ function AutoSwitches({ account, server, blocker, refresh }: { account: LinkedAc
  * The _v2 names (account_id_v2, account_mid_v2, cookie_token_v2) are what hoyoverse.com
  * sets today. Not tested with a live account yet.
  */
-function CodeLoginForm({ linkId, blocker, onDone }: { linkId: string; blocker: string | null; onDone: (text: string) => void }) {
+function CodeLoginForm({ linkId, hoyolabId, blocker, onDone }: { linkId: string; hoyolabId: string; blocker: string | null; onDone: (text: string) => void }) {
   const id = useId();
   const [text, setText] = useState('');
   const [busy, setBusy] = useState(false);
   const [problem, setProblem] = useState<string | null>(null);
+  const box = useRef<HTMLTextAreaElement>(null);
+  // "Replace code login" leads straight here: the paste box comes into view with the cursor in it.
+  useEffect(() => {
+    box.current?.scrollIntoView?.({ block: 'center' });
+    box.current?.focus();
+  }, []);
   const save = async () => {
     const read = readRedeemLogin(text);
     if (!read.ok) return setProblem(`Still missing: ${read.missing.join(', ')}.`);
+    if (!sameAccount(read.login, hoyolabId))
+      return setProblem(
+        `That account_id_v2 isn’t this account’s number (${maskId(hoyolabId)}): the values come from another HoYoverse account. Log in to the gift page with this account and copy all three again. Nothing was saved.`,
+      );
     if (!backend) return;
     setText('');
     setBusy(true);
@@ -500,13 +529,17 @@ function CodeLoginForm({ linkId, blocker, onDone }: { linkId: string; blocker: s
         open
         steps={[
           <>
-            On a PC, open <span className={c.mono}>hsr.hoyoverse.com/gift</span> (or <span className={c.mono}>zenless.hoyoverse.com/redemption</span>) and log in with the same account.
+            On a PC, open <span className={c.mono}>hsr.hoyoverse.com/gift</span> (Star Rail) or <span className={c.mono}>zenless.hoyoverse.com/redemption</span> (Zenless) and log in with <strong>this</strong> account: HoYoLAB ID{' '}
+            <span className={c.mono}>{maskId(hoyolabId)}</span>.
           </>,
           <>
             Press <span className={c.mono}>F12</span> → <strong>Application</strong> (Firefox: <strong>Storage</strong>) → <strong>Cookies</strong> → the hoyoverse.com address.
           </>,
           <>
-            Copy the values of <span className={c.mono}>account_id_v2</span> (a number), <span className={c.mono}>account_mid_v2</span> (ends in _hy) and <span className={c.mono}>cookie_token_v2</span> (starts with v2_). Paste all three below, in any order.
+            Copy three values: <span className={c.mono}>account_id_v2</span> (the same number as the HoYoLAB ID above), <span className={c.mono}>account_mid_v2</span> (ends in _hy) and <span className={c.mono}>cookie_token_v2</span> (starts with v2_; not ltoken_v2, which also starts with v2_). Safest is one per line as name=value, e.g. <span className={c.mono}>account_id_v2=…</span>.
+          </>,
+          <>
+            Close the tab without pressing <strong>Log out</strong>: logging out of the gift page ends the code login. For a second account, use a private window.
           </>,
         ]}
       >
@@ -517,7 +550,7 @@ function CodeLoginForm({ linkId, blocker, onDone }: { linkId: string; blocker: s
       <label className={c.field} htmlFor={`${id}-code-login`}>
         Paste account_id_v2, account_mid_v2 and cookie_token_v2
       </label>
-      <textarea id={`${id}-code-login`} className={c.textarea} rows={3} value={text} onChange={(e) => setText(e.target.value)} autoComplete="off" spellCheck={false} disabled={blocker !== null} />
+      <textarea ref={box} id={`${id}-code-login`} className={c.textarea} rows={3} value={text} onChange={(e) => setText(e.target.value)} autoComplete="off" spellCheck={false} disabled={blocker !== null} />
       <div className={c.row}>
         <Button variant="primary" disabled={busy || blocker !== null || !text.trim()} onClick={() => void save()}>
           {busy ? 'Saving…' : 'Save the code login'}

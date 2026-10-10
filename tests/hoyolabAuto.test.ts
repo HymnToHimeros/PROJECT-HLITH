@@ -8,7 +8,9 @@ import {
   checkinDayStart,
   checkinRecord,
   checkRedeemLogin,
+  codeLoginMismatch,
   codesToTry,
+  MISMATCH_TEXT,
   parseCodeList,
   readCodes,
   redeemCode,
@@ -19,7 +21,7 @@ import {
   type Store,
   type Tried,
 } from '../supabase/functions/_shared/hoyolabAuto.ts';
-import { cleanLabel, parseAction, storedGames } from '../supabase/functions/_shared/hoyolabLinks.ts';
+import { ACTION_ERROR_TEXT, cleanLabel, parseAction, storedGames } from '../supabase/functions/_shared/hoyolabLinks.ts';
 
 const md5 = (s: string) => createHash('md5').update(s).digest('hex');
 const TOKEN = 'v2_SECRETTOKENvalue1234567890';
@@ -117,6 +119,26 @@ describe('code redemption', () => {
     expect(call?.body).not.toContain(REDEEM.cookie_token_v2);
   });
 
+  it('keeps HoYoverse’s answer number with an unclear outcome, so a refusal can be traced', async () => {
+    const { deps } = fake({}, [-1071, 0]);
+    const refused = await redeemCode(deps, REDEEM, { gameBiz: 'hkrpg_global', uid: '700000001', region: 'prod_official_eur', code: 'AAAA' });
+    expect(refused).toEqual({ status: 'login', message: expect.stringContaining('(HoYoverse answer -1071)') as unknown as string });
+    expect(refused.message).toMatch(/account_id_v2, account_mid_v2 and cookie_token_v2/);
+    const fine = await redeemCode(deps, REDEEM, { gameBiz: 'hkrpg_global', uid: '700000001', region: 'prod_official_eur', code: 'BBBB' });
+    expect(fine.message).not.toMatch(/HoYoverse answer/);
+  });
+
+  it('the code login must be the same HoYoverse account as the saved login', () => {
+    const login = { ...LOGIN, ltmid_v2: 'abc123_hy' };
+    expect(codeLoginMismatch(login, REDEEM)).toBeNull();
+    expect(codeLoginMismatch(LOGIN, { ...REDEEM, account_mid_v2: 'other9_hy' })).toBeNull(); // no ltmid_v2 saved: only the number can be compared
+    // The owner's case: account_id_v2 copied from another account, account_mid_v2 from this one.
+    expect(codeLoginMismatch(login, { ...REDEEM, account_id_v2: '987654321' })).toBe('account-id');
+    expect(codeLoginMismatch(login, { ...REDEEM, account_mid_v2: 'other9_hy' })).toBe('account-mid');
+    expect(codeLoginMismatch(null, REDEEM)).toBeNull();
+    expect(ACTION_ERROR_TEXT['redeem-other-account']).toMatch(/Nothing was saved/);
+  });
+
   it('reads pasted codes and the public list', () => {
     expect(readCodes('starrailgift, ABCD1234\nabcd1234 · x · TOOLONGCODEXXXXXXXXXXXXXXXXXXXXXXX')).toEqual(['STARRAILGIFT', 'ABCD1234']);
     expect(parseCodeList({ codes: [{ code: 'STARRAILGIFT', status: 'OK', rewards: '50 stellar jade' }, { code: 'OLD', status: 'NOT_OK' }, { code: 'bad code!', status: 'OK' }] })).toEqual([{ code: 'STARRAILGIFT', rewards: '50 stellar jade' }]);
@@ -201,6 +223,13 @@ describe('one automatic run', () => {
     await runLinks([LINK], mem.store, bad.deps, { startedBy: 'auto', deadline: bad.deps.now() + 1e6, maxRedemptions: 10, jobs: () => ({ checkin: false, redeem: true }) });
     expect(mem.redemptions.map((r) => r.status)).toEqual(['login']);
 
+    // A code login mixed from two accounts is never sent to HoYoverse: one row says why.
+    const mixed = fake(routes);
+    const mix = memoryStore({ login: JSON.stringify(LOGIN), redeem: JSON.stringify({ ...REDEEM, account_id_v2: '987654321' }) }, ['AAAA', 'BBBB']);
+    await runLinks([LINK], mix.store, mixed.deps, { startedBy: 'auto', deadline: mixed.deps.now() + 1e6, maxRedemptions: 10, jobs: () => ({ checkin: false, redeem: true }) });
+    expect(mixed.calls.filter((c) => c.url.includes('webExchangeCdkey'))).toHaveLength(0);
+    expect(mix.redemptions).toEqual([expect.objectContaining({ code: 'AAAA', game_uid: '700000001', status: 'login', message: MISMATCH_TEXT })]);
+
     const slow = fake(routes);
     const late = memoryStore({ login: JSON.stringify(LOGIN), redeem: JSON.stringify(REDEEM) }, ['AAAA', 'BBBB']);
     const s = await runLinks([LINK], late.store, slow.deps, { startedBy: 'auto', deadline: slow.deps.now() + 5000, maxRedemptions: 10, jobs: () => ({ checkin: false, redeem: true }) });
@@ -244,5 +273,9 @@ describe('the daily function', () => {
     const toml = readFileSync('supabase/config.toml', 'utf8');
     expect(toml).toMatch(/\[functions\.hoyolab-daily\]\nverify_jwt = false/);
     expect(readFileSync('supabase/functions/hoyolab/index.ts', 'utf8')).not.toMatch(/console\./);
+  });
+  it('refuses to save a code login from another account than the saved login', () => {
+    const src = readFileSync('supabase/functions/hoyolab/index.ts', 'utf8');
+    expect(src).toMatch(/codeLoginMismatch\(await savedLogin\(a\.linkId\), a\.redeem\)\) return json\(\{ error: ACTION_ERROR_TEXT\['redeem-other-account'\]/);
   });
 });

@@ -20,12 +20,14 @@ export type Action =
   /** Pasted codes, kept for the caller's saved accounts. */
   | { action: 'add-codes'; gameBiz: GameBiz; codes: string[] };
 
-export type ActionError = 'bad-request' | 'bad-login' | 'bad-redeem-login' | 'no-codes';
+export type ActionError = 'bad-request' | 'bad-login' | 'bad-redeem-login' | 'redeem-other-account' | 'no-codes';
 
 export const ACTION_ERROR_TEXT: Record<ActionError, string> = {
   'bad-request': 'HLITH sent something the server didn’t understand. Reload the page and try again.',
   'bad-login': 'Send both login values: ltuid_v2 (a number) and ltoken_v2 (starts with v2_).',
   'bad-redeem-login': 'Send all three code login values: account_id_v2 (a number), account_mid_v2 (ends in _hy) and cookie_token_v2 (starts with v2_).',
+  'redeem-other-account':
+    'These values belong to a different HoYoverse account than this saved account: account_id_v2 must be the same number as its HoYoLAB ID (ltuid_v2). Log in to the gift page with this account, copy all three values again and paste them here. Nothing was saved.',
   'no-codes': 'No codes found. Codes are letters and digits, e.g. STARRAILGIFT.',
 };
 
