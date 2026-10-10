@@ -1,4 +1,4 @@
-import { useEffect, useId, useRef, type ReactNode } from 'react';
+import { useEffect, useEffectEvent, useId, useRef, type ReactNode } from 'react';
 import { cx } from './cx';
 import s from './ui.module.css';
 
@@ -34,17 +34,21 @@ export function BottomSheet({ open, title, onClose, children, side = false, plac
   const ref = useRef<HTMLDivElement>(null);
   const where: Placement = placement ?? (side ? 'side' : 'bottom');
 
+  // The latest onClose, read when Escape is pressed. Callers often pass a new function on every render; if the effect
+  // below depended on it, each keystroke in a field inside would re-run it and pull the focus out of the field.
+  const closeNow = useEffectEvent(() => onClose());
+
   useEffect(() => {
     if (!open) return;
     const before = document.activeElement as HTMLElement | null;
     ref.current?.focus();
-    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && onClose();
+    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && closeNow();
     document.addEventListener('keydown', onKey);
     return () => {
       document.removeEventListener('keydown', onKey);
       before?.focus();
     };
-  }, [open, onClose]);
+  }, [open]);
 
   if (!open) return null;
   const action =

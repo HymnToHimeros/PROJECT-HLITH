@@ -136,6 +136,26 @@ describe('BottomSheet', () => {
     expect(onClose).toHaveBeenCalledOnce();
     expect(screen.getByRole('dialog', { name: 'More' })).toBeInTheDocument();
   });
+  it('typing in a field inside keeps the focus there, even when the owner re-renders with a new onClose', () => {
+    // Owners often pass `onClose={() => …}`, a new function on every render. Each keystroke re-renders them.
+    function Form() {
+      const [text, setText] = useState('');
+      return (
+        <>
+          <button type="button">Behind</button>
+          <BottomSheet open title="Edit" onClose={() => setText('')}>
+            <input aria-label="Name" value={text} onChange={(e) => setText(e.target.value)} />
+          </BottomSheet>
+        </>
+      );
+    }
+    render(<Form />);
+    const input = screen.getByLabelText('Name');
+    input.focus();
+    for (const v of ['a', 'ab', 'abc']) fireEvent.change(input, { target: { value: v } });
+    expect(input).toHaveValue('abc');
+    expect(document.activeElement).toBe(input);
+  });
   it('renders nothing when closed', () => {
     render(<BottomSheet open={false} title="More" onClose={() => {}}>x</BottomSheet>);
     expect(screen.queryByRole('dialog')).toBeNull();
