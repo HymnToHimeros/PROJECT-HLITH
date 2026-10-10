@@ -2,12 +2,12 @@
  * Screenshot scan of a character screen (R50): which fields the game's record
  * asks for (`scan.fields`), what each means, and how a confirmed reading is saved.
  *
- * Saved today: owned + dupes (the roster holds those). Level, weapon, gear and
- * skills are read and confirmed but not stored yet: HLITH has no build store
- * (ROSTER-LOGIC adds it and fills `saveBuild` here).
+ * Saved: owned + dupes (the roster), and level and weapon into the character's saved
+ * build when the game has builds (`GameContract.build`). Gear and skills are read and
+ * confirmed but entered in the build form, piece by piece.
  */
 import type { GameContract } from '../../core/contract';
-import { setRosterEntry, type RosterEntry } from '../../core/data/userData';
+import { gameData, setBuild, setRosterEntry, type RosterEntry } from '../../core/data/userData';
 
 export type FieldKind = 'level' | 'dupes' | 'text';
 export interface ScanField {
@@ -25,9 +25,9 @@ export function fieldsFor(game: GameContract): ScanField[] {
   const terms = game.terms;
   return (game.scan?.fields ?? []).map((id): ScanField => {
     const n = norm(id);
-    if (n === 'level') return { id, label: 'Level', kind: 'level', saved: false, max: 100 };
+    if (n === 'level') return { id, label: 'Level', kind: 'level', saved: Boolean(game.build), max: game.build?.levelMax ?? 100 };
     if (game.dupes && n === norm(game.dupes.name)) return { id, label: game.dupes.name, kind: 'dupes', saved: true, max: game.dupes.max };
-    if (n === norm(terms.weapon)) return { id, label: terms.weapon, kind: 'text', saved: false };
+    if (n === norm(terms.weapon)) return { id, label: terms.weapon, kind: 'text', saved: Boolean(game.build) };
     if (n === norm(terms.gear)) return { id, label: terms.gear, kind: 'text', saved: false };
     if (n === norm(terms.skill)) return { id, label: terms.skill, kind: 'text', saved: false };
     const words = id.replace(/[-_]+/g, ' ');
@@ -60,7 +60,30 @@ export function saveScan(game: GameContract, characterId: string, values: ScanVa
   const typed = dupesField ? (values[dupesField.id] ?? '').trim() : '';
   const entry: RosterEntry = { owned: true, wanted: before?.owned ? before.wanted : false, dupes: typed ? Number(typed) : (before?.dupes ?? 0) };
   setRosterEntry(game.id, characterId, entry);
+  saveBuildFields(game, characterId, values);
   return entry;
+}
+
+/** Level and weapon from a scan go into the saved build; everything else in it stays. */
+function saveBuildFields(game: GameContract, characterId: string, values: ScanValues): void {
+  if (!game.build) return;
+  const fields = fieldsFor(game);
+  const typed = (kind: FieldKind, weapon = false) => {
+    const f = fields.find((x) => x.kind === kind && (!weapon || norm(x.id) === norm(game.terms.weapon)));
+    return f ? (values[f.id] ?? '').trim() : '';
+  };
+  const level = typed('level');
+  const weapon = typed('text', true);
+  if (!level && !weapon) return;
+  const before = gameData(game.id).builds?.[characterId];
+  const sameWeapon = before?.weapon && before.weapon.name.toLowerCase() === weapon.toLowerCase();
+  setBuild(game.id, characterId, {
+    ...(before ?? { gear: [] }),
+    ...(level ? { level: Number(level) } : {}),
+    ...(weapon ? { weapon: sameWeapon && before.weapon ? before.weapon : { name: weapon } } : {}),
+    source: 'scan',
+    updatedAt: new Date().toISOString(),
+  });
 }
 
 /**

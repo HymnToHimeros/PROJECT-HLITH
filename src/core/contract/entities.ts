@@ -201,10 +201,27 @@ export interface BuildLevel {
   skills?: number[];
 }
 
+/**
+ * A build you saved for one character (character page, screenshot scan, later HoYoLAB).
+ * Names are as the game writes them; gear slot ids are `GameContract.build.slots[].id`.
+ * Every field can be missing: HLITH shows only what you entered.
+ */
+export interface SavedBuild {
+  level?: number;
+  /** Weapon by name; `id` when it matches the game's list. `refine`: Superimposition / Phase. */
+  weapon?: { name: string; id?: string; level?: number; refine?: number };
+  gear: { slot: string; set?: string; main?: string; level?: number; subs: { stat: string; value: number; rolls?: number }[] }[];
+  /** Skill name → level. */
+  skills?: Record<string, number>;
+  source: 'manual' | 'scan' | 'hoyolab';
+  updatedAt: string;
+}
+
 export interface CharacterBuild {
   characterId: string;
   level: number;
   dupes: number;
-  weapon?: { id: string; level: number };
+  /** The weapon by name; `id` when it matches the game's list, `level` when entered. */
+  weapon?: { name: string; id?: string; level?: number };
   gear: { slot: string; main: string; subs: Record<string, number> }[];
 }

@@ -28,6 +28,14 @@ Resume with: "continue from PROGRESS.md". Newest entry on top. Older entries:
 - CI (`.github/workflows/ci.yml`) runs both on every pull request.
 
 ## Done
+- 2026-10-10 · **FRAME: save a build per character** (branch `frame/build-store`).
+  Build score on the character page: "Enter build" opens a form for level, weapon
+  (picked from the game's list, with level and Superimposition / Phase), every gear
+  piece (set, main stat, up to four extra stats) and skill levels. Empty fields stay
+  empty; a wrong number is named and nothing saves. Saved builds sync, show on the
+  page (level in the header), can be edited, and cleared with Undo. A screenshot scan
+  saves level and weapon into the build. The score itself waits for LOGIC-CORE's
+  `scoreBuild`. Browser tests: "every module opens" is one test per screen.
 - 2026-10-10 · **FRAME: Enhanced / Agent Potential per character** (branch `frame/potential-field`).
   For LOGIC-CORE: the character page has an "Enhanced" (HSR: Not set / No / Yes) or
   "Agent Potential" (ZZZ: Not set / 0–6) picker, only for characters whose kit has pieces

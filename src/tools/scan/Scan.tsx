@@ -111,8 +111,10 @@ export function Scan({ game, reader, characterId }: { game: GameContract; reader
     const dupesTyped = fields.some((f) => f.kind === 'dupes' && (values[f.id] ?? '').trim());
     const entry = saveScan(game, who, values, roster);
     const dropped = fields.filter((f) => !f.saved && (values[f.id] ?? '').trim()).map((f) => f.label);
-    const kept = `Saved: ${chosen?.name ?? who} is owned${game.dupes ? `, ${game.dupes.prefix}${entry.dupes}${dupesTyped ? '' : ' (as it was)'}` : ''}.`;
-    setStatus({ kind: 'ok', text: dropped.length ? `${kept} Not saved, because HLITH can’t store builds yet: ${dropped.join(', ')}.` : kept });
+    const toBuild = fields.filter((f) => f.saved && f.kind !== 'dupes' && (values[f.id] ?? '').trim()).map((f) => f.label);
+    const kept = `Saved: ${chosen?.name ?? who} is owned${game.dupes ? `, ${game.dupes.prefix}${entry.dupes}${dupesTyped ? '' : ' (as it was)'}` : ''}${toBuild.length ? `; ${toBuild.join(' and ')} in their build` : ''}.`;
+    const why = game.build ? 'enter these piece by piece in Build score on their character page' : 'HLITH can’t store builds for this game yet';
+    setStatus({ kind: 'ok', text: dropped.length ? `${kept} Not saved from here (${why}): ${dropped.join(', ')}.` : kept });
   };
 
   if (!game.scan) return <p className={c.muted}>No data yet: this game’s record doesn’t list which fields a screenshot scan reads.</p>;
@@ -126,7 +128,7 @@ export function Scan({ game, reader, characterId }: { game: GameContract; reader
           <>Take a screenshot. Windows: Win + Shift + S, or Print Screen. Mac: Cmd + Shift + 4. Phone: your phone’s screenshot buttons.</>,
           <>Here, press “Choose a screenshot”, drop the picture on the box, or paste it (Ctrl + V / Cmd + V).</>,
           <>Pick who it is and type what you see into the fields.</>,
-          <>Check every field against the game, then press Save. Only owned{game.dupes ? ` and ${game.dupes.name}` : ''} are saved for now; fields marked “not saved” are kept only on screen. Empty fields stay as they were.</>,
+          <>Check every field against the game, then press Save. Saved: owned{fields.filter((f) => f.saved).map((f) => `, ${f.label}`).join('')}; fields marked “not saved” are kept only on screen. Empty fields stay as they were.</>,
         ]}
       >
         <p className={c.body}>
@@ -207,7 +209,7 @@ export function Scan({ game, reader, characterId }: { game: GameContract; reader
                 aria-invalid={problems[f.id] ? true : undefined}
               />
               {problems[f.id] && <span className={c.error}>{problems[f.id]}</span>}
-              {!f.saved && <span className={c.muted}>HLITH can’t store this yet; it isn’t saved.</span>}
+              {!f.saved && <span className={c.muted}>{game.build ? 'Not saved from here: enter it in Build score on the character page.' : 'HLITH can’t store this yet; it isn’t saved.'}</span>}
             </div>
           ))}
         </div>
