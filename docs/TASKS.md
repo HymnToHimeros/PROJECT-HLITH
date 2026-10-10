@@ -21,7 +21,8 @@ doing it said `LIVE`. Newest jobs at the bottom; live jobs move to Done.
 | T17 | Kit check / Roster teams don't explain their reasoning ("Why 90%: count 9 of 10" is a number, not a reason). Screenshot `2-recommended-teams.png` | LOGIC-CORE leads, FRAME for the screen | working | PR #61 (after #60): every Why opens in plain words, one line per member, "To reach 100%". Both games. |
 | T18 | Make my own teams (pick the members myself, get them scored) | FRAME leads, LOGIC-CORE scores | working | Owner OK: put live. Order: #61 → account-fits → #59. Build/weapon scoring (incl. Robin • Summeretto HP case) follows as its own step. |
 | T20 | Several screens are badly designed / crowded (owner: endgame may stay in Events; MANAGER to find which). MANAGER's list: Today, Events, Calendar, Backlog, Banners (see note to FRAME) | FRAME | working | Owner OK on #63 Calendar, #64 Events, #65 Today; merging in line. #66 Backlog still needs the owner's look. |
-| T21 | Banners screen looks like a card picker, not a banner tracker: redesign. Screenshot `3-banners-page.webp` | FRAME | working | Owner: #62 not accepted. Fix permanent banners in "Live now" and small weapon art on phone, and a totally different look. FRAME sends 2–3 mock-ups; owner picks. |
+| T21 | Banners screen looks like a card picker, not a banner tracker: redesign. Screenshot `3-banners-page.webp` | FRAME | working | Owner picked Direction 2, Timeline board (Now/Next/Later, TODAY ruler, permanent banners in a side rail, swipe tabs on phone). FRAME builds it on real data. |
+| T26 | Team scores count saved builds: bigger stat → higher score (roughly, steps are fine); the build a support should run depends on the team (e.g. HP Robin • Summeretto for Phainon); only when a build is saved; option to see which build fits which team | LOGIC-CORE leads, FRAME screen | sent | Owner's answer to LOGIC-CORE's scaling question. Part of T18 steps 3–4. |
 
 ## Done
 | # | Job | Who | Live on |
