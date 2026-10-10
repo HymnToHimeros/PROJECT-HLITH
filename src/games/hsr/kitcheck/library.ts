@@ -36,6 +36,29 @@ export function centreOf(team: TeamPreset, carries: Set<string>): string | undef
   return first && carries.has(first) ? first : page && carries.has(page) ? page : undefined;
 }
 
+/**
+ * A carry's OWN game team: one shown on that carry's page and built around them (owner's report, 2026-10-10). Other
+ * pages' teams are starter line-ups that force that page's character in beside today's top carry ("Phainon with
+ * March 7th"): they are not teams anyone plays, so they are never used (hsr-decisions.md 30).
+ */
+export const isOwnTeam = (team: TeamPreset, carries: Set<string>) => {
+  const page = pageOf(team);
+  if (!page || !carries.has(page) || !team.slots.some((s) => s.characters.includes(page))) return false;
+  // A partner's page fixes the real carry alone in a slot (Topaz's page: "Feixiao" | Topaz | …); a carry's own page
+  // only lists other carries among options (The Herta's: "Anaxa, Jade, Herta, Serval" | The Herta | …).
+  return !team.slots.some((s) => s.characters.length === 1 && s.characters[0] !== page && carries.has(s.characters[0] ?? ''));
+};
+
+/** Who each carry's own game teams list, in any slot: the only teammates the check tries for them. */
+function allowedFor(teams: TeamPreset[]): Map<string, Set<string>> {
+  const out = new Map<string, Set<string>>();
+  for (const t of teams) {
+    const page = pageOf(t);
+    if (page) out.set(page, new Set([...(out.get(page) ?? []), ...t.slots.flatMap((s) => s.characters).filter((id) => id !== page)]));
+  }
+  return out;
+}
+
 function pairs(teams: TeamPreset[]): Map<string, Set<string>> {
   const out = new Map<string, Set<string>>();
   for (const t of teams) {
@@ -47,9 +70,11 @@ function pairs(teams: TeamPreset[]): Map<string, Set<string>> {
 
 export function buildLibrary(sheets: CharacterSheet[] = SHEETS, kitList: Kit[] = KITS, teams: TeamPreset[] = gameTeams as TeamPreset[]): Library {
   const carries = new Set(sheets.filter((s) => s.damage).map((s) => s.characterId));
+  const own = teams.filter((t) => isOwnTeam(t, carries));
   return {
-    centres: new Set(teams.map((t) => centreOf(t, carries)).filter((x): x is string => !!x)),
-    pairedWith: pairs(teams),
+    centres: new Set(own.map((t) => pageOf(t)).filter((x): x is string => !!x)),
+    pairedWith: pairs(own),
+    allowed: allowedFor(own),
     profiles: new Map(characters.map((c) => [c.id, { characterId: c.id, path: c.role as Path, element: c.element as Element } satisfies Profile])),
     sheets: new Map(sheets.map((s) => [s.characterId, s])),
     unlocks: new Map(
