@@ -1,6 +1,7 @@
 // @vitest-environment node
 /** T18: suggestions for your own teams come from your account, ranked by %, with theory only when asked. */
 import { describe, expect, it } from 'vitest';
+import weapons from '../src/games/hsr/data/weapons.json';
 import type { TeamAccount } from '../src/core/contract';
 import { library as hsrLib } from '../src/games/hsr/kitcheck/library';
 import { whoFits as hsrFits } from '../src/games/hsr/kitcheck/team';
@@ -24,7 +25,7 @@ describe('Who fits from your account (T18)', () => {
     const topaz = fits.find((f) => f.id === idOf(h, 'Topaz & Numby'));
     expect(topaz?.theory).toBe(false);
     expect(topaz?.fromAccount?.[0]).toBe('Counted: E2.');
-    expect(topaz?.fromAccount?.some((n) => /^Signature .+ not saved: not counted\.$/.test(n))).toBe(true);
+    expect(topaz?.fromAccount?.some((n) => /^No weapon saved \(signature .+ would count\)\.$/.test(n))).toBe(true);
   });
 
   it('"Include characters I don’t own" adds the rest, marked as theory', () => {
@@ -34,7 +35,7 @@ describe('Who fits from your account (T18)', () => {
     expect(ratio?.fromAccount?.[0]).toMatch(/^Not owned: scored as theory at E0/);
   });
 
-  it('the signature weapon counts only when the saved build has it; another weapon is named and not counted', () => {
+  it('the signature counts when saved; any other weapon counts when its path is theirs, and says why when not', () => {
     // Topaz is in Feixiao's own game team (Robin isn't, so she is never suggested for him).
     const topazId = idOf(h, 'Topaz & Numby');
     const sigId = h.unlocks.get(topazId)?.get('signature-weapon')?.weapon ?? '';
@@ -42,8 +43,14 @@ describe('Who fits from your account (T18)', () => {
     const withSig = account({ [fei]: 0, [topazId]: 0 }, { weapon: (id) => (id === topazId ? { id: sigId, name: sigName } : undefined) });
     const topaz = hsrFits([fei], withSig, h).find((f) => f.id === topazId);
     expect(topaz?.fromAccount).toContain(`Counted: E0 (no copies saved), signature ${sigName}.`);
-    const other = account({ [fei]: 0, [topazId]: 0 }, { weapon: (id) => (id === topazId ? { name: 'Swordplay' } : undefined) });
-    expect(hsrFits([fei], other, h).find((f) => f.id === topazId)?.fromAccount).toContain(`Swordplay saved, not signature ${sigName}: not counted.`);
+    const unmatched = account({ [fei]: 0, [topazId]: 0 }, { weapon: (id) => (id === topazId ? { name: 'My own cone' } : undefined) });
+    expect(hsrFits([fei], unmatched, h).find((f) => f.id === topazId)?.fromAccount).toContain("My own cone: not matched to the game's list, not counted.");
+    // A Destruction Light Cone on Topaz (Hunt): its effect only works for Destruction characters.
+    const destruction = (weapons as { id: string; name: string; role?: string; madeFor?: string }[]).find((w) => w.role === 'destruction' && !w.madeFor);
+    if (!destruction) throw new Error('no Destruction Light Cone');
+    const wrong = account({ [fei]: 0, [topazId]: 0 }, { weapon: (id) => (id === topazId ? { id: destruction.id, name: destruction.name } : undefined) });
+    const wrongNotes = hsrFits([fei], wrong, h).find((f) => f.id === topazId)?.fromAccount ?? [];
+    expect(wrongNotes).toContain(`${destruction.name}: works only for Destruction characters, not counted.`);
   });
 
   it('ZZZ: Mindscapes and Agent Potential from the account', () => {

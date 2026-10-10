@@ -15,13 +15,32 @@ import { groupF } from './sheet/groupF';
 import { groupG } from './sheet/groupG';
 import { groupH } from './sheet/groupH';
 import { groupI } from './sheet/groupI';
-import type { CharacterSheet } from './types';
+import type { CharacterSheet, WeaponSheet } from './types';
+import { WEAPON_SHEETS } from './weapons';
+import { weaponPiece } from './check';
 
 /** Every kit, with each character's signature W-Engine as one more piece (counted only when equipped). */
 export const KITS: Kit[] = withSignatureWeapons(kitsJson as Kit[], weapons as Weapon[], 'W-Engine');
 
 /** Every character read so far, group by group. */
 export const SHEETS: CharacterSheet[] = [...groupA, ...groupB, ...groupC, ...groupD, ...groupE, ...groupF, ...groupG, ...groupH, ...groupI];
+
+/**
+ * Every W-Engine the check can read (T18 step 4). A signature's entries come from its agent's sheet (piece
+ * `signature-weapon`); the rest from the weapon sheets. Entry ids get the weapon's id in front, so a W-Engine never
+ * clashes with the wearer's own entries.
+ */
+export function weaponLibrary(sheets: CharacterSheet[], weaponSheets: WeaponSheet[] = WEAPON_SHEETS, list: Weapon[] = weapons as Weapon[]): Library['weapons'] {
+  const out: Library['weapons'] = new Map();
+  for (const w of list) {
+    if (!w.role) continue;
+    const read = w.madeFor ? sheets.find((s) => s.characterId === w.madeFor)?.entries.filter((e) => e.piece === 'signature-weapon') : weaponSheets.find((s) => s.weaponId === w.id)?.entries;
+    if (!read) continue;
+    const entries = read.map((e) => ({ ...e, id: `w${w.id}-${e.id}`, piece: weaponPiece(w.id) }));
+    out.set(w.id, { name: w.name, role: w.role, ...(w.madeFor ? { madeFor: w.madeFor } : {}), label: `W-Engine: ${w.name}`, entries });
+  }
+  return out;
+}
 
 export function buildLibrary(sheets: CharacterSheet[] = SHEETS, kitList: Kit[] = KITS): Library {
   return {
@@ -35,6 +54,7 @@ export function buildLibrary(sheets: CharacterSheet[] = SHEETS, kitList: Kit[] =
     ),
     pieceLabels: new Map(kitList.map((k) => [k.characterId, new Map(k.skills.map((s) => [s.id, s.label] as const))])),
     names: new Map(characters.map((c) => [c.id, c.name])),
+    weapons: weaponLibrary(sheets),
   };
 }
 
