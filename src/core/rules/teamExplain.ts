@@ -15,6 +15,8 @@ export interface ExplainLine {
   tag: string;
   why: string;
   points: number;
+  /** T30: the line's share of the kit value (a support's own hits have value but no count point). */
+  value?: number;
   helpers?: string[];
   /** Counted for a second damage dealer of the team, not the main one (hsr-decisions 33). */
   forDd?: string;
@@ -65,7 +67,11 @@ function given(t: ExplainTeam, who: string, name: (id: string) => string): { phr
     for (const c of chains) parts.push(chainWords(c.why));
     // Switching on the damage dealer's ability is counted once, on the damage dealer's line.
     if (turnedOn.length) parts.push(`switches on ${dd}'s ${list(turnedOn.map((l) => `“${bare(l.tag)}”`))}`);
-    if (support.length && !buffs.length && !chains.length) parts.push(`team support only (${list(support.map((l) => bare(l.tag)))}): breaks ties, adds no points`);
+    // T30 (B): a support's own hits add to the team's damage (kit value), not to the count.
+    const hits = support.filter((l) => (l.value ?? 0) > 0);
+    if (hits.length) parts.push(`adds damage of their own: ${list(hits.map((l) => bare(l.tag)))}`);
+    const rest = support.filter((l) => !((l.value ?? 0) > 0));
+    if (rest.length && !buffs.length && !chains.length && !hits.length) parts.push(`team support only (${list(rest.map((l) => bare(l.tag)))}): breaks ties, adds no points`);
   }
   for (const l of own)
     if (l.kind === 'build' && l.build)

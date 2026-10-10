@@ -226,3 +226,6 @@ team size and order, and the owner's ZZZ method's own counting.
     Lucia's and Pan Yinhu's Sheer Force are one kind and add up, Dialyn's +40% DMG, Stun multiplier and free
     Ultimate are kinds of their own, so Billy > Dialyn > Lucia is Billy's best squad and Billy > Lucia > Pan Yinhu
     only "Partly". No role is needed unless a kit asks for it (an Anomaly squad without a Stun loses nothing).
+    Same day, mirrored from HSR decision 37: like with like for a squad with a healer; a support's own damage counts,
+    sized from its kit against the carry's own hit; Rupture carries get nothing from ATK buffs (owner: Astra Yao's
+    ATK gives Starlight - Billy nothing).

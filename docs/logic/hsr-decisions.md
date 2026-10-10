@@ -213,3 +213,16 @@ team size and order, and the owner's ZZZ method's own counting.
       42 stacks, from her own numbers); Robin • Summeretto gives ATK (from her Max HP) to an ATK carry and CRIT DMG
       to others, never both (`gives[].when`).
     - Sizes: "+15% at 1 stack, +5% per extra stack, up to 5 stacks" counts at full stacks; "+20% to +60%" at its top.
+    Round 3 (MANAGER's rulings A–C, owner's answers):
+    - **Like with like (A):** a team with a healer or shielder is compared with the best team that keeps one, and the
+      Why says so. No healer is ever required.
+    - **A support's own damage (B)** adds to the team's, sized against the carry's own hit from the kits ("12% of
+      Tribbie's Max HP per target hit" against "56% of Castorice's Max HP"); typical only when the text gives no
+      number. The Why says "adds damage of their own".
+    - Robin • Summeretto's lines grow per Vibe, "capped at 50": DEF ignore 40%, CRIT DMG 115% at the cap.
+    - Phainon: "When Phainon is targeted by an ability from any other target, gains 1 Coreflame": every teammate with
+      an ability aimed at one chosen ally charges his domain (event `targets-ally`). In his domain "other teammates
+      depart and cannot take action" (`damage.alone`): teammates' own hits and extra hits don't count for him there;
+      their buffs from before do. Open (owner asked): what makes Dan Heng • Permansor Terrae better than standard
+      Robin and Huohuo for him; until then the Why shows this reading.
+    - The best-team search always keeps the team's own members in the running.
