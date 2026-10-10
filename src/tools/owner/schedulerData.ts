@@ -163,7 +163,7 @@ export async function onApprove(finding: FindingView): Promise<void> {
   void finding; // DATA workstream: write the approved finding into catalog_items here.
 }
 
-/** Records your decision on a finding, then (for an approval) calls onApprove. */
+/** Records your decision on a finding, then (for an approval) calls onApprove. Returns when it was decided. */
 export async function decideFinding(finding: FindingView, status: Exclude<Decision, 'new'>): Promise<string> {
   if (!backend) throw new Error('This site runs without a server (this device only).');
   const { data: auth } = await backend.auth.getUser();
@@ -175,6 +175,13 @@ export async function decideFinding(finding: FindingView, status: Exclude<Decisi
   if (error) throw new Error(error.message);
   if (status === 'approved') await onApprove({ ...finding, status, decided_at: decidedAt });
   return decidedAt;
+}
+
+/** "Move back to new": undoes an Approve or Dismiss (the finding returns to the inbox, undecided). */
+export async function reopenFinding(finding: FindingView): Promise<void> {
+  if (!backend) throw new Error('This site runs without a server (this device only).');
+  const { error } = await backend.from('scheduler_findings').update({ status: 'new', decided_by: null, decided_at: null }).eq('id', finding.id);
+  if (error) throw new Error(error.message);
 }
 
 export const jobLabel = (id: string) => JOBS.find((j) => j.id === id)?.label ?? id;

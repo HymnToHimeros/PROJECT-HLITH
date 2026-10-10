@@ -2,7 +2,8 @@
  * Roster import from HoYoLAB: compare what HoYoLAB lists with your roster, then
  * add or raise. It only ever ADDS: characters become owned and their dupes go
  * up (never down, since dupes can't be lost in the game). Nothing is removed,
- * un-owned or un-wanted, and characters HoYoLAB doesn't list are left alone.
+ * or un-owned (a character that becomes owned leaves your wanted list), and characters
+ * HoYoLAB doesn't list are left alone.
  */
 import type { Character, GameContract } from '../../core/contract';
 import { setRosterEntry, type RosterEntry } from '../../core/data/userData';
@@ -48,14 +49,14 @@ export function planImport(game: GameContract, imported: HoyoCharacter[], charac
   return rows.sort((a, b) => order[a.status] - order[b.status] || a.name.localeCompare(b.name));
 }
 
-/** Write the plan: owned = true, dupes raised, `wanted` kept as it was. Returns counts. */
+/** Write the plan: owned = true (so no longer wanted), dupes raised. Returns counts. */
 export function applyImport(gameId: string, rows: ImportRow[], roster: Record<string, RosterEntry>): { added: number; updated: number } {
   let added = 0;
   let updated = 0;
   for (const r of rows) {
     if (!r.id || (r.status !== 'new' && r.status !== 'update')) continue;
     const before = roster[r.id];
-    setRosterEntry(gameId, r.id, { owned: true, wanted: before?.wanted ?? false, dupes: Math.max(before?.dupes ?? 0, r.dupesAfter) });
+    setRosterEntry(gameId, r.id, { owned: true, wanted: before?.owned ? before.wanted : false, dupes: Math.max(before?.dupes ?? 0, r.dupesAfter) });
     if (r.status === 'new') added++;
     else updated++;
   }

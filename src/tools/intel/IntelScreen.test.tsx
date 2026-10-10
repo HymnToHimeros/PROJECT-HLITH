@@ -91,4 +91,12 @@ describe('Intel screen', () => {
     fireEvent.click(within(screen.getByRole('group', { name: 'Kind' })).getByRole('button', { name: 'Area' }));
     expect(screen.getAllByRole('article').map((c) => c.getAttribute('aria-label'))).toEqual(['A new map area']);
   });
+
+  it('says plainly where Hide leaks applies and that leak alerts are not built yet', async () => {
+    show(makeGame(chars, banners));
+    await screen.findByText('Soon Star');
+    expect(screen.getByText(/also hides leaks in Today, Events, Calendar, Banners and the Pulls planner/)).toBeInTheDocument();
+    expect(screen.getByText(/Leak alerts .* aren’t built yet/)).toBeInTheDocument();
+    expect(screen.queryByText(/evening message/)).toBeNull();
+  });
 });

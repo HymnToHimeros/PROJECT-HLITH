@@ -67,5 +67,8 @@ describe('Owner console · Findings (this device only)', () => {
     // Nothing is removed: dismissed findings stay under Dismissed.
     fireEvent.change(within(inbox).getByLabelText('Status'), { target: { value: 'dismissed' } });
     expect(within(inbox).getByText(/a login event starting next week/)).toBeInTheDocument();
+    // …and can be moved back to the inbox.
+    fireEvent.click(within(inbox).getByRole('button', { name: /Move back to new: Example: a login event/ }));
+    expect(await within(inbox).findByText('1 new')).toBeInTheDocument();
   });
 });

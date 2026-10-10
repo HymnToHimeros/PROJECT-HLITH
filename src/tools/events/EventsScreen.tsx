@@ -45,8 +45,10 @@ function GameEvents({ game, serverId, now, heading, openAccount }: { game: GameC
   if (data.events.example) {
     parts.push('These events are examples: the game’s event list still has to be added by us (not you). Marking events done or skipped and claiming login days already saves for real.');
   }
-  if (data.versionEnd.example) parts.push('The version end date is an example too, until the version list is added.');
-  const anyExample = data.events.example || data.versionEnd.example;
+  const cyclesExample = data.cycleExamples.size > 0;
+  if (cyclesExample) parts.push('Endgame cycle dates marked EXAMPLE stand in until the real start dates are added.');
+  if (data.versionEnd.example) parts.push(`The version end date is an example${parts.length ? ' too' : ''}, until the version list is added.`);
+  const anyExample = data.events.example || cyclesExample || data.versionEnd.example;
   if (anyExample && !serverId) {
     parts.push('Login days left are not counted until you pick your server.');
     actions.push({ label: 'Choose my server', onClick: openAccount });

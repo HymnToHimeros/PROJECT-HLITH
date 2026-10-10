@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { currentProvider, sendEmailLink, signInWith, signOut, useSession } from './core/auth/session';
 import { SignIn } from './core/auth/SignIn';
 import { backend } from './core/data/backend';
-import { supabaseSettings } from './core/data/supabaseSettings';
+import { supabaseGameData, supabaseSettings } from './core/data/supabaseSettings';
 import { markDeviceOnly, markSignedOut, startSync } from './core/data/sync';
 import { listGames } from './core/registry';
 import { Shell } from './core/shell/Shell';
@@ -16,20 +16,23 @@ export function App() {
 function Root() {
   const session = useSession(backend);
   const userId = session?.user.id;
-  const [ownerOf, setOwnerOf] = useState<string | null>(null);
+  // Which account the owner answer is for, and the answer (null until the server replies).
+  const [ownerAnswer, setOwnerAnswer] = useState<{ userId: string; owner: boolean } | null>(null);
 
   // Ask the server whether this account is an owner (public.is_owner()); only shows the Owner console row.
   useEffect(() => {
     if (!backend || !userId) return;
     let alive = true;
     void backend.rpc('is_owner').then(({ data }) => {
-      if (alive) setOwnerOf(data === true ? userId : null);
+      if (alive) setOwnerAnswer({ userId, owner: data === true });
     });
     return () => {
       alive = false;
     };
   }, [userId]);
-  const isOwner = Boolean(userId) && ownerOf === userId;
+  const isOwner = Boolean(userId) && ownerAnswer?.userId === userId && ownerAnswer?.owner === true;
+  // Without an account there is nothing to ask; with one, wait for the server's answer.
+  const ownerChecked = !backend || !userId || ownerAnswer?.userId === userId;
 
   useEffect(() => {
     if (!backend) return markDeviceOnly();
@@ -37,7 +40,7 @@ function Root() {
     if (!userId) return;
     let stop: (() => void) | undefined;
     let cancelled = false;
-    void startSync(supabaseSettings(backend, userId)).then((s) => (cancelled ? s() : (stop = s)));
+    void startSync(supabaseSettings(backend, userId), 1500, supabaseGameData(backend, userId)).then((s) => (cancelled ? s() : (stop = s)));
     return () => {
       cancelled = true;
       stop?.();
@@ -57,5 +60,5 @@ function Root() {
     client && session
       ? { email: session.user.email ?? 'your account', provider, id: session.user.id, identities: methods, createdAt: session.user.created_at, onSignOut: () => void signOut(client) }
       : null;
-  return <Shell games={listGames()} account={account} isOwner={isOwner} />;
+  return <Shell games={listGames()} account={account} isOwner={isOwner} ownerChecked={ownerChecked} />;
 }

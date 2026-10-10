@@ -6,7 +6,9 @@
 import { useEffect, useState, type ReactNode } from 'react';
 import type { Banner, Character, GameContract, GameEvent, GameId, Material, SampleArt, Version } from '../../core/contract';
 import { useGameData, type GameUserData } from '../../core/data/userData';
-import { mergeOwnItems } from '../edit-mode/merge';
+import { mixExamples } from '../edit-mode/examples';
+import { exampleEvents } from '../events/examples';
+import { exampleBannerSchedule } from '../pulls/examples';
 
 export interface GameLists {
   characters: Character[];
@@ -16,6 +18,10 @@ export interface GameLists {
   materials: Material[];
   /** Art for EXAMPLE items only (never on real data). */
   sampleArt?: SampleArt[];
+  /** After `withOwnItems`: ids of the banners and events that are examples. */
+  exampleIds?: ReadonlySet<string>;
+  /** After `withOwnItems`: only real banners and events (never examples), for tasks and budgets. */
+  real?: { banners: Banner[]; events: GameEvent[] };
 }
 
 /** Built-in lists per game id; null while loading. */
@@ -72,12 +78,23 @@ export const inScope = (games: GameContract[], scope: GameId | 'all') => (scope 
 /** A game tag, only when several games share the screen (DESIGN: tags appear only in All games). */
 export const tagFor = (game: GameContract, show: boolean) => (show ? { label: game.short, vent: game.vent } : undefined);
 
-/** The built-in banners and events plus your own from Edit mode (hidden ones left out). */
-export function withOwnItems(lists: Record<GameId, GameLists>, user: Record<GameId, GameUserData>): Record<GameId, GameLists> {
+/**
+ * The built-in banners and events with your changes and own items (hidden ones left out),
+ * plus each game's examples one by one while its list is empty and examples are shown
+ * (the same examples Events, Banners and Pulls use, so a tick or hide on one shows everywhere).
+ * Leaks are left out while "Hide leaks" is on.
+ */
+export function withOwnItems(games: GameContract[], lists: Record<GameId, GameLists>, user: Record<GameId, GameUserData>, opts: { showExamples: boolean; hideLeaks: boolean; now: number }): Record<GameId, GameLists> {
+  const { showExamples, hideLeaks, now } = opts;
+  const noLeaks = <T extends { leak?: unknown }>(list: T[]) => (hideLeaks ? list.filter((x) => !x.leak) : list);
   return Object.fromEntries(
     Object.entries(lists).map(([id, l]) => {
+      const game = games.find((g) => g.id === id);
       const own = user[id]?.ownItems;
-      return [id, { ...l, banners: mergeOwnItems('banners', l.banners, own?.banners), events: mergeOwnItems('events', l.events, own?.events) }];
+      const art = (l.sampleArt ?? []).map((a) => a.characterId);
+      const banners = mixExamples('banners', l.banners, own?.banners, game ? exampleBannerSchedule(game, l.characters, now, art) : [], showExamples);
+      const events = mixExamples('events', l.events, own?.events, game ? exampleEvents(game, now) : [], showExamples);
+      return [id, { ...l, banners: noLeaks(banners.list), events: noLeaks(events.list), exampleIds: new Set([...banners.exampleIds, ...events.exampleIds]), real: { banners: banners.real, events: events.real } }];
     }),
   );
 }

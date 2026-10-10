@@ -29,7 +29,7 @@ describe('scan fields', () => {
 describe('Scan', () => {
   beforeEach(() => resetUserData());
 
-  it('saves what you typed: owned + dupes, keeping wanted', async () => {
+  it('saves what you typed: owned + dupes; newly owned leaves the wanted list', async () => {
     setRosterEntry('aa', '1003', { owned: false, wanted: true, dupes: 0 });
     render(<Scan game={game} />);
     const who = await screen.findByLabelText('Character');
@@ -37,7 +37,7 @@ describe('Scan', () => {
     fireEvent.change(who, { target: { value: '1003' } });
     fireEvent.change(screen.getByLabelText(/Eidolon/), { target: { value: '2' } });
     fireEvent.click(screen.getByRole('button', { name: 'Save to my roster' }));
-    await waitFor(() => expect(gameData('aa').roster['1003']).toEqual({ owned: true, wanted: true, dupes: 2 }));
+    await waitFor(() => expect(gameData('aa').roster['1003']).toEqual({ owned: true, wanted: false, dupes: 2 }));
     expect(screen.getByRole('status')).toHaveTextContent('Fire Queen is owned, E2');
   });
 
@@ -49,10 +49,25 @@ describe('Scan', () => {
     await waitFor(() => expect(gameData('aa').roster['1001']).toEqual({ owned: true, wanted: false, dupes: 4 }));
   });
 
-  it('marks "Read it for me" as needing the Assistant key until one is set', () => {
+  it('says plainly the screenshot reader isn’t built yet, without blaming your setup', () => {
     render(<Scan game={game} />);
-    expect(screen.getByRole('button', { name: 'Read it for me (uses your Assistant key)' })).toBeDisabled();
-    expect(screen.getByText(/needs the Assistant with your own key/)).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Read it for me' })).toBeDisabled();
+    expect(screen.getByText(/HLITH can’t read screenshots by itself yet/)).toBeInTheDocument();
+    expect(screen.queryByText(/isn’t set up/)).not.toBeInTheDocument();
+  });
+
+  it('marks fields that aren’t saved, and the save message lists what was kept and what wasn’t', async () => {
+    render(<Scan game={game} characterId="1003" />);
+    await screen.findByRole('option', { name: 'Fire Queen' });
+    expect(screen.getByLabelText('Level · not saved')).toBeInTheDocument();
+    expect(screen.getByLabelText(/^Eidolon/).closest('div')).not.toHaveTextContent('not saved');
+    fireEvent.change(screen.getByLabelText('Level · not saved'), { target: { value: '80' } });
+    fireEvent.change(screen.getByLabelText('Relics · not saved'), { target: { value: 'Two sets' } });
+    fireEvent.click(screen.getByRole('button', { name: 'Save to my roster' }));
+    await waitFor(() => expect(gameData('aa').roster['1003']?.owned).toBe(true));
+    const msg = screen.getByRole('status');
+    expect(msg).toHaveTextContent('Fire Queen is owned, E0 (as it was).');
+    expect(msg).toHaveTextContent('Not saved, because HLITH can’t store builds yet: Level, Relics.');
   });
 
   it('refuses an out-of-range number', async () => {

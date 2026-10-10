@@ -6,6 +6,7 @@ import c from '../account-links/connections.module.css';
 import { useCharacters } from '../account-links/RosterImport';
 import { checkValues, fieldsFor, saveScan, type ScanReader, type ScanValues } from './scan';
 import { useExamplesShown } from '../../core/data/prefs';
+import sc from './scan.module.css';
 
 /**
  * Roster → ONE "Scan a screenshot" button for every game in view. The sheet asks
@@ -47,7 +48,9 @@ export function ScanEntry({ games, reader }: { games: GameContract[]; reader?: S
 /**
  * Screenshot scan (R50): pick, drop or paste a screenshot of a character screen,
  * see it next to a form of the fields the game record lists, confirm or correct,
- * then save. Manual entry works now; "Read it for me" needs the Assistant key.
+ * then save. Manual entry works now; "Read it for me" works once a reader is
+ * plugged in (the screenshot reader isn't built yet). Only owned and dupes are
+ * saved: fields HLITH can't store yet are marked, and the save message says so.
  */
 export function Scan({ game, reader, characterId }: { game: GameContract; reader?: ScanReader | undefined; characterId?: string }) {
   const showExamples = useExamplesShown();
@@ -105,8 +108,11 @@ export function Scan({ game, reader, characterId }: { game: GameContract; reader
   const submit = (e: FormEvent) => {
     e.preventDefault();
     if (!who || Object.keys(problems).length) return;
+    const dupesTyped = fields.some((f) => f.kind === 'dupes' && (values[f.id] ?? '').trim());
     const entry = saveScan(game, who, values, roster);
-    setStatus({ kind: 'ok', text: `Saved: ${chosen?.name ?? who} is owned${game.dupes ? `, ${game.dupes.prefix}${entry.dupes}` : ''}.` });
+    const dropped = fields.filter((f) => !f.saved && (values[f.id] ?? '').trim()).map((f) => f.label);
+    const kept = `Saved: ${chosen?.name ?? who} is owned${game.dupes ? `, ${game.dupes.prefix}${entry.dupes}${dupesTyped ? '' : ' (as it was)'}` : ''}.`;
+    setStatus({ kind: 'ok', text: dropped.length ? `${kept} Not saved, because HLITH can’t store builds yet: ${dropped.join(', ')}.` : kept });
   };
 
   if (!game.scan) return <p className={c.muted}>No data yet: this game’s record doesn’t list which fields a screenshot scan reads.</p>;
@@ -119,12 +125,12 @@ export function Scan({ game, reader, characterId }: { game: GameContract; reader
           <>In the game, open the {term} screen of the {term} you want: the page that shows their level{game.dupes ? ` and ${game.dupes.name}` : ''}.</>,
           <>Take a screenshot. Windows: Win + Shift + S, or Print Screen. Mac: Cmd + Shift + 4. Phone: your phone’s screenshot buttons.</>,
           <>Here, press “Choose a screenshot”, drop the picture on the box, or paste it (Ctrl + V / Cmd + V).</>,
-          <>Pick who it is. Type what you see into the fields, or use “Read it for me” once your Assistant key is set.</>,
-          <>Check every field against the game, then press Save. Empty fields stay as they were.</>,
+          <>Pick who it is and type what you see into the fields.</>,
+          <>Check every field against the game, then press Save. Only owned{game.dupes ? ` and ${game.dupes.name}` : ''} are saved for now; fields marked “not saved” are kept only on screen. Empty fields stay as they were.</>,
         ]}
       >
         <p className={c.body}>
-          The picture stays in this browser and isn’t uploaded. With “Read it for me”, the picture goes to the Assistant with your own key, only to read it. For gear, two screenshots are fine: a later reading only fills what it shows.
+          The picture stays in this browser and isn’t uploaded.{reader ? ' With “Read it for me”, the picture goes to the Assistant with your own key, only to read it.' : ''}
         </p>
       </HowTo>
 
@@ -156,10 +162,10 @@ export function Scan({ game, reader, characterId }: { game: GameContract; reader
       <div className={c.tight}>
         <div className={c.row}>
           <Button disabled={!reader || !image || status?.kind === 'busy'} onClick={() => void readIt()}>
-            Read it for me (uses your Assistant key)
+            Read it for me
           </Button>
         </div>
-        {!reader && <span className={c.muted}>Not available yet: reading pictures needs the Assistant with your own key, which isn’t set up. Type the values below for now.</span>}
+        {!reader && <span className={c.muted}>Not built yet: HLITH can’t read screenshots by itself yet. Type the values below for now.</span>}
         {reader && !image && <span className={c.muted}>Choose a screenshot first.</span>}
       </div>
 
@@ -185,10 +191,11 @@ export function Scan({ game, reader, characterId }: { game: GameContract; reader
         </select>
         <div className={c.grid}>
           {fields.map((f) => (
-            <div key={f.id} className={c.tight}>
+            <div key={f.id} className={`${c.tight} ${f.saved ? '' : sc.unsaved}`}>
               <label className={c.field} htmlFor={`${id}-${f.id}`}>
                 {f.label}
                 {f.max !== undefined && f.kind === 'dupes' ? ` (0–${f.max})` : ''}
+                {f.saved ? '' : ' · not saved'}
               </label>
               <input
                 id={`${id}-${f.id}`}
@@ -200,7 +207,7 @@ export function Scan({ game, reader, characterId }: { game: GameContract; reader
                 aria-invalid={problems[f.id] ? true : undefined}
               />
               {problems[f.id] && <span className={c.error}>{problems[f.id]}</span>}
-              {!f.saved && <span className={c.muted}>Not saved yet (HLITH doesn’t store builds yet).</span>}
+              {!f.saved && <span className={c.muted}>HLITH can’t store this yet; it isn’t saved.</span>}
             </div>
           ))}
         </div>

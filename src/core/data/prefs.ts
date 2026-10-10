@@ -37,6 +37,8 @@ export interface Prefs {
    * Only switches what's on screen; never adds, changes or removes any data.
    */
   hideExamples?: boolean;
+  /** Account → Guide: setup checklist steps you chose to skip (step ids). Missing = none. */
+  skippedSetup?: string[];
 }
 
 export type Theme = 'dark' | 'light';

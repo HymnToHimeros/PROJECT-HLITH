@@ -4,8 +4,8 @@
  */
 import type { Banner, Character, GameContract, GameEvent, Version } from '../../core/contract';
 import { serverRule, weekStart } from '../../core/time/reset';
-import { exampleBanners, exampleVersionEnd } from '../pulls/examples';
-import { exampleCycles, exampleEvents, exampleLeak } from './examples';
+import { exampleVersionEnd } from '../pulls/examples';
+import { exampleCycles } from './examples';
 
 const DAY = 86_400_000;
 
@@ -50,30 +50,28 @@ interface Input {
   to: number;
   /** Fill empty lanes with examples (Account → Example data). Default on. */
   examples?: boolean;
+  /** Which banners and events are examples (from withOwnItems). */
+  exampleIds?: ReadonlySet<string> | undefined;
 }
 
-export function gameTimeline({ game, serverId, characters, banners, events, versions, now, from, to, examples: showExamples = true }: Input): GameTimeline {
+export function gameTimeline({ game, serverId, banners, events, versions, now, from, to, examples: showExamples = true, exampleIds }: Input): GameTimeline {
   const spans: Span[] = [];
   const inWindow = (s: number, e: number) => e > from && s < to;
 
-  // Banners: the game's list, or examples (with one leak to show how leaks look).
-  const bannerList = banners.length || !showExamples ? [...banners] : exampleBanners(game, characters, now);
-  const exBanners = banners.length === 0 && bannerList.length > 0;
-  if (exBanners) {
-    const lastEnd = Math.max(...bannerList.map((b) => Date.parse(b.end)), now);
-    const leak = exampleLeak(game, characters, lastEnd);
-    if (leak) bannerList.push(leak);
-  }
+  // Banners and events arrive already mixed: the game's lists, your own items and, while a
+  // list is empty, its examples one by one (`exampleIds`, the same ones every screen uses).
+  const isExample = (id: string) => Boolean(exampleIds?.has(id));
   const typeLabel = (id: string) => game.bannerTypes.find((t) => t.id === id)?.label ?? id;
-  for (const b of bannerList) {
-    spans.push({ id: `banner:${b.id}`, game, lane: 'banners', title: `${b.title} · ${typeLabel(b.type)}`, start: Date.parse(b.start), end: Date.parse(b.end), leak: b.leak, example: exBanners });
+  for (const b of banners) {
+    spans.push({ id: `banner:${b.id}`, game, lane: 'banners', title: `${b.title} · ${typeLabel(b.type)}`, start: Date.parse(b.start), end: Date.parse(b.end), leak: b.leak, example: isExample(b.id) });
   }
+  const exBanners = banners.some((b) => isExample(b.id));
 
   // Events and endgame: endgame comes from endgame events, else from cycle rows with a known start, else examples.
-  const eventList = events.length || !showExamples ? events : exampleEvents(game, now);
-  const exEvents = events.length === 0 && showExamples;
+  const eventList = events;
+  const exEvents = events.some((e) => isExample(e.id));
   for (const e of eventList) {
-    spans.push({ id: `event:${e.id}`, game, lane: e.kind === 'endgame' ? 'endgame' : 'events', title: e.title, start: Date.parse(e.start), end: Date.parse(e.end), leak: e.leak, example: exEvents });
+    spans.push({ id: `event:${e.id}`, game, lane: e.kind === 'endgame' ? 'endgame' : 'events', title: e.title, start: Date.parse(e.start), end: Date.parse(e.end), leak: e.leak, example: isExample(e.id) });
   }
   let exEndgame = false;
   if (!eventList.some((e) => e.kind === 'endgame')) {

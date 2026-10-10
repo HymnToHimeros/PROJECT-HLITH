@@ -21,7 +21,7 @@ export function DragHandleRow({ label, state, onHide, onRestore, handleProps, nu
     return (
       <div className={cx(s.dragRow, s.hiddenRow)}>
         <span className={s.rowLabel}>{label}</span>
-        <button type="button" className={s.restore} onClick={onRestore}>
+        <button type="button" className={s.restore} onClick={onRestore} aria-label={`Restore ${label}`}>
           Restore
         </button>
       </div>
@@ -44,7 +44,7 @@ export function DragHandleRow({ label, state, onHide, onRestore, handleProps, nu
       <span className={s.rowLabel}>{label}</span>
       {tag && <GameTag {...tag} />}
       {onHide && state === 'normal' && (
-        <button type="button" className={s.rowAction} onClick={onHide}>
+        <button type="button" className={s.rowAction} onClick={onHide} aria-label={`Hide ${label}`}>
           Hide
         </button>
       )}

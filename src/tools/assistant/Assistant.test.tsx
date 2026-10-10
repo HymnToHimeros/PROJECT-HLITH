@@ -1,7 +1,8 @@
 import { act, fireEvent, render, screen, within } from '@testing-library/react';
 import { beforeEach, describe, expect, it } from 'vitest';
 import type { GameContract } from '../../core/contract';
-import { gameData, resetUserData } from '../../core/data/userData';
+import { updatePrefs } from '../../core/data/prefs';
+import { gameData, recordAssistantAction, resetUserData, type AssistantAction } from '../../core/data/userData';
 import { Assistant } from './Assistant';
 import { newChat, type Reply, type RequestBody } from './chat';
 import { forgetKey, readKey, saveKey } from './keyStore';
@@ -47,8 +48,34 @@ describe('Assistant panel', () => {
     newChat();
   });
 
-  it('without a key: the setup step, how to get a key, and a clearly marked example chat', () => {
+  it('without a server: says so first and never asks for a key it can’t use', () => {
     render(<Assistant games={[game]} scope="aa" servers={{}} account={null} />);
+    expect(screen.getByRole('note')).toHaveTextContent(/isn’t connected to its server/);
+    expect(screen.queryByRole('region', { name: 'Add your Claude API key' })).toBeNull();
+    expect(screen.getByLabelText('Message to the Assistant')).toBeDisabled();
+  });
+
+  it('with examples switched off, an empty chat says what to do in one line', () => {
+    updatePrefs((p) => ({ ...p, hideExamples: true }));
+    render(<Assistant games={[game]} scope="aa" servers={{}} account={null} transport={async () => reply} />);
+    expect(screen.queryByRole('region', { name: 'Example conversation' })).toBeNull();
+    expect(screen.getByText(/No messages yet/)).toBeInTheDocument();
+    updatePrefs((p) => ({ ...p, hideExamples: false }));
+  });
+
+  it('Settings lists the changes in every game, or says None yet', () => {
+    const other = { ...game, id: 'bb', short: 'BB', name: 'Game B' } as GameContract;
+    render(<Assistant games={[game]} allGames={[game, other]} scope="aa" servers={{}} account={null} />);
+    fireEvent.click(screen.getByRole('button', { name: 'Settings' }));
+    const log = screen.getByRole('region', { name: 'Changes the Assistant made' });
+    expect(within(log).getByText('None yet.')).toBeInTheDocument();
+    act(() => recordAssistantAction('bb', { id: 'x1', at: '2026-10-01T10:00:00Z', summary: 'Logged 300 gems', status: 'applied' } as AssistantAction));
+    expect(within(log).queryByText('None yet.')).toBeNull();
+    expect(within(log).getByRole('list', { name: 'Changes the Assistant made in Game B' })).toBeInTheDocument();
+  });
+
+  it('without a key: the setup step, how to get a key, and a clearly marked example chat', () => {
+    render(<Assistant games={[game]} scope="aa" servers={{}} account={null} transport={async () => reply} />);
     expect(screen.getByRole('region', { name: 'Add your Claude API key' })).toBeInTheDocument();
     expect(screen.getByText('How to get a Claude API key')).toBeInTheDocument();
     const example = screen.getByRole('region', { name: 'Example conversation' });
@@ -58,7 +85,7 @@ describe('Assistant panel', () => {
   });
 
   it('saving and forgetting the key', () => {
-    render(<Assistant games={[game]} scope="aa" servers={{}} account={null} />);
+    render(<Assistant games={[game]} scope="aa" servers={{}} account={null} transport={async () => reply} />);
     fireEvent.change(screen.getByLabelText('Claude API key'), { target: { value: KEY } });
     fireEvent.click(screen.getByRole('button', { name: 'Save key' }));
     expect(readKey()).toEqual({ key: KEY, place: 'device' });
@@ -94,7 +121,7 @@ describe('Assistant panel', () => {
   it('stops at the daily limit', () => {
     saveKey(KEY, 'device');
     updateSettings((s) => ({ ...s, dailyLimit: 0.5, spent: { [localDayNow()]: 0.6 } }));
-    render(<Assistant games={[game]} scope="aa" servers={{}} account={{ email: 'a@b.c' }} />);
+    render(<Assistant games={[game]} scope="aa" servers={{}} account={{ email: 'a@b.c' }} transport={async () => reply} />);
     expect(screen.getByText(/You reached today’s limit of \$0\.500/)).toBeInTheDocument();
     expect(screen.getByLabelText('Message to the Assistant')).toBeDisabled();
   });

@@ -8,6 +8,7 @@ export const BACKUP_TABLES = [
   'profiles',
   'owners',
   'user_settings',
+  'user_game_data',
   'catalog_items',
   'user_items',
   'roster',

@@ -52,13 +52,13 @@ export function checkValues(fields: ScanField[], values: ScanValues): Record<str
 
 /**
  * Save a confirmed reading: the character becomes owned; dupes are set to what
- * you confirmed (empty leaves them as they were). `wanted` is kept.
+ * you confirmed (empty leaves them as they were). Newly owned means no longer wanted.
  */
 export function saveScan(game: GameContract, characterId: string, values: ScanValues, roster: Record<string, RosterEntry>): RosterEntry {
   const before = roster[characterId];
   const dupesField = fieldsFor(game).find((f) => f.kind === 'dupes');
   const typed = dupesField ? (values[dupesField.id] ?? '').trim() : '';
-  const entry: RosterEntry = { owned: true, wanted: before?.wanted ?? false, dupes: typed ? Number(typed) : (before?.dupes ?? 0) };
+  const entry: RosterEntry = { owned: true, wanted: before?.owned ? before.wanted : false, dupes: typed ? Number(typed) : (before?.dupes ?? 0) };
   setRosterEntry(game.id, characterId, entry);
   return entry;
 }

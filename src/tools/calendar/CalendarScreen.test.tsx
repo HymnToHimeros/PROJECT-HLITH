@@ -2,7 +2,7 @@ import { fireEvent, render, screen, within } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 import type { GameContract, GameEvent } from '../../core/contract';
 import { act } from '@testing-library/react';
-import { addPlan, resetUserData } from '../../core/data/userData';
+import { addPlan, gameData, resetUserData } from '../../core/data/userData';
 import CalendarScreen from './CalendarScreen';
 
 const DAY = 86_400_000;
@@ -100,5 +100,41 @@ describe('Calendar', () => {
     show({ aa: 'eu' });
     expect((await screen.findAllByText('Farm relics before the banner')).length).toBeGreaterThan(0);
     resetUserData();
+  });
+
+  it('tapping a plan bar shows its details; Undo takes it off (kept, can come back)', async () => {
+    resetUserData();
+    act(() => addPlan('aa', { id: 'p1', title: 'Farm relics', start: at(2), source: 'assistant', status: 'active', at: at(0) }));
+    show({ aa: 'eu' });
+    fireEvent.click(await screen.findByRole('button', { name: 'Plan: Farm relics. Show details' }));
+    const sheet = screen.getByRole('dialog', { name: 'Your plan' });
+    expect(within(sheet).getByText(/Proposed by the Assistant/)).toBeInTheDocument();
+    fireEvent.click(within(sheet).getByRole('button', { name: 'Undo plan' }));
+    expect(gameData('aa').plans[0]?.status).toBe('undone');
+    expect(await screen.findByText(/undone\. It’s kept/)).toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'Plan: Farm relics. Show details' })).toBeNull();
+    fireEvent.click(screen.getByRole('button', { name: 'Bring it back' }));
+    expect(gameData('aa').plans[0]?.status).toBe('active');
+    expect(await screen.findByRole('button', { name: 'Plan: Farm relics. Show details' })).toBeInTheDocument();
+    resetUserData();
+  });
+
+  it('the EXAMPLE plan opens too, and says how to get a real one', async () => {
+    resetUserData();
+    const withBanners = { ...game, bannerTypes: [{ id: 'character', label: 'Character banner', pullItem: 'gem', target: 'character', pity: { kind: 'hard-pity', hardPity: 90, baseRate: 0.006 } }] } as unknown as GameContract;
+    render(<CalendarScreen games={[withBanners]} scope="aa" servers={{ aa: 'eu' }} openTab={() => {}} open={() => {}} openAccount={() => {}} now={NOW} />);
+    fireEvent.click(await screen.findByRole('button', { name: /^Plan: Save pulls for/ }));
+    const sheet = screen.getByRole('dialog', { name: 'Example plan' });
+    expect(within(sheet).getByText(/isn’t saved\. Open the Assistant/)).toBeInTheDocument();
+    expect(within(sheet).queryByRole('button', { name: 'Undo plan' })).toBeNull();
+  });
+
+  it('no plans: says where the Assistant is; an empty Banners lane offers to add your own', async () => {
+    resetUserData();
+    show({ aa: 'eu' });
+    await screen.findByLabelText('Dates');
+    expect(screen.getByText(/No plans yet\. Open the Assistant/)).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'Add your own banner' }));
+    expect(screen.getByRole('dialog', { name: 'Edit mode · Banners · AA' })).toBeInTheDocument();
   });
 });

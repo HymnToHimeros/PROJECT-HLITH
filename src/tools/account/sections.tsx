@@ -53,8 +53,8 @@ export function SyncPage({ status, now, signedIn }: { status: SyncStatus; now: n
         {!canSync() && <p className={a.small}>{signedIn ? 'Sync starts by itself a moment after you sign in.' : 'Sync needs sign-in. This site runs in “this device only” mode, so everything stays in this browser.'}</p>}
       </Card>
       <Card title="What syncs">
-        <p className={a.text}>Your settings sync to your account: chosen games, layout, servers, theme and notification choices. The newest copy wins; the other one is kept as a backup in this browser, never thrown away.</p>
-        <p className={a.text}>Your game data (bank log, pull history, roster, events, ticks) is kept on this device for now. Download a backup to keep it safe or move it to another device.</p>
+        <p className={a.text}>Everything syncs to your account: your settings (games, layout, servers, theme, notifications) and your game data (bank log, pull history, roster, teams, events, backlog, ticks, your own items and plans).</p>
+        <p className={a.text}>When two devices disagree, the newest copy wins; the other one is kept as a backup in this browser, never thrown away. A backup file is still the safest copy you can hold yourself.</p>
       </Card>
       <HowTo steps={['Sign in on every device with the same account.', 'Changes sync a moment after you make them. “Sync now” sends them straight away.', 'If sync fails, nothing is lost: your changes stay on this device and sync next time.']} />
     </>
