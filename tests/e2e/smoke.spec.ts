@@ -171,9 +171,9 @@ test('Profile: pick a picture and a banner, move and zoom them, and save exactly
   await noSidewaysScroll(page);
 });
 
-test('the server chip on Today opens Account → Game settings for that game, and back', async ({ page }) => {
+test('Choose server on Today opens Account → Game settings for that game, and back to the server chip', async ({ page }) => {
   await page.goto('/hsr/today');
-  await page.getByRole('button', { name: 'Choose your HSR server' }).click();
+  await page.getByRole('button', { name: 'Choose HSR server' }).click();
   await expect(page).toHaveURL(/\/account\/game-settings\/hsr$/);
   await page.getByRole('radiogroup', { name: 'HSR server' }).getByRole('radio', { name: /Europe/ }).click();
   await page.getByRole('button', { name: 'Done · back to where you were' }).click();

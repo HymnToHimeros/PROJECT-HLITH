@@ -16,10 +16,16 @@ export default function EventsScreen({ games, scope, servers, openAccount, openS
       <HowTo
         title="How to use Events"
         steps={[
-          <>Every event, login event and endgame cycle that is running or coming up, with what it still gives you. The filter on top narrows the list.</>,
           <>
-            Tap <strong>Done</strong> when you have finished an event: its reward is then already in your bank, so Pulls stops counting it. Tap <strong>Skip</strong> if you won’t play it: it counts
-            zero. <strong>Open</strong> means you still plan to do it, so its reward counts as “still to earn”.
+            Every event, login event and endgame cycle that is running or coming up, with what it still gives you, grouped into Ending soon, Running now and Coming up. Bigger rewards stand out;
+            ones worth nothing stay quiet. The filter on top narrows the list; “Edit list” next to it adds, changes or hides events.
+          </>,
+          <>
+            Tap <strong>Done</strong> when you have finished an event: its reward is then already in your bank, so Pulls stops counting it. Won’t play it? Open the <strong>⋯</strong> menu and choose{' '}
+            <strong>Skip</strong>: it counts zero. Open events count as “still to earn”.
+          </>,
+          <>
+            Done and skipped events fold away under <strong>Done or skipped</strong>. Changed your mind? Tap <strong>Undo</strong> on the line that confirms it, or <strong>Reopen</strong> on the row.
           </>,
           <>
             Login events: tap the bar at the day you are on (or use +1 day each day you log in). HLITH counts only the days you can still claim before the event ends. Tap the last day again, or −, to
@@ -56,9 +62,16 @@ function GameEvents({ game, serverId, now, heading, openAccount }: { game: GameC
   return (
     <section className={e.stack} aria-label={game.name}>
       <GameHeading game={game} show={heading} />
-      <EditListButton game={game} kind="events" examples={data.examples} />
       {anyExample && <ExampleNotice actions={actions}>{parts.join(' ')}</ExampleNotice>}
-      <Events game={game} data={data} serverId={serverId} now={now} onChooseServer={openAccount} />
+      <Events
+        game={game}
+        data={data}
+        serverId={serverId}
+        now={now}
+        onChooseServer={openAccount}
+        level={heading ? 3 : 2}
+        actions={<EditListButton game={game} kind="events" examples={data.examples} />}
+      />
     </section>
   );
 }

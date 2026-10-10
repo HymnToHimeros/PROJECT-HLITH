@@ -268,7 +268,7 @@ export function checkOrder(order: string[], dd: string, lib: Library, account: A
   return { order, dd, count, support: lines.filter((l) => l.kind === 'support').length, chains: lines.filter((l) => l.kind === 'chain').length, lines };
 }
 
-const eventWord = (e: string) => ({ 'quick-assist': 'Quick Assist', 'chain-attack': 'Chain Attack', ultimate: 'Ultimate', 'ether-veil': 'Ether Veil' })[e] ?? e;
+export const eventWord = (e: string) => ({ 'quick-assist': 'Quick Assist', 'chain-attack': 'Chain Attack', ultimate: 'Ultimate', 'ether-veil': 'Ether Veil' })[e] ?? e;
 
 /** Ties: higher count, then more team support, then more chains. Positive = a is better. */
 export const compare = (a: SquadResult, b: SquadResult) => a.count - b.count || a.support - b.support || a.chains - b.chains;

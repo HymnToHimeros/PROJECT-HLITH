@@ -179,7 +179,7 @@ function reach(e: Entry, giver: string, dd: string, lib: Library): Reach {
   return { kind: 'no', why: `${name(dd)}'s damage doesn't use ${list([...new Set(stats)].map(statWord))}` };
 }
 
-const EVENT_WORD: Record<GameEventKind, string> = {
+export const EVENT_WORD: Record<GameEventKind, string> = {
   'follow-up': 'Follow-Up ATK',
   'summon-attack': 'summon or memosprite attack',
   debuff: 'debuff on enemies',

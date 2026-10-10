@@ -29,21 +29,138 @@
   font: 600 11px var(--font-numbers);
   color: var(--ink-4);
 }
-.list {
-  list-style: none;
-  margin: 0;
-  padding: 4px 16px;
-  background: var(--bg-card);
-  border: 1px solid var(--line-default);
-  border-radius: var(--r-card);
-}
-.row {
+/* Toolbar: filters on the left, list actions (Edit list) on the right. */
+.toolbar {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
   gap: var(--s-3);
-  min-height: 68px;
-  padding: 12px 0;
+  min-width: 0;
+}
+.toolbar > :first-child {
+  min-width: 0;
+}
+.actions {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--tap-min);
+  font-size: 14px;
+  font-weight: 700;
+}
+/* The line that confirms a change, with Undo. Empty = not shown. */
+.status {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--s-3);
+  padding: 8px 8px 8px 14px;
+  background: var(--bg-card);
+  border: 1px solid var(--line-mid);
+  border-left: 3px solid var(--vent);
+  border-radius: var(--r-button);
+  font-size: 13px;
+  color: var(--ink-2);
+}
+.status:empty {
+  display: none;
+}
+.status:focus-visible {
+  outline: 2px solid var(--glacier);
+  outline-offset: 1px;
+}
+.undo {
+  margin-left: auto;
+  min-height: 36px;
+  padding: 0 14px;
+  border: 1px solid var(--line-mid);
+  border-radius: var(--r-button);
+  background: var(--bg-raised);
+  color: var(--ink-1);
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+.undo:hover {
+  border-color: var(--vent);
+}
+.undo:focus-visible,
+.fold:focus-visible,
+.more:focus-visible,
+.done:focus-visible,
+.reopen:focus-visible {
+  outline: 2px solid var(--glacier);
+  outline-offset: 1px;
+}
+
+/* Groups: Ending soon · Running now · Coming up · Done or skipped · Ended. */
+.group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-2);
+  min-width: 0;
+}
+.groupHead {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  min-height: 28px;
+}
+.groupTitle {
+  margin: 0;
+}
+.hint {
+  font-size: 12px;
+  color: var(--ink-4);
+}
+.fold {
+  margin-left: auto;
+  min-height: 36px;
+  padding: 0 12px;
+  border: 1px solid var(--line-default);
+  border-radius: var(--r-button);
+  background: transparent;
+  color: var(--glacier);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.fold:hover,
+.more:hover {
+  border-color: var(--line-strong);
+}
+.more {
+  align-self: flex-start;
+  min-height: 36px;
+  padding: 0 12px;
+  border: 1px solid var(--line-default);
+  border-radius: var(--r-button);
+  background: transparent;
+  color: var(--glacier);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0 16px;
+  background: var(--bg-card);
+  border: 1px solid var(--line-default);
+  border-radius: var(--r-card);
+}
+/* One row: mark · what and when · reward · Done + ⋯. Fixed reward and control columns line up down the list. */
+.row {
+  display: grid;
+  grid-template-columns: 4px minmax(0, 1fr) 210px 124px;
+  grid-template-areas: 'mark main reward controls';
+  align-items: center;
+  column-gap: var(--s-3);
+  row-gap: var(--s-2);
+  padding: 10px 0;
   border-bottom: 1px solid var(--line-subtle);
 }
 .row:last-child {
@@ -51,7 +168,7 @@
 }
 .leak {
   margin: 8px 0;
-  padding: 12px;
+  padding: 10px 12px;
   border: 1px dashed var(--line-strong);
   border-radius: var(--r-button);
   background: repeating-linear-gradient(135deg, transparent 0 8px, var(--hatch) 8px 16px);
@@ -63,37 +180,33 @@
   background: transparent;
   border: 1px dashed var(--ember-soft);
 }
-.settled .title {
-  color: var(--ink-3);
-}
 .mark {
+  grid-area: mark;
   width: 4px;
-  height: 32px;
+  height: 100%;
+  min-height: 28px;
   border-radius: 2px;
   background: var(--vent);
-  flex: none;
-  align-self: flex-start;
-  margin-top: 2px;
-}
-.settled .mark {
-  background: var(--line-strong);
+  align-self: stretch;
 }
 .main {
-  flex: 1 1 260px;
+  grid-area: main;
   min-width: 0;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 4px;
 }
 .titleLine {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  gap: var(--s-2);
+  column-gap: var(--s-2);
+  row-gap: 2px;
 }
 .title {
   font-size: 15px;
   font-weight: 700;
+  color: var(--ink-1);
 }
 .kind {
   font: 600 10px var(--font-numbers);
@@ -106,21 +219,55 @@
   flex-wrap: wrap;
   align-items: baseline;
   column-gap: var(--s-3);
-  row-gap: 4px;
+  row-gap: 2px;
   font-size: 12px;
   color: var(--ink-3);
+}
+/* Meta and login days share a line when there is room. */
+.sub {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  column-gap: var(--s-4);
+  row-gap: 4px;
+  min-width: 0;
 }
 .dates {
   font-family: var(--font-numbers);
   color: var(--ink-3);
 }
+.note {
+  color: var(--ink-4);
+}
 .reward {
-  color: var(--ink-2);
+  grid-area: reward;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  text-align: right;
+  gap: 2px;
+  font-size: 12px;
+  color: var(--ink-3);
+  min-width: 0;
+}
+.amountLine {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
 }
 .amount {
-  font-family: var(--font-numbers);
-  font-weight: 600;
+  font: 600 14px var(--font-numbers);
   color: var(--ink-1);
+}
+.currency {
+  font-size: 12px;
+  color: var(--ink-3);
+}
+.caption {
+  font-size: 12px;
+  color: var(--ink-4);
 }
 .muted {
   margin: 0;
@@ -130,41 +277,89 @@
 .glacier {
   color: var(--glacier);
 }
-.states {
-  display: flex;
-  gap: 2px;
-  padding: 3px;
-  background: var(--bg-app);
-  border: 1px solid var(--line-default);
-  border-radius: var(--r-row);
-  flex: none;
+
+/* Weight by reward: big ones stand out, ones worth nothing stay quiet. */
+.row[data-weight='high'] .amount {
+  font-size: 20px;
+  line-height: 1.1;
 }
-.state {
-  min-height: 38px;
-  min-width: 56px;
-  padding: 0 10px;
-  border: 0;
-  border-radius: var(--r-segment);
-  background: transparent;
-  color: var(--ink-4);
+.row[data-weight='high'] .currency {
+  color: var(--ink-2);
+}
+.row[data-weight='low'] .amount,
+.row[data-weight='none'] .amount {
+  color: var(--ink-3);
+}
+.row[data-weight='none'] .title {
+  color: var(--ink-3);
+  font-weight: 600;
+  font-size: 14px;
+}
+.row[data-weight='none'] .mark,
+.row[data-weight='low'] .mark {
+  background: var(--line-strong);
+}
+.row[data-weight='none'] {
+  padding: 6px 0;
+}
+.row[data-weight='none'] .reward {
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  align-items: baseline;
+  column-gap: 6px;
+}
+
+/* Done or skipped: quieter. */
+.settled .title {
+  color: var(--ink-3);
+  font-weight: 600;
+}
+.settled .mark {
+  background: var(--line-strong);
+}
+
+/* Controls: one clear button (Done or Reopen) and a ⋯ menu for the rest. */
+.controls {
+  grid-area: controls;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 4px;
+}
+.done,
+.reopen {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 40px;
+  padding: 0 14px;
+  border: 1px solid var(--line-mid);
+  border-radius: var(--r-button);
+  background: var(--bg-raised);
+  color: var(--ink-1);
   font: inherit;
   font-size: 13px;
   font-weight: 700;
   cursor: pointer;
+  white-space: nowrap;
 }
-.state:hover {
-  color: var(--ink-2);
+.done:hover {
+  border-color: var(--vent);
 }
-.state[aria-pressed='true'] {
-  background: var(--bg-track);
+.check {
+  color: var(--vent);
+  font-size: 14px;
+}
+.reopen {
+  background: transparent;
+  border-color: var(--line-default);
+  color: var(--ink-3);
+}
+.reopen:hover {
   color: var(--ink-1);
+  border-color: var(--line-strong);
 }
-.state[aria-pressed='true'][data-state='done'],
-.state[aria-pressed='true'][data-state='skipped'] {
-  background: var(--vent);
-  color: var(--on-vent);
-}
-.state:focus-visible,
 .pip:focus-visible {
   outline: 2px solid var(--glacier);
   outline-offset: 1px;
@@ -174,7 +369,8 @@
   align-items: center;
   flex-wrap: wrap;
   gap: var(--s-2);
-  margin-top: 4px;
+  flex: 1 1 320px;
+  max-width: 440px;
 }
 .pips {
   display: flex;
@@ -222,42 +418,32 @@
   opacity: 0.45;
   cursor: default;
 }
-.ended {
-  display: flex;
-  flex-direction: column;
-  gap: var(--s-2);
-}
-.endedSummary {
-  display: flex;
-  align-items: center;
-  gap: var(--s-2);
-  min-height: var(--tap-min);
-  cursor: pointer;
-  list-style: none;
-}
-.endedSummary::-webkit-details-marker {
-  display: none;
-}
-.endedSummary::before {
-  content: '▸';
-  color: var(--ink-4);
-  font-size: 12px;
-}
-.ended[open] > .endedSummary::before {
-  content: '▾';
-}
-.ended[open] > .list {
-  margin-top: var(--s-2);
-}
 @media (max-width: 819px) {
   .list {
-    padding: 2px 12px;
+    padding: 0 12px;
   }
-  .states {
-    width: 100%;
+  .row {
+    grid-template-columns: 4px minmax(0, 1fr) auto;
+    grid-template-areas:
+      'mark main main'
+      'mark reward controls';
   }
-  .state {
-    flex: 1;
+  .reward {
+    align-items: flex-start;
+    text-align: left;
+  }
+  .amountLine,
+  .row[data-weight='none'] .reward {
+    justify-content: flex-start;
+  }
+  .done,
+  .reopen {
+    min-height: var(--tap-min);
+  }
+  .fold,
+  .more,
+  .undo {
+    min-height: var(--tap-min);
   }
 }
 
@@ -275,7 +461,7 @@
   gap: 2px;
   flex: 1 1 160px;
   max-width: 240px;
-  padding: 10px 0;
+  padding: 6px 0;
 }
 .daySeg {
   position: relative;
