@@ -1,36 +1,34 @@
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
 
-// R59: every module, in every game scope, has no serious or critical accessibility
+// R59: every module, in every game scope (one test each, so they run side by side), has no serious or critical accessibility
 // problems (labels, contrast, roles, keyboard) at PC and phone sizes.
 const MODULES = ['today', 'pulls', 'roster', 'calendar', 'events', 'banners', 'backlog', 'farm', 'intel'];
 
 for (const scope of ['all', 'hsr', 'zzz']) {
-  test(`no serious accessibility problems · ${scope}`, async ({ page }) => {
-    test.setTimeout(180_000); // nine full scans per game scope
-    const problems: string[] = [];
-    for (const module of MODULES) {
+  for (const module of MODULES) {
+    test(`no serious accessibility problems · ${scope} ${module}`, async ({ page }) => {
       await page.goto(`/${scope}/${module}`);
       await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
       // Scan the finished screen, not a half-loaded one.
       await expect(page.getByText('Loading…')).toHaveCount(0);
       await page.waitForLoadState('networkidle');
       const result = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa']).analyze();
-      for (const v of result.violations) {
-        if (v.impact === 'serious' || v.impact === 'critical') problems.push(`/${scope}/${module}: ${v.id} (${v.nodes.length}) ${v.help} → ${v.nodes[0]?.target.join(' ')}`);
-      }
-    }
-    expect(problems, problems.join('\n')).toEqual([]);
-  });
+      const problems = result.violations
+        .filter((v) => v.impact === 'serious' || v.impact === 'critical')
+        .map((v) => `/${scope}/${module}: ${v.id} (${v.nodes.length}) ${v.help} → ${v.nodes[0]?.target.join(' ')}`);
+      expect(problems, problems.join('\n')).toEqual([]);
+    });
+  }
 }
 
 // Every theme: Today, Account → Profile and Account → Theme, with the theme's background art showing.
 const THEMES = ['dark', 'light', 'candlelight', 'crimson', 'bifrost', 'ascendant'];
 
-test('no serious accessibility problems · every theme', async ({ page }) => {
-  test.setTimeout(180_000);
-  const problems: string[] = [];
-  for (const theme of THEMES) {
+for (const theme of THEMES) {
+  test(`no serious accessibility problems · theme ${theme}`, async ({ page }) => {
+    test.setTimeout(60_000);
+    const problems: string[] = [];
     await page.goto('/hsr/today');
     await page.evaluate((t) => {
       const p = JSON.parse(localStorage.getItem('hlith.prefs') ?? '{}') as Record<string, unknown>;
@@ -47,9 +45,9 @@ test('no serious accessibility problems · every theme', async ({ page }) => {
         if (v.impact === 'serious' || v.impact === 'critical') problems.push(`${theme} ${path}: ${v.id} (${v.nodes.length}) ${v.help} → ${v.nodes[0]?.target.join(' ')}`);
       }
     }
-  }
-  expect(problems, problems.join('\n')).toEqual([]);
-});
+    expect(problems, problems.join('\n')).toEqual([]);
+  });
+}
 
 // The Account page (/account/<section>): every section, plus Profile in edit mode.
 const ACCOUNT_SECTIONS = ['', 'sync', 'backup', 'notifications', 'game-settings', 'examples', 'connections', 'guide', 'layout', 'theme', 'sign-in'];

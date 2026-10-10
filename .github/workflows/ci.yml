@@ -4,8 +4,40 @@ on:
     branches: [main]
   pull_request:
 
+# A newer push to the same pull request stops the older, now useless run.
+concurrency:
+  group: ci-${{ github.event.pull_request.number || github.sha }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
 jobs:
-  check:
+  # Changes that touch only notes (docs/, *.md) skip the code checks. docs/ROADMAP.md is
+  # not a note: tests/roadmap.test.ts reads it.
+  changes:
+    runs-on: ubuntu-latest
+    outputs:
+      code: ${{ steps.diff.outputs.code }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - id: diff
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            range="${{ github.event.pull_request.base.sha }}...${{ github.sha }}"
+          else
+            range="${{ github.event.before }}..${{ github.sha }}"
+          fi
+          files=$(git diff --name-only "$range" 2>/dev/null) || files=everything
+          echo "$files"
+          if [ -n "$files" ] && { echo "$files" | grep -qvE '^docs/|\.md$' || echo "$files" | grep -qx 'docs/ROADMAP.md'; }; then
+            echo "code=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "code=false" >> "$GITHUB_OUTPUT"
+          fi
+
+  unit:
+    needs: changes
+    if: needs.changes.outputs.code == 'true'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -18,7 +50,37 @@ jobs:
       - run: npm run typecheck
       - run: npm test
       - run: npm run build
+
+  # The browser tests, split over four machines that run at the same time.
+  e2e:
+    needs: changes
+    if: needs.changes.outputs.code == 'true'
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [1, 2, 3, 4]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
       - run: npx playwright install --with-deps chromium
-      - run: npm run e2e
+      - run: npm run e2e -- --shard=${{ matrix.shard }}/4
         env:
           CI: 'true'
+
+  # The one result to look at: green when every check passed (or was rightly skipped).
+  check:
+    needs: [changes, unit, e2e]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo "changes=${{ needs.changes.result }} unit=${{ needs.unit.result }} e2e=${{ needs.e2e.result }}"
+          [ "${{ needs.changes.result }}" = "success" ] || exit 1
+          if [ "${{ needs.changes.outputs.code }}" = "true" ]; then
+            [ "${{ needs.unit.result }}" = "success" ] && [ "${{ needs.e2e.result }}" = "success" ]
+          fi
