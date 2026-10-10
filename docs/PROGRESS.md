@@ -33,6 +33,12 @@ Resume with: "continue from PROGRESS.md". Newest entry on top. Older entries:
   "Agent Potential" (ZZZ: Not set / 0–6) picker, only for characters whose kit has pieces
   that need it. Saved with the roster and synced; team scores and Kit check read it
   through `TeamAccount.potential`. "Not set" keeps those pieces locked, as before.
+- 2026-10-10 · **FRAME: faster check, shared release routine** (branch `frame/faster-checks-and-releases`).
+  `docs/RELEASES.md`: the three chats agree together before anything goes live
+  (READY / OK / WAIT, merge order, one at a time). CI: notes-only changes skip the
+  code checks; browser tests split over four machines; a newer push stops the older
+  run; the long browser tests are one test per screen and theme (same checks), so they
+  run side by side. About 5 minutes instead of 11.
 - 2026-10-10 · **LOGIC-CORE: HSR scoring, build guide with pictures, shorter team lists** (branch `logic-core/roster-polish-hsr-scoring`).
   - HSR now scores like ZZZ: synergy % with Why (every point with its quote),
     Line-ups, Who fits, If you pull, and best teams by kit check. Rules:
