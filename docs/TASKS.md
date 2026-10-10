@@ -25,6 +25,10 @@ doing it said `LIVE`. Newest jobs at the bottom; live jobs move to Done.
 | T31 | Remove owner's Gmail from git history (Option A + GitHub Support) | ERROR-FIX | blocked | ERROR-FIX's Auto mode blocks history-changing git; owner switches its mode so they can approve each command. All chats except FRAME confirmed frozen. |
 | T32 | HSR: add Nihilux to Roster as a leak character (owner asked repeatedly) | SCHEDULER | sent | Only what leak sources state, source named; link to Aeon ★ Aha if same. |
 | T33 | Blind test of LOGIC-CORE's kit understanding: Aventurine • Waveflair's best team worked out alone, plus 6 carries the owner hasn't corrected (exactly 4 members, one archetype) | LOGIC-CORE | sent | Before any T30 building. |
+| T34 | Switch: assume signature weapon + average build for characters without a saved build | LOGIC-CORE + FRAME | sent | Plan first. |
+| T35 | Target end stats per character on the character page (you vs target), each number sourced | LOGIC-CORE + FRAME | sent | Owner: LOGIC-CORE must find the basis itself. Plan first. |
+| T37 | BUG: typing in the Roster build form triggers other page elements, so the form is unusable | FRAME | sent | High priority; test for every form. |
+| T36 | README made attractive for public visitors | FRAME | sent | |
 
 ## Done
 | # | Job | Who | Live on |
