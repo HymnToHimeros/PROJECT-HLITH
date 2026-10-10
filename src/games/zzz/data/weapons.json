@@ -1,0 +1,771 @@
+[
+ {
+  "id": "12001",
+  "name": "[Lunar] Pleniluna",
+  "rarity": "low",
+  "icon": "https://static.nanoka.cc/assets/zzz/Weapon_B_Common_01.webp",
+  "source": "nanoka.cc"
+ },
+ {
+  "id": "12002",
+  "name": "[Lunar] Decrescent",
+  "rarity": "low",
+  "icon": "https://static.nanoka.cc/assets/zzz/Weapon_B_Common_02.webp",
+  "source": "nanoka.cc"
+ },
+ {
+  "id": "12003",
+  "name": "[Lunar] Noviluna",
+  "rarity": "low",
+  "icon": "https://static.nanoka.cc/assets/zzz/Weapon_B_Common_03.webp",
+  "source": "nanoka.cc"
+ },
+ {
+  "id": "12004",
+  "name": "[Reverb] Mark I",
+  "rarity": "low",
+  "icon": "https://static.nanoka.cc/assets/zzz/Weapon_B_Common_04.webp",
+  "source": "nanoka.cc"
+ },
+ {
+  "id": "12005",
+  "name": "[Reverb] Mark II",
+  "rarity": "low",
+  "icon": "https://static.nanoka.cc/assets/zzz/Weapon_B_Common_05.webp",
+  "source": "nanoka.cc"
+ },
+ {
+  "id": "12006",
+  "name": "[Reverb] Mark III",
+  "rarity": "low",
+  "icon": "https://static.nanoka.cc/assets/zzz/Weapon_B_Common_06.webp",
+  "source": "nanoka.cc"
+ },
+ {
+  "id": "12007",
+  "name": "[Vortex] Revolver",
+  "rarity": "low",
+  "icon": "https://static.nanoka.cc/assets/zzz/Weapon_B_Common_07.webp",
+  "source": "nanoka.cc"
+ },
+ {
+  "id": "12008",
+  "name": "[Vortex] Arrow",
+  "rarity": "low",
+  "icon": "https://static.nanoka.cc/assets/zzz/Weapon_B_Common_08.webp",
+  "source": "nanoka.cc"
+ },
+ {
+  "id": "12009",
+  "name": "[Vortex] Hatchet",
+  "rarity": "low",
+  "icon": "https://static.nanoka.cc/assets/zzz/Weapon_B_Common_09.webp",
+  "source": "nanoka.cc"
+ },
+ {
+  "id": "12010",
+  "name": "[Magnetic Storm] Alpha",
+  "rarity": "low",
+  "icon": "https://static.nanoka.cc/assets/zzz/Weapon_B_Common_10.webp",
+  "source": "nanoka.cc"
+ },
+ {
+  "id": "12011",
+  "name": "[Magnetic Storm] Bravo",
+  "rarity": "low",
+  "icon": "https://static.nanoka.cc/assets/zzz/Weapon_B_Common_11.webp",
+  "source": "nanoka.cc"
+ },
+ {
+  "id": "12012",
+  "name": "[Magnetic Storm] Charlie",
+  "rarity": "low",
+  "icon": "https://static.nanoka.cc/assets/zzz/Weapon_B_Common_12.webp",
+  "source": "nanoka.cc"
+ },
+ {
+  "id": "12013",
+  "name": "[Identity] Base",
+  "rarity": "low",
+  "icon": "https://static.nanoka.cc/assets/zzz/Weapon_B_Common_13.webp",
+  "source": "nanoka.cc"
+ },
+ {
+  "id": "12014",
+  "name": "[Identity] Inflection",
+  "rarity": "low",
+  "icon": "https://static.nanoka.cc/assets/zzz/Weapon_B_Common_14.webp",
+  "source": "nanoka.cc"
+ },
+ {
+  "id": "12015",
+  "name": "[Cinder] Cobalt",
+  "rarity": "low",
+  "icon": "https://static.nanoka.cc/assets/zzz/Weapon_B_Common_15.webp",
+  "source": "nanoka.cc"
+ },
+ {
+  "id": "12016",
+  "name": "[Lunar] Semiluna",
+  "rarity": "low",
+  "icon": "https://static.nanoka.cc/assets/zzz/Weapon_B_Common_16.webp",
+  "source": "nanoka.cc"
+ },
+ {
+  "id": "13001",
+  "name": "Street Superstar",
+  "rarity": "mid",
+  "icon": "https://static.nanoka.cc/assets/zzz/Weapon_A_Common_01.webp",
+  "source": "nanoka.cc"
+ },
+ {
+  "id": "13002",
+  "name": "Slice of Time",
+  "rarity": "mid",
+  "icon": "https://static.nanoka.cc/assets/zzz/Weapon_A_Common_02.webp",
+  "source": "nanoka.cc"
+ },
+ {
+  "id": "13003",
+  "name": "Rainforest Gourmet",
+  "rarity": "mid",
+  "icon": "https://static.nanoka.cc/assets/zzz/Weapon_A_Common_03.webp",
+  "source": "nanoka.cc"
+ },
+ {
+  "id": "13004",
+  "name": "Starlight Engine",
+  "rarity": "mid",
+  "icon": "https://static.nanoka.cc/assets/zzz/Weapon_A_Common_04.webp",
+  "source": "nanoka.cc"
+ },
+ {
+  "id": "13005",
+  "name": "Steam Oven",
+  "rarity": "mid",
+  "icon": "https://static.nanoka.cc/assets/zzz/Weapon_A_Common_05.webp",
+  "source": "nanoka.cc"
+ },
+ {
+  "id": "13006",
+  "name": "Precious Fossilized Core",
+  "rarity": "mid",
+  "icon": "https://static.nanoka.cc/assets/zzz/Weapon_A_Common_06.webp",
+  "source": "nanoka.cc"
+ },
+ {
+  "id": "13007",
+  "name": "Original Transmorpher",
+  "rarity": "mid",
+  "icon": "https://static.nanoka.cc/assets/zzz/Weapon_A_Common_07.webp",
+  "source": "nanoka.cc"
+ },
+ {
+  "id": "13008",
+  "name": "Weeping Gemini",
+  "rarity": "mid",
+  "icon": "https://static.nanoka.cc/assets/zzz/Weapon_A_Common_08.webp",
+  "source": "nanoka.cc"
+ },
+ {
+  "id": "13009",
+  "name": "Electro-Lip Gloss",
+  "rarity": "mid",
+  "icon": "https://static.nanoka.cc/assets/zzz/Weapon_A_Common_09.webp",
+  "source": "nanoka.cc"
+ },
+ {
+  "id": "13010",
+  "name": "Bunny Band",
+  "rarity": "mid",
+  "icon": "https://static.nanoka.cc/assets/zzz/Weapon_A_Common_10.webp",
+  "source": "nanoka.cc"
+ },
+ {
+  "id": "13011",
+  "name": "Spring Embrace",
+  "rarity": "mid",
+  "icon": "https://static.nanoka.cc/assets/zzz/Weapon_A_Common_11.webp",
+  "source": "nanoka.cc"
+ },
+ {
+  "id": "13012",
+  "name": "Puzzle Sphere",
+  "rarity": "mid",
+  "icon": "https://static.nanoka.cc/assets/zzz/Weapon_A_Common_12.webp",
+  "source": "nanoka.cc"
+ },
+ {
+  "id": "13013",
+  "name": "Gilded Blossom",
+  "rarity": "mid",
+  "icon": "https://static.nanoka.cc/assets/zzz/Weapon_A_Common_13.webp",
+  "source": "nanoka.cc"
+ },
+ {
+  "id": "13014",
+  "name": "Radiowave Journey",
+  "rarity": "mid",
+  "icon": "https://static.nanoka.cc/assets/zzz/Weapon_A_Common_14.webp",
+  "source": "nanoka.cc"
+ },
+ {
+  "id": "13015",
+  "name": "Marcato Desire",
+  "rarity": "mid",
+  "icon": "https://static.nanoka.cc/assets/zzz/Weapon_A_Common_15.webp",
+  "source": "nanoka.cc"
+ },
+ {
+  "id": "13016",
+  "name": "Reel Projector",
+  "rarity": "mid",
+  "icon": "https://static.nanoka.cc/assets/zzz/Weapon_A_Common_16.webp",
+  "source": "nanoka.cc"
+ },
+ {
+  "id": "13017",
+  "name": "Catty Luck",
+  "rarity": "mid",
+  "icon": "https://static.nanoka.cc/assets/zzz/Weapon_A_Common_17.webp",
+  "source": "nanoka.cc"
+ },
+ {
+  "id": "13018",
+  "name": "Boisterous Echoes",
+  "rarity": "mid",
+  "icon": "https://static.nanoka.cc/assets/zzz/Weapon_A_Common_18.webp",
+  "source": "nanoka.cc"
+ },
+ {
+  "id": "13019",
+  "name": "Cauldron of Clarity",
+  "rarity": "mid",
+  "icon": "https://static.nanoka.cc/assets/zzz/Weapon_A_Common_19.webp",
+  "source": "nanoka.cc"
+ },
+ {
+  "id": "13020",
+  "name": "The Simmering Pot",
+  "rarity": "mid",
+  "icon": "https://static.nanoka.cc/assets/zzz/Weapon_A_Common_20.webp",
+  "source": "nanoka.cc"
+ },
+ {
+  "id": "13021",
+  "name": "Bloodmarrow Coffer",
+  "rarity": "mid",
+  "icon": "https://static.nanoka.cc/assets/zzz/Weapon_A_Common_21.webp",
+  "source": "nanoka.cc"
+ },
+ {
+  "id": "13022",
+  "name": "Candlelight Conspiracy",
+  "rarity": "mid",
+  "icon": "https://static.nanoka.cc/assets/zzz/Weapon_A_Common_22.webp",
+  "source": "nanoka.cc"
+ },
+ {
+  "id": "13101",
+  "name": "Demara Battery Mark II",
+  "rarity": "mid",
+  "icon": "https://static.nanoka.cc/assets/zzz/Weapon_A_1011.webp",
+  "source": "nanoka.cc"
+ },
+ {
+  "id": "13103",
+  "name": "The Vault",
+  "rarity": "mid",
+  "icon": "https://static.nanoka.cc/assets/zzz/Weapon_A_1031.webp",
+  "source": "nanoka.cc"
+ },
+ {
+  "id": "13106",
+  "name": "Housekeeper",
+  "rarity": "mid",
+  "icon": "https://static.nanoka.cc/assets/zzz/Weapon_A_1061.webp",
+  "source": "nanoka.cc"
+ },
+ {
+  "id": "13108",
+  "name": "Starlight Engine Replica",
+  "rarity": "mid",
+  "icon": "https://static.nanoka.cc/assets/zzz/Weapon_A_1081.webp",
+  "source": "nanoka.cc"
+ },
+ {
+  "id": "13111",
+  "name": "Drill Rig - Red Axis",
+  "rarity": "mid",
+  "icon": "https://static.nanoka.cc/assets/zzz/Weapon_A_1111.webp",
+  "source": "nanoka.cc"
+ },
+ {
+  "id": "13112",
+  "name": "Big Cylinder",
+  "rarity": "mid",
+  "icon": "https://static.nanoka.cc/assets/zzz/Weapon_A_1121.webp",
+  "source": "nanoka.cc"
+ },
+ {
+  "id": "13113",
+  "name": "Bashful Demon",
+  "rarity": "mid",
+  "icon": "https://static.nanoka.cc/assets/zzz/Weapon_A_1131.webp",
+  "source": "nanoka.cc"
+ },
+ {
+  "id": "13115",
+  "name": "Kaboom the Cannon",
+  "rarity": "mid",
+  "icon": "https://static.nanoka.cc/assets/zzz/Weapon_A_1151.webp",
+  "source": "nanoka.cc"
+ },
+ {
+  "id": "13127",
+  "name": "Peacekeeper - Specialized",
+  "rarity": "mid",
+  "icon": "https://static.nanoka.cc/assets/zzz/Weapon_A_1271.webp",
+  "source": "nanoka.cc"
+ },
+ {
+  "id": "13128",
+  "name": "Roaring Ride",
+  "rarity": "mid",
+  "icon": "https://static.nanoka.cc/assets/zzz/Weapon_A_1281.webp",
+  "source": "nanoka.cc"
+ },
+ {
+  "id": "13135",
+  "name": "Box Cutter",
+  "rarity": "mid",
+  "icon": "https://static.nanoka.cc/assets/zzz/Weapon_A_1351.webp",
+  "source": "nanoka.cc"
+ },
+ {
+  "id": "13142",
+  "name": "Tremor Trigram Vessel",
+  "rarity": "mid",
+  "icon": "https://static.nanoka.cc/assets/zzz/Weapon_A_1421.webp",
+  "source": "nanoka.cc"
+ },
+ {
+  "id": "13144",
+  "name": "Grill O'Wisp",
+  "rarity": "mid",
+  "icon": "https://static.nanoka.cc/assets/zzz/Weapon_A_1441.webp",
+  "source": "nanoka.cc"
+ },
+ {
+  "id": "14001",
+  "name": "Cannon Rotor",
+  "rarity": "mid",
+  "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_Common_01.webp",
+  "source": "nanoka.cc"
+ },
+ {
+  "id": "14002",
+  "name": "Unfettered Game Ball",
+  "rarity": "mid",
+  "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_Common_02.webp",
+  "source": "nanoka.cc"
+ },
+ {
+  "id": "14003",
+  "name": "Six Shooter",
+  "rarity": "mid",
+  "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_Common_03.webp",
+  "source": "nanoka.cc"
+ },
+ {
+  "id": "14102",
+  "name": "Steel Cushion",
+  "rarity": "top",
+  "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1021.webp",
+  "madeFor": "1021",
+  "source": "nanoka.cc"
+ },
+ {
+  "id": "14104",
+  "name": "The Brimstone",
+  "rarity": "top",
+  "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1041.webp",
+  "madeFor": "1041",
+  "source": "nanoka.cc"
+ },
+ {
+  "id": "14105",
+  "name": "Kraken's Cradle",
+  "rarity": "top",
+  "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1051.webp",
+  "madeFor": "1051",
+  "source": "nanoka.cc"
+ },
+ {
+  "id": "14107",
+  "name": "Tusks of Fury",
+  "rarity": "top",
+  "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1071.webp",
+  "madeFor": "1071",
+  "source": "nanoka.cc"
+ },
+ {
+  "id": "14109",
+  "name": "Hailstorm Shrine",
+  "rarity": "top",
+  "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1091.webp",
+  "madeFor": "1091",
+  "source": "nanoka.cc"
+ },
+ {
+  "id": "14110",
+  "name": "Hellfire Gears",
+  "rarity": "top",
+  "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1101.webp",
+  "madeFor": "1101",
+  "source": "nanoka.cc"
+ },
+ {
+  "id": "14114",
+  "name": "The Restrained",
+  "rarity": "top",
+  "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1141.webp",
+  "madeFor": "1141",
+  "source": "nanoka.cc"
+ },
+ {
+  "id": "14116",
+  "name": "Blazing Laurel",
+  "rarity": "top",
+  "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1161.webp",
+  "madeFor": "1161",
+  "source": "nanoka.cc"
+ },
+ {
+  "id": "14117",
+  "name": "Flamemaker Shaker",
+  "rarity": "top",
+  "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1171.webp",
+  "madeFor": "1171",
+  "source": "nanoka.cc"
+ },
+ {
+  "id": "14118",
+  "name": "Fusion Compiler",
+  "rarity": "top",
+  "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1181.webp",
+  "madeFor": "1181",
+  "source": "nanoka.cc"
+ },
+ {
+  "id": "14119",
+  "name": "Deep Sea Visitor",
+  "rarity": "top",
+  "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1191.webp",
+  "madeFor": "1191",
+  "source": "nanoka.cc"
+ },
+ {
+  "id": "14120",
+  "name": "Zanshin Herb Case",
+  "rarity": "top",
+  "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1201.webp",
+  "madeFor": "1201",
+  "source": "nanoka.cc"
+ },
+ {
+  "id": "14121",
+  "name": "Weeping Cradle",
+  "rarity": "top",
+  "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1211.webp",
+  "madeFor": "1211",
+  "source": "nanoka.cc"
+ },
+ {
+  "id": "14122",
+  "name": "Timeweaver",
+  "rarity": "top",
+  "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1221.webp",
+  "madeFor": "1221",
+  "source": "nanoka.cc"
+ },
+ {
+  "id": "14124",
+  "name": "Riot Suppressor Mark VI",
+  "rarity": "top",
+  "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1241.webp",
+  "madeFor": "1241",
+  "source": "nanoka.cc"
+ },
+ {
+  "id": "14125",
+  "name": "Ice-Jade Teapot",
+  "rarity": "top",
+  "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1251.webp",
+  "madeFor": "1251",
+  "source": "nanoka.cc"
+ },
+ {
+  "id": "14126",
+  "name": "Sharpened Stinger",
+  "rarity": "top",
+  "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1261.webp",
+  "madeFor": "1261",
+  "source": "nanoka.cc"
+ },
+ {
+  "id": "14129",
+  "name": "Myriad Eclipse",
+  "rarity": "top",
+  "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1291.webp",
+  "madeFor": "1291",
+  "source": "nanoka.cc"
+ },
+ {
+  "id": "14130",
+  "name": "Bellicose Blaze",
+  "rarity": "top",
+  "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1301.webp",
+  "madeFor": "1301",
+  "source": "nanoka.cc"
+ },
+ {
+  "id": "14131",
+  "name": "Elegant Vanity",
+  "rarity": "top",
+  "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1311.webp",
+  "madeFor": "1311",
+  "source": "nanoka.cc"
+ },
+ {
+  "id": "14132",
+  "name": "Heartstring Nocturne",
+  "rarity": "top",
+  "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1321.webp",
+  "madeFor": "1321",
+  "source": "nanoka.cc"
+ },
+ {
+  "id": "14133",
+  "name": "Flight of Fancy",
+  "rarity": "top",
+  "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1331.webp",
+  "madeFor": "1331",
+  "source": "nanoka.cc"
+ },
+ {
+  "id": "14134",
+  "name": "Half-Sugar Bunny",
+  "rarity": "top",
+  "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1341.webp",
+  "madeFor": "1341",
+  "source": "nanoka.cc"
+ },
+ {
+  "id": "14136",
+  "name": "Spectral Gaze",
+  "rarity": "top",
+  "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1361.webp",
+  "madeFor": "1361",
+  "source": "nanoka.cc"
+ },
+ {
+  "id": "14137",
+  "name": "Qingming Birdcage",
+  "rarity": "top",
+  "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1371.webp",
+  "madeFor": "1371",
+  "source": "nanoka.cc"
+ },
+ {
+  "id": "14138",
+  "name": "Severed Innocence",
+  "rarity": "top",
+  "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1381.webp",
+  "madeFor": "1381",
+  "source": "nanoka.cc"
+ },
+ {
+  "id": "14139",
+  "name": "Roaring Fur-nace",
+  "rarity": "top",
+  "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1391.webp",
+  "madeFor": "1391",
+  "source": "nanoka.cc"
+ },
+ {
+  "id": "14140",
+  "name": "Practiced Perfection",
+  "rarity": "top",
+  "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1401.webp",
+  "madeFor": "1401",
+  "source": "nanoka.cc"
+ },
+ {
+  "id": "14141",
+  "name": "Metanukimorphosis",
+  "rarity": "top",
+  "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1411.webp",
+  "madeFor": "1411",
+  "source": "nanoka.cc"
+ },
+ {
+  "id": "14143",
+  "name": "Cloudcleave Radiance",
+  "rarity": "top",
+  "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1431.webp",
+  "madeFor": "1431",
+  "source": "nanoka.cc"
+ },
+ {
+  "id": "14145",
+  "name": "Dreamlit Hearth",
+  "rarity": "top",
+  "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1451.webp",
+  "madeFor": "1451",
+  "source": "nanoka.cc"
+ },
+ {
+  "id": "14146",
+  "name": "Cordis Germina",
+  "rarity": "top",
+  "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1461.webp",
+  "madeFor": "1461",
+  "source": "nanoka.cc"
+ },
+ {
+  "id": "14147",
+  "name": "Wrathful Vajra",
+  "rarity": "top",
+  "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1471.webp",
+  "madeFor": "1471",
+  "source": "nanoka.cc"
+ },
+ {
+  "id": "14148",
+  "name": "Yesterday Calls",
+  "rarity": "top",
+  "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1481.webp",
+  "madeFor": "1481",
+  "source": "nanoka.cc"
+ },
+ {
+  "id": "14149",
+  "name": "Thoughtbop",
+  "rarity": "top",
+  "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1491.webp",
+  "madeFor": "1491",
+  "source": "nanoka.cc"
+ },
+ {
+  "id": "14150",
+  "name": "Angel in the Shell",
+  "rarity": "top",
+  "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1501.webp",
+  "madeFor": "1501",
+  "source": "nanoka.cc"
+ },
+ {
+  "id": "14151",
+  "name": "Neon Fantasies",
+  "rarity": "top",
+  "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1511.webp",
+  "madeFor": "1511",
+  "source": "nanoka.cc"
+ },
+ {
+  "id": "14152",
+  "name": "Serpentine Seeker",
+  "rarity": "top",
+  "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1521.webp",
+  "madeFor": "1521",
+  "source": "nanoka.cc"
+ },
+ {
+  "id": "14153",
+  "name": "Starlight Rider Faceplate",
+  "rarity": "top",
+  "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1531.webp",
+  "madeFor": "1531",
+  "source": "nanoka.cc"
+ },
+ {
+  "id": "14154",
+  "name": "Frostfall Sickle",
+  "rarity": "top",
+  "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1541.webp",
+  "madeFor": "1541",
+  "source": "nanoka.cc"
+ },
+ {
+  "id": "14155",
+  "name": "Sol Exuvia",
+  "rarity": "top",
+  "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_Common_04.webp",
+  "source": "nanoka.cc"
+ },
+ {
+  "id": "14156",
+  "name": "Joyau Dore",
+  "rarity": "top",
+  "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1561.webp",
+  "madeFor": "1561",
+  "source": "nanoka.cc"
+ },
+ {
+  "id": "14157",
+  "name": "Chief Sidekick",
+  "rarity": "top",
+  "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1571.webp",
+  "madeFor": "1571",
+  "source": "nanoka.cc"
+ },
+ {
+  "id": "14158",
+  "name": "Ode of Resurrected Wings",
+  "rarity": "top",
+  "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1581.webp",
+  "madeFor": "1581",
+  "source": "nanoka.cc"
+ },
+ {
+  "id": "14159",
+  "name": "Knight's Extolment",
+  "rarity": "top",
+  "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1591.webp",
+  "madeFor": "1591",
+  "source": "nanoka.cc"
+ },
+ {
+  "id": "14161",
+  "name": "Crimson Thirst",
+  "rarity": "top",
+  "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1611.webp",
+  "madeFor": "1611",
+  "source": "nanoka.cc"
+ },
+ {
+  "id": "14162",
+  "name": "Crimson Moon Casket",
+  "rarity": "top",
+  "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1621.webp",
+  "madeFor": "1621",
+  "source": "nanoka.cc"
+ },
+ {
+  "id": "14163",
+  "name": "Sin-Ban Cage",
+  "rarity": "top",
+  "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1631.webp",
+  "madeFor": "1631",
+  "source": "nanoka.cc"
+ },
+ {
+  "id": "14164",
+  "name": "Nirvana's First Plume",
+  "rarity": "top",
+  "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1641.webp",
+  "madeFor": "1641",
+  "source": "nanoka.cc"
+ }
+]

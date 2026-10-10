@@ -45,6 +45,10 @@ Resume with: "continue from PROGRESS.md". Newest entry on top. Older entries:
   - Teams: search, ready-to-play first, 6 shown then "Show 12 more".
     Character page Team fit: 3 teams, then "Show N more teams with …".
     Nothing is removed. Best-team searches are cached (both games).
+  - Weapon banners (Light Cone, W-Engine) showed "NO ART YET" and no names:
+    the app had no weapon list. Now `weapons.json` (172 Light Cones, 103
+    W-Engines, every one with a picture) and the banners show each weapon's
+    picture, name and who it's made for, with your roster fit.
   - Next: HSR character EXP (no source yet), Enhanced kits need a saved
     "Enhanced" flag (shown as locked until then), build score needs FRAME's
     build store.

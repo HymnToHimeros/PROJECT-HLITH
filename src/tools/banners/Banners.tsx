@@ -1,5 +1,5 @@
 import type { CSSProperties } from 'react';
-import type { Banner, Character, GameContract, ModuleId } from '../../core/contract';
+import type { Banner, Character, GameContract, ModuleId, Weapon } from '../../core/contract';
 import { formatRange } from '../../core/time/reset';
 import { EmptyState, ExampleNotice, ExampleTag, GameTag, NoData, Timer, UnverifiedTag } from '../../core/ui';
 import { cx } from '../../core/ui/cx';
@@ -96,22 +96,27 @@ function BannerItem({ game, banner, state, data, tagged, open }: ItemProps) {
   const type = game.bannerTypes.find((t) => t.id === banner.type);
   const start = Date.parse(banner.start);
   const end = Date.parse(banner.end);
-  const featured = banner.featured.map((id) => data.characters.get(id)).filter((c): c is Character => Boolean(c));
+  const isWeapon = type?.target === 'weapon';
+  // A weapon banner features weapons: each shown with its picture, and the character it's made for when the game data says so.
+  const weapons = isWeapon ? banner.featured.map((id) => data.weapons.get(id)).filter((w): w is Weapon => Boolean(w)) : [];
+  const leadWeapon = weapons[0];
+  const featured = isWeapon
+    ? weapons.flatMap((w) => (w.madeFor && data.characters.get(w.madeFor) ? [data.characters.get(w.madeFor) as Character] : []))
+    : banner.featured.map((id) => data.characters.get(id)).filter((c): c is Character => Boolean(c));
   const lead = featured[0];
   const isExample = data.banners.exampleIds.has(banner.id);
-  // Sample art only ever illustrates example banners; real banners use the character's own art.
-  const art = banner.art ?? (lead ? (isExample ? (data.sampleArt.get(lead.id) ?? lead.art) : lead.art) : undefined);
+  // Sample art only ever illustrates example banners; real banners use the character's own art (a weapon banner: the weapon's picture).
+  const art = banner.art ?? (isWeapon && leadWeapon ? leadWeapon.icon : lead ? (isExample ? (data.sampleArt.get(lead.id) ?? lead.art) : lead.art) : undefined);
   const element = lead ? game.elements.find((e) => e.id === lead.element) : undefined;
-  const isWeapon = type?.target === 'weapon';
   const rerun = rerunLabel(game, banner, data.characters);
   return (
     <article className={cx(b.card, banner.leak && b.leak)} aria-label={banner.title} style={{ '--el': element?.color ?? 'var(--line-strong)' } as CSSProperties}>
       <div className={cx(b.art, !art && b.artEmpty)}>
         {art ? (
-          <img src={art} alt="" loading="lazy" className={b.artImg} />
+          <img src={art} alt="" loading="lazy" className={cx(b.artImg, isWeapon && leadWeapon && !banner.art && b.artWeapon)} />
         ) : (
           <span className={b.artName} aria-hidden="true">
-            {lead?.name ?? banner.title}
+            {leadWeapon?.name ?? lead?.name ?? banner.title}
           </span>
         )}
         <span className={b.artLabel}>{art ? (isExample ? 'SAMPLE ART' : '') : 'NO ART YET'}</span>
@@ -131,10 +136,24 @@ function BannerItem({ game, banner, state, data, tagged, open }: ItemProps) {
           <span>{formatRange(start, end)}</span>
           {state === 'live' ? <Timer to={end} deadline prefix="ends in" /> : <Timer to={start} prefix="opens in" />}
         </div>
-        {featured.map((c) => (
-          <FeaturedLines key={c.id} game={game} character={c} data={data} weapon={isWeapon} open={open} />
-        ))}
-        {featured.length === 0 && <span className={b.sub}>{isWeapon ? `${game.terms.weapon} banner · no fit score` : 'Featured character not in the list yet'}</span>}
+        {isWeapon &&
+          weapons.map((w) => {
+            const owner = w.madeFor ? data.characters.get(w.madeFor) : undefined;
+            return (
+              <div key={w.id} className={b.weapon}>
+                {w.icon ? <img src={w.icon} alt="" loading="lazy" className={b.weaponIcon} /> : <span className={b.weaponIcon} aria-hidden="true" />}
+                <div className={b.weaponText}>
+                  <span className={b.sub}>
+                    <strong className={b.charName}>{w.name}</strong> {w.rarity !== 'low' && <span className={w.rarity === 'top' ? b.top : b.mid}>{game.terms.rarity[w.rarity]}</span>}
+                  </span>
+                  {owner && <FeaturedLines game={game} character={owner} data={data} weapon open={open} />}
+                </div>
+              </div>
+            );
+          })}
+        {!isWeapon && featured.map((c) => <FeaturedLines key={c.id} game={game} character={c} data={data} weapon={false} open={open} />)}
+        {isWeapon && weapons.length === 0 && <span className={b.sub}>{`${game.terms.weapon} banner · ${game.terms.weapon} list not in HLITH yet`}</span>}
+        {!isWeapon && featured.length === 0 && <span className={b.sub}>Featured character not in the list yet</span>}
         <button type="button" className={b.plan} onClick={() => open('pulls', 'planner')}>
           Plan pulls
         </button>

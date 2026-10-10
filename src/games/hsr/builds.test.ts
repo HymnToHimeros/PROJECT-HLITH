@@ -41,4 +41,14 @@ describe("HSR recommended builds and teams (the game's own recommendation)", () 
       expect(t.source).toContain("the game's own recommended team");
     }
   });
+
+  it('every weapon has its picture; every weapon on a banner is in the list; "made for" names a known character', async () => {
+    const { default: weapons } = await import('./data/weapons.json');
+    const { default: banners } = await import('./data/banners.json');
+    const ids = new Set(weapons.map((w) => w.id));
+    for (const w of weapons) expect(w.icon, w.name).toMatch(/^https:\/\/static\.nanoka\.cc\/assets\/hsr\/.+\.webp$/);
+    for (const b of banners.filter((x) => x.type === 'light-cone')) for (const f of b.featured) expect(ids.has(f), `${b.title}: ${f}`).toBe(true);
+    const chars = new Set(characters.map((c) => c.id));
+    for (const w of weapons) if ('madeFor' in w && w.madeFor) expect(chars.has(w.madeFor), w.name).toBe(true);
+  });
 });

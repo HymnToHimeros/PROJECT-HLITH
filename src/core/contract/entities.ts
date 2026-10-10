@@ -22,6 +22,18 @@ export interface Character {
   leak?: { source: string };
 }
 
+/** A weapon (Light Cone, W-Engine): what weapon banners feature (LOGIC-CORE). */
+export interface Weapon {
+  id: string;
+  name: string;
+  rarity: 'top' | 'mid' | 'low';
+  /** Picture (full URL), when the source has one that loads. */
+  icon?: string;
+  /** The character it is made for (their signature weapon), when the game data says so. */
+  madeFor?: string;
+  source?: string;
+}
+
 export interface Banner {
   id: string;
   type: string; // GameContract.bannerTypes[].id

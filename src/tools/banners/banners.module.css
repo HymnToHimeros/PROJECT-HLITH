@@ -285,3 +285,30 @@
   border: 1px dashed var(--ember-soft);
   color: var(--ember-soft);
 }
+
+/* Weapon banners: the weapon's own picture, whole, and one row per featured weapon. */
+.artWeapon {
+  object-fit: contain;
+  object-position: center;
+  padding: var(--s-2);
+}
+.weapon {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--s-2);
+  min-width: 0;
+}
+.weaponIcon {
+  width: 40px;
+  height: 40px;
+  flex: none;
+  object-fit: contain;
+  border-radius: 6px;
+  background: var(--bg-raised);
+}
+.weaponText {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}

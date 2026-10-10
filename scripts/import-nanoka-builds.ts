@@ -8,7 +8,9 @@
  * recommendations). Every character at once: game data, not kit reading.
  * Codes are mapped through the tables below; an unknown code stops the script.
  *
- * Writes src/games/<game>/data/builds.json, and src/games/hsr/data/teams.json.
+ * Writes src/games/<game>/data/builds.json and weapons.json (every Light Cone /
+ * W-Engine in the newest game files, with its picture and, when the game data
+ * says so, who it's made for), and src/games/hsr/data/teams.json.
  */
 import { writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
@@ -252,6 +254,60 @@ async function hsr(): Promise<{ builds: Build[]; teams: unknown[] }> {
   return { builds, teams };
 }
 
+interface WeaponOut {
+  id: string;
+  name: string;
+  rarity: 'top' | 'mid' | 'low';
+  icon?: string;
+  madeFor?: string;
+  source: string;
+}
+const RARITY: Record<number, WeaponOut['rarity']> = { 5: 'top', 4: 'mid', 3: 'low' };
+
+/** ZZZ: every W-Engine in the newest files; an S-rank named after an agent ("Weapon_S_<id>") is made for them. */
+async function zzzWeapons(): Promise<WeaponOut[]> {
+  const v = (await getJson<{ zzz: { latest: string } }>(`${BASE}/manifest.json`)).zzz.latest;
+  const list = await getJson<Record<string, { icon: string; rank: number; en: string }>>(`${BASE}/zzz/${v}/weapon.json`);
+  const agents = new Set(Object.keys(await getJson<Record<string, unknown>>(`${BASE}/zzz/${v}/character.json`)));
+  const out: WeaponOut[] = [];
+  for (const [id, w] of Object.entries(list)) {
+    // ZZZ ranks: 4 = S, 3 = A, 2 = B; the same three steps as 5, 4, 3 stars.
+    const rarity = RARITY[w.rank + 1];
+    if (!rarity) throw new Error(`zzz weapon ${id}: unknown rank ${w.rank}`);
+    const icon = await loads(`${ASSETS}/zzz/${w.icon}.webp`);
+    const agent = /^Weapon_S_(\d+)$/.exec(w.icon)?.[1];
+    out.push({ id, name: plain(w.en), rarity, ...(icon ? { icon } : {}), ...(agent && agents.has(agent) ? { madeFor: agent } : {}), source: 'nanoka.cc' });
+  }
+  return out;
+}
+
+/**
+ * HSR: every Light Cone in the newest files. A 5★ Light Cone is "made for" a
+ * character when it is the first one the game recommends for them and for no
+ * one else (the game's own signature pick); otherwise it is left blank.
+ */
+async function hsrWeapons(): Promise<WeaponOut[]> {
+  const v = (await getJson<{ hsr: { latest: string } }>(`${BASE}/manifest.json`)).hsr.latest;
+  const list = await getJson<Record<string, { rank: string; en: string }>>(`${BASE}/hsr/${v}/lightcone.json`);
+  const chars = await getJson<Record<string, unknown>>(`${BASE}/hsr/${v}/character.json`);
+  const firstFor = new Map<string, string[]>();
+  for (const id of Object.keys(chars)) {
+    const d = await getJson<HsrDetail>(`${BASE}/hsr/${v}/en/character/${id}.json`);
+    const first = d.lightcones?.[0];
+    if (first !== undefined) firstFor.set(String(first), [...(firstFor.get(String(first)) ?? []), id]);
+  }
+  const out: WeaponOut[] = [];
+  for (const [id, c] of Object.entries(list)) {
+    const stars = Number(/(\d)$/.exec(c.rank)?.[1]);
+    const rarity = RARITY[stars];
+    if (!rarity) throw new Error(`hsr Light Cone ${id}: unknown rarity ${c.rank}`);
+    const icon = await loads(`${ASSETS}/hsr/lightconemediumicon/${id}.webp`);
+    const who = firstFor.get(id);
+    out.push({ id, name: plain(c.en), rarity, ...(icon ? { icon } : {}), ...(stars === 5 && who?.length === 1 && who[0] ? { madeFor: who[0] } : {}), source: 'nanoka.cc' });
+  }
+  return out;
+}
+
 const write = (game: string, file: string, data: unknown) => writeFileSync(resolve(ROOT, `src/games/${game}/data/${file}`), `${JSON.stringify(data, null, 1)}\n`);
 const z = await zzz();
 write('zzz', 'builds.json', z);
@@ -260,3 +316,8 @@ const h = await hsr();
 write('hsr', 'builds.json', h.builds);
 write('hsr', 'teams.json', h.teams);
 console.log(`hsr: ${h.builds.length} recommended builds, ${h.teams.length} recommended teams`);
+const zw = await zzzWeapons();
+write('zzz', 'weapons.json', zw);
+const hw = await hsrWeapons();
+write('hsr', 'weapons.json', hw);
+console.log(`weapons: zzz ${zw.length} (${zw.filter((w) => !w.icon).length} without a picture), hsr ${hw.length} (${hw.filter((w) => !w.icon).length} without a picture)`);
