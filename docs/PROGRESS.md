@@ -28,6 +28,20 @@ Resume with: "continue from PROGRESS.md". Newest entry on top. Older entries:
 - CI (`.github/workflows/ci.yml`) runs both on every pull request.
 
 ## Done
+- 2026-10-10 · **LOGIC-CORE steps 2–3 for group A: Kit check tags and team scores** (branch `logic-core/zzz-kit-check-a`).
+  - Cheat sheet (Part A) for Starlight Billy, Dialyn, Lucia, Pan Yinhu:
+    `src/games/zzz/kitcheck/sheet/groupA.ts`. Every entry answers the seven
+    questions; tests check each quote is word for word in the game text and
+    every kit piece is read.
+  - The check (Part B, nine steps): `src/games/zzz/kitcheck/check.ts`. The
+    method's worked examples are tests: Billy > Dialyn > Lucia = 9,
+    Billy > Pan Yinhu > Lucia = 10, 9 ÷ 10 = 90% Excellent.
+  - On the site (ZZZ): Kit check shows tags with the proving words underlined;
+    team cards show synergy % with a tappable "Why" (every point with its quote);
+    Ideas show real Line-ups and "If you pull…" %; the character page shows Who
+    fits and what a missing agent adds; Characters → Sort → Best fit for me.
+    Agents not read yet say "not rated yet" / "No data yet".
+  - Open calls written down for the owner: `docs/logic/zzz-decisions.md`.
 - 2026-10-10 · **SCHEDULER step 1: every time-gated list filled for HSR and ZZZ** (branch `scheduler/versions`).
   - Run again any time: `npm run data:nanoka`, then `npm run data:schedule` (in that order:
     the second one turns announced leaks into upcoming characters). Both only add or

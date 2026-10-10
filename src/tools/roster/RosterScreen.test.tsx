@@ -1,7 +1,7 @@
 import { act, fireEvent, render, screen, within } from '@testing-library/react';
 import { useState } from 'react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import type { Character, GameContract, Kit, TeamPreset } from '../../core/contract';
+import type { Character, GameContract, Kit, TeamPreset, TeamRules } from '../../core/contract';
 import { gameData, resetUserData, saveTeam, setRosterEntry } from '../../core/data/userData';
 import RosterScreen from './RosterScreen';
 
@@ -371,6 +371,41 @@ describe('Roster screen', () => {
     expect(await within(page).findByText(/Game text from nanoka\.cc \(game data 3\.3\.4\)\./)).toBeInTheDocument();
     expect(within(page).getByText(/Not released yet: the text can still change\./)).toBeInTheDocument();
     expect(within(page).getByText(/Not read yet: what each skill does is added next\./)).toBeInTheDocument();
+  });
+
+  it('a game with team rules shows the synergy % and, on tap, every reason with its proof', async () => {
+    const base = makeGame(false);
+    const rules: TeamRules = {
+      method: 'Test method',
+      rated: (id) => id !== 'c4',
+      verdict: (members) =>
+        members.includes('c4')
+          ? { rated: false, why: 'not rated yet: Shield Friend not read yet' }
+          : {
+              rated: true,
+              percent: 90,
+              label: 'Excellent',
+              count: 9,
+              best: 10,
+              bestMembers: ['c1', 'c3', 'c2'],
+              order: ['c1', 'c3', 'c2'],
+              reasons: [{ points: 1, group: 'counted', text: 'Helper · Squad: +40% DMG: reaches Newest Star', proof: { who: 'Helper', skill: 'Additional Ability: Glow', quote: 'DMG dealt is increased by 40%' } }],
+              notes: ['A higher count means more of the kits connect, not more damage.'],
+            },
+      whoFits: () => [],
+      lineUps: () => [{ members: ['c1', 'c3'], count: 4, why: 'Newest Star > Helper counts 4' }],
+      ifYouPull: () => ({ percent: 75, why: ['As a teammate: Newest Star goes from 3 to 4'] }),
+    };
+    await show('teams', { ...base, rules: { teams: rules } });
+    const card = screen.getByRole('article', { name: 'Fire team' });
+    expect(within(card).getByText('90%')).toBeInTheDocument();
+    expect(within(card).getByText('synergy · Excellent')).toBeInTheDocument();
+    fireEvent.click(within(card).getByText(/Why 90%: count 9 of 10/));
+    expect(within(card).getByText(/Helper · Squad: \+40% DMG/)).toBeInTheDocument();
+    expect(within(card).getByText(/Additional Ability: Glow: “DMG dealt is increased by 40%”/)).toBeInTheDocument();
+    // Ideas come from the rules too: Line-ups and If you pull, no examples.
+    expect(screen.getByRole('button', { name: 'Newest Star, Helper: count 4. Make it a preset' })).toBeInTheDocument();
+    expect(screen.getAllByText('75%').length).toBeGreaterThan(0);
   });
 
   it('Kit check also opens from a team in Teams', async () => {

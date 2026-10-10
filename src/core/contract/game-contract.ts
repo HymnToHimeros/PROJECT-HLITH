@@ -212,4 +212,74 @@ export interface GameDataLoaders {
 export interface GameRules {
   materialsFor?: (characterId: string, from: BuildLevel, to: BuildLevel) => MaterialNeed[];
   scoreBuild?: (build: CharacterBuild) => Known<{ score: number; grade: string }>;
+  /** Team scoring from kits (LOGIC-CORE). Every score explains itself with kit text. */
+  teams?: TeamRules;
+}
+
+/** What team scoring may know about the viewer's account. Not owned = no dupes. */
+export interface TeamAccount {
+  owned: (id: string) => boolean;
+  dupes: (id: string) => number;
+  /** A game's second upgrade track (ZZZ Agent Potential); undefined = not saved. */
+  potential?: (id: string) => number | undefined;
+}
+
+/** One reason behind a team score. */
+export interface TeamReason {
+  /** What it adds to the count; 0 = shown but not counted. */
+  points: number;
+  group: 'counted' | 'tie-break' | 'not-counted';
+  text: string;
+  /** The kit text that proves it. */
+  proof?: { who: string; skill: string; quote: string };
+}
+
+export type TeamVerdict =
+  | {
+      rated: true;
+      /** 0–100: this team against the best the rules find for its damage dealer. */
+      percent: number;
+      label: string;
+      count: number;
+      best: number;
+      bestMembers: string[];
+      /** The order the score is for, e.g. A > B > C. */
+      order: string[];
+      reasons: TeamReason[];
+      notes: string[];
+    }
+  | { rated: false; why: string };
+
+export interface TeamIdea {
+  members: string[];
+  count: number;
+  why: string;
+}
+
+export interface FitSuggestion {
+  id: string;
+  count: number;
+  /** How it connects, in words ("turns on Billy's Additional Ability"). */
+  how: string[];
+  withEveryone: boolean;
+}
+
+export interface PullValue {
+  /** 0 = no gain. */
+  percent: number;
+  why: string[];
+}
+
+/** Team logic for one game (filled by LOGIC-CORE in the game's folder). */
+export interface TeamRules {
+  /** Where the rules are written, shown with every score. */
+  method: string;
+  /** Can this character be rated yet (their kit has been read)? */
+  rated: (id: string) => boolean;
+  verdict: (members: string[], account: TeamAccount) => TeamVerdict;
+  whoFits: (members: string[], account: TeamAccount) => FitSuggestion[];
+  /** Best teams from owned characters, no character twice. */
+  lineUps: (account: TeamAccount) => TeamIdea[];
+  /** What a character adds to the account; null = not rated. */
+  ifYouPull: (id: string, account: TeamAccount) => PullValue | null;
 }

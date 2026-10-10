@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react';
 import type { Character, GameContract, Kit } from '../../core/contract';
 import { NoData } from '../../core/ui';
 import r from './roster.module.css';
@@ -48,7 +49,7 @@ function OneKit({ who, kit, showName, game }: { who: Character; kit: Kit | undef
       </div>
     );
   }
-  const unread = kit.skills.every((s) => s.does.length === 0);
+  const unread = kit.skills.every((s) => s.does.length === 0 && !s.note);
   return (
     <div className={r.kitBlock}>
       {showName && <h4 className={r.kitName}>{who.name}</h4>}
@@ -75,7 +76,21 @@ function OneKit({ who, kit, showName, game }: { who: Character; kit: Kit | undef
               </summary>
               <div className={r.gameText}>
                 <span className={r.label}>GAME TEXT</span>
-                <p>{s.gameText}</p>
+                <p className={r.gameTextBody}>{marked(s.gameText, (s.proof ?? []).map((p) => p.quote))}</p>
+                {s.proof && s.proof.length > 0 && (
+                  <>
+                    <span className={r.label}>WHAT IT DOES · THE MARKED WORDS PROVE IT</span>
+                    <ul className={r.proofList}>
+                      {s.proof.map((p) => (
+                        <li key={p.tag}>
+                          <strong>{p.tag}</strong>
+                          {p.note && <span className={r.muted}> · {p.note}</span>}
+                        </li>
+                      ))}
+                    </ul>
+                  </>
+                )}
+                {s.note && <span className={r.muted}>{s.note}</span>}
               </div>
             </details>
           </li>
@@ -83,4 +98,25 @@ function OneKit({ who, kit, showName, game }: { who: Character; kit: Kit | undef
       </ul>
     </div>
   );
+}
+
+/** The game text with the proving quotes marked. */
+function marked(text: string, quotes: string[]): ReactNode {
+  const spans: [number, number][] = [];
+  for (const q of quotes) {
+    const at = q ? text.indexOf(q) : -1;
+    if (at >= 0) spans.push([at, at + q.length]);
+  }
+  spans.sort((a, b) => a[0] - b[0]);
+  const out: ReactNode[] = [];
+  let pos = 0;
+  for (const [from, to] of spans) {
+    if (to <= pos) continue;
+    const start = Math.max(from, pos);
+    if (start > pos) out.push(text.slice(pos, start));
+    out.push(<mark key={start}>{text.slice(start, to)}</mark>);
+    pos = to;
+  }
+  out.push(text.slice(pos));
+  return out;
 }
