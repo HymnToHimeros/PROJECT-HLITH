@@ -8,6 +8,7 @@ export { CurrencyChip } from './CurrencyChip';
 export { DragHandleRow } from './DragHandleRow';
 export { EmptyState } from './EmptyState';
 export { EventRow } from './EventRow';
+export { Menu, type MenuItem } from './Menu';
 export { NoData } from './NoData';
 export { ProgressBar } from './ProgressBar';
 export { Segmented } from './Segmented';

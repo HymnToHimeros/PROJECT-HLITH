@@ -105,7 +105,7 @@ describe('Events screen', () => {
     const ended: GameEvent = { id: 'lg', title: 'Old login', kind: 'login', start: new Date(now - 9 * DAY).toISOString(), end: new Date(now - DAY).toISOString(), reward: 700, currency: 'gem', loginDays: 7 };
     act(() => setEventProgress('aa', 'lg', { state: 'open', daysClaimed: 2 }));
     await show(makeGame([ended]), { aa: 'eu' });
-    fireEvent.click(screen.getByText('Ended'));
+    fireEvent.click(screen.getByRole('button', { name: 'Show 1 ended' }));
     const login = row('Old login');
     expect(within(login).getByRole('button', { name: 'Claim one more day for Old login' })).toBeDisabled();
     expect(within(login).getByRole('button', { name: 'Day 3' })).toBeDisabled();
@@ -120,19 +120,105 @@ describe('Events screen', () => {
     expect(screen.getByText('Limited story event')).toBeInTheDocument();
   });
 
-  it('marking an event done or skipped saves it and stops counting its reward', async () => {
+  it('marking an event done (one tap) or skipped (from its menu) saves it and stops counting its reward', async () => {
     await show();
     // No server: login days are left out, so the total is 1,000 + 120 + 900.
     expect(within(stillToEarn()).getByText(/2,020/)).toBeInTheDocument();
 
-    fireEvent.click(within(screen.getByRole('group', { name: 'State of Limited story event' })).getByRole('button', { name: 'Done' }));
+    fireEvent.click(within(screen.getByRole('group', { name: 'State of Limited story event' })).getByRole('button', { name: 'Mark Limited story event done' }));
     expect(gameData('aa').events['example-limited']).toEqual({ state: 'done' });
-    expect(within(row('Limited story event')).getByText(/already in your bank/)).toBeInTheDocument();
     expect(within(stillToEarn()).getByText(/1,020/)).toBeInTheDocument();
+    // It folds away under "Done or skipped"; Show brings it back.
+    expect(screen.queryByRole('listitem', { name: 'Limited story event' })).not.toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'Show 1 done or skipped' }));
+    expect(within(row('Limited story event')).getByText(/already in your bank/)).toBeInTheDocument();
 
-    fireEvent.click(within(screen.getByRole('group', { name: 'State of Web event' })).getByRole('button', { name: 'Skip' }));
+    fireEvent.click(within(row('Web event')).getByRole('button', { name: 'More for Web event' }));
+    fireEvent.click(screen.getByRole('menuitem', { name: /Skip/ }));
     expect(gameData('aa').events['example-web']?.state).toBe('skipped');
     expect(within(row('Web event')).getByText(/Skipped · not counted/)).toBeInTheDocument();
+  });
+
+  it('every change can be undone, and a settled row can be reopened or switched', async () => {
+    await show();
+    fireEvent.click(screen.getByRole('button', { name: 'Mark Limited story event done' }));
+    expect(screen.getByRole('status')).toHaveTextContent('“Limited story event” marked done.');
+    const undo = screen.getByRole('button', { name: /^Undo: Limited story event/ });
+    expect(undo).toHaveFocus();
+    fireEvent.click(undo);
+    expect(gameData('aa').events['example-limited']).toEqual({ state: 'open' });
+    expect(screen.getByRole('status')).toHaveTextContent('back to open');
+    expect(within(row('Limited story event')).getByRole('button', { name: 'Mark Limited story event done' })).toBeInTheDocument();
+
+    // Done, then from the menu: skip instead, then reopen.
+    fireEvent.click(screen.getByRole('button', { name: 'Mark Limited story event done' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Show 1 done or skipped' }));
+    fireEvent.click(screen.getByRole('button', { name: 'More for Limited story event' }));
+    fireEvent.click(screen.getByRole('menuitem', { name: 'Skip instead' }));
+    expect(gameData('aa').events['example-limited']?.state).toBe('skipped');
+    fireEvent.click(within(row('Limited story event')).getByRole('button', { name: 'Reopen Limited story event' }));
+    expect(gameData('aa').events['example-limited']?.state).toBe('open');
+  });
+
+  it('changing the state keeps the login days already claimed', async () => {
+    act(() => setEventProgress('aa', 'example-login', { state: 'open', daysClaimed: 3 }));
+    await show(makeGame(), { aa: 'eu' });
+    fireEvent.click(screen.getByRole('button', { name: 'Mark Daily login event done' }));
+    expect(gameData('aa').events['example-login']).toEqual({ state: 'done', daysClaimed: 3 });
+    fireEvent.click(screen.getByRole('button', { name: /^Undo/ }));
+    expect(gameData('aa').events['example-login']).toEqual({ state: 'open', daysClaimed: 3 });
+  });
+
+  it('the ⋯ menu works from the keyboard and Escape closes it', async () => {
+    await show();
+    const trigger = within(row('Web event')).getByRole('button', { name: 'More for Web event' });
+    expect(trigger).toHaveAttribute('aria-haspopup', 'menu');
+    fireEvent.keyDown(trigger, { key: 'ArrowDown' });
+    expect(trigger).toHaveAttribute('aria-expanded', 'true');
+    expect(screen.getByRole('menuitem', { name: /Skip/ })).toHaveFocus();
+    fireEvent.keyDown(screen.getByRole('menu'), { key: 'Escape' });
+    expect(screen.queryByRole('menu')).not.toBeInTheDocument();
+    expect(trigger).toHaveFocus();
+  });
+
+  it('groups rows into ending soon, running now and coming up; ended ones fold behind Show N', async () => {
+    await show();
+    const group = (name: string) => screen.getByRole('list', { name });
+    expect(within(group('Ending soon')).getByRole('listitem', { name: 'Web event' })).toBeInTheDocument();
+    expect(within(group('Running now')).getByRole('listitem', { name: 'Limited story event' })).toBeInTheDocument();
+    expect(within(group('Coming up')).getByRole('listitem', { name: 'Next limited event' })).toBeInTheDocument();
+    // Ended: folded until asked.
+    expect(screen.queryByRole('listitem', { name: 'Previous limited event' })).not.toBeInTheDocument();
+    const showEnded = screen.getByRole('button', { name: 'Show 1 ended' });
+    expect(showEnded).toHaveAttribute('aria-expanded', 'false');
+    fireEvent.click(showEnded);
+    expect(within(group('Ended')).getByRole('listitem', { name: 'Previous limited event' })).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'Hide ended' }));
+    expect(screen.queryByRole('listitem', { name: 'Previous limited event' })).not.toBeInTheDocument();
+  });
+
+  it('a long Coming up list shows the first rows and folds the rest behind Show N more', async () => {
+    const now = Date.now();
+    const next = (i: number): GameEvent => ({ id: `n${i}`, title: `Next ${i}`, kind: 'event', start: new Date(now + (i + 1) * DAY).toISOString(), end: new Date(now + (i + 9) * DAY).toISOString(), reward: 100, currency: 'gem' });
+    await show(makeGame([1, 2, 3, 4, 5, 6].map(next)));
+    expect(within(screen.getByRole('list', { name: 'Coming up' })).getAllByRole('listitem')).toHaveLength(4);
+    fireEvent.click(screen.getByRole('button', { name: 'Show 2 more coming up' }));
+    expect(within(screen.getByRole('list', { name: 'Coming up' })).getAllByRole('listitem')).toHaveLength(6);
+  });
+
+  it('bigger rewards stand out and rows worth nothing stay quiet', async () => {
+    const now = Date.now();
+    const ev = (id: string, reward: number): GameEvent => ({ id, title: id, kind: 'event', start: new Date(now - DAY).toISOString(), end: new Date(now + 9 * DAY).toISOString(), reward, currency: 'gem' });
+    await show(makeGame([ev('Big', 800), ev('Small', 320), ev('Zero', 0)], false));
+    expect(row('Big')).toHaveAttribute('data-weight', 'high');
+    expect(row('Small')).toHaveAttribute('data-weight', 'normal');
+    expect(row('Zero')).toHaveAttribute('data-weight', 'none');
+  });
+
+  it('Edit list sits with the list actions next to the filters', async () => {
+    await show();
+    const filters = screen.getByRole('group', { name: 'Show events' });
+    expect(filters.parentElement).toContainElement(screen.getByRole('button', { name: /Add, change or hide/ }));
   });
 
   it('claims login days with + / − and by tapping a day', async () => {
