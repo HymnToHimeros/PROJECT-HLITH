@@ -114,7 +114,9 @@ describe('Today', () => {
     render(<TodayScreen {...props({ servers: {}, openAccount })} />);
     expect(await screen.findByText(/Choose your server first/)).toBeInTheDocument();
     expect(screen.getByRole('checkbox', { name: 'Daily task' })).toBeDisabled();
-    fireEvent.click(screen.getByRole('button', { name: 'Choose my server' }));
+    // One clear step per game instead of a prompt on every card.
+    expect(screen.getAllByRole('button', { name: /Choose .*server/ })).toHaveLength(1);
+    fireEvent.click(screen.getByRole('button', { name: 'Choose AA server' }));
     expect(openAccount).toHaveBeenCalled();
     expect(screen.getAllByText(/No data yet/).length).toBeGreaterThan(1);
   });
@@ -149,10 +151,10 @@ describe('Today', () => {
     expect(screen.getAllByText('EXAMPLE').length).toBeGreaterThan(1);
   });
 
-  it('the server chip opens the server picker for that game', async () => {
+  it('Choose server opens the server picker for that game', async () => {
     const openServer = vi.fn();
     render(<TodayScreen {...props({ servers: {}, openServer })} />);
-    fireEvent.click(await screen.findByRole('button', { name: 'Choose your AA server' }));
+    fireEvent.click(await screen.findByRole('button', { name: 'Choose AA server' }));
     expect(openServer).toHaveBeenCalledWith('aa');
   });
 
