@@ -218,6 +218,8 @@ export interface SavedBuild {
   gear: { slot: string; set?: string; main?: string; level?: number; subs: { stat: string; value: number; rolls?: number }[] }[];
   /** Skill name → level. */
   skills?: Record<string, number>;
+  /** Total stats as the game's stat screen shows them (BuildRules.totalStats names; % as plain numbers). Missing = not saved (T35). */
+  totals?: Record<string, number>;
   source: 'manual' | 'scan' | 'hoyolab';
   updatedAt: string;
 }

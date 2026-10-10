@@ -202,7 +202,7 @@ export function Scan({ game, reader, characterId }: { game: GameContract; reader
               <input
                 id={`${id}-${f.id}`}
                 className={c.input}
-                inputMode={f.kind === 'text' ? 'text' : 'numeric'}
+                inputMode={f.kind === 'text' ? 'text' : f.kind === 'total' ? 'decimal' : 'numeric'}
                 value={values[f.id] ?? ''}
                 onChange={(e) => setValues((v) => ({ ...v, [f.id]: e.target.value }))}
                 placeholder={f.kind === 'text' ? 'As shown in game' : 'Leave empty to keep'}
@@ -232,7 +232,8 @@ export function Scan({ game, reader, characterId }: { game: GameContract; reader
             <ExampleTag /> <span className={c.label}>What a reading looks like</span>
           </span>
           <span>
-            Read from the screenshot: {fields.map((f) => `${f.label} ${f.kind === 'dupes' ? '2' : f.kind === 'level' ? '80' : '…'}`).join(' · ')}
+            Read from the screenshot: {fields.filter((f) => f.kind !== 'total').map((f) => `${f.label} ${f.kind === 'dupes' ? '2' : f.kind === 'level' ? '80' : '…'}`).join(' · ')}
+            {fields.some((f) => f.kind === 'total') ? ' · stat screen totals' : ''}
           </span>
           <span className={c.muted}>Check it against the game before saving: a reading is only as good as the screenshot.</span>
         </div>
