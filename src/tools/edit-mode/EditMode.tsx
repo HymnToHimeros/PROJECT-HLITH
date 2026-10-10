@@ -6,9 +6,13 @@
  */
 import { useEffect, useId, useState, type FormEvent } from 'react';
 import type { GameContract } from '../../core/contract';
-import { saveOwnItem, setOwnItemHidden, useGameData, type OwnItemTypes, type OwnKind } from '../../core/data/userData';
+import { useExamplesShown } from '../../core/data/prefs';
+import { revertOwnItem, saveOwnItem, setOwnItemHidden, useGameData, type OwnItemTypes, type OwnKind } from '../../core/data/userData';
 import { formatDateTime } from '../../core/time/reset';
 import { BottomSheet, Button, HowTo, Segmented } from '../../core/ui';
+import { ItemForm as BacklogItemForm } from '../backlog/Backlog';
+import { categoryIds, categoryLabel } from '../backlog/backlog';
+import { exampleBacklog } from '../backlog/examples';
 import { newOwnId, type MergedRow, type Origin } from './merge';
 import { useOwnRows } from './useWithOwnItems';
 import s from './edit-mode.module.css';
@@ -80,15 +84,31 @@ export function EditMode({ game, kind, examples }: { game: GameContract; kind: O
           </Button>
         )}
       </div>
-      {editing && (
+      {editing && kind === 'backlog' && (
+        // Backlog items have more to them (kind, steps, groups, percent): the Backlog screen's own form, so there is one editor.
+        <div className={s.form}>
+          <h3 className={s.formTitle}>{editing.row ? `Change “${editing.row.item.title}”` : 'Add your own backlog item'}</h3>
+          <BacklogItemForm
+            game={game}
+            row={editing.row as MergedRow<OwnItemTypes['backlog']> | null}
+            category={(editing.row?.item as OwnItemTypes['backlog'] | undefined)?.category ?? 'story'}
+            categories={categoryIds(rows.map((r) => r.item as OwnItemTypes['backlog']))}
+            rows={rows as MergedRow<OwnItemTypes['backlog']>[]}
+            onDone={() => setEditing(null)}
+          />
+        </div>
+      )}
+      {editing && kind !== 'backlog' && (
         <ItemForm
           game={game}
           kind={kind}
           row={editing.row}
           onCancel={() => setEditing(null)}
-          onSave={(id, fields, mine) => {
+          onSave={(id, fields, mine, cleared) => {
             const before = own[id]?.fields ?? {};
-            saveOwnItem(game.id, kind, { id, mine, fields: { ...before, ...fields }, hidden: editing.row?.hidden ?? false, at: now() });
+            // An emptied optional field (like login days) is removed, not kept from before.
+            const merged = Object.fromEntries(Object.entries({ ...before, ...fields }).filter(([k]) => !cleared.includes(k))) as Partial<AnyItem>;
+            saveOwnItem(game.id, kind, { id, mine, fields: merged, hidden: editing.row?.hidden ?? false, at: now() });
             setEditing(null);
           }}
         />
@@ -117,6 +137,11 @@ export function EditMode({ game, kind, examples }: { game: GameContract; kind: O
                 <Button className={s.small} onClick={() => setEditing({ row: r })} aria-label={`Change ${r.item.title}`}>
                   Change
                 </Button>
+                {r.origin === 'changed' && (
+                  <Button className={s.small} onClick={() => revertOwnItem(game.id, kind, r.item.id, now())} aria-label={`Back to the list’s version of ${r.item.title}`}>
+                    Back to the list’s version
+                  </Button>
+                )}
                 <Button className={s.small} onClick={() => setOwnItemHidden(game.id, kind, r.item.id, !r.hidden, now())} aria-label={`${r.hidden ? 'Show' : 'Hide'} ${r.item.title}`}>
                   {r.hidden ? 'Show' : 'Hide'}
                 </Button>
@@ -145,7 +170,7 @@ function describe(game: GameContract, kind: OwnKind, item: AnyItem): string {
     return `${game.bannerTypes.find((t) => t.id === b.type)?.label ?? b.type} · ${when(b.start, b.end)}`;
   }
   const b = item as OwnItemTypes['backlog'];
-  return `${b.category} · ${b.total} to do · ${b.reward === null ? 'reward unknown' : `${b.reward} ${cur(b.currency)}`}`;
+  return `${categoryLabel(b.category)} · ${b.total} to do · ${b.reward === null ? 'reward unknown' : `${b.reward} ${cur(b.currency)}`}`;
 }
 
 /** ISO → value for <input type="datetime-local"> in your local time. */
@@ -164,19 +189,21 @@ const EVENT_KINDS: { id: OwnItemTypes['events']['kind']; label: string }[] = [
   { id: 'endgame', label: 'Endgame' },
   { id: 'bonus', label: 'Double drops / bonus' },
 ];
-const BACKLOG_CATEGORIES = ['story', 'side-quests', 'exploration', 'modes', 'achievements'];
 
 interface FormProps {
   game: GameContract;
-  kind: OwnKind;
+  kind: Exclude<OwnKind, 'backlog'>;
   row: MergedRow<AnyItem> | null;
   onCancel: () => void;
-  onSave: (id: string, fields: Partial<AnyItem>, mine: boolean) => void;
+  /** `cleared`: fields you emptied, removed from what you saved before. */
+  onSave: (id: string, fields: Partial<AnyItem>, mine: boolean, cleared: string[]) => void;
 }
 
 function ItemForm({ game, kind, row, onCancel, onSave }: FormProps) {
   const uid = useId();
-  const item = (row?.item ?? {}) as Partial<OwnItemTypes['events'] & OwnItemTypes['banners'] & OwnItemTypes['backlog']>;
+  const saved = useGameData(game.id).ownItems[kind];
+  const own = row ? saved[row.item.id] : undefined;
+  const item = (row?.item ?? {}) as Partial<OwnItemTypes['events'] & OwnItemTypes['banners']>;
   const premium = game.currencies.find((c) => c.perPull)?.id ?? game.currencies[0]?.id ?? '';
   const [title, setTitle] = useState(item.title ?? '');
   const [start, setStart] = useState(toLocalInput(item.start));
@@ -187,8 +214,6 @@ function ItemForm({ game, kind, row, onCancel, onSave }: FormProps) {
   const [loginDays, setLoginDays] = useState(item.loginDays ? String(item.loginDays) : '');
   const [bannerType, setBannerType] = useState(item.type ?? game.bannerTypes[0]?.id ?? '');
   const [featured, setFeatured] = useState((item.featured ?? []).join(', '));
-  const [category, setCategory] = useState(item.category ?? BACKLOG_CATEGORIES[0] ?? 'story');
-  const [total, setTotal] = useState(item.total ? String(item.total) : '');
   const [error, setError] = useState('');
   const noun = NOUN[kind].one;
   const isMine = !row || row.origin === 'mine' || row.origin === 'example';
@@ -200,39 +225,36 @@ function ItemForm({ game, kind, row, onCancel, onSave }: FormProps) {
     const rewardNum = reward.trim() === '' ? null : Number(reward);
     if (rewardNum !== null && (!Number.isFinite(rewardNum) || rewardNum < 0)) return setError('The reward must be a number (or empty if you don’t know it).');
     let fields: Partial<AnyItem>;
-    if (kind === 'backlog') {
-      const t = Number(total);
-      if (!Number.isInteger(t) || t < 1) return setError('How many steps it has must be a whole number of 1 or more.');
-      fields = { title: title.trim(), category, total: t, reward: rewardNum, currency } satisfies Partial<OwnItemTypes['backlog']>;
+    const cleared: string[] = [];
+    const s0 = fromLocalInput(start);
+    const e0 = fromLocalInput(end);
+    if (!s0 || !e0) return setError('Set when it starts and ends.');
+    if (Date.parse(e0) <= Date.parse(s0)) return setError('It has to end after it starts.');
+    if (kind === 'events') {
+      const days = loginDays.trim() === '' ? undefined : Number(loginDays);
+      if (days !== undefined && (!Number.isInteger(days) || days < 1)) return setError('Login days must be a whole number.');
+      fields = { title: title.trim(), kind: eventKind, start: s0, end: e0, reward: rewardNum, currency, ...(days ? { loginDays: days } : {}) } satisfies Partial<OwnItemTypes['events']>;
+      // An emptied login days field takes away a number you saved before.
+      if (days === undefined) cleared.push('loginDays');
     } else {
-      const s0 = fromLocalInput(start);
-      const e0 = fromLocalInput(end);
-      if (!s0 || !e0) return setError('Set when it starts and ends.');
-      if (Date.parse(e0) <= Date.parse(s0)) return setError('It has to end after it starts.');
-      if (kind === 'events') {
-        const days = loginDays.trim() === '' ? undefined : Number(loginDays);
-        if (days !== undefined && (!Number.isInteger(days) || days < 1)) return setError('Login days must be a whole number.');
-        fields = { title: title.trim(), kind: eventKind, start: s0, end: e0, reward: rewardNum, currency, ...(days ? { loginDays: days } : {}) } satisfies Partial<OwnItemTypes['events']>;
-      } else {
-        fields = {
-          title: title.trim(),
-          type: bannerType,
-          start: s0,
-          end: e0,
-          featured: featured
-            .split(',')
-            .map((x) => x.trim())
-            .filter(Boolean),
-        } satisfies Partial<OwnItemTypes['banners']>;
-      }
+      fields = {
+        title: title.trim(),
+        type: bannerType,
+        start: s0,
+        end: e0,
+        featured: featured
+          .split(',')
+          .map((x) => x.trim())
+          .filter(Boolean),
+      } satisfies Partial<OwnItemTypes['banners']>;
     }
     if (row && !isMine) {
       // A built-in item: keep only what you actually changed.
       const base = row.item as unknown as Record<string, unknown>;
       fields = Object.fromEntries(Object.entries(fields).filter(([k, v]) => JSON.stringify(base[k]) !== JSON.stringify(v))) as Partial<AnyItem>;
-      if (Object.keys(fields).length === 0) return onCancel();
+      if (Object.keys(fields).length === 0 && !cleared.some((k) => k in (own?.fields ?? {}))) return onCancel();
     }
-    onSave(row?.item.id ?? newOwnId(Date.now()), fields, isMine);
+    onSave(row?.item.id ?? newOwnId(Date.now()), fields, isMine, cleared);
   };
 
   return (
@@ -269,43 +291,21 @@ function ItemForm({ game, kind, row, onCancel, onSave }: FormProps) {
             </select>
           </label>
         )}
-        {kind === 'backlog' && (
-          <>
-            <label className={s.field} htmlFor={f('cat')}>
-              Category
-              <select id={f('cat')} className={s.input} value={category} onChange={(e) => setCategory(e.target.value)}>
-                {[...new Set([...BACKLOG_CATEGORIES, category])].map((c) => (
-                  <option key={c} value={c}>
-                    {c}
-                  </option>
-                ))}
-              </select>
-            </label>
-            <label className={s.field} htmlFor={f('total')}>
-              Steps in total
-              <input id={f('total')} className={s.input} inputMode="numeric" value={total} onChange={(e) => setTotal(e.target.value)} />
-            </label>
-          </>
-        )}
-        {kind !== 'backlog' && (
-          <>
-            <label className={s.field} htmlFor={f('start')}>
-              Starts (your time)
-              <input id={f('start')} className={s.input} type="datetime-local" value={start} onChange={(e) => setStart(e.target.value)} />
-            </label>
-            <label className={s.field} htmlFor={f('end')}>
-              Ends (your time)
-              <input id={f('end')} className={s.input} type="datetime-local" value={end} onChange={(e) => setEnd(e.target.value)} />
-            </label>
-          </>
-        )}
+        <label className={s.field} htmlFor={f('start')}>
+          Starts (your time)
+          <input id={f('start')} className={s.input} type="datetime-local" value={start} onChange={(e) => setStart(e.target.value)} />
+        </label>
+        <label className={s.field} htmlFor={f('end')}>
+          Ends (your time)
+          <input id={f('end')} className={s.input} type="datetime-local" value={end} onChange={(e) => setEnd(e.target.value)} />
+        </label>
         {kind === 'banners' && (
           <label className={`${s.field} ${s.wide}`} htmlFor={f('feat')}>
             Featured (names or ids, separated by commas)
             <input id={f('feat')} className={s.input} value={featured} onChange={(e) => setFeatured(e.target.value)} autoComplete="off" />
           </label>
         )}
-        {kind !== 'banners' && (
+        {kind === 'events' && (
           <>
             <label className={s.field} htmlFor={f('reward')}>
               Reward (empty = unknown)
@@ -349,8 +349,12 @@ function ItemForm({ game, kind, row, onCancel, onSave }: FormProps) {
 export function EditLists({ games, initialGame }: { games: GameContract[]; initialGame?: string | undefined }) {
   const [gameId, setGameId] = useState(initialGame && games.some((g) => g.id === initialGame) ? initialGame : (games[0]?.id ?? ''));
   const [kind, setKind] = useState<OwnKind>('events');
+  const showExamples = useExamplesShown();
   const game = games.find((g) => g.id === gameId);
   if (!game) return <p className={s.note}>Switch on a game first.</p>;
+  // Backlog examples come from the game record alone, so they show here as on the Backlog screen.
+  // (Event and banner examples need those screens' own data, so those lists show without examples here.)
+  const examples = kind === 'backlog' && showExamples ? exampleBacklog(game).items : undefined;
   return (
     <div className={s.stack}>
       {games.length > 1 && <Segmented label="Game" options={games.map((g) => ({ id: g.id, label: g.short }))} value={game.id} onChange={setGameId} />}
@@ -364,7 +368,7 @@ export function EditLists({ games, initialGame }: { games: GameContract[]; initi
         value={kind}
         onChange={setKind}
       />
-      <EditMode key={`${game.id}-${kind}`} game={game} kind={kind} />
+      <EditMode key={`${game.id}-${kind}`} game={game} kind={kind} examples={examples} />
     </div>
   );
 }

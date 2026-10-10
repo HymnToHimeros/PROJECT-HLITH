@@ -6,6 +6,7 @@ import { formatDate } from '../../core/time/reset';
 import { ExampleTag, GameTag, NoData, Timer } from '../../core/ui';
 import { cx } from '../../core/ui/cx';
 import { budget, budgetPulls, pullsFor, type Budget, type BudgetInput, type BudgetRow } from '../budget/budget';
+import { pullsOf } from '../backlog/backlog';
 import { Switch } from './shared';
 import p from './pulls.module.css';
 import type { PullsData } from './usePullsData';
@@ -148,15 +149,22 @@ export function Calculator({ game, data, serverId, now, tagged, openModule }: Pr
   if (data.notCounted.includes('Backlog')) {
     rows.push(<Row key="backlog" label="Backlog rewards" sub="Backlog list is still an example, so it isn't counted" value={<NoData dash={false} />} action={{ label: 'Open Backlog', onClick: () => openModule('backlog') }} />);
   } else {
-    for (const c of data.backlogCats) {
+    // Categories that give nothing (a checklist only) get no row: there is nothing to switch.
+    const withRewards = data.backlogCats.filter((c) => c.items.some((v) => v.item.reward !== 0));
+    if (withRewards.length === 0) {
+      rows.push(<Row key="backlog" label="Backlog" sub={data.backlogCats.length ? 'only checklists so far, nothing with a reward' : 'no items yet · add your own in Backlog'} value={<NoData dash={false} />} action={{ label: 'Open Backlog', onClick: () => openModule('backlog') }} />);
+    }
+    for (const c of withRewards) {
       const row = b.rows.find((x) => x.id === `backlog:${c.id}`);
-      const potential = Object.values(c.rewardLeft).reduce((a, v) => a + v, 0);
+      // What it would add if counted: as pulls, with each amount named.
+      const amounts = Object.entries(c.rewardLeft).filter(([, v]) => v > 0);
+      const potential = amounts.length ? `about ${formatNumber(pullsOf(game, c.rewardLeft))} pulls (${amounts.map(([cur, v]) => `${formatNumber(v)} ${name(cur)}`).join(' + ')}) left if you count it` : 'no data yet on what is left';
       rows.push(
         <Row
           key={`backlog:${c.id}`}
           toggle={<Switch checked={c.enabled} onChange={(on) => setBacklogCategory(game.id, c.id, on)} label={`Count Backlog: ${c.label}`} />}
           label={`Backlog · ${c.label}`}
-          sub={c.enabled ? 'One-time rewards still open · switched on in Backlog' : `Switched off · ${formatNumber(potential)} left if you count it`}
+          sub={c.enabled ? 'One-time rewards still open · switched on in Backlog' : `Switched off · ${potential}`}
           value={row ? valueOf(row, asPulls) : c.enabled ? <NoData dash={false} /> : <span className={p.off}>Off</span>}
           small={row?.status === 'counted' ? `${formatNumber(row.amount)} ${name(row.currency)}` : ''}
         />,
