@@ -1,4 +1,4 @@
-import { act, fireEvent, render, screen, waitFor, within } from '@testing-library/react';
+import { act, fireEvent, render, renderHook, screen, waitFor, within } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import type { GameContract } from '../../core/contract';
 import { getPrefs, reloadPrefs, updatePrefs } from '../../core/data/prefs';
@@ -6,7 +6,9 @@ import { addLedgerEntry, addPulls, resetUserData, setRosterEntry } from '../../c
 import type { PanelProps } from '../../core/registry/panels';
 import { ExampleNotice, useSampleShown } from '../../core/ui';
 import AccountPage, { resolveSection, sectionsFor } from './AccountPage';
-import { DEVICE_KEY } from './profile';
+import { DEVICE_KEY, EMPTY_PROFILE, type Profile } from './profile';
+import { useProfile } from './useProfile';
+import { setupSteps, type SetupFacts } from './SetupChecklist';
 
 const game = {
   id: 'aa',
@@ -80,6 +82,17 @@ describe('Account page: section bar', () => {
     expect(resolveSection(undefined, sectionsFor({ isOwner: false, signedIn: false }))).toBe('profile');
   });
 
+  it('fixes the address when the asked-for section falls back to Profile, but waits for the owner check', () => {
+    window.history.replaceState(null, '', '/account/owner');
+    const { rerender } = render(<AccountPage {...props({ section: 'owner', ownerChecked: false })} />);
+    expect(window.location.pathname).toBe('/account/owner');
+    rerender(<AccountPage {...props({ section: 'owner', ownerChecked: true })} />);
+    expect(window.location.pathname).toBe('/account');
+    window.history.replaceState(null, '', '/account/nope');
+    rerender(<AccountPage {...props({ section: 'nope' })} />);
+    expect(window.location.pathname).toBe('/account');
+  });
+
   it('clicking a section asks for its address; the open one is marked', async () => {
     const p = props({ section: 'sync' });
     render(<AccountPage {...p} />);
@@ -124,7 +137,16 @@ describe('Account page: settings sections', () => {
     const list = within(screen.getByLabelText('Setup checklist'));
     expect(list.getByText(/Enter your currency in the Bank log/)).toHaveTextContent('(done)');
     expect(list.getByText(/Choose your server/)).toHaveTextContent('(to do)');
-    expect(list.getByText(/Connect HoYoLAB/)).toHaveTextContent('(to do)');
+    // This test copy has no server, so HoYoLAB and notifications can't be done here: they can be skipped.
+    expect(list.getByText(/Connect HoYoLAB/)).toHaveTextContent('(not possible here)');
+    expect(list.getByText(/Set up notifications/)).toHaveTextContent('(not possible here)');
+    expect(list.getByText('1/7')).toBeInTheDocument();
+    fireEvent.click(list.getByRole('button', { name: 'Skip: Connect HoYoLAB' }));
+    expect(getPrefs().skippedSetup).toEqual(['hoyolab']);
+    expect(list.getByText('2/7 · 1 skipped')).toBeInTheDocument();
+    expect(list.getByText(/Connect HoYoLAB/)).toHaveTextContent('(skipped)');
+    fireEvent.click(list.getByRole('button', { name: 'Undo skip: Connect HoYoLAB' }));
+    expect(getPrefs().skippedSetup).toEqual([]);
     fireEvent.click(list.getByRole('button', { name: 'Open History' }));
     expect(p.open).toHaveBeenCalledWith('pulls', 'history');
     fireEvent.click(list.getByRole('button', { name: 'Choose server' }));
@@ -133,6 +155,19 @@ describe('Account page: settings sections', () => {
     expect(list.getByText(/Choose your server/)).toHaveTextContent('(done)');
     fireEvent.click(screen.getByRole('button', { name: 'Open Calendar' }));
     expect(p.open).toHaveBeenCalledWith('calendar', undefined);
+  });
+
+  it('setup steps: HoYoLAB ticks for any linked account (server or device); notifications only for the calendar feed', () => {
+    const linked = { ...game, accountLinks: [{ provider: 'hoyolab', supports: [], config: { gameBiz: 'x_global' } }] } as unknown as GameContract;
+    const act0 = { games: [linked], open: vi.fn(), goTo: vi.fn() };
+    const facts: SetupFacts = { accounts: [], feed: false, backup: false, server: true };
+    const step = (id: string, f = facts) => setupSteps([linked], {}, {}, f, act0).find((s) => s.id === id);
+    expect(step('hoyolab')?.done).toBe(false);
+    const serverAccount = { id: 's1', label: 'Main', where: 'server' as const, hoyolabId: '1', games: [{ gameId: 'aa' }], autoCheckin: true, autoRedeem: false, hasRedeemLogin: false };
+    expect(step('hoyolab', { ...facts, accounts: [serverAccount] })?.done).toBe(true);
+    expect(step('notify')?.done).toBe(false);
+    expect(step('notify', { ...facts, feed: true })?.done).toBe(true);
+    expect(step('notify', { ...facts, server: false })?.unavailable).toMatch(/server/);
   });
 
   it('Backup: restore checks the file first, then only adds', async () => {
@@ -154,6 +189,10 @@ describe('Account page: settings sections', () => {
     fireEvent.click(screen.getByRole('switch', { name: 'Banners ending' }));
     expect(getPrefs().notify?.items.banners).toBe(false);
     expect(screen.getByText(/needs sign-in/)).toBeInTheDocument();
+    // Can't be sent yet: said plainly, and no button to press that isn't there.
+    expect(screen.getByRole('switch', { name: /preview only/ })).toBeInTheDocument();
+    expect(screen.queryByText(/kept up to date by itself/)).toBeNull();
+    expect(screen.queryByText(/Create my calendar link/)).toBeNull();
   });
 });
 
@@ -198,6 +237,32 @@ describe('Account page: Profile', () => {
     view.unmount();
     render(<AccountPage {...props()} />);
     expect(await screen.findByRole('heading', { name: 'Mira' })).toBeInTheDocument();
+  });
+
+  it('a pinned character you no longer own shows dimmed with ✕ and can be unpinned', async () => {
+    localStorage.setItem(DEVICE_KEY, JSON.stringify({ displayName: 'Mira', pinned: { aa: ['c1'] }, hiddenCards: [], updatedAt: 1 }));
+    act(() => {
+      setRosterEntry('aa', 'c1', { owned: false, wanted: false, dupes: 0 });
+      setRosterEntry('aa', 'c2', { owned: true, wanted: false, dupes: 0 });
+    });
+    render(<AccountPage {...props()} />);
+    fireEvent.click(await screen.findByRole('button', { name: 'Edit profile' }));
+    const pins = within(await screen.findByRole('group', { name: 'Pin AA characters' }));
+    expect(screen.getByText('1 / 6 pinned')).toBeInTheDocument();
+    fireEvent.click(pins.getByRole('button', { name: 'Unpin Ash (not owned)' }));
+    expect(screen.getByText('0 / 6 pinned')).toBeInTheDocument();
+    expect(pins.queryByRole('button', { name: /not owned/ })).toBeNull();
+  });
+
+  it('the profile from before sign-in can be declined, and the device copy is kept', async () => {
+    localStorage.setItem(DEVICE_KEY, JSON.stringify({ displayName: 'Old me', pinned: {}, hiddenCards: [], updatedAt: 1 }));
+    const store = { mode: 'account' as const, load: async () => EMPTY_PROFILE, save: async (x: Profile) => x, imageUrl: () => null };
+    const { result } = renderHook(() => useProfile(store));
+    await waitFor(() => expect(result.current.deviceCopy?.displayName).toBe('Old me'));
+    act(() => result.current.dismissDeviceCopy());
+    expect(result.current.deviceCopy).toBeNull();
+    expect(localStorage.getItem(DEVICE_KEY)).toContain('Old me');
+    expect(renderHook(() => useProfile(store)).result.current.deviceCopy).toBeNull();
   });
 
   it('refuses a file that isn’t a picture or is over 2 MB, in plain words', async () => {

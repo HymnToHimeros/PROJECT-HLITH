@@ -570,6 +570,19 @@
   color: var(--ink-5);
   font-size: 18px;
 }
+.hiddenNote {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--s-2);
+  margin: 0;
+  padding: 8px 14px;
+  border: 1.5px dashed var(--line-strong);
+  border-radius: var(--r-button);
+  background: var(--bg-shell);
+  font-size: 13px;
+  color: var(--ink-3);
+}
 .note {
   font-size: 12px;
   line-height: 1.45;

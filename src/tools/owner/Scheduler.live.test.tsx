@@ -106,5 +106,10 @@ describe('Owner console · Scheduler with the server', () => {
     const saved = calls.updates.find((u) => u.table === 'scheduler_findings');
     expect(saved).toMatchObject({ id: 'f1', patch: { status: 'approved', decided_by: 'owner-1' } });
     expect(screen.getByText('0 new')).toBeInTheDocument();
+    // Changed your mind: back to the inbox, undecided.
+    fireEvent.change(screen.getByLabelText('Status'), { target: { value: 'approved' } });
+    await act(async () => fireEvent.click(screen.getByRole('button', { name: 'Move back to new: Real leak' })));
+    expect(calls.updates).toContainEqual({ table: 'scheduler_findings', patch: { status: 'new', decided_by: null, decided_at: null }, id: 'f1' });
+    expect(screen.getByText('1 new')).toBeInTheDocument();
   });
 });

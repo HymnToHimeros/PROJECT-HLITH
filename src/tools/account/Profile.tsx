@@ -152,7 +152,13 @@ export function ProfileSection({ games, account, open, goSection }: Props) {
       {state.deviceCopy && (
         <div className={p.notice}>
           <p className={p.text}>This device has a profile saved from before you signed in. Your account’s profile is still empty.</p>
-          <Button onClick={() => void state.save(cleanProfile(state.deviceCopy))}>Use the profile from this device</Button>
+          <div className={p.actions}>
+            <Button onClick={() => void state.save(cleanProfile(state.deviceCopy))}>Use the profile from this device</Button>
+            <Button variant="quiet" onClick={state.dismissDeviceCopy}>
+              Keep my account’s profile
+            </Button>
+          </div>
+          <p className={p.muted}>Either way, the copy on this device isn’t deleted.</p>
         </div>
       )}
 
@@ -514,6 +520,18 @@ function ProfileEditor({ games, profile, imageUrl, mode, fallbackName, error, on
           const roster = gameData(g.id).roster;
           const owned = (lists.characters[g.id] ?? []).filter((c) => roster[c.id]?.owned);
           const pinned = draft.pinned[g.id] ?? [];
+          // Pinned earlier but no longer owned (or gone from the list): shown dimmed so they can be unpinned.
+          const stale = pinned.filter((id) => !owned.some((c) => c.id === id));
+          const nameOf = (id: string) => lists.characters[g.id]?.find((c) => c.id === id)?.name ?? id;
+          const staleChips = stale.map((id) => (
+            <button key={id} type="button" className={`${p.pinChip} ${p.pinStale}`} style={vent(g)} onClick={() => setDraft((d) => togglePin(d, g.id, id))} aria-label={`Unpin ${nameOf(id)} (not owned)`}>
+              <span className={p.pinInitials} aria-hidden="true">
+                {initials(nameOf(id))}
+              </span>
+              {nameOf(id)} · not owned
+              <span aria-hidden="true">✕</span>
+            </button>
+          ));
           return (
             <div key={g.id} className={p.group}>
               <div className={p.line}>
@@ -525,12 +543,19 @@ function ProfileEditor({ games, profile, imageUrl, mode, fallbackName, error, on
               {lists.characters[g.id] === undefined ? (
                 <span className={p.muted}>Loading…</span>
               ) : owned.length === 0 ? (
-                <div className={p.missing}>
-                  <span className={p.noData}>No owned characters yet</span>
-                  <Button variant="quiet" onClick={() => open('roster', 'characters')}>
-                    Open Roster
-                  </Button>
-                </div>
+                <>
+                  <div className={p.missing}>
+                    <span className={p.noData}>No owned characters yet</span>
+                    <Button variant="quiet" onClick={() => open('roster', 'characters')}>
+                      Open Roster
+                    </Button>
+                  </div>
+                  {staleChips.length > 0 && (
+                    <div className={p.chips} role="group" aria-label={`Pinned ${g.short} characters you no longer own`}>
+                      {staleChips}
+                    </div>
+                  )}
+                </>
               ) : (
                 <div className={p.chips} role="group" aria-label={`Pin ${g.short} characters`}>
                   {owned.map((c) => {
@@ -552,6 +577,7 @@ function ProfileEditor({ games, profile, imageUrl, mode, fallbackName, error, on
                       </button>
                     );
                   })}
+                  {staleChips}
                 </div>
               )}
             </div>

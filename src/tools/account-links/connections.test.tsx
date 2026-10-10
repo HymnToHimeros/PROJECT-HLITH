@@ -245,6 +245,19 @@ describe('Connected accounts', () => {
     expect(screen.getByText('Your HoYoLAB accounts · 2')).toBeInTheDocument();
     expect(document.body.textContent).not.toContain(TOKEN);
   });
+  it('the example check-in reward uses the game’s own currency', () => {
+    const g = fakeGame({ currencies: [{ id: 'poly', name: 'Polychrome', perPull: 160 }] } as never);
+    render(<LinkAccounts games={[g]} />);
+    expect(screen.getByLabelText('Example accounts')).toHaveTextContent('got 20 × Polychrome');
+    expect(screen.getByLabelText('Example accounts')).not.toHaveTextContent('Stellar Jade');
+  });
+  it('an account covering a switched-off game says so, instead of quietly hiding it', () => {
+    const other = fakeGame({ id: 'bb', short: 'BB', name: 'Game B', accountLinks: [{ provider: 'hoyolab', supports: ['stamina'], config: { gameBiz: 'nap_global' } }] });
+    saveDeviceAccount({ label: 'Main', login: { ltuid_v2: '111111', ltoken_v2: TOKEN }, games: [{ gameId: 'aa' }, { gameId: 'bb' }] });
+    render(<LinkAccounts games={[fakeGame()]} allGames={[fakeGame(), other]} />);
+    const main = screen.getByRole('region', { name: 'HoYoLAB account Main' });
+    expect(main).toHaveTextContent('Also covers Game B, switched off in your games');
+  });
   it('says so when no game has a link', () => {
     render(<LinkAccounts games={[fakeGame({ accountLinks: [] })]} />);
     expect(screen.getByText('No HoYoLAB link for your games')).toBeInTheDocument();

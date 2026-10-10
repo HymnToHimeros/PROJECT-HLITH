@@ -2,12 +2,13 @@ import { createElement, Suspense, useCallback, useEffect, useRef, useState, type
 import type { GameContract, GameId, ModuleId } from '../contract';
 import { updatePrefs, usePrefs } from '../data/prefs';
 import { canSync, syncNow, useSyncStatus, type SyncStatus } from '../data/sync';
-import { defaultLayout, phoneBar, slot, type LayoutState, type Scope } from '../registry/layout';
+import { defaultLayout, hiddenIn, phoneBar, restore, slot, type LayoutState, type Scope } from '../registry/layout';
 import { moduleScreen, MODULES, type ModuleScreenProps } from '../registry/modules';
 import { panel, type PanelAccount, type PanelId, type PanelProps } from '../registry/panels';
 import { useTheme } from '../theme/theme';
 import { formatTime, serverRule } from '../time/reset';
 import { BottomSheet } from '../ui/BottomSheet';
+import { Button } from '../ui/Button';
 import { useSampleShown } from '../ui/sampleMarker';
 import { Segmented } from '../ui/Segmented';
 import { useNow } from '../ui/useNow';
@@ -24,6 +25,8 @@ interface Props {
   account?: PanelAccount | null;
   /** The signed-in account is an owner (checked on the server with public.is_owner()). */
   isOwner?: boolean;
+  /** False while the server is still being asked whether this account is an owner. */
+  ownerChecked?: boolean;
 }
 
 type Sheet = null | 'more' | 'edit' | 'games' | 'assistant';
@@ -42,7 +45,7 @@ const tabInPath = (m: ModuleId, t: string | undefined) => (t && t !== tabsOf(m)?
  * Drawn to docs/design/HLITH App.dc.html: PC sidebar 248 px; phone top bar,
  * bottom bar with the first four modules + More, and a floating ASK button.
  */
-export function Shell({ games: registered, account = null, isOwner = false }: Props) {
+export function Shell({ games: registered, account = null, isOwner = false, ownerChecked = true }: Props) {
   const prefs = usePrefs();
   const sync = useSyncStatus();
   const path = usePath();
@@ -67,10 +70,12 @@ export function Shell({ games: registered, account = null, isOwner = false }: Pr
   // One layout for every game and All games, so the bars mirror each other; modules a game lacks just drop out.
   const layout: LayoutState = prefs.layouts[SHARED] ?? defaultLayout();
   const visible = slot(games, scope, layout);
+  // Hidden modules stay reachable: a Guide or checklist button (or an old link) opens them, with a Restore note.
+  const hiddenHere = hiddenIn(games, scope, layout);
   const remembered = prefs.lastModule[scope];
   const active: ModuleId | undefined = acct
     ? undefined
-    : route.module && visible.includes(route.module)
+    : route.module && (visible.includes(route.module) || hiddenHere.includes(route.module))
       ? route.module
       : remembered && visible.includes(remembered)
         ? remembered
@@ -144,6 +149,7 @@ export function Shell({ games: registered, account = null, isOwner = false }: Pr
     editLayout: () => setSheet('edit'),
     // Shows the Owner console section; every owner write is still checked on the server by public.is_owner().
     isOwner,
+    ownerChecked,
     section: acct?.section ?? undefined,
     detail: acct?.detail ?? undefined,
     goSection: (section, detail) => openAccount(section, detail),
@@ -178,7 +184,7 @@ export function Shell({ games: registered, account = null, isOwner = false }: Pr
           {labelOf(sc)}
         </button>
       ))}
-      <button type="button" className={s.addBtn} aria-label="Add or remove games" title="Add a game" onClick={() => setSheet('games')}>
+      <button type="button" className={s.addBtn} aria-label="Choose which games show" title="Choose which games show" onClick={() => setSheet('games')}>
         +
       </button>
     </div>
@@ -296,6 +302,14 @@ export function Shell({ games: registered, account = null, isOwner = false }: Pr
               )}
             </div>
             <div className={s.content}>
+              {active && hiddenHere.includes(active) && (
+                <p className={s.hiddenNote} role="status">
+                  <span className={s.grow}>{MODULES[active].label} is hidden in your layout, so it isn’t in the menu.</span>
+                  <Button variant="quiet" onClick={() => setLayout(restore(layout, active))}>
+                    Restore {MODULES[active].label}
+                  </Button>
+                </p>
+              )}
               {moduleDef?.tabs && (
                 <Segmented
                   label={moduleDef.label}
@@ -381,10 +395,10 @@ export function Shell({ games: registered, account = null, isOwner = false }: Pr
         <EditLayout games={games} scope={scope} layout={layout} onChange={setLayout} onDone={close} scopeName={scopeName} />
       </BottomSheet>
 
-      <BottomSheet open={sheet === 'games'} title="Add a game" onClose={close} placement="center" closeButton>
+      <BottomSheet open={sheet === 'games'} title="Choose which games show" onClose={close} placement="center" closeButton>
         <p className={s.sheetText}>
-          A game is one record: name, vent colour, icon, currencies, reset times and the modules it supports. The shell stays the same. Turning a game off
-          never deletes its data.
+          Switch on the games you play. Switched-off games leave the switcher and the All games view, but everything you saved for them is kept and
+          comes back when you switch them on again.
         </p>
         {registered.map((g) => {
           const on = chosen.includes(g.id);
@@ -396,7 +410,7 @@ export function Shell({ games: registered, account = null, isOwner = false }: Pr
               </span>
               <span className={s.grow}>
                 <span className={s.gameName}>{g.name}</span>
-                <span className={s.gameMeta}>{on ? 'In your switcher' : 'not added yet'}</span>
+                <span className={s.gameMeta}>{on ? 'Shown' : 'Switched off'}</span>
               </span>
               <label className={s.switchLabel}>
                 <input
@@ -418,7 +432,7 @@ export function Shell({ games: registered, account = null, isOwner = false }: Pr
             </div>
           );
         })}
-        <p className={s.note}>More games arrive as their records are added. Nothing else changes.</p>
+        <p className={s.note}>More games will appear here when HLITH supports them.</p>
       </BottomSheet>
 
       <BottomSheet open={sheet === 'assistant'} title="Assistant" onClose={close} side>
