@@ -23,7 +23,9 @@ export function BannerCard({ kind, title, ends, art, tag, unverified }: Props) {
           {kind}
           {tag && <GameTag {...tag} />}
         </span>
-        <span className={s.bannerTitle}>{title}</span>
+        <span className={s.bannerTitle} title={title}>
+          {title}
+        </span>
         {unverified ? <UnverifiedTag source={unverified.source} /> : <Timer to={ends} deadline prefix="ends in" />}
       </div>
     </div>

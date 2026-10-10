@@ -294,10 +294,12 @@
   display: flex;
   gap: var(--s-3);
   overflow: hidden;
-  min-height: 76px;
+  /* Every card the same height, so every art box is the same size and crops the same way. */
+  height: 104px;
 }
 .bannerArt {
-  width: 72px;
+  width: 78px;
+  height: 100%;
   flex: none;
   background: repeating-linear-gradient(135deg, var(--line-subtle) 0 6px, var(--hatch) 6px 12px);
   border-right: 3px solid var(--vent);
@@ -312,6 +314,8 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+  /* Portraits keep faces near the top. */
+  object-position: center 20%;
 }
 .leak {
   border-style: dashed;
@@ -339,6 +343,12 @@
 .bannerTitle {
   font-weight: 700;
   font-size: 16px;
+  line-height: 1.25;
+  /* At most two lines; the full title is in the tooltip. */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 /* ── Event row ── */
