@@ -33,6 +33,13 @@ Resume with: "continue from PROGRESS.md". Newest entry on top. Older entries:
   ones, Ethereal Dune and Amber Mirage, each from the owner's palette with its own background art and emblem
   (`src/core/theme/tokens-themes.css`, `ThemeArt.tsx`, `themes.ts`). Same contrast tests as the first six
   (tests/themes.test.ts) and the theme accessibility browser test; the six existing themes look the same.
+- 2026-10-10 · **FRAME: live banner art the same size; HoYoLAB ticks dailies** (branch `frame/owner-jobs-1`, owner jobs T16, T22).
+  Today's live banners: every card is the same height, so every art box is the same
+  size and crops the same way (titles stop at two lines). Each live stamina read now
+  ticks what HoYoLAB proves (`src/tools/today/autoTick.ts`): stamina lower than the
+  last read counted forward = spent ("Spend …" ticked, only when the last read was the
+  same game day); daily activity full = the daily income row (Daily Training / Daily
+  Engagement) ticked. Ticked rows say "ticked from HoYoLAB"; untick and it stays unticked.
 - 2026-10-10 · **LOGIC-CORE: HSR teams built around real damage dealers (T19)** (branch `logic-core/hsr-real-teams`).
   Cause: the check let any Hunt/Erudition character be a team's centre, and the game's
   team for March 7th (Hunt) was imported with her first, though the game builds it
