@@ -74,26 +74,18 @@ export function bestFor(dd: string, pool: string[], lib: Library, account: Accou
   return found;
 }
 
-/**
- * A big pool is cut to the partners worth trying: the PAIR_LIMIT best by count
- * beside the damage dealer, plus the SUSTAIN_LIMIT best who bring sustain (so
- * the best team can always have one).
- */
-const SUSTAIN_LIMIT = 3;
+/** A big pool is cut to the PAIR_LIMIT partners with the best count beside the damage dealer. */
 function shortlist(dd: string, partners: string[], lib: Library, account: Account): string[] {
   if (partners.length <= PAIR_LIMIT) return partners;
-  const solo = check([dd], lib, account, dd);
-  const alone = solo.rated && solo.best.sustain;
-  const pairs = partners
+  return partners
     .map((p) => {
       const out = check([dd, p], lib, account, dd);
       return { p, r: out.rated ? out.best : undefined };
     })
     .filter((x): x is { p: string; r: TeamResult } => !!x.r)
-    .sort((a, b) => b.r.count - a.r.count || b.r.support - a.r.support || b.r.chains - a.r.chains);
-  const top = pairs.slice(0, PAIR_LIMIT).map((x) => x.p);
-  const sustain = alone ? [] : pairs.filter((x) => x.r.sustain && !top.includes(x.p)).slice(0, SUSTAIN_LIMIT).map((x) => x.p);
-  return [...top, ...sustain];
+    .sort((a, b) => b.r.count - a.r.count || b.r.support - a.r.support || b.r.chains - a.r.chains)
+    .slice(0, PAIR_LIMIT)
+    .map((x) => x.p);
 }
 
 function findBest(dd: string, pool: string[], lib: Library, account: Account, also: string[] = []): TeamResult | undefined {
@@ -134,7 +126,7 @@ export function summary(r: TeamResult): string {
   const n = (kind: Line['kind']) => r.lines.filter((l) => l.kind === kind).length;
   const parts = [`${n('buff')} buffs reach the damage dealer`, `${n('switched-on')} of their abilities switched on`, `${n('chain')} chains`];
   const minus = n('off') + n('duplicate') + n('weak-fit');
-  return `${parts.join(', ')}${minus ? `, −${minus} (off, duplicates, weak fits)` : ''}${r.sustain ? '' : '; no sustain (no healer or shield)'}`;
+  return `${parts.join(', ')}${minus ? `, −${minus} (off, duplicates, weak fits)` : ''}`;
 }
 
 const teamWords = (r: TeamResult, lib: Library) => {
@@ -162,7 +154,6 @@ export function verdict(members: string[], a: TeamAccount, lib: Library = librar
   const top = best && compare(best, mine) > 0 ? best : mine;
   if (top.count <= 0) return { rated: false, why: `No team the check can find connects for ${name(mine.dd)} yet (best count ${top.count}).` };
   const percent = Math.max(0, Math.round((mine.count / top.count) * 100));
-  if (!mine.sustain) notes.push('No sustain: nobody in this team heals or shields, and no Preservation or Abundance character.');
   if (percent >= 100) notes.push(`100% means the check knows no better team for ${name(mine.dd)} from your characters.`);
   else notes.push(`Best for ${name(mine.dd)} from your characters: ${teamWords(top, lib)} counts ${top.count}.`);
   const every = bestFor(mine.dd, readable(lib, a), lib, account);
@@ -174,7 +165,7 @@ export function verdict(members: string[], a: TeamAccount, lib: Library = librar
   return {
     rated: true,
     percent,
-    label: mine.sustain ? label : `${label} · no sustain`,
+    label,
     count: mine.count,
     best: top.count,
     bestMembers: top.members,

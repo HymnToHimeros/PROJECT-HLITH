@@ -31,14 +31,13 @@ team size and order, and the owner's ZZZ method's own counting.
    fit (−1).
 6. **The Trailblazer is one character**: at most one Trailblazer form in a
    team (Line-ups, Who fits, best teams).
-7. **Sustain**: a team without a healer, shield, Preservation or Abundance
-   character says "no sustain" next to its label.
+7. ~~Sustain label~~: withdrawn by the owner's ruling (decision 32).
 8. **Each teammate counts each stat once** (theory Part B step 4). Readers
    cut kits differently (one sentence or three); counting stats, not
    sentences, makes the count the same either way. A stat limited to one
    damage kind is its own stat.
-9. **Sustain first when comparing teams**; partners are shortlisted as the 10
-   best by count plus the 3 best who bring sustain.
+9. ~~Sustain first when comparing teams~~: withdrawn (decision 32). Partners are shortlisted as the 10 best
+   by count.
 10. **Acheron's "The Abyss" has two tiers**, one per other Nihility, as two
     entries (her Eidolon 2 makes the full tier need only one).
 11. **Best-team answers are kept** while the roster and levels stay the same
@@ -139,4 +138,9 @@ team size and order, and the owner's ZZZ method's own counting.
     patches wrong logic: unedited teams stay the game's own (decision 30). Example: the game's page for Phainon
     doesn't list Robin • Summeretto; with her added to slot 3 the card fills Phainon, Cerydra, Robin • Summeretto,
     Dan Heng • Permansor Terrae. ZZZ's cards read edits the same way (mirror rule).
+32. **A team does not need a healer or shield (owner's ruling 2026-10-10).** The owner, word for word: "what
+    the fuck is up with the every team needs a sustain or healer which isnt true at all either". Decisions 7
+    and 9 are withdrawn: no "no sustain" label or note, no penalty, and sustain is no tiebreak anywhere (best
+    team, Line-ups, Who fits, recommended teams). Teams compare by count, then team support, then chains.
+    Healing and shields still count as team support, as before. Mirror rule: ZZZ never had a sustain rule.
 

@@ -33,7 +33,7 @@ dealer. A higher count means more connects, not more damage.
 | Events | Quick Assist, Chain Attack, Ultimate, Ether Veil | Follow-Up ATK, summon/memosprite attack, debuff, DoT, HP loss, Elation Skill, extra turn |
 | Upgrades | Mindscape 1–6, Agent Potential | **Eidolon 1–6**, the **Enhanced** kit (Traces count as unlocked) |
 | Weak fit | only for Rupture, Armorer, Anomaly | for **every** damage dealer: four slots, each must bring something |
-| Extra | | **Sustain check**: a team with no healer or shield says so |
+| Extra | | ~~Sustain check~~ withdrawn: a team does not need a healer or shield (decision 32) |
 
 ## Part A: reading one character (the rules every reader follows)
 
@@ -119,11 +119,8 @@ dealer. A higher count means more connects, not more damage.
    and weak fit. Team support (healing, shields, cleanse, energy, Skill Points
    for a carry who doesn't need them, enemy delay, taunt, revive) only breaks
    ties.
-10. **Sustain check**: a Preservation or Abundance member, or an entry that is
-    on and heals or shields allies. Without one the label says "no sustain".
-    Not in the count, but when teams are compared (best team, Line-ups,
-    recommended teams) **a team with sustain always beats one without**: an
-    HSR team that can't heal or shield doesn't last, whatever it counts.
+10. ~~Sustain check~~: withdrawn by the owner (decision 32). A team does not need a healer or shield; teams
+    are compared by count, then team support, then chains.
 
 ## Synergy %, Line-ups, Who fits, If you pull
 
@@ -133,8 +130,7 @@ Exactly as in ZZZ, with teams of four:
   same damage dealer from your characters × 100. Labels: 85%+ Excellent, 65–84
   Good, 45–64 Partly, under 45 Weak, fewer than four members Incomplete.
 - **Line-ups**: your best teams with no character twice (a big roster: the 10
-  best partners by pair count, plus the 3 best who bring sustain, then every
-  team of four from them).
+  best partners by pair count, then every team of four from them).
 - **Who fits**: everyone whose kit really connects with the team, saying how.
 - **If you pull…**: as a damage dealer and as a teammate, the better of the two.
 - **Recommended teams**: the game's own recommended teams, each built around
