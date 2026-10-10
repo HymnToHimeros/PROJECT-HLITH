@@ -19,6 +19,8 @@ export interface Prefs {
   games: GameId[] | null;
   layouts: Record<Scope, LayoutState>;
   servers: Record<GameId, string>;
+  /** Your main character per game (`GameContract.protagonist` option id), e.g. HSR: 'caelus'. Missing = not picked. */
+  protagonists?: Record<GameId, string>;
   lastModule: Record<Scope, ModuleId>;
   /** Account → Theme (one of THEME_IDS in theme/themes.ts). Missing or unknown = dark (Glacier). */
   theme?: Theme;
