@@ -2,11 +2,12 @@
  * Honkai: Star Rail. Numbers here are checked against the sources listed at the
  * bottom; anything not confirmed stays null and shows "No data yet".
  */
-import type { BacklogItem, Banner, Character, GameContract, GameEvent, Kit, Material, SampleArt, TeamPreset, Version } from '../../core/contract';
+import type { BacklogItem, Banner, Character, GameContract, GameEvent, Kit, RecommendedBuild, Material, SampleArt, TeamPreset, Version } from '../../core/contract';
 import backlog from './data/backlog.json';
 import banners from './data/banners.json';
 import characters from './data/characters.json';
 import events from './data/events.json';
+import builds from './data/builds.json';
 import kits from './data/kits.json';
 import { materialsFor } from './costs';
 import materials from './data/materials.json';
@@ -160,6 +161,8 @@ export const hsr: GameContract = {
     versions: list<Version>(versions),
     // Kit text, group by group (npm run data:hsr-kits). Tags and team scores wait for the owner's OK on docs/logic/hsr-theory.md.
     kits: list<Kit>(kits),
+    // The game's own recommended builds (npm run data:builds).
+    builds: list<RecommendedBuild>(builds),
   },
   accountLinks: [{ provider: 'hoyolab', supports: ['stamina', 'checkin', 'roster', 'endgame'], config: { gameBiz: 'hkrpg_global' } }],
   scan: { screen: 'character', fields: ['level', 'eidolon', 'light-cone', 'relics', 'traces'] },

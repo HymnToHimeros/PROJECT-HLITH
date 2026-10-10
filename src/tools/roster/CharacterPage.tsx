@@ -11,7 +11,7 @@ import { KitCheck } from './KitCheck';
 import r from './roster.module.css';
 import { artOf, CharArt, dupesLabel, elementOf, entryOf, isUpcoming, rarityColor, roleLabel } from './shared';
 import { TeamRow, teamAccount } from './TeamParts';
-import type { RosterData } from './useRosterData';
+import { useBuilds, type RosterData } from './useRosterData';
 
 interface Props {
   data: RosterData;
@@ -233,18 +233,42 @@ export function CharacterPage({ data, character: c, several, onBack, openPulls, 
           </summary>
           <div className={r.foldBody}>
             <section className={r.card} aria-label="Recommended build">
-              {/* ROSTER-LOGIC fills recommended gear, weapon and stats from the build guides. */}
-              {[`${game.terms.gear} sets`, game.terms.weapon, 'Main stats', `${game.terms.skill}: level first`].map((label) => (
-                <div key={label} className={r.lineRow}>
-                  <span className={r.lineLabel}>{label}</span>
-                  <NoData dash={false} />
-                </div>
-              ))}
+              <RecommendedBuildRows data={data} character={c} />
             </section>
           </div>
         </details>
       </div>
     </article>
+  );
+}
+
+/** The recommended build (game.data.builds): gear sets, weapon, main and sub stats, skills first, with its source. */
+function RecommendedBuildRows({ data, character: c }: { data: RosterData; character: Character }) {
+  const { game } = data;
+  const builds = useBuilds(game);
+  const b = builds?.find((x) => x.characterId === c.id);
+  const row = (label: string, value: string | null) => (
+    <div key={label} className={r.lineRow}>
+      <span className={r.lineLabel}>{label}</span>
+      {value ? <span className={r.buildValue}>{value}</span> : <NoData dash={false} />}
+    </div>
+  );
+  if (builds === null) return <p className={r.muted}>Loading…</p>;
+  if (!b)
+    return (
+      <>
+        {[`${game.terms.gear} sets`, game.terms.weapon, 'Main stats', `${game.terms.skill}: level first`].map((label) => row(label, null))}
+      </>
+    );
+  return (
+    <>
+      {b.sets.map((s) => row(`${game.terms.gear} · ${s.pieces} pieces`, s.options.length ? s.options.join(' or ') : null))}
+      {row(game.terms.weapon, b.weapons.length ? b.weapons.join(', then ') : null)}
+      {Object.entries(b.mainStats).map(([slot, stats]) => row(`Main stat · ${slot}`, stats.join(' or ')))}
+      {row('Sub stats', b.subStats.length ? b.subStats.join(', ') : null)}
+      {row(`${game.terms.skill}: level first`, b.skillsFirst.length ? b.skillsFirst.map((tier) => tier.join(' and ')).join(', then ') : null)}
+      <span className={r.muted}>Source: {b.source}.</span>
+    </>
   );
 }
 

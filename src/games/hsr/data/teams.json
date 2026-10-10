@@ -1,1 +1,3504 @@
-[]
+[
+ {
+  "id": "game-1001-1",
+  "name": "March 7th team",
+  "slots": [
+   {
+    "characters": [
+     "1001"
+    ]
+   },
+   {
+    "characters": [
+     "1408"
+    ]
+   },
+   {
+    "characters": [
+     "1412",
+     "1313",
+     "1403",
+     "1309",
+     "1303"
+    ]
+   },
+   {
+    "characters": [
+     "1313",
+     "1403",
+     "1309",
+     "1303"
+    ]
+   }
+  ],
+  "source": "the game's own recommended team (nanoka.cc)"
+ },
+ {
+  "id": "game-1002-1",
+  "name": "Dan Heng team",
+  "slots": [
+   {
+    "characters": [
+     "1002"
+    ]
+   },
+   {
+    "characters": [
+     "1313",
+     "1403",
+     "8007"
+    ]
+   },
+   {
+    "characters": [
+     "1403",
+     "1309",
+     "8007",
+     "1306"
+    ]
+   },
+   {
+    "characters": [
+     "1409",
+     "1414",
+     "1222",
+     "1304",
+     "1217",
+     "1208",
+     "1203",
+     "1301"
+    ]
+   }
+  ],
+  "source": "the game's own recommended team (nanoka.cc)"
+ },
+ {
+  "id": "game-1003-1",
+  "name": "Himeko team",
+  "slots": [
+   {
+    "characters": [
+     "1003"
+    ]
+   },
+   {
+    "characters": [
+     "1403",
+     "1309"
+    ]
+   },
+   {
+    "characters": [
+     "1013"
+    ]
+   },
+   {
+    "characters": [
+     "1409",
+     "1414",
+     "1222",
+     "1304",
+     "1217",
+     "1208",
+     "1203",
+     "1301"
+    ]
+   }
+  ],
+  "source": "the game's own recommended team (nanoka.cc)"
+ },
+ {
+  "id": "game-1004-1",
+  "name": "Welt team",
+  "slots": [
+   {
+    "characters": [
+     "1004"
+    ]
+   },
+   {
+    "characters": [
+     "1510"
+    ]
+   },
+   {
+    "characters": [
+     "1403",
+     "1309",
+     "8007",
+     "1306"
+    ]
+   },
+   {
+    "characters": [
+     "1409",
+     "1414",
+     "1222",
+     "1304",
+     "1217",
+     "1208",
+     "1203",
+     "1301"
+    ]
+   }
+  ],
+  "source": "the game's own recommended team (nanoka.cc)"
+ },
+ {
+  "id": "game-1005-1",
+  "name": "Kafka team",
+  "slots": [
+   {
+    "characters": [
+     "1005"
+    ]
+   },
+   {
+    "characters": [
+     "1410",
+     "1307",
+     "1210"
+    ]
+   },
+   {
+    "characters": [
+     "1307",
+     "1403",
+     "1309",
+     "1303"
+    ]
+   },
+   {
+    "characters": [
+     "1409",
+     "1217",
+     "1222",
+     "1304",
+     "1414",
+     "1208",
+     "1203",
+     "1301"
+    ]
+   }
+  ],
+  "source": "the game's own recommended team (nanoka.cc)"
+ },
+ {
+  "id": "game-1006-1",
+  "name": "Silver Wolf team",
+  "slots": [
+   {
+    "characters": [
+     "1006"
+    ]
+   },
+   {
+    "characters": [
+     "1308"
+    ]
+   },
+   {
+    "characters": [
+     "1406",
+     "1218"
+    ]
+   },
+   {
+    "characters": [
+     "1409",
+     "1304",
+     "1222",
+     "1414",
+     "1217",
+     "1208",
+     "1203",
+     "1301"
+    ]
+   }
+  ],
+  "source": "the game's own recommended team (nanoka.cc)"
+ },
+ {
+  "id": "game-1008-1",
+  "name": "Arlan team",
+  "slots": [
+   {
+    "characters": [
+     "1008"
+    ]
+   },
+   {
+    "characters": [
+     "1313",
+     "1403",
+     "8007"
+    ]
+   },
+   {
+    "characters": [
+     "1403",
+     "1309",
+     "8007",
+     "1306"
+    ]
+   },
+   {
+    "characters": [
+     "1409",
+     "1222",
+     "1217",
+     "1208",
+     "1203",
+     "1301"
+    ]
+   }
+  ],
+  "source": "the game's own recommended team (nanoka.cc)"
+ },
+ {
+  "id": "game-1009-1",
+  "name": "Asta team",
+  "slots": [
+   {
+    "characters": [
+     "1009"
+    ]
+   },
+   {
+    "characters": [
+     "1408"
+    ]
+   },
+   {
+    "characters": [
+     "1412",
+     "1313",
+     "1309",
+     "1403",
+     "1303"
+    ]
+   },
+   {
+    "characters": [
+     "1414",
+     "1217",
+     "1409",
+     "1222",
+     "1304",
+     "1208",
+     "1203",
+     "1301"
+    ]
+   }
+  ],
+  "source": "the game's own recommended team (nanoka.cc)"
+ },
+ {
+  "id": "game-1013-1",
+  "name": "Herta team",
+  "slots": [
+   {
+    "characters": [
+     "1013"
+    ]
+   },
+   {
+    "characters": [
+     "1401"
+    ]
+   },
+   {
+    "characters": [
+     "1403",
+     "1309",
+     "8007",
+     "1306"
+    ]
+   },
+   {
+    "characters": [
+     "1409",
+     "1414",
+     "1222",
+     "1304",
+     "1217",
+     "1208",
+     "1203",
+     "1301"
+    ]
+   }
+  ],
+  "source": "the game's own recommended team (nanoka.cc)"
+ },
+ {
+  "id": "game-1014-1",
+  "name": "Saber team",
+  "slots": [
+   {
+    "characters": [
+     "1014"
+    ]
+   },
+   {
+    "characters": [
+     "1509"
+    ]
+   },
+   {
+    "characters": [
+     "1403",
+     "1313",
+     "1309",
+     "8007",
+     "1306"
+    ]
+   },
+   {
+    "characters": [
+     "1217",
+     "1409",
+     "1414",
+     "1222",
+     "1304",
+     "1208",
+     "1203",
+     "1301"
+    ]
+   }
+  ],
+  "source": "the game's own recommended team (nanoka.cc)"
+ },
+ {
+  "id": "game-1015-1",
+  "name": "Archer team",
+  "slots": [
+   {
+    "characters": [
+     "1015"
+    ]
+   },
+   {
+    "characters": [
+     "1508"
+    ]
+   },
+   {
+    "characters": [
+     "1306",
+     "1313",
+     "1309",
+     "8007"
+    ]
+   },
+   {
+    "characters": [
+     "1409",
+     "1414",
+     "1217",
+     "1222",
+     "1304",
+     "1208",
+     "1203",
+     "1301"
+    ]
+   }
+  ],
+  "source": "the game's own recommended team (nanoka.cc)"
+ },
+ {
+  "id": "game-1101-1",
+  "name": "Bronya team",
+  "slots": [
+   {
+    "characters": [
+     "1101"
+    ]
+   },
+   {
+    "characters": [
+     "1408"
+    ]
+   },
+   {
+    "characters": [
+     "1412",
+     "1313",
+     "1309",
+     "1403",
+     "1303"
+    ]
+   },
+   {
+    "characters": [
+     "1414",
+     "1217",
+     "1409",
+     "1222",
+     "1304",
+     "1208",
+     "1203",
+     "1301"
+    ]
+   }
+  ],
+  "source": "the game's own recommended team (nanoka.cc)"
+ },
+ {
+  "id": "game-1102-1",
+  "name": "Seele team",
+  "slots": [
+   {
+    "characters": [
+     "1102"
+    ]
+   },
+   {
+    "characters": [
+     "1313",
+     "1403",
+     "8007"
+    ]
+   },
+   {
+    "characters": [
+     "1412",
+     "1313",
+     "1403",
+     "1309",
+     "8007",
+     "1306"
+    ]
+   },
+   {
+    "characters": [
+     "1409",
+     "1414",
+     "1222",
+     "1304",
+     "1217",
+     "1208",
+     "1203",
+     "1301"
+    ]
+   }
+  ],
+  "source": "the game's own recommended team (nanoka.cc)"
+ },
+ {
+  "id": "game-1103-1",
+  "name": "Serval team",
+  "slots": [
+   {
+    "characters": [
+     "1103"
+    ]
+   },
+   {
+    "characters": [
+     "1401"
+    ]
+   },
+   {
+    "characters": [
+     "1403",
+     "1309",
+     "8007",
+     "1306"
+    ]
+   },
+   {
+    "characters": [
+     "1409",
+     "1414",
+     "1222",
+     "1304",
+     "1217",
+     "1208",
+     "1203",
+     "1301"
+    ]
+   }
+  ],
+  "source": "the game's own recommended team (nanoka.cc)"
+ },
+ {
+  "id": "game-1104-1",
+  "name": "Gepard team",
+  "slots": [
+   {
+    "characters": [
+     "1104"
+    ]
+   },
+   {
+    "characters": [
+     "1408"
+    ]
+   },
+   {
+    "characters": [
+     "1412",
+     "1313",
+     "1403",
+     "1309",
+     "1303"
+    ]
+   },
+   {
+    "characters": [
+     "1313",
+     "1403",
+     "1309",
+     "1303"
+    ]
+   }
+  ],
+  "source": "the game's own recommended team (nanoka.cc)"
+ },
+ {
+  "id": "game-1105-1",
+  "name": "Natasha team",
+  "slots": [
+   {
+    "characters": [
+     "1105"
+    ]
+   },
+   {
+    "characters": [
+     "1407"
+    ]
+   },
+   {
+    "characters": [
+     "1403",
+     "1406",
+     "8007",
+     "1303",
+     "1006",
+     "1106"
+    ]
+   },
+   {
+    "characters": [
+     "1406",
+     "8007",
+     "1303",
+     "1106"
+    ]
+   }
+  ],
+  "source": "the game's own recommended team (nanoka.cc)"
+ },
+ {
+  "id": "game-1106-1",
+  "name": "Pela team",
+  "slots": [
+   {
+    "characters": [
+     "1106"
+    ]
+   },
+   {
+    "characters": [
+     "1407"
+    ]
+   },
+   {
+    "characters": [
+     "1403",
+     "1413",
+     "1303",
+     "8007"
+    ]
+   },
+   {
+    "characters": [
+     "1409",
+     "1222",
+     "1217",
+     "1203",
+     "1301"
+    ]
+   }
+  ],
+  "source": "the game's own recommended team (nanoka.cc)"
+ },
+ {
+  "id": "game-1107-1",
+  "name": "Clara team",
+  "slots": [
+   {
+    "characters": [
+     "1107"
+    ]
+   },
+   {
+    "characters": [
+     "1313",
+     "1403",
+     "8007"
+    ]
+   },
+   {
+    "characters": [
+     "1403",
+     "1309",
+     "8007",
+     "1306"
+    ]
+   },
+   {
+    "characters": [
+     "1409",
+     "1414",
+     "1222",
+     "1304",
+     "1217",
+     "1208",
+     "1203",
+     "1301"
+    ]
+   }
+  ],
+  "source": "the game's own recommended team (nanoka.cc)"
+ },
+ {
+  "id": "game-1108-1",
+  "name": "Sampo team",
+  "slots": [
+   {
+    "characters": [
+     "1108"
+    ]
+   },
+   {
+    "characters": [
+     "1005"
+    ]
+   },
+   {
+    "characters": [
+     "1410",
+     "1307",
+     "1403",
+     "1309",
+     "1303"
+    ]
+   },
+   {
+    "characters": [
+     "1409",
+     "1217",
+     "1222",
+     "1304",
+     "1414",
+     "1208",
+     "1203",
+     "1301"
+    ]
+   }
+  ],
+  "source": "the game's own recommended team (nanoka.cc)"
+ },
+ {
+  "id": "game-1109-1",
+  "name": "Hook team",
+  "slots": [
+   {
+    "characters": [
+     "1109"
+    ]
+   },
+   {
+    "characters": [
+     "1313",
+     "1403",
+     "8007"
+    ]
+   },
+   {
+    "characters": [
+     "1403",
+     "1309",
+     "8007",
+     "1306"
+    ]
+   },
+   {
+    "characters": [
+     "1409",
+     "1414",
+     "1222",
+     "1304",
+     "1217",
+     "1208",
+     "1203",
+     "1301"
+    ]
+   }
+  ],
+  "source": "the game's own recommended team (nanoka.cc)"
+ },
+ {
+  "id": "game-1110-1",
+  "name": "Lynx team",
+  "slots": [
+   {
+    "characters": [
+     "1110"
+    ]
+   },
+   {
+    "characters": [
+     "1407"
+    ]
+   },
+   {
+    "characters": [
+     "1403",
+     "1406",
+     "8007",
+     "1303",
+     "1006",
+     "1106"
+    ]
+   },
+   {
+    "characters": [
+     "1406",
+     "8007",
+     "1303",
+     "1106"
+    ]
+   }
+  ],
+  "source": "the game's own recommended team (nanoka.cc)"
+ },
+ {
+  "id": "game-1111-1",
+  "name": "Luka team",
+  "slots": [
+   {
+    "characters": [
+     "1111"
+    ]
+   },
+   {
+    "characters": [
+     "1225",
+     "1303",
+     "8005"
+    ]
+   },
+   {
+    "characters": [
+     "1303",
+     "8005"
+    ]
+   },
+   {
+    "characters": [
+     "1222",
+     "1301",
+     "1409"
+    ]
+   }
+  ],
+  "source": "the game's own recommended team (nanoka.cc)"
+ },
+ {
+  "id": "game-1112-1",
+  "name": "Topaz & Numby team",
+  "slots": [
+   {
+    "characters": [
+     "1112"
+    ]
+   },
+   {
+    "characters": [
+     "1220"
+    ]
+   },
+   {
+    "characters": [
+     "1403",
+     "1305",
+     "1224"
+    ]
+   },
+   {
+    "characters": [
+     "1304",
+     "1409",
+     "1222",
+     "1414",
+     "1217",
+     "1208",
+     "1203",
+     "1301"
+    ]
+   }
+  ],
+  "source": "the game's own recommended team (nanoka.cc)"
+ },
+ {
+  "id": "game-1201-1",
+  "name": "Qingque team",
+  "slots": [
+   {
+    "characters": [
+     "1201"
+    ]
+   },
+   {
+    "characters": [
+     "1306",
+     "1313",
+     "1403",
+     "8007"
+    ]
+   },
+   {
+    "characters": [
+     "1313",
+     "1403",
+     "1309",
+     "8007"
+    ]
+   },
+   {
+    "characters": [
+     "1409",
+     "1414",
+     "1222",
+     "1304",
+     "1217",
+     "1208",
+     "1203",
+     "1301"
+    ]
+   }
+  ],
+  "source": "the game's own recommended team (nanoka.cc)"
+ },
+ {
+  "id": "game-1202-1",
+  "name": "Tingyun team",
+  "slots": [
+   {
+    "characters": [
+     "1202"
+    ]
+   },
+   {
+    "characters": [
+     "1408"
+    ]
+   },
+   {
+    "characters": [
+     "1412",
+     "1313",
+     "1309",
+     "1403",
+     "1303"
+    ]
+   },
+   {
+    "characters": [
+     "1414",
+     "1217",
+     "1409",
+     "1222",
+     "1304",
+     "1208",
+     "1203",
+     "1301"
+    ]
+   }
+  ],
+  "source": "the game's own recommended team (nanoka.cc)"
+ },
+ {
+  "id": "game-1203-1",
+  "name": "Luocha team",
+  "slots": [
+   {
+    "characters": [
+     "1203"
+    ]
+   },
+   {
+    "characters": [
+     "1407"
+    ]
+   },
+   {
+    "characters": [
+     "1403",
+     "1406",
+     "8007",
+     "1303",
+     "1006",
+     "1106"
+    ]
+   },
+   {
+    "characters": [
+     "1406",
+     "8007",
+     "1303",
+     "1106"
+    ]
+   }
+  ],
+  "source": "the game's own recommended team (nanoka.cc)"
+ },
+ {
+  "id": "game-1204-1",
+  "name": "Jing Yuan team",
+  "slots": [
+   {
+    "characters": [
+     "1204"
+    ]
+   },
+   {
+    "characters": [
+     "1313",
+     "1403",
+     "8007"
+    ]
+   },
+   {
+    "characters": [
+     "1403",
+     "1309",
+     "8007",
+     "1306"
+    ]
+   },
+   {
+    "characters": [
+     "1409",
+     "1414",
+     "1222",
+     "1304",
+     "1217",
+     "1208",
+     "1203",
+     "1301"
+    ]
+   }
+  ],
+  "source": "the game's own recommended team (nanoka.cc)"
+ },
+ {
+  "id": "game-1205-1",
+  "name": "Blade team",
+  "slots": [
+   {
+    "characters": [
+     "1205"
+    ]
+   },
+   {
+    "characters": [
+     "1313",
+     "1403",
+     "8007"
+    ]
+   },
+   {
+    "characters": [
+     "1403",
+     "1309",
+     "8007",
+     "1306"
+    ]
+   },
+   {
+    "characters": [
+     "1409",
+     "1222",
+     "1217",
+     "1208",
+     "1203",
+     "1301"
+    ]
+   }
+  ],
+  "source": "the game's own recommended team (nanoka.cc)"
+ },
+ {
+  "id": "game-1206-1",
+  "name": "Sushang team",
+  "slots": [
+   {
+    "characters": [
+     "1206"
+    ]
+   },
+   {
+    "characters": [
+     "1313",
+     "1403",
+     "8007"
+    ]
+   },
+   {
+    "characters": [
+     "1403",
+     "1309",
+     "8007",
+     "1306"
+    ]
+   },
+   {
+    "characters": [
+     "1409",
+     "1414",
+     "1222",
+     "1304",
+     "1217",
+     "1208",
+     "1203",
+     "1301"
+    ]
+   }
+  ],
+  "source": "the game's own recommended team (nanoka.cc)"
+ },
+ {
+  "id": "game-1207-1",
+  "name": "Yukong team",
+  "slots": [
+   {
+    "characters": [
+     "1207"
+    ]
+   },
+   {
+    "characters": [
+     "1408"
+    ]
+   },
+   {
+    "characters": [
+     "1412",
+     "1313",
+     "1309",
+     "1403",
+     "1303"
+    ]
+   },
+   {
+    "characters": [
+     "1414",
+     "1217",
+     "1409",
+     "1222",
+     "1304",
+     "1208",
+     "1203",
+     "1301"
+    ]
+   }
+  ],
+  "source": "the game's own recommended team (nanoka.cc)"
+ },
+ {
+  "id": "game-1208-1",
+  "name": "Fu Xuan team",
+  "slots": [
+   {
+    "characters": [
+     "1208"
+    ]
+   },
+   {
+    "characters": [
+     "1408"
+    ]
+   },
+   {
+    "characters": [
+     "1412",
+     "1313",
+     "1403",
+     "1309",
+     "1303"
+    ]
+   },
+   {
+    "characters": [
+     "1313",
+     "1403",
+     "1309",
+     "1303"
+    ]
+   }
+  ],
+  "source": "the game's own recommended team (nanoka.cc)"
+ },
+ {
+  "id": "game-1209-1",
+  "name": "Yanqing team",
+  "slots": [
+   {
+    "characters": [
+     "1209"
+    ]
+   },
+   {
+    "characters": [
+     "1313",
+     "1403",
+     "8007"
+    ]
+   },
+   {
+    "characters": [
+     "1403",
+     "1309",
+     "8007",
+     "1306"
+    ]
+   },
+   {
+    "characters": [
+     "1414",
+     "1304",
+     "1409",
+     "1222",
+     "1217",
+     "1208",
+     "1203",
+     "1301"
+    ]
+   }
+  ],
+  "source": "the game's own recommended team (nanoka.cc)"
+ },
+ {
+  "id": "game-1210-1",
+  "name": "Guinaifen team",
+  "slots": [
+   {
+    "characters": [
+     "1210"
+    ]
+   },
+   {
+    "characters": [
+     "1005"
+    ]
+   },
+   {
+    "characters": [
+     "1410",
+     "1307",
+     "1403",
+     "1309",
+     "1303"
+    ]
+   },
+   {
+    "characters": [
+     "1409",
+     "1217",
+     "1222",
+     "1304",
+     "1414",
+     "1208",
+     "1203",
+     "1301"
+    ]
+   }
+  ],
+  "source": "the game's own recommended team (nanoka.cc)"
+ },
+ {
+  "id": "game-1211-1",
+  "name": "Bailu team",
+  "slots": [
+   {
+    "characters": [
+     "1211"
+    ]
+   },
+   {
+    "characters": [
+     "1407"
+    ]
+   },
+   {
+    "characters": [
+     "1403",
+     "1406",
+     "8007",
+     "1303",
+     "1006",
+     "1106"
+    ]
+   },
+   {
+    "characters": [
+     "1406",
+     "8007",
+     "1303",
+     "1106"
+    ]
+   }
+  ],
+  "source": "the game's own recommended team (nanoka.cc)"
+ },
+ {
+  "id": "game-1212-1",
+  "name": "Jingliu team",
+  "slots": [
+   {
+    "characters": [
+     "1212"
+    ]
+   },
+   {
+    "characters": [
+     "1313",
+     "1403",
+     "8007"
+    ]
+   },
+   {
+    "characters": [
+     "1403",
+     "1309",
+     "8007",
+     "1306"
+    ]
+   },
+   {
+    "characters": [
+     "1409",
+     "1222",
+     "1217",
+     "1208",
+     "1203",
+     "1301"
+    ]
+   }
+  ],
+  "source": "the game's own recommended team (nanoka.cc)"
+ },
+ {
+  "id": "game-1213-1",
+  "name": "Dan Heng • Imbibitor Lunae team",
+  "slots": [
+   {
+    "characters": [
+     "1213"
+    ]
+   },
+   {
+    "characters": [
+     "1306"
+    ]
+   },
+   {
+    "characters": [
+     "1403",
+     "1313",
+     "1309",
+     "8007"
+    ]
+   },
+   {
+    "characters": [
+     "1409",
+     "1414",
+     "1222",
+     "1304",
+     "1217",
+     "1208",
+     "1203",
+     "1301"
+    ]
+   }
+  ],
+  "source": "the game's own recommended team (nanoka.cc)"
+ },
+ {
+  "id": "game-1214-1",
+  "name": "Xueyi team",
+  "slots": [
+   {
+    "characters": [
+     "1214"
+    ]
+   },
+   {
+    "characters": [
+     "1225",
+     "1006",
+     "1303",
+     "8005"
+    ]
+   },
+   {
+    "characters": [
+     "1303",
+     "8005"
+    ]
+   },
+   {
+    "characters": [
+     "1222",
+     "1301",
+     "1409"
+    ]
+   }
+  ],
+  "source": "the game's own recommended team (nanoka.cc)"
+ },
+ {
+  "id": "game-1215-1",
+  "name": "Hanya team",
+  "slots": [
+   {
+    "characters": [
+     "1215"
+    ]
+   },
+   {
+    "characters": [
+     "1408"
+    ]
+   },
+   {
+    "characters": [
+     "1412",
+     "1313",
+     "1309",
+     "1403",
+     "1303"
+    ]
+   },
+   {
+    "characters": [
+     "1414",
+     "1217",
+     "1409",
+     "1222",
+     "1304",
+     "1208",
+     "1203",
+     "1301"
+    ]
+   }
+  ],
+  "source": "the game's own recommended team (nanoka.cc)"
+ },
+ {
+  "id": "game-1217-1",
+  "name": "Huohuo team",
+  "slots": [
+   {
+    "characters": [
+     "1217"
+    ]
+   },
+   {
+    "characters": [
+     "1408"
+    ]
+   },
+   {
+    "characters": [
+     "1412",
+     "1313",
+     "1403",
+     "1309",
+     "1303"
+    ]
+   },
+   {
+    "characters": [
+     "1313",
+     "1403",
+     "1309",
+     "1303"
+    ]
+   }
+  ],
+  "source": "the game's own recommended team (nanoka.cc)"
+ },
+ {
+  "id": "game-1218-1",
+  "name": "Jiaoqiu team",
+  "slots": [
+   {
+    "characters": [
+     "1218"
+    ]
+   },
+   {
+    "characters": [
+     "1308"
+    ]
+   },
+   {
+    "characters": [
+     "1406",
+     "1006",
+     "1106"
+    ]
+   },
+   {
+    "characters": [
+     "1304",
+     "1409",
+     "1222",
+     "1414",
+     "1217",
+     "1208",
+     "1203",
+     "1301"
+    ]
+   }
+  ],
+  "source": "the game's own recommended team (nanoka.cc)"
+ },
+ {
+  "id": "game-1220-1",
+  "name": "Feixiao team",
+  "slots": [
+   {
+    "characters": [
+     "1220"
+    ]
+   },
+   {
+    "characters": [
+     "1406",
+     "1403",
+     "1112",
+     "1305",
+     "1224",
+     "1223"
+    ]
+   },
+   {
+    "characters": [
+     "1403",
+     "1112",
+     "1305",
+     "1224",
+     "1223"
+    ]
+   },
+   {
+    "characters": [
+     "1304",
+     "1409",
+     "1222",
+     "1414",
+     "1217",
+     "1208",
+     "1203",
+     "1301"
+    ]
+   }
+  ],
+  "source": "the game's own recommended team (nanoka.cc)"
+ },
+ {
+  "id": "game-1221-1",
+  "name": "Yunli team",
+  "slots": [
+   {
+    "characters": [
+     "1221"
+    ]
+   },
+   {
+    "characters": [
+     "1313",
+     "1403",
+     "8007"
+    ]
+   },
+   {
+    "characters": [
+     "1403",
+     "1309",
+     "8007",
+     "1306"
+    ]
+   },
+   {
+    "characters": [
+     "1409",
+     "1414",
+     "1222",
+     "1304",
+     "1217",
+     "1208",
+     "1203",
+     "1301"
+    ]
+   }
+  ],
+  "source": "the game's own recommended team (nanoka.cc)"
+ },
+ {
+  "id": "game-1222-1",
+  "name": "Lingsha team",
+  "slots": [
+   {
+    "characters": [
+     "1222"
+    ]
+   },
+   {
+    "characters": [
+     "1310",
+     "1317",
+     "1315"
+    ]
+   },
+   {
+    "characters": [
+     "1321",
+     "1225",
+     "1303",
+     "8005"
+    ]
+   },
+   {
+    "characters": [
+     "1303",
+     "8005"
+    ]
+   }
+  ],
+  "source": "the game's own recommended team (nanoka.cc)"
+ },
+ {
+  "id": "game-1223-1",
+  "name": "Moze team",
+  "slots": [
+   {
+    "characters": [
+     "1223"
+    ]
+   },
+   {
+    "characters": [
+     "1220"
+    ]
+   },
+   {
+    "characters": [
+     "1403",
+     "1112",
+     "1305"
+    ]
+   },
+   {
+    "characters": [
+     "1304",
+     "1409",
+     "1222",
+     "1414",
+     "1217",
+     "1208",
+     "1203",
+     "1301"
+    ]
+   }
+  ],
+  "source": "the game's own recommended team (nanoka.cc)"
+ },
+ {
+  "id": "game-1224-1",
+  "name": "March 7th team",
+  "slots": [
+   {
+    "characters": [
+     "1224"
+    ]
+   },
+   {
+    "characters": [
+     "1220"
+    ]
+   },
+   {
+    "characters": [
+     "1403",
+     "1112",
+     "1305",
+     "1223"
+    ]
+   },
+   {
+    "characters": [
+     "1304",
+     "1409",
+     "1222",
+     "1414",
+     "1217",
+     "1208",
+     "1203",
+     "1301"
+    ]
+   }
+  ],
+  "source": "the game's own recommended team (nanoka.cc)"
+ },
+ {
+  "id": "game-1225-1",
+  "name": "Fugue team",
+  "slots": [
+   {
+    "characters": [
+     "1225"
+    ]
+   },
+   {
+    "characters": [
+     "1310",
+     "1317",
+     "1315"
+    ]
+   },
+   {
+    "characters": [
+     "1321",
+     "1303",
+     "8005"
+    ]
+   },
+   {
+    "characters": [
+     "1222",
+     "1301",
+     "1409"
+    ]
+   }
+  ],
+  "source": "the game's own recommended team (nanoka.cc)"
+ },
+ {
+  "id": "game-1301-1",
+  "name": "Gallagher team",
+  "slots": [
+   {
+    "characters": [
+     "1301"
+    ]
+   },
+   {
+    "characters": [
+     "1310",
+     "1317",
+     "1315"
+    ]
+   },
+   {
+    "characters": [
+     "1225",
+     "1303",
+     "8005"
+    ]
+   },
+   {
+    "characters": [
+     "1303",
+     "8005"
+    ]
+   }
+  ],
+  "source": "the game's own recommended team (nanoka.cc)"
+ },
+ {
+  "id": "game-1302-1",
+  "name": "Argenti team",
+  "slots": [
+   {
+    "characters": [
+     "1302"
+    ]
+   },
+   {
+    "characters": [
+     "1313",
+     "1403",
+     "8007"
+    ]
+   },
+   {
+    "characters": [
+     "1403",
+     "1309",
+     "8007",
+     "1306"
+    ]
+   },
+   {
+    "characters": [
+     "1409",
+     "1414",
+     "1222",
+     "1304",
+     "1217",
+     "1208",
+     "1203",
+     "1301"
+    ]
+   }
+  ],
+  "source": "the game's own recommended team (nanoka.cc)"
+ },
+ {
+  "id": "game-1303-1",
+  "name": "Ruan Mei team",
+  "slots": [
+   {
+    "characters": [
+     "1303"
+    ]
+   },
+   {
+    "characters": [
+     "1310",
+     "1317",
+     "1315"
+    ]
+   },
+   {
+    "characters": [
+     "1225",
+     "8005"
+    ]
+   },
+   {
+    "characters": [
+     "1222",
+     "1301",
+     "1409"
+    ]
+   }
+  ],
+  "source": "the game's own recommended team (nanoka.cc)"
+ },
+ {
+  "id": "game-1304-1",
+  "name": "Aventurine team",
+  "slots": [
+   {
+    "characters": [
+     "1304"
+    ]
+   },
+   {
+    "characters": [
+     "1220"
+    ]
+   },
+   {
+    "characters": [
+     "1112",
+     "1224",
+     "1223",
+     "1305"
+    ]
+   },
+   {
+    "characters": [
+     "1403",
+     "1112",
+     "1224",
+     "1223"
+    ]
+   }
+  ],
+  "source": "the game's own recommended team (nanoka.cc)"
+ },
+ {
+  "id": "game-1305-1",
+  "name": "Dr. Ratio team",
+  "slots": [
+   {
+    "characters": [
+     "1305"
+    ]
+   },
+   {
+    "characters": [
+     "1220"
+    ]
+   },
+   {
+    "characters": [
+     "1403",
+     "1112",
+     "1224",
+     "1223"
+    ]
+   },
+   {
+    "characters": [
+     "1304",
+     "1409",
+     "1222",
+     "1414",
+     "1217",
+     "1208",
+     "1203",
+     "1301"
+    ]
+   }
+  ],
+  "source": "the game's own recommended team (nanoka.cc)"
+ },
+ {
+  "id": "game-1306-1",
+  "name": "Sparkle team",
+  "slots": [
+   {
+    "characters": [
+     "1306"
+    ]
+   },
+   {
+    "characters": [
+     "1015"
+    ]
+   },
+   {
+    "characters": [
+     "1313",
+     "1309",
+     "8007"
+    ]
+   },
+   {
+    "characters": [
+     "1409",
+     "1414",
+     "1217",
+     "1222",
+     "1304",
+     "1208",
+     "1203",
+     "1301"
+    ]
+   }
+  ],
+  "source": "the game's own recommended team (nanoka.cc)"
+ },
+ {
+  "id": "game-1307-1",
+  "name": "Black Swan team",
+  "slots": [
+   {
+    "characters": [
+     "1307"
+    ]
+   },
+   {
+    "characters": [
+     "1005"
+    ]
+   },
+   {
+    "characters": [
+     "1410",
+     "1403",
+     "1309",
+     "1303"
+    ]
+   },
+   {
+    "characters": [
+     "1409",
+     "1217",
+     "1222",
+     "1304",
+     "1414",
+     "1208",
+     "1203",
+     "1301"
+    ]
+   }
+  ],
+  "source": "the game's own recommended team (nanoka.cc)"
+ },
+ {
+  "id": "game-1308-1",
+  "name": "Acheron team",
+  "slots": [
+   {
+    "characters": [
+     "1308"
+    ]
+   },
+   {
+    "characters": [
+     "1406",
+     "1218",
+     "1006",
+     "1106"
+    ]
+   },
+   {
+    "characters": [
+     "1218",
+     "1006",
+     "1106"
+    ]
+   },
+   {
+    "characters": [
+     "1304",
+     "1409",
+     "1222",
+     "1414",
+     "1217",
+     "1208",
+     "1203",
+     "1301"
+    ]
+   }
+  ],
+  "source": "the game's own recommended team (nanoka.cc)"
+ },
+ {
+  "id": "game-1309-1",
+  "name": "Robin team",
+  "slots": [
+   {
+    "characters": [
+     "1309"
+    ]
+   },
+   {
+    "characters": [
+     "1220"
+    ]
+   },
+   {
+    "characters": [
+     "1403",
+     "1112",
+     "1224",
+     "1223"
+    ]
+   },
+   {
+    "characters": [
+     "1304",
+     "1409",
+     "1222",
+     "1414",
+     "1217",
+     "1208",
+     "1203",
+     "1301"
+    ]
+   }
+  ],
+  "source": "the game's own recommended team (nanoka.cc)"
+ },
+ {
+  "id": "game-1310-1",
+  "name": "Firefly team",
+  "slots": [
+   {
+    "characters": [
+     "1310"
+    ]
+   },
+   {
+    "characters": [
+     "1321",
+     "1225",
+     "1303",
+     "8005"
+    ]
+   },
+   {
+    "characters": [
+     "1225",
+     "1303",
+     "8005"
+    ]
+   },
+   {
+    "characters": [
+     "1222",
+     "1301",
+     "1409"
+    ]
+   }
+  ],
+  "source": "the game's own recommended team (nanoka.cc)"
+ },
+ {
+  "id": "game-1312-1",
+  "name": "Misha team",
+  "slots": [
+   {
+    "characters": [
+     "1312"
+    ]
+   },
+   {
+    "characters": [
+     "1313",
+     "1403",
+     "8007"
+    ]
+   },
+   {
+    "characters": [
+     "1403",
+     "1309",
+     "8007",
+     "1306"
+    ]
+   },
+   {
+    "characters": [
+     "1409",
+     "1414",
+     "1222",
+     "1304",
+     "1217",
+     "1208",
+     "1203",
+     "1301"
+    ]
+   }
+  ],
+  "source": "the game's own recommended team (nanoka.cc)"
+ },
+ {
+  "id": "game-1313-1",
+  "name": "Sunday team",
+  "slots": [
+   {
+    "characters": [
+     "1313"
+    ]
+   },
+   {
+    "characters": [
+     "1510"
+    ]
+   },
+   {
+    "characters": [
+     "1507",
+     "1403",
+     "1415",
+     "1306",
+     "1309",
+     "8007",
+     "1406",
+     "1218",
+     "1202",
+     "1106"
+    ]
+   },
+   {
+    "characters": [
+     "1414",
+     "1217",
+     "1409",
+     "1222",
+     "1304",
+     "1208",
+     "1203",
+     "1301"
+    ]
+   }
+  ],
+  "source": "the game's own recommended team (nanoka.cc)"
+ },
+ {
+  "id": "game-1314-1",
+  "name": "Jade team",
+  "slots": [
+   {
+    "characters": [
+     "1314"
+    ]
+   },
+   {
+    "characters": [
+     "1401"
+    ]
+   },
+   {
+    "characters": [
+     "1403",
+     "1309",
+     "8007",
+     "1306"
+    ]
+   },
+   {
+    "characters": [
+     "1409",
+     "1414",
+     "1222",
+     "1304",
+     "1217",
+     "1208",
+     "1203",
+     "1301"
+    ]
+   }
+  ],
+  "source": "the game's own recommended team (nanoka.cc)"
+ },
+ {
+  "id": "game-1315-1",
+  "name": "Boothill team",
+  "slots": [
+   {
+    "characters": [
+     "1315"
+    ]
+   },
+   {
+    "characters": [
+     "1321",
+     "1225",
+     "1303",
+     "8005"
+    ]
+   },
+   {
+    "characters": [
+     "1225",
+     "1303",
+     "8005"
+    ]
+   },
+   {
+    "characters": [
+     "1222",
+     "1301",
+     "1409"
+    ]
+   }
+  ],
+  "source": "the game's own recommended team (nanoka.cc)"
+ },
+ {
+  "id": "game-1317-1",
+  "name": "Rappa team",
+  "slots": [
+   {
+    "characters": [
+     "1317"
+    ]
+   },
+   {
+    "characters": [
+     "1321",
+     "1225",
+     "1303",
+     "8005"
+    ]
+   },
+   {
+    "characters": [
+     "1225",
+     "1303",
+     "8005"
+    ]
+   },
+   {
+    "characters": [
+     "1222",
+     "1301",
+     "1409"
+    ]
+   }
+  ],
+  "source": "the game's own recommended team (nanoka.cc)"
+ },
+ {
+  "id": "game-1321-5",
+  "name": "The Dahlia team 5",
+  "slots": [
+   {
+    "characters": [
+     "1321"
+    ]
+   },
+   {
+    "characters": [
+     "1310",
+     "1317",
+     "1315"
+    ]
+   },
+   {
+    "characters": [
+     "1225",
+     "8005",
+     "1303"
+    ]
+   },
+   {
+    "characters": [
+     "1222",
+     "1301",
+     "1409",
+     "1203"
+    ]
+   }
+  ],
+  "source": "the game's own recommended team (nanoka.cc)"
+ },
+ {
+  "id": "game-1401-1",
+  "name": "The Herta team",
+  "slots": [
+   {
+    "characters": [
+     "1401"
+    ]
+   },
+   {
+    "characters": [
+     "1405",
+     "1314",
+     "1013",
+     "1103"
+    ]
+   },
+   {
+    "characters": [
+     "1403",
+     "1309",
+     "1303"
+    ]
+   },
+   {
+    "characters": [
+     "1409",
+     "1414",
+     "1222",
+     "1304",
+     "1217",
+     "1208",
+     "1203",
+     "1301"
+    ]
+   }
+  ],
+  "source": "the game's own recommended team (nanoka.cc)"
+ },
+ {
+  "id": "game-1402-1",
+  "name": "Aglaea team",
+  "slots": [
+   {
+    "characters": [
+     "1402"
+    ]
+   },
+   {
+    "characters": [
+     "1415",
+     "1313",
+     "1403",
+     "8007"
+    ]
+   },
+   {
+    "characters": [
+     "1313",
+     "1403",
+     "1309",
+     "8007",
+     "1306"
+    ]
+   },
+   {
+    "characters": [
+     "1409",
+     "1217",
+     "1414",
+     "1222",
+     "1304",
+     "1208",
+     "1203",
+     "1301"
+    ]
+   }
+  ],
+  "source": "the game's own recommended team (nanoka.cc)"
+ },
+ {
+  "id": "game-1403-1",
+  "name": "Tribbie team",
+  "slots": [
+   {
+    "characters": [
+     "1403"
+    ]
+   },
+   {
+    "characters": [
+     "1407"
+    ]
+   },
+   {
+    "characters": [
+     "1406",
+     "8007",
+     "1303",
+     "1106"
+    ]
+   },
+   {
+    "characters": [
+     "1409",
+     "1222",
+     "1217",
+     "1203",
+     "1301"
+    ]
+   }
+  ],
+  "source": "the game's own recommended team (nanoka.cc)"
+ },
+ {
+  "id": "game-1404-1",
+  "name": "Mydei team",
+  "slots": [
+   {
+    "characters": [
+     "1404"
+    ]
+   },
+   {
+    "characters": [
+     "1403",
+     "1303"
+    ]
+   },
+   {
+    "characters": [
+     "1415",
+     "1313",
+     "1306",
+     "8007"
+    ]
+   },
+   {
+    "characters": [
+     "1409",
+     "1222",
+     "1217",
+     "1203",
+     "1301"
+    ]
+   }
+  ],
+  "source": "the game's own recommended team (nanoka.cc)"
+ },
+ {
+  "id": "game-1405-1",
+  "name": "Anaxa team",
+  "slots": [
+   {
+    "characters": [
+     "1405"
+    ]
+   },
+   {
+    "characters": [
+     "1401"
+    ]
+   },
+   {
+    "characters": [
+     "1403",
+     "1309",
+     "8007",
+     "1306"
+    ]
+   },
+   {
+    "characters": [
+     "1409",
+     "1414",
+     "1222",
+     "1304",
+     "1217",
+     "1208",
+     "1203",
+     "1301"
+    ]
+   }
+  ],
+  "source": "the game's own recommended team (nanoka.cc)"
+ },
+ {
+  "id": "game-1406-1",
+  "name": "Cipher team",
+  "slots": [
+   {
+    "characters": [
+     "1406"
+    ]
+   },
+   {
+    "characters": [
+     "1407"
+    ]
+   },
+   {
+    "characters": [
+     "1403",
+     "1413",
+     "1303",
+     "8007",
+     "1106"
+    ]
+   },
+   {
+    "characters": [
+     "1409",
+     "1222",
+     "1217",
+     "1203",
+     "1301"
+    ]
+   }
+  ],
+  "source": "the game's own recommended team (nanoka.cc)"
+ },
+ {
+  "id": "game-1407-1",
+  "name": "Castorice team",
+  "slots": [
+   {
+    "characters": [
+     "1407"
+    ]
+   },
+   {
+    "characters": [
+     "1415",
+     "1403",
+     "1406",
+     "1303",
+     "8007",
+     "1218",
+     "1006",
+     "1106"
+    ]
+   },
+   {
+    "characters": [
+     "1413",
+     "1403",
+     "1406",
+     "8007",
+     "1303",
+     "1006",
+     "1106"
+    ]
+   },
+   {
+    "characters": [
+     "1409",
+     "1222",
+     "1217",
+     "1203",
+     "1301"
+    ]
+   }
+  ],
+  "source": "the game's own recommended team (nanoka.cc)"
+ },
+ {
+  "id": "game-1408-1",
+  "name": "Phainon team",
+  "slots": [
+   {
+    "characters": [
+     "1408"
+    ]
+   },
+   {
+    "characters": [
+     "1412",
+     "1313",
+     "1403",
+     "1309",
+     "1303"
+    ]
+   },
+   {
+    "characters": [
+     "1415",
+     "1313",
+     "1403",
+     "1309",
+     "1303"
+    ]
+   },
+   {
+    "characters": [
+     "1414",
+     "1217",
+     "1409",
+     "1222",
+     "1304",
+     "1208",
+     "1203",
+     "1301"
+    ]
+   }
+  ],
+  "source": "the game's own recommended team (nanoka.cc)"
+ },
+ {
+  "id": "game-1409-1",
+  "name": "Hyacine team",
+  "slots": [
+   {
+    "characters": [
+     "1409"
+    ]
+   },
+   {
+    "characters": [
+     "1407"
+    ]
+   },
+   {
+    "characters": [
+     "1403",
+     "1406",
+     "8007",
+     "1303",
+     "1006",
+     "1106"
+    ]
+   },
+   {
+    "characters": [
+     "1406",
+     "8007",
+     "1303",
+     "1106"
+    ]
+   }
+  ],
+  "source": "the game's own recommended team (nanoka.cc)"
+ },
+ {
+  "id": "game-1410-1",
+  "name": "Hysilens team",
+  "slots": [
+   {
+    "characters": [
+     "1410"
+    ]
+   },
+   {
+    "characters": [
+     "1005"
+    ]
+   },
+   {
+    "characters": [
+     "1307",
+     "1403",
+     "1309",
+     "1303"
+    ]
+   },
+   {
+    "characters": [
+     "1409",
+     "1217",
+     "1222",
+     "1304",
+     "1414",
+     "1208",
+     "1203",
+     "1301"
+    ]
+   }
+  ],
+  "source": "the game's own recommended team (nanoka.cc)"
+ },
+ {
+  "id": "game-1412-1",
+  "name": "Cerydra team",
+  "slots": [
+   {
+    "characters": [
+     "1412"
+    ]
+   },
+   {
+    "characters": [
+     "1408",
+     "1405"
+    ]
+   },
+   {
+    "characters": [
+     "1313",
+     "1403",
+     "1309",
+     "1303"
+    ]
+   },
+   {
+    "characters": [
+     "1414",
+     "1217",
+     "1409",
+     "1222",
+     "1304",
+     "1208",
+     "1203",
+     "1301"
+    ]
+   }
+  ],
+  "source": "the game's own recommended team (nanoka.cc)"
+ },
+ {
+  "id": "game-1413-1",
+  "name": "Evernight team",
+  "slots": [
+   {
+    "characters": [
+     "1413"
+    ]
+   },
+   {
+    "characters": [
+     "1407"
+    ]
+   },
+   {
+    "characters": [
+     "1403",
+     "1406",
+     "8007",
+     "1303",
+     "1006",
+     "1106"
+    ]
+   },
+   {
+    "characters": [
+     "1409",
+     "1222",
+     "1217",
+     "1203",
+     "1301"
+    ]
+   }
+  ],
+  "source": "the game's own recommended team (nanoka.cc)"
+ },
+ {
+  "id": "game-1414-1",
+  "name": "Dan Heng • Permansor Terrae team",
+  "slots": [
+   {
+    "characters": [
+     "1414"
+    ]
+   },
+   {
+    "characters": [
+     "1510"
+    ]
+   },
+   {
+    "characters": [
+     "1507",
+     "1403",
+     "1415",
+     "1306",
+     "1313",
+     "1309",
+     "8007",
+     "1406",
+     "1218",
+     "1202",
+     "1106"
+    ]
+   },
+   {
+    "characters": [
+     "1403",
+     "1415",
+     "1306",
+     "1313",
+     "1309",
+     "8007",
+     "1406",
+     "1218",
+     "1202",
+     "1106"
+    ]
+   }
+  ],
+  "source": "the game's own recommended team (nanoka.cc)"
+ },
+ {
+  "id": "game-1415-1",
+  "name": "Cyrene team",
+  "slots": [
+   {
+    "characters": [
+     "1415"
+    ]
+   },
+   {
+    "characters": [
+     "1407"
+    ]
+   },
+   {
+    "characters": [
+     "1413",
+     "1403",
+     "1406",
+     "8007",
+     "1303",
+     "1006",
+     "1106"
+    ]
+   },
+   {
+    "characters": [
+     "1409",
+     "1222",
+     "1217",
+     "1203",
+     "1301"
+    ]
+   }
+  ],
+  "source": "the game's own recommended team (nanoka.cc)"
+ },
+ {
+  "id": "game-1501-1",
+  "name": "Sparxie team",
+  "slots": [
+   {
+    "characters": [
+     "1501"
+    ]
+   },
+   {
+    "characters": [
+     "1502",
+     "1306",
+     "1403",
+     "8007"
+    ]
+   },
+   {
+    "characters": [
+     "1306",
+     "1403",
+     "8007"
+    ]
+   },
+   {
+    "characters": [
+     "1503",
+     "1414",
+     "1409",
+     "1217",
+     "1222",
+     "1304",
+     "1208",
+     "1203",
+     "1301"
+    ]
+   }
+  ],
+  "source": "the game's own recommended team (nanoka.cc)"
+ },
+ {
+  "id": "game-1502-1",
+  "name": "Yao Guang team",
+  "slots": [
+   {
+    "characters": [
+     "1502"
+    ]
+   },
+   {
+    "characters": [
+     "1501"
+    ]
+   },
+   {
+    "characters": [
+     "1306",
+     "1403",
+     "8007"
+    ]
+   },
+   {
+    "characters": [
+     "1503",
+     "1414",
+     "1409",
+     "1217",
+     "1222",
+     "1304",
+     "1208",
+     "1203",
+     "1301"
+    ]
+   }
+  ],
+  "source": "the game's own recommended team (nanoka.cc)"
+ },
+ {
+  "id": "game-1503-1",
+  "name": "Pearl team",
+  "slots": [
+   {
+    "characters": [
+     "1503"
+    ]
+   },
+   {
+    "characters": [
+     "1506"
+    ]
+   },
+   {
+    "characters": [
+     "1502",
+     "8009"
+    ]
+   },
+   {
+    "characters": [
+     "1501",
+     "8009"
+    ]
+   }
+  ],
+  "source": "the game's own recommended team (nanoka.cc)"
+ },
+ {
+  "id": "game-1504-1",
+  "name": "Ashveil team",
+  "slots": [
+   {
+    "characters": [
+     "1504"
+    ]
+   },
+   {
+    "characters": [
+     "1220"
+    ]
+   },
+   {
+    "characters": [
+     "1403",
+     "1415",
+     "1306",
+     "1313",
+     "1309",
+     "8007",
+     "1406",
+     "1218",
+     "1202",
+     "1106"
+    ]
+   },
+   {
+    "characters": [
+     "1414",
+     "1409",
+     "1217",
+     "1222",
+     "1304",
+     "1208",
+     "1203",
+     "1301"
+    ]
+   }
+  ],
+  "source": "the game's own recommended team (nanoka.cc)"
+ },
+ {
+  "id": "game-1505-1",
+  "name": "Evanescia team",
+  "slots": [
+   {
+    "characters": [
+     "1505"
+    ]
+   },
+   {
+    "characters": [
+     "1502",
+     "8009",
+     "1501"
+    ]
+   },
+   {
+    "characters": [
+     "1501",
+     "8009",
+     "1403",
+     "1313",
+     "1415",
+     "1306",
+     "1406",
+     "1218",
+     "1202",
+     "1106"
+    ]
+   },
+   {
+    "characters": [
+     "1503",
+     "1217",
+     "1414",
+     "1409",
+     "1222",
+     "1304",
+     "1208",
+     "1203",
+     "1301"
+    ]
+   }
+  ],
+  "source": "the game's own recommended team (nanoka.cc)"
+ },
+ {
+  "id": "game-1506-1",
+  "name": "Silver Wolf LV.999 team",
+  "slots": [
+   {
+    "characters": [
+     "1506"
+    ]
+   },
+   {
+    "characters": [
+     "1501",
+     "1502"
+    ]
+   },
+   {
+    "characters": [
+     "1502",
+     "8009",
+     "1403",
+     "1415",
+     "1313",
+     "1306",
+     "1406",
+     "1218",
+     "1202",
+     "1106"
+    ]
+   },
+   {
+    "characters": [
+     "1503",
+     "1409",
+     "1414",
+     "1222",
+     "1304",
+     "1217",
+     "1208",
+     "1203",
+     "1301"
+    ]
+   }
+  ],
+  "source": "the game's own recommended team (nanoka.cc)"
+ },
+ {
+  "id": "game-1507-1",
+  "name": "Mortenax Blade team",
+  "slots": [
+   {
+    "characters": [
+     "1507"
+    ]
+   },
+   {
+    "characters": [
+     "1504"
+    ]
+   },
+   {
+    "characters": [
+     "1403",
+     "1306",
+     "1415",
+     "1313",
+     "1309",
+     "8007",
+     "1406",
+     "1218",
+     "1202",
+     "1106"
+    ]
+   },
+   {
+    "characters": [
+     "1409",
+     "1414",
+     "1217",
+     "1222",
+     "1304",
+     "1208",
+     "1203",
+     "1301"
+    ]
+   }
+  ],
+  "source": "the game's own recommended team (nanoka.cc)"
+ },
+ {
+  "id": "game-1508-1",
+  "name": "Rin Tohsaka team",
+  "slots": [
+   {
+    "characters": [
+     "1508"
+    ]
+   },
+   {
+    "characters": [
+     "1015"
+    ]
+   },
+   {
+    "characters": [
+     "1507",
+     "1403",
+     "1415",
+     "1306",
+     "1313",
+     "1309",
+     "8007",
+     "1406",
+     "1218",
+     "1202",
+     "1106"
+    ]
+   },
+   {
+    "characters": [
+     "1217",
+     "1409",
+     "1414",
+     "1222",
+     "1304",
+     "1208",
+     "1203",
+     "1301"
+    ]
+   }
+  ],
+  "source": "the game's own recommended team (nanoka.cc)"
+ },
+ {
+  "id": "game-1509-1",
+  "name": "Gilgamesh team",
+  "slots": [
+   {
+    "characters": [
+     "1509"
+    ]
+   },
+   {
+    "characters": [
+     "1014"
+    ]
+   },
+   {
+    "characters": [
+     "1507",
+     "1403",
+     "1415",
+     "1306",
+     "1313",
+     "1309",
+     "8007",
+     "1406",
+     "1218",
+     "1202",
+     "1106"
+    ]
+   },
+   {
+    "characters": [
+     "1217",
+     "1409",
+     "1414",
+     "1222",
+     "1304",
+     "1208",
+     "1203",
+     "1301"
+    ]
+   }
+  ],
+  "source": "the game's own recommended team (nanoka.cc)"
+ },
+ {
+  "id": "game-1510-1",
+  "name": "Himeko • Nova team",
+  "slots": [
+   {
+    "characters": [
+     "1510"
+    ]
+   },
+   {
+    "characters": [
+     "1507",
+     "1403",
+     "1415",
+     "1306",
+     "1313",
+     "1309",
+     "8007",
+     "1406",
+     "1218",
+     "1202",
+     "1106"
+    ]
+   },
+   {
+    "characters": [
+     "1306",
+     "1415",
+     "1313",
+     "1309",
+     "8007",
+     "1406",
+     "1218",
+     "1202",
+     "1106"
+    ]
+   },
+   {
+    "characters": [
+     "1414"
+    ]
+   }
+  ],
+  "source": "the game's own recommended team (nanoka.cc)"
+ },
+ {
+  "id": "game-1512-1",
+  "name": "Robin • Summeretto team",
+  "slots": [
+   {
+    "characters": [
+     "1512"
+    ]
+   },
+   {
+    "characters": [
+     "1510"
+    ]
+   },
+   {
+    "characters": [
+     "1507",
+     "1403",
+     "1415",
+     "1306",
+     "1313",
+     "1309",
+     "8007",
+     "1406",
+     "1218",
+     "1202"
+    ]
+   },
+   {
+    "characters": [
+     "1414",
+     "1409",
+     "1217",
+     "1222",
+     "1304",
+     "1208",
+     "1203",
+     "1301"
+    ]
+   }
+  ],
+  "source": "the game's own recommended team (nanoka.cc)"
+ },
+ {
+  "id": "game-1513-1",
+  "name": "Aventurine • Waveflair team",
+  "slots": [
+   {
+    "characters": [
+     "1513"
+    ]
+   },
+   {
+    "characters": [
+     "1512",
+     "1403",
+     "1507",
+     "1415",
+     "1306",
+     "1313",
+     "1309",
+     "8007",
+     "1406",
+     "1218",
+     "1202"
+    ]
+   },
+   {
+    "characters": [
+     "1403",
+     "1507",
+     "1415",
+     "1306",
+     "1313",
+     "1309",
+     "8007",
+     "1406",
+     "1218",
+     "1202"
+    ]
+   },
+   {
+    "characters": [
+     "1409",
+     "1217",
+     "1414",
+     "1222",
+     "1304",
+     "1208",
+     "1203",
+     "1301"
+    ]
+   }
+  ],
+  "source": "the game's own recommended team (nanoka.cc)"
+ },
+ {
+  "id": "game-8001-1",
+  "name": "{NICKNAME} team",
+  "slots": [
+   {
+    "characters": [
+     "8001"
+    ]
+   },
+   {
+    "characters": [
+     "1313",
+     "1403"
+    ]
+   },
+   {
+    "characters": [
+     "1403",
+     "1309",
+     "1306",
+     "1303"
+    ]
+   },
+   {
+    "characters": [
+     "1409",
+     "1414",
+     "1222",
+     "1304",
+     "1217",
+     "1208",
+     "1203",
+     "1301"
+    ]
+   }
+  ],
+  "source": "the game's own recommended team (nanoka.cc)"
+ },
+ {
+  "id": "game-8003-1",
+  "name": "{NICKNAME} team",
+  "slots": [
+   {
+    "characters": [
+     "8003"
+    ]
+   },
+   {
+    "characters": [
+     "1408"
+    ]
+   },
+   {
+    "characters": [
+     "1412",
+     "1313",
+     "1403",
+     "1309",
+     "1303"
+    ]
+   },
+   {
+    "characters": [
+     "1313",
+     "1403",
+     "1309",
+     "1303"
+    ]
+   }
+  ],
+  "source": "the game's own recommended team (nanoka.cc)"
+ },
+ {
+  "id": "game-8005-1",
+  "name": "{NICKNAME} team",
+  "slots": [
+   {
+    "characters": [
+     "8005"
+    ]
+   },
+   {
+    "characters": [
+     "1310",
+     "1317",
+     "1315"
+    ]
+   },
+   {
+    "characters": [
+     "1225",
+     "1303"
+    ]
+   },
+   {
+    "characters": [
+     "1222",
+     "1301",
+     "1409"
+    ]
+   }
+  ],
+  "source": "the game's own recommended team (nanoka.cc)"
+ },
+ {
+  "id": "game-8007-1",
+  "name": "{NICKNAME} team",
+  "slots": [
+   {
+    "characters": [
+     "8007"
+    ]
+   },
+   {
+    "characters": [
+     "1407"
+    ]
+   },
+   {
+    "characters": [
+     "1413",
+     "1403",
+     "1303",
+     "1406",
+     "1106"
+    ]
+   },
+   {
+    "characters": [
+     "1409",
+     "1222",
+     "1217",
+     "1203",
+     "1301"
+    ]
+   }
+  ],
+  "source": "the game's own recommended team (nanoka.cc)"
+ },
+ {
+  "id": "game-8009-1",
+  "name": "{NICKNAME} team",
+  "slots": [
+   {
+    "characters": [
+     "8009"
+    ]
+   },
+   {
+    "characters": [
+     "1506",
+     "1502",
+     "1501"
+    ]
+   },
+   {
+    "characters": [
+     "1502",
+     "1501",
+     "1403",
+     "1415",
+     "1313",
+     "1306",
+     "1406",
+     "1218",
+     "1202",
+     "1106"
+    ]
+   },
+   {
+    "characters": [
+     "1503",
+     "1409",
+     "1414",
+     "1222",
+     "1304",
+     "1217",
+     "1208",
+     "1203",
+     "1301"
+    ]
+   }
+  ],
+  "source": "the game's own recommended team (nanoka.cc)"
+ }
+]

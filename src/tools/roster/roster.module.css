@@ -1355,3 +1355,9 @@ button.member:hover .memberArt {
   color: var(--ink-2);
   font-size: 13px;
 }
+
+.buildValue {
+  text-align: right;
+  font-size: 13px;
+  color: var(--ink-1);
+}

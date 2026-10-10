@@ -41,6 +41,13 @@ Resume with: "continue from PROGRESS.md". Newest entry on top. Older entries:
     Agent EXP. Farm and the character page's "Materials to max" now show real
     amounts, with a note saying what they cover. HSR character EXP isn't
     counted yet (no source found that HLITH can read).
+  - Recommended builds: `npm run data:builds` reads the game's own
+    recommendation for every character (ZZZ: Drive Disc sets, main and sub
+    stats, the agent's own W-Engine, which skills to level first; HSR: relic
+    and planar sets, main and sub stats, Light Cones). Shown on the character
+    page (Recommended build) and in Farm (Gear to farm), source named.
+  - HSR recommended teams: the game's own (first team per character, 93),
+    each place with its backups. Their scores wait for the HSR theory OK.
 - 2026-10-10 · **LOGIC-CORE: ZZZ groups B to E, HSR kit text and theory** (branch `logic-core/zzz-groups-d-e`, replaces PR #41).
   - ZZZ group D read (Yixuan, Ju Fufu, Yidhari, Manato, Claret, Astra Yao,
     Yuzuha) and group E (Miyabi, Yanagi, Burnice, Jane, Vivian, Alice, Piper).

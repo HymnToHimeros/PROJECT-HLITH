@@ -16,6 +16,7 @@ import type {
   Material,
   MaterialNeed,
   PullRecord,
+  RecommendedBuild,
   TeamPreset,
   Version,
 } from './entities';
@@ -206,6 +207,8 @@ export interface GameDataLoaders {
   versions: () => Promise<Version[]>;
   /** Override 1: Kit check shows for any game that has this. */
   kits?: () => Promise<Kit[]>;
+  /** Recommended builds (gear, weapon, stats, skills first), source named. */
+  builds?: () => Promise<RecommendedBuild[]>;
 }
 
 /** Game maths. Every member is optional: absent = that feature shows "No data yet". */

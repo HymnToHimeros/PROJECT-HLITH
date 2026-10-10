@@ -171,3 +171,13 @@ Each one can be changed: tell LOGIC-CORE which.
     own text proves their damage is Aftershock DMG.
 50. **Pyrois's Mindscape 6 is hidden in the game data** ("Mindscape Effect
     Hidden"); it is read when the game shows it.
+
+## Recommended builds (step 4)
+51. **Builds are the game's own recommendation** (nanoka.cc's copy of it), the
+    only source that is game data rather than a guide. Guides (Prydwen and
+    the like) can be added later as a second, named source.
+52. **The ZZZ W-Engine shown is the agent's own**: the game files name it after
+    them ("Weapon_S_<agent id>"). Agents without one show "No data yet".
+53. **Build score and saving a scanned build** need a place to save builds,
+    which the app doesn't have yet (FRAME's saved data). Until then the
+    character page keeps saying "No build data yet".
