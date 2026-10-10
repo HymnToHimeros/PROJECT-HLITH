@@ -28,6 +28,11 @@ Resume with: "continue from PROGRESS.md". Newest entry on top. Older entries:
 - CI (`.github/workflows/ci.yml`) runs both on every pull request.
 
 ## Done
+- 2026-10-10 · **Two more chats: MANAGER and ERROR-FIX** (branch `frame/manager-error-fix`).
+  `docs/WORKSTREAMS.md`: rules 7–8, both in Who's who, a routing table (which job goes
+  to which chat). `docs/briefs/MANAGER.md` (the owner's front desk: routes every
+  owner message, keeps `docs/TASKS.md`, reports back) and `docs/briefs/ERROR-FIX.md`
+  (fixes bugs only when a chat asks). `docs/RELEASES.md` updated for five chats.
 - 2026-10-10 · **FRAME: save a build per character** (branch `frame/build-store`).
   Build score on the character page: "Enter build" opens a form for level, weapon
   (picked from the game's list, with level and Superimposition / Phase), every gear
