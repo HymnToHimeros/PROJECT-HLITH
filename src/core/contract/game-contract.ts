@@ -17,6 +17,7 @@ import type {
   MaterialNeed,
   PullRecord,
   RecommendedBuild,
+  Weapon,
   TeamPreset,
   Version,
 } from './entities';
@@ -209,6 +210,8 @@ export interface GameDataLoaders {
   kits?: () => Promise<Kit[]>;
   /** Recommended builds (gear, weapon, stats, skills first), source named. */
   builds?: () => Promise<RecommendedBuild[]>;
+  /** Weapons (Light Cones, W-Engines): names and pictures for weapon banners. */
+  weapons?: () => Promise<Weapon[]>;
 }
 
 /** Game maths. Every member is optional: absent = that feature shows "No data yet". */
@@ -248,8 +251,10 @@ export type TeamVerdict =
       count: number;
       best: number;
       bestMembers: string[];
-      /** The order the score is for, e.g. A > B > C. */
+      /** The order the score is for, e.g. A > B > C; the damage dealer first. */
       order: string[];
+      /** The game's teams have no order (HSR): `order` is only "damage dealer first". */
+      unordered?: boolean;
       reasons: TeamReason[];
       notes: string[];
     }

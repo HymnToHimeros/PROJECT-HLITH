@@ -43,6 +43,10 @@ interface Editing {
  * show example numbers next to an EXAMPLE badge.
  */
 
+/** Recommended teams shown at first, and how many more each "Show more" adds: the rest stay one tap away. */
+const TEAMS_FIRST = 6;
+const TEAMS_MORE = 12;
+
 const firsts = (p: TeamPreset) => p.slots.map((s) => s.characters[0]).filter((x): x is string => Boolean(x));
 
 /** Roster → Teams (design): preset cards with portraits and a score, your own presets, ideas and Kit check. */
@@ -63,7 +67,15 @@ export function Teams({ data, several, onOpen, openCharacters, openAccount, draf
   const anyExample = data.some((d) => d.presets.example && d.presets.list.length > 0);
   const ownsAnyone = data.some((d) => Object.values(d.user.roster).some((e) => e.owned));
   const mine = data.flatMap((d) => d.user.teams.map((t) => ({ d, t })));
-  const recommended = data.flatMap((d) => d.presets.list.map((p, i) => ({ d, p, i })));
+  const [query, setQuery] = useState('');
+  const [shown, setShown] = useState(TEAMS_FIRST);
+  const allRecommended = data.flatMap((d) => d.presets.list.map((p, i) => ({ d, p, i, missing: missingFrom(d, firsts(p)) })));
+  // Ready-to-play teams first, then the fewest missing; the game's own order inside each.
+  const q = query.trim().toLowerCase();
+  const matching = allRecommended
+    .filter(({ d, p }) => !q || p.name.toLowerCase().includes(q) || p.slots.some((sl) => sl.characters.some((id) => (d.byId.get(id)?.name ?? '').toLowerCase().includes(q))))
+    .sort((a, b) => a.missing - b.missing);
+  const recommended = matching.slice(0, shown);
   const first = data[0];
   const word = several ? 'character' : (first?.game.terms.character.toLowerCase() ?? 'character');
   const size = [...new Set(data.map((d) => d.teamSize))].join(' or ');
@@ -90,8 +102,30 @@ export function Teams({ data, several, onOpen, openCharacters, openAccount, draf
             />
           </span>
         </SectionHead>
-        {recommended.length === 0 ? (
+        {allRecommended.length > TEAMS_FIRST && (
+          <div className={r.teamFilter}>
+            <label className={`${r.field} ${r.searchField}`}>
+              <span className={r.fieldLabel}>Find a team</span>
+              <input
+                className={r.input}
+                type="search"
+                value={query}
+                onChange={(e) => {
+                  setQuery(e.target.value);
+                  setShown(TEAMS_FIRST);
+                }}
+                placeholder={`Team or ${word} name`}
+              />
+            </label>
+            <span className={r.muted} aria-live="polite">
+              {q ? `${matching.length} of ${allRecommended.length} teams` : `${allRecommended.length} teams`} · ready to play first
+            </span>
+          </div>
+        )}
+        {allRecommended.length === 0 ? (
           <p className={r.muted}>No recommended teams yet.</p>
+        ) : matching.length === 0 ? (
+          <p className={r.muted}>No recommended team has “{query}” in it.</p>
         ) : (
           <div className={r.teamGrid}>
             {recommended.map(({ d, p, i }) => (
@@ -114,6 +148,11 @@ export function Teams({ data, several, onOpen, openCharacters, openAccount, draf
               />
             ))}
           </div>
+        )}
+        {matching.length > recommended.length && (
+          <Button onClick={() => setShown((n) => n + TEAMS_MORE)}>
+            Show {Math.min(TEAMS_MORE, matching.length - recommended.length)} more ({matching.length - recommended.length} hidden)
+          </Button>
         )}
       </section>
 

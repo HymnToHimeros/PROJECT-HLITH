@@ -202,4 +202,30 @@ describe('Banners screen', () => {
     expect(first.querySelector('img')?.getAttribute('src')).toBe('https://example.test/c2.webp');
     expect(within(first).getByText('SAMPLE ART')).toBeInTheDocument();
   });
+
+  it('weapon banners show each weapon with its picture, and who it is made for with your roster fit', async () => {
+    const game = makeGame([{ id: 'cone', type: 'weapon', title: 'Cone banner', featured: ['w1', 'w2'], start: iso(-2), end: iso(8) }]);
+    const withWeapons = {
+      ...game,
+      bannerTypes: [...game.bannerTypes, { id: 'weapon', label: 'Cone banner', pullItem: 'gem', target: 'weapon', pity: { kind: 'hard-pity', hardPity: 80, baseRate: 0.008, featured: { winRate: 0.75, guaranteeAfterLoss: true } } }],
+      data: {
+        ...game.data,
+        weapons: async () => [
+          { id: 'w1', name: 'Bright Cone', rarity: 'top', icon: 'https://example.test/w1.webp', madeFor: 'c1' },
+          { id: 'w2', name: 'Plain Cone', rarity: 'mid', icon: 'https://example.test/w2.webp' },
+        ],
+      },
+    } as GameContract;
+    setRosterEntry('aa', 'c1', { owned: true, wanted: false, dupes: 0 });
+    render(<BannersScreen games={[withWeapons]} scope="aa" servers={{}} openTab={() => {}} open={() => {}} openAccount={() => {}} />);
+    const card = (await screen.findAllByRole('article'))[0] as HTMLElement;
+    const srcs = [...card.querySelectorAll('img')].map((i) => i.getAttribute('src'));
+    // The banner picture is the lead weapon's, and each weapon has its own.
+    expect(srcs).toEqual(['https://example.test/w1.webp', 'https://example.test/w1.webp', 'https://example.test/w2.webp']);
+    expect(within(card).queryByText('NO ART YET')).toBeNull();
+    expect(within(card).getByText('Bright Cone')).toBeInTheDocument();
+    expect(within(card).getByText('Plain Cone')).toBeInTheDocument();
+    expect(within(card).getByText('Star One')).toBeInTheDocument();
+    expect(within(card).getByText('You own it (E0)')).toBeInTheDocument();
+  });
 });

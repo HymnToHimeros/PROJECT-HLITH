@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import type { Character, Material, TeamPreset } from '../../core/contract';
 import { useExamplesShown } from '../../core/data/prefs';
 import { setFarm, setRosterEntry } from '../../core/data/userData';
@@ -177,6 +177,12 @@ export function CharacterPage({ data, character: c, several, onBack, openPulls, 
       <div className={r.cards}>
         {entry.owned ? <BuildCard data={data} /> : <IfYouPull data={data} character={c} openPulls={openPulls} />}
         <TeamFit data={data} character={c} makePreset={makePreset} />
+        <section className={r.card} aria-labelledby={`how-to-build-${c.id}`}>
+          <h3 className={r.cardTitle} id={`how-to-build-${c.id}`}>
+            How to build {c.name}
+          </h3>
+          <BuildGuide data={data} character={c} />
+        </section>
         <Materials
           data={data}
           character={c}
@@ -224,49 +230,154 @@ export function CharacterPage({ data, character: c, several, onBack, openPulls, 
             </section>
           </div>
         </details>
-        <details className={r.fold}>
-          <summary className={r.foldSummary}>
-            Recommended build{' '}
-            <span className={r.foldNote}>
-              {game.terms.gear}, {game.terms.weapon}, stats
-            </span>
-          </summary>
-          <div className={r.foldBody}>
-            <section className={r.card} aria-label="Recommended build">
-              <RecommendedBuildRows data={data} character={c} />
-            </section>
-          </div>
-        </details>
       </div>
     </article>
   );
 }
 
-/** The recommended build (game.data.builds): gear sets, weapon, main and sub stats, skills first, with its source. */
-function RecommendedBuildRows({ data, character: c }: { data: RosterData; character: Character }) {
+/** One numbered step of How to build. */
+function BuildStep({ n, title, children }: { n: number; title: string; children: ReactNode }) {
+  return (
+    <section className={r.buildStep}>
+      <h4 className={r.buildStepTitle}>
+        <span className={r.buildStepNum}>{n}</span>
+        {title}
+      </h4>
+      {children}
+    </section>
+  );
+}
+
+/** A set or weapon picture; nothing when the source has none (the name stays). */
+function ItemIcon({ src, size = 'md' }: { src: string | undefined; size?: 'sm' | 'md' }) {
+  if (!src) return null;
+  return <img className={size === 'sm' ? r.itemIconSm : r.itemIcon} src={src} alt="" loading="lazy" decoding="async" />;
+}
+
+/**
+ * How to build (game.data.builds): step by step, with pictures. Gear sets with
+ * what they do, the weapon and its effect, main stat per slot, sub stats in
+ * order, skills to level first, and where it came from.
+ */
+function BuildGuide({ data, character: c }: { data: RosterData; character: Character }) {
   const { game } = data;
   const builds = useBuilds(game);
   const b = builds?.find((x) => x.characterId === c.id);
-  const row = (label: string, value: string | null) => (
-    <div key={label} className={r.lineRow}>
-      <span className={r.lineLabel}>{label}</span>
-      {value ? <span className={r.buildValue}>{value}</span> : <NoData dash={false} />}
-    </div>
-  );
+  const t = game.terms;
   if (builds === null) return <p className={r.muted}>Loading…</p>;
   if (!b)
     return (
       <>
-        {[`${game.terms.gear} sets`, game.terms.weapon, 'Main stats', `${game.terms.skill}: level first`].map((label) => row(label, null))}
+        {[`${t.gear} sets`, t.weapon, 'Main stats', `${t.skill}: level first`].map((label) => (
+          <div key={label} className={r.lineRow}>
+            <span className={r.lineLabel}>{label}</span>
+            <NoData dash={false} />
+          </div>
+        ))}
       </>
     );
+  const sets = b.sets.filter((s) => s.options.length);
+  // Steps are numbered in the order shown; a step the source has nothing for is left out.
+  const present = { sets: sets.length > 0, weapon: true, main: Object.keys(b.mainStats).length > 0, sub: b.subStats.length > 0, skills: b.skillsFirst.length > 0 };
+  const order = (Object.keys(present) as (keyof typeof present)[]).filter((k) => present[k]);
+  const num = (k: keyof typeof present) => order.indexOf(k) + 1;
   return (
     <>
-      {b.sets.map((s) => row(`${game.terms.gear} · ${s.pieces} pieces`, s.options.length ? s.options.join(' or ') : null))}
-      {row(game.terms.weapon, b.weapons.length ? b.weapons.join(', then ') : null)}
-      {Object.entries(b.mainStats).map(([slot, stats]) => row(`Main stat · ${slot}`, stats.join(' or ')))}
-      {row('Sub stats', b.subStats.length ? b.subStats.join(', ') : null)}
-      {row(`${game.terms.skill}: level first`, b.skillsFirst.length ? b.skillsFirst.map((tier) => tier.join(' and ')).join(', then ') : null)}
+      {sets.length > 0 && (
+        <BuildStep n={num('sets')} title={`${t.gear} sets: ${sets.map((s) => `${s.pieces} pieces`).join(' + ')}`}>
+          {sets.map((s) => (
+            <div key={s.pieces} className={r.stack}>
+              <span className={r.label}>
+                {s.pieces} PIECES
+                {s.options.length > 1 ? ' · BEST FIRST, ANY ONE' : ''}
+              </span>
+              <ul className={r.itemList}>
+                {s.options.map((o, i) => {
+                  const item = b.items?.[o];
+                  // A 2-piece slot only gets the 2-piece effect; 4 pieces get both.
+                  const effects = (item?.effects ?? []).filter((e) => Number.parseInt(e.label, 10) <= s.pieces || Number.isNaN(Number.parseInt(e.label, 10)));
+                  return (
+                    <li key={o} className={r.item}>
+                      <ItemIcon src={item?.icon} />
+                      <div className={r.itemBody}>
+                        <span className={r.itemName}>
+                          {o}
+                          {i === 0 && s.options.length > 1 && <span className={r.itemBest}>best</span>}
+                        </span>
+                        {effects.map((e) => (
+                          <span key={e.label} className={r.itemEffect}>
+                            <strong>{e.label}:</strong> {e.text}
+                          </span>
+                        ))}
+                      </div>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          ))}
+        </BuildStep>
+      )}
+      <BuildStep n={num('weapon')} title={b.weapons.length > 1 ? `${t.weapon}: best first` : t.weapon}>
+        {b.weapons.length ? (
+          <ul className={r.itemList}>
+            {b.weapons.map((w, i) => {
+              const item = b.items?.[w];
+              return (
+                <li key={w} className={r.item}>
+                  <ItemIcon src={item?.icon} />
+                  <div className={r.itemBody}>
+                    <span className={r.itemName}>
+                      {b.weapons.length > 1 && <span className={r.mono}>{i + 1}. </span>}
+                      {w}
+                    </span>
+                    {item?.effects.map((e) => (
+                      <span key={e.label} className={r.itemEffect}>
+                        <strong>{e.label}:</strong> {e.text}
+                      </span>
+                    ))}
+                  </div>
+                </li>
+              );
+            })}
+          </ul>
+        ) : (
+          <span className={r.cardText}>
+            <NoData dash={false} /> The source doesn’t name a {t.weapon} for them.
+          </span>
+        )}
+      </BuildStep>
+      {Object.keys(b.mainStats).length > 0 && (
+        <BuildStep n={num('main')} title="Main stat on each slot">
+          <div>
+            {Object.entries(b.mainStats).map(([slot, stats]) => (
+              <div key={slot} className={r.lineRow}>
+                <span className={r.lineLabel}>{slot}</span>
+                <span className={r.buildValue}>{stats.join(' or ')}</span>
+              </div>
+            ))}
+          </div>
+          <span className={r.muted}>Slots not listed have a fixed main stat.</span>
+        </BuildStep>
+      )}
+      {b.subStats.length > 0 && (
+        <BuildStep n={num('sub')} title="Sub stats to look for, best first">
+          <ol className={r.subList}>
+            {b.subStats.map((x) => (
+              <li key={x}>{x}</li>
+            ))}
+          </ol>
+        </BuildStep>
+      )}
+      {b.skillsFirst.length > 0 && (
+        <BuildStep n={num('skills')} title={`${t.skill}: level first`}>
+          <ol className={r.subList}>
+            {b.skillsFirst.map((tier) => (
+              <li key={tier.join()}>{tier.join(' and ')}</li>
+            ))}
+          </ol>
+        </BuildStep>
+      )}
       <span className={r.muted}>Source: {b.source}.</span>
     </>
   );
@@ -359,11 +470,27 @@ function IfYouPull({ data, character, openPulls }: { data: RosterData; character
   );
 }
 
+/** Teams shown at first on a character page; the rest stay one tap away. */
+const FIT_FIRST = 3;
+
 function TeamFit({ data, character: c, makePreset }: { data: RosterData; character: Character; makePreset?: (() => void) | undefined }) {
   const { game, user, presets } = data;
+  const [all, setAll] = useState(false);
   const inPreset = (p: TeamPreset) => p.slots.some((s) => s.characters.includes(c.id));
-  const recommended = presets.list.map((p, i) => ({ p, i })).filter(({ p }) => inPreset(p));
+  const firstsOf = (p: TeamPreset) => p.slots.map((s) => s.characters[0]).filter((x): x is string => Boolean(x));
+  const missing = (ids: string[]) => ids.filter((id) => !entryOf(user.roster, id).owned).length;
+  // Their own team first (they lead it), then teams they're a first pick in, then fewest missing.
+  const recommended = presets.list
+    .map((p, i) => ({ p, i, members: firstsOf(p) }))
+    .filter(({ p }) => inPreset(p))
+    .map((x) => ({
+      ...x,
+      rank: (x.members[0] === c.id ? 0 : x.members.includes(c.id) ? 1 : 2) * 10 + missing(x.members),
+    }))
+    .sort((a, b) => a.rank - b.rank);
   const mine = user.teams.filter((t) => t.members.includes(c.id));
+  const shown = all ? recommended : recommended.slice(0, Math.max(0, FIT_FIRST - mine.length));
+  const hidden = recommended.length - shown.length;
   return (
     <section className={r.card} aria-labelledby="team-fit">
       <h3 className={r.cardTitle} id="team-fit">
@@ -375,19 +502,22 @@ function TeamFit({ data, character: c, makePreset }: { data: RosterData; charact
           Make a preset with them →
         </button>
       )}
-      {recommended.map(({ p, i }) => (
-        <TeamRow
-          key={p.id}
-          data={data}
-          name={p.name}
-          members={p.slots.map((s) => s.characters[0]).filter((x): x is string => Boolean(x))}
-          example={presets.example}
-          score={presets.example ? exampleScore(i) : null}
-        />
-      ))}
       {mine.map((t) => (
         <TeamRow key={t.id} data={data} name={t.name} members={t.members} example={false} score={null} />
       ))}
+      {shown.map(({ p, i, members }) => (
+        <TeamRow key={p.id} data={data} name={p.name} members={members} example={presets.example} score={presets.example ? exampleScore(i) : null} />
+      ))}
+      {hidden > 0 && (
+        <button type="button" className={r.linkButton} onClick={() => setAll(true)}>
+          Show {hidden} more team{hidden === 1 ? '' : 's'} with {c.name}
+        </button>
+      )}
+      {all && recommended.length > FIT_FIRST && (
+        <button type="button" className={r.linkButton} onClick={() => setAll(false)}>
+          Show fewer
+        </button>
+      )}
       <WhoFits data={data} character={c} />
     </section>
   );
@@ -413,7 +543,8 @@ function WhoFits({ data, character: c }: { data: RosterData; character: Characte
         fits.map((f) => (
           <details key={f.id} className={r.why}>
             <summary className={r.whySummary}>
-              <span className={r.lineLabel}>{data.byId.get(f.id)?.name ?? f.id}</span>&nbsp;
+              <span className={r.lineLabel}>{data.byId.get(f.id)?.name ?? f.id}</span>
+              &nbsp;
               <span className={r.ideaState}>
                 count {f.count} · {entryOf(roster, f.id).owned ? 'owned' : 'not owned'}
               </span>
@@ -504,7 +635,10 @@ function Materials({
         real.needs.value.map((m) => (
           <div key={m.material} className={r.matRow}>
             <div className={r.matTop}>
-              <span className={r.lineLabel}>{m.name}</span>
+              <span className={r.matName}>
+                <ItemIcon src={m.icon} size="sm" />
+                <span className={r.lineLabel}>{m.name}</span>
+              </span>
               <span className={r.mono}>need {formatNumber(m.amount)}</span>
             </div>
             <span className={r.track} aria-hidden="true" />
