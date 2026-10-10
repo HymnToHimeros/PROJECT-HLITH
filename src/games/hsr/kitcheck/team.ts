@@ -14,7 +14,7 @@ export const METHOD = 'HSR Kit Check theory v2 (docs/logic/hsr-theory.md)';
 const PAIR_LIMIT = 10;
 const SIZE = 4;
 
-const toAccount = (a: TeamAccount): Account => ({ eidolon: (id) => (a.owned(id) ? a.dupes(id) : 0), enhanced: (id) => a.potential?.(id) });
+const toAccount = (a: TeamAccount): Account => ({ eidolon: (id) => (a.owned(id) ? a.dupes(id) : 0), enhanced: (id) => a.potential?.(id), weapon: (id) => (a.owned(id) ? a.weapon?.(id) : undefined) });
 
 /** The Trailblazer is one character: at most one of their forms (ids 8001–8010) in a team. */
 const isTrailblazer = (id: string) => id.startsWith('80') && id.length === 4;

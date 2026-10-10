@@ -1,8 +1,7 @@
 // @vitest-environment node
 import { describe, expect, it } from 'vitest';
-import kits from '../data/kits.json';
 import { checkOrder, checkSquad, type Account } from './check';
-import { buildLibrary, library, SHEETS } from './library';
+import { buildLibrary, KITS as kits, library, SHEETS } from './library';
 
 const BILLY = '1531';
 const DIALYN = '1481';

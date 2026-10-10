@@ -124,9 +124,10 @@ export interface KitSkill {
   id: string;
   label: string;
   /** What sort of piece it is; screens group by it. */
-  kind?: 'skill' | 'core' | 'additional' | 'mindscape' | 'potential' | 'trace' | 'eidolon';
+  kind?: 'skill' | 'core' | 'additional' | 'mindscape' | 'potential' | 'trace' | 'eidolon' | 'weapon';
   /** Only active from this dupe level (1–6) or potential level; absent = base kit. */
-  unlock?: { dupes?: number; potential?: number };
+  /** `weapon`: only with this weapon (id) equipped in the saved build: the character's signature weapon (LOGIC-CORE). */
+  unlock?: { dupes?: number; potential?: number; weapon?: string };
   /** No longer applies from this level: a stronger version (`unlock` at the same level) replaces it. */
   replacedAt?: { potential: number };
   /** What it does, in a few words. Empty until the kit has been read. */

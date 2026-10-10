@@ -13,7 +13,7 @@ export const METHOD = 'ZZZ Kit Check method (docs/logic/zzz-method.md)';
 /** Partners kept per damage dealer before trios are tried, once the pool is bigger than this (method: Line-ups step 2). */
 const PAIR_LIMIT = 10;
 
-const toAccount = (a: TeamAccount): Account => ({ mindscape: (id) => (a.owned(id) ? a.dupes(id) : 0), potential: (id) => a.potential?.(id) });
+const toAccount = (a: TeamAccount): Account => ({ mindscape: (id) => (a.owned(id) ? a.dupes(id) : 0), potential: (id) => a.potential?.(id), weapon: (id) => (a.owned(id) ? a.weapon?.(id) : undefined) });
 
 export function synergyLabel(percent: number, members: number): string {
   if (members < 3) return 'Incomplete';
