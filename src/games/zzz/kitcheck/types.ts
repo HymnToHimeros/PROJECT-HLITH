@@ -10,7 +10,8 @@ export type Specialty = 'attack' | 'stun' | 'anomaly' | 'support' | 'defense' | 
 /**
  * What a piece gives (question 2), by stat.
  * Damage stats every damage dealer uses: dmg, crit-dmg, crit-rate, atk,
- * res-ignore, def-shred, dmg-taken, stun-dmg-multiplier, pen.
+ * res-ignore, def-shred, dmg-taken, stun-dmg-multiplier, pen, extra-hit (an
+ * extra hit counted as the damage dealer's own, e.g. Sunna's Cat's Gaze).
  * Stats only some use (counted only when the damage dealer's notes say so):
  * sheer-force, sheer-dmg, max-hp, anomaly-proficiency, anomaly-buildup.
  * Team support (tie-break only): daze, energy, stun-duration, decibels,
@@ -26,6 +27,7 @@ export type Stat =
   | 'dmg-taken'
   | 'stun-dmg-multiplier'
   | 'pen'
+  | 'extra-hit'
   | 'sheer-force'
   | 'sheer-dmg'
   | 'max-hp'
@@ -40,7 +42,7 @@ export type Stat =
   | 'duration'
   | 'own-damage';
 
-export const GENERAL_STATS: readonly Stat[] = ['dmg', 'crit-dmg', 'crit-rate', 'atk', 'res-ignore', 'def-shred', 'dmg-taken', 'stun-dmg-multiplier', 'pen'];
+export const GENERAL_STATS: readonly Stat[] = ['dmg', 'crit-dmg', 'crit-rate', 'atk', 'res-ignore', 'def-shred', 'dmg-taken', 'stun-dmg-multiplier', 'pen', 'extra-hit'];
 export const SPECIFIC_STATS: readonly Stat[] = ['sheer-force', 'sheer-dmg', 'max-hp', 'anomaly-proficiency', 'anomaly-buildup'];
 export const SUPPORT_STATS: readonly Stat[] = ['daze', 'energy', 'stun-duration', 'decibels', 'free-ultimate', 'heal', 'duration', 'own-damage'];
 

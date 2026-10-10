@@ -70,3 +70,23 @@ Each one can be changed: tell LOGIC-CORE which.
 21. **Best fit for me** (Characters → Sort) ranks by the "If you pull…" %
     (for an owned agent: what your teams lose without them). Unread agents come
     last.
+
+## Added with group B
+22. **Released agents are read from the live game version** (nanoka.cc's
+    manifest names it, 3.2 today); only unreleased agents use the newer beta
+    files, marked beta. Roxy's beta file had blank pieces mid-rewrite.
+23. **Glossary words the files leave blank** (Roxy's "Wind Energy", "Eye of the
+    Storm", "Cleanse") are filled from the same game text on zzz.gachabase.net
+    (another game-data site), matched by context and listed in the importer.
+    An unknown one stops the importer.
+24. **Agent Potential** has two versions of some pieces: the base text (until
+    Potential I) and the Potential text. With Potential unknown, the base counts
+    and the Potential version is locked; with Potential saved, the base shows as
+    "Replaced" (method: a stronger version replaces the weaker one).
+25. **Hugo's "1/2 Stun characters: ATK +300/900"** is read as two entries: +300
+    with one Stun teammate, +900 (an upgrade) with two. As the method counts
+    upgrades as their own entries, two Stun characters switch on both.
+26. **Roxy's Mindscape 6 Wind RES ignore is unverified**: "The DMG dealt by
+    attacks ignores 15% …" doesn't say whose attacks.
+27. **Sunna's Cat's Gaze** counts as a buff for Attack and Anomaly damage
+    dealers: the extra hit "is treated as DMG dealt by the triggering Agent".

@@ -18,7 +18,7 @@ export interface Library {
   profiles: Map<string, Profile>;
   sheets: Map<string, CharacterSheet>;
   /** Kit piece → unlock level, per character. */
-  unlocks: Map<string, Map<string, { dupes?: number; potential?: number }>>;
+  unlocks: Map<string, Map<string, { dupes?: number; potential?: number; replacedAt?: number }>>;
   /** Kit piece → its label ("Additional Ability: External Line"), per character. */
   pieceLabels: Map<string, Map<string, string>>;
   names: Map<string, string>;
@@ -31,11 +31,11 @@ export interface Account {
   potential: (id: string) => number | undefined;
 }
 
-export type Status = 'on' | 'off' | 'locked' | 'unknown';
+export type Status = 'on' | 'off' | 'locked' | 'unknown' | 'replaced';
 
 /** One line of the explanation. `points` is what it adds to the count (0 for tie-break and not counted). */
 export interface Line {
-  kind: 'switched-on' | 'buff' | 'chain' | 'off' | 'duplicate' | 'weak-fit' | 'support' | 'possible' | 'not-counted' | 'locked' | 'unknown';
+  kind: 'switched-on' | 'buff' | 'chain' | 'off' | 'duplicate' | 'weak-fit' | 'support' | 'possible' | 'not-counted' | 'locked' | 'unknown' | 'replaced';
   who: string;
   /** Entry id (absent for weak fits). */
   entry?: string;
@@ -118,6 +118,10 @@ export function statusOf(e: Entry, who: string, order: string[], lib: Library, a
     if (p === undefined) return { status: 'locked', why: `locked: needs Potential ${unlock.potential}; Potential isn't saved yet` };
     if (p < unlock.potential) return { status: 'locked', why: `locked: needs Potential ${unlock.potential}, you have ${p}` };
   }
+  if (unlock?.replacedAt) {
+    const p = account.potential(who);
+    if (p !== undefined && p >= unlock.replacedAt) return { status: 'replaced', why: `replaced: the Agent Potential ${unlock.replacedAt}+ version is on` };
+  }
   if (e.unverified) return { status: 'unknown', why: `unclear text: ${e.unverified}` };
   const r = evalCondition(e.on, who, order, lib);
   if (r === 'unknown') return { status: 'unknown', why: 'its condition cannot be checked from profiles' };
@@ -185,6 +189,10 @@ export function checkOrder(order: string[], dd: string, lib: Library, account: A
       const base = { who, entry: e.id, tag: e.tag, piece: e.piece, quote: e.quote };
       if (st.status === 'locked') {
         lines.push({ ...base, kind: 'locked', why: st.why, points: 0 });
+        continue;
+      }
+      if (st.status === 'replaced') {
+        lines.push({ ...base, kind: 'replaced', why: st.why, points: 0 });
         continue;
       }
       if (st.status === 'unknown') {
