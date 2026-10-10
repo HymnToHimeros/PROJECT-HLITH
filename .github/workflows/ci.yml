@@ -10,7 +10,8 @@ concurrency:
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
-  # Changes that touch only notes (docs/, *.md) skip the code checks.
+  # Changes that touch only notes (docs/, *.md) skip the code checks. docs/ROADMAP.md is
+  # not a note: tests/roadmap.test.ts reads it.
   changes:
     runs-on: ubuntu-latest
     outputs:
@@ -28,7 +29,7 @@ jobs:
           fi
           files=$(git diff --name-only "$range" 2>/dev/null) || files=everything
           echo "$files"
-          if [ -n "$files" ] && echo "$files" | grep -qvE '^docs/|\.md$'; then
+          if [ -n "$files" ] && { echo "$files" | grep -qvE '^docs/|\.md$' || echo "$files" | grep -qx 'docs/ROADMAP.md'; }; then
             echo "code=true" >> "$GITHUB_OUTPUT"
           else
             echo "code=false" >> "$GITHUB_OUTPUT"

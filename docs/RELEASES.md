@@ -39,6 +39,7 @@ Talk with `send_message` (session ids in `docs/WORKSTREAMS.md`).
 
 ## The check (CI)
 - Notes-only changes (`docs/`, `*.md`) skip the code checks and pass in seconds.
+  `docs/ROADMAP.md` still runs them (a test reads it).
 - Code changes run style, types, unit tests and build on one machine and the
   browser tests on four machines at once: about 5 minutes instead of 11.
 - A newer push to the same PR stops the older check.
