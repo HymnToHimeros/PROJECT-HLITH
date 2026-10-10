@@ -1,1 +1,711 @@
-[]
+[
+  {
+    "characterId": "1421",
+    "source": "nanoka.cc",
+    "version": "3.3.4+19304006",
+    "skills": [
+      {
+        "id": "skill-basic-attack-unyielding-strikes",
+        "label": "Basic Attack: Unyielding Strikes",
+        "kind": "skill",
+        "does": [],
+        "gameText": "Press [Basic Attack button] to activate:\nLaunches up to four consecutive melee attacks, dealing Physical DMG."
+      },
+      {
+        "id": "skill-dodge-light-as-a-swallow",
+        "label": "Dodge: Light as a Swallow",
+        "kind": "skill",
+        "does": [],
+        "gameText": "Press [Dodge button] to activate:\nA quick dash dodge.\nCharacter is invulnerable while using this skill."
+      },
+      {
+        "id": "skill-dash-attack-sizzling-oil-supreme",
+        "label": "Dash Attack: Sizzling Oil Supreme",
+        "kind": "skill",
+        "does": [],
+        "gameText": "Press [Basic Attack button] during a dodge to activate:\nPerform a quick forward melee attack, dealing Physical DMG."
+      },
+      {
+        "id": "skill-dodge-counter-moving-mountains-and-seas",
+        "label": "Dodge Counter: Moving Mountains and Seas",
+        "kind": "skill",
+        "does": [],
+        "gameText": "Press [Basic Attack button] during a Perfect Dodge to activate:\nPerform a melee attack on enemies in front, dealing Physical DMG.\nCharacter is invulnerable while using this skill."
+      },
+      {
+        "id": "skill-special-attack-sonic-pressure-point-strike",
+        "label": "Special Attack: Sonic Pressure-Point Strike",
+        "kind": "skill",
+        "does": [],
+        "gameText": "Press [Special Attack button] to activate:\nDelivers a forward melee technique while tossing firecrackers, dealing Physical DMG.\nAnti-Interrupt level is increased while using this skill."
+      },
+      {
+        "id": "skill-special-attack-touch-of-death",
+        "label": "Special Attack: Touch of Death",
+        "kind": "skill",
+        "does": [],
+        "gameText": "With Break Force, press [Special Attack button]to activate:\nSpecial Attack: Touch of Death attacks centered on the enemy, dealing Physical DMG.\nThe skill can be chained up to three times. Each use of Special Attack: Touch of Death consumes 1 point of Break Force.\nWhen Pan Yinhu is the active character, DMG received during the skill is reduced by 40% and Anti-Interrupt Level is increased. If he isn't the active character, he becomes Invulnerable."
+      },
+      {
+        "id": "skill-ex-special-attack-mountainous-pulse-strike",
+        "label": "EX Special Attack: Mountainous Pulse Strike",
+        "kind": "skill",
+        "does": [],
+        "gameText": "With enough Energy, press [EX Special Attack button] to activate:\nEX Special Attack: Mountainous Pulse Strike unleashes a powerful strike forward, dealing Physical DMG.\nGain 3 points of Break Force on activation. Upon hitting an enemy, it triggers the Quick Assist of the previous character in the squad.\nAgents who enter the field via this Quick Assist will gain the Sheer Force bonus from the Core Passive. After switching out, Pan Yinhu will stay on the field and automatically launch Special Attack: Touch of Death until his Break Force runs out, where he then leaves the field.\nCharacter is invulnerable while using this skill."
+      },
+      {
+        "id": "skill-chain-attack-anointed-with-wok-steam",
+        "label": "Chain Attack: Anointed with Wok Steam",
+        "kind": "skill",
+        "does": [],
+        "gameText": "When a Chain Attack is triggered, select the character to activate:\nHop onto the Iron Wok and spin rapidly to ram into enemies, dealing massive Physical DMG to all enemies on the way.\nCharacter is invulnerable while using this skill."
+      },
+      {
+        "id": "skill-ultimate-a-feast-fit-for-an-emperor",
+        "label": "Ultimate: A Feast Fit for an Emperor!",
+        "kind": "skill",
+        "does": [],
+        "gameText": "When Decibel Rating is at Maximum, press [Ultimate button] to activate:\nPerform a technique that compresses qi into fried rice and catapults it at foes, dealing massive Physical DMG and healing all squad members for (100 + 60 × Chain Attack level) HP, while also applying a 8s heal over time on all squad members, recovering (0.8 + 0.05 × Chain Attack level)% HP/s.\nCharacter is invulnerable while using this skill."
+      },
+      {
+        "id": "skill-quick-assist-lift-your-gaze-to-good-fortune",
+        "label": "Quick Assist: Lift Your Gaze to Good Fortune",
+        "kind": "skill",
+        "does": [],
+        "gameText": "When the active character is launched, press [Switch button] to activate:\nPerform a melee attack on enemies in front, dealing Physical DMG.\nCharacter is invulnerable while using this skill."
+      },
+      {
+        "id": "skill-defensive-assist-intimidating-presence",
+        "label": "Defensive Assist: Intimidating Presence",
+        "kind": "skill",
+        "does": [],
+        "gameText": "When the on-field character is about to be attacked, press [Switch button] to activate:\nParries the enemy's attack, dealing massive Daze.\nThis skill excels at parrying enemy attacks and reduces the consumption of Assist Points when the character is under intense attacks.\nCharacter is invulnerable while using this skill."
+      },
+      {
+        "id": "skill-assist-follow-up-ride-the-momentum",
+        "label": "Assist Follow-Up: Ride the Momentum",
+        "kind": "skill",
+        "does": [],
+        "gameText": "Press [Basic Attack button] after a Defensive Assist to activate:\nPerform a melee attack on enemies in front, dealing Physical DMG.\nCharacter is invulnerable while using this skill."
+      },
+      {
+        "id": "core-passive",
+        "label": "Core Passive: Meridian Enlightenment (Core Skill level 7)",
+        "kind": "core",
+        "does": [],
+        "gameText": "For a brief period when Pan Yinhu's EX Special Attack: Mountainous Pulse Strike hits an enemy and triggers Quick Assist, the next Agent entering through a Quick Assist or Chain Attack will gain the Meridian Flow effect. This effect provides a Sheer Force boost equal to 18% of Pan Yinhu's initial ATK and lasts for 25s. The Sheer Force provided by this effect cannot exceed 540 points."
+      },
+      {
+        "id": "additional-ability",
+        "label": "Additional Ability: Iron Stomach",
+        "kind": "additional",
+        "does": [],
+        "gameText": "When another character in your squad is a Rupture character or shares the same Faction:\nWhen Pan Yinhu hits an enemy with Special Attack: Touch of Death, the enemy suffers the Depleted Qi effect, increasing DMG from all units against the target by 20%. Each hit of Special Attack: Touch of Death inflicts a 10s Depleted Qi effect. This effect does not stack, but repeated hits on the same enemy will extend the duration."
+      },
+      {
+        "id": "mindscape-1",
+        "label": "Mindscape 1: Qi Shield",
+        "kind": "mindscape",
+        "unlock": {
+          "dupes": 1
+        },
+        "does": [],
+        "gameText": "All units deal 10% increased DMG to enemies affected by Depleted Qi."
+      },
+      {
+        "id": "mindscape-2",
+        "label": "Mindscape 2: Yunkui Pressure-Point Strike",
+        "kind": "mindscape",
+        "unlock": {
+          "dupes": 2
+        },
+        "does": [],
+        "gameText": "For every 6 points of Break Force consumed, Pan Yinhu will recover 4 Energy, and the Depleted Qi effect applied when Special Attack: Touch of Death hits an enemy will have its duration increased to 12s."
+      },
+      {
+        "id": "mindscape-3",
+        "label": "Mindscape 3: Non-Meridian Pressure Point",
+        "kind": "mindscape",
+        "unlock": {
+          "dupes": 3
+        },
+        "does": [],
+        "gameText": "Basic Attack, Dodge, Assist, Special Attack, and Chain Attack Lv. +2"
+      },
+      {
+        "id": "mindscape-4",
+        "label": "Mindscape 4: First-Class Head Chef",
+        "kind": "mindscape",
+        "unlock": {
+          "dupes": 4
+        },
+        "does": [],
+        "gameText": "When Ultimate: A Feast Fit for an Emperor! heals all squad members, the HP recovery is increased by 25%, and the healing over time effect is increased by 25%. On activating Ultimate: A Feast Fit for an Emperor!, gain the Backup Provisions effect. Whenever any character in the squad loses HP, consume the Backup Provisions effect to instantly restore 50% of the HP recovered with Ultimate: A Feast Fit for an Emperor!'s instant HP recovery effect. This effect does not stack."
+      },
+      {
+        "id": "mindscape-5",
+        "label": "Mindscape 5: \"Thiren\"",
+        "kind": "mindscape",
+        "unlock": {
+          "dupes": 5
+        },
+        "does": [],
+        "gameText": "Basic Attack, Dodge, Assist, Special Attack, and Chain Attack Lv. +2"
+      },
+      {
+        "id": "mindscape-6",
+        "label": "Mindscape 6: Meridian Theory",
+        "kind": "mindscape",
+        "unlock": {
+          "dupes": 6
+        },
+        "does": [],
+        "gameText": "The Meridian Flow effect provided by Core Passive: Meridian Enlightenment increases by an extra 6% of Pan Yinhu's initial ATK. The maximum Sheer Force provided by this effect increases to 720."
+      }
+    ]
+  },
+  {
+    "characterId": "1451",
+    "source": "nanoka.cc",
+    "version": "3.3.4+19304006",
+    "skills": [
+      {
+        "id": "skill-basic-attack-orbital-combo",
+        "label": "Basic Attack: Orbital Combo",
+        "kind": "skill",
+        "does": [],
+        "gameText": "Press [Basic Attack button] to activate:\nPerform up to five forward strikes, dealing Ether DMG.\nThe fifth attack is a Whim, conjuring an Ethereal figure that inflicts Ether DMG on enemies in a circular area ahead.\nWhen in combat and not in the Dream state, Lucia gains 40 Dream Points upon using this Whim."
+      },
+      {
+        "id": "skill-dodge-fading-silhouette",
+        "label": "Dodge: Fading Silhouette",
+        "kind": "skill",
+        "does": [],
+        "gameText": "Press [Dodge button] to activate:\nA quick dash dodge.\nCharacter is invulnerable while using this skill."
+      },
+      {
+        "id": "skill-dash-attack-refraction",
+        "label": "Dash Attack: Refraction",
+        "kind": "skill",
+        "does": [],
+        "gameText": "Press [Basic Attack button] during a dodge to activate:\nDeliver a quick strike forward, dealing Ether DMG."
+      },
+      {
+        "id": "skill-dodge-counter-stardust-echo",
+        "label": "Dodge Counter: Stardust Echo",
+        "kind": "skill",
+        "does": [],
+        "gameText": "Press [Basic Attack button] during a Perfect Dodge to activate:\nThis Dodge Counter is a Whim. When activated, summons an Ethereal figure that delivers a downward attack in a circular area ahead, dealing Ether DMG.\nIf not in the Dream state, Lucia gains 20 Dream Points upon using this Whim. This effect can trigger once every 5s.\nCharacter is invulnerable while using this skill."
+      },
+      {
+        "id": "skill-special-attack-symphony-of-the-reaper-storm",
+        "label": "Special Attack: Symphony of the Reaper - Storm",
+        "kind": "skill",
+        "does": [],
+        "gameText": "Press [Special Attack button] to activate:\nThis Special Attack is a Whim. When activated, it recreates an Ethereal figure that slashes forward in a line, dealing Ether DMG.\nWhen in combat and not in the Dream state, Lucia gains 20 Dream Points upon using this Whim. This effect can trigger once every 5s."
+      },
+      {
+        "id": "skill-ex-special-attack-symphony-of-the-reaper-daybreak",
+        "label": "EX Special Attack: Symphony of the Reaper - Daybreak",
+        "kind": "skill",
+        "does": [],
+        "gameText": "With enough Energy, press [EX Special Attack button] to activate:\nThis EX Special Attack is a Harmony. When activated, it summons an Ethereal figure that delivers a powerful forward slash in a line, dealing Ether DMG.\nWhen Lucia uses any Harmony, all squad members gain the Darkbreaker state. While in Darkbreaker state, Sheer Force increases by 12. Every 200 points of Lucia's initial Max HP grants an additional (5 + 0.2 × Special Attack level) Sheer Force. The Darkbreaker state can increase Sheer Force by up to a maximum of (612 + 24 × Special Attack level), lasting 20s and repeated triggers reset the duration. When Lucia's initial Max HP reaches 24,000, the above bonus effect reaches its maximum value.\nWhen any Harmony deals DMG, Lucia increases the final attack's DMG by an additional (34 + 3 × Special Attack level)% of her Max HP.\nIf she activates this EX Special Attack while in the Dream state and under the effect of Ether Veil: Wellspring, Ether Veil: Wellspring duration is extended by 16s.\nAfter activating her EX Special Attack, Lucia can immediately follow up with the 5th hit of her Basic Attack.\nIf not in the Dream state, Lucia gains 60 Dream Points upon using this Harmony.\nCharacter is invulnerable while using this skill."
+      },
+      {
+        "id": "skill-chain-attack-stage-of-brilliance",
+        "label": "Chain Attack: Stage of Brilliance",
+        "kind": "skill",
+        "does": [],
+        "gameText": "When a Chain Attack is triggered, select the character to activate:\nThis Chain Attack is a Harmony. When activated, it summons an Ethereal figure that pulls in enemies in a circular area ahead and deals Ether DMG.\nIf not in the Dream state, Lucia gains 40 Dream Points upon using this Harmony.\nCharacter is invulnerable while using this skill."
+      },
+      {
+        "id": "skill-ultimate-charge-great-armor",
+        "label": "Ultimate: Charge, Great Armor!",
+        "kind": "skill",
+        "does": [],
+        "gameText": "When Decibel Rating is at Maximum, press [Ultimate button] to activate:\nThis Ultimate is a Harmony. When activated, Lucia summons an Ethereal figure and rides it forward in a charge. Holding a directional button allows her to steer and extend the charge, up to 3s. During the charge, Anti-Interrupt Level is increased, DMG taken is reduced by 40%, and when Lucia takes fatal DMG, she remains in battle with HP not dropping below 1.\nWhen the charge ends, Lucia unleashes a powerful strike in a large area around her, dealing Ether DMG. A Quick Assist is triggered when this skill hits an enemy, and after the skill is used, it leaves behind a Starlight Convergence. Starlight Convergence lasts 8s. While inside Starlight Convergence, the currently active character gains HP regeneration equal to (1 + 0.05 × Chain Attack level)% of Lucia's Max HP per second. This effect ends 4s after leaving the Starlight Convergence or immediately when switching out.\nAfter activation, if Lucia is in the Dream state and Ether Veil: Wellspring is active, Ether Veil: Wellspring duration is extended by 32s.\nIf not in the Dream state, Lucia gains 100 Dream Points upon using this Harmony. If she is in the Dream state when activating this Harmony, she will gain 100 Dream Points and re-enter Dream state the next time she exits it. This effect cannot be stacked.\nCharacter is invulnerable while performing the powerful strike."
+      },
+      {
+        "id": "skill-quick-assist-crushing-mist",
+        "label": "Quick Assist: Crushing Mist",
+        "kind": "skill",
+        "does": [],
+        "gameText": "When the active character is launched, press [Switch button] to activate:\nThis Quick Assist is a Whim. When activated, it summons an Ethereal figure that delivers a downward attack in a circular area ahead, dealing Ether DMG.\nIf not in the Dream state, Lucia gains 20 Dream Points upon using this Whim. This effect can trigger once every 5s.\nCharacter is invulnerable while using this skill."
+      },
+      {
+        "id": "skill-defensive-assist-voice-of-illusory-dreams",
+        "label": "Defensive Assist: Voice of Illusory Dreams",
+        "kind": "skill",
+        "does": [],
+        "gameText": "When the on-field character is about to be attacked, press [Switch button] to activate:\nParries the enemy's attack, dealing massive Daze.\nCharacter is invulnerable while using this skill."
+      },
+      {
+        "id": "skill-assist-follow-up-harmony-of-painted-dreams",
+        "label": "Assist Follow-Up: Harmony of Painted Dreams",
+        "kind": "skill",
+        "does": [],
+        "gameText": "Press [Basic Attack button] after a Defensive Assist to activate:\nThis Assist Follow-Up is a Harmony. When activated, it summons an Ethereal figure that delivers a downward attack in a circular area ahead, dealing Ether DMG.\nIf not in the Dream state, Lucia gains 40 Dream Points upon using this Harmony.\nCharacter is invulnerable while using this skill."
+      },
+      {
+        "id": "core-passive",
+        "label": "Core Passive: Lost Nocturne (Core Skill level 7)",
+        "kind": "core",
+        "does": [],
+        "gameText": "When entering the battlefield, Lucia immediately gains 60 Dream Points. If her Dream Points reaches 100 upon activating a Whim or Harmony, she enters the Dream state.\nWhen entering the Dream state, it triggers a Quick Assist and simultaneously activates Ether Veil: Wellspring. While Ether Veil: Wellspring is active, all squad members' Max HP increase by 5%, lasting 40s. Repeated triggers extend the duration, up to a max of 300s.\nWhile Lucia is in the Dream state, using any Whim consumes 25 Dream Points and upgrades it to Harmony. Whenever another active character's attack hits an enemy, Lucia consumes 25 Dream Points to unleash an Aftershock. This Aftershock is a Harmony. After Lucia triggers a skill upgrade or Aftershock, Aftershock cannot be triggered for 8s.\nWhen Lucia triggers a skill upgrade or an Aftershock, all squad members gain the Dreamer's Nursery Rhyme state. While in Dreamer's Nursery Rhyme state, DMG dealt increases by 20% for 12s. Repeated triggers reset the duration.\nIf Lucia runs out of Dream Points or she leaves the Ether Veil, she exits the Dream state."
+      },
+      {
+        "id": "additional-ability",
+        "label": "Additional Ability: Ballad of the Long Night",
+        "kind": "additional",
+        "does": [],
+        "gameText": "When another character in your squad is a Rupture or Stun character:\nWhen applying Darkbreaker, additionally applies a 30% CRIT DMG increase effect."
+      },
+      {
+        "id": "mindscape-1",
+        "label": "Mindscape 1: Secret Friend",
+        "kind": "mindscape",
+        "unlock": {
+          "dupes": 1
+        },
+        "does": [],
+        "gameText": "When Dreamer's Nursery Rhyme deals additional DMG, ignore 18% of enemy All-Attribute RES and have 5% increased Decibel Generation Rate. Each time Lucia performs a skill upgrade, she gains 1 stack of Echo, stacking up to 4 times. When Dreamer's Nursery Rhyme ends, if Lucia has any Echo stacks, 1 stack is consumed to reapply Dreamer's Nursery Rhyme to all squad members."
+      },
+      {
+        "id": "mindscape-2",
+        "label": "Mindscape 2: Great Magician",
+        "kind": "mindscape",
+        "unlock": {
+          "dupes": 2
+        },
+        "does": [],
+        "gameText": "While Lucia is inside Ether Veil: Wellspring, Harmony deals 15% more DMG. Agents in the Darkbreaker state gain an additional 15% Sheer DMG increase while in Ether Veil: Wellspring."
+      },
+      {
+        "id": "mindscape-3",
+        "label": "Mindscape 3: The Best Partner",
+        "kind": "mindscape",
+        "unlock": {
+          "dupes": 3
+        },
+        "does": [],
+        "gameText": "Basic Attack, Dodge, Assist, Special Attack, and Chain Attack Lv. +2"
+      },
+      {
+        "id": "mindscape-4",
+        "label": "Mindscape 4: Late-Night Hours",
+        "kind": "mindscape",
+        "unlock": {
+          "dupes": 4
+        },
+        "does": [],
+        "gameText": "When Ether Veil is activated or extended on the field, Lucia grants all squad members 100 Decibels. This effect can trigger once every 15s."
+      },
+      {
+        "id": "mindscape-5",
+        "label": "Mindscape 5: Dream Watcher",
+        "kind": "mindscape",
+        "unlock": {
+          "dupes": 5
+        },
+        "does": [],
+        "gameText": "Basic Attack, Dodge, Assist, Special Attack, and Chain Attack Lv. +2"
+      },
+      {
+        "id": "mindscape-6",
+        "label": "Mindscape 6: The Never-Ending Journey",
+        "kind": "mindscape",
+        "unlock": {
+          "dupes": 6
+        },
+        "does": [],
+        "gameText": "When Lucia is inside any Ether Veil, her ATK increases by 2% of her initial Max HP, and Harmony always triggers a CRIT with Harmony CRIT DMG increased by 30%."
+      }
+    ]
+  },
+  {
+    "characterId": "1481",
+    "source": "nanoka.cc",
+    "version": "3.3.4+19304006",
+    "skills": [
+      {
+        "id": "skill-basic-attack-happy-to-be-of-service",
+        "label": "Basic Attack: Happy to Be of Service",
+        "kind": "skill",
+        "does": [],
+        "gameText": "Press [Basic Attack button] to activate:\nUnleashes up to four attacks, dealing Physical DMG."
+      },
+      {
+        "id": "skill-basic-attack-rock-paper-scissors",
+        "label": "Basic Attack: Rock, Paper, Scissors",
+        "kind": "skill",
+        "does": [],
+        "gameText": "After EX Special Attack: Rock or EX Special Attack: Scissors, press [Basic Attack button] to activate:\nPerforms up to two attacks, dealing Physical DMG.\nDuring skill activation, Anti-Interrupt level increases, and DMG taken is reduced by 40%."
+      },
+      {
+        "id": "skill-dodge-line-busy",
+        "label": "Dodge: Line Busy",
+        "kind": "skill",
+        "does": [],
+        "gameText": "Press [Dodge button] to activate:\nA quick dash dodge.\nCharacter is invulnerable while using this skill."
+      },
+      {
+        "id": "skill-dash-attack-sudden-call",
+        "label": "Dash Attack: Sudden Call",
+        "kind": "skill",
+        "does": [],
+        "gameText": "Press [Basic Attack button] during a dodge to activate:\nLaunches a dashing attack at enemies in front, dealing Physical DMG."
+      },
+      {
+        "id": "skill-dodge-counter-number-unavailable",
+        "label": "Dodge Counter: Number Unavailable",
+        "kind": "skill",
+        "does": [],
+        "gameText": "Press [Basic Attack button] during a Perfect Dodge to activate:\nLaunches consecutive attacks against enemies in front, dealing Physical DMG.\nAfter using this skill, can immediately follow up with the 4th hit of Basic Attack: Happy to Be of Service.\nCharacter is invulnerable while using this skill."
+      },
+      {
+        "id": "skill-ex-special-attack-get-lost",
+        "label": "EX Special Attack: Get Lost!",
+        "kind": "skill",
+        "does": [],
+        "gameText": "With Customer Complaint, hold [Basic Attack button] to activate:\nDelivers a forward martial salute attack. On activation, it consumes 1 Customer Complaint and deals Physical DMG.\nAfter activation, the previous character's Quick Assist is triggered.\nCharacter is invulnerable while using this skill."
+      },
+      {
+        "id": "skill-special-attack-welcome-gesture",
+        "label": "Special Attack: Welcome Gesture",
+        "kind": "skill",
+        "does": [],
+        "gameText": "Press [Special Attack button] to activate:\nThrows dual rings to slash enemies, dealing Physical DMG.\nAnti-Interrupt level is increased while using this skill."
+      },
+      {
+        "id": "skill-ex-special-attack-rock",
+        "label": "EX Special Attack: Rock",
+        "kind": "skill",
+        "does": [],
+        "gameText": "With enough Energy, press [EX Special Attack button] to activate:\nLaunches a fist attack, dealing Physical DMG.\nCharacter is invulnerable while using this skill."
+      },
+      {
+        "id": "skill-ex-special-attack-scissors",
+        "label": "EX Special Attack: Scissors",
+        "kind": "skill",
+        "does": [],
+        "gameText": "With enough Energy, press [EX Special Attack button] to activate:\nLaunches a scissors attack, dealing Physical DMG.\nCharacter is invulnerable while using this skill."
+      },
+      {
+        "id": "skill-ex-special-attack-paper",
+        "label": "EX Special Attack: Paper!",
+        "kind": "skill",
+        "does": [],
+        "gameText": "With enough Energy, press [EX Special Attack button] to activate:\nLaunches a paper attack, dealing Physical DMG.\nCharacter is invulnerable while using this skill."
+      },
+      {
+        "id": "skill-chain-attack-welcome-mat",
+        "label": "Chain Attack: Welcome Mat",
+        "kind": "skill",
+        "does": [],
+        "gameText": "When a Chain Attack is triggered, select the character to activate:\nLaunches consecutive kicks against enemies in front, dealing massive Physical DMG.\nAfter using this skill, can immediately follow up with the 4th hit of Basic Attack: Happy to Be of Service.\nCharacter is invulnerable while using this skill."
+      },
+      {
+        "id": "skill-ultimate-service-stopped-for-number-dialed",
+        "label": "Ultimate: Service Stopped for Number Dialed",
+        "kind": "skill",
+        "does": [],
+        "gameText": "When Decibel Rating is at Maximum, press [Ultimate button] to activate:\nRushes forward and performs a finger flick attack, dealing massive Physical DMG.\nAfter using this skill, can immediately follow up with the 4th hit of Basic Attack: Happy to Be of Service.\nCharacter is invulnerable while using this skill."
+      },
+      {
+        "id": "skill-quick-assist-forward-call",
+        "label": "Quick Assist: Forward Call",
+        "kind": "skill",
+        "does": [],
+        "gameText": "When the active character is launched, press [Switch button] to activate:\nLaunches consecutive attacks against enemies in front, dealing Physical DMG.\nAfter using this skill, can immediately follow up with the 4th hit of Basic Attack: Happy to Be of Service.\nCharacter is invulnerable while using this skill."
+      },
+      {
+        "id": "skill-defensive-assist-decline-call",
+        "label": "Defensive Assist: Decline Call",
+        "kind": "skill",
+        "does": [],
+        "gameText": "When the on-field character is about to be attacked, press [Switch button] to activate:\nParries the enemy's attack, dealing massive Daze.\nThis skill excels at parrying enemy attacks and reduces the consumption of Assist Points when the character is under intense attacks.\nCharacter is invulnerable while using this skill."
+      },
+      {
+        "id": "skill-assist-follow-up-back-to-back-calls",
+        "label": "Assist Follow-Up: Back-to-Back Calls",
+        "kind": "skill",
+        "does": [],
+        "gameText": "Press [Basic Attack button] after a Defensive Assist to activate:\nPerforms a rapid dash followed by a slash attack, dealing Physical DMG.\nAfter using this skill, can immediately follow up with the 4th hit of Basic Attack: Happy to Be of Service.\nCharacter is invulnerable while using this skill."
+      },
+      {
+        "id": "core-passive",
+        "label": "Core Passive: Five-Star Service Hotline (Core Skill level 7)",
+        "kind": "core",
+        "does": [],
+        "gameText": "Upon entering the battlefield, Dialyn starts with 60 Positive Reviews. If her initial CRIT Rate surpasses 50%, her Impact increases by 2 for each additional 1%, up to a maximum increase of 100.\nAfter using EX Special Attack: Rock, the next EX Special Attack becomes EX Special Attack: Scissors for 8s.\nAfter using EX Special Attack: Scissors, the next EX Special Attack becomes EX Special Attack: Paper! for 8s.\nWhen EX Special Attack: Paper! hits an enemy, it applies the Malicious Complaint effect. While under Malicious Complaint, if the enemy becomes Stunned, the Stun duration is extended by 2s, and Stun DMG Multiplier increases by 30%. Before recovering from Stun, Malicious Complaint can trigger on the same target only once. The Stun duration bonus does not stack with similar effects. When an enemy with Malicious Complaint recovers from being Stunned, the effect ends.\nWhile in combat, Dialyn gains 0.6 Positive Reviews per second. When a heavy attack of EX Special Attack: Rock, EX Special Attack: Scissors, or EX Special Attack: Paper! hits enemies, she gains 7.5 Positive Reviews. Each use of a skill can grant this bonus only once, up to a maximum of 120.\nWith at least 90 Positive Reviews, when Dialyn triggers the Chain Attack window using Chain Attack: Welcome Mat, EX Special Attack: Get Lost!, or Quick Assist: Forward Call, the next character to switch in will have their Chain Attack upgraded to an Ultimate. When an ally launches an Ultimate this way, Dialyn consumes 60 Positive Reviews.\nWith at least 90 Positive Reviews, when Dialyn hits an enemy with EX Special Attack: Get Lost! and doesn't trigger a Chain Attack window, she consumes 90 Positive Reviews to forcibly trigger a Chain Attack window. The next character to switch in will have their Chain Attack upgraded to an Ultimate.\nEach time Positive Reviews reaches 90 or an Ultimate is activated, Dialyn obtains 1 Customer Complaint. A maximum of 1 Customer Complaint can be held at a time."
+      },
+      {
+        "id": "additional-ability",
+        "label": "Additional Ability: External Line",
+        "kind": "additional",
+        "does": [],
+        "gameText": "When another character in your squad is an Attack or Rupture character:\nDialyn's EX Special Attack CRIT DMG is increased by 50%.\nWhen an EX Special Attack or Ultimate is activated, all squad members gain the Overwhelmingly Positive effect. While Overwhelmingly Positive is active, DMG dealt is increased by 40% for 15s. When Dialyn uses an EX Special Attack or Ultimate while Overwhelmingly Positive is active, if the remaining duration of Overwhelmingly Positive is less than 35s, its duration is extended by 10s.\nWhen a heavy attack from EX Special Attack: Rock, EX Special Attack: Scissors, or EX Special Attack: Paper! hits, additional DMG is dealt based on the previous squad member's Specialty:\nIf the squad member is an Attack Agent, EX Special Attack: Rock, EX Special Attack: Scissors, and EX Special Attack: Paper! deal additional DMG equal to 320% of that Attack Agent's ATK.\nIf the squad member is a Rupture Agent, EX Special Attack: Rock, EX Special Attack: Scissors, and EX Special Attack: Paper! deal additional DMG equal to 400% of that Rupture Agent's Sheer Force."
+      },
+      {
+        "id": "mindscape-1",
+        "label": "Mindscape 1: Boundless Hospitality",
+        "kind": "mindscape",
+        "unlock": {
+          "dupes": 1
+        },
+        "does": [],
+        "gameText": "The amount of Positive Reviews accumulated each second and gained when EX Special Attack: Rock, EX Special Attack: Scissors, or EX Special Attack: Paper! hits an enemy increase by 16%. While the Overwhelmingly Positive effect is active, characters ignore 15% of enemy All-Attribute RES."
+      },
+      {
+        "id": "mindscape-2",
+        "label": "Mindscape 2: 24/7 Hotline",
+        "kind": "mindscape",
+        "unlock": {
+          "dupes": 2
+        },
+        "does": [],
+        "gameText": "Enemies affected by Malicious Complaint gain an additional 20% Stun DMG Multiplier when Stunned, and all units deal 15% increased DMG to targets affected by Malicious Complaint."
+      },
+      {
+        "id": "mindscape-3",
+        "label": "Mindscape 3: Call From the Hollow",
+        "kind": "mindscape",
+        "unlock": {
+          "dupes": 3
+        },
+        "does": [],
+        "gameText": "Basic Attack, Dodge, Assist, Special Attack, and Chain Attack Lv. +2"
+      },
+      {
+        "id": "mindscape-4",
+        "label": "Mindscape 4: The Past Never Fades",
+        "kind": "mindscape",
+        "unlock": {
+          "dupes": 4
+        },
+        "does": [],
+        "gameText": "Upon entering combat, Dialyn recovers 20 Energy. This effect can trigger once every 180s in Investigation Zone Mode. While the Overwhelmingly Positive effect is active, Dialyn's ATK increases by 500."
+      },
+      {
+        "id": "mindscape-5",
+        "label": "Mindscape 5: Lies",
+        "kind": "mindscape",
+        "unlock": {
+          "dupes": 5
+        },
+        "does": [],
+        "gameText": "Basic Attack, Dodge, Assist, Special Attack, and Chain Attack Lv. +2"
+      },
+      {
+        "id": "mindscape-6",
+        "label": "Mindscape 6: Truth",
+        "kind": "mindscape",
+        "unlock": {
+          "dupes": 6
+        },
+        "does": [],
+        "gameText": "When an ally enters the field with an Ultimate through the Core Passive's effect, that ally gains the Aftertone effect. With this effect, landing an attack causes Dialyn to deal an additional instance of Physical DMG equal to 480% of Dialyn's ATK. This DMG is treated as EX Special Attack DMG, and can trigger once every second, up to 12 times. Gaining Aftertone again refreshes its trigger count. Only one ally can have Aftertone at a time."
+      }
+    ]
+  },
+  {
+    "characterId": "1531",
+    "source": "nanoka.cc",
+    "version": "3.3.4+19304006",
+    "skills": [
+      {
+        "id": "skill-basic-attack-knight-s-technique",
+        "label": "Basic Attack: Knight's Technique",
+        "kind": "skill",
+        "does": [],
+        "gameText": "Press [Basic Attack button] to activate:\nPerforms up to four attacks forward, dealing Physical DMG.\nDuring the 4th hit, press [Special Attack button] to use Special Attack: Drive Suppression, reducing HP consumption by 50%.\nRestores a small amount of HP on hit."
+      },
+      {
+        "id": "skill-basic-attack-full-throttle-starlight",
+        "label": "Basic Attack: Full-Throttle Starlight",
+        "kind": "skill",
+        "does": [],
+        "gameText": "With enough Determination, hold [Basic Attack button] to activate:\nCharges forward on the motorcycle, then fires a laser beam, dealing massive Physical DMG.\nCharacter is invulnerable while using this skill."
+      },
+      {
+        "id": "skill-dodge-close-call",
+        "label": "Dodge: Close Call!",
+        "kind": "skill",
+        "does": [],
+        "gameText": "Press [Dodge button] to activate:\nA quick dash dodge.\nCharacter is invulnerable while using this skill."
+      },
+      {
+        "id": "skill-dodge-through-the-galaxy",
+        "label": "Dodge: Through the Galaxy",
+        "kind": "skill",
+        "does": [],
+        "gameText": "During Special Attack: Drive Suppression, drag the joystick or hold [Dodge button] to activate:\nDrifts with the motorcycle, enabling Perfect Dodges for a brief duration.\nIf a Perfect Dodge is successfully triggered, it immediately chains into Dodge Counter: Afterfire Spin.\nDuring this skill, continue dragging the joystick or holding [Dodge button] to continue drifting.\nDuring this skill, the duration of Special Attack: Drive Suppression will continue, and upon reaching the maximum duration, it automatically chains into EX Special Attack: Cool Wheelie.\nIf the skill ends early, it automatically chains into Special Attack: Run Wild.\nCharacter is briefly invulnerable and Anti-Interrupt Level increases during this skill."
+      },
+      {
+        "id": "skill-dash-attack-starlight-retribution",
+        "label": "Dash Attack: Starlight Retribution",
+        "kind": "skill",
+        "does": [],
+        "gameText": "Press [Basic Attack button] during a dodge to activate:\nPerforms a quick forward slash, dealing Physical DMG."
+      },
+      {
+        "id": "skill-dodge-counter-duel-king",
+        "label": "Dodge Counter: Duel King",
+        "kind": "skill",
+        "does": [],
+        "gameText": "Press [Basic Attack button] during a Perfect Dodge to activate:\nFires a blast from his arm cannon, dealing Physical DMG.\nIf this skill is triggered via a Perfect Dodge, hitting an enemy restores 10% of Max HP, and it can be chained into the 4th hit of Basic Attack: Knight's Technique.\nCharacter is invulnerable while using this skill."
+      },
+      {
+        "id": "skill-dodge-counter-afterfire-spin",
+        "label": "Dodge Counter: Afterfire Spin",
+        "kind": "skill",
+        "does": [],
+        "gameText": "During Dodge: Through the Galaxy, trigger a Perfect Dodge to activate:\nSpins with the bike to deal Physical DMG to surrounding enemies.\nAfter using this skill, it automatically chains into EX Special Attack: Cool Wheelie.\nCharacter is invulnerable while using this skill."
+      },
+      {
+        "id": "skill-special-attack-drive-suppression",
+        "label": "Special Attack: Drive Suppression",
+        "kind": "skill",
+        "does": [],
+        "gameText": "When HP is above 25%, press [Special Attack button] to activate:\nConsumes HP equal to 16% of Max HP to summon a motorcycle and swiftly crash into enemies, continuously dealing Physical DMG.\nIf attacked by an enemy as the active character shortly upon activating this skill, triggers a block, negating the attack and restoring 5 Determination.\nAfter triggering a block, immediately chains into EX Special Attack: Cool Wheelie.\nAfter the skill continues for a while, it automatically chains into EX Special Attack: Cool Wheelie.\nAnti-Interrupt level is increased while using this skill."
+      },
+      {
+        "id": "skill-special-attack-run-wild",
+        "label": "Special Attack: Run Wild",
+        "kind": "skill",
+        "does": [],
+        "gameText": "Triggers automatically when Dodge: Through the Galaxy is interrupted:\nKicks his motorcycle at enemies, dealing Physical DMG.\nAfter using this skill, it can be chained into Dodge Counter: Duel King.\nAnti-Interrupt level is increased while using this skill."
+      },
+      {
+        "id": "skill-ex-special-attack-cool-wheelie",
+        "label": "EX Special Attack: Cool Wheelie",
+        "kind": "skill",
+        "does": [],
+        "gameText": "Triggers automatically when Special Attack: Drive Suppression reaches its maximum duration or a block is triggered:\nLifts the motorcycle to attack enemies, dealing Physical DMG.\nOn hit, restores an additional 8 Determination.\nAfter using this skill, with enough Adrenaline, press or hold [EX Special Attack button] to chain into EX Special Attack: Rocking Footwork.\nAfter the skill animation ends, automatically chains into Special Attack: Run Wild.\nCharacter is invulnerable while using this skill."
+      },
+      {
+        "id": "skill-ex-special-attack-high-traction-wheels",
+        "label": "EX Special Attack: High-Traction Wheels",
+        "kind": "skill",
+        "does": [],
+        "gameText": "With enough Adrenaline, hold [EX Special Attack button] to activate:\nSlams down with the motorcycle, dealing Physical DMG.\nRestores 30% of Max HP upon activating this skill.\nCharacter is invulnerable while using this skill."
+      },
+      {
+        "id": "skill-ex-special-attack-rocking-footwork",
+        "label": "EX Special Attack: Rocking Footwork",
+        "kind": "skill",
+        "does": [],
+        "gameText": "After activating EX Special Attack: Cool Wheelie and with enough Adrenaline, press or hold [EX Special Attack button] to activate:\nUses the motorcycle and hand cannon for a combined attack, dealing Physical DMG.\nUpon activating this skill, restore 15% of Max HP.\nCharacter is invulnerable while using this skill."
+      },
+      {
+        "id": "skill-chain-attack-knight-s-swagger",
+        "label": "Chain Attack: Knight's Swagger",
+        "kind": "skill",
+        "does": [],
+        "gameText": "When a Chain Attack is triggered, select the character to activate:\nLaunches a series of attacks forward, dealing massive Physical DMG.\nUpon activating this skill, gains 15 Determination.\nCharacter is invulnerable while using this skill."
+      },
+      {
+        "id": "skill-ultimate-starlight-knight-flying-kick",
+        "label": "Ultimate: Starlight Knight Flying Kick",
+        "kind": "skill",
+        "does": [],
+        "gameText": "When Decibel Rating is at Maximum, press [Ultimate button] to activate:\nLeaps into the air and delivers a flying kick at the target, dealing massive Physical DMG.\nCharacter is invulnerable while using this skill."
+      },
+      {
+        "id": "skill-quick-assist-starlight-power-of-bonds",
+        "label": "Quick Assist: Starlight - Power of Bonds",
+        "kind": "skill",
+        "does": [],
+        "gameText": "When the active character is launched, press [Switch button] to activate:\nFires a blast from his arm cannon ahead, dealing Physical DMG. When HP is above 25%, this skill is replaced with Special Attack: Drive Suppression. This effect can trigger once every 5s.\nCharacter is invulnerable while using this skill."
+      },
+      {
+        "id": "skill-defensive-assist-hero-s-entrance",
+        "label": "Defensive Assist: Hero's Entrance",
+        "kind": "skill",
+        "does": [],
+        "gameText": "When the on-field character is about to be attacked, press [Switch button] to activate:\nParries the enemy's attack, dealing massive Daze.\nCharacter is invulnerable while using this skill."
+      },
+      {
+        "id": "skill-assist-follow-up-villain-s-exit",
+        "label": "Assist Follow-Up: Villain's Exit",
+        "kind": "skill",
+        "does": [],
+        "gameText": "Press [Basic Attack button] after a Defensive Assist to activate:\nKicks the motorcycle at the target, dealing massive Physical DMG.\nCharacter is invulnerable while using this skill."
+      },
+      {
+        "id": "core-passive",
+        "label": "Core Passive: Knight's Resolve (Core Skill level 7)",
+        "kind": "core",
+        "does": [],
+        "gameText": "Starlight - Billy gains extra Sheer Force based on his Max HP, with every 1 point of Max HP increasing Sheer Force by 0.1. All Physical DMG Starlight - Billy deals is Sheer DMG, ignoring enemy DEF and using his Sheer Force stat as the DMG Multiplier.\nStarlight - Billy restores 60 Adrenaline upon entering the battlefield. In Investigation Zone Mode, this effect can trigger once every 180s.\nWhen his HP is greater than 25%, press [Special Attack button] to consume HP and activate Special Attack: Drive Suppression. While in combat, each use of this skill increases his CRIT DMG by 90% for 45s. Repeated triggers refresh the duration. When HP is at or below 25%, the DMG he takes is reduced by 50%.\nStarlight - Billy gains Determination when his attacks hit enemies, with the amount depending on the skill used. Determination regenerates slowly while in combat, and is capped at 120. Hitting an enemy with EX Special Attack: Cool Wheelie, activating Chain Attack: Knight's Swagger, or triggering a block restores additional Determination. Triggering a Perfect Dodge by any means restores 3 Determination. This effect can trigger once every 0.5s.\nWhen Determination is greater than or equal to 100, hold [Basic Attack button] to consume 100 Determination and activate Basic Attack: Full-Throttle Starlight.\nHitting an enemy with Basic Attack: Knight's Technique restores a small amount of HP. Hitting an enemy with Dodge Counter: Duel King activated through a Perfect Dodge restores HP. Using EX Special Attack: High-Traction Wheels or EX Special Attack: Rocking Footwork restores HP."
+      },
+      {
+        "id": "additional-ability",
+        "label": "Additional Ability: Blazing Starlight",
+        "kind": "additional",
+        "does": [],
+        "gameText": "When another character in your squad is a Stun, Defense, or Support character:\nHitting an enemy with EX Special Attack: Cool Wheelie, the 4th hit of Basic Attack: Knight's Technique, Chain Attack, or Ultimate grants 1 stack of Starlight for 45s, up to a maximum of 2 stacks, Only one stack can be obtained per use of a skill. Each stack increases the DMG of Chain Attacks, Ultimates, EX Special Attacks, and Basic Attack: Full-Throttle Starlight by 20%."
+      },
+      {
+        "id": "mindscape-1",
+        "label": "Mindscape 1: Heroic Entrance",
+        "kind": "mindscape",
+        "unlock": {
+          "dupes": 1
+        },
+        "does": [],
+        "gameText": "Core Passive: Knight's Resolve restores an additional 60 Adrenaline upon entering the battlefield. Hitting an enemy with an EX Special Attack causes Starlight - Billy's DMG to ignore 18% Physical RES for 45s. Repeated triggers refresh the duration."
+      },
+      {
+        "id": "mindscape-2",
+        "label": "Mindscape 2: Wasteland Automaton",
+        "kind": "mindscape",
+        "unlock": {
+          "dupes": 2
+        },
+        "does": [],
+        "gameText": "Increases the DMG dealt by Basic Attack: Full-Throttle Starlight, EX Special Attack: Cool Wheelie, and Ultimate: Starlight Knight Flying Kick by 50%. Activating EX Special Attack: Rocking Footwork, EX Special Attack: High-Traction Wheels, or hitting a Stunned enemy with Special Attack: Drive Suppression grants the Turbocharged effect: Special Attack: Drive Suppression consumes this effect to immediately follow up with EX Special Attack: Cool Wheelie, and increases that instance's CRIT DMG by 50%. Only 1 stack of Turbocharged can be held."
+      },
+      {
+        "id": "mindscape-3",
+        "label": "Mindscape 3: Knight's Chivalry",
+        "kind": "mindscape",
+        "unlock": {
+          "dupes": 3
+        },
+        "does": [],
+        "gameText": "Basic Attack, Dodge, Assist, Special Attack, and Chain Attack Lv. +2"
+      },
+      {
+        "id": "mindscape-4",
+        "label": "Mindscape 4: Flames of Justice",
+        "kind": "mindscape",
+        "unlock": {
+          "dupes": 4
+        },
+        "does": [],
+        "gameText": "While in combat, each use of Special Attack: Drive Suppression increases Starlight - Billy's CRIT DMG by 8%, stacking up to 2 times and lasting 45s. Repeated triggers reset the duration. If HP is below 35% and Starlight - Billy is not the active character, he continuously recovers HP, up to 35%."
+      },
+      {
+        "id": "mindscape-5",
+        "label": "Mindscape 5: Radiant Armaments",
+        "kind": "mindscape",
+        "unlock": {
+          "dupes": 5
+        },
+        "does": [],
+        "gameText": "Basic Attack, Dodge, Assist, Special Attack, and Chain Attack Lv. +2"
+      },
+      {
+        "id": "mindscape-6",
+        "label": "Mindscape 6: Starlight Knight",
+        "kind": "mindscape",
+        "unlock": {
+          "dupes": 6
+        },
+        "does": [],
+        "gameText": "Ultimate: Starlight Knight Flying Kick and Basic Attack: Full-Throttle Starlight's Sheer DMG increases by 18%. Landing the 4th hit of Basic Attack: Knight's Technique, EX Special Attack: Cool Wheelie, or Chain Attack: Knight's Swagger grants 1 stack of Brilliant Starlight, stacking up to 6 times, and gaining at most 1 stack per skill use. When using Ultimate: Starlight Knight Flying Kick or Basic Attack: Full-Throttle Starlight, consumes up to 2 stacks of Brilliant Starlight, with each stack consumed causing that skill's final hit to deal 100% Sheer Force as additional Physical DMG."
+      }
+    ]
+  }
+]

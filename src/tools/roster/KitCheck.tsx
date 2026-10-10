@@ -48,9 +48,17 @@ function OneKit({ who, kit, showName, game }: { who: Character; kit: Kit | undef
       </div>
     );
   }
+  const unread = kit.skills.every((s) => s.does.length === 0);
   return (
     <div className={r.kitBlock}>
       {showName && <h4 className={r.kitName}>{who.name}</h4>}
+      {(kit.source || kit.beta || unread) && (
+        <span className={r.muted}>
+          {kit.source && `Game text from ${kit.source}${kit.version ? ` (game data ${kit.version.split('+')[0]})` : ''}. `}
+          {kit.beta && 'Not released yet: the text can still change. '}
+          {unread && 'Not read yet: what each skill does is added next.'}
+        </span>
+      )}
       <ul className={r.skills}>
         {kit.skills.map((s) => (
           <li key={s.id} className={r.skill}>

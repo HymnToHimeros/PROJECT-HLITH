@@ -85,10 +85,30 @@ export interface TeamPreset {
   source: string;
 }
 
-/** Owned by the roster-logic workstream; FRAME only defines the slot. */
+/** One piece of a kit: a skill, a passive, or a dupe level (Mindscape, Eidolon). */
+export interface KitSkill {
+  /** Stable within the kit; tags and scores point at it. */
+  id: string;
+  label: string;
+  /** What sort of piece it is; screens group by it. */
+  kind?: 'skill' | 'core' | 'additional' | 'mindscape' | 'potential' | 'trace' | 'eidolon';
+  /** Only active from this dupe level (1–6) or potential level; absent = base kit. */
+  unlock?: { dupes?: number; potential?: number };
+  /** What it does, in a few words. Empty until the kit has been read. */
+  does: string[];
+  /** The game's own text, markup turned into plain words. */
+  gameText: string;
+}
+
+/** Owned by the LOGIC-CORE workstream (docs/WORKSTREAMS.md); FRAME only defines the slot. */
 export interface Kit {
   characterId: string;
-  skills: { id: string; label: string; does: string[]; gameText: string }[];
+  /** Where the text came from, e.g. 'nanoka.cc', and the game data version read. */
+  source?: string;
+  version?: string;
+  /** Not released yet: the text can change before release. */
+  beta?: boolean;
+  skills: KitSkill[];
 }
 
 export interface Version {
