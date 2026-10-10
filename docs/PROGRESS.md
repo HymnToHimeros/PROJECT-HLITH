@@ -28,6 +28,11 @@ Resume with: "continue from PROGRESS.md". Newest entry on top. Older entries:
 - CI (`.github/workflows/ci.yml`) runs both on every pull request.
 
 ## Done
+- 2026-10-10 · **LOGIC-CORE: leaked characters in teams (T39)** (branch `logic-core/leaks-in-teams`).
+  A leaked character (today HSR Nihilux) can be pre-pulled: "If you pull" shows their best team from your
+  characters, and they can be put in teams. Everything that names a leak says "Leak: unverified beta kit,
+  may change"; a leaked carry has "No game team list yet" (teammates come from their kit lines). Leaks
+  join every-character lists only with "Show leaked" on. Both games. FRAME passes `showLeaks`.
 - 2026-10-10 · **ERROR-FIX: typing in a pop-up form works again** (branch `error-fix/typing-in-forms`).
   Owner's report: typing in the character page's "Enter build" form set off other things on
   the page. Cause: the pop-up panel (`BottomSheet`, FRAME's) re-ran its open step whenever

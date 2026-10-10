@@ -21,6 +21,8 @@ export interface Library {
   /** Kit piece → its label ("Trace: Inert Respiration"), per character. */
   pieceLabels: Map<string, Map<string, string>>;
   names: Map<string, string>;
+  /** Leaked characters (beta kit text) and where the leak came from (T39). */
+  leaks?: Map<string, string>;
   /**
    * Who teams are built around: characters the game's own recommended teams centre on (a team's first member, or
    * the page's character when the first member can't carry). Empty = not known, every carry counts.

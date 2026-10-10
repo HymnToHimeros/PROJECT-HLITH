@@ -12,6 +12,7 @@ import { library } from './library';
 import { accountNotes, type AccountFacts } from '../../../core/rules/accountNotes';
 import { SIGNATURE_PIECE } from '../../../core/rules/signatureWeapons';
 import { explainTeam, memberPhrase } from '../../../core/rules/teamExplain';
+import { leakLines, usable } from '../../../core/rules/leaks';
 
 export const METHOD = 'ZZZ Kit Check method (docs/logic/zzz-method.md)';
 /** Partners kept per damage dealer before trios are tried, once the pool is bigger than this (method: Line-ups step 2). */
@@ -78,7 +79,8 @@ function findBest(dd: string, pool: string[], lib: Library, account: Account): S
 const asExplain = (r: SquadResult) => ({ members: r.order, dd: r.dd, count: r.count, lines: r.lines });
 
 /** Every read character the account doesn't hide (the unpicked Trailblazer: `skip`, FRAME's protagonist setting). */
-const readable = (lib: Library, a: TeamAccount) => [...lib.sheets.keys()].filter((id) => !a.skip?.(id));
+/** Everyone the check may use: no one the owner hid, and leaks only when the owner shows them (T39). */
+const readable = (lib: Library, a: TeamAccount) => usable(lib.sheets.keys(), a, lib.leaks);
 const ownedRead = (a: TeamAccount, lib: Library) => readable(lib, a).filter((id) => a.owned(id));
 
 function reasonOf(l: Line, lib: Library): TeamReason {
@@ -120,6 +122,10 @@ export function verdict(members: string[], a: TeamAccount, lib: Library = librar
   if (every && every.count > top.count) notes.push(`From every agent, ${every.order.map(name).join(' > ')} counts ${every.count}.`);
   if (out.other && out.other.count !== mine.count) notes.push(`The other order, ${out.other.order.map(name).join(' > ')}, counts ${out.other.count}.`);
   notes.push('A higher count means more of the kits connect, not more damage.');
+  // T39: a leak in the squad says so (ZZZ has no game team lists to lack, so only the leak line).
+  const leakNote = leakLines(mine.order, lib.leaks, name);
+  notes.push(...leakNote);
+  const explain = explainTeam({ members: mine.order, dd: mine.dd, count: mine.count, lines: mine.lines }, { members: top.order, dd: top.dd, count: top.count, lines: top.lines }, name);
   return {
     rated: true,
     percent,
@@ -130,7 +136,7 @@ export function verdict(members: string[], a: TeamAccount, lib: Library = librar
     order: mine.order,
     reasons: mine.lines.map((l) => reasonOf(l, lib)),
     ...(wantsOf(mine, lib).length ? { wants: wantsOf(mine, lib) } : {}),
-    explain: explainTeam({ members: mine.order, dd: mine.dd, count: mine.count, lines: mine.lines }, { members: top.order, dd: top.dd, count: top.count, lines: top.lines }, name),
+    explain: leakNote.length ? { ...explain, missing: [...explain.missing, ...leakNote] } : explain,
     notes: [summary(mine), ...notes],
   };
 }
@@ -175,7 +181,9 @@ export function whoFits(members: string[], a: TeamAccount, lib: Library = librar
     const signature = sigId && sigLabel ? { id: sigId, name: sigLabel.replace(/^Signature [^:]+: /, '').replace(/ · .*$/, '') } : undefined;
     const equipped = equippedFact(c, a, lib);
     const { notes, theory } = accountNotes(c, a, { dupePrefix: 'M', ...(hasTrack ? { track: 'Agent Potential', trackLevels: true } : {}), locked, ...(signature ? { signature } : {}), ...(equipped ? { equipped } : {}) });
-    out.push({ id: c, count: r.count, how, withEveryone, percent, fromAccount: notes, theory });
+    // T39: a leak is never owned, so it only shows as theory, marked unverified.
+    const leak = leakLines([c], lib.leaks, (x) => lib.names.get(x) ?? x);
+    out.push({ id: c, count: r.count, how, withEveryone, percent, fromAccount: [...leak, ...notes], theory });
   }
   return out.sort((x, y) => (y.percent ?? 0) - (x.percent ?? 0) || Number(y.withEveryone) - Number(x.withEveryone) || y.count - x.count);
 }
@@ -225,7 +233,8 @@ export function ifYouPull(id: string, a: TeamAccount, lib: Library = library()):
   const name = (x: string) => lib.names.get(x) ?? x;
   // A character you don't own is tested at M0 (toAccount gives 0 for anyone not owned).
   const account = toAccount(a);
-  const all = readable(lib, a);
+  // The character asked about is always in the pool, a hidden leak included (pre-pull, T39).
+  const all = [...new Set([...readable(lib, a), id])];
   const base = ownedRead(a, lib).filter((x) => x !== id);
   const why: string[] = [];
   let percent = 0;
@@ -254,6 +263,8 @@ export function ifYouPull(id: string, a: TeamAccount, lib: Library = library()):
     }
   }
   if (!why.length) why.push('No gain: no team of yours gets a higher count with them.');
+  // T39: a leak says so first.
+  if (lib.leaks?.has(id)) why.unshift(...leakLines([id], lib.leaks, name));
   return { percent, why };
 }
 
@@ -275,7 +286,8 @@ export const zzzTeamRules: TeamRules = {
 export function recommendedTeams(lib: Library = library()): TeamPreset[] {
   const name = (id: string) => lib.names.get(id) ?? id;
   const m0: Account = { mindscape: () => 0, potential: () => undefined };
-  const all = [...lib.sheets.keys()];
+  // Recommended teams are the same for everyone: leaks (unverified) stay out of them (T39).
+  const all = [...lib.sheets.keys()].filter((id) => !lib.leaks?.has(id));
   const out: TeamPreset[] = [];
   for (const dd of all.filter((id) => isDamageDealer(id, lib))) {
     const first = bestFor(dd, all, lib, m0);
