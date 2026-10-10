@@ -401,8 +401,27 @@ function BuildCard({ data, character: c }: { data: RosterData; character: Charac
       characterId: c.id,
       level: saved.level,
       dupes: entry.dupes,
-      ...(saved.weapon ? { weapon: { name: saved.weapon.name, ...(saved.weapon.id ? { id: saved.weapon.id } : {}), ...(saved.weapon.level !== undefined ? { level: saved.weapon.level } : {}) } } : {}),
-      gear: saved.gear.filter((g) => g.main).map((g) => ({ slot: g.slot, main: g.main ?? '', subs: Object.fromEntries(g.subs.map((x) => [x.stat, x.value])) })),
+      ...(saved.weapon
+        ? {
+            weapon: {
+              name: saved.weapon.name,
+              ...(saved.weapon.id ? { id: saved.weapon.id } : {}),
+              ...(saved.weapon.level !== undefined ? { level: saved.weapon.level } : {}),
+              ...(saved.weapon.refine !== undefined ? { refine: saved.weapon.refine } : {}),
+            },
+          }
+        : {}),
+      // Every piece that has anything entered: main stat, set, sub stats (and their rolls when known).
+      gear: saved.gear
+        .filter((g) => g.main || g.set || g.subs.length)
+        .map((g) => ({
+          slot: g.slot,
+          main: g.main ?? '',
+          subs: Object.fromEntries(g.subs.map((x) => [x.stat, x.value])),
+          ...(g.set ? { set: g.set } : {}),
+          ...(g.subs.some((x) => x.rolls !== undefined) ? { rolls: Object.fromEntries(g.subs.filter((x) => x.rolls !== undefined).map((x) => [x.stat, x.rolls ?? 0])) } : {}),
+        })),
+      ...(saved.skills ? { skills: saved.skills } : {}),
     };
     return rate(build);
   }, [game.rules, saved, c.id, entry.dupes]);
@@ -435,13 +454,37 @@ function BuildCard({ data, character: c }: { data: RosterData; character: Charac
       {saved ? (
         <>
           {score?.known ? (
-            <div className={r.scoreRow}>
-              <span className={r.scoreBig}>{score.value.score}</span>
-              <span className={r.scoreOf}>/100</span>
-              <span className={r.grade}>{score.value.grade}</span>
-            </div>
+            <>
+              <div className={r.scoreRow}>
+                <span className={r.scoreBig}>{score.value.score}</span>
+                <span className={r.scoreOf}>/100</span>
+                <span className={r.grade}>{score.value.grade}</span>
+              </div>
+              {/* Every checked part with what it compared (LOGIC-CORE); parts with no data yet aren't counted. */}
+              {score.value.parts && (
+                <details className={r.why}>
+                  <summary className={r.whySummary}>Why {score.value.score}: {score.value.basis}</summary>
+                  <ul className={r.whyList}>
+                    {score.value.parts.map((p) => (
+                      <li key={p.label} className={r.partRow}>
+                        <span className={r.lineLabel}>{p.label}</span>
+                        <span className={r.track} aria-hidden="true">
+                          {p.value !== null && <span className={r.fill} style={{ width: `${p.value}%` }} />}
+                        </span>
+                        <span className={r.mono}>{p.value ?? '—'}</span>
+                        <span className={r.muted}>{p.value === null ? `No data yet · ${p.detail}` : p.detail}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </details>
+              )}
+            </>
           ) : (
-            <p className={r.statNoData}>{saved.level === undefined ? 'No score yet · add the level to score this build' : 'No score yet · scoring is being built'}</p>
+            <p className={r.statNoData}>{saved.level === undefined
+                ? 'No score yet · add the level to score this build'
+                : game.rules.scoreBuild
+                  ? 'No score yet · there’s no recommended build for them to compare with'
+                  : 'No score yet · scoring is being built'}</p>
           )}
           <dl className={r.buildSummary}>
             <div>

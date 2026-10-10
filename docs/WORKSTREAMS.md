@@ -76,6 +76,11 @@ stays the base; never rename an id that is already in a list.
     `items` (`BuildItem`: picture, rarity, effects) to `RecommendedBuild`, and
     optional `unordered` to a rated `TeamVerdict` (HSR teams have no order).
     Farm, the character page ("How to build") and Why % use them.
+  - 2026-10-10 · LOGIC-CORE added optional `set`, `rolls`, `weapon.refine` and
+    `skills` to `CharacterBuild`, the `BuildScorePart` type, and optional `parts`
+    and `basis` on `scoreBuild`'s result; the character page's Build score card
+    shows them. The game-free scoring lives in `src/core/rules/buildScore.ts`
+    (games pass their facts; rules: `docs/logic/build-score.md`).
   - 2026-10-10 · LOGIC-CORE added the `Weapon` entity and optional
     `data.weapons` (Light Cones, W-Engines with picture and "made for"), from
     `npm run data:builds` (`weapons.json`, both games). LOGIC-CORE changed
