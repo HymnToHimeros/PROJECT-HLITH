@@ -24,10 +24,37 @@
 
 /* ── Hero ── */
 .hero {
+  position: relative;
+  isolation: isolate;
+}
+/* The card itself: solid, so text on it keeps its contrast. */
+.heroCard {
+  position: relative;
   background: var(--bg-card);
-  border: 1px solid var(--line-default);
+  border: 1px solid color-mix(in srgb, var(--line-default) 70%, transparent);
   border-radius: var(--r-hero);
   overflow: hidden;
+}
+/* A blurred copy of the banner behind the card: its colours spill softly past the card's top and sides. */
+.bannerGlow {
+  position: absolute;
+  z-index: -1;
+  top: 10px;
+  left: -14px;
+  right: -14px;
+  aspect-ratio: 4 / 1;
+  border-radius: var(--r-hero);
+  overflow: hidden;
+  filter: blur(26px) saturate(1.25);
+  opacity: 0.5;
+  pointer-events: none;
+}
+/* The banner melts into the card at the bottom and fades a little at the sides, instead of ending on a hard line. */
+.bannerSoft {
+  border-bottom: 0;
+  mask-image: linear-gradient(to bottom, #000 45%, rgb(0 0 0 / 0.5) 72%, transparent 100%),
+    linear-gradient(to right, rgb(0 0 0 / 0.55), #000 14%, #000 86%, rgb(0 0 0 / 0.55));
+  mask-composite: intersect;
 }
 .banner {
   position: relative;
