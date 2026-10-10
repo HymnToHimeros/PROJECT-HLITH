@@ -101,8 +101,8 @@ describe('Roster characters: order and leaks', () => {
 
   it('says so honestly when leaks are shown but none are listed', async () => {
     await show(released);
-    fireEvent.click(screen.getByRole('button', { name: 'Show leaked' }));
-    expect(screen.getByText('No leaked characters listed yet.')).toBeInTheDocument();
+    fireEvent.click(await screen.findByRole('button', { name: 'Show leaked' }));
+    expect(await screen.findByText('No leaked characters listed yet.')).toBeInTheDocument();
   });
 
   it('“Hide leaks” (Banners) keeps leaked characters hidden here too', async () => {
