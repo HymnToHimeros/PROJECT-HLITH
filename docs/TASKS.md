@@ -14,8 +14,8 @@ doing it said `LIVE`. Newest jobs at the bottom; live jobs move to Done.
 | T37 | BUG fixed: typing in the build form (and every pop-up form) keeps the cursor in the field (#83) | ERROR-FIX | 2026-10-10 |
 | T36 | README made attractive for public visitors (#82) | FRAME | 2026-10-10 |
 | T5 | HSR "Interastral Peace Gala" reward (starts 21 Oct) | SCHEDULER | blocked | Sources say 500 or 60; filled from the official notice when the event opens 21 Oct. |
-| T6 | Keep the game lists current on a schedule | SCHEDULER | later | Owner: a task for the end, when everything else is done. |
-| T7 | Schedules for the research routine (leaks, events, game data) | SCHEDULER | later | Owner: a task for the end. |
+| T6 | Keep the game lists current on a schedule | SCHEDULER | working | Owner started it 2026-10-10, together with T7. Plan first. |
+| T7 | Research routine: several checks a week (leaks, official notices, confirmations), more in the first/last 2 weeks of the 6-week cycle; SCHEDULER picks days/times itself and self-corrects per version; finds auto-update the app | SCHEDULER | working | Plan first. |
 | T8 | Live checks with real logins: HoYoLAB link, in-game history link, Assistant with own key | FRAME | waiting on owner | Needs the owner to sign in and try each. |
 | T9 | Phone push keys (VAPID) so the evening message is really sent | FRAME | later | Owner: phone notifications are a task for the end. |
 | T10 | Resend for sign-in mail at scale | FRAME | later | Owner: a last thing to add, low importance. |
