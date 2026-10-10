@@ -15,7 +15,7 @@ doing it said `LIVE`. Newest jobs at the bottom; live jobs move to Done.
 | T36 | README made attractive for public visitors (#82) | FRAME | 2026-10-10 |
 | T5 | HSR "Interastral Peace Gala" reward (starts 21 Oct) | SCHEDULER | blocked | Sources say 500 or 60; filled from the official notice when the event opens 21 Oct. |
 | T6 | Keep the game lists current on a schedule | SCHEDULER | working | Owner started it 2026-10-10, together with T7. Plan first. |
-| T7 | Research routine: several checks a week (leaks, official notices, confirmations), more in the first/last 2 weeks of the 6-week cycle; SCHEDULER picks days/times itself and self-corrects per version; finds auto-update the app | SCHEDULER | working | Plan first. |
+| T7 | Research routine: several checks a week (leaks, official notices, confirmations), more in the first/last 2 weeks of the 6-week cycle; SCHEDULER picks days/times itself and self-corrects per version; finds auto-update the app | SCHEDULER (+ FRAME step 2) | working | Plan approved: anchored on patch day, busy first/last 2 weeks, learns offsets per version (rhythm.json); GitHub Action every 2h + Claude routine. Step 1 SCHEDULER, step 2 FRAME findings-intake. Owner to decide: data-only PRs auto-merge? + add FINDINGS_INTAKE_KEY secret. |
 | T8 | Live checks with real logins: HoYoLAB link, in-game history link, Assistant with own key | FRAME | waiting on owner | Needs the owner to sign in and try each. |
 | T9 | Phone push keys (VAPID) so the evening message is really sent | FRAME | later | Owner: phone notifications are a task for the end. |
 | T10 | Resend for sign-in mail at scale | FRAME | later | Owner: a last thing to add, low importance. |
