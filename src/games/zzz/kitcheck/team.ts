@@ -6,6 +6,7 @@
 import type { FitSuggestion, PullValue, TeamAccount, TeamIdea, TeamPreset, TeamReason, TeamRules, TeamVerdict } from '../../../core/contract';
 import { checkSquad, compare, DD_ORDER, type Account, type Library, type Line, type SquadResult } from './check';
 import { library } from './library';
+import { explainTeam, memberPhrase } from '../../../core/rules/teamExplain';
 
 export const METHOD = 'ZZZ Kit Check method (docs/logic/zzz-method.md)';
 /** Partners kept per damage dealer before trios are tried, once the pool is bigger than this (method: Line-ups step 2). */
@@ -59,6 +60,8 @@ function findBest(dd: string, pool: string[], lib: Library, account: Account): S
   return best;
 }
 
+const asExplain = (r: SquadResult) => ({ members: r.order, dd: r.dd, count: r.count, lines: r.lines });
+
 const ownedRead = (a: TeamAccount, lib: Library) => [...lib.sheets.keys()].filter((id) => a.owned(id));
 
 function reasonOf(l: Line, lib: Library): TeamReason {
@@ -109,6 +112,7 @@ export function verdict(members: string[], a: TeamAccount, lib: Library = librar
     bestMembers: top.order,
     order: mine.order,
     reasons: mine.lines.map((l) => reasonOf(l, lib)),
+    explain: explainTeam({ members: mine.order, dd: mine.dd, count: mine.count, lines: mine.lines }, { members: top.order, dd: top.dd, count: top.count, lines: top.lines }, name),
     notes: [summary(mine), ...notes],
   };
 }
@@ -199,7 +203,9 @@ export function ifYouPull(id: string, a: TeamAccount, lib: Library = library()):
     const withAll = bestFor(id, all, lib, account);
     if (withYours && withAll && withAll.count > 0) {
       const p = Math.max(0, Math.round((withYours.count / withAll.count) * 100));
-      why.push(`As a damage dealer: ${withYours.order.map(name).join(' > ')} counts ${withYours.count} from your agents, against ${withAll.count} with every agent (${p}%).`);
+      why.push(
+        `As a damage dealer: your best squad for them is ${withYours.order.map(name).join(' > ')} (${withYours.count} points; the best with every agent is ${withAll.count}, so ${p}%). There ${memberPhrase(asExplain(withYours), id, name)}.`,
+      );
       percent = Math.max(percent, p);
     }
   }
@@ -210,7 +216,9 @@ export function ifYouPull(id: string, a: TeamAccount, lib: Library = library()):
     if (!lifted || !possible || possible.count <= 0 || !lifted.order.includes(id)) continue;
     if (lifted.count > (now?.count ?? 0)) {
       const p = Math.round((lifted.count / possible.count) * 100);
-      why.push(`As a teammate: ${name(dd)} goes from ${now?.count ?? 0} to ${lifted.count} (${lifted.order.map(name).join(' > ')}); ${name(dd)}'s best possible is ${possible.count} (${p}%).`);
+      why.push(
+        `As a teammate: ${name(dd)}'s best squad of yours goes from ${now?.count ?? 0} to ${lifted.count} points (${lifted.order.map(name).join(' > ')}; the most possible is ${possible.count}, so ${p}%). ${name(id)} ${memberPhrase(asExplain(lifted), id, name)}.`,
+      );
       percent = Math.max(percent, p);
     }
   }
