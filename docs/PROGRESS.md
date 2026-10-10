@@ -33,6 +33,12 @@ Resume with: "continue from PROGRESS.md". Newest entry on top. Older entries:
   ones, Ethereal Dune and Amber Mirage, each from the owner's palette with its own background art and emblem
   (`src/core/theme/tokens-themes.css`, `ThemeArt.tsx`, `themes.ts`). Same contrast tests as the first six
   (tests/themes.test.ts) and the theme accessibility browser test; the six existing themes look the same.
+- 2026-10-10 · **FRAME: GitHub tidy and README** (branch `frame/tidy-readme`, owner job T24).
+  `docs/README.md` sorts every doc by what you'd open it for (files stay where they are:
+  code, migrations and the chats' rules point at them). README brought up to date
+  (HoYoLAB ticks, builds, Enhanced / Potential, themes, owner console, five chats) with
+  fresh screenshots. A stray `preview.log` removed and `*.log` ignored. Merged branches
+  are auto-deleted by GitHub; two stale ones are left for the owner to delete.
 - 2026-10-10 · **FRAME: live banner art the same size; HoYoLAB ticks dailies** (branch `frame/owner-jobs-1`, owner jobs T16, T22).
   Today's live banners: every card is the same height, so every art box is the same
   size and crops the same way (titles stop at two lines). Each live stamina read now
