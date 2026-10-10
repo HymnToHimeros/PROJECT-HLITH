@@ -28,19 +28,12 @@ Resume with: "continue from PROGRESS.md". Newest entry on top. Older entries:
 - CI (`.github/workflows/ci.yml`) runs both on every pull request.
 
 ## Done
-- 2026-10-10 · **LOGIC-CORE: team suggestions from your account (T18, step 1)** (branch `logic-core/account-fits`).
-  Who fits takes options: by default only characters you own, ranked by the team's %,
-  counting your Eidolons / Mindscapes and Enhanced / Agent Potential; "include characters
-  I don't own" adds the rest as theory. Each suggestion says what came from your account
-  ("E2 counted", "Enhanced kit: not saved, scored without it", "Weapon in your build: …,
-  its effect isn't counted yet"). Next: signature weapon effects read into the cheat sheets.
-- 2026-10-10 · **LOGIC-CORE: scores explain themselves in plain words (T17)** (branch `logic-core/plain-reasons`).
-  Every team's "Why" now opens with a sentence (who deals the damage, who connects
-  with their kit), one line per member (what they give the damage dealer, what they
-  set off, points), and "To reach 100%" (points lost, the best team found and what
-  its members would bring). The kit lines that prove it are one tap below. "If you
-  pull" says what the character would give; Kit check notes are full sentences
-  (who gets it, when it's on, what it sets off, what you must do). Both games.
+- 2026-10-10 · **FRAME: GitHub tidy and README** (branch `frame/tidy-readme`, owner job T24).
+  `docs/README.md` sorts every doc by what you'd open it for (files stay where they are:
+  code, migrations and the chats' rules point at them). README brought up to date
+  (HoYoLAB ticks, builds, Enhanced / Potential, themes, owner console, five chats) with
+  fresh screenshots. A stray `preview.log` removed and `*.log` ignored. Merged branches
+  are auto-deleted by GitHub; two stale ones are left for the owner to delete.
 - 2026-10-10 · **FRAME: live banner art the same size; HoYoLAB ticks dailies** (branch `frame/owner-jobs-1`, owner jobs T16, T22).
   Today's live banners: every card is the same height, so every art box is the same
   size and crops the same way (titles stop at two lines). Each live stamina read now
