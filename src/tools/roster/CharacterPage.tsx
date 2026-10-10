@@ -504,6 +504,7 @@ function Materials({
           ))}
         </>
       )}
+      {real?.needs.known && game.rules.materialsNote && <span className={r.muted}>{game.rules.materialsNote}</span>}
       {openFarm && (
         <button type="button" className={r.linkButton} onClick={openFarm}>
           {farming ? 'Open Farm →' : 'Plan it in Farm →'}

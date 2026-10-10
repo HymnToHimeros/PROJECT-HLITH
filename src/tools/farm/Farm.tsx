@@ -103,6 +103,14 @@ export function Farm({ games, openRoster }: Props) {
             <section className={f.card} aria-label="Materials">
               <h3 className={f.cardTitle}>Materials</h3>
               {plans.flatMap((p) => p.rows.map((row) => <MaterialRow key={`${p.g.game.id}:${row.material}`} plan={p} row={row} several={several} />))}
+              {plans
+                .filter((p) => p.chosen.length > 0 && p.amountsKnown && p.g.game.rules.materialsNote)
+                .map((p) => (
+                  <span key={`note-${p.g.game.id}`} className={f.sub}>
+                    {several ? `${p.g.game.short}: ` : ''}
+                    {p.g.game.rules.materialsNote}
+                  </span>
+                ))}
               {plans.every((p) => p.rows.length === 0) && (
                 <span className={f.sub}>
                   <NoData dash={false} /> Material amounts for {plans.filter((p) => !p.amountsKnown && p.chosen.length > 0).map((p) => p.g.game.name).join(' and ') || 'these games'} aren’t in HLITH yet. That part is on us, not you.

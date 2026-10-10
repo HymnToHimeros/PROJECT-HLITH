@@ -211,6 +211,8 @@ export interface GameDataLoaders {
 /** Game maths. Every member is optional: absent = that feature shows "No data yet". */
 export interface GameRules {
   materialsFor?: (characterId: string, from: BuildLevel, to: BuildLevel) => MaterialNeed[];
+  /** What the material amounts include or leave out, in plain words (shown with them). */
+  materialsNote?: string;
   scoreBuild?: (build: CharacterBuild) => Known<{ score: number; grade: string }>;
   /** Team scoring from kits (LOGIC-CORE). Every score explains itself with kit text. */
   teams?: TeamRules;

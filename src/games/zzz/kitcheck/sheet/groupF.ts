@@ -12,12 +12,11 @@
  *   'anomaly-dmg' limited to Wind characters (attribute id 'windbite'), as
  *   Assault buffs are limited to Physical.
  * - Aria, Nangong Yu and Sunna all give "+50 ATK" from Ether Veil: Delusion
- *   Reprise. No text says it "does not stack" (Aria's only says re-activating
- *   it cancels an existing instance), so there is no noStack key: it counts
- *   once per giver, the method's known "same stat twice" limit.
- * - Pulchra's Binding Trap raises only Aftershock DMG. No damage dealer's kit
- *   deals Aftershock (only Pulchra, Yuzuha, Lucia and Ju Fufu), so it is team
- *   support ('own-damage'); her Mindscape 6 makes it all DMG ('dmg-taken').
+ *   Reprise. Re-activating it cancels an existing instance, so its +50 ATK
+ *   counts once (noStack 'delusion-reprise-atk', decision 39).
+ * - Pulchra's Binding Trap raises only Aftershock DMG ('aftershock-dmg':
+ *   counts for Soldier 0 - Anby and Orphie & Magus, decision 49); her
+ *   Mindscape 6 makes it all DMG ('dmg-taken').
  * - Nangong Yu's line about Aria needs Aria herself in the squad; profiles
  *   can't name a character, so that condition is unknown and never counted.
  * - Anomaly Proficiency is in a damage dealer's `uses` only when their own
@@ -1313,7 +1312,7 @@ export const pulchra: CharacterSheet = {
       quote: "After applying Binding Trap, all units' Aftershock DMG against the target is increased by 30%.",
       tag: 'Enemy: +30% Aftershock DMG taken (Binding Trap)',
       on: { another: { specialties: ['attack', 'rupture'], sameFaction: true } },
-      gives: [{ stat: 'own-damage', amount: '+30% Aftershock DMG' }],
+      gives: [{ stat: 'aftershock-dmg', amount: '+30% Aftershock DMG' }],
       to: 'enemy',
       setup: 'Nightmare Shadow, her EX Special Attack, Assist Follow-Up, Chain Attack or Ultimate hits; lasts 15s.',
     },

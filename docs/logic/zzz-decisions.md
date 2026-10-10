@@ -162,3 +162,12 @@ Each one can be changed: tell LOGIC-CORE which.
 47. **HSR character EXP is not counted yet**: neither nanoka.cc nor Yatta has
     the per-level table, and the wiki that has it blocks automated reading.
     The Farm says so instead of guessing.
+
+## Added with group H: every agent is read
+48. **Conditions can ask for an assist type** (Caesar: "another member who can
+    activate Defensive Assist"), from the profiles.
+49. **"Aftershock DMG" is a stat only some damage dealers use**, like Anomaly
+    DMG (decision 37): it counts for Soldier 0 - Anby and Orphie & Magus, whose
+    own text proves their damage is Aftershock DMG.
+50. **Pyrois's Mindscape 6 is hidden in the game data** ("Mindscape Effect
+    Hidden"); it is read when the game shows it.
