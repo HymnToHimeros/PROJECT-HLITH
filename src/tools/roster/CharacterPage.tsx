@@ -599,10 +599,10 @@ function TeamFit({ data, character: c, makePreset }: { data: RosterData; charact
       <h3 className={r.cardTitle} id="team-fit">
         Team fit
       </h3>
-      {recommended.length === 0 && mine.length === 0 && <p className={r.cardText}>No preset uses this {game.terms.character.toLowerCase()} yet.</p>}
+      {recommended.length === 0 && mine.length === 0 && <p className={r.cardText}>No team uses this {game.terms.character.toLowerCase()} yet.</p>}
       {recommended.length === 0 && mine.length === 0 && makePreset && (
         <button type="button" className={r.linkButton} onClick={makePreset}>
-          Make a preset with them →
+          Make a team with them →
         </button>
       )}
       {mine.map((t) => (

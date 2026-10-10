@@ -28,6 +28,12 @@ Resume with: "continue from PROGRESS.md". Newest entry on top. Older entries:
 - CI (`.github/workflows/ci.yml`) runs both on every pull request.
 
 ## Done
+- 2026-10-10 · **FRAME: My teams at the top of Teams** (branch `frame/my-teams`, owner job T18).
+  The team builder existed but sat under 146 recommended teams and was called "presets".
+  Now "My teams" comes first in Roster → Teams with "Make a team" (and "Make my first
+  team" in the empty card); "preset" is "team" everywhere. Your own teams get the same
+  synergy % and Why as recommended ones; edit, share, delete with Undo as before.
+  Fixed a test that read the Characters grid before it redrew (leaked.test.tsx).
 - 2026-10-10 · **Two more chats: MANAGER and ERROR-FIX** (branch `frame/manager-error-fix`).
   `docs/WORKSTREAMS.md`: rules 7–8, both in Who's who, a routing table (which job goes
   to which chat). `docs/briefs/MANAGER.md` (the owner's front desk: routes every

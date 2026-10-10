@@ -179,7 +179,7 @@ describe('Roster screen', () => {
     expect(within(card).getByText('or Shield Friend')).toBeInTheDocument();
     expect(within(card).queryByText('EXAMPLE')).not.toBeInTheDocument();
     // No presets of your own yet: the design's empty card.
-    expect(screen.getByText('No team presets yet')).toBeInTheDocument();
+    expect(screen.getByText('No teams of your own yet')).toBeInTheDocument();
   });
 
   it('without presets, Teams shows example presets with example scores and an honest notice', async () => {
@@ -195,12 +195,12 @@ describe('Roster screen', () => {
     setRosterEntry('aa', 'c1', { owned: true, wanted: false, dupes: 0 });
     setRosterEntry('aa', 'c3', { owned: true, wanted: false, dupes: 0 });
     await show('teams');
-    fireEvent.click(screen.getByRole('button', { name: 'New preset' }));
-    const sheet = await screen.findByRole('dialog', { name: 'New preset' });
+    fireEvent.click(screen.getByRole('button', { name: 'Make a team' }));
+    const sheet = await screen.findByRole('dialog', { name: 'New team' });
     fireEvent.click(within(sheet).getByRole('button', { name: 'Newest Star, owned' }));
     fireEvent.click(within(sheet).getByRole('button', { name: 'Helper, owned' }));
     await act(async () => {
-      fireEvent.click(within(sheet).getByRole('button', { name: 'Save preset' }));
+      fireEvent.click(within(sheet).getByRole('button', { name: 'Save team' }));
     });
     expect(gameData('aa').teams).toHaveLength(1);
     expect(gameData('aa').teams[0]?.members).toEqual(['c1', 'c3']);
@@ -210,8 +210,8 @@ describe('Roster screen', () => {
     setRosterEntry('aa', 'c3', { owned: true, wanted: false, dupes: 0 });
     setRosterEntry('aa', 'c2', { owned: false, wanted: true, dupes: 0 });
     await show('teams');
-    fireEvent.click(screen.getByRole('button', { name: 'New preset' }));
-    const sheet = await screen.findByRole('dialog', { name: 'New preset' });
+    fireEvent.click(screen.getByRole('button', { name: 'Make a team' }));
+    const sheet = await screen.findByRole('dialog', { name: 'New team' });
     const list = () =>
       within(within(sheet).getByRole('list', { name: 'Characters to pick' }))
         .getAllByRole('button')
@@ -220,14 +220,14 @@ describe('Roster screen', () => {
     fireEvent.click(within(sheet).getByRole('button', { name: 'Show all (2 more, not owned)' }));
     expect(list()).toEqual(['Helper, owned', 'Older Star, wanted · not owned', 'Newest Star, not owned', 'Shield Friend, not owned']);
     fireEvent.click(within(sheet).getByRole('button', { name: 'Newest Star, not owned' }));
-    fireEvent.click(within(sheet).getByRole('button', { name: 'Save preset' }));
+    fireEvent.click(within(sheet).getByRole('button', { name: 'Save team' }));
     expect(gameData('aa').teams[0]?.members).toEqual(['c1']);
   });
 
   it('owning nobody is no dead end: the editor still lists everyone to pick from', async () => {
     await show('teams');
-    fireEvent.click(screen.getByRole('button', { name: 'New preset' }));
-    const sheet = await screen.findByRole('dialog', { name: 'New preset' });
+    fireEvent.click(screen.getByRole('button', { name: 'Make a team' }));
+    const sheet = await screen.findByRole('dialog', { name: 'New team' });
     expect(within(sheet).getByText(/You haven’t marked anyone as owned yet/)).toBeInTheDocument();
     fireEvent.click(within(sheet).getByRole('button', { name: 'Show all (4 more, not owned)' }));
     expect(within(sheet).getByRole('button', { name: 'Helper, not owned' })).toBeInTheDocument();
@@ -238,8 +238,8 @@ describe('Roster screen', () => {
     await show('teams');
     const card = screen.getByRole('article', { name: 'My team' });
     fireEvent.click(within(card).getByRole('button', { name: 'Edit' }));
-    const sheet = await screen.findByRole('dialog', { name: 'Edit preset' });
-    fireEvent.click(within(sheet).getByRole('button', { name: 'Delete preset' }));
+    const sheet = await screen.findByRole('dialog', { name: 'Edit team' });
+    fireEvent.click(within(sheet).getByRole('button', { name: 'Delete team' }));
     expect(gameData('aa').teams).toEqual([]);
     expect(screen.getByRole('status')).toHaveTextContent('Deleted “My team”.');
     fireEvent.click(screen.getByRole('button', { name: 'Undo' }));
@@ -250,12 +250,12 @@ describe('Roster screen', () => {
   it('"Save as my preset" on a recommended team opens the editor pre-filled; members can be changed', async () => {
     await show('teams');
     const card = screen.getByRole('article', { name: 'Fire team' });
-    fireEvent.click(within(card).getByRole('button', { name: 'Save as my preset' }));
-    const sheet = await screen.findByRole('dialog', { name: 'New preset' });
+    fireEvent.click(within(card).getByRole('button', { name: 'Save as my team' }));
+    const sheet = await screen.findByRole('dialog', { name: 'New team' });
     expect(within(sheet).getByLabelText('Preset name')).toHaveValue('Fire team');
     expect(within(sheet).getByRole('button', { name: 'Newest Star, not owned' })).toHaveAttribute('aria-pressed', 'true');
     fireEvent.click(within(sheet).getByRole('button', { name: 'Older Star, not owned' }));
-    fireEvent.click(within(sheet).getByRole('button', { name: 'Save preset' }));
+    fireEvent.click(within(sheet).getByRole('button', { name: 'Save team' }));
     expect(gameData('aa').teams[0]).toMatchObject({ name: 'Fire team', members: ['c1', 'c3'] });
   });
 
@@ -269,7 +269,7 @@ describe('Roster screen', () => {
     expect(within(pull).getByText(/^fits /)).toBeInTheDocument();
     const ideas = screen.getByRole('region', { name: 'Teams you can build' });
     fireEvent.click(within(ideas).getByRole('button', { name: /Newest Star team: \d characters away/ }));
-    const sheet = await screen.findByRole('dialog', { name: 'New preset' });
+    const sheet = await screen.findByRole('dialog', { name: 'New team' });
     expect(within(sheet).getByLabelText('Preset name')).toHaveValue('Newest Star team');
   });
 
@@ -343,8 +343,8 @@ describe('Roster screen', () => {
     render(<WithTabs />);
     await screen.findByRole('list', { name: /Characters/ });
     const page = await openPage('Shield Friend');
-    fireEvent.click(within(page).getByRole('button', { name: 'Make a preset with them →' }));
-    const sheet = await screen.findByRole('dialog', { name: 'New preset' });
+    fireEvent.click(within(page).getByRole('button', { name: 'Make a team with them →' }));
+    const sheet = await screen.findByRole('dialog', { name: 'New team' });
     expect(within(sheet).getByRole('button', { name: 'Shield Friend, not owned' })).toHaveAttribute('aria-pressed', 'true');
   });
 
@@ -512,7 +512,7 @@ describe('Roster screen', () => {
     expect(within(card).getByText(/Helper · Squad: \+40% DMG/)).toBeInTheDocument();
     expect(within(card).getByText(/Additional Ability: Glow: “DMG dealt is increased by 40%”/)).toBeInTheDocument();
     // Ideas come from the rules too: Line-ups and If you pull, no examples.
-    expect(screen.getByRole('button', { name: 'Newest Star, Helper: count 4. Make it a preset' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Newest Star, Helper: count 4. Make it my team' })).toBeInTheDocument();
     expect(screen.getAllByText('75%').length).toBeGreaterThan(0);
   });
 
