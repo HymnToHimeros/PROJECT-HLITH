@@ -335,6 +335,34 @@ export function GameSettingsPage({ games, allGames, now, focus, onBack }: { game
   );
 }
 
+/**
+ * Account → Example data: one switch that hides every example everywhere, so only your
+ * own data and the games' real lists show, and brings them back again. It only changes
+ * what's on screen: nothing you entered is touched either way.
+ */
+export function ExamplesPage() {
+  const prefs = usePrefs();
+  const shown = !prefs.hideExamples;
+  return (
+    <>
+      <Card title="Example data">
+        <p className={a.small}>
+          While a list is still empty, HLITH shows clearly marked examples (with an EXAMPLE badge) so you can see what each screen does. Hide them to work only with your
+          own data: empty places then say “No data yet”. Show them again any time to get the examples back.
+        </p>
+        <Switch
+          label="Show example data"
+          hint={shown ? 'On: examples fill the places that have no data yet.' : 'Off: only your own data and the games’ real lists. Empty places say “No data yet”.'}
+          checked={shown}
+          onChange={(on) => updatePrefs((p) => ({ ...p, hideExamples: !on }))}
+        />
+        <p className={a.small}>Nothing you entered is changed or removed either way: this only switches what you see.</p>
+      </Card>
+      <HowTo steps={['Switch “Show example data” off to hide every example on every screen.', 'Fill in your own data; it shows exactly as it will stay.', 'Switch it on again to see the examples next to empty places.']} />
+    </>
+  );
+}
+
 export function ThemePage() {
   const theme = usePrefs().theme ?? 'dark';
   const options = [

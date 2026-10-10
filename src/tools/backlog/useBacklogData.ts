@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import type { BacklogItem, GameContract } from '../../core/contract';
+import { useExamplesShown } from '../../core/data/prefs';
 import { useGameData, type GameUserData } from '../../core/data/userData';
 import { exampleBacklog } from './examples';
 import { useWithOwnItems } from '../edit-mode/useWithOwnItems';
@@ -15,6 +16,7 @@ export interface BacklogData {
 
 export function useBacklogData(game: GameContract): BacklogData {
   const user = useGameData(game.id);
+  const showExamples = useExamplesShown();
   const [list, setList] = useState<BacklogItem[] | null>(null);
 
   useEffect(() => {
@@ -31,7 +33,7 @@ export function useBacklogData(game: GameContract): BacklogData {
   const items = useWithOwnItems(game, 'backlog', list ?? NO_ITEMS);
   return {
     user,
-    items: items.length ? { list: items, example: false, exampleDone: {} } : { list: examples.items, example: true, exampleDone: examples.done },
+    items: items.length || !showExamples ? { list: items, example: false, exampleDone: {} } : { list: examples.items, example: true, exampleDone: examples.done },
     loading: list === null,
   };
 }

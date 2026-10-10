@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import type { Banner, Character, GameContract, PullRecord, Version } from '../../core/contract';
 import type { Known } from '../../core/contract/known';
+import { useExamplesShown } from '../../core/data/prefs';
 import { balances, useGameData, type GameUserData } from '../../core/data/userData';
 import { backlogForBudget, categories, type CategoryView } from '../backlog/backlog';
 import { useBacklogData } from '../backlog/useBacklogData';
@@ -19,7 +20,8 @@ export interface PullsData {
   banners: { list: Banner[]; example: boolean };
   bank: { value: Known<Record<string, number>>; example: boolean };
   history: { list: PullRecord[]; example: boolean };
-  versionEnd: { at: number; example: boolean };
+  /** null = unknown (no version list, and examples are hidden in Account → Example data). */
+  versionEnd: { at: number | null; example: boolean };
   /** Events and Backlog progress for the budget, up to a date. Only real lists count, never examples. */
   budgetExtras: (until: number) => Partial<BudgetInput>;
   /** Modules whose rewards aren't counted because their lists are still examples. */
@@ -29,9 +31,10 @@ export interface PullsData {
   loading: boolean;
 }
 
-/** Everything the Pulls tabs need for one game, with examples filling the gaps. */
+/** Everything the Pulls tabs need for one game, with examples filling the gaps (unless hidden in Account → Example data). */
 export function usePullsData(game: GameContract, now: number): PullsData {
   const user = useGameData(game.id);
+  const showExamples = useExamplesShown();
   const [lists, setLists] = useState<{
     characters: Character[];
     banners: Banner[];
@@ -64,10 +67,10 @@ export function usePullsData(game: GameContract, now: number): PullsData {
   return {
     user,
     characters,
-    banners: ownBanners.length ? { list: ownBanners, example: false } : { list: exampleBannerSchedule(game, characters, now, lists?.withArt), example: true },
-    bank: realBank.known ? { value: realBank, example: false } : { value: exampleBank(game), example: true },
-    history: user.pulls.length ? { list: user.pulls, example: false } : { list: exampleHistory(game, characters, now), example: true },
-    versionEnd: current ? { at: Date.parse(current.end), example: false } : { at: exampleVersionEnd(now), example: true },
+    banners: ownBanners.length || !showExamples ? { list: ownBanners, example: false } : { list: exampleBannerSchedule(game, characters, now, lists?.withArt), example: true },
+    bank: realBank.known || !showExamples ? { value: realBank, example: false } : { value: exampleBank(game), example: true },
+    history: user.pulls.length || !showExamples ? { list: user.pulls, example: false } : { list: exampleHistory(game, characters, now), example: true },
+    versionEnd: current ? { at: Date.parse(current.end), example: false } : showExamples ? { at: exampleVersionEnd(now), example: true } : { at: null, example: false },
     budgetExtras,
     notCounted,
     backlogCats,

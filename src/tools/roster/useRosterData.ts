@@ -1,5 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import type { Character, GameContract, GameId, Kit, SampleArt, TeamPreset } from '../../core/contract';
+import { useExamplesShown } from '../../core/data/prefs';
 import type { GameUserData } from '../../core/data/userData';
 import { examplePresets } from './examples';
 
@@ -50,7 +51,15 @@ export function useRosterLists(games: GameContract[]): Record<GameId, RosterList
       alive = false;
     };
   }, [games]);
-  return state && state.key === key ? state.value : null;
+  const showExamples = useExamplesShown();
+  return useMemo(() => {
+    if (!state || state.key !== key) return null;
+    if (showExamples) return state.value;
+    // Examples hidden (Account → Example data): example teams give way to "No data yet".
+    return Object.fromEntries(
+      Object.entries(state.value).map(([id, l]) => [id, l.presets.example ? { ...l, presets: { list: [], example: false } } : l]),
+    ) as Record<GameId, RosterLists>;
+  }, [state, key, showExamples]);
 }
 
 // Kit lists can be large, so each game's is loaded once, only when Kit check is shown.

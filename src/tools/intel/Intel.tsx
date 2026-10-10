@@ -1,5 +1,6 @@
 import { useState, type CSSProperties } from 'react';
 import type { GameContract, GameId } from '../../core/contract';
+import { useExamplesShown } from '../../core/data/prefs';
 import { formatDate } from '../../core/time/reset';
 import { EmptyState, ExampleNotice, ExampleTag, GameTag, NoData, Timer } from '../../core/ui';
 import type { GameLists } from '../today/lists';
@@ -25,11 +26,12 @@ const REL: Record<Reliability, { label: string; pct: number }> = { high: { label
 export function Intel({ games, lists, now }: Props) {
   const [kind, setKind] = useState<IntelKind | 'all'>('all');
   const several = games.length > 1;
+  const showExamples = useExamplesShown();
   const examples: GameContract[] = [];
   const rows: Row[] = games.flatMap((game): Row[] => {
     const l = lists[game.id];
     const real = l ? intelItems(game, l.characters, l.banners, now) : [];
-    if (real.length) return real.map((item) => ({ game, item, example: false }));
+    if (real.length || !showExamples) return real.map((item) => ({ game, item, example: false }));
     examples.push(game);
     return exampleIntel(game, now).map((item) => ({ game, item, example: true }));
   });
@@ -52,6 +54,7 @@ export function Intel({ games, lists, now }: Props) {
           </button>
         ))}
       </div>
+      {rows.length === 0 && <EmptyState title="Nothing upcoming listed yet" body="New characters, banners and content appear here, marked unverified, once the game’s lists are added. That part is on us, not you." />}
       <ul className={n.list} aria-label="Upcoming">
         {shown.map((r) => (
           <li key={`${r.game.id}:${r.item.id}`}>

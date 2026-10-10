@@ -12,10 +12,10 @@ import a from './account.module.css';
 import { Guide } from './Guide';
 import pg from './page.module.css';
 import { ProfileSection } from './Profile';
-import { BackupPage, GameSettingsPage, SignInPage, SyncPage, syncSub, ThemePage } from './sections';
+import { BackupPage, ExamplesPage, GameSettingsPage, SignInPage, SyncPage, syncSub, ThemePage } from './sections';
 import { SetupChecklist } from './SetupChecklist';
 
-export type SectionId = 'profile' | 'sync' | 'backup' | 'notifications' | 'game-settings' | 'connections' | 'guide' | 'layout' | 'theme' | 'owner' | 'sign-in';
+export type SectionId = 'profile' | 'sync' | 'backup' | 'notifications' | 'game-settings' | 'examples' | 'connections' | 'guide' | 'layout' | 'theme' | 'owner' | 'sign-in';
 
 export interface SectionDef {
   id: SectionId;
@@ -30,6 +30,7 @@ export function sectionsFor({ isOwner, signedIn }: { isOwner: boolean; signedIn:
     { id: 'backup', label: 'Backup' },
     { id: 'notifications', label: 'Notifications' },
     { id: 'game-settings', label: 'Game settings' },
+    { id: 'examples', label: 'Example data' },
     { id: 'connections', label: 'Connected accounts' },
     { id: 'guide', label: 'Guide' },
     { id: 'layout', label: 'Layout' },
@@ -71,6 +72,7 @@ export default function AccountPage(props: PanelProps) {
     backup: days === null ? 'No backup yet' : days >= BACKUP_EVERY_DAYS ? 'Time for a new one' : `Last ${days === 0 ? 'today' : `${days}d ago`}`,
     notifications: prefs.notify?.enabled ? `Evening at ${prefs.notify.time}` : undefined,
     theme: prefs.theme === 'light' ? 'Light' : 'Dark',
+    examples: prefs.hideExamples ? 'Hidden' : 'Shown',
   };
 
   let body: ReactNode;
@@ -89,6 +91,9 @@ export default function AccountPage(props: PanelProps) {
       break;
     case 'game-settings':
       body = <GameSettingsPage games={games} allGames={props.allGames} now={now} focus={props.detail} onBack={cameFromApp() ? () => window.history.back() : undefined} />;
+      break;
+    case 'examples':
+      body = <ExamplesPage />;
       break;
     case 'connections':
       body = <LinkAccounts games={games} />;

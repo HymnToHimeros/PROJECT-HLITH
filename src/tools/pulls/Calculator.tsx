@@ -26,6 +26,23 @@ interface Props {
  * total and say why. A second card compares free vs paid income (V1 feature).
  */
 export function Calculator({ game, data, serverId, now, tagged, openModule }: Props) {
+  if (data.versionEnd.at === null) {
+    // No version list and examples hidden: the budget has no end date to count to.
+    return (
+      <div className={p.calcGrid} style={{ '--vent': game.vent } as CSSProperties}>
+        <section className={p.card} aria-label="Budget to version end">
+          <div className={p.calcHead}>
+            <h3 className={p.cardTitle}>Budget to version end</h3>
+            {tagged && <GameTag label={game.short} vent={game.vent} />}
+          </div>
+          <span className={p.range}>
+            Version end: <NoData dash={false} />
+          </span>
+          <p className={p.small}>The budget counts every source of pulls up to the version end. It appears as soon as {game.short}’s version list is added.</p>
+        </section>
+      </div>
+    );
+  }
   const until = data.versionEnd.at;
   const input = (paidExtras: boolean): BudgetInput => ({
     game,

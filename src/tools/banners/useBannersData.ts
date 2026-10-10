@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import type { Banner, Character, GameContract, SampleArt } from '../../core/contract';
+import { useExamplesShown } from '../../core/data/prefs';
 import { useGameData, type GameUserData } from '../../core/data/userData';
 import { exampleBanners } from './examples';
 import { useWithOwnItems } from '../edit-mode/useWithOwnItems';
@@ -19,6 +20,7 @@ export interface BannersData {
 /** Everything the Banners screen needs for one game. */
 export function useBannersData(game: GameContract, now: number): BannersData {
   const user = useGameData(game.id);
+  const showExamples = useExamplesShown();
   const [lists, setLists] = useState<{ characters: Character[]; banners: Banner[]; art: SampleArt[] } | null>(null);
 
   useEffect(() => {
@@ -37,7 +39,7 @@ export function useBannersData(game: GameContract, now: number): BannersData {
   return {
     user,
     characters: new Map(characters.map((c) => [c.id, c])),
-    banners: banners.length ? { list: banners, example: false } : { list: exampleBanners(game, characters, now, art.map((a) => a.characterId)), example: true },
+    banners: banners.length || !showExamples ? { list: banners, example: false } : { list: exampleBanners(game, characters, now, art.map((a) => a.characterId)), example: true },
     sampleArt: new Map(art.map((a) => [a.characterId, a.art])),
     loading: lists === null,
   };

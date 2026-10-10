@@ -25,7 +25,7 @@ for (const scope of ['all', 'hsr', 'zzz']) {
 }
 
 // The Account page (/account/<section>): every section, plus Profile in edit mode.
-const ACCOUNT_SECTIONS = ['', 'sync', 'backup', 'notifications', 'game-settings', 'connections', 'guide', 'layout', 'theme', 'sign-in'];
+const ACCOUNT_SECTIONS = ['', 'sync', 'backup', 'notifications', 'game-settings', 'examples', 'connections', 'guide', 'layout', 'theme', 'sign-in'];
 
 test('no serious accessibility problems · account', async ({ page }) => {
   test.setTimeout(180_000);

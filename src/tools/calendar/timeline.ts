@@ -48,14 +48,16 @@ interface Input {
   now: number;
   from: number;
   to: number;
+  /** Fill empty lanes with examples (Account → Example data). Default on. */
+  examples?: boolean;
 }
 
-export function gameTimeline({ game, serverId, characters, banners, events, versions, now, from, to }: Input): GameTimeline {
+export function gameTimeline({ game, serverId, characters, banners, events, versions, now, from, to, examples: showExamples = true }: Input): GameTimeline {
   const spans: Span[] = [];
   const inWindow = (s: number, e: number) => e > from && s < to;
 
   // Banners: the game's list, or examples (with one leak to show how leaks look).
-  const bannerList = banners.length ? banners : exampleBanners(game, characters, now);
+  const bannerList = banners.length || !showExamples ? [...banners] : exampleBanners(game, characters, now);
   const exBanners = banners.length === 0 && bannerList.length > 0;
   if (exBanners) {
     const lastEnd = Math.max(...bannerList.map((b) => Date.parse(b.end)), now);
@@ -68,8 +70,8 @@ export function gameTimeline({ game, serverId, characters, banners, events, vers
   }
 
   // Events and endgame: endgame comes from endgame events, else from cycle rows with a known start, else examples.
-  const eventList = events.length ? events : exampleEvents(game, now);
-  const exEvents = events.length === 0;
+  const eventList = events.length || !showExamples ? events : exampleEvents(game, now);
+  const exEvents = events.length === 0 && showExamples;
   for (const e of eventList) {
     spans.push({ id: `event:${e.id}`, game, lane: e.kind === 'endgame' ? 'endgame' : 'events', title: e.title, start: Date.parse(e.start), end: Date.parse(e.end), leak: e.leak, example: exEvents });
   }
@@ -83,13 +85,13 @@ export function gameTimeline({ game, serverId, characters, banners, events, vers
         spans.push({ id: `cycle:${row.id}:${s}`, game, lane: 'endgame', title: row.label, start: s, end: s + len, example: false });
       }
     }
-    const examples = exampleCycles(game, now);
+    const examples = showExamples ? exampleCycles(game, now) : [];
     exEndgame = examples.length > 0;
     for (const c of examples) spans.push({ id: c.id, game, lane: 'endgame', title: c.title, start: c.start, end: c.end, example: true });
   }
 
   // Versions.
-  const exVersion = versions.length === 0;
+  const exVersion = versions.length === 0 && showExamples;
   if (exVersion) {
     const end = exampleVersionEnd(now);
     spans.push({ id: 'version:example-current', game, lane: 'version', title: 'Current version', start: end - 42 * DAY, end, example: true });

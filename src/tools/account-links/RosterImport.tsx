@@ -9,6 +9,7 @@ import { askHoyolab, hoyolabLink, type HoyoAccount, type HoyoCharacter, type Hoy
 import { HoyolabSteps, PasteLogin } from './HoyolabLogin';
 import { applyImport, planImport, type ImportRow } from './rosterImport';
 import { useAccounts } from './useAccounts';
+import { useExamplesShown } from '../../core/data/prefs';
 
 /** The game's character list, loaded once. */
 export function useCharacters(game: GameContract): Character[] | null {
@@ -282,6 +283,8 @@ function Rows({ game, rows }: { game: GameContract; rows: ImportRow[] }) {
 /** Before any import: what the preview looks like, built from the game's own list and marked EXAMPLE. */
 function ExamplePreview({ game }: { game: GameContract }) {
   const characters = useCharacters(game);
+  const shown = useExamplesShown();
+  if (!shown) return null; // Account → Example data: off
   if (!characters || characters.length === 0) return <span className={c.muted}>No data yet: the {game.terms.character.toLowerCase()} list hasn’t loaded.</span>;
   const pick = [...characters].sort((a, b) => (a.rarity === b.rarity ? a.name.localeCompare(b.name) : a.rarity === 'top' ? -1 : 1)).slice(0, 4);
   const statuses: ImportRow['status'][] = ['new', 'update', 'same', 'new'];

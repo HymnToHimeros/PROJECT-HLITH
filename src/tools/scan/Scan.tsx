@@ -5,6 +5,7 @@ import { BottomSheet, Button, ExampleTag, HowTo, Segmented } from '../../core/ui
 import c from '../account-links/connections.module.css';
 import { useCharacters } from '../account-links/RosterImport';
 import { checkValues, fieldsFor, saveScan, type ScanReader, type ScanValues } from './scan';
+import { useExamplesShown } from '../../core/data/prefs';
 
 /**
  * Roster → ONE "Scan a screenshot" button for every game in view. The sheet asks
@@ -49,6 +50,7 @@ export function ScanEntry({ games, reader }: { games: GameContract[]; reader?: S
  * then save. Manual entry works now; "Read it for me" needs the Assistant key.
  */
 export function Scan({ game, reader, characterId }: { game: GameContract; reader?: ScanReader | undefined; characterId?: string }) {
+  const showExamples = useExamplesShown();
   const id = useId();
   const characters = useCharacters(game);
   const roster = useGameData(game.id).roster;
@@ -215,7 +217,7 @@ export function Scan({ game, reader, characterId }: { game: GameContract; reader
         )}
       </form>
 
-      {!url && (
+      {!url && showExamples && (
         <div className={`${c.notBuilt}`}>
           <span className={c.row}>
             <ExampleTag /> <span className={c.label}>What a reading looks like</span>
