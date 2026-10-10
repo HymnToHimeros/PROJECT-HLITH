@@ -53,3 +53,46 @@ A saved build always wins; characters you don't own are never assumed; with the
 switch off nothing changes ("no build saved, scored at base"). Code:
 `src/core/rules/averageBuild.ts`, each game's `assumed.ts`; tests in
 `tests/averageBuild.test.ts`.
+## Target stats (owner's job T35, both games)
+
+The owner: "the best or remconded stats each ahcrhter should end up with in the
+end for the roaster charchter profile thing so like u know what to build
+towards." The numbers had to be found, not handed over, and every one needs a
+source. So a target is shown **only when the game text states it**:
+
+1. **The character's kit** (traces, talents, Eidolons / Mindscapes, core
+   passives). Example: Jiaoqiu's "For every 15% of Jiaoqiu's Effect Hit Rate that
+   exceeds 80%, additionally increases ATK by 60%, up to 240%". The bonus is at
+   its maximum at 80% + 4 × 15% = **140% Effect Hit Rate**.
+2. **Their signature weapon.** Example: Ruan Mei's Past Self in Mirror,
+   "Break Effect exceeds or equals 150%".
+3. **The sets the game recommends for them.** Example: Glamoth "SPD is equal to
+   or higher than 135/160".
+
+Each target shows:
+- the stat;
+- the number, with its steps, and whether the text says "initial" or "current";
+- what reaching it does;
+- the source;
+- the quote, word for word (a test checks every quote against the game data);
+- the working, when the number isn't written as is;
+- when it applies (Enhanced kit, E6, Core Skill level 7, "with their signature
+  equipped", "with <set>").
+
+When the text gives a start and no cap, the target reads "above X (no cap in the
+text)". When the game text gives no number for a character, there are no rows and
+the page says "No data yet". The game's recommended main and sub stats are shown
+as a **direction** with no numbers. No community numbers are used.
+
+**You:** the saved build's `totals`, i.e. the character's stat screen, from the
+scan, HoYoLAB or typed in. Without totals, "you" is "No data yet".
+
+Not covered yet, because the text gives no number: CRIT Rate caps from traces,
+SPD breakpoints from the turn formula, Energy Regen for an Ultimate every N
+turns, and Effect Hit Rate against enemy Effect RES. These need maths or numbers
+the app can't cite yet; each can be added later with its working shown.
+
+Code:
+- `src/core/rules/statTargets.ts`;
+- each game's `statTargets.ts` (the read facts);
+- tests in `tests/statTargets.test.ts`.

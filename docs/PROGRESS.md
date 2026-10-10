@@ -28,6 +28,12 @@ Resume with: "continue from PROGRESS.md". Newest entry on top. Older entries:
 - CI (`.github/workflows/ci.yml`) runs both on every pull request.
 
 ## Done
+- 2026-10-10 · **LOGIC-CORE: target stats to build towards (T35)** (branch `logic-core/stat-targets`).
+  Each character page can show the end stats to aim for, only where the game text states a number:
+  their kit (e.g. Jiaoqiu 140% Effect Hit Rate, Lucia 24,000 initial Max HP), their signature weapon,
+  and the sets the game recommends for them. Each one has its quote word for word and the working,
+  and a test checks every quote against the game data. No number in the text = "No data yet". "You"
+  comes from the saved build's totals (FRAME adds them to the form and scan). Both games.
 - 2026-10-10 · **LOGIC-CORE: "Assume signature + average build" (T34)** (branch `logic-core/assume-average-build`).
   With the owner's switch on, an owned character with no saved build is scored in team checks with
   their signature weapon and an average build made from the game's own recommendation (recommended

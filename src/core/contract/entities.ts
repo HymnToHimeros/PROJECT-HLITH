@@ -232,6 +232,11 @@ export interface CharacterBuild {
   gear: { slot: string; main: string; subs: Record<string, number>; set?: string; rolls?: Record<string, number> }[];
   /** Skill name → level, when entered (LOGIC-CORE). */
   skills?: Record<string, number>;
+  /**
+   * The character's total stats as the game's stat screen shows them, by the game's stat names ("CRIT Rate", "SPD");
+   * % stats as plain numbers (72.5 = 72.5%). From the scan, HoYoLAB or typed in; undefined = not saved (T35).
+   */
+  totals?: Record<string, number>;
 }
 
 /** One checked part of a build score, shown on screen with how it was worked out (LOGIC-CORE). */

@@ -19,6 +19,7 @@ import versions from './data/versions.json';
 import { KITS, SHEETS } from './kitcheck/library';
 import { withTags } from './kitcheck/tags';
 import { gameTeams, hsrTeamRules } from './kitcheck/team';
+import { hsrStatTargets, TOTAL_STATS } from './statTargets';
 
 const list = <T>(rows: unknown) => async () => rows as T[];
 const COMMUNITY = 'community pull-log statistics (not published by the game)';
@@ -76,6 +77,7 @@ export const hsr: GameContract = {
     refine: { name: 'Superimposition', max: 5 },
     slots: GEAR_SLOTS,
     subStats: ['HP', 'ATK', 'DEF', 'HP %', 'ATK %', 'DEF %', 'SPD', 'CRIT Rate', 'CRIT DMG', 'Effect Hit Rate', 'Effect RES', 'Break Effect'],
+    totalStats: TOTAL_STATS,
     skills: [
       { name: 'Basic ATK', max: 7 },
       { name: 'Skill', max: 15 },
@@ -211,6 +213,8 @@ export const hsr: GameContract = {
         { levelMax: LEVEL_MAX, weaponLevelMax: 80, setSlots: SET_SLOTS },
       ),
     teams: hsrTeamRules,
+    // End stats to build towards, only from numbers the game text states (T35).
+    statTargets: hsrStatTargets,
     materialsFor,
     materialsNote: "From the game data (nanoka.cc): ascension, every skill and every Trace to max. Character EXP 1 → 80 (5,797,920, from the game's own EXP table) is counted as Traveler's Guides (20,000 EXP each).",
   },

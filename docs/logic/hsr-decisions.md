@@ -162,3 +162,6 @@ team size and order, and the owner's ZZZ method's own counting.
     switch on, owned characters with no saved build are scored with their signature weapon and an average build made
     from the game's own recommendation (rules in `build-score.md`, "Assumed builds"). It is said in the Why; a saved
     build always wins; switch off = scored at base, as before.
+35. **Target stats come only from numbers the game text states (owner's job T35, both games, ZZZ decision 59 mirrors it).**
+    Kit, signature weapon and the recommended sets' own conditions, each quoted word for word with the working shown;
+    no number in the text = "No data yet". Rules in `build-score.md`, "Target stats".
