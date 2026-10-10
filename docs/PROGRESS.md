@@ -28,6 +28,11 @@ Resume with: "continue from PROGRESS.md". Newest entry on top. Older entries:
 - CI (`.github/workflows/ci.yml`) runs both on every pull request.
 
 ## Done
+- 2026-10-10 · **LOGIC-CORE: a leak's sheet that no longer matches its beta kit is not used (T43)** (branch
+  `logic-core/stale-leak-sheets`). Beta kits change between builds and SCHEDULER re-imports them on every check. A
+  leak's sheet whose quoted lines changed (or that misses a new piece) is stale: the leak reads "not read yet" with
+  why, and its sheet test is skipped with "re-read: …" instead of failing CI. Both games. hsr-decisions 41,
+  zzz-decisions 65.
 - 2026-10-10 · **LOGIC-CORE: "Builds their teams want" follows the card and the switches (T42)** (branch
   `logic-core/build-wants-account`). The character page's build wants ask the team rules with FRAME's
   `useTeamAccount` (team lists, the assume and leak switches now count, not only roster and builds), and about the

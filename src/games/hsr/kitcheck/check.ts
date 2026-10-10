@@ -5,6 +5,7 @@
  */
 import { BUILD_STAT_WORD, BUILT_POINTS, FIT_WORD, type BuildFit, type BuildStat } from '../../../core/rules/buildFit';
 import { ownDamagePart, partOf, POINTS, sizeOf, typicalSize, value, type Part } from '../../../core/rules/kitValue';
+import { unreadWords } from '../../../core/rules/leaks';
 import { GENERAL_STATS, SPECIFIC_STATS, SUPPORT_STATS, SUSTAIN_STATS, type CharacterSheet, type Condition, type DamageKind, type Element, type Entry, type GameEventKind, type Path, type Stat } from './types';
 
 export interface Profile {
@@ -24,6 +25,8 @@ export interface Library {
   names: Map<string, string>;
   /** Leaked characters (beta kit text) and where the leak came from (T39). */
   leaks?: Map<string, string>;
+  /** Leaks whose sheet no longer matches their beta kit text (T43): not read until read again; why. */
+  stale?: Map<string, string>;
   /**
    * Who teams are built around: characters the game's own recommended teams centre on (a team's first member, or
    * the page's character when the first member can't carry). Empty = not known, every carry counts.
@@ -622,7 +625,7 @@ function withCoCarries(r: TeamResult, lib: Library, account: Account): TeamResul
 
 export function check(members: string[], lib: Library, account: Account, dd?: string): CheckOutcome {
   const unread = members.filter((id) => !lib.sheets.has(id));
-  if (unread.length) return { rated: false, why: `not rated yet: ${unread.map((id) => lib.names.get(id) ?? id).join(', ')} not read yet`, unread };
+  if (unread.length) return { rated: false, why: unreadWords(unread, (id) => lib.names.get(id) ?? id, lib.stale), unread };
   const dds = dd ? [dd] : damageDealers(members, lib);
   if (!dds.length) return { rated: false, why: 'no one in this team carries damage (no damage notes in their kits)' };
   let best: TeamResult | undefined;
