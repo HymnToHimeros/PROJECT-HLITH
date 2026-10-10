@@ -481,6 +481,46 @@ describe('Roster screen', () => {
     expect(gameData('aa').builds?.c2).toEqual(before);
   });
 
+  it('Make a team: after the first pick it suggests teammates by %, owned only by default; the switch adds the rest as theory', async () => {
+    const calls: { includeUnowned?: boolean | undefined }[] = [];
+    const base = makeGame(false);
+    const game: GameContract = {
+      ...base,
+      rules: {
+        teams: {
+          method: 'Test method',
+          rated: () => true,
+          verdict: (members) => ({ rated: true, percent: members.length * 20, label: 'Good', count: members.length, best: 5, bestMembers: members, order: members, reasons: [], notes: [] }),
+          whoFits: (_m, _a, opts) => {
+            calls.push({ includeUnowned: opts?.includeUnowned });
+            const owned = [{ id: 'c3', count: 2, how: ['buffs Newest Star'], withEveryone: true, percent: 70, fromAccount: ['E2 counted.'], theory: false }];
+            return opts?.includeUnowned ? [...owned, { id: 'c2', count: 3, how: ['shreds'], withEveryone: true, percent: 90, fromAccount: ['Not owned: scored as theory at E0.'], theory: true }] : owned;
+          },
+          lineUps: () => [],
+          ifYouPull: () => null,
+        },
+      },
+    };
+    setRosterEntry('aa', 'c1', { owned: true, wanted: false, dupes: 0 });
+    setRosterEntry('aa', 'c3', { owned: true, wanted: false, dupes: 2 });
+    await show('teams', game);
+    fireEvent.click(screen.getByRole('button', { name: 'Make a team' }));
+    const sheet = await screen.findByRole('dialog', { name: 'New team' });
+    const box = within(sheet).getByRole('region', { name: 'Suggested teammates' });
+    expect(within(box).getByText(/Pick a first character/)).toBeInTheDocument();
+    fireEvent.click(within(sheet).getByRole('button', { name: /^Newest Star/ }));
+    expect(within(box).queryByText(/Team now/)).not.toBeInTheDocument();
+    expect(calls.at(-1)).toEqual({ includeUnowned: false });
+    expect(within(box).getByRole('button', { name: 'Add Helper: team 70%' })).toBeInTheDocument();
+    expect(within(box).queryByText(/Theory/)).not.toBeInTheDocument();
+    fireEvent.click(within(box).getByRole('switch', { name: 'Include characters I don’t own' }));
+    expect(calls.at(-1)).toEqual({ includeUnowned: true });
+    expect(within(box).getByRole('button', { name: 'Add Older Star: team 90%, not owned, theory' })).toBeInTheDocument();
+    fireEvent.click(within(box).getByRole('button', { name: 'Add Helper: team 70%' }));
+    expect(within(sheet).getByText(/Picked/)).toHaveTextContent('Picked 2 of 4');
+    expect(within(box).getByText('Team now: 40%')).toBeInTheDocument();
+  });
+
   it('a game with team rules shows the synergy % and, on tap, every reason with its proof', async () => {
     const base = makeGame(false);
     const rules: TeamRules = {

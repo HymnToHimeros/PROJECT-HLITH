@@ -1570,3 +1570,96 @@ button.member:hover .memberArt {
   padding: var(--s-2) 0;
   background: var(--bg-card);
 }
+
+/* Team editor: suggested teammates, best first. */
+.suggest {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-2);
+  padding: var(--s-3);
+  border-radius: var(--r-card);
+  border: 1px solid var(--line-default);
+  background: var(--bg-raised);
+}
+.suggestHead {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--s-2) var(--s-3);
+}
+.suggestNow {
+  font: 600 13px var(--font-numbers);
+  color: var(--ink-1);
+}
+.suggestSwitch {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+  font-size: 13px;
+  color: var(--ink-2);
+}
+.suggestList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.suggestItem {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 10px 6px 6px;
+  border-radius: var(--r-row);
+  border: 1px solid var(--line-subtle);
+  background: var(--bg-card);
+  color: var(--ink-1);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.suggestItem:hover:not(:disabled) {
+  border-color: var(--vent);
+}
+.suggestItem:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+.suggestText {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  flex: 1;
+}
+.suggestName {
+  font-size: 14px;
+  font-weight: 600;
+}
+.suggestTheory {
+  margin-left: 6px;
+  font: 600 10px/1 var(--font-numbers);
+  letter-spacing: 0.06em;
+  padding: 3px 5px;
+  border-radius: var(--r-tag);
+  border: 1px dashed var(--line-empty);
+  color: var(--ink-3);
+  white-space: nowrap;
+  display: inline-block;
+}
+.suggestNotes {
+  font-size: 12px;
+  color: var(--ink-3);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+.suggestPct {
+  font: 700 18px var(--font-numbers);
+  color: var(--ink-1);
+  flex: none;
+}

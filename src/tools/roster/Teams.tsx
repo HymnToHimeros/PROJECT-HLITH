@@ -9,6 +9,7 @@ import r from './roster.module.css';
 import { artOf, byNewest, CharArt, elementOf, entryOf, SectionHead, tagOf } from './shared';
 import { Member, Score, teamAccount, useVerdict, WhyScore } from './TeamParts';
 import type { RosterData } from './useRosterData';
+import { Switch } from '../pulls/shared';
 
 /** A preset to start the editor with (copied from a recommended team, or from a character page). */
 export interface PresetDraft {
@@ -600,6 +601,7 @@ function TeamEditor({
           </button>
         </p>
       )}
+      <Suggestions data={data} members={members} full={full} onAdd={toggle} />
       <label className={r.field}>
         <span className={r.fieldLabel}>Search</span>
         <input className={r.input} type="search" value={query} onChange={(e) => setQuery(e.target.value)} placeholder={`${game.terms.character} name`} />
@@ -646,5 +648,73 @@ function TeamEditor({
         )}
       </div>
     </form>
+  );
+}
+
+/**
+ * Who to add next, ranked by the team's % with them (LOGIC-CORE's whoFits). By default only
+ * characters you own, scored with what your account has (copies, Enhanced / Potential, the
+ * weapon in a saved build); the switch adds everyone else, scored as theory (base kit).
+ */
+function Suggestions({ data, members, full, onAdd }: { data: RosterData; members: string[]; full: boolean; onAdd: (id: string) => void }) {
+  const rules = data.game.rules.teams;
+  const [unowned, setUnowned] = useState(false);
+  const verdict = useVerdict(data, members, members.length === 0);
+  const key = members.join(',');
+  const user = data.user;
+  const fits = useMemo(
+    () => (rules && key ? rules.whoFits(key.split(','), teamAccount(data), { includeUnowned: unowned }).filter((f) => !key.split(',').includes(f.id)).slice(0, 8) : []),
+    [rules, key, unowned, user], // eslint-disable-line react-hooks/exhaustive-deps
+  );
+  if (!rules) return null;
+  const word = data.game.terms.character.toLowerCase();
+  const name = (id: string) => data.byId.get(id)?.name ?? id;
+  return (
+    <section className={r.suggest} aria-label="Suggested teammates">
+      <div className={r.suggestHead}>
+        <span className={r.fieldLabel}>Suggested teammates</span>
+        {verdict?.rated && members.length > 1 && <span className={r.suggestNow}>Team now: {verdict.percent}%</span>}
+        <span className={r.grow} />
+        <span className={r.suggestSwitch}>
+          <Switch checked={unowned} onChange={setUnowned} label={`Include ${word}s I don’t own`} />
+          <span>Include {word}s I don’t own</span>
+        </span>
+      </div>
+      {members.length === 0 ? (
+        <p className={r.muted}>Pick a first {word} and HLITH suggests who fits with them, best first, from what you own.</p>
+      ) : fits.length === 0 ? (
+        <p className={r.muted}>
+          {verdict && !verdict.rated ? verdict.why : unowned ? `No ${word} adds to this team yet.` : `None of the ${word}s you own adds to this team. Switch on “Include ${word}s I don’t own” to see the rest as theory.`}
+        </p>
+      ) : (
+        <ul className={r.suggestList}>
+          {fits.map((f) => {
+            const c = data.byId.get(f.id);
+            const el = c ? elementOf(data.game, c.element) : undefined;
+            const notes = [...(f.fromAccount ?? []), ...f.how.slice(0, 1)];
+            return (
+              <li key={f.id}>
+                <button
+                  type="button"
+                  className={r.suggestItem}
+                  disabled={full}
+                  onClick={() => onAdd(f.id)}
+                  aria-label={`Add ${name(f.id)}${f.percent !== undefined ? `: team ${f.percent}%` : ''}${f.theory ? ', not owned, theory' : ''}`}
+                >
+                  {c && <CharArt name={c.name} src={artOf(c, 'portrait')} elementColor={el?.color ?? 'var(--ink-4)'} className={r.memberArtSm} />}
+                  <span className={r.suggestText}>
+                    <span className={r.suggestName}>
+                      {name(f.id)} {f.theory && <span className={r.suggestTheory}>Theory · not owned</span>}
+                    </span>
+                    {notes.length > 0 && <span className={r.suggestNotes}>{notes.join(' ')}</span>}
+                  </span>
+                  <span className={r.suggestPct}>{f.percent !== undefined ? `${f.percent}%` : `+${f.count}`}</span>
+                </button>
+              </li>
+            );
+          })}
+        </ul>
+      )}
+    </section>
   );
 }

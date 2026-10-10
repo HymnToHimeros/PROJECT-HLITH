@@ -28,6 +28,11 @@ Resume with: "continue from PROGRESS.md". Newest entry on top. Older entries:
 - CI (`.github/workflows/ci.yml`) runs both on every pull request.
 
 ## Done
+- 2026-10-10 · **FRAME: Make a team suggests teammates by %** (branch `frame/my-teams`, owner job T18; on LOGIC-CORE's `logic-core/account-fits`).
+  After the first pick, "Suggested teammates" lists who to add, best first, with the team's
+  % and what was counted from the account (copies, Enhanced / Potential, saved weapon).
+  Owned only by default; "Include characters I don't own" adds the rest as theory (marked).
+  Tap to add; "Team now: N%" updates as you pick.
 - 2026-10-10 · **FRAME: My teams at the top of Teams** (branch `frame/my-teams`, owner job T18).
   The team builder existed but sat under 146 recommended teams and was called "presets".
   Now "My teams" comes first in Roster → Teams with "Make a team" (and "Make my first
