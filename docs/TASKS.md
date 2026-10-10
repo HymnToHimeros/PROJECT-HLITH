@@ -30,6 +30,7 @@ doing it said `LIVE`. Newest jobs at the bottom; live jobs move to Done.
 | T40 | Recommended teams wrong while My teams scores right (Phainon: only Cerydra + Cyrene + Dan Heng PT at 36%). Same scoring for both; check every recommended team in both games is up to date | LOGIC-CORE | live | #92: Cyrene's Odes count; each card slot takes the best owned pick; Phainon card 36% → 91%. |
 | T41 | Carries who sustain themselves (Aventurine • Waveflair) free the sustain slot; "Best found from your characters" card when a card is under 90% | LOGIC-CORE (+ FRAME OK on Teams.tsx) | live | #93: "Best found from your characters" cards (Waveflair, Silver Wolf LV.999, 7 ZZZ); Castorice counts as her own healer. |
 | T42 | Character page "Builds their teams want": refresh on switches/team lists/leaks; use the members the card shows | LOGIC-CORE | live | #95 (with FRAME's #94: all Roster team results refresh on switches, lists, builds). |
+| T43 | Leak kit sheets go "stale" (not scored, says so) when the beta kit text changes; data updates not blocked | LOGIC-CORE | sent | Follows owner's beta-kit re-check ask. |
 
 ## Done
 | # | Job | Who | Live on |
