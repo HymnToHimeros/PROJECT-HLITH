@@ -59,6 +59,17 @@ export interface GameUserData {
   pityManual?: Record<string, { pity: number; guaranteed: boolean; at: string }>;
   /** Character id → the build you saved (level, weapon, gear, skills). Missing = none saved. */
   builds?: Record<string, SavedBuild>;
+  /**
+   * Your own lists for a game team (T29): team preset id → one ordered list per slot, in the
+   * card's slot order (carry's slot first). It replaces the game's list for those slots. Missing =
+   * the game's list. Game data updates never touch it.
+   */
+  teamLists?: Record<string, TeamList>;
+}
+
+export interface TeamList {
+  slots: string[][];
+  updatedAt: string;
 }
 
 /** The lists Edit mode can add to, change and hide in. */
@@ -277,6 +288,19 @@ export function setBuild(game: GameId, characterId: string, build: SavedBuild): 
 export function clearBuild(game: GameId, characterId: string): SavedBuild | null {
   const before = gameData(game).builds?.[characterId] ?? null;
   if (before) update(game, (g) => ({ ...g, builds: Object.fromEntries(Object.entries(g.builds ?? {}).filter(([id]) => id !== characterId)) }));
+  return before;
+}
+
+/** Save your own lists for one game team (replaces your earlier edit of it). */
+export function setTeamList(game: GameId, presetId: string, slots: string[][]): void {
+  const list: TeamList = { slots: slots.map((s) => [...new Set(s)]), updatedAt: new Date().toISOString() };
+  update(game, (g) => ({ ...g, teamLists: { ...g.teamLists, [presetId]: list } }));
+}
+
+/** Back to the game's list for one team; returns your edit so Undo can put it back with `setTeamList`. */
+export function resetTeamList(game: GameId, presetId: string): TeamList | null {
+  const before = gameData(game).teamLists?.[presetId] ?? null;
+  if (before) update(game, (g) => ({ ...g, teamLists: Object.fromEntries(Object.entries(g.teamLists ?? {}).filter(([id]) => id !== presetId)) }));
   return before;
 }
 

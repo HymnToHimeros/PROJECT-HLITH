@@ -8,6 +8,7 @@ import { KitCheck } from './KitCheck';
 import r from './roster.module.css';
 import { artOf, byNewest, CharArt, elementOf, entryOf, SectionHead, tagOf } from './shared';
 import { Member, Score, teamAccount, useVerdict, WhyScore } from './TeamParts';
+import { slotsOf, TeamListEditor } from './TeamListEditor';
 import type { RosterData } from './useRosterData';
 import { Switch } from '../pulls/shared';
 
@@ -66,6 +67,9 @@ export function Teams({ data, several, onOpen, openCharacters, openAccount, draf
   const [removed, setRemoved] = useState<{ game: string; team: UserTeam } | null>(null);
   const closeKit = useCallback(() => setKitFor(null), []);
   const closeEditor = useCallback(() => setEditing(null), []);
+  // A game team's slot lists you're editing (T29).
+  const [listFor, setListFor] = useState<{ data: RosterData; preset: TeamPreset } | null>(null);
+  const closeList = useCallback(() => setListFor(null), []);
   const copyPreset = (d: RosterData, p: TeamPreset) => setEditing({ data: d, team: null, draft: { name: p.name, members: membersOf(d, p) } });
   const anyExample = data.some((d) => d.presets.example && d.presets.list.length > 0);
   const ownsAnyone = data.some((d) => Object.values(d.user.roster).some((e) => e.owned));
@@ -203,6 +207,7 @@ export function Teams({ data, several, onOpen, openCharacters, openAccount, draf
                   <>
                     <Button onClick={() => setKitFor({ data: d, name: p.name, members })}>Kit check</Button>
                     <Button onClick={() => copyPreset(d, p)}>Save as my team</Button>
+                    {!d.presets.example && <Button onClick={() => setListFor({ data: d, preset: p })}>Edit team list</Button>}
                   </>
                 }
               />
@@ -241,6 +246,9 @@ export function Teams({ data, several, onOpen, openCharacters, openAccount, draf
         {kitFor && <KitCheck game={kitFor.data.game} title={false} characters={kitFor.members.map((id) => kitFor.data.byId.get(id)).filter((x): x is Character => Boolean(x))} />}
       </BottomSheet>
 
+      <BottomSheet open={listFor !== null} side title={listFor ? `Team list · ${listFor.preset.name}` : 'Team list'} onClose={closeList}>
+        {listFor && <TeamListEditor key={`${listFor.data.game.id}:${listFor.preset.id}`} data={listFor.data} preset={listFor.preset} onDone={closeList} />}
+      </BottomSheet>
       <BottomSheet open={editing !== null} side title={editing?.team ? 'Edit team' : 'New team'} onClose={closeEditor}>
         {editing !== null && (
           <TeamEditor
@@ -291,6 +299,9 @@ function TeamCard({
   const tag = tagOf(data.game, several);
   const nameOf = (id: string) => data.byId.get(id)?.name ?? id;
   const verdict = useVerdict(data, members, example);
+  // Your own slot lists for this game team (T29), else the game's.
+  const slots = preset ? slotsOf(data, preset) : [];
+  const edited = Boolean(preset && data.user.teamLists?.[preset.id]);
   return (
     <article className={r.teamCard} aria-label={name}>
       <div className={r.teamTop}>
@@ -299,6 +310,7 @@ function TeamCard({
             <span>{name}</span>
             {example && <ExampleTag />}
             {tag && <GameTag {...tag} />}
+            {edited && <span className={r.editedTag}>Edited by you</span>}
           </h4>
           <div className={r.members}>
             {members.map((id) => (
@@ -309,19 +321,19 @@ function TeamCard({
         <Score score={score} example={example} big verdict={verdict} />
       </div>
       {!example && <WhyScore verdict={verdict} data={data} />}
-      {preset && preset.slots.some((s) => s.characters.length > 1) && (
+      {slots.some((s) => s.length > 1) && (
         <ol className={r.alts} aria-label="Who else fits">
-          {preset.slots.map((s, i) =>
-            s.characters.length > 1 ? (
+          {slots.map((s, i) =>
+            s.length > 1 ? (
               <li key={i}>
                 <span className={r.altNo}>{i + 1}</span>
-                <span className={r.muted}>or {s.characters.slice(1).map(nameOf).join(', ')}</span>
+                <span className={r.muted}>or {s.slice(1).map(nameOf).join(', ')}</span>
               </li>
             ) : null,
           )}
         </ol>
       )}
-      {preset && !example && <span className={r.muted}>Source: {preset.source}</span>}
+      {preset && !example && <span className={r.muted}>Source: {preset.source}{edited ? ' · slot lists edited by you' : ''}</span>}
       <div className={r.cardActions}>{actions}</div>
     </article>
   );
