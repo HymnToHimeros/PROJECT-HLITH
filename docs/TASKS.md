@@ -7,6 +7,7 @@ doing it said `LIVE`. Newest jobs at the bottom; live jobs move to Done.
 ## Open
 | # | Job | Who | State | Note |
 |---|---|---|---|---|
+| T39 | Leaked characters in teams + "If you pull" for leaks, marked "? UNVERIFIED", follows Show leaked / Hide leaks (#87 rules, #89 screens) | LOGIC-CORE + FRAME | 2026-10-10 |
 | T35 | Target stats card on the character page: you vs target, game quote + working, totals by hand or scan (#86 rules, #88 screens) | LOGIC-CORE + FRAME | 2026-10-10 |
 | T33 | Blind test checked by LOGIC-CORE against game lists + owner teams: 3 match, 4 mostly (sustain slot swapped for damage, newer characters), Feixiao 1 of 3 (explained from kits) | LOGIC-CORE | 2026-10-10 |
 | T34 | Switch in Roster → Teams: assume signature + average build when none is saved (#84 rules, #85 switch) | LOGIC-CORE + FRAME | 2026-10-10 |
@@ -26,7 +27,6 @@ doing it said `LIVE`. Newest jobs at the bottom; live jobs move to Done.
 | T28 | Standing rule: every logic rule is the same in HSR and ZZZ, except game-specific facts; ZZZ counts builds like HSR | LOGIC-CORE | working | In #73 (ZZZ counts builds like HSR; standing mirror rule in decisions files). |
 | T30 | HSR scoring still doesn't understand kits (owner's own Aventurine • Waveflair team 47%, "best" again Tingyun + Sparkle). Owner: teams do NOT need a sustain/healer. Wants scoring that understands buff size, conditions, how kits interact | LOGIC-CORE | working | Plan approved; owner very satisfied with all 8 blind teams (2026-10-10). Tests: owner\'s 3 teams + 8 blind teams on top; Castorice Tribbie vs Evernight kept close. ~4 data steps + engine + Why. |
 | T38 | ZZZ teams: two supports doing the same job (Lucia + Pan Yinhu for Starlight Billy) scored above a complementary team (Dialyn + Lucia). Scoring must handle overlap and role coverage | LOGIC-CORE | working | Covered by T30. Owner: no "Stun needed" rule (Anomaly teams want none); roles needed only when the carry\'s kit asks. |
-| T39 | Leaked characters usable in teams (beta kit text), Who fits, If you pull, so pre-pulling can be judged; marked leak/unverified | LOGIC-CORE | working | Rules live (#87): leaks usable when shown, marked unverified; importers auto-add leaks, "No name yet". FRAME wires the switch + "If you pull" card after T35. |
 
 ## Done
 | # | Job | Who | Live on |
