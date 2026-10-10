@@ -10,6 +10,7 @@ import { cx } from '../../core/ui/cx';
 import { clock, fullInText, projectStamina, type LiveStamina } from '../account-links/liveStamina';
 import { pullsFor } from '../budget/budget';
 import { AddOwnButton, examplesFor } from './AddOwn';
+import { autoTickWhy } from './autoTick';
 import type { GameLists } from './lists';
 import { buildTasks, type Task } from './tasks';
 import { TonightsRun } from './TonightsRun';
@@ -360,6 +361,11 @@ function OpenTasks({ days, tags, now, hideTicked, chooseServer }: { days: GameTo
               <span className={t.taskLabel}>
                 {task.label}
                 {task.reward && <span className={t.reward}>{task.reward}</span>}
+                {isDone && d.serverId && autoTickWhy(d.game.id, task.id, serverRule(d.game, d.serverId), now) && (
+                  <span className={t.autoTick} title={autoTickWhy(d.game.id, task.id, serverRule(d.game, d.serverId), now) ?? undefined}>
+                    ticked from HoYoLAB
+                  </span>
+                )}
               </span>
               {tags && <GameTag label={d.game.short} vent={d.game.vent} />}
               <span className={t.kind}>{task.kind === 'event' ? 'Event' : task.period === 'weekly' ? 'Weekly' : 'Daily'}</span>
