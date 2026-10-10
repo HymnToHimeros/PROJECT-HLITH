@@ -28,6 +28,11 @@ Resume with: "continue from PROGRESS.md". Newest entry on top. Older entries:
 - CI (`.github/workflows/ci.yml`) runs both on every pull request.
 
 ## Done
+- 2026-10-10 · **LOGIC-CORE: build score** (branch `logic-core/build-score`).
+  A saved build is checked against the game's own recommended build: level,
+  weapon, sets, main stat per slot, sub stats. Score and grade with every part
+  and its reason on the character page; parts with nothing entered say "No data
+  yet" and aren't counted. Rules: `docs/logic/build-score.md`.
 - 2026-10-10 · **MANAGER is on** (branch `manager/jobs-list`). `docs/TASKS.md` holds every
   open owner job with who has it and its state; the owner's screenshots are in
   `docs/owner-reports/2026-10-10/`. Owner's rule: MANAGER approves and merges every PR
