@@ -8,6 +8,7 @@ import { exampleNeeds } from '../farm/examples';
 import { farmPlan } from '../farm/plan';
 import { exampleBuild, exampleScore } from './examples';
 import { BuildEditor } from './BuildEditor';
+import { StatTargets } from './StatTargets';
 import { BuildWants } from './BuildWants';
 import { KitCheck } from './KitCheck';
 import r from './roster.module.css';
@@ -182,6 +183,7 @@ export function CharacterPage({ data, character: c, several, onBack, openPulls, 
         {entry.owned ? <BuildCard data={data} character={c} /> : <IfYouPull data={data} character={c} openPulls={openPulls} />}
         <TeamFit data={data} character={c} makePreset={makePreset} />
         <BuildWants data={data} character={c} />
+        <StatTargets data={data} character={c} />
         <section className={r.card} aria-labelledby={`how-to-build-${c.id}`}>
           <h3 className={r.cardTitle} id={`how-to-build-${c.id}`}>
             How to build {c.name}

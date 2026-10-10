@@ -127,5 +127,6 @@ export function toCharacterBuild(saved: SavedBuild, id: string, dupes: number): 
         ...(g.subs.some((x) => x.rolls !== undefined) ? { rolls: Object.fromEntries(g.subs.filter((x) => x.rolls !== undefined).map((x) => [x.stat, x.rolls ?? 0])) } : {}),
       })),
     ...(saved.skills ? { skills: saved.skills } : {}),
+    ...(saved.totals && Object.keys(saved.totals).length ? { totals: saved.totals } : {}),
   };
 }
