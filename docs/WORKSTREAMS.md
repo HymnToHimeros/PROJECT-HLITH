@@ -45,7 +45,7 @@ creates starts with that name, so you can always tell who made what.
 |---|---|
 | How something looks or works on screen, a new screen or button, settings, sign-in, sync, saved data, the Assistant, HoYoLAB link, backups, the server functions, the check (CI), hosting | FRAME |
 | Game dates and lists: versions, banners, events, rewards, endgame, backlog, new or leaked characters, art, release dates, server times | SCHEDULER |
-| What characters do and how well they fit: kits, Kit check, team scores, "who fits", builds and build scores, materials, Farm amounts | LOGIC-CORE |
+| What characters do and how well they fit: kits, Kit check, team scores, "who fits", builds and build scores, materials, Farm amounts; the weapon list and item pictures (Light Cones / W-Engines, gear sets, materials) | LOGIC-CORE |
 | Something that worked and now doesn't, an error message, a crash, wrong numbers from working code, a red check on `main` | the chat whose area it is; ERROR-FIX if that chat asks, it spans areas, or the live site is broken |
 | Unclear, or it needs a decision from the owner | MANAGER asks the owner first, in one short question |
 
