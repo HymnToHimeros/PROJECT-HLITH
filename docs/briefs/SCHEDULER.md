@@ -21,7 +21,7 @@ Per game, in `src/games/<game>/data/`, using the types in
 | `banners.json` | `Banner` | Current and announced banners: type, featured ids (the game's own character ids from `characters.json`), start, end. |
 | `events.json` | `GameEvent` | Current and announced events, login events, web events, endgame rotations and their resets, with rewards in premium currency (`null` when the source doesn't say). |
 | `backlog.json` | `BacklogItem` | Permanent content: the main story as one item with `steps` (chapters in order, `reward: 0`), side quests as single items (`total: 1`) with `group` = region, permanent events and modes as counters with their reward, exploration per region with `unit: "%"`, achievements. `reward: null` when unknown, `0` when there is none; `note` for where a number came from. |
-| `characters.json` | `Character` | Only add characters that are new since the list was made (`scripts/import-nanoka.ts`). Don't redo the list; kits and builds belong to LOGIC-CORE. |
+| `characters.json` | `Character` | Add characters that are new since the list was made (`scripts/import-nanoka.ts`), and fill `releasedAt` for every character that lacks it (ZZZ has none yet; Roster sorts newest first by it). Leaked, unreleased characters go in with `leak: { source }` so Roster can show them on request, marked unverified. Don't redo the list; kits and builds belong to LOGIC-CORE. |
 
 ## Rules
 - **Honest data:** every entry must come from a named source (nanoka.cc, used
