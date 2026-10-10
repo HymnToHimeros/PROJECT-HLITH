@@ -9,10 +9,12 @@ import { groupB } from './sheet/groupB';
 import { groupC } from './sheet/groupC';
 import { groupD } from './sheet/groupD';
 import { groupE } from './sheet/groupE';
+import { groupF } from './sheet/groupF';
+import { groupG } from './sheet/groupG';
 import type { CharacterSheet } from './types';
 
 /** Every character read so far, group by group. */
-export const SHEETS: CharacterSheet[] = [...groupA, ...groupB, ...groupC, ...groupD, ...groupE];
+export const SHEETS: CharacterSheet[] = [...groupA, ...groupB, ...groupC, ...groupD, ...groupE, ...groupF, ...groupG];
 
 export function buildLibrary(sheets: CharacterSheet[] = SHEETS, kitList: Kit[] = kits as Kit[]): Library {
   return {
