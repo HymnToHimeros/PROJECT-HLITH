@@ -4,6 +4,9 @@
   display: grid;
   grid-template-columns: var(--sidebar) minmax(0, 1fr);
   background: var(--bg-app);
+  /* The background art (ThemeArt) sits just above this background, under everything else, right of the sidebar. */
+  isolation: isolate;
+  --art-left: var(--sidebar);
 }
 .grow {
   flex: 1;
@@ -115,7 +118,7 @@
   display: flex;
   flex-direction: column;
   gap: 2px;
-  flex: 1;
+  flex: 0 1 auto;
   min-height: 0;
   overflow: auto;
   margin-top: -8px;
@@ -163,6 +166,21 @@
 }
 .navItem[aria-current='page'] .glyph {
   color: var(--vent);
+}
+.sideArt {
+  flex: 1 1 0;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  color: var(--art-ink);
+  opacity: 0.22;
+  pointer-events: none;
+}
+.sideMotif {
+  width: min(150px, 100%);
+  max-height: 100%;
 }
 .sideFoot {
   display: flex;
@@ -232,25 +250,105 @@
   font: 500 11px var(--font-numbers);
   color: var(--ink-4);
 }
-.accountBtn {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  height: var(--tap-min);
-  padding: 0 10px;
-  border: 0;
-  border-radius: var(--r-row);
+/* Account row as a profile card: banner behind (fading into the sidebar), picture and name over it. */
+.profileCard {
+  position: relative;
+  display: block;
+  width: 100%;
+  margin-top: 4px;
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: var(--r-card);
   background: none;
-  color: var(--ink-3);
-  font-size: 14px;
-  cursor: pointer;
-}
-.accountBtn:hover {
-  background: var(--bg-inset);
   color: var(--ink-1);
+  text-align: left;
+  cursor: pointer;
+  overflow: hidden;
+  isolation: isolate;
+}
+.profileCard:hover,
+.profileCard[aria-current='page'] {
+  border-color: var(--line-mid);
+  background: color-mix(in srgb, var(--bg-inset) 60%, transparent);
+}
+.profileBanner {
+  position: absolute;
+  inset: 0 0 auto;
+  height: 68px;
+  z-index: -1;
+  background:
+    radial-gradient(120% 160% at 0% 0%, color-mix(in srgb, var(--vent) 34%, transparent), transparent 62%),
+    radial-gradient(110% 150% at 100% 10%, color-mix(in srgb, var(--art-glow) 55%, transparent), transparent 66%),
+    linear-gradient(160deg, var(--bg-raised), var(--bg-shell));
+  /* Fades out downwards and at the sides, so it melts into the sidebar instead of ending on a line. */
+  mask-image: linear-gradient(to bottom, #000 25%, transparent 100%), linear-gradient(to right, transparent, #000 12%, #000 88%, transparent);
+  mask-composite: intersect;
+}
+.profileBanner img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.profileRow {
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+  padding: 30px 10px 10px;
+}
+.profileAvatar {
+  width: 60px;
+  height: 60px;
+  flex: none;
+  border-radius: 50%;
+  border: 3px solid var(--bg-shell);
+  box-shadow: 0 0 0 1px var(--line-strong), 0 6px 18px rgb(0 0 0 / 0.35);
+  background: var(--bg-raised);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  font: 700 19px var(--font-numbers);
+  color: var(--ink-2);
+}
+.profileAvatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.profileText {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding-bottom: 4px;
+  text-shadow: 0 0 6px var(--bg-shell), 0 0 2px var(--bg-shell);
+}
+.profileName {
+  font-weight: 800;
+  font-size: 15px;
+  line-height: 1.2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.profileSub {
+  font-size: 12px;
+  color: var(--ink-4);
 }
 .dots {
   color: var(--ink-5);
+  padding-bottom: 6px;
+}
+.figure {
+  width: 58%;
+  height: 58%;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
 }
 .avatar {
   width: 26px;
@@ -262,17 +360,19 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
   font: 700 11px var(--font-numbers);
   color: var(--ink-2);
 }
-.avatarMd {
-  width: 28px;
-  height: 28px;
+.avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
-.avatarLg {
-  width: 44px;
-  height: 44px;
-  font-size: 16px;
+.avatarMd {
+  width: 32px;
+  height: 32px;
 }
 
 /* ── Main ── */
@@ -301,8 +401,8 @@
   letter-spacing: 0.12em;
   color: var(--vent);
 }
-:root[data-theme='light'] .scopeLabel,
-:root[data-theme='light'] .navItem[aria-current='page'] .glyph {
+:root[data-tone='light'] .scopeLabel,
+:root[data-tone='light'] .navItem[aria-current='page'] .glyph {
   color: var(--ink-2);
 }
 .title {
@@ -361,6 +461,7 @@
 
 @media (max-width: 819px) {
   .root {
+    --art-left: 0px;
     display: flex;
     flex-direction: column;
     /* Room for the tab bar and the ASK button above it (bottom 94px + 56px tall), so nothing ends up under ASK. */

@@ -3,3 +3,4 @@ export * from './games';
 export * from './layout';
 export * from './modules';
 export * from './panels';
+export * from './identity';

@@ -4,6 +4,7 @@ import type { GameContract } from '../../core/contract';
 import { getPrefs, reloadPrefs, updatePrefs } from '../../core/data/prefs';
 import { addLedgerEntry, addPulls, resetUserData, setRosterEntry } from '../../core/data/userData';
 import type { PanelProps } from '../../core/registry/panels';
+import { THEMES } from '../../core/theme/theme';
 import { ExampleNotice, useSampleShown } from '../../core/ui';
 import AccountPage, { resolveSection, sectionsFor } from './AccountPage';
 import { DEVICE_KEY, EMPTY_PROFILE, type Profile } from './profile';
@@ -115,11 +116,30 @@ describe('Account page: section bar', () => {
 describe('Account page: settings sections', () => {
   it('Theme switches dark and light, saved in settings and applied to the page', () => {
     render(<AccountPage {...props({ section: 'theme' })} />);
-    fireEvent.click(screen.getByRole('radio', { name: /Light/ }));
+    fireEvent.click(screen.getByRole('radio', { name: /^Light/ }));
     expect(getPrefs().theme).toBe('light');
     expect(document.documentElement.dataset.theme).toBe('light');
-    fireEvent.click(screen.getByRole('radio', { name: /Dark/ }));
+    expect(document.documentElement.dataset.tone).toBe('light');
+    fireEvent.click(screen.getByRole('radio', { name: /^Glacier/ }));
     expect(document.documentElement.dataset.theme).toBe('dark');
+    expect(document.documentElement.dataset.tone).toBe('dark');
+  });
+
+  it('Theme: every theme has a card with a live preview; picking one applies it at once and the section hint names it', () => {
+    render(<AccountPage {...props({ section: 'theme' })} />);
+    const radios = within(screen.getByRole('radiogroup', { name: 'Theme' })).getAllByRole('radio');
+    expect(radios.map((r) => r.querySelector('[class*="rowTitle"]')?.textContent)).toEqual(THEMES.map((t) => t.name));
+    for (const t of THEMES) {
+      const radio = screen.getByRole('radio', { name: new RegExp(`^${t.name}`) });
+      // The preview box is drawn with that theme's own tokens.
+      expect(radio.querySelector(`[data-theme-preview="${t.id}"]`)).not.toBeNull();
+      fireEvent.click(radio);
+      expect(radio).toHaveAttribute('aria-checked', 'true');
+      expect(getPrefs().theme).toBe(t.id);
+      expect(document.documentElement.dataset.theme).toBe(t.id);
+      expect(document.documentElement.dataset.tone).toBe(t.tone);
+      expect(bar().getByRole('link', { name: /^Theme/ })).toHaveTextContent(t.name);
+    }
   });
 
   it('Game settings: choose a server, switch a task off Today', () => {
