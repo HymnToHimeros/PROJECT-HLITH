@@ -49,10 +49,25 @@
   letter-spacing: 0.12em;
   color: var(--ink-5);
 }
+.headRow {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--s-2);
+}
+.grow {
+  flex: 1;
+}
+/* Live banners: big cards, two side by side when there's room. Upcoming: smaller cards. */
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(100%, 360px), 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 540px), 1fr));
   gap: 14px;
+}
+.gridUp {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
+  gap: 12px;
 }
 .card {
   background: var(--bg-card);
@@ -62,6 +77,7 @@
   display: flex;
   flex-direction: column;
   min-width: 0;
+  container-type: inline-size;
 }
 .leak {
   border-style: dashed;
@@ -83,6 +99,35 @@
 }
 .leak .art {
   border-bottom-style: dashed;
+}
+.cardUp .art {
+  aspect-ratio: 16 / 5;
+}
+.cardUp .title {
+  font-size: 18px;
+}
+.inner {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+}
+/* A wide live card: art on the left, the details beside it. */
+@container (min-width: 600px) {
+  .card:not(.cardUp) .inner {
+    flex-direction: row;
+  }
+  .card:not(.cardUp) .art {
+    width: 40%;
+    flex: none;
+    aspect-ratio: auto;
+    min-height: 280px;
+    border-bottom: 0;
+    border-right: 3px solid var(--vent);
+  }
+  .leak:not(.cardUp) .art {
+    border-right-style: dashed;
+  }
 }
 .artEmpty {
   background:
@@ -147,13 +192,174 @@
   font-size: 22px;
   line-height: 1.15;
 }
+.when {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
 .whenRow {
   display: flex;
   justify-content: space-between;
+  align-items: baseline;
   flex-wrap: wrap;
   gap: var(--s-2);
   font: 500 12px var(--font-numbers);
   color: var(--ink-3);
+}
+.timer {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--ink-1);
+}
+/* How far into the banner you are. */
+.bar {
+  display: block;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--bg-track);
+  overflow: hidden;
+}
+.barFill {
+  display: block;
+  height: 100%;
+  background: var(--vent);
+}
+.lead {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+.leadPic {
+  width: 48px;
+  height: 48px;
+  flex: none;
+  border-radius: 10px;
+  object-fit: cover;
+  object-position: 50% 15%;
+  background: var(--bg-raised);
+  border: 1px solid var(--line-default);
+}
+.leadText {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+  flex: 1;
+}
+.want {
+  flex: none;
+  min-height: 36px;
+  padding: 0 12px;
+  border-radius: var(--r-pill);
+  border: 1px solid var(--line-strong);
+  background: transparent;
+  color: var(--ink-2);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.want:hover,
+.star:hover {
+  border-color: var(--glacier);
+  color: var(--glacier);
+}
+.wantOn {
+  border-color: color-mix(in srgb, var(--glacier) 60%, transparent);
+  color: var(--glacier);
+  background: color-mix(in srgb, var(--glacier) 10%, transparent);
+}
+/* The other featured characters: small tiles, two per row when there's room. */
+.also {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.alsoLabel {
+  font: 600 10px/1 var(--font-numbers);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-4);
+}
+.alsoList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: 6px;
+}
+.alsoItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 6px 6px 6px;
+  border-radius: var(--r-row);
+  background: var(--bg-raised);
+  min-width: 0;
+}
+.alsoPic {
+  width: 32px;
+  height: 32px;
+  flex: none;
+  border-radius: 8px;
+  object-fit: cover;
+  object-position: 50% 15%;
+  background: var(--bg-inset);
+}
+.alsoText {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+  flex: 1;
+}
+.alsoName {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--ink-1);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.alsoItem .fit {
+  padding: 1px 6px;
+  font-size: 11px;
+}
+.alsoItem .sub {
+  font-size: 11.5px;
+}
+.alsoWeapon {
+  object-fit: contain;
+}
+.alsoFor {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4px;
+  font-size: 11.5px;
+  color: var(--ink-3);
+}
+.star {
+  flex: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid var(--line-default);
+  background: transparent;
+  color: var(--ink-3);
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+}
+.footer {
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--s-2) var(--s-3);
+  padding-top: 4px;
 }
 .featured {
   display: flex;
@@ -229,8 +435,6 @@
   color: var(--ember);
 }
 .plan {
-  margin-top: auto;
-  align-self: flex-start;
   min-height: var(--tap-min);
   padding: 0 16px;
   border-radius: var(--r-button);
@@ -290,7 +494,15 @@
 .artWeapon {
   object-fit: contain;
   object-position: center;
-  padding: var(--s-2);
+  padding: var(--s-3);
+}
+/* The weapon picture fills its panel on a soft spotlight instead of sitting small in an empty box. */
+.artWeaponBox {
+  background:
+    radial-gradient(circle at 50% 55%, color-mix(in srgb, var(--el) 22%, var(--bg-raised)) 0, var(--bg-inset) 70%);
+}
+.artWeaponBox .artImg {
+  filter: drop-shadow(0 8px 18px rgb(0 0 0 / 0.45));
 }
 .weapon {
   display: flex;

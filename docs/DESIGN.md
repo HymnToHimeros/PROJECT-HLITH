@@ -135,7 +135,7 @@ Elements: Fire #E8664A · Ice #8FD3F0 · Lightning/Electric #B98AF0 · Wind #6FD
 - Spacing (4 base): 4 · 8 · 12 · 16 · 20 · 24 · 28.
 - Radius: tag 4 · segment 7 · button/row 9–10 · card 12 · hero/empty 14 · sheet 20 top · chip pill.
 - Tap target min 44 · phone tab 58 · PC nav row 42.
-- Sidebar 248 · content max 1240 · phone/PC switch at 820 px · Assistant panel 420.
+- Sidebar 248 · content max 1560 (wide screens use more of the width) · phone/PC switch at 820 px · Assistant panel 420.
 - Page padding: PC 24/28 · phone 16. Scrim #050607 at 55–62%.
 
 ---

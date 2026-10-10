@@ -28,6 +28,13 @@ Resume with: "continue from PROGRESS.md". Newest entry on top. Older entries:
 - CI (`.github/workflows/ci.yml`) runs both on every pull request.
 
 ## Done
+- 2026-10-10 · **FRAME: Banners as a banner tracker** (branch `frame/banner-tracker`, owner jobs T21 + T20's Banners part).
+  "Live now" and "Coming up" sections; live cards put the art beside the details on wide
+  screens, with how long is left and a bar for how far into the banner you are. The lead
+  has one "Want" button; the other featured characters (and 4★ weapons) are one compact
+  row of small tiles with their roster fit and a star to want them; team fit shows once
+  per banner. Weapon art fills its panel. Edit list sits in the game heading; "Latest
+  changes" moved to the end. Content can use up to 1560 px on wide screens (was 1240).
 - 2026-10-10 · **Two more chats: MANAGER and ERROR-FIX** (branch `frame/manager-error-fix`).
   `docs/WORKSTREAMS.md`: rules 7–8, both in Who's who, a routing table (which job goes
   to which chat). `docs/briefs/MANAGER.md` (the owner's front desk: routes every
