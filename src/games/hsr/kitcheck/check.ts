@@ -28,6 +28,29 @@ export interface Library {
   centres: Set<string>;
   /** Who the game's own teams put together (every pick and backup of a team), per character. */
   pairedWith: Map<string, Set<string>>;
+  /**
+   * Every Light Cone the check can read (T18 step 4): its path, its entries (piece `weapon:<id>`) and its label.
+   * A signature's entries come from its character's sheet; `madeFor` marks it (that character reads it as a kit piece).
+   */
+  weapons: Map<string, { name: string; role: string; madeFor?: string; label: string; entries: Entry[] }>;
+}
+
+/** The piece a weapon's entries carry: `weapon:<id>`. */
+export const weaponPiece = (id: string) => `weapon:${id}`;
+
+/** A kit piece's label, or an equipped Light Cone's ("Light Cone: Night on the Milky Way"). */
+export const labelOf = (lib: Library, who: string, piece: string) => (piece.startsWith('weapon:') ? lib.weapons.get(piece.slice(7))?.label : lib.pieceLabels.get(who)?.get(piece)) ?? piece;
+
+/**
+ * Everything a member brings: their sheet, plus the Light Cone in their saved build when its path is theirs (an HSR
+ * Light Cone's effect only works on its path) and it isn't their own signature (read as a kit piece already).
+ */
+export function entriesOf(who: string, lib: Library, account: Account): Entry[] {
+  const own = lib.sheets.get(who)?.entries ?? [];
+  const id = account.weapon?.(who)?.id;
+  const w = id ? lib.weapons.get(id) : undefined;
+  if (!w || w.madeFor === who || w.role !== lib.profiles.get(who)?.path) return own;
+  return [...own, ...w.entries];
 }
 
 /** Your account: Eidolon per character (not owned = 0), Enhanced when known. */
@@ -215,15 +238,14 @@ export function checkTeam(members: string[], dd: string, lib: Library, account: 
   const wants = new Map<string, { who: string; e: Entry & { scales: NonNullable<Entry['scales']> } }>();
   const statuses = new Map<string, { status: Status; why: string }>();
   const key = (who: string, e: Entry) => `${who}:${e.id}`;
-  for (const who of team) for (const e of lib.sheets.get(who)?.entries ?? []) statuses.set(key(who, e), statusOf(e, who, team, lib, account));
-  const ddSheet = lib.sheets.get(dd);
-  const reactions = (ddSheet?.entries ?? []).filter((x) => x.reacts && x.reacts.from !== 'self' && statuses.get(key(dd, x))?.status === 'on');
+  const entries = new Map(team.map((who) => [who, entriesOf(who, lib, account)]));
+  for (const who of team) for (const e of entries.get(who) ?? []) statuses.set(key(who, e), statusOf(e, who, team, lib, account));
+  const reactions = (entries.get(dd) ?? []).filter((x) => x.reacts && x.reacts.from !== 'self' && statuses.get(key(dd, x))?.status === 'on');
   let sustain = team.some((id) => ['preservation', 'abundance'].includes(lib.profiles.get(id)?.path ?? ''));
 
   for (const who of team) {
-    const sheet = lib.sheets.get(who);
-    if (!sheet) continue;
-    for (const e of sheet.entries) {
+    const own = entries.get(who) ?? [];
+    for (const e of own) {
       const st = statuses.get(key(who, e)) ?? { status: 'unknown', why: '' };
       const base = { who, entry: e.id, tag: e.tag, piece: e.piece, quote: e.quote };
       if (st.status === 'locked' || st.status === 'replaced' || st.status === 'unknown') {
@@ -232,7 +254,7 @@ export function checkTeam(members: string[], dd: string, lib: Library, account: 
       }
       if (st.status === 'off') {
         // An option of the same kit that is on (an Eidolon that drops the condition) covers it: not a loss.
-        const cover = e.noStack ? sheet.entries.find((x) => x !== e && x.noStack === e.noStack && statuses.get(key(who, x))?.status === 'on') : undefined;
+        const cover = e.noStack ? own.find((x) => x !== e && x.noStack === e.noStack && statuses.get(key(who, x))?.status === 'on') : undefined;
         if (cover) lines.push({ ...base, kind: 'not-counted', why: `${st.why}; ${cover.tag} applies instead`, points: 0 });
         else lines.push({ ...base, kind: 'off', why: st.why, points: -1 });
         continue;

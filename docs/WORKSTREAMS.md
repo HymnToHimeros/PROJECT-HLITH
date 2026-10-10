@@ -115,6 +115,8 @@ stays the base; never rename an id that is already in a list.
     owned characters only), the `TeamWant` type and optional `wants` on a rated
     `TeamVerdict` (builds a team wants, T18; points already in the count). Each game's
     gear slots moved to `src/games/<game>/gear.ts` (the contract uses them as before).
+  - 2026-10-10 · LOGIC-CORE added optional `role` (path / specialty) and `effect` to
+    `Weapon` (every weapon's effect text, T18 step 4; `npm run data:builds`).
   - 2026-10-10 · LOGIC-CORE added optional `set`, `rolls`, `weapon.refine` and
     `skills` to `CharacterBuild`, the `BuildScorePart` type, and optional `parts`
     and `basis` on `scoreBuild`'s result; the character page's Build score card

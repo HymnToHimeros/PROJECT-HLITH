@@ -222,3 +222,38 @@ describe('HSR: builds a team wants (T18, owner\'s Phainon example)', () => {
     expect(want(v)?.fit).toBe('no-build');
   });
 });
+
+describe('HSR: any equipped Light Cone counts when its path is the wearer’s (T18 step 4)', () => {
+  const team = ['Feixiao', 'Topaz & Numby', 'Robin', 'Aventurine'];
+  const run = (weapon: { id: string; name: string } | undefined, wearer = 'Robin') => {
+    const r = check(team.map(id), lib, { ...e0, weapon: (x) => (x === id(wearer) ? weapon : undefined) }, id('Feixiao'));
+    if (!r.rated) throw new Error(r.why);
+    return r.best.lines.filter((l) => l.piece?.startsWith('weapon:'));
+  };
+  it('Dance! Dance! Dance! (Harmony) on Robin (Harmony) is read, with the Light Cone named as proof', () => {
+    const lines = run({ id: '21018', name: 'Dance! Dance! Dance!' });
+    expect(lines.length).toBeGreaterThan(0);
+    expect(lines.every((l) => l.piece === 'weapon:21018' && l.kind !== 'locked')).toBe(true);
+    const v = verdict(team.map(id), { ...own(team), weapon: (x) => (x === id('Robin') ? { id: '21018', name: 'Dance! Dance! Dance!' } : undefined) });
+    if (!v.rated) throw new Error(v.why);
+    expect(v.reasons.some((x) => x.proof?.skill === 'Light Cone: Dance! Dance! Dance!')).toBe(true);
+  });
+  it('a Destruction Light Cone on Robin does nothing (its effect only works for Destruction)', () => {
+    expect(run({ id: '20002', name: 'Collapsing Sky' })).toEqual([]);
+  });
+  it('someone else’s signature works on another wearer of its path: Robin’s Flowing Nightglow on Topaz does nothing (Hunt), on Robin it is her kit piece', () => {
+    expect(run({ id: '23026', name: 'Flowing Nightglow' }, 'Topaz & Numby')).toEqual([]);
+    expect(run({ id: '23026', name: 'Flowing Nightglow' })).toEqual([]);
+  });
+});
+
+describe('HSR: a signature on another wearer of its path', () => {
+  it('Robin’s Flowing Nightglow on Sparkle (Harmony) brings its team buff', () => {
+    const team = ['Feixiao', 'Topaz & Numby', 'Sparkle', 'Aventurine'];
+    const r = check(team.map(id), lib, { ...e0, weapon: (x) => (x === id('Sparkle') ? { id: '23026', name: 'Flowing Nightglow' } : undefined) }, id('Feixiao'));
+    if (!r.rated) throw new Error(r.why);
+    const lines = r.best.lines.filter((l) => l.piece === 'weapon:23026');
+    expect(lines.length).toBeGreaterThan(0);
+    expect(lines.every((l) => lib.names.get(l.who) === 'Sparkle' && l.kind !== 'locked')).toBe(true);
+  });
+});

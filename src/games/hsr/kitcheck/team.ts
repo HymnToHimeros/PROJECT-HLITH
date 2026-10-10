@@ -6,9 +6,9 @@
 import type { FitOptions, FitSuggestion, PullValue, TeamAccount, TeamIdea, TeamPreset, TeamReason, TeamRules, TeamVerdict, TeamWant } from '../../../core/contract';
 import { BUILD_STAT_WORD, buildFit } from '../../../core/rules/buildFit';
 import { GEAR_SLOTS } from '../gear';
-import { canCarry, canPartner, check, compare, damageDealers, isCentre, type Account, type Library, type Line, type TeamResult } from './check';
+import { canCarry, canPartner, check, compare, damageDealers, isCentre, labelOf, type Account, type Library, type Line, type TeamResult } from './check';
 import { centreOf, library, pageOf } from './library';
-import { accountNotes } from '../../../core/rules/accountNotes';
+import { accountNotes, type AccountFacts } from '../../../core/rules/accountNotes';
 import { SIGNATURE_PIECE } from '../../../core/rules/signatureWeapons';
 import { explainTeam, memberPhrase } from '../../../core/rules/teamExplain';
 
@@ -115,7 +115,7 @@ const ownedRead = (a: TeamAccount, lib: Library) => [...lib.sheets.keys()].filte
 function reasonOf(l: Line, lib: Library): TeamReason {
   const name = (id: string) => lib.names.get(id) ?? id;
   const group: TeamReason['group'] = l.kind === 'support' ? 'tie-break' : l.points !== 0 ? 'counted' : 'not-counted';
-  const proof = l.piece && l.quote ? { who: name(l.who), skill: lib.pieceLabels.get(l.who)?.get(l.piece) ?? l.piece, quote: l.quote } : undefined;
+  const proof = l.piece && l.quote ? { who: name(l.who), skill: labelOf(lib, l.who, l.piece), quote: l.quote } : undefined;
   return { points: l.points, group, text: `${name(l.who)} · ${l.tag}: ${l.why}`, ...(proof ? { proof } : {}) };
 }
 
@@ -175,6 +175,17 @@ export function verdict(members: string[], a: TeamAccount, lib: Library = librar
   };
 }
 
+/** What the check makes of the Light Cone in a character's saved build (for the account notes). */
+function equippedFact(c: string, a: TeamAccount, lib: Library): AccountFacts['equipped'] {
+  const w = a.owned(c) ? a.weapon?.(c) : undefined;
+  if (!w) return undefined;
+  if (!w.id) return { is: 'unknown' };
+  const sheet = lib.weapons.get(w.id);
+  if (!sheet) return { is: 'unread' };
+  const path = lib.profiles.get(c)?.path;
+  return sheet.madeFor === c || sheet.role === path ? { is: 'counts' } : { is: 'wrong-role', role: sheet.role.charAt(0).toUpperCase() + sheet.role.slice(1) };
+}
+
 /** The builds this team wants on its members (T18), from its build lines. */
 function wantsOf(r: TeamResult, lib: Library): TeamWant[] {
   return r.lines.flatMap((l) =>
@@ -188,7 +199,7 @@ function wantsOf(r: TeamResult, lib: Library): TeamWant[] {
             fit: l.build.fit,
             points: l.points,
             max: l.build.max,
-            proof: { skill: (l.piece && lib.pieceLabels.get(l.who)?.get(l.piece)) ?? l.piece ?? '', quote: l.quote ?? '' },
+            proof: { skill: l.piece ? labelOf(lib, l.who, l.piece) : '', quote: l.quote ?? '' },
           },
         ]
       : [],
@@ -198,7 +209,7 @@ function wantsOf(r: TeamResult, lib: Library): TeamWant[] {
 /** How a candidate connects in a checked team, in words; empty = not at all. */
 function connections(r: TeamResult, c: string, lib: Library): string[] {
   const name = (id: string) => lib.names.get(id) ?? id;
-  const piece = (who: string, p?: string) => (p ? (lib.pieceLabels.get(who)?.get(p) ?? p) : '');
+  const piece = (who: string, p?: string) => (p ? labelOf(lib, who, p) : '');
   const how: string[] = [];
   for (const l of r.lines) {
     if (l.kind === 'switched-on' && (l.helpers?.includes(c) || (r.dd === c && l.helpers?.length))) how.push(`turns on ${name(r.dd)}'s ${piece(r.dd, l.piece)}`);
@@ -233,7 +244,8 @@ export function whoFits(members: string[], a: TeamAccount, lib: Library = librar
     const sigId = lib.unlocks.get(c)?.get(SIGNATURE_PIECE)?.weapon;
     const sigLabel = lib.pieceLabels.get(c)?.get(SIGNATURE_PIECE);
     const signature = sigId && sigLabel ? { id: sigId, name: sigLabel.replace(/^Signature [^:]+: /, '').replace(/ · .*$/, '') } : undefined;
-    const { notes, theory } = accountNotes(c, a, { dupePrefix: 'E', ...(hasTrack ? { track: 'Enhanced kit' } : {}), locked, ...(signature ? { signature } : {}) });
+    const equipped = equippedFact(c, a, lib);
+    const { notes, theory } = accountNotes(c, a, { dupePrefix: 'E', ...(hasTrack ? { track: 'Enhanced kit' } : {}), locked, ...(signature ? { signature } : {}), ...(equipped ? { equipped } : {}) });
     out.push({ id: c, count: r.count, how, withEveryone, percent, fromAccount: notes, theory });
   }
   return out.sort((x, y) => (y.percent ?? 0) - (x.percent ?? 0) || Number(y.withEveryone) - Number(x.withEveryone) || y.count - x.count);

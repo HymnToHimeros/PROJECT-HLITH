@@ -23,6 +23,29 @@ export interface Library {
   /** Kit piece → its label ("Additional Ability: External Line"), per character. */
   pieceLabels: Map<string, Map<string, string>>;
   names: Map<string, string>;
+  /**
+   * Every W-Engine the check can read (T18 step 4): its specialty, its entries (piece `weapon:<id>`) and its label.
+   * A signature's entries come from its agent's sheet; `madeFor` marks it (that agent reads it as a kit piece).
+   */
+  weapons: Map<string, { name: string; role: string; madeFor?: string; label: string; entries: Entry[] }>;
+}
+
+/** The piece a weapon's entries carry: `weapon:<id>`. */
+export const weaponPiece = (id: string) => `weapon:${id}`;
+
+/** A kit piece's label, or an equipped W-Engine's ("W-Engine: Steel Cushion"). */
+export const labelOf = (lib: Library, who: string, piece: string) => (piece.startsWith('weapon:') ? lib.weapons.get(piece.slice(7))?.label : lib.pieceLabels.get(who)?.get(piece)) ?? piece;
+
+/**
+ * Everything an agent brings: their sheet, plus the W-Engine in their saved build when its specialty is theirs (a
+ * W-Engine's effect only works for its specialty) and it isn't their own signature (read as a kit piece already).
+ */
+export function entriesOf(who: string, lib: Library, account: Account): Entry[] {
+  const own = lib.sheets.get(who)?.entries ?? [];
+  const id = account.weapon?.(who)?.id;
+  const w = id ? lib.weapons.get(id) : undefined;
+  if (!w || w.madeFor === who || w.role !== lib.profiles.get(who)?.specialty) return own;
+  return [...own, ...w.entries];
 }
 
 /** Your account: Mindscape per character (not owned = 0), Potential when known. */
@@ -198,13 +221,11 @@ export function checkOrder(order: string[], dd: string, lib: Library, account: A
   const wants = new Map<string, { who: string; e: Entry & { scales: NonNullable<Entry['scales']> } }>();
   const statuses = new Map<string, { status: Status; why: string }>();
   const key = (who: string, e: Entry) => `${who}:${e.id}`;
-  for (const who of order) for (const e of lib.sheets.get(who)?.entries ?? []) statuses.set(key(who, e), statusOf(e, who, order, lib, account));
-  const ddSheet = lib.sheets.get(dd);
+  const entries = new Map(order.map((who) => [who, entriesOf(who, lib, account)]));
+  for (const who of order) for (const e of entries.get(who) ?? []) statuses.set(key(who, e), statusOf(e, who, order, lib, account));
 
   for (const who of order) {
-    const sheet = lib.sheets.get(who);
-    if (!sheet) continue;
-    for (const e of sheet.entries) {
+    for (const e of entries.get(who) ?? []) {
       const st = statuses.get(key(who, e)) ?? { status: 'unknown', why: '' };
       const base = { who, entry: e.id, tag: e.tag, piece: e.piece, quote: e.quote };
       if (st.status === 'locked') {
@@ -253,7 +274,7 @@ export function checkOrder(order: string[], dd: string, lib: Library, account: A
           lines.push({ ...base, kind: 'possible', why: `a ${eventWord(c.event)}, but the text does not say whose`, points: 0 });
         } else {
           const target = c.whose === 'previous' ? before(order, who) : c.whose === 'next' ? after(order, who) : dd;
-          const reaction = ddSheet?.entries.find((x) => [x.reacts].flat().includes(c.event) && statuses.get(key(dd, x))?.status === 'on');
+          const reaction = entries.get(dd)?.find((x) => [x.reacts].flat().includes(c.event) && statuses.get(key(dd, x))?.status === 'on');
           if (target !== dd) lines.push({ ...base, kind: 'not-counted', why: `the ${eventWord(c.event)} goes to ${name(target)}, not ${name(dd)}`, points: 0 });
           else if (!reaction) lines.push({ ...base, kind: 'not-counted', why: `${name(dd)}'s kit has nothing switched on that reacts to a ${eventWord(c.event)}`, points: 0 });
           else {

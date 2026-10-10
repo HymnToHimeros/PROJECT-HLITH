@@ -100,4 +100,14 @@ Numbered so later changes can point at them.
     worked examples (Billy > Dialyn > Lucia 9 of 10) don't include builds. ZZZ reads the same `scales` (28 entries:
     Astra Yao's ATK, Lucia's HP, Pan Yinhu's ATK…) and shows "Builds this team wants" with the fit, marked "not counted
     yet", until the owner says whether ZZZ counts them too.
+29. **Whatever weapon is equipped counts, when its path or specialty is the wearer's (T18 step 4, both games).**
+    Every Light Cone (109) and W-Engine (55) that isn't a signature is read like a kit piece, quote for quote
+    (`src/games/<game>/kitcheck/weapons/`). In the game an HSR Light Cone's effect only works on its path and a
+    W-Engine's only for its specialty, so a weapon on the wrong wearer adds nothing and the account note says so
+    ("X: works only for Destruction characters, not counted."). A signature on someone else of its path (Robin's
+    Flowing Nightglow on Sparkle) brings the entries read in its owner's sheet. Same rules as kits: the wearer's own
+    stats with no team condition give the team nothing; unclear text is shown, never counted ("Unto Tomorrow's
+    Morrow" doesn't say whose DMG rises; Planetary Rendezvous and Poised to Bloom depend on the wearer's element /
+    a shared path the sheet can't name). ZZZ's "less DMG taken" is read as `heal` (tie-break only), as Lucia's
+    shield is.
 

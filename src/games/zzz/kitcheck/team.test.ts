@@ -126,3 +126,18 @@ describe('Builds a team wants (T18): shown, not counted in ZZZ yet (decision 28)
     expect(lib.sheets.get('1421')?.entries.some((e) => e.scales?.stat === 'atk')).toBe(true);
   });
 });
+
+describe('Any equipped W-Engine counts when its specialty is the wearer’s (T18 step 4)', () => {
+  const kaboom = { id: '13115', name: 'Kaboom the Cannon' };
+  const with_ = (who: string) => verdict([BILLY, DIALYN, LUCIA], { ...account([BILLY, DIALYN, LUCIA]), weapon: (x) => (x === who ? kaboom : undefined) });
+  it('Kaboom the Cannon (Support) on Lucia (Support) is read, named as the proof', () => {
+    const v = with_(LUCIA);
+    if (!v.rated) throw new Error(v.why);
+    expect(v.reasons.some((x) => x.proof?.skill === 'W-Engine: Kaboom the Cannon')).toBe(true);
+  });
+  it('on Starlight Billy (Attack) it does nothing: its effect only works for Support agents', () => {
+    const v = with_(BILLY);
+    if (!v.rated) throw new Error(v.why);
+    expect(v.reasons.some((x) => x.proof?.skill === 'W-Engine: Kaboom the Cannon')).toBe(false);
+  });
+});

@@ -170,3 +170,16 @@ export interface CharacterSheet {
   /** Pieces with nothing for the team: piece id → why. Every kit piece is either here or has entries. */
   nothing: Record<string, string>;
 }
+
+/**
+ * An equipped weapon's effect, read like a kit piece (T18 step 4): every entry's `piece` is 'effect' and quotes
+ * the weapon's effect text (weapons.json) word for word. It counts for whoever has it in their saved build, when
+ * their path matches the weapon's. Signature weapons are read in their character's sheet instead.
+ */
+export interface WeaponSheet {
+  weaponId: string;
+  name: string;
+  entries: Entry[];
+  /** Why it gives the team nothing (only the wearer's own stats…); required when there are no entries. */
+  nothing?: string;
+}

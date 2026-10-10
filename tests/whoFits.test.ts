@@ -1,6 +1,7 @@
 // @vitest-environment node
 /** T18: suggestions for your own teams come from your account, ranked by %, with theory only when asked. */
 import { describe, expect, it } from 'vitest';
+import weapons from '../src/games/hsr/data/weapons.json';
 import type { TeamAccount } from '../src/core/contract';
 import { library as hsrLib } from '../src/games/hsr/kitcheck/library';
 import { whoFits as hsrFits } from '../src/games/hsr/kitcheck/team';
@@ -24,7 +25,7 @@ describe('Who fits from your account (T18)', () => {
     const robin = fits.find((f) => f.id === idOf(h, 'Robin'));
     expect(robin?.theory).toBe(false);
     expect(robin?.fromAccount?.[0]).toBe('Counted: E2.');
-    expect(robin?.fromAccount?.some((n) => /Signature Flowing Nightglow not saved: not counted/.test(n))).toBe(true);
+    expect(robin?.fromAccount).toContain('No weapon saved (signature Flowing Nightglow would count).');
   });
 
   it('"Include characters I don’t own" adds the rest, marked as theory', () => {
@@ -34,14 +35,20 @@ describe('Who fits from your account (T18)', () => {
     expect(topaz?.fromAccount?.[0]).toMatch(/^Not owned: scored as theory at E0/);
   });
 
-  it('the signature weapon counts only when the saved build has it; another weapon is named and not counted', () => {
+  it('the signature counts when saved; any other weapon counts when its path is theirs, and says why when not', () => {
     const robinId = idOf(h, 'Robin');
     const nightglow = h.unlocks.get(robinId)?.get('signature-weapon')?.weapon ?? '';
     const withSig = account({ [fei]: 0, [robinId]: 0 }, { weapon: (id) => (id === robinId ? { id: nightglow, name: 'Flowing Nightglow' } : undefined) });
     const robin = hsrFits([fei], withSig, h).find((f) => f.id === robinId);
     expect(robin?.fromAccount).toContain('Counted: E0 (no copies saved), signature Flowing Nightglow.');
-    const other = account({ [fei]: 0, [robinId]: 0 }, { weapon: (id) => (id === robinId ? { name: 'Dance! Dance! Dance!' } : undefined) });
-    expect(hsrFits([fei], other, h).find((f) => f.id === robinId)?.fromAccount).toContain('Dance! Dance! Dance! saved, not signature Flowing Nightglow: not counted.');
+    const unmatched = account({ [fei]: 0, [robinId]: 0 }, { weapon: (id) => (id === robinId ? { name: 'My own cone' } : undefined) });
+    expect(hsrFits([fei], unmatched, h).find((f) => f.id === robinId)?.fromAccount).toContain("My own cone: not matched to the game's list, not counted.");
+    // A Destruction Light Cone on Robin (Harmony): its effect only works for Destruction characters.
+    const destruction = (weapons as { id: string; name: string; role?: string; madeFor?: string }[]).find((w) => w.role === 'destruction' && !w.madeFor);
+    if (!destruction) throw new Error('no Destruction Light Cone');
+    const wrong = account({ [fei]: 0, [robinId]: 0 }, { weapon: (id) => (id === robinId ? { id: destruction.id, name: destruction.name } : undefined) });
+    const wrongNotes = hsrFits([fei], wrong, h).find((f) => f.id === robinId)?.fromAccount ?? [];
+    expect(wrongNotes.some((n) => n === `${destruction.name}: works only for Destruction characters, not counted.` || n === `${destruction.name}: effect not read yet, not counted.`)).toBe(true);
   });
 
   it('ZZZ: Mindscapes and Agent Potential from the account', () => {
