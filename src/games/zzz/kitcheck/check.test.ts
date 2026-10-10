@@ -2,7 +2,7 @@
 import { describe, expect, it } from 'vitest';
 import kits from '../data/kits.json';
 import { checkOrder, checkSquad, type Account } from './check';
-import { library, SHEETS } from './library';
+import { buildLibrary, library, SHEETS } from './library';
 
 const BILLY = '1531';
 const DIALYN = '1481';
@@ -131,7 +131,9 @@ describe('Ties and order: Billy > Pan Yinhu > Lucia counts 10', () => {
 
 describe('Part B rules', () => {
   it('a squad with an unread member is not rated', () => {
-    const out = checkSquad([BILLY, DIALYN, '1011'], lib, account);
+    // Every agent is read now, so leave one sheet out on purpose (a new character before it is read).
+    const partial = buildLibrary(SHEETS.filter((s) => s.characterId !== '1011'));
+    const out = checkSquad([BILLY, DIALYN, '1011'], partial, account);
     expect(out).toMatchObject({ rated: false, unread: ['1011'] });
   });
 

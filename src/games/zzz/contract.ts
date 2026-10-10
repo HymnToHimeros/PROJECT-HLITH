@@ -12,6 +12,7 @@ import materials from './data/materials.json';
 import teams from './data/teams.json';
 import sampleArt from './data/sample-art.json';
 import versions from './data/versions.json';
+import { materialsFor } from './costs';
 import { SHEETS } from './kitcheck/library';
 import { withTags } from './kitcheck/tags';
 import { zzzTeamRules } from './kitcheck/team';
@@ -138,7 +139,7 @@ export const zzz: GameContract = {
   },
   accountLinks: [{ provider: 'hoyolab', supports: ['stamina', 'checkin', 'roster', 'endgame'], config: { gameBiz: 'nap_global' } }],
   scan: { screen: 'character', fields: ['level', 'mindscape', 'w-engine', 'drive-discs', 'skills'] },
-  rules: { teams: zzzTeamRules },
+  rules: { teams: zzzTeamRules, materialsFor },
   sources: [
     { what: 'Agent list (names, rank, specialty, attribute)', source: 'nanoka.cc data files, game data 3.3.4, used with permission', entered: '2026-10-09', verified: false },
     { what: 'Pull rates, hard pity, 50/50 and 75/25', source: 'official rates shown on the in-game Signal Search details page', entered: '2026-10-09', verified: false },

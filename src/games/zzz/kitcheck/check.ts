@@ -167,7 +167,7 @@ function reach(e: Entry, giver: string, dd: string, order: string[], lib: Librar
   const used = stats.filter((s) => (GENERAL_STATS.includes(s) && !notes?.ignores.includes(s)) || (SPECIFIC_STATS.includes(s) && !!notes?.uses.includes(s)));
   if (used.length) return { kind: 'buff', why: `reaches ${name(dd)}` };
   if (stats.some((s) => SUPPORT_STATS.includes(s))) return { kind: 'support', why: 'team support' };
-  return { kind: 'no', why: `${name(dd)}'s damage doesn't use ${list(stats)}` };
+  return { kind: 'no', why: `${name(dd)}'s damage doesn't use ${list([...new Set(stats)])}` };
 }
 
 /** Parts B steps 3–8 for one order with a set damage dealer. */

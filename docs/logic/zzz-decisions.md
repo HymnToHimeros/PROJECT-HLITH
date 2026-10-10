@@ -143,3 +143,22 @@ Each one can be changed: tell LOGIC-CORE which.
     a teammate who gives them a Quick Assist makes a chain.
 42. **Two different skills that each give a Quick Assist are two chains**
     (Seth), as "one chain per cause" (decision 5).
+
+## Added with group I
+43. **Shields count as team support** (stat "heal"): there is no Shield stat,
+    and a shield doesn't raise damage. Ben's +16% CRIT Rate for shielded
+    characters reaches the whole squad, because his Core Passive shields all.
+44. **Phoenix (beta)**: her "Scorch" is read as a state on the enemy and
+    counted; her text never says what applies it. Beta text can change: she is
+    re-read on release, as the method says.
+
+## Materials (step 4)
+45. **Costs come from nanoka.cc** (ascension, every skill level, Core Skill,
+    Traces), for every character at once: this is game data, not kit reading.
+46. **ZZZ Agent EXP** is counted in Senior Investigator Logs (3,000 EXP each,
+    from the item's in-game text as quoted by Icy Veins and ONE Esports).
+    Checked: nanoka.cc's EXP table gives 900,000 for 1 → 60 = 300 Logs, the
+    number Icy Veins lists.
+47. **HSR character EXP is not counted yet**: neither nanoka.cc nor Yatta has
+    the per-level table, and the wiki that has it blocks automated reading.
+    The Farm says so instead of guessing.
