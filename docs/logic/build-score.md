@@ -27,3 +27,29 @@ Not scored yet (shown, not counted): skill levels, refinement / phase, set
 choice ranking (any recommended option counts the same), and how high the sub
 stat values rolled. No damage maths: the score says how closely a build follows
 the game's recommendation, not how much damage it does.
+
+## Assumed builds (owner's job T34, both games)
+
+The owner, word for word: "if a build is not aviable for a charchter i should have
+the option to turn n assume said charchter as their signautre and also a avrage
+build nothing to extrra odrinary but nothing bnad either."
+
+With the switch on (saved with the account, `TeamAccount.assumeAverage`), an
+**owned character with nothing saved** is scored in team checks with:
+
+- their **signature weapon** (the game's own link in `weapons.json`) at the first
+  refinement, so kit lines that need it unlock;
+- an **average build** made from the game's own recommended build above: level
+  cap, the first option of each recommended set on the slots the game puts it
+  on, the first recommended main stat on every slot that has a choice, and each
+  recommended sub stat once per piece (at most 4, never the main stat), 1 roll
+  each with no upgrades on top. Roll values are not assumed.
+
+That is right sets and main stats with ordinary sub stats. The usual build check
+reads it like any saved build, so it can still be "not built for it" when a
+team wants a stat the game doesn't recommend for that character. Every place
+the build or weapon is used says "assumed: signature …, average build (…)".
+A saved build always wins; characters you don't own are never assumed; with the
+switch off nothing changes ("no build saved, scored at base"). Code:
+`src/core/rules/averageBuild.ts`, each game's `assumed.ts`; tests in
+`tests/averageBuild.test.ts`.

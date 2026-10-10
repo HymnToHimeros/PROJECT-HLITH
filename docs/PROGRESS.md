@@ -28,6 +28,51 @@ Resume with: "continue from PROGRESS.md". Newest entry on top. Older entries:
 - CI (`.github/workflows/ci.yml`) runs both on every pull request.
 
 ## Done
+- 2026-10-10 · **LOGIC-CORE: "Assume signature + average build" (T34)** (branch `logic-core/assume-average-build`).
+  With the owner's switch on, an owned character with no saved build is scored in team checks with
+  their signature weapon and an average build made from the game's own recommendation (recommended
+  sets and main stats, 1 roll per recommended sub stat). The Why says "No build saved for X (signature
+  Y): scored with … as your setting asks"; a saved build always wins; switch off = scored at base, as
+  before. Both games. FRAME adds the switch (saved with the account). Rules: `docs/logic/build-score.md`.
+- 2026-10-10 · **LOGIC-CORE: multi-carry teams and solo modes (#80)** (branch `logic-core/solo-and-co-carries`).
+  Owner's Team 1 (Aventurine • Waveflair, Mortenax Blade, Ashveil, Robin • Summeretto): every carry on a
+  carry's own game team counts, and "solo" lines ("no other Elation character") are read. 40–47% → 93%.
+  HSR decision 33.
+- 2026-10-10 · **LOGIC-CORE: a team does not need a healer or shield (#78)** (branch `logic-core/no-sustain`).
+  Owner's ruling: sustain is no longer a requirement, a tie-break or a note. HSR decision 32.
+- 2026-10-10 · **LOGIC-CORE: scores explain themselves in plain words (T17)** (branch `logic-core/plain-reasons`).
+  Every team's "Why" now opens with a sentence (who deals the damage, who connects
+  with their kit), one line per member (what they give the damage dealer, what they
+  set off, points), and "To reach 100%" (points lost, the best team found and what
+  its members would bring). The kit lines that prove it are one tap below. "If you
+  pull" says what the character would give; Kit check notes are full sentences
+  (who gets it, when it's on, what it sets off, what you must do). Both games.
+- 2026-10-10 · **LOGIC-CORE: signature weapons count when equipped (T18, step 2)** (branch `logic-core/signature-weapons`).
+  Every signature Light Cone and W-Engine is read from its game text as part of the
+  character's kit (about 110). It counts in team scores only when that weapon is in the
+  character's saved build; the "Why" says "Signature X counted", "not counted (no weapon
+  saved)" or "your build has Y, not X". Decision 24 in `docs/logic/hsr-decisions.md`.
+- 2026-10-10 · **LOGIC-CORE: team suggestions from your account (T18, step 1)** (branch `logic-core/account-fits`).
+  Who fits takes options: by default only characters you own, ranked by the team's %,
+  counting your Eidolons / Mindscapes and Enhanced / Agent Potential; "include characters
+  I don't own" adds the rest as theory. Each suggestion says what came from your account
+  ("E2 counted", "Enhanced kit: not saved, scored without it", "Weapon in your build: …,
+  its effect isn't counted yet"). Next: signature weapon effects read into the cheat sheets.
+- 2026-10-10 · **LOGIC-CORE: builds a team wants (T18, step 3)** (branch `logic-core/build-wants`).
+  A teammate's buff that grows with their own stat makes the team want that build on them
+  (Robin • Summeretto with Phainon: HP). Saved builds are read in bands: built +2, partly +1,
+  none 0 ("no build saved, scored at base"); 100% assumes the team is built right. The team
+  "Why" lists "Builds this team wants"; the character page has "Builds their teams want".
+  ZZZ shows them, not counted yet (owner to decide). Decisions 25–28.
+- 2026-10-10 · **LOGIC-CORE: every equipped weapon counts (T18, step 4)** (branch `logic-core/equipped-weapons`).
+  All 109 Light Cones and 55 W-Engines that aren't signatures are read quote for quote. The one in a
+  character's saved build counts when its path / specialty is theirs (as in the game); otherwise the note
+  says "works only for X characters". Decision 29.
+- 2026-10-10 · **LOGIC-CORE: HSR teams are each carry's own game team** (branch `logic-core/hsr-own-teams`).
+  Owner's report: "Phainon team · with March 7th" was a starter line-up from March 7th's page. Now only a
+  carry's own game team is shown, each slot filled with the first character you own in the game's order, and
+  teammates are only ever picked from that team's lists. Phainon + Sunday + Cerydra + Dan Heng PT is his one
+  team when owned. Decision 30.
 - 2026-10-10 · **SCHEDULER: Nihilux found under her leak name** (branch `scheduler/nihilux-leak-name`).
   Nihilux was already listed as a leak (HSR id 1511), but under the display name the
   beta files give, "Aeon ★ Aha"; the same files name the character `nihilux`. Leaked
