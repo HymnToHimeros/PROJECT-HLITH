@@ -179,7 +179,7 @@ interface HsrDetail {
     sub_affix_property_list?: string[];
   };
   lightcones?: number[];
-  teams?: { team_id: number; member_list: number[]; backup_list1?: number[]; backup_list2?: number[]; backup_list3?: number[] }[];
+  teams?: { team_id: number; position?: number; member_list: number[]; backup_list1?: number[]; backup_list2?: number[]; backup_list3?: number[] }[];
 }
 
 async function hsr(): Promise<{ builds: Build[]; teams: unknown[] }> {
@@ -242,10 +242,12 @@ async function hsr(): Promise<{ builds: Build[]; teams: unknown[] }> {
         items,
       });
     }
-    // The game's first recommended team per character (the Teams screen lists every one).
-    for (const t of (d.teams ?? []).slice(0, 1)) {
-      // The lead plus the three places; each place lists the game's first pick, then its backups.
-      const places = [[Number(id)], ...[0, 1, 2].map((i) => [t.member_list[i], ...((i === 0 ? t.backup_list1 : i === 1 ? t.backup_list2 : t.backup_list3) ?? [])].filter((x): x is number => typeof x === 'number'))];
+    // Every team the game recommends on this character's page, in the game's own order: the three members, with the
+    // page's character placed where the game puts them (`position`). Each place lists the game's pick, then its backups.
+    // Who the team is built around is decided from the kits (src/games/hsr/kitcheck/team.ts), not here.
+    for (const t of d.teams ?? []) {
+      const places = [0, 1, 2].map((i) => [t.member_list[i], ...((i === 0 ? t.backup_list1 : i === 1 ? t.backup_list2 : t.backup_list3) ?? [])].filter((x): x is number => typeof x === 'number'));
+      places.splice(Math.min(t.position ?? 0, places.length), 0, [Number(id)]);
       const slots = places.map((p) => ({ characters: [...new Set(p.map(String))].filter((c) => c in list) })).filter((s) => s.characters.length);
       if (slots.length < 2) continue;
       teams.push({ id: `game-${id}-${t.team_id}`, name: `${plain(d.name)} team${t.team_id > 1 ? ` ${t.team_id}` : ''}`, slots, source: "the game's own recommended team (nanoka.cc)" });
@@ -260,6 +262,8 @@ interface WeaponOut {
   rarity: 'top' | 'mid' | 'low';
   icon?: string;
   madeFor?: string;
+  /** A signature weapon's effect at its first refinement, in the game's words (the kit check reads it). */
+  effect?: { name: string; text: string };
   source: string;
 }
 const RARITY: Record<number, WeaponOut['rarity']> = { 5: 'top', 4: 'mid', 3: 'low' };
@@ -276,7 +280,14 @@ async function zzzWeapons(): Promise<WeaponOut[]> {
     if (!rarity) throw new Error(`zzz weapon ${id}: unknown rank ${w.rank}`);
     const icon = await loads(`${ASSETS}/zzz/${w.icon}.webp`);
     const agent = /^Weapon_S_(\d+)$/.exec(w.icon)?.[1];
-    out.push({ id, name: plain(w.en), rarity, ...(icon ? { icon } : {}), ...(agent && agents.has(agent) ? { madeFor: agent } : {}), source: 'nanoka.cc' });
+    const madeFor = agent && agents.has(agent) ? agent : undefined;
+    let effect: WeaponOut['effect'];
+    if (madeFor) {
+      const d = await getJson<{ talents: Record<string, { name: string; desc: string }> }>(`${BASE}/zzz/${v}/en/weapon/${id}.json`);
+      const t = d.talents['1'];
+      if (t) effect = { name: plain(t.name), text: plain(t.desc) };
+    }
+    out.push({ id, name: plain(w.en), rarity, ...(icon ? { icon } : {}), ...(madeFor ? { madeFor } : {}), ...(effect ? { effect } : {}), source: 'nanoka.cc' });
   }
   return out;
 }
@@ -303,7 +314,14 @@ async function hsrWeapons(): Promise<WeaponOut[]> {
     if (!rarity) throw new Error(`hsr Light Cone ${id}: unknown rarity ${c.rank}`);
     const icon = await loads(`${ASSETS}/hsr/lightconemediumicon/${id}.webp`);
     const who = firstFor.get(id);
-    out.push({ id, name: plain(c.en), rarity, ...(icon ? { icon } : {}), ...(stars === 5 && who?.length === 1 && who[0] ? { madeFor: who[0] } : {}), source: 'nanoka.cc' });
+    const madeFor = stars === 5 && who?.length === 1 && who[0] ? who[0] : undefined;
+    let effect: WeaponOut['effect'];
+    if (madeFor) {
+      const d = await getJson<{ refinements: { name: string; desc: string; level: Record<string, { param_list: number[] }> } }>(`${BASE}/hsr/${v}/en/lightcone/${id}.json`);
+      if (d.refinements?.desc) effect = { name: plain(d.refinements.name), text: plain(fill(d.refinements.desc, d.refinements.level['1']?.param_list ?? [])) };
+      else console.log(`  hsr Light Cone ${id} (${plain(c.en)}): no effect text in the files yet, left out`);
+    }
+    out.push({ id, name: plain(c.en), rarity, ...(icon ? { icon } : {}), ...(madeFor ? { madeFor } : {}), ...(effect ? { effect } : {}), source: 'nanoka.cc' });
   }
   return out;
 }

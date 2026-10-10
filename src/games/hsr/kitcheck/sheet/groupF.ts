@@ -5,6 +5,7 @@
  */
 import type { CharacterSheet } from '../types';
 
+const WEARER = "Raises the wearer's own stats; nothing for the team.";
 const TECH = 'Used before battle; not counted.';
 const LEVELS = 'Raises their own skill levels; nothing for the team.';
 const SELF_HIM = 'Buffs only himself; nothing for the team.';
@@ -91,6 +92,7 @@ export const saber: CharacterSheet = {
     'eidolon-4': SELF_HER,
     'eidolon-5': LEVELS,
     'eidolon-6': SELF_HER,
+    'signature-weapon': "Raises the wearer's own stats and Energy; nothing for the team.",
   },
 };
 
@@ -140,6 +142,7 @@ export const clara: CharacterSheet = {
     'eidolon-4': SELF_HER,
     'eidolon-5': LEVELS,
     'eidolon-6': 'More Counters of her own; the Follow-Up ATK is read in the Talent.',
+    'signature-weapon': "Raises the wearer's own stats and heals only the wearer; nothing for the team.",
   },
 };
 
@@ -269,6 +272,7 @@ export const blade: CharacterSheet = {
     'eidolon-4-enhanced': SELF_HIM,
     'eidolon-5-enhanced': LEVELS,
     'eidolon-6-enhanced': SELF_HIM,
+    'signature-weapon': "Raises the wearer's own stats when attacked or spending their own HP; nothing for the team.",
   },
 };
 
@@ -304,6 +308,16 @@ export const jingliu: CharacterSheet = {
       to: 'self',
       reacts: { event: 'hp-loss', from: 'any' },
       setup: 'In the Spectral Transmigration state; allies take DMG or consume HP.',
+    },
+    {
+      id: 'lc-eclipse',
+      piece: 'signature-weapon',
+      quote: 'When a teammate gets attacked or loses HP, the wearer gains 1 stack of Eclipse, up to a max of 3 stack(s).',
+      tag: 'Eclipse: her next attack +14% DMG per stack',
+      gives: [{ stat: 'dmg', amount: '+14% per stack, up to 3 (next attack)' }, { stat: 'def-shred', amount: '12% at 3 stacks' }],
+      to: 'self',
+      reacts: { event: 'hp-loss', from: 'teammates' },
+      setup: 'A teammate is attacked or loses HP; the stacks clear after her attack.',
     },
   ],
   nothing: {
@@ -447,6 +461,15 @@ export const yunli: CharacterSheet = {
       to: 'enemy',
       setup: 'Use her Ultimate.',
     },
+    {
+      id: 'lc-draws-attacks',
+      piece: 'signature-weapon',
+      quote: "Greatly increases the wearer's chance of getting attacked",
+      tag: 'Draws enemy attacks',
+      gives: [{ stat: 'taunt', amount: 'greatly raised chance to be attacked' }],
+      to: 'enemy',
+      setup: 'Nothing; always on.',
+    },
   ],
   nothing: {
     'skill-basic-atk-galespin-summersault': only('Physical'),
@@ -518,6 +541,7 @@ export const misha: CharacterSheet = {
     'eidolon-3': LEVELS,
     'eidolon-4': SELF_HIM,
     'eidolon-5': LEVELS,
+    'signature-weapon': WEARER,
   },
 };
 
@@ -579,6 +603,7 @@ export const mydei: CharacterSheet = {
     'eidolon-4': SELF_HIM,
     'eidolon-5': LEVELS,
     'eidolon-6': SELF_HIM,
+    'signature-weapon': "Raises the wearer's own stats and spends the wearer's own HP (his HP loss is counted with his kit); nothing for the team.",
   },
 };
 
@@ -643,6 +668,7 @@ export const phainon: CharacterSheet = {
     'eidolon-4': SELF_HIM,
     'eidolon-5': LEVELS,
     'eidolon-6': SELF_HIM,
+    'signature-weapon': WEARER,
   },
 };
 
@@ -713,6 +739,15 @@ export const gilgamesh: CharacterSheet = {
       gives: [{ stat: 'res-pen', amount: '+20%' }],
       to: 'allies',
       setup: 'Gilgamesh is on the field.',
+    },
+    {
+      id: 'lc-kings-entertainment',
+      piece: 'signature-weapon',
+      quote: 'While the wearer holds "King\'s Entertainment," increases all allies\' CRIT DMG by 24%.',
+      tag: 'Allies: +24% CRIT DMG',
+      gives: [{ stat: 'crit-dmg', amount: '+24%' }],
+      to: 'allies',
+      setup: 'Gilgamesh enters combat or uses his Ultimate; 3 turns.',
     },
   ],
   nothing: {

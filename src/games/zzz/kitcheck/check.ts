@@ -18,7 +18,7 @@ export interface Library {
   profiles: Map<string, Profile>;
   sheets: Map<string, CharacterSheet>;
   /** Kit piece → unlock level, per character. */
-  unlocks: Map<string, Map<string, { dupes?: number; potential?: number; replacedAt?: number }>>;
+  unlocks: Map<string, Map<string, { dupes?: number; potential?: number; replacedAt?: number; weapon?: string }>>;
   /** Kit piece → its label ("Additional Ability: External Line"), per character. */
   pieceLabels: Map<string, Map<string, string>>;
   names: Map<string, string>;
@@ -28,7 +28,8 @@ export interface Library {
 export interface Account {
   mindscape: (id: string) => number;
   /** undefined = not saved. */
-  potential: (id: string) => number | undefined;
+  potential: (id: string) => number | undefined;  /** The weapon in the saved build (signature weapons); undefined = none saved. */
+  weapon?: (id: string) => { id?: string; name: string } | undefined;
 }
 
 export type Status = 'on' | 'off' | 'locked' | 'unknown' | 'replaced';
@@ -113,6 +114,11 @@ function evalCondition(c: Condition | undefined, self: string, order: string[], 
 /** Part B step 3: locked, on, off or unknown, with the reason in words. */
 export function statusOf(e: Entry, who: string, order: string[], lib: Library, account: Account): { status: Status; why: string } {
   const unlock = lib.unlocks.get(who)?.get(e.piece);
+  if (unlock?.weapon) {
+    const w = account.weapon?.(who);
+    if (!w) return { status: 'locked', why: 'locked: needs their signature weapon equipped (none saved in their build)' };
+    if (w.id !== unlock.weapon) return { status: 'locked', why: `locked: needs their signature weapon; the saved build has ${w.name}` };
+  }
   if (unlock?.dupes && account.mindscape(who) < unlock.dupes) return { status: 'locked', why: `locked: needs M${unlock.dupes}, you have M${account.mindscape(who)}` };
   if (unlock?.potential) {
     const p = account.potential(who);
@@ -268,7 +274,7 @@ export function checkOrder(order: string[], dd: string, lib: Library, account: A
   return { order, dd, count, support: lines.filter((l) => l.kind === 'support').length, chains: lines.filter((l) => l.kind === 'chain').length, lines };
 }
 
-const eventWord = (e: string) => ({ 'quick-assist': 'Quick Assist', 'chain-attack': 'Chain Attack', ultimate: 'Ultimate', 'ether-veil': 'Ether Veil' })[e] ?? e;
+export const eventWord = (e: string) => ({ 'quick-assist': 'Quick Assist', 'chain-attack': 'Chain Attack', ultimate: 'Ultimate', 'ether-veil': 'Ether Veil' })[e] ?? e;
 
 /** Ties: higher count, then more team support, then more chains. Positive = a is better. */
 export const compare = (a: SquadResult, b: SquadResult) => a.count - b.count || a.support - b.support || a.chains - b.chains;

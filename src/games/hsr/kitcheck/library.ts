@@ -1,7 +1,10 @@
 /** The HSR kit check's ingredients, built from the game data and the cheat sheet. */
-import type { Kit } from '../../../core/contract';
+import type { Kit, TeamPreset, Weapon } from '../../../core/contract';
 import characters from '../data/characters.json';
-import kits from '../data/kits.json';
+import kitsJson from '../data/kits.json';
+import weapons from '../data/weapons.json';
+import { withSignatureWeapons } from '../../../core/rules/signatureWeapons';
+import gameTeams from '../data/teams.json';
 import type { Library, Profile } from './check';
 import { groupA } from './sheet/groupA';
 import { groupB } from './sheet/groupB';
@@ -14,11 +17,39 @@ import { groupH } from './sheet/groupH';
 import { groupI } from './sheet/groupI';
 import type { CharacterSheet, Element, Path } from './types';
 
+/** Every kit, with each character's signature Light Cone as one more piece (counted only when equipped). */
+export const KITS: Kit[] = withSignatureWeapons(kitsJson as Kit[], weapons as Weapon[], 'Light Cone');
+
 /** Every character read so far, group by group. */
 export const SHEETS: CharacterSheet[] = [...groupA, ...groupB, ...groupC, ...groupD, ...groupE, ...groupF, ...groupG, ...groupH, ...groupI];
 
-export function buildLibrary(sheets: CharacterSheet[] = SHEETS, kitList: Kit[] = kits as Kit[]): Library {
+/** The page's character of a game team (`game-<id>-<n>`). */
+export const pageOf = (team: TeamPreset) => /^game-(\d+)-/.exec(team.id)?.[1];
+
+/**
+ * Who a game team is built around: its first member when they can carry, else the page's character when they can.
+ * The game lists a support's or partner's team with its real carry first (March 7th (Hunt): Feixiao, March 7th, …).
+ */
+export function centreOf(team: TeamPreset, carries: Set<string>): string | undefined {
+  const first = team.slots[0]?.characters[0];
+  const page = pageOf(team);
+  return first && carries.has(first) ? first : page && carries.has(page) ? page : undefined;
+}
+
+function pairs(teams: TeamPreset[]): Map<string, Set<string>> {
+  const out = new Map<string, Set<string>>();
+  for (const t of teams) {
+    const all = t.slots.flatMap((s) => s.characters);
+    for (const a of all) for (const b of all) if (a !== b) out.set(a, (out.get(a) ?? new Set()).add(b));
+  }
+  return out;
+}
+
+export function buildLibrary(sheets: CharacterSheet[] = SHEETS, kitList: Kit[] = KITS, teams: TeamPreset[] = gameTeams as TeamPreset[]): Library {
+  const carries = new Set(sheets.filter((s) => s.damage).map((s) => s.characterId));
   return {
+    centres: new Set(teams.map((t) => centreOf(t, carries)).filter((x): x is string => !!x)),
+    pairedWith: pairs(teams),
     profiles: new Map(characters.map((c) => [c.id, { characterId: c.id, path: c.role as Path, element: c.element as Element } satisfies Profile])),
     sheets: new Map(sheets.map((s) => [s.characterId, s])),
     unlocks: new Map(

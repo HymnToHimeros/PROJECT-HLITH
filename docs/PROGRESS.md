@@ -28,6 +28,36 @@ Resume with: "continue from PROGRESS.md". Newest entry on top. Older entries:
 - CI (`.github/workflows/ci.yml`) runs both on every pull request.
 
 ## Done
+- 2026-10-10 · **Eight more themes** (branch `worktree-agent-a9e6d8c564b992b99`). Account → Theme now offers
+  Noctune Bloom, Astral Lagoon, Crimson Haze, Jade Whisper, Velvet Twilight, Midnight Sakura and two light
+  ones, Ethereal Dune and Amber Mirage, each from the owner's palette with its own background art and emblem
+  (`src/core/theme/tokens-themes.css`, `ThemeArt.tsx`, `themes.ts`). Same contrast tests as the first six
+  (tests/themes.test.ts) and the theme accessibility browser test; the six existing themes look the same.
+- 2026-10-10 · **FRAME: GitHub tidy and README** (branch `frame/tidy-readme`, owner job T24).
+  `docs/README.md` sorts every doc by what you'd open it for (files stay where they are:
+  code, migrations and the chats' rules point at them). README brought up to date
+  (HoYoLAB ticks, builds, Enhanced / Potential, themes, owner console, five chats) with
+  fresh screenshots. A stray `preview.log` removed and `*.log` ignored. Merged branches
+  are auto-deleted by GitHub; two stale ones are left for the owner to delete.
+- 2026-10-10 · **FRAME: live banner art the same size; HoYoLAB ticks dailies** (branch `frame/owner-jobs-1`, owner jobs T16, T22).
+  Today's live banners: every card is the same height, so every art box is the same
+  size and crops the same way (titles stop at two lines). Each live stamina read now
+  ticks what HoYoLAB proves (`src/tools/today/autoTick.ts`): stamina lower than the
+  last read counted forward = spent ("Spend …" ticked, only when the last read was the
+  same game day); daily activity full = the daily income row (Daily Training / Daily
+  Engagement) ticked. Ticked rows say "ticked from HoYoLAB"; untick and it stays unticked.
+- 2026-10-10 · **LOGIC-CORE: HSR teams built around real damage dealers (T19)** (branch `logic-core/hsr-real-teams`).
+  Cause: the check let any Hunt/Erudition character be a team's centre, and the game's
+  team for March 7th (Hunt) was imported with her first, though the game builds it
+  around Feixiao. Now centres come from the game's own teams (March 7th (Hunt), Topaz,
+  Moze, Dr. Ratio, Herta, Serval, Jade, Black Swan are partners), the game's teams are
+  listed led by their centre, and HSR no longer lists made-up "best by kit check" teams.
+  Decisions 21–23 in `docs/logic/hsr-decisions.md`.
+- 2026-10-10 · **LOGIC-CORE: build score** (branch `logic-core/build-score`).
+  A saved build is checked against the game's own recommended build: level,
+  weapon, sets, main stat per slot, sub stats. Score and grade with every part
+  and its reason on the character page; parts with nothing entered say "No data
+  yet" and aren't counted. Rules: `docs/logic/build-score.md`.
 - 2026-10-10 · **MANAGER is on** (branch `manager/jobs-list`). `docs/TASKS.md` holds every
   open owner job with who has it and its state; the owner's screenshots are in
   `docs/owner-reports/2026-10-10/`. Owner's rule: MANAGER approves and merges every PR

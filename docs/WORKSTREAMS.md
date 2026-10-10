@@ -105,6 +105,17 @@ stays the base; never rename an id that is already in a list.
     `items` (`BuildItem`: picture, rarity, effects) to `RecommendedBuild`, and
     optional `unordered` to a rated `TeamVerdict` (HSR teams have no order).
     Farm, the character page ("How to build") and Why % use them.
+  - 2026-10-10 · LOGIC-CORE added `FitOptions` (`includeUnowned`), optional `percent`,
+    `fromAccount` and `theory` on `FitSuggestion`, and optional `TeamAccount.weapon`
+    (filled from the saved build in TeamParts.tsx) for T18.
+  - 2026-10-10 · LOGIC-CORE added `TeamExplain` and optional `explain` on a rated
+    `TeamVerdict` (plain-words reasons, T17), filled by `src/core/rules/teamExplain.ts`;
+    the team "Why" (TeamParts.tsx) shows it first, the proof list one tap below.
+  - 2026-10-10 · LOGIC-CORE added optional `set`, `rolls`, `weapon.refine` and
+    `skills` to `CharacterBuild`, the `BuildScorePart` type, and optional `parts`
+    and `basis` on `scoreBuild`'s result; the character page's Build score card
+    shows them. The game-free scoring lives in `src/core/rules/buildScore.ts`
+    (games pass their facts; rules: `docs/logic/build-score.md`).
   - 2026-10-10 · LOGIC-CORE added the `Weapon` entity and optional
     `data.weapons` (Light Cones, W-Engines with picture and "made for"), from
     `npm run data:builds` (`weapons.json`, both games). LOGIC-CORE changed

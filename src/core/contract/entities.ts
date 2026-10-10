@@ -124,9 +124,10 @@ export interface KitSkill {
   id: string;
   label: string;
   /** What sort of piece it is; screens group by it. */
-  kind?: 'skill' | 'core' | 'additional' | 'mindscape' | 'potential' | 'trace' | 'eidolon';
+  kind?: 'skill' | 'core' | 'additional' | 'mindscape' | 'potential' | 'trace' | 'eidolon' | 'weapon';
   /** Only active from this dupe level (1–6) or potential level; absent = base kit. */
-  unlock?: { dupes?: number; potential?: number };
+  /** `weapon`: only with this weapon (id) equipped in the saved build: the character's signature weapon (LOGIC-CORE). */
+  unlock?: { dupes?: number; potential?: number; weapon?: string };
   /** No longer applies from this level: a stronger version (`unlock` at the same level) replaces it. */
   replacedAt?: { potential: number };
   /** What it does, in a few words. Empty until the kit has been read. */
@@ -221,7 +222,19 @@ export interface CharacterBuild {
   characterId: string;
   level: number;
   dupes: number;
-  /** The weapon by name; `id` when it matches the game's list, `level` when entered. */
-  weapon?: { name: string; id?: string; level?: number };
-  gear: { slot: string; main: string; subs: Record<string, number> }[];
+  /** The weapon by name; `id` when it matches the game's list, `level` when entered. `refine`: Superimposition / Phase. */
+  weapon?: { name: string; id?: string; level?: number; refine?: number };
+  /** Each piece: its slot, main stat, sub stats (stat → value), and when known its set and how many rolls went into each sub stat (LOGIC-CORE). */
+  gear: { slot: string; main: string; subs: Record<string, number>; set?: string; rolls?: Record<string, number> }[];
+  /** Skill name → level, when entered (LOGIC-CORE). */
+  skills?: Record<string, number>;
+}
+
+/** One checked part of a build score, shown on screen with how it was worked out (LOGIC-CORE). */
+export interface BuildScorePart {
+  label: string;
+  /** 0–100; null = no data yet (not counted). */
+  value: number | null;
+  /** In plain words: what was compared and what was found. */
+  detail: string;
 }

@@ -16,17 +16,25 @@ export interface Library {
   profiles: Map<string, Profile>;
   sheets: Map<string, CharacterSheet>;
   /** Kit piece → unlock level, per character (`potential` 1 = the Enhanced kit). */
-  unlocks: Map<string, Map<string, { dupes?: number; potential?: number; replacedAt?: number }>>;
+  unlocks: Map<string, Map<string, { dupes?: number; potential?: number; replacedAt?: number; weapon?: string }>>;
   /** Kit piece → its label ("Trace: Inert Respiration"), per character. */
   pieceLabels: Map<string, Map<string, string>>;
   names: Map<string, string>;
+  /**
+   * Who teams are built around: characters the game's own recommended teams centre on (a team's first member, or
+   * the page's character when the first member can't carry). Empty = not known, every carry counts.
+   */
+  centres: Set<string>;
+  /** Who the game's own teams put together (every pick and backup of a team), per character. */
+  pairedWith: Map<string, Set<string>>;
 }
 
 /** Your account: Eidolon per character (not owned = 0), Enhanced when known. */
 export interface Account {
   eidolon: (id: string) => number;
   /** 1 = has the Enhanced kit, 0 = not; undefined = not saved. */
-  enhanced: (id: string) => number | undefined;
+  enhanced: (id: string) => number | undefined;  /** The weapon in the saved build (signature weapons); undefined = none saved. */
+  weapon?: (id: string) => { id?: string; name: string } | undefined;
 }
 
 export type Status = 'on' | 'off' | 'locked' | 'unknown' | 'replaced';
@@ -62,13 +70,26 @@ export type CheckOutcome = { rated: true; best: TeamResult; other?: TeamResult }
 /** Damage dealers first by path when two can carry: the ones built for it. */
 const PATH_ORDER: Path[] = ['destruction', 'hunt', 'erudition', 'nihility', 'remembrance', 'elation', 'harmony', 'abundance', 'preservation'];
 
-/** Part B step 1: who can carry this team's damage (their sheet has damage notes), the main-damage paths first. */
+/**
+ * Part B step 1: who carries this team. Characters the game builds teams around come first; a character who can
+ * carry but whom the game only ever pairs with another carry (March 7th (Hunt) with Feixiao) is tried only when no
+ * centre is in the team. Then the main-damage paths first.
+ */
 export function damageDealers(members: string[], lib: Library): string[] {
   const rank = (id: string) => PATH_ORDER.indexOf(lib.profiles.get(id)?.path ?? 'preservation');
-  return members.filter((id) => lib.sheets.get(id)?.damage).sort((a, b) => rank(a) - rank(b));
+  const carries = members.filter((id) => canCarry(id, lib)).sort((a, b) => rank(a) - rank(b));
+  const centres = carries.filter((id) => isCentre(id, lib));
+  return centres.length ? centres : carries;
 }
 
 export const canCarry = (id: string, lib: Library) => Boolean(lib.sheets.get(id)?.damage);
+/** A character teams are built around (the game's own teams say so); every carry when that isn't known. */
+export const isCentre = (id: string, lib: Library) => canCarry(id, lib) && (lib.centres.size === 0 || lib.centres.has(id));
+/**
+ * Can this character be a partner on a team built around `dd`? Anyone who isn't a centre themself; another
+ * centre only when the game's own teams put the two together (Saber with Gilgamesh, Mortenax Blade with Rin).
+ */
+export const canPartner = (id: string, dd: string, lib: Library) => !isCentre(id, lib) || lib.centres.size === 0 || !!lib.pairedWith.get(dd)?.has(id);
 
 type CondResult = 'met' | 'not-met' | 'unknown';
 
@@ -89,6 +110,11 @@ function evalCondition(c: Condition | undefined, self: string, team: string[], l
 /** Part B step 3: locked, replaced, on, off or unknown, with the reason in words. */
 export function statusOf(e: Entry, who: string, team: string[], lib: Library, account: Account): { status: Status; why: string } {
   const unlock = lib.unlocks.get(who)?.get(e.piece);
+  if (unlock?.weapon) {
+    const w = account.weapon?.(who);
+    if (!w) return { status: 'locked', why: 'locked: needs their signature weapon equipped (none saved in their build)' };
+    if (w.id !== unlock.weapon) return { status: 'locked', why: `locked: needs their signature weapon; the saved build has ${w.name}` };
+  }
   if (unlock?.dupes && account.eidolon(who) < unlock.dupes) return { status: 'locked', why: `locked: needs E${unlock.dupes}, you have E${account.eidolon(who)}` };
   if (unlock?.potential) {
     const p = account.enhanced(who);
@@ -159,7 +185,7 @@ function reach(e: Entry, giver: string, dd: string, lib: Library): Reach {
   return { kind: 'no', why: `${name(dd)}'s damage doesn't use ${list([...new Set(stats)].map(statWord))}` };
 }
 
-const EVENT_WORD: Record<GameEventKind, string> = {
+export const EVENT_WORD: Record<GameEventKind, string> = {
   'follow-up': 'Follow-Up ATK',
   'summon-attack': 'summon or memosprite attack',
   debuff: 'debuff on enemies',

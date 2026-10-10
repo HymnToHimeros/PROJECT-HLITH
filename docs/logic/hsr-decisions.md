@@ -60,3 +60,29 @@ Numbered so later changes can point at them.
     character, so his notes don't list Follow-Up ATK.
 20. **Aeon ★ Aha** is read from beta game files (not released). Its Eidolon 2
     text is still a placeholder in the files, so it's listed as nothing.
+
+## Teams players actually run (owner's report T19)
+
+21. **Centres come from the game's own teams.** A character is a team's centre
+    only when the game's own recommended teams are built around them. Cause of
+    the report: every Hunt/Erudition character could be a centre, and the
+    game's team for March 7th (Hunt) was imported with March 7th first, though
+    the game builds that team around Feixiao.
+22. **Game teams are shown in the game's own order, led by their centre**
+    ("Feixiao team · with March 7th"); the same four first picks from several
+    pages are shown once.
+23. **No made-up "best by kit check" team list for HSR.** The search kept
+    finding the same generic buffers for every carry. The game's teams are
+    listed and scored instead; the search still powers Line-ups, Who fits and
+    If you pull, and another centre is only a teammate where the game pairs
+    them.
+
+24. **Signature weapons are kit pieces, counted only when equipped (T18, both
+    games).** Each signature Light Cone / W-Engine effect is read like any
+    other piece, quote for quote. It is locked unless that exact weapon is in
+    the character's saved build; the "Why" says which weapon was saved
+    instead. Effects that only raise the wearer's own stats are listed as
+    read with "nothing for the team" (a support's own Energy, Daze or Impact
+    included). A weapon line that repeats an event the kit already causes
+    is not a second event source. Pearl's Colors for Tomorrow has no effect
+    text yet, so it isn't read; it will be once the text exists.

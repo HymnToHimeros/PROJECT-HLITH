@@ -166,7 +166,15 @@ A theme is a full set of colour tokens plus its own background art. Picked in Ac
 | `candlelight` | Candlelight | Candle glow over near-black; wings, halo, rays (owner's palette A) | #110706 · #1C0D0A · #F4D59F · #B78861 · #B2493E |
 | `crimson` | Crimson Rose | Dark roses, crown of thorns, sigil (owner's palette B) | #130F0D · #1D1413 · #C4C1B8 · #551F22 · #E0959A |
 | `bifrost` | Bifröst | Starry night, aurora, astrolabe rings, ravens | #060A16 · #0C1428 · #EAF0FF · #8FB8FF · #6B5BD6 |
+| `noctune-bloom` | Noctune Bloom | Mystical, deep, feminine; crescent moon, night flowers, drifting petals | #110A19 · #1A1026 · #EDE6EE · #B79AB4 · #7E496B |
+| `astral-lagoon` | Astral Lagoon | Calm, oceanic, dreamy; moon over still water, its reflection, ripples, waves | #061A22 · #0D2B36 · #A6D6C9 · #4CA7A1 · #E6D6EA |
+| `crimson-haze` | Crimson Haze | Bold, rare, intense; an eclipse with a corona, red smoke wisps | #18050D · #2B0A12 · #E7D7D9 · #C77D8B · #9E3F57 |
+| `jade-whisper` | Jade Whisper | Fresh, calm, refined; a carved jade disc, bamboo, bands of mist | #0F1C18 · #1B2E28 · #ECF3E9 · #B6D8C7 · #71A897 |
+| `velvet-twilight` | Velvet Twilight | Luxurious, moody, royal; velvet drapes and tassels, crescent moon, crown | #110C22 · #1A1331 · #D8C8E6 · #9A78A6 · #6B3F7C |
+| `midnight-sakura` | Midnight Sakura | Mysterious, soft, enchanting; full moon, blossoming branches, falling petals | #0B0E1A · #141424 · #F3E6EC · #B47A9A · #5E3A5C |
 | `ascendant` | Ascendant (light) | Marble and gold; wings, halo, light rays through clouds | #EFEBE3 · #FBF9F5 · #17130D · #75560F |
+| `ethereal-dune` | Ethereal Dune (light) | Soft, earthy, elegant; low sun, wind-drawn dunes and ripples | #F4EFE6 · #FCF9F4 · #1C1D16 · #6B705C · #85493A |
+| `amber-mirage` | Amber Mirage (light) | Warm, exotic, timeless; sun in an eight-point star, heat shimmer, an arch | #FBF0DE · #FFF6E6 · #1F130A · #A35C1E · #D99A4E |
 | `light` | Light | Cool paper, dark ink, faint rings | #F3F6F8 · #FFFFFF · #0B1117 · #1D5F8C |
 
 Rules: every theme defines every colour token tokens.css defines (tests/themes.test.ts); text colours reach 4.5:1 on every surface (ink.5 on bg.app, bg.card, bg.shell: Override 4); game vents stay readable on every dark theme; light themes (`data-tone='light'`) show game names in ink. Background art (`src/core/theme/ThemeArt.tsx`) is drawn in code (no image files), fixed behind the page right of the sidebar, at `--art-opacity`; the test checks text still reaches 4.5:1 where the art is strongest. Cards keep solid backgrounds. Motion is very slow and stops with reduced motion. The sidebar's empty space shows the theme's emblem; the account row is a profile card (banner fading into the sidebar, picture, name).

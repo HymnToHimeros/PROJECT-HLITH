@@ -70,9 +70,10 @@ describe('Roster characters: order and leaks', () => {
     const toggle = screen.getByRole('button', { name: 'Show leaked' });
     expect(toggle).toHaveAttribute('aria-pressed', 'false');
     fireEvent.click(toggle);
+    // The grid redraws after the click: wait for the leaked tile rather than reading too early.
+    const tile = await screen.findByRole('button', { name: 'Rumoured Hero, leaked, unverified' });
     const shown = screen.getByRole('list', { name: /Characters/ });
     expect(names(shown)).toContain('Rumoured Hero, leaked, unverified');
-    const tile = within(shown).getByRole('button', { name: 'Rumoured Hero, leaked, unverified' });
     expect(within(tile).getByText('? UNVERIFIED')).toBeInTheDocument();
     expect(within(tile).getByText('test leak site')).toBeInTheDocument();
     // A leak isn't counted as something you could own.

@@ -3,16 +3,19 @@
  * teams, Line-ups, Who fits, "If you pull…" % and recommended teams. Same
  * shape as ZZZ (src/games/zzz/kitcheck/team.ts), with teams of four and no order.
  */
-import type { FitSuggestion, PullValue, TeamAccount, TeamIdea, TeamPreset, TeamReason, TeamRules, TeamVerdict } from '../../../core/contract';
-import { canCarry, check, compare, type Account, type Library, type Line, type TeamResult } from './check';
-import { library } from './library';
+import type { FitOptions, FitSuggestion, PullValue, TeamAccount, TeamIdea, TeamPreset, TeamReason, TeamRules, TeamVerdict } from '../../../core/contract';
+import { canCarry, canPartner, check, compare, damageDealers, isCentre, type Account, type Library, type Line, type TeamResult } from './check';
+import { centreOf, library, pageOf } from './library';
+import { accountNotes } from '../../../core/rules/accountNotes';
+import { SIGNATURE_PIECE } from '../../../core/rules/signatureWeapons';
+import { explainTeam, memberPhrase } from '../../../core/rules/teamExplain';
 
 export const METHOD = 'HSR Kit Check theory v2 (docs/logic/hsr-theory.md)';
 /** Partners kept per damage dealer before teams of four are tried, once the pool is bigger than this. */
 const PAIR_LIMIT = 10;
 const SIZE = 4;
 
-const toAccount = (a: TeamAccount): Account => ({ eidolon: (id) => (a.owned(id) ? a.dupes(id) : 0), enhanced: (id) => a.potential?.(id) });
+const toAccount = (a: TeamAccount): Account => ({ eidolon: (id) => (a.owned(id) ? a.dupes(id) : 0), enhanced: (id) => a.potential?.(id), weapon: (id) => (a.owned(id) ? a.weapon?.(id) : undefined) });
 
 /** The Trailblazer is one character: at most one of their forms (ids 8001–8010) in a team. */
 const isTrailblazer = (id: string) => id.startsWith('80') && id.length === 4;
@@ -73,7 +76,7 @@ function shortlist(dd: string, partners: string[], lib: Library, account: Accoun
 }
 
 function findBest(dd: string, pool: string[], lib: Library, account: Account): TeamResult | undefined {
-  let partners = pool.filter((id) => id !== dd && lib.sheets.has(id) && fits([dd, id]));
+  let partners = pool.filter((id) => id !== dd && lib.sheets.has(id) && fits([dd, id]) && canPartner(id, dd, lib));
   if (!lib.sheets.has(dd) || !canCarry(dd, lib) || !partners.length) return undefined;
   partners = shortlist(dd, partners, lib, account);
   let best: TeamResult | undefined;
@@ -84,6 +87,16 @@ function findBest(dd: string, pool: string[], lib: Library, account: Account): T
   }
   return best;
 }
+
+/** The first member leads when the check would pick them as the damage dealer. */
+const leadOf = (members: string[], lib: Library) => (members[0] && damageDealers(members, lib).includes(members[0]) ? members[0] : undefined);
+/** Characters to build teams around: the centres among them, or every carry when none is a centre. */
+const centresIn = (ids: string[], lib: Library) => {
+  const centres = ids.filter((id) => isCentre(id, lib));
+  return centres.length ? centres : ids.filter((id) => canCarry(id, lib));
+};
+
+const asExplain = (r: TeamResult) => ({ members: r.members, dd: r.dd, count: r.count, lines: r.lines });
 
 const ownedRead = (a: TeamAccount, lib: Library) => [...lib.sheets.keys()].filter((id) => a.owned(id));
 
@@ -110,7 +123,8 @@ export function verdict(members: string[], a: TeamAccount, lib: Library = librar
   const name = (id: string) => lib.names.get(id) ?? id;
   const account = toAccount(a);
   // A preset's first member is its damage dealer when they can carry; otherwise the check picks.
-  const lead = members[0] && canCarry(members[0], lib) ? members[0] : undefined;
+  // A team's first member is its damage dealer when the check would pick them (a centre, or a carry when no centre is in it).
+  const lead = leadOf(members, lib);
   const out = check(members, lib, account, lead);
   if (!out.rated) return { rated: false, why: out.why };
   const mine = out.best;
@@ -143,6 +157,7 @@ export function verdict(members: string[], a: TeamAccount, lib: Library = librar
     order: mine.members,
     unordered: true,
     reasons: mine.lines.map((l) => reasonOf(l, lib)),
+    explain: explainTeam({ members: mine.members, dd: mine.dd, count: mine.count, lines: mine.lines }, { members: top.members, dd: top.dd, count: top.count, lines: top.lines }, name),
     notes: [summary(mine), ...notes],
   };
 }
@@ -161,12 +176,14 @@ function connections(r: TeamResult, c: string, lib: Library): string[] {
   return [...new Set(how)];
 }
 
-export function whoFits(members: string[], a: TeamAccount, lib: Library = library()): FitSuggestion[] {
+export function whoFits(members: string[], a: TeamAccount, lib: Library = library(), options: FitOptions = {}): FitSuggestion[] {
   const account = toAccount(a);
   const out: FitSuggestion[] = [];
-  for (const c of lib.sheets.keys()) {
+  // Your own characters by default; the rest only when asked, as theory.
+  const pool = [...lib.sheets.keys()].filter((c) => options.includeUnowned || a.owned(c));
+  for (const c of pool) {
     if (members.includes(c) || !fits([...members, c])) continue;
-    const res = check([...members, c], lib, account, members[0] && canCarry(members[0], lib) ? members[0] : undefined);
+    const res = check([...members, c], lib, account, leadOf([...members, c], lib));
     if (!res.rated) continue;
     const r = res.best;
     if (r.lines.some((l) => l.kind === 'weak-fit' && l.who === c)) continue;
@@ -174,17 +191,27 @@ export function whoFits(members: string[], a: TeamAccount, lib: Library = librar
     if (!how.length) continue;
     const others = members.filter((m) => m !== r.dd);
     const withEveryone = c === r.dd ? others.every((m) => r.lines.some((l) => l.who === m && (l.kind === 'buff' || l.kind === 'chain'))) : r.lines.some((l) => l.who === c && (l.kind === 'buff' || l.kind === 'chain'));
-    out.push({ id: c, count: r.count, how, withEveryone });
+    // % against the best team found for the same damage dealer from the same pool.
+    const best = bestFor(r.dd, [...new Set([...pool, ...members])], lib, account);
+    const top = best && compare(best, r) > 0 ? best.count : r.count;
+    const percent = top > 0 ? Math.max(0, Math.round((r.count / top) * 100)) : 0;
+    const hasTrack = [...(lib.unlocks.get(c)?.values() ?? [])].some((u) => u.potential || u.replacedAt);
+    const locked = r.lines.filter((l) => l.who === c && l.kind === 'locked').length;
+    const sigId = lib.unlocks.get(c)?.get(SIGNATURE_PIECE)?.weapon;
+    const sigLabel = lib.pieceLabels.get(c)?.get(SIGNATURE_PIECE);
+    const signature = sigId && sigLabel ? { id: sigId, name: sigLabel.replace(/^Signature [^:]+: /, '').replace(/ · .*$/, '') } : undefined;
+    const { notes, theory } = accountNotes(c, a, { dupePrefix: 'E', ...(hasTrack ? { track: 'Enhanced kit' } : {}), locked, ...(signature ? { signature } : {}) });
+    out.push({ id: c, count: r.count, how, withEveryone, percent, fromAccount: notes, theory });
   }
-  return out.sort((x, y) => Number(y.withEveryone) - Number(x.withEveryone) || y.count - x.count);
+  return out.sort((x, y) => (y.percent ?? 0) - (x.percent ?? 0) || Number(y.withEveryone) - Number(x.withEveryone) || y.count - x.count);
 }
 
 export function lineUps(a: TeamAccount, lib: Library = library()): TeamIdea[] {
   const account = toAccount(a);
   const owned = ownedRead(a, lib);
   const candidates: TeamResult[] = [];
-  for (const dd of owned.filter((id) => canCarry(id, lib))) {
-    let partners = owned.filter((id) => id !== dd && fits([dd, id]));
+  for (const dd of centresIn(owned, lib)) {
+    let partners = owned.filter((id) => id !== dd && fits([dd, id]) && canPartner(id, dd, lib));
     partners = shortlist(dd, partners, lib, account);
     const mine: TeamResult[] = [];
     for (const others of combos(partners, Math.min(SIZE - 1, partners.length))) {
@@ -219,23 +246,27 @@ export function ifYouPull(id: string, a: TeamAccount, lib: Library = library()):
   const name = (x: string) => lib.names.get(x) ?? x;
   const why: string[] = [];
   let percent = 0;
-  if (canCarry(id, lib)) {
+  if (isCentre(id, lib)) {
     const withYours = bestFor(id, [...base, id], lib, account);
     const withAll = bestFor(id, all, lib, account);
     if (withYours && withAll && withAll.count > 0) {
       const p = Math.max(0, Math.round((withYours.count / withAll.count) * 100));
-      why.push(`As a damage dealer: ${teamWords(withYours, lib)} counts ${withYours.count} from your characters, against ${withAll.count} with every character (${p}%).`);
+      why.push(
+        `As a damage dealer: your best team for them is ${teamWords(withYours, lib)} (${withYours.count} points; the best with every character is ${withAll.count}, so ${p}%). There ${memberPhrase(asExplain(withYours), id, name)}.`,
+      );
       percent = Math.max(percent, p);
     }
   }
-  for (const dd of base.filter((x) => canCarry(x, lib))) {
+  for (const dd of centresIn(base, lib)) {
     const now = bestFor(dd, base, lib, account);
     const lifted = bestFor(dd, [...base, id], lib, account);
     const possible = bestFor(dd, all, lib, account);
     if (!lifted || !possible || possible.count <= 0 || !lifted.members.includes(id)) continue;
     if (lifted.count > (now?.count ?? 0)) {
       const p = Math.round((lifted.count / possible.count) * 100);
-      why.push(`As a teammate: ${name(dd)} goes from ${now?.count ?? 0} to ${lifted.count} (${teamWords(lifted, lib)}); ${name(dd)}'s best possible is ${possible.count} (${p}%).`);
+      why.push(
+        `As a teammate: ${name(dd)}'s best team of yours goes from ${now?.count ?? 0} to ${lifted.count} points (${teamWords(lifted, lib)}; the most possible is ${possible.count}, so ${p}%). ${name(id)} ${memberPhrase(asExplain(lifted), id, name)}.`,
+      );
       percent = Math.max(percent, p);
     }
   }
@@ -247,7 +278,7 @@ export const hsrTeamRules: TeamRules = {
   method: METHOD,
   rated: (id) => library().sheets.has(id),
   verdict: (m, a) => verdict(m, a),
-  whoFits: (m, a) => whoFits(m, a),
+  whoFits: (m, a, o) => whoFits(m, a, library(), o),
   lineUps: (a) => lineUps(a),
   ifYouPull: (id, a) => ifYouPull(id, a),
 };
@@ -257,19 +288,30 @@ export const hsrTeamRules: TeamRules = {
  * the best team of four from every character at Eidolon 0. Each place lists the
  * best pick first, then the two that score best beside the rest.
  */
+const recommendedCache = new WeakMap<Library, TeamPreset[]>();
+
+/** Same library, same answer: the search runs once per library (it checks thousands of teams). */
 export function recommendedTeams(lib: Library = library()): TeamPreset[] {
+  const hit = recommendedCache.get(lib);
+  if (hit) return hit;
+  const found = findRecommended(lib);
+  recommendedCache.set(lib, found);
+  return found;
+}
+
+function findRecommended(lib: Library): TeamPreset[] {
   const name = (id: string) => lib.names.get(id) ?? id;
   const e0: Account = { eidolon: () => 0, enhanced: () => undefined };
   const all = [...lib.sheets.keys()];
   const out: TeamPreset[] = [];
-  for (const dd of all.filter((id) => canCarry(id, lib))) {
+  for (const dd of all.filter((id) => isCentre(id, lib))) {
     const first = bestFor(dd, all, lib, e0);
     if (!first || first.count <= 0) continue;
     const partners = first.members.filter((x) => x !== dd);
     const places = partners.map((p) => {
       const others = partners.filter((x) => x !== p);
       const ranked = all
-        .filter((x) => x !== dd && !partners.includes(x) && fits([dd, ...others, x]))
+        .filter((x) => x !== dd && !partners.includes(x) && fits([dd, ...others, x]) && canPartner(x, dd, lib))
         .map((x) => {
           const res = check([dd, ...others, x], lib, e0, dd);
           return { x, r: res.rated ? res.best : undefined };
@@ -286,6 +328,30 @@ export function recommendedTeams(lib: Library = library()): TeamPreset[] {
       slots: [{ characters: [dd] }, ...places.map((p) => ({ characters: [...new Set(p)] }))],
       source: `${METHOD}: the best count for ${name(dd)} from every character at Eidolon 0 (${first.count})`,
     });
+  }
+  return out;
+}
+
+/**
+ * The game's own recommended teams, built around their real centre: the game lists a partner's team (March 7th
+ * (Hunt), Topaz, Robin) with its carry first, so that carry leads and the team is named after them. The same four
+ * first picks recommended from several pages are shown once.
+ */
+export function gameTeams(raw: TeamPreset[], lib: Library = library()): TeamPreset[] {
+  const name = (id: string) => lib.names.get(id) ?? id;
+  const carries = new Set([...lib.sheets.values()].filter((s) => s.damage).map((s) => s.characterId));
+  const seen = new Set<string>();
+  const out: TeamPreset[] = [];
+  for (const t of raw) {
+    const centre = centreOf(t, carries);
+    const at = centre ? t.slots.findIndex((s) => s.characters[0] === centre) : -1;
+    const slots = at > 0 ? [t.slots[at], ...t.slots.filter((_, i) => i !== at)].filter((s): s is TeamPreset['slots'][number] => !!s) : t.slots;
+    const key = slots.map((s) => s.characters[0]).sort().join(',');
+    if (seen.has(key)) continue;
+    seen.add(key);
+    const page = pageOf(t);
+    const lead = slots[0]?.characters[0];
+    out.push({ ...t, slots, name: lead ? `${name(lead)} team${page && page !== lead ? ` · with ${name(page)}` : ''}` : t.name });
   }
   return out;
 }
