@@ -9,6 +9,7 @@ import characters from './data/characters.json';
 import events from './data/events.json';
 import builds from './data/builds.json';
 import weapons from './data/weapons.json';
+import { scoreBuild } from '../../core/rules/buildScore';
 import kits from './data/kits.json';
 import materials from './data/materials.json';
 import teams from './data/teams.json';
@@ -170,6 +171,13 @@ export const zzz: GameContract = {
   accountLinks: [{ provider: 'hoyolab', supports: ['stamina', 'checkin', 'roster', 'endgame'], config: { gameBiz: 'nap_global' } }],
   scan: { screen: 'character', fields: ['level', 'mindscape', 'w-engine', 'drive-discs', 'skills'] },
   rules: {
+    // Build score: the saved build against the game's own recommendation (docs/logic/build-score.md).
+    scoreBuild: (b) =>
+      scoreBuild(
+        b,
+        (builds as unknown as RecommendedBuild[]).find((x) => x.characterId === b.characterId),
+        { levelMax: 60, weaponLevelMax: 60, setSlots: () => [] },
+      ),
     teams: zzzTeamRules,
     materialsFor,
     materialsNote: 'From the game data (nanoka.cc): ascension, every skill and the Core Skill to max. Agent EXP is counted as Senior Investigator Logs (3,000 EXP each).',

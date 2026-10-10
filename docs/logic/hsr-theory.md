@@ -81,9 +81,17 @@ dealer. A higher count means more connects, not more damage.
 
 ## Part B: checking a team
 
-1. **The damage dealer.** A preset's lead when they can carry; otherwise each
-   member who can carry is tried (Destruction, Hunt, Erudition first) and the
-   better result is kept. No one can carry: "no damage dealer", not rated.
+1. **The damage dealer.** Teams are built around **centres**: characters the
+   game's own recommended teams are built around (a game team's first member,
+   or the page's character when the first member can't carry). March 7th
+   (Hunt), Topaz, Moze, Dr. Ratio, Herta, Serval, Jade and Black Swan can
+   carry, but the game only ever pairs them with another carry (Feixiao, The
+   Herta, Kafka), so they are partners, not centres. In a team, a centre in it
+   is the damage dealer (a preset's lead when the lead is one); with no centre,
+   each member who can carry is tried (Destruction, Hunt, Erudition first) and
+   the better result is kept. No one can carry: "no damage dealer", not rated.
+   **Teammates:** anyone who isn't a centre; another centre only when the
+   game's own teams put the two together (Saber with Gilgamesh).
 2. **No order.** The four are checked as a group.
 3. **Status of every entry**: locked (Eidolon too low, or the Enhanced kit,
    which HLITH does not save yet), replaced (the Enhanced version is on), on,
@@ -129,8 +137,10 @@ Exactly as in ZZZ, with teams of four:
   team of four from them).
 - **Who fits**: everyone whose kit really connects with the team, saying how.
 - **If you pull…**: as a damage dealer and as a teammate, the better of the two.
-- **Recommended teams**: for every character who can carry, the best team of
-  four from every character at Eidolon 0, with two alternatives per place.
+- **Recommended teams**: the game's own recommended teams, each built around
+  its centre and scored by the check (with the game's backups per place). The
+  check's own "best possible" search is used for your Line-ups, Who fits and If
+  you pull, not as a list of made-up teams.
 
 ## Worked examples
 
