@@ -7,6 +7,7 @@ doing it said `LIVE`. Newest jobs at the bottom; live jobs move to Done.
 ## Open
 | # | Job | Who | State | Note |
 |---|---|---|---|---|
+| T37 | BUG fixed: typing in the build form (and every pop-up form) keeps the cursor in the field (#83) | ERROR-FIX | 2026-10-10 |
 | T36 | README made attractive for public visitors (#82) | FRAME | 2026-10-10 |
 | T5 | HSR "Interastral Peace Gala" reward (starts 21 Oct) | SCHEDULER | blocked | Sources say 500 or 60; filled from the official notice when the event opens 21 Oct. |
 | T6 | Keep the game lists current on a schedule | SCHEDULER | later | Owner: a task for the end, when everything else is done. |
@@ -21,12 +22,11 @@ doing it said `LIVE`. Newest jobs at the bottom; live jobs move to Done.
 | T18 | Make my own teams (pick the members myself, get them scored) | FRAME leads, LOGIC-CORE scores | working | LIVE: My teams picker (#59), account suggestions (#67), signature weapons (#69), build wants (#73). Next: every equipped weapon (#74). |
 | T28 | Standing rule: every logic rule is the same in HSR and ZZZ, except game-specific facts; ZZZ counts builds like HSR | LOGIC-CORE | working | In #73 (ZZZ counts builds like HSR; standing mirror rule in decisions files). |
 | T30 | HSR scoring still doesn't understand kits (owner's own Aventurine • Waveflair team 47%, "best" again Tingyun + Sparkle). Owner: teams do NOT need a sustain/healer. Wants scoring that understands buff size, conditions, how kits interact | LOGIC-CORE | working | Remove sustain rule now; explain this team; plan for kit-interaction scoring to owner. |
-| T33 | Blind test of LOGIC-CORE's kit understanding: Aventurine • Waveflair's best team worked out alone, plus 6 carries the owner hasn't corrected (exactly 4 members, one archetype) | LOGIC-CORE | sent | Before any T30 building. |
-| T34 | Switch: assume signature weapon + average build for characters without a saved build | LOGIC-CORE + FRAME | sent | Plan first. |
-| T35 | Target end stats per character on the character page (you vs target), each number sourced | LOGIC-CORE + FRAME | sent | Owner: LOGIC-CORE must find the basis itself. Plan first. |
-| T37 | BUG: typing in the Roster build form triggers other page elements, so the form is unusable | ERROR-FIX | sent | High priority; test for every form. |
+| T33 | Blind test of LOGIC-CORE's kit understanding: Aventurine • Waveflair's best team worked out alone, plus 6 carries the owner hasn't corrected (exactly 4 members, one archetype) | owner | waiting on owner | All 8 answers given to the owner; T30 waits on their verdict. |
+| T34 | Switch: assume signature weapon + average build for characters without a saved build | LOGIC-CORE + FRAME | working | Plan approved; order T34 → T35 → T39. |
+| T35 | Target end stats per character on the character page (you vs target), each number sourced | LOGIC-CORE + FRAME | sent | Plan approved: kit/set text, game maths, else "No data yet"; optional build totals. After T34. |
 | T38 | ZZZ teams: two supports doing the same job (Lucia + Pan Yinhu for Starlight Billy) scored above a complementary team (Dialyn + Lucia). Scoring must handle overlap and role coverage | LOGIC-CORE | sent | Part of T30 + blind test. |
-| T39 | Leaked characters usable in teams (beta kit text), Who fits, If you pull, so pre-pulling can be judged; marked leak/unverified | LOGIC-CORE | sent | Queued for after the owner's break. |
+| T39 | Leaked characters usable in teams (beta kit text), Who fits, If you pull, so pre-pulling can be judged; marked leak/unverified | LOGIC-CORE | sent | Plan approved: kit-line partners marked "no game team list yet"; importers auto-add leaks, placeholder names show "No name yet". SCHEDULER keeps leak data current. After T35. |
 
 ## Done
 | # | Job | Who | Live on |
