@@ -20,7 +20,7 @@ function parseThemes(): Map<string, Record<string, string>> {
   for (const file of FILES) {
     const css = read(file).replace(/\/\*[\s\S]*?\*\//g, '');
     for (const m of css.matchAll(/([^{}]+)\{([^{}]*)\}/g)) {
-      const id = /\[data-theme-preview='([a-z]+)'\]/.exec(m[1] ?? '')?.[1];
+      const id = /\[data-theme-preview='([a-z-]+)'\]/.exec(m[1] ?? '')?.[1];
       if (!id) continue;
       const tokens: Record<string, string> = {};
       for (const d of (m[2] ?? '').matchAll(/--([a-z0-9-]+):\s*([^;]+);/g)) tokens[d[1] as string] = (d[2] as string).trim();

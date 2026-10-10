@@ -187,3 +187,371 @@
 
   --scrim: rgb(23 19 13 / 0.35);
 }
+
+/* Noctune Bloom · from the owner's palette: #1A1026 #4B2A46 #7E496B #B79AB4 #EDE6EE.
+   Deep plum night, mauve ink, flowers that open under the moon. */
+:root[data-theme='noctune-bloom'],
+[data-theme-preview='noctune-bloom'] {
+  color-scheme: dark;
+
+  --bg-void: #0b0611;
+  --bg-app: #110a19;
+  --bg-shell: #150d1f;
+  --bg-card: #1a1026;
+  --bg-inset: #21152f;
+  --bg-raised: #261935;
+  --bg-track: #351f3d;
+
+  --line-subtle: #23162d;
+  --line-default: #2e1d38;
+  --line-mid: #392341;
+  --line-strong: #4b2a46;
+  --line-empty: #7e496b;
+  --ghost: #563452;
+  --hatch: #1c1228;
+
+  --ink-1: #f4eef5;
+  --ink-2: #ede6ee;
+  --ink-3: #cdb7cb;
+  --ink-4: #b79ab4;
+  --ink-5: #b79ab4;
+  --glacier: #e0a6d2;
+  --ok: #8fd6b4;
+
+  --ember: #ff7a45;
+  --ember-soft: #ff9b72;
+
+  --vent-all: #e6d8e8;
+  --on-vent: #08090b;
+
+  --rarity-top: #efc26c;
+  --rarity-mid: #a9bdf2;
+
+  --art-ink: #d9c3d8;
+  --art-glow: #7e496b;
+  --art-opacity: 0.15;
+
+  --scrim: rgb(11 6 17 / 0.65);
+}
+
+/* Ethereal Dune · light, from the owner's palette: #6B705C #B69F7B #C49A8A #E7CDB8 #F4EFE6.
+   Pale sand and linen, sage-brown ink, a clay-rose accent. */
+:root[data-theme='ethereal-dune'],
+[data-theme-preview='ethereal-dune'] {
+  color-scheme: light;
+
+  --bg-void: #ddd0bd;
+  --bg-app: #f4efe6;
+  --bg-shell: #ede5d8;
+  --bg-card: #fcf9f4;
+  --bg-inset: #ebe1d2;
+  --bg-raised: #f8f4ed;
+  --bg-track: #e2d5c2;
+
+  --line-subtle: #e9e0d2;
+  --line-default: #ddd1bf;
+  --line-mid: #d2c4ae;
+  --line-strong: #b69f7b;
+  --line-empty: #8a836c;
+  --ghost: #d0c2ac;
+  --hatch: #efe8dd;
+
+  --ink-1: #1c1d16;
+  --ink-2: #2d2f24;
+  --ink-3: #43463a;
+  --ink-4: #53574a;
+  --ink-5: #53574a;
+  --glacier: #85493a;
+  --ok: #2d6740;
+
+  --ember: #ff6a1f;
+  --ember-soft: #a3400b;
+
+  --vent-all: #d3d6bd;
+  --on-vent: #08090b;
+
+  --rarity-top: #7d5300;
+  --rarity-mid: #2b5c78;
+
+  --art-ink: #6b705c;
+  --art-glow: #c49a8a;
+  --art-opacity: 0.13;
+
+  --scrim: rgb(28 29 22 / 0.35);
+}
+
+/* Astral Lagoon · from the owner's palette: #0D2B36 #1F5F63 #4CA7A1 #A6D6C9 #E6D6EA.
+   Deep sea-teal water, sea-glass ink, a lilac shimmer of starlight. */
+:root[data-theme='astral-lagoon'],
+[data-theme-preview='astral-lagoon'] {
+  color-scheme: dark;
+
+  --bg-void: #03121a;
+  --bg-app: #061a22;
+  --bg-shell: #092029;
+  --bg-card: #0d2b36;
+  --bg-inset: #10313d;
+  --bg-raised: #133744;
+  --bg-track: #1a454f;
+
+  --line-subtle: #0f2f3a;
+  --line-default: #153d47;
+  --line-mid: #1a4850;
+  --line-strong: #1f5f63;
+  --line-empty: #3f8582;
+  --ghost: #285a5e;
+  --hatch: #0a222b;
+
+  --ink-1: #effaf6;
+  --ink-2: #d6efe7;
+  --ink-3: #a6d6c9;
+  --ink-4: #8dc2b6;
+  --ink-5: #8dc2b6;
+  --glacier: #6fd2c8;
+  --ok: #a6e39a;
+
+  --ember: #ff7a45;
+  --ember-soft: #ff9d72;
+
+  --vent-all: #e6d6ea;
+  --on-vent: #08090b;
+
+  --rarity-top: #f0c66a;
+  --rarity-mid: #b3c4ff;
+
+  --art-ink: #a6d6c9;
+  --art-glow: #4ca7a1;
+  --art-opacity: 0.14;
+
+  --scrim: rgb(3 18 26 / 0.65);
+}
+
+/* Crimson Haze · from the owner's palette: #2B0A12 #6E1D2F #9E3F57 #C77D8B #E7D7D9.
+   Deep wine and red smoke under an eclipse; brighter and redder than Crimson Rose. */
+:root[data-theme='crimson-haze'],
+[data-theme-preview='crimson-haze'] {
+  color-scheme: dark;
+
+  --bg-void: #10030a;
+  --bg-app: #18050d;
+  --bg-shell: #1e0710;
+  --bg-card: #2b0a12;
+  --bg-inset: #320d17;
+  --bg-raised: #39101c;
+  --bg-track: #4a1525;
+
+  --line-subtle: #33101a;
+  --line-default: #431522;
+  --line-mid: #521a2a;
+  --line-strong: #6e1d2f;
+  --line-empty: #9e3f57;
+  --ghost: #6a2a3b;
+  --hatch: #230812;
+
+  --ink-1: #f7eef0;
+  --ink-2: #e7d7d9;
+  --ink-3: #d9b6bc;
+  --ink-4: #cf9aa5;
+  --ink-5: #cf9aa5;
+  --glacier: #f593a6;
+  --ok: #9fd8a9;
+
+  --ember: #ff7a3d;
+  --ember-soft: #ff9a6b;
+
+  --vent-all: #e7d7d9;
+  --on-vent: #08090b;
+
+  --rarity-top: #f0c063;
+  --rarity-mid: #a9c3f2;
+
+  --art-ink: #e0a9b4;
+  --art-glow: #9e3f57;
+  --art-opacity: 0.15;
+
+  --scrim: rgb(16 3 10 / 0.65);
+}
+
+/* Jade Whisper · from the owner's palette: #1B2E28 #336B5C #71A897 #B6D8C7 #ECF3E9.
+   Dark jade stone, pale celadon ink, bamboo in the mist. */
+:root[data-theme='jade-whisper'],
+[data-theme-preview='jade-whisper'] {
+  color-scheme: dark;
+
+  --bg-void: #0a1411;
+  --bg-app: #0f1c18;
+  --bg-shell: #13231e;
+  --bg-card: #1b2e28;
+  --bg-inset: #20342e;
+  --bg-raised: #243a33;
+  --bg-track: #2c4a40;
+
+  --line-subtle: #1e332c;
+  --line-default: #274138;
+  --line-mid: #2e4c42;
+  --line-strong: #336b5c;
+  --line-empty: #4f8574;
+  --ghost: #3a5c51;
+  --hatch: #142520;
+
+  --ink-1: #f4f8f1;
+  --ink-2: #ecf3e9;
+  --ink-3: #c4e0d1;
+  --ink-4: #a2c9b7;
+  --ink-5: #a2c9b7;
+  --glacier: #8ed6bb;
+  --ok: #c6e59a;
+
+  --ember: #ff7a45;
+  --ember-soft: #ff9e72;
+
+  --vent-all: #dcebdf;
+  --on-vent: #08090b;
+
+  --rarity-top: #ecc56a;
+  --rarity-mid: #a8c6f2;
+
+  --art-ink: #b6d8c7;
+  --art-glow: #71a897;
+  --art-opacity: 0.13;
+
+  --scrim: rgb(10 20 17 / 0.65);
+}
+
+/* Velvet Twilight · from the owner's palette: #1A1331 #3A2257 #6B3F7C #9A78A6 #D8C8E6.
+   Royal violet velvet, lilac ink, a crescent moon and drapes. */
+:root[data-theme='velvet-twilight'],
+[data-theme-preview='velvet-twilight'] {
+  color-scheme: dark;
+
+  --bg-void: #0b0817;
+  --bg-app: #110c22;
+  --bg-shell: #150f29;
+  --bg-card: #1a1331;
+  --bg-inset: #211839;
+  --bg-raised: #271c42;
+  --bg-track: #33244f;
+
+  --line-subtle: #22193c;
+  --line-default: #2d2148;
+  --line-mid: #372853;
+  --line-strong: #4a3170;
+  --line-empty: #6b3f7c;
+  --ghost: #4a3466;
+  --hatch: #19132e;
+
+  --ink-1: #f3eefa;
+  --ink-2: #d8c8e6;
+  --ink-3: #c0abd2;
+  --ink-4: #ab94bf;
+  --ink-5: #ab94bf;
+  --glacier: #cfaaf0;
+  --ok: #8fd8b8;
+
+  --ember: #ff7a45;
+  --ember-soft: #ff9d70;
+
+  --vent-all: #d8c8e6;
+  --on-vent: #08090b;
+
+  --rarity-top: #ecc46a;
+  --rarity-mid: #a3c2f2;
+
+  --art-ink: #d8c8e6;
+  --art-glow: #6b3f7c;
+  --art-opacity: 0.14;
+
+  --scrim: rgb(11 8 23 / 0.65);
+}
+
+/* Amber Mirage · light, from the owner's palette: #4A2C1A #A35C1E #D99A4E #EBCB9C #FFF3E0.
+   Warm cream and honey, dark umber ink, a desert sun shimmering. */
+:root[data-theme='amber-mirage'],
+[data-theme-preview='amber-mirage'] {
+  color-scheme: light;
+
+  --bg-void: #e8d2b0;
+  --bg-app: #fbf0de;
+  --bg-shell: #f5e7d0;
+  --bg-card: #fff6e6;
+  --bg-inset: #f2e2c8;
+  --bg-raised: #fef3e2;
+  --bg-track: #ecd7b6;
+
+  --line-subtle: #f0e1c9;
+  --line-default: #e6d1b0;
+  --line-mid: #dcc39c;
+  --line-strong: #c9a676;
+  --line-empty: #8f6c46;
+  --ghost: #dbc19a;
+  --hatch: #f6e9d5;
+
+  --ink-1: #1f130a;
+  --ink-2: #301e12;
+  --ink-3: #4a2c1a;
+  --ink-4: #5a3b25;
+  --ink-5: #5a3b25;
+  --glacier: #85470f;
+  --ok: #2b6735;
+
+  --ember: #ff6a1f;
+  --ember-soft: #a33c0a;
+
+  --vent-all: #ead99c;
+  --on-vent: #08090b;
+
+  --rarity-top: #7a5000;
+  --rarity-mid: #1d5a86;
+
+  --art-ink: #a35c1e;
+  --art-glow: #d99a4e;
+  --art-opacity: 0.12;
+
+  --scrim: rgb(31 19 10 / 0.35);
+}
+
+/* Midnight Sakura · from the owner's palette: #0B0E1A #2C1B2F #5E3A5C #B47A9A #F3E6EC.
+   Blue-black night, plum shadows, cherry blossom pink. */
+:root[data-theme='midnight-sakura'],
+[data-theme-preview='midnight-sakura'] {
+  color-scheme: dark;
+
+  --bg-void: #06080f;
+  --bg-app: #0b0e1a;
+  --bg-shell: #0f1120;
+  --bg-card: #141424;
+  --bg-inset: #1a182b;
+  --bg-raised: #1f1b31;
+  --bg-track: #2c1b2f;
+
+  --line-subtle: #1b1829;
+  --line-default: #251d33;
+  --line-mid: #2e223b;
+  --line-strong: #44294a;
+  --line-empty: #5e3a5c;
+  --ghost: #432c45;
+  --hatch: #11121f;
+
+  --ink-1: #f7eef2;
+  --ink-2: #f3e6ec;
+  --ink-3: #d7b7c7;
+  --ink-4: #bf9aaf;
+  --ink-5: #bf9aaf;
+  --glacier: #eda5c5;
+  --ok: #93d8b2;
+
+  --ember: #ff7a45;
+  --ember-soft: #ff9d70;
+
+  --vent-all: #f3e6ec;
+  --on-vent: #08090b;
+
+  --rarity-top: #ecc46a;
+  --rarity-mid: #a7c0f5;
+
+  --art-ink: #e8bcd1;
+  --art-glow: #b47a9a;
+  --art-opacity: 0.14;
+
+  --scrim: rgb(6 8 15 / 0.65);
+}
