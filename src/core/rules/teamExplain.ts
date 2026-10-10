@@ -5,6 +5,7 @@
  * Game-free: each game's check hands over its lines in this shape.
  */
 import type { TeamExplain } from '../contract';
+import { BUILD_STAT_WORD, FIT_WORD, type BuildStat, type Fit } from './buildFit';
 
 /** One line of a game's check, in the fields every game's check has. */
 export interface ExplainLine {
@@ -14,6 +15,8 @@ export interface ExplainLine {
   why: string;
   points: number;
   helpers?: string[];
+  /** A build line (T18): the build the team wants on `who` and how theirs fits. */
+  build?: { stat: string; have: string; fit: Fit; max: number };
 }
 
 export interface ExplainTeam {
@@ -23,6 +26,7 @@ export interface ExplainTeam {
   lines: ExplainLine[];
 }
 
+const statWords = (stat: string) => (stat in BUILD_STAT_WORD ? BUILD_STAT_WORD[stat as BuildStat] : stat);
 const list = (xs: string[]) => (xs.length < 2 ? (xs[0] ?? '') : `${xs.slice(0, -1).join(', ')} and ${xs[xs.length - 1] ?? ''}`);
 const plural = (n: number, word: string) => `${n} ${word}${n === 1 ? '' : 's'}`;
 
@@ -55,6 +59,13 @@ function given(t: ExplainTeam, who: string, name: (id: string) => string): { phr
     if (turnedOn.length) parts.push(`switches on ${dd}'s ${list(turnedOn.map((l) => `“${bare(l.tag)}”`))}`);
     if (support.length && !buffs.length && !chains.length) parts.push(`team support only (${list(support.map((l) => bare(l.tag)))}): breaks ties, adds no points`);
   }
+  for (const l of own)
+    if (l.kind === 'build' && l.build)
+      parts.push(
+        l.build.have.startsWith('assumed')
+          ? `best when built for ${statWords(l.build.stat)} (assumed here)`
+          : `the team wants them built for ${statWords(l.build.stat)}: ${FIT_WORD[l.build.fit]}${l.build.fit === 'no-build' ? '' : ` (${l.build.have})`}`,
+      );
   for (const l of lost) parts.push(l.kind === 'weak-fit' ? `brings nothing ${dd} uses (−1)` : `${bare(l.tag)}: ${l.why} (−1)`);
   const points = counted.reduce((n, l) => n + l.points, 0) + lost.reduce((n, l) => n + l.points, 0);
   return { phrase: parts.join('; ') || 'nothing that counts for this team', points };
@@ -78,9 +89,13 @@ export function explainTeam(mine: ExplainTeam, best: ExplainTeam, name: (id: str
   const lost = mine.lines.filter((l) => l.points < 0);
   if (lost.length)
     missing.push(`${plural(lost.length, 'point')} lost: ${list(lost.map((l) => (l.kind === 'weak-fit' ? `${name(l.who)} brings nothing for ${dd}` : `${name(l.who)}'s “${bare(l.tag)}” is ${l.kind === 'duplicate' ? 'a duplicate' : 'off'}`)))}.`);
+  // Builds this team wants that aren't (fully) there yet.
+  for (const l of mine.lines)
+    if (l.kind === 'build' && l.build && l.points < l.build.max)
+      missing.push(`${name(l.who)} built for ${statWords(l.build.stat)}: ${FIT_WORD[l.build.fit]}; up to ${plural(l.build.max - l.points, 'point')} more.`);
   const gap = best.count - mine.count;
-  if (gap > 0) {
-    const newcomers = best.members.filter((id) => !mine.members.includes(id));
+  const newcomers = best.members.filter((id) => !mine.members.includes(id));
+  if (gap > 0 && newcomers.length) {
     const leaving = mine.members.filter((id) => !best.members.includes(id));
     missing.unshift(`The best team found for ${dd} is ${list(best.members.map(name))}: ${best.count} points against ${mine.count} here${leaving.length ? `, swapping ${list(leaving.map(name))} for ${list(newcomers.map(name))}` : ''}.`);
     for (const id of newcomers) {
@@ -89,6 +104,6 @@ export function explainTeam(mine: ExplainTeam, best: ExplainTeam, name: (id: str
     }
   }
   const helpers = members.filter((m) => m.id !== mine.dd && m.points > 0).map((m) => name(m.id));
-  const headline = `${dd} deals the damage. ${helpers.length ? `${list(helpers)} ${helpers.length === 1 ? 'connects' : 'connect'} with ${dd}'s kit` : `No teammate connects with ${dd}'s kit`}${gap > 0 ? `; ${plural(gap, 'point')} short of the best team found` : '; no better team found'}.`;
+  const headline = `${dd} deals the damage. ${helpers.length ? `${list(helpers)} ${helpers.length === 1 ? 'connects' : 'connect'} with ${dd}'s kit` : `No teammate connects with ${dd}'s kit`}${gap > 0 ? (newcomers.length ? `; ${plural(gap, 'point')} short of the best team found` : `; ${plural(gap, 'point')} more when fully built`) : '; no better team found'}.`;
   return { headline, members, missing };
 }

@@ -1,3 +1,4 @@
+import type { BuildStat } from '../../../core/rules/buildFit';
 /**
  * The HSR cheat sheet: every kit cut into pieces, each answering the seven
  * questions of docs/logic/hsr-theory.md (Part A). Plain data; the check
@@ -138,6 +139,12 @@ export interface Entry {
   setup: string;
   /** Q7: the same buff from two sources does not stack: entries sharing this key count once. */
   noStack?: string;
+  /**
+   * The amount grows with the giver's own stat ("equal to 16% of Robin • Summeretto's Max HP"): a team where this
+   * counts wants that build on them (T18, decisions 25–26). `quote` is word for word from the piece; `gives` limits it
+   * to those stats of the entry (absent = all).
+   */
+  scales?: { stat: BuildStat; quote: string; gives?: Stat[] };
   /** Q7: unclear text; shown, never counted. Says why. */
   unverified?: string;
 }

@@ -234,6 +234,8 @@ export const soukaku: CharacterSheet = {
       quote: 'This buff can be passed along to characters switching in via Quick Assists or Chain Attacks triggered by Fly the Flag, and it refreshes the duration of the buff.',
       tag: 'ATK up to +1,000 for the character who switches in',
       gives: [{ stat: 'atk', amount: "20% of Soukaku's initial ATK, up to 500 (doubled, up to 1,000, when she consumes Vortex)" }],
+      // Judgement call: the quote is about Soukaku's own buff, which the next sentence passes on to the switch-in, so its size is her initial ATK.
+      scales: { stat: 'atk', quote: 'her ATK is increased by 20% of her initial ATK' },
       to: 'switch-in',
       setup: 'Fly the Flag hits, then a squad member switches in through the Quick Assist or Chain Attack it triggers; lasts 22s.',
     },

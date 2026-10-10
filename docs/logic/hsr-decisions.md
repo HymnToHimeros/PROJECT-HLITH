@@ -4,6 +4,13 @@ Calls made while reading the kits and building the check, where the theory
 (`hsr-theory.md`) left room. Each one is applied the same way to every kit.
 Numbered so later changes can point at them.
 
+## Standing rule: both games mirror each other (owner, 2026-10-10)
+The owner, word for word: "what goes for zzz or hsr goes for the other too logic core mirrors each other perfectly
+up to the point where it gets game specific (aka elemtns or class or whatever u get my point no)".
+So every logic rule (account notes, signature and equipped weapons, builds a team wants, the plain-words "Why",
+best team found) is the same in HSR and ZZZ. Only game facts differ: elements / attributes, paths / specialties,
+team size and order, and the owner's ZZZ method's own counting.
+
 ## Engine
 
 1. **A DoT is a debuff.** A reaction to debuffs (Acheron's Talent) also takes
@@ -86,3 +93,16 @@ Numbered so later changes can point at them.
     included). A weapon line that repeats an event the kit already causes
     is not a second event source. Pearl's Colors for Tomorrow has no effect
     text yet, so it isn't read; it will be once the text exists.
+25. **A bigger stat on a teammate raises the team score, roughly (owner, T18).** Buffs that grow with the giver's
+    stat carry `scales`; when they count, the team wants that build. The saved build is read in bands (built +2,
+    partly +1, not 0, no build 0 and said), never as damage math. Per team: Robin • Summeretto is an HP build with
+    Phainon because her "Deviated Chords" ATK buff is "(16% + Vibes × 0.4%) of Robin • Summeretto's Max HP".
+26. **The best team found assumes ideal builds.** So 100% = the right members and built right; an unbuilt team says
+    which builds would close the gap. A team you haven't built scores lower than before this rule; that is the
+    owner's "the value increases" read from the other side.
+27. **Thresholds count as wants when the stat is clearly the giver's.** Ruan Mei's and Lingsha's Light Cones (150%
+    Break Effect), Fugue's 220% Break Effect, Cyrene's 180 SPD: the team wants that stat on them, so they are wants;
+    whether the threshold is reached is not checked (no total stats saved yet).
+28. **ZZZ counts builds too (owner's ruling 2026-10-10, see the standing rule above).** Same bands, same wants,
+    same "Why"; ZZZ's 28 scaling lines (Astra Yao's ATK, Lucia's HP, Pan Yinhu's ATK…) count as HSR's do. The
+    method's worked examples hold at base builds (zzz-decisions.md 56).

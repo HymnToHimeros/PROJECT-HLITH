@@ -3,7 +3,9 @@
  * presets, Line-ups, Who fits and "If you pull…" %. Decisions the method leaves
  * open are written down in docs/logic/zzz-decisions.md.
  */
-import type { FitOptions, FitSuggestion, PullValue, TeamAccount, TeamIdea, TeamPreset, TeamReason, TeamRules, TeamVerdict } from '../../../core/contract';
+import type { FitOptions, FitSuggestion, PullValue, TeamAccount, TeamIdea, TeamPreset, TeamReason, TeamRules, TeamVerdict, TeamWant } from '../../../core/contract';
+import { BUILD_STAT_WORD, buildFit } from '../../../core/rules/buildFit';
+import { GEAR_SLOTS } from '../gear';
 import { checkSquad, compare, DD_ORDER, type Account, type Library, type Line, type SquadResult } from './check';
 import { library } from './library';
 import { accountNotes } from '../../../core/rules/accountNotes';
@@ -14,7 +16,16 @@ export const METHOD = 'ZZZ Kit Check method (docs/logic/zzz-method.md)';
 /** Partners kept per damage dealer before trios are tried, once the pool is bigger than this (method: Line-ups step 2). */
 const PAIR_LIMIT = 10;
 
-const toAccount = (a: TeamAccount): Account => ({ mindscape: (id) => (a.owned(id) ? a.dupes(id) : 0), potential: (id) => a.potential?.(id), weapon: (id) => (a.owned(id) ? a.weapon?.(id) : undefined) });
+const toAccount = (a: TeamAccount): Account => ({
+  mindscape: (id) => (a.owned(id) ? a.dupes(id) : 0),
+  potential: (id) => a.potential?.(id),
+  weapon: (id) => (a.owned(id) ? a.weapon?.(id) : undefined),
+  // T18: a saved build is read only for agents you own; undefined = no build saved.
+  buildFit: (id, stat) => {
+    const b = a.owned(id) ? a.build?.(id) : undefined;
+    return b ? buildFit(b, stat, GEAR_SLOTS) : undefined;
+  },
+});
 
 export function synergyLabel(percent: number, members: number): string {
   if (members < 3) return 'Incomplete';
@@ -36,7 +47,8 @@ export function bestFor(dd: string, pool: string[], lib: Library, account: Accou
   const key = `${dd}|${[...new Set(pool)].sort().map((id) => `${id}:${account.mindscape(id)}:${account.potential(id) ?? '-'}`).join(',')}|${account.mindscape(dd)}:${account.potential(dd) ?? '-'}`;
   if (bestCache.has(key)) return bestCache.get(key);
   if (bestCache.size > 2000) bestCache.clear();
-  const found = findBest(dd, pool, lib, account);
+  // The best team found assumes every member is built for what the team wants (decision 26): 100% includes builds.
+  const found = findBest(dd, pool, lib, { ...account, ideal: true });
   bestCache.set(key, found);
   return found;
 }
@@ -114,6 +126,7 @@ export function verdict(members: string[], a: TeamAccount, lib: Library = librar
     bestMembers: top.order,
     order: mine.order,
     reasons: mine.lines.map((l) => reasonOf(l, lib)),
+    ...(wantsOf(mine, lib).length ? { wants: wantsOf(mine, lib) } : {}),
     explain: explainTeam({ members: mine.order, dd: mine.dd, count: mine.count, lines: mine.lines }, { members: top.order, dd: top.dd, count: top.count, lines: top.lines }, name),
     notes: [summary(mine), ...notes],
   };
@@ -286,4 +299,24 @@ export function recommendedTeams(lib: Library = library()): TeamPreset[] {
     });
   }
   return out;
+}
+
+/** The builds this team wants on its members (T18), from its build lines. */
+function wantsOf(r: SquadResult, lib: Library): TeamWant[] {
+  return r.lines.flatMap((l) =>
+    l.kind === 'build' && l.build
+      ? [
+          {
+            who: l.who,
+            stat: BUILD_STAT_WORD[l.build.stat],
+            label: l.tag,
+            have: l.build.have,
+            fit: l.build.fit,
+            points: l.points,
+            max: l.build.max,
+            proof: { skill: (l.piece && lib.pieceLabels.get(l.who)?.get(l.piece)) ?? l.piece ?? '', quote: l.quote ?? '' },
+          },
+        ]
+      : [],
+  );
 }
