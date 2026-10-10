@@ -18,19 +18,19 @@ doing it said `LIVE`. Newest jobs at the bottom; live jobs move to Done.
 | T13 | ZZZ 3.3 (21 Oct): event dates, A-rank featured agents, version end date | SCHEDULER | blocked | Nothing published yet; rerun `data:nanoka` + `data:schedule` on 21 Oct. |
 | T14 | HSR 4.7 (starts 11 Nov): versions, banners, events | SCHEDULER | blocked | Waits for the announcement (special program around late Oct). |
 | T15 | HSR leak "Nihilux": confirm official name | SCHEDULER | blocked | Probably Aeon ★ Aha (already marked as a leak); confirm when announced. |
-| T16 | Live banners card (Today): art scales wrong. Screenshot `docs/owner-reports/2026-10-10/1-live-banners-scaling.png` | FRAME | working | PR #56 merged 10:14; waiting for LIVE. |
 | T17 | Kit check / Roster teams don't explain their reasoning ("Why 90%: count 9 of 10" is a number, not a reason). Screenshot `2-recommended-teams.png` | LOGIC-CORE leads, FRAME for the screen | working | PR #61 (after #60): every Why opens in plain words, one line per member, "To reach 100%". Both games. |
 | T18 | Make my own teams (pick the members myself, get them scored) | FRAME leads, LOGIC-CORE scores | working | Owner OK: put live. Order: #61 → account-fits → #59. Build/weapon scoring (incl. Robin • Summeretto HP case) follows as its own step. |
-| T19 | HSR recommended teams make no sense (e.g. built around March 7th); mixes whatever is possible instead of real teams | LOGIC-CORE | working | PR #60 merged; waiting for LIVE. |
 | T20 | Several screens are badly designed / crowded (owner: endgame may stay in Events; MANAGER to find which). MANAGER's list: Today, Events, Calendar, Backlog, Banners (see note to FRAME) | FRAME | working | Owner OK on #63 Calendar, #64 Events, #65 Today; merging in line. #66 Backlog still needs the owner's look. |
 | T21 | Banners screen looks like a card picker, not a banner tracker: redesign. Screenshot `3-banners-page.webp` | FRAME | working | Owner: #62 not accepted. Fix permanent banners in "Live now" and small weapon art on phone, and a totally different look. FRAME sends 2–3 mock-ups; owner picks. |
-| T22 | Auto-tick dailies from HoYoLAB: remember when stamina/battery should have been full; if the next sync shows less, the stamina was spent, so tick the dailies that prove it | FRAME | working | PR #56 merged 10:14 (strict: same game day); waiting for LIVE. |
-| T23 | More themes (owner sent 8 palettes) | FRAME | working | PR #58, owner OK. Merging in line. |
-| T24 | Tidy the GitHub repo so it looks sorted, and update the README (asked before, not done) | FRAME | working | PR #57: docs index, README updated, fresh screenshots. Two stale branches left; owner can delete them on GitHub (FRAME and MANAGER were blocked). |
 
 ## Done
 | # | Job | Who | Live on |
 |---|---|---|---|
+| T16 | Live banner art the same size (PR #56) | FRAME | 2026-10-10 |
+| T22 | Dailies tick from HoYoLAB, strict (PR #56) | FRAME | 2026-10-10 |
+| T19 | HSR teams from the game's real teams (PR #60) | LOGIC-CORE | 2026-10-10 |
+| T24 | Repo tidy, docs index, README (PR #57) | FRAME | 2026-10-10 |
+| T23 | 8 new themes (PR #58) | FRAME | 2026-10-10 |
 | T2 | MANAGER and ERROR-FIX chats (PR #51) | FRAME | 2026-10-10 |
 | T3 | Build score (PR #55): character page → Build score card, graded against the game's own build, with Why | LOGIC-CORE | 2026-10-10 |
 | T25 | MANAGER approves and merges every PR (PR #54) | MANAGER | 2026-10-10 |
