@@ -41,6 +41,7 @@ Routing table and session ids: `docs/WORKSTREAMS.md`. How updates go live:
   screen, the live preview or screenshots), the owner has seen it if it's a new
   screen or a redesign, and no chat said `WAIT`. One merge at a time, in order. If
   it isn't right, tell the chat what's wrong; don't fix their code yourself.
+- **One exception: SCHEDULER's data-only PRs merge themselves (owner, 2026-10-10, "Yrs").** Only when the diff is just `src/games/*/data/*.json` + `scripts/schedule/rhythm.json` and the full check is green; anything else comes to you. Read the run log now and then.
 - **Bugs go to ERROR-FIX (owner, 2026-10-10):** "the bug goes to error fixer as its a error". Send every bug the owner reports to ERROR-FIX; ERROR-FIX tells the owning chat what it changes.
 - **No go-live OKs from the owner (owner, 2026-10-10):** "neverr ask again if its okay to put smt life. jsutto double check." Double-check it yourself (check green, diff does what was asked, look at screenshots for big screen changes), merge, then tell the owner what went live. Ask the owner only for real decisions (rules, which design direction), never "may this go live".
 - You never edit another chat's files (code); you fix nothing in their PRs.
