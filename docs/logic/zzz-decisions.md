@@ -4,6 +4,13 @@
 LOGIC-CORE made the call below (the owner asked for no questions while away).
 Each one can be changed: tell LOGIC-CORE which.
 
+## Standing rule: both games mirror each other (owner, 2026-10-10)
+The owner, word for word: "what goes for zzz or hsr goes for the other too logic core mirrors each other perfectly
+up to the point where it gets game specific (aka elemtns or class or whatever u get my point no)".
+So every logic rule (account notes, signature and equipped weapons, builds a team wants, the plain-words "Why",
+best team found) is the same in HSR and ZZZ. Only game facts differ: elements / attributes, paths / specialties,
+team size and order, and the owner's ZZZ method's own counting.
+
 ## Counting
 1. **The count is built exactly as the formula is written.** The method also
    lists improvements for "the rebuild": weights by kind, role coverage, and
@@ -187,3 +194,11 @@ Each one can be changed: tell LOGIC-CORE which.
 55. **Recommended teams (ZZZ) come from the check itself**: for every damage
     dealer, the best squad from every agent at Mindscape 0, with the two best
     alternatives per place. Source named on each card.
+56. **Builds count on top of the method (owner's ruling 2026-10-10).** `zzz-method.md` is unchanged. On top of its
+    count, a squad member whose buff grows with their own stat adds points for the saved build (built +2, partly
+    +1, none 0 and said), and the best squad found is scored fully built, exactly as in HSR
+    (hsr-decisions.md 25–28). The method's worked examples hold at base builds: Billy > Dialyn > Lucia = 9,
+    Billy > Pan Yinhu > Lucia = 10. Fully built (Pan Yinhu for ATK, Lucia for HP) the second is 14 of 14 = 100%,
+    and the first is 9 of 14 = 64% with no builds saved.
+57. **Every equipped W-Engine counts when its specialty is the wearer's** (T18 step 4, the standing rule): 55
+    W-Engines that aren't signatures are read quote for quote; see hsr-decisions.md 29.
