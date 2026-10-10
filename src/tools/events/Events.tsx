@@ -72,7 +72,8 @@ export function Events({ game, data, serverId, now, onChooseServer }: Props) {
   const live = groups.live.filter(keep);
   const upcoming = groups.upcoming.filter(keep);
   const cycleList = filter === 'all' || filter === 'endgame' ? cycles(game, now) : [];
-  const empty = live.length === 0 && upcoming.length === 0 && cycleList.length === 0;
+  // Endgame cycles always list, so "empty" is about events: with none running or coming up, point to Edit list.
+  const noEvents = live.length === 0 && upcoming.length === 0;
 
   return (
     <div className={e.stack} style={{ '--vent': game.vent } as CSSProperties}>
@@ -90,13 +91,18 @@ export function Events({ game, data, serverId, now, onChooseServer }: Props) {
           { id: 'bonus', label: 'Bonuses' },
         ]}
       />
-      {empty ? (
-        <p className={e.muted}>{filter === 'all' ? 'No events are listed yet.' : 'Nothing in this filter right now.'}</p>
-      ) : (
+      {noEvents && (
+        <p className={e.muted}>
+          {filter === 'all' || filter === 'endgame'
+            ? 'No events running or coming up on the list. Know one that’s missing? Add it with “Edit list” above.'
+            : 'Nothing in this filter right now.'}
+        </p>
+      )}
+      {(!noEvents || cycleList.length > 0) && (
         <ul className={e.list} aria-label="Events">
           {live.map(item)}
           {cycleList.map((c) => (
-            <CycleItem key={c.row.id} game={game} cycle={c} user={data.user} currency={name} />
+            <CycleItem key={c.row.id} game={game} cycle={c} example={data.cycleExamples.get(c.row.id)} user={data.user} currency={name} />
           ))}
           {upcoming.map(item)}
         </ul>
@@ -219,9 +225,10 @@ function EventItem({ game, ev, now, until, user, example, row, currency, onChoos
             <Reward ev={ev} state={p.state} row={row} until={until} currency={currency} pulls={row?.status === 'counted' ? asPulls(game, row.currency, row.amount) : null} onChooseServer={onChooseServer} />
           </span>
         </div>
-        {ev.kind === 'bonus' && <span className={e.muted}>Reminders for bonuses come with notifications (Account → Notifications).</span>}
+        {ev.kind === 'bonus' && <span className={e.muted}>Reminders for bonuses aren’t built yet.</span>}
         {ev.kind === 'login' && (
-          <LoginDays title={ev.title} total={ev.loginDays} claimed={p.daysClaimed ?? 0} canClaim={group !== 'upcoming'} onSet={(daysClaimed) => save({ daysClaimed })} />
+          // Days can be claimed only while the event runs; − stays on so a wrong tap can always be undone.
+          <LoginDays title={ev.title} total={ev.loginDays} claimed={p.daysClaimed ?? 0} canClaim={group === 'live'} onSet={(daysClaimed) => save({ daysClaimed })} />
         )}
       </div>
       <StateSwitch title={ev.title} value={p.state} onChange={(state) => save({ state })} />
@@ -347,8 +354,11 @@ function LoginDays({ title, total, claimed, canClaim, onSet }: { title: string; 
   );
 }
 
-/** One endgame cycle as a row in the list: dates when known, reward per cycle, Open / Done / Skip for this cycle. */
-function CycleItem({ game, cycle: c, user, currency }: { game: GameContract; cycle: Cycle; user: GameUserData; currency: (id: string) => string }) {
+/**
+ * One endgame cycle as a row in the list: dates when known, reward per cycle, Open / Done / Skip for this cycle.
+ * Dates the record doesn't know show as the same EXAMPLE dates Calendar draws (no Done / Skip on those).
+ */
+function CycleItem({ game, cycle: c, example, user, currency }: { game: GameContract; cycle: Cycle; example: { start: number; end: number } | undefined; user: GameUserData; currency: (id: string) => string }) {
   const cur = c.current;
   const p = cur ? progressOf(user, cur.key) : null;
   return (
@@ -358,6 +368,7 @@ function CycleItem({ game, cycle: c, user, currency }: { game: GameContract; cyc
         <div className={e.titleLine}>
           <span className={e.title}>{c.row.label}</span>
           <span className={e.kind}>Endgame</span>
+          {!cur && example && <ExampleTag />}
         </div>
         <div className={e.meta}>
           <span className={e.dates}>every {c.days} days</span>
@@ -365,6 +376,11 @@ function CycleItem({ game, cycle: c, user, currency }: { game: GameContract; cyc
             <>
               <span className={e.dates}>{formatRange(cur.start, cur.end)}</span>
               <Timer to={cur.end} deadline prefix="resets in" />
+            </>
+          ) : example ? (
+            <>
+              <span className={e.dates}>{formatRange(example.start, example.end)}</span>
+              <span className={e.glacier}>example dates · the real ones aren’t known yet</span>
             </>
           ) : (
             <span className={e.glacier}>Dates not known yet</span>

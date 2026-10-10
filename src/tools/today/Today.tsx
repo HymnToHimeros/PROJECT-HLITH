@@ -1,13 +1,14 @@
 import type { CSSProperties } from 'react';
 import type { Banner, GameContract, GameEvent, GameId, ModuleId, Version } from '../../core/contract';
 import { known, unknown } from '../../core/contract/known';
-import { getPrefs, usePrefs } from '../../core/data/prefs';
+import { getPrefs, useExamplesShown, usePrefs } from '../../core/data/prefs';
 import { balances, EMPTY_GAME, setTick, type GameUserData } from '../../core/data/userData';
 import { formatNumber } from '../../core/time/format';
 import { formatTime, nextDailyReset, nextWeeklyReset, serverRule } from '../../core/time/reset';
 import { BannerCard, CurrencyChip, ExampleNotice, ExampleTag, GameTag, HowTo, StatTile, Timer, UnverifiedTag } from '../../core/ui';
 import { cx } from '../../core/ui/cx';
 import { pullsFor } from '../budget/budget';
+import { AddOwnButton, examplesFor } from './AddOwn';
 import type { GameLists } from './lists';
 import { buildTasks, type Task } from './tasks';
 import { TonightsRun } from './TonightsRun';
@@ -49,6 +50,7 @@ interface GameToday {
 export function Today({ games, servers, lists, user, now, open, openAccount, openServer }: TodayProps) {
   const tags = games.length > 1;
   const prefs = usePrefs();
+  const showExamples = useExamplesShown();
   const chooseServer = (id: GameId) => (openServer ? openServer(id) : openAccount());
   const days: GameToday[] = games.map((game) => {
     const l = lists[game.id] ?? { characters: [], banners: [], events: [], versions: [], materials: [] };
@@ -101,8 +103,8 @@ export function Today({ games, servers, lists, user, now, open, openAccount, ope
           <TonightsRun tasks={days.flatMap((d) => d.tasks)} noServer={noServer} tags={tags} now={now} openAccount={noServer[0] ? () => chooseServer(noServer[0]?.id ?? '') : openAccount} />
         </div>
         <div className={t.stack}>
-          <LiveBanners days={days} tags={tags} now={now} />
-          <ComingUp days={days} tags={tags} now={now} />
+          <LiveBanners days={days} tags={tags} now={now} showExamples={showExamples} />
+          <ComingUp days={days} tags={tags} now={now} showExamples={showExamples} />
           <Wishlist
             games={days.map((d) => ({ game: d.game, user: d.user, characters: d.lists.characters, banners: d.banners.list, example: d.banners.example, exampleIds: d.lists.exampleIds }))}
             tags={tags}
@@ -220,8 +222,11 @@ function OpenTasks({ days, tags, now, hideTicked, chooseServer }: { days: GameTo
     const fallback = d.game.servers[0]?.id;
     const hidden = new Set(getPrefs().hiddenTasks?.[d.game.id] ?? []);
     const list = d.serverId ? d.tasks : fallback ? buildTasks({ game: d.game, serverId: fallback, user: d.user, events: [], farmNames: [], now }).filter((x) => !hidden.has(x.id)) : [];
-    return list.filter((x) => x.kind !== 'event').map((task) => ({ d, task, done: Boolean(d.serverId) && task.done }));
+    // Event tasks list here too, so a tick made in Tonight's run can be taken back here.
+    return list.map((task) => ({ d, task, done: Boolean(d.serverId) && task.done }));
   });
+  // Counted like Tonight's run: only tasks that can be ticked (games with a server).
+  const tickable = rows.filter((r) => r.d.serverId).length;
   const done = rows.filter((r) => r.done).length;
   const shown = hideTicked ? rows.filter((r) => !r.done) : rows;
   const missing = days.filter((d) => !d.serverId);
@@ -229,12 +234,14 @@ function OpenTasks({ days, tags, now, hideTicked, chooseServer }: { days: GameTo
     <section className={t.card} aria-label="Open tasks">
       <div className={t.cardHead}>
         <h3 className={t.cardTitle}>Open tasks</h3>
-        <span className={t.count}>
-          {done}/{rows.length}
-        </span>
+        {tickable > 0 && (
+          <span className={t.count}>
+            {done}/{tickable}
+          </span>
+        )}
       </div>
-      <div className={t.track} role="progressbar" aria-label="Tasks done" aria-valuenow={done} aria-valuemin={0} aria-valuemax={rows.length}>
-        <div className={t.fill} style={{ width: rows.length ? `${(done / rows.length) * 100}%` : '0%' }} />
+      <div className={t.track} role="progressbar" aria-label="Tasks done" aria-valuenow={done} aria-valuemin={0} aria-valuemax={tickable}>
+        <div className={t.fill} style={{ width: tickable ? `${(done / tickable) * 100}%` : '0%' }} />
       </div>
       {rows.length === 0 && <p className={t.muted}>The game record lists no daily or weekly tasks yet.</p>}
       <ul className={t.taskList}>
@@ -257,7 +264,7 @@ function OpenTasks({ days, tags, now, hideTicked, chooseServer }: { days: GameTo
                 {task.reward && <span className={t.reward}>{task.reward}</span>}
               </span>
               {tags && <GameTag label={d.game.short} vent={d.game.vent} />}
-              <span className={t.kind}>{task.period === 'weekly' ? 'Weekly' : 'Daily'}</span>
+              <span className={t.kind}>{task.kind === 'event' ? 'Event' : task.period === 'weekly' ? 'Weekly' : 'Daily'}</span>
             </label>
           </li>
         ))}
@@ -275,7 +282,16 @@ function OpenTasks({ days, tags, now, hideTicked, chooseServer }: { days: GameTo
   );
 }
 
-function LiveBanners({ days, tags, now }: { days: GameToday[]; tags: boolean; now: number }) {
+/** Ways forward from an empty card: add your own item for each game (examples passed so hidden ones can come back). */
+function AddOwn({ days, kinds, tags, now, showExamples }: { days: GameToday[]; kinds: ('events' | 'banners')[]; tags: boolean; now: number; showExamples: boolean }) {
+  return (
+    <div className={t.addOwn}>
+      {days.flatMap((d) => kinds.map((kind) => <AddOwnButton key={`${d.game.id}:${kind}`} game={d.game} kind={kind} tag={tags} examples={examplesFor(d.game, d.lists, kind, now, showExamples)} />))}
+    </div>
+  );
+}
+
+function LiveBanners({ days, tags, now, showExamples }: { days: GameToday[]; tags: boolean; now: number; showExamples: boolean }) {
   const rows = days.flatMap((d) => d.banners.list.map((b) => ({ d, b, example: Boolean(d.lists.exampleIds?.has(b.id)) })));
   const live = rows.filter(({ b }) => Date.parse(b.start) <= now && Date.parse(b.end) > now).sort((x, y) => Date.parse(x.b.end) - Date.parse(y.b.end));
   const typeLabel = (g: GameContract, id: string) => g.bannerTypes.find((x) => x.id === id)?.label ?? id;
@@ -298,7 +314,10 @@ function LiveBanners({ days, tags, now }: { days: GameToday[]; tags: boolean; no
           ))}
         </div>
       ) : (
-        <p className={t.muted}>No banner on the list is live right now.</p>
+        <>
+          <p className={t.muted}>No banner on the list is live right now. Know one that’s missing? Add it yourself.</p>
+          <AddOwn days={days} kinds={['banners']} tags={tags} now={now} showExamples={showExamples} />
+        </>
       )}
     </section>
   );
@@ -313,7 +332,7 @@ interface Coming {
   example: boolean;
 }
 
-function ComingUp({ days, tags, now }: { days: GameToday[]; tags: boolean; now: number }) {
+function ComingUp({ days, tags, now, showExamples }: { days: GameToday[]; tags: boolean; now: number; showExamples: boolean }) {
   const items: Coming[] = [];
   for (const d of days) {
     const typeLabel = (id: string) => d.game.bannerTypes.find((x) => x.id === id)?.label ?? id;
@@ -349,7 +368,10 @@ function ComingUp({ days, tags, now }: { days: GameToday[]; tags: boolean; now: 
           ))}
         </div>
       ) : (
-        <p className={t.muted}>Nothing on the lists in the next six weeks.</p>
+        <>
+          <p className={t.muted}>Nothing on the lists in the next six weeks. Know an event or banner that’s coming? Add it yourself.</p>
+          <AddOwn days={days} kinds={['events', 'banners']} tags={tags} now={now} showExamples={showExamples} />
+        </>
       )}
     </section>
   );

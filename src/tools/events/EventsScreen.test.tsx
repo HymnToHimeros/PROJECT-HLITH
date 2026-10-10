@@ -1,12 +1,15 @@
 import { fireEvent, render, screen, within } from '@testing-library/react';
-import { beforeEach, describe, expect, it } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import type { GameContract, GameEvent } from '../../core/contract';
-import { gameData, resetUserData } from '../../core/data/userData';
+import { act } from '@testing-library/react';
+import { updatePrefs } from '../../core/data/prefs';
+import { gameData, resetUserData, setEventProgress } from '../../core/data/userData';
+import { resetHideLeaks, setHideLeaks } from '../banners/leakPref';
 import EventsScreen from './EventsScreen';
 
 const DAY = 86_400_000;
 
-const makeGame = (events: GameEvent[] = []): GameContract =>
+const makeGame = (events: GameEvent[] = [], withCycle = true): GameContract =>
   ({
     id: 'aa',
     short: 'AA',
@@ -26,7 +29,7 @@ const makeGame = (events: GameEvent[] = []): GameContract =>
     modules: ['events'],
     bannerTypes: [{ id: 'character', label: 'Character banner', pullItem: 'ticket', target: 'character', pity: { kind: 'hard-pity', hardPity: 90, baseRate: 0.006 } }],
     income: [
-      { id: 'aa.tower', source: 'endgame', label: 'Tower', currency: 'gem', amount: null, schedule: { kind: 'cycle', days: 14 } },
+      ...(withCycle ? [{ id: 'aa.tower', source: 'endgame', label: 'Tower', currency: 'gem', amount: null, schedule: { kind: 'cycle', days: 14 } }] : []),
       { id: 'aa.events', source: 'events', label: 'Events', currency: 'gem', amount: null, schedule: { kind: 'from-events' } },
     ],
     historyImporters: [],
@@ -56,6 +59,10 @@ describe('Events screen', () => {
     localStorage.clear();
     resetUserData();
   });
+  afterEach(() => {
+    updatePrefs((p) => ({ ...p, hideExamples: false }));
+    resetHideLeaks();
+  });
 
   it('shows example events, clearly marked, and says the list is ours to add', async () => {
     await show();
@@ -65,8 +72,52 @@ describe('Events screen', () => {
     expect(screen.getAllByText('EXAMPLE').length).toBeGreaterThan(3);
     // The leak is marked unverified, with its source.
     expect(within(row('Rumoured collaboration event')).getByText('? UNVERIFIED')).toBeInTheDocument();
-    // Endgame cycle from the game record, honest about missing dates.
+    // Endgame cycle without a start date: the same EXAMPLE dates Calendar draws, marked as such.
+    expect(within(row('Tower')).getByText(/example dates/)).toBeInTheDocument();
+    expect(within(row('Tower')).getByText('EXAMPLE')).toBeInTheDocument();
+    expect(screen.getByText(/Endgame cycle dates marked EXAMPLE/)).toBeInTheDocument();
+  });
+
+  it('with examples hidden, an endgame cycle without a start date says its dates are not known', async () => {
+    act(() => updatePrefs((p) => ({ ...p, hideExamples: true })));
+    await show();
     expect(within(row('Tower')).getByText('Dates not known yet')).toBeInTheDocument();
+    expect(within(row('Tower')).queryByText('EXAMPLE')).not.toBeInTheDocument();
+  });
+
+  it('with no event running or coming up, says so and points to Edit list; cycles still show', async () => {
+    const now = Date.now();
+    await show(makeGame([{ id: 'old', title: 'Old event', kind: 'event', start: new Date(now - 9 * DAY).toISOString(), end: new Date(now - DAY).toISOString(), reward: null, currency: 'gem' }]));
+    expect(screen.getByText(/No events running or coming up/)).toBeInTheDocument();
+    expect(screen.getByText(/Edit list/, { selector: 'p' })).toBeInTheDocument();
+    expect(row('Tower')).toBeInTheDocument();
+  });
+
+  it('the version end is "an example", not "an example too", when nothing else is', async () => {
+    const now = Date.now();
+    await show(makeGame([{ id: 'ev1', title: 'Real event', kind: 'event', start: new Date(now - DAY).toISOString(), end: new Date(now + 3 * DAY).toISOString(), reward: null, currency: 'gem' }], false));
+    expect(screen.getByText(/The version end date is an example, until/)).toBeInTheDocument();
+    expect(screen.queryByText(/an example too/)).not.toBeInTheDocument();
+  });
+
+  it('login days can be claimed only while the event runs, but − still undoes on an ended one', async () => {
+    const now = Date.now();
+    const ended: GameEvent = { id: 'lg', title: 'Old login', kind: 'login', start: new Date(now - 9 * DAY).toISOString(), end: new Date(now - DAY).toISOString(), reward: 700, currency: 'gem', loginDays: 7 };
+    act(() => setEventProgress('aa', 'lg', { state: 'open', daysClaimed: 2 }));
+    await show(makeGame([ended]), { aa: 'eu' });
+    fireEvent.click(screen.getByText('Ended'));
+    const login = row('Old login');
+    expect(within(login).getByRole('button', { name: 'Claim one more day for Old login' })).toBeDisabled();
+    expect(within(login).getByRole('button', { name: 'Day 3' })).toBeDisabled();
+    fireEvent.click(within(login).getByRole('button', { name: 'Undo one day for Old login' }));
+    expect(gameData('aa').events['lg']?.daysClaimed).toBe(1);
+  });
+
+  it('Hide leaks hides leaked events here too', async () => {
+    act(() => setHideLeaks(true));
+    await show();
+    expect(screen.queryByText('Rumoured collaboration event')).not.toBeInTheDocument();
+    expect(screen.getByText('Limited story event')).toBeInTheDocument();
   });
 
   it('marking an event done or skipped saves it and stops counting its reward', async () => {
