@@ -28,14 +28,12 @@ Resume with: "continue from PROGRESS.md". Newest entry on top. Older entries:
 - CI (`.github/workflows/ci.yml`) runs both on every pull request.
 
 ## Done
-- 2026-10-10 · **FRAME: calmer Events screen (T20)** (branch `frame/calm-events`).
-  Rows grouped into Ending soon / Running now / Coming up (first 4, rest behind
-  "Show N more"); Done or skipped and Ended fold behind "Show N". Each row has one
-  Done button (Reopen once settled); Skip and switching sit in a ⋯ menu (new shared
-  `Menu` in `src/core/ui`). Every change shows a line with Undo; login days stay as
-  they were. Rewards in their own column, sized by worth: 4+ pulls stand out, rows
-  worth 0 stay quiet. "Edit list" moved next to the filters. Nothing removed. Page
-  height: all games PC 3079 → 2653 px, HSR 1704 → 1476; phone 5972 → 5012, 3447 → 2856.
+- 2026-10-10 · **FRAME: GitHub tidy and README** (branch `frame/tidy-readme`, owner job T24).
+  `docs/README.md` sorts every doc by what you'd open it for (files stay where they are:
+  code, migrations and the chats' rules point at them). README brought up to date
+  (HoYoLAB ticks, builds, Enhanced / Potential, themes, owner console, five chats) with
+  fresh screenshots. A stray `preview.log` removed and `*.log` ignored. Merged branches
+  are auto-deleted by GitHub; two stale ones are left for the owner to delete.
 - 2026-10-10 · **FRAME: live banner art the same size; HoYoLAB ticks dailies** (branch `frame/owner-jobs-1`, owner jobs T16, T22).
   Today's live banners: every card is the same height, so every art box is the same
   size and crops the same way (titles stop at two lines). Each live stamina read now
