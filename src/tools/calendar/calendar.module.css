@@ -16,8 +16,15 @@
   gap: 2px;
   min-width: 0;
 }
+.cardHead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--s-1) var(--s-3);
+  margin-bottom: var(--s-1);
+}
 .cardTitle {
-  margin: 0 0 var(--s-2);
+  margin: 0;
   font-size: 17px;
   font-weight: 700;
 }
@@ -91,6 +98,20 @@
   height: 30px;
   border-bottom: 1px solid var(--bg-track);
 }
+.todayMark {
+  position: absolute;
+  top: 7px;
+  z-index: 3;
+  transform: translateX(-50%);
+  padding: 2px 6px;
+  border-radius: var(--r-tag);
+  background: var(--ink-1);
+  color: var(--bg-card);
+  font: 700 10px/1.2 var(--font-numbers);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
 .scaleMark {
   position: absolute;
   top: 9px;
@@ -124,7 +145,7 @@
   display: flex;
   align-items: center;
   gap: var(--s-2);
-  padding: 14px 0 6px;
+  padding: 12px 0 4px;
   font: 600 10px/1 var(--font-numbers);
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -133,7 +154,36 @@
 .row {
   position: relative;
   z-index: 1;
-  height: 38px;
+  height: 30px;
+}
+/* In All games, each game's rows in a lane start a little apart. */
+.gameBreak {
+  margin-top: 6px;
+}
+.moreRow {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  min-height: 30px;
+  align-items: center;
+}
+.moreBtn {
+  border: 0;
+  background: none;
+  padding: 0 var(--s-2) 0 0;
+  min-height: 32px;
+  color: var(--glacier);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.moreBtn:hover {
+  color: var(--ember);
+}
+.moreBtn:focus-visible {
+  outline: 2px solid var(--glacier);
+  outline-offset: 2px;
 }
 .emptyRow {
   position: relative;
@@ -141,7 +191,7 @@
   align-items: center;
   flex-wrap: wrap;
   gap: var(--s-2);
-  min-height: 38px;
+  min-height: 32px;
   font-size: 13px;
   color: var(--ink-4);
 }
@@ -174,6 +224,17 @@
 }
 
 /* ── Dates ── */
+.group {
+  display: flex;
+  flex-direction: column;
+}
+.groupHead {
+  margin: var(--s-3) 0 2px;
+  font: 600 10px/1 var(--font-numbers);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-5);
+}
 .list {
   display: flex;
   flex-direction: column;
@@ -186,7 +247,7 @@
   flex-wrap: wrap;
   align-items: center;
   gap: 6px 10px;
-  min-height: 50px;
+  min-height: 44px;
   padding: 4px 0;
   border-bottom: 1px solid var(--line-subtle);
 }
@@ -200,7 +261,7 @@
   flex: none;
 }
 .what {
-  flex: 1 1 160px;
+  flex: 1 1 120px;
   min-width: 0;
   display: flex;
   flex-direction: column;
@@ -233,6 +294,16 @@
 @media (min-width: 820px) {
   .timeline {
     min-width: 0;
+  }
+  /* On a PC the timeline never scrolls sideways, so the date scale and Today mark can stay in view while you scroll down. */
+  .scroller {
+    overflow: visible;
+  }
+  .scale {
+    position: sticky;
+    top: 0;
+    z-index: 4;
+    background: var(--bg-card);
   }
 }
 @media (max-width: 819px) {
@@ -274,4 +345,25 @@
   padding-left: 20px;
   font-size: 13px;
   color: var(--ink-2);
+}
+/* On a PC a date row is one line: title and range side by side. */
+@media (min-width: 820px) {
+  .what {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 2px 12px;
+  }
+  .item {
+    min-height: 40px;
+  }
+}
+/* When the timeline scrolls sideways (phone), lane names, notes and "Show N more" stay at the left edge, in view. */
+.laneHead,
+.emptyRow,
+.moreRow {
+  position: sticky;
+  left: var(--s-4);
+  width: fit-content;
+  max-width: min(100%, calc(100vw - 64px));
 }
