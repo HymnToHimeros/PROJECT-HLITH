@@ -18,12 +18,8 @@ doing it said `LIVE`. Newest jobs at the bottom; live jobs move to Done.
 | T14 | HSR 4.7 (starts 11 Nov): versions, banners, events | SCHEDULER | blocked | Waits for the announcement (special program around late Oct). |
 | T15 | HSR leak "Nihilux": confirm official name | SCHEDULER | blocked | Probably Aeon ★ Aha (already marked as a leak); confirm when announced. |
 | T18 | Make my own teams (pick the members myself, get them scored) | FRAME leads, LOGIC-CORE scores | working | LIVE: My teams picker (#59), account suggestions (#67), signature weapons (#69), build wants (#73). Next: every equipped weapon (#74). |
-| T27 | HSR: pick your Trailblazer (Caelus or Stelle) so that Trailblazer's entries are auto-marked owned in Roster; ZZZ needs nothing | FRAME | working | Owner: other Trailblazer hidden. FRAME building. |
 | T28 | Standing rule: every logic rule is the same in HSR and ZZZ, except game-specific facts; ZZZ counts builds like HSR | LOGIC-CORE | working | In #73 (ZZZ counts builds like HSR; standing mirror rule in decisions files). |
-| T29 | HSR teams still mix-match (Phainon + March 7th / Asta / Bronya; "best" = Tingyun, Sparkle, Huohuo). Owner: when a better unit for a job exists, pick it. Test: Phainon + Sunday + Cerydra + Dan Heng PT must be Phainon's top team | LOGIC-CORE | working | Fix (a) merged as #75: only each carry's own game team, filled from roster. Next: owner-editable team list (b), priority because Robin • Summeretto is missing from Phainon's game list. |
 | T30 | HSR scoring still doesn't understand kits (owner's own Aventurine • Waveflair team 47%, "best" again Tingyun + Sparkle). Owner: teams do NOT need a sustain/healer. Wants scoring that understands buff size, conditions, how kits interact | LOGIC-CORE | working | Remove sustain rule now; explain this team; plan for kit-interaction scoring to owner. |
-| T31 | Remove owner's Gmail from git history (Option A + GitHub Support) | ERROR-FIX | blocked | ERROR-FIX's Auto mode blocks history-changing git; owner switches its mode so they can approve each command. All chats except FRAME confirmed frozen. |
-| T32 | HSR: add Nihilux to Roster as a leak character (owner asked repeatedly) | SCHEDULER | sent | Only what leak sources state, source named; link to Aeon ★ Aha if same. |
 | T33 | Blind test of LOGIC-CORE's kit understanding: Aventurine • Waveflair's best team worked out alone, plus 6 carries the owner hasn't corrected (exactly 4 members, one archetype) | LOGIC-CORE | sent | Before any T30 building. |
 | T34 | Switch: assume signature weapon + average build for characters without a saved build | LOGIC-CORE + FRAME | sent | Plan first. |
 | T35 | Target end stats per character on the character page (you vs target), each number sourced | LOGIC-CORE + FRAME | sent | Owner: LOGIC-CORE must find the basis itself. Plan first. |
@@ -35,6 +31,10 @@ doing it said `LIVE`. Newest jobs at the bottom; live jobs move to Done.
 ## Done
 | # | Job | Who | Live on |
 |---|---|---|---|
+| T29 | HSR teams: only each carry's own game team (#75), owner-editable team lists with reset (#81) | LOGIC-CORE + FRAME | 2026-10-10 |
+| T32 | Nihilux in HSR Roster as a leak character (#79) | SCHEDULER | 2026-10-10 |
+| T27 | Pick your Trailblazer; their entries auto-marked owned (#72) | FRAME | 2026-10-10 |
+| T31 | Owner's Gmail removed from git history (76 → 0, all branches) | owner + MANAGER | 2026-10-10 |
 | T12 | HoYoLAB linked and working: HSR Main (EU, lv 68) and ZZZ MAIN (EU, lv 56), check-ins claimed; first automatic check-in shows tomorrow | owner + FRAME | 2026-10-10 |
 | T17 | Teams explain themselves in plain words (PR #61) | LOGIC-CORE | 2026-10-10 |
 | T20 | Calmer Calendar, Events, Today, Backlog (PRs #63–#66) | FRAME | 2026-10-10 |
