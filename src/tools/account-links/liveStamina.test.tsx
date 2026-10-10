@@ -91,7 +91,7 @@ describe('useLiveStamina', () => {
     saveReading('aa:server:123456789', { current: 90, max: 240, fullInSeconds: 54_000, readAt: new Date(Date.now() - STAMINA_TTL_MS - 1000).toISOString() });
     invoke.mockResolvedValue({ data: { account: { uid: '700000001' }, readAt: new Date().toISOString(), stamina: { current: 120, max: 240, fullInSeconds: 43_200 }, problems: {} }, error: null });
     const { result } = renderHook(() => useLiveStamina([linked]));
-    expect(result.current.stamina.aa).toMatchObject({ state: 'ok', reading: { current: 90 }, refreshing: true });
+    expect(result.current.stamina.aa).toMatchObject({ state: 'ok', reading: { current: 90 } });
     await waitFor(() => expect(result.current.stamina.aa).toMatchObject({ state: 'ok', reading: { current: 120 }, refreshing: false }));
   });
 

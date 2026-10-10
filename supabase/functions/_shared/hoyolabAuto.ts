@@ -23,7 +23,7 @@
  * Safety: login values are used only inside these calls, never logged, never stored
  * anywhere but Vault, never returned.
  */
-import { checkLogin, ERROR_TEXT, readHoyolab, type Deps, type GameBiz } from './hoyolab.ts';
+import { checkLogin, ERROR_TEXT, readHoyolab, type Deps, type GameBiz, type Login } from './hoyolab.ts';
 
 // ── Check-in result ──────────────────────────────────────────────
 
@@ -71,6 +71,23 @@ export function checkRedeemLogin(raw: unknown): RedeemLogin | null {
   return { account_id_v2: id, account_mid_v2: mid, cookie_token_v2: token };
 }
 
+/**
+ * The code login must belong to the same HoYoverse account as the saved HoYoLAB
+ * login: account_id_v2 is the same number as ltuid_v2, and account_mid_v2 the same
+ * text as ltmid_v2 (when the login has one). A mix of two accounts' values is
+ * refused by HoYoverse as "not logged in" (retcode -1071), so it is caught here
+ * with a clear reason instead.
+ */
+export function codeLoginMismatch(login: Login | null, redeem: RedeemLogin): 'account-id' | 'account-mid' | null {
+  if (!login) return null;
+  if (redeem.account_id_v2 !== login.ltuid_v2) return 'account-id';
+  if (login.ltmid_v2 && redeem.account_mid_v2.toLowerCase() !== login.ltmid_v2.toLowerCase()) return 'account-mid';
+  return null;
+}
+
+export const MISMATCH_TEXT =
+  'Not tried: the code login belongs to a different HoYoverse account than this saved account (account_id_v2 must be the same number as the account’s HoYoLAB ID). Log in to the gift page with this account and copy all three values again.';
+
 export const REDEEM: Record<GameBiz, { url: string; origin: string }> = {
   hkrpg_global: { url: 'https://public-operation-hkrpg.hoyoverse.com/common/apicdkey/api/webExchangeCdkeyRisk', origin: 'https://hsr.hoyoverse.com' },
   nap_global: { url: 'https://public-operation-nap.hoyoverse.com/common/apicdkey/api/webExchangeCdkeyRisk', origin: 'https://zenless.hoyoverse.com' },
@@ -87,7 +104,7 @@ export const REDEEM_TEXT: Record<RedeemStatus, string> = {
   'region-locked': 'This code is for another server region.',
   'level-too-low': 'Your account level is too low for this code yet. HLITH tries again later.',
   cooldown: 'HoYoverse asked to wait between codes. HLITH tries again on the next run.',
-  login: 'HoYoverse says the code login isn’t valid any more. Paste fresh values from the gift page.',
+  login: 'HoYoverse didn’t accept the code login (it has ended, or the three values don’t belong together). Copy account_id_v2, account_mid_v2 and cookie_token_v2 again from the gift page and press “Replace code login”.',
   captcha: 'HoYoverse wants a captcha first. Redeem this one on the gift page yourself.',
   error: 'HoYoverse returned an error. HLITH tries again on the next run (up to 3 times).',
 };
@@ -154,7 +171,9 @@ export async function redeemCode(
     const answer = (await res.json()) as { retcode?: unknown };
     const retcode = typeof answer.retcode === 'number' ? answer.retcode : null;
     const status = redeemStatus(retcode);
-    return { status, message: REDEEM_TEXT[status] };
+    // HoYoverse's own answer number is kept with the unclear outcomes, so the next problem can be traced.
+    const traced = retcode !== null && (status === 'login' || status === 'error' || status === 'captcha');
+    return { status, message: traced ? `${REDEEM_TEXT[status]} (HoYoverse answer ${retcode})` : REDEEM_TEXT[status] };
   } catch {
     return { status: 'error', message: REDEEM_TEXT.error };
   }
@@ -318,6 +337,17 @@ export async function runLinks(links: LinkRow[], store: Store, deps: RunDeps, op
     const secret = await secretOf(link.id);
     const login = checkRedeemLogin(parseJson(secret?.redeem ?? null));
     if (!login) continue;
+    // Two accounts' values mixed together: say so once (on the first code due) instead of asking HoYoverse.
+    if (codeLoginMismatch(checkLogin(parseJson(secret?.login ?? null)), login)) {
+      for (const g of link.games) {
+        const code = codesToTry(await store.codesFor(link.user_id, g.gameBiz), tried, link.id, g.uid)[0];
+        if (!code) continue;
+        await store.recordRedemption({ user_id: link.user_id, link_id: link.id, game_biz: g.gameBiz, game_uid: g.uid, code, started_by: opts.startedBy, status: 'login', message: MISMATCH_TEXT });
+        tried.push({ link_id: link.id, game_uid: g.uid, code, status: 'login' });
+        break;
+      }
+      continue;
+    }
     let stop = false;
     for (const g of link.games) {
       if (stop) break;

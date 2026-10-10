@@ -2,7 +2,7 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import { beforeEach, describe, expect, it } from 'vitest';
 import { gameData, resetUserData, setRosterEntry } from '../../core/data/userData';
 import { fakeCharacters, fakeGame } from './fakeGame';
-import { accountsFor, fromDevice, fromServerRows, importSources, lastCheckinLine, latestRedemptions, maskId, mergeAccounts, nextLabel, readCodes, readRedeemLogin, type LinkedAccount, type ServerRow } from './accounts';
+import { accountsFor, codeLoginRefused, fromDevice, fromServerRows, importSources, lastCheckinLine, latestRedemptions, maskId, mergeAccounts, nextLabel, readCodes, readRedeemLogin, sameAccount, type LinkedAccount, type ServerRow } from './accounts';
 import { deviceAccounts, forgetDeviceAccount, forgetLogin, readLogin, rememberLogin, savedLogin, saveDeviceAccount } from './hoyolab';
 import { LinkAccounts } from './LinkAccount';
 import { RosterImport } from './RosterImport';
@@ -133,6 +133,19 @@ describe('account list handling', () => {
     expect(readRedeemLogin('account_id_v2=123456; account_mid_v2=abc12_hy; cookie_token_v2=v2_ABCDEFGHIJKLMNOP')).toEqual({ ok: true, login: { account_id_v2: '123456', account_mid_v2: 'abc12_hy', cookie_token_v2: 'v2_ABCDEFGHIJKLMNOP' } });
     expect(readRedeemLogin('v2_ABCDEFGHIJKLMNOP 123456')).toEqual({ ok: false, missing: ['account_mid_v2'] });
     expect(readCodes('starrailgift\nAB12CD34, starrailgift')).toEqual(['STARRAILGIFT', 'AB12CD34']);
+  });
+
+  it('the code login must be this account’s own: account_id_v2 is the HoYoLAB ID', () => {
+    const redeem = { account_id_v2: '123456', account_mid_v2: 'abc12_hy', cookie_token_v2: 'v2_ABCDEFGHIJKLMNOP' };
+    expect(sameAccount(redeem, '123456')).toBe(true);
+    expect(sameAccount(redeem, '999999')).toBe(false);
+  });
+
+  it('notices when HoYoverse’s latest answer refused the code login', () => {
+    const r = (code: string, status: string, ran_at: string) => ({ link_id: 'm', game_biz: 'hkrpg_global', game_uid: '700', code, ran_at, status, message: 'x' });
+    expect(codeLoginRefused([r('A', 'redeemed', '2026-10-08'), r('B', 'login', '2026-10-09')], 'm')?.code).toBe('B');
+    expect(codeLoginRefused([r('B', 'login', '2026-10-08'), r('A', 'redeemed', '2026-10-09')], 'm')).toBeNull();
+    expect(codeLoginRefused([], 'm')).toBeNull();
   });
 });
 

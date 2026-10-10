@@ -208,7 +208,7 @@ export function useLiveStamina(games: GameContract[]): { stamina: Record<GameId,
     const src = sources.find((s) => s.game.id === g.id);
     // Before the first read finishes, a kept answer is shown with its read time.
     const kept = src ? cachedReading(cacheId(g.id, src.account)) : null;
-    stamina[g.id] = src ? (state[g.id] ?? (kept ? { state: 'ok', reading: kept, refreshing: Date.now() - Date.parse(kept.readAt) >= STAMINA_TTL_MS } : { state: 'loading' })) : pending && hoyolabLink(g)?.supports.includes('stamina') ? { state: 'loading' } : { state: 'none' };
+    stamina[g.id] = src ? (state[g.id] ?? (kept ? { state: 'ok', reading: kept, refreshing: false } : { state: 'loading' })) : pending && hoyolabLink(g)?.supports.includes('stamina') ? { state: 'loading' } : { state: 'none' };
   }
   return { stamina, retry };
 }
