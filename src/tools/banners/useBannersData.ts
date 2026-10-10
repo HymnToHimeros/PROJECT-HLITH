@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import type { Banner, Character, GameContract, SampleArt } from '../../core/contract';
+import { useExamplesShown } from '../../core/data/prefs';
 import { useGameData, type GameUserData } from '../../core/data/userData';
 import { exampleBanners } from './examples';
 import { useWithOwnItems } from '../edit-mode/useWithOwnItems';
@@ -13,12 +14,15 @@ export interface BannersData {
   banners: { list: Banner[]; example: boolean };
   /** Character id → sample art. Only for illustrating example banners, never real ones. */
   sampleArt: Map<string, string>;
+  /** Every example banner (hidden ones too), for Edit mode, while examples stand in for the list; else undefined. */
+  examples: Banner[] | undefined;
   loading: boolean;
 }
 
 /** Everything the Banners screen needs for one game. */
 export function useBannersData(game: GameContract, now: number): BannersData {
   const user = useGameData(game.id);
+  const showExamples = useExamplesShown();
   const [lists, setLists] = useState<{ characters: Character[]; banners: Banner[]; art: SampleArt[] } | null>(null);
 
   useEffect(() => {
@@ -34,10 +38,14 @@ export function useBannersData(game: GameContract, now: number): BannersData {
   const characters = lists?.characters ?? [];
   const art = lists?.art ?? [];
   const banners = useWithOwnItems(game, 'banners', lists?.banners ?? NO_BANNERS);
+  const useExamples = !banners.length && showExamples;
+  const examples = useExamples ? exampleBanners(game, characters, now, art.map((a) => a.characterId)) : undefined;
   return {
     user,
     characters: new Map(characters.map((c) => [c.id, c])),
-    banners: banners.length ? { list: banners, example: false } : { list: exampleBanners(game, characters, now, art.map((a) => a.characterId)), example: true },
+    // Examples you hid in Edit mode stay hidden.
+    banners: examples ? { list: examples.filter((x) => !user.ownItems.banners[x.id]?.hidden), example: true } : { list: banners, example: false },
+    examples,
     sampleArt: new Map(art.map((a) => [a.characterId, a.art])),
     loading: lists === null,
   };

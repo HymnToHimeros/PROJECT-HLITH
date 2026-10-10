@@ -1,11 +1,11 @@
+import { useState } from 'react';
 import type { GameContract } from '../../core/contract';
 import type { ModuleScreenProps } from '../../core/registry/modules';
-import { ExampleNotice, HowTo, type ExampleAction } from '../../core/ui';
+import { Button, ExampleNotice, HowTo } from '../../core/ui';
 import { GameHeading } from '../pulls/shared';
 import { Backlog } from './Backlog';
 import b from './backlog.module.css';
 import { useBacklogData } from './useBacklogData';
-import { EditListButton } from '../edit-mode/EditMode';
 
 /** Backlog module: one block per game in scope. */
 export default function BacklogScreen({ games, scope, open }: ModuleScreenProps) {
@@ -15,14 +15,19 @@ export default function BacklogScreen({ games, scope, open }: ModuleScreenProps)
       <HowTo
         title="How to use Backlog"
         steps={[
-          <>Backlog is permanent content you haven’t finished yet that still gives currency: story, side quests, exploration, modes and achievements.</>,
-          <>Each row shows how far you are and how many pulls its rewards are still worth. Open a row (tap its name) to see the items in it.</>,
-          <>Tap Edit on an item and set how much you have done, as the game shows it (for example 38 of 52 chapters). Until you do, it says “No data yet” and isn’t counted.</>,
+          <>Backlog is permanent content you haven’t finished yet: the story, side quests, permanent events, exploration, modes and achievements. Pick a category with the tabs.</>,
           <>
-            The switch on each row decides whether that category <strong>counts toward pulls</strong>. Switch off what you won’t play (for example Achievements) and it drops out of the Pulls
-            Calculator and the Planner. The same switches are in Pulls → Calculator.
+            Mark your progress right on the list: tap the story step you are on, tick side quests, and set counters with − and + (or type the number the game shows). Until you
+            do, an item says “No data yet” and isn’t counted.
           </>,
-          <>“Backlog could add” is the total of the switched-on rows. Open calculator to see it next to everything else you can still earn.</>,
+          <>
+            Press <strong>Edit</strong> to change anything: rename items, set their totals and rewards, add your own items or categories, or hide what you don’t want. Hidden
+            items can always be shown again; nothing is deleted.
+          </>,
+          <>
+            The switch on each category decides whether it <strong>counts toward pulls</strong>. “Still on the table” adds up the switched-on categories; the same switches are in
+            Pulls → Calculator.
+          </>,
         ]}
       />
       {shown.map((g) => (
@@ -34,19 +39,23 @@ export default function BacklogScreen({ games, scope, open }: ModuleScreenProps)
 
 function GameBacklog({ game, heading, openCalculator }: { game: GameContract; heading: boolean; openCalculator: () => void }) {
   const data = useBacklogData(game);
+  const [editing, setEditing] = useState(false);
   if (data.loading) return null;
-  const actions: ExampleAction[] = [{ label: 'Enter my progress', onClick: () => document.getElementById(`backlog-first-${game.id}`)?.click() }];
   return (
     <section className={b.stack} aria-label={game.name}>
-      <GameHeading game={game} show={heading} />
-      <EditListButton game={game} kind="backlog" />
+      <div className={b.gameHead}>
+        <GameHeading game={game} show={heading} />
+        <Button variant={editing ? 'primary' : 'secondary'} onClick={() => setEditing((v) => !v)} aria-pressed={editing} aria-label={editing ? `Done editing ${game.name} backlog` : `Edit ${game.name} backlog`}>
+          {editing ? '✓ Done editing' : 'Edit'}
+        </Button>
+      </div>
       {data.items.example && (
-        <ExampleNotice actions={actions}>
-          This backlog is an example: the game’s backlog list still has to be added by us (not you). The done counts are examples too until you enter your own. Tap
-          any item to set how much you’ve done; that is saved for real.
+        <ExampleNotice actions={[{ label: 'Edit', onClick: () => setEditing(true) }]}>
+          Items marked EXAMPLE stand in until the game’s backlog list is added (that part is on us, not you). They’re fully yours to use: change one in Edit and it becomes
+          your own item; progress you enter is saved for real. Examples are never counted toward pulls.
         </ExampleNotice>
       )}
-      <Backlog game={game} data={data} openCalculator={openCalculator} />
+      <Backlog game={game} data={data} openCalculator={openCalculator} editing={editing} />
     </section>
   );
 }

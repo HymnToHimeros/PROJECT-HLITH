@@ -26,6 +26,7 @@ import c from './connections.module.css';
 import { askHoyolab, forgetDeviceAccount, fullIn, hoyolabLink, saveDeviceAccount, type HoyoAccount, type HoyoAnswer, type HoyoEndgame, type HoyoLogin, type Part } from './hoyolab';
 import { HoyolabSteps, PasteLogin } from './HoyolabLogin';
 import { useAccounts } from './useAccounts';
+import { useExamplesShown } from '../../core/data/prefs';
 
 export { linkBlocker } from './useAccounts';
 
@@ -831,11 +832,13 @@ const figures = (e: Pick<HoyoEndgame, 'stars' | 'score' | 'maxScore' | 'floor' |
 
 /** Before any account is linked: what the list looks like, clearly marked EXAMPLE. */
 function ExampleAccounts({ games }: { games: GameContract[] }) {
+  const shown = useExamplesShown();
   const first = games[0];
   const examples = [
     { label: 'Main', where: 'Saved on HLITH’s server · encrypted', games: games.slice(0, 2), line: 'Last automatic check-in: today 05:02 · got 20 × Stellar Jade' },
     { label: 'Alt', where: 'Remembered on this device only', games: games.slice(0, 1), line: null },
   ];
+  if (!shown) return null; // Account → Example data: off
   return (
     <div className={`${c.card} ${c.example}`} aria-label="Example accounts">
       <div className={c.row}>

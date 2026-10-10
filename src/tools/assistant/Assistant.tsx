@@ -20,6 +20,7 @@ import { ProposalCard, ProposalsHowTo } from './Proposals';
 import type { Proposal } from './proposals';
 import { recordSpend, spentToday, useSettings } from './settings';
 import s from './assistant.module.css';
+import { useExamplesShown } from '../../core/data/prefs';
 
 export interface AssistantProps {
   games: GameContract[];
@@ -257,6 +258,7 @@ function CostLine({ model, cost }: { model: string | undefined; cost: Cost }) {
 
 /** Shown while the chat is empty: what a chat looks like. Clearly an example; its buttons do nothing. */
 function ExampleChat({ game }: { game: GameContract | undefined }) {
+  const shown = useExamplesShown();
   const currency = game?.currencies.find((c) => c.perPull) ?? game?.currencies[0];
   const proposals: Proposal[] = game
     ? [
@@ -284,6 +286,7 @@ function ExampleChat({ game }: { game: GameContract | undefined }) {
         },
       ]
     : [];
+  if (!shown) return null; // Account → Example data: off
   return (
     <section className={s.example} aria-label="Example conversation">
       <div className={s.exampleHead}>

@@ -26,6 +26,19 @@ Resume with: "continue from PROGRESS.md". Newest entry on top.
 - CI (`.github/workflows/ci.yml`) runs both on every pull request.
 
 ## Done
+- 2026-10-10 · **Example data switch + Backlog rebuilt** (branch `frame/example-switch`).
+  - Account → Example data: one switch hides every example on every screen
+    (empty places say "No data yet") and brings them back. Only changes what is
+    shown; nothing entered is touched. Browser test checks all screens.
+  - Backlog rebuilt to the V1 layout: "Still on the table" on top, category
+    tabs with counts, the story as a checklist (tap where you are), side quests
+    as tick boxes per region, counters with − / + for everything else.
+    Inline Edit mode: change any item (name, kind, totals, reward, currency,
+    group, steps, note), add items or categories, hide and show again.
+    Examples are editable: changing one makes it your own item. Examples are
+    never counted toward pulls. New optional item fields: group, steps, unit, note.
+  - Events and Banners: Edit list now shows the examples too, so they can be
+    changed (becomes yours) or hidden.
 - 2026-10-09 · **Timer key fix** (branch `frame/scheduler-key-check`). The first
   timer run (23:30 UTC) was refused (401): the scheduler compared the Vault key with
   its own copy of the project key, which differs. It now asks the database

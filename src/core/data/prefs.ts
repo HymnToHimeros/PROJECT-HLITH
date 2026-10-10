@@ -31,6 +31,12 @@ export interface Prefs {
   hideTicked?: boolean;
   /** Show each game's server clock next to the screen title. */
   showServerTime?: boolean;
+  /**
+   * Account → Example data: true hides every example everywhere, so only your own data
+   * and the games' real lists show ("No data yet" where there is none). Missing = shown.
+   * Only switches what's on screen; never adds, changes or removes any data.
+   */
+  hideExamples?: boolean;
 }
 
 export type Theme = 'dark' | 'light';
@@ -117,4 +123,9 @@ export function usePrefs(): Prefs {
 export function reloadPrefs(): void {
   current = read();
   listeners.forEach((l) => l());
+}
+
+/** Are examples shown? (Account → Example data.) Every screen that can show examples asks this. */
+export function useExamplesShown(): boolean {
+  return !usePrefs().hideExamples;
 }

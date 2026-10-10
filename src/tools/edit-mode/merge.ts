@@ -5,7 +5,8 @@
  */
 import type { OwnItemEdit, OwnItems, OwnItemTypes, OwnKind } from '../../core/data/userData';
 
-export type Origin = 'built-in' | 'changed' | 'mine';
+/** 'example': an example item shown while the game's list is empty (changing it makes it yours). */
+export type Origin = 'built-in' | 'changed' | 'mine' | 'example';
 
 export interface MergedRow<T> {
   item: T;
