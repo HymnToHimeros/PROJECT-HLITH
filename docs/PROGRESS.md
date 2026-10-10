@@ -28,6 +28,11 @@ Resume with: "continue from PROGRESS.md". Newest entry on top. Older entries:
 - CI (`.github/workflows/ci.yml`) runs both on every pull request.
 
 ## Done
+- 2026-10-10 · **Two more chats: MANAGER and ERROR-FIX** (branch `frame/manager-error-fix`).
+  `docs/WORKSTREAMS.md`: rules 7–8, both in Who's who, a routing table (which job goes
+  to which chat). `docs/briefs/MANAGER.md` (the owner's front desk: routes every
+  owner message, keeps `docs/TASKS.md`, reports back) and `docs/briefs/ERROR-FIX.md`
+  (fixes bugs only when a chat asks). `docs/RELEASES.md` updated for five chats.
 - 2026-10-10 · **FRAME: Enhanced / Agent Potential per character** (branch `frame/potential-field`).
   For LOGIC-CORE: the character page has an "Enhanced" (HSR: Not set / No / Yes) or
   "Agent Potential" (ZZZ: Not set / 0–6) picker, only for characters whose kit has pieces
