@@ -13,7 +13,7 @@ import { BuildWants } from './BuildWants';
 import { KitCheck } from './KitCheck';
 import r from './roster.module.css';
 import { artOf, CharArt, dupesLabel, elementOf, entryOf, isUpcoming, rarityColor, roleLabel, toCharacterBuild } from './shared';
-import { Line, TeamRow, teamAccount } from './TeamParts';
+import { Line, TeamRow, teamAccount, useTeamAccount } from './TeamParts';
 import { useBuilds, useKits, type RosterData } from './useRosterData';
 
 interface Props {
@@ -655,7 +655,8 @@ function TeamFit({ data, character: c, makePreset }: { data: RosterData; charact
 function WhoFits({ data, character: c }: { data: RosterData; character: Character }) {
   const rules = data.game.rules.teams;
   const roster = data.user.roster;
-  const fits = useMemo(() => (rules?.rated(c.id) ? rules.whoFits([c.id], teamAccount(data), { includeUnowned: true }).slice(0, 5) : null), [rules, c.id, roster]); // eslint-disable-line react-hooks/exhaustive-deps
+  const account = useTeamAccount(data);
+  const fits = useMemo(() => (rules?.rated(c.id) ? rules.whoFits([c.id], account, { includeUnowned: true }).slice(0, 5) : null), [rules, c.id, account]);
   if (!rules) return null;
   const word = data.game.terms.character.toLowerCase();
   return (
@@ -692,8 +693,8 @@ function WhoFits({ data, character: c }: { data: RosterData; character: Characte
 /** What this character would add to your teams (game's team rules), shown in "If you pull". */
 function PullValueLine({ data, character: c }: { data: RosterData; character: Character }) {
   const rules = data.game.rules.teams;
-  const roster = data.user.roster;
-  const v = useMemo(() => (rules ? rules.ifYouPull(c.id, teamAccount(data)) : null), [rules, c.id, roster, data.showLeaks]); // eslint-disable-line react-hooks/exhaustive-deps
+  const account = useTeamAccount(data);
+  const v = useMemo(() => (rules ? rules.ifYouPull(c.id, account) : null), [rules, c.id, account]);
   if (!rules) return null;
   if (!v)
     return (

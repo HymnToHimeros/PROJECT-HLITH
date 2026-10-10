@@ -1,4 +1,4 @@
-import { act, cleanup, fireEvent, render, screen, within } from '@testing-library/react';
+import { act, cleanup, fireEvent, render, screen, waitFor, within } from '@testing-library/react';
 import { useState } from 'react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import type { Character, GameContract, Kit, TeamPreset, TeamRules } from '../../core/contract';
@@ -320,15 +320,29 @@ describe('Roster screen', () => {
       seen.push(account.assumeAverage);
       return p.slots.map((sl) => sl.characters[0] ?? '');
     };
-    const rules = { method: 'm', rated: () => false, verdict: () => ({ rated: false, why: '' }), whoFits: () => [], lineUps: () => [], ifYouPull: () => null, fill } as unknown as TeamRules;
+    // Line-ups are worked out once and kept: they must be worked out again when the switch changes.
+    const lineUpsSeen: (boolean | undefined)[] = [];
+    const lineUps = (account: Parameters<TeamRules['lineUps']>[0]) => {
+      lineUpsSeen.push(account.assumeAverage);
+      return [];
+    };
+    const rules = { method: 'm', rated: () => false, verdict: () => ({ rated: false, why: '' }), whoFits: () => [], lineUps, ifYouPull: () => null, fill } as unknown as TeamRules;
     await show('teams', { ...makeGame(false), rules: { teams: rules } });
-    expect(seen.at(-1)).toBeUndefined();
+    expect(seen.length).toBeGreaterThan(0);
+    expect(seen.every((v) => v === undefined)).toBe(true);
     const sw = screen.getByRole('switch', { name: 'Assume signature + average build when none is saved' });
     expect(sw).toHaveAttribute('aria-checked', 'false');
+    const before = seen.length;
+    const lineUpsBefore = lineUpsSeen.length;
     fireEvent.click(sw);
     expect(gameData('aa').assumeAverageBuilds).toBe(true);
-    // The team rules get it with the account (TeamAccount.assumeAverage).
-    expect(seen.at(-1)).toBe(true);
+    // The team rules get it with the account (TeamAccount.assumeAverage): wait for the screen to ask again,
+    // then every answer it asked for since the click carries the switch (none from before it).
+    await waitFor(() => expect(seen.length).toBeGreaterThan(before));
+    expect(seen.slice(before).every((v) => v === true)).toBe(true);
+    expect(lineUpsBefore).toBeGreaterThan(0);
+    await waitFor(() => expect(lineUpsSeen.length).toBeGreaterThan(lineUpsBefore));
+    expect(lineUpsSeen.at(-1)).toBe(true);
     expect(screen.getByRole('switch', { name: 'Assume signature + average build when none is saved' })).toHaveAttribute('aria-checked', 'true');
   });
 
