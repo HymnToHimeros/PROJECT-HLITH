@@ -22,14 +22,14 @@ doing it said `LIVE`. Newest jobs at the bottom; live jobs move to Done.
 | T13 | ZZZ 3.3 (21 Oct): event dates, A-rank featured agents, version end date | SCHEDULER | blocked | Nothing published yet; rerun `data:nanoka` + `data:schedule` on 21 Oct. |
 | T14 | HSR 4.7 (starts 11 Nov): versions, banners, events | SCHEDULER | blocked | Waits for the announcement (special program around late Oct). |
 | T15 | HSR leak "Nihilux": confirm official name | SCHEDULER | blocked | Probably Aeon ★ Aha (already marked as a leak); confirm when announced. |
-| T16 | Live banners card (Today): art scales wrong. Screenshot `docs/owner-reports/2026-10-10/1-live-banners-scaling.png` | FRAME | working | FRAME's order: T16, T22, T23, T24, T18, T21, T17. |
+| T16 | Live banners card (Today): art scales wrong. Screenshot `docs/owner-reports/2026-10-10/1-live-banners-scaling.png` | FRAME | working | Fixed in PR #56 (every art box the same size, PC and phone). Not live yet. |
 | T17 | Kit check / Roster teams don't explain their reasoning ("Why 90%: count 9 of 10" is a number, not a reason). Screenshot `2-recommended-teams.png` | LOGIC-CORE leads, FRAME for the screen | sent | |
 | T18 | Make my own teams (pick the members myself, get them scored) | FRAME leads, LOGIC-CORE scores | sent | FRAME: a preset editor exists in Teams; finding out why the owner can't see or use it. Shown to the owner first. |
 | T19 | HSR recommended teams make no sense (e.g. built around March 7th); mixes whatever is possible instead of real teams | LOGIC-CORE | sent | |
 | T20 | Several screens are badly designed / crowded (owner: endgame may stay in Events; MANAGER to find which). MANAGER's list: Today, Events, Calendar, Backlog, Banners (see note to FRAME) | FRAME | sent | Owner left the choice of screens to MANAGER. Redesigns are shown to the owner before going live. |
 | T21 | Banners screen looks like a card picker, not a banner tracker: redesign. Screenshot `3-banners-page.webp` | FRAME | sent | Show the owner the new look before it goes live. |
-| T22 | Auto-tick dailies from HoYoLAB: remember when stamina/battery should have been full; if the next sync shows less, the stamina was spent, so tick the dailies that prove it | FRAME | sent | |
-| T23 | More themes (owner sent 8 palettes) | FRAME | sent | |
+| T22 | Auto-tick dailies from HoYoLAB: remember when stamina/battery should have been full; if the next sync shows less, the stamina was spent, so tick the dailies that prove it | FRAME | working | PR #56. MANAGER sent it back: it must compare with what stamina should be after refilling, not just the last reading. |
+| T23 | More themes (owner sent 8 palettes) | FRAME | working | Being built. |
 | T24 | Tidy the GitHub repo so it looks sorted, and update the README (asked before, not done) | FRAME | sent | |
 | T25 | MANAGER approves and merges every PR (owner's rule): written into `docs/RELEASES.md`, `docs/WORKSTREAMS.md` rule 9, MANAGER brief | MANAGER | working | In PR #54. |
 
