@@ -28,6 +28,11 @@ Resume with: "continue from PROGRESS.md". Newest entry on top. Older entries:
 - CI (`.github/workflows/ci.yml`) runs both on every pull request.
 
 ## Done
+- 2026-10-10 · **Eight more themes** (branch `worktree-agent-a9e6d8c564b992b99`). Account → Theme now offers
+  Noctune Bloom, Astral Lagoon, Crimson Haze, Jade Whisper, Velvet Twilight, Midnight Sakura and two light
+  ones, Ethereal Dune and Amber Mirage, each from the owner's palette with its own background art and emblem
+  (`src/core/theme/tokens-themes.css`, `ThemeArt.tsx`, `themes.ts`). Same contrast tests as the first six
+  (tests/themes.test.ts) and the theme accessibility browser test; the six existing themes look the same.
 - 2026-10-10 · **FRAME: GitHub tidy and README** (branch `frame/tidy-readme`, owner job T24).
   `docs/README.md` sorts every doc by what you'd open it for (files stay where they are:
   code, migrations and the chats' rules point at them). README brought up to date
