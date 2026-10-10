@@ -4,6 +4,7 @@
  * signature weapon in the saved build. Honest: what isn't saved is said, and scored at base.
  */
 import type { TeamAccount } from '../contract';
+import { assumedWords } from './averageBuild';
 
 export interface AccountFacts {
   /** 'E' (Eidolon) or 'M' (Mindscape). */
@@ -40,11 +41,13 @@ export function accountNotes(id: string, account: TeamAccount, facts: AccountFac
   const sig = facts.signature;
   const eq = facts.equipped;
   if (!w) missing.push(sig ? `No weapon saved (signature ${sig.name} would count).` : 'No weapon saved.');
-  else if (sig && w.id === sig.id) counted.push(`signature ${sig.name}`);
+  else if (sig && w.id === sig.id) counted.push(`signature ${sig.name}${account.assumed?.(id) ? ' (assumed)' : ''}`);
   else if (eq?.is === 'counts') counted.push(w.name);
   else if (eq?.is === 'wrong-role') missing.push(`${w.name}: works only for ${eq.role ?? 'other'} characters, not counted.`);
   else if (eq?.is === 'unread') missing.push(`${w.name}: effect not read yet, not counted.`);
   else missing.push(`${w.name}: not matched to the game's list, not counted.`);
+  // T34: no build saved and the owner's switch on: say what was assumed instead.
+  if (account.assumed?.(id)) missing.push(`No build saved; ${assumedWords(w?.name)}.`);
   const notes = [`Counted: ${counted.join(', ')}.`, ...missing];
   if (facts.locked) notes.push(`${facts.locked} kit piece${facts.locked === 1 ? '' : 's'} still locked.`);
   return { notes, theory: false };
