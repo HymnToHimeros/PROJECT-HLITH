@@ -7,7 +7,6 @@ doing it said `LIVE`. Newest jobs at the bottom; live jobs move to Done.
 ## Open
 | # | Job | Who | State | Note |
 |---|---|---|---|---|
-| T3 | Build score (`scoreBuild`) | LOGIC-CORE | working | PR #55; next to merge once main is in and green. |
 | T5 | HSR "Interastral Peace Gala" reward (starts 21 Oct) | SCHEDULER | blocked | Sources say 500 or 60; filled from the official notice when the event opens 21 Oct. |
 | T6 | Keep the game lists current on a schedule | SCHEDULER | waiting on owner | Owner decides how often (`data:nanoka` then `data:schedule`). |
 | T7 | Schedules for the research routine (leaks, events, game data) | SCHEDULER | waiting on owner | Decided once SCHEDULER and LOGIC-CORE are done. |
@@ -21,18 +20,19 @@ doing it said `LIVE`. Newest jobs at the bottom; live jobs move to Done.
 | T15 | HSR leak "Nihilux": confirm official name | SCHEDULER | blocked | Probably Aeon ★ Aha (already marked as a leak); confirm when announced. |
 | T16 | Live banners card (Today): art scales wrong. Screenshot `docs/owner-reports/2026-10-10/1-live-banners-scaling.png` | FRAME | working | Fixed in PR #56 (every art box the same size, PC and phone). Not live yet. |
 | T17 | Kit check / Roster teams don't explain their reasoning ("Why 90%: count 9 of 10" is a number, not a reason). Screenshot `2-recommended-teams.png` | LOGIC-CORE leads, FRAME for the screen | working | PR #61 (after #60): every Why opens in plain words, one line per member, "To reach 100%". Both games. |
-| T18 | Make my own teams (pick the members myself, get them scored) | FRAME leads, LOGIC-CORE scores | waiting on owner | PR #59 (draft): "My teams" first in Roster → Teams with "Make a team"; own teams scored like recommended ones. Owner to look and OK. |
+| T18 | Make my own teams (pick the members myself, get them scored) | FRAME leads, LOGIC-CORE scores | waiting on owner | PR #59 (draft): "My teams" first with "Make a team"; "preset" renamed "team". Screenshots sent to the owner. |
 | T19 | HSR recommended teams make no sense (e.g. built around March 7th); mixes whatever is possible instead of real teams | LOGIC-CORE | working | PR #60. Cause: any Hunt/Erudition character could be a team centre, and the game's March 7th team was imported with her first. Now teams come from the game's own teams, led by their real damage dealer. |
 | T20 | Several screens are badly designed / crowded (owner: endgame may stay in Events; MANAGER to find which). MANAGER's list: Today, Events, Calendar, Backlog, Banners (see note to FRAME) | FRAME | sent | Owner left the choice of screens to MANAGER. Redesigns are shown to the owner before going live. |
-| T21 | Banners screen looks like a card picker, not a banner tracker: redesign. Screenshot `3-banners-page.webp` | FRAME | sent | Show the owner the new look before it goes live. |
+| T21 | Banners screen looks like a card picker, not a banner tracker: redesign. Screenshot `3-banners-page.webp` | FRAME | waiting on owner | PR #62 (draft). MANAGER sent the owner screenshots; also asked about permanent banners under "Live now" and small Light Cone art on phone. |
 | T22 | Auto-tick dailies from HoYoLAB: remember when stamina/battery should have been full; if the next sync shows less, the stamina was spent, so tick the dailies that prove it | FRAME | working | PR #56. Works as asked (expected stamina after refill vs real value). Owner asked: also tick when the last sync was before the daily reset? |
-| T23 | More themes (owner sent 8 palettes) | FRAME | working | PR #58: 8 themes, all pass contrast (lowest 5.94:1). |
+| T23 | More themes (owner sent 8 palettes) | FRAME | waiting on owner | PR #58: 8 themes, all pass contrast. Screenshots sent to the owner. |
 | T24 | Tidy the GitHub repo so it looks sorted, and update the README (asked before, not done) | FRAME | working | PR #57: docs index, README updated, fresh screenshots. Two stale branches left; owner can delete them on GitHub (FRAME and MANAGER were blocked). |
 
 ## Done
 | # | Job | Who | Live on |
 |---|---|---|---|
 | T2 | MANAGER and ERROR-FIX chats (PR #51) | FRAME | 2026-10-10 |
+| T3 | Build score (PR #55): character page → Build score card, graded against the game's own build, with Why | LOGIC-CORE | 2026-10-10 |
 | T25 | MANAGER approves and merges every PR (PR #54) | MANAGER | 2026-10-10 |
-| T4 | HSR character EXP in Farm and "Materials to max" (PR #53) | LOGIC-CORE | 2026-10-10 (merged; waiting for LIVE check) |
+| T4 | HSR character EXP in Farm and "Materials to max" (PR #53) | LOGIC-CORE | 2026-10-10  |
 | T1 | Save a build per character (PR #50): character page → Build score → "Enter build" | FRAME | 2026-10-10 |
