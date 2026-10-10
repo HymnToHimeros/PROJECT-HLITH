@@ -89,6 +89,20 @@ describe('Scan', () => {
     expect(msg).toHaveTextContent('enter these piece by piece in Build score on their character page');
   });
 
+  it('stat screen totals from a scan go into the build: typed ones replace, the others stay (T35)', async () => {
+    const withTotals: GameContract = {
+      ...game,
+      build: { levelMax: 80, weaponLevelMax: 80, refine: { name: 'Superimposition', max: 5 }, slots: [], subStats: [], totalStats: ['CRIT Rate', 'SPD'], skills: [] },
+    };
+    setBuild('aa', '1003', { gear: [], totals: { SPD: 134 }, source: 'manual', updatedAt: '2026-10-01T00:00:00Z' });
+    render(<Scan game={withTotals} characterId="1003" />);
+    await screen.findByRole('option', { name: 'Fire Queen' });
+    fireEvent.change(screen.getByLabelText('CRIT Rate total'), { target: { value: '65.3%' } });
+    fireEvent.click(screen.getByRole('button', { name: 'Save to my roster' }));
+    await waitFor(() => expect(gameData('aa').builds?.['1003']?.totals).toEqual({ SPD: 134, 'CRIT Rate': 65.3 }));
+    expect(checkValues(fieldsFor(withTotals), { 'total:SPD': 'fast' })).toEqual({ 'total:SPD': 'SPD total must be a number (for a % stat, the number without the %).' });
+  });
+
   it('refuses an out-of-range number', async () => {
     render(<Scan game={game} characterId="1001" />);
     await screen.findByRole('option', { name: 'Ice Friend' });

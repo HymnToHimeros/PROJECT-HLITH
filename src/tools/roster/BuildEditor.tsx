@@ -15,6 +15,8 @@ interface Draft {
   refine: string;
   gear: Record<string, { set: string; main: string; subs: { stat: string; value: string }[] }>;
   skills: Record<string, string>;
+  /** Stat screen totals, by BuildRules.totalStats name (T35). */
+  totals: Record<string, string>;
 }
 
 const SUBS_PER_PIECE = 4;
@@ -35,6 +37,7 @@ function toDraft(rules: BuildRules, b: SavedBuild | undefined): Draft {
     refine: str(b?.weapon?.refine),
     gear,
     skills: Object.fromEntries(rules.skills.map((s) => [s.name, str(b?.skills?.[s.name])])),
+    totals: Object.fromEntries((rules.totalStats ?? []).map((s) => [s, str(b?.totals?.[s])])),
   };
 }
 
@@ -79,6 +82,14 @@ export function fromDraft(rules: BuildRules, d: Draft, weaponId: (name: string) 
     const n = whole(d.skills[s.name] ?? '', 1, s.max, s.name, bad);
     if (n !== undefined) skills[s.name] = n;
   }
+  const totals: Record<string, number> = {};
+  for (const stat of rules.totalStats ?? []) {
+    const raw = (d.totals[stat] ?? '').trim().replace(/%$/, '').trim();
+    if (!raw) continue;
+    const n = Number(raw);
+    if (!Number.isFinite(n) || n < 0) bad.push(`${stat} total must be a number (for a % stat, the number without the %).`);
+    else totals[stat] = n;
+  }
   if (bad.length) return { problems: [...new Set(bad)] };
   const id = name ? weaponId(name) : undefined;
   return {
@@ -87,6 +98,7 @@ export function fromDraft(rules: BuildRules, d: Draft, weaponId: (name: string) 
       ...(name ? { weapon: { name, ...(id ? { id } : {}), ...(wLevel !== undefined ? { level: wLevel } : {}), ...(refine !== undefined ? { refine } : {}) } } : {}),
       gear,
       ...(Object.keys(skills).length ? { skills } : {}),
+      ...(Object.keys(totals).length ? { totals } : {}),
     },
   };
 }
@@ -259,6 +271,20 @@ export function BuildEditor({ game, character: c, saved, open, onClose }: Props)
             </Field>
           ))}
         </div>
+
+        {(rules.totalStats ?? []).length > 0 && (
+          <>
+            <h4 className={r.buildHead}>Totals from the stat screen</h4>
+            <p className={r.cardText}>Optional: the final numbers on the character’s stat screen in the game. For a % stat, type the number only (72.5 for 72.5%). Stat targets compare against these.</p>
+            <div className={r.buildGrid}>
+              {(rules.totalStats ?? []).map((stat) => (
+                <Field key={stat} label={`${stat} total`}>
+                  {(id) => <input id={id} className={r.input} inputMode="decimal" value={d.totals[stat] ?? ''} onChange={(e) => change({ totals: { ...d.totals, [stat]: e.target.value } })} />}
+                </Field>
+              ))}
+            </div>
+          </>
+        )}
 
         {problems.length > 0 && (
           <ul className={r.buildProblems} role="alert">
