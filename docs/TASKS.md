@@ -14,7 +14,6 @@ doing it said `LIVE`. Newest jobs at the bottom; live jobs move to Done.
 | T9 | Phone push keys (VAPID) so the evening message is really sent | FRAME | later | Owner: phone notifications are a task for the end. |
 | T10 | Resend for sign-in mail at scale | FRAME | later | Owner: a last thing to add, low importance. |
 | T11 | Finish account deletions after 30 days | FRAME | sent | Listed as "later" in PROGRESS.md. |
-| T12 | Paste fresh HoYoLAB code logins for HSR and ZZZ (Account → Connected accounts) | owner | working | Owner says HoYoLAB is set up. FRAME checks whether reads/check-ins actually succeed. |
 | T13 | ZZZ 3.3 (21 Oct): event dates, A-rank featured agents, version end date | SCHEDULER | blocked | Nothing published yet; rerun `data:nanoka` + `data:schedule` on 21 Oct. |
 | T14 | HSR 4.7 (starts 11 Nov): versions, banners, events | SCHEDULER | blocked | Waits for the announcement (special program around late Oct). |
 | T15 | HSR leak "Nihilux": confirm official name | SCHEDULER | blocked | Probably Aeon ★ Aha (already marked as a leak); confirm when announced. |
@@ -30,6 +29,7 @@ doing it said `LIVE`. Newest jobs at the bottom; live jobs move to Done.
 ## Done
 | # | Job | Who | Live on |
 |---|---|---|---|
+| T12 | HoYoLAB linked and working: HSR Main (EU, lv 68) and ZZZ MAIN (EU, lv 56), check-ins claimed; first automatic check-in shows tomorrow | owner + FRAME | 2026-10-10 |
 | T17 | Teams explain themselves in plain words (PR #61) | LOGIC-CORE | 2026-10-10 |
 | T20 | Calmer Calendar, Events, Today, Backlog (PRs #63–#66) | FRAME | 2026-10-10 |
 | T21 | Banners as a timeline board, every banner a big card (PR #68) | FRAME | 2026-10-10 |
