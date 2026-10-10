@@ -9,8 +9,8 @@ doing it said `LIVE`. Newest jobs at the bottom; live jobs move to Done.
 |---|---|---|---|---|
 | T2 | MANAGER and ERROR-FIX chats (PR #51) | FRAME | 2026-10-10 |
 | T1 | Save a build per character (PR #50): character page → Build score → "Enter build" | FRAME | 2026-10-10 |
-| T3 | Build score (`scoreBuild`) | LOGIC-CORE | working | #50 is live, so it can start now. |
-| T4 | HSR character EXP in Farm amounts | LOGIC-CORE | working | Source found (the game's own EXP table: 1 → 80 = 290 Traveler's Guides). PR #53. |
+| T3 | Build score (`scoreBuild`) | LOGIC-CORE | working | Done in PR #55; needs main merged in (conflict) and FRAME's OK (contract types). |
+| T4 | HSR character EXP in Farm amounts | LOGIC-CORE | working | Source found (the game's own EXP table: 1 → 80 = 290 Traveler's Guides). PR #53: needs main merged in (conflict) and a check run. |
 | T5 | HSR "Interastral Peace Gala" reward (starts 21 Oct) | SCHEDULER | blocked | Sources say 500 or 60; filled from the official notice when the event opens 21 Oct. |
 | T6 | Keep the game lists current on a schedule | SCHEDULER | waiting on owner | Owner decides how often (`data:nanoka` then `data:schedule`). |
 | T7 | Schedules for the research routine (leaks, events, game data) | SCHEDULER | waiting on owner | Decided once SCHEDULER and LOGIC-CORE are done. |
