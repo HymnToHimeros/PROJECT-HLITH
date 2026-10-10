@@ -33,6 +33,9 @@ Per game, in `src/games/<game>/data/`, using the types in
   (no odds shown until their pity rules are confirmed).
 
 ## Rules
+- **Other chats (owner, 2026-10-10):** message FRAME and LOGIC-CORE directly
+  (`send_message`, ids in `docs/WORKSTREAMS.md`) about anything of theirs that blocks or
+  would improve the data; answer and fix what they send you.
 - **Sources (owner, 2026-10-09):** SCHEDULER judges which sources are
   trustworthy. nanoka.cc is one trusted source (good quality, carries leaks),
   not the only one. Always check the official channels (HoYoverse news pages,
