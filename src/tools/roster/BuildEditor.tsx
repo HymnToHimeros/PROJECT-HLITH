@@ -232,6 +232,7 @@ export function BuildEditor({ game, character: c, saved, open, onClose }: Props)
                       className={r.input}
                       aria-label={`${slot.label} extra stat ${i + 1}`}
                       list={`${lists}-subs`}
+                      placeholder="Extra stat"
                       value={s.stat}
                       onChange={(e) => piece(slot.id, { subs: g.subs.map((x, j) => (j === i ? { ...x, stat: e.target.value } : x)) })}
                     />
@@ -239,6 +240,7 @@ export function BuildEditor({ game, character: c, saved, open, onClose }: Props)
                       className={r.input}
                       aria-label={`${slot.label} extra stat ${i + 1} value`}
                       inputMode="decimal"
+                      placeholder="Value"
                       value={s.value}
                       onChange={(e) => piece(slot.id, { subs: g.subs.map((x, j) => (j === i ? { ...x, value: e.target.value } : x)) })}
                     />
