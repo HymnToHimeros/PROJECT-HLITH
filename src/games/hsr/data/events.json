@@ -6,7 +6,12 @@
     "start": "2026-07-05T20:00:00.000Z",
     "end": "2026-08-16T19:59:00.000Z",
     "reward": 800,
-    "currency": "stellar-jade"
+    "currency": "stellar-jade",
+    "serverTime": {
+      "base": 8,
+      "start": true,
+      "end": true
+    }
   },
   {
     "id": "antigraft-brickbuster-2026-07-15",
@@ -43,6 +48,10 @@
     "end": "2026-08-24T19:59:00.000Z",
     "reward": 10,
     "currency": "special-pass",
+    "serverTime": {
+      "base": 8,
+      "end": true
+    },
     "loginDays": 7
   },
   {
@@ -52,7 +61,12 @@
     "start": "2026-07-19T20:00:00.000Z",
     "end": "2026-08-30T19:59:00.000Z",
     "reward": 800,
-    "currency": "stellar-jade"
+    "currency": "stellar-jade",
+    "serverTime": {
+      "base": 8,
+      "start": true,
+      "end": true
+    }
   },
   {
     "id": "fate-contract-renewal-2026-07-24",
@@ -61,7 +75,11 @@
     "start": "2026-07-24T04:00:00.000Z",
     "end": "2026-11-10T23:00:00.000Z",
     "reward": null,
-    "currency": "stellar-jade"
+    "currency": "stellar-jade",
+    "serverTime": {
+      "base": 8,
+      "start": true
+    }
   },
   {
     "id": "fate-star-rail-night-2026-07-24",
@@ -70,7 +88,11 @@
     "start": "2026-07-24T04:00:00.000Z",
     "end": "2026-08-25T19:59:59.000Z",
     "reward": 1650,
-    "currency": "stellar-jade"
+    "currency": "stellar-jade",
+    "serverTime": {
+      "base": 8,
+      "start": true
+    }
   },
   {
     "id": "imagenae-holy-grail-war-2026-07-24",
@@ -79,7 +101,11 @@
     "start": "2026-07-24T04:00:00.000Z",
     "end": "2026-08-25T19:59:59.000Z",
     "reward": null,
-    "currency": "stellar-jade"
+    "currency": "stellar-jade",
+    "serverTime": {
+      "base": 8,
+      "start": true
+    }
   },
   {
     "id": "planar-fissure-2026-07-27",
@@ -88,7 +114,12 @@
     "start": "2026-07-26T20:00:00.000Z",
     "end": "2026-08-09T19:59:59.000Z",
     "reward": 0,
-    "currency": "stellar-jade"
+    "currency": "stellar-jade",
+    "serverTime": {
+      "base": 8,
+      "start": true,
+      "end": true
+    }
   },
   {
     "id": "pure-fiction-fabricated-business-2026-08-02",
@@ -97,7 +128,12 @@
     "start": "2026-08-02T20:00:00.000Z",
     "end": "2026-09-13T19:59:00.000Z",
     "reward": 800,
-    "currency": "stellar-jade"
+    "currency": "stellar-jade",
+    "serverTime": {
+      "base": 8,
+      "start": true,
+      "end": true
+    }
   },
   {
     "id": "garden-of-plenty-2026-08-14",
@@ -106,7 +142,12 @@
     "start": "2026-08-13T20:00:00.000Z",
     "end": "2026-08-23T19:59:00.000Z",
     "reward": 0,
-    "currency": "stellar-jade"
+    "currency": "stellar-jade",
+    "serverTime": {
+      "base": 8,
+      "start": true,
+      "end": true
+    }
   },
   {
     "id": "memory-of-chaos-stormcleanse-2026-08-16",
@@ -115,7 +156,11 @@
     "start": "2026-08-16T20:00:00.000Z",
     "end": "2026-09-27T22:00:00.000Z",
     "reward": 800,
-    "currency": "stellar-jade"
+    "currency": "stellar-jade",
+    "serverTime": {
+      "base": 8,
+      "start": true
+    }
   },
   {
     "id": "gift-of-odyssey-2026-08-26",
@@ -143,7 +188,12 @@
     "start": "2026-08-30T20:00:00.000Z",
     "end": "2026-10-04T19:59:00.000Z",
     "reward": 800,
-    "currency": "stellar-jade"
+    "currency": "stellar-jade",
+    "serverTime": {
+      "base": 8,
+      "start": true,
+      "end": true
+    }
   },
   {
     "id": "planar-fissure-2026-09-07",
@@ -152,7 +202,12 @@
     "start": "2026-09-06T20:00:00.000Z",
     "end": "2026-09-20T19:59:59.000Z",
     "reward": 0,
-    "currency": "stellar-jade"
+    "currency": "stellar-jade",
+    "serverTime": {
+      "base": 8,
+      "start": true,
+      "end": true
+    }
   },
   {
     "id": "minuscule-great-adventure-2026-09-12",
@@ -161,7 +216,11 @@
     "start": "2026-09-12T04:00:00.000Z",
     "end": "2026-09-27T19:59:00.000Z",
     "reward": 500,
-    "currency": "stellar-jade"
+    "currency": "stellar-jade",
+    "serverTime": {
+      "base": 8,
+      "start": true
+    }
   },
   {
     "id": "pure-fiction-domain-genesis-2026-09-13",
@@ -170,7 +229,12 @@
     "start": "2026-09-13T20:00:00.000Z",
     "end": "2026-10-18T19:59:00.000Z",
     "reward": 800,
-    "currency": "stellar-jade"
+    "currency": "stellar-jade",
+    "serverTime": {
+      "base": 8,
+      "start": true,
+      "end": true
+    }
   },
   {
     "id": "realm-of-the-strange-2026-09-19",
@@ -179,7 +243,11 @@
     "start": "2026-09-18T20:00:00.000Z",
     "end": "2026-09-27T19:59:59.000Z",
     "reward": 0,
-    "currency": "stellar-jade"
+    "currency": "stellar-jade",
+    "serverTime": {
+      "base": 8,
+      "start": true
+    }
   },
   {
     "id": "astral-imagea-park-2026-09-28",
@@ -216,6 +284,10 @@
     "end": "2026-11-09T19:59:00.000Z",
     "reward": 10,
     "currency": "special-pass",
+    "serverTime": {
+      "base": 8,
+      "end": true
+    },
     "loginDays": 7
   },
   {
@@ -234,7 +306,11 @@
     "start": "2026-09-28T03:00:00.000Z",
     "end": "2026-11-01T19:59:00.000Z",
     "reward": 800,
-    "currency": "stellar-jade"
+    "currency": "stellar-jade",
+    "serverTime": {
+      "base": 8,
+      "end": true
+    }
   },
   {
     "id": "wishpower-up-down-with-voracity-2026-09-28",
@@ -252,7 +328,12 @@
     "start": "2026-10-04T20:00:00.000Z",
     "end": "2026-11-15T19:59:00.000Z",
     "reward": 800,
-    "currency": "stellar-jade"
+    "currency": "stellar-jade",
+    "serverTime": {
+      "base": 8,
+      "start": true,
+      "end": true
+    }
   },
   {
     "id": "planar-fissure-2026-10-12",
@@ -261,7 +342,12 @@
     "start": "2026-10-11T20:00:00.000Z",
     "end": "2026-10-24T19:59:59.000Z",
     "reward": 0,
-    "currency": "stellar-jade"
+    "currency": "stellar-jade",
+    "serverTime": {
+      "base": 8,
+      "start": true,
+      "end": true
+    }
   },
   {
     "id": "pure-fiction-imagined-words-2026-10-18",
@@ -270,7 +356,12 @@
     "start": "2026-10-18T20:00:00.000Z",
     "end": "2026-11-29T19:59:00.000Z",
     "reward": 800,
-    "currency": "stellar-jade"
+    "currency": "stellar-jade",
+    "serverTime": {
+      "base": 8,
+      "start": true,
+      "end": true
+    }
   },
   {
     "id": "garden-of-plenty-2026-10-30",
@@ -279,7 +370,11 @@
     "start": "2026-10-29T20:00:00.000Z",
     "end": "2026-11-10T19:59:00.000Z",
     "reward": 0,
-    "currency": "stellar-jade"
+    "currency": "stellar-jade",
+    "serverTime": {
+      "base": 8,
+      "start": true
+    }
   },
   {
     "id": "memory-of-chaos-survival-of-the-fittest-2026-11-01",
@@ -288,6 +383,11 @@
     "start": "2026-11-01T20:00:00.000Z",
     "end": "2026-12-13T19:59:00.000Z",
     "reward": 800,
-    "currency": "stellar-jade"
+    "currency": "stellar-jade",
+    "serverTime": {
+      "base": 8,
+      "start": true,
+      "end": true
+    }
   }
 ]

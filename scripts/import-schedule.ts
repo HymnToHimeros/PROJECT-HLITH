@@ -20,8 +20,8 @@
 import { readFileSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import type { BacklogItem, Banner, GameEvent, Version } from '../src/core/contract/entities.ts';
-import { amountOf, nameKey, noticeText, slug, spanIn, versionFromNotice, type VersionTimes } from './schedule/text.ts';
-import { fetchWiki, infobox, mainBox, poolBox, poolFeatured, rewardTotal, sectionLinks, wikiPrefix, wikiTime, type WikiPage } from './schedule/wiki.ts';
+import { amountOf, nameKey, noticeText, serverMark, slug, spanIn, versionFromNotice, type VersionTimes } from './schedule/text.ts';
+import { fetchWiki, infobox, mainBox, poolBox, poolFeatured, rewardTotal, sectionLinks, wikiPrefix, wikiServer, wikiTime, type WikiPage } from './schedule/wiki.ts';
 
 const ROOT = resolve(import.meta.dirname, '..');
 const DAY = 86_400_000;
@@ -56,7 +56,7 @@ const GAMES: Game[] = [
       { id: 'special-pass', item: 'Star Rail Special Pass' },
       { id: 'pass', item: 'Star Rail Pass' },
     ],
-    bannerTypes: { 'character event': 'character', 'light cone event': 'light-cone' },
+    bannerTypes: { 'character event': 'character', 'light cone event': 'light-cone', 'character collaboration': 'collab-character', 'light cone collaboration': 'collab-light-cone' },
     endgameOverview: /^(Memory of Chaos|Pure Fiction|Apocalyptic Shadow|Forgotten Hall|Anomaly Arbitration)/,
     bonus: /^(Garden of Plenty|Planar Fissure|Realm of the Strange)/,
     weapons: 'lightcone.json',
@@ -146,7 +146,7 @@ async function inGameNotices(g: Game): Promise<string[]> {
 
 // ── 3. Names → the game's ids (characters from our list, weapons from nanoka) ──
 
-async function idIndex(g: Game, wikiPages: Map<string, WikiPage>): Promise<Map<string, string>> {
+async function idIndex(g: Game, wikiPages: Map<string, WikiPage>): Promise<{ index: Map<string, string>; weaponArt: Map<string, string> }> {
   const index = new Map<string, string>();
   const chars = JSON.parse(readFileSync(resolve(ROOT, `src/games/${g.id}/data/characters.json`), 'utf8')) as { id: string; name: string }[];
   for (const c of chars) index.set(nameKey(c.name), c.id);
@@ -158,9 +158,15 @@ async function idIndex(g: Game, wikiPages: Map<string, WikiPage>): Promise<Map<s
     if (id && box.name) index.set(nameKey(box.name), id);
   }
   const manifest = await json<Record<string, { latest: string }>>('https://static.nanoka.cc/manifest.json');
-  const weapons = await json<Record<string, { en: string }>>(`https://static.nanoka.cc/${g.id}/${manifest[g.id]?.latest ?? ''}/${g.weapons}`);
-  for (const [id, w] of Object.entries(weapons)) if (!index.has(nameKey(w.en))) index.set(nameKey(w.en.replace(/<[^>]+>/g, '')), id);
-  return index;
+  const weapons = await json<Record<string, { en: string; icon?: string }>>(`https://static.nanoka.cc/${g.id}/${manifest[g.id]?.latest ?? ''}/${g.weapons}`);
+  const weaponArt = new Map<string, string>();
+  for (const [id, w] of Object.entries(weapons)) {
+    if (!index.has(nameKey(w.en))) index.set(nameKey(w.en.replace(/<[^>]+>/g, '')), id);
+    // nanoka's pictures: HSR light cone figures by id, ZZZ W-Engines by icon name.
+    const art = g.id === 'hsr' ? `https://static.nanoka.cc/assets/hsr/lightconemaxfigures/${id}.webp` : w.icon ? `https://static.nanoka.cc/assets/zzz/${w.icon}.webp` : undefined;
+    if (art) weaponArt.set(id, art);
+  }
+  return { index, weaponArt };
 }
 
 // ── 4. Banners and events from the wiki's version pages ────────────────
@@ -257,7 +263,7 @@ async function fromWiki(g: Game, versions: Map<string, VersionTimes>, notices: s
     const f = poolFeatured(poolBox(p.text));
     for (const n of [...f.top, ...f.mid]) featuredNames.add(n);
   }
-  const index = await idIndex(g, await fetchWiki(g.wiki, [...featuredNames]));
+  const { index, weaponArt } = await idIndex(g, await fetchWiki(g.wiki, [...featuredNames]));
 
   const banners: Banner[] = [];
   for (const t of bannerTitles) {
@@ -270,13 +276,14 @@ async function fromWiki(g: Game, versions: Map<string, VersionTimes>, notices: s
     const type = Object.entries(g.bannerTypes).find(([k]) => (box.type ?? '').toLowerCase().startsWith(k))?.[1];
     let start = wikiTime(box, 'start');
     let end = wikiTime(box, 'end');
+    let startServer = wikiServer(box, 'start');
+    let endServer = wikiServer(box, 'end');
     const title = baseOf(t);
     const official = officialSpan(title, notices, versions, start);
     if (official) {
       if (start && Math.abs(Date.parse(official.start) - Date.parse(start)) > 60_000) warn(g.id, `${title}: wiki start ${start}, official ${official.start} (official used)`);
       if (end && Math.abs(Date.parse(official.end) - Date.parse(end)) > 60_000) warn(g.id, `${title}: wiki end ${end}, official ${official.end} (official used)`);
-      start = official.start;
-      end = official.end;
+      ({ start, end, startServer, endServer } = official);
     }
     if (!type || !start || !end) {
       warn(g.id, `banner "${t}" left out: ${!type ? `unknown type "${box.type ?? ''}"` : 'no start or end yet'}`);
@@ -290,8 +297,23 @@ async function fromWiki(g: Game, versions: Map<string, VersionTimes>, notices: s
       else warn(g.id, `${title}: featured "${n}" is not in the lists`);
     }
     if (f.top.length === 0) warn(g.id, `${title}: the wiki page has no featured items yet`);
-    banners.push({ id: `${slug(title)}-${dateOf(t) ?? start.slice(0, 10)}`, type, title, featured, start, end });
+    // A weapon banner's own picture: its featured Light Cone / W-Engine (nanoka).
+    const lead = featured[0];
+    const art = lead ? weaponArt.get(lead) : undefined;
+    banners.push({ id: `${slug(title)}-${dateOf(t) ?? start.slice(0, 10)}`, type, title, featured, start, end, ...serverMark(startServer, endServer), ...(art ? { art } : {}) });
   }
+
+  // Keep only pictures that answer; a missing one falls back to the lead character's art on screen.
+  await Promise.all(
+    banners.map(async (b) => {
+      if (!b.art) return;
+      const res = await fetch(b.art, { method: 'HEAD' }).catch(() => undefined);
+      if (!res?.ok) {
+        warn(g.id, `${b.title}: no picture at ${b.art}`);
+        delete b.art;
+      }
+    }),
+  );
 
   const events: GameEvent[] = [];
   for (const t of eventTitles) {
@@ -301,14 +323,15 @@ async function fromWiki(g: Game, versions: Map<string, VersionTimes>, notices: s
     const title = baseOf(t).replace(/^"(.*)"$/, '$1');
     let start = wikiTime(box, 'start');
     let end = wikiTime(box, 'end');
+    let startServer = wikiServer(box, 'start');
+    let endServer = wikiServer(box, 'end');
     const day = dateOf(t);
     const near = start ?? (day ? new Date(`${day}T12:00:00+08:00`).toISOString() : undefined);
     // Without a page and without a date there is nothing to tie a notice period to.
     const official = near || pages.has(t) ? officialSpan(title, notices, versions, near) : undefined;
     if (official) {
       if (end && Math.abs(Date.parse(official.end) - Date.parse(end)) > 60_000) warn(g.id, `${title}: wiki end ${end}, official ${official.end} (official used)`);
-      start = official.start;
-      end = official.end;
+      ({ start, end, startServer, endServer } = official);
     }
     if (!start || !end) {
       warn(g.id, `event "${title}" left out: no start or end yet (${pages.has(t) ? 'wiki page has none' : 'no wiki page yet'}, no official period)`);
@@ -319,7 +342,7 @@ async function fromWiki(g: Game, versions: Map<string, VersionTimes>, notices: s
     // Double-drop events give no currency of their own; a page without any reward list is unknown, not zero.
     const { reward, currency } =
       kind === 'bonus' ? { reward: 0, currency: g.premium.id } : /\{\{Card/.test(all) ? rewardOf(g, all) : { reward: null, currency: g.premium.id };
-    const ev: GameEvent = { id: `${slug(title)}-${dateOf(t) ?? start.slice(0, 10)}`, title, kind, start, end, reward, currency };
+    const ev: GameEvent = { id: `${slug(title)}-${dateOf(t) ?? start.slice(0, 10)}`, title, kind, start, end, reward, currency, ...serverMark(startServer, endServer) };
     if (kind === 'login') {
       const days = Math.max(0, ...[...p.text.matchAll(/^\|\s*(?:Day\s*)?(\d+)\s*\|\||caption:Day (\d+)\}/gim)].map((m) => Number(m[1] ?? m[2])));
       const stated = /(?:for|total of)\s+(\d+)\s+days/i.exec(p.text)?.[1] ?? /(\d+)\s+days\b/i.exec(/\{\{Description\|([^}]*)\}\}/.exec(p.text)?.[1] ?? '')?.[1];
@@ -383,7 +406,7 @@ function hsrEndgame(texts: Map<string, string>, versions: Map<string, VersionTim
       if (!span) return;
       const title = `${m[1]}: ${m[2]}`;
       const id = `${slug(title)}-${span.start.slice(0, 10)}`;
-      if (Date.parse(span.end) > NOW - KEEP_BACK) out.set(id, { id, title, kind: 'endgame', start: span.start, end: span.end, reward: ENDGAME_REWARD[m[1] ?? ''] ?? null, currency: 'stellar-jade' });
+      if (Date.parse(span.end) > NOW - KEEP_BACK) out.set(id, { id, title, kind: 'endgame', start: span.start, end: span.end, reward: ENDGAME_REWARD[m[1] ?? ''] ?? null, currency: 'stellar-jade', ...serverMark(span.startServer, span.endServer) });
     });
   }
   return [...out.values()];
@@ -414,7 +437,7 @@ async function zzzEndgame(g: Game, versionEnd: number | undefined): Promise<Game
         warn(g.id, `${t}: no start or end yet`);
         continue;
       }
-      out.push({ id: `${slug(label)}-${dateOf(t)}`, title: label, kind: 'endgame', start, end, reward: ENDGAME_REWARD[label] ?? null, currency: g.premium.id });
+      out.push({ id: `${slug(label)}-${dateOf(t)}`, title: label, kind: 'endgame', start, end, reward: ENDGAME_REWARD[label] ?? null, currency: g.premium.id, ...serverMark(wikiServer(box, 'start'), wikiServer(box, 'end')) });
     }
     const mine = out.filter((e) => e.title === label).sort((a, b) => Date.parse(a.start) - Date.parse(b.start));
     let last = mine.at(-1);
@@ -424,7 +447,7 @@ async function zzzEndgame(g: Game, versionEnd: number | undefined): Promise<Game
       const end = new Date(Date.parse(last.end) + 14 * DAY).toISOString();
       // Server-time days: the date part of the start at UTC+8.
       const day = new Date(Date.parse(start) + 8 * 3_600_000).toISOString().slice(0, 10);
-      last = { id: `${slug(label)}-${day}`, title: label, kind: 'endgame', start, end, reward: ENDGAME_REWARD[label] ?? null, currency: g.premium.id };
+      last = { id: `${slug(label)}-${day}`, title: label, kind: 'endgame', start, end, reward: ENDGAME_REWARD[label] ?? null, currency: g.premium.id, ...(last.serverTime ? { serverTime: last.serverTime } : {}) };
       warn(g.id, `${label} ${day}: no wiki page yet, added from the two-week cycle (${start} – ${end})`);
       out.push(last);
     }

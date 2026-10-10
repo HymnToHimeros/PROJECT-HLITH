@@ -28,6 +28,13 @@ Resume with: "continue from PROGRESS.md". Newest entry on top. Older entries:
 - CI (`.github/workflows/ci.yml`) runs both on every pull request.
 
 ## Done
+- 2026-10-10 · **SCHEDULER step 2: server times, weapon banner art** (branch `scheduler/server-times-weapon-art`).
+  Uses FRAME's new fields (#40): every banner and event time the game gives in "server
+  time" now carries `serverTime { base: 8, start/end }`, so screens show it on the user's
+  own server (America and Europe no longer see ends 13 / 7 h early). Light Cone and
+  W-Engine banners get their picture (`Banner.art`, nanoka; each link checked).
+  HSR collaboration warps stay out: the game runs them with no end date ("time_end = none"
+  on the wiki, notice shown until 2036), and a banner needs an end. Told FRAME.
 - 2026-10-10 · **LOGIC-CORE steps 2–3 for group A: Kit check tags and team scores** (branch `logic-core/zzz-kit-check-a`).
   - Cheat sheet (Part A) for Starlight Billy, Dialyn, Lucia, Pan Yinhu:
     `src/games/zzz/kitcheck/sheet/groupA.ts`. Every entry answers the seven

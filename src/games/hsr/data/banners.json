@@ -10,7 +10,11 @@
       "1103"
     ],
     "start": "2026-07-15T03:00:00.000Z",
-    "end": "2026-08-25T07:00:00.000Z"
+    "end": "2026-08-25T07:00:00.000Z",
+    "serverTime": {
+      "base": 8,
+      "end": true
+    }
   },
   {
     "id": "brilliant-fixation-2026-07-15",
@@ -23,7 +27,12 @@
       "21006"
     ],
     "start": "2026-07-15T03:00:00.000Z",
-    "end": "2026-08-25T07:00:00.000Z"
+    "end": "2026-08-25T07:00:00.000Z",
+    "serverTime": {
+      "base": 8,
+      "end": true
+    },
+    "art": "https://static.nanoka.cc/assets/hsr/lightconemaxfigures/23060.webp"
   },
   {
     "id": "coalesced-truths-2026-07-15",
@@ -38,7 +47,12 @@
       "21006"
     ],
     "start": "2026-07-15T03:00:00.000Z",
-    "end": "2026-08-05T03:59:00.000Z"
+    "end": "2026-08-05T03:59:00.000Z",
+    "serverTime": {
+      "base": 8,
+      "end": true
+    },
+    "art": "https://static.nanoka.cc/assets/hsr/lightconemaxfigures/23053.webp"
   },
   {
     "id": "indelible-coterie-2026-07-15",
@@ -53,7 +67,11 @@
       "1103"
     ],
     "start": "2026-07-15T03:00:00.000Z",
-    "end": "2026-08-05T03:59:00.000Z"
+    "end": "2026-08-05T03:59:00.000Z",
+    "serverTime": {
+      "base": 8,
+      "end": true
+    }
   },
   {
     "id": "coalesced-truths-2026-08-05",
@@ -68,7 +86,13 @@
       "21006"
     ],
     "start": "2026-08-05T04:00:00.000Z",
-    "end": "2026-08-25T07:00:00.000Z"
+    "end": "2026-08-25T07:00:00.000Z",
+    "serverTime": {
+      "base": 8,
+      "start": true,
+      "end": true
+    },
+    "art": "https://static.nanoka.cc/assets/hsr/lightconemaxfigures/23048.webp"
   },
   {
     "id": "indelible-coterie-2026-08-05",
@@ -83,7 +107,12 @@
       "1103"
     ],
     "start": "2026-08-05T04:00:00.000Z",
-    "end": "2026-08-25T07:00:00.000Z"
+    "end": "2026-08-25T07:00:00.000Z",
+    "serverTime": {
+      "base": 8,
+      "start": true,
+      "end": true
+    }
   },
   {
     "id": "a-rainbow-onto-twilight-2026-08-26",
@@ -96,7 +125,11 @@
       "1301"
     ],
     "start": "2026-08-26T03:00:00.000Z",
-    "end": "2026-09-12T03:59:00.000Z"
+    "end": "2026-09-12T03:59:00.000Z",
+    "serverTime": {
+      "base": 8,
+      "end": true
+    }
   },
   {
     "id": "brilliant-fixation-2026-08-26",
@@ -109,7 +142,12 @@
       "21066"
     ],
     "start": "2026-08-26T03:00:00.000Z",
-    "end": "2026-09-12T03:59:00.000Z"
+    "end": "2026-09-12T03:59:00.000Z",
+    "serverTime": {
+      "base": 8,
+      "end": true
+    },
+    "art": "https://static.nanoka.cc/assets/hsr/lightconemaxfigures/23063.webp"
   },
   {
     "id": "bygone-reminiscence-2026-08-26",
@@ -122,7 +160,12 @@
       "21066"
     ],
     "start": "2026-08-26T03:00:00.000Z",
-    "end": "2026-09-12T03:59:00.000Z"
+    "end": "2026-09-12T03:59:00.000Z",
+    "serverTime": {
+      "base": 8,
+      "end": true
+    },
+    "art": "https://static.nanoka.cc/assets/hsr/lightconemaxfigures/23042.webp"
   },
   {
     "id": "summer-chorus-2026-08-26",
@@ -135,7 +178,11 @@
       "1301"
     ],
     "start": "2026-08-26T03:00:00.000Z",
-    "end": "2026-09-12T03:59:00.000Z"
+    "end": "2026-09-12T03:59:00.000Z",
+    "serverTime": {
+      "base": 8,
+      "end": true
+    }
   },
   {
     "id": "a-hunt-through-night-2026-09-12",
@@ -148,7 +195,11 @@
       "1210"
     ],
     "start": "2026-09-12T04:00:00.000Z",
-    "end": "2026-09-27T19:59:59.000Z"
+    "end": "2026-09-27T19:59:59.000Z",
+    "serverTime": {
+      "base": 8,
+      "start": true
+    }
   },
   {
     "id": "brilliant-fixation-2026-09-12",
@@ -161,7 +212,12 @@
       "21054"
     ],
     "start": "2026-09-12T04:00:00.000Z",
-    "end": "2026-09-27T19:59:59.000Z"
+    "end": "2026-09-27T19:59:59.000Z",
+    "serverTime": {
+      "base": 8,
+      "start": true
+    },
+    "art": "https://static.nanoka.cc/assets/hsr/lightconemaxfigures/23064.webp"
   },
   {
     "id": "bygone-reminiscence-2026-09-12",
@@ -174,7 +230,12 @@
       "21054"
     ],
     "start": "2026-09-12T04:00:00.000Z",
-    "end": "2026-09-27T19:59:59.000Z"
+    "end": "2026-09-27T19:59:59.000Z",
+    "serverTime": {
+      "base": 8,
+      "start": true
+    },
+    "art": "https://static.nanoka.cc/assets/hsr/lightconemaxfigures/23056.webp"
   },
   {
     "id": "over-the-gilded-tides-2026-09-12",
@@ -187,7 +248,11 @@
       "1210"
     ],
     "start": "2026-09-12T04:00:00.000Z",
-    "end": "2026-09-27T19:59:59.000Z"
+    "end": "2026-09-27T19:59:59.000Z",
+    "serverTime": {
+      "base": 8,
+      "start": true
+    }
   },
   {
     "id": "an-ocean-in-a-pearl-2026-09-28",
@@ -200,7 +265,11 @@
       "1312"
     ],
     "start": "2026-09-28T03:00:00.000Z",
-    "end": "2026-11-10T07:00:00.000Z"
+    "end": "2026-11-10T07:00:00.000Z",
+    "serverTime": {
+      "base": 8,
+      "end": true
+    }
   },
   {
     "id": "brilliant-fixation-2026-09-28",
@@ -213,7 +282,12 @@
       "21044"
     ],
     "start": "2026-09-28T03:00:00.000Z",
-    "end": "2026-11-10T07:00:00.000Z"
+    "end": "2026-11-10T07:00:00.000Z",
+    "serverTime": {
+      "base": 8,
+      "end": true
+    },
+    "art": "https://static.nanoka.cc/assets/hsr/lightconemaxfigures/23055.webp"
   },
   {
     "id": "bygone-reminiscence-2026-09-28",
@@ -226,7 +300,12 @@
       "21044"
     ],
     "start": "2026-09-28T03:00:00.000Z",
-    "end": "2026-10-21T03:59:00.000Z"
+    "end": "2026-10-21T03:59:00.000Z",
+    "serverTime": {
+      "base": 8,
+      "end": true
+    },
+    "art": "https://static.nanoka.cc/assets/hsr/lightconemaxfigures/23058.webp"
   },
   {
     "id": "the-demoiselle-in-charge-2026-09-28",
@@ -239,7 +318,11 @@
       "1312"
     ],
     "start": "2026-09-28T03:00:00.000Z",
-    "end": "2026-10-21T03:59:00.000Z"
+    "end": "2026-10-21T03:59:00.000Z",
+    "serverTime": {
+      "base": 8,
+      "end": true
+    }
   },
   {
     "id": "bygone-reminiscence-2026-10-21",
@@ -252,7 +335,13 @@
       "21044"
     ],
     "start": "2026-10-21T04:00:00.000Z",
-    "end": "2026-11-10T06:59:59.000Z"
+    "end": "2026-11-10T06:59:59.000Z",
+    "serverTime": {
+      "base": 8,
+      "start": true,
+      "end": true
+    },
+    "art": "https://static.nanoka.cc/assets/hsr/lightconemaxfigures/23059.webp"
   },
   {
     "id": "now-i-am-become-blade-2026-10-21",
@@ -265,6 +354,11 @@
       "1312"
     ],
     "start": "2026-10-21T04:00:00.000Z",
-    "end": "2026-11-10T06:59:59.000Z"
+    "end": "2026-11-10T06:59:59.000Z",
+    "serverTime": {
+      "base": 8,
+      "start": true,
+      "end": true
+    }
   }
 ]

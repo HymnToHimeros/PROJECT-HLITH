@@ -60,6 +60,11 @@ export function wikiTime(box: Record<string, string>, which: 'start' | 'end'): s
   return at(stamp, off === undefined ? SERVER_OFFSET : Number(off));
 }
 
+/** True when the wiki gives no offset for this time: the notice said "server time". */
+export function wikiServer(box: Record<string, string>, which: 'start' | 'end'): boolean {
+  return !/([+-]\d+)/.test(box[`time_${which}_offset`] ?? '');
+}
+
 /** Links in a "===Heading===" section of a version page: [[Page/2026-09-28|Label]] → "Page/2026-09-28". */
 export function sectionLinks(text: string, heading: RegExp): string[] {
   const lines = text.split('\n');
