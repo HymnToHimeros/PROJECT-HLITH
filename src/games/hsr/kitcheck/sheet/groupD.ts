@@ -464,9 +464,33 @@ const theHerta: CharacterSheet = {
       quote: 'If 2 or more characters follow the Path of Erudition in the team, each stack grants an additional increase of 8.0%/4.0% on the primary target/other targets respectively.',
       tag: 'Interpretation counts double',
       on: ERUDITION_PARTNER,
-      gives: [{ stat: 'dmg', amount: '+8.0%/4.0% more multiplier per Interpretation stack' }],
+      // T30 size from her own numbers: at 42 stacks the Enhanced Skill hit goes from 80% + 42 × 8% to 80% + 42 × 16% of
+      // her ATK ("80% of The Herta's ATK", "each stack granting an increase of 8.0%", "can stack up to 42 time(s)").
+      gives: [{ stat: 'dmg', amount: '×1.8 (80% + 42 × 16% against 80% + 42 × 8% of her ATK at 42 stacks)' }],
       to: 'self',
       setup: 'Interpretation stacks on the target of her Enhanced Skill.',
+    },
+    // T30: teammates' extra attacks add Interpretation stacks. Plain Basic ATK / Skill / Ultimate are never events
+    // (every kit has them): the Follow-Up ATKs and summon or memosprite attacks a kit makes on purpose count.
+    {
+      id: 'interpretation-from-follow-ups',
+      piece: 'trace-aloofly-honest',
+      quote: 'When ally targets attack, inflicts 1 stack of "Interpretation" on the hit enemy target.',
+      tag: "Interpretation from teammates' Follow-Up ATKs",
+      gives: [],
+      to: 'self',
+      reacts: { event: 'follow-up', from: 'teammates' },
+      setup: 'A teammate launches Follow-Up ATKs.',
+    },
+    {
+      id: 'interpretation-from-summons',
+      piece: 'trace-aloofly-honest',
+      quote: 'When ally targets attack, inflicts 1 stack of "Interpretation" on the hit enemy target.',
+      tag: "Interpretation from teammates' summon or memosprite attacks",
+      gives: [],
+      to: 'self',
+      reacts: { event: 'summon-attack', from: 'teammates' },
+      setup: "A teammate's summon or memosprite attacks.",
     },
     {
       id: 'e4-erudition-spd',

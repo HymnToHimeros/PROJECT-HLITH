@@ -177,3 +177,52 @@ team size and order, and the owner's ZZZ method's own counting.
     unreleased character in nanoka.cc's manifest on each run, so a new leak gets its beta kit text without a code
     change (its kit check sheet is still read by hand before it is rated). A raw text key in a beta file where a name
     belongs (ZZZ "Severian_Talent_01_Title") shows "No name yet"; the game text stays.
+
+37. **Kit value: sizes, one kind adds, kinds multiply (owner's job T30, both games, ZZZ decision 61 mirrors it).**
+    The count stays as written (+1 per kit line that connects, −1 for one that's off, decisions above; in ZZZ the
+    method's count, untouched). On top of it, every team gets a **kit value** that ranks teams and gives the %:
+    - each counted buff at its size in the kit text (`gives[].amount`): "+40%", "×1.35", "+20% per stack, up to 2"
+      (full stacks), "a/b/c" steps (the last one), "(7 + 1.5 × Special Attack level)%" (at level 12);
+    - a size the kit doesn't write as a % (+600 ATK, "one more turn", a set-off reaction, an ability with no number)
+      counts as the game's **typical buff**, the middle of every stated % in its sheets, and the Why says so;
+    - buffs of one kind (one stat) add up; different kinds multiply: value = POINTS × ln Π(1 + zone total);
+      percent = the ratio of the two teams' multipliers;
+    - only what the damage dealer's damage uses counts (their `uses` / `ignores` and kind limits, as before);
+    - an action advance from an Ultimate counts a third (an Ultimate comes about every third turn);
+    - an extra hit counts its % only when it is a share of the damage dealer's own damage ("24% of each hit");
+      "80% of the Bondmate's ATK" is a hit of its own: typical;
+    - a buff that grows with the giver's stat counts a third at base, their build adds the rest (decisions 25–26);
+    - several carries (decision 33): their damage adds (value = POINTS × ln of the sum of their multipliers), and a
+      buff for one chosen ally counts for one carry only.
+    Rule 1 (owner via MANAGER, 2026-10-10): **no role is needed in general**; a role counts only when a kit asks
+    for it. New condition `teammate`: "a teammate who heals or shields Phainon" (+45% DMG) and "a teammate whose
+    abilities target Phainon" (+30% CRIT DMG) are now checked from the teammates' kits. Aventurine • Waveflair:
+    teammates' Follow-Up ATKs and summon attacks feed his Fervor (chains), and as the only Elation character his
+    damage counts as Follow-Up ATK (`addsKinds`), so Follow-Up buffs reach him. Code: `src/core/rules/kitValue.ts`.
+    After MANAGER's review (same day):
+    - **A buff counts only if it raises what the damage dealer's damage scales on** (owner): ATK counts only for a
+      carry whose damage lines name ATK, or name no stat at all (HP carries: Castorice, Mydei, Evernight, Mortenax
+      Blade). ZZZ: Rupture runs on Sheer Force, so ATK buffs don't count for them (Astra Yao's ATK and Billy).
+    - Firefly: in Complete Combustion her hits become Super Break DMG, which can't crit and has no DMG% bonus, so
+      CRIT and general DMG% don't count for her; a bonus to Break / Super Break DMG itself still does.
+    - A teammate's Super Break hit is sized against the carry's own ("60% Super Break DMG" against her "50%"); a
+      Super Break hit with no % is the game's plain one (100%).
+    - Kit lines read now (each the kit asking for a teammate): The Dahlia's Break Effect buff is kept up only by a
+      teammate who heals or shields her; Castorice's healing fills Newbud; The Herta's Interpretation grows with
+      teammates' Follow-Up ATKs and summon attacks, and with a second Erudition her stacks count double (×1.8 at
+      42 stacks, from her own numbers); Robin • Summeretto gives ATK (from her Max HP) to an ATK carry and CRIT DMG
+      to others, never both (`gives[].when`).
+    - Sizes: "+15% at 1 stack, +5% per extra stack, up to 5 stacks" counts at full stacks; "+20% to +60%" at its top.
+    Round 3 (MANAGER's rulings A–C, owner's answers):
+    - **Like with like (A):** a team with a healer or shielder is compared with the best team that keeps one, and the
+      Why says so. No healer is ever required.
+    - **A support's own damage (B)** adds to the team's, sized against the carry's own hit from the kits ("12% of
+      Tribbie's Max HP per target hit" against "56% of Castorice's Max HP"); typical only when the text gives no
+      number. The Why says "adds damage of their own".
+    - Robin • Summeretto's lines grow per Vibe, "capped at 50": DEF ignore 40%, CRIT DMG 115% at the cap.
+    - Phainon: "When Phainon is targeted by an ability from any other target, gains 1 Coreflame": every teammate with
+      an ability aimed at one chosen ally charges his domain (event `targets-ally`). In his domain "other teammates
+      depart and cannot take action" (`damage.alone`): teammates' own hits and extra hits don't count for him there;
+      their buffs from before do. Open (owner asked): what makes Dan Heng • Permansor Terrae better than standard
+      Robin and Huohuo for him; until then the Why shows this reading.
+    - The best-team search always keeps the team's own members in the running.

@@ -4,6 +4,7 @@
  * every point comes with the entry (and its quote) that earned it.
  */
 import { BUILD_STAT_WORD, BUILT_POINTS, FIT_WORD, type BuildFit, type BuildStat } from '../../../core/rules/buildFit';
+import { ownDamagePart, partOf, sizeOf, typicalSize, value, type Part } from '../../../core/rules/kitValue';
 import { GENERAL_STATS, SPECIFIC_STATS, SUPPORT_STATS, type CharacterSheet, type Condition, type Entry, type Specialty, type Stat } from './types';
 
 export interface Profile {
@@ -81,7 +82,10 @@ export interface Line {
   quote?: string;
   points: number;
   /** For a switched-on ability: the teammates who each meet its condition. */
-  helpers?: string[];
+  helpers?: string[];  /** T30: what the line adds, sized from the kit text, by zone. */
+  parts?: Part[];
+  /** T30: its share of the squad's kit value (see `value` on the result). */
+  value?: number;
 }
 
 export interface SquadResult {
@@ -89,6 +93,10 @@ export interface SquadResult {
   order: string[];
   dd: string;
   count: number;
+  /** T30: the kit value, POINTS × ln(how much the kits multiply the damage dealer's damage). Ranks teams and gives the %. */
+  value: number;
+  /** Info only: someone in the squad heals or shields the others (like with like for the best squad found, T30). */
+  sustain: boolean;
   support: number;
   chains: number;
   lines: Line[];
@@ -205,10 +213,44 @@ function reach(e: Entry, giver: string, dd: string, order: string[], lib: Librar
     if (l.notSpecialties?.includes(ddp.specialty)) return { kind: 'no', why: `not for ${SPECIALTY_WORD[ddp.specialty]}` };
   }
   const stats = e.gives.map((g) => g.stat);
-  const used = stats.filter((s) => (GENERAL_STATS.includes(s) && !notes?.ignores.includes(s)) || (SPECIFIC_STATS.includes(s) && !!notes?.uses.includes(s)));
+  const used = stats.filter((s) => !(s === 'atk' && !usesAtk(dd, lib)) && ((GENERAL_STATS.includes(s) && !notes?.ignores.includes(s)) || (SPECIFIC_STATS.includes(s) && !!notes?.uses.includes(s))));
   if (used.length) return { kind: 'buff', why: `reaches ${name(dd)}`, used };
   if (stats.some((s) => SUPPORT_STATS.includes(s))) return { kind: 'support', why: 'team support' };
   return { kind: 'no', why: `${name(dd)}'s damage doesn't use ${list([...new Set(stats)])}` };
+}
+
+/**
+ * T30 (owner via MANAGER, 2026-10-10): a buff counts only if it raises what the damage dealer's own damage scales on.
+ * A Rupture character's damage runs on Sheer Force ("using his Sheer Force stat as the DMG Multiplier"), not ATK:
+ * Astra Yao's +1,200 ATK gives Starlight - Billy nothing.
+ */
+export const usesAtk = (dd: string, lib: Library) => lib.profiles.get(dd)?.specialty !== 'rupture';
+
+/** Does this part of the entry grow with the giver's build (`scales.gives`; all of it when absent)? */
+const scalesWith = (e: Entry, stat: string) => !!e.scales && (!e.scales.gives || e.scales.gives.includes(stat as Stat));
+
+/** Does the damage dealer's damage use this stat (general and not ignored, or specific and listed)? */
+function usedBy(g: { stat: Stat }, dd: string, lib: Library): boolean {
+  const notes = lib.sheets.get(dd)?.damage;
+  if (g.stat === 'atk' && !usesAtk(dd, lib)) return false;
+  return (GENERAL_STATS.includes(g.stat) && !notes?.ignores.includes(g.stat)) || (SPECIFIC_STATS.includes(g.stat) && !!notes?.uses.includes(g.stat));
+}
+
+/** T30: a buff without a stated percentage counts as the middle of every stated one in the game's sheets. */
+const typicals = new WeakMap<Library, number>();
+export function typicalOf(lib: Library): number {
+  const hit = typicals.get(lib);
+  if (hit !== undefined) return hit;
+  const sizes: number[] = [];
+  for (const sh of lib.sheets.values())
+    for (const e of sh.entries)
+      for (const g of e.gives) {
+        const z = sizeOf(g.amount);
+        if (z !== undefined && (GENERAL_STATS.includes(g.stat) || SPECIFIC_STATS.includes(g.stat))) sizes.push(Math.abs(z));
+      }
+  const t = typicalSize(sizes);
+  typicals.set(lib, t);
+  return t;
 }
 
 /** Parts B steps 3–8 for one order with a set damage dealer. */
@@ -217,7 +259,9 @@ export function checkOrder(order: string[], dd: string, lib: Library, account: A
   const lines: Line[] = [];
   const contributed = new Set<string>();
   const seenNoStack = new Map<string, string>();
-  const wants = new Map<string, { who: string; e: Entry & { scales: NonNullable<Entry['scales']> } }>();
+  const wants = new Map<string, { who: string; e: Entry & { scales: NonNullable<Entry['scales']> }; parts: Part[] }>();
+  const typ = typicalOf(lib);
+  const sized = (e: Entry, keep: (g: Entry['gives'][number]) => boolean): Part[] => e.gives.filter(keep).map((g) => partOf(g.stat, g.amount, typ));
   const statuses = new Map<string, { status: Status; why: string }>();
   const key = (who: string, e: Entry) => `${who}:${e.id}`;
   const entries = new Map(order.map((who) => [who, entriesOf(who, lib, account)]));
@@ -262,7 +306,9 @@ export function checkOrder(order: string[], dd: string, lib: Library, account: A
           // Who switches it on: each teammate who would meet the condition alone.
           const helpers = order.filter((id) => id !== dd && evalCondition(e.on, dd, [dd, id], lib) === 'met');
           for (const id of helpers) contributed.add(id);
-          lines.push({ ...base, kind: 'switched-on', why: `${st.why}${helpers.length ? ` (${helpers.map(name).join(' and ')})` : ''}`, points: 1, helpers });
+          // T30: what it gives the damage dealer, sized from the kit; an ability with no number counts as a typical buff.
+          const own = sized(e, (g) => usedBy(g, dd, lib));
+          lines.push({ ...base, kind: 'switched-on', why: `${st.why}${helpers.length ? ` (${helpers.map(name).join(' and ')})` : ''}`, points: 1, helpers, parts: own.length ? own : [{ zone: `ability:${dd}:${e.id}`, size: typ, how: 'typical' }] });
         }
         continue;
       }
@@ -278,7 +324,8 @@ export function checkOrder(order: string[], dd: string, lib: Library, account: A
           else if (!reaction) lines.push({ ...base, kind: 'not-counted', why: `${name(dd)}'s kit has nothing switched on that reacts to a ${eventWord(c.event)}`, points: 0 });
           else {
             contributed.add(who);
-            lines.push({ ...base, kind: 'chain', why: `${eventWord(c.event)} for ${name(dd)}: ${reaction.tag}`, points: 1 });
+            // T30: the kit doesn't say how much a set-off reaction adds: a typical buff, one zone per reaction.
+            lines.push({ ...base, kind: 'chain', why: `${eventWord(c.event)} for ${name(dd)}: ${reaction.tag}`, points: 1, parts: [{ zone: `chain:${dd}:${reaction.id}`, size: typ, how: 'typical' }] });
           }
         }
         if (!e.gives.length) continue;
@@ -287,18 +334,24 @@ export function checkOrder(order: string[], dd: string, lib: Library, account: A
       const r = reach(e, who, dd, order, lib);
       if (r.kind === 'buff') {
         contributed.add(who);
-        lines.push({ ...base, kind: 'buff', why: r.why, points: 1 });
+        // T30: sized from the kit text; a buff that grows with the giver's stat counts a third at base, their build adds the rest.
+        const parts = sized(e, (g) => r.used.includes(g.stat));
+        lines.push({ ...base, kind: 'buff', why: r.why, points: 1, parts: parts.map((pt) => (scalesWith(e, pt.zone) ? { ...pt, size: pt.size / (1 + BUILT_POINTS) } : pt)) });
         // T18: a counted buff that grows with the giver's stat makes the team want that build on them.
         const sc = e.scales;
-        if (sc && (!sc.gives || r.used.some((u) => sc.gives?.includes(u))) && !wants.has(`${who}|${sc.stat}`)) wants.set(`${who}|${sc.stat}`, { who, e: { ...e, scales: sc } });
-      } else if (r.kind === 'support') lines.push({ ...base, kind: 'support', why: r.why, points: 0 });
+        if (sc && (!sc.gives || r.used.some((u) => sc.gives?.includes(u))) && !wants.has(`${who}|${sc.stat}`)) wants.set(`${who}|${sc.stat}`, { who, e: { ...e, scales: sc }, parts: parts.filter((pt) => scalesWith(e, pt.zone)) });
+      } else if (r.kind === 'support') {
+        // T30 (B), as in HSR: a support's own damage adds to the squad's, sized against the damage dealer's own hit.
+        const own = e.to === 'self' ? [] : e.gives.filter((g) => g.stat === 'own-damage').map((g) => ownDamagePart(g.amount, lib.sheets.get(dd)?.damage?.quotes ?? [], typ));
+        lines.push({ ...base, kind: 'support', why: r.why, points: 0, ...(own.length ? { parts: own } : {}) });
+      }
       else lines.push({ ...base, kind: 'not-counted', why: r.why, points: 0 });
     }
   }
 
   // T18 (owner's ruling 2026-10-10, zzz-decisions.md): each wanted build, read roughly from the saved build, counts on
   // top of the method as in HSR; the best team found assumes it built.
-  for (const { who, e } of wants.values()) {
+  for (const { who, e, parts } of wants.values()) {
     const fit: BuildFit = account.ideal ? { fit: 'built', points: BUILT_POINTS, have: 'assumed built for it' } : (account.buildFit?.(who, e.scales.stat) ?? { fit: 'no-build', points: 0, have: 'no build saved' });
     const word = BUILD_STAT_WORD[e.scales.stat];
     lines.push({
@@ -311,6 +364,8 @@ export function checkOrder(order: string[], dd: string, lib: Library, account: A
       quote: e.scales.quote,
       points: fit.points,
       build: { stat: e.scales.stat, fit: fit.fit, have: fit.have, max: BUILT_POINTS },
+      // T30: the rest of the scaled buff, by how built they are (built: all of it).
+      parts: fit.points ? parts.map((pt) => ({ ...pt, size: (pt.size * fit.points) / (1 + BUILT_POINTS) })) : [],
     });
   }
 
@@ -323,14 +378,18 @@ export function checkOrder(order: string[], dd: string, lib: Library, account: A
     }
   }
 
+  // T30, on top of the method's count: the squad's kit value from every line's sized parts; each line's `value` is its share.
+  const v = value(lines.map((l) => l.parts ?? []));
+  lines.forEach((l, i) => (l.value = l.parts?.length ? (v.shares[i] ?? 0) : 0));
   const count = lines.reduce((n, l) => n + l.points, 0);
-  return { order, dd, count, support: lines.filter((l) => l.kind === 'support').length, chains: lines.filter((l) => l.kind === 'chain').length, lines };
+  const sustain = order.some((id) => (entries.get(id) ?? []).some((e) => e.to !== 'self' && e.to !== 'enemy' && e.gives.some((g) => g.stat === 'heal')));
+  return { order, dd, count, value: v.points, sustain, support: lines.filter((l) => l.kind === 'support').length, chains: lines.filter((l) => l.kind === 'chain').length, lines };
 }
 
 export const eventWord = (e: string) => ({ 'quick-assist': 'Quick Assist', 'chain-attack': 'Chain Attack', ultimate: 'Ultimate', 'ether-veil': 'Ether Veil' })[e] ?? e;
 
 /** Ties: higher count, then more team support, then more chains. Positive = a is better. */
-export const compare = (a: SquadResult, b: SquadResult) => a.count - b.count || a.support - b.support || a.chains - b.chains;
+export const compare = (a: SquadResult, b: SquadResult) => a.value - b.value || a.count - b.count || a.support - b.support || a.chains - b.chains;
 
 /**
  * The whole check (Part B steps 1–9): pick the damage dealer, try both orders,

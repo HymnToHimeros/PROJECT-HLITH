@@ -613,7 +613,13 @@ export const phainon: CharacterSheet = {
   damage: {
     kinds: ['skill', 'ultimate', 'basic'],
     uses: [],
+    // T30 (owner): buffs from before his Ultimate are frozen for his whole domain. Teammates' action advances still
+    // count: they come before the domain and charge it sooner (his Skill gains Coreflame).
     ignores: [],
+    alone: {
+      piece: 'skill-ultimate-he-who-bears-the-world-must-burn',
+      quote: 'Within the Territory, other teammates depart and cannot take action, and all enemies have Physical Weaknesses.',
+    },
     quotes: [
       { piece: 'skill-skill-calamity-soulscorch-edict', quote: 'DMG dealt through this ability is considered as Skill DMG.' },
       { piece: 'skill-skill-foundation-stardeath-verdict', quote: "deals Physical DMG equal to a max of 1170% of Khaslana's ATK." },
@@ -622,12 +628,24 @@ export const phainon: CharacterSheet = {
     ],
   },
   entries: [
+    // T30 (owner): teammates who aim abilities at him charge his domain sooner (Sunday, Cerydra, Dan Heng • Permansor
+    // Terrae, Robin • Summeretto's Special Guest; not standard Robin).
+    {
+      id: 'coreflame-targeted',
+      piece: 'skill-talent-pyric-corpus',
+      quote: 'When Phainon is targeted by an ability from any other target, gains 1 "Coreflame" point.',
+      tag: 'Coreflame when a teammate targets him',
+      gives: [],
+      to: 'self',
+      reacts: { event: 'targets-ally', from: 'teammates' },
+      setup: 'A teammate uses an ability on him (12 Coreflame: his Ultimate).',
+    },
     {
       id: 'targeted-crit-dmg',
       piece: 'skill-talent-pyric-corpus',
       quote: "And if the ability is cast by one of Phainon's teammates, can also increase Phainon's CRIT DMG by 30% for 3 turn(s).",
       tag: '+30% CRIT DMG when teammates target him',
-      on: { unknown: 'a teammate whose abilities target Phainon' },
+      on: { teammate: { to: ['chosen-ally'], words: 'a teammate whose abilities target Phainon' } },
       gives: [{ stat: 'crit-dmg', amount: '+30%' }],
       to: 'self',
       setup: 'A teammate targets him with an ability.',
@@ -646,7 +664,7 @@ export const phainon: CharacterSheet = {
       piece: 'trace-bide-in-flames',
       quote: 'When receiving healing or a Shield from a teammate, deals 45% increased DMG for 4 turn(s).',
       tag: '+45% DMG when a teammate heals or shields him',
-      on: { unknown: 'a teammate who heals or shields Phainon' },
+      on: { teammate: { gives: ['heal', 'shield'], words: 'a teammate who heals or shields Phainon' } },
       gives: [{ stat: 'dmg', amount: '+45%' }],
       to: 'self',
       setup: 'A teammate heals or shields him.',

@@ -21,6 +21,9 @@ export const gradeOf = (score: number) => (score >= 90 ? 'S' : score >= 75 ? 'A'
 const same = (a: string, b: string) => a.trim().toLowerCase() === b.trim().toLowerCase();
 const pct = (x: number) => Math.round(Math.max(0, Math.min(1, x)) * 100);
 
+/** Parts with data needed before a build gets a score and grade. */
+export const MIN_PARTS = 3;
+
 export function scoreBuild(build: CharacterBuild, rec: RecommendedBuild | undefined, facts: BuildScoreFacts): BuildScore {
   if (!rec) return unknown('enter-manually');
   const parts: BuildScorePart[] = [];
@@ -92,7 +95,9 @@ export function scoreBuild(build: CharacterBuild, rec: RecommendedBuild | undefi
   }
 
   const counted = parts.filter((p): p is BuildScorePart & { value: number } => p.value !== null);
-  if (!counted.length) return unknown('enter-manually');
+  // A score from one or two parts reads like a verdict on the whole build (FRAME's report: "100/100 · S" from the level
+  // alone): below MIN_PARTS checked parts there is no score yet.
+  if (counted.length < MIN_PARTS) return unknown('enter-manually');
   const score = Math.round(counted.reduce((n, p) => n + p.value, 0) / counted.length);
   const missing = parts.length - counted.length;
   const basis = `Average of ${counted.length} checked part${counted.length === 1 ? '' : 's'} against ${rec.source}${missing ? `; ${missing} part${missing === 1 ? '' : 's'} with no data yet not counted` : ''}.`;

@@ -14,6 +14,7 @@ import { SIGNATURE_PIECE } from '../../../core/rules/signatureWeapons';
 import { assumedLine, assumedWords } from '../../../core/rules/averageBuild';
 import { assume } from '../assumed';
 import { explainTeam, memberPhrase } from '../../../core/rules/teamExplain';
+import { countWords, percentOf, timesWords, typicalNote, VALUE_NOTE } from '../../../core/rules/kitValue';
 import { leakLines, noListLine, usable } from '../../../core/rules/leaks';
 
 export const METHOD = 'HSR Kit Check theory v2 (docs/logic/hsr-theory.md)';
@@ -65,16 +66,16 @@ let cacheLib: Library | undefined;
  * `also`: characters tried beside `dd` even when their own game team doesn't list them: a team you made yourself is
  * compared with the best team that could include its own members (decision 30).
  */
-export function bestFor(dd: string, pool: string[], lib: Library, account: Account, also: string[] = []): TeamResult | undefined {
+export function bestFor(dd: string, pool: string[], lib: Library, account: Account, also: string[] = [], likeFor?: TeamResult): TeamResult | undefined {
   if (cacheLib !== lib) {
     bestCache.clear();
     cacheLib = lib;
   }
-  const key = `${dd}|${[...new Set(pool)].sort().map((id) => `${id}:${account.eidolon(id)}:${account.enhanced(id) ?? '-'}`).join(',')}|${account.eidolon(dd)}:${account.enhanced(dd) ?? '-'}|${[...also].sort().join(',')}|${(lib.ownTeams.get(dd) ?? []).map((t) => JSON.stringify(account.teamList?.(t.id) ?? null)).join(';')}`;
+  const key = `${dd}|${[...new Set(pool)].sort().map((id) => `${id}:${account.eidolon(id)}:${account.enhanced(id) ?? '-'}`).join(',')}|${account.eidolon(dd)}:${account.enhanced(dd) ?? '-'}|${[...also].sort().join(',')}|${(lib.ownTeams.get(dd) ?? []).map((t) => JSON.stringify(account.teamList?.(t.id) ?? null)).join(';')}|${likeFor?.sustain ? 'sustain' : ''}`;
   if (bestCache.has(key)) return bestCache.get(key);
   if (bestCache.size > 2000) bestCache.clear();
   // The best team found assumes every member is built for what the team wants (decision 26): 100% includes builds.
-  const found = findBest(dd, pool, lib, { ...account, ideal: true }, also);
+  const found = findBest(dd, pool, lib, { ...account, ideal: true }, also, !!likeFor?.sustain);
   bestCache.set(key, found);
   return found;
 }
@@ -88,20 +89,21 @@ function shortlist(dd: string, partners: string[], lib: Library, account: Accoun
       return { p, r: out.rated ? out.best : undefined };
     })
     .filter((x): x is { p: string; r: TeamResult } => !!x.r)
-    .sort((a, b) => b.r.count - a.r.count || b.r.support - a.r.support || b.r.chains - a.r.chains)
+    .sort((a, b) => b.r.value - a.r.value || b.r.count - a.r.count || b.r.support - a.r.support || b.r.chains - a.r.chains)
     .slice(0, PAIR_LIMIT)
     .map((x) => x.p);
 }
 
-function findBest(dd: string, pool: string[], lib: Library, account: Account, also: string[] = []): TeamResult | undefined {
+function findBest(dd: string, pool: string[], lib: Library, account: Account, also: string[] = [], needSustain = false): TeamResult | undefined {
   let partners = pool.filter((id) => id !== dd && lib.sheets.has(id) && fits([dd, id]) && (canPartner(id, dd, lib, account) || also.includes(id)));
   if (!lib.sheets.has(dd) || !canCarry(dd, lib) || !partners.length) return undefined;
-  partners = shortlist(dd, partners, lib, account);
+  // The team's own members always stay in the running, however their pair with the damage dealer ranks.
+  partners = [...new Set([...shortlist(dd, partners, lib, account), ...partners.filter((id) => also.includes(id))])];
   let best: TeamResult | undefined;
   for (const others of combos(partners, Math.min(SIZE - 1, partners.length))) {
     if (!fits([dd, ...others])) continue;
     const out = check([dd, ...others], lib, account, dd);
-    if (out.rated && (!best || compare(out.best, best) > 0)) best = out.best;
+    if (out.rated && (!needSustain || out.best.sustain) && (!best || compare(out.best, best) > 0)) best = out.best;
   }
   return best;
 }
@@ -114,7 +116,7 @@ const centresIn = (ids: string[], lib: Library) => {
   return centres.length ? centres : ids.filter((id) => canCarry(id, lib));
 };
 
-const asExplain = (r: TeamResult) => ({ members: r.members, dd: r.dd, count: r.count, lines: r.lines, ...(r.coDds ? { coDds: r.coDds } : {}) });
+const asExplain = (r: TeamResult) => ({ members: r.members, dd: r.dd, count: r.count, value: r.value, lines: r.lines, ...(r.coDds ? { coDds: r.coDds } : {}) });
 
 /** Every read character the account doesn't hide (the unpicked Trailblazer: `skip`, FRAME's protagonist setting). */
 /** Everyone the check may use: no one the owner hid, and leaks only when the owner shows them (T39). */
@@ -156,17 +158,22 @@ export function verdict(members: string[], a: TeamAccount, lib: Library = librar
     pool = readable(lib, a);
     notes.push('You own fewer than four characters whose kits have been read, so this compares with every character instead.');
   } else pool = [...new Set([...owned, ...members])];
-  const best = bestFor(mine.dd, pool, lib, account, mine.members);
+  // Like with like (MANAGER's ruling, T30): a team with a healer or shielder is compared with the best team that keeps
+  // one. It never makes a healer required.
+  const best = bestFor(mine.dd, pool, lib, account, mine.members, mine);
+  if (mine.sustain) notes.push('This team has a healer or shielder, so the best team found keeps one too.');
   const top = best && compare(best, mine) > 0 ? best : mine;
-  if (top.count <= 0) return { rated: false, why: `No team the check can find connects for ${name(mine.dd)} yet (best count ${top.count}).` };
-  const percent = Math.max(0, Math.round((mine.count / top.count) * 100));
+  if (top.value <= 0 && top.count <= 0) return { rated: false, why: `No team the check can find connects for ${name(mine.dd)} yet (best ${countWords(top)}).` };
+  const percent = Math.max(0, percentOf(mine.value, top.value));
   if (percent >= 100) notes.push(`100% means the check knows no better team for ${name(mine.dd)} from your characters.`);
-  else notes.push(`Best for ${name(mine.dd)} from your characters: ${teamWords(top, lib)} counts ${top.count}.`);
-  const every = bestFor(mine.dd, readable(lib, a), lib, account);
-  if (every && every.count > top.count) notes.push(`From every character: ${teamWords(every, lib)} counts ${every.count}.`);
-  if (out.other && !lead) notes.push(`With ${name(out.other.dd)} as the damage dealer it counts ${out.other.count}.`);
+  else notes.push(`Best for ${name(mine.dd)} from your characters: ${teamWords(top, lib)} counts ${countWords(top)}.`);
+  const every = bestFor(mine.dd, readable(lib, a), lib, account, [], mine);
+  if (every && every.value > top.value) notes.push(`From every character: ${teamWords(every, lib)} counts ${countWords(every)}.`);
+  if (out.other && !lead) notes.push(`With ${name(out.other.dd)} as the damage dealer it counts ${countWords(out.other)}.`);
   if ((lib.ownTeams.get(mine.dd) ?? []).some((t) => account.teamList?.(t.id))) notes.push(`Team lists for ${name(mine.dd)} edited by you: teammates come from your lists.`);
-  notes.push('Traces count as unlocked. A higher count means more of the kits connect, not more damage.');
+  notes.push(`Traces count as unlocked. ${VALUE_NOTE}`);
+  const typical = typicalNote(mine.lines.filter((l) => !l.forDd), name);
+  if (typical) notes.push(typical);
   const assumedNote = assumedLine(mine.members, a, name);
   // T39: a leak in the team says so; a leaked carry has no game team list yet.
   const leakNote = [...leakLines(mine.members, lib.leaks, name), ...(lib.leaks?.has(mine.dd) && !lib.ownTeams.get(mine.dd)?.length ? [noListLine(name(mine.dd))] : [])];
@@ -254,9 +261,9 @@ export function whoFits(members: string[], a: TeamAccount, lib: Library = librar
     const others = members.filter((m) => m !== r.dd);
     const withEveryone = c === r.dd ? others.every((m) => r.lines.some((l) => l.who === m && (l.kind === 'buff' || l.kind === 'chain'))) : r.lines.some((l) => l.who === c && (l.kind === 'buff' || l.kind === 'chain'));
     // % against the best team found for the same damage dealer from the same pool.
-    const best = bestFor(r.dd, [...new Set([...pool, ...members])], lib, account);
-    const top = best && compare(best, r) > 0 ? best.count : r.count;
-    const percent = top > 0 ? Math.max(0, Math.round((r.count / top) * 100)) : 0;
+    const best = bestFor(r.dd, [...new Set([...pool, ...members])], lib, account, [], r);
+    const top = best && compare(best, r) > 0 ? best.value : r.value;
+    const percent = top > 0 ? Math.max(0, percentOf(r.value, top)) : 0;
     const hasTrack = [...(lib.unlocks.get(c)?.values() ?? [])].some((u) => u.potential || u.replacedAt);
     const locked = r.lines.filter((l) => l.who === c && l.kind === 'locked').length;
     const sigId = lib.unlocks.get(c)?.get(SIGNATURE_PIECE)?.weapon;
@@ -282,13 +289,13 @@ export function lineUps(a: TeamAccount, lib: Library = library()): TeamIdea[] {
     for (const others of combos(partners, Math.min(SIZE - 1, partners.length))) {
       if (others.length < SIZE - 1 || !fits([dd, ...others])) continue;
       const out = check([dd, ...others], lib, account, dd);
-      if (out.rated && out.best.count > 0) mine.push(out.best);
+      if (out.rated && out.best.value > 0) mine.push(out.best);
     }
     candidates.push(...mine.sort((x, y) => compare(y, x)).slice(0, 5));
   }
   // The set of teams that never share a character with the highest total count; more teams break a tie.
   let best: TeamResult[] = [];
-  const total = (xs: TeamResult[]) => xs.reduce((n, x) => n + x.count, 0);
+  const total = (xs: TeamResult[]) => xs.reduce((n, x) => n + x.value, 0);
   const search = (i: number, used: Set<string>, picked: TeamResult[]) => {
     if (total(picked) > total(best) || (total(picked) === total(best) && picked.length > best.length)) best = [...picked];
     for (let k = i; k < candidates.length; k++) {
@@ -300,7 +307,7 @@ export function lineUps(a: TeamAccount, lib: Library = library()): TeamIdea[] {
     }
   };
   search(0, new Set(), []);
-  return best.map((r) => ({ members: r.members, count: r.count, why: `${teamWords(r, lib)} counts ${r.count}: ${summary(r)}` }));
+  return best.map((r) => ({ members: r.members, count: r.count, why: `${teamWords(r, lib)} counts ${countWords(r)}: ${summary(r)}` }));
 }
 
 export function ifYouPull(id: string, a: TeamAccount, lib: Library = library()): PullValue | null {
@@ -316,10 +323,10 @@ export function ifYouPull(id: string, a: TeamAccount, lib: Library = library()):
   if (isCentre(id, lib) || (lib.leaks?.has(id) && canCarry(id, lib))) {
     const withYours = bestFor(id, [...base, id], lib, account);
     const withAll = bestFor(id, all, lib, account);
-    if (withYours && withAll && withAll.count > 0) {
-      const p = Math.max(0, Math.round((withYours.count / withAll.count) * 100));
+    if (withYours && withAll && withAll.value > 0) {
+      const p = Math.max(0, percentOf(withYours.value, withAll.value));
       why.push(
-        `As a damage dealer: your best team for them is ${teamWords(withYours, lib)} (${withYours.count} points; the best with every character is ${withAll.count}, so ${p}%). There ${memberPhrase(asExplain(withYours), id, name)}.`,
+        `As a damage dealer: your best team for them is ${teamWords(withYours, lib)} (${countWords(withYours)}; the best with every character is ${countWords(withAll)}, so ${p}%). There ${memberPhrase(asExplain(withYours), id, name)}.`,
       );
       percent = Math.max(percent, p);
     }
@@ -328,16 +335,16 @@ export function ifYouPull(id: string, a: TeamAccount, lib: Library = library()):
     const now = bestFor(dd, base, lib, account);
     const lifted = bestFor(dd, [...base, id], lib, account);
     const possible = bestFor(dd, all, lib, account);
-    if (!lifted || !possible || possible.count <= 0 || !lifted.members.includes(id)) continue;
-    if (lifted.count > (now?.count ?? 0)) {
-      const p = Math.round((lifted.count / possible.count) * 100);
+    if (!lifted || !possible || possible.value <= 0 || !lifted.members.includes(id)) continue;
+    if (lifted.value > (now?.value ?? 0)) {
+      const p = percentOf(lifted.value, possible.value);
       why.push(
-        `As a teammate: ${name(dd)}'s best team of yours goes from ${now?.count ?? 0} to ${lifted.count} points (${teamWords(lifted, lib)}; the most possible is ${possible.count}, so ${p}%). ${name(id)} ${memberPhrase(asExplain(lifted), id, name)}.`,
+        `As a teammate: ${name(dd)}'s best team of yours goes from ${(now ? countWords(now) : '0')} to ${countWords(lifted)} (${teamWords(lifted, lib)}; the most possible is ${countWords(possible)}, so ${p}%). ${name(id)} ${memberPhrase(asExplain(lifted), id, name)}.`,
       );
       percent = Math.max(percent, p);
     }
   }
-  if (!why.length) why.push('No gain: no team of yours gets a higher count with them.');
+  if (!why.length) why.push('No gain: no team of yours gets a higher kit value with them.');
   // T39: a leak says so first; a leaked carry has no game team list yet.
   if (lib.leaks?.has(id)) why.unshift(...leakLines([id], lib.leaks, name), ...(canCarry(id, lib) && !lib.ownTeams.get(id)?.length ? [noListLine(name(id))] : []));
   return { percent, why };
@@ -398,7 +405,7 @@ function findRecommended(lib: Library): TeamPreset[] {
       id: `kit-check-${dd}`,
       name: `${name(dd)} · best by kit check`,
       slots: [{ characters: [dd] }, ...places.map((p) => ({ characters: [...new Set(p)] }))],
-      source: `${METHOD}: the best count for ${name(dd)} from every character at Eidolon 0 (${first.count})`,
+      source: `${METHOD}: the best kit value for ${name(dd)} from every character at Eidolon 0: count ${first.count}, ${timesWords(first.value)}`,
     });
   }
   return out;

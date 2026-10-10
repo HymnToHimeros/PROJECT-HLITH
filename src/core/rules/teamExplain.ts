@@ -6,6 +6,7 @@
  */
 import type { TeamExplain } from '../contract';
 import { BUILD_STAT_WORD, FIT_WORD, type BuildStat, type Fit } from './buildFit';
+import { percentOf, timesWords } from './kitValue';
 
 /** One line of a game's check, in the fields every game's check has. */
 export interface ExplainLine {
@@ -14,6 +15,8 @@ export interface ExplainLine {
   tag: string;
   why: string;
   points: number;
+  /** T30: the line's share of the kit value (a support's own hits have value but no count point). */
+  value?: number;
   helpers?: string[];
   /** Counted for a second damage dealer of the team, not the main one (hsr-decisions 33). */
   forDd?: string;
@@ -24,6 +27,8 @@ export interface ExplainLine {
 export interface ExplainTeam {
   members: string[];
   dd: string;
+  /** T30: the kit value (POINTS × ln of the multiplier); ranks teams. Absent = compare by count. */
+  value?: number;
   /** Other damage dealers whose damage counts too (hsr-decisions 33). */
   coDds?: string[];
   count: number;
@@ -62,7 +67,11 @@ function given(t: ExplainTeam, who: string, name: (id: string) => string): { phr
     for (const c of chains) parts.push(chainWords(c.why));
     // Switching on the damage dealer's ability is counted once, on the damage dealer's line.
     if (turnedOn.length) parts.push(`switches on ${dd}'s ${list(turnedOn.map((l) => `“${bare(l.tag)}”`))}`);
-    if (support.length && !buffs.length && !chains.length) parts.push(`team support only (${list(support.map((l) => bare(l.tag)))}): breaks ties, adds no points`);
+    // T30 (B): a support's own hits add to the team's damage (kit value), not to the count.
+    const hits = support.filter((l) => (l.value ?? 0) > 0);
+    if (hits.length) parts.push(`adds damage of their own: ${list(hits.map((l) => bare(l.tag)))}`);
+    const rest = support.filter((l) => !((l.value ?? 0) > 0));
+    if (rest.length && !buffs.length && !chains.length && !hits.length) parts.push(`team support only (${list(rest.map((l) => bare(l.tag)))}): breaks ties, adds no points`);
   }
   for (const l of own)
     if (l.kind === 'build' && l.build)
@@ -115,11 +124,15 @@ export function explainTeam(mine: ExplainTeam, best: ExplainTeam, name: (id: str
   for (const l of mine.lines)
     if (l.kind === 'build' && l.build && l.points < l.build.max)
       missing.push(`${name(l.who)} built for ${statWords(l.build.stat)}: ${FIT_WORD[l.build.fit]}; up to ${plural(l.build.max - l.points, 'point')} more.`);
-  const gap = best.count - mine.count;
+  // T30: "better" is a higher kit value when both have one; the count otherwise.
+  const byValue = mine.value !== undefined && best.value !== undefined;
+  const gap = byValue ? (best.value ?? 0) - (mine.value ?? 0) : best.count - mine.count;
   const newcomers = best.members.filter((id) => !mine.members.includes(id));
-  if (gap > 0 && newcomers.length) {
+  const short = byValue ? `${percentOf(mine.value ?? 0, best.value ?? 0)}% of the best team found's kit value` : `${plural(gap, 'point')} short of the best team found`;
+  if (gap > 1e-9 && newcomers.length) {
     const leaving = mine.members.filter((id) => !best.members.includes(id));
-    missing.unshift(`The best team found for ${dd} is ${list(best.members.map(name))}: ${best.count} points against ${mine.count} here${leaving.length ? `, swapping ${list(leaving.map(name))} for ${list(newcomers.map(name))}` : ''}.`);
+    const against = byValue ? `kit value ${timesWords(best.value ?? 0)} against ${timesWords(mine.value ?? 0)} here (count ${best.count} against ${mine.count})` : `${best.count} points against ${mine.count} here`;
+    missing.unshift(`The best team found for ${dd} is ${list(best.members.map(name))}: ${against}${leaving.length ? `, swapping ${list(leaving.map(name))} for ${list(newcomers.map(name))}` : ''}.`);
     for (const id of newcomers) {
       const g = given(best, id, name);
       missing.push(`${name(id)} would bring: ${g.phrase} (${pts(g.points)}).`);
@@ -127,6 +140,7 @@ export function explainTeam(mine: ExplainTeam, best: ExplainTeam, name: (id: str
   }
   const helpers = members.filter((m) => m.id !== mine.dd && m.points > 0).map((m) => name(m.id));
   const co = (mine.coDds ?? []).map(name);
-  const headline = `${dd} deals the damage${co.length ? `, with ${list(co)}` : ''}. ${helpers.length ? `${list(helpers)} ${helpers.length === 1 ? 'connects' : 'connect'} with ${dd}'s kit` : `No teammate connects with ${dd}'s kit`}${gap > 0 ? (newcomers.length ? `; ${plural(gap, 'point')} short of the best team found` : `; ${plural(gap, 'point')} more when fully built`) : '; no better team found'}.`;
+  const built = byValue ? `; ${percentOf(mine.value ?? 0, best.value ?? 0)}% of its kit value when fully built` : `; ${plural(gap, 'point')} more when fully built`;
+  const headline = `${dd} deals the damage${co.length ? `, with ${list(co)}` : ''}. ${helpers.length ? `${list(helpers)} ${helpers.length === 1 ? 'connects' : 'connect'} with ${dd}'s kit` : `No teammate connects with ${dd}'s kit`}${gap > 1e-9 ? (newcomers.length ? `; ${short}` : built) : '; no better team found'}.`;
   return { headline, members, missing };
 }

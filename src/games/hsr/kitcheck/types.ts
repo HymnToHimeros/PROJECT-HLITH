@@ -85,6 +85,12 @@ export type Condition =
   | { count: { paths?: Path[]; elements?: Element[]; atLeast: number; atMost?: number; others?: boolean } }
   /** Every one of these. */
   | { all: Condition[] }
+  /**
+   * Another member's kit does this for the team (T30 rule 1: a role counts only when a kit asks for it): an entry
+   * that gives one of `gives` (to anyone but themself), and when `to` is set, one aimed at one of those recipients
+   * ("a teammate who heals or shields Phainon", "a teammate whose abilities target Phainon"). Eidolons don't count.
+   */
+  | { teammate: { gives?: Stat[]; to?: Recipient[]; words: string } }
   /** Cannot be checked from profiles (HP thresholds, enemy state is not a condition but setup): never counted as met. */
   | { unknown: string };
 
@@ -112,7 +118,9 @@ export interface Limits {
  * Wind Shear) · hp-loss (makes allies lose or consume HP) · elation-skill (an
  * Elation Skill / Punchline) · extra-turn (gives allies an extra turn or "Aha Instant").
  */
-export type GameEventKind = 'follow-up' | 'summon-attack' | 'debuff' | 'dot' | 'hp-loss' | 'elation-skill' | 'extra-turn';
+export type GameEventKind = 'follow-up' | 'summon-attack' | 'debuff' | 'dot' | 'hp-loss' | 'elation-skill' | 'extra-turn' | 'targets-ally';
+// 'targets-ally' (T30): an ability aimed at one chosen ally. Never written on entries: every non-Eidolon entry given
+// to a chosen ally makes it (Sunday's, Cerydra's, Dan Heng • Permansor Terrae's Skill on the damage dealer).
 
 /** Whose events a reaction reacts to: the owner only, teammates, or any ally / any unit. */
 export type From = 'self' | 'teammates' | 'any';
@@ -129,7 +137,15 @@ export interface Entry {
   /** Q1. Absent = always on. */
   on?: Condition;
   /** Q2. Empty = gives nothing to anyone (an event or a reaction only). */
-  gives: { stat: Stat; amount: string }[];
+  gives: {
+    stat: Stat;
+    amount: string;
+    /**
+     * One of two branches the kit picks by the damage dealer (T30): 'atk-carry' applies when their damage scales on ATK,
+     * 'other-carry' when it doesn't (Robin • Summeretto: ATK from her Max HP "if their ATK is higher", else CRIT DMG).
+     */
+    when?: 'atk-carry' | 'other-carry';
+  }[];
   /** Q3. */
   to: Recipient;
   /** Q4. */
@@ -150,6 +166,12 @@ export interface Entry {
   scales?: { stat: BuildStat; quote: string; gives?: Stat[] };
   /** Q7: unclear text; shown, never counted. Says why. */
   unverified?: string;
+  /**
+   * When this entry of the damage dealer's is on, their own damage also counts as these kinds (T30): Aventurine •
+   * Waveflair's "Elation Skill … is considered as launching a Follow-Up ATK" when he is the only Elation character,
+   * so Follow-Up ATK buffs reach him in that team.
+   */
+  addsKinds?: DamageKind[];
 }
 
 /** Part A step 5: what a damage dealer's damage is and uses. */
@@ -162,6 +184,11 @@ export interface DamageNotes {
   ignores: Stat[];
   /** The sentences that prove it. */
   quotes: { piece: string; quote: string }[];
+  /**
+   * Their main damage happens with the teammates gone (T30, owner: Phainon's domain, "other teammates depart and cannot
+   * take action"): buffs from before count, but teammates' own hits, extra hits and set-off reactions don't.
+   */
+  alone?: { piece: string; quote: string };
 }
 
 export interface CharacterSheet {

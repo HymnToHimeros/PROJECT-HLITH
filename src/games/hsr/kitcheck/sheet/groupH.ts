@@ -109,6 +109,17 @@ export const castorice: CharacterSheet = {
       to: 'enemy',
       setup: 'Netherwing on the field (Ultimate used).',
     },
+    // T30: her own kit asks for a healer (rule 1): healing a teammate gives turns into Newbud (her Ultimate) or Netherwing's HP.
+    {
+      id: 'healing-to-newbud',
+      piece: 'trace-contained-dark-tide',
+      quote: 'After ally targets (excluding Netherwing) receive healing, converts 100% of the healed amount into "Newbud."',
+      tag: 'Healing from teammates fills Newbud',
+      on: { teammate: { gives: ['heal'], words: 'a teammate who heals' } },
+      gives: [],
+      to: 'self',
+      setup: 'A teammate heals the team.',
+    },
     {
       id: 'allies-lose-hp',
       piece: 'skill-talent-desolation-across-palms',
@@ -696,7 +707,7 @@ export const robinSummeretto: CharacterSheet = {
       piece: 'skill-talent-wings-heed-no-borders',
       quote: "When ally targets deal DMG within the Zone, they ignore a percentage of enemy targets' DEF equal to (15.0% + Vibes × 0.5%).",
       tag: 'Allies: ignore 15%+ DEF',
-      gives: [{ stat: 'def-shred', amount: '15% + 0.5% per Vibe' }],
+      gives: [{ stat: 'def-shred', amount: '15% to 40% (0.5% per Vibe, Vibes capped at 50)' }],
       to: 'allies',
       setup: 'All three "Summer Songbirds" on the field ("Fever" Zone, 12+ Vibes).',
     },
@@ -725,8 +736,8 @@ export const robinSummeretto: CharacterSheet = {
       quote: "if their ATK is higher than Robin • Summeretto's, increases that target's ATK by an amount equal to (16% + Vibes × 0.4%) of Robin • Summeretto's Max HP. Otherwise, increases that target's CRIT DMG by an amount equal to (40% + Vibes × 1.5%).",
       tag: 'Allies: ATK or CRIT DMG up',
       gives: [
-        { stat: 'atk', amount: "(16% + 0.4% per Vibe) of her Max HP, if their ATK is higher than hers" },
-        { stat: 'crit-dmg', amount: '+40% + 1.5% per Vibe, otherwise' },
+        { stat: 'atk', amount: "16% to 36% of her Max HP (0.4% per Vibe, Vibes capped at 50), if their ATK is higher than hers", when: 'atk-carry' },
+        { stat: 'crit-dmg', amount: '+40% to +115% (1.5% per Vibe, Vibes capped at 50), otherwise', when: 'other-carry' },
       ],
       scales: { stat: 'hp', quote: "increases that target's ATK by an amount equal to (16% + Vibes × 0.4%) of Robin • Summeretto's Max HP", gives: ['atk'] },
       to: 'allies',
