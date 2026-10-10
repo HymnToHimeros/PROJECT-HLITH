@@ -28,6 +28,12 @@ Resume with: "continue from PROGRESS.md". Newest entry on top. Older entries:
 - CI (`.github/workflows/ci.yml`) runs both on every pull request.
 
 ## Done
+- 2026-10-10 · **LOGIC-CORE: team suggestions from your account (T18, step 1)** (branch `logic-core/account-fits`).
+  Who fits takes options: by default only characters you own, ranked by the team's %,
+  counting your Eidolons / Mindscapes and Enhanced / Agent Potential; "include characters
+  I don't own" adds the rest as theory. Each suggestion says what came from your account
+  ("E2 counted", "Enhanced kit: not saved, scored without it", "Weapon in your build: …,
+  its effect isn't counted yet"). Next: signature weapon effects read into the cheat sheets.
 - 2026-10-10 · **LOGIC-CORE: scores explain themselves in plain words (T17)** (branch `logic-core/plain-reasons`).
   Every team's "Why" now opens with a sentence (who deals the damage, who connects
   with their kit), one line per member (what they give the damage dealer, what they

@@ -3,9 +3,10 @@
  * teams, Line-ups, Who fits, "If you pull…" % and recommended teams. Same
  * shape as ZZZ (src/games/zzz/kitcheck/team.ts), with teams of four and no order.
  */
-import type { FitSuggestion, PullValue, TeamAccount, TeamIdea, TeamPreset, TeamReason, TeamRules, TeamVerdict } from '../../../core/contract';
+import type { FitOptions, FitSuggestion, PullValue, TeamAccount, TeamIdea, TeamPreset, TeamReason, TeamRules, TeamVerdict } from '../../../core/contract';
 import { canCarry, canPartner, check, compare, damageDealers, isCentre, type Account, type Library, type Line, type TeamResult } from './check';
 import { centreOf, library, pageOf } from './library';
+import { accountNotes } from '../../../core/rules/accountNotes';
 import { explainTeam, memberPhrase } from '../../../core/rules/teamExplain';
 
 export const METHOD = 'HSR Kit Check theory v2 (docs/logic/hsr-theory.md)';
@@ -174,10 +175,12 @@ function connections(r: TeamResult, c: string, lib: Library): string[] {
   return [...new Set(how)];
 }
 
-export function whoFits(members: string[], a: TeamAccount, lib: Library = library()): FitSuggestion[] {
+export function whoFits(members: string[], a: TeamAccount, lib: Library = library(), options: FitOptions = {}): FitSuggestion[] {
   const account = toAccount(a);
   const out: FitSuggestion[] = [];
-  for (const c of lib.sheets.keys()) {
+  // Your own characters by default; the rest only when asked, as theory.
+  const pool = [...lib.sheets.keys()].filter((c) => options.includeUnowned || a.owned(c));
+  for (const c of pool) {
     if (members.includes(c) || !fits([...members, c])) continue;
     const res = check([...members, c], lib, account, leadOf([...members, c], lib));
     if (!res.rated) continue;
@@ -187,9 +190,16 @@ export function whoFits(members: string[], a: TeamAccount, lib: Library = librar
     if (!how.length) continue;
     const others = members.filter((m) => m !== r.dd);
     const withEveryone = c === r.dd ? others.every((m) => r.lines.some((l) => l.who === m && (l.kind === 'buff' || l.kind === 'chain'))) : r.lines.some((l) => l.who === c && (l.kind === 'buff' || l.kind === 'chain'));
-    out.push({ id: c, count: r.count, how, withEveryone });
+    // % against the best team found for the same damage dealer from the same pool.
+    const best = bestFor(r.dd, [...new Set([...pool, ...members])], lib, account);
+    const top = best && compare(best, r) > 0 ? best.count : r.count;
+    const percent = top > 0 ? Math.max(0, Math.round((r.count / top) * 100)) : 0;
+    const hasTrack = [...(lib.unlocks.get(c)?.values() ?? [])].some((u) => u.potential || u.replacedAt);
+    const locked = r.lines.filter((l) => l.who === c && l.kind === 'locked').length;
+    const { notes, theory } = accountNotes(c, a, { dupePrefix: 'E', ...(hasTrack ? { track: 'Enhanced kit' } : {}), locked });
+    out.push({ id: c, count: r.count, how, withEveryone, percent, fromAccount: notes, theory });
   }
-  return out.sort((x, y) => Number(y.withEveryone) - Number(x.withEveryone) || y.count - x.count);
+  return out.sort((x, y) => (y.percent ?? 0) - (x.percent ?? 0) || Number(y.withEveryone) - Number(x.withEveryone) || y.count - x.count);
 }
 
 export function lineUps(a: TeamAccount, lib: Library = library()): TeamIdea[] {
@@ -264,7 +274,7 @@ export const hsrTeamRules: TeamRules = {
   method: METHOD,
   rated: (id) => library().sheets.has(id),
   verdict: (m, a) => verdict(m, a),
-  whoFits: (m, a) => whoFits(m, a),
+  whoFits: (m, a, o) => whoFits(m, a, library(), o),
   lineUps: (a) => lineUps(a),
   ifYouPull: (id, a) => ifYouPull(id, a),
 };

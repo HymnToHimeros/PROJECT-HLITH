@@ -69,9 +69,14 @@ export function Member({
 }
 
 /** What the game's team rules may know about you: who you own, their dupes and (when set) their potential. */
-export const teamAccount = (data: RosterData): TeamAccount => rosterAccount(data.user.roster);
+export const teamAccount = (data: RosterData): TeamAccount => rosterAccount(data.user.roster, data.user.builds);
 
-const rosterAccount = (roster: RosterData['user']['roster']): TeamAccount => ({
+const rosterAccount = (roster: RosterData['user']['roster'], builds?: RosterData['user']['builds']): TeamAccount => ({
+  // The weapon in an owned character's saved build (signature weapons, T18).
+  weapon: (id) => {
+    const w = entryOf(roster, id).owned ? builds?.[id]?.weapon : undefined;
+    return w ? { name: w.name, ...(w.id ? { id: w.id } : {}), ...(w.refine !== undefined ? { refine: w.refine } : {}) } : undefined;
+  },
   owned: (id) => entryOf(roster, id).owned,
   dupes: (id) => entryOf(roster, id).dupes,
   potential: (id) => {
@@ -85,7 +90,8 @@ export function useVerdict(data: RosterData, members: string[], skip = false): T
   const rules = data.game.rules.teams;
   const key = members.join(',');
   const roster = data.user.roster;
-  return useMemo(() => (skip || !rules ? null : rules.verdict(key ? key.split(',') : [], rosterAccount(roster))), [rules, key, roster, skip]);
+  const builds = data.user.builds;
+  return useMemo(() => (skip || !rules ? null : rules.verdict(key ? key.split(',') : [], rosterAccount(roster, builds))), [rules, key, roster, builds, skip]);
 }
 
 /** Why a team scores what it does: every point with the kit text that earned it. */

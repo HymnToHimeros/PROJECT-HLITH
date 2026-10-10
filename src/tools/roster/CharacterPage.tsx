@@ -630,7 +630,7 @@ function TeamFit({ data, character: c, makePreset }: { data: RosterData; charact
 function WhoFits({ data, character: c }: { data: RosterData; character: Character }) {
   const rules = data.game.rules.teams;
   const roster = data.user.roster;
-  const fits = useMemo(() => (rules?.rated(c.id) ? rules.whoFits([c.id], teamAccount(data)).slice(0, 5) : null), [rules, c.id, roster]); // eslint-disable-line react-hooks/exhaustive-deps
+  const fits = useMemo(() => (rules?.rated(c.id) ? rules.whoFits([c.id], teamAccount(data), { includeUnowned: true }).slice(0, 5) : null), [rules, c.id, roster]); // eslint-disable-line react-hooks/exhaustive-deps
   if (!rules) return null;
   const word = data.game.terms.character.toLowerCase();
   return (
