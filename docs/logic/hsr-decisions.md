@@ -86,3 +86,18 @@ Numbered so later changes can point at them.
     included). A weapon line that repeats an event the kit already causes
     is not a second event source. Pearl's Colors for Tomorrow has no effect
     text yet, so it isn't read; it will be once the text exists.
+25. **A bigger stat on a teammate raises the team score, roughly (owner, T18).** Buffs that grow with the giver's
+    stat carry `scales`; when they count, the team wants that build. The saved build is read in bands (built +2,
+    partly +1, not 0, no build 0 and said), never as damage math. Per team: Robin • Summeretto is an HP build with
+    Phainon because her "Deviated Chords" ATK buff is "(16% + Vibes × 0.4%) of Robin • Summeretto's Max HP".
+26. **The best team found assumes ideal builds.** So 100% = the right members and built right; an unbuilt team says
+    which builds would close the gap. A team you haven't built scores lower than before this rule; that is the
+    owner's "the value increases" read from the other side.
+27. **Thresholds count as wants when the stat is clearly the giver's.** Ruan Mei's and Lingsha's Light Cones (150%
+    Break Effect), Fugue's 220% Break Effect, Cyrene's 180 SPD: the team wants that stat on them, so they are wants;
+    whether the threshold is reached is not checked (no total stats saved yet).
+28. **ZZZ shows build wants but doesn't count them yet.** The owner's ZZZ method (zzz-method.md) is exact and its
+    worked examples (Billy > Dialyn > Lucia 9 of 10) don't include builds. ZZZ reads the same `scales` (28 entries:
+    Astra Yao's ATK, Lucia's HP, Pan Yinhu's ATK…) and shows "Builds this team wants" with the fit, marked "not counted
+    yet", until the owner says whether ZZZ counts them too.
+

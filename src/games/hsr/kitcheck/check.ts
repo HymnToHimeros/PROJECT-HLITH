@@ -3,6 +3,7 @@
  * guessing: the same team always gets the same answer, and every point comes
  * with the entry (and its quote) that earned it. HSR has no team order.
  */
+import { BUILD_STAT_WORD, BUILT_POINTS, FIT_WORD, type BuildFit, type BuildStat } from '../../../core/rules/buildFit';
 import { GENERAL_STATS, SPECIFIC_STATS, SUPPORT_STATS, SUSTAIN_STATS, type CharacterSheet, type Condition, type DamageKind, type Element, type Entry, type GameEventKind, type Path, type Stat } from './types';
 
 export interface Profile {
@@ -33,16 +34,23 @@ export interface Library {
 export interface Account {
   eidolon: (id: string) => number;
   /** 1 = has the Enhanced kit, 0 = not; undefined = not saved. */
-  enhanced: (id: string) => number | undefined;  /** The weapon in the saved build (signature weapons); undefined = none saved. */
+  enhanced: (id: string) => number | undefined;
+  /** The weapon in the saved build (signature weapons); undefined = none saved. */
   weapon?: (id: string) => { id?: string; name: string } | undefined;
+  /** How the saved build fits one stat (T18); undefined = no build saved. */
+  buildFit?: (id: string, stat: BuildStat) => BuildFit | undefined;
+  /** Assume every member is built for what the team wants: the best team found (decision 26). */
+  ideal?: boolean;
 }
 
 export type Status = 'on' | 'off' | 'locked' | 'unknown' | 'replaced';
 
 /** One line of the explanation. `points` is what it adds to the count (0 for tie-break and not counted). */
 export interface Line {
-  kind: 'switched-on' | 'buff' | 'chain' | 'off' | 'duplicate' | 'weak-fit' | 'support' | 'not-counted' | 'locked' | 'unknown' | 'replaced';
+  kind: 'switched-on' | 'buff' | 'chain' | 'off' | 'duplicate' | 'weak-fit' | 'support' | 'not-counted' | 'locked' | 'unknown' | 'replaced' | 'build';
   who: string;
+  /** For a build line: the stat the team wants on them and how their saved build fits. */
+  build?: { stat: BuildStat; fit: BuildFit['fit']; have: string; max: number };
   entry?: string;
   tag: string;
   why: string;
@@ -204,6 +212,7 @@ export function checkTeam(members: string[], dd: string, lib: Library, account: 
   const seenNoStack = new Map<string, { who: string; what: string }>();
   const chained = new Set<string>();
   const countedStats = new Set<string>();
+  const wants = new Map<string, { who: string; e: Entry & { scales: NonNullable<Entry['scales']> } }>();
   const statuses = new Map<string, { status: Status; why: string }>();
   const key = (who: string, e: Entry) => `${who}:${e.id}`;
   for (const who of team) for (const e of lib.sheets.get(who)?.entries ?? []) statuses.set(key(who, e), statusOf(e, who, team, lib, account));
@@ -275,13 +284,35 @@ export function checkTeam(members: string[], dd: string, lib: Library, account: 
         // Step 4b: each teammate counts each stat once, however many sentences give it.
         const fresh = r.used.filter((u) => !countedStats.has(`${who}|${u}`));
         for (const u of r.used) countedStats.add(`${who}|${u}`);
-        if (fresh.length) lines.push({ ...base, kind: 'buff', why: r.why, points: 1 });
+        if (fresh.length) {
+          lines.push({ ...base, kind: 'buff', why: r.why, points: 1 });
+          // T18: a counted buff that grows with the giver's stat makes the team want that build on them.
+          const sc = e.scales;
+          if (sc && (!sc.gives || fresh.some((u) => sc.gives?.includes(u.split(':')[0] as Stat))) && !wants.has(`${who}|${sc.stat}`)) wants.set(`${who}|${sc.stat}`, { who, e: { ...e, scales: sc } });
+        }
         else lines.push({ ...base, kind: 'not-counted', why: `${r.why}, but ${name(who)}'s ${list([...new Set(r.used.map((u) => statWord(u.split(':')[0] as Stat)))], 'and')} already counts once`, points: 0 });
       } else if (r.kind === 'support') {
         contributed.add(who);
         lines.push({ ...base, kind: 'support', why: r.why, points: 0 });
       } else lines.push({ ...base, kind: 'not-counted', why: r.why, points: 0 });
     }
+  }
+
+  // T18 (decisions 25–26): each wanted build, read roughly from the saved build; the best team found assumes it built.
+  for (const { who, e } of wants.values()) {
+    const fit: BuildFit = account.ideal ? { fit: 'built', points: BUILT_POINTS, have: 'assumed built for it' } : (account.buildFit?.(who, e.scales.stat) ?? { fit: 'no-build', points: 0, have: 'no build saved' });
+    const word = BUILD_STAT_WORD[e.scales.stat];
+    lines.push({
+      kind: 'build',
+      who,
+      entry: e.id,
+      tag: `${word} build on ${name(who)}`,
+      why: `${e.tag} grows with ${name(who)}'s ${word}. Yours: ${fit.have}: ${FIT_WORD[fit.fit]}`,
+      piece: e.piece,
+      quote: e.scales.quote,
+      points: fit.points,
+      build: { stat: e.scales.stat, fit: fit.fit, have: fit.have, max: BUILT_POINTS },
+    });
   }
 
   // Step 7: a teammate who brings nothing for the damage dealer and no team support is a weak fit.

@@ -400,6 +400,7 @@ const rappa: CharacterSheet = {
       quote: 'When an enemy target becomes Weakness Broken, increases the Break DMG taken by 2%.',
       tag: 'Enemy: Break DMG taken +2%',
       gives: [{ stat: 'vulnerability', amount: '+2% (up to +10% with her ATK over 2400)' }],
+      scales: { stat: 'atk', quote: "If Rappa's current ATK is higher than 2400, for every 100 excess ATK, additionally increases this value by 1%" },
       to: 'enemy',
       limits: { kinds: ['break'] },
       causes: 'debuff',

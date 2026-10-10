@@ -3,7 +3,9 @@
  * teams, Line-ups, Who fits, "If you pull…" % and recommended teams. Same
  * shape as ZZZ (src/games/zzz/kitcheck/team.ts), with teams of four and no order.
  */
-import type { FitOptions, FitSuggestion, PullValue, TeamAccount, TeamIdea, TeamPreset, TeamReason, TeamRules, TeamVerdict } from '../../../core/contract';
+import type { FitOptions, FitSuggestion, PullValue, TeamAccount, TeamIdea, TeamPreset, TeamReason, TeamRules, TeamVerdict, TeamWant } from '../../../core/contract';
+import { BUILD_STAT_WORD, buildFit } from '../../../core/rules/buildFit';
+import { GEAR_SLOTS } from '../gear';
 import { canCarry, canPartner, check, compare, damageDealers, isCentre, type Account, type Library, type Line, type TeamResult } from './check';
 import { centreOf, library, pageOf } from './library';
 import { accountNotes } from '../../../core/rules/accountNotes';
@@ -15,7 +17,16 @@ export const METHOD = 'HSR Kit Check theory v2 (docs/logic/hsr-theory.md)';
 const PAIR_LIMIT = 10;
 const SIZE = 4;
 
-const toAccount = (a: TeamAccount): Account => ({ eidolon: (id) => (a.owned(id) ? a.dupes(id) : 0), enhanced: (id) => a.potential?.(id), weapon: (id) => (a.owned(id) ? a.weapon?.(id) : undefined) });
+const toAccount = (a: TeamAccount): Account => ({
+  eidolon: (id) => (a.owned(id) ? a.dupes(id) : 0),
+  enhanced: (id) => a.potential?.(id),
+  weapon: (id) => (a.owned(id) ? a.weapon?.(id) : undefined),
+  // T18: a saved build is read only for characters you own; undefined = no build saved.
+  buildFit: (id, stat) => {
+    const b = a.owned(id) ? a.build?.(id) : undefined;
+    return b ? buildFit(b, stat, GEAR_SLOTS) : undefined;
+  },
+});
 
 /** The Trailblazer is one character: at most one of their forms (ids 8001–8010) in a team. */
 const isTrailblazer = (id: string) => id.startsWith('80') && id.length === 4;
@@ -48,7 +59,8 @@ export function bestFor(dd: string, pool: string[], lib: Library, account: Accou
   const key = `${dd}|${[...new Set(pool)].sort().map((id) => `${id}:${account.eidolon(id)}:${account.enhanced(id) ?? '-'}`).join(',')}|${account.eidolon(dd)}:${account.enhanced(dd) ?? '-'}`;
   if (bestCache.has(key)) return bestCache.get(key);
   if (bestCache.size > 2000) bestCache.clear();
-  const found = findBest(dd, pool, lib, account);
+  // The best team found assumes every member is built for what the team wants (decision 26): 100% includes builds.
+  const found = findBest(dd, pool, lib, { ...account, ideal: true });
   bestCache.set(key, found);
   return found;
 }
@@ -157,9 +169,30 @@ export function verdict(members: string[], a: TeamAccount, lib: Library = librar
     order: mine.members,
     unordered: true,
     reasons: mine.lines.map((l) => reasonOf(l, lib)),
+    ...(wantsOf(mine, lib).length ? { wants: wantsOf(mine, lib) } : {}),
     explain: explainTeam({ members: mine.members, dd: mine.dd, count: mine.count, lines: mine.lines }, { members: top.members, dd: top.dd, count: top.count, lines: top.lines }, name),
     notes: [summary(mine), ...notes],
   };
+}
+
+/** The builds this team wants on its members (T18), from its build lines. */
+function wantsOf(r: TeamResult, lib: Library): TeamWant[] {
+  return r.lines.flatMap((l) =>
+    l.kind === 'build' && l.build
+      ? [
+          {
+            who: l.who,
+            stat: BUILD_STAT_WORD[l.build.stat],
+            label: l.tag,
+            have: l.build.have,
+            fit: l.build.fit,
+            points: l.points,
+            max: l.build.max,
+            proof: { skill: (l.piece && lib.pieceLabels.get(l.who)?.get(l.piece)) ?? l.piece ?? '', quote: l.quote ?? '' },
+          },
+        ]
+      : [],
+  );
 }
 
 /** How a candidate connects in a checked team, in words; empty = not at all. */

@@ -114,3 +114,15 @@ describe('Recommended teams from the check', () => {
     expect(billy?.slots[1]?.characters.length).toBeGreaterThan(1);
   });
 });
+
+describe('Builds a team wants (T18): shown, not counted in ZZZ yet (decision 28)', () => {
+  it('Pan Yinhu’s ATK-based buff asks for an ATK build, but the method’s count stays as written', () => {
+    const lib = library();
+    const a = { owned: () => true, dupes: () => 0 };
+    const v = verdict(['1531', '1421', '1451'], a, lib);
+    if (!v.rated) throw new Error(v.why);
+    const pan = v.wants?.find((w) => w.who === '1421');
+    expect(pan).toMatchObject({ stat: 'ATK', points: 0, max: 0, fit: 'no-build' });
+    expect(lib.sheets.get('1421')?.entries.some((e) => e.scales?.stat === 'atk')).toBe(true);
+  });
+});

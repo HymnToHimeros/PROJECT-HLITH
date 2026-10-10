@@ -22,6 +22,10 @@ describe('Part A: the cheat sheet is proven by the game text', () => {
       expect(text.get(e.piece), `${e.id}: piece ${e.piece}`).toBeDefined();
       expect(text.get(e.piece), `${e.id}: quote`).toContain(e.quote);
       expect(e.setup.length, `${e.id}: question 6`).toBeGreaterThan(3);
+      if (e.scales) {
+        expect(text.get(e.piece), `${e.id}: scaling quote`).toContain(e.scales.quote);
+        for (const g of e.scales.gives ?? []) expect(e.gives.some((x) => x.stat === g), `${e.id}: scales a stat it gives`).toBe(true);
+      }
     }
     for (const q of sheet.damage?.quotes ?? []) expect(text.get(q.piece)).toContain(q.quote);
     // Every part read: each kit piece has entries or a reason it has nothing for the squad.

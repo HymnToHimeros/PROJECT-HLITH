@@ -111,6 +111,10 @@ stays the base; never rename an id that is already in a list.
   - 2026-10-10 · LOGIC-CORE added `TeamExplain` and optional `explain` on a rated
     `TeamVerdict` (plain-words reasons, T17), filled by `src/core/rules/teamExplain.ts`;
     the team "Why" (TeamParts.tsx) shows it first, the proof list one tap below.
+  - 2026-10-10 · LOGIC-CORE added optional `build` to `TeamAccount` (the saved build,
+    owned characters only), the `TeamWant` type and optional `wants` on a rated
+    `TeamVerdict` (builds a team wants, T18; points already in the count). Each game's
+    gear slots moved to `src/games/<game>/gear.ts` (the contract uses them as before).
   - 2026-10-10 · LOGIC-CORE added optional `set`, `rolls`, `weapon.refine` and
     `skills` to `CharacterBuild`, the `BuildScorePart` type, and optional `parts`
     and `basis` on `scoreBuild`'s result; the character page's Build score card

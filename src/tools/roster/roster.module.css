@@ -1578,3 +1578,9 @@ button.member:hover .memberArt {
 .whyList .partRow > .muted {
   grid-column: 1 / -1;
 }
+
+/* Builds their teams want (T18): the teams under each build. */
+.wantTeams {
+  display: block;
+  color: var(--ink-3);
+}

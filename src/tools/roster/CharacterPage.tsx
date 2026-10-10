@@ -1,7 +1,8 @@
 import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
-import type { Character, CharacterBuild, Material, SavedBuild, TeamPreset } from '../../core/contract';
+import type { Character, Material, SavedBuild, TeamPreset } from '../../core/contract';
 import { useExamplesShown } from '../../core/data/prefs';
 import { clearBuild, setBuild, setFarm, setRosterEntry } from '../../core/data/userData';
+import { FIT_WORD } from '../../core/rules/buildFit';
 import { formatNumber } from '../../core/time/format';
 import { Button, ExampleTag, GameTag, HowTo, NoData, UnverifiedTag } from '../../core/ui';
 import { exampleNeeds } from '../farm/examples';
@@ -10,7 +11,7 @@ import { exampleBuild, exampleScore } from './examples';
 import { BuildEditor } from './BuildEditor';
 import { KitCheck } from './KitCheck';
 import r from './roster.module.css';
-import { artOf, CharArt, dupesLabel, elementOf, entryOf, isUpcoming, rarityColor, roleLabel } from './shared';
+import { artOf, CharArt, dupesLabel, elementOf, entryOf, isUpcoming, rarityColor, roleLabel, toCharacterBuild } from './shared';
 import { TeamRow, teamAccount } from './TeamParts';
 import { useBuilds, useKits, type RosterData } from './useRosterData';
 
@@ -180,6 +181,7 @@ export function CharacterPage({ data, character: c, several, onBack, openPulls, 
       <div className={r.cards}>
         {entry.owned ? <BuildCard data={data} character={c} /> : <IfYouPull data={data} character={c} openPulls={openPulls} />}
         <TeamFit data={data} character={c} makePreset={makePreset} />
+        <BuildWants data={data} character={c} />
         <section className={r.card} aria-labelledby={`how-to-build-${c.id}`}>
           <h3 className={r.cardTitle} id={`how-to-build-${c.id}`}>
             How to build {c.name}
@@ -397,32 +399,7 @@ function BuildCard({ data, character: c }: { data: RosterData; character: Charac
   const score = useMemo(() => {
     const rate = game.rules.scoreBuild;
     if (!rate || !saved || saved.level === undefined) return null;
-    const build: CharacterBuild = {
-      characterId: c.id,
-      level: saved.level,
-      dupes: entry.dupes,
-      ...(saved.weapon
-        ? {
-            weapon: {
-              name: saved.weapon.name,
-              ...(saved.weapon.id ? { id: saved.weapon.id } : {}),
-              ...(saved.weapon.level !== undefined ? { level: saved.weapon.level } : {}),
-              ...(saved.weapon.refine !== undefined ? { refine: saved.weapon.refine } : {}),
-            },
-          }
-        : {}),
-      // Every piece that has anything entered: main stat, set, sub stats (and their rolls when known).
-      gear: saved.gear
-        .filter((g) => g.main || g.set || g.subs.length)
-        .map((g) => ({
-          slot: g.slot,
-          main: g.main ?? '',
-          subs: Object.fromEntries(g.subs.map((x) => [x.stat, x.value])),
-          ...(g.set ? { set: g.set } : {}),
-          ...(g.subs.some((x) => x.rolls !== undefined) ? { rolls: Object.fromEntries(g.subs.filter((x) => x.rolls !== undefined).map((x) => [x.stat, x.rolls ?? 0])) } : {}),
-        })),
-      ...(saved.skills ? { skills: saved.skills } : {}),
-    };
+    const build = toCharacterBuild(saved, c.id, entry.dupes);
     return rate(build);
   }, [game.rules, saved, c.id, entry.dupes]);
   const t = game.terms;
@@ -618,6 +595,57 @@ function IfYouPull({ data, character, openPulls }: { data: RosterData; character
 
 /** Teams shown at first on a character page; the rest stay one tap away. */
 const FIT_FIRST = 3;
+
+/**
+ * Which build each of their teams wants on them (owner's job T18: "Robin • Summeretto with Phainon is an HP-only build").
+ * A team wants a build when this character's buff to its damage dealer grows with their own stat. Hidden when none does.
+ */
+function BuildWants({ data, character: c }: { data: RosterData; character: Character }) {
+  const { game, user, presets } = data;
+  const rules = game.rules.teams;
+  const roster = user.roster;
+  const builds = user.builds;
+  const rows = useMemo(() => {
+    if (!rules || presets.example) return [];
+    const firsts = (p: TeamPreset) => p.slots.map((s) => s.characters[0]).filter((x): x is string => Boolean(x));
+    const teams = [...user.teams.map((t) => ({ id: t.id, name: t.name, members: t.members })), ...presets.list.map((p) => ({ id: p.id, name: p.name, members: firsts(p) }))].filter((t) =>
+      t.members.includes(c.id),
+    );
+    return teams.flatMap((t) => {
+      const v = rules.verdict(t.members, teamAccount(data));
+      return v.rated ? (v.wants ?? []).filter((w) => w.who === c.id).map((w) => ({ team: t, want: w })) : [];
+    });
+  }, [rules, presets, user.teams, c.id, roster, builds]); // eslint-disable-line react-hooks/exhaustive-deps
+  if (!rows.length) return null;
+  // One line per stat: their build is the same in every team, so the fit is too; the teams that want it are listed.
+  const byStat = [...new Map(rows.map((x) => [x.want.stat, { want: x.want, teams: [...new Set(rows.filter((y) => y.want.stat === x.want.stat).map((y) => y.team.name))] }])).values()];
+  return (
+    <section className={r.card} aria-labelledby="build-wants">
+      <h3 className={r.cardTitle} id="build-wants">
+        Builds their teams want
+      </h3>
+      <p className={r.cardText}>
+        {byStat.length === 1
+          ? `Their teams want ${c.name} built for ${byStat[0]?.want.stat ?? ''}: their buff to the damage dealer grows with it.`
+          : `Different teams want different builds on ${c.name}: ${byStat.map((x) => x.want.stat).join(', ')}.`}
+      </p>
+      <ul className={r.whyList}>
+        {byStat.map(({ want, teams }) => (
+          <li key={want.stat} className={r.whyItem}>
+            <span className={r.whyPoints}>{want.max ? `+${want.points}` : '·'}</span>
+            <span>
+              <strong>{want.stat} build</strong> · yours: {want.fit === 'no-build' ? FIT_WORD[want.fit] : `${want.have} → ${FIT_WORD[want.fit]}`}
+              <span className={r.wantTeams}>Wanted by {teams.length === 1 ? teams[0] : `${teams.length} teams: ${teams.join('; ')}`}.</span>
+              <span className={r.whyQuote}>
+                {want.proof.skill}: “{want.proof.quote}”
+              </span>
+            </span>
+          </li>
+        ))}
+      </ul>
+    </section>
+  );
+}
 
 function TeamFit({ data, character: c, makePreset }: { data: RosterData; character: Character; makePreset?: (() => void) | undefined }) {
   const { game, user, presets } = data;

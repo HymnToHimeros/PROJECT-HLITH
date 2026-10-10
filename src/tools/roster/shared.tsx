@@ -1,5 +1,5 @@
 import type { CSSProperties, ReactNode } from 'react';
-import type { Character, GameContract, GameId } from '../../core/contract';
+import type { Character, CharacterBuild, GameContract, GameId, SavedBuild } from '../../core/contract';
 import { useGameData, type GameUserData, type RosterEntry } from '../../core/data/userData';
 import { initials } from '../../core/ui';
 import r from './roster.module.css';
@@ -98,4 +98,34 @@ export function SectionHead({ title, note, children, id }: { title: string; note
       {children}
     </div>
   );
+}
+
+/** A saved build (the build editor's shape) as the game rules read it: build score and team build wants (T18). */
+export function toCharacterBuild(saved: SavedBuild, id: string, dupes: number): CharacterBuild {
+  return {
+    characterId: id,
+    level: saved.level ?? 0,
+    dupes,
+    ...(saved.weapon
+      ? {
+          weapon: {
+            name: saved.weapon.name,
+            ...(saved.weapon.id ? { id: saved.weapon.id } : {}),
+            ...(saved.weapon.level !== undefined ? { level: saved.weapon.level } : {}),
+            ...(saved.weapon.refine !== undefined ? { refine: saved.weapon.refine } : {}),
+          },
+        }
+      : {}),
+    // Every piece that has anything entered: main stat, set, sub stats (and their rolls when known).
+    gear: saved.gear
+      .filter((g) => g.main || g.set || g.subs.length)
+      .map((g) => ({
+        slot: g.slot,
+        main: g.main ?? '',
+        subs: Object.fromEntries(g.subs.map((x) => [x.stat, x.value])),
+        ...(g.set ? { set: g.set } : {}),
+        ...(g.subs.some((x) => x.rolls !== undefined) ? { rolls: Object.fromEntries(g.subs.filter((x) => x.rolls !== undefined).map((x) => [x.stat, x.rolls ?? 0])) } : {}),
+      })),
+    ...(saved.skills ? { skills: saved.skills } : {}),
+  };
 }
