@@ -8,22 +8,23 @@ doing it said `LIVE`. Newest jobs at the bottom; live jobs move to Done.
 | # | Job | Who | State | Note |
 |---|---|---|---|---|
 | T5 | HSR "Interastral Peace Gala" reward (starts 21 Oct) | SCHEDULER | blocked | Sources say 500 or 60; filled from the official notice when the event opens 21 Oct. |
-| T6 | Keep the game lists current on a schedule | SCHEDULER | waiting on owner | Owner decides how often (`data:nanoka` then `data:schedule`). |
-| T7 | Schedules for the research routine (leaks, events, game data) | SCHEDULER | waiting on owner | Decided once SCHEDULER and LOGIC-CORE are done. |
+| T6 | Keep the game lists current on a schedule | SCHEDULER | later | Owner: a task for the end, when everything else is done. |
+| T7 | Schedules for the research routine (leaks, events, game data) | SCHEDULER | later | Owner: a task for the end. |
 | T8 | Live checks with real logins: HoYoLAB link, in-game history link, Assistant with own key | FRAME | waiting on owner | Needs the owner to sign in and try each. |
-| T9 | Phone push keys (VAPID) so the evening message is really sent | FRAME | waiting on owner | Turns something on; owner's call. |
-| T10 | Resend for sign-in mail at scale | FRAME | waiting on owner | May cost money; owner's call. |
+| T9 | Phone push keys (VAPID) so the evening message is really sent | FRAME | later | Owner: phone notifications are a task for the end. |
+| T10 | Resend for sign-in mail at scale | FRAME | waiting on owner | Explained to the owner what Resend is; probably not needed for a personal app. |
 | T11 | Finish account deletions after 30 days | FRAME | sent | Listed as "later" in PROGRESS.md. |
-| T12 | Paste fresh HoYoLAB code logins for HSR and ZZZ (Account → Connected accounts) | owner | waiting on owner | Live stamina and check-in need them. |
+| T12 | Paste fresh HoYoLAB code logins for HSR and ZZZ (Account → Connected accounts) | owner | working | Owner says HoYoLAB is set up. FRAME checks whether reads/check-ins actually succeed. |
 | T13 | ZZZ 3.3 (21 Oct): event dates, A-rank featured agents, version end date | SCHEDULER | blocked | Nothing published yet; rerun `data:nanoka` + `data:schedule` on 21 Oct. |
 | T14 | HSR 4.7 (starts 11 Nov): versions, banners, events | SCHEDULER | blocked | Waits for the announcement (special program around late Oct). |
 | T15 | HSR leak "Nihilux": confirm official name | SCHEDULER | blocked | Probably Aeon ★ Aha (already marked as a leak); confirm when announced. |
 | T17 | Kit check / Roster teams don't explain their reasoning ("Why 90%: count 9 of 10" is a number, not a reason). Screenshot `2-recommended-teams.png` | LOGIC-CORE leads, FRAME for the screen | working | PR #61 (after #60): every Why opens in plain words, one line per member, "To reach 100%". Both games. |
 | T18 | Make my own teams (pick the members myself, get them scored) | FRAME leads, LOGIC-CORE scores | working | Owner OK: put live. Order: #61 → account-fits → #59. Build/weapon scoring (incl. Robin • Summeretto HP case) follows as its own step. |
-| T20 | Several screens are badly designed / crowded (owner: endgame may stay in Events; MANAGER to find which). MANAGER's list: Today, Events, Calendar, Backlog, Banners (see note to FRAME) | FRAME | working | Owner OK on #63 Calendar, #64 Events, #65 Today; merging in line. #66 Backlog still needs the owner's look. |
+| T20 | Several screens are badly designed / crowded (owner: endgame may stay in Events; MANAGER to find which). MANAGER's list: Today, Events, Calendar, Backlog, Banners (see note to FRAME) | FRAME | working | All owner-approved: Calendar, Events, Today live; Backlog #66 OK, merging. |
 | T21 | Banners screen looks like a card picker, not a banner tracker: redesign. Screenshot `3-banners-page.webp` | FRAME | waiting on owner | PR #68 (Timeline board on real data, replaces #62). Screenshots sent to owner. |
 | T26 | Team scores count saved builds: bigger stat → higher score (roughly, steps are fine); the build a support should run depends on the team (e.g. HP Robin • Summeretto for Phainon); only when a build is saved; option to see which build fits which team | LOGIC-CORE leads, FRAME screen | working | LOGIC-CORE plan: step 3 build-wants (bands: built +2 / partly +1 / not 0 / no build "scored at base"; "This team wants…" in Why; "Builds her teams want" on character page), step 4 every equipped weapon. Hard thresholds ("at 150% Break") wait for total stats. |
 | T27 | HSR: pick your Trailblazer (Caelus or Stelle) so that Trailblazer's entries are auto-marked owned in Roster; ZZZ needs nothing | FRAME | sent | Asked owner: hide the other Trailblazer or leave unowned. |
+| T28 | Standing rule: every logic rule is the same in HSR and ZZZ, except game-specific facts; ZZZ counts builds like HSR | LOGIC-CORE | sent | Owner's words in decisions files; zzz-method.md untouched. |
 
 ## Done
 | # | Job | Who | Live on |
