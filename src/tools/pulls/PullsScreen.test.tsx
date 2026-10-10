@@ -319,7 +319,7 @@ describe('Pulls screen', () => {
     render(<PullsScreen games={[paidGame]} scope="aa" tab="calculator" servers={{ aa: 'eu' }} openTab={openTab} open={() => {}} openAccount={() => {}} />);
     expect(await screen.findByText('Budget to the date you choose')).toBeInTheDocument();
     expect(screen.getByText('Bank now')).toBeInTheDocument();
-    expect(screen.getByRole('switch', { name: 'Count paid extras (Monthly pass)' })).toBeInTheDocument();
+    expect(screen.getByRole('switch', { name: 'Count paid extra: Monthly pass' })).toBeInTheDocument();
     // "No data yet · Add it" opens the Bank log.
     fireEvent.click(screen.getAllByRole('button', { name: 'Add it' })[0] as HTMLElement);
     expect(openTab).toHaveBeenCalledWith('log');

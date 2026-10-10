@@ -30,6 +30,8 @@ export interface GameUserData {
   /** Income row id → when that pass runs out. */
   passes: Record<string, string>;
   paidExtras: boolean;
+  /** Paid rows switched off one by one (income row ids). Missing = none. */
+  paidOff?: string[];
   /** Event id → your state and claimed login days. Missing = open, nothing claimed. */
   events: Record<string, EventProgress>;
   /** Backlog item id → how many done. */
@@ -229,6 +231,14 @@ export function importPulls(game: GameId, incoming: PullRecord[]): string[] {
 
 export function setPaidExtras(game: GameId, on: boolean): void {
   update(game, (g) => ({ ...g, paidExtras: on }));
+}
+
+/** Count one paid extra or not. Switching one on also switches paid extras on. */
+export function setPaidRow(game: GameId, rowId: string, on: boolean): void {
+  update(game, (g) => {
+    const off = (g.paidOff ?? []).filter((id) => id !== rowId);
+    return on ? { ...g, paidExtras: true, paidOff: off } : { ...g, paidOff: [...off, rowId] };
+  });
 }
 
 export function setPass(game: GameId, rowId: string, until: string | null): void {

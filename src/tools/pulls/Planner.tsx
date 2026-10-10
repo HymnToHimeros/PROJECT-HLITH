@@ -136,6 +136,7 @@ function PlanCard({ game, banner: b, type, data, serverId, now, tagged, whatIf, 
     until: horizon,
     bank: data.bank.value,
     paidExtras: data.user.paidExtras,
+    paidOff: data.user.paidOff,
     passes: Object.fromEntries(Object.entries(data.user.passes).map(([k, v]) => [k, Date.parse(v)])),
     ...data.budgetExtras(horizon),
   });
