@@ -50,6 +50,11 @@ export interface GameUserData {
   plans: UserPlan[];
   /** Every change the Assistant made with your approval, with the value before, for Undo. Never removed. */
   assistantActions: AssistantAction[];
+  /**
+   * Pity you entered yourself, per banner type (for players who can't import history).
+   * A history import takes over once it knows the state. Missing = not entered.
+   */
+  pityManual?: Record<string, { pity: number; guaranteed: boolean; at: string }>;
 }
 
 /** The lists Edit mode can add to, change and hide in. */
@@ -207,11 +212,16 @@ export function reverseLedgerEntry(game: GameId, entryId: string, at: string, no
 
 /** Add pulls; ones already stored (same game pull id) are ignored. Returns how many were new. */
 export function addPulls(game: GameId, incoming: PullRecord[]): number {
-  let added = 0;
+  return importPulls(game, incoming).length;
+}
+
+/** Add pulls; returns the ids that were new, so "Undo this import" can remove exactly those. */
+export function importPulls(game: GameId, incoming: PullRecord[]): string[] {
+  let added: string[] = [];
   update(game, (g) => {
     const seen = new Set(g.pulls.map((p) => p.id));
     const fresh = incoming.filter((p) => !seen.has(p.id));
-    added = fresh.length;
+    added = fresh.map((p) => p.id);
     return { ...g, pulls: [...g.pulls, ...fresh].sort((a, b) => a.time.localeCompare(b.time) || a.id.length - b.id.length || a.id.localeCompare(b.id)) };
   });
   return added;
@@ -253,10 +263,59 @@ export function saveTeam(game: GameId, team: UserTeam): void {
   update(game, (g) => ({ ...g, teams: [...g.teams.filter((t) => t.id !== team.id), team] }));
 }
 
+/** Delete one of your teams (you asked for it). Returns the team, so Undo can save it back. */
+export function deleteTeam(game: GameId, teamId: string): UserTeam | null {
+  const team = gameData(game).teams.find((t) => t.id === teamId) ?? null;
+  if (team) update(game, (g) => ({ ...g, teams: g.teams.filter((t) => t.id !== teamId) }));
+  return team;
+}
+
+/** Clear your progress on a backlog item (back to "No data yet"). */
+export function clearBacklogDone(game: GameId, itemId: string): void {
+  update(game, (g) => ({ ...g, backlog: Object.fromEntries(Object.entries(g.backlog).filter(([k]) => k !== itemId)) }));
+}
+
+/** Put backlog progress back exactly as it was (Undo): numbers restored, missing ones cleared. */
+export function restoreBacklogDone(game: GameId, before: Record<string, number | undefined>): void {
+  update(game, (g) => {
+    const next = { ...g.backlog };
+    for (const [id, v] of Object.entries(before)) {
+      if (v === undefined) delete next[id];
+      else next[id] = v;
+    }
+    return { ...g, backlog: next };
+  });
+}
+
+/** Save or clear the pity you entered yourself for one banner type. */
+export function setPityManual(game: GameId, bannerType: string, value: { pity: number; guaranteed: boolean } | null): void {
+  update(game, (g) => {
+    const rest = Object.fromEntries(Object.entries(g.pityManual ?? {}).filter(([k]) => k !== bannerType));
+    return { ...g, pityManual: value ? { ...rest, [bannerType]: { ...value, at: new Date().toISOString() } } : rest };
+  });
+}
+
+/** Undo an import: remove exactly the pulls with these ids (an import records them). Returns how many were removed. */
+export function removePulls(game: GameId, ids: string[]): number {
+  const drop = new Set(ids);
+  const before = gameData(game).pulls.length;
+  update(game, (g) => ({ ...g, pulls: g.pulls.filter((p) => !drop.has(p.id)) }));
+  return before - gameData(game).pulls.length;
+}
+
 export function setTick(game: GameId, taskId: string, at: string | null): void {
   update(game, (g) => {
     const rest = Object.fromEntries(Object.entries(g.ticks).filter(([k]) => k !== taskId));
     return { ...g, ticks: at ? { ...rest, [taskId]: at } : rest };
+  });
+}
+
+/** Edit mode: put a built-in item back to the list's version (your changes dropped; a hide stays). */
+export function revertOwnItem(game: GameId, kind: OwnKind, id: string, at: string): void {
+  update(game, (g) => {
+    const cur = g.ownItems[kind][id];
+    if (!cur || cur.mine) return g;
+    return { ...g, ownItems: { ...g.ownItems, [kind]: { ...g.ownItems[kind], [id]: { ...cur, fields: {}, at } } } };
   });
 }
 
