@@ -18,18 +18,18 @@ doing it said `LIVE`. Newest jobs at the bottom; live jobs move to Done.
 | T13 | ZZZ 3.3 (21 Oct): event dates, A-rank featured agents, version end date | SCHEDULER | blocked | Nothing published yet; rerun `data:nanoka` + `data:schedule` on 21 Oct. |
 | T14 | HSR 4.7 (starts 11 Nov): versions, banners, events | SCHEDULER | blocked | Waits for the announcement (special program around late Oct). |
 | T15 | HSR leak "Nihilux": confirm official name | SCHEDULER | blocked | Probably Aeon ★ Aha (already marked as a leak); confirm when announced. |
-| T17 | Kit check / Roster teams don't explain their reasoning ("Why 90%: count 9 of 10" is a number, not a reason). Screenshot `2-recommended-teams.png` | LOGIC-CORE leads, FRAME for the screen | working | #61 LIVE. |
-| T18 | Make my own teams (pick the members myself, get them scored) | FRAME leads, LOGIC-CORE scores | working | #67 LIVE (account suggestions), #69 merged (signature weapons). #59 picker next. |
-| T20 | Several screens are badly designed / crowded (owner: endgame may stay in Events; MANAGER to find which). MANAGER's list: Today, Events, Calendar, Backlog, Banners (see note to FRAME) | FRAME | working | All owner-approved: Calendar, Events, Today live; Backlog #66 OK, merging. |
-| T21 | Banners screen looks like a card picker, not a banner tracker: redesign. Screenshot `3-banners-page.webp` | FRAME | working | #68 v2 matches mock-up; owner: NEXT/LATER (and weapon banners) must use the same big hero card as NOW. No more owner OK needed. |
-| T26 | Team scores count saved builds: bigger stat → higher score (roughly, steps are fine); the build a support should run depends on the team (e.g. HP Robin • Summeretto for Phainon); only when a build is saved; option to see which build fits which team | LOGIC-CORE leads, FRAME screen | working | LOGIC-CORE plan: step 3 build-wants (bands: built +2 / partly +1 / not 0 / no build "scored at base"; "This team wants…" in Why; "Builds her teams want" on character page), step 4 every equipped weapon. Hard thresholds ("at 150% Break") wait for total stats. |
+| T18 | Make my own teams (pick the members myself, get them scored) | FRAME leads, LOGIC-CORE scores | working | LIVE: My teams picker (#59), account suggestions (#67), signature weapons (#69), build wants (#73). Next: every equipped weapon (#74). |
 | T27 | HSR: pick your Trailblazer (Caelus or Stelle) so that Trailblazer's entries are auto-marked owned in Roster; ZZZ needs nothing | FRAME | working | Owner: other Trailblazer hidden. FRAME building. |
-| T28 | Standing rule: every logic rule is the same in HSR and ZZZ, except game-specific facts; ZZZ counts builds like HSR | LOGIC-CORE | sent | Owner's words in decisions files; zzz-method.md untouched. |
-| T29 | HSR teams still mix-match (Phainon + March 7th / Asta / Bronya; "best" = Tingyun, Sparkle, Huohuo). Owner: when a better unit for a job exists, pick it. Test: Phainon + Sunday + Cerydra + Dan Heng PT must be Phainon's top team | LOGIC-CORE | working | Top priority. Cause: teams copied from the game's starter line-ups; score counts kinds of buff, not size or real strength. LOGIC-CORE to send fix options; owner decides. |
+| T28 | Standing rule: every logic rule is the same in HSR and ZZZ, except game-specific facts; ZZZ counts builds like HSR | LOGIC-CORE | working | In #73 (ZZZ counts builds like HSR; standing mirror rule in decisions files). |
+| T29 | HSR teams still mix-match (Phainon + March 7th / Asta / Bronya; "best" = Tingyun, Sparkle, Huohuo). Owner: when a better unit for a job exists, pick it. Test: Phainon + Sunday + Cerydra + Dan Heng PT must be Phainon's top team | LOGIC-CORE | working | Fix (a) merged as #75: only each carry's own game team, filled from roster. Next: owner-editable team list (b), priority because Robin • Summeretto is missing from Phainon's game list. |
 
 ## Done
 | # | Job | Who | Live on |
 |---|---|---|---|
+| T17 | Teams explain themselves in plain words (PR #61) | LOGIC-CORE | 2026-10-10 |
+| T20 | Calmer Calendar, Events, Today, Backlog (PRs #63–#66) | FRAME | 2026-10-10 |
+| T21 | Banners as a timeline board, every banner a big card (PR #68) | FRAME | 2026-10-10 |
+| T26 | Builds a team wants, both games (PR #73) | LOGIC-CORE | 2026-10-10 |
 | T16 | Live banner art the same size (PR #56) | FRAME | 2026-10-10 |
 | T22 | Dailies tick from HoYoLAB, strict (PR #56) | FRAME | 2026-10-10 |
 | T19 | HSR teams from the game's real teams (PR #60) | LOGIC-CORE | 2026-10-10 |
