@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import type { GameContract, GameEvent, Version } from '../../core/contract';
-import { useExamplesShown } from '../../core/data/prefs';
+import { useExamplesShown, useServerOffset } from '../../core/data/prefs';
+import { listAtServer } from '../../core/time/serverTime';
 import { useGameData, type GameUserData } from '../../core/data/userData';
 import { useHideLeaks } from '../banners/leakPref';
 import { exampleCycles } from '../calendar/examples';
@@ -33,6 +34,7 @@ export interface EventsData {
 export function useEventsData(game: GameContract, now: number): EventsData {
   const user = useGameData(game.id);
   const showExamples = useExamplesShown();
+  const offset = useServerOffset(game);
   const hideLeaks = useHideLeaks();
   const [lists, setLists] = useState<{ events: GameEvent[]; versions: Version[]; at: number } | null>(null);
 
@@ -52,7 +54,8 @@ export function useEventsData(game: GameContract, now: number): EventsData {
   const examples = useMemo(() => exampleEvents(game, at), [game, at]);
   const builtIn = lists?.events ?? NO_EVENTS;
   // Built-in events with your changes, your own events, and examples one by one (until you hide or change them).
-  const mixed = useMemo(() => mixExamples('events', builtIn, user.ownItems.events, examples, showExamples), [builtIn, user.ownItems.events, examples, showExamples]);
+  // "Server time" ends move to the user's server.
+  const mixed = useMemo(() => mixExamples('events', listAtServer(builtIn, offset), user.ownItems.events, examples, showExamples), [builtIn, offset, user.ownItems.events, examples, showExamples]);
   const list = useMemo(() => (hideLeaks ? mixed.list.filter((e) => !e.leak) : mixed.list), [mixed.list, hideLeaks]);
   const cycleExamples = useMemo(
     () => new Map(showExamples && !list.some((e) => e.kind === 'endgame') ? exampleCycles(game, at).map((c) => [c.rowId, { start: c.start, end: c.end }] as const) : []),

@@ -8,6 +8,8 @@ export const AVATAR_BUCKET = 'avatars';
 /** Where the profile is kept: this browser, or your account. */
 export interface ProfileStore {
   mode: 'device' | 'account';
+  /** Two stores with the same key hold the same profile (so a save in one shows in the other). */
+  key?: string;
   load(): Promise<Profile>;
   save(p: Profile): Promise<Profile>;
   /** Something an <img> can show for a stored picture value. */
@@ -16,6 +18,7 @@ export interface ProfileStore {
 
 export const deviceStore: ProfileStore = {
   mode: 'device',
+  key: 'device',
   load: async () => loadDeviceProfile(),
   save: async (p) => saveDeviceProfile(p),
   imageUrl: (v) => v,
@@ -34,6 +37,7 @@ export function accountStore(client: SupabaseClient, userId: string): ProfileSto
   };
   return {
     mode: 'account',
+    key: `account:${userId}`,
     async load() {
       const { data, error } = await client.from('profiles').select('user_id, display_name, bio, avatar_path, banner_path, showcase, updated_at').eq('user_id', userId).maybeSingle();
       if (error) throw new Error(error.message);
@@ -81,6 +85,11 @@ const readDismissed = (): boolean => {
   }
 };
 
+/** Every open copy of the profile (the Account page, the sidebar card) hears about a save. */
+type Listener = (store: ProfileStore, saved: Profile) => void;
+const listeners = new Set<Listener>();
+const sameStore = (a: ProfileStore, b: ProfileStore) => a === b || (a.key !== undefined && a.key === b.key);
+
 export function useProfile(store: ProfileStore): ProfileState {
   const [state, setState] = useState<{ store: ProfileStore; profile: Profile; error: string } | null>(null);
   const [saveError, setSaveError] = useState('');
@@ -105,6 +114,16 @@ export function useProfile(store: ProfileStore): ProfileState {
     };
   }, [store]);
 
+  useEffect(() => {
+    const hear: Listener = (from, saved) => {
+      if (sameStore(from, store)) setState({ store, profile: saved, error: '' });
+    };
+    listeners.add(hear);
+    return () => {
+      listeners.delete(hear);
+    };
+  }, [store]);
+
   const current = state?.store === store ? state : null;
   const save = useCallback(
     async (p: Profile) => {
@@ -112,6 +131,7 @@ export function useProfile(store: ProfileStore): ProfileState {
       try {
         const saved = await store.save(p);
         setState({ store, profile: saved, error: '' });
+        for (const hear of listeners) hear(store, saved);
         return true;
       } catch (e) {
         setSaveError(e instanceof Error ? e.message : 'That didn’t save. Nothing was changed.');

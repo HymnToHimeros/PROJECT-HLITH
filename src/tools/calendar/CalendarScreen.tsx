@@ -21,7 +21,7 @@ export default function CalendarScreen({ games, scope, servers, openAccount, ope
         <Calendar
           games={shown}
           servers={servers}
-          lists={withOwnItems(shown, lists, user, { showExamples, hideLeaks, now })}
+          lists={withOwnItems(shown, lists, user, { showExamples, hideLeaks, now, servers })}
           plans={shown.flatMap((g) => (user[g.id]?.plans ?? []).filter((p) => p.status === 'active').map((p) => ({ game: g, plan: p })))}
           now={now}
           openAccount={openAccount}

@@ -4,7 +4,8 @@
  * in tests/tokens-light.test.ts with the same rules as the dark theme.
  * The design says "light comes later": this is built from the tokens, not drawn yet.
  */
-:root[data-theme='light'] {
+:root[data-theme='light'],
+[data-theme-preview='light'] {
   color-scheme: light;
 
   /* Basalt → paper · surfaces */
@@ -44,6 +45,10 @@
   /* Rarity, as text on light surfaces */
   --rarity-top: #855600;
   --rarity-mid: #1d5f8c;
+
+  --art-ink: #4a5d6c;
+  --art-glow: #9fc3db;
+  --art-opacity: 0.08;
 
   --scrim: rgb(5 6 7 / 0.35);
 }

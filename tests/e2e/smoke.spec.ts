@@ -161,7 +161,9 @@ test('Profile: pick a picture and a banner, move and zoom them, and save exactly
 
   await page.getByRole('button', { name: 'Save profile' }).click();
   const hero = page.getByRole('region', { name: 'Your profile' });
-  const sizes = await hero.locator('img').evaluateAll((imgs) => (imgs as HTMLImageElement[]).map((i) => [i.src.slice(0, 15), i.naturalWidth, i.naturalHeight]));
+  // The banner's soft glow behind the card is a second copy of the same banner.
+  expect(await hero.locator('[data-banner-glow] img').evaluate((i) => (i as HTMLImageElement).naturalWidth)).toBe(1600);
+  const sizes = await hero.locator('img:not([data-banner-glow] img)').evaluateAll((imgs) => (imgs as HTMLImageElement[]).map((i) => [i.src.slice(0, 15), i.naturalWidth, i.naturalHeight]));
   expect(sizes).toEqual([
     ['data:image/jpeg', 1600, 400],
     ['data:image/jpeg', 512, 512],

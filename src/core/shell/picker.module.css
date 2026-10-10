@@ -129,7 +129,7 @@
 .actions > * {
   flex: 1;
 }
-:root[data-theme='light'] .editLabel {
+:root[data-tone='light'] .editLabel {
   color: var(--ink-3);
 }
 .actions > :first-child {

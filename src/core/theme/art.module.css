@@ -1,0 +1,97 @@
+/* Background art layer (ThemeArt.tsx). Sits behind the page content, right of the PC sidebar. */
+.art {
+  position: fixed;
+  inset: 0 0 0 var(--art-left, 0);
+  z-index: -1; /* the shell root is isolated: above its background, below the page */
+  overflow: hidden;
+  pointer-events: none;
+  color: var(--art-ink);
+  opacity: var(--art-opacity);
+  contain: strict;
+}
+.art svg {
+  position: absolute;
+  display: block;
+  stroke: currentColor;
+  stroke-width: 1;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  overflow: visible;
+}
+.field {
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.crest {
+  top: max(-14vh, -120px);
+  right: -8vw;
+  width: clamp(340px, 56vw, 900px);
+  height: auto;
+  aspect-ratio: 1;
+}
+.base {
+  bottom: -4vh;
+  left: -4vw;
+  width: clamp(260px, 40vw, 620px);
+  height: auto;
+  aspect-ratio: 1;
+}
+
+/* Motion: very slow and optional. Off with prefers-reduced-motion. */
+.twinkle,
+.twinkleSlow {
+  animation: twinkle 9s ease-in-out infinite;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+.twinkleSlow {
+  animation-duration: 14s;
+}
+.turn {
+  animation: turn 360s linear infinite;
+  transform-box: view-box;
+  transform-origin: 430px 360px;
+}
+.drift {
+  animation: drift 40s ease-in-out infinite alternate;
+}
+@keyframes twinkle {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.25;
+  }
+}
+@keyframes turn {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes drift {
+  to {
+    transform: translateX(-60px);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .twinkle,
+  .twinkleSlow,
+  .turn,
+  .drift {
+    animation: none;
+  }
+}
+@media (max-width: 819px) {
+  .crest {
+    top: 40px;
+    right: -30vw;
+    width: 110vw;
+  }
+  .base {
+    width: 80vw;
+    left: -14vw;
+    bottom: 120px;
+  }
+}

@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import type { Banner, Character, GameContract, SampleArt } from '../../core/contract';
-import { useExamplesShown } from '../../core/data/prefs';
+import { useExamplesShown, useServerOffset } from '../../core/data/prefs';
+import { listAtServer } from '../../core/time/serverTime';
 import { useGameData, type GameUserData } from '../../core/data/userData';
 import { exampleBanners } from './examples';
 import { mixExamples } from '../edit-mode/examples';
@@ -23,6 +24,7 @@ export interface BannersData {
 export function useBannersData(game: GameContract, now: number): BannersData {
   const user = useGameData(game.id);
   const showExamples = useExamplesShown();
+  const offset = useServerOffset(game);
   const [lists, setLists] = useState<{ characters: Character[]; banners: Banner[]; art: SampleArt[] } | null>(null);
 
   useEffect(() => {
@@ -39,7 +41,7 @@ export function useBannersData(game: GameContract, now: number): BannersData {
   const art = useMemo(() => lists?.art ?? [], [lists]);
   const builtIn = lists?.banners ?? NO_BANNERS;
   const examples = useMemo(() => exampleBanners(game, characters, now, art.map((a) => a.characterId)), [game, characters, now, art]);
-  const mixed = mixExamples('banners', builtIn, user.ownItems.banners, examples, showExamples);
+  const mixed = mixExamples('banners', listAtServer(builtIn, offset), user.ownItems.banners, examples, showExamples);
   return {
     user,
     characters: new Map(characters.map((c) => [c.id, c])),

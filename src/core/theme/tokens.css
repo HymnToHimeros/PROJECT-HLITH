@@ -1,9 +1,12 @@
 /*
  * PROJECT-HLITH design tokens. Source: docs/DESIGN.md §3.
  * The only place colours, type, spacing and sizes are defined.
- * Contrast is tested in src/core/theme/tokens.test.ts.
+ * Contrast is tested in tests/tokens.test.ts and, for every theme, tests/themes.test.ts.
+ * This block is the Glacier theme (id 'dark', the default). Other themes override
+ * the colour tokens in tokens-light.css and tokens-themes.css.
  */
-:root {
+:root,
+[data-theme-preview='dark'] {
   color-scheme: dark;
 
   /* Basalt · surfaces */
@@ -27,8 +30,8 @@
   --ink-1: #e6eef3;
   --ink-2: #cfe3ef;
   --ink-3: #a9bbc8;
-  --ink-4: #6f8494;
-  --ink-5: #6c7f93; /* lightened from #56677A: CLAUDE.md Override 4 */
+  --ink-4: #768b9c;
+  --ink-5: #768a9e; /* lightened from #56677A (CLAUDE.md Override 4), then a touch more so it stays readable over the background art */
   --glacier: #7fb4d6;
   --ok: #6fd3a8;
 
@@ -44,6 +47,12 @@
   /* Rarity */
   --rarity-top: #e8b85c;
   --rarity-mid: #7fb4d6;
+
+  /* Background art (ThemeArt.tsx): line colour, glow colour, and how strongly the
+     whole layer shows. Tested so text on the page stays readable over the art. */
+  --art-ink: #cfe3ef;
+  --art-glow: #7fb4d6;
+  --art-opacity: 0.11;
 
   /* Type */
   --font-words: 'Archivo Variable', Archivo, system-ui, sans-serif;

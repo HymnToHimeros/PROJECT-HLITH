@@ -2,6 +2,8 @@ import { act, fireEvent, render, screen, within } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import type { GameContract } from '../contract';
 import { getPrefs, reloadPrefs } from '../data/prefs';
+import { registerIdentity, resetIdentity } from '../registry/identity';
+import { setTheme } from '../theme/theme';
 import { Shell } from './Shell';
 
 const base = (over: Partial<GameContract>): GameContract => ({
@@ -138,6 +140,50 @@ describe('Shell', () => {
     expect(window.location.pathname).toBe('/account');
     expect(screen.getByRole('heading', { level: 1, name: 'Account' })).toBeInTheDocument();
     expect(side.getByRole('button', { name: /Account/ })).toHaveAttribute('aria-current', 'page');
+  });
+
+  it('profile card without a profile: a plain figure, “Your profile”, and the theme’s own glow as banner', () => {
+    render(<Shell games={[A, B]} />);
+    const card = within(screen.getByRole('complementary', { name: 'Main' })).getByRole('button', { name: /Account/ });
+    expect(card).toHaveTextContent('Your profile');
+    expect(card).toHaveAttribute('data-banner', 'theme');
+    expect(card.querySelector('img')).toBeNull();
+    expect(card.querySelector('svg')).not.toBeNull();
+  });
+
+  it('profile card signed in without a picture: initials from the email name', () => {
+    render(<Shell games={[A, B]} account={{ email: 'mira.vale@example.com', onSignOut: () => {} }} />);
+    const card = within(screen.getByRole('complementary', { name: 'Main' })).getByRole('button', { name: /Account/ });
+    expect(card).toHaveTextContent('mira.vale');
+    expect(card).toHaveTextContent(/^M/);
+  });
+
+  it('profile card with a picture and banner from the profile; a broken picture falls back to initials', () => {
+    registerIdentity(() => ({ name: 'Rook Ash', avatarUrl: 'https://x.test/a.png', bannerUrl: 'https://x.test/b.jpg' }));
+    try {
+      render(<Shell games={[A, B]} />);
+      const card = within(screen.getByRole('complementary', { name: 'Main' })).getByRole('button', { name: /Rook Ash.*Account/ });
+      expect(card).toHaveAttribute('data-banner', 'picture');
+      const imgs = [...card.querySelectorAll('img')].map((i) => i.getAttribute('src'));
+      expect(imgs).toEqual(['https://x.test/b.jpg', 'https://x.test/a.png']);
+      fireEvent.error(card.querySelectorAll('img')[1] as HTMLImageElement);
+      expect(card).toHaveTextContent('RA');
+      fireEvent.error(card.querySelector('img') as HTMLImageElement);
+      expect(card).toHaveAttribute('data-banner', 'theme');
+    } finally {
+      resetIdentity();
+    }
+  });
+
+  it('draws the theme’s background art behind the page, hidden from screen readers', () => {
+    const { container } = render(<Shell games={[A, B]} />);
+    const art = container.querySelector('[data-art]');
+    expect(art).toHaveAttribute('data-art', 'dark');
+    expect(art).toHaveAttribute('aria-hidden', 'true');
+    act(() => setTheme('crimson'));
+    expect(container.querySelector('[data-art]')).toHaveAttribute('data-art', 'crimson');
+    expect(document.documentElement.dataset.theme).toBe('crimson');
+    act(() => setTheme('dark'));
   });
 });
 

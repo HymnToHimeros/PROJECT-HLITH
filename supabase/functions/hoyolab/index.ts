@@ -14,7 +14,7 @@
 import { createHash } from 'node:crypto';
 import { createClient } from 'npm:@supabase/supabase-js@2';
 import { checkLogin, ERROR_TEXT, findAccounts, parseRequest, readHoyolab, type FoundAccount, type GameBiz } from '../_shared/hoyolab.ts';
-import { checkinRecord, runLinks } from '../_shared/hoyolabAuto.ts';
+import { checkinRecord, codeLoginMismatch, runLinks } from '../_shared/hoyolabAuto.ts';
 import { ACTION_ERROR_TEXT, parseAction, storedGames } from '../_shared/hoyolabLinks.ts';
 import { activeLinks, dbStore, type Db } from '../_shared/hoyolabStore.ts';
 import { requireUser } from '../_shared/requireUser.ts';
@@ -102,6 +102,8 @@ Deno.serve(async (req) => {
     }
 
     if (a.action === 'redeem-login') {
+      // A code login from another account would only ever be refused by HoYoverse: stop it here.
+      if (a.redeem && codeLoginMismatch(await savedLogin(a.linkId), a.redeem)) return json({ error: ACTION_ERROR_TEXT['redeem-other-account'], code: 'redeem-other-account' }, 400);
       const r = await db.rpc('hoyolab_link_set_redeem', { p_user: userId, p_link: a.linkId, p_redeem: a.redeem ? JSON.stringify(a.redeem) : null });
       if (r.error) return json({ error: 'Saving failed. Nothing was stored. Try again.' }, 500);
       return json({ ok: true });

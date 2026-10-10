@@ -94,6 +94,22 @@ export const hsr: GameContract = {
         softPity: { from: 66, stepPerPull: 0.07, source: COMMUNITY },
       },
     },
+    // Collaboration warps (e.g. the Fate collaboration): listed so their banners show; their pity
+    // rules aren't confirmed yet, so no odds are worked out for them ("none", rate not published).
+    {
+      id: 'collab-character',
+      label: 'Character Collaboration Warp',
+      pullItem: 'special-pass',
+      target: 'character',
+      pity: { kind: 'none', baseRate: null },
+    },
+    {
+      id: 'collab-light-cone',
+      label: 'Light Cone Collaboration Warp',
+      pullItem: 'special-pass',
+      target: 'weapon',
+      pity: { kind: 'none', baseRate: null },
+    },
     {
       id: 'departure',
       label: 'Departure Warp',
