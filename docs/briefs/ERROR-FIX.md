@@ -39,7 +39,7 @@ asked, you wait.
 
 ## Start
 1. Read `CLAUDE.md`, `docs/WORKSTREAMS.md`, `docs/RELEASES.md`, `docs/PROGRESS.md`.
-2. Find your session id with `list_sessions` and give it to MANAGER, who adds it to
-   `docs/WORKSTREAMS.md` (or add it yourself with a docs-only PR if MANAGER isn't on yet).
+2. Check that your session id is in the table in `docs/WORKSTREAMS.md`
+   (`list_sessions`); if not, give it to MANAGER, who adds it.
 3. Message the other chats: "ERROR-FIX is on. Send me bugs you want help with."
 4. Wait for the first ask.

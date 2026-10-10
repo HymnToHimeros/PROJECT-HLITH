@@ -55,8 +55,8 @@ creates starts with that name, so you can always tell who made what.
 | FRAME | `session_01JhX321c2CZBUjDK5Z6yXKX` |
 | LOGIC-CORE | `session_01BA3zSGcxmptiKVhzJkBkaP` |
 | SCHEDULER | `session_01AYGjoovgX3AtCHtQ3TvW5T` |
-| MANAGER | add yours when you start (`list_sessions`) |
-| ERROR-FIX | add yours when you start (`list_sessions`) |
+| MANAGER | `session_01GimxkMJzEydgMJauGc9J4o` |
+| ERROR-FIX | `session_01HQ51Y69kZRzfNsM6jQyQ7j` |
 
 ## Interface vs logic (owner's rule, 2026-10-09)
 FRAME builds the interface and the base, not the logic. A screen FRAME builds

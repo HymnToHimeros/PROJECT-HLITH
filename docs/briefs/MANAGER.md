@@ -46,8 +46,8 @@ Routing table and session ids: `docs/WORKSTREAMS.md`. How updates go live:
 ## Start
 1. Read `CLAUDE.md`, `docs/WORKSTREAMS.md`, `docs/RELEASES.md`, `docs/PROGRESS.md`
    and `docs/ROADMAP.md`.
-2. Find your session id with `list_sessions`, and add it to the table in
-   `docs/WORKSTREAMS.md` with a docs-only PR.
+2. Check that your session id is in the table in `docs/WORKSTREAMS.md`
+   (`list_sessions`); if not, add it with a docs-only PR.
 3. Create `docs/TASKS.md` with what is open now (from `docs/PROGRESS.md` → Next).
 4. Message FRAME, SCHEDULER, LOGIC-CORE and ERROR-FIX: "MANAGER is on. Owner jobs
    come through me now; tell me when a job is done or blocked."
