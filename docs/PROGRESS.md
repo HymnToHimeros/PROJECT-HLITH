@@ -27,6 +27,18 @@ Resume with: "continue from PROGRESS.md". Newest entry on top. Older entries:
 - CI (`.github/workflows/ci.yml`) runs both on every pull request.
 
 ## Done
+- 2026-10-10 · **LOGIC-CORE step 1: ZZZ kit text, group A** (branch `logic-core/zzz-kits-group1`).
+  - The owner's ZZZ method saved word for word: `docs/logic/zzz-method.md`.
+  - `npm run data:kits` (`scripts/import-nanoka-kits.ts`) reads nanoka.cc
+    (game data 3.3.4): profiles for all 62 agents (specialty, attribute, faction,
+    assist type → `profiles.json`) and the full kit text for group A only:
+    Starlight Billy, Dialyn, Lucia, Pan Yinhu (every skill, Core Passive at Core
+    Skill level 7, Additional Ability, Mindscapes 1–6 → `kits.json`). Button
+    icons and level formulas become plain words; unknown markup stops the script.
+  - Kit check on those four agents' pages (and on teams with them) shows each
+    piece with its game text, the source, and "Not read yet" until tags come.
+  - Next: read group A into the cheat sheet (the seven questions, tags with
+    quotes), then group B (needs Agent Potential reading, e.g. Lycaon).
 - 2026-10-10 · **Whole-site audit: about 70 flaws fixed** (branch `frame/audit-fixes`).
   Five audits (Today/Calendar/Events/Intel, Pulls/Banners, Roster/Farm/Scan,
   Account/Assistant/shell, Backlog/Edit mode), then fixes:
