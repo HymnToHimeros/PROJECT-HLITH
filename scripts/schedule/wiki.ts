@@ -60,6 +60,11 @@ export function wikiTime(box: Record<string, string>, which: 'start' | 'end'): s
   return at(stamp, off === undefined ? SERVER_OFFSET : Number(off));
 }
 
+/** True when the wiki gives no offset for this time: the notice said "server time". */
+export function wikiServer(box: Record<string, string>, which: 'start' | 'end'): boolean {
+  return !/([+-]\d+)/.test(box[`time_${which}_offset`] ?? '');
+}
+
 /** Links in a "===Heading===" section of a version page: [[Page/2026-09-28|Label]] → "Page/2026-09-28". */
 export function sectionLinks(text: string, heading: RegExp): string[] {
   const lines = text.split('\n');
@@ -85,15 +90,37 @@ export function sectionLinks(text: string, heading: RegExp): string[] {
   return [...new Set(out)];
 }
 
+/**
+ * The page's own total, when it has one: a "Total Rewards" / "Total" section
+ * ({{Event Rewards |Polychrome = 300}}, or a card list after "Total Rewards:").
+ * An item missing from a stated total is 0. Undefined when the page states no total.
+ */
+export function statedTotal(text: string, item: string): number | undefined {
+  const esc = item.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const at = text.search(/^=+\s*Total( Rewards)?\s*=+\s*$|'''Total Rewards:?'''/m);
+  if (at < 0) return undefined;
+  const rest = text.slice(at).replace(/^[^\n]*\n/, '');
+  const next = rest.search(/^==[^=]/m);
+  const section = (next >= 0 ? rest.slice(0, next) : rest).replace(/<!--|-->/g, '');
+  const field = new RegExp(String.raw`^\|\s*${esc}\s*=\s*([\d,]+)\s*$`, 'm').exec(section)?.[1];
+  if (field) return Number(field.replace(/,/g, ''));
+  // Several totals for different choices ("If Gilgamesh is chosen…") give the same currency: the first counts.
+  const card = new RegExp(String.raw`(?:^|[|;=])\s*${esc}\s*\*\s*([\d,]+)|\{\{Card\s*\|\s*${esc}\s*\|\s*([\d,]+)`, 'm').exec(section);
+  if (card) return Number((card[1] ?? card[2] ?? '0').replace(/,/g, ''));
+  return 0;
+}
+
 /** Total of an item in the page's reward cards: {{Card|Stellar Jade|100}}, {{Card List|Stellar Jade*100;…}}, Stellar Jade*100. */
 export function rewardTotal(text: string, item: string): number | null {
+  const stated = statedTotal(text, item);
+  if (stated !== undefined) return stated;
   const esc = item.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-  // A "Total Rewards" box states the sum itself: |Polychrome = 300.
-  const stated = new RegExp(String.raw`^\|\s*${esc}\s*=\s*([\d,]+)\s*$`, 'm').exec(text)?.[1];
-  if (stated) return Number(stated.replace(/,/g, ''));
+  // An {{Event Rewards}} box outside a Total heading still states the sum: |Polychrome = 300.
+  const field = new RegExp(String.raw`^\|\s*${esc}\s*=\s*([\d,]+)\s*$`, 'm').exec(text)?.[1];
+  if (field) return Number(field.replace(/,/g, ''));
   text = text.replace(/<!--|-->/g, '');
   let total = 0;
-  for (const m of text.matchAll(new RegExp(String.raw`\{\{Card\|${esc}\|([\d,]+)`, 'g'))) total += Number((m[1] ?? '0').replace(/,/g, ''));
+  for (const m of text.matchAll(new RegExp(String.raw`\{\{Card\s*\|\s*${esc}\s*\|\s*([\d,]+)`, 'g'))) total += Number((m[1] ?? '0').replace(/,/g, ''));
   for (const m of text.matchAll(new RegExp(String.raw`(?:^|[|;])\s*${esc}\s*\*\s*([\d,]+)`, 'gm'))) total += Number((m[1] ?? '0').replace(/,/g, ''));
   if (total > 0) return total;
   // Named in a reward list without a number ("Reward Preview: Polychrome; Boopon"): it gives some, amount unknown.

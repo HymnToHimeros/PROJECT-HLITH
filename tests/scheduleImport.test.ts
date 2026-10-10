@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { duplicateIds } from '../src/core/data/catalog';
 import { games } from '../src/games';
-import { amountOf, at, nameKey, noticeText, slug, spanIn, versionFromNotice, type VersionTimes } from '../scripts/schedule/text.ts';
+import { amountOf, at, nameKey, noticeText, serverMark, slug, spanIn, versionFromNotice, type VersionTimes } from '../scripts/schedule/text.ts';
 import { infobox, mainBox, poolBox, poolFeatured, rewardTotal, sectionLinks, wikiTime } from '../scripts/schedule/wiki.ts';
 
 const v46: VersionTimes = { id: '4.6', start: '2026-09-27T22:00:00.000Z', open: '2026-09-28T03:00:00.000Z', end: '2026-11-10T22:00:00.000Z' };
@@ -13,11 +13,13 @@ describe('reading official notices', () => {
     expect(spanIn('2026/10/05 04:00 – 2026/11/16 03:59 (server time)', versions)).toEqual({
       start: '2026-10-04T20:00:00.000Z',
       end: '2026-11-15T19:59:00.000Z',
+      startServer: true,
+      endServer: true,
     });
   });
 
   it('reads "after the update" and "end of version" from the version', () => {
-    expect(spanIn('Event Period: After the Version 4.6 update – End of Version 4.6', versions)).toEqual({ start: v46.open, end: v46.end });
+    expect(spanIn('Event Period: After the Version 4.6 update – End of Version 4.6', versions)).toEqual({ start: v46.open, end: v46.end, startServer: false, endServer: false });
   });
 
   it('keeps time tags, also when the notice escapes them', () => {
@@ -25,6 +27,13 @@ describe('reading official notices', () => {
     const escaped = noticeText('<p>After the Version 4.6 update – &lt;t class=&quot;t_lc&quot;&gt;2026/11/10 15:00:00&lt;/t&gt;</p>');
     expect(plain).toBe(escaped);
     expect(spanIn(plain, versions)?.end).toBe('2026-11-10T07:00:00.000Z');
+  });
+
+  it('marks which times follow each server\'s clock', () => {
+    const s = spanIn('Event Period: ⟨lc 2026/10/21 12:00:00⟩ – ⟨gl 2026/11/11 03:59:00⟩', versions);
+    expect([s?.startServer, s?.endServer]).toEqual([true, false]);
+    expect(serverMark(true, false)).toEqual({ serverTime: { base: 8, start: true } });
+    expect(serverMark(false, false)).toEqual({});
   });
 
   it('a line with only one time is not a period', () => {
@@ -92,6 +101,11 @@ describe('reading the wikis', () => {
     expect(rewardTotal('{{Event Rewards\n|Polychrome = 300\n}}', 'Polychrome')).toBe(300);
     expect(rewardTotal('{{Card List|Polychrome; Boopon; Denny}}', 'Polychrome')).toBeNull();
     expect(rewardTotal('{{Card List|Boopon*2}}', 'Polychrome')).toBe(0);
+    // A stated total is never added to the rows above it; an item missing from it is 0.
+    const page = '==Rewards==\n{{Card List|Polychrome*20; Log*5}}\n{{Card List|Polychrome*20; Log*5}}\n\n\'\'\'Total Rewards:\'\'\'\n{{Card List|Polychrome*40; Log*10}}\n==Other==';
+    expect(rewardTotal(page, 'Polychrome')).toBe(40);
+    expect(rewardTotal('==Total Rewards==\n{{Event Rewards\n|Tracks of Destiny = 1\n}}', 'Stellar Jade')).toBe(0);
+    expect(rewardTotal('===Total Rewards===\n{{Card\n|Boopon\n|10\n|rank=S\n}}', 'Boopon')).toBe(10);
   });
 });
 
