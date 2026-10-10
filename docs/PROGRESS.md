@@ -28,6 +28,25 @@ Resume with: "continue from PROGRESS.md". Newest entry on top. Older entries:
 - CI (`.github/workflows/ci.yml`) runs both on every pull request.
 
 ## Done
+- 2026-10-10 · **SCHEDULER step 2: server times, weapon banner art** (branch `scheduler/server-times-weapon-art`).
+  Uses FRAME's new fields (#40): every banner and event time the game gives in "server
+  time" now carries `serverTime { base: 8, start/end }`, so screens show it on the user's
+  own server (America and Europe no longer see ends 13 / 7 h early). Light Cone and
+  W-Engine banners get their picture (`Banner.art`, nanoka; each link checked).
+  HSR Fate collaboration warps (Saber, Archer, Rin Tohsaka, Gilgamesh and their Light Cones)
+  are in as `permanent` banners (FRAME #45): the game runs them "long-term"; `end` is how
+  long the official notice is shown (2036).
+  - **Rewards fixed:** a wiki page's own "Total Rewards" now wins over adding up its rows
+    (The Final Callback was counted twice: 80 → 40), "/Rewards" sub-pages are read
+    (Clink, Clank, Pinball Knight! 800, Diary of an Orbie Parent 300), multi-line reward
+    cards count ("En-Nah" 10 Boopons), totals without the currency mean 0 (Fate Contract,
+    Astral Imagea Park). Chronicles of the Hobbling Crow 360 from game8 (the wiki and the
+    official notice show only pictures; `REWARD_OVERRIDE` in the script names the source).
+    Only HSR "Interastral Peace Gala" (starts 21 Oct) stays unknown: sources say 500 or 60.
+  - ZZZ 3.3 banners (21 Oct and 11 Nov) are in, now that the wiki has them; new W-Engines
+    are matched to the game files through their agent (beta names differ).
+  - Outfit sales ("discount" events) are no longer added; the two already listed stay
+    (ids are never removed).
 - 2026-10-10 · **LOGIC-CORE: every ZZZ agent read; materials for both games** (branch `logic-core/zzz-groups-f-i`).
   - ZZZ groups F (Aria, Promeia, Velina, Remielle, Grace, Nangong Yu, Pulchra),
     G (Ellen, Soukaku, Zhu Yuan, Qingyi, Nicole, Evelyn, Seth), H (Soldier 0 -

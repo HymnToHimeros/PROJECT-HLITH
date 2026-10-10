@@ -5,11 +5,9 @@
  *
  * Times: every value becomes an absolute ISO time.
  * - "(UTC+8)" and <t class="t_gl"> are global times in UTC+8.
- * - "(server time)" and <t class="t_lc"> are the player's server clock. The app
- *   stores one time per item, so these use the Asia server (UTC+8): the
- *   earliest of all servers, so nobody is told something is still open after
- *   it closed. America and Europe get the same moment in their own clock later.
- *   (Note for FRAME in docs/PROGRESS.md.)
+ * - "(server time)" and <t class="t_lc"> are the player's server clock. These
+ *   are written at the Asia server (UTC+8) and marked with `serverTime`, so
+ *   every screen moves them to the user's own server.
  * - "After the Version X update" is the update start plus the stated
  *   maintenance length; "End of Version X" is the version end.
  */
@@ -64,41 +62,60 @@ export interface VersionTimes {
 export interface Span {
   start: string;
   end: string;
+  /** Which of the two follow each server's own clock ("server time"); the rest are one moment worldwide. */
+  startServer: boolean;
+  endServer: boolean;
+}
+
+/** A time and whether it follows each server's clock. */
+export interface Moment {
+  at: string;
+  server: boolean;
 }
 
 const STAMP = String.raw`\d{4}/\d{1,2}/\d{1,2}\s+\d{1,2}:\d{2}(?::\d{2})?`;
-// A bare stamp ("2026/10/05 04:00 – 2026/11/16 03:59 (server time)") shares the zone written after
-// the second one; both zones are read at UTC+8 here, so it needs no zone of its own.
+// A bare stamp ("2026/10/05 04:00 – 2026/11/16 03:59 (server time)") takes the zone written after
+// the next stamp in the line.
 const ONE = new RegExp(
-  String.raw`⟨(gl|lc) (${STAMP})⟩|(${STAMP})(?:\s*\((?:UTC\+8|server time)\))?|after the Version ([\d.]+) update|End of Version ([\d.]+)`,
+  String.raw`⟨(gl|lc) (${STAMP})⟩|(${STAMP})(?:\s*\((UTC\+8|server time)\))?|after the Version ([\d.]+) update|End of Version ([\d.]+)`,
   'gi',
 );
 
 /** Every time in a line, in order, read with the rules above. */
-export function timesIn(line: string, versions: Map<string, VersionTimes>): string[] {
-  const out: string[] = [];
+export function momentsIn(line: string, versions: Map<string, VersionTimes>): Moment[] {
+  const out: Moment[] = [];
   for (const m of line.matchAll(ONE)) {
-    if (m[1] && m[2]) out.push(at(m[2], SERVER_OFFSET));
-    else if (m[3]) out.push(at(m[3], SERVER_OFFSET));
-    else if (m[4]) {
-      const v = versions.get(m[4]);
-      if (!v) throw new Error(`"After the Version ${m[4]} update" but version ${m[4]} is unknown`);
-      out.push(v.open);
+    if (m[1] && m[2]) out.push({ at: at(m[2], SERVER_OFFSET), server: m[1] === 'lc' });
+    else if (m[3]) {
+      const zone = m[4] ?? /\((UTC\+8|server time)\)/i.exec(line.slice((m.index ?? 0) + m[0].length))?.[1] ?? 'server time';
+      out.push({ at: at(m[3], SERVER_OFFSET), server: /server/i.test(zone) });
     } else if (m[5]) {
       const v = versions.get(m[5]);
-      if (!v?.end) throw new Error(`"End of Version ${m[5]}" but its end is unknown`);
-      out.push(v.end);
+      if (!v) throw new Error(`"After the Version ${m[5]} update" but version ${m[5]} is unknown`);
+      out.push({ at: v.open, server: false });
+    } else if (m[6]) {
+      const v = versions.get(m[6]);
+      if (!v?.end) throw new Error(`"End of Version ${m[6]}" but its end is unknown`);
+      out.push({ at: v.end, server: false });
     }
   }
   return out;
 }
 
+export function timesIn(line: string, versions: Map<string, VersionTimes>): string[] {
+  return momentsIn(line, versions).map((x) => x.at);
+}
+
 /** A "start – end" period in a line, or undefined when the line has no full period. */
 export function spanIn(line: string, versions: Map<string, VersionTimes>): Span | undefined {
-  const t = timesIn(line, versions);
-  if (t.length < 2) return undefined;
-  const [start, end] = t;
-  return start && end ? { start, end } : undefined;
+  const [start, end] = momentsIn(line, versions);
+  return start && end ? { start: start.at, end: end.at, startServer: start.server, endServer: end.server } : undefined;
+}
+
+/** The `serverTime` mark for Banner / GameEvent: times are written at the Asia server (UTC+8). */
+export function serverMark(startServer: boolean, endServer: boolean): { serverTime?: { base: number; start?: boolean; end?: boolean } } {
+  if (!startServer && !endServer) return {};
+  return { serverTime: { base: SERVER_OFFSET, ...(startServer ? { start: true } : {}), ...(endServer ? { end: true } : {}) } };
 }
 
 /** "Stellar Jade ×500" → 500 (all mentions added up). */
