@@ -17,8 +17,8 @@ const NO_BANNERS: Banner[] = [];
 export interface PullsData {
   user: GameUserData;
   characters: Character[];
-  /** The game's banners with your changes and own banners, plus examples (each in `exampleIds`) while the list is empty. Leaks left out while hidden. */
-  banners: { list: Banner[]; example: boolean; exampleIds: ReadonlySet<string> };
+  /** The game's banners with your changes and own banners, plus examples (each in `exampleIds`) while the list is empty. Leaks left out while hidden. `examples`: every example banner, for Edit mode, while examples stand in. */
+  banners: { list: Banner[]; example: boolean; exampleIds: ReadonlySet<string>; examples: Banner[] | undefined };
   bank: { value: Known<Record<string, number>>; example: boolean };
   history: { list: PullRecord[]; example: boolean };
   /** null = unknown (no version list, and examples are hidden in Account → Example data). */
@@ -77,7 +77,7 @@ export function usePullsData(game: GameContract, now: number): PullsData {
   return {
     user,
     characters,
-    banners: { list: shownBanners, example: shownBanners.some((b) => mixed.exampleIds.has(b.id)), exampleIds: mixed.exampleIds },
+    banners: { list: shownBanners, example: shownBanners.some((b) => mixed.exampleIds.has(b.id)), exampleIds: mixed.exampleIds, examples: builtInBanners.length || !showExamples ? undefined : exampleList },
     // Your first bank log entry replaces the example bank, even before a balance check.
     bank: realBank.known || user.ledger.length > 0 || !showExamples ? { value: realBank, example: false } : { value: exampleBank(game), example: true },
     history: user.pulls.length || !showExamples ? { list: user.pulls, example: false } : { list: exampleHistory(game, characters, now), example: true },

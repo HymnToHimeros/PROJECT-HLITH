@@ -153,7 +153,7 @@ export function goodToKnow(): ReactNode[] {
       <strong>Phone or console:</strong> we know of no simple way there; the game doesn’t show the link. Star Rail Station lists guides for iOS and Android (Android help is in its Discord); we
       haven’t tested them, so we don’t repeat them here. The easy route: import once on a PC (your history belongs to your game account, not the device) or use an export file.
     </>,
-    <>The game only keeps recent history (trackers say about six months), so import now and then. HLITH keeps everything you imported and only adds new pulls.</>,
+    <>The game only keeps recent history (trackers say about six months), so import now and then. HLITH keeps everything you imported and only adds new pulls (unless you undo an import right after it).</>,
     <>History links stop working after a while (trackers say about a day). If one fails, open the history page in the game again and repeat.</>,
   ];
 }

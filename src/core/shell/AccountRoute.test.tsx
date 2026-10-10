@@ -99,6 +99,28 @@ describe('Account routes', () => {
     window.history.replaceState(null, '', '/account');
     render(<Shell games={[game]} />);
     fireEvent.click(await screen.findByRole('button', { name: 'go pulls' }));
+    // The tab it asked for is part of the address.
+    expect(window.location.pathname).toBe('/aa/pulls/history');
+  });
+
+  it('a tab in the address opens that tab, and picking another tab updates the address', async () => {
+    window.history.replaceState(null, '', '/aa/pulls/log');
+    render(<Shell games={[game]} />);
+    expect(await screen.findByRole('tab', { name: 'Bank log' })).toHaveAttribute('aria-selected', 'true');
+    expect(window.location.pathname).toBe('/aa/pulls/log');
+    fireEvent.click(screen.getByRole('tab', { name: 'Planner' }));
+    expect(window.location.pathname).toBe('/aa/pulls');
+    fireEvent.click(screen.getByRole('tab', { name: 'History' }));
+    expect(window.location.pathname).toBe('/aa/pulls/history');
+    // The browser's back button returns to the tab before.
+    await back();
+    expect(screen.getByRole('tab', { name: 'Planner' })).toHaveAttribute('aria-selected', 'true');
+  });
+
+  it('an unknown tab in the address falls back to the first tab', async () => {
+    window.history.replaceState(null, '', '/aa/pulls/nope');
+    render(<Shell games={[game]} />);
+    expect(await screen.findByRole('tab', { name: 'Planner' })).toHaveAttribute('aria-selected', 'true');
     expect(window.location.pathname).toBe('/aa/pulls');
   });
 });

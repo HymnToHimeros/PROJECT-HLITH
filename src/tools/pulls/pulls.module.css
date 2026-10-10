@@ -607,3 +607,27 @@
     padding: 4px 12px;
   }
 }
+
+/* ── Bank log: an undone entry stays listed, struck through ── */
+.undone .entryName,
+.undone .change {
+  text-decoration: line-through;
+  color: var(--ink-3);
+}
+.undoneTag {
+  display: inline-block;
+  margin-left: 6px;
+  padding: 1px 6px;
+  border: 1px solid var(--line-mid);
+  border-radius: var(--r-button);
+  font: 600 10px var(--font-numbers);
+  letter-spacing: 0.08em;
+  color: var(--ink-3);
+}
+
+/* ── History: pick an account, show all ── */
+.accounts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}

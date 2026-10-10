@@ -1,18 +1,19 @@
 import { useState, type ChangeEvent, type CSSProperties, type FormEvent } from 'react';
 import type { GameContract, PullRecord } from '../../core/contract';
 import { backend } from '../../core/data/backend';
-import { addPulls } from '../../core/data/userData';
+import { importPulls, removePulls } from '../../core/data/userData';
 import { formatDateTime } from '../../core/time/reset';
 import { Button, EmptyState, ExampleTag, HowTo } from '../../core/ui';
 import { cx } from '../../core/ui/cx';
-import { parseHistoryFile, readAccount } from '../import/uigf';
+import { parseHistoryFile, readAccount, type ImportedAccount } from '../import/uigf';
 import { pityFromHistory } from '../pity/pity';
 import { cacheFileSteps, fileSteps, findHistoryLink, goodToKnow, guideFor, pasteSteps } from './importGuides';
 import { LuckReport } from './LuckReport';
 import p from './pulls.module.css';
 import type { PullsData } from './usePullsData';
 
-type Status = { kind: 'idle' } | { kind: 'busy' } | { kind: 'ok'; text: string } | { kind: 'error'; text: string };
+/** After an import, `undoIds` are the pulls it added, so "Undo this import" removes exactly those. */
+type Status = { kind: 'idle' } | { kind: 'busy' } | { kind: 'ok'; text: string; undoIds?: string[] } | { kind: 'error'; text: string };
 type Way = 'link' | 'cache' | 'file' | null;
 
 /**
@@ -25,6 +26,8 @@ export function History({ game, data, signedIn }: { game: GameContract; data: Pu
   const [status, setStatus] = useState<Status>({ kind: 'idle' });
   const [way, setWay] = useState<Way>(null);
   const [link, setLink] = useState('');
+  const [choose, setChoose] = useState<ImportedAccount[] | null>(null);
+  const [showAll, setShowAll] = useState(false);
   const mapping = game.historyMapping;
   const fileImport = game.historyImporters.some((i) => i.kind === 'file');
   const linkImport = game.historyImporters.some((i) => i.kind === 'link');
@@ -35,10 +38,16 @@ export function History({ game, data, signedIn }: { game: GameContract; data: Pu
     .join(' or ');
 
   const report = (records: PullRecord[], skipped: Record<string, number>, invalid: number) => {
-    const added = addPulls(game.id, records);
+    const ids = importPulls(game.id, records);
     const skippedCount = Object.values(skipped).reduce((a, b) => a + b, 0);
     const extra = [skippedCount ? `${skippedCount} from banner types HLITH doesn't know yet` : '', invalid ? `${invalid} unreadable` : ''].filter(Boolean).join(', ');
-    setStatus({ kind: 'ok', text: `Added ${added} new pulls (${records.length - added} already stored).${extra ? ` Skipped: ${extra}.` : ''}` });
+    setChoose(null);
+    setStatus({ kind: 'ok', text: `Added ${ids.length} new pulls (${records.length - ids.length} already stored).${extra ? ` Skipped: ${extra}.` : ''}`, undoIds: ids });
+  };
+
+  const undoImport = (ids: string[]) => {
+    const removed = removePulls(game.id, ids);
+    setStatus({ kind: 'ok', text: `Import undone: removed the ${removed} pulls it added. Pulls you had before are untouched.` });
   };
 
   const onFile = async (e: ChangeEvent<HTMLInputElement>) => {
@@ -48,14 +57,15 @@ export function History({ game, data, signedIn }: { game: GameContract; data: Pu
     setStatus({ kind: 'busy' });
     const result = parseHistoryFile(await file.text(), mapping);
     if (!result.ok) return setStatus({ kind: 'error', text: result.error });
-    const records = result.accounts.flatMap((a) => a.records);
-    const skipped: Record<string, number> = {};
-    for (const a of result.accounts) for (const [k, v] of Object.entries(a.skipped)) skipped[k] = (skipped[k] ?? 0) + v;
-    report(
-      records,
-      skipped,
-      result.accounts.reduce((n, a) => n + a.invalid, 0),
-    );
+    const accounts = byUid(result.accounts);
+    // Several game accounts in one file: never merge them into one history, ask which one is yours.
+    if (accounts.length > 1) {
+      setStatus({ kind: 'idle' });
+      return setChoose(accounts);
+    }
+    const [only] = accounts;
+    if (only) report(only.records, only.skipped, only.invalid);
+    else setStatus({ kind: 'error', text: 'This file holds no accounts for this game.' });
   };
 
   const importLink = async (pasted: string) => {
@@ -96,7 +106,8 @@ export function History({ game, data, signedIn }: { game: GameContract; data: Pu
 
   const example = data.history.example;
   const types = game.bannerTypes.filter((t) => data.history.list.some((h) => h.bannerType === t.id));
-  const tops = topsWithPity(data.history.list).slice(-10).reverse();
+  const allTops = topsWithPity(data.history.list).reverse();
+  const tops = showAll ? allTops : allTops.slice(0, 10);
   const noImport = !mapping || (!fileImport && !linkImport);
   const ways: { id: Exclude<Way, null>; label: string; sub: string; show: boolean }[] = [
     { id: 'link', label: 'Paste a history link', sub: 'From the in-game history page. Works on PC.', show: linkImport },
@@ -181,10 +192,31 @@ export function History({ game, data, signedIn }: { game: GameContract; data: Pu
 
           <HowTo title="Phone, console and good to know" steps={goodToKnow()} />
 
+          {choose && (
+            <section className={p.card} aria-label="Which account to import">
+              <h3 className={p.cardTitle}>This file holds {choose.length} game accounts</h3>
+              <span className={p.muted}>Pick yours. HLITH keeps one history per game, so accounts are never mixed together.</span>
+              <div className={p.accounts}>
+                {choose.map((a) => (
+                  <Button key={a.uid} onClick={() => report(a.records, a.skipped, a.invalid)}>
+                    UID {a.uid || 'unknown'} · {a.records.length} pulls
+                  </Button>
+                ))}
+                <Button variant="quiet" onClick={() => setChoose(null)}>
+                  Cancel
+                </Button>
+              </div>
+            </section>
+          )}
           {status.kind === 'busy' && <span className={p.muted}>Importing…</span>}
           {status.kind === 'ok' && (
             <span className={p.message} role="status">
-              {status.text}
+              {status.text}{' '}
+              {status.undoIds && status.undoIds.length > 0 && (
+                <Button variant="quiet" onClick={() => undoImport(status.undoIds ?? [])}>
+                  Undo this import
+                </Button>
+              )}
             </span>
           )}
           {status.kind === 'error' && (
@@ -238,11 +270,11 @@ export function History({ game, data, signedIn }: { game: GameContract; data: Pu
           <span className={p.muted}>None yet.</span>
         ) : (
           <ul className={p.topList}>
-            {tops.map(({ pull: h, pity }) => (
+            {tops.map(({ pull: h, pity, result }) => (
               <li key={h.id} className={p.topRow}>
-                <span className={cx(p.topName, h.featured === false && p.lost)}>{h.name}</span>
+                <span className={cx(p.topName, result === 'lost' && p.lost)}>{h.name}</span>
                 <span className={p.small}>{game.bannerTypes.find((t) => t.id === h.bannerType)?.label ?? h.bannerType}</span>
-                <span className={p.small}>{h.featured === undefined ? '' : h.featured ? 'won 50/50' : 'lost 50/50'}</span>
+                <span className={p.small}>{RESULT_LABEL[result]}</span>
                 <span className={p.topPity}>
                   {pity} <span className={p.small}>pulls</span>
                 </span>
@@ -251,22 +283,58 @@ export function History({ game, data, signedIn }: { game: GameContract; data: Pu
             ))}
           </ul>
         )}
+        {allTops.length > 10 && (
+          <Button variant="quiet" onClick={() => setShowAll(!showAll)}>
+            {showAll ? 'Show the newest 10' : `Show all ${allTops.length}`}
+          </Button>
+        )}
       </section>
     </div>
   );
 }
 
-/** Each top result with the pulls it took on its banner type (V1: "every 5★ with the pity it took"). Oldest first. */
-function topsWithPity(history: PullRecord[]): { pull: PullRecord; pity: number }[] {
+/** Accounts from one file, one per game account (UID); rows of the same UID count as one account. */
+function byUid(accounts: ImportedAccount[]): ImportedAccount[] {
+  const out = new Map<string, ImportedAccount>();
+  for (const a of accounts) {
+    const cur = out.get(a.uid);
+    if (!cur) {
+      out.set(a.uid, a);
+      continue;
+    }
+    const skipped = { ...cur.skipped };
+    for (const [k, v] of Object.entries(a.skipped)) skipped[k] = (skipped[k] ?? 0) + v;
+    out.set(a.uid, { uid: a.uid, records: [...cur.records, ...a.records], skipped, invalid: cur.invalid + a.invalid });
+  }
+  return [...out.values()];
+}
+
+/** How a top result went. After a lost 50/50 the next featured one is guaranteed, not a won 50/50 (the same rule as the Luck report). */
+export type TopResult = 'won' | 'lost' | 'guaranteed' | 'unknown';
+const RESULT_LABEL: Record<TopResult, string> = { won: 'won 50/50', lost: 'lost 50/50', guaranteed: 'guaranteed', unknown: '' };
+
+/** Each top result with the pulls it took on its banner type (V1: "every 5★ with the pity it took") and how it went. Oldest first. */
+export function topsWithPity(history: PullRecord[]): { pull: PullRecord; pity: number; result: TopResult }[] {
   const sorted = [...history].sort((a, b) => a.time.localeCompare(b.time) || a.id.localeCompare(b.id));
   const since: Record<string, number> = {};
-  const out: { pull: PullRecord; pity: number }[] = [];
+  const guaranteedNext: Record<string, boolean> = {};
+  const out: { pull: PullRecord; pity: number; result: TopResult }[] = [];
   for (const h of sorted) {
     since[h.bannerType] = (since[h.bannerType] ?? 0) + 1;
-    if (h.rarity === 'top') {
-      out.push({ pull: h, pity: since[h.bannerType] ?? 0 });
-      since[h.bannerType] = 0;
+    if (h.rarity !== 'top') continue;
+    let result: TopResult;
+    if (guaranteedNext[h.bannerType]) {
+      // As in luck(): the result after a lost 50/50 is never a 50/50 itself.
+      result = h.featured ? 'guaranteed' : 'unknown';
+      guaranteedNext[h.bannerType] = false;
+    } else if (h.featured === undefined) result = 'unknown';
+    else if (h.featured) result = 'won';
+    else {
+      result = 'lost';
+      guaranteedNext[h.bannerType] = true;
     }
+    out.push({ pull: h, pity: since[h.bannerType] ?? 0, result });
+    since[h.bannerType] = 0;
   }
   return out;
 }
