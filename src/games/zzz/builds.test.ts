@@ -20,4 +20,17 @@ describe("ZZZ recommended builds (the game's own recommendation)", () => {
     expect(d?.mainStats).toEqual({ 'Disc 4': ['CRIT Rate'], 'Disc 5': ['Energy Regen'], 'Disc 6': ['Impact'] });
     expect(d?.skillsFirst[0]).toEqual(['Core Skill', 'Special Attack']);
   });
+
+  it('every Drive Disc set and W-Engine named has its picture and game text', () => {
+    for (const b of builds) {
+      const items = (b as { items?: Record<string, { icon?: string; effects: { label: string; text: string }[] }> }).items ?? {};
+      for (const name of [...b.sets.flatMap((s) => s.options), ...b.weapons]) {
+        const it = items[name];
+        expect(it?.icon, `${b.characterId}: ${name} picture`).toMatch(/^https:\/\/static\.nanoka\.cc\/assets\/zzz\/.+\.webp$/);
+        expect(it?.effects.length, `${b.characterId}: ${name} effects`).toBeGreaterThan(0);
+      }
+    }
+    const d = builds.find((b) => b.characterId === '1481') as { items: Record<string, { effects: { label: string; text: string }[] }> } | undefined;
+    expect(d?.items['King of the Summit']?.effects.map((e) => e.label)).toEqual(['2-piece', '4-piece']);
+  });
 });

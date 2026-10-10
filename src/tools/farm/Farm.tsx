@@ -187,6 +187,7 @@ function MaterialRow({ plan, row, several }: { plan: Plan; row: NeedRow; several
   return (
     <div className={f.matRow}>
       <span className={f.rowTitle}>
+        {row.icon && <img className={f.matIcon} src={row.icon} alt="" loading="lazy" decoding="async" />}
         {row.name}
         {several && <GameTag label={g.game.short} vent={g.game.vent} />}
         {example && <ExampleTag />}

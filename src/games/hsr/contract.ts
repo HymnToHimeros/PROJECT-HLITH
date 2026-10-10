@@ -14,6 +14,9 @@ import materials from './data/materials.json';
 import teams from './data/teams.json';
 import sampleArt from './data/sample-art.json';
 import versions from './data/versions.json';
+import { SHEETS } from './kitcheck/library';
+import { withTags } from './kitcheck/tags';
+import { hsrTeamRules, recommendedTeams } from './kitcheck/team';
 
 const list = <T>(rows: unknown) => async () => rows as T[];
 const COMMUNITY = 'community pull-log statistics (not published by the game)';
@@ -156,11 +159,12 @@ export const hsr: GameContract = {
     events: list<GameEvent>(events),
     backlog: list<BacklogItem>(backlog),
     materials: list<Material>(materials),
-    teams: list<TeamPreset>(teams),
+    // The game's own recommended teams, then the best teams the kit check finds for each damage dealer (docs/logic/hsr-theory.md).
+    teams: async () => [...(teams as TeamPreset[]), ...recommendedTeams()],
     sampleArt: async () => sampleArt as SampleArt[],
     versions: list<Version>(versions),
-    // Kit text, group by group (npm run data:hsr-kits). Tags and team scores wait for the owner's OK on docs/logic/hsr-theory.md.
-    kits: list<Kit>(kits),
+    // Kit text (npm run data:hsr-kits) with the cheat sheet's tags (docs/logic/hsr-theory.md, Part A).
+    kits: async () => withTags(kits as Kit[], SHEETS),
     // The game's own recommended builds (npm run data:builds).
     builds: list<RecommendedBuild>(builds),
   },
@@ -168,6 +172,7 @@ export const hsr: GameContract = {
   scan: { screen: 'character', fields: ['level', 'eidolon', 'light-cone', 'relics', 'traces'] },
   // Level-up costs from nanoka.cc; team scoring waits for the owner's OK on docs/logic/hsr-theory.md.
   rules: {
+    teams: hsrTeamRules,
     materialsFor,
     materialsNote: "From the game data (nanoka.cc): ascension, every skill and every Trace to max. Character EXP isn't counted yet: the per-level EXP table isn't in the data HLITH reads.",
   },

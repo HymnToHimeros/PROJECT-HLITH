@@ -83,7 +83,8 @@ export function WhyScore({ verdict, data }: { verdict: TeamVerdict | null; data:
   return (
     <details className={r.why}>
       <summary className={r.whySummary}>
-        Why {verdict.percent}%: count {verdict.count} of {verdict.best} · order {verdict.order.map(name).join(' > ')}
+        Why {verdict.percent}%: count {verdict.count} of {verdict.best} ·{' '}
+        {verdict.unordered ? `damage dealer ${name(verdict.order[0] ?? '')}` : `order ${verdict.order.map(name).join(' > ')}`}
       </summary>
       <div className={r.stack}>
         {verdict.notes.map((n) => (

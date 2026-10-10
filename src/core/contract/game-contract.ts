@@ -248,8 +248,10 @@ export type TeamVerdict =
       count: number;
       best: number;
       bestMembers: string[];
-      /** The order the score is for, e.g. A > B > C. */
+      /** The order the score is for, e.g. A > B > C; the damage dealer first. */
       order: string[];
+      /** The game's teams have no order (HSR): `order` is only "damage dealer first". */
+      unordered?: boolean;
       reasons: TeamReason[];
       notes: string[];
     }

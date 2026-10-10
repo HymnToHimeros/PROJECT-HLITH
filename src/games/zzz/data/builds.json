@@ -47,7 +47,48 @@
     "Dodge",
     "Assist"
    ]
-  ]
+  ],
+  "items": {
+   "King of the Summit": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitKingoftheSummit.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "Increases Daze of attacks by 6%"
+     },
+     {
+      "label": "4-piece",
+      "text": "When the equipper is a Stun character and uses an EX Special Attack or Chain Attack, increases CRIT DMG of all squad members by 15%, and when the equipper's CRIT Rate is more than or equal to 50%, further increases CRIT DMG by 15%, lasting 15s. Repeated triggers reset the duration. Passive effects of the same name do not stack."
+     }
+    ]
+   },
+   "Shockstar Disco": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitShockstarDisco.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "Impact +6%"
+     },
+     {
+      "label": "4-piece",
+      "text": "Basic Attacks, Dash Attacks, and Dodge Counters inflict 20% more Daze to the main target."
+     }
+    ]
+   },
+   "Swing Jazz": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitSwingJazz.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "Energy Regen +20%"
+     },
+     {
+      "label": "4-piece",
+      "text": "Launching a Chain Attack or Ultimate increases all squad members' DMG by 15% for 12s. Passive effects of the same name do not stack."
+     }
+    ]
+   }
+  }
  },
  {
   "characterId": "1021",
@@ -99,7 +140,58 @@
    [
     "Assist"
    ]
-  ]
+  ],
+  "items": {
+   "Woodpecker Electro": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitWoodpeckerElectro.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "CRIT Rate +8%"
+     },
+     {
+      "label": "4-piece",
+      "text": "Landing a critical hit on an enemy with a Basic Attack, Dodge Counter, or EX Special Attack increases the equipper's ATK by 9% for 6s. The buff duration for different skills are calculated separately."
+     }
+    ]
+   },
+   "Fanged Metal": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitFangedMetal.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "Physical DMG +10%"
+     },
+     {
+      "label": "4-piece",
+      "text": "Whenever a squad member inflicts Assault on an enemy, the equipper deals 35% additional DMG to the target for 12s."
+     }
+    ]
+   },
+   "Puffer Electro": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitPufferElectro.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "PEN Ratio +8%"
+     },
+     {
+      "label": "4-piece",
+      "text": "Ultimate DMG increases by 20%. Launching an Ultimate increases the equipper's ATK by 15% for 12s."
+     }
+    ]
+   },
+   "Steel Cushion": {
+    "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1021.webp",
+    "rarity": 4,
+    "effects": [
+     {
+      "label": "Metal Cat Claws (Phase 1)",
+      "text": "Increases Physical DMG by 20%. The equipper's DMG increases by 25% when hitting the enemy from behind."
+     }
+    ]
+   }
+  }
  },
  {
   "characterId": "1031",
@@ -148,7 +240,48 @@
     "Basic Attack",
     "Dodge"
    ]
-  ]
+  ],
+  "items": {
+   "Moonlight Lullaby": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitMoonlightLullaby.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "Energy Regen +20%"
+     },
+     {
+      "label": "4-piece",
+      "text": "When the equipper is a Support character and uses an EX Special Attack or Ultimate, the DMG dealt by all squad members increases by 18% for 25s. Repeated triggers reset the duration. Passive effects of the same name do not stack."
+     }
+    ]
+   },
+   "Swing Jazz": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitSwingJazz.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "Energy Regen +20%"
+     },
+     {
+      "label": "4-piece",
+      "text": "Launching a Chain Attack or Ultimate increases all squad members' DMG by 15% for 12s. Passive effects of the same name do not stack."
+     }
+    ]
+   },
+   "Chaotic Metal": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitChaosMetal.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "Ether DMG +10%"
+     },
+     {
+      "label": "4-piece",
+      "text": "The equipper's CRIT DMG increases by 20%. When any character in the squad triggers Corruption DMG, this effect further increases by 5.5% for 8s, stacking up to 6 times. Repeated triggers reset the duration."
+     }
+    ]
+   }
+  }
  },
  {
   "characterId": "1041",
@@ -200,7 +333,58 @@
     "Assist",
     "Dodge"
    ]
-  ]
+  ],
+  "items": {
+   "Inferno Metal": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitInfernoMetal.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "Fire DMG +10%"
+     },
+     {
+      "label": "4-piece",
+      "text": "Upon hitting a Burning enemy, the equipper's CRIT Rate is increased by 28% for 8s."
+     }
+    ]
+   },
+   "Branch & Blade Song": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitBranch&BladeSong.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "CRIT DMG +16%"
+     },
+     {
+      "label": "4-piece",
+      "text": "When Anomaly Mastery exceeds or equals 115 points, the equipper's CRIT DMG increases by 30%. When any squad member applies Freeze or triggers the Shatter effect on an enemy, the equipper's CRIT Rate increases by 12%, lasting 15s."
+     }
+    ]
+   },
+   "Woodpecker Electro": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitWoodpeckerElectro.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "CRIT Rate +8%"
+     },
+     {
+      "label": "4-piece",
+      "text": "Landing a critical hit on an enemy with a Basic Attack, Dodge Counter, or EX Special Attack increases the equipper's ATK by 9% for 6s. The buff duration for different skills are calculated separately."
+     }
+    ]
+   },
+   "The Brimstone": {
+    "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1041.webp",
+    "rarity": 4,
+    "effects": [
+     {
+      "label": "Scorching Breath (Phase 1)",
+      "text": "Upon hitting an enemy with a Basic Attack, Dash Attack, or Dodge Counter, the equipper's ATK increases by 3.5% for 8s, stacking up to 8 times. This effect can trigger once every 0.5s. The duration of each stack is calculated separately."
+     }
+    ]
+   }
+  }
  },
  {
   "characterId": "1051",
@@ -252,7 +436,58 @@
     "Assist",
     "Dodge"
    ]
-  ]
+  ],
+  "items": {
+   "Yunkui Tales": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitYunkuiTales.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "HP +10%"
+     },
+     {
+      "label": "4-piece",
+      "text": "When using EX Special Attack, Chain Attack, or Ultimate, CRIT Rate increases by 4%, stacking up to 3 times and lasting 15s. Repeated triggers reset the duration. When having 3 stacks of this effect, Sheer DMG increases by 10%."
+     }
+    ]
+   },
+   "Woodpecker Electro": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitWoodpeckerElectro.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "CRIT Rate +8%"
+     },
+     {
+      "label": "4-piece",
+      "text": "Landing a critical hit on an enemy with a Basic Attack, Dodge Counter, or EX Special Attack increases the equipper's ATK by 9% for 6s. The buff duration for different skills are calculated separately."
+     }
+    ]
+   },
+   "Branch & Blade Song": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitBranch&BladeSong.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "CRIT DMG +16%"
+     },
+     {
+      "label": "4-piece",
+      "text": "When Anomaly Mastery exceeds or equals 115 points, the equipper's CRIT DMG increases by 30%. When any squad member applies Freeze or triggers the Shatter effect on an enemy, the equipper's CRIT Rate increases by 12%, lasting 15s."
+     }
+    ]
+   },
+   "Kraken's Cradle": {
+    "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1051.webp",
+    "rarity": 4,
+    "effects": [
+     {
+      "label": "Heartfelt Caress (Phase 1)",
+      "text": "When the equipper's HP decreases, their Ice Sheer DMG increases by 6%, stacking up to 3 times and lasting 25s. The duration of each stack is calculated separately. This effect can trigger once every 0.5s. When the equipper's HP falls to 50% of Max HP or below, CRIT Rate increases by 20%."
+     }
+    ]
+   }
+  }
  },
  {
   "characterId": "1061",
@@ -302,7 +537,48 @@
     "Assist",
     "Dodge"
    ]
-  ]
+  ],
+  "items": {
+   "Hormone Punk": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitHormonePunk.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "ATK +10%"
+     },
+     {
+      "label": "4-piece",
+      "text": "Upon becoming the active character in combat, the equipper's ATK increases by 25% for 10s. This effect can trigger once every 20s."
+     }
+    ]
+   },
+   "Woodpecker Electro": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitWoodpeckerElectro.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "CRIT Rate +8%"
+     },
+     {
+      "label": "4-piece",
+      "text": "Landing a critical hit on an enemy with a Basic Attack, Dodge Counter, or EX Special Attack increases the equipper's ATK by 9% for 6s. The buff duration for different skills are calculated separately."
+     }
+    ]
+   },
+   "Fanged Metal": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitFangedMetal.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "Physical DMG +10%"
+     },
+     {
+      "label": "4-piece",
+      "text": "Whenever a squad member inflicts Assault on an enemy, the equipper deals 35% additional DMG to the target for 12s."
+     }
+    ]
+   }
+  }
  },
  {
   "characterId": "1071",
@@ -354,7 +630,58 @@
    [
     "Dodge"
    ]
-  ]
+  ],
+  "items": {
+   "Bunny in Wonderland": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitBunnyinWonderland.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "HP +10%"
+     },
+     {
+      "label": "4-piece",
+      "text": "When the equipper is a Defense character: When the equipper launches an EX Special Attack or any squad member triggers a Defensive Assist or Evasive Assist, all squad members' DMG increases by 6%, stacking up to 3 times, lasting 25s. Stacks decay one at a time, and duration refreshes when gained or decayed. Passive effects of the same name do not stack."
+     }
+    ]
+   },
+   "Proto Punk": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitProtoPunk.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "Increases Shield effect by 15%."
+     },
+     {
+      "label": "4-piece",
+      "text": "When any squad member triggers a Defensive Assist or Evasive Assist, all squad members deal 15% increased DMG, lasting 10s. Passive effects of the same name do not stack."
+     }
+    ]
+   },
+   "Shockstar Disco": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitShockstarDisco.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "Impact +6%"
+     },
+     {
+      "label": "4-piece",
+      "text": "Basic Attacks, Dash Attacks, and Dodge Counters inflict 20% more Daze to the main target."
+     }
+    ]
+   },
+   "Tusks of Fury": {
+    "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1071.webp",
+    "rarity": 4,
+    "effects": [
+     {
+      "label": "Invincible Rider (Phase 1)",
+      "text": "The Shield value provided by the equipper increases by 30%. When any squad member triggers Interrupt or Perfect Dodge, all squad members' DMG increases by 18% and Daze dealt increases by 12% for 20s. Passive effects of the same name do not stack."
+     }
+    ]
+   }
+  }
  },
  {
   "characterId": "1081",
@@ -404,7 +731,48 @@
    [
     "Assist"
    ]
-  ]
+  ],
+  "items": {
+   "Hormone Punk": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitHormonePunk.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "ATK +10%"
+     },
+     {
+      "label": "4-piece",
+      "text": "Upon becoming the active character in combat, the equipper's ATK increases by 25% for 10s. This effect can trigger once every 20s."
+     }
+    ]
+   },
+   "Woodpecker Electro": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitWoodpeckerElectro.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "CRIT Rate +8%"
+     },
+     {
+      "label": "4-piece",
+      "text": "Landing a critical hit on an enemy with a Basic Attack, Dodge Counter, or EX Special Attack increases the equipper's ATK by 9% for 6s. The buff duration for different skills are calculated separately."
+     }
+    ]
+   },
+   "Fanged Metal": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitFangedMetal.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "Physical DMG +10%"
+     },
+     {
+      "label": "4-piece",
+      "text": "Whenever a squad member inflicts Assault on an enemy, the equipper deals 35% additional DMG to the target for 12s."
+     }
+    ]
+   }
+  }
  },
  {
   "characterId": "1091",
@@ -456,7 +824,58 @@
     "Assist",
     "Dodge"
    ]
-  ]
+  ],
+  "items": {
+   "Branch & Blade Song": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitBranch&BladeSong.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "CRIT DMG +16%"
+     },
+     {
+      "label": "4-piece",
+      "text": "When Anomaly Mastery exceeds or equals 115 points, the equipper's CRIT DMG increases by 30%. When any squad member applies Freeze or triggers the Shatter effect on an enemy, the equipper's CRIT Rate increases by 12%, lasting 15s."
+     }
+    ]
+   },
+   "Woodpecker Electro": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitWoodpeckerElectro.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "CRIT Rate +8%"
+     },
+     {
+      "label": "4-piece",
+      "text": "Landing a critical hit on an enemy with a Basic Attack, Dodge Counter, or EX Special Attack increases the equipper's ATK by 9% for 6s. The buff duration for different skills are calculated separately."
+     }
+    ]
+   },
+   "Polar Metal": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitPolarMetal.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "Ice DMG +10%"
+     },
+     {
+      "label": "4-piece",
+      "text": "Increase the DMG of Basic Attack and Dash Attack by 20%. When any squad member inflicts Freeze or Shatter, this effect increases by an additional 20% for 12s."
+     }
+    ]
+   },
+   "Hailstorm Shrine": {
+    "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1091.webp",
+    "rarity": 4,
+    "effects": [
+     {
+      "label": "Frost-Stained Star (Phase 1)",
+      "text": "CRIT DMG increases by 50%. When using an EX Special Attack or when any squad member applies an Attribute Anomaly to an enemy, the equipper's Ice DMG increases by 20%, stacking up to 2 times and lasting 15s. The duration of each stack is calculated separately."
+     }
+    ]
+   }
+  }
  },
  {
   "characterId": "1101",
@@ -508,7 +927,58 @@
     "Assist",
     "Dodge"
    ]
-  ]
+  ],
+  "items": {
+   "King of the Summit": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitKingoftheSummit.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "Increases Daze of attacks by 6%"
+     },
+     {
+      "label": "4-piece",
+      "text": "When the equipper is a Stun character and uses an EX Special Attack or Chain Attack, increases CRIT DMG of all squad members by 15%, and when the equipper's CRIT Rate is more than or equal to 50%, further increases CRIT DMG by 15%, lasting 15s. Repeated triggers reset the duration. Passive effects of the same name do not stack."
+     }
+    ]
+   },
+   "Shockstar Disco": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitShockstarDisco.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "Impact +6%"
+     },
+     {
+      "label": "4-piece",
+      "text": "Basic Attacks, Dash Attacks, and Dodge Counters inflict 20% more Daze to the main target."
+     }
+    ]
+   },
+   "Woodpecker Electro": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitWoodpeckerElectro.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "CRIT Rate +8%"
+     },
+     {
+      "label": "4-piece",
+      "text": "Landing a critical hit on an enemy with a Basic Attack, Dodge Counter, or EX Special Attack increases the equipper's ATK by 9% for 6s. The buff duration for different skills are calculated separately."
+     }
+    ]
+   },
+   "Hellfire Gears": {
+    "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1101.webp",
+    "rarity": 4,
+    "effects": [
+     {
+      "label": "Passionate Construction (Phase 1)",
+      "text": "While off-field, the equipper's Energy Regen increases by 0.6/s.\nWhen using an EX Special Attack, the equipper's Impact is increased by 10% for 10s, stacking up to 2 times. The duration of each stack is calculated separately."
+     }
+    ]
+   }
+  }
  },
  {
   "characterId": "1111",
@@ -558,7 +1028,48 @@
     "Assist",
     "Dodge"
    ]
-  ]
+  ],
+  "items": {
+   "Dawn's Bloom": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitDawnsBloom.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "Increases Basic Attack DMG by 15%."
+     },
+     {
+      "label": "4-piece",
+      "text": "Increases Basic Attack DMG by 20%. When equipped by an Attack character, using an EX Special Attack or Ultimate will further increase Basic Attack DMG by 20% for 25s. Repeated triggers reset the duration."
+     }
+    ]
+   },
+   "Woodpecker Electro": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitWoodpeckerElectro.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "CRIT Rate +8%"
+     },
+     {
+      "label": "4-piece",
+      "text": "Landing a critical hit on an enemy with a Basic Attack, Dodge Counter, or EX Special Attack increases the equipper's ATK by 9% for 6s. The buff duration for different skills are calculated separately."
+     }
+    ]
+   },
+   "Branch & Blade Song": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitBranch&BladeSong.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "CRIT DMG +16%"
+     },
+     {
+      "label": "4-piece",
+      "text": "When Anomaly Mastery exceeds or equals 115 points, the equipper's CRIT DMG increases by 30%. When any squad member applies Freeze or triggers the Shatter effect on an enemy, the equipper's CRIT Rate increases by 12%, lasting 15s."
+     }
+    ]
+   }
+  }
  },
  {
   "characterId": "1121",
@@ -607,7 +1118,48 @@
     "Basic Attack",
     "Dodge"
    ]
-  ]
+  ],
+  "items": {
+   "Bunny in Wonderland": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitBunnyinWonderland.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "HP +10%"
+     },
+     {
+      "label": "4-piece",
+      "text": "When the equipper is a Defense character: When the equipper launches an EX Special Attack or any squad member triggers a Defensive Assist or Evasive Assist, all squad members' DMG increases by 6%, stacking up to 3 times, lasting 25s. Stacks decay one at a time, and duration refreshes when gained or decayed. Passive effects of the same name do not stack."
+     }
+    ]
+   },
+   "Proto Punk": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitProtoPunk.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "Increases Shield effect by 15%."
+     },
+     {
+      "label": "4-piece",
+      "text": "When any squad member triggers a Defensive Assist or Evasive Assist, all squad members deal 15% increased DMG, lasting 10s. Passive effects of the same name do not stack."
+     }
+    ]
+   },
+   "Soul Rock": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitSoulRock.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "DEF +16%"
+     },
+     {
+      "label": "4-piece",
+      "text": "Upon receiving an enemy attack and losing HP, the equipper takes 40% less DMG for 2.5s. This effect can trigger once every 15s."
+     }
+    ]
+   }
+  }
  },
  {
   "characterId": "1131",
@@ -656,7 +1208,48 @@
     "Basic Attack",
     "Dodge"
    ]
-  ]
+  ],
+  "items": {
+   "Moonlight Lullaby": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitMoonlightLullaby.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "Energy Regen +20%"
+     },
+     {
+      "label": "4-piece",
+      "text": "When the equipper is a Support character and uses an EX Special Attack or Ultimate, the DMG dealt by all squad members increases by 18% for 25s. Repeated triggers reset the duration. Passive effects of the same name do not stack."
+     }
+    ]
+   },
+   "Swing Jazz": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitSwingJazz.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "Energy Regen +20%"
+     },
+     {
+      "label": "4-piece",
+      "text": "Launching a Chain Attack or Ultimate increases all squad members' DMG by 15% for 12s. Passive effects of the same name do not stack."
+     }
+    ]
+   },
+   "Polar Metal": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitPolarMetal.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "Ice DMG +10%"
+     },
+     {
+      "label": "4-piece",
+      "text": "Increase the DMG of Basic Attack and Dash Attack by 20%. When any squad member inflicts Freeze or Shatter, this effect increases by an additional 20% for 12s."
+     }
+    ]
+   }
+  }
  },
  {
   "characterId": "1141",
@@ -708,7 +1301,58 @@
     "Assist",
     "Dodge"
    ]
-  ]
+  ],
+  "items": {
+   "King of the Summit": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitKingoftheSummit.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "Increases Daze of attacks by 6%"
+     },
+     {
+      "label": "4-piece",
+      "text": "When the equipper is a Stun character and uses an EX Special Attack or Chain Attack, increases CRIT DMG of all squad members by 15%, and when the equipper's CRIT Rate is more than or equal to 50%, further increases CRIT DMG by 15%, lasting 15s. Repeated triggers reset the duration. Passive effects of the same name do not stack."
+     }
+    ]
+   },
+   "Shockstar Disco": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitShockstarDisco.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "Impact +6%"
+     },
+     {
+      "label": "4-piece",
+      "text": "Basic Attacks, Dash Attacks, and Dodge Counters inflict 20% more Daze to the main target."
+     }
+    ]
+   },
+   "Woodpecker Electro": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitWoodpeckerElectro.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "CRIT Rate +8%"
+     },
+     {
+      "label": "4-piece",
+      "text": "Landing a critical hit on an enemy with a Basic Attack, Dodge Counter, or EX Special Attack increases the equipper's ATK by 9% for 6s. The buff duration for different skills are calculated separately."
+     }
+    ]
+   },
+   "The Restrained": {
+    "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1141.webp",
+    "rarity": 4,
+    "effects": [
+     {
+      "label": "Binding Chains (Phase 1)",
+      "text": "When an attack hits an enemy, DMG and Daze from Basic Attacks increase by 6% for 8s, stacking up to 5 times. This effect can trigger at most once during each skill. The duration of each stack is calculated separately."
+     }
+    ]
+   }
+  }
  },
  {
   "characterId": "1151",
@@ -757,7 +1401,48 @@
     "Assist",
     "Dodge"
    ]
-  ]
+  ],
+  "items": {
+   "Moonlight Lullaby": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitMoonlightLullaby.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "Energy Regen +20%"
+     },
+     {
+      "label": "4-piece",
+      "text": "When the equipper is a Support character and uses an EX Special Attack or Ultimate, the DMG dealt by all squad members increases by 18% for 25s. Repeated triggers reset the duration. Passive effects of the same name do not stack."
+     }
+    ]
+   },
+   "Astral Voice": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitAstralVoice.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "ATK +10%"
+     },
+     {
+      "label": "4-piece",
+      "text": "Whenever any squad member enters the field using a Quick Assist, all squad members gain 1 stack of Astral, up to a maximum of 3 stacks, and lasting 15s. Repeated triggers reset the duration. Each stack of Astral increases the DMG dealt by the character entering the field using a Quick Assist by 8%. Passive effects of the same name do not stack."
+     }
+    ]
+   },
+   "Hormone Punk": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitHormonePunk.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "ATK +10%"
+     },
+     {
+      "label": "4-piece",
+      "text": "Upon becoming the active character in combat, the equipper's ATK increases by 25% for 10s. This effect can trigger once every 20s."
+     }
+    ]
+   }
+  }
  },
  {
   "characterId": "1161",
@@ -809,7 +1494,58 @@
     "Assist",
     "Dodge"
    ]
-  ]
+  ],
+  "items": {
+   "King of the Summit": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitKingoftheSummit.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "Increases Daze of attacks by 6%"
+     },
+     {
+      "label": "4-piece",
+      "text": "When the equipper is a Stun character and uses an EX Special Attack or Chain Attack, increases CRIT DMG of all squad members by 15%, and when the equipper's CRIT Rate is more than or equal to 50%, further increases CRIT DMG by 15%, lasting 15s. Repeated triggers reset the duration. Passive effects of the same name do not stack."
+     }
+    ]
+   },
+   "Shockstar Disco": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitShockstarDisco.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "Impact +6%"
+     },
+     {
+      "label": "4-piece",
+      "text": "Basic Attacks, Dash Attacks, and Dodge Counters inflict 20% more Daze to the main target."
+     }
+    ]
+   },
+   "Woodpecker Electro": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitWoodpeckerElectro.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "CRIT Rate +8%"
+     },
+     {
+      "label": "4-piece",
+      "text": "Landing a critical hit on an enemy with a Basic Attack, Dodge Counter, or EX Special Attack increases the equipper's ATK by 9% for 6s. The buff duration for different skills are calculated separately."
+     }
+    ]
+   },
+   "Blazing Laurel": {
+    "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1161.webp",
+    "rarity": 4,
+    "effects": [
+     {
+      "label": "Flowing Flame (Phase 1)",
+      "text": "Upon launching a Quick Assist or Perfect Assist, the equipper's Impact increases by 25% for 8s. When the equipper launches and hits an enemy with a Basic Attack, apply Wilt to the target for 30s, stacking up to 20 times, repeated triggers reset the duration. When any squad member hits an enemy, for every stack of Wilt applied to the target, the CRIT DMG of the Ice DMG and Fire DMG dealt by that attack increases by 1.5%. Only one instance of this effect can exist in the same squad."
+     }
+    ]
+   }
+  }
  },
  {
   "characterId": "1171",
@@ -860,7 +1596,58 @@
     "Assist",
     "Dodge"
    ]
-  ]
+  ],
+  "items": {
+   "Chaos Jazz": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitChaosJazz.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "Anomaly Proficiency +30"
+     },
+     {
+      "label": "4-piece",
+      "text": "Fire DMG and Electric DMG increases by 15%. While off-field, EX Special Attack and Assist Attack DMG increases by 20%. When switching on-field, this buff continues for 5s, and this continuation effect can trigger once every 7.5s."
+     }
+    ]
+   },
+   "Swing Jazz": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitSwingJazz.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "Energy Regen +20%"
+     },
+     {
+      "label": "4-piece",
+      "text": "Launching a Chain Attack or Ultimate increases all squad members' DMG by 15% for 12s. Passive effects of the same name do not stack."
+     }
+    ]
+   },
+   "Freedom Blues": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitFreedomBlues.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "Anomaly Proficiency +30"
+     },
+     {
+      "label": "4-piece",
+      "text": "When an EX Special Attack hits an enemy, reduce the target's Anomaly Buildup RES to the equipper's Attribute by 20% for 8s. This effect does not stack with others of the same attribute."
+     }
+    ]
+   },
+   "Flamemaker Shaker": {
+    "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1171.webp",
+    "rarity": 4,
+    "effects": [
+     {
+      "label": "Fuel on the Rocks (Phase 1)",
+      "text": "While off-field, the equipper's Energy Regen increases by 0.6/s. When hitting an enemy with an EX Special Attack or Assist Attack, the equipper's DMG increases by 3.5%, stacking up to 10 times and lasting for 6s. This effect can trigger once every 0.3s. While off-field, the stack effect is doubled. Repeated triggers reset the duration. Upon obtaining the DMG increase effect, if the number of current stacks is greater than or equal to 5, then the equipper's Anomaly Proficiency increases by 50. This Anomaly Proficiency increase does not stack and lasts for 6s."
+     }
+    ]
+   }
+  }
  },
  {
   "characterId": "1181",
@@ -911,7 +1698,58 @@
     "Assist",
     "Dodge"
    ]
-  ]
+  ],
+  "items": {
+   "Freedom Blues": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitFreedomBlues.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "Anomaly Proficiency +30"
+     },
+     {
+      "label": "4-piece",
+      "text": "When an EX Special Attack hits an enemy, reduce the target's Anomaly Buildup RES to the equipper's Attribute by 20% for 8s. This effect does not stack with others of the same attribute."
+     }
+    ]
+   },
+   "Thunder Metal": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitThunderMetal.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "Electric DMG +10%"
+     },
+     {
+      "label": "4-piece",
+      "text": "As long as an enemy in combat is Shocked, the equipper's ATK is increased by 28%."
+     }
+    ]
+   },
+   "Phaethon's Melody": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitSavior.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "Anomaly Mastery +8%."
+     },
+     {
+      "label": "4-piece",
+      "text": "When any squad member uses an EX Special Attack, the equipper's Anomaly Proficiency increases by 45 for 8s. If the character using the EX Special Attack is not the equipper, the equipper's Ether DMG is increased by 25%."
+     }
+    ]
+   },
+   "Fusion Compiler": {
+    "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1181.webp",
+    "rarity": 4,
+    "effects": [
+     {
+      "label": "Data Flood (Phase 1)",
+      "text": "Increases ATK by 12%.\nWhen using a Special Attack or EX Special Attack, the equipper's Anomaly Proficiency is increased by 25 for 8s, stacking up to 3 times. The duration of each stack is calculated separately."
+     }
+    ]
+   }
+  }
  },
  {
   "characterId": "1191",
@@ -963,7 +1801,58 @@
    [
     "Assist"
    ]
-  ]
+  ],
+  "items": {
+   "Dawn's Bloom": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitDawnsBloom.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "Increases Basic Attack DMG by 15%."
+     },
+     {
+      "label": "4-piece",
+      "text": "Increases Basic Attack DMG by 20%. When equipped by an Attack character, using an EX Special Attack or Ultimate will further increase Basic Attack DMG by 20% for 25s. Repeated triggers reset the duration."
+     }
+    ]
+   },
+   "Woodpecker Electro": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitWoodpeckerElectro.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "CRIT Rate +8%"
+     },
+     {
+      "label": "4-piece",
+      "text": "Landing a critical hit on an enemy with a Basic Attack, Dodge Counter, or EX Special Attack increases the equipper's ATK by 9% for 6s. The buff duration for different skills are calculated separately."
+     }
+    ]
+   },
+   "Puffer Electro": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitPufferElectro.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "PEN Ratio +8%"
+     },
+     {
+      "label": "4-piece",
+      "text": "Ultimate DMG increases by 20%. Launching an Ultimate increases the equipper's ATK by 15% for 12s."
+     }
+    ]
+   },
+   "Deep Sea Visitor": {
+    "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1191.webp",
+    "rarity": 4,
+    "effects": [
+     {
+      "label": "Lord of Seas (Phase 1)",
+      "text": "Increases Ice DMG by 25%. Upon hitting an enemy with a Basic Attack, the equipper's CRIT Rate increases by 10% for 8s. When dealing Ice DMG with a Dash Attack, the equipper's CRIT Rate increases by an additional 10% for 15s. The duration of each effect is calculated separately."
+     }
+    ]
+   }
+  }
  },
  {
   "characterId": "1201",
@@ -1015,7 +1904,58 @@
    [
     "Assist"
    ]
-  ]
+  ],
+  "items": {
+   "Shadow Harmony": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitShadow.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "The DMG of Aftershocks and Dash Attacks is increased by 15%."
+     },
+     {
+      "label": "4-piece",
+      "text": "Upon hitting an enemy with an Aftershock or Dash Attack, if the DMG dealt aligns with the equipper's attribute, the equipper gains 1 stack of a buff effect, at most once per use of a skill. For each stack, the equipper's ATK increases by 4%, and CRIT Rate increases by 4%. The effect can stack up to 3 times and lasts for 15s. Repeated triggers reset the duration."
+     }
+    ]
+   },
+   "Woodpecker Electro": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitWoodpeckerElectro.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "CRIT Rate +8%"
+     },
+     {
+      "label": "4-piece",
+      "text": "Landing a critical hit on an enemy with a Basic Attack, Dodge Counter, or EX Special Attack increases the equipper's ATK by 9% for 6s. The buff duration for different skills are calculated separately."
+     }
+    ]
+   },
+   "Branch & Blade Song": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitBranch&BladeSong.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "CRIT DMG +16%"
+     },
+     {
+      "label": "4-piece",
+      "text": "When Anomaly Mastery exceeds or equals 115 points, the equipper's CRIT DMG increases by 30%. When any squad member applies Freeze or triggers the Shatter effect on an enemy, the equipper's CRIT Rate increases by 12%, lasting 15s."
+     }
+    ]
+   },
+   "Zanshin Herb Case": {
+    "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1201.webp",
+    "rarity": 4,
+    "effects": [
+     {
+      "label": "Growth Through Adversity (Phase 1)",
+      "text": "CRIT Rate increases by 10%. Dash Attack Electric DMG increases by 40%. When any squad member applies an Attribute Anomaly or Stuns an enemy, the equipper's CRIT Rate increases by an additional 10% for 15s."
+     }
+    ]
+   }
+  }
  },
  {
   "characterId": "1211",
@@ -1066,7 +2006,58 @@
     "Basic Attack",
     "Dodge"
    ]
-  ]
+  ],
+  "items": {
+   "Moonlight Lullaby": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitMoonlightLullaby.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "Energy Regen +20%"
+     },
+     {
+      "label": "4-piece",
+      "text": "When the equipper is a Support character and uses an EX Special Attack or Ultimate, the DMG dealt by all squad members increases by 18% for 25s. Repeated triggers reset the duration. Passive effects of the same name do not stack."
+     }
+    ]
+   },
+   "Puffer Electro": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitPufferElectro.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "PEN Ratio +8%"
+     },
+     {
+      "label": "4-piece",
+      "text": "Ultimate DMG increases by 20%. Launching an Ultimate increases the equipper's ATK by 15% for 12s."
+     }
+    ]
+   },
+   "Swing Jazz": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitSwingJazz.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "Energy Regen +20%"
+     },
+     {
+      "label": "4-piece",
+      "text": "Launching a Chain Attack or Ultimate increases all squad members' DMG by 15% for 12s. Passive effects of the same name do not stack."
+     }
+    ]
+   },
+   "Weeping Cradle": {
+    "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1211.webp",
+    "rarity": 4,
+    "effects": [
+     {
+      "label": "Punishment (Phase 1)",
+      "text": "While off-field, the equipper's Energy Regen increases by 0.6/s. Attacks from the equipper increase all units' DMG against a struck target by 10% for 3 seconds. During this period, this effect is further increased by 1.7% every 0.5s, up to a maximum additional increase of 10.2%. Repeated triggers only refresh the duration without refreshing the DMG increase effect. Passive effects of the same name do not stack."
+     }
+    ]
+   }
+  }
  },
  {
   "characterId": "1221",
@@ -1117,7 +2108,58 @@
     "Assist",
     "Dodge"
    ]
-  ]
+  ],
+  "items": {
+   "Freedom Blues": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitFreedomBlues.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "Anomaly Proficiency +30"
+     },
+     {
+      "label": "4-piece",
+      "text": "When an EX Special Attack hits an enemy, reduce the target's Anomaly Buildup RES to the equipper's Attribute by 20% for 8s. This effect does not stack with others of the same attribute."
+     }
+    ]
+   },
+   "Thunder Metal": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitThunderMetal.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "Electric DMG +10%"
+     },
+     {
+      "label": "4-piece",
+      "text": "As long as an enemy in combat is Shocked, the equipper's ATK is increased by 28%."
+     }
+    ]
+   },
+   "Chaos Jazz": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitChaosJazz.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "Anomaly Proficiency +30"
+     },
+     {
+      "label": "4-piece",
+      "text": "Fire DMG and Electric DMG increases by 15%. While off-field, EX Special Attack and Assist Attack DMG increases by 20%. When switching on-field, this buff continues for 5s, and this continuation effect can trigger once every 7.5s."
+     }
+    ]
+   },
+   "Timeweaver": {
+    "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1221.webp",
+    "rarity": 4,
+    "effects": [
+     {
+      "label": "Time-Devouring Stratagem (Phase 1)",
+      "text": "The equipper's Electric Anomaly Buildup Rate increases by 30%. When Special Attacks or EX Special Attacks hit enemies suffering an Attribute Anomaly, the equipper's Anomaly Proficiency increases by 75 for 15s.\nWhen the equipper's Anomaly Proficiency is greater than or equal to 375, Disorder DMG inflicted by the equipper increases by 25%."
+     }
+    ]
+   }
+  }
  },
  {
   "characterId": "1241",
@@ -1169,7 +2211,58 @@
    [
     "Dodge"
    ]
-  ]
+  ],
+  "items": {
+   "The Sky Ablaze": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitTheSkyAblaze.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "Ether DMG +10%."
+     },
+     {
+      "label": "4-piece",
+      "text": "When the equipper is an Ether attribute Agent, their CRIT DMG increases by 30%. When the equipper uses an EX Special Attack or Ultimate, their ATK increases by 10% for 30s. Repeated triggers reset the duration."
+     }
+    ]
+   },
+   "Woodpecker Electro": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitWoodpeckerElectro.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "CRIT Rate +8%"
+     },
+     {
+      "label": "4-piece",
+      "text": "Landing a critical hit on an enemy with a Basic Attack, Dodge Counter, or EX Special Attack increases the equipper's ATK by 9% for 6s. The buff duration for different skills are calculated separately."
+     }
+    ]
+   },
+   "Branch & Blade Song": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitBranch&BladeSong.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "CRIT DMG +16%"
+     },
+     {
+      "label": "4-piece",
+      "text": "When Anomaly Mastery exceeds or equals 115 points, the equipper's CRIT DMG increases by 30%. When any squad member applies Freeze or triggers the Shatter effect on an enemy, the equipper's CRIT Rate increases by 12%, lasting 15s."
+     }
+    ]
+   },
+   "Riot Suppressor Mark VI": {
+    "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1241.webp",
+    "rarity": 4,
+    "effects": [
+     {
+      "label": "Security Patrol (Phase 1)",
+      "text": "Increases CRIT Rate by 15%. Launching an EX Special Attack grants the equipper 8 Charge stacks, up to a maximum of 8 stacks. Whenever the equipper's Basic Attack or Dash Attack deals Ether DMG, consumes a Charge stack and increases the skill's DMG by 35%."
+     }
+    ]
+   }
+  }
  },
  {
   "characterId": "1251",
@@ -1220,7 +2313,58 @@
     "Assist",
     "Dodge"
    ]
-  ]
+  ],
+  "items": {
+   "King of the Summit": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitKingoftheSummit.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "Increases Daze of attacks by 6%"
+     },
+     {
+      "label": "4-piece",
+      "text": "When the equipper is a Stun character and uses an EX Special Attack or Chain Attack, increases CRIT DMG of all squad members by 15%, and when the equipper's CRIT Rate is more than or equal to 50%, further increases CRIT DMG by 15%, lasting 15s. Repeated triggers reset the duration. Passive effects of the same name do not stack."
+     }
+    ]
+   },
+   "Shockstar Disco": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitShockstarDisco.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "Impact +6%"
+     },
+     {
+      "label": "4-piece",
+      "text": "Basic Attacks, Dash Attacks, and Dodge Counters inflict 20% more Daze to the main target."
+     }
+    ]
+   },
+   "Woodpecker Electro": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitWoodpeckerElectro.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "CRIT Rate +8%"
+     },
+     {
+      "label": "4-piece",
+      "text": "Landing a critical hit on an enemy with a Basic Attack, Dodge Counter, or EX Special Attack increases the equipper's ATK by 9% for 6s. The buff duration for different skills are calculated separately."
+     }
+    ]
+   },
+   "Ice-Jade Teapot": {
+    "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1251.webp",
+    "rarity": 4,
+    "effects": [
+     {
+      "label": "Ringing Melody (Phase 1)",
+      "text": "When a Basic Attack hits an enemy, gain 1 stack of Tea-riffic. Each stack of Tea-riffic increases the user's Impact by 0.7%, stacking up to 30 times, and lasting for 8s. The duration of each stack is calculated separately. Upon acquiring Tea-riffic, if the equipper possesses stacks of Tea-riffic greater than or equal to 15, all squad members' DMG is increased by 20% for 10s. Passive effects of the same name do not stack."
+     }
+    ]
+   }
+  }
  },
  {
   "characterId": "1261",
@@ -1271,7 +2415,58 @@
    [
     "Assist"
    ]
-  ]
+  ],
+  "items": {
+   "Fanged Metal": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitFangedMetal.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "Physical DMG +10%"
+     },
+     {
+      "label": "4-piece",
+      "text": "Whenever a squad member inflicts Assault on an enemy, the equipper deals 35% additional DMG to the target for 12s."
+     }
+    ]
+   },
+   "Freedom Blues": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitFreedomBlues.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "Anomaly Proficiency +30"
+     },
+     {
+      "label": "4-piece",
+      "text": "When an EX Special Attack hits an enemy, reduce the target's Anomaly Buildup RES to the equipper's Attribute by 20% for 8s. This effect does not stack with others of the same attribute."
+     }
+    ]
+   },
+   "Phaethon's Melody": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitSavior.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "Anomaly Mastery +8%."
+     },
+     {
+      "label": "4-piece",
+      "text": "When any squad member uses an EX Special Attack, the equipper's Anomaly Proficiency increases by 45 for 8s. If the character using the EX Special Attack is not the equipper, the equipper's Ether DMG is increased by 25%."
+     }
+    ]
+   },
+   "Sharpened Stinger": {
+    "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1261.webp",
+    "rarity": 4,
+    "effects": [
+     {
+      "label": "Indulge in the Hunt (Phase 1)",
+      "text": "Upon activating a Dash Attack, gain 1 stack of Predatory Instinct. Each stack of Predatory Instinct increases the equipper's Physical DMG by 12% for 10s, stacking up to 3 times. This effect can trigger once every 0.5s and repeated triggers reset the duration. When entering combat or triggering Perfect Dodge, gain 3 stacks of Predatory Instinct. While Predatory Instinct is at maximum stacks, the equipper's Anomaly Buildup Rate increases by 40%."
+     }
+    ]
+   }
+  }
  },
  {
   "characterId": "1271",
@@ -1320,7 +2515,48 @@
    [
     "Dodge"
    ]
-  ]
+  ],
+  "items": {
+   "Bunny in Wonderland": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitBunnyinWonderland.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "HP +10%"
+     },
+     {
+      "label": "4-piece",
+      "text": "When the equipper is a Defense character: When the equipper launches an EX Special Attack or any squad member triggers a Defensive Assist or Evasive Assist, all squad members' DMG increases by 6%, stacking up to 3 times, lasting 25s. Stacks decay one at a time, and duration refreshes when gained or decayed. Passive effects of the same name do not stack."
+     }
+    ]
+   },
+   "Proto Punk": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitProtoPunk.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "Increases Shield effect by 15%."
+     },
+     {
+      "label": "4-piece",
+      "text": "When any squad member triggers a Defensive Assist or Evasive Assist, all squad members deal 15% increased DMG, lasting 10s. Passive effects of the same name do not stack."
+     }
+    ]
+   },
+   "Swing Jazz": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitSwingJazz.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "Energy Regen +20%"
+     },
+     {
+      "label": "4-piece",
+      "text": "Launching a Chain Attack or Ultimate increases all squad members' DMG by 15% for 12s. Passive effects of the same name do not stack."
+     }
+    ]
+   }
+  }
  },
  {
   "characterId": "1281",
@@ -1369,7 +2605,48 @@
     "Assist",
     "Dodge"
    ]
-  ]
+  ],
+  "items": {
+   "Fanged Metal": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitFangedMetal.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "Physical DMG +10%"
+     },
+     {
+      "label": "4-piece",
+      "text": "Whenever a squad member inflicts Assault on an enemy, the equipper deals 35% additional DMG to the target for 12s."
+     }
+    ]
+   },
+   "Freedom Blues": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitFreedomBlues.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "Anomaly Proficiency +30"
+     },
+     {
+      "label": "4-piece",
+      "text": "When an EX Special Attack hits an enemy, reduce the target's Anomaly Buildup RES to the equipper's Attribute by 20% for 8s. This effect does not stack with others of the same attribute."
+     }
+    ]
+   },
+   "Phaethon's Melody": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitSavior.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "Anomaly Mastery +8%."
+     },
+     {
+      "label": "4-piece",
+      "text": "When any squad member uses an EX Special Attack, the equipper's Anomaly Proficiency increases by 45 for 8s. If the character using the EX Special Attack is not the equipper, the equipper's Ether DMG is increased by 25%."
+     }
+    ]
+   }
+  }
  },
  {
   "characterId": "1291",
@@ -1421,7 +2698,58 @@
     "Assist",
     "Dodge"
    ]
-  ]
+  ],
+  "items": {
+   "Hormone Punk": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitHormonePunk.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "ATK +10%"
+     },
+     {
+      "label": "4-piece",
+      "text": "Upon becoming the active character in combat, the equipper's ATK increases by 25% for 10s. This effect can trigger once every 20s."
+     }
+    ]
+   },
+   "Woodpecker Electro": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitWoodpeckerElectro.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "CRIT Rate +8%"
+     },
+     {
+      "label": "4-piece",
+      "text": "Landing a critical hit on an enemy with a Basic Attack, Dodge Counter, or EX Special Attack increases the equipper's ATK by 9% for 6s. The buff duration for different skills are calculated separately."
+     }
+    ]
+   },
+   "Branch & Blade Song": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitBranch&BladeSong.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "CRIT DMG +16%"
+     },
+     {
+      "label": "4-piece",
+      "text": "When Anomaly Mastery exceeds or equals 115 points, the equipper's CRIT DMG increases by 30%. When any squad member applies Freeze or triggers the Shatter effect on an enemy, the equipper's CRIT Rate increases by 12%, lasting 15s."
+     }
+    ]
+   },
+   "Myriad Eclipse": {
+    "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1291.webp",
+    "rarity": 4,
+    "effects": [
+     {
+      "label": "False Personas (Phase 1)",
+      "text": "Increases CRIT DMG by 45%. When using an EX Special Attack, Chain Attack, or Ultimate to deal Ice DMG, the equipper gains the Absolute Zero Death Sentence effect for 3s. While Absolute Zero Death Sentence is active, the character ignores 25% of the enemy's DEF when landing a hit."
+     }
+    ]
+   }
+  }
  },
  {
   "characterId": "1301",
@@ -1473,7 +2801,58 @@
     "Basic Attack",
     "Dodge"
    ]
-  ]
+  ],
+  "items": {
+   "Shadow Harmony": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitShadow.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "The DMG of Aftershocks and Dash Attacks is increased by 15%."
+     },
+     {
+      "label": "4-piece",
+      "text": "Upon hitting an enemy with an Aftershock or Dash Attack, if the DMG dealt aligns with the equipper's attribute, the equipper gains 1 stack of a buff effect, at most once per use of a skill. For each stack, the equipper's ATK increases by 4%, and CRIT Rate increases by 4%. The effect can stack up to 3 times and lasts for 15s. Repeated triggers reset the duration."
+     }
+    ]
+   },
+   "Swing Jazz": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitSwingJazz.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "Energy Regen +20%"
+     },
+     {
+      "label": "4-piece",
+      "text": "Launching a Chain Attack or Ultimate increases all squad members' DMG by 15% for 12s. Passive effects of the same name do not stack."
+     }
+    ]
+   },
+   "Woodpecker Electro": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitWoodpeckerElectro.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "CRIT Rate +8%"
+     },
+     {
+      "label": "4-piece",
+      "text": "Landing a critical hit on an enemy with a Basic Attack, Dodge Counter, or EX Special Attack increases the equipper's ATK by 9% for 6s. The buff duration for different skills are calculated separately."
+     }
+    ]
+   },
+   "Bellicose Blaze": {
+    "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1301.webp",
+    "rarity": 4,
+    "effects": [
+     {
+      "label": "Flame-Devouring Choir (Phase 1)",
+      "text": "Increases CRIT Rate by 20%. When the equipper triggers an Aftershock that deals Fire DMG, their attacks ignore 15% of the target's DEF for 8s. Can stack once every 3s, up to 2 stacks. Repeated triggers reset the duration."
+     }
+    ]
+   }
+  }
  },
  {
   "characterId": "1311",
@@ -1524,7 +2903,58 @@
     "Basic Attack",
     "Dodge"
    ]
-  ]
+  ],
+  "items": {
+   "Astral Voice": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitAstralVoice.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "ATK +10%"
+     },
+     {
+      "label": "4-piece",
+      "text": "Whenever any squad member enters the field using a Quick Assist, all squad members gain 1 stack of Astral, up to a maximum of 3 stacks, and lasting 15s. Repeated triggers reset the duration. Each stack of Astral increases the DMG dealt by the character entering the field using a Quick Assist by 8%. Passive effects of the same name do not stack."
+     }
+    ]
+   },
+   "Moonlight Lullaby": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitMoonlightLullaby.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "Energy Regen +20%"
+     },
+     {
+      "label": "4-piece",
+      "text": "When the equipper is a Support character and uses an EX Special Attack or Ultimate, the DMG dealt by all squad members increases by 18% for 25s. Repeated triggers reset the duration. Passive effects of the same name do not stack."
+     }
+    ]
+   },
+   "Swing Jazz": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitSwingJazz.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "Energy Regen +20%"
+     },
+     {
+      "label": "4-piece",
+      "text": "Launching a Chain Attack or Ultimate increases all squad members' DMG by 15% for 12s. Passive effects of the same name do not stack."
+     }
+    ]
+   },
+   "Elegant Vanity": {
+    "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1311.webp",
+    "rarity": 4,
+    "effects": [
+     {
+      "label": "Untold Beauty (Phase 1)",
+      "text": "When any squad member enters the field through a Quick Assist, Chain Attack, Defensive Assist, or Evasive Assist, the equipper gains 5 Energy. This effect can trigger once every 5s. When the equipper consumes 25 or more Energy, the DMG dealt by all squad members increases by 10%, stacking up to 2 times, and lasting 20s. Repeated triggers reset the duration. Only one instance of this effect can exist in the same squad."
+     }
+    ]
+   }
+  }
  },
  {
   "characterId": "1321",
@@ -1576,7 +3006,58 @@
     "Assist",
     "Dodge"
    ]
-  ]
+  ],
+  "items": {
+   "Woodpecker Electro": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitWoodpeckerElectro.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "CRIT Rate +8%"
+     },
+     {
+      "label": "4-piece",
+      "text": "Landing a critical hit on an enemy with a Basic Attack, Dodge Counter, or EX Special Attack increases the equipper's ATK by 9% for 6s. The buff duration for different skills are calculated separately."
+     }
+    ]
+   },
+   "Branch & Blade Song": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitBranch&BladeSong.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "CRIT DMG +16%"
+     },
+     {
+      "label": "4-piece",
+      "text": "When Anomaly Mastery exceeds or equals 115 points, the equipper's CRIT DMG increases by 30%. When any squad member applies Freeze or triggers the Shatter effect on an enemy, the equipper's CRIT Rate increases by 12%, lasting 15s."
+     }
+    ]
+   },
+   "Astral Voice": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitAstralVoice.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "ATK +10%"
+     },
+     {
+      "label": "4-piece",
+      "text": "Whenever any squad member enters the field using a Quick Assist, all squad members gain 1 stack of Astral, up to a maximum of 3 stacks, and lasting 15s. Repeated triggers reset the duration. Each stack of Astral increases the DMG dealt by the character entering the field using a Quick Assist by 8%. Passive effects of the same name do not stack."
+     }
+    ]
+   },
+   "Heartstring Nocturne": {
+    "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1321.webp",
+    "rarity": 4,
+    "effects": [
+     {
+      "label": "String & Melody (Phase 1)",
+      "text": "CRIT DMG increases by 50%. When the equipper enters combat, or activates a Chain Attack or Ultimate, they gain 1 stack of Heartstring. Each stack of Heartstring allows the equipper's Chain Attack and Ultimate to ignore 12.5% of the target's Fire RES, stacking up to 2 times and lasting 30s. Repeated triggers reset the duration."
+     }
+    ]
+   }
+  }
  },
  {
   "characterId": "1331",
@@ -1627,7 +3108,58 @@
    [
     "Dodge"
    ]
-  ]
+  ],
+  "items": {
+   "Phaethon's Melody": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitSavior.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "Anomaly Mastery +8%."
+     },
+     {
+      "label": "4-piece",
+      "text": "When any squad member uses an EX Special Attack, the equipper's Anomaly Proficiency increases by 45 for 8s. If the character using the EX Special Attack is not the equipper, the equipper's Ether DMG is increased by 25%."
+     }
+    ]
+   },
+   "Freedom Blues": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitFreedomBlues.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "Anomaly Proficiency +30"
+     },
+     {
+      "label": "4-piece",
+      "text": "When an EX Special Attack hits an enemy, reduce the target's Anomaly Buildup RES to the equipper's Attribute by 20% for 8s. This effect does not stack with others of the same attribute."
+     }
+    ]
+   },
+   "Swing Jazz": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitSwingJazz.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "Energy Regen +20%"
+     },
+     {
+      "label": "4-piece",
+      "text": "Launching a Chain Attack or Ultimate increases all squad members' DMG by 15% for 12s. Passive effects of the same name do not stack."
+     }
+    ]
+   },
+   "Flight of Fancy": {
+    "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1331.webp",
+    "rarity": 4,
+    "effects": [
+     {
+      "label": "Silver Spiked Feathers (Phase 1)",
+      "text": "Increases Anomaly Buildup Rate by 40%. When the equipper deals Ether DMG, their Anomaly Proficiency increases by 20 for 5s, stacking up to 6 times. This effect can trigger once every 0.5s, and repeated triggers reset the duration."
+     }
+    ]
+   }
+  }
  },
  {
   "characterId": "1341",
@@ -1678,7 +3210,58 @@
    [
     "Dodge"
    ]
-  ]
+  ],
+  "items": {
+   "Bunny in Wonderland": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitBunnyinWonderland.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "HP +10%"
+     },
+     {
+      "label": "4-piece",
+      "text": "When the equipper is a Defense character: When the equipper launches an EX Special Attack or any squad member triggers a Defensive Assist or Evasive Assist, all squad members' DMG increases by 6%, stacking up to 3 times, lasting 25s. Stacks decay one at a time, and duration refreshes when gained or decayed. Passive effects of the same name do not stack."
+     }
+    ]
+   },
+   "Yunkui Tales": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitYunkuiTales.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "HP +10%"
+     },
+     {
+      "label": "4-piece",
+      "text": "When using EX Special Attack, Chain Attack, or Ultimate, CRIT Rate increases by 4%, stacking up to 3 times and lasting 15s. Repeated triggers reset the duration. When having 3 stacks of this effect, Sheer DMG increases by 10%."
+     }
+    ]
+   },
+   "Swing Jazz": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitSwingJazz.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "Energy Regen +20%"
+     },
+     {
+      "label": "4-piece",
+      "text": "Launching a Chain Attack or Ultimate increases all squad members' DMG by 15% for 12s. Passive effects of the same name do not stack."
+     }
+    ]
+   },
+   "Half-Sugar Bunny": {
+    "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1341.webp",
+    "rarity": 4,
+    "effects": [
+     {
+      "label": "Fragile Sweetness (Phase 1)",
+      "text": "The equipper's Energy Regen increases by 0.46/s. All squad members gain 10% ATK and 10% Max HP. Only one instance of this effect can exist in the same squad. When the equipper activates or extends an Ether Veil, all squad members gain 30% CRIT DMG for 60s. Repeated triggers reset the duration."
+     }
+    ]
+   }
+  }
  },
  {
   "characterId": "1351",
@@ -1728,7 +3311,48 @@
     "Basic Attack",
     "Dodge"
    ]
-  ]
+  ],
+  "items": {
+   "King of the Summit": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitKingoftheSummit.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "Increases Daze of attacks by 6%"
+     },
+     {
+      "label": "4-piece",
+      "text": "When the equipper is a Stun character and uses an EX Special Attack or Chain Attack, increases CRIT DMG of all squad members by 15%, and when the equipper's CRIT Rate is more than or equal to 50%, further increases CRIT DMG by 15%, lasting 15s. Repeated triggers reset the duration. Passive effects of the same name do not stack."
+     }
+    ]
+   },
+   "Woodpecker Electro": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitWoodpeckerElectro.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "CRIT Rate +8%"
+     },
+     {
+      "label": "4-piece",
+      "text": "Landing a critical hit on an enemy with a Basic Attack, Dodge Counter, or EX Special Attack increases the equipper's ATK by 9% for 6s. The buff duration for different skills are calculated separately."
+     }
+    ]
+   },
+   "Shockstar Disco": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitShockstarDisco.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "Impact +6%"
+     },
+     {
+      "label": "4-piece",
+      "text": "Basic Attacks, Dash Attacks, and Dodge Counters inflict 20% more Daze to the main target."
+     }
+    ]
+   }
+  }
  },
  {
   "characterId": "1361",
@@ -1780,7 +3404,58 @@
     "Assist",
     "Dodge"
    ]
-  ]
+  ],
+  "items": {
+   "King of the Summit": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitKingoftheSummit.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "Increases Daze of attacks by 6%"
+     },
+     {
+      "label": "4-piece",
+      "text": "When the equipper is a Stun character and uses an EX Special Attack or Chain Attack, increases CRIT DMG of all squad members by 15%, and when the equipper's CRIT Rate is more than or equal to 50%, further increases CRIT DMG by 15%, lasting 15s. Repeated triggers reset the duration. Passive effects of the same name do not stack."
+     }
+    ]
+   },
+   "Woodpecker Electro": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitWoodpeckerElectro.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "CRIT Rate +8%"
+     },
+     {
+      "label": "4-piece",
+      "text": "Landing a critical hit on an enemy with a Basic Attack, Dodge Counter, or EX Special Attack increases the equipper's ATK by 9% for 6s. The buff duration for different skills are calculated separately."
+     }
+    ]
+   },
+   "Shockstar Disco": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitShockstarDisco.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "Impact +6%"
+     },
+     {
+      "label": "4-piece",
+      "text": "Basic Attacks, Dash Attacks, and Dodge Counters inflict 20% more Daze to the main target."
+     }
+    ]
+   },
+   "Spectral Gaze": {
+    "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1361.webp",
+    "rarity": 4,
+    "effects": [
+     {
+      "label": "Wind Seeker (Phase 1)",
+      "text": "When the equipper's Aftershock hits an enemy, causing Electric DMG, the target's DEF is reduced by 25% for 5s. Passive effects of the same name do not stack. When this effect is triggered, if the equipper is not the active character, they gain 1 stack of Spirit Lock, up to a maximum of 3 stacks. This can trigger only once per use of a skill. Each stack of Spirit Lock increases the equipper's Impact by 4%, lasting 12s. The duration of each stack is calculated separately. At full stacks of Spirit Lock, the equipper's Impact increases by an additional 8%."
+     }
+    ]
+   }
+  }
  },
  {
   "characterId": "1371",
@@ -1832,7 +3507,58 @@
     "Dodge",
     "Assist"
    ]
-  ]
+  ],
+  "items": {
+   "Yunkui Tales": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitYunkuiTales.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "HP +10%"
+     },
+     {
+      "label": "4-piece",
+      "text": "When using EX Special Attack, Chain Attack, or Ultimate, CRIT Rate increases by 4%, stacking up to 3 times and lasting 15s. Repeated triggers reset the duration. When having 3 stacks of this effect, Sheer DMG increases by 10%."
+     }
+    ]
+   },
+   "Woodpecker Electro": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitWoodpeckerElectro.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "CRIT Rate +8%"
+     },
+     {
+      "label": "4-piece",
+      "text": "Landing a critical hit on an enemy with a Basic Attack, Dodge Counter, or EX Special Attack increases the equipper's ATK by 9% for 6s. The buff duration for different skills are calculated separately."
+     }
+    ]
+   },
+   "Branch & Blade Song": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitBranch&BladeSong.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "CRIT DMG +16%"
+     },
+     {
+      "label": "4-piece",
+      "text": "When Anomaly Mastery exceeds or equals 115 points, the equipper's CRIT DMG increases by 30%. When any squad member applies Freeze or triggers the Shatter effect on an enemy, the equipper's CRIT Rate increases by 12%, lasting 15s."
+     }
+    ]
+   },
+   "Qingming Birdcage": {
+    "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1371.webp",
+    "rarity": 4,
+    "effects": [
+     {
+      "label": "Cloud Flow (Phase 1)",
+      "text": "CRIT Rate increases by 20%. When the equipper launches an EX Special Attack, the character gains 1 stack of Qingming Companion effect, stacking up to 2 times and lasting 15s. On entering combat, immediately gain 2 stacks. Repeated triggers reset the duration. Each stack of the Qingming Companion effect increases the equipper's Ether DMG by 8%, and increases Ultimate and EX Special Attack Ether Sheer DMG by 10%."
+     }
+    ]
+   }
+  }
  },
  {
   "characterId": "1381",
@@ -1884,7 +3610,58 @@
    [
     "Assist"
    ]
-  ]
+  ],
+  "items": {
+   "Shadow Harmony": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitShadow.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "The DMG of Aftershocks and Dash Attacks is increased by 15%."
+     },
+     {
+      "label": "4-piece",
+      "text": "Upon hitting an enemy with an Aftershock or Dash Attack, if the DMG dealt aligns with the equipper's attribute, the equipper gains 1 stack of a buff effect, at most once per use of a skill. For each stack, the equipper's ATK increases by 4%, and CRIT Rate increases by 4%. The effect can stack up to 3 times and lasts for 15s. Repeated triggers reset the duration."
+     }
+    ]
+   },
+   "Woodpecker Electro": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitWoodpeckerElectro.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "CRIT Rate +8%"
+     },
+     {
+      "label": "4-piece",
+      "text": "Landing a critical hit on an enemy with a Basic Attack, Dodge Counter, or EX Special Attack increases the equipper's ATK by 9% for 6s. The buff duration for different skills are calculated separately."
+     }
+    ]
+   },
+   "Thunder Metal": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitThunderMetal.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "Electric DMG +10%"
+     },
+     {
+      "label": "4-piece",
+      "text": "As long as an enemy in combat is Shocked, the equipper's ATK is increased by 28%."
+     }
+    ]
+   },
+   "Severed Innocence": {
+    "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1381.webp",
+    "rarity": 4,
+    "effects": [
+     {
+      "label": "Tranquil Blossom (Phase 1)",
+      "text": "CRIT DMG is increased by 30%. When the equipper lands a hit with a Basic Attack, Special Attack, or Aftershock, they gain 1 stack of a buff. Each stack increases the equipper's CRIT DMG by an additional 10%, stacking up to 3 times. The effect lasts for 30s, with each stack's duration calculated separately, and can only be triggered once per use of a skill. With all 3 stacks, the equipper's Electric DMG increases by 20%."
+     }
+    ]
+   }
+  }
  },
  {
   "characterId": "1391",
@@ -1936,7 +3713,58 @@
     "Basic Attack",
     "Dodge"
    ]
-  ]
+  ],
+  "items": {
+   "King of the Summit": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitKingoftheSummit.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "Increases Daze of attacks by 6%"
+     },
+     {
+      "label": "4-piece",
+      "text": "When the equipper is a Stun character and uses an EX Special Attack or Chain Attack, increases CRIT DMG of all squad members by 15%, and when the equipper's CRIT Rate is more than or equal to 50%, further increases CRIT DMG by 15%, lasting 15s. Repeated triggers reset the duration. Passive effects of the same name do not stack."
+     }
+    ]
+   },
+   "Woodpecker Electro": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitWoodpeckerElectro.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "CRIT Rate +8%"
+     },
+     {
+      "label": "4-piece",
+      "text": "Landing a critical hit on an enemy with a Basic Attack, Dodge Counter, or EX Special Attack increases the equipper's ATK by 9% for 6s. The buff duration for different skills are calculated separately."
+     }
+    ]
+   },
+   "Shockstar Disco": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitShockstarDisco.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "Impact +6%"
+     },
+     {
+      "label": "4-piece",
+      "text": "Basic Attacks, Dash Attacks, and Dodge Counters inflict 20% more Daze to the main target."
+     }
+    ]
+   },
+   "Roaring Fur-nace": {
+    "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1391.webp",
+    "rarity": 4,
+    "effects": [
+     {
+      "label": "Tiger Spirit Rising (Phase 1)",
+      "text": "The Daze dealt by the equipper's EX Special Attack, Chain Attack, and Ultimate increases by 28%.\nWhen using a Chain Attack or Ultimate to deal Fire DMG, the DMG dealt by all squad members increases by 10%, stacking up to 2 times and lasting 30s. The duration of each stack is calculated separately. Triggers once per use of a skill. Only one instance of this effect can exist in the same squad."
+     }
+    ]
+   }
+  }
  },
  {
   "characterId": "1401",
@@ -1987,7 +3815,58 @@
     "Assist",
     "Dodge"
    ]
-  ]
+  ],
+  "items": {
+   "Fanged Metal": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitFangedMetal.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "Physical DMG +10%"
+     },
+     {
+      "label": "4-piece",
+      "text": "Whenever a squad member inflicts Assault on an enemy, the equipper deals 35% additional DMG to the target for 12s."
+     }
+    ]
+   },
+   "Freedom Blues": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitFreedomBlues.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "Anomaly Proficiency +30"
+     },
+     {
+      "label": "4-piece",
+      "text": "When an EX Special Attack hits an enemy, reduce the target's Anomaly Buildup RES to the equipper's Attribute by 20% for 8s. This effect does not stack with others of the same attribute."
+     }
+    ]
+   },
+   "Phaethon's Melody": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitSavior.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "Anomaly Mastery +8%."
+     },
+     {
+      "label": "4-piece",
+      "text": "When any squad member uses an EX Special Attack, the equipper's Anomaly Proficiency increases by 45 for 8s. If the character using the EX Special Attack is not the equipper, the equipper's Ether DMG is increased by 25%."
+     }
+    ]
+   },
+   "Practiced Perfection": {
+    "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1401.webp",
+    "rarity": 4,
+    "effects": [
+     {
+      "label": "Gift of Stardust (Phase 1)",
+      "text": "The equipper's Anomaly Mastery increases by 60. When inflicting Assault, the equipper's Physical DMG increases by 20% for 20s, stacking up to 2 times. Repeated triggers reset the duration. When the equipper enters combat, immediately gain 2 stacks."
+     }
+    ]
+   }
+  }
  },
  {
   "characterId": "1411",
@@ -2038,7 +3917,58 @@
    [
     "Dodge"
    ]
-  ]
+  ],
+  "items": {
+   "Moonlight Lullaby": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitMoonlightLullaby.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "Energy Regen +20%"
+     },
+     {
+      "label": "4-piece",
+      "text": "When the equipper is a Support character and uses an EX Special Attack or Ultimate, the DMG dealt by all squad members increases by 18% for 25s. Repeated triggers reset the duration. Passive effects of the same name do not stack."
+     }
+    ]
+   },
+   "Phaethon's Melody": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitSavior.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "Anomaly Mastery +8%."
+     },
+     {
+      "label": "4-piece",
+      "text": "When any squad member uses an EX Special Attack, the equipper's Anomaly Proficiency increases by 45 for 8s. If the character using the EX Special Attack is not the equipper, the equipper's Ether DMG is increased by 25%."
+     }
+    ]
+   },
+   "Swing Jazz": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitSwingJazz.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "Energy Regen +20%"
+     },
+     {
+      "label": "4-piece",
+      "text": "Launching a Chain Attack or Ultimate increases all squad members' DMG by 15% for 12s. Passive effects of the same name do not stack."
+     }
+    ]
+   },
+   "Metanukimorphosis": {
+    "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1411.webp",
+    "rarity": 4,
+    "effects": [
+     {
+      "label": "Exquisitely Ingenious (Phase 1)",
+      "text": "When the equipper's EX Special Attack or Ultimate deals Physical DMG, their Anomaly Mastery increases by 30 for 40s. When the equipper's Aftershock hits an enemy, all squad members' Anomaly Proficiency increases by 60 for 40s. Only one instance of this effect can exist in the same squad."
+     }
+    ]
+   }
+  }
  },
  {
   "characterId": "1421",
@@ -2087,7 +4017,48 @@
     "Basic Attack",
     "Dodge"
    ]
-  ]
+  ],
+  "items": {
+   "Bunny in Wonderland": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitBunnyinWonderland.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "HP +10%"
+     },
+     {
+      "label": "4-piece",
+      "text": "When the equipper is a Defense character: When the equipper launches an EX Special Attack or any squad member triggers a Defensive Assist or Evasive Assist, all squad members' DMG increases by 6%, stacking up to 3 times, lasting 25s. Stacks decay one at a time, and duration refreshes when gained or decayed. Passive effects of the same name do not stack."
+     }
+    ]
+   },
+   "Hormone Punk": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitHormonePunk.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "ATK +10%"
+     },
+     {
+      "label": "4-piece",
+      "text": "Upon becoming the active character in combat, the equipper's ATK increases by 25% for 10s. This effect can trigger once every 20s."
+     }
+    ]
+   },
+   "Astral Voice": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitAstralVoice.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "ATK +10%"
+     },
+     {
+      "label": "4-piece",
+      "text": "Whenever any squad member enters the field using a Quick Assist, all squad members gain 1 stack of Astral, up to a maximum of 3 stacks, and lasting 15s. Repeated triggers reset the duration. Each stack of Astral increases the DMG dealt by the character entering the field using a Quick Assist by 8%. Passive effects of the same name do not stack."
+     }
+    ]
+   }
+  }
  },
  {
   "characterId": "1431",
@@ -2139,7 +4110,58 @@
    [
     "Dodge"
    ]
-  ]
+  ],
+  "items": {
+   "White Water Ballad": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitWhiteWaterBallad.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "Physical DMG +10%"
+     },
+     {
+      "label": "4-piece",
+      "text": "When the equipper is within any Ether Veil, their CRIT Rate increases by 10%. After leaving the Ether Veil, this buff remains for 15s. If the equipper is an Attack character, activating an Ether Veil or extending an Ether Veil's duration increases their CRIT Rate by 10% and ATK by 10% for 30s. Repeated triggers reset the duration."
+     }
+    ]
+   },
+   "Branch & Blade Song": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitBranch&BladeSong.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "CRIT DMG +16%"
+     },
+     {
+      "label": "4-piece",
+      "text": "When Anomaly Mastery exceeds or equals 115 points, the equipper's CRIT DMG increases by 30%. When any squad member applies Freeze or triggers the Shatter effect on an enemy, the equipper's CRIT Rate increases by 12%, lasting 15s."
+     }
+    ]
+   },
+   "Woodpecker Electro": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitWoodpeckerElectro.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "CRIT Rate +8%"
+     },
+     {
+      "label": "4-piece",
+      "text": "Landing a critical hit on an enemy with a Basic Attack, Dodge Counter, or EX Special Attack increases the equipper's ATK by 9% for 6s. The buff duration for different skills are calculated separately."
+     }
+    ]
+   },
+   "Cloudcleave Radiance": {
+    "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1431.webp",
+    "rarity": 4,
+    "effects": [
+     {
+      "label": "Jade Soul, Frozen Heart (Phase 1)",
+      "text": "The equipper's DMG ignores 20% of the target's Physical RES. When the equipper activates an Ether Veil, the equipper's DMG increases by 25% and CRIT DMG increases by 25% for 40s. Repeated triggers reset the duration."
+     }
+    ]
+   }
+  }
  },
  {
   "characterId": "1441",
@@ -2189,7 +4211,48 @@
    [
     "Dodge"
    ]
-  ]
+  ],
+  "items": {
+   "Yunkui Tales": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitYunkuiTales.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "HP +10%"
+     },
+     {
+      "label": "4-piece",
+      "text": "When using EX Special Attack, Chain Attack, or Ultimate, CRIT Rate increases by 4%, stacking up to 3 times and lasting 15s. Repeated triggers reset the duration. When having 3 stacks of this effect, Sheer DMG increases by 10%."
+     }
+    ]
+   },
+   "Woodpecker Electro": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitWoodpeckerElectro.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "CRIT Rate +8%"
+     },
+     {
+      "label": "4-piece",
+      "text": "Landing a critical hit on an enemy with a Basic Attack, Dodge Counter, or EX Special Attack increases the equipper's ATK by 9% for 6s. The buff duration for different skills are calculated separately."
+     }
+    ]
+   },
+   "Branch & Blade Song": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitBranch&BladeSong.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "CRIT DMG +16%"
+     },
+     {
+      "label": "4-piece",
+      "text": "When Anomaly Mastery exceeds or equals 115 points, the equipper's CRIT DMG increases by 30%. When any squad member applies Freeze or triggers the Shatter effect on an enemy, the equipper's CRIT Rate increases by 12%, lasting 15s."
+     }
+    ]
+   }
+  }
  },
  {
   "characterId": "1451",
@@ -2240,7 +4303,58 @@
    [
     "Dodge"
    ]
-  ]
+  ],
+  "items": {
+   "Moonlight Lullaby": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitMoonlightLullaby.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "Energy Regen +20%"
+     },
+     {
+      "label": "4-piece",
+      "text": "When the equipper is a Support character and uses an EX Special Attack or Ultimate, the DMG dealt by all squad members increases by 18% for 25s. Repeated triggers reset the duration. Passive effects of the same name do not stack."
+     }
+    ]
+   },
+   "Yunkui Tales": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitYunkuiTales.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "HP +10%"
+     },
+     {
+      "label": "4-piece",
+      "text": "When using EX Special Attack, Chain Attack, or Ultimate, CRIT Rate increases by 4%, stacking up to 3 times and lasting 15s. Repeated triggers reset the duration. When having 3 stacks of this effect, Sheer DMG increases by 10%."
+     }
+    ]
+   },
+   "Swing Jazz": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitSwingJazz.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "Energy Regen +20%"
+     },
+     {
+      "label": "4-piece",
+      "text": "Launching a Chain Attack or Ultimate increases all squad members' DMG by 15% for 12s. Passive effects of the same name do not stack."
+     }
+    ]
+   },
+   "Dreamlit Hearth": {
+    "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1451.webp",
+    "rarity": 4,
+    "effects": [
+     {
+      "label": "Moontide Epic (Phase 1)",
+      "text": "The equipper's Energy Regen increases by 0.4/s. When the equipper activates Ether Veil or extends its duration, all squad members gain 25% increased DMG and 15% increased Max HP for 45s. Repeated triggers reset the duration. Only one instance of this effect can exist in the same squad."
+     }
+    ]
+   }
+  }
  },
  {
   "characterId": "1461",
@@ -2292,7 +4406,58 @@
     "Assist",
     "Dodge"
    ]
-  ]
+  ],
+  "items": {
+   "Dawn's Bloom": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitDawnsBloom.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "Increases Basic Attack DMG by 15%."
+     },
+     {
+      "label": "4-piece",
+      "text": "Increases Basic Attack DMG by 20%. When equipped by an Attack character, using an EX Special Attack or Ultimate will further increase Basic Attack DMG by 20% for 25s. Repeated triggers reset the duration."
+     }
+    ]
+   },
+   "Woodpecker Electro": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitWoodpeckerElectro.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "CRIT Rate +8%"
+     },
+     {
+      "label": "4-piece",
+      "text": "Landing a critical hit on an enemy with a Basic Attack, Dodge Counter, or EX Special Attack increases the equipper's ATK by 9% for 6s. The buff duration for different skills are calculated separately."
+     }
+    ]
+   },
+   "Hormone Punk": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitHormonePunk.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "ATK +10%"
+     },
+     {
+      "label": "4-piece",
+      "text": "Upon becoming the active character in combat, the equipper's ATK increases by 25% for 10s. This effect can trigger once every 20s."
+     }
+    ]
+   },
+   "Cordis Germina": {
+    "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1461.webp",
+    "rarity": 4,
+    "effects": [
+     {
+      "label": "Sprouting Core (Phase 1)",
+      "text": "Increases CRIT Rate by 15%. When the equipper deals DMG with a Basic Attack or EX Special Attack, they gain 1 stack of a buff. Each stack increases the equipper's Electric DMG by 12.5%, up to 2 stacks. Each stack lasts 40s. The duration of each stack is calculated separately. Can trigger once per use of a skill. At 2 stacks, the wearer's Basic Attack and Ultimate DMG ignore 20% of enemy DEF."
+     }
+    ]
+   }
+  }
  },
  {
   "characterId": "1471",
@@ -2344,7 +4509,58 @@
     "Assist",
     "Dodge"
    ]
-  ]
+  ],
+  "items": {
+   "Yunkui Tales": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitYunkuiTales.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "HP +10%"
+     },
+     {
+      "label": "4-piece",
+      "text": "When using EX Special Attack, Chain Attack, or Ultimate, CRIT Rate increases by 4%, stacking up to 3 times and lasting 15s. Repeated triggers reset the duration. When having 3 stacks of this effect, Sheer DMG increases by 10%."
+     }
+    ]
+   },
+   "Woodpecker Electro": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitWoodpeckerElectro.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "CRIT Rate +8%"
+     },
+     {
+      "label": "4-piece",
+      "text": "Landing a critical hit on an enemy with a Basic Attack, Dodge Counter, or EX Special Attack increases the equipper's ATK by 9% for 6s. The buff duration for different skills are calculated separately."
+     }
+    ]
+   },
+   "Branch & Blade Song": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitBranch&BladeSong.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "CRIT DMG +16%"
+     },
+     {
+      "label": "4-piece",
+      "text": "When Anomaly Mastery exceeds or equals 115 points, the equipper's CRIT DMG increases by 30%. When any squad member applies Freeze or triggers the Shatter effect on an enemy, the equipper's CRIT Rate increases by 12%, lasting 15s."
+     }
+    ]
+   },
+   "Wrathful Vajra": {
+    "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1471.webp",
+    "rarity": 4,
+    "effects": [
+     {
+      "label": "Purging Karmic Fire (Phase 1)",
+      "text": "CRIT Rate increases by 20%. When the equipper launches an EX Special Attack, their Fire Sheer DMG increases by 9%, stacking up to 2 times and lasting 20s. The duration of each stack is calculated separately."
+     }
+    ]
+   }
+  }
  },
  {
   "characterId": "1481",
@@ -2396,7 +4612,58 @@
     "Assist",
     "Dodge"
    ]
-  ]
+  ],
+  "items": {
+   "King of the Summit": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitKingoftheSummit.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "Increases Daze of attacks by 6%"
+     },
+     {
+      "label": "4-piece",
+      "text": "When the equipper is a Stun character and uses an EX Special Attack or Chain Attack, increases CRIT DMG of all squad members by 15%, and when the equipper's CRIT Rate is more than or equal to 50%, further increases CRIT DMG by 15%, lasting 15s. Repeated triggers reset the duration. Passive effects of the same name do not stack."
+     }
+    ]
+   },
+   "Woodpecker Electro": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitWoodpeckerElectro.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "CRIT Rate +8%"
+     },
+     {
+      "label": "4-piece",
+      "text": "Landing a critical hit on an enemy with a Basic Attack, Dodge Counter, or EX Special Attack increases the equipper's ATK by 9% for 6s. The buff duration for different skills are calculated separately."
+     }
+    ]
+   },
+   "Shockstar Disco": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitShockstarDisco.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "Impact +6%"
+     },
+     {
+      "label": "4-piece",
+      "text": "Basic Attacks, Dash Attacks, and Dodge Counters inflict 20% more Daze to the main target."
+     }
+    ]
+   },
+   "Yesterday Calls": {
+    "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1481.webp",
+    "rarity": 4,
+    "effects": [
+     {
+      "label": "24/7 (Phase 1)",
+      "text": "While off-field, the equipper's Energy Regen increases by 1.5/s. When the equipper deals Physical DMG with an EX Special Attack, the Daze dealt by the equipper's attacks increases by 9% for 10s, stacking up to 3 times. At 3 stacks, all squad members gain 30% additional CRIT DMG for 40s. Repeated triggers reset the duration. Only one instance of this CRIT DMG boost effect can exist in the same squad."
+     }
+    ]
+   }
+  }
  },
  {
   "characterId": "1491",
@@ -2447,7 +4714,58 @@
     "Assist",
     "Dodge"
    ]
-  ]
+  ],
+  "items": {
+   "Moonlight Lullaby": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitMoonlightLullaby.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "Energy Regen +20%"
+     },
+     {
+      "label": "4-piece",
+      "text": "When the equipper is a Support character and uses an EX Special Attack or Ultimate, the DMG dealt by all squad members increases by 18% for 25s. Repeated triggers reset the duration. Passive effects of the same name do not stack."
+     }
+    ]
+   },
+   "Swing Jazz": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitSwingJazz.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "Energy Regen +20%"
+     },
+     {
+      "label": "4-piece",
+      "text": "Launching a Chain Attack or Ultimate increases all squad members' DMG by 15% for 12s. Passive effects of the same name do not stack."
+     }
+    ]
+   },
+   "Astral Voice": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitAstralVoice.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "ATK +10%"
+     },
+     {
+      "label": "4-piece",
+      "text": "Whenever any squad member enters the field using a Quick Assist, all squad members gain 1 stack of Astral, up to a maximum of 3 stacks, and lasting 15s. Repeated triggers reset the duration. Each stack of Astral increases the DMG dealt by the character entering the field using a Quick Assist by 8%. Passive effects of the same name do not stack."
+     }
+    ]
+   },
+   "Thoughtbop": {
+    "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1491.webp",
+    "rarity": 4,
+    "effects": [
+     {
+      "label": "Decibel Monologue (Phase 1)",
+      "text": "While not the active character, the equipper's Energy Regen increases by 0.6/s. When the equipper uses an EX Special Attack and deals Physical DMG, all squad members gain a buff that increases DMG dealt by 12.5% for 40s, stacking up to 2 times. Repeated triggers reset the duration. At 2 stacks, characters gain an additional 10% ATK. Only one instance of this effect can exist in the same squad."
+     }
+    ]
+   }
+  }
  },
  {
   "characterId": "1501",
@@ -2498,7 +4816,58 @@
     "Assist",
     "Dodge"
    ]
-  ]
+  ],
+  "items": {
+   "Shining Aria": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitShiningAria.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "Ether DMG +10%"
+     },
+     {
+      "label": "4-piece",
+      "text": "When the equipper's Basic Attack hits an enemy, their Anomaly Proficiency increases by 36, lasting 8s. Repeated triggers reset the duration. When any enemy on the field is Stunned, the equipper's DMG increases by 25% for 18s. Repeated triggers reset the duration."
+     }
+    ]
+   },
+   "Phaethon's Melody": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitSavior.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "Anomaly Mastery +8%."
+     },
+     {
+      "label": "4-piece",
+      "text": "When any squad member uses an EX Special Attack, the equipper's Anomaly Proficiency increases by 45 for 8s. If the character using the EX Special Attack is not the equipper, the equipper's Ether DMG is increased by 25%."
+     }
+    ]
+   },
+   "Freedom Blues": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitFreedomBlues.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "Anomaly Proficiency +30"
+     },
+     {
+      "label": "4-piece",
+      "text": "When an EX Special Attack hits an enemy, reduce the target's Anomaly Buildup RES to the equipper's Attribute by 20% for 8s. This effect does not stack with others of the same attribute."
+     }
+    ]
+   },
+   "Angel in the Shell": {
+    "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1501.webp",
+    "rarity": 4,
+    "effects": [
+     {
+      "label": "Energetic Strike (Phase 1)",
+      "text": "Increases the equipper's Anomaly Proficiency by 90. When the equipper is an Ether character, and comes on-field or uses a Special Attack or EX Special Attack, they gain a buff: DMG dealt to enemies afflicted with Attribute Anomalies increases by 20%, and all Attribute Anomaly DMG and Disorder DMG they trigger increases by 10%, lasting 15s. Repeated triggers reset the duration, and the effect is removed when switching off-field."
+     }
+    ]
+   }
+  }
  },
  {
   "characterId": "1511",
@@ -2549,7 +4918,58 @@
     "Assist",
     "Dodge"
    ]
-  ]
+  ],
+  "items": {
+   "Shining Aria": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitShiningAria.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "Ether DMG +10%"
+     },
+     {
+      "label": "4-piece",
+      "text": "When the equipper's Basic Attack hits an enemy, their Anomaly Proficiency increases by 36, lasting 8s. Repeated triggers reset the duration. When any enemy on the field is Stunned, the equipper's DMG increases by 25% for 18s. Repeated triggers reset the duration."
+     }
+    ]
+   },
+   "Phaethon's Melody": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitSavior.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "Anomaly Mastery +8%."
+     },
+     {
+      "label": "4-piece",
+      "text": "When any squad member uses an EX Special Attack, the equipper's Anomaly Proficiency increases by 45 for 8s. If the character using the EX Special Attack is not the equipper, the equipper's Ether DMG is increased by 25%."
+     }
+    ]
+   },
+   "King of the Summit": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitKingoftheSummit.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "Increases Daze of attacks by 6%"
+     },
+     {
+      "label": "4-piece",
+      "text": "When the equipper is a Stun character and uses an EX Special Attack or Chain Attack, increases CRIT DMG of all squad members by 15%, and when the equipper's CRIT Rate is more than or equal to 50%, further increases CRIT DMG by 15%, lasting 15s. Repeated triggers reset the duration. Passive effects of the same name do not stack."
+     }
+    ]
+   },
+   "Neon Fantasies": {
+    "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1511.webp",
+    "rarity": 4,
+    "effects": [
+     {
+      "label": "Disco Demon (Phase 1)",
+      "text": "The equipper's Anomaly Proficiency increases by 90. When the equipper's EX Special Attack or Basic Attack deals Ether DMG, all squad members' DMG dealt increases by 15% for 40s, stacking up to 2 times. This effect can trigger once per use of a skill and repeated triggers reset the duration. With 2 stacks, the equipper's Anomaly Proficiency increases by an additional 60. Only one instance of this effect can exist in the same squad."
+     }
+    ]
+   }
+  }
  },
  {
   "characterId": "1521",
@@ -2601,7 +5021,58 @@
     "Assist",
     "Dodge"
    ]
-  ]
+  ],
+  "items": {
+   "Dawn's Bloom": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitDawnsBloom.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "Increases Basic Attack DMG by 15%."
+     },
+     {
+      "label": "4-piece",
+      "text": "Increases Basic Attack DMG by 20%. When equipped by an Attack character, using an EX Special Attack or Ultimate will further increase Basic Attack DMG by 20% for 25s. Repeated triggers reset the duration."
+     }
+    ]
+   },
+   "Moonlight Lullaby": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitMoonlightLullaby.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "Energy Regen +20%"
+     },
+     {
+      "label": "4-piece",
+      "text": "When the equipper is a Support character and uses an EX Special Attack or Ultimate, the DMG dealt by all squad members increases by 18% for 25s. Repeated triggers reset the duration. Passive effects of the same name do not stack."
+     }
+    ]
+   },
+   "Swing Jazz": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitSwingJazz.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "Energy Regen +20%"
+     },
+     {
+      "label": "4-piece",
+      "text": "Launching a Chain Attack or Ultimate increases all squad members' DMG by 15% for 12s. Passive effects of the same name do not stack."
+     }
+    ]
+   },
+   "Serpentine Seeker": {
+    "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1521.webp",
+    "rarity": 4,
+    "effects": [
+     {
+      "label": "Bioengineered Venom (Phase 1)",
+      "text": "CRIT Rate increases by 25%. When the equipper consumes at least 20 Energy in a single instance, every 20 Energy consumed grants 3s of a buff: when dealing Electric DMG, ignore 28% of the target's DEF. Repeated triggers extend the duration, up to a maximum of 30s. When entering combat, gain 10s of this buff. While the equipper is not the active character, the duration no longer decreases."
+     }
+    ]
+   }
+  }
  },
  {
   "characterId": "1531",
@@ -2653,7 +5124,58 @@
    [
     "Assist"
    ]
-  ]
+  ],
+  "items": {
+   "Yunkui Tales": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitYunkuiTales.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "HP +10%"
+     },
+     {
+      "label": "4-piece",
+      "text": "When using EX Special Attack, Chain Attack, or Ultimate, CRIT Rate increases by 4%, stacking up to 3 times and lasting 15s. Repeated triggers reset the duration. When having 3 stacks of this effect, Sheer DMG increases by 10%."
+     }
+    ]
+   },
+   "Branch & Blade Song": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitBranch&BladeSong.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "CRIT DMG +16%"
+     },
+     {
+      "label": "4-piece",
+      "text": "When Anomaly Mastery exceeds or equals 115 points, the equipper's CRIT DMG increases by 30%. When any squad member applies Freeze or triggers the Shatter effect on an enemy, the equipper's CRIT Rate increases by 12%, lasting 15s."
+     }
+    ]
+   },
+   "Woodpecker Electro": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitWoodpeckerElectro.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "CRIT Rate +8%"
+     },
+     {
+      "label": "4-piece",
+      "text": "Landing a critical hit on an enemy with a Basic Attack, Dodge Counter, or EX Special Attack increases the equipper's ATK by 9% for 6s. The buff duration for different skills are calculated separately."
+     }
+    ]
+   },
+   "Starlight Rider Faceplate": {
+    "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1531.webp",
+    "rarity": 4,
+    "effects": [
+     {
+      "label": "Knight's Morale (Phase 1)",
+      "text": "Increases CRIT Rate by 20%. When the equipper launches a Special Attack, their Physical Sheer DMG increases by 10%, stacking up to 2 times and lasting 30s. Repeated triggers reset the duration."
+     }
+    ]
+   }
+  }
  },
  {
   "characterId": "1541",
@@ -2704,7 +5226,58 @@
     "Assist",
     "Dodge"
    ]
-  ]
+  ],
+  "items": {
+   "Notes From the Chained": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitNotesFromtheChained.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "Ice DMG +10%."
+     },
+     {
+      "label": "4-piece",
+      "text": "When the equipper triggers Abloom, their Anomaly Proficiency increases by 48 for 30s; repeated triggers reset the duration. When the equipper triggers a Freeze effect, their All-Attribute Anomaly DMG and Disorder DMG increase by 16% for 30s; repeated triggers reset the duration."
+     }
+    ]
+   },
+   "Phaethon's Melody": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitSavior.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "Anomaly Mastery +8%."
+     },
+     {
+      "label": "4-piece",
+      "text": "When any squad member uses an EX Special Attack, the equipper's Anomaly Proficiency increases by 45 for 8s. If the character using the EX Special Attack is not the equipper, the equipper's Ether DMG is increased by 25%."
+     }
+    ]
+   },
+   "Freedom Blues": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitFreedomBlues.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "Anomaly Proficiency +30"
+     },
+     {
+      "label": "4-piece",
+      "text": "When an EX Special Attack hits an enemy, reduce the target's Anomaly Buildup RES to the equipper's Attribute by 20% for 8s. This effect does not stack with others of the same attribute."
+     }
+    ]
+   },
+   "Frostfall Sickle": {
+    "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1541.webp",
+    "rarity": 4,
+    "effects": [
+     {
+      "label": "Terminating Verdict (Phase 1)",
+      "text": "When an Ice attribute equipper uses a Special Attack or EX Special Attack, their Ice DMG is increased by 20% for 40s, stacking up to 2 times, once per use of a skill. Repeated triggers refresh the duration. At 2 stacks, the equipper's Abloom DMG dealt is increased by an additional 35%."
+     }
+    ]
+   }
+  }
  },
  {
   "characterId": "1551",
@@ -2754,7 +5327,48 @@
     "Assist",
     "Dodge"
    ]
-  ]
+  ],
+  "items": {
+   "The Sky Ablaze": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitTheSkyAblaze.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "Ether DMG +10%."
+     },
+     {
+      "label": "4-piece",
+      "text": "When the equipper is an Ether attribute Agent, their CRIT DMG increases by 30%. When the equipper uses an EX Special Attack or Ultimate, their ATK increases by 10% for 30s. Repeated triggers reset the duration."
+     }
+    ]
+   },
+   "Woodpecker Electro": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitWoodpeckerElectro.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "CRIT Rate +8%"
+     },
+     {
+      "label": "4-piece",
+      "text": "Landing a critical hit on an enemy with a Basic Attack, Dodge Counter, or EX Special Attack increases the equipper's ATK by 9% for 6s. The buff duration for different skills are calculated separately."
+     }
+    ]
+   },
+   "Branch & Blade Song": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitBranch&BladeSong.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "CRIT DMG +16%"
+     },
+     {
+      "label": "4-piece",
+      "text": "When Anomaly Mastery exceeds or equals 115 points, the equipper's CRIT DMG increases by 30%. When any squad member applies Freeze or triggers the Shatter effect on an enemy, the equipper's CRIT Rate increases by 12%, lasting 15s."
+     }
+    ]
+   }
+  }
  },
  {
   "characterId": "1561",
@@ -2805,7 +5419,58 @@
     "Assist",
     "Dodge"
    ]
-  ]
+  ],
+  "items": {
+   "Wuthering Salon": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitWutheringSalon.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "Wind DMG +10%."
+     },
+     {
+      "label": "4-piece",
+      "text": "When the equipper uses an EX Special Attack, their Anomaly Proficiency increases by 25, stacking up to 2 times, and lasting 40s; repeated triggers reset the duration. When the equipper triggers Windswept, their DMG increases by 18% for 40s. Repeated triggers reset the duration."
+     }
+    ]
+   },
+   "Swing Jazz": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitSwingJazz.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "Energy Regen +20%"
+     },
+     {
+      "label": "4-piece",
+      "text": "Launching a Chain Attack or Ultimate increases all squad members' DMG by 15% for 12s. Passive effects of the same name do not stack."
+     }
+    ]
+   },
+   "Moonlight Lullaby": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitMoonlightLullaby.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "Energy Regen +20%"
+     },
+     {
+      "label": "4-piece",
+      "text": "When the equipper is a Support character and uses an EX Special Attack or Ultimate, the DMG dealt by all squad members increases by 18% for 25s. Repeated triggers reset the duration. Passive effects of the same name do not stack."
+     }
+    ]
+   },
+   "Joyau Dore": {
+    "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1561.webp",
+    "rarity": 4,
+    "effects": [
+     {
+      "label": "Flawless Etiquette (Phase 1)",
+      "text": "The equipper's Anomaly Proficiency increases by 70. When the equipper's EX Special Attack deals Wind DMG, the DMG dealt by their Vortex and Windswept increases by 7% for 40s, stacking up to 2 times. Repeated triggers reset the duration. This effect can trigger once per skill use. At 2 stacks, all squad members gain 60 Anomaly Proficiency. Only one instance of this effect can exist in the same squad."
+     }
+    ]
+   }
+  }
  },
  {
   "characterId": "1571",
@@ -2857,7 +5522,58 @@
     "Basic Attack",
     "Dodge"
    ]
-  ]
+  ],
+  "items": {
+   "King of the Summit": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitKingoftheSummit.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "Increases Daze of attacks by 6%"
+     },
+     {
+      "label": "4-piece",
+      "text": "When the equipper is a Stun character and uses an EX Special Attack or Chain Attack, increases CRIT DMG of all squad members by 15%, and when the equipper's CRIT Rate is more than or equal to 50%, further increases CRIT DMG by 15%, lasting 15s. Repeated triggers reset the duration. Passive effects of the same name do not stack."
+     }
+    ]
+   },
+   "Woodpecker Electro": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitWoodpeckerElectro.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "CRIT Rate +8%"
+     },
+     {
+      "label": "4-piece",
+      "text": "Landing a critical hit on an enemy with a Basic Attack, Dodge Counter, or EX Special Attack increases the equipper's ATK by 9% for 6s. The buff duration for different skills are calculated separately."
+     }
+    ]
+   },
+   "Shockstar Disco": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitShockstarDisco.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "Impact +6%"
+     },
+     {
+      "label": "4-piece",
+      "text": "Basic Attacks, Dash Attacks, and Dodge Counters inflict 20% more Daze to the main target."
+     }
+    ]
+   },
+   "Chief Sidekick": {
+    "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1571.webp",
+    "rarity": 4,
+    "effects": [
+     {
+      "label": "The Genius's Follower (Phase 1)",
+      "text": "The equipper's Impact increases by 30, and their DMG ignores 15% of the target's Fire RES. When the equipper is not the active character, Energy Regen increases by 0.4/s. When the equipper deals Fire DMG with an EX Special Attack, all Agents' DMG increases by 12.5% for 30s, stacking up to 2 times. Repeated triggers reset the duration. This effect can trigger once per skill. Only one instance of this effect can exist in the same squad."
+     }
+    ]
+   }
+  }
  },
  {
   "characterId": "1581",
@@ -2909,7 +5625,58 @@
    [
     "Dodge"
    ]
-  ]
+  ],
+  "items": {
+   "Feathered Fate": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitFeatheredFate.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "Anomaly Proficiency +30"
+     },
+     {
+      "label": "4-piece",
+      "text": "When the equipper enters the battlefield or is switched in as the active character, they gain the following buff: Anomaly Proficiency increases by 50. If the equipper is a Lumiflux character, Attribute Anomaly DMG increases by 15%, lasting 15s.\nThis buff remains active while the equipper is off-field."
+     }
+    ]
+   },
+   "Freedom Blues": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitFreedomBlues.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "Anomaly Proficiency +30"
+     },
+     {
+      "label": "4-piece",
+      "text": "When an EX Special Attack hits an enemy, reduce the target's Anomaly Buildup RES to the equipper's Attribute by 20% for 8s. This effect does not stack with others of the same attribute."
+     }
+    ]
+   },
+   "Chaos Jazz": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitChaosJazz.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "Anomaly Proficiency +30"
+     },
+     {
+      "label": "4-piece",
+      "text": "Fire DMG and Electric DMG increases by 15%. While off-field, EX Special Attack and Assist Attack DMG increases by 20%. When switching on-field, this buff continues for 5s, and this continuation effect can trigger once every 7.5s."
+     }
+    ]
+   },
+   "Ode of Resurrected Wings": {
+    "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1581.webp",
+    "rarity": 4,
+    "effects": [
+     {
+      "label": "Paradise Lost (Phase 1)",
+      "text": "Increases Anomaly Proficiency by 96. When the equipper triggers a Refringe reaction, they gain 20% increased Anomaly DMG, and all squad members gain 30% increased DMG dealt. Both effects last 30s. Repeated triggers reset the duration."
+     }
+    ]
+   }
+  }
  },
  {
   "characterId": "1591",
@@ -2961,7 +5728,58 @@
     "Dodge",
     "Assist"
    ]
-  ]
+  ],
+  "items": {
+   "Dawn's Bloom": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitDawnsBloom.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "Increases Basic Attack DMG by 15%."
+     },
+     {
+      "label": "4-piece",
+      "text": "Increases Basic Attack DMG by 20%. When equipped by an Attack character, using an EX Special Attack or Ultimate will further increase Basic Attack DMG by 20% for 25s. Repeated triggers reset the duration."
+     }
+    ]
+   },
+   "Puffer Electro": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitPufferElectro.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "PEN Ratio +8%"
+     },
+     {
+      "label": "4-piece",
+      "text": "Ultimate DMG increases by 20%. Launching an Ultimate increases the equipper's ATK by 15% for 12s."
+     }
+    ]
+   },
+   "Hormone Punk": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitHormonePunk.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "ATK +10%"
+     },
+     {
+      "label": "4-piece",
+      "text": "Upon becoming the active character in combat, the equipper's ATK increases by 25% for 10s. This effect can trigger once every 20s."
+     }
+    ]
+   },
+   "Knight's Extolment": {
+    "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1591.webp",
+    "rarity": 4,
+    "effects": [
+     {
+      "label": "Knight's Rite (Phase 1)",
+      "text": "When the equipper's Basic Attack or EX Special Attack's heavy attack hits an enemy, they gain 1 stack of Battle Edge, increasing CRIT DMG by 32% for 25s. Battle Edge can stack up to 2 times, and each skill type can provide up to 1 stack. Repeated triggers refresh the duration of all Battle Edge.\nAt 2 stacks of Battle Edge, the equipper gains Bonechill: Their DMG ignores 20% of the target's Ice RES."
+     }
+    ]
+   }
+  }
  },
  {
   "characterId": "1611",
@@ -3013,7 +5831,58 @@
    [
     "Dodge"
    ]
-  ]
+  ],
+  "items": {
+   "Thorned Rose": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitThornedRose.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "DEF +16%"
+     },
+     {
+      "label": "4-piece",
+      "text": "The equipper's DMG increases by 15%. When the equipper's initial DEF is at least 1,000/1,800, CRIT Rate increases by 8/16%."
+     }
+    ]
+   },
+   "Woodpecker Electro": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitWoodpeckerElectro.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "CRIT Rate +8%"
+     },
+     {
+      "label": "4-piece",
+      "text": "Landing a critical hit on an enemy with a Basic Attack, Dodge Counter, or EX Special Attack increases the equipper's ATK by 9% for 6s. The buff duration for different skills are calculated separately."
+     }
+    ]
+   },
+   "Puffer Electro": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitPufferElectro.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "PEN Ratio +8%"
+     },
+     {
+      "label": "4-piece",
+      "text": "Ultimate DMG increases by 20%. Launching an Ultimate increases the equipper's ATK by 15% for 12s."
+     }
+    ]
+   },
+   "Crimson Thirst": {
+    "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1611.webp",
+    "rarity": 4,
+    "effects": [
+     {
+      "label": "Bloodthirst (Phase 1)",
+      "text": "The equipper's CRIT Rate increases by 25%, and Electric DMG increases by 15%. When the equipper uses an EX Special Attack or triggers Maim, Electric Sharp DMG dealt increases by 10% for 40s. Repeated triggers reset the duration."
+     }
+    ]
+   }
+  }
  },
  {
   "characterId": "1621",
@@ -3065,6 +5934,57 @@
     "Basic Attack",
     "Dodge"
    ]
-  ]
+  ],
+  "items": {
+   "Swing Jazz": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitSwingJazz.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "Energy Regen +20%"
+     },
+     {
+      "label": "4-piece",
+      "text": "Launching a Chain Attack or Ultimate increases all squad members' DMG by 15% for 12s. Passive effects of the same name do not stack."
+     }
+    ]
+   },
+   "Moonlight Lullaby": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitMoonlightLullaby.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "Energy Regen +20%"
+     },
+     {
+      "label": "4-piece",
+      "text": "When the equipper is a Support character and uses an EX Special Attack or Ultimate, the DMG dealt by all squad members increases by 18% for 25s. Repeated triggers reset the duration. Passive effects of the same name do not stack."
+     }
+    ]
+   },
+   "Woodpecker Electro": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitWoodpeckerElectro.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "CRIT Rate +8%"
+     },
+     {
+      "label": "4-piece",
+      "text": "Landing a critical hit on an enemy with a Basic Attack, Dodge Counter, or EX Special Attack increases the equipper's ATK by 9% for 6s. The buff duration for different skills are calculated separately."
+     }
+    ]
+   },
+   "Crimson Moon Casket": {
+    "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1621.webp",
+    "rarity": 4,
+    "effects": [
+     {
+      "label": "Sleepless Eternal Night (Phase 1)",
+      "text": "The equipper's CRIT Rate increases by 24%. DMG dealt ignores 15% of the target's Wind RES. When the equipper uses an EX Special Attack to deal Wind DMG, Daze dealt increases by 16%, and DMG dealt by all other squad members increases by 20%, for 50s. Repeated triggers reset the duration. Only one instance of the DMG increase effect can exist in the same squad."
+     }
+    ]
+   }
+  }
  }
 ]

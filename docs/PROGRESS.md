@@ -28,6 +28,26 @@ Resume with: "continue from PROGRESS.md". Newest entry on top. Older entries:
 - CI (`.github/workflows/ci.yml`) runs both on every pull request.
 
 ## Done
+- 2026-10-10 · **LOGIC-CORE: HSR scoring, build guide with pictures, shorter team lists** (branch `logic-core/roster-polish-hsr-scoring`).
+  - HSR now scores like ZZZ: synergy % with Why (every point with its quote),
+    Line-ups, Who fits, If you pull, and best teams by kit check. Rules:
+    `docs/logic/hsr-theory.md` (v2, tightened), calls in
+    `docs/logic/hsr-decisions.md`. All 99 HSR kits read into
+    `src/games/hsr/kitcheck/sheet/` (groups A–I, quotes tested word for word).
+    Teams of four, no order; each teammate counts each stat once; a team with
+    a healer or shield always beats one without ("no sustain" is shown).
+  - Aeon ★ Aha (not released) kit text imported from beta files, marked beta.
+    "Nihilux" is not in any game data (rumour only), so nothing to import.
+  - Character page: "How to build" card, step by step: relic/disc sets with
+    picture and 2/4-piece text, weapon with picture and effect, main stat per
+    slot, sub stats in order, skills first. Materials (page and Farm) show
+    their pictures. Pictures from nanoka.cc, only ones that really load.
+  - Teams: search, ready-to-play first, 6 shown then "Show 12 more".
+    Character page Team fit: 3 teams, then "Show N more teams with …".
+    Nothing is removed. Best-team searches are cached (both games).
+  - Next: HSR character EXP (no source yet), Enhanced kits need a saved
+    "Enhanced" flag (shown as locked until then), build score needs FRAME's
+    build store.
 - 2026-10-10 · **LOGIC-CORE: every ZZZ agent read; materials for both games** (branch `logic-core/zzz-groups-f-i`).
   - ZZZ groups F (Aria, Promeia, Velina, Remielle, Grace, Nangong Yu, Pulchra),
     G (Ellen, Soukaku, Zhu Yuan, Qingyi, Nicole, Evelyn, Seth), H (Soldier 0 -
