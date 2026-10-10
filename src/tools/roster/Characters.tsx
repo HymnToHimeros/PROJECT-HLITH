@@ -8,10 +8,11 @@ import { ScanEntry } from '../scan/Scan';
 import { setShowLeaked, useShowLeaked } from './leakedPref';
 import r from './roster.module.css';
 import { artOf, byNewest, CharArt, dupesLabel, elementOf, entryOf, rarityColor, subtitleOf, tagOf } from './shared';
+import { teamAccount } from './TeamParts';
 import type { RosterData } from './useRosterData';
 
 type Show = 'all' | 'owned' | 'not-owned' | 'wanted';
-type Sort = 'newest' | 'name' | 'rarity';
+type Sort = 'newest' | 'name' | 'rarity' | 'fit';
 type Tap = 'open' | 'owned' | 'wanted' | 'copies' | 'select';
 
 interface Props {
@@ -83,10 +84,24 @@ export function Characters({ data, several, onOpen }: Props) {
       if (show === 'wanted' && !e.wanted) return false;
       return true;
     };
+    // Best fit for me: what each character adds to your teams (the game's team rules); not rated yet = last.
+    const fit = new Map<string, number>();
+    if (sort === 'fit')
+      for (const x of rows) {
+        const v = x.d.game.rules.teams?.ifYouPull(x.c.id, teamAccount(x.d));
+        if (v) fit.set(x.key, v.percent);
+      }
     const order = (a: Row, b: Row) =>
-      sort === 'name' ? a.c.name.localeCompare(b.c.name) : sort === 'rarity' && a.c.rarity !== b.c.rarity ? (a.c.rarity === 'top' ? -1 : 1) : byNewest(a.c, b.c);
+      sort === 'fit'
+        ? (fit.get(b.key) ?? -1) - (fit.get(a.key) ?? -1) || byNewest(a.c, b.c)
+        : sort === 'name'
+          ? a.c.name.localeCompare(b.c.name)
+          : sort === 'rarity' && a.c.rarity !== b.c.rarity
+            ? (a.c.rarity === 'top' ? -1 : 1)
+            : byNewest(a.c, b.c);
     return rows.filter(keep).sort(order);
   }, [rows, query, element, rarity, show, sort]);
+  const canFit = data.some((d) => d.game.rules.teams);
 
   // "N of M owned" counts released characters only: a leak can't be owned.
   const owned = released.filter((x) => x.e.owned).length;
@@ -192,9 +207,8 @@ export function Characters({ data, several, onOpen }: Props) {
                 <option value="newest">Newest first</option>
                 <option value="name">Name</option>
                 <option value="rarity">Rarity</option>
-                {/* ROSTER-LOGIC fills "Best fit for me" (ranks by fit with your account). */}
-                <option value="fit" disabled>
-                  Best fit for me · no data yet
+                <option value="fit" disabled={!canFit}>
+                  {canFit ? 'Best fit for me' : 'Best fit for me · no data yet'}
                 </option>
               </select>
             </label>
@@ -311,6 +325,11 @@ export function Characters({ data, several, onOpen }: Props) {
         </div>
       )}
 
+      {sort === 'fit' && (
+        <p className={r.summary}>
+          <span className={r.muted}>Ranked by what each {word} adds to your teams, checked kit by kit (open one to see why). {word[0]?.toUpperCase()}{word.slice(1)}s whose kits haven’t been read yet come last: no data yet.</span>
+        </p>
+      )}
       {(filtered || (sort === 'newest' && !anyDates)) && (
         <p className={r.summary}>
           {filtered && (

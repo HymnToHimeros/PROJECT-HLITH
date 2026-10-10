@@ -33,6 +33,16 @@ Per game, in `src/games/<game>/data/`, using the types in
   (no odds shown until their pity rules are confirmed).
 
 ## Rules
+- **Sources (owner, 2026-10-09):** SCHEDULER judges which sources are
+  trustworthy. nanoka.cc is one trusted source (good quality, carries leaks),
+  not the only one. Always check the official channels (HoYoverse news pages,
+  version announcements, in-game notices); they are the final word on dates
+  and banners. Other sources (wikis, trackers) case by case; dates and banners
+  need an official source or two reliable sources that agree.
+- **Backlog (owner, 2026-10-09):** mostly the user's own list; it estimates
+  what permanent and long-cycle content can still pay out on their account.
+  Built-in items only for the important shared things (main story first);
+  never try to make it complete.
 - **Honest data:** every entry must come from a named source (nanoka.cc, used
   with its owner's permission; official game sites and announcements). A value
   the source doesn't give stays `null` or is left out, never guessed. Dates in

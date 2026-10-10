@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import type { Character, Material, TeamPreset } from '../../core/contract';
 import { useExamplesShown } from '../../core/data/prefs';
 import { setFarm, setRosterEntry } from '../../core/data/userData';
@@ -10,7 +10,7 @@ import { exampleBuild, exampleScore } from './examples';
 import { KitCheck } from './KitCheck';
 import r from './roster.module.css';
 import { artOf, CharArt, dupesLabel, elementOf, entryOf, isUpcoming, rarityColor, roleLabel } from './shared';
-import { TeamRow } from './TeamParts';
+import { TeamRow, teamAccount } from './TeamParts';
 import type { RosterData } from './useRosterData';
 
 interface Props {
@@ -175,7 +175,7 @@ export function CharacterPage({ data, character: c, several, onBack, openPulls, 
 
       {/* Design order: Build score (or If you pull), Team fit, Materials. Secondary cards fold away below. */}
       <div className={r.cards}>
-        {entry.owned ? <BuildCard data={data} /> : <IfYouPull data={data} openPulls={openPulls} />}
+        {entry.owned ? <BuildCard data={data} /> : <IfYouPull data={data} character={c} openPulls={openPulls} />}
         <TeamFit data={data} character={c} makePreset={makePreset} />
         <Materials
           data={data}
@@ -296,7 +296,7 @@ function BuildCard({ data }: { data: RosterData }) {
   );
 }
 
-function IfYouPull({ data, openPulls }: { data: RosterData; openPulls: Props['openPulls'] }) {
+function IfYouPull({ data, character, openPulls }: { data: RosterData; character: Character; openPulls: Props['openPulls'] }) {
   const { game } = data;
   const banner = game.bannerTypes.find((b) => b.target === 'character' && b.pity.kind === 'hard-pity');
   const worst = banner && banner.pity.kind === 'hard-pity' ? banner.pity.hardPity * (banner.pity.featured?.guaranteeAfterLoss ? 2 : 1) : null;
@@ -325,6 +325,7 @@ function IfYouPull({ data, openPulls }: { data: RosterData; openPulls: Props['op
           </button>
         )}
       </div>
+      <PullValueLine data={data} character={character} />
       {openPulls && (
         <button type="button" className={r.linkButton} onClick={() => openPulls('planner')}>
           Plan pulls →
@@ -344,7 +345,6 @@ function TeamFit({ data, character: c, makePreset }: { data: RosterData; charact
       <h3 className={r.cardTitle} id="team-fit">
         Team fit
       </h3>
-      {/* ROSTER-LOGIC fills "who fits" and the real synergy scores. */}
       {recommended.length === 0 && mine.length === 0 && <p className={r.cardText}>No preset uses this {game.terms.character.toLowerCase()} yet.</p>}
       {recommended.length === 0 && mine.length === 0 && makePreset && (
         <button type="button" className={r.linkButton} onClick={makePreset}>
@@ -364,7 +364,69 @@ function TeamFit({ data, character: c, makePreset }: { data: RosterData; charact
       {mine.map((t) => (
         <TeamRow key={t.id} data={data} name={t.name} members={t.members} example={false} score={null} />
       ))}
+      <WhoFits data={data} character={c} />
     </section>
+  );
+}
+
+/** Who fits with this character, from the game's team rules: only characters whose kits really connect, with how. */
+function WhoFits({ data, character: c }: { data: RosterData; character: Character }) {
+  const rules = data.game.rules.teams;
+  const roster = data.user.roster;
+  const fits = useMemo(() => (rules?.rated(c.id) ? rules.whoFits([c.id], teamAccount(data)).slice(0, 5) : null), [rules, c.id, roster]); // eslint-disable-line react-hooks/exhaustive-deps
+  if (!rules) return null;
+  const word = data.game.terms.character.toLowerCase();
+  return (
+    <div className={r.stack}>
+      <span className={r.label}>WHO FITS</span>
+      {fits === null ? (
+        <span className={r.cardText}>
+          <NoData dash={false} /> This {word}’s kit hasn’t been read yet, so the check can’t say who fits.
+        </span>
+      ) : fits.length === 0 ? (
+        <span className={r.cardText}>No {word} whose kit has been read connects with them yet.</span>
+      ) : (
+        fits.map((f) => (
+          <details key={f.id} className={r.why}>
+            <summary className={r.whySummary}>
+              <span className={r.lineLabel}>{data.byId.get(f.id)?.name ?? f.id}</span>&nbsp;
+              <span className={r.ideaState}>
+                count {f.count} · {entryOf(roster, f.id).owned ? 'owned' : 'not owned'}
+              </span>
+            </summary>
+            <ul className={r.whyList}>
+              {f.how.map((h) => (
+                <li key={h}>{h}</li>
+              ))}
+            </ul>
+          </details>
+        ))
+      )}
+    </div>
+  );
+}
+
+/** What this character would add to your teams (game's team rules), shown in "If you pull". */
+function PullValueLine({ data, character: c }: { data: RosterData; character: Character }) {
+  const rules = data.game.rules.teams;
+  const roster = data.user.roster;
+  const v = useMemo(() => (rules ? rules.ifYouPull(c.id, teamAccount(data)) : null), [rules, c.id, roster]); // eslint-disable-line react-hooks/exhaustive-deps
+  if (!rules) return null;
+  if (!v)
+    return (
+      <span className={r.cardText}>
+        For your teams: <NoData dash={false} /> (kit not read yet)
+      </span>
+    );
+  return (
+    <details className={r.why}>
+      <summary className={r.whySummary}>For your teams: {v.percent ? `${v.percent}%` : 'No gain'}</summary>
+      <ul className={r.whyList}>
+        {v.why.map((w) => (
+          <li key={w}>{w}</li>
+        ))}
+      </ul>
+    </details>
   );
 }
 

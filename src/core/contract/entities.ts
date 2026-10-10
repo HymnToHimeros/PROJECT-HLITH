@@ -110,6 +110,10 @@ export interface KitSkill {
   unlock?: { dupes?: number; potential?: number };
   /** What it does, in a few words. Empty until the kit has been read. */
   does: string[];
+  /** Each tag with the exact words of `gameText` that prove it. */
+  proof?: { tag: string; quote: string; note?: string }[];
+  /** When read and nothing in it matters for the team: why, in words. */
+  note?: string;
   /** The game's own text, markup turned into plain words. */
   gameText: string;
 }

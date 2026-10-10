@@ -101,6 +101,7 @@ Who builds what: see `docs/WORKSTREAMS.md`.
 - [x] R62 ★ HoYoLAB: several accounts, one import and scan button, automatic daily check-in and codes · proof: `supabase/migrations/0003_hoyolab_links.sql`, `supabase/functions/hoyolab-daily/index.ts`, `src/tools/account-links/accounts.ts`, `tests/hoyolabAuto.test.ts`
 - [x] R64 ★ Owner console tools: edit the built-in lists for everyone, approved findings go into the lists, announcements, real numbers · proof: `src/tools/owner/Lists.tsx`, `src/tools/owner/Announcements.tsx`, `src/core/shell/AnnouncementStrip.tsx`, `supabase/migrations/0008_owner_console.sql`, `src/tools/owner/Lists.live.test.tsx`
 - [x] R63 ★ Scheduler frame: one cron job runs every fixed job, findings inbox for the external routine, Owner console Scheduler and Findings tabs · proof: `supabase/functions/scheduler/index.ts`, `supabase/functions/findings-intake/index.ts`, `src/tools/owner/Scheduler.tsx`, `src/tools/owner/Findings.tsx`
+- [x] R64 Time-gated lists for HSR and ZZZ (versions, banners, events, endgame, main story, release dates, art, leaks) with sources · proof: `scripts/import-schedule.ts`, `scripts/schedule/text.ts`, `scripts/schedule/wiki.ts`, `tests/scheduleImport.test.ts`
 
 ## Phase 7 · Launch
 - [x] R59 Accessibility and phone pass · proof: `tests/e2e/accessibility.spec.ts`

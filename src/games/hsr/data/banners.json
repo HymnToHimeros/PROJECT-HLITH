@@ -1,1 +1,270 @@
-[]
+[
+  {
+    "id": "ad-astra-nova-2026-07-15",
+    "type": "character",
+    "title": "Ad Astra Nova",
+    "featured": [
+      "1510",
+      "1223",
+      "1215",
+      "1103"
+    ],
+    "start": "2026-07-15T03:00:00.000Z",
+    "end": "2026-08-25T07:00:00.000Z"
+  },
+  {
+    "id": "brilliant-fixation-2026-07-15",
+    "type": "light-cone",
+    "title": "Brilliant Fixation",
+    "featured": [
+      "23060",
+      "21045",
+      "21019",
+      "21006"
+    ],
+    "start": "2026-07-15T03:00:00.000Z",
+    "end": "2026-08-25T07:00:00.000Z"
+  },
+  {
+    "id": "coalesced-truths-2026-07-15",
+    "type": "light-cone",
+    "title": "Coalesced Truths",
+    "featured": [
+      "23053",
+      "23051",
+      "23049",
+      "21045",
+      "21019",
+      "21006"
+    ],
+    "start": "2026-07-15T03:00:00.000Z",
+    "end": "2026-08-05T03:59:00.000Z"
+  },
+  {
+    "id": "indelible-coterie-2026-07-15",
+    "type": "character",
+    "title": "Indelible Coterie",
+    "featured": [
+      "1501",
+      "1414",
+      "1413",
+      "1223",
+      "1215",
+      "1103"
+    ],
+    "start": "2026-07-15T03:00:00.000Z",
+    "end": "2026-08-05T03:59:00.000Z"
+  },
+  {
+    "id": "coalesced-truths-2026-08-05",
+    "type": "light-cone",
+    "title": "Coalesced Truths",
+    "featured": [
+      "23048",
+      "23041",
+      "23023",
+      "21045",
+      "21019",
+      "21006"
+    ],
+    "start": "2026-08-05T04:00:00.000Z",
+    "end": "2026-08-25T07:00:00.000Z"
+  },
+  {
+    "id": "indelible-coterie-2026-08-05",
+    "type": "character",
+    "title": "Indelible Coterie",
+    "featured": [
+      "1412",
+      "1405",
+      "1304",
+      "1223",
+      "1215",
+      "1103"
+    ],
+    "start": "2026-08-05T04:00:00.000Z",
+    "end": "2026-08-25T07:00:00.000Z"
+  },
+  {
+    "id": "a-rainbow-onto-twilight-2026-08-26",
+    "type": "character",
+    "title": "A Rainbow onto Twilight",
+    "featured": [
+      "1409",
+      "1002",
+      "1201",
+      "1301"
+    ],
+    "start": "2026-08-26T03:00:00.000Z",
+    "end": "2026-09-12T03:59:00.000Z"
+  },
+  {
+    "id": "brilliant-fixation-2026-08-26",
+    "type": "light-cone",
+    "title": "Brilliant Fixation",
+    "featured": [
+      "23063",
+      "21048",
+      "21051",
+      "21066"
+    ],
+    "start": "2026-08-26T03:00:00.000Z",
+    "end": "2026-09-12T03:59:00.000Z"
+  },
+  {
+    "id": "bygone-reminiscence-2026-08-26",
+    "type": "light-cone",
+    "title": "Bygone Reminiscence",
+    "featured": [
+      "23042",
+      "21048",
+      "21051",
+      "21066"
+    ],
+    "start": "2026-08-26T03:00:00.000Z",
+    "end": "2026-09-12T03:59:00.000Z"
+  },
+  {
+    "id": "summer-chorus-2026-08-26",
+    "type": "character",
+    "title": "Summer Chorus",
+    "featured": [
+      "1512",
+      "1002",
+      "1201",
+      "1301"
+    ],
+    "start": "2026-08-26T03:00:00.000Z",
+    "end": "2026-09-12T03:59:00.000Z"
+  },
+  {
+    "id": "a-hunt-through-night-2026-09-12",
+    "type": "character",
+    "title": "A Hunt Through Night",
+    "featured": [
+      "1504",
+      "1108",
+      "1109",
+      "1210"
+    ],
+    "start": "2026-09-12T04:00:00.000Z",
+    "end": "2026-09-27T19:59:59.000Z"
+  },
+  {
+    "id": "brilliant-fixation-2026-09-12",
+    "type": "light-cone",
+    "title": "Brilliant Fixation",
+    "featured": [
+      "23064",
+      "21003",
+      "21014",
+      "21054"
+    ],
+    "start": "2026-09-12T04:00:00.000Z",
+    "end": "2026-09-27T19:59:59.000Z"
+  },
+  {
+    "id": "bygone-reminiscence-2026-09-12",
+    "type": "light-cone",
+    "title": "Bygone Reminiscence",
+    "featured": [
+      "23056",
+      "21003",
+      "21014",
+      "21054"
+    ],
+    "start": "2026-09-12T04:00:00.000Z",
+    "end": "2026-09-27T19:59:59.000Z"
+  },
+  {
+    "id": "over-the-gilded-tides-2026-09-12",
+    "type": "character",
+    "title": "Over the Gilded Tides",
+    "featured": [
+      "1513",
+      "1108",
+      "1109",
+      "1210"
+    ],
+    "start": "2026-09-12T04:00:00.000Z",
+    "end": "2026-09-27T19:59:59.000Z"
+  },
+  {
+    "id": "an-ocean-in-a-pearl-2026-09-28",
+    "type": "character",
+    "title": "An Ocean in a Pearl",
+    "featured": [
+      "1503",
+      "1201",
+      "1214",
+      "1312"
+    ],
+    "start": "2026-09-28T03:00:00.000Z",
+    "end": "2026-11-10T07:00:00.000Z"
+  },
+  {
+    "id": "brilliant-fixation-2026-09-28",
+    "type": "light-cone",
+    "title": "Brilliant Fixation",
+    "featured": [
+      "23055",
+      "21000",
+      "21011",
+      "21044"
+    ],
+    "start": "2026-09-28T03:00:00.000Z",
+    "end": "2026-11-10T07:00:00.000Z"
+  },
+  {
+    "id": "bygone-reminiscence-2026-09-28",
+    "type": "light-cone",
+    "title": "Bygone Reminiscence",
+    "featured": [
+      "23058",
+      "21000",
+      "21011",
+      "21044"
+    ],
+    "start": "2026-09-28T03:00:00.000Z",
+    "end": "2026-10-21T03:59:00.000Z"
+  },
+  {
+    "id": "the-demoiselle-in-charge-2026-09-28",
+    "type": "character",
+    "title": "The Demoiselle in Charge",
+    "featured": [
+      "1505",
+      "1201",
+      "1214",
+      "1312"
+    ],
+    "start": "2026-09-28T03:00:00.000Z",
+    "end": "2026-10-21T03:59:00.000Z"
+  },
+  {
+    "id": "bygone-reminiscence-2026-10-21",
+    "type": "light-cone",
+    "title": "Bygone Reminiscence",
+    "featured": [
+      "23059",
+      "21000",
+      "21011",
+      "21044"
+    ],
+    "start": "2026-10-21T04:00:00.000Z",
+    "end": "2026-11-10T06:59:59.000Z"
+  },
+  {
+    "id": "now-i-am-become-blade-2026-10-21",
+    "type": "character",
+    "title": "Now I Am Become Blade",
+    "featured": [
+      "1507",
+      "1201",
+      "1214",
+      "1312"
+    ],
+    "start": "2026-10-21T04:00:00.000Z",
+    "end": "2026-11-10T06:59:59.000Z"
+  }
+]
