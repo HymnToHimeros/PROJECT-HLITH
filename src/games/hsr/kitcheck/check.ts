@@ -323,6 +323,9 @@ function superBreakOf(dd: string, lib: Library): number | undefined {
 /** Does this part of the entry grow with the giver's build (`scales.gives`; all of it when absent)? */
 const scalesWith = (e: Entry, stat: string) => !!e.scales && (!e.scales.gives || e.scales.gives.includes(stat as Stat));
 
+/** A teammate's effect that needs them (or their summon or Zone) on the field, by its quote. */
+const FIELD = /on the field|within the Zone|in the Zone|while .{0,40}Zone/i;
+
 /** Does the damage dealer's damage use this stat (general and not ignored, or specific and listed)? */
 function usedBy(g: { stat: Stat }, dd: string, lib: Library): boolean {
   const notes = lib.sheets.get(dd)?.damage;
@@ -362,6 +365,9 @@ export function checkTeam(members: string[], dd: string, lib: Library, account: 
   const ownSuperBreak = superBreakOf(dd, lib);
   // A damage dealer whose damage happens alone (Phainon's domain) gets nothing from teammates' own hits there.
   const alone = !!lib.sheets.get(dd)?.damage?.alone;
+  // …and a teammate's field effect (their Zone, their memosprite on the field) stays behind with them; buffs they put
+  // on the damage dealer before go along (frozen), and so does what's attached to the damage dealer (staysWithCarry).
+  const leftBehind = (e: Entry, who: string) => alone && who !== dd && !e.staysWithCarry && FIELD.test(e.quote);
   const sized = (e: Entry, keep: (g: Entry['gives'][number]) => boolean): Part[] =>
     e.gives.filter(keep).map((g) => {
       // A teammate's Super Break hit is sized against the damage dealer's own ("1 instance of 50% Super Break DMG").
@@ -369,7 +375,7 @@ export function checkTeam(members: string[], dd: string, lib: Library, account: 
       if (sb !== undefined && ownSuperBreak) return { zone: g.stat, size: sb / ownSuperBreak, how: 'stated' as const };
       const pt = partOf(g.stat, g.amount, typ);
       // An extra hit made by the teammate (not a share of the damage dealer's own hits) doesn't happen while they're alone.
-      if (alone && g.stat === 'extra-dmg' && pt.how === 'typical') return { ...pt, size: 0 };
+      if (alone && g.stat === 'extra-dmg' && pt.how === 'typical' && !e.staysWithCarry) return { ...pt, size: 0 };
       // An action advance from an Ultimate comes about every third turn; from a Skill, Talent or trace, every time.
       return g.stat === 'action-advance' && e.piece.startsWith('skill-ultimate') ? { ...pt, size: pt.size / ULTIMATE_EVERY } : pt;
     });
@@ -458,6 +464,10 @@ export function checkTeam(members: string[], dd: string, lib: Library, account: 
         e = { ...e, gives: e.gives.filter((g) => !g.when || (g.when === 'atk-carry') === atk) };
       }
       const r = reach(e, who, dd, lib, addedKinds);
+      if (r.kind === 'buff' && leftBehind(e, who)) {
+        lines.push({ ...base, kind: 'not-counted', why: `${name(dd)} deals damage alone, where ${name(who)} can't follow; this needs them on the field`, points: 0 });
+        continue;
+      }
       if (r.kind === 'buff') {
         contributed.add(who);
         // Step 4b: each teammate counts each stat once, however many sentences give it.
