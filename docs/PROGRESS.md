@@ -28,6 +28,12 @@ Resume with: "continue from PROGRESS.md". Newest entry on top. Older entries:
 - CI (`.github/workflows/ci.yml`) runs both on every pull request.
 
 ## Done
+- 2026-10-10 · **FRAME: calmer Today** (branch `frame/calm-today`, owner job T20, Today part; built on #56).
+  Without a server, one "Choose HSR / ZZZ server" step per game replaces the two empty
+  reset tiles and the extra prompts ("Choose server" was offered about nine times, now
+  once per game). Currencies with nothing in the Bank log fold into one quiet chip per
+  game. Live banners show four, the rest behind "Show N more". Wishlist moved under
+  Tonight's run so both columns end near the same height.
 - 2026-10-10 · **FRAME: live banner art the same size; HoYoLAB ticks dailies** (branch `frame/owner-jobs-1`, owner jobs T16, T22).
   Today's live banners: every card is the same height, so every art box is the same
   size and crops the same way (titles stop at two lines). Each live stamina read now

@@ -1,7 +1,6 @@
 import type { GameContract } from '../../core/contract';
 import { setTick } from '../../core/data/userData';
-import { Button, GameTag } from '../../core/ui';
-import { cx } from '../../core/ui/cx';
+import { GameTag } from '../../core/ui';
 import { byUrgency, type Task } from './tasks';
 import t from './today.module.css';
 
@@ -11,14 +10,13 @@ interface Props {
   noServer: GameContract[];
   tags: boolean;
   now: number;
-  openAccount: () => void;
 }
 
 /**
  * ★ Tonight's run (R43, no design yet: built from the shared tokens). The
  * tasks you haven't ticked, in the order to do them, each with one line on why.
  */
-export function TonightsRun({ tasks, noServer, tags, now, openAccount }: Props) {
+export function TonightsRun({ tasks, noServer, tags, now }: Props) {
   const open = tasks.filter((x) => !x.done).sort(byUrgency);
   const doneCount = tasks.length - open.length;
   return (
@@ -54,16 +52,11 @@ export function TonightsRun({ tasks, noServer, tags, now, openAccount }: Props) 
       )}
       {open.length === 0 && tasks.length > 0 && <p className={t.allDone}>All done for tonight. Ticks clear at the next reset.</p>}
       {noServer.length > 0 && (
-        <div className={cx(t.prompt)}>
-          <p>
-            {noServer.length === 1 && !tags
-              ? 'Choose your server first: the order depends on when your dailies reset.'
-              : `Choose your server for ${noServer.map((g) => g.short).join(' and ')} to add its tasks: the order depends on when its dailies reset.`}
-          </p>
-          <Button variant="primary" onClick={openAccount}>
-            Choose my server
-          </Button>
-        </div>
+        <p className={t.muted}>
+          {noServer.length === 1 && !tags
+            ? 'Choose your server first (top of the page): the order depends on when your dailies reset.'
+            : `Choose your server for ${noServer.map((g) => g.short).join(' and ')} (top of the page) to add its tasks: the order depends on when its dailies reset.`}
+        </p>
       )}
     </section>
   );
