@@ -7,6 +7,22 @@ import type { CharacterBuild, RecommendedBuild, StatTargets } from '../../core/c
 import { statTargets, type CharacterFact, type SetFact } from '../../core/rules/statTargets';
 import builds from './data/builds.json';
 
+/** The character stat screen's stats, by the game's names: what `totals` and the targets use (T35). */
+export const TOTAL_STATS = [
+  'HP',
+  'ATK',
+  'DEF',
+  'SPD',
+  'CRIT Rate',
+  'CRIT DMG',
+  'Break Effect',
+  'Outgoing Healing Boost',
+  'Energy Regeneration Rate',
+  'Effect Hit Rate',
+  'Effect RES',
+  'Elation',
+];
+
 const kit = (label: string) => `Kit: ${label}`;
 const sig = (name: string) => `Signature: ${name}`;
 const SIGNATURE = 'with their signature equipped';

@@ -19,7 +19,7 @@ import versions from './data/versions.json';
 import { KITS, SHEETS } from './kitcheck/library';
 import { withTags } from './kitcheck/tags';
 import { gameTeams, hsrTeamRules } from './kitcheck/team';
-import { hsrStatTargets } from './statTargets';
+import { hsrStatTargets, TOTAL_STATS } from './statTargets';
 
 const list = <T>(rows: unknown) => async () => rows as T[];
 const COMMUNITY = 'community pull-log statistics (not published by the game)';
@@ -77,6 +77,7 @@ export const hsr: GameContract = {
     refine: { name: 'Superimposition', max: 5 },
     slots: GEAR_SLOTS,
     subStats: ['HP', 'ATK', 'DEF', 'HP %', 'ATK %', 'DEF %', 'SPD', 'CRIT Rate', 'CRIT DMG', 'Effect Hit Rate', 'Effect RES', 'Break Effect'],
+    totalStats: TOTAL_STATS,
     skills: [
       { name: 'Basic ATK', max: 7 },
       { name: 'Skill', max: 15 },

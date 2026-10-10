@@ -8,6 +8,9 @@ import type { CharacterBuild, RecommendedBuild, StatTargets } from '../../core/c
 import { statTargets, type CharacterFact, type SetFact } from '../../core/rules/statTargets';
 import builds from './data/builds.json';
 
+/** The agent stat screen's stats, by the game's names: what `totals` and the targets use (T35). */
+export const TOTAL_STATS = ['HP', 'ATK', 'DEF', 'Impact', 'CRIT Rate', 'CRIT DMG', 'Anomaly Mastery', 'Anomaly Proficiency', 'PEN Ratio', 'Energy Regen', 'Sheer Force'];
+
 const kit = (label: string) => `Kit: ${label}`;
 const CORE7 = 'Core Skill level 7';
 

@@ -5,21 +5,25 @@ import type { RecommendedBuild } from '../src/core/contract';
 import hsrBuilds from '../src/games/hsr/data/builds.json';
 import hsrKits from '../src/games/hsr/data/kits.json';
 import hsrWeapons from '../src/games/hsr/data/weapons.json';
-import { HSR_FACTS, HSR_SETS, hsrStatTargets } from '../src/games/hsr/statTargets';
+import { HSR_FACTS, HSR_SETS, hsrStatTargets, TOTAL_STATS as HSR_STATS } from '../src/games/hsr/statTargets';
 import zzzBuilds from '../src/games/zzz/data/builds.json';
 import zzzKits from '../src/games/zzz/data/kits.json';
 import zzzWeapons from '../src/games/zzz/data/weapons.json';
-import { ZZZ_FACTS, ZZZ_SETS, zzzStatTargets } from '../src/games/zzz/statTargets';
+import { TOTAL_STATS as ZZZ_STATS, ZZZ_FACTS, ZZZ_SETS, zzzStatTargets } from '../src/games/zzz/statTargets';
 
 type KitRow = { characterId: string; skills: { label?: string; gameText?: string }[] };
 type WeaponRow = { name: string; madeFor?: string; effect?: { text?: string } };
 
 const games = [
-  { game: 'HSR', facts: HSR_FACTS, sets: HSR_SETS, kits: hsrKits as KitRow[], weapons: hsrWeapons as WeaponRow[], builds: hsrBuilds as unknown as RecommendedBuild[] },
-  { game: 'ZZZ', facts: ZZZ_FACTS, sets: ZZZ_SETS, kits: zzzKits as KitRow[], weapons: zzzWeapons as WeaponRow[], builds: zzzBuilds as unknown as RecommendedBuild[] },
+  { game: 'HSR', facts: HSR_FACTS, sets: HSR_SETS, stats: HSR_STATS, kits: hsrKits as KitRow[], weapons: hsrWeapons as WeaponRow[], builds: hsrBuilds as unknown as RecommendedBuild[] },
+  { game: 'ZZZ', facts: ZZZ_FACTS, sets: ZZZ_SETS, stats: ZZZ_STATS, kits: zzzKits as KitRow[], weapons: zzzWeapons as WeaponRow[], builds: zzzBuilds as unknown as RecommendedBuild[] },
 ];
 
-describe.each(games)('$game target stats: every number is in the game text', ({ facts, sets, kits, weapons, builds }) => {
+describe.each(games)('$game target stats: every number is in the game text', ({ facts, sets, stats, kits, weapons, builds }) => {
+  it('every target names a stat on the game’s stat screen (the build form offers exactly these)', () => {
+    for (const f of [...facts, ...sets]) expect(stats).toContain(f.stat);
+  });
+
   it.each(facts.map((f) => [f.characterId, f.source, f] as const))('%s · %s: the quote is word for word in that kit piece or signature', (_id, _src, f) => {
     if (f.source.startsWith('Kit: ')) {
       const label = f.source.slice(5);

@@ -19,7 +19,7 @@ import { GEAR_SLOTS } from './gear';
 import { KITS, SHEETS } from './kitcheck/library';
 import { withTags } from './kitcheck/tags';
 import { recommendedTeams, zzzTeamRules } from './kitcheck/team';
-import { zzzStatTargets } from './statTargets';
+import { TOTAL_STATS, zzzStatTargets } from './statTargets';
 
 const list = <T>(rows: unknown) => async () => rows as T[];
 const COMMUNITY = 'community pull-log statistics (not published by the game)';
@@ -64,6 +64,7 @@ export const zzz: GameContract = {
     refine: { name: 'Phase', max: 5 },
     slots: GEAR_SLOTS,
     subStats: ['HP', 'ATK', 'DEF', 'HP %', 'ATK %', 'DEF %', 'CRIT Rate', 'CRIT DMG', 'PEN', 'Anomaly Proficiency'],
+    totalStats: TOTAL_STATS,
     skills: [
       { name: 'Basic Attack', max: 16 },
       { name: 'Dodge', max: 16 },

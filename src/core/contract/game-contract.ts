@@ -283,6 +283,8 @@ export interface BuildRules {
   /** Gear slots in game order, with the main stats each can roll. */
   slots: { id: string; label: string; mains: string[] }[];
   subStats: string[];
+  /** The stats on the game's character stat screen, by its names: what a build's `totals` and stat targets use (T35). */
+  totalStats?: string[];
   /** Skills with their highest level (bonus levels from dupes included). */
   skills: { name: string; max: number }[];
 }
