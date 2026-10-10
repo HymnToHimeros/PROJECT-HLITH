@@ -619,6 +619,7 @@ export const phainon: CharacterSheet = {
     alone: {
       piece: 'skill-ultimate-he-who-bears-the-world-must-burn',
       quote: 'Within the Territory, other teammates depart and cannot take action, and all enemies have Physical Weaknesses.',
+      turns: { count: 8, quote: "Khaslana does not enter his own turn, but has 8 Khaslana's extra turn(s)" },
     },
     quotes: [
       { piece: 'skill-skill-calamity-soulscorch-edict', quote: 'DMG dealt through this ability is considered as Skill DMG.' },

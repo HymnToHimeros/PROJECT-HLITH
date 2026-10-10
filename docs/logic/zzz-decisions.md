@@ -234,3 +234,9 @@ team size and order, and the owner's ZZZ method's own counting.
     the squad; when it isn't met, the line is for another squad: shown, 0, no loss. ZZZ has one today: Nangong Yu's
     Polarity Disorder needs Aria in the squad. It stays unknown, because its text doesn't say whose DMG it is. No
     ZZZ score changes. The Why names the best squad found ("N% of the kit value of the best team found (…)").
+63. **Recommended cards pick the better unit (mirrors HSR decision 39, T40).** Each slot of a recommended squad
+    takes the owned agent that gives the squad the highest kit value, scored as My teams scores it (same check,
+    same account). Before, it took the first owned in list order. The damage dealer's slot stays. On the owner's
+    roster: Hugo, Banyue, Yixuan, Ellen, and Orphie & Magus take Dialyn or Lucia instead of Lighter or Koleda.
+    Billy > Dialyn > Lucia is unchanged.
+

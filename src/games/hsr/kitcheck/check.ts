@@ -332,6 +332,8 @@ function superBreakOf(dd: string, lib: Library): number | undefined {
 const scalesWith = (e: Entry, stat: string) => !!e.scales && (!e.scales.gives || e.scales.gives.includes(stat as Stat));
 
 /** A teammate's effect that needs them (or their summon or Zone) on the field, by its quote. */
+/** A buff's length in its kit text: "for 4 turn(s)", "for 3 turns". */
+const DURATION = /\bfor (\d+) turns?(?:\(s\))?/;
 const FIELD = /on the field|within the Zone|in the Zone|while .{0,40}Zone/i;
 
 /** Does the damage dealer's damage use this stat (general and not ignored, or specific and listed)? */
@@ -376,6 +378,20 @@ export function checkTeam(members: string[], dd: string, lib: Library, account: 
   // …and a teammate's field effect (their Zone, their memosprite on the field) stays behind with them; buffs they put
   // on the damage dealer before go along (frozen), and so does what's attached to the damage dealer (staysWithCarry).
   const leftBehind = (e: Entry, who: string) => alone && who !== dd && !e.staysWithCarry && FIELD.test(e.quote);
+  // T40 (kit + owner): Phainon's domain lasts 8 of his turns; "+45% DMG … for 4 turn(s)" switched on by a teammate who
+  // stays behind covers 4 of them. A teammate whose matching line goes along (Dan Heng • Permansor Terrae's Souldragon
+  // Shields) keeps it on for the whole domain.
+  const domainTurns = lib.sheets.get(dd)?.damage?.alone?.turns?.count;
+  const coverShare = (e: Entry, helpers: string[]): { share: number; why: string } => {
+    const d = Number(DURATION.exec(e.quote)?.[1] ?? 0);
+    if (!alone || !domainTurns || !d || d >= domainTurns || !e.on || !('teammate' in e.on)) return { share: 1, why: '' };
+    const q = e.on.teammate;
+    const along = helpers.find((id) =>
+      (entries.get(id) ?? []).some((x) => x.staysWithCarry && !x.piece.startsWith('eidolon-') && (!q.gives || x.gives.some((g) => q.gives?.includes(g.stat))) && (!q.to || q.to.includes(x.to))),
+    );
+    if (along) return { share: 1, why: `; ${name(along)}'s line goes with ${name(dd)} and keeps it on while ${name(dd)} is alone` };
+    return { share: d / domainTurns, why: `; while ${name(dd)} is alone (${domainTurns} turns) it lasts ${d} of them: counted ${d}/${domainTurns}` };
+  };
   const sized = (e: Entry, keep: (g: Entry['gives'][number]) => boolean): Part[] =>
     e.gives.filter(keep).map((g) => {
       // A teammate's Super Break hit is sized against the damage dealer's own ("1 instance of 50% Super Break DMG").
@@ -440,7 +456,10 @@ export function checkTeam(members: string[], dd: string, lib: Library, account: 
           for (const id of helpers) contributed.add(id);
           // T30: what it gives the damage dealer, sized from the kit; an ability with no number counts as a typical buff.
           const own = sized(e, (g) => usedBy(g, dd, lib));
-          lines.push({ ...base, kind: 'switched-on', why: `${st.why}${helpers.length ? ` (${helpers.map(name).join(' and ')})` : ''}`, points: 1, helpers, parts: own.length ? own : [{ zone: `ability:${dd}:${e.id}`, size: typ, how: 'typical' }] });
+          // T40: alone for N turns, a buff of d turns that teammates who stay behind switch on covers d of the N.
+          const cover = coverShare(e, helpers);
+          const parts: Part[] = (own.length ? own : [{ zone: `ability:${dd}:${e.id}`, size: typ, how: 'typical' as const }]).map((pt) => ({ ...pt, size: pt.size * cover.share }));
+          lines.push({ ...base, kind: 'switched-on', why: `${st.why}${helpers.length ? ` (${helpers.map(name).join(' and ')})` : ''}${cover.why}`, points: 1, helpers, parts });
         }
         continue;
       }

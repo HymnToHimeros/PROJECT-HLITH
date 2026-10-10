@@ -3,7 +3,7 @@
  * presets, Line-ups, Who fits and "If you pull…" %. Decisions the method leaves
  * open are written down in docs/logic/zzz-decisions.md.
  */
-import { fillTeam, withOwnerLists } from '../../../core/rules/fillTeam';
+import { bestFill, withOwnerLists } from '../../../core/rules/fillTeam';
 import type { FitOptions, FitSuggestion, PullValue, TeamAccount, TeamIdea, TeamPreset, TeamReason, TeamRules, TeamVerdict, TeamWant } from '../../../core/contract';
 import { BUILD_STAT_WORD, buildFit } from '../../../core/rules/buildFit';
 import { GEAR_SLOTS } from '../gear';
@@ -283,7 +283,16 @@ export function ifYouPull(id: string, a: TeamAccount, lib: Library = library()):
 
 export const zzzTeamRules: TeamRules = {
   method: METHOD,
-  fill: (p, a) => fillTeam(withOwnerLists(p, a), a.owned, (_team, id) => !a.skip?.(id)),
+  // T40: the better unit is picked for each slot, by the kit value My teams scores with (same account, same check).
+  fill: (p, a) => {
+    const lib = library();
+    const account = toAccount(assume(a));
+    return bestFill(withOwnerLists(p, a), a, (_team, id) => !a.skip?.(id), (team, dd) => {
+      const lead = dd ?? (team[0] && isDamageDealer(team[0], lib) ? team[0] : undefined);
+      const out = checkSquad(team, lib, account, lead);
+      return out.rated ? { value: out.best.value, dd: out.best.dd } : undefined;
+    });
+  },
   rated: (id) => library().sheets.has(id),
   // T34: the owner's "assume signature + average build" switch is applied once, here, for every question.
   verdict: (m, a) => verdict(m, assume(a)),

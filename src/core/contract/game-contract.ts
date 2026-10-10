@@ -426,8 +426,8 @@ export interface TeamRules {
   /** What a character adds to the account; null = not rated. */
   ifYouPull: (id: string, account: TeamAccount) => PullValue | null;
   /**
-   * The members to show for one of the game's teams: per slot, the first listed character you own, in the game's
-   * order (LOGIC-CORE). Absent = each slot's first pick.
+   * The members to show for one of the game's teams: per slot, the listed character you own who gives the team the
+   * highest kit value, scored as My teams scores it (LOGIC-CORE, T40). Absent = each slot's first pick.
    */
   fill?: (preset: TeamPreset, account: TeamAccount) => string[];
 }

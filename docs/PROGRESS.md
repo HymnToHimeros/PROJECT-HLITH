@@ -28,6 +28,11 @@ Resume with: "continue from PROGRESS.md". Newest entry on top. Older entries:
 - CI (`.github/workflows/ci.yml`) runs both on every pull request.
 
 ## Done
+- 2026-10-10 · **LOGIC-CORE: recommended cards pick the better unit (T40)** (same branch). My teams and the cards
+  were scored the same way; the cards filled each slot with the first owned in list order. Now each slot takes the
+  owned pick with the highest kit value (both games). Phainon's card on the owner's roster: Phainon + Cerydra +
+  Sunday + Dan Heng PT. In his 8-turn domain, a heal or shield from a teammate who stays behind covers 4 turns of
+  his "+45% DMG for 4 turn(s)"; Dan Heng PT's Souldragon goes along. hsr-decisions 39, zzz-decisions 63.
 - 2026-10-10 · **LOGIC-CORE: Cyrene's Odes count; the Why names the best team** (branch `logic-core/cyrene-odes`).
   The owner's live card read "Phainon team 36% Weak" (Cerydra, Cyrene, Dan Heng PT, the game's own list). Cyrene's
   Ode for Phainon was never counted (named-character conditions were "unknown") and her +56% Ode counted for him

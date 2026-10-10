@@ -255,3 +255,23 @@ team size and order, and the owner's ZZZ method's own counting.
       is still Phainon + Sunday + Cerydra + Dan Heng PT, the owner's team (88% Excellent on their roster,
       unchanged). Aglaea's best now has Cyrene. Castorice, Mydei and Robin • Summeretto teams with Cyrene drop:
       the +56% no longer reaches a Chrysos Heir.
+39. **Recommended cards pick the better unit; Phainon's domain lasts 8 turns (owner's job T40, both games, ZZZ decision
+    63 mirrors it).** The owner: "When I build my own team it's correct but the recommended stuff just is wrong" and
+    "This is btw the only team recommended for phainon". My teams and the cards were already scored the same way
+    (same verdict, same account). What differed was who went on the card: each slot took the first character you own
+    in the game's list order, so Phainon's card had Cyrene where Sunday belongs.
+    - **The fill (`bestFill`, core):** start from that first-owned fill, then try every combination of your
+      characters that each slot's list names. Keep the one with the highest kit value, scored exactly as My teams
+      scores it (the same check, the same account with the "assume" switch). The damage dealer's slot stays. A slot
+      with none of yours keeps its first pick, so "missing" doesn't change. The owner's edited lists say who may
+      join; the kit value picks among them. Results are cached per team and roster.
+    - **Phainon's domain:** "Khaslana does not enter his own turn, but has 8 Khaslana's extra turn(s)". His "+45%
+      DMG … for 4 turn(s)" (healed or shielded) and "+30% CRIT DMG for 3 turn(s)" (targeted), switched on only by
+      teammates who stay behind, cover 4 and 3 of those 8 turns: counted 4/8 and 3/8. A teammate whose matching
+      line goes along keeps them on (owner: Dan Heng • Permansor Terrae's Souldragon, so its Shields
+      `staysWithCarry` too). The Why says which.
+    - Result: on the owner's roster Phainon's card fills Phainon + Cerydra + Sunday + Dan Heng PT, his best team
+      found (91% Excellent: full builds would add the rest). With every character owned and full builds, against
+      Dan Heng PT: standard Robin 88%, Huohuo 76%, Robin • Summeretto 74%. Sunday + Cerydra + Cyrene comes to 112%
+      with no healer or shielder; like with like keeps the owner's team the best found for a team with one.
+

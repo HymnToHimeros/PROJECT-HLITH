@@ -881,6 +881,7 @@ export const danHengPermansorTerrae: CharacterSheet = {
         { stat: 'shield', amount: '10% of his ATK + 200, 3 turns' },
       ],
       to: 'allies',
+      staysWithCarry: 'The Bondmate and their Souldragon go with Phainon into his domain (owner, 2026-10-10): its Shields keep coming there.',
       setup: 'Souldragon is out (a Bondmate is set with his Skill).',
     },
     {
@@ -901,6 +902,7 @@ export const danHengPermansorTerrae: CharacterSheet = {
       tag: 'Lowest-Shield ally: extra Shield',
       gives: [{ stat: 'shield', amount: '5% of his ATK + 100' }],
       to: 'chosen-ally',
+      staysWithCarry: 'The Bondmate and their Souldragon go with Phainon into his domain (owner, 2026-10-10): its Shields keep coming there.',
       setup: 'Souldragon is out; goes to the ally with the lowest Shield.',
     },
     {

@@ -200,7 +200,16 @@ export interface DamageNotes {
    * Their main damage happens with the teammates gone (T30, owner: Phainon's domain, "other teammates depart and cannot
    * take action"): buffs from before count, but teammates' own hits, extra hits and set-off reactions don't.
    */
-  alone?: { piece: string; quote: string };
+  alone?: {
+    piece: string;
+    quote: string;
+    /**
+     * How many turns the alone part lasts (Phainon: "has 8 Khaslana's extra turn(s)"), from the same piece. A buff of
+     * theirs that a teammate switches on for N turns covers N of these, unless that teammate's line goes along
+     * (`staysWithCarry`; T40).
+     */
+    turns?: { count: number; quote: string };
+  };
 }
 
 export interface CharacterSheet {
