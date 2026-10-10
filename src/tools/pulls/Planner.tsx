@@ -36,7 +36,8 @@ type WhatIf = Record<string, { pulls: number; guaranteed: boolean }>;
 export function Planner({ game, data, serverId, now, tagged, openTab }: Props) {
   const [target, setTarget] = useState<Target>('all');
   const [whatIf, setWhatIf] = useState<WhatIf>({});
-  const all = data.banners.list.filter((b) => Date.parse(b.end) > now);
+  // Permanent banners have no end to plan pulls by.
+  const all = data.banners.list.filter((b) => !b.permanent && Date.parse(b.end) > now);
   const typeOf = (b: Banner) => game.bannerTypes.find((t) => t.id === b.type);
   const banners = all.filter((b) => target === 'all' || typeOf(b)?.target === target).sort((a, b) => Date.parse(a.start) - Date.parse(b.start) || Date.parse(a.end) - Date.parse(b.end));
   const hasWeapon = all.some((b) => typeOf(b)?.target === 'weapon');
