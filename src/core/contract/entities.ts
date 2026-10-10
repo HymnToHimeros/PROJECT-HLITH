@@ -45,12 +45,21 @@ export interface GameEvent {
 
 export interface BacklogItem {
   id: string;
-  category: string; // 'story', 'side-quests', 'exploration', 'modes', 'achievements'
+  category: string; // 'story', 'side-quests', 'permanent-events', 'exploration', 'modes', 'achievements'
   title: string;
+  /** How much there is to do (chapters, chests, points…). 1 = a single tick box. With `steps`: the number of steps. */
   total: number;
-  /** Premium currency for finishing it all; null = unknown. */
+  /** Premium currency for finishing it all; null = unknown; 0 = gives no reward. */
   reward: number | null;
   currency: string;
+  /** Shown under a heading inside its category (e.g. the region of a side quest). */
+  group?: string;
+  /** An ordered checklist (e.g. story chapters): you tap the step you are on and everything before it counts as done. */
+  steps?: string[];
+  /** Unit after the numbers, e.g. "%" for exploration. Missing = a plain count. */
+  unit?: string;
+  /** A short note shown under the title (where a number came from, a timer the game shows…). */
+  note?: string;
 }
 
 export interface Material {

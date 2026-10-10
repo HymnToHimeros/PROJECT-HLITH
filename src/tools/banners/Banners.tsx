@@ -35,7 +35,7 @@ export function GameBanners({ game, now, many, hideLeaks, filter, open }: Props)
   return (
     <section className={b.stack} aria-label={game.name} style={{ '--vent': game.vent } as CSSProperties}>
       <GameHeading game={game} show={many} />
-      <EditListButton game={game} kind="banners" />
+      <EditListButton game={game} kind="banners" examples={data.examples} />
       {data.banners.example && (
         <ExampleNotice>
           The banner list for this game still has to be added by us (not you), so these banners and their art are examples. The roster labels on them are your own.

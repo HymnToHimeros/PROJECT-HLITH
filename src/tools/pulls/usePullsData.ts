@@ -55,12 +55,14 @@ export function usePullsData(game: GameContract, now: number): PullsData {
   const events = useEventsData(game, now);
   const backlog = useBacklogData(game);
   const characters = lists?.characters ?? [];
-  const backlogCats = backlog.items.example ? [] : categories(game, backlog.items.list, user);
+  // Only real items count (the game's list and yours), never examples.
+  const backlogCats = categories(game, backlog.items.real, user);
+  const backlogNotCounted = backlog.items.real.length === 0 && backlog.items.example;
   const budgetExtras = (until: number): Partial<BudgetInput> => ({
     ...(events.events.example ? {} : eventsForBudget(game, events.events.list, user, now, until)),
-    ...(backlog.items.example ? {} : { backlog: backlogForBudget(backlogCats) }),
+    ...(backlogNotCounted ? {} : { backlog: backlogForBudget(backlogCats) }),
   });
-  const notCounted = [events.events.example && 'Events', backlog.items.example && 'Backlog'].filter((x): x is string => Boolean(x));
+  const notCounted = [events.events.example && 'Events', backlogNotCounted && 'Backlog'].filter((x): x is string => Boolean(x));
   const realBank = balances(user.ledger);
   const current = (lists?.versions ?? []).find((v) => Date.parse(v.start) <= now && now < Date.parse(v.end));
   const ownBanners = useWithOwnItems(game, 'banners', lists?.banners ?? NO_BANNERS);

@@ -14,6 +14,8 @@ export interface EventsData {
   events: { list: GameEvent[]; example: boolean };
   /** null = unknown (no version list, and examples are hidden in Account → Example data). */
   versionEnd: { at: number | null; example: boolean };
+  /** Every example event (hidden ones too), for Edit mode, while examples stand in for the list; else undefined. */
+  examples: GameEvent[] | undefined;
   loading: boolean;
 }
 
@@ -41,7 +43,9 @@ export function useEventsData(game: GameContract, now: number): EventsData {
   const events = useWithOwnItems(game, 'events', lists?.events ?? NO_EVENTS);
   return {
     user,
-    events: events.length || !showExamples ? { list: events, example: false } : { list: examples, example: true },
+    // Examples you hid in Edit mode stay hidden.
+    events: events.length || !showExamples ? { list: events, example: false } : { list: examples.filter((e) => !user.ownItems.events[e.id]?.hidden), example: true },
+    examples: events.length || !showExamples ? undefined : examples,
     versionEnd: current ? { at: Date.parse(current.end), example: false } : showExamples ? { at: exampleVersionEnd(at), example: true } : { at: null, example: false },
     loading: lists === null,
   };

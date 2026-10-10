@@ -8,10 +8,11 @@ import { known } from '../../core/contract/known';
 import type { GameUserData } from '../../core/data/userData';
 import { budget, budgetPulls, pullsFor, type BudgetInput } from '../budget/budget';
 
-const ORDER = ['story', 'side-quests', 'exploration', 'modes', 'achievements'];
+export const ORDER = ['story', 'side-quests', 'permanent-events', 'exploration', 'modes', 'achievements'];
 const LABEL: Record<string, string> = {
-  story: 'Story',
+  story: 'Main story',
   'side-quests': 'Side quests',
+  'permanent-events': 'Permanent events',
   exploration: 'Exploration',
   modes: 'Modes',
   achievements: 'Achievements',
@@ -38,6 +39,41 @@ export interface CategoryView {
   unknown: ItemView[];
   /** Income rows this category already covers when it's on (they're skipped in Pulls, never counted twice). */
   covers: IncomeRow[];
+}
+
+/** How an item is shown: an ordered checklist, a single tick box, or a counter. */
+export type Shape = 'steps' | 'check' | 'counter';
+export const shapeOf = (item: BacklogItem): Shape => (item.steps && item.steps.length > 0 ? 'steps' : item.total === 1 ? 'check' : 'counter');
+
+/** Finished, as far as your progress shows (unknown progress is not finished). */
+export const isDone = (v: ItemView) => v.done !== null && v.done >= v.item.total;
+
+/** For the tab badge: how many items are still open (unknown progress counts as open). */
+export function openCount(cat: CategoryView): number {
+  return cat.items.filter((v) => !isDone(v)).length;
+}
+
+/** Items in their groups, in list order; items without a group come first, under no heading. */
+export function groupsOf(items: ItemView[]): { name: string | null; items: ItemView[] }[] {
+  const out: { name: string | null; items: ItemView[] }[] = [];
+  for (const v of items) {
+    const name = v.item.group?.trim() || null;
+    let g = out.find((x) => x.name === name);
+    if (!g) {
+      g = { name, items: [] };
+      if (name === null) out.unshift(g);
+      else out.push(g);
+    }
+    g.items.push(v);
+  }
+  return out;
+}
+
+/** Every category the game knows plus any your items use, in the usual order. */
+export function categoryIds(items: BacklogItem[]): string[] {
+  const ids = new Set([...ORDER, ...items.map((i) => i.category)]);
+  const rank = (id: string) => (ORDER.includes(id) ? ORDER.indexOf(id) : ORDER.length);
+  return [...ids].sort((a, b) => rank(a) - rank(b));
 }
 
 /** Reward left, in proportion to what's not done yet. */
