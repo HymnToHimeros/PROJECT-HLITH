@@ -1,37 +1,53 @@
 # PROJECT-HLITH · how updates go live
 
-Owner's rule (2026-10-10): FRAME, SCHEDULER and LOGIC-CORE agree together when an
-update goes live, so our work lines up and nobody breaks another chat's work.
+Owner's rule (2026-10-10): the chats (FRAME, SCHEDULER, LOGIC-CORE, ERROR-FIX;
+MANAGER approves and merges) agree together when an update goes live, so our work lines up and nobody breaks another chat's work.
 Efficiency counts as much as getting it right.
 
 Every merge to `main` goes live within minutes, so **merging is releasing**.
 Talk with `send_message` (session ids in `docs/WORKSTREAMS.md`).
 
 ## The routine
-1. **Work on your own branch** (`frame/…`, `scheduler/…`, `logic-core/…`) as long
-   as you like. Pushing your branch and opening a PR is free and needs no one's OK.
-2. **Ready?** When your PR is green and done, message the other two:
+**MANAGER merges (owner, 2026-10-10).** MANAGER oversees and approves every PR and
+does every merge to `main`. The other chats never merge their own PRs.
+
+1. **Work on your own branch** (`frame/…`, `scheduler/…`, `logic-core/…`,
+   `error-fix/…`, `manager/…`) as long as you like. Pushing your branch and opening
+   a PR is free and needs no one's OK.
+2. **Ready?** When your PR is green and done, send MANAGER and the other building
+   chats (FRAME, SCHEDULER, LOGIC-CORE, ERROR-FIX):
    `READY #<pr>: <one line what it does>. Touches: <shared files, or "only my area">.`
-3. **They answer within their next turn:** `OK`, `WAIT <reason>` (e.g. "I'm about to
-   merge something that touches the same file") or `ME TOO #<pr>` (theirs is ready too).
-4. **Merge when both said OK.** If several are ready, they go in one go, one after
-   another, in this order unless the thread agrees otherwise:
-   SCHEDULER (data) → LOGIC-CORE (logic) → FRAME (screens).
-   Docs-only PRs go first: their check takes seconds.
-5. **After each merge** the next one in line merges `main` into its branch, runs
-   `npm run check`, pushes once, waits for green, then merges.
-6. **The last one checks the live site** and tells the others `LIVE`. The owner hears
-   about the batch once, in plain words, from whichever chat they are talking to.
+   Say which owner job it is (`T<n>` from `docs/TASKS.md`) and whether the owner has
+   to see it first (a new screen or a redesign: Override 5).
+3. **The others answer within their next turn:** `OK`, `WAIT <reason>` (e.g. "I'm
+   about to finish something that touches the same file") or `ME TOO #<pr>`. They
+   send the answer to MANAGER as well.
+4. **MANAGER approves and merges** when: the check is green on the latest commit,
+   there's no merge conflict, the PR does what the owner asked (and the owner has
+   seen it if it needed that), and no building chat said `WAIT`. A chat silent for
+   its whole turn counts as OK if the PR touches only the author's own area. If
+   something is wrong, MANAGER says what on the PR's thread or to the chat, and the
+   chat fixes it and sends `READY` again.
+5. **One at a time, in this order** unless MANAGER says otherwise: docs-only PRs
+   (seconds) → ERROR-FIX (a fix for something broken) → SCHEDULER (data) →
+   LOGIC-CORE (logic) → FRAME (screens). After each merge MANAGER tells the next one
+   in line to merge `main` into its branch, run `npm run check` and push once; MANAGER
+   merges it when that check is green.
+6. **After the merge** the chat whose PR it was checks the live site and sends `LIVE`
+   to MANAGER (and the others). MANAGER moves the job to Done in `docs/TASKS.md` and
+   tells the owner about the batch once, in plain words.
 
 ## Shortcuts (efficiency)
-- **Nobody else has anything open?** (`list_pull_requests` shows only your PR.)
-  Send `READY` anyway, then merge straight away; nothing can clash.
-- **A sibling is silent for its whole turn** (it may be working on something long):
-  merge if your PR touches only your own area; if it touches shared files, wait.
-- **Urgent fix for a broken live site:** merge first, tell the others right after.
+- **Nothing else open?** (`list_pull_requests` shows only this PR.) MANAGER merges
+  as soon as the check is green; nothing can clash.
+- **Urgent fix for a broken live site:** ERROR-FIX (or the chat that owns it) sends
+  `READY URGENT #<pr>`; MANAGER merges it first, before anything else in line. If
+  MANAGER doesn't answer within its turn, the author merges it and tells MANAGER
+  right after.
 
 ## Never
-- Merge while another chat's merge is still waiting for its check (one at a time).
+- Merge your own PR (MANAGER merges; the one exception is the urgent case above).
+- Merge while another merge is still waiting for its check (one at a time).
 - Edit a file another chat owns without telling it first. Shared files need a
   heads-up before editing: `src/core/contract/`, `src/core/registry/`,
   `src/main.tsx`, `.github/workflows/`, `docs/WORKSTREAMS.md`, `docs/ROADMAP.md`.
