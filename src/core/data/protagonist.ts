@@ -63,6 +63,15 @@ function ownMine(game: GameContract, forms: Forms): void {
 const cache = new WeakMap<GameContract, Map<string, GameContract>>();
 /** Wrapped game → the game as registered (with both options). */
 const originals = new WeakMap<GameContract, GameContract>();
+/** Wrapped game → is this character hidden by your pick? */
+const hiders = new WeakMap<GameContract, (id: string) => boolean>();
+const nothingHidden = () => false;
+
+/**
+ * Is a character hidden by your pick, for the game a screen was given? Team rules use it to leave
+ * hidden characters out of every pool (TeamAccount.skip). Always false with nothing picked.
+ */
+export const hiddenBy = (game: GameContract): ((id: string) => boolean) => hiders.get(game) ?? nothingHidden;
 
 /**
  * The game as every screen should see it with your pick. Same object for the same game and pick,
@@ -107,6 +116,7 @@ export function withProtagonist(game: GameContract, pick: string | undefined): G
   };
   byPick.set(pick, wrapped);
   originals.set(wrapped, game);
+  hiders.set(wrapped, (id) => forms?.hidden.has(id) ?? false);
   return wrapped;
 }
 

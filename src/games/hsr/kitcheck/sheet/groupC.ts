@@ -4,6 +4,7 @@
  */
 import type { CharacterSheet } from '../types';
 
+const WEAPON_SELF = "Raises the wearer's own stats; nothing for the team.";
 const WIND = 'Deals Wind DMG only; nothing for the team.';
 const QUANTUM = 'Deals Quantum DMG only; nothing for the team.';
 const PHYS = 'Deals Physical DMG only; nothing for the team.';
@@ -43,6 +44,7 @@ const danHeng: CharacterSheet = {
     },
   ],
   nothing: {
+    'signature-weapon': WEAPON_SELF,
     'skill-basic-atk-cloudlancer-art-north-wind': WIND,
     'skill-ultimate-ethereal-dream': WIND,
     'skill-talent-superiority-of-reach': "Buffs only his own next attack (Wind RES PEN) when an ally targets him with an ability; nothing for the team.",
@@ -123,6 +125,7 @@ const archer: CharacterSheet = {
     },
   ],
   nothing: {
+    'signature-weapon': WEAPON_SELF,
     'skill-basic-atk-kanshou-and-bakuya': QUANTUM,
     'skill-skill-caladbolg-ii-fake-spiral-sword': 'Deals Quantum DMG and buffs only his own Skill; nothing for the team.',
     'skill-ultimate-unlimited-blade-works': 'Deals Quantum DMG and gives himself Charge; nothing for the team.',
@@ -173,6 +176,7 @@ const seele: CharacterSheet = {
     },
   ],
   nothing: {
+    'signature-weapon': WEAPON_SELF,
     'skill-basic-atk-thwack': QUANTUM,
     'skill-skill-sheathed-blade': 'Deals Quantum DMG and raises only her own SPD; nothing for the team.',
     'skill-ultimate-butterfly-flurry': QUANTUM,
@@ -481,6 +485,7 @@ const drRatio: CharacterSheet = {
     },
   ],
   nothing: {
+    'signature-weapon': WEAPON_SELF,
     'skill-basic-atk-mind-is-might': IMAG,
     'skill-skill-intellectual-midwifery': 'Deals Imaginary DMG; its Follow-Up ATK and debuff are read under Talent and Inference.',
     'skill-ultimate-syllogistic-paradox': `Deals Imaginary DMG; "Wiseman's Folly" gives him more of his own Follow-Up ATKs when teammates attack (attacks are not an event).`,
@@ -540,6 +545,7 @@ const boothill: CharacterSheet = {
     },
   ],
   nothing: {
+    'signature-weapon': WEAPON_SELF,
     'skill-basic-atk-skullcrush-spurs': PHYS,
     'skill-talent-five-peas-in-a-pod': 'Deals his own Break DMG; nothing for the team.',
     'skill-technique-3-9-smile': TECH,
@@ -638,6 +644,15 @@ const ashveil: CharacterSheet = {
       gives: [{ stat: 'res-pen', amount: '20%' }],
       to: 'enemy',
       setup: BAIT,
+    },
+    {
+      id: 'lc-umbra-devourer',
+      piece: 'signature-weapon',
+      quote: 'While the wearer holds "Umbra Devourer," increases ATK by 40% and increases the DMG taken by all enemies by 20%.',
+      tag: 'Enemies: DMG taken +20% (Umbra Devourer)',
+      gives: [{ stat: 'vulnerability', amount: '+20% for 3 turns' }],
+      to: 'enemy',
+      setup: 'Nothing at the start of battle; then again after every 4 of her Follow-Up ATKs.',
     },
   ],
   nothing: {

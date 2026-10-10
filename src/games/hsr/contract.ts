@@ -2,7 +2,7 @@
  * Honkai: Star Rail. Numbers here are checked against the sources listed at the
  * bottom; anything not confirmed stays null and shows "No data yet".
  */
-import type { BacklogItem, Banner, Character, GameContract, GameEvent, Kit, RecommendedBuild, Material, SampleArt, TeamPreset, Version, Weapon } from '../../core/contract';
+import type { BacklogItem, Banner, Character, GameContract, GameEvent, RecommendedBuild, Material, SampleArt, TeamPreset, Version, Weapon } from '../../core/contract';
 import backlog from './data/backlog.json';
 import banners from './data/banners.json';
 import characters from './data/characters.json';
@@ -10,13 +10,13 @@ import events from './data/events.json';
 import builds from './data/builds.json';
 import weapons from './data/weapons.json';
 import { scoreBuild } from '../../core/rules/buildScore';
-import kits from './data/kits.json';
 import { materialsFor } from './costs';
+import { GEAR_SLOTS } from './gear';
 import materials from './data/materials.json';
 import teams from './data/teams.json';
 import sampleArt from './data/sample-art.json';
 import versions from './data/versions.json';
-import { SHEETS } from './kitcheck/library';
+import { KITS, SHEETS } from './kitcheck/library';
 import { withTags } from './kitcheck/tags';
 import { gameTeams, hsrTeamRules } from './kitcheck/team';
 
@@ -74,18 +74,7 @@ export const hsr: GameContract = {
     levelMax: 80,
     weaponLevelMax: 80,
     refine: { name: 'Superimposition', max: 5 },
-    slots: [
-      { id: 'Head', label: 'Head', mains: ['HP'] },
-      { id: 'Hands', label: 'Hands', mains: ['ATK'] },
-      { id: 'Body', label: 'Body', mains: ['HP %', 'ATK %', 'DEF %', 'CRIT Rate', 'CRIT DMG', 'Outgoing Healing Boost', 'Effect Hit Rate'] },
-      { id: 'Feet', label: 'Feet', mains: ['HP %', 'ATK %', 'DEF %', 'SPD'] },
-      {
-        id: 'Planar Sphere',
-        label: 'Planar Sphere',
-        mains: ['HP %', 'ATK %', 'DEF %', 'Physical DMG Boost', 'Fire DMG Boost', 'Ice DMG Boost', 'Lightning DMG Boost', 'Wind DMG Boost', 'Quantum DMG Boost', 'Imaginary DMG Boost'],
-      },
-      { id: 'Link Rope', label: 'Link Rope', mains: ['HP %', 'ATK %', 'DEF %', 'Break Effect', 'Energy Regeneration Rate'] },
-    ],
+    slots: GEAR_SLOTS,
     subStats: ['HP', 'ATK', 'DEF', 'HP %', 'ATK %', 'DEF %', 'SPD', 'CRIT Rate', 'CRIT DMG', 'Effect Hit Rate', 'Effect RES', 'Break Effect'],
     skills: [
       { name: 'Basic ATK', max: 7 },
@@ -204,7 +193,7 @@ export const hsr: GameContract = {
     sampleArt: async () => sampleArt as SampleArt[],
     versions: list<Version>(versions),
     // Kit text (npm run data:hsr-kits) with the cheat sheet's tags (docs/logic/hsr-theory.md, Part A).
-    kits: async () => withTags(kits as Kit[], SHEETS),
+    kits: async () => withTags(KITS, SHEETS),
     // The game's own recommended builds (npm run data:builds).
     builds: list<RecommendedBuild>(builds),
     // Every Light Cone / W-Engine with its picture (npm run data:builds); weapon banners show them.

@@ -13,7 +13,7 @@ const account = (owned: Record<string, number>, extra: Partial<TeamAccount> = {}
 describe('Who fits from your account (T18)', () => {
   const h = hsrLib();
   const fei = idOf(h, 'Feixiao');
-  const mine = account({ [fei]: 0, [idOf(h, 'Robin')]: 2, [idOf(h, 'Aventurine')]: 0, [idOf(h, 'Pela')]: 0 });
+  const mine = account({ [fei]: 0, [idOf(h, 'Topaz & Numby')]: 2, [idOf(h, 'Aventurine')]: 0, [idOf(h, 'Tribbie')]: 0 });
 
   it('by default only your own characters, ranked by %, each saying what came from your account', () => {
     const fits = hsrFits([fei], mine, h);
@@ -21,23 +21,29 @@ describe('Who fits from your account (T18)', () => {
     for (const f of fits) expect(mine.owned(f.id), h.names.get(f.id)).toBe(true);
     const percents = fits.map((f) => f.percent ?? 0);
     expect([...percents].sort((a, b) => b - a)).toEqual(percents);
-    const robin = fits.find((f) => f.id === idOf(h, 'Robin'));
-    expect(robin?.theory).toBe(false);
-    expect(robin?.fromAccount?.[0]).toBe('Counted: E2.');
-    expect(robin?.fromAccount?.some((n) => /No weapon saved/.test(n))).toBe(true);
+    const topaz = fits.find((f) => f.id === idOf(h, 'Topaz & Numby'));
+    expect(topaz?.theory).toBe(false);
+    expect(topaz?.fromAccount?.[0]).toBe('Counted: E2.');
+    expect(topaz?.fromAccount?.some((n) => /^Signature .+ not saved: not counted\.$/.test(n))).toBe(true);
   });
 
   it('"Include characters I don’t own" adds the rest, marked as theory', () => {
     const fits = hsrFits([fei], mine, h, { includeUnowned: true });
-    const topaz = fits.find((f) => f.id === idOf(h, 'Topaz & Numby'));
-    expect(topaz?.theory).toBe(true);
-    expect(topaz?.fromAccount?.[0]).toMatch(/^Not owned: scored as theory at E0/);
+    const ratio = fits.find((f) => f.id === idOf(h, 'Dr. Ratio'));
+    expect(ratio?.theory).toBe(true);
+    expect(ratio?.fromAccount?.[0]).toMatch(/^Not owned: scored as theory at E0/);
   });
 
-  it('a saved weapon is named, and said not to be counted yet (no guessing)', () => {
-    const withWeapon = account({ [fei]: 0, [idOf(h, 'Robin')]: 0 }, { weapon: (id) => (id === idOf(h, 'Robin') ? { name: 'Flowing Nightglow' } : undefined) });
-    const robin = hsrFits([fei], withWeapon, h).find((f) => f.id === idOf(h, 'Robin'));
-    expect(robin?.fromAccount).toContain('Weapon Flowing Nightglow: effect not counted yet.');
+  it('the signature weapon counts only when the saved build has it; another weapon is named and not counted', () => {
+    // Topaz is in Feixiao's own game team (Robin isn't, so she is never suggested for him).
+    const topazId = idOf(h, 'Topaz & Numby');
+    const sigId = h.unlocks.get(topazId)?.get('signature-weapon')?.weapon ?? '';
+    const sigName = (h.pieceLabels.get(topazId)?.get('signature-weapon') ?? '').replace(/^Signature [^:]+: /, '').replace(/ · .*$/, '');
+    const withSig = account({ [fei]: 0, [topazId]: 0 }, { weapon: (id) => (id === topazId ? { id: sigId, name: sigName } : undefined) });
+    const topaz = hsrFits([fei], withSig, h).find((f) => f.id === topazId);
+    expect(topaz?.fromAccount).toContain(`Counted: E0 (no copies saved), signature ${sigName}.`);
+    const other = account({ [fei]: 0, [topazId]: 0 }, { weapon: (id) => (id === topazId ? { name: 'Swordplay' } : undefined) });
+    expect(hsrFits([fei], other, h).find((f) => f.id === topazId)?.fromAccount).toContain(`Swordplay saved, not signature ${sigName}: not counted.`);
   });
 
   it('ZZZ: Mindscapes and Agent Potential from the account', () => {

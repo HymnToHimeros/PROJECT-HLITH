@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it } from 'vitest';
 import type { Character, GameContract, TeamAccount } from '../contract';
-import { chooseProtagonist, withProtagonist } from './protagonist';
+import { chooseProtagonist, hiddenBy, withProtagonist } from './protagonist';
 import { getPrefs, reloadPrefs } from './prefs';
 import { gameData, resetUserData, setRosterEntry } from './userData';
 
@@ -75,6 +75,9 @@ describe('your main character (T27)', () => {
     expect((await g.data.teams())[0]?.slots).toEqual([{ characters: ['a-fire'] }, { characters: ['friend'] }]);
     expect(g.rules.teams?.whoFits([], account).map((s) => s.id)).toEqual(['friend']);
     expect(g.rules.teams?.lineUps(account).map((i) => i.members)).toEqual([['a-fire', 'friend']]);
+    // For team rules (TeamAccount.skip).
+    expect(['a-fire', 'b-fire', 'b-ice', 'friend'].map(hiddenBy(g))).toEqual([false, true, true, false]);
+    expect(hiddenBy(game)('b-fire')).toBe(false);
   });
 
   it('picking marks yours owned, except where you set it yourself; nothing else is touched', async () => {

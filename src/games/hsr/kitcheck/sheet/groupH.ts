@@ -4,6 +4,7 @@
  */
 import type { CharacterSheet } from '../types';
 
+const WEARER = "Raises the wearer's own stats; nothing for the team.";
 const TECH = 'Used before battle; not counted.';
 const LEVELS = 'Raises her own skill levels; nothing for the team.';
 const SELF = 'Buffs only herself (and her memosprite); nothing for the team.';
@@ -71,6 +72,7 @@ export const aglaea: CharacterSheet = {
     'eidolon-4': SELF,
     'eidolon-5': LEVELS,
     'eidolon-6': SELF,
+    'signature-weapon': WEARER,
   },
 };
 
@@ -170,6 +172,7 @@ export const castorice: CharacterSheet = {
     'eidolon-3': LEVELS,
     'eidolon-5': LEVELS,
     'eidolon-6': SELF,
+    'signature-weapon': WEARER,
   },
 };
 
@@ -255,6 +258,25 @@ export const hyacine: CharacterSheet = {
       to: 'allies',
       setup: 'Little Ica on the field (Skill or Ultimate used).',
     },
+    {
+      id: 'lc-consume-hp',
+      piece: 'signature-weapon',
+      quote: "consumes all allies' HP equal to 1.0% of their current HP",
+      tag: 'Allies lose HP',
+      gives: [],
+      to: 'allies',
+      causes: 'hp-loss',
+      setup: 'Hyacine uses Basic ATK, Skill or Ultimate.',
+    },
+    {
+      id: 'lc-vulnerability',
+      piece: 'signature-weapon',
+      quote: "When the wearer's memosprite uses Memosprite Skill, increases the DMG taken by all enemies by 18.0%, lasting for 2 turn(s).",
+      tag: 'Enemy: DMG taken +18%',
+      gives: [{ stat: 'vulnerability', amount: '+18%' }],
+      to: 'enemy',
+      setup: 'Little Ica uses its Memosprite Skill; 2 turns.',
+    },
   ],
   nothing: {
     'skill-basic-atk-when-breeze-kisses-cirrus': 'Deals Wind DMG only; nothing for the team.',
@@ -290,6 +312,7 @@ export const evernight: CharacterSheet = {
       quote: "increases CRIT DMG of all ally memosprites by an amount equal to 24% of Evernight's CRIT DMG for 2 turn(s).",
       tag: 'Memosprites: CRIT DMG +24% of hers',
       gives: [{ stat: 'crit-dmg', amount: "24% of Evernight's CRIT DMG" }],
+      scales: { stat: 'crit-dmg', quote: "by an amount equal to 24% of Evernight's CRIT DMG" },
       to: 'allies',
       limits: { kinds: ['memosprite'] },
       setup: 'Nothing beyond using her Skill.',
@@ -371,6 +394,16 @@ export const evernight: CharacterSheet = {
       gives: [{ stat: 'res-pen', amount: '+20% All-Type' }],
       to: 'allies',
       setup: 'Nothing: Evernight on the field.',
+    },
+    {
+      id: 'lc-noctis',
+      piece: 'signature-weapon',
+      quote: 'While the wearer has "Noctis," the DMG dealt by all ally memosprites ignores 20% of the targets\' DEF.',
+      tag: 'Ally memosprites: DMG ignores 20% DEF',
+      gives: [{ stat: 'def-shred', amount: '20%' }],
+      to: 'allies',
+      limits: { kinds: ['memosprite'] },
+      setup: 'Her memosprite uses an ability (she gains "Noctis").',
     },
   ],
   nothing: {
@@ -563,6 +596,8 @@ export const cyrene: CharacterSheet = {
       quote: "When Cyrene's SPD is 180 or higher, increases all allies' DMG dealt by 20%.",
       tag: 'Allies: +20% DMG',
       gives: [{ stat: 'dmg', amount: '+20%' }],
+      // A threshold, not a ratio: nothing is given below 180 SPD, so the team wants her built for SPD.
+      scales: { stat: 'spd', quote: "When Cyrene's SPD is 180 or higher" },
       to: 'allies',
       setup: "Cyrene's SPD 180 or higher.",
     },
@@ -601,6 +636,24 @@ export const cyrene: CharacterSheet = {
       gives: [{ stat: 'action-advance', amount: '24% each time' }],
       to: 'allies',
       setup: '"Ode to Ego" triggered twice or more.',
+    },
+    {
+      id: 'lc-blank',
+      piece: 'signature-weapon',
+      quote: 'When the wearer\'s memosprite uses Memosprite Skill on one ally, gains "Blank," which increases DMG taken by all enemies by 10%.',
+      tag: 'Enemy: DMG taken +10% (Blank)',
+      gives: [{ stat: 'vulnerability', amount: '+10%' }],
+      to: 'enemy',
+      setup: 'Her memosprite uses its Memosprite Skill on an ally; +60% more once "Verse" is held too.',
+    },
+    {
+      id: 'lc-verse',
+      piece: 'signature-weapon',
+      quote: 'When the wearer\'s memosprite uses Memosprite Skill on an enemy, gains "Verse," which increases CRIT DMG of all allies by 16%.',
+      tag: 'Allies: +16% CRIT DMG (Verse)',
+      gives: [{ stat: 'crit-dmg', amount: '+16%' }],
+      to: 'allies',
+      setup: 'Her memosprite uses its Memosprite Skill on an enemy; +60% more once "Blank" is held too.',
     },
   ],
   nothing: {
@@ -675,6 +728,7 @@ export const robinSummeretto: CharacterSheet = {
         { stat: 'atk', amount: "(16% + 0.4% per Vibe) of her Max HP, if their ATK is higher than hers" },
         { stat: 'crit-dmg', amount: '+40% + 1.5% per Vibe, otherwise' },
       ],
+      scales: { stat: 'hp', quote: "increases that target's ATK by an amount equal to (16% + Vibes × 0.4%) of Robin • Summeretto's Max HP", gives: ['atk'] },
       to: 'allies',
       setup: 'The ally attacks (or heals/shields) and gives her Vibes.',
     },
@@ -686,6 +740,24 @@ export const robinSummeretto: CharacterSheet = {
       gives: [{ stat: 'res-pen', amount: '+18% All-Type' }],
       to: 'allies',
       setup: 'Nothing.',
+    },
+    {
+      id: 'lc-ult-sp',
+      piece: 'signature-weapon',
+      quote: 'After the wearer uses their Ultimate, recovers 1 Skill Point for allies.',
+      tag: 'Team: +1 Skill Point',
+      gives: [{ stat: 'skill-points', amount: '+1 per Ultimate' }],
+      to: 'allies',
+      setup: 'Robin • Summeretto uses her Ultimate.',
+    },
+    {
+      id: 'lc-new-melody',
+      piece: 'signature-weapon',
+      quote: 'While the wearer has "New Melody," all allies\' SPD increases by 20%.',
+      tag: 'Allies: +20% SPD',
+      gives: [{ stat: 'spd', amount: '+20%' }],
+      to: 'allies',
+      setup: 'Entering combat; "New Melody" lasts 2 turns.',
     },
   ],
   nothing: {

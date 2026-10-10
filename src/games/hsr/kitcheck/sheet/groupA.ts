@@ -4,6 +4,7 @@
  */
 import type { CharacterSheet } from '../types';
 
+const WEAPON_SELF = "Raises the wearer's own stats; nothing for the team.";
 const TECH = 'Used before battle; not counted.';
 const LEVELS = 'Raises their own skill levels; nothing for the team.';
 const SELF = 'Buffs only themselves; nothing for the team.';
@@ -48,6 +49,7 @@ const feixiao: CharacterSheet = {
     },
   ],
   nothing: {
+    'signature-weapon': WEAPON_SELF,
     'skill-basic-atk-boltsunder': dmgOnly('Wind'),
     'skill-skill-waraxe': 'Deals Wind DMG and launches her own Follow-Up ATK; nothing for the team.',
     'skill-ultimate-terrasplit': 'Deals Wind DMG and raises her own Weakness Break Efficiency; nothing for the team.',
@@ -121,6 +123,15 @@ const topaz: CharacterSheet = {
       limits: { kinds: ['follow-up'] },
       setup: 'Hit the Proof of Debt target with Follow-Up ATKs to build stacks.',
     },
+    {
+      id: 'lc-tame',
+      piece: 'signature-weapon',
+      quote: 'When allies hit enemy targets under the "Tame" state, each "Tame" stack increases the CRIT DMG dealt by 12%.',
+      tag: 'Enemy: CRIT DMG taken +12% per Tame stack',
+      gives: [{ stat: 'crit-dmg', amount: '+12% per stack, up to 2' }],
+      to: 'enemy',
+      setup: 'Topaz hits the enemy with a Follow-Up ATK to build Tame stacks.',
+    },
   ],
   nothing: {
     'skill-basic-atk-deficit': dmgOnly('Fire'),
@@ -167,6 +178,7 @@ const robin: CharacterSheet = {
       quote: 'While in the "Concerto" state, increases all allies\' ATK by 22.8% of Robin\'s ATK plus 200.',
       tag: "Allies: ATK + 22.8% of Robin's ATK + 200",
       gives: [{ stat: 'atk', amount: "+22.8% of Robin's ATK + 200" }],
+      scales: { stat: 'atk', quote: "increases all allies' ATK by 22.8% of Robin's ATK plus 200" },
       to: 'allies',
       setup: CONCERTO,
     },
@@ -213,6 +225,15 @@ const robin: CharacterSheet = {
       quote: 'When using the Ultimate, dispels Crowd Control debuffs from all allies.',
       tag: 'Allies: Crowd Control removed',
       gives: [{ stat: 'cleanse', amount: 'Crowd Control debuffs' }],
+      to: 'allies',
+      setup: 'Use her Ultimate.',
+    },
+    {
+      id: 'lc-cadenza',
+      piece: 'signature-weapon',
+      quote: "increases all allies' DMG dealt by 24%, lasting for 1 turn(s).",
+      tag: 'Allies: DMG +24% (Cadenza)',
+      gives: [{ stat: 'dmg', amount: '+24% for 1 turn' }],
       to: 'allies',
       setup: 'Use her Ultimate.',
     },
@@ -317,6 +338,15 @@ const aventurine: CharacterSheet = {
       to: 'enemy',
       setup: 'Use his Basic ATK on the enemy.',
     },
+    {
+      id: 'lc-follow-up-vulnerability',
+      piece: 'signature-weapon',
+      quote: "When the wearer's Follow-Up ATK hits an enemy target, there is a 100% base chance to increase the DMG taken by the attacked enemy target by 10.0%, lasting for 2 turn(s).",
+      tag: 'Enemy: DMG taken +10%',
+      gives: [{ stat: 'vulnerability', amount: '+10% for 2 turns' }],
+      to: 'enemy',
+      setup: 'His Follow-Up ATK hits the enemy.',
+    },
   ],
   nothing: {
     'skill-basic-atk-straight-bet': dmgOnly('Imaginary'),
@@ -408,6 +438,7 @@ const acheron: CharacterSheet = {
     },
   ],
   nothing: {
+    'signature-weapon': "Raises her own CRIT DMG and her own DMG against Mirage Fizzle targets; nothing for the team.",
     'skill-basic-atk-trilateral-wiltcross': dmgOnly('Lightning'),
     'skill-ultimate-slashed-dream-cries-in-red': dmgOnly('Lightning'),
     'skill-technique-quadrivalent-ascendance': TECH,
@@ -472,6 +503,24 @@ const jiaoqiu: CharacterSheet = {
       gives: [{ stat: 'res-pen', amount: '3% per stack, up to 9 stacks' }],
       to: 'enemy',
       setup: 'Build Ashen Roast stacks on the enemy.',
+    },
+    {
+      id: 'lc-unarmored',
+      piece: 'signature-weapon',
+      quote: 'While in the Unarmored state, the enemy target receives 10% increased DMG, lasting for 2 turn(s).',
+      tag: 'Enemy: DMG taken +10% (Unarmored)',
+      gives: [{ stat: 'vulnerability', amount: '+10% for 2 turns' }],
+      to: 'enemy',
+      setup: 'His Basic ATK, Skill or Ultimate hits the enemy (60% base chance).',
+    },
+    {
+      id: 'lc-cornered',
+      piece: 'signature-weapon',
+      quote: 'If the target is under a DoT state inflicted by the wearer, there is a 60% base chance to upgrade the "Unarmored" state inflicted by the wearer to the "Cornered" state, which additionally increases the DMG the enemy target receives by 14%, lasting for 2 turn(s).',
+      tag: 'Enemy: DMG taken +14% more (Cornered)',
+      gives: [{ stat: 'vulnerability', amount: '+14% more for 2 turns' }],
+      to: 'enemy',
+      setup: 'The enemy is Unarmored and has a DoT from him (his Ashen Roast counts as Burn); 60% base chance.',
     },
   ],
   nothing: {
@@ -635,6 +684,15 @@ const silverWolf: CharacterSheet = {
       to: 'enemy',
       setup: 'Nothing: enemies get it when they enter combat.',
     },
+    {
+      id: 'lc-aether-code',
+      piece: 'signature-weapon',
+      quote: 'Targets with Aether Code receive 12% increased DMG for 1 turn.',
+      tag: 'Enemy: DMG taken +12% (Aether Code)',
+      gives: [{ stat: 'vulnerability', amount: '+12% for 1 turn' }],
+      to: 'enemy',
+      setup: 'Her Basic ATK, Skill or Ultimate hits a target that has no Aether Code yet (random hit target).',
+    },
   ],
   nothing: {
     'skill-basic-atk-system-warning': dmgOnly('Quantum'),
@@ -698,6 +756,7 @@ const firefly: CharacterSheet = {
     },
   ],
   nothing: {
+    'signature-weapon': "Raises her own Break Effect and her own Break DMG against Routed enemies; the enemy SPD down is not a counted stat (decision 18). Nothing for the team.",
     'skill-basic-atk-order-flare-propulsion': dmgOnly('Fire'),
     'skill-ultimate-fyrefly-type-iv-complete-combustion': FF_SELF,
     'skill-talent-chrysalid-pyronexus': FF_SELF,
@@ -790,6 +849,7 @@ const ruanMei: CharacterSheet = {
       quote: "In battle, for every 10% of Ruan Mei's Break Effect that exceeds 120%, her Skill additionally increases allies' DMG by 6%, up to a maximum of 36%.",
       tag: 'Allies: up to +36% more DMG from her Skill',
       gives: [{ stat: 'dmg', amount: '+6% per 10% of her Break Effect over 120%, up to +36%' }],
+      scales: { stat: 'break-effect', quote: "for every 10% of Ruan Mei's Break Effect that exceeds 120%, her Skill additionally increases allies' DMG by 6%" },
       to: 'allies',
       setup: 'Her Break Effect above 120%, and her Skill is on.',
     },
@@ -810,6 +870,35 @@ const ruanMei: CharacterSheet = {
       gives: [{ stat: 'atk', amount: '+40%' }],
       to: 'allies',
       setup: 'The enemy is Weakness Broken.',
+    },
+    {
+      id: 'lc-ult-dmg',
+      piece: 'signature-weapon',
+      quote: "When the wearer uses their Ultimate, increases all allies' DMG by 24%, lasting for 3 turn(s).",
+      tag: 'Allies: DMG +24%',
+      gives: [{ stat: 'dmg', amount: '+24% for 3 turns' }],
+      to: 'allies',
+      setup: 'Use her Ultimate.',
+    },
+    {
+      id: 'lc-skill-point',
+      piece: 'signature-weapon',
+      quote: "If the wearer's Break Effect exceeds or equals 150%, 1 Skill Point will be recovered.",
+      tag: 'Team: +1 Skill Point on her Ultimate',
+      gives: [{ stat: 'skill-points', amount: '+1 per Ultimate' }],
+      // Judgement call: a threshold, not a share; the Skill Point only comes at 150% Break Effect, so the wearer wants it.
+      scales: { stat: 'break-effect', quote: "If the wearer's Break Effect exceeds or equals 150%, 1 Skill Point will be recovered." },
+      to: 'allies',
+      setup: 'She uses her Ultimate with 150% or more Break Effect.',
+    },
+    {
+      id: 'lc-wave-energy',
+      piece: 'signature-weapon',
+      quote: 'At the start of each wave, all allies regenerate 10.0 Energy immediately.',
+      tag: 'Allies: +10 Energy each wave',
+      gives: [{ stat: 'energy', amount: '10 per wave' }],
+      to: 'allies',
+      setup: 'Nothing; at the start of each wave.',
     },
   ],
   nothing: {
@@ -886,6 +975,7 @@ const tbHarmony = (characterId: string, name: string): CharacterSheet => ({
       quote: "While the Trailblazer is on the field, increases the Break Effect of all teammates (excluding the Trailblazer), by an amount equal to 15% of the Trailblazer's Break Effect.",
       tag: "Teammates: Break Effect + 15% of the Trailblazer's",
       gives: [{ stat: 'break-effect', amount: "+15% of the Trailblazer's Break Effect" }],
+      scales: { stat: 'break-effect', quote: "by an amount equal to 15% of the Trailblazer's Break Effect" },
       to: 'teammates',
       setup: 'Nothing: while the Trailblazer is on the field.',
       noStack: 'tb-harmony-e4',
@@ -1005,6 +1095,26 @@ const lingsha: CharacterSheet = {
       gives: [{ stat: 'res-pen', amount: '20%' }],
       to: 'enemy',
       setup: 'Fuyuan is on the field.',
+    },
+    {
+      id: 'lc-woefree',
+      piece: 'signature-weapon',
+      quote: 'While in "Woefree," enemy targets take 10% increased DMG.',
+      tag: 'Enemy: DMG taken +10% (Woefree)',
+      gives: [{ stat: 'vulnerability', amount: '+10% for 2 turns' }],
+      to: 'enemy',
+      setup: 'Her Ultimate hits the enemy.',
+    },
+    {
+      id: 'lc-woefree-be',
+      piece: 'signature-weapon',
+      quote: "The effect of increasing DMG taken is additionally boosted by 8% if the wearer's current Break Effect is 150% or higher.",
+      tag: 'Enemy: Woefree +8% more',
+      gives: [{ stat: 'vulnerability', amount: '+8% more' }],
+      // Judgement call: a threshold, not a share; the extra 8% only comes at 150% Break Effect, so the wearer wants it.
+      scales: { stat: 'break-effect', quote: "if the wearer's current Break Effect is 150% or higher" },
+      to: 'enemy',
+      setup: 'Her Break Effect is 150% or higher while the enemy has Woefree.',
     },
   ],
   nothing: {

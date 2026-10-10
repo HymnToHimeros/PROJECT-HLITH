@@ -2,7 +2,7 @@
  * Zenless Zone Zero. Numbers here are checked against the sources listed at the
  * bottom; anything not confirmed stays null and shows "No data yet".
  */
-import type { BacklogItem, Banner, Character, GameContract, GameEvent, Kit, RecommendedBuild, Material, TeamPreset, Version, SampleArt, Weapon } from '../../core/contract';
+import type { BacklogItem, Banner, Character, GameContract, GameEvent, RecommendedBuild, Material, TeamPreset, Version, SampleArt, Weapon } from '../../core/contract';
 import backlog from './data/backlog.json';
 import banners from './data/banners.json';
 import characters from './data/characters.json';
@@ -10,13 +10,13 @@ import events from './data/events.json';
 import builds from './data/builds.json';
 import weapons from './data/weapons.json';
 import { scoreBuild } from '../../core/rules/buildScore';
-import kits from './data/kits.json';
 import materials from './data/materials.json';
 import teams from './data/teams.json';
 import sampleArt from './data/sample-art.json';
 import versions from './data/versions.json';
 import { materialsFor } from './costs';
-import { SHEETS } from './kitcheck/library';
+import { GEAR_SLOTS } from './gear';
+import { KITS, SHEETS } from './kitcheck/library';
 import { withTags } from './kitcheck/tags';
 import { recommendedTeams, zzzTeamRules } from './kitcheck/team';
 
@@ -61,14 +61,7 @@ export const zzz: GameContract = {
     levelMax: 60,
     weaponLevelMax: 60,
     refine: { name: 'Phase', max: 5 },
-    slots: [
-      { id: 'Disc 1', label: 'Disc 1', mains: ['HP'] },
-      { id: 'Disc 2', label: 'Disc 2', mains: ['ATK'] },
-      { id: 'Disc 3', label: 'Disc 3', mains: ['DEF'] },
-      { id: 'Disc 4', label: 'Disc 4', mains: ['HP %', 'ATK %', 'DEF %', 'CRIT Rate', 'CRIT DMG', 'Anomaly Proficiency'] },
-      { id: 'Disc 5', label: 'Disc 5', mains: ['HP %', 'ATK %', 'DEF %', 'PEN Ratio', 'Physical DMG Bonus', 'Fire DMG Bonus', 'Ice DMG Bonus', 'Electric DMG Bonus', 'Ether DMG Bonus', 'Wind DMG Bonus'] },
-      { id: 'Disc 6', label: 'Disc 6', mains: ['HP %', 'ATK %', 'DEF %', 'Anomaly Mastery', 'Impact', 'Energy Regen'] },
-    ],
+    slots: GEAR_SLOTS,
     subStats: ['HP', 'ATK', 'DEF', 'HP %', 'ATK %', 'DEF %', 'CRIT Rate', 'CRIT DMG', 'PEN', 'Anomaly Proficiency'],
     skills: [
       { name: 'Basic Attack', max: 16 },
@@ -162,7 +155,7 @@ export const zzz: GameContract = {
     sampleArt: async () => sampleArt as SampleArt[],
     versions: list<Version>(versions),
     // Kit text with the cheat sheet's tags (docs/logic/zzz-method.md, Part A).
-    kits: async () => withTags(kits as Kit[], SHEETS),
+    kits: async () => withTags(KITS, SHEETS),
     // The game's own recommended builds (npm run data:builds).
     builds: list<RecommendedBuild>(builds),
     // Every Light Cone / W-Engine with its picture (npm run data:builds); weapon banners show them.

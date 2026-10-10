@@ -142,6 +142,26 @@ Exactly as in ZZZ, with teams of four:
   check's own "best possible" search is used for your Line-ups, Who fits and If
   you pull, not as a list of made-up teams.
 
+## Builds a team wants (T18, owner's rule, 2026-10-10)
+The owner: "yes as the value of said character increases … if you run Robin with Phainon her value is taken as an
+HP-only user for her build itself, which makes her scale differently than in a team with someone who wants a different
+build on her … only a thing when she even is built … I want to have the option to see which [build fits which team]."
+1. A cheat-sheet entry whose amount grows with the giver's own stat ("equal to 16% of Robin • Summeretto's Max HP")
+   carries `scales: { stat, quote, gives? }`; the quote is word for word from the same piece (tested).
+2. When that entry counts as a buff for this team's damage dealer, the team **wants** that build on the giver. Wants
+   are per team: a buff that doesn't count for this damage dealer asks nothing.
+3. The saved build is read roughly, in bands (`src/core/rules/buildFit.ts`): each main stat of that stat on a slot that
+   could roll something else counts 5, each sub-stat roll of it 1; full marks = every such slot plus 5 rolls.
+   80%+ of full marks = built for it (+2), 35%+ = partly (+1), less = not built for it (0), no build saved = 0
+   ("no build saved, scored at base"). Only characters you own have a build read.
+4. The best team found assumes every member built for what it wants, so 100% means the team is also built right.
+5. On screen: every team's "Why" has "Builds this team wants" (what, yours, the fit, the kit line), and "To reach
+   100%" names the builds still missing. The character page has "Builds their teams want": one line per stat with
+   the teams that want it.
+6. Effects with a hard threshold ("at 150% Break Effect") need real total stats, which builds don't hold. Where the
+   team clearly wants that stat on the giver, the entry is read as a want too (decision 27); the threshold itself is
+   not checked until totals are saved.
+
 ## Worked examples
 
 The numbers the check gives for these teams are tested in

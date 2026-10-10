@@ -2,8 +2,7 @@
 /** The cheat sheet's honesty tests (docs/logic/hsr-theory.md, Part A step 6). */
 import { describe, expect, it } from 'vitest';
 import characters from '../data/characters.json';
-import kits from '../data/kits.json';
-import { SHEETS } from './library';
+import { KITS as kits, SHEETS } from './library';
 import { GENERAL_STATS, SPECIFIC_STATS, SUPPORT_STATS } from './types';
 
 type K = { characterId: string; skills: { id: string; gameText: string }[] };
@@ -31,6 +30,10 @@ describe('HSR cheat sheet', () => {
       expect(t, `${e.id}: quote is word for word`).toContain(e.quote);
       expect(e.setup.length, `${e.id}: setup answered`).toBeGreaterThan(2);
       for (const g of e.gives) expect(STATS.has(g.stat), `${e.id}: stat ${g.stat}`).toBe(true);
+      if (e.scales) {
+        expect(t, `${e.id}: scaling quote is word for word`).toContain(e.scales.quote);
+        for (const g of e.scales.gives ?? []) expect(e.gives.some((x) => x.stat === g), `${e.id}: scales a stat it gives`).toBe(true);
+      }
       if (e.on && 'count' in e.on) expect(e.on.count.paths?.length || e.on.count.elements?.length, `${e.id}: condition names a path or element`).toBeTruthy();
     }
     for (const q of sheet.damage?.quotes ?? []) expect(text(q.piece), `damage quote in ${q.piece}`).toContain(q.quote);

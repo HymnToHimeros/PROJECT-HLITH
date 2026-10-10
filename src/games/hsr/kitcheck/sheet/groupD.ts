@@ -5,6 +5,7 @@
  */
 import type { CharacterSheet, Condition } from '../types';
 
+const WEAPON_SELF = "Raises the wearer's own stats; nothing for the team.";
 const TECH = 'Used before battle; not counted.';
 const LEVELS_HER = 'Raises her own skill levels; nothing for the team.';
 const LEVELS_HIS = 'Raises his own skill levels; nothing for the team.';
@@ -269,6 +270,7 @@ const jingYuan: CharacterSheet = {
     },
   ],
   nothing: {
+    'signature-weapon': WEAPON_SELF,
     'skill-basic-atk-glistening-light': LIGHTNING,
     'skill-skill-rifting-zenith': 'Deals Lightning DMG and adds hits to his own Lightning-Lord; nothing for the team.',
     'skill-ultimate-lightbringer': 'Deals Lightning DMG and adds hits to his own Lightning-Lord; nothing for the team.',
@@ -298,6 +300,7 @@ const argenti: CharacterSheet = {
   },
   entries: [],
   nothing: {
+    'signature-weapon': WEAPON_SELF,
     'skill-basic-atk-fleeting-fragrance': PHYSICAL,
     'skill-skill-justice-hereby-blooms': PHYSICAL,
     'skill-ultimate-for-in-this-garden-supreme-beauty-bestows': PHYSICAL,
@@ -361,6 +364,7 @@ const jade: CharacterSheet = {
     },
   ],
   nothing: {
+    'signature-weapon': WEAPON_SELF,
     'skill-basic-atk-lash-of-riches': QUANTUM,
     'skill-ultimate-vow-of-the-deep': 'Deals Quantum DMG and strengthens her own Follow-Up ATK; nothing for the team.',
     'skill-technique-visionary-predation': TECH,
@@ -396,6 +400,7 @@ const rappa: CharacterSheet = {
       quote: 'When an enemy target becomes Weakness Broken, increases the Break DMG taken by 2%.',
       tag: 'Enemy: Break DMG taken +2%',
       gives: [{ stat: 'vulnerability', amount: '+2% (up to +10% with her ATK over 2400)' }],
+      scales: { stat: 'atk', quote: "If Rappa's current ATK is higher than 2400, for every 100 excess ATK, additionally increases this value by 1%" },
       to: 'enemy',
       limits: { kinds: ['break'] },
       causes: 'debuff',
@@ -412,6 +417,7 @@ const rappa: CharacterSheet = {
     },
   ],
   nothing: {
+    'signature-weapon': WEAPON_SELF,
     'skill-basic-atk-ninjutsu-rise-above-tumbles': IMAGINARY,
     'skill-skill-ninja-strike-rooted-resolute': IMAGINARY,
     'skill-ultimate-nind-supreme-aishiteru': 'Gives herself an extra turn and buffs only herself; nothing for the team.',
@@ -471,6 +477,15 @@ const theHerta: CharacterSheet = {
       to: 'allies',
       limits: { paths: ['erudition'] },
       setup: 'Nothing.',
+    },
+    {
+      id: 'lc-skill-point',
+      piece: 'signature-weapon',
+      quote: 'After the wearer uses their Ultimate, if this Ultimate consumed 140 or more Energy, recovers 1 Skill Point.',
+      tag: 'Team: +1 Skill Point on her Ultimate',
+      gives: [{ stat: 'skill-points', amount: '+1 per Ultimate' }],
+      to: 'allies',
+      setup: 'She uses an Ultimate that costs 140 or more Energy.',
     },
   ],
   nothing: {
@@ -552,6 +567,15 @@ const anaxa: CharacterSheet = {
       gives: [{ stat: 'res-pen', amount: '20%' }],
       to: 'enemy',
       setup: 'Nothing; enemies get it when they enter the battlefield.',
+    },
+    {
+      id: 'lc-def-down',
+      piece: 'signature-weapon',
+      quote: "When an enemy target gets attacked by the wearer, the wearer decreases the target's DEF by 12%, lasting for 2 turn(s).",
+      tag: 'Enemy: DEF -12%',
+      gives: [{ stat: 'def-shred', amount: '-12% DEF for 2 turns' }],
+      to: 'enemy',
+      setup: 'She attacks the enemy.',
     },
   ],
   nothing: {
@@ -657,6 +681,15 @@ const rinTohsaka: CharacterSheet = {
       limits: { kinds: ['skill'] },
       setup: 'Rin is on the field.',
     },
+    {
+      id: 'lc-radiant-crown',
+      piece: 'signature-weapon',
+      quote: `While the wearer holds "Radiant Crown," all allies' DMG dealt ignores 20% of the target's DEF`,
+      tag: 'Allies: ignore 20% DEF (Radiant Crown)',
+      gives: [{ stat: 'def-shred', amount: '20% DEF ignored for 3 turns' }],
+      to: 'allies',
+      setup: 'Allies spend 4 or more Skill Points in a single turn.',
+    },
   ],
   nothing: {
     'skill-basic-atk-bajiquan': QUANTUM,
@@ -749,6 +782,7 @@ const himekoNova: CharacterSheet = {
     },
   ],
   nothing: {
+    'signature-weapon': WEAPON_SELF,
     'skill-basic-atk-enkindle-the-first-lodestar': FIRE,
     'skill-ultimate-we-too-stride-the-stars': 'Takes control of her own Starblazer to deal Fire DMG; nothing for the team.',
     'skill-technique-starcharter-cruise': TECH,
