@@ -9,7 +9,11 @@
 import { useCallback, useEffect, useState } from 'react';
 import { JOBS, type JobDef } from '../../../supabase/functions/_shared/jobs.ts';
 import type { FindingKind, RunStatus } from '../../../supabase/functions/_shared/scheduler.ts';
+import type { GameContract } from '../../core/contract';
 import { backend } from '../../core/data/backend';
+import { LIST_KINDS, type ListKind } from '../../core/data/catalog';
+import { fetchCatalogRows, saveCatalogRow, setCatalogStatus } from '../../core/data/catalogSource';
+import { findingSource, planApproval, type Draft } from './approve';
 
 export interface JobRowFull {
   id: string;
@@ -154,17 +158,51 @@ export async function runJobNow(id: string): Promise<void> {
   if (error) throw new Error(error.message);
 }
 
+export type ApproveResult =
+  | { kind: 'added'; message: string; gameId: string; list: ListKind; id: string }
+  | { kind: 'needs-form'; message: string; draft: Draft }
+  | { kind: 'none'; message: string };
+
+const LIST_NOUN: Record<ListKind, string> = { events: 'Events', banners: 'Banners', backlog: 'Backlog', characters: 'Characters', versions: 'Versions' };
+
 /**
- * Hook for approved findings. FRAME only marks a finding approved; actually writing it
- * into the built-in lists (catalog_items: characters, banners, events, leaks …) is logic
- * for the data workstream, which fills this in. Until then approving changes nothing else.
+ * An approved finding goes into the built-in lists (catalog_items) when its payload has
+ * every required field (approve.ts); otherwise the result carries a pre-filled draft for
+ * the Lists form. The row's source names the finding, so "Move back to new" can retire it.
  */
-export async function onApprove(finding: FindingView): Promise<void> {
-  void finding; // DATA workstream: write the approved finding into catalog_items here.
+export async function onApprove(finding: FindingView, game?: GameContract): Promise<ApproveResult> {
+  const plan = planApproval(finding, game);
+  if (!plan.ok) return { kind: 'none', message: `Approved. ${plan.reason}` };
+  const { draft } = plan;
+  if (draft.missing.length > 0) {
+    return { kind: 'needs-form', message: `Approved. To add it to ${LIST_NOUN[draft.list]} it still needs: ${draft.missing.join(', ')}. The form is open in Lists.`, draft };
+  }
+  const { id, ...data } = draft.item as { id: string } & Record<string, unknown>;
+  await saveCatalogRow({ game_id: draft.gameId, kind: LIST_KINDS[draft.list], id, data, source: findingSource(finding.id) });
+  const label = String(data.title ?? data.name ?? id);
+  return {
+    kind: 'added',
+    message: `Added “${label}” to ${game?.short ?? draft.gameId.toUpperCase()} · ${LIST_NOUN[draft.list]}${data.leak ? ' as a leak' : ''}. Everyone sees it after reload. “Move back to new” retires it again.`,
+    gameId: draft.gameId,
+    list: draft.list,
+    id,
+  };
 }
 
-/** Records your decision on a finding, then (for an approval) calls onApprove. Returns when it was decided. */
-export async function decideFinding(finding: FindingView, status: Exclude<Decision, 'new'>): Promise<string> {
+/** Undoing an approval: the list item that finding added (if any) is retired again. Returns what happened, or null if it added nothing. */
+export async function undoApprove(finding: FindingView, game?: GameContract): Promise<string | null> {
+  const plan = planApproval(finding, game);
+  if (!plan.ok) return null;
+  const kind = LIST_KINDS[plan.draft.list];
+  const rows = await fetchCatalogRows(backend, plan.draft.gameId, kind);
+  const row = rows.find((r) => r.source === findingSource(finding.id) && r.status === 'active');
+  if (!row) return null;
+  await setCatalogStatus(row.game_id, kind, row.id, 'retired');
+  return `Retired “${String(row.data.title ?? row.data.name ?? row.id)}” again: it’s out of the list for everyone after reload.`;
+}
+
+/** Records your decision on a finding, then (for an approval) calls onApprove. Returns when it was decided, and what approving did. */
+export async function decideFinding(finding: FindingView, status: Exclude<Decision, 'new'>, game?: GameContract): Promise<{ decidedAt: string; result: ApproveResult | null }> {
   if (!backend) throw new Error('This site runs without a server (this device only).');
   const { data: auth } = await backend.auth.getUser();
   const decidedAt = new Date().toISOString();
@@ -173,15 +211,17 @@ export async function decideFinding(finding: FindingView, status: Exclude<Decisi
     .update({ status, decided_by: auth.user?.id ?? null, decided_at: decidedAt })
     .eq('id', finding.id);
   if (error) throw new Error(error.message);
-  if (status === 'approved') await onApprove({ ...finding, status, decided_at: decidedAt });
-  return decidedAt;
+  const result = status === 'approved' ? await onApprove({ ...finding, status, decided_at: decidedAt }, game) : null;
+  return { decidedAt, result };
 }
 
-/** "Move back to new": undoes an Approve or Dismiss (the finding returns to the inbox, undecided). */
-export async function reopenFinding(finding: FindingView): Promise<void> {
+/** "Move back to new": undoes an Approve or Dismiss (the finding returns to the inbox, undecided). An approval's list item is retired again. */
+export async function reopenFinding(finding: FindingView, game?: GameContract): Promise<string | null> {
   if (!backend) throw new Error('This site runs without a server (this device only).');
+  const undone = finding.status === 'approved' ? await undoApprove(finding, game) : null;
   const { error } = await backend.from('scheduler_findings').update({ status: 'new', decided_by: null, decided_at: null }).eq('id', finding.id);
   if (error) throw new Error(error.message);
+  return undone;
 }
 
 export const jobLabel = (id: string) => JOBS.find((j) => j.id === id)?.label ?? id;

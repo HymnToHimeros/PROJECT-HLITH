@@ -27,6 +27,21 @@ Resume with: "continue from PROGRESS.md". Newest entry on top. Older entries:
 - CI (`.github/workflows/ci.yml`) runs both on every pull request.
 
 ## Done
+- 2026-10-10 · **Owner console does real work** (branch `frame/owner-console`).
+  - Lists tab: pick a game and a list (Events, Banners, Backlog, Characters,
+    Versions), see the game files' items (LIST) and yours (OWNER); add, change,
+    retire and bring back items. Saved to `catalog_items`; everyone sees it after
+    reload. Every screen now reads lists through one wrapper (`withCatalog` in
+    `src/main.tsx`), so people's own changes and hides still sit on top.
+  - Findings: Approve adds a complete event, banner, character or leak to the
+    list; an incomplete one opens the Lists form pre-filled. "Move back to new"
+    retires it again.
+  - Announcements tab (migration 0008, table `announcements`): write, schedule,
+    end now. A strip shows at the top of the app; each person can hide one.
+  - Overview: real numbers from `owner_stats()` (accounts, active in 7 days,
+    HoYoLAB accounts, findings waiting, last run per job); "No data yet" if the
+    call fails. Migration 0008 tested on local Postgres (non-owners can't write,
+    everyone signed in reads, `owner_stats` refuses non-owners).
 - 2026-10-10 · **Whole-site audit: about 70 flaws fixed** (branch `frame/audit-fixes`).
   Five audits (Today/Calendar/Events/Intel, Pulls/Banners, Roster/Farm/Scan,
   Account/Assistant/shell, Backlog/Edit mode), then fixes:

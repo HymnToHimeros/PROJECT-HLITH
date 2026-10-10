@@ -32,8 +32,17 @@ The scheduler frame is FRAME's: the `scheduler` and `findings-intake` functions,
 console → Scheduler / Findings. Job logic belongs to a data workstream: the
 "find new info" jobs (leaks-scan, events-scan, game-data-refresh) run in a
 separate scheduled routine chat that delivers findings as described in
-`docs/ROUTINES.md`, and writing approved findings into the built-in lists fills
-`onApprove` in `src/tools/owner/schedulerData.ts`.
+`docs/ROUTINES.md`. Approving a finding writes it into the built-in lists
+(`onApprove` in `src/tools/owner/schedulerData.ts`, payload rules in
+`src/tools/owner/approve.ts`, FRAME 2026-10-10); data workstreams may refine
+those rules.
+
+## Built-in lists (2026-10-10)
+Every game's list loaders (events, banners, backlog, characters, versions) are
+wrapped once in `src/main.tsx` with `withCatalog` (`src/core/data/catalog.ts`):
+the seed JSON with the owner's rows from `catalog_items` laid over it, read once
+per signed-in session. The owner edits them in Owner console → Lists. Seed JSON
+stays the base; never rename an id that is already in a list.
 
 ## Shared files
 - `src/core/contract/` and `src/core/registry/`: owned by FRAME. The `Kit` and
