@@ -87,6 +87,36 @@ describe('Banners screen', () => {
     expect(screen.queryByText(/Example data/)).not.toBeInTheDocument();
   });
 
+  it('timeline board: Now holds live banners, Next the next phase, Later the rest; permanent banners sit in "Always open"', async () => {
+    await show([...realBanners, { id: 'collab', type: 'character', title: 'Collab forever', featured: ['c1'], start: iso(-60), end: iso(3650), permanent: true }]);
+    const column = (label: string) => screen.getByText(label, { selector: 'span' }).closest('div')?.parentElement as HTMLElement;
+    const titles = (el: HTMLElement) => within(el).queryAllByRole('article').map((a) => a.getAttribute('aria-label'));
+    expect(titles(column('Now'))).toEqual(['Live short', 'Live long']);
+    expect(titles(column('Next'))).toEqual(['Upcoming soon']);
+    expect(titles(column('Later'))).toEqual(['Upcoming late', 'Leaked one']);
+    const rail = screen.getByRole('complementary', { name: 'Always open · AA' });
+    expect(titles(rail)).toEqual(['Collab forever']);
+    expect(titles(column('Now'))).not.toContain('Collab forever');
+    // The ruler shows the limited banners with a TODAY line.
+    expect(screen.getByRole('img', { name: 'AA banner timeline' })).toHaveTextContent('TODAY');
+  });
+
+  it('a weapon banner stacks under the character banner it belongs to', async () => {
+    const game = makeGame([
+      { id: 'char', type: 'character', title: 'Star banner', featured: ['c1'], start: iso(-2), end: iso(8) },
+      { id: 'cone', type: 'weapon', title: 'Cone banner', featured: ['w1'], start: iso(-2), end: iso(8) },
+    ]);
+    const withWeapons = {
+      ...game,
+      bannerTypes: [...game.bannerTypes, { id: 'weapon', label: 'Cone banner', pullItem: 'gem', target: 'weapon', pity: { kind: 'hard-pity', hardPity: 80, baseRate: 0.008 } }],
+      data: { ...game.data, weapons: async () => [{ id: 'w1', name: 'Bright Cone', rarity: 'top', madeFor: 'c1' }] },
+    } as GameContract;
+    render(<BannersScreen games={[withWeapons]} scope="aa" servers={{}} openTab={() => {}} open={() => {}} openAccount={() => {}} />);
+    const star = (await screen.findAllByRole('article')).find((a) => a.getAttribute('aria-label') === 'Star banner') as HTMLElement;
+    expect(star.parentElement?.querySelectorAll('article')).toHaveLength(2);
+    expect(star.nextElementSibling?.getAttribute('aria-label')).toBe('Cone banner');
+  });
+
   it('a permanent banner says "Permanent" instead of a countdown', async () => {
     await show([{ id: 'collab', type: 'character', title: 'Collab forever', featured: ['c1'], start: iso(-60), end: iso(3650), permanent: true }]);
     const card = screen.getByRole('article', { name: 'Collab forever' });
@@ -174,7 +204,9 @@ describe('Banners screen', () => {
   it('“build a team first” opens Roster → Teams', async () => {
     const open = vi.fn();
     await show(realBanners, open);
-    fireEvent.click(within(screen.getByRole('article', { name: 'Live short' })).getByRole('button', { name: 'build a team first' }));
+    const tile = screen.getByRole('article', { name: 'Live short' });
+    fireEvent.click(within(tile).getByRole('button', { name: 'Details' }));
+    fireEvent.click(within(tile).getByRole('button', { name: 'build a team first' }));
     expect(open).toHaveBeenCalledWith('roster', 'teams');
   });
 
@@ -220,8 +252,8 @@ describe('Banners screen', () => {
     render(<BannersScreen games={[withWeapons]} scope="aa" servers={{}} openTab={() => {}} open={() => {}} openAccount={() => {}} />);
     const card = (await screen.findAllByRole('article'))[0] as HTMLElement;
     const srcs = [...card.querySelectorAll('img')].map((i) => i.getAttribute('src'));
-    // The banner picture is the lead weapon's, and each weapon has its own.
-    expect(srcs).toEqual(['https://example.test/w1.webp', 'https://example.test/w1.webp', 'https://example.test/w2.webp']);
+    // The banner picture is the lead weapon's; the other weapons have their own under Details.
+    expect(srcs).toEqual(['https://example.test/w1.webp', 'https://example.test/w2.webp']);
     expect(within(card).queryByText('NO ART YET')).toBeNull();
     expect(within(card).getByText('Bright Cone')).toBeInTheDocument();
     expect(within(card).getByText('Plain Cone')).toBeInTheDocument();
