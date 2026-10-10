@@ -153,7 +153,7 @@ async function noticeEnds(g: Game): Promise<Map<string, string>> {
   type Item = { title: string; end_time: string };
   const r = await json<{ data: { timezone: number; list: { list: Item[] }[]; pic_list: { type_list: { list: Item[] }[] }[] } }>(g.notices.replace('getAnnContent', 'getAnnList'));
   const items = [...r.data.list.flatMap((x) => x.list), ...r.data.pic_list.flatMap((x) => x.type_list.flatMap((t) => t.list))];
-  return new Map(items.map((a) => [noticeText(a.title), at(a.end_time.replace(/-/g, '/'), r.data.timezone)]));
+  return new Map(items.map((a) => [noticeText(a.title), at(a.end_time.replace(/-/g, '/'), 8)]));
 }
 
 // ── 3. Names → the game's ids (characters from our list, weapons from nanoka) ──

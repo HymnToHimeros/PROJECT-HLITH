@@ -327,12 +327,13 @@
     "id": "deadly-assault-2026-09-11",
     "title": "Deadly Assault",
     "kind": "endgame",
-    "start": "2026-09-11T02:00:00.000Z",
+    "start": "2026-09-10T20:00:00.000Z",
     "end": "2026-09-24T19:59:59.000Z",
     "reward": 300,
     "currency": "polychrome",
     "serverTime": {
       "base": 8,
+      "start": true,
       "end": true
     }
   },
@@ -397,12 +398,13 @@
     "id": "deadly-assault-2026-09-25",
     "title": "Deadly Assault",
     "kind": "endgame",
-    "start": "2026-09-25T02:00:00.000Z",
+    "start": "2026-09-24T20:00:00.000Z",
     "end": "2026-10-08T19:59:59.000Z",
     "reward": 300,
     "currency": "polychrome",
     "serverTime": {
       "base": 8,
+      "start": true,
       "end": true
     }
   },
@@ -481,12 +483,13 @@
     "id": "deadly-assault-2026-10-09",
     "title": "Deadly Assault",
     "kind": "endgame",
-    "start": "2026-10-09T02:00:00.000Z",
+    "start": "2026-10-08T20:00:00.000Z",
     "end": "2026-10-22T19:59:59.000Z",
     "reward": 300,
     "currency": "polychrome",
     "serverTime": {
       "base": 8,
+      "start": true,
       "end": true
     }
   }
