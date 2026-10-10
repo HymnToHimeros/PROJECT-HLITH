@@ -23,7 +23,8 @@ describe('Team scores in plain words', () => {
   it('HSR Feixiao team: what each member gives and what the best team found has that this one lacks', () => {
     const v = hsrVerdict(['Feixiao', 'Topaz & Numby', 'Tribbie', 'Aventurine'].map((n) => idOf(hsrLib(), n)), all);
     if (!v.rated || !v.explain) throw new Error('not rated');
-    expect(v.explain.headline).toMatch(/^Feixiao deals the damage\. .* short of the best team found\.$/);
+    // Topaz is a carry on Feixiao's own game team: her damage counts too (hsr-decisions 33).
+    expect(v.explain.headline).toMatch(/^Feixiao deals the damage, with Topaz & Numby\. .* (short of the best team found|no better team found)\.$/);
     expect(v.explain.members.find((m) => m.id === idOf(hsrLib(), 'Topaz & Numby'))?.text).toContain('their Follow-Up ATK sets off “Follow-Up ATK after teammates attack”');
     expect(v.explain.members.reduce((n, m) => n + m.points, 0)).toBe(v.count);
     expect(v.explain.missing[0]).toMatch(/^The best team found for Feixiao is .*: \d+ points against \d+ here/);

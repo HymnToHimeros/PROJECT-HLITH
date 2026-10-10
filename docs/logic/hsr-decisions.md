@@ -143,4 +143,19 @@ team size and order, and the owner's ZZZ method's own counting.
     and 9 are withdrawn: no "no sustain" label or note, no penalty, and sustain is no tiebreak anywhere (best
     team, Line-ups, Who fits, recommended teams). Teams compare by count, then team support, then chains.
     Healing and shields still count as team support, as before. Mirror rule: ZZZ never had a sustain rule.
+33. **Multi-carry teams and solo modes (owner's report on "Team 1", 2026-10-10).** Two fixes:
+    - **Several damage dealers.** A team the game builds around more than one carry (Aventurine • Waveflair's own
+      team 3: him, Mortenax Blade and Ashveil) is checked for each of them: the main damage dealer's lines as
+      before, plus, for every other carry the main one's own game team lists (or the owner's edited lists), the
+      lines that earn or cost points for them, marked "for X" in the Why. A teammate who helps only one carry is
+      not a weak fit; a build already wanted on someone is not asked twice. Feixiao's team with Topaz now counts
+      Topaz's side too.
+    - **Solo modes.** A condition can be "no other X in the team" (`atMost: 0`). Anaxa ("1 character"), Mortenax
+      Blade ("Otherwise", no other Nihility) and Aventurine • Waveflair ("the only Elation character") are read
+      that way instead of "can't be checked", and each solo branch shares a key with its duo branch, so whichever
+      is on covers the other: the duo branch no longer costs −1 in a solo team.
+    - The partner-page rule of decision 30 looks only at the first slot ("Feixiao | Topaz | …"), so a carry's own
+      team that lists another carry alone further along (Aventurine • Waveflair's team 3) is kept.
+    ZZZ: no game team lists and no solo-mode readings in its sheets, so nothing changes there (mirror rule: the
+    same rules apply once ZZZ has the facts).
 

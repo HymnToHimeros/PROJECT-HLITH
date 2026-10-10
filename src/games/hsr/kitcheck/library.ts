@@ -46,9 +46,11 @@ export function centreOf(team: TeamPreset, carries: Set<string>): string | undef
 export const isOwnTeam = (team: TeamPreset, carries: Set<string>) => {
   const page = pageOf(team);
   if (!page || !carries.has(page) || !team.slots.some((s) => s.characters.includes(page))) return false;
-  // A partner's page fixes the real carry alone in a slot (Topaz's page: "Feixiao" | Topaz | …); a carry's own page
-  // only lists other carries among options (The Herta's: "Anaxa, Jade, Herta, Serval" | The Herta | …).
-  return !team.slots.some((s) => s.characters.length === 1 && s.characters[0] !== page && carries.has(s.characters[0] ?? ''));
+  // A partner's page leads with the real carry alone in the first slot (Topaz's page: "Feixiao" | Topaz | …); a
+  // carry's own page lists other carries as options (The Herta's: "Anaxa, Jade, Herta, Serval" | The Herta | …) or
+  // further along (Aventurine • Waveflair's: "Mortenax Blade, Ashveil" | him | "Ashveil" | sustain).
+  const first = team.slots[0]?.characters ?? [];
+  return !(first.length === 1 && first[0] !== page && carries.has(first[0] ?? ''));
 };
 
 /** Who each carry's own game teams list, in any slot: the only teammates the check tries for them. */

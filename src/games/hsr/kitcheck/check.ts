@@ -83,6 +83,8 @@ export interface Line {
   who: string;
   /** For a build line: the stat the team wants on them and how their saved build fits. */
   build?: { stat: BuildStat; fit: BuildFit['fit']; have: string; max: number };
+  /** Counted for a second damage dealer of the team (decision 33), not the main one. */
+  forDd?: string;
   entry?: string;
   tag: string;
   why: string;
@@ -103,6 +105,8 @@ export interface TeamResult {
   /** Someone heals or shields the team (or is Preservation / Abundance). */
   /** Info only (decision 32): someone heals or shields. Never scored, ranked or required. */
   sustain: boolean;
+  /** Other damage dealers the carry's own game team puts beside them, whose damage counts too (decision 33). */
+  coDds?: string[];
   lines: Line[];
 }
 
@@ -151,7 +155,7 @@ function evalCondition(c: Condition | undefined, self: string, team: string[], l
   }
   const q = c.count;
   const n = team.filter((id) => !(q.others && id === self) && matches(lib.profiles.get(id), q.paths, q.elements)).length;
-  return n >= q.atLeast ? 'met' : 'not-met';
+  return n >= q.atLeast && (q.atMost === undefined || n <= q.atMost) ? 'met' : 'not-met';
 }
 
 /** Part B step 3: locked, replaced, on, off or unknown, with the reason in words. */
@@ -182,13 +186,17 @@ export function statusOf(e: Entry, who: string, team: string[], lib: Library, ac
 const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 const list = (xs: string[], or = 'or') => (xs.length < 2 ? (xs[0] ?? '') : `${xs.slice(0, -1).join(', ')} ${or} ${xs[xs.length - 1] ?? ''}`);
 
+const hasAtMost = (c: Condition | undefined): boolean => !!c && ('all' in c ? c.all.some(hasAtMost) : 'count' in c && c.count.atMost !== undefined);
+
 export function conditionWords(c: Condition | undefined): string {
   if (!c) return 'always';
   if ('unknown' in c) return c.unknown;
   if ('all' in c) return c.all.map(conditionWords).join(', and ');
   const q = c.count;
   const what = list([...(q.paths ?? []).map(cap), ...(q.elements ?? []).map(cap)]);
-  return `${q.atLeast} ${what} character${q.atLeast === 1 ? '' : 's'}${q.others ? ' besides them' : ''} in the team`;
+  if (q.atMost === 0) return `no ${what} character${q.others ? ' besides them' : ''} in the team`;
+  const most = q.atMost === undefined ? '' : ` and at most ${q.atMost}`;
+  return `${q.atLeast}${most} ${what} character${q.atLeast === 1 && !most ? '' : 's'}${q.others ? ' besides them' : ''} in the team`;
 }
 
 export const KIND_WORD: Record<DamageKind, string> = {
@@ -297,7 +305,8 @@ export function checkTeam(members: string[], dd: string, lib: Library, account: 
           continue;
         }
         if (e.on) {
-          const helpers = team.filter((id) => id !== dd && evalCondition(e.on, dd, [dd, id], lib) === 'met');
+          // A "no other X" condition is kept on by nobody in particular: no teammate is credited with it.
+          const helpers = hasAtMost(e.on) ? [] : team.filter((id) => id !== dd && evalCondition(e.on, dd, [dd, id], lib) === 'met');
           for (const id of helpers) contributed.add(id);
           lines.push({ ...base, kind: 'switched-on', why: `${st.why}${helpers.length ? ` (${helpers.map(name).join(' and ')})` : ''}`, points: 1, helpers });
         }
@@ -373,6 +382,38 @@ export const compare = (a: TeamResult, b: TeamResult) => a.count - b.count || a.
  * The whole check: pick the damage dealer (or use `dd`), check, and when two can
  * carry, keep the better and remember the other.
  */
+/**
+ * The carries this damage dealer's own game team lists (the owner's edited lists when there are any; otherwise the
+ * game's pairings): in a team, they deal damage too, so what reaches them counts (decision 33).
+ */
+function coCarries(members: string[], dd: string, lib: Library, account: Account): string[] {
+  const own = lib.ownTeams.get(dd);
+  const listed = (id: string) => (own?.length ? own.some((t) => (account.teamList?.(t.id) ?? t.slots).some((slot) => slot.includes(id))) : !!lib.pairedWith.get(dd)?.has(id));
+  return members.filter((id) => id !== dd && canCarry(id, lib) && listed(id));
+}
+
+/**
+ * Decision 33: a team the game builds around several damage dealers (Aventurine • Waveflair with Mortenax Blade and
+ * Ashveil) is checked for each of them. The main damage dealer's lines stay as they are; for each co-carry, the
+ * lines that earn or cost points for them are added, marked `forDd`. A teammate who helps one carry only is not a
+ * weak fit, and a build the team already wants on someone is not asked twice.
+ */
+function withCoCarries(r: TeamResult, lib: Library, account: Account): TeamResult {
+  const co = coCarries(r.members, r.dd, lib, account);
+  if (!co.length) return r;
+  const wanted = new Set(r.lines.filter((l) => l.kind === 'build').map((l) => `${l.who}|${l.build?.stat ?? ''}`));
+  const extra: Line[] = [];
+  for (const c of co) {
+    for (const l of checkTeam(r.members, c, lib, account).lines) {
+      if (l.points === 0 || l.kind === 'weak-fit') continue;
+      if (l.kind === 'build' && wanted.has(`${l.who}|${l.build?.stat ?? ''}`)) continue;
+      extra.push({ ...l, forDd: c });
+    }
+  }
+  const lines = [...r.lines, ...extra];
+  return { ...r, lines, coDds: co, count: lines.reduce((n, l) => n + l.points, 0), chains: lines.filter((l) => l.kind === 'chain').length };
+}
+
 export function check(members: string[], lib: Library, account: Account, dd?: string): CheckOutcome {
   const unread = members.filter((id) => !lib.sheets.has(id));
   if (unread.length) return { rated: false, why: `not rated yet: ${unread.map((id) => lib.names.get(id) ?? id).join(', ')} not read yet`, unread };
@@ -381,7 +422,7 @@ export function check(members: string[], lib: Library, account: Account, dd?: st
   let best: TeamResult | undefined;
   let other: TeamResult | undefined;
   for (const d of dds) {
-    const r = checkTeam(members, d, lib, account);
+    const r = withCoCarries(checkTeam(members, d, lib, account), lib, account);
     if (!best || compare(r, best) > 0) {
       other = best;
       best = r;

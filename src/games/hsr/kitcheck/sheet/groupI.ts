@@ -716,16 +716,19 @@ export const aventurineWaveflair: CharacterSheet = {
       gives: [{ stat: 'elation', amount: '+20% (himself +80% more)' }],
       to: 'allies',
       setup: 'Nothing beyond the team; while he is on the field.',
+      noStack: 'waveflair-revel',
     },
     {
       id: 'revel-solo-follow-up',
       piece: 'trace-revel-in-raging-tides',
       quote: 'At the start of the battle, if Aventurine • Waveflair is the only Elation character in the team, when Aventurine • Waveflair deals DMG using his Elation Skill, it is considered as launching a Follow-Up ATK.',
       tag: 'Elation Skill counts as Follow-Up ATK (solo Elation)',
-      on: { unknown: 'Aventurine • Waveflair is the only Elation character in the team (the check cannot test "none")' },
+      on: { count: { paths: ['elation'], atLeast: 0, atMost: 0, others: true } },
       gives: [],
       to: 'enemy',
       causes: 'follow-up',
+      // Solo branch of "Revel in Raging Tides": exclusive with the "other Elation characters" branch, which it covers.
+      noStack: 'waveflair-revel',
       setup: 'He uses his Elation Skill.',
     },
     {

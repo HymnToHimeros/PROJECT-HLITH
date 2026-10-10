@@ -534,10 +534,12 @@ const anaxa: CharacterSheet = {
       piece: 'trace-imperative-hiatus',
       quote: "1 character: Increases Anaxa's CRIT DMG by 140%.",
       tag: 'Alone: +140% CRIT DMG for herself',
-      on: { unknown: 'Anaxa is the only Erudition character in the team' },
+      on: { count: { paths: ['erudition'], atLeast: 0, atMost: 0, others: true } },
       gives: [{ stat: 'crit-dmg', amount: '+140%' }],
       to: 'self',
       setup: 'Nothing; on for the whole battle.',
+      // Her solo branch and her "2 or more Erudition" branch exclude each other: whichever is on covers the other.
+      noStack: 'anaxa-imperative-hiatus-allies',
     },
     {
       id: 'e6-imperative-hiatus',
