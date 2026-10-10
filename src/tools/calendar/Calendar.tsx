@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from 'react';
+import { Fragment, useEffect, useRef, useState, type CSSProperties, type ReactNode } from 'react';
 import type { GameContract, GameId } from '../../core/contract';
 import { useExamplesShown } from '../../core/data/prefs';
 import { setPlanStatus, type UserPlan } from '../../core/data/userData';
@@ -6,13 +6,18 @@ import { formatDateTime, formatRange } from '../../core/time/reset';
 import { BottomSheet, Button, CalendarBar, ExampleNotice, ExampleTag, GameTag, HowTo, Timer, UnverifiedTag } from '../../core/ui';
 import { AddOwnButton, examplesFor } from '../today/AddOwn';
 import type { GameLists } from '../today/lists';
-import { gameTimeline, type GameTimeline, type Lane, type Span } from './timeline';
+import { foldRows, gameTimeline, nextChange, packRows, type GameTimeline, type Lane, type Span } from './timeline';
 import c from './calendar.module.css';
 
 const DAY = 86_400_000;
 /** Design: one week back, five ahead. */
 const DAYS_BACK = 7;
 const DAYS_AHEAD = 35;
+/** A busy lane shows at most this many rows per game; the rest fold behind "Show N more". */
+const ROWS_PER_GAME = 4;
+/** The Dates list shows what's next: dates in the next two weeks, at most DATES_SHOWN of them; the rest fold behind a button. */
+const SOON_DAYS = 14;
+const DATES_SHOWN = 8;
 
 export interface CalendarProps {
   games: GameContract[];
@@ -26,11 +31,11 @@ export interface CalendarProps {
   plans?: { game: GameContract; plan: UserPlan }[];
 }
 
-const LANES: { id: Lane; label: string }[] = [
-  { id: 'banners', label: 'Banners' },
-  { id: 'events', label: 'Events' },
-  { id: 'endgame', label: 'Endgame' },
-  { id: 'version', label: 'Version' },
+const LANES: { id: Lane; label: string; noun: string }[] = [
+  { id: 'banners', label: 'Banners', noun: 'banners' },
+  { id: 'events', label: 'Events', noun: 'events' },
+  { id: 'endgame', label: 'Endgame', noun: 'endgame cycles' },
+  { id: 'version', label: 'Version', noun: 'versions' },
 ];
 
 /** Start of the viewer's local day: the timeline is drawn in local time. */
@@ -78,6 +83,7 @@ export function Calendar({ games, servers, lists, now, openAccount, openServer, 
   // A tapped plan bar (or Dates row) opens its details; Undo marks it undone (plans are never deleted).
   const [picked, setPicked] = useState<{ game: GameContract; plan: UserPlan } | 'example' | null>(null);
   const [undone, setUndone] = useState<{ game: GameContract; plan: UserPlan } | null>(null);
+  const [showAllDates, setShowAllDates] = useState(false);
   const pick = (id: string) => setPicked(id === plan?.id ? 'example' : (mine.find((m) => m.plan.id === id) ?? null));
   const addOwn = (kind: 'events' | 'banners') =>
     games.map((g) => <AddOwnButton key={`${g.id}:${kind}`} game={g} kind={kind} tag={tags} examples={examplesFor(g, lists[g.id] ?? EMPTY_LISTS, kind, now, showExamples)} />);
@@ -105,9 +111,42 @@ export function Calendar({ games, servers, lists, now, openAccount, openServer, 
     plan && 'the plan',
   ].filter(Boolean);
 
-  // The list under the timeline: everything not over yet, by start date.
+  // The list under the timeline: everything not over yet, soonest change first. What's next shows; the rest folds.
   const all = timelines.flatMap(({ timeline }) => timeline.spans);
-  const dates = [...all, ...myPlans, ...(plan ? [plan] : [])].filter((s) => s.end >= now).sort((a, b) => a.start - b.start || a.end - b.end);
+  const dates = [...all, ...myPlans, ...(plan ? [plan] : [])].filter((s) => s.end >= now).sort((a, b) => nextChange(a, now) - nextChange(b, now) || a.start - b.start);
+  const week = now + 7 * DAY;
+  const soon = now + SOON_DAYS * DAY;
+  const shownDates = showAllDates ? dates : dates.filter((s) => nextChange(s, now) < soon).slice(0, DATES_SHOWN);
+  const hiddenDates = dates.length - shownDates.length;
+  const dateGroups = [
+    { label: 'Next 7 days', items: shownDates.filter((s) => nextChange(s, now) < week) },
+    { label: 'In 1–2 weeks', items: shownDates.filter((s) => nextChange(s, now) >= week && nextChange(s, now) < soon) },
+    { label: 'Later', items: shownDates.filter((s) => nextChange(s, now) >= soon) },
+  ].filter((g) => g.items.length > 0);
+  const planRows = packRows([...myPlans, ...(plan ? [plan] : [])]);
+  const dateRow = (s: Span) => (
+    <li key={`${s.game.id}:${s.id}`} className={c.item}>
+      <span className={c.mark} style={{ background: s.game.vent }} aria-hidden="true" />
+      <span className={c.what}>
+        <span className={c.itemTitle}>{s.title}</span>
+        <span className={c.range}>{formatRange(s.start, s.end)}</span>
+        {(s.id === plan?.id || myPlans.some((p) => p.id === s.id)) && (
+          <button type="button" className={c.linkBtn} onClick={() => pick(s.id)} aria-label={`Details of plan ${s.title}`}>
+            Plan details
+          </button>
+        )}
+      </span>
+      {s.leak && <UnverifiedTag source={s.leak.source} />}
+      {s.example && <ExampleTag />}
+      {tags && <GameTag label={s.game.short} vent={s.game.vent} />}
+      <span className={c.when}>
+        {s.start > now ? <Timer to={s.start} prefix="in" /> : <Timer to={s.end} deadline prefix="ends in" />}
+        <time className={c.whenAt} dateTime={new Date(s.start > now ? s.start : s.end).toISOString()}>
+          {formatDateTime(s.start > now ? s.start : s.end)}
+        </time>
+      </span>
+    </li>
+  );
 
   return (
     <div className={c.stack}>
@@ -146,6 +185,9 @@ export function Calendar({ games, servers, lists, now, openAccount, openServer, 
                   {new Date(t).toLocaleDateString(undefined, { weekday: 'short', day: 'numeric', month: 'short' })}
                 </span>
               ))}
+              <span className={c.todayMark} style={{ left: `${todayPct}%` }}>
+                Today
+              </span>
             </div>
             <div className={c.lanes}>
               {ticks.map((t) => (
@@ -156,6 +198,8 @@ export function Calendar({ games, servers, lists, now, openAccount, openServer, 
                 <LaneRows
                   key={lane.id}
                   label={lane.label}
+                  noun={lane.noun}
+                  now={now}
                   example={laneExample(lane.id)}
                   spans={timelines.flatMap(({ timeline }) => timeline.spans.filter((s) => s.lane === lane.id))}
                   pct={pct}
@@ -168,16 +212,20 @@ export function Calendar({ games, servers, lists, now, openAccount, openServer, 
                 Your plans
                 {plan && <ExampleTag />}
               </div>
-              {[...myPlans, ...(plan ? [plan] : [])].map((p) => {
-                const left = pct(p.start);
-                const width = Math.max(2, pct(p.end) - left);
-                return (
-                  <div key={p.id} className={c.row}>
-                    <CalendarBar kind="plan" title={p.title} range={formatRange(p.start, p.end)} left={left} width={width} />
-                    <button type="button" className={c.barBtn} style={{ left: `${left}%`, width: `${width}%` }} onClick={() => pick(p.id)} aria-label={`Plan: ${p.title}. Show details`} />
-                  </div>
-                );
-              })}
+              {planRows.map((row) => (
+                <div key={row[0]?.id} className={c.row}>
+                  {row.map((p) => {
+                    const left = pct(p.start);
+                    const width = Math.max(2, pct(p.end) - left);
+                    return (
+                      <Fragment key={p.id}>
+                        <CalendarBar kind="plan" title={p.title} range={formatRange(p.start, p.end)} left={left} width={width} />
+                        <button type="button" className={c.barBtn} style={{ left: `${left}%`, width: `${width}%` }} onClick={() => pick(p.id)} aria-label={`Plan: ${p.title}. Show details`} />
+                      </Fragment>
+                    );
+                  })}
+                </div>
+              ))}
               {myPlans.length === 0 && !plan && <div className={c.emptyRow}>No plans yet. {ASSISTANT_HINT} It shows here.</div>}
             </div>
           </div>
@@ -185,33 +233,27 @@ export function Calendar({ games, servers, lists, now, openAccount, openServer, 
       </section>
 
       <section className={c.card} aria-label="Dates">
-        <h3 className={c.cardTitle}>Dates</h3>
+        <div className={c.cardHead}>
+          <h3 className={c.cardTitle}>Dates</h3>
+          {dates.length > 0 && <span className={c.sub}>{showAllDates ? 'Every date, soonest first' : 'What’s next, soonest first'}</span>}
+        </div>
         {dates.length > 0 ? (
-          <ol className={c.list}>
-            {dates.map((s) => (
-              <li key={`${s.game.id}:${s.id}`} className={c.item}>
-                <span className={c.mark} style={{ background: s.game.vent }} aria-hidden="true" />
-                <span className={c.what}>
-                  <span className={c.itemTitle}>{s.title}</span>
-                  <span className={c.range}>{formatRange(s.start, s.end)}</span>
-                  {(s.id === plan?.id || myPlans.some((p) => p.id === s.id)) && (
-                    <button type="button" className={c.linkBtn} onClick={() => pick(s.id)} aria-label={`Details of plan ${s.title}`}>
-                      Plan details
-                    </button>
-                  )}
-                </span>
-                {s.leak && <UnverifiedTag source={s.leak.source} />}
-                {s.example && <ExampleTag />}
-                {tags && <GameTag label={s.game.short} vent={s.game.vent} />}
-                <span className={c.when}>
-                  {s.start > now ? <Timer to={s.start} prefix="in" /> : <Timer to={s.end} deadline prefix="ends in" />}
-                  <time className={c.whenAt} dateTime={new Date(s.start > now ? s.start : s.end).toISOString()}>
-                    {formatDateTime(s.start > now ? s.start : s.end)}
-                  </time>
-                </span>
-              </li>
+          <>
+            {dateGroups.map((g) => (
+              <div key={g.label} className={c.group}>
+                <h4 className={c.groupHead}>{g.label}</h4>
+                <ol className={c.list}>{g.items.map(dateRow)}</ol>
+              </div>
             ))}
-          </ol>
+            {dateGroups.length === 0 && <p className={c.sub}>Nothing starts or ends in the next two weeks.</p>}
+            {(hiddenDates > 0 || showAllDates) && (
+              <div>
+                <button type="button" className={c.moreBtn} aria-expanded={showAllDates} onClick={() => setShowAllDates((v) => !v)}>
+                  {showAllDates ? 'Show fewer dates' : `Show ${hiddenDates} more ${hiddenDates === 1 ? 'date' : 'dates'}`}
+                </button>
+              </div>
+            )}
+          </>
         ) : (
           <>
             <p className={c.sub}>Nothing on the lists in the next five weeks. Know an event or banner that’s coming? Add it yourself.</p>
@@ -265,9 +307,10 @@ export function Calendar({ games, servers, lists, now, openAccount, openServer, 
       <HowTo
         steps={[
           'The timeline runs from a week ago to five weeks ahead. The white line is now.',
+          'Bars that don’t overlap share a row. A busy lane shows what changes soonest; tap “Show N more” for the rest.',
           'Solid bars are confirmed dates. Dashed, striped bars are leaks: marked ? UNVERIFIED, with their source.',
           'Weekly resets follow the server you chose; tap “Choose server” if they are missing.',
-          'On a phone, swipe the timeline sideways. The Dates list underneath has every date in order, with a countdown.',
+          'On a phone, swipe the timeline sideways. The Dates list underneath shows what’s next (up to two weeks ahead), soonest first, with a countdown; “Show N more dates” opens every date.',
           'Plans you approve from the Assistant appear in “Your plans” with a dashed outline. Tap one to see it or undo it.',
         ]}
       />
@@ -275,37 +318,55 @@ export function Calendar({ games, servers, lists, now, openAccount, openServer, 
   );
 }
 
-function LaneRows({ label, example, spans, pct, tags, addOwn }: { label: string; example: boolean; spans: Span[]; pct: (t: number) => number; tags: boolean; addOwn?: ReactNode }) {
-  const sorted = [...spans].sort((a, b) => a.start - b.start || a.end - b.end);
+function LaneRows({ label, noun, now, example, spans, pct, tags, addOwn }: { label: string; noun: string; now: number; example: boolean; spans: Span[]; pct: (t: number) => number; tags: boolean; addOwn?: ReactNode }) {
+  const [open, setOpen] = useState(false);
+  // One block of rows per game (All games), each packed tight; a busy game shows its soonest changes first.
+  const byGame = new Map<GameId, Span[]>();
+  for (const s of spans) byGame.set(s.game.id, [...(byGame.get(s.game.id) ?? []), s]);
+  const folded = [...byGame.values()].map((list) => foldRows(list, now, ROWS_PER_GAME));
+  const hidden = folded.reduce((n, f) => n + f.hidden.length, 0);
+  const blocks = folded.map((f) => packRows(open ? [...f.shown, ...f.hidden] : f.shown));
   return (
     <>
       <div className={c.laneHead}>
         {label}
         {example && <ExampleTag />}
       </div>
-      {sorted.length === 0 && (
+      {spans.length === 0 && (
         <div className={c.emptyRow}>
           Nothing in these six weeks.
           {addOwn}
         </div>
       )}
-      {sorted.map((s) => {
-        const left = pct(s.start);
-        return (
-          <div key={`${s.game.id}:${s.id}`} className={c.row}>
-            <CalendarBar
-              kind={s.leak ? 'leak' : 'confirmed'}
-              title={s.title}
-              range={formatRange(s.start, s.end)}
-              left={left}
-              width={Math.max(2, pct(s.end) - left)}
-              vent={s.game.vent}
-              tag={tags ? { label: s.game.short, vent: s.game.vent } : undefined}
-              source={s.leak?.source}
-            />
+      {blocks.map((rows, b) =>
+        rows.map((row, i) => (
+          <div key={`${b}:${i}`} className={b > 0 && i === 0 ? `${c.row} ${c.gameBreak}` : c.row}>
+            {row.map((s) => {
+              const left = pct(s.start);
+              return (
+                <CalendarBar
+                  key={`${s.game.id}:${s.id}`}
+                  kind={s.leak ? 'leak' : 'confirmed'}
+                  title={s.title}
+                  range={formatRange(s.start, s.end)}
+                  left={left}
+                  width={Math.max(2, pct(s.end) - left)}
+                  vent={s.game.vent}
+                  tag={tags ? { label: s.game.short, vent: s.game.vent } : undefined}
+                  source={s.leak?.source}
+                />
+              );
+            })}
           </div>
-        );
-      })}
+        )),
+      )}
+      {hidden > 0 && (
+        <div className={c.moreRow}>
+          <button type="button" className={c.moreBtn} aria-expanded={open} onClick={() => setOpen((v) => !v)}>
+            {open ? `Show fewer ${noun}` : `Show ${hidden} more ${hidden === 1 ? noun.replace(/s$/, '') : noun}`}
+          </button>
+        </div>
+      )}
     </>
   );
 }

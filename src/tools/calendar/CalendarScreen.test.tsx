@@ -47,21 +47,53 @@ const show = (servers: Record<string, string>, openAccount = () => {}) =>
   render(<CalendarScreen games={[game]} scope="aa" servers={servers} openTab={() => {}} open={() => {}} openAccount={openAccount} now={NOW} />);
 
 describe('Calendar', () => {
-  it('lists every date not over yet, by start, with a countdown', async () => {
+  it('Dates shows what’s next (two weeks), soonest change first, with a countdown; the rest folds behind "Show N more dates"', async () => {
     show({ aa: 'eu' });
     const list = await screen.findByLabelText('Dates');
-    const texts = within(list)
-      .getAllByRole('listitem')
-      .map((li) => li.textContent ?? '');
-    const pos = (s: string) => texts.findIndex((t) => t.includes(s));
-    expect(pos('Version 1.2')).toBe(0);
+    const texts = () =>
+      within(list)
+        .getAllByRole('listitem')
+        .map((li) => li.textContent ?? '');
+    const pos = (s: string) => texts().findIndex((t) => t.includes(s));
+    // Next 7 days, then 1–2 weeks: ordered by when each next starts or ends.
+    expect(within(list).getByRole('heading', { name: 'Next 7 days' })).toBeInTheDocument();
+    expect(within(list).getByRole('heading', { name: 'In 1–2 weeks' })).toBeInTheDocument();
+    expect(pos('Soon event')).toBe(0);
     expect(pos('Soon event')).toBeLessThan(pos('Middle event'));
-    expect(pos('Late event')).toBeLessThan(pos('Middle event'));
     expect(pos('Middle event')).toBeLessThan(pos('Leaked event'));
     // Running: "ends in"; not started: "in".
-    expect(texts[pos('Soon event')]).toMatch(/ends in/);
-    expect(texts[pos('Middle event')]).toMatch(/in \d/);
-    expect(texts[pos('Middle event')]).not.toMatch(/ends in/);
+    expect(texts()[pos('Soon event')]).toMatch(/ends in/);
+    expect(texts()[pos('Middle event')]).toMatch(/in \d/);
+    expect(texts()[pos('Middle event')]).not.toMatch(/ends in/);
+    // More than two weeks away: folded, not gone.
+    expect(pos('Late event')).toBe(-1);
+    expect(pos('Version 1.2')).toBe(-1);
+    const more = within(list).getByRole('button', { name: 'Show 3 more dates' });
+    expect(more).toHaveAttribute('aria-expanded', 'false');
+    fireEvent.click(more);
+    expect(within(list).getByRole('heading', { name: 'Later' })).toBeInTheDocument();
+    expect(pos('Leaked event')).toBeLessThan(pos('Late event'));
+    expect(pos('Late event')).toBeLessThan(pos('Version 1.2'));
+    expect(texts()[pos('Late event')]).toMatch(/ends in/);
+    // Unfolded, every date not over yet is listed: 4 events, the version and 3 Deep Tower cycles.
+    expect(texts()).toHaveLength(8);
+    fireEvent.click(within(list).getByRole('button', { name: 'Show fewer dates' }));
+    expect(pos('Late event')).toBe(-1);
+  });
+
+  it('a busy lane shows its soonest changes in a few rows; "Show N more" opens the rest', async () => {
+    const busy: GameEvent[] = Array.from({ length: 7 }, (_, i) => ({ id: `b${i}`, title: `Busy ${i}`, kind: 'event', start: at(-2), end: at(3 + i * 2), reward: null, currency: 'gem' }));
+    const crowded = { ...game, data: { ...game.data, events: async () => busy } } as unknown as GameContract;
+    render(<CalendarScreen games={[crowded]} scope="aa" servers={{ aa: 'eu' }} openTab={() => {}} open={() => {}} openAccount={() => {}} now={NOW} />);
+    const timeline = await screen.findByLabelText('Timeline');
+    await within(timeline).findByText('Busy 0');
+    // All 7 overlap, so 4 rows show: the 4 ending soonest. The 3 ending latest wait behind the button.
+    for (const i of [0, 1, 2, 3]) expect(within(timeline).getByText(`Busy ${i}`)).toBeInTheDocument();
+    for (const i of [4, 5, 6]) expect(within(timeline).queryByText(`Busy ${i}`)).toBeNull();
+    fireEvent.click(within(timeline).getByRole('button', { name: 'Show 3 more events' }));
+    for (const i of [4, 5, 6]) expect(within(timeline).getByText(`Busy ${i}`)).toBeInTheDocument();
+    fireEvent.click(within(timeline).getByRole('button', { name: 'Show fewer events' }));
+    expect(within(timeline).queryByText('Busy 6')).toBeNull();
   });
 
   it('weekly resets come from your server; endgame cycles from the record’s start date', async () => {
