@@ -20,12 +20,14 @@ export const SERVER_OFFSET = 8;
 export function noticeText(html: string): string {
   return decode(
     html
+      // Some notices carry the time tags escaped ("&lt;t class=&quot;t_lc&quot;&gt;").
+      .replace(/&lt;(\/?t\b(?:[^&]|&quot;)*?)&gt;/g, (_m, inner: string) => `<${inner.replace(/&quot;/g, '"')}>`)
       .replace(/<t\s+class="t_(gl|lc)"[^>]*>(.*?)<\/t>/gs, (_m, kind: string, t: string) => `⟨${kind} ${t.replace(/<[^>]+>/g, '')}⟩`)
       .replace(/<br\s*\/?>|<\/p>|<\/div>|<\/tr>|<\/h\d>|<\/li>/g, '\n')
       .replace(/<\/t[dh]>/g, ' | ')
       .replace(/<[^>]+>/g, ''),
   )
-    .replace(/[ \t ]+/g, ' ')
+    .replace(/[ \t\u00a0]+/g, ' ')
     .replace(/ *\n */g, '\n')
     .replace(/\n{2,}/g, '\n')
     .trim();
@@ -65,8 +67,10 @@ export interface Span {
 }
 
 const STAMP = String.raw`\d{4}/\d{1,2}/\d{1,2}\s+\d{1,2}:\d{2}(?::\d{2})?`;
+// A bare stamp ("2026/10/05 04:00 – 2026/11/16 03:59 (server time)") shares the zone written after
+// the second one; both zones are read at UTC+8 here, so it needs no zone of its own.
 const ONE = new RegExp(
-  String.raw`⟨(gl|lc) (${STAMP})⟩|(${STAMP})\s*\((UTC\+8|server time)\)|after the Version ([\d.]+) update|End of Version ([\d.]+)`,
+  String.raw`⟨(gl|lc) (${STAMP})⟩|(${STAMP})(?:\s*\((?:UTC\+8|server time)\))?|after the Version ([\d.]+) update|End of Version ([\d.]+)`,
   'gi',
 );
 
@@ -76,13 +80,13 @@ export function timesIn(line: string, versions: Map<string, VersionTimes>): stri
   for (const m of line.matchAll(ONE)) {
     if (m[1] && m[2]) out.push(at(m[2], SERVER_OFFSET));
     else if (m[3]) out.push(at(m[3], SERVER_OFFSET));
-    else if (m[5]) {
-      const v = versions.get(m[5]);
-      if (!v) throw new Error(`"After the Version ${m[5]} update" but version ${m[5]} is unknown`);
+    else if (m[4]) {
+      const v = versions.get(m[4]);
+      if (!v) throw new Error(`"After the Version ${m[4]} update" but version ${m[4]} is unknown`);
       out.push(v.open);
-    } else if (m[6]) {
-      const v = versions.get(m[6]);
-      if (!v?.end) throw new Error(`"End of Version ${m[6]}" but its end is unknown`);
+    } else if (m[5]) {
+      const v = versions.get(m[5]);
+      if (!v?.end) throw new Error(`"End of Version ${m[5]}" but its end is unknown`);
       out.push(v.end);
     }
   }
@@ -93,13 +97,14 @@ export function timesIn(line: string, versions: Map<string, VersionTimes>): stri
 export function spanIn(line: string, versions: Map<string, VersionTimes>): Span | undefined {
   const t = timesIn(line, versions);
   if (t.length < 2) return undefined;
-  return { start: t[0]!, end: t[1]! };
+  const [start, end] = t;
+  return start && end ? { start, end } : undefined;
 }
 
 /** "Stellar Jade ×500" → 500 (all mentions added up). */
 export function amountOf(text: string, item: string): number {
   let total = 0;
-  for (const m of text.matchAll(new RegExp(String.raw`${item}s?\s*[×x*]\s*([\d,]+)`, 'gi'))) total += Number(m[1]!.replace(/,/g, ''));
+  for (const m of text.matchAll(new RegExp(String.raw`${item}s?\s*[×x*]\s*([\d,]+)`, 'gi'))) total += Number((m[1] ?? '0').replace(/,/g, ''));
   return total;
 }
 

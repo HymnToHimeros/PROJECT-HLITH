@@ -12,6 +12,15 @@ export interface WikiPage {
   text: string;
 }
 
+/** The page's main infobox: the first template that carries a time or a type (tab bars and notes come first on some pages). */
+export function mainBox(text: string): Record<string, string> {
+  for (const m of text.matchAll(/\{\{[^{}|\n]+\s*\n?\|/g)) {
+    const box = infobox(text.slice(m.index));
+    if (box.time_start !== undefined || box.time_known !== undefined) return box;
+  }
+  return infobox(text);
+}
+
 /** Fields of the first {{Template ...}} block on a page ("|time_start = 2026-09-28 11:00:00"). */
 export function infobox(text: string): Record<string, string> {
   const start = text.indexOf('{{');
@@ -34,7 +43,7 @@ export function infobox(text: string): Record<string, string> {
   }
   const body = text.slice(start, end).replace(/<!--[\s\S]*?-->/g, '');
   const out: Record<string, string> = {};
-  for (const m of body.matchAll(/^\|[ \t]*([a-z0-9_-]+)[ \t]*=[ \t]*(.*)$/gim)) out[m[1]!.toLowerCase()] = m[2]!.trim();
+  for (const m of body.matchAll(/^\|[ \t]*([a-z0-9_-]+)[ \t]*=[ \t]*(.*)$/gim)) out[(m[1] ?? '').toLowerCase()] = (m[2] ?? '').trim();
   return out;
 }
 
@@ -60,28 +69,36 @@ export function sectionLinks(text: string, heading: RegExp): string[] {
   for (const line of lines) {
     const h = /^(=+)\s*(.*?)\s*=+\s*$/.exec(line);
     if (h) {
-      if (inside && h[1]!.length <= level) inside = false;
-      if (heading.test(h[2]!)) {
+      const depth = (h[1] ?? '').length;
+      if (inside && depth <= level) inside = false;
+      if (heading.test(h[2] ?? '')) {
         inside = true;
-        level = h[1]!.length;
+        level = depth;
       }
       continue;
     }
     if (!inside || !/^\s*\*/.test(line)) continue;
     // The first link on a list line is the item; later ones are featured characters.
     const m = /\[\[([^\]|#]+)(?:\|[^\]]*)?\]\]/.exec(line);
-    if (m) out.push(m[1]!.trim());
+    if (m?.[1]) out.push(m[1].trim());
   }
   return [...new Set(out)];
 }
 
 /** Total of an item in the page's reward cards: {{Card|Stellar Jade|100}}, {{Card List|Stellar Jade*100;…}}, Stellar Jade*100. */
-export function rewardTotal(text: string, item: string): number {
+export function rewardTotal(text: string, item: string): number | null {
   const esc = item.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  // A "Total Rewards" box states the sum itself: |Polychrome = 300.
+  const stated = new RegExp(String.raw`^\|\s*${esc}\s*=\s*([\d,]+)\s*$`, 'm').exec(text)?.[1];
+  if (stated) return Number(stated.replace(/,/g, ''));
+  text = text.replace(/<!--|-->/g, '');
   let total = 0;
-  for (const m of text.matchAll(new RegExp(String.raw`\{\{Card\|${esc}\|([\d,]+)`, 'g'))) total += Number(m[1]!.replace(/,/g, ''));
-  for (const m of text.matchAll(new RegExp(String.raw`(?:^|[|;])\s*${esc}\s*\*\s*([\d,]+)`, 'gm'))) total += Number(m[1]!.replace(/,/g, ''));
-  return total;
+  for (const m of text.matchAll(new RegExp(String.raw`\{\{Card\|${esc}\|([\d,]+)`, 'g'))) total += Number((m[1] ?? '0').replace(/,/g, ''));
+  for (const m of text.matchAll(new RegExp(String.raw`(?:^|[|;])\s*${esc}\s*\*\s*([\d,]+)`, 'gm'))) total += Number((m[1] ?? '0').replace(/,/g, ''));
+  if (total > 0) return total;
+  // Named in a reward list without a number ("Reward Preview: Polychrome; Boopon"): it gives some, amount unknown.
+  if (new RegExp(String.raw`(?:\{\{Card(?: List)?\|[^}]*?|[;|]\s*)${esc}\s*(?:[;}|]|$)`, 'm').test(text)) return null;
+  return 0;
 }
 
 /** Featured items from a banner's pool template: character_5_F = Pearl; lightcone_4_F = A; B. */
@@ -128,7 +145,7 @@ export async function fetchWiki(host: string, titles: string[]): Promise<Map<str
     }
     for (const t of batch) {
       let real = t.replace(/_/g, ' ');
-      for (let k = 0; k < 3 && alias.has(real); k++) real = alias.get(real)!;
+      for (let k = 0; k < 3; k++) real = alias.get(real) ?? real;
       const page = byTitle.get(real) ?? byTitle.get(t);
       if (page) out.set(t, page);
     }

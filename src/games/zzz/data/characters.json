@@ -666,9 +666,9 @@
     "element": "windbite",
     "role": "attack",
     "source": "nanoka.cc",
-    "leak": {
-      "source": "nanoka.cc, game files of build 3.3.4+19304006 (live is 3.2)"
-    }
+    "art": "https://static.wikia.nocookie.net/zenless-zone-zero/images/2/27/Agent_Severian_Lowell_Portrait.png/revision/latest?cb=20260912041405",
+    "portrait": "https://static.wikia.nocookie.net/zenless-zone-zero/images/b/b1/Agent_Severian_Lowell_Icon.png/revision/latest?cb=20260912041555",
+    "releasedAt": "2026-11-11T04:00:00.000Z"
   },
   {
     "id": "1641",
@@ -677,8 +677,8 @@
     "element": "fire",
     "role": "anomaly",
     "source": "nanoka.cc",
-    "leak": {
-      "source": "nanoka.cc, game files of build 3.3.4+19304006 (live is 3.2)"
-    }
+    "art": "https://static.wikia.nocookie.net/zenless-zone-zero/images/0/03/Agent_Phoenix_Reffaella_Portrait.png/revision/latest?cb=20260912031158",
+    "portrait": "https://static.wikia.nocookie.net/zenless-zone-zero/images/c/c9/Agent_Phoenix_Reffaella_Icon.png/revision/latest?cb=20260912031643",
+    "releasedAt": "2026-10-21T04:00:00.000Z"
   }
 ]

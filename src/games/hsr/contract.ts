@@ -110,9 +110,11 @@ export const hsr: GameContract = {
   income: [
     { id: 'hsr.daily-training', source: 'daily', label: 'Daily Training', currency: 'stellar-jade', amount: 60, schedule: { kind: 'per-reset' } },
     { id: 'hsr.weekly-universe', source: 'weekly', label: 'Simulated Universe weekly points', currency: 'stellar-jade', amount: 225, schedule: { kind: 'weekly' } },
-    { id: 'hsr.memory-of-chaos', source: 'endgame', label: 'Memory of Chaos', currency: 'stellar-jade', amount: null, schedule: { kind: 'cycle', days: 42 } },
-    { id: 'hsr.pure-fiction', source: 'endgame', label: 'Pure Fiction', currency: 'stellar-jade', amount: null, schedule: { kind: 'cycle', days: 42 } },
-    { id: 'hsr.apocalyptic-shadow', source: 'endgame', label: 'Apocalyptic Shadow', currency: 'stellar-jade', amount: null, schedule: { kind: 'cycle', days: 42 } },
+    // Memory of Chaos has no anchor: Version 4.6 runs it 5 weeks, then 6 (official 4.6 notice), so no fixed rhythm
+    // fits both; its real dates come from the endgame entries in data/events.json.
+    { id: 'hsr.memory-of-chaos', source: 'endgame', label: 'Memory of Chaos', currency: 'stellar-jade', amount: 800, schedule: { kind: 'cycle', days: 42 } },
+    { id: 'hsr.pure-fiction', source: 'endgame', label: 'Pure Fiction', currency: 'stellar-jade', amount: 800, schedule: { kind: 'cycle', anchor: '2026-10-18T20:00:00.000Z', days: 42 } },
+    { id: 'hsr.apocalyptic-shadow', source: 'endgame', label: 'Apocalyptic Shadow', currency: 'stellar-jade', amount: 800, schedule: { kind: 'cycle', anchor: '2026-10-04T20:00:00.000Z', days: 42 } },
     { id: 'hsr.express-pass', source: 'monthly', label: 'Express Supply Pass', currency: 'stellar-jade', amount: 90, schedule: { kind: 'pass', perDay: 90 }, paid: true },
     { id: 'hsr.events', source: 'events', label: 'Events', currency: 'stellar-jade', amount: null, schedule: { kind: 'from-events' } },
     { id: 'hsr.login', source: 'login', label: 'Login events', currency: 'stellar-jade', amount: null, schedule: { kind: 'from-login-events' } },
@@ -148,6 +150,7 @@ export const hsr: GameContract = {
     { what: 'Pull rates, hard pity, 50/50 and 75/25', source: 'official rates shown on the in-game Warp details page', entered: '2026-10-09', verified: false },
     { what: 'Rising odds before hard pity', source: COMMUNITY, entered: '2026-10-09', verified: false },
     { what: 'Stamina cap and regeneration', source: 'V1 design (docs/DESIGN.md); verify in game', entered: '2026-10-09', verified: false },
-    { what: 'Endgame rewards per cycle', source: 'not entered yet (depends on your clears)', entered: '2026-10-09', verified: false },
+    { what: 'Endgame rewards per cycle', source: '800 Stellar Jade per full clear of each mode since 2.3 (honkai.gg/stellar-jades-calculation-in-version-2-3, games.gg Memory of Chaos guide 4.1); Starward Mode adds 100 more (honkai-star-rail.fandom.com/wiki/Treasures_Lightward), not counted', entered: '2026-10-10', verified: false },
+    { what: 'Versions, banners, events and endgame dates', source: 'official version notices (hsr.hoyoverse.com) and in-game notices; rewards and featured items from honkai-star-rail.fandom.com (scripts/import-schedule.ts)', entered: '2026-10-10', verified: false },
   ],
 };

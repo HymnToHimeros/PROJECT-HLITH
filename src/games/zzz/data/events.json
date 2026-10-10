@@ -1,1 +1,331 @@
-[]
+[
+  {
+    "id": "filmgoer-thank-you-gift-2026-07-29",
+    "title": "Filmgoer Thank-You Gift",
+    "kind": "event",
+    "start": "2026-07-29T03:00:00.000Z",
+    "end": "2026-09-08T06:59:59.000Z",
+    "reward": 2,
+    "currency": "encrypted-master-tape"
+  },
+  {
+    "id": "gift-from-the-clouds-2026-07-29",
+    "title": "Gift From the Clouds",
+    "kind": "login",
+    "start": "2026-07-29T03:00:00.000Z",
+    "end": "2026-09-07T19:59:59.000Z",
+    "reward": 10,
+    "currency": "encrypted-master-tape",
+    "loginDays": 7
+  },
+  {
+    "id": "marcel-anniversary-gifts-2026-07-29",
+    "title": "Marcel Anniversary Gifts",
+    "kind": "event",
+    "start": "2026-07-29T03:00:00.000Z",
+    "end": "2026-09-08T06:59:59.000Z",
+    "reward": null,
+    "currency": "polychrome"
+  },
+  {
+    "id": "phaethons-grand-reveal-of-the-year-2026-07-29",
+    "title": "Phaethon's Grand Reveal of the Year",
+    "kind": "web",
+    "start": "2026-07-29T03:00:00.000Z",
+    "end": "2026-09-08T06:59:59.000Z",
+    "reward": 160,
+    "currency": "polychrome"
+  },
+  {
+    "id": "potential-hypothesis-hunting-game-2026-07-29",
+    "title": "Potential Hypothesis: Hunting Game",
+    "kind": "event",
+    "start": "2026-07-29T03:00:00.000Z",
+    "end": "2026-09-08T06:59:59.000Z",
+    "reward": 60,
+    "currency": "polychrome"
+  },
+  {
+    "id": "summer-waves-roll-in-2026-07-29",
+    "title": "Summer Waves Roll In",
+    "kind": "event",
+    "start": "2026-07-29T03:00:00.000Z",
+    "end": "2026-09-06T19:59:59.000Z",
+    "reward": null,
+    "currency": "polychrome"
+  },
+  {
+    "id": "the-final-callback-2026-07-29",
+    "title": "The Final Callback",
+    "kind": "event",
+    "start": "2026-07-29T03:00:00.000Z",
+    "end": "2026-08-19T03:59:59.000Z",
+    "reward": 80,
+    "currency": "polychrome"
+  },
+  {
+    "id": "snap-focus-showdown-2026-08-07",
+    "title": "Snap! Focus Showdown!",
+    "kind": "event",
+    "start": "2026-08-07T02:00:00.000Z",
+    "end": "2026-08-23T19:59:59.000Z",
+    "reward": null,
+    "currency": "polychrome"
+  },
+  {
+    "id": "extensive-patrol-triple-bounty-2026-08-11",
+    "title": "Extensive Patrol: Triple Bounty",
+    "kind": "event",
+    "start": "2026-08-11T20:00:00.000Z",
+    "end": "2026-08-16T19:59:59.000Z",
+    "reward": null,
+    "currency": "polychrome"
+  },
+  {
+    "id": "deadly-assault-2026-08-14",
+    "title": "Deadly Assault",
+    "kind": "endgame",
+    "start": "2026-08-13T20:00:00.000Z",
+    "end": "2026-08-27T19:59:59.000Z",
+    "reward": 300,
+    "currency": "polychrome"
+  },
+  {
+    "id": "crispy-meal-deployment-plan-2026-08-19",
+    "title": "Crispy Meal Deployment Plan",
+    "kind": "event",
+    "start": "2026-08-19T02:00:00.000Z",
+    "end": "2026-09-06T19:59:59.000Z",
+    "reward": null,
+    "currency": "polychrome"
+  },
+  {
+    "id": "the-great-en-nah-giveaway-2026-08-19",
+    "title": "The Great En-Nah Giveaway!",
+    "kind": "login",
+    "start": "2026-08-19T02:00:00.000Z",
+    "end": "2026-09-07T19:59:59.000Z",
+    "reward": 10,
+    "currency": "encrypted-master-tape",
+    "loginDays": 7
+  },
+  {
+    "id": "the-final-callback-2026-08-19",
+    "title": "The Final Callback",
+    "kind": "event",
+    "start": "2026-08-19T04:00:00.000Z",
+    "end": "2026-09-08T06:59:59.000Z",
+    "reward": 200,
+    "currency": "polychrome"
+  },
+  {
+    "id": "shiyu-defense-critical-node-2026-08-21",
+    "title": "Shiyu Defense: Critical Node",
+    "kind": "endgame",
+    "start": "2026-08-20T20:00:00.000Z",
+    "end": "2026-09-03T19:59:59.000Z",
+    "reward": 780,
+    "currency": "polychrome"
+  },
+  {
+    "id": "dangerous-fugitives-leisurely-vacation-2026-08-24",
+    "title": "Dangerous Fugitive's Leisurely Vacation",
+    "kind": "event",
+    "start": "2026-08-24T02:00:00.000Z",
+    "end": "2026-09-06T19:59:59.000Z",
+    "reward": null,
+    "currency": "polychrome"
+  },
+  {
+    "id": "deadly-assault-2026-08-28",
+    "title": "Deadly Assault",
+    "kind": "endgame",
+    "start": "2026-08-27T20:00:00.000Z",
+    "end": "2026-09-10T19:59:59.000Z",
+    "reward": 300,
+    "currency": "polychrome"
+  },
+  {
+    "id": "ding-dong-delivery-training-in-progress-2026-08-28",
+    "title": "Ding-Dong! Delivery Training in Progress",
+    "kind": "event",
+    "start": "2026-08-28T02:00:00.000Z",
+    "end": "2026-09-13T19:59:59.000Z",
+    "reward": null,
+    "currency": "polychrome"
+  },
+  {
+    "id": "combat-training-triple-bounty-2026-09-01",
+    "title": "Combat Training: Triple Bounty",
+    "kind": "event",
+    "start": "2026-09-01T20:00:00.000Z",
+    "end": "2026-09-06T19:59:59.000Z",
+    "reward": null,
+    "currency": "polychrome"
+  },
+  {
+    "id": "shiyu-defense-critical-node-2026-09-04",
+    "title": "Shiyu Defense: Critical Node",
+    "kind": "endgame",
+    "start": "2026-09-03T20:00:00.000Z",
+    "end": "2026-09-17T19:59:59.000Z",
+    "reward": 780,
+    "currency": "polychrome"
+  },
+  {
+    "id": "all-new-program-2026-09-09",
+    "title": "All-New Program",
+    "kind": "login",
+    "start": "2026-09-09T03:00:00.000Z",
+    "end": "2026-10-19T19:59:00.000Z",
+    "reward": 10,
+    "currency": "encrypted-master-tape",
+    "loginDays": 7
+  },
+  {
+    "id": "angels-support-operation-2026-09-09",
+    "title": "Angels Support Operation",
+    "kind": "event",
+    "start": "2026-09-09T03:00:00.000Z",
+    "end": "2026-11-29T19:59:00.000Z",
+    "reward": 0,
+    "currency": "polychrome"
+  },
+  {
+    "id": "potential-hypothesis-reforged-in-fire-2026-09-09",
+    "title": "Potential Hypothesis: Reforged in Fire",
+    "kind": "event",
+    "start": "2026-09-09T03:00:00.000Z",
+    "end": "2026-10-20T22:00:00.000Z",
+    "reward": 20,
+    "currency": "polychrome"
+  },
+  {
+    "id": "the-final-callback-2026-09-09",
+    "title": "The Final Callback",
+    "kind": "event",
+    "start": "2026-09-09T03:00:00.000Z",
+    "end": "2026-09-30T03:59:59.000Z",
+    "reward": 80,
+    "currency": "polychrome"
+  },
+  {
+    "id": "clink-clank-pinball-knight-2026-09-10",
+    "title": "Clink, Clank, Pinball Knight!",
+    "kind": "event",
+    "start": "2026-09-10T02:00:00.000Z",
+    "end": "2026-10-18T19:59:00.000Z",
+    "reward": null,
+    "currency": "polychrome"
+  },
+  {
+    "id": "deadly-assault-2026-09-11",
+    "title": "Deadly Assault",
+    "kind": "endgame",
+    "start": "2026-09-11T02:00:00.000Z",
+    "end": "2026-09-24T19:59:59.000Z",
+    "reward": 300,
+    "currency": "polychrome"
+  },
+  {
+    "id": "shadow-chase-showdown-2026-09-16",
+    "title": "Shadow Chase Showdown",
+    "kind": "event",
+    "start": "2026-09-16T02:00:00.000Z",
+    "end": "2026-10-04T19:59:00.000Z",
+    "reward": null,
+    "currency": "polychrome"
+  },
+  {
+    "id": "shiyu-defense-critical-node-2026-09-18",
+    "title": "Shiyu Defense: Critical Node",
+    "kind": "endgame",
+    "start": "2026-09-17T20:00:00.000Z",
+    "end": "2026-10-01T19:59:59.000Z",
+    "reward": 780,
+    "currency": "polychrome"
+  },
+  {
+    "id": "advanced-bounty-area-patrol-2026-09-23",
+    "title": "Advanced Bounty: Area Patrol",
+    "kind": "bonus",
+    "start": "2026-09-22T20:00:00.000Z",
+    "end": "2026-09-27T19:59:00.000Z",
+    "reward": 0,
+    "currency": "polychrome"
+  },
+  {
+    "id": "surprise-screening-plan-2026-09-23",
+    "title": "Surprise Screening Plan",
+    "kind": "login",
+    "start": "2026-09-23T02:00:00.000Z",
+    "end": "2026-10-19T19:59:00.000Z",
+    "reward": 300,
+    "currency": "polychrome",
+    "loginDays": 14
+  },
+  {
+    "id": "deadly-assault-2026-09-25",
+    "title": "Deadly Assault",
+    "kind": "endgame",
+    "start": "2026-09-25T02:00:00.000Z",
+    "end": "2026-10-08T19:59:59.000Z",
+    "reward": 300,
+    "currency": "polychrome"
+  },
+  {
+    "id": "diary-of-an-orbie-parent-2026-09-30",
+    "title": "Diary of an Orbie Parent",
+    "kind": "event",
+    "start": "2026-09-30T02:00:00.000Z",
+    "end": "2026-10-18T19:59:00.000Z",
+    "reward": null,
+    "currency": "polychrome"
+  },
+  {
+    "id": "en-nah-into-your-lap-2026-09-30",
+    "title": "\"En-Nah\" Into Your Lap",
+    "kind": "login",
+    "start": "2026-09-30T02:00:00.000Z",
+    "end": "2026-10-19T19:59:00.000Z",
+    "reward": 10,
+    "currency": "boopon",
+    "loginDays": 7
+  },
+  {
+    "id": "the-final-callback-2026-09-30",
+    "title": "The Final Callback",
+    "kind": "event",
+    "start": "2026-09-30T04:00:00.000Z",
+    "end": "2026-10-20T06:59:00.000Z",
+    "reward": 80,
+    "currency": "polychrome"
+  },
+  {
+    "id": "shiyu-defense-critical-node-2026-10-02",
+    "title": "Shiyu Defense: Critical Node",
+    "kind": "endgame",
+    "start": "2026-10-01T20:00:00.000Z",
+    "end": "2026-10-15T19:59:59.000Z",
+    "reward": 780,
+    "currency": "polychrome"
+  },
+  {
+    "id": "chronicles-of-the-hobbling-crow-2026-10-03",
+    "title": "Chronicles of the Hobbling Crow",
+    "kind": "event",
+    "start": "2026-10-03T02:00:00.000Z",
+    "end": "2026-10-18T19:59:00.000Z",
+    "reward": null,
+    "currency": "polychrome"
+  },
+  {
+    "id": "deadly-assault-2026-10-09",
+    "title": "Deadly Assault",
+    "kind": "endgame",
+    "start": "2026-10-09T02:00:00.000Z",
+    "end": "2026-10-22T19:59:59.000Z",
+    "reward": 300,
+    "currency": "polychrome"
+  }
+]

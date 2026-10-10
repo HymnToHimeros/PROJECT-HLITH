@@ -13,7 +13,8 @@ Resume with: "continue from PROGRESS.md". Newest entry on top. Older entries:
   time-gated game data) and **LOGIC-CORE** (`docs/briefs/LOGIC-CORE.md`).
 
 ## Next
-- SCHEDULER fills versions, banners, events, endgame and backlog; LOGIC-CORE
+- SCHEDULER: lists filled (see Done); next is keeping them current once the owner
+  decides the schedule (`npm run data:nanoka && npm run data:schedule`). LOGIC-CORE
   refines Roster (kits, kit check, teams, builds, materials). Schedules for the
   research routine are decided once both are done.
 - Live checks with real logins: HoYoLAB link, in-game history link, Assistant
@@ -27,6 +28,43 @@ Resume with: "continue from PROGRESS.md". Newest entry on top. Older entries:
 - CI (`.github/workflows/ci.yml`) runs both on every pull request.
 
 ## Done
+- 2026-10-10 · **SCHEDULER step 1: every time-gated list filled for HSR and ZZZ** (branch `scheduler/versions`).
+  - Run again any time: `npm run data:nanoka`, then `npm run data:schedule` (in that order:
+    the second one turns announced leaks into upcoming characters). Both only add or
+    update; no id is ever removed.
+  - **Versions** (HSR 26, ZZZ 19): start, maintenance length and end from the official
+    update notices on hsr.hoyoverse.com / zenless.hoyoverse.com.
+  - **Banners**: current, ended in the last 60 days, and announced phase-2 banners. Times
+    from the in-game notice board when it names the banner (it wins over the wiki),
+    otherwise from the wiki page, which links its official HoYoLAB post. Featured
+    characters and Light Cones / W-Engines by the game's own ids.
+  - **Events**: in-game, login (with day count), web and double-drop events, plus endgame
+    cycles (HSR from the official notices, ZZZ from the wiki's cycle pages; a ZZZ cycle that
+    has opened but has no page yet is added on the official two-week rhythm and printed).
+    Rewards: premium currency summed from the wiki's reward tables or stated in the notice;
+    pull items when an event gives no premium currency; `null` when only "Polychrome" is
+    named without a number.
+  - **Characters**: art and portrait for every character (nanoka; wiki copies of the
+    official reveal art for announced agents nanoka has no picture of), release date for
+    every released character (nanoka, else the wiki), leaks from nanoka's newer build
+    (HSR: Aeon ★ Aha). Leaks named on an officially announced banner become upcoming
+    characters (ZZZ: Phoenix 21 Oct, Severian 11 Nov).
+  - **Backlog**: only the main story, chapters in order as steps (HSR 26, ZZZ 27);
+    reward `null` (no source lists all chapter rewards).
+  - **Game records**: endgame amounts per full clear (HSR 800 each, ZZZ Critical Node 780,
+    Deadly Assault 300), ZZZ weekly 220, Bangboo Channel 1 % base, cycle start dates
+    (all but Memory of Chaos, which runs 5 weeks then 6 this version). Sources in
+    each contract's `sources` list.
+  - Times: "server time" is stored at the Asia server (UTC+8), the earliest of all servers,
+    so nothing shows as open after it closed. **For FRAME:** America and Europe see those
+    ends 13 / 7 hours early; a per-server time would need a field on Banner/GameEvent.
+  - **For FRAME:** Light Cone / W-Engine banners show no art (there is no weapon list
+    with pictures); Today's banner tiles show art only for examples (`artFor` in
+    Today.tsx); HSR collaboration warps (Fate) have no banner type, so they're left out;
+    the endgame rows at the bottom of Events repeat "every N days" next to the real cycles.
+  - Not filled yet because no source has it yet: ZZZ 3.3 banners and events (wiki pages
+    and notices appear on 21 Oct), HSR 4.7 (not announced), rewards of events whose
+    wiki pages only list item names.
 - 2026-10-10 · **LOGIC-CORE step 1: ZZZ kit text, group A** (branch `logic-core/zzz-kits-group1`).
   - The owner's ZZZ method saved word for word: `docs/logic/zzz-method.md`.
   - `npm run data:kits` (`scripts/import-nanoka-kits.ts`) reads nanoka.cc
