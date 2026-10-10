@@ -19,6 +19,17 @@ creates starts with that name, so you can always tell who made what.
    you get, do the fix if it is yours, and reply when it is done. Still write anything
    lasting into `docs/PROGRESS.md`. Session ids are in the table below; `list_sessions`
    finds a chat whose id changed.
+7. **MANAGER is the owner's front desk (owner, 2026-10-10).** The owner writes to
+   MANAGER; MANAGER sends each job to the chat it belongs to (routing table below).
+   A job MANAGER forwards carries the owner's own words in quotes: treat it as the
+   owner's request. Report back to MANAGER when it's done or blocked; MANAGER tells
+   the owner. If the owner writes to you directly, that still counts, and you tell
+   MANAGER so its list stays right.
+8. **ERROR-FIX fixes bugs only when a chat asks (owner, 2026-10-10).** Found a bug?
+   If it's in your own area, fix it yourself. If it's someone else's, tell that chat.
+   Send it to ERROR-FIX when the owning chat is busy or asks for help, when it spans
+   several areas, or when the live site or `main` is broken. ERROR-FIX doesn't go
+   looking for work on its own.
 
 ## Who's who
 | Name | Branches | Builds | Roadmap items |
@@ -26,6 +37,17 @@ creates starts with that name, so you can always tell who made what.
 | **FRAME** | `frame/…` | The base and the interface: look, shell, contract, registries, saved data, every module screen as a frame (layout, components, example data, "No data yet" slots). Not the deeper logic behind them. | R01–R61 (the screens) |
 | **LOGIC-CORE** (brief: `docs/briefs/LOGIC-CORE.md`; code comments still say ROSTER-LOGIC) | `logic-core/…` | Roster logic: full character data and builds, kit check data and parsing, team scoring, who-fits. Fills the slots FRAME's Roster screens leave. | logic behind R35–R38, plus any new items it adds |
 | **SCHEDULER** (brief: `docs/briefs/SCHEDULER.md`) | `scheduler/…` | Now: every time-gated thing (versions, banners, events, endgame, backlog, new characters) onto the site with sources. Later: the schedules, once every chat is done. | data behind R39–R45 |
+| **MANAGER** (brief: `docs/briefs/MANAGER.md`) | `manager/…` | The owner's front desk: takes every message from the owner, splits it into jobs, sends each to the right chat, keeps the list of open jobs (`docs/TASKS.md`), and tells the owner in plain words when things are done. Writes no app code. | none |
+| **ERROR-FIX** (brief: `docs/briefs/ERROR-FIX.md`) | `error-fix/…` | Bug fixes anywhere in the app, only when another chat (or MANAGER) asks: finds the cause, fixes it with a test, tells the chat whose area it was. | none |
+
+### Where a job goes (MANAGER's routing table)
+| The job is about… | Goes to |
+|---|---|
+| How something looks or works on screen, a new screen or button, settings, sign-in, sync, saved data, the Assistant, HoYoLAB link, backups, the server functions, the check (CI), hosting | FRAME |
+| Game dates and lists: versions, banners, events, rewards, endgame, backlog, new or leaked characters, art, release dates, server times; game record numbers (income per source, endgame and weekly rewards, pull rates in each game's `contract.ts`); keeping the lists current (`data:nanoka`, `data:schedule`, the leaks and events routine, Findings) | SCHEDULER |
+| What characters do and how well they fit: kits, Kit check, team scores, "who fits", builds and build scores, materials, Farm amounts; the weapon list and item pictures (Light Cones / W-Engines, gear sets, materials) | LOGIC-CORE |
+| Something that worked and now doesn't, an error message, a crash, wrong numbers from working code, a red check on `main` | the chat whose area it is; ERROR-FIX if that chat asks, it spans areas, or the live site is broken |
+| Unclear, or it needs a decision from the owner | MANAGER asks the owner first, in one short question |
 
 ## Chat sessions (for `send_message`)
 | Name | Session id |
@@ -33,6 +55,8 @@ creates starts with that name, so you can always tell who made what.
 | FRAME | `session_01JhX321c2CZBUjDK5Z6yXKX` |
 | LOGIC-CORE | `session_01BA3zSGcxmptiKVhzJkBkaP` |
 | SCHEDULER | `session_01AYGjoovgX3AtCHtQ3TvW5T` |
+| MANAGER | `session_01GimxkMJzEydgMJauGc9J4o` |
+| ERROR-FIX | `session_01HQ51Y69kZRzfNsM6jQyQ7j` |
 
 ## Interface vs logic (owner's rule, 2026-10-09)
 FRAME builds the interface and the base, not the logic. A screen FRAME builds
