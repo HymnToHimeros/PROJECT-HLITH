@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import type { Character, TeamPreset } from '../../core/contract';
 import { FIT_WORD } from '../../core/rules/buildFit';
 import r from './roster.module.css';
-import { teamAccount } from './TeamParts';
+import { useTeamAccount } from './TeamParts';
 import type { RosterData } from './useRosterData';
 
 /**
@@ -12,19 +12,20 @@ import type { RosterData } from './useRosterData';
 export function BuildWants({ data, character: c }: { data: RosterData; character: Character }) {
   const { game, user, presets } = data;
   const rules = game.rules.teams;
-  const roster = user.roster;
-  const builds = user.builds;
+  // Everything the team rules read (roster, builds, team lists, the assume and leak switches): a change asks again.
+  const account = useTeamAccount(data);
   const rows = useMemo(() => {
     if (!rules || presets.example) return [];
     const firsts = (p: TeamPreset) => p.slots.map((s) => s.characters[0]).filter((x): x is string => Boolean(x));
-    const teams = [...user.teams.map((t) => ({ id: t.id, name: t.name, members: t.members })), ...presets.list.map((p) => ({ id: p.id, name: p.name, members: firsts(p) }))].filter((t) =>
+    // A game team as its card shows it (T40: the better unit per slot), so the wants are about the same members.
+    const teams = [...user.teams.map((t) => ({ id: t.id, name: t.name, members: t.members })), ...presets.list.map((p) => ({ id: p.id, name: p.name, members: rules.fill?.(p, account) ?? firsts(p) }))].filter((t) =>
       t.members.includes(c.id),
     );
     return teams.flatMap((t) => {
-      const v = rules.verdict(t.members, teamAccount(data));
+      const v = rules.verdict(t.members, account);
       return v.rated ? (v.wants ?? []).filter((w) => w.who === c.id).map((w) => ({ team: t, want: w })) : [];
     });
-  }, [rules, presets, user.teams, c.id, roster, builds]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [rules, presets, user.teams, c.id, account]);
   if (!rows.length) return null;
   // One line per stat: their build is the same in every team, so the fit is too; the teams that want it are listed.
   const byStat = [...new Map(rows.map((x) => [x.want.stat, { want: x.want, teams: [...new Set(rows.filter((y) => y.want.stat === x.want.stat).map((y) => y.team.name))] }])).values()];

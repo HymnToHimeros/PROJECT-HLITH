@@ -28,6 +28,10 @@ Resume with: "continue from PROGRESS.md". Newest entry on top. Older entries:
 - CI (`.github/workflows/ci.yml`) runs both on every pull request.
 
 ## Done
+- 2026-10-10 · **LOGIC-CORE: "Builds their teams want" follows the card and the switches (T42)** (branch
+  `logic-core/build-wants-account`). The character page's build wants ask the team rules with FRAME's
+  `useTeamAccount` (team lists, the assume and leak switches now count, not only roster and builds), and about the
+  members the card shows (T40's best pick), not each slot's first pick.
 - 2026-10-10 · **LOGIC-CORE: "Best found from your characters" cards (T41)** (branch `logic-core/best-found-card`).
   A damage dealer whose recommended cards all stay under 90% gets their best team found from your characters as a
   card of its own, tagged "Best found" (both games; Teams.tsx shows them). A carry who heals allies (Castorice) is
