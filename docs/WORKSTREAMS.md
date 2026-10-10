@@ -12,6 +12,13 @@ creates starts with that name, so you can always tell who made what.
 4. Tick roadmap items by adding their proof files, then run `npm run roadmap`.
    Never tick by hand.
 5. Before starting, read `CLAUDE.md`, `docs/PLAN.md`, `docs/ROADMAP.md` and this file.
+6. **Talk to each other directly (owner, 2026-10-10).** The chats are one ecosystem. When
+   you find something another chat owns that is broken, missing or would help your work,
+   message that chat yourself with `send_message` (Claude Code Remote tools) instead of
+   waiting for the owner: say what, where (file, PR) and what you need. Answer messages
+   you get, do the fix if it is yours, and reply when it is done. Still write anything
+   lasting into `docs/PROGRESS.md`. Session ids are in the table below; `list_sessions`
+   finds a chat whose id changed.
 
 ## Who's who
 | Name | Branches | Builds | Roadmap items |
@@ -19,6 +26,13 @@ creates starts with that name, so you can always tell who made what.
 | **FRAME** | `frame/…` | The base and the interface: look, shell, contract, registries, saved data, every module screen as a frame (layout, components, example data, "No data yet" slots). Not the deeper logic behind them. | R01–R61 (the screens) |
 | **LOGIC-CORE** (brief: `docs/briefs/LOGIC-CORE.md`; code comments still say ROSTER-LOGIC) | `logic-core/…` | Roster logic: full character data and builds, kit check data and parsing, team scoring, who-fits. Fills the slots FRAME's Roster screens leave. | logic behind R35–R38, plus any new items it adds |
 | **SCHEDULER** (brief: `docs/briefs/SCHEDULER.md`) | `scheduler/…` | Now: every time-gated thing (versions, banners, events, endgame, backlog, new characters) onto the site with sources. Later: the schedules, once every chat is done. | data behind R39–R45 |
+
+## Chat sessions (for `send_message`)
+| Name | Session id |
+|---|---|
+| FRAME | `session_01JhX321c2CZBUjDK5Z6yXKX` |
+| LOGIC-CORE | `session_01BA3zSGcxmptiKVhzJkBkaP` |
+| SCHEDULER | `session_01AYGjoovgX3AtCHtQ3TvW5T` |
 
 ## Interface vs logic (owner's rule, 2026-10-09)
 FRAME builds the interface and the base, not the logic. A screen FRAME builds
