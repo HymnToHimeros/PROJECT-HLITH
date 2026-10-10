@@ -727,9 +727,32 @@ export const aventurineWaveflair: CharacterSheet = {
       gives: [],
       to: 'enemy',
       causes: 'follow-up',
+      addsKinds: ['follow-up'],
       // Solo branch of "Revel in Raging Tides": exclusive with the "other Elation characters" branch, which it covers.
       noStack: 'waveflair-revel',
       setup: 'He uses his Elation Skill.',
+    },
+    // T30: teammates' extra attacks feed his Fervor and Punchline. Plain Basic ATK / Skill / Ultimate are never events
+    // (every kit has them), so the follow-ups and summon or memosprite attacks a kit makes on purpose are what counts.
+    {
+      id: 'fervor-from-follow-ups',
+      piece: 'skill-talent-ante-up-the-abyss-answers',
+      quote: 'After a teammate uses an attack, Aventurine • Waveflair gains 1 "Fervor" and 1 Punchline.',
+      tag: 'Fervor and Punchline from teammates\' Follow-Up ATKs',
+      gives: [],
+      to: 'self',
+      reacts: { event: 'follow-up', from: 'teammates' },
+      setup: 'A teammate launches Follow-Up ATKs.',
+    },
+    {
+      id: 'fervor-from-summons',
+      piece: 'skill-talent-ante-up-the-abyss-answers',
+      quote: 'After a teammate uses an attack, Aventurine • Waveflair gains 1 "Fervor" and 1 Punchline.',
+      tag: 'Fervor and Punchline from teammates\' summon or memosprite attacks',
+      gives: [],
+      to: 'self',
+      reacts: { event: 'summon-attack', from: 'teammates' },
+      setup: 'A teammate\'s summon or memosprite attacks.',
     },
     {
       id: 'sift-crit-dmg',

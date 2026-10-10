@@ -14,7 +14,8 @@ describe('Team scores in plain words', () => {
     const v = zzzVerdict(['Starlight - Billy', 'Dialyn', 'Lucia'].map((n) => idOf(zzzLib(), n)), all);
     if (!v.rated || !v.explain) throw new Error('not rated');
     // At base builds (none saved): Lucia's HP build is what's still missing, and the best squad found is fully built.
-    expect(v.explain.headline).toMatch(/^Starlight - Billy deals the damage\. Dialyn and Lucia connect with Starlight - Billy's kit; \d+ points short of the best team found\.$/);
+    // T30: the best squad found is this one, fully built (Lucia's HP build is what's missing).
+    expect(v.explain.headline).toMatch(/^Starlight - Billy deals the damage\. Dialyn and Lucia connect with Starlight - Billy's kit; \d+% of its kit value when fully built\.$/);
     expect(v.explain.members.find((m) => m.id === idOf(zzzLib(), 'Dialyn'))?.text).toMatch(/^Dialyn: gives Starlight - Billy .*\+40% DMG/);
     expect(v.explain.members.reduce((n, m) => n + m.points, 0)).toBe(v.count);
     expect(v.explain.missing.some((m) => /^Lucia built for HP: no build saved, scored at base; up to 2 points more\.$/.test(m))).toBe(true);
@@ -24,10 +25,10 @@ describe('Team scores in plain words', () => {
     const v = hsrVerdict(['Feixiao', 'Topaz & Numby', 'Tribbie', 'Aventurine'].map((n) => idOf(hsrLib(), n)), all);
     if (!v.rated || !v.explain) throw new Error('not rated');
     // Topaz is a carry on Feixiao's own game team: her damage counts too (hsr-decisions 33).
-    expect(v.explain.headline).toMatch(/^Feixiao deals the damage, with Topaz & Numby\. .* (short of the best team found|no better team found)\.$/);
+    expect(v.explain.headline).toMatch(/^Feixiao deals the damage, with Topaz & Numby\. .*; \d+% of the best team found's kit value\.$/);
     expect(v.explain.members.find((m) => m.id === idOf(hsrLib(), 'Topaz & Numby'))?.text).toContain('their Follow-Up ATK sets off “Follow-Up ATK after teammates attack”');
     expect(v.explain.members.reduce((n, m) => n + m.points, 0)).toBe(v.count);
-    expect(v.explain.missing[0]).toMatch(/^The best team found for Feixiao is .*: \d+ points against \d+ here/);
+    expect(v.explain.missing[0]).toMatch(/^The best team found for Feixiao is .*: kit value ×[\d.]+ against ×[\d.]+ here \(count \d+ against \d+\)/);
     expect(v.explain.missing.some((m) => / would bring: /.test(m))).toBe(true);
   });
 });

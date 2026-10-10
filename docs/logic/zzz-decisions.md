@@ -218,3 +218,11 @@ team size and order, and the owner's ZZZ method's own counting.
     (`TeamAccount.showLeaks`: Roster's "Show leaked" on, Banners' "Hide leaks" off); never in the check's recommended
     teams. A released carry's own game lists don't name leaks, so a leak joins their team only if the owner adds it
     to the lists (decision 31). No new scoring.
+
+61. **Kit value on top of the method (owner's job T30, both games, HSR decision 37 mirrors it).** zzz-method.md is
+    unchanged: its count stands, worked examples included (Billy > Dialyn > Lucia counts 9). On top of it, as with
+    builds (decision 56), the kit value ranks squads and gives the %: sizes from the kit text, one kind adds up,
+    kinds multiply, a size without a % counts as the typical buff (rules in hsr-decisions.md 37). The owner's T38:
+    Lucia's and Pan Yinhu's Sheer Force are one kind and add up, Dialyn's +40% DMG, Stun multiplier and free
+    Ultimate are kinds of their own, so Billy > Dialyn > Lucia is Billy's best squad and Billy > Lucia > Pan Yinhu
+    only "Partly". No role is needed unless a kit asks for it (an Anomaly squad without a Stun loses nothing).

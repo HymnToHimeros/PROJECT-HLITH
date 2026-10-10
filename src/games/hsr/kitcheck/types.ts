@@ -85,6 +85,12 @@ export type Condition =
   | { count: { paths?: Path[]; elements?: Element[]; atLeast: number; atMost?: number; others?: boolean } }
   /** Every one of these. */
   | { all: Condition[] }
+  /**
+   * Another member's kit does this for the team (T30 rule 1: a role counts only when a kit asks for it): an entry
+   * that gives one of `gives` (to anyone but themself), and when `to` is set, one aimed at one of those recipients
+   * ("a teammate who heals or shields Phainon", "a teammate whose abilities target Phainon"). Eidolons don't count.
+   */
+  | { teammate: { gives?: Stat[]; to?: Recipient[]; words: string } }
   /** Cannot be checked from profiles (HP thresholds, enemy state is not a condition but setup): never counted as met. */
   | { unknown: string };
 
@@ -150,6 +156,12 @@ export interface Entry {
   scales?: { stat: BuildStat; quote: string; gives?: Stat[] };
   /** Q7: unclear text; shown, never counted. Says why. */
   unverified?: string;
+  /**
+   * When this entry of the damage dealer's is on, their own damage also counts as these kinds (T30): Aventurine •
+   * Waveflair's "Elation Skill … is considered as launching a Follow-Up ATK" when he is the only Elation character,
+   * so Follow-Up ATK buffs reach him in that team.
+   */
+  addsKinds?: DamageKind[];
 }
 
 /** Part A step 5: what a damage dealer's damage is and uses. */

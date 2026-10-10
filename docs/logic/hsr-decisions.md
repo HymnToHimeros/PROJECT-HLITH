@@ -177,3 +177,25 @@ team size and order, and the owner's ZZZ method's own counting.
     unreleased character in nanoka.cc's manifest on each run, so a new leak gets its beta kit text without a code
     change (its kit check sheet is still read by hand before it is rated). A raw text key in a beta file where a name
     belongs (ZZZ "Severian_Talent_01_Title") shows "No name yet"; the game text stays.
+
+37. **Kit value: sizes, one kind adds, kinds multiply (owner's job T30, both games, ZZZ decision 61 mirrors it).**
+    The count stays as written (+1 per kit line that connects, −1 for one that's off, decisions above; in ZZZ the
+    method's count, untouched). On top of it, every team gets a **kit value** that ranks teams and gives the %:
+    - each counted buff at its size in the kit text (`gives[].amount`): "+40%", "×1.35", "+20% per stack, up to 2"
+      (full stacks), "a/b/c" steps (the last one), "(7 + 1.5 × Special Attack level)%" (at level 12);
+    - a size the kit doesn't write as a % (+600 ATK, "one more turn", a set-off reaction, an ability with no number)
+      counts as the game's **typical buff**, the middle of every stated % in its sheets, and the Why says so;
+    - buffs of one kind (one stat) add up; different kinds multiply: value = POINTS × ln Π(1 + zone total);
+      percent = the ratio of the two teams' multipliers;
+    - only what the damage dealer's damage uses counts (their `uses` / `ignores` and kind limits, as before);
+    - an action advance from an Ultimate counts a third (an Ultimate comes about every third turn);
+    - an extra hit counts its % only when it is a share of the damage dealer's own damage ("24% of each hit");
+      "80% of the Bondmate's ATK" is a hit of its own: typical;
+    - a buff that grows with the giver's stat counts a third at base, their build adds the rest (decisions 25–26);
+    - several carries (decision 33): their damage adds (value = POINTS × ln of the sum of their multipliers), and a
+      buff for one chosen ally counts for one carry only.
+    Rule 1 (owner via MANAGER, 2026-10-10): **no role is needed in general**; a role counts only when a kit asks
+    for it. New condition `teammate`: "a teammate who heals or shields Phainon" (+45% DMG) and "a teammate whose
+    abilities target Phainon" (+30% CRIT DMG) are now checked from the teammates' kits. Aventurine • Waveflair:
+    teammates' Follow-Up ATKs and summon attacks feed his Fervor (chains), and as the only Elation character his
+    damage counts as Follow-Up ATK (`addsKinds`), so Follow-Up buffs reach him. Code: `src/core/rules/kitValue.ts`.

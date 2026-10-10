@@ -28,6 +28,12 @@ Resume with: "continue from PROGRESS.md". Newest entry on top. Older entries:
 - CI (`.github/workflows/ci.yml`) runs both on every pull request.
 
 ## Done
+- 2026-10-10 · **LOGIC-CORE: team scores read the kit numbers (T30)** (branch `logic-core/kit-value`).
+  The count of connecting kit lines stays (the ZZZ method's counts untouched); a kit value now ranks teams and
+  gives the %: every buff at its size in the kit text, buffs of one kind add up (Lucia's and Pan Yinhu's Sheer
+  Force), different kinds multiply. No role is needed unless a kit asks for it. Billy > Dialyn > Lucia is Billy's
+  best squad (owner's T38); Feixiao's blind-test team is her best found; Phainon's shield line (+45% DMG) is read.
+  Both games. Rules: hsr-decisions 37, zzz-decisions 61.
 - 2026-10-10 · **LOGIC-CORE: leaked characters in teams (T39)** (branch `logic-core/leaks-in-teams`).
   A leaked character (today HSR Nihilux) can be pre-pulled: "If you pull" shows their best team from your
   characters, and they can be put in teams. Everything that names a leak says "Leak: unverified beta kit,

@@ -21,19 +21,19 @@ const all = account([BILLY, DIALYN, LUCIA, PAN]);
 const builtFor = (stat: string) => ({ characterId: 'x', level: 60, dupes: 0, gear: ['Disc 4', 'Disc 5', 'Disc 6'].map((slot) => ({ slot, main: `${stat} %`, subs: { [`${stat} %`]: 3 }, rolls: { [`${stat} %`]: 2 } })) });
 
 describe('Synergy % on presets', () => {
-  // The method's worked example holds at base builds (no builds saved): 9 against 10. Builds count on top of the method
-  // (owner's ruling 2026-10-10, zzz-decisions.md): the best squad found is scored fully built (Pan Yinhu for ATK,
-  // Lucia for HP: +2 each), so the % compares against 14.
-  it('the method’s example at base builds: Billy > Dialyn > Lucia counts 9, Billy > Pan Yinhu > Lucia 10; the best, fully built, 14', () => {
+  // The method's worked example still counts as written (9 against 10). T30 (zzz-decisions 61) ranks squads by kit
+  // value on top of the count: Lucia and Pan Yinhu both give Sheer Force (one zone, so they add up), and Dialyn's
+  // +40% DMG, Stun multiplier and free Ultimate are kinds of their own. Owner's T38: Billy > Dialyn > Lucia is the
+  // best squad, and Billy > Pan Yinhu > Lucia is only "Partly".
+  it('the method’s counts stand (9 and 10), and by kit value Billy > Dialyn > Lucia is the best squad (owner’s T38)', () => {
     const v = verdict([BILLY, DIALYN, LUCIA], all);
-    expect(v).toMatchObject({ rated: true, count: 9, best: 14, percent: 64, order: [BILLY, DIALYN, LUCIA], bestMembers: [BILLY, PAN, LUCIA] });
-    expect(verdict([BILLY, PAN, LUCIA], all)).toMatchObject({ rated: true, count: 10 });
+    expect(v).toMatchObject({ rated: true, count: 9, percent: 87, label: 'Excellent', order: [BILLY, DIALYN, LUCIA], bestMembers: [BILLY, DIALYN, LUCIA] });
+    expect(verdict([BILLY, PAN, LUCIA], all)).toMatchObject({ rated: true, count: 10, percent: 60, label: 'Partly', bestMembers: [BILLY, DIALYN, LUCIA] });
   });
 
   it('100% when the check knows no better squad and it is built for what it wants', () => {
-    expect(verdict([BILLY, PAN, LUCIA], all)).toMatchObject({ rated: true, percent: 71 });
-    const built = { ...all, build: (id: string) => (id === PAN ? builtFor('ATK') : id === LUCIA ? builtFor('HP') : undefined) };
-    expect(verdict([BILLY, PAN, LUCIA], built)).toMatchObject({ rated: true, count: 14, percent: 100 });
+    const built = { ...all, build: (id: string) => (id === LUCIA ? builtFor('HP') : undefined) };
+    expect(verdict([BILLY, DIALYN, LUCIA], built)).toMatchObject({ rated: true, count: 11, percent: 100 });
   });
 
   it('every reason that counts names the kit text that proves it', () => {
@@ -62,7 +62,7 @@ describe('Synergy % on presets', () => {
 
 describe('Line-ups', () => {
   it('your best team with no character twice', () => {
-    expect(lineUps(all)).toEqual([expect.objectContaining({ members: [BILLY, PAN, LUCIA], count: 10 })]);
+    expect(lineUps(all)).toEqual([expect.objectContaining({ members: [BILLY, DIALYN, LUCIA], count: 9 })]);
   });
 
   it('nothing without a damage dealer', () => {
@@ -89,11 +89,10 @@ describe('Who fits', () => {
 });
 
 describe('If you pull…', () => {
-  it('as a teammate: Pan Yinhu (built for ATK) lifts Billy’s best squad; Lucia brings it to the most possible', () => {
-    // Squads are scored fully built (decision 26): Pan Yinhu's ATK-based buff lifts Billy's best from 11 to 12.
+  it('as a teammate: Pan Yinhu adds nothing to Billy > Dialyn > Lucia; Lucia brings Billy’s best squad to the most possible', () => {
+    // By kit value Pan Yinhu's Sheer Force only adds to Lucia's (one zone): with Billy, Dialyn and Lucia there's no gain.
     const v = ifYouPull(PAN, account([BILLY, DIALYN, LUCIA], { [BILLY]: 1 }));
-    expect(v).toMatchObject({ percent: 100 });
-    expect(v?.why.join(' ')).toMatch(/best when built for ATK \(assumed here\)/);
+    expect(v).toMatchObject({ percent: 0, why: ['No gain: no team of yours gets a higher kit value with them.'] });
     const owner = ifYouPull(LUCIA, account([BILLY, DIALYN, PAN], { [BILLY]: 1, [PAN]: 6 }));
     expect(owner?.percent).toBe(100);
     expect(owner?.why.join(' ')).toContain("As a teammate: Starlight - Billy's best squad of yours goes from");
@@ -113,14 +112,14 @@ describe('If you pull…', () => {
 });
 
 describe('Recommended teams from the check', () => {
-  it("Starlight Billy's, fully built at Mindscape 0, is Billy > Lucia > Roxy (count 12), with alternatives per place", () => {
+  it("Starlight Billy's, fully built at Mindscape 0, is Billy > Dialyn > Lucia (count 11, the best kit value), with alternatives per place", () => {
     const t0 = Date.now();
     const teams = recommendedTeams();
     expect(Date.now() - t0).toBeLessThan(8000);
     const billy = teams.find((t) => t.id === `kit-check-${BILLY}`);
-    // The method's Billy > Dialyn > Lucia (9 at base) gains only Lucia's HP build; Roxy's and Lucia's builds lift this one to 12.
-    expect(billy?.slots.map((s) => s.characters[0])).toEqual([BILLY, LUCIA, '1621']);
-    expect(billy?.source).toContain('(12)');
+    // The method's own squad, Billy > Dialyn > Lucia, is the best by kit value (owner's T38); fully built it counts 11.
+    expect(billy?.slots.map((s) => s.characters[0])).toEqual([BILLY, DIALYN, LUCIA]);
+    expect(billy?.source).toContain('count 11, ×');
     expect(billy?.slots[1]?.characters.length).toBeGreaterThan(1);
   });
 });
