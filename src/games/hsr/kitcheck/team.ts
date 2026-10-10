@@ -97,7 +97,8 @@ function shortlist(dd: string, partners: string[], lib: Library, account: Accoun
 function findBest(dd: string, pool: string[], lib: Library, account: Account, also: string[] = [], needSustain = false): TeamResult | undefined {
   let partners = pool.filter((id) => id !== dd && lib.sheets.has(id) && fits([dd, id]) && (canPartner(id, dd, lib, account) || also.includes(id)));
   if (!lib.sheets.has(dd) || !canCarry(dd, lib) || !partners.length) return undefined;
-  partners = shortlist(dd, partners, lib, account);
+  // The team's own members always stay in the running, however their pair with the damage dealer ranks.
+  partners = [...new Set([...shortlist(dd, partners, lib, account), ...partners.filter((id) => also.includes(id))])];
   let best: TeamResult | undefined;
   for (const others of combos(partners, Math.min(SIZE - 1, partners.length))) {
     if (!fits([dd, ...others])) continue;
@@ -157,13 +158,16 @@ export function verdict(members: string[], a: TeamAccount, lib: Library = librar
     pool = readable(lib, a);
     notes.push('You own fewer than four characters whose kits have been read, so this compares with every character instead.');
   } else pool = [...new Set([...owned, ...members])];
-  const best = bestFor(mine.dd, pool, lib, account, mine.members);
+  // Like with like (MANAGER's ruling, T30): a team with a healer or shielder is compared with the best team that keeps
+  // one. It never makes a healer required.
+  const best = bestFor(mine.dd, pool, lib, account, mine.members, mine);
+  if (mine.sustain) notes.push('This team has a healer or shielder, so the best team found keeps one too.');
   const top = best && compare(best, mine) > 0 ? best : mine;
   if (top.value <= 0 && top.count <= 0) return { rated: false, why: `No team the check can find connects for ${name(mine.dd)} yet (best ${countWords(top)}).` };
   const percent = Math.max(0, percentOf(mine.value, top.value));
   if (percent >= 100) notes.push(`100% means the check knows no better team for ${name(mine.dd)} from your characters.`);
   else notes.push(`Best for ${name(mine.dd)} from your characters: ${teamWords(top, lib)} counts ${countWords(top)}.`);
-  const every = bestFor(mine.dd, readable(lib, a), lib, account);
+  const every = bestFor(mine.dd, readable(lib, a), lib, account, [], mine);
   if (every && every.value > top.value) notes.push(`From every character: ${teamWords(every, lib)} counts ${countWords(every)}.`);
   if (out.other && !lead) notes.push(`With ${name(out.other.dd)} as the damage dealer it counts ${countWords(out.other)}.`);
   if ((lib.ownTeams.get(mine.dd) ?? []).some((t) => account.teamList?.(t.id))) notes.push(`Team lists for ${name(mine.dd)} edited by you: teammates come from your lists.`);
@@ -257,7 +261,7 @@ export function whoFits(members: string[], a: TeamAccount, lib: Library = librar
     const others = members.filter((m) => m !== r.dd);
     const withEveryone = c === r.dd ? others.every((m) => r.lines.some((l) => l.who === m && (l.kind === 'buff' || l.kind === 'chain'))) : r.lines.some((l) => l.who === c && (l.kind === 'buff' || l.kind === 'chain'));
     // % against the best team found for the same damage dealer from the same pool.
-    const best = bestFor(r.dd, [...new Set([...pool, ...members])], lib, account);
+    const best = bestFor(r.dd, [...new Set([...pool, ...members])], lib, account, [], r);
     const top = best && compare(best, r) > 0 ? best.value : r.value;
     const percent = top > 0 ? Math.max(0, percentOf(r.value, top)) : 0;
     const hasTrack = [...(lib.unlocks.get(c)?.values() ?? [])].some((u) => u.potential || u.replacedAt);

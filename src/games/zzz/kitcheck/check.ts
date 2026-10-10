@@ -4,7 +4,7 @@
  * every point comes with the entry (and its quote) that earned it.
  */
 import { BUILD_STAT_WORD, BUILT_POINTS, FIT_WORD, type BuildFit, type BuildStat } from '../../../core/rules/buildFit';
-import { partOf, sizeOf, typicalSize, value, type Part } from '../../../core/rules/kitValue';
+import { ownDamagePart, partOf, sizeOf, typicalSize, value, type Part } from '../../../core/rules/kitValue';
 import { GENERAL_STATS, SPECIFIC_STATS, SUPPORT_STATS, type CharacterSheet, type Condition, type Entry, type Specialty, type Stat } from './types';
 
 export interface Profile {
@@ -95,6 +95,8 @@ export interface SquadResult {
   count: number;
   /** T30: the kit value, POINTS × ln(how much the kits multiply the damage dealer's damage). Ranks teams and gives the %. */
   value: number;
+  /** Info only: someone in the squad heals or shields the others (like with like for the best squad found, T30). */
+  sustain: boolean;
   support: number;
   chains: number;
   lines: Line[];
@@ -338,7 +340,11 @@ export function checkOrder(order: string[], dd: string, lib: Library, account: A
         // T18: a counted buff that grows with the giver's stat makes the team want that build on them.
         const sc = e.scales;
         if (sc && (!sc.gives || r.used.some((u) => sc.gives?.includes(u))) && !wants.has(`${who}|${sc.stat}`)) wants.set(`${who}|${sc.stat}`, { who, e: { ...e, scales: sc }, parts: parts.filter((pt) => scalesWith(e, pt.zone)) });
-      } else if (r.kind === 'support') lines.push({ ...base, kind: 'support', why: r.why, points: 0 });
+      } else if (r.kind === 'support') {
+        // T30 (B), as in HSR: a support's own damage adds to the squad's, sized against the damage dealer's own hit.
+        const own = e.to === 'self' ? [] : e.gives.filter((g) => g.stat === 'own-damage').map((g) => ownDamagePart(g.amount, lib.sheets.get(dd)?.damage?.quotes ?? [], typ));
+        lines.push({ ...base, kind: 'support', why: r.why, points: 0, ...(own.length ? { parts: own } : {}) });
+      }
       else lines.push({ ...base, kind: 'not-counted', why: r.why, points: 0 });
     }
   }
@@ -376,7 +382,8 @@ export function checkOrder(order: string[], dd: string, lib: Library, account: A
   const v = value(lines.map((l) => l.parts ?? []));
   lines.forEach((l, i) => (l.value = l.parts?.length ? (v.shares[i] ?? 0) : 0));
   const count = lines.reduce((n, l) => n + l.points, 0);
-  return { order, dd, count, value: v.points, support: lines.filter((l) => l.kind === 'support').length, chains: lines.filter((l) => l.kind === 'chain').length, lines };
+  const sustain = order.some((id) => (entries.get(id) ?? []).some((e) => e.to !== 'self' && e.to !== 'enemy' && e.gives.some((g) => g.stat === 'heal')));
+  return { order, dd, count, value: v.points, sustain, support: lines.filter((l) => l.kind === 'support').length, chains: lines.filter((l) => l.kind === 'chain').length, lines };
 }
 
 export const eventWord = (e: string) => ({ 'quick-assist': 'Quick Assist', 'chain-attack': 'Chain Attack', ultimate: 'Ultimate', 'ether-veil': 'Ether Veil' })[e] ?? e;

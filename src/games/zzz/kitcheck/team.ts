@@ -46,21 +46,21 @@ const isDamageDealer = (id: string, lib: Library) => DD_ORDER.includes(lib.profi
 const bestCache = new Map<string, SquadResult | undefined>();
 let cacheLib: Library | undefined;
 
-export function bestFor(dd: string, pool: string[], lib: Library, account: Account): SquadResult | undefined {
+export function bestFor(dd: string, pool: string[], lib: Library, account: Account, likeFor?: SquadResult): SquadResult | undefined {
   if (cacheLib !== lib) {
     bestCache.clear();
     cacheLib = lib;
   }
-  const key = `${dd}|${[...new Set(pool)].sort().map((id) => `${id}:${account.mindscape(id)}:${account.potential(id) ?? '-'}`).join(',')}|${account.mindscape(dd)}:${account.potential(dd) ?? '-'}`;
+  const key = `${dd}|${[...new Set(pool)].sort().map((id) => `${id}:${account.mindscape(id)}:${account.potential(id) ?? '-'}`).join(',')}|${account.mindscape(dd)}:${account.potential(dd) ?? '-'}|${likeFor?.sustain ? 'sustain' : ''}|${(likeFor?.order ?? []).join(',')}`;
   if (bestCache.has(key)) return bestCache.get(key);
   if (bestCache.size > 2000) bestCache.clear();
   // The best team found assumes every member is built for what the team wants (decision 26): 100% includes builds.
-  const found = findBest(dd, pool, lib, { ...account, ideal: true });
+  const found = findBest(dd, pool, lib, { ...account, ideal: true }, !!likeFor?.sustain, likeFor?.order ?? []);
   bestCache.set(key, found);
   return found;
 }
 
-function findBest(dd: string, pool: string[], lib: Library, account: Account): SquadResult | undefined {
+function findBest(dd: string, pool: string[], lib: Library, account: Account, needSustain = false, also: string[] = []): SquadResult | undefined {
   let partners = pool.filter((id) => id !== dd && lib.sheets.has(id));
   if (!lib.sheets.has(dd) || !partners.length) return undefined;
   if (partners.length > PAIR_LIMIT) {
@@ -69,12 +69,13 @@ function findBest(dd: string, pool: string[], lib: Library, account: Account): S
       return { p, r: out.rated ? out.best : undefined };
     });
     pairs.sort((a, b) => (b.r && a.r ? compare(b.r, a.r) : b.r ? 1 : -1));
-    partners = pairs.slice(0, PAIR_LIMIT).map((x) => x.p);
+    // The squad's own members always stay in the running, however their pair with the damage dealer ranks.
+    partners = [...new Set([...pairs.slice(0, PAIR_LIMIT).map((x) => x.p), ...partners.filter((id) => also.includes(id))])];
   }
   let best: SquadResult | undefined;
   const tryOne = (members: string[]) => {
     const out = checkSquad(members, lib, account, dd);
-    if (out.rated && (!best || compare(out.best, best) > 0)) best = out.best;
+    if (out.rated && (!needSustain || out.best.sustain) && (!best || compare(out.best, best) > 0)) best = out.best;
   };
   if (partners.length === 1) tryOne([dd, partners[0] ?? '']);
   for (let i = 0; i < partners.length; i++) for (let j = i + 1; j < partners.length; j++) tryOne([dd, partners[i] ?? '', partners[j] ?? '']);
@@ -117,13 +118,15 @@ export function verdict(members: string[], a: TeamAccount, lib: Library = librar
     pool = readable(lib, a);
     notes.push('You own fewer than three agents whose kits have been read, so this compares with every agent instead.');
   } else pool = [...new Set([...owned, ...members])];
-  const best = bestFor(mine.dd, pool, lib, account);
+  // Like with like (MANAGER's ruling, T30): a squad with a healer is compared with the best squad that keeps one.
+  const best = bestFor(mine.dd, pool, lib, account, mine);
+  if (mine.sustain) notes.push('This squad has a healer, so the best squad found keeps one too.');
   const top = best && compare(best, mine) > 0 ? best : mine;
   if (top.value <= 0 && top.count <= 0) return { rated: false, why: `No squad the check can find connects for ${name(mine.dd)} yet (best ${countWords(top)}).` };
   const percent = Math.max(0, percentOf(mine.value, top.value));
   if (percent >= 100) notes.push(`100% means the check knows no better squad for ${name(mine.dd)} from your agents.`);
   else notes.push(`Best for ${name(mine.dd)} from your agents: ${top.order.map(name).join(' > ')} counts ${countWords(top)}.`);
-  const every = bestFor(mine.dd, readable(lib, a), lib, account);
+  const every = bestFor(mine.dd, readable(lib, a), lib, account, mine);
   if (every && every.value > top.value) notes.push(`From every agent, ${every.order.map(name).join(' > ')} counts ${countWords(every)}.`);
   if (out.other && out.other.count !== mine.count) notes.push(`The other order, ${out.other.order.map(name).join(' > ')}, counts ${countWords(out.other)}.`);
   notes.push(VALUE_NOTE);
@@ -181,7 +184,7 @@ export function whoFits(members: string[], a: TeamAccount, lib: Library = librar
     const others = members.filter((m) => m !== r.dd);
     const withEveryone = c === r.dd ? others.every((m) => r.lines.some((l) => l.who === m && (l.kind === 'buff' || l.kind === 'chain'))) : r.lines.some((l) => l.who === c && (l.kind === 'buff' || l.kind === 'chain'));
     // % against the best squad found for the same damage dealer from the same pool.
-    const best = bestFor(r.dd, [...new Set([...pool, ...members])], lib, account);
+    const best = bestFor(r.dd, [...new Set([...pool, ...members])], lib, account, r);
     const top = best && compare(best, r) > 0 ? best.value : r.value;
     const percent = top > 0 ? Math.max(0, percentOf(r.value, top)) : 0;
     const hasTrack = [...(lib.unlocks.get(c)?.values() ?? [])].some((u) => u.potential || u.replacedAt);

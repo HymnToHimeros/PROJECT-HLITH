@@ -108,14 +108,13 @@ describe('Kit facts read for T30', () => {
     expect(out.best.lines.filter((l) => l.who === t[3] && l.tag === 'One ally: acts now, +30% DMG' && (l.value ?? 0) > 0)).toHaveLength(1);
   });
 
-  it('the owner’s teams score Good or better, and the Why names the better swap when there is one', () => {
-    for (const ns of [
-      ['Phainon', 'Sunday', 'Cerydra', 'Dan Heng • Permansor Terrae'],
-      ['Aventurine • Waveflair', 'Mortenax Blade', 'Ashveil', 'Robin • Summeretto'],
-    ]) {
-      const v = hsrVerdict(team(ns), all);
-      if (!v.rated) throw new Error('not rated');
-      expect(['Good', 'Excellent']).toContain(v.label);
-    }
+  it('owner’s teams: Aventurine • Waveflair’s is the best found; Phainon’s with Dan Heng • Permansor Terrae stays within reach of the best that keeps a healer', () => {
+    const wf = hsrVerdict(team(['Aventurine • Waveflair', 'Mortenax Blade', 'Ashveil', 'Robin • Summeretto']), all);
+    if (!wf.rated) throw new Error('not rated');
+    expect(wf.bestMembers).toEqual(team(['Aventurine • Waveflair', 'Mortenax Blade', 'Ashveil', 'Robin • Summeretto']));
+    const ph = hsrVerdict(team(['Phainon', 'Sunday', 'Cerydra', 'Dan Heng • Permansor Terrae']), all);
+    if (!ph.rated) throw new Error('not rated');
+    expect(ph.notes).toContain('This team has a healer or shielder, so the best team found keeps one too.');
+    expect(ph.percent).toBeGreaterThanOrEqual(60);
   });
 });

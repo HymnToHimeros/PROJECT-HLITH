@@ -4,7 +4,7 @@
  * with the entry (and its quote) that earned it. HSR has no team order.
  */
 import { BUILD_STAT_WORD, BUILT_POINTS, FIT_WORD, type BuildFit, type BuildStat } from '../../../core/rules/buildFit';
-import { partOf, POINTS, sizeOf, typicalSize, value, type Part } from '../../../core/rules/kitValue';
+import { ownDamagePart, partOf, POINTS, sizeOf, typicalSize, value, type Part } from '../../../core/rules/kitValue';
 import { GENERAL_STATS, SPECIFIC_STATS, SUPPORT_STATS, SUSTAIN_STATS, type CharacterSheet, type Condition, type DamageKind, type Element, type Entry, type GameEventKind, type Path, type Stat } from './types';
 
 export interface Profile {
@@ -273,6 +273,7 @@ export const EVENT_WORD: Record<GameEventKind, string> = {
   'hp-loss': 'HP loss for allies',
   'elation-skill': 'Elation Skill',
   'extra-turn': 'extra turn',
+  'targets-ally': 'ability aimed at them',
 };
 
 /** T30: an Ultimate comes about every third turn (an action advance from it counts a third). */
@@ -359,12 +360,16 @@ export function checkTeam(members: string[], dd: string, lib: Library, account: 
   const wants = new Map<string, { who: string; e: Entry & { scales: NonNullable<Entry['scales']> }; parts: Part[] }>();
   const typ = typicalOf(lib);
   const ownSuperBreak = superBreakOf(dd, lib);
+  // A damage dealer whose damage happens alone (Phainon's domain) gets nothing from teammates' own hits there.
+  const alone = !!lib.sheets.get(dd)?.damage?.alone;
   const sized = (e: Entry, keep: (g: Entry['gives'][number]) => boolean): Part[] =>
     e.gives.filter(keep).map((g) => {
       // A teammate's Super Break hit is sized against the damage dealer's own ("1 instance of 50% Super Break DMG").
       const sb = g.stat === 'extra-dmg' && ownSuperBreak ? superBreakSize(g.amount) : undefined;
       if (sb !== undefined && ownSuperBreak) return { zone: g.stat, size: sb / ownSuperBreak, how: 'stated' as const };
       const pt = partOf(g.stat, g.amount, typ);
+      // An extra hit made by the teammate (not a share of the damage dealer's own hits) doesn't happen while they're alone.
+      if (alone && g.stat === 'extra-dmg' && pt.how === 'typical') return { ...pt, size: 0 };
       // An action advance from an Ultimate comes about every third turn; from a Skill, Talent or trace, every time.
       return g.stat === 'action-advance' && e.piece.startsWith('skill-ultimate') ? { ...pt, size: pt.size / ULTIMATE_EVERY } : pt;
     });
@@ -433,8 +438,18 @@ export function checkTeam(members: string[], dd: string, lib: Library, account: 
           chained.add(`${who}:${reaction.id}`);
           contributed.add(who);
           // T30: the kit doesn't say how much a set-off reaction adds: a typical buff, one zone per reaction (feeders add up).
-          lines.push({ ...base, kind: 'chain', why: `${EVENT_WORD[e.causes]} for ${name(dd)}: ${reaction.tag}`, points: 1, parts: [{ zone: `chain:${dd}:${reaction.id}`, size: typ, how: 'typical' }] });
+          lines.push({ ...base, kind: 'chain', why: `${EVENT_WORD[e.causes]} for ${name(dd)}: ${reaction.tag}`, points: 1, parts: alone ? [] : [{ zone: `chain:${dd}:${reaction.id}`, size: typ, how: 'typical' }] });
         } else lines.push({ ...base, kind: 'not-counted', why: `${name(dd)}'s kit has nothing switched on that reacts to a teammate's ${EVENT_WORD[e.causes]}`, points: 0 });
+      }
+      // T30: an ability aimed at one chosen ally sets off a reaction to being targeted (Phainon's Coreflame), once per
+      // teammate. It happens before the damage dealer's own turn, so it counts even when they deal damage alone.
+      if (e.to === 'chosen-ally' && !e.piece.startsWith('eidolon-')) {
+        const targeted = reactions.find((x) => x.reacts?.event === 'targets-ally' && !chained.has(`${who}:${x.id}`));
+        if (targeted) {
+          chained.add(`${who}:${targeted.id}`);
+          contributed.add(who);
+          lines.push({ ...base, kind: 'chain', why: `${EVENT_WORD['targets-ally']} for ${name(dd)}: ${targeted.tag}`, points: 1, parts: [{ zone: `chain:${dd}:${targeted.id}`, size: typ, how: 'typical' }] });
+        }
       }
       if (!e.gives.length) continue;
       // T30: a kit with two branches by the damage dealer ("if their ATK is higher… otherwise") gives one of them.
@@ -469,7 +484,10 @@ export function checkTeam(members: string[], dd: string, lib: Library, account: 
           });
       } else if (r.kind === 'support') {
         contributed.add(who);
-        lines.push({ ...base, kind: 'support', why: r.why, points: 0 });
+        // T30 (B): a support's own damage adds to the team's, sized against the damage dealer's own hit from the kit
+        // texts ("12% of Tribbie's Max HP per target hit" against "56% of Castorice's Max HP"); typical when they don't say.
+        const own = e.to === 'self' || alone ? [] : e.gives.filter((g) => g.stat === 'own-damage').map((g) => ownDamagePart(g.amount, lib.sheets.get(dd)?.damage?.quotes ?? [], typ));
+        lines.push({ ...base, kind: 'support', why: r.why, points: 0, ...(own.length ? { parts: own } : {}) });
       } else lines.push({ ...base, kind: 'not-counted', why: r.why, points: 0 });
     }
   }

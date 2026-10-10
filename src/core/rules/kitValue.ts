@@ -128,3 +128,26 @@ export function typicalNote(lines: { who: string; tag: string; value?: number; p
   const items = [...new Set(typ.map((l) => `${name(l.who)}'s “${l.tag}”`))];
   return `Counted as a typical buff (+${Math.round(size * 100)}%, the kit text gives no %): ${items.join('; ')}.`;
 }
+
+/** The damage dealer's biggest hit on each stat, from their damage notes ("1170% of Khaslana's ATK" → ATK 11.7). */
+function ownHit(quotes: { quote: string }[]): Map<string, number> {
+  const out = new Map<string, number>();
+  for (const q of quotes)
+    for (const m of q.quote.matchAll(/(\d+(?:\.\d+)?)% of (?:[A-Z][^.%]*?'s |this unit's )(ATK|Max HP|DEF)\b/g)) {
+      const stat = m[2] ?? '';
+      out.set(stat, Math.max(out.get(stat) ?? 0, Number(m[1]) / 100));
+    }
+  return out;
+}
+
+/**
+ * T30 (B): a support's own damage adds to the team's, as a share of the damage dealer's: "12% of Tribbie's Max HP per
+ * target hit" against the damage dealer's biggest hit on the same stat in their damage notes ("56% of Castorice's Max
+ * HP"). A different stat, or no number on either side: the typical buff. Both games.
+ */
+export function ownDamagePart(amount: string, ddQuotes: { quote: string }[], typical: number): Part {
+  const m = /(\d+(?:\.\d+)?)% of (?:[A-Z][^.%]*?'s |her |his )(initial )?(ATK|Max HP|DEF)\b/.exec(amount);
+  const hit = m?.[3] ? ownHit(ddQuotes).get(m[3]) : undefined;
+  if (!m?.[1] || !hit) return { zone: 'extra-dmg', size: typical, how: 'typical' };
+  return { zone: 'extra-dmg', size: Number(m[1]) / 100 / hit, how: 'stated' };
+}

@@ -118,7 +118,9 @@ export interface Limits {
  * Wind Shear) · hp-loss (makes allies lose or consume HP) · elation-skill (an
  * Elation Skill / Punchline) · extra-turn (gives allies an extra turn or "Aha Instant").
  */
-export type GameEventKind = 'follow-up' | 'summon-attack' | 'debuff' | 'dot' | 'hp-loss' | 'elation-skill' | 'extra-turn';
+export type GameEventKind = 'follow-up' | 'summon-attack' | 'debuff' | 'dot' | 'hp-loss' | 'elation-skill' | 'extra-turn' | 'targets-ally';
+// 'targets-ally' (T30): an ability aimed at one chosen ally. Never written on entries: every non-Eidolon entry given
+// to a chosen ally makes it (Sunday's, Cerydra's, Dan Heng • Permansor Terrae's Skill on the damage dealer).
 
 /** Whose events a reaction reacts to: the owner only, teammates, or any ally / any unit. */
 export type From = 'self' | 'teammates' | 'any';
@@ -182,6 +184,11 @@ export interface DamageNotes {
   ignores: Stat[];
   /** The sentences that prove it. */
   quotes: { piece: string; quote: string }[];
+  /**
+   * Their main damage happens with the teammates gone (T30, owner: Phainon's domain, "other teammates depart and cannot
+   * take action"): buffs from before count, but teammates' own hits, extra hits and set-off reactions don't.
+   */
+  alone?: { piece: string; quote: string };
 }
 
 export interface CharacterSheet {

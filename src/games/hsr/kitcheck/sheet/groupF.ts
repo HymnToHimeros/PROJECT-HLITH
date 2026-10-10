@@ -613,7 +613,13 @@ export const phainon: CharacterSheet = {
   damage: {
     kinds: ['skill', 'ultimate', 'basic'],
     uses: [],
+    // T30 (owner): buffs from before his Ultimate are frozen for his whole domain. Teammates' action advances still
+    // count: they come before the domain and charge it sooner (his Skill gains Coreflame).
     ignores: [],
+    alone: {
+      piece: 'skill-ultimate-he-who-bears-the-world-must-burn',
+      quote: 'Within the Territory, other teammates depart and cannot take action, and all enemies have Physical Weaknesses.',
+    },
     quotes: [
       { piece: 'skill-skill-calamity-soulscorch-edict', quote: 'DMG dealt through this ability is considered as Skill DMG.' },
       { piece: 'skill-skill-foundation-stardeath-verdict', quote: "deals Physical DMG equal to a max of 1170% of Khaslana's ATK." },
@@ -622,6 +628,18 @@ export const phainon: CharacterSheet = {
     ],
   },
   entries: [
+    // T30 (owner): teammates who aim abilities at him charge his domain sooner (Sunday, Cerydra, Dan Heng • Permansor
+    // Terrae, Robin • Summeretto's Special Guest; not standard Robin).
+    {
+      id: 'coreflame-targeted',
+      piece: 'skill-talent-pyric-corpus',
+      quote: 'When Phainon is targeted by an ability from any other target, gains 1 "Coreflame" point.',
+      tag: 'Coreflame when a teammate targets him',
+      gives: [],
+      to: 'self',
+      reacts: { event: 'targets-ally', from: 'teammates' },
+      setup: 'A teammate uses an ability on him (12 Coreflame: his Ultimate).',
+    },
     {
       id: 'targeted-crit-dmg',
       piece: 'skill-talent-pyric-corpus',
