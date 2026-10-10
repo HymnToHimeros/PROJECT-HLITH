@@ -24,6 +24,8 @@ doing it said `LIVE`. Newest jobs at the bottom; live jobs move to Done.
 | T29 | HSR teams still mix-match (Phainon + March 7th / Asta / Bronya; "best" = Tingyun, Sparkle, Huohuo). Owner: when a better unit for a job exists, pick it. Test: Phainon + Sunday + Cerydra + Dan Heng PT must be Phainon's top team | LOGIC-CORE | working | Fix (a) merged as #75: only each carry's own game team, filled from roster. Next: owner-editable team list (b), priority because Robin • Summeretto is missing from Phainon's game list. |
 | T30 | HSR scoring still doesn't understand kits (owner's own Aventurine • Waveflair team 47%, "best" again Tingyun + Sparkle). Owner: teams do NOT need a sustain/healer. Wants scoring that understands buff size, conditions, how kits interact | LOGIC-CORE | working | Remove sustain rule now; explain this team; plan for kit-interaction scoring to owner. |
 | T31 | Remove owner's Gmail from git history (Option A + GitHub Support) | ERROR-FIX | blocked | ERROR-FIX's Auto mode blocks history-changing git; owner switches its mode so they can approve each command. All chats except FRAME confirmed frozen. |
+| T32 | HSR: add Nihilux to Roster as a leak character (owner asked repeatedly) | SCHEDULER | sent | Only what leak sources state, source named; link to Aeon ★ Aha if same. |
+| T33 | Blind test of LOGIC-CORE's kit understanding: Aventurine • Waveflair's best team worked out alone, plus 6 carries the owner hasn't corrected (exactly 4 members, one archetype) | LOGIC-CORE | sent | Before any T30 building. |
 
 ## Done
 | # | Job | Who | Live on |
