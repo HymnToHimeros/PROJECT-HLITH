@@ -13,10 +13,11 @@ describe('Team scores in plain words', () => {
   it('ZZZ Billy + Dialyn + Lucia: who carries, what each gives, and the points add up to the count', () => {
     const v = zzzVerdict(['Starlight - Billy', 'Dialyn', 'Lucia'].map((n) => idOf(zzzLib(), n)), all);
     if (!v.rated || !v.explain) throw new Error('not rated');
-    expect(v.explain.headline).toBe("Starlight - Billy deals the damage. Dialyn and Lucia connect with Starlight - Billy's kit; no better team found.");
+    // At base builds (none saved): Lucia's HP build is what's still missing, and the best squad found is fully built.
+    expect(v.explain.headline).toMatch(/^Starlight - Billy deals the damage\. Dialyn and Lucia connect with Starlight - Billy's kit; \d+ points short of the best team found\.$/);
     expect(v.explain.members.find((m) => m.id === idOf(zzzLib(), 'Dialyn'))?.text).toMatch(/^Dialyn: gives Starlight - Billy .*\+40% DMG/);
     expect(v.explain.members.reduce((n, m) => n + m.points, 0)).toBe(v.count);
-    expect(v.explain.missing).toEqual([]);
+    expect(v.explain.missing.some((m) => /^Lucia built for HP: no build saved, scored at base; up to 2 points more\.$/.test(m))).toBe(true);
   });
 
   it('HSR Feixiao team: what each member gives and what the best team found has that this one lacks', () => {

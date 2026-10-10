@@ -17,15 +17,23 @@ const account = (owned: string[], dupes: Record<string, number> = { [BILLY]: 1, 
   dupes: (id) => dupes[id] ?? 0,
 });
 const all = account([BILLY, DIALYN, LUCIA, PAN]);
+/** A saved build with this stat's % main stat on Discs 4–6 and 6 rolls of it: built for it (decision 25). */
+const builtFor = (stat: string) => ({ characterId: 'x', level: 60, dupes: 0, gear: ['Disc 4', 'Disc 5', 'Disc 6'].map((slot) => ({ slot, main: `${stat} %`, subs: { [`${stat} %`]: 3 }, rolls: { [`${stat} %`]: 2 } })) });
 
 describe('Synergy % on presets', () => {
-  it('the method’s example: Billy > Dialyn > Lucia counts 9 against Billy > Pan Yinhu > Lucia at 10 = 90%, Excellent', () => {
+  // The method's worked example holds at base builds (no builds saved): 9 against 10. Builds count on top of the method
+  // (owner's ruling 2026-10-10, zzz-decisions.md): the best squad found is scored fully built (Pan Yinhu for ATK,
+  // Lucia for HP: +2 each), so the % compares against 14.
+  it('the method’s example at base builds: Billy > Dialyn > Lucia counts 9, Billy > Pan Yinhu > Lucia 10; the best, fully built, 14', () => {
     const v = verdict([BILLY, DIALYN, LUCIA], all);
-    expect(v).toMatchObject({ rated: true, count: 9, best: 10, percent: 90, label: 'Excellent', order: [BILLY, DIALYN, LUCIA], bestMembers: [BILLY, PAN, LUCIA] });
+    expect(v).toMatchObject({ rated: true, count: 9, best: 14, percent: 64, order: [BILLY, DIALYN, LUCIA], bestMembers: [BILLY, PAN, LUCIA] });
+    expect(verdict([BILLY, PAN, LUCIA], all)).toMatchObject({ rated: true, count: 10 });
   });
 
-  it('100% when the check knows no better squad', () => {
-    expect(verdict([BILLY, PAN, LUCIA], all)).toMatchObject({ rated: true, percent: 100 });
+  it('100% when the check knows no better squad and it is built for what it wants', () => {
+    expect(verdict([BILLY, PAN, LUCIA], all)).toMatchObject({ rated: true, percent: 71 });
+    const built = { ...all, build: (id: string) => (id === PAN ? builtFor('ATK') : id === LUCIA ? builtFor('HP') : undefined) };
+    expect(verdict([BILLY, PAN, LUCIA], built)).toMatchObject({ rated: true, count: 14, percent: 100 });
   });
 
   it('every reason that counts names the kit text that proves it', () => {
@@ -81,10 +89,11 @@ describe('Who fits', () => {
 });
 
 describe('If you pull…', () => {
-  it('as a teammate: without Pan Yinhu, Billy’s best is 9; with him 10 of 10 = 100%', () => {
+  it('as a teammate: Pan Yinhu (built for ATK) lifts Billy’s best squad; Lucia brings it to the most possible', () => {
+    // Squads are scored fully built (decision 26): Pan Yinhu's ATK-based buff lifts Billy's best from 11 to 12.
     const v = ifYouPull(PAN, account([BILLY, DIALYN, LUCIA], { [BILLY]: 1 }));
-    // Tested at M0: Pan Yinhu gives 8 with Lucia, so no lift over Dialyn's 9.
-    expect(v).toMatchObject({ percent: 0 });
+    expect(v).toMatchObject({ percent: 100 });
+    expect(v?.why.join(' ')).toMatch(/best when built for ATK \(assumed here\)/);
     const owner = ifYouPull(LUCIA, account([BILLY, DIALYN, PAN], { [BILLY]: 1, [PAN]: 6 }));
     expect(owner?.percent).toBe(100);
     expect(owner?.why.join(' ')).toContain("As a teammate: Starlight - Billy's best squad of yours goes from");
@@ -104,13 +113,30 @@ describe('If you pull…', () => {
 });
 
 describe('Recommended teams from the check', () => {
-  it("Starlight Billy's is Billy > Dialyn > Lucia at Mindscape 0 (count 9), with alternatives per place", () => {
+  it("Starlight Billy's, fully built at Mindscape 0, is Billy > Lucia > Roxy (count 12), with alternatives per place", () => {
     const t0 = Date.now();
     const teams = recommendedTeams();
     expect(Date.now() - t0).toBeLessThan(8000);
     const billy = teams.find((t) => t.id === `kit-check-${BILLY}`);
-    expect(billy?.slots.map((s) => s.characters[0])).toEqual([BILLY, DIALYN, LUCIA]);
-    expect(billy?.source).toContain('(9)');
+    // The method's Billy > Dialyn > Lucia (9 at base) gains only Lucia's HP build; Roxy's and Lucia's builds lift this one to 12.
+    expect(billy?.slots.map((s) => s.characters[0])).toEqual([BILLY, LUCIA, '1621']);
+    expect(billy?.source).toContain('(12)');
     expect(billy?.slots[1]?.characters.length).toBeGreaterThan(1);
+  });
+});
+
+describe('Builds a team wants (T18): counted in ZZZ as in HSR (owner’s ruling 2026-10-10)', () => {
+  it('Pan Yinhu’s ATK-based buff asks for an ATK build: none saved scores at base, built adds 2', () => {
+    const lib = library();
+    const a = { owned: () => true, dupes: () => 0 };
+    const v = verdict(['1531', '1421', '1451'], a, lib);
+    if (!v.rated) throw new Error(v.why);
+    const pan = v.wants?.find((w) => w.who === '1421');
+    expect(pan).toMatchObject({ stat: 'ATK', points: 0, max: 2, fit: 'no-build' });
+    const built = verdict(['1531', '1421', '1451'], { ...a, build: (id: string) => (id === '1421' ? builtFor('ATK') : undefined) }, lib);
+    if (!built.rated) throw new Error(built.why);
+    expect(built.wants?.find((w) => w.who === '1421')).toMatchObject({ fit: 'built', points: 2 });
+    expect(built.count).toBe(v.count + 2);
+    expect(lib.sheets.get('1421')?.entries.some((e) => e.scales?.stat === 'atk')).toBe(true);
   });
 });

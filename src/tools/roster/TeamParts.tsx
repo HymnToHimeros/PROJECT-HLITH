@@ -1,8 +1,9 @@
 import { useMemo, type ReactNode } from 'react';
 import type { TeamAccount, TeamReason, TeamVerdict } from '../../core/contract';
+import { FIT_WORD } from '../../core/rules/buildFit';
 import { ExampleTag, NoData } from '../../core/ui';
 import r from './roster.module.css';
-import { artOf, CharArt, elementOf, entryOf } from './shared';
+import { artOf, CharArt, elementOf, entryOf, toCharacterBuild } from './shared';
 import type { RosterData } from './useRosterData';
 
 export type Status = 'owned' | 'wanted' | 'gap';
@@ -76,6 +77,12 @@ const rosterAccount = (roster: RosterData['user']['roster'], builds?: RosterData
   weapon: (id) => {
     const w = entryOf(roster, id).owned ? builds?.[id]?.weapon : undefined;
     return w ? { name: w.name, ...(w.id ? { id: w.id } : {}), ...(w.refine !== undefined ? { refine: w.refine } : {}) } : undefined;
+  },
+  // The saved build, read for the builds a team wants (T18).
+  build: (id) => {
+    const e = entryOf(roster, id);
+    const b = e.owned ? builds?.[id] : undefined;
+    return b ? toCharacterBuild(b, id, e.dupes) : undefined;
   },
   owned: (id) => entryOf(roster, id).owned,
   dupes: (id) => entryOf(roster, id).dupes,
@@ -176,6 +183,25 @@ export function WhyScore({ verdict, data }: { verdict: TeamVerdict | null; data:
             </li>
           ))}
         </ul>
+        {verdict.wants && verdict.wants.length > 0 && (
+          <>
+            <span className={r.label}>BUILDS THIS TEAM WANTS</span>
+            <ul className={r.whyList}>
+              {verdict.wants.map((w) => (
+                <li key={`${w.who}-${w.stat}`} className={r.whyItem}>
+                  <span className={r.whyPoints}>{w.max ? `+${w.points}` : '·'}</span>
+                  <span>
+                    {w.label}. Yours: {w.fit === 'no-build' ? <strong>{FIT_WORD[w.fit]}</strong> : <>{w.have} → <strong>{FIT_WORD[w.fit]}</strong></>}
+                    {w.max ? (w.points < w.max ? ` (up to +${w.max})` : '') : ' (shown, not counted yet)'}
+                    <span className={r.whyQuote}>
+                      {w.proof.skill}: “{w.proof.quote}”
+                    </span>
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </>
+        )}
         {ex.missing.length > 0 && (
           <>
             <span className={r.label}>TO REACH 100%</span>

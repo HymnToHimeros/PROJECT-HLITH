@@ -837,6 +837,11 @@ export const phoenix: CharacterSheet = {
         { stat: 'anomaly-dmg', amount: "30% CRIT Rate, more from Phoenix's Anomaly Mastery over 155" },
         { stat: 'anomaly-dmg', amount: '25% CRIT DMG' },
       ],
+      // Judgement call: only the CRIT Rate half grows with Phoenix's Anomaly Mastery; both halves are anomaly-dmg, so gives cannot split them.
+      scales: {
+        stat: 'anomaly-mastery',
+        quote: "If Phoenix's initial Anomaly Mastery is greater than 155 points, each point of Anomaly Mastery beyond that increases this effect's CRIT Rate by an additional 0.7%.",
+      },
       to: 'enemy',
       setup: 'Any squad member deals Attribute Anomaly DMG (Searing Corrosion, 20s), then more Attribute Anomaly DMG.',
     },

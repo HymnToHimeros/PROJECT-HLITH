@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
-import type { Character, CharacterBuild, Material, SavedBuild, TeamPreset } from '../../core/contract';
+import type { Character, Material, SavedBuild, TeamPreset } from '../../core/contract';
 import { useExamplesShown } from '../../core/data/prefs';
 import { clearBuild, setBuild, setFarm, setRosterEntry } from '../../core/data/userData';
 import { formatNumber } from '../../core/time/format';
@@ -8,9 +8,10 @@ import { exampleNeeds } from '../farm/examples';
 import { farmPlan } from '../farm/plan';
 import { exampleBuild, exampleScore } from './examples';
 import { BuildEditor } from './BuildEditor';
+import { BuildWants } from './BuildWants';
 import { KitCheck } from './KitCheck';
 import r from './roster.module.css';
-import { artOf, CharArt, dupesLabel, elementOf, entryOf, isUpcoming, rarityColor, roleLabel } from './shared';
+import { artOf, CharArt, dupesLabel, elementOf, entryOf, isUpcoming, rarityColor, roleLabel, toCharacterBuild } from './shared';
 import { TeamRow, teamAccount } from './TeamParts';
 import { useBuilds, useKits, type RosterData } from './useRosterData';
 
@@ -180,6 +181,7 @@ export function CharacterPage({ data, character: c, several, onBack, openPulls, 
       <div className={r.cards}>
         {entry.owned ? <BuildCard data={data} character={c} /> : <IfYouPull data={data} character={c} openPulls={openPulls} />}
         <TeamFit data={data} character={c} makePreset={makePreset} />
+        <BuildWants data={data} character={c} />
         <section className={r.card} aria-labelledby={`how-to-build-${c.id}`}>
           <h3 className={r.cardTitle} id={`how-to-build-${c.id}`}>
             How to build {c.name}
@@ -397,32 +399,7 @@ function BuildCard({ data, character: c }: { data: RosterData; character: Charac
   const score = useMemo(() => {
     const rate = game.rules.scoreBuild;
     if (!rate || !saved || saved.level === undefined) return null;
-    const build: CharacterBuild = {
-      characterId: c.id,
-      level: saved.level,
-      dupes: entry.dupes,
-      ...(saved.weapon
-        ? {
-            weapon: {
-              name: saved.weapon.name,
-              ...(saved.weapon.id ? { id: saved.weapon.id } : {}),
-              ...(saved.weapon.level !== undefined ? { level: saved.weapon.level } : {}),
-              ...(saved.weapon.refine !== undefined ? { refine: saved.weapon.refine } : {}),
-            },
-          }
-        : {}),
-      // Every piece that has anything entered: main stat, set, sub stats (and their rolls when known).
-      gear: saved.gear
-        .filter((g) => g.main || g.set || g.subs.length)
-        .map((g) => ({
-          slot: g.slot,
-          main: g.main ?? '',
-          subs: Object.fromEntries(g.subs.map((x) => [x.stat, x.value])),
-          ...(g.set ? { set: g.set } : {}),
-          ...(g.subs.some((x) => x.rolls !== undefined) ? { rolls: Object.fromEntries(g.subs.filter((x) => x.rolls !== undefined).map((x) => [x.stat, x.rolls ?? 0])) } : {}),
-        })),
-      ...(saved.skills ? { skills: saved.skills } : {}),
-    };
+    const build = toCharacterBuild(saved, c.id, entry.dupes);
     return rate(build);
   }, [game.rules, saved, c.id, entry.dupes]);
   const t = game.terms;

@@ -87,9 +87,16 @@ describe('HSR team rules for the Roster', () => {
   const team = ['Feixiao', 'Topaz & Numby', 'Robin', 'Aventurine'];
 
   it('synergy %: the team against the best for its damage dealer, with every reason and quote', () => {
-    const v = verdict(team.map(id), own(team));
+    // Robin's ATK buff grows with her ATK (T18): 100% needs her built for ATK; with no build saved the team is short.
+    const atkBuild = { characterId: id('Robin'), level: 80, dupes: 0, gear: ['Body', 'Feet', 'Planar Sphere', 'Link Rope'].map((slot) => ({ slot, main: 'ATK %', subs: { 'ATK %': 3.9 }, rolls: { 'ATK %': 2 } })) };
+    const unbuilt = verdict(team.map(id), own(team));
+    if (!unbuilt.rated) throw new Error(unbuilt.why);
+    expect(unbuilt.percent).toBeLessThan(100);
+    expect(unbuilt.wants?.find((w) => w.who === id('Robin'))).toMatchObject({ stat: 'ATK', fit: 'no-build', points: 0, max: 2 });
+    const v = verdict(team.map(id), { ...own(team), build: (x) => (x === id('Robin') ? atkBuild : undefined) });
     expect(v.rated).toBe(true);
     if (!v.rated) return;
+    expect(v.wants?.find((w) => w.who === id('Robin'))).toMatchObject({ fit: 'built', points: 2 });
     expect(v.percent).toBe(100);
     expect(v.unordered).toBe(true);
     expect(v.order[0]).toBe(id('Feixiao'));
@@ -170,5 +177,48 @@ describe('HSR: signature Light Cones count only when equipped (T18)', () => {
     const line = robin(withIt.best.lines);
     expect(line?.kind).not.toBe('locked');
     expect(withIt.best.count).toBeGreaterThanOrEqual(without.best.count);
+  });
+});
+
+describe('HSR: builds a team wants (T18, owner\'s Phainon example)', () => {
+  const team = ['Phainon', 'Robin • Summeretto', 'Sunday', 'Huohuo'];
+  const rs = () => id('Robin • Summeretto');
+  const hp = (mains: number, rolls: number) => ({
+    characterId: rs(),
+    level: 80,
+    dupes: 0,
+    gear: ['Body', 'Feet', 'Planar Sphere', 'Link Rope'].map((slot, i) => ({ slot, main: i < mains ? 'HP %' : 'SPD', subs: { 'HP %': 4 }, rolls: { 'HP %': i === 0 ? rolls : 0 } })),
+  });
+  const withBuild = (b?: ReturnType<typeof hp>) => verdict(team.map(id), { ...own(team), build: (x) => (x === rs() ? b : undefined) });
+  const want = (v: ReturnType<typeof verdict>) => (v.rated ? v.wants?.find((w) => w.who === rs()) : undefined);
+
+  it('Phainon’s team wants an HP build on Robin • Summeretto, with the kit line that says why', () => {
+    const w = want(withBuild());
+    expect(w).toMatchObject({ stat: 'HP', label: 'HP build on Robin • Summeretto', fit: 'no-build', points: 0, max: 2 });
+    expect(w?.proof.quote).toMatch(/of Robin • Summeretto's Max HP/);
+  });
+
+  it('an HP build scores higher than a partly HP build, which scores higher than none', () => {
+    const none = withBuild();
+    const partly = withBuild(hp(1, 4));
+    const built = withBuild(hp(4, 5));
+    expect(want(partly)?.fit).toBe('partly');
+    expect(want(built)?.fit).toBe('built');
+    if (!none.rated || !partly.rated || !built.rated) throw new Error('not rated');
+    expect(built.count).toBe(partly.count + 1);
+    expect(partly.count).toBe(none.count + 1);
+    expect(built.percent).toBeGreaterThan(none.percent);
+  });
+
+  it('the “Why” says it in words: what the team wants and what is missing', () => {
+    const v = withBuild(hp(1, 4));
+    if (!v.rated) throw new Error('not rated');
+    expect(v.explain?.members.find((m) => m.id === rs())?.text).toMatch(/the team wants them built for HP: partly built for it/);
+    expect(v.explain?.missing.some((m) => /Robin • Summeretto built for HP: partly built for it; up to 1 point more/.test(m))).toBe(true);
+  });
+
+  it('a build is only read for characters you own', () => {
+    const v = verdict(team.map(id), { ...own(team.filter((n) => !n.startsWith('Robin'))), build: () => hp(4, 5) });
+    expect(want(v)?.fit).toBe('no-build');
   });
 });
