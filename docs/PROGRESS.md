@@ -28,6 +28,13 @@ Resume with: "continue from PROGRESS.md". Newest entry on top. Older entries:
 - CI (`.github/workflows/ci.yml`) runs both on every pull request.
 
 ## Done
+- 2026-10-10 · **FRAME: live banner art the same size; HoYoLAB ticks dailies** (branch `frame/owner-jobs-1`, owner jobs T16, T22).
+  Today's live banners: every card is the same height, so every art box is the same
+  size and crops the same way (titles stop at two lines). Each live stamina read now
+  ticks what HoYoLAB proves (`src/tools/today/autoTick.ts`): stamina lower than the
+  last read counted forward = spent ("Spend …" ticked, only when the last read was the
+  same game day); daily activity full = the daily income row (Daily Training / Daily
+  Engagement) ticked. Ticked rows say "ticked from HoYoLAB"; untick and it stays unticked.
 - 2026-10-10 · **Two more chats: MANAGER and ERROR-FIX** (branch `frame/manager-error-fix`).
   `docs/WORKSTREAMS.md`: rules 7–8, both in Who's who, a routing table (which job goes
   to which chat). `docs/briefs/MANAGER.md` (the owner's front desk: routes every
