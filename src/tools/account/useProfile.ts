@@ -67,11 +67,32 @@ export interface ProfileState {
   imageUrl: (value: string | null) => string | null;
   /** Signed in with an empty account profile, but this device holds one: offered to copy over (never copied without asking). */
   deviceCopy: Profile | null;
+  /** "Keep my account's profile": stop offering the device copy here. The device copy itself is kept. */
+  dismissDeviceCopy: () => void;
 }
+
+/** Remembered on this device: you chose to keep your account's profile over this device's copy. */
+export const DEVICE_COPY_DISMISSED_KEY = 'hlith.profile.deviceCopyDismissed';
+const readDismissed = (): boolean => {
+  try {
+    return localStorage.getItem(DEVICE_COPY_DISMISSED_KEY) === '1';
+  } catch {
+    return false;
+  }
+};
 
 export function useProfile(store: ProfileStore): ProfileState {
   const [state, setState] = useState<{ store: ProfileStore; profile: Profile; error: string } | null>(null);
   const [saveError, setSaveError] = useState('');
+  const [dismissed, setDismissed] = useState(readDismissed);
+  const dismissDeviceCopy = useCallback(() => {
+    try {
+      localStorage.setItem(DEVICE_COPY_DISMISSED_KEY, '1');
+    } catch {
+      /* storage blocked: hidden for this visit only */
+    }
+    setDismissed(true);
+  }, []);
 
   useEffect(() => {
     let alive = true;
@@ -100,7 +121,7 @@ export function useProfile(store: ProfileStore): ProfileState {
     [store],
   );
   const profile = current?.profile ?? EMPTY_PROFILE;
-  const local = store.mode === 'account' && current && !current.error && isBlank(profile) ? loadDeviceProfile() : null;
+  const local = store.mode === 'account' && !dismissed && current && !current.error && isBlank(profile) ? loadDeviceProfile() : null;
   return {
     profile,
     loading: current === null,
@@ -109,5 +130,6 @@ export function useProfile(store: ProfileStore): ProfileState {
     save,
     imageUrl: (v) => store.imageUrl(v, profile.updatedAt),
     deviceCopy: local && !isBlank(local) ? local : null,
+    dismissDeviceCopy,
   };
 }

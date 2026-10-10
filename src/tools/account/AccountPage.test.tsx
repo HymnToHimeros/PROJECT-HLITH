@@ -1,4 +1,4 @@
-import { act, fireEvent, render, screen, waitFor, within } from '@testing-library/react';
+import { act, fireEvent, render, renderHook, screen, waitFor, within } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import type { GameContract } from '../../core/contract';
 import { getPrefs, reloadPrefs, updatePrefs } from '../../core/data/prefs';
@@ -6,8 +6,9 @@ import { addLedgerEntry, addPulls, resetUserData, setRosterEntry } from '../../c
 import type { PanelProps } from '../../core/registry/panels';
 import { ExampleNotice, useSampleShown } from '../../core/ui';
 import AccountPage, { resolveSection, sectionsFor } from './AccountPage';
-import { DEVICE_KEY } from './profile';
-import { setupSteps } from './SetupChecklist';
+import { DEVICE_KEY, EMPTY_PROFILE, type Profile } from './profile';
+import { useProfile } from './useProfile';
+import { setupSteps, type SetupFacts } from './SetupChecklist';
 
 const game = {
   id: 'aa',
@@ -159,7 +160,7 @@ describe('Account page: settings sections', () => {
   it('setup steps: HoYoLAB ticks for any linked account (server or device); notifications only for the calendar feed', () => {
     const linked = { ...game, accountLinks: [{ provider: 'hoyolab', supports: [], config: { gameBiz: 'x_global' } }] } as unknown as GameContract;
     const act0 = { games: [linked], open: vi.fn(), goTo: vi.fn() };
-    const facts = { accounts: [], feed: false, backup: false, server: true };
+    const facts: SetupFacts = { accounts: [], feed: false, backup: false, server: true };
     const step = (id: string, f = facts) => setupSteps([linked], {}, {}, f, act0).find((s) => s.id === id);
     expect(step('hoyolab')?.done).toBe(false);
     const serverAccount = { id: 's1', label: 'Main', where: 'server' as const, hoyolabId: '1', games: [{ gameId: 'aa' }], autoCheckin: true, autoRedeem: false, hasRedeemLogin: false };
@@ -236,6 +237,32 @@ describe('Account page: Profile', () => {
     view.unmount();
     render(<AccountPage {...props()} />);
     expect(await screen.findByRole('heading', { name: 'Mira' })).toBeInTheDocument();
+  });
+
+  it('a pinned character you no longer own shows dimmed with ✕ and can be unpinned', async () => {
+    localStorage.setItem(DEVICE_KEY, JSON.stringify({ displayName: 'Mira', pinned: { aa: ['c1'] }, hiddenCards: [], updatedAt: 1 }));
+    act(() => {
+      setRosterEntry('aa', 'c1', { owned: false, wanted: false, dupes: 0 });
+      setRosterEntry('aa', 'c2', { owned: true, wanted: false, dupes: 0 });
+    });
+    render(<AccountPage {...props()} />);
+    fireEvent.click(await screen.findByRole('button', { name: 'Edit profile' }));
+    const pins = within(await screen.findByRole('group', { name: 'Pin AA characters' }));
+    expect(screen.getByText('1 / 6 pinned')).toBeInTheDocument();
+    fireEvent.click(pins.getByRole('button', { name: 'Unpin Ash (not owned)' }));
+    expect(screen.getByText('0 / 6 pinned')).toBeInTheDocument();
+    expect(pins.queryByRole('button', { name: /not owned/ })).toBeNull();
+  });
+
+  it('the profile from before sign-in can be declined, and the device copy is kept', async () => {
+    localStorage.setItem(DEVICE_KEY, JSON.stringify({ displayName: 'Old me', pinned: {}, hiddenCards: [], updatedAt: 1 }));
+    const store = { mode: 'account' as const, load: async () => EMPTY_PROFILE, save: async (x: Profile) => x, imageUrl: () => null };
+    const { result } = renderHook(() => useProfile(store));
+    await waitFor(() => expect(result.current.deviceCopy?.displayName).toBe('Old me'));
+    act(() => result.current.dismissDeviceCopy());
+    expect(result.current.deviceCopy).toBeNull();
+    expect(localStorage.getItem(DEVICE_KEY)).toContain('Old me');
+    expect(renderHook(() => useProfile(store)).result.current.deviceCopy).toBeNull();
   });
 
   it('refuses a file that isn’t a picture or is over 2 MB, in plain words', async () => {

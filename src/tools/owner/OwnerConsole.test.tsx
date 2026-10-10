@@ -1,5 +1,5 @@
 import { fireEvent, render, screen, within } from '@testing-library/react';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import type { GameContract } from '../../core/contract';
 import OwnerConsole from './OwnerConsole';
 
@@ -21,30 +21,28 @@ const game = {
   },
 } as unknown as GameContract;
 
-describe('Owner console (frame)', () => {
-  it('shows game records, real list counts, example leak sources and honest user stats', async () => {
+describe('Owner console', () => {
+  it('shows game records and real list counts, and names unbuilt parts once instead of dead controls', async () => {
     render(<OwnerConsole games={[game]} scope="all" servers={{}} openTab={() => {}} open={() => {}} openAccount={() => {}} />);
     expect(screen.getByText('Game A')).toBeInTheDocument();
     expect(screen.getByText(/1 servers · reset 04:00 · Mon · 2 modules/)).toBeInTheDocument();
     expect(screen.getByText('Gems')).toBeInTheDocument();
-    // User stats need the backend: no numbers.
-    expect(screen.getAllByText('No data yet · needs the backend')).toHaveLength(3);
     // List sizes are counted from the built-in lists themselves.
     const lists = screen.getByRole('region', { name: 'Built-in lists' });
     expect(await within(lists).findByText('2')).toBeInTheDocument();
-    // Leak sources are examples until the backend holds the list.
-    const sources = screen.getByRole('region', { name: 'Leak sources' });
-    expect(within(sources).getAllByText('EXAMPLE').length).toBeGreaterThan(0);
-    const sw = within(sources).getByRole('switch', { name: 'Use Datamine file names' });
-    fireEvent.click(sw);
-    expect(sw).toHaveAttribute('aria-checked', 'false');
+    expect(screen.getByText(/Planned, not built yet/)).toBeInTheDocument();
+    // No fake Publish, no switches that do nothing, no buttons that can never be pressed.
+    expect(screen.queryByRole('button', { name: 'Publish' })).toBeNull();
+    expect(screen.queryByRole('switch')).toBeNull();
+    expect(screen.queryAllByRole('button').filter((b) => (b as HTMLButtonElement).disabled)).toHaveLength(0);
+    expect(screen.queryByText(/needs the backend|comes with the backend/i)).toBeNull();
   });
 
-  it('an announcement stays on screen, clearly not sent', () => {
-    render(<OwnerConsole games={[game]} scope="all" servers={{}} openTab={() => {}} open={() => {}} openAccount={() => {}} />);
-    fireEvent.change(screen.getByLabelText('Announcement'), { target: { value: 'Maintenance on Wednesday' } });
-    fireEvent.click(screen.getByRole('button', { name: 'Publish' }));
-    expect(screen.getByText('Maintenance on Wednesday')).toBeInTheDocument();
-    expect(screen.getByText(/Not sent yet/)).toBeInTheDocument();
+  it('the open tab can follow the address', () => {
+    const openTab = vi.fn();
+    render(<OwnerConsole games={[game]} scope="all" servers={{}} tab="findings" openTab={openTab} open={() => {}} openAccount={() => {}} />);
+    expect(screen.getByRole('tab', { name: /Findings/ })).toHaveAttribute('aria-selected', 'true');
+    fireEvent.click(screen.getByRole('tab', { name: 'Scheduler' }));
+    expect(openTab).toHaveBeenCalledWith('scheduler');
   });
 });

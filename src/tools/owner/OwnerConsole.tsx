@@ -1,21 +1,21 @@
-import { useEffect, useState, type CSSProperties, type FormEvent } from 'react';
+import { useEffect, useState, type CSSProperties } from 'react';
 import type { GameContract, GameId } from '../../core/contract';
 import type { ModuleScreenProps } from '../../core/registry/modules';
-import { ExampleNotice, ExampleTag, HowTo, NoData, Segmented } from '../../core/ui';
+import { HowTo, Segmented } from '../../core/ui';
 import { Findings } from './Findings';
 import o from './owner.module.css';
 import { Scheduler } from './Scheduler';
 import { useSchedulerData } from './schedulerData';
 
 /*
- * Owner console (R58), design: Account → Owner console. Interface frame only.
- * Not reachable yet: there is no owner check, so the Account row stays hidden
- * (shell builder). Wire it as a screen taking ModuleScreenProps.
+ * Owner console (R58), design: Account → Owner console. Shown only to owners
+ * (public.is_owner() on the server); every owner write is checked there again.
  *
- * Logic still to come (backend): saving game records, updating built-in lists,
- * the real leak-source list, publishing announcements to every user, and the
- * user stats. Until then each slot is "No data yet" or a clearly marked EXAMPLE.
- * Nothing here ever touches anyone's progress.
+ * Overview shows what is real today: every game record and the built-in list sizes.
+ * Not built yet, and so not shown as controls: editing game records, updating
+ * built-in lists, the leak-source list, announcements to every user and user
+ * numbers. They are named once, in one "planned" line. Nothing here ever touches
+ * anyone's progress.
  *
  * Tabs: Overview (this file), Scheduler (Scheduler.tsx) and Findings (Findings.tsx),
  * both reading the scheduler tables through schedulerData.ts.
@@ -51,21 +51,20 @@ const LISTS: { id: keyof Counts; label: string }[] = [
   { id: 'backlog', label: 'Backlog items' },
 ];
 
-/** Example leak sources, shown until the backend holds the real list. */
-const EXAMPLE_SOURCES = [
-  { id: 'official', name: 'Official preview streams', reliability: 95 },
-  { id: 'beta', name: 'Beta build leakers', reliability: 70 },
-  { id: 'files', name: 'Datamine file names', reliability: 40 },
-];
-
 const pad = (n: number) => String(n).padStart(2, '0');
 const WEEKDAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
 type OwnerTab = 'overview' | 'scheduler' | 'findings';
+const OWNER_TABS: readonly string[] = ['overview', 'scheduler', 'findings'];
 
-/** The owner's console: Overview (records, lists, sources, announcements), Scheduler, Findings. */
+/** The owner's console: Overview (game records, built-in lists), Scheduler, Findings. The tab can live in the address (props.tab / openTab). */
 export default function OwnerConsole(props: ModuleScreenProps) {
-  const [tab, setTab] = useState<OwnerTab>('overview');
+  const [own, setOwn] = useState<OwnerTab>('overview');
+  const tab: OwnerTab = props.tab && OWNER_TABS.includes(props.tab) ? (props.tab as OwnerTab) : own;
+  const setTab = (t: OwnerTab) => {
+    setOwn(t);
+    props.openTab(t);
+  };
   const [now] = useState(() => Date.now());
   const sched = useSchedulerData(props.games.map((g) => g.id));
   const newFindings = sched.findings.filter((f) => f.status === 'new').length;
@@ -91,53 +90,25 @@ export default function OwnerConsole(props: ModuleScreenProps) {
 
 function Overview({ games }: ModuleScreenProps) {
   const counts = useListCounts(games);
-  const [sourceOn, setSourceOn] = useState<Record<string, boolean>>({});
-  const [draft, setDraft] = useState('');
-  const [drafts, setDrafts] = useState<string[]>([]);
-  const shorts = games.map((g) => g.short).join(' · ');
-
-  const publish = (e: FormEvent) => {
-    e.preventDefault();
-    const t = draft.trim();
-    if (!t) return;
-    setDrafts((d) => [t, ...d]);
-    setDraft('');
-  };
 
   return (
     <div className={o.stack}>
       <HowTo
         steps={[
-          <>Game records set each game’s colour, currencies, servers, reset time and modules. New colours must pass the 7:1 contrast check.</>,
-          <>Built-in lists are the characters, banners, events, materials and backlog every user starts from. Updating a list never changes anyone’s progress.</>,
-          <>Leak sources decide what shows in Intel, Banners and Calendar as unverified. Switch a source off to hide everything from it.</>,
-          <>Announcements go to every user. User numbers appear once the backend is connected.</>,
+          <>Game records set each game’s colour, currencies, servers, reset time and modules. All of them are listed, switched on in your switcher or not.</>,
+          <>Built-in lists are the characters, banners, events, materials and backlog every user starts from. The numbers are counted from the lists themselves.</>,
+          <>Scheduler runs the jobs; Findings is the inbox of what they found.</>,
         ]}
       />
-
-      <div className={o.tiles}>
-        {['Accounts', 'Active today', 'Sync errors'].map((label) => (
-          <div key={label} className={o.tile}>
-            <span className={o.tileLabel}>{label}</span>
-            <span className={o.tileDash} aria-hidden="true">
-              —
-            </span>
-            <span className={o.noData}>No data yet · needs the backend</span>
-          </div>
-        ))}
-      </div>
+      <p className={o.note}>
+        Planned, not built yet: editing game records, updating built-in lists from here, the leak-source list, announcements to every user, and user numbers.
+      </p>
 
       <div className={o.grid}>
         <section className={o.card} aria-labelledby="owner-records">
-          <div className={o.cardHead}>
-            <h3 className={o.cardTitle} id="owner-records">
-              Game records
-            </h3>
-            {/* Adding and editing records needs the backend (owner workstream). */}
-            <button type="button" className={o.dashedBtn} disabled title="Comes with the backend">
-              + Add game record
-            </button>
-          </div>
+          <h3 className={o.cardTitle} id="owner-records">
+            Game records
+          </h3>
           {games.map((g) => (
             <div key={g.id} className={o.record}>
               <span className={o.recordIcon} style={{ '--rec-vent': g.vent } as CSSProperties}>
@@ -150,12 +121,8 @@ function Overview({ games }: ModuleScreenProps) {
                 </span>
                 <span className={o.recordCurr}>{g.currencies.map((c) => c.name).join(' · ') || 'No currencies listed'}</span>
               </div>
-              <button type="button" className={o.smallBtn} disabled title="Comes with the backend">
-                Edit
-              </button>
             </div>
           ))}
-          <span className={o.note}>A record sets vent, icon, currencies, servers, reset rule and modules. New vents must pass the 7:1 contrast check.</span>
         </section>
 
         <section className={o.card} aria-labelledby="owner-lists">
@@ -166,70 +133,9 @@ function Overview({ games }: ModuleScreenProps) {
             <div key={l.id} className={o.listRow}>
               <span className={o.listLabel}>{l.label}</span>
               <span className={o.listCount}>{counts ? games.reduce((sum, g) => sum + (counts[g.id]?.[l.id] ?? 0), 0) : '…'}</span>
-              <span className={o.listUpdated}>
-                {/* Last update time is kept by the backend. */}
-                <NoData dash={false} />
-              </span>
-              <button type="button" className={o.smallBtn} disabled title="Comes with the backend">
-                Update
-              </button>
             </div>
           ))}
-          <span className={o.note}>List updates never change anyone’s progress.</span>
-        </section>
-
-        <section className={o.card} aria-labelledby="owner-sources">
-          <div className={o.cardHead}>
-            <h3 className={o.cardTitle} id="owner-sources">
-              Leak sources
-            </h3>
-            <ExampleTag />
-          </div>
-          <ExampleNotice>These sources and their reliability are examples until the backend holds the real list. Switching them here changes nothing for users yet.</ExampleNotice>
-          {EXAMPLE_SOURCES.map((s) => {
-            const on = sourceOn[s.id] !== false;
-            return (
-              <div key={s.id} className={o.sourceRow}>
-                <div className={o.sourceText}>
-                  <span className={o.listLabel}>{s.name}</span>
-                  <span className={o.recordMeta}>{shorts}</span>
-                </div>
-                <span className={o.track} aria-hidden="true">
-                  <span className={o.fill} style={{ width: `${s.reliability}%` }} />
-                </span>
-                <span className={o.relValue}>{s.reliability}%</span>
-                <button type="button" role="switch" aria-checked={on} aria-label={`Use ${s.name}`} className={o.switch} onClick={() => setSourceOn((x) => ({ ...x, [s.id]: !on }))}>
-                  <span className={o.knob} />
-                </button>
-              </div>
-            );
-          })}
-        </section>
-
-        <section className={o.card} aria-labelledby="owner-ann">
-          <h3 className={o.cardTitle} id="owner-ann">
-            Announcements
-          </h3>
-          <form className={o.annForm} onSubmit={publish}>
-            <label className={o.srOnly} htmlFor="owner-ann-input">
-              Announcement
-            </label>
-            <input id="owner-ann-input" className={o.input} value={draft} onChange={(e) => setDraft(e.target.value)} placeholder="Write to every user…" />
-            <button type="submit" className={o.publish}>
-              Publish
-            </button>
-          </form>
-          {/* Sending to every user needs the backend; until then a published text stays on this screen only. */}
-          {drafts.length === 0 ? (
-            <span className={o.note}>Nothing published yet.</span>
-          ) : (
-            drafts.map((t, i) => (
-              <div key={`${i}-${t}`} className={o.ann}>
-                <span className={o.annText}>{t}</span>
-                <span className={o.noData}>Not sent yet · sending needs the backend</span>
-              </div>
-            ))
-          )}
+          <span className={o.note}>All games together. List updates never change anyone’s progress.</span>
         </section>
       </div>
     </div>

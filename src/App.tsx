@@ -30,7 +30,7 @@ function Root() {
       alive = false;
     };
   }, [userId]);
-  const isOwner = Boolean(userId) && ownerAnswer?.userId === userId && ownerAnswer.owner;
+  const isOwner = Boolean(userId) && ownerAnswer?.userId === userId && ownerAnswer?.owner === true;
   // Without an account there is nothing to ask; with one, wait for the server's answer.
   const ownerChecked = !backend || !userId || ownerAnswer?.userId === userId;
 
