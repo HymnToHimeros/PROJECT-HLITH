@@ -212,7 +212,8 @@ for (const [game, read] of [
 ] as const) {
   const m = manifest[game];
   if (!m) throw new Error(`nanoka manifest has no ${game}`);
-  const list = read(await getJson(`${STATIC}/${game}/${m.latest}/character.json`)).sort((a, b) => Number(a.id) - Number(b.id));
+  const raw = await getJson(`${STATIC}/${game}/${m.latest}/character.json`);
+  const list = read(raw).sort((a, b) => Number(a.id) - Number(b.id));
   // A build newer than the live game: its new characters are unreleased (leaks).
   if (m.latest !== m.live && !m.latest.startsWith(`${m.live}+`)) {
     const fresh = new Set((m.new?.character ?? []).map(String));
@@ -220,6 +221,12 @@ for (const [game, read] of [
       if (!fresh.has(c.id)) continue;
       c.leak = { source: `nanoka.cc, game files of build ${m.latest} (live is ${m.live})` };
       delete c.releasedAt;
+      // Leakers use the game files' code name ("nihilux"), the files' display name can differ
+      // ("Aeon ★ Aha"): show both so the character is found under either. The id never changes.
+      const code = raw[c.id]?.icon;
+      if (typeof code === 'string' && /^[a-z]+$/i.test(code) && code.toLowerCase().replace(/[^a-z0-9]/g, '') !== c.name.toLowerCase().replace(/[^a-z0-9]/g, '')) {
+        c.name = `${code.charAt(0).toUpperCase()}${code.slice(1)} (${c.name})`;
+      }
     }
   }
   await wikiDates(game, list);

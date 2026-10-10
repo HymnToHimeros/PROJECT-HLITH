@@ -28,6 +28,13 @@ Resume with: "continue from PROGRESS.md". Newest entry on top. Older entries:
 - CI (`.github/workflows/ci.yml`) runs both on every pull request.
 
 ## Done
+- 2026-10-10 · **SCHEDULER: Nihilux found under her leak name** (branch `scheduler/nihilux-leak-name`).
+  Nihilux was already listed as a leak (HSR id 1511), but under the display name the
+  beta files give, "Aeon ★ Aha"; the same files name the character `nihilux`. Leaked
+  characters now show both names: "Nihilux (Aeon ★ Aha)", Elation · Quantum · 5★, art
+  from the beta files, marked unverified. The id stays 1511 when the official name lands.
+  Also: permanent banners' "announced until" date no longer shifts between runs; the
+  wiki corrected Deadly Assault start times (04:00 server time).
 - 2026-10-10 · **Eight more themes** (branch `worktree-agent-a9e6d8c564b992b99`). Account → Theme now offers
   Noctune Bloom, Astral Lagoon, Crimson Haze, Jade Whisper, Velvet Twilight, Midnight Sakura and two light
   ones, Ethereal Dune and Amber Mirage, each from the owner's palette with its own background art and emblem
