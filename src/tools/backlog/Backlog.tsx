@@ -7,7 +7,23 @@ import { cx } from '../../core/ui/cx';
 import { newOwnId } from '../edit-mode/merge';
 import { Switch } from '../pulls/shared';
 import { exampleBacklog } from './examples';
-import { categories, categoryIds, categoryLabel, estimate, groupsOf, isDone, openCount, shapeOf, type CategoryView, type ItemView, type Shape } from './backlog';
+import {
+  categories,
+  categoryIds,
+  categoryLabel,
+  estimate,
+  FOLD_ROWS_AT,
+  FOLD_ROWS_SHOW,
+  FOLD_STEPS_AT,
+  groupsOf,
+  isDone,
+  nearSteps,
+  openCount,
+  shapeOf,
+  type CategoryView,
+  type ItemView,
+  type Shape,
+} from './backlog';
 import b from './backlog.module.css';
 import type { BacklogData, BacklogRow } from './useBacklogData';
 
@@ -219,7 +235,12 @@ function CategoryPanel({
                 All done
               </button>
             ))}
-          {cat && !noRewards && <Switch checked={cat.enabled} onChange={(on) => setBacklogCategory(game.id, cat.id, on)} label={`Count ${label} toward pulls`} />}
+          {cat && !noRewards && (
+            <span className={b.countToggle}>
+              <span aria-hidden="true">Counts toward pulls</span>
+              <Switch checked={cat.enabled} onChange={(on) => setBacklogCategory(game.id, cat.id, on)} label={`Count ${label} toward pulls`} />
+            </span>
+          )}
         </div>
       </div>
       {cat && !cat.enabled && <p className={b.muted}>Not counted toward pulls.</p>}
@@ -234,7 +255,7 @@ function CategoryPanel({
         <div className={b.card}>
           {groups.map((g) =>
             g.name === null ? (
-              g.items.map((v) => <ItemRow key={v.item.id} view={v} ctx={ctx} />)
+              <PlainRows key="__plain" items={g.items} ctx={ctx} />
             ) : (
               <Group key={g.name} title={g.name} items={g.items} open={openGroups.has(g.name)} onToggle={() => toggle(g.name as string)} ctx={ctx} />
             ),
@@ -317,6 +338,33 @@ function Group({ title, items, open, onToggle, ctx }: { title: string; items: It
   );
 }
 
+/** Items without a group: a long list shows its first few rows and folds the rest behind "Show all". */
+function PlainRows({ items, ctx }: { items: ItemView[]; ctx: RowCtx }) {
+  const [showAll, setShowAll] = useState(false);
+  const listId = useId();
+  const foldable = items.length > FOLD_ROWS_AT;
+  const shown = foldable && !showAll ? items.slice(0, FOLD_ROWS_SHOW) : items;
+  const rest = items.slice(FOLD_ROWS_SHOW);
+  const restOpen = rest.filter((v) => !isDone(v)).length;
+  return (
+    <>
+      <div id={listId} className={b.plainRows}>
+        {shown.map((v) => (
+          <ItemRow key={v.item.id} view={v} ctx={ctx} />
+        ))}
+      </div>
+      {foldable && (
+        <button type="button" className={b.foldToggle} aria-expanded={showAll} aria-controls={listId} onClick={() => setShowAll((v) => !v)}>
+          <span className={b.chevron} aria-hidden="true">
+            {showAll ? '⌄' : '›'}
+          </span>
+          {showAll ? 'Show fewer' : `Show all ${items.length} · ${rest.length} more${restOpen > 0 ? `, ${restOpen} still open` : ', all done'}`}
+        </button>
+      )}
+    </>
+  );
+}
+
 function EditButtons({ view, ctx }: { view: ItemView; ctx: RowCtx }) {
   if (!ctx.editing) return null;
   const t = view.item.title;
@@ -345,12 +393,25 @@ function ItemRow({ view, ctx }: { view: ItemView; ctx: RowCtx }) {
   return <Counter view={view} ctx={ctx} />;
 }
 
-/** An ordered checklist: tap the step you are on; everything before it counts as done. */
+/**
+ * An ordered checklist: tap the step you are on; everything before it counts as done.
+ * "Where you are" leads (current step, how far along, reward left); a long list folds the
+ * rest behind "Show all", so the whole story never fills the screen unasked. Nothing is
+ * removed: every step stays one tap away.
+ */
 function Steps({ view, ctx }: { view: ItemView; ctx: RowCtx }) {
   const { item, done } = view;
+  const listId = useId();
+  const [showAll, setShowAll] = useState(false);
   const steps = item.steps ?? [];
   const finished = done !== null && done >= steps.length;
   const at = done === null || finished ? null : steps[done];
+  const doneCount = done === null ? null : Math.min(done, steps.length);
+  const foldable = steps.length > FOLD_STEPS_AT;
+  const folded = foldable && !showAll;
+  const near = new Set(nearSteps(steps.length, done));
+  const noun = item.category === 'story' ? 'chapters' : 'steps';
+  const ratio = doneCount === null ? null : doneCount / Math.max(1, steps.length);
   const save = (n: number) => setBacklogDone(ctx.game.id, item.id, n);
   return (
     <div className={b.steps} role="group" aria-label={item.title}>
@@ -361,14 +422,26 @@ function Steps({ view, ctx }: { view: ItemView; ctx: RowCtx }) {
         </span>
         <EditButtons view={view} ctx={ctx} />
       </div>
+      <div className={b.whereMeta}>
+        {(finished || at) && <span className={b.muted}>{item.title}</span>}
+        {doneCount === null ? (
+          <span className={b.muted}>
+            Where you are: <NoData dash={false} />
+          </span>
+        ) : (
+          <span className={b.progressText}>
+            {formatNumber(doneCount)} of {formatNumber(steps.length)} done
+          </span>
+        )}
+        <RewardLeft view={view} name={ctx.name} />
+      </div>
+      <div className={b.bar} role="progressbar" aria-label={`${item.title} done`} {...(ratio !== null ? { 'aria-valuenow': Math.round(ratio * 100), 'aria-valuemin': 0, 'aria-valuemax': 100 } : {})}>
+        {ratio !== null && <div className={b.barFill} style={{ width: `${ratio * 100}%` }} />}
+      </div>
       <span className={b.muted}>Tap the step you are on: everything before it counts as done.</span>
-      {done === null && (
-        <span className={b.muted}>
-          Where you are: <NoData dash={false} />
-        </span>
-      )}
-      <ol className={b.stepList}>
+      <ol className={b.stepList} id={listId} aria-label={folded ? `${item.title}: where you are` : `${item.title}: all ${noun}`}>
         {steps.map((s, i) => {
+          if (folded && !near.has(i)) return null;
           const state = done === null ? 'open' : i < done ? 'done' : i === done ? 'here' : 'open';
           return (
             <li key={`${i}-${s}`}>
@@ -378,11 +451,24 @@ function Steps({ view, ctx }: { view: ItemView; ctx: RowCtx }) {
                 </span>
                 <span className={b.stepText}>{s}</span>
                 {state === 'here' && <span className={b.here}>you are here</span>}
+                {foldable && (
+                  <span className={b.stepNo} aria-hidden="true">
+                    {i + 1}
+                  </span>
+                )}
               </button>
             </li>
           );
         })}
       </ol>
+      {foldable && (
+        <button type="button" className={b.foldToggle} aria-expanded={showAll} aria-controls={listId} onClick={() => setShowAll((v) => !v)}>
+          <span className={b.chevron} aria-hidden="true">
+            {showAll ? '⌄' : '›'}
+          </span>
+          {showAll ? `Show fewer ${noun}` : `Show all ${steps.length} ${noun}`}
+        </button>
+      )}
       <div className={b.stepsActions}>
         <Button onClick={() => save(steps.length)} aria-pressed={finished}>
           ✓ I’ve finished {item.title.toLowerCase()}
