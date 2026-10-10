@@ -57,6 +57,30 @@ export const hsr: GameContract = {
   ],
   dupes: { prefix: 'E', name: 'Eidolon', max: 6 },
   potential: { name: 'Enhanced', max: 1 },
+  build: {
+    levelMax: 80,
+    weaponLevelMax: 80,
+    refine: { name: 'Superimposition', max: 5 },
+    slots: [
+      { id: 'Head', label: 'Head', mains: ['HP'] },
+      { id: 'Hands', label: 'Hands', mains: ['ATK'] },
+      { id: 'Body', label: 'Body', mains: ['HP %', 'ATK %', 'DEF %', 'CRIT Rate', 'CRIT DMG', 'Outgoing Healing Boost', 'Effect Hit Rate'] },
+      { id: 'Feet', label: 'Feet', mains: ['HP %', 'ATK %', 'DEF %', 'SPD'] },
+      {
+        id: 'Planar Sphere',
+        label: 'Planar Sphere',
+        mains: ['HP %', 'ATK %', 'DEF %', 'Physical DMG Boost', 'Fire DMG Boost', 'Ice DMG Boost', 'Lightning DMG Boost', 'Wind DMG Boost', 'Quantum DMG Boost', 'Imaginary DMG Boost'],
+      },
+      { id: 'Link Rope', label: 'Link Rope', mains: ['HP %', 'ATK %', 'DEF %', 'Break Effect', 'Energy Regeneration Rate'] },
+    ],
+    subStats: ['HP', 'ATK', 'DEF', 'HP %', 'ATK %', 'DEF %', 'SPD', 'CRIT Rate', 'CRIT DMG', 'Effect Hit Rate', 'Effect RES', 'Break Effect'],
+    skills: [
+      { name: 'Basic ATK', max: 7 },
+      { name: 'Skill', max: 15 },
+      { name: 'Ultimate', max: 15 },
+      { name: 'Talent', max: 15 },
+    ],
+  },
   currencies: [
     { id: 'stellar-jade', name: 'Stellar Jade', perPull: 160 },
     { id: 'special-pass', name: 'Star Rail Special Pass', pullItemFor: ['character', 'light-cone'] },

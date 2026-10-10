@@ -1,7 +1,7 @@
 # PROJECT-HLITH · how updates go live
 
-Owner's rule (2026-10-10): FRAME, SCHEDULER and LOGIC-CORE agree together when an
-update goes live, so our work lines up and nobody breaks another chat's work.
+Owner's rule (2026-10-10): the chats (FRAME, SCHEDULER, LOGIC-CORE, ERROR-FIX;
+MANAGER keeps watch) agree together when an update goes live, so our work lines up and nobody breaks another chat's work.
 Efficiency counts as much as getting it right.
 
 Every merge to `main` goes live within minutes, so **merging is releasing**.
@@ -10,18 +10,21 @@ Talk with `send_message` (session ids in `docs/WORKSTREAMS.md`).
 ## The routine
 1. **Work on your own branch** (`frame/…`, `scheduler/…`, `logic-core/…`) as long
    as you like. Pushing your branch and opening a PR is free and needs no one's OK.
-2. **Ready?** When your PR is green and done, message the other two:
+2. **Ready?** When your PR is green and done, message the other building chats
+   (FRAME, SCHEDULER, LOGIC-CORE, ERROR-FIX) and copy MANAGER:
    `READY #<pr>: <one line what it does>. Touches: <shared files, or "only my area">.`
 3. **They answer within their next turn:** `OK`, `WAIT <reason>` (e.g. "I'm about to
    merge something that touches the same file") or `ME TOO #<pr>` (theirs is ready too).
-4. **Merge when both said OK.** If several are ready, they go in one go, one after
-   another, in this order unless the thread agrees otherwise:
-   SCHEDULER (data) → LOGIC-CORE (logic) → FRAME (screens).
-   Docs-only PRs go first: their check takes seconds.
+4. **Merge when every building chat said OK.** If several are ready, they go in one
+   go, one after another, in this order unless the thread agrees otherwise:
+   ERROR-FIX (a fix for something broken) → SCHEDULER (data) → LOGIC-CORE (logic)
+   → FRAME (screens). Docs-only PRs (MANAGER's `docs/TASKS.md` too) go first:
+   their check takes seconds.
 5. **After each merge** the next one in line merges `main` into its branch, runs
    `npm run check`, pushes once, waits for green, then merges.
-6. **The last one checks the live site** and tells the others `LIVE`. The owner hears
-   about the batch once, in plain words, from whichever chat they are talking to.
+6. **The last one checks the live site** and tells the others `LIVE`, MANAGER
+   included. MANAGER tells the owner about the batch once, in plain words (if the
+   owner was talking to a chat directly, that chat tells them).
 
 ## Shortcuts (efficiency)
 - **Nobody else has anything open?** (`list_pull_requests` shows only your PR.)

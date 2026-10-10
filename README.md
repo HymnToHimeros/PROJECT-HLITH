@@ -107,6 +107,8 @@ HLITH is built by several focused workstreams, each with its own brief:
 | **FRAME** | The whole interface and base: every screen, the shell, sync, accounts, scheduler. |
 | **SCHEDULER** | The real game data: versions, banners, events, endgame, backlog ([brief](docs/briefs/SCHEDULER.md)). |
 | **LOGIC-CORE** | The deep logic: kits, kit check, team scores, builds, materials ([brief](docs/briefs/LOGIC-CORE.md)). |
+| **MANAGER** | The owner's front desk: sends every request to the right workstream and reports back ([brief](docs/briefs/MANAGER.md)). |
+| **ERROR-FIX** | Bug fixes anywhere, when another workstream asks ([brief](docs/briefs/ERROR-FIX.md)). |
 
 ## For developers
 

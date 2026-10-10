@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import type { Character, GameContract, GameId, Kit, RecommendedBuild, SampleArt, TeamPreset } from '../../core/contract';
+import type { Character, GameContract, GameId, Kit, RecommendedBuild, SampleArt, TeamPreset, Weapon } from '../../core/contract';
 import { useExamplesShown } from '../../core/data/prefs';
 import type { GameUserData } from '../../core/data/userData';
 import { examplePresets } from './examples';
@@ -112,4 +112,30 @@ export function useBuilds(game: GameContract): RecommendedBuild[] | null {
   }, [game]);
   if (!game.data.builds) return [];
   return state?.game === game ? state.builds : null;
+}
+
+// Weapon lists are loaded once per game, only when the build form needs them.
+const weaponCache = new WeakMap<GameContract, Promise<Weapon[]>>();
+
+/** The game's weapons (for the build form): null while loading; [] when the game has none. */
+export function useWeapons(game: GameContract): Weapon[] | null {
+  const [state, setState] = useState<{ game: GameContract; weapons: Weapon[] } | null>(null);
+  useEffect(() => {
+    const load = game.data.weapons;
+    if (!load) return;
+    let alive = true;
+    let p = weaponCache.get(game);
+    if (!p) {
+      p = load().catch(() => []);
+      weaponCache.set(game, p);
+    }
+    void p.then((weapons) => {
+      if (alive) setState({ game, weapons });
+    });
+    return () => {
+      alive = false;
+    };
+  }, [game]);
+  if (!game.data.weapons) return [];
+  return state?.game === game ? state.weapons : null;
 }

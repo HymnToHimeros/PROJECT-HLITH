@@ -73,9 +73,10 @@ jobs:
           CI: 'true'
 
   # The one result to look at: green when every check passed (or was rightly skipped).
+  # A run stopped by a newer push shows as skipped, not as a failure.
   check:
     needs: [changes, unit, e2e]
-    if: always()
+    if: always() && !cancelled()
     runs-on: ubuntu-latest
     steps:
       - run: |
