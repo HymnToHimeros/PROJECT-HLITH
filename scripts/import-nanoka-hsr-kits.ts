@@ -14,6 +14,7 @@
  */
 import { writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
+import { leakedIds, shownName } from './kits/names.ts';
 
 const ROOT = resolve(import.meta.dirname, '..');
 const BASE = 'https://static.nanoka.cc/hsr';
@@ -92,7 +93,7 @@ const slug = (s: string) =>
 
 const num = (x: number) => String(Number(x.toPrecision(10)));
 /** Names can carry markup too (<unbreak>All-Out</unbreak>). */
-const name = (s: string) => s.replace(/<[^>]+>/g, '').trim();
+const name = (s: string) => shownName(s.replace(/<[^>]+>/g, '').trim());
 
 /** Game text with its markup turned into plain words and #n[i] numbers filled in. Exported for the tests. */
 export function plainText(raw: string, params: number[], who: string): string {
@@ -190,11 +191,13 @@ function kitOf(id: string, d: Detail, version: string) {
   return { characterId: id, source: 'nanoka.cc', version, skills: [...base.map((p) => ({ ...p, replacedAt: { potential: 1 } })), ...extra] };
 }
 
-const manifest = await getJson<{ hsr: { latest: string; live: string } }>(MANIFEST);
+const manifest = await getJson<{ hsr: { latest: string; live: string; new?: { character?: number[] } } }>(MANIFEST);
 const live = await getJson<Record<string, unknown>>(`${BASE}/${manifest.hsr.live}/character.json`);
 const latest = await getJson<Record<string, unknown>>(`${BASE}/${manifest.hsr.latest}/character.json`);
+// Leaks (T39): every new character in the manifest that isn't released yet gets its beta kit text on each run.
+const leaks = leakedIds(manifest.hsr.new, live);
 const kits = [];
-for (const id of Object.values(GROUPS).flat()) {
+for (const id of new Set([...Object.values(GROUPS).flat(), ...leaks])) {
   const released = id in live;
   if (!released && !(id in latest)) throw new Error(`Group character ${id} is not in nanoka.cc's HSR lists.`);
   const version = released ? manifest.hsr.live : manifest.hsr.latest;
@@ -203,4 +206,4 @@ for (const id of Object.values(GROUPS).flat()) {
 }
 kits.sort((a, b) => Number(a.characterId) - Number(b.characterId));
 writeFileSync(resolve(ROOT, 'src/games/hsr/data/kits.json'), `${JSON.stringify(kits, null, 2)}\n`);
-console.log(`hsr: kit text for ${kits.length} characters (groups ${Object.keys(GROUPS).join(', ')})`);
+console.log(`hsr: kit text for ${kits.length} characters (groups ${Object.keys(GROUPS).join(', ')}; leaks ${leaks.join(', ') || 'none'})`);

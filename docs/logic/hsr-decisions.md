@@ -166,4 +166,7 @@ team size and order, and the owner's ZZZ method's own counting.
     Why says "No game team list yet". Leaks join every-character pools only when the owner shows leaks
     (`TeamAccount.showLeaks`: Roster's "Show leaked" on, Banners' "Hide leaks" off); never in the check's recommended
     teams. A released carry's own game lists don't name leaks, so a leak joins their team only if the owner adds it
-    to the lists (decision 31). No new scoring.
+    to the lists (decision 31). No new scoring. The kit importers (`scripts/import-nanoka*-kits.ts`) read every new,
+    unreleased character in nanoka.cc's manifest on each run, so a new leak gets its beta kit text without a code
+    change (its kit check sheet is still read by hand before it is rated). A raw text key in a beta file where a name
+    belongs (ZZZ "Severian_Talent_01_Title") shows "No name yet"; the game text stays.

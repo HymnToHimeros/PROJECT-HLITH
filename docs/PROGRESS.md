@@ -33,6 +33,8 @@ Resume with: "continue from PROGRESS.md". Newest entry on top. Older entries:
   characters, and they can be put in teams. Everything that names a leak says "Leak: unverified beta kit,
   may change"; a leaked carry has "No game team list yet" (teammates come from their kit lines). Leaks
   join every-character lists only with "Show leaked" on. Both games. FRAME passes `showLeaks`.
+  The kit importers now read every unreleased new character on each run (SCHEDULER keeps leak data
+  current); raw beta name keys (ZZZ Severian / Phoenix Mindscapes) show "No name yet".
 - 2026-10-10 · **ERROR-FIX: typing in a pop-up form works again** (branch `error-fix/typing-in-forms`).
   Owner's report: typing in the character page's "Enter build" form set off other things on
   the page. Cause: the pop-up panel (`BottomSheet`, FRAME's) re-ran its open step whenever

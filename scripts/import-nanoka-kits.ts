@@ -15,6 +15,7 @@
  */
 import { writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
+import { leakedIds, shownName } from './kits/names.ts';
 
 const ROOT = resolve(import.meta.dirname, '..');
 const BASE = 'https://static.nanoka.cc/zzz';
@@ -233,7 +234,7 @@ function kitOf(id: string, d: Detail, version: string, beta: boolean) {
     const entries = d.skill[group]?.description ?? [];
     for (const e of entries) {
       if (e.desc === undefined) continue; // number tables, not text
-      const piece = variant({ id: `skill-${slug(e.name)}`, label: e.name, kind: 'skill', does: [], gameText: plainText(e.desc, who) }, e.potential);
+      const piece = variant({ id: `skill-${slug(e.name)}`, label: shownName(e.name), kind: 'skill', does: [], gameText: plainText(e.desc, who) }, e.potential);
       if (seen.has(piece.id)) continue; // the game lists some skills twice (once per tab)
       add(piece);
     }
@@ -256,7 +257,7 @@ function kitOf(id: string, d: Detail, version: string, beta: boolean) {
   for (let m = 1; m <= 6; m++) {
     const t = d.talent[String(m)];
     if (!t) throw new Error(`${who}: Mindscape ${m} is missing.`);
-    add({ id: `mindscape-${m}`, label: `Mindscape ${m}: ${t.name}`, kind: 'mindscape', unlock: { dupes: m }, does: [], gameText: plainText(t.desc, who) });
+    add({ id: `mindscape-${m}`, label: `Mindscape ${m}: ${shownName(t.name)}`, kind: 'mindscape', unlock: { dupes: m }, does: [], gameText: plainText(t.desc, who) });
   }
 
   // Potential Awakening: unlocked at the first level that has text; the numbers shown are the highest level's.
@@ -266,7 +267,7 @@ function kitOf(id: string, d: Detail, version: string, beta: boolean) {
     const last = awakenings.reduce((a, b) => (b.level > a.level ? b : a));
     add({
       id: 'potential-awakening',
-      label: `${last.name} (Agent Potential ${first.level}+, numbers at ${last.level})`,
+      label: `${shownName(last.name)} (Agent Potential ${first.level}+, numbers at ${last.level})`,
       kind: 'potential',
       unlock: { potential: first.level },
       does: [],
@@ -277,13 +278,15 @@ function kitOf(id: string, d: Detail, version: string, beta: boolean) {
   return { characterId: id, source: 'nanoka.cc', version, ...(beta ? { beta: true } : {}), skills: pieces };
 }
 
-const manifest = await getJson<{ zzz: { latest: string; live: string } }>(MANIFEST);
+const manifest = await getJson<{ zzz: { latest: string; live: string; new?: { character?: number[] } } }>(MANIFEST);
 if (manifest.zzz.latest !== VERSION) console.warn(`Note: nanoka.cc now has ZZZ ${manifest.zzz.latest}; this script reads ${VERSION}. Update VERSION after checking the new text.`);
 const live = await getJson<Record<string, unknown>>(`${BASE}/${manifest.zzz.live}/character.json`);
 const all = await getJson<Record<string, unknown>>(`${BASE}/${VERSION}/character.json`);
 
 const ids = Object.keys(all).sort((a, b) => Number(a) - Number(b));
-const wanted = new Set(Object.values(GROUPS).flat());
+// Leaks (T39): every new character in the manifest that isn't released yet gets its beta kit text on each run.
+const leaks = leakedIds(manifest.zzz.new, live).filter((id) => id in all);
+const wanted = new Set([...Object.values(GROUPS).flat(), ...leaks]);
 const profiles = [];
 const kits = [];
 for (const id of ids) {
@@ -301,4 +304,4 @@ for (const id of wanted) if (!(id in all)) throw new Error(`Group character ${id
 const out = (file: string, data: unknown) => writeFileSync(resolve(ROOT, 'src/games/zzz/data', file), `${JSON.stringify(data, null, 2)}\n`);
 out('profiles.json', profiles);
 out('kits.json', kits);
-console.log(`zzz: ${profiles.length} profiles, kit text for ${kits.length} characters (groups ${Object.keys(GROUPS).join(', ')})`);
+console.log(`zzz: ${profiles.length} profiles, kit text for ${kits.length} characters (groups ${Object.keys(GROUPS).join(', ')}; leaks ${leaks.join(', ') || 'none'})`);

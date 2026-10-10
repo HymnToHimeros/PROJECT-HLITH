@@ -63,3 +63,23 @@ describe('ZZZ mirrors it (no leaks listed today, so one is made up for the test)
     expect(v.explain.missing.at(-1)).toBe('Leak: Lucia: unverified beta kit, may change (test leak).');
   });
 });
+
+describe('Kit importers: leaks are read on every run, raw text keys are never shown', () => {
+  it('a raw key where a name belongs shows "No name yet"; real names stay', async () => {
+    const { shownName, leakedIds } = await import('../scripts/kits/names.ts');
+    expect(shownName('Severian_Talent_01_Title')).toBe('No name yet');
+    expect(shownName('Survivor')).toBe('Survivor');
+    expect(shownName('Wind Shear - Purifying Rise')).toBe('Wind Shear - Purifying Rise');
+    // The manifest's new characters that aren't live yet are the leaks.
+    expect(leakedIds({ character: [1511, 1415] }, { '1415': {} })).toEqual(['1511']);
+    expect(leakedIds(undefined, {})).toEqual([]);
+  });
+
+  it('no stored kit label shows a raw text key (both games)', async () => {
+    const raw = /(^|: )[A-Za-z0-9]+(?:_[A-Za-z0-9]+)+($| \()/;
+    for (const file of ['../src/games/hsr/data/kits.json', '../src/games/zzz/data/kits.json']) {
+      const kits = (await import(file)).default as { characterId: string; skills: { label: string }[] }[];
+      for (const k of kits) for (const s of k.skills) expect(s.label, `${k.characterId} ${s.label}`).not.toMatch(raw);
+    }
+  });
+});
