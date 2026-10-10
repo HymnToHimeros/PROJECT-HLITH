@@ -56,6 +56,28 @@ export const zzz: GameContract = {
   ],
   dupes: { prefix: 'M', name: 'Mindscape', max: 6 },
   potential: { name: 'Agent Potential', max: 6 },
+  build: {
+    levelMax: 60,
+    weaponLevelMax: 60,
+    refine: { name: 'Phase', max: 5 },
+    slots: [
+      { id: 'Disc 1', label: 'Disc 1', mains: ['HP'] },
+      { id: 'Disc 2', label: 'Disc 2', mains: ['ATK'] },
+      { id: 'Disc 3', label: 'Disc 3', mains: ['DEF'] },
+      { id: 'Disc 4', label: 'Disc 4', mains: ['HP %', 'ATK %', 'DEF %', 'CRIT Rate', 'CRIT DMG', 'Anomaly Proficiency'] },
+      { id: 'Disc 5', label: 'Disc 5', mains: ['HP %', 'ATK %', 'DEF %', 'PEN Ratio', 'Physical DMG Bonus', 'Fire DMG Bonus', 'Ice DMG Bonus', 'Electric DMG Bonus', 'Ether DMG Bonus', 'Wind DMG Bonus'] },
+      { id: 'Disc 6', label: 'Disc 6', mains: ['HP %', 'ATK %', 'DEF %', 'Anomaly Mastery', 'Impact', 'Energy Regen'] },
+    ],
+    subStats: ['HP', 'ATK', 'DEF', 'HP %', 'ATK %', 'DEF %', 'CRIT Rate', 'CRIT DMG', 'PEN', 'Anomaly Proficiency'],
+    skills: [
+      { name: 'Basic Attack', max: 16 },
+      { name: 'Dodge', max: 16 },
+      { name: 'Assist', max: 16 },
+      { name: 'Special Attack', max: 16 },
+      { name: 'Chain Attack', max: 16 },
+      { name: 'Core Skill', max: 7 },
+    ],
+  },
   currencies: [
     { id: 'polychrome', name: 'Polychrome', perPull: 160 },
     { id: 'encrypted-master-tape', name: 'Encrypted Master Tape', pullItemFor: ['exclusive', 'w-engine'] },

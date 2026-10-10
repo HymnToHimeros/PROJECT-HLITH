@@ -1481,3 +1481,92 @@ button.member:hover .memberArt {
 .teamFilter .searchField {
   flex: 1 1 220px;
 }
+
+/* Build score: your saved build, and the Edit build form. */
+.buildSummary {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+}
+.buildSummary > div {
+  display: grid;
+  grid-template-columns: minmax(96px, 30%) 1fr;
+  gap: var(--s-3);
+  padding: 6px 0;
+  border-bottom: 1px solid var(--line-subtle);
+}
+.buildSummary dt {
+  font-size: 12px;
+  color: var(--ink-3);
+}
+.buildSummary dd {
+  margin: 0;
+  font-size: 13px;
+  color: var(--ink-1);
+  overflow-wrap: anywhere;
+}
+.buildForm {
+  display: grid;
+  gap: var(--s-3);
+}
+.buildHead {
+  margin: var(--s-2) 0 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink-1);
+}
+.buildGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: var(--s-2) var(--s-3);
+}
+.buildField {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+}
+.buildFieldWide {
+  grid-column: 1 / -1;
+}
+.buildPiece {
+  display: grid;
+  gap: var(--s-2);
+  margin: 0;
+  padding: var(--s-3);
+  border: 1px solid var(--line-default);
+  border-radius: var(--r-card);
+  background: var(--bg-raised);
+}
+.buildLegend {
+  padding: 0 4px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink-2);
+}
+.buildSubs {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: var(--s-2);
+}
+.buildSub {
+  display: grid;
+  grid-template-columns: 1fr 76px;
+  gap: 6px;
+}
+.buildProblems {
+  margin: 0;
+  padding: var(--s-2) var(--s-3) var(--s-2) var(--s-5);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-row);
+  color: var(--ink-1);
+  font-size: 13px;
+}
+.buildActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--s-2);
+  position: sticky;
+  bottom: 0;
+  padding: var(--s-2) 0;
+  background: var(--bg-card);
+}

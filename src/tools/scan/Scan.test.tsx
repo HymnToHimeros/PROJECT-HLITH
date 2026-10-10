@@ -1,7 +1,7 @@
 import { fireEvent, render, screen, waitFor, within } from '@testing-library/react';
 import type { GameContract } from '../../core/contract';
 import { beforeEach, describe, expect, it } from 'vitest';
-import { gameData, resetUserData, setRosterEntry } from '../../core/data/userData';
+import { gameData, resetUserData, setBuild, setRosterEntry } from '../../core/data/userData';
 import { fakeGame } from '../account-links/fakeGame';
 import { checkValues, fieldsFor } from './scan';
 import { Scan, ScanEntry } from './Scan';
@@ -67,7 +67,26 @@ describe('Scan', () => {
     await waitFor(() => expect(gameData('aa').roster['1003']?.owned).toBe(true));
     const msg = screen.getByRole('status');
     expect(msg).toHaveTextContent('Fire Queen is owned, E0 (as it was).');
-    expect(msg).toHaveTextContent('Not saved, because HLITH can’t store builds yet: Level, Relics.');
+    expect(msg).toHaveTextContent('Not saved from here (HLITH can’t store builds for this game yet): Level, Relics.');
+  });
+
+  it('a game with builds saves level and weapon into the build, keeps the gear, and says where the rest goes', async () => {
+    const withBuild: GameContract = {
+      ...game,
+      build: { levelMax: 80, weaponLevelMax: 80, refine: { name: 'Superimposition', max: 5 }, slots: [{ id: 'Head', label: 'Head', mains: ['HP'] }], subStats: ['SPD'], skills: [] },
+    };
+    setBuild('aa', '1003', { gear: [{ slot: 'Head', main: 'HP', subs: [{ stat: 'SPD', value: 4 }] }], source: 'manual', updatedAt: '2026-10-01T00:00:00Z' });
+    render(<Scan game={withBuild} characterId="1003" />);
+    await screen.findByRole('option', { name: 'Fire Queen' });
+    fireEvent.change(screen.getByLabelText('Level'), { target: { value: '70' } });
+    fireEvent.change(screen.getByLabelText('Light Cone'), { target: { value: 'Night on the Milky Way' } });
+    fireEvent.change(screen.getByLabelText('Relics · not saved'), { target: { value: 'Two sets' } });
+    fireEvent.click(screen.getByRole('button', { name: 'Save to my roster' }));
+    await waitFor(() => expect(gameData('aa').builds?.['1003']?.level).toBe(70));
+    expect(gameData('aa').builds?.['1003']).toMatchObject({ weapon: { name: 'Night on the Milky Way' }, gear: [{ slot: 'Head', main: 'HP' }], source: 'scan' });
+    const msg = screen.getByRole('status');
+    expect(msg).toHaveTextContent('Level and Light Cone in their build');
+    expect(msg).toHaveTextContent('enter these piece by piece in Build score on their character page');
   });
 
   it('refuses an out-of-range number', async () => {
