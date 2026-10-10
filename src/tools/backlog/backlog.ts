@@ -69,6 +69,21 @@ export function groupsOf(items: ItemView[]): { name: string | null; items: ItemV
   return out;
 }
 
+/** A checklist longer than this starts folded: only where you are shows, the rest behind "Show all". */
+export const FOLD_STEPS_AT = 8;
+
+/** The steps shown while folded: the last one done, the one you are on and the next (or the first few when unknown). */
+export function nearSteps(total: number, done: number | null): number[] {
+  if (total <= 0) return [];
+  if (done === null) return [0, 1, 2].filter((i) => i < total);
+  if (done >= total) return [total - 1];
+  return [done - 1, done, done + 1].filter((i) => i >= 0 && i < total);
+}
+
+/** A plain list (no groups) longer than this starts folded, showing its first FOLD_ROWS_SHOW rows. */
+export const FOLD_ROWS_AT = 8;
+export const FOLD_ROWS_SHOW = 6;
+
 /** Every category the game knows plus any your items use, in the usual order. */
 export function categoryIds(items: BacklogItem[]): string[] {
   const ids = new Set([...ORDER, ...items.map((i) => i.category)]);

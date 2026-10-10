@@ -7,7 +7,8 @@ import type { FitOptions, FitSuggestion, PullValue, TeamAccount, TeamIdea, TeamP
 import { BUILD_STAT_WORD, buildFit } from '../../../core/rules/buildFit';
 import { GEAR_SLOTS } from '../gear';
 import { canCarry, canPartner, check, compare, damageDealers, isCentre, labelOf, type Account, type Library, type Line, type TeamResult } from './check';
-import { centreOf, library, pageOf } from './library';
+import { isOwnTeam, library, pageOf } from './library';
+import { fillTeam } from '../../../core/rules/fillTeam';
 import { accountNotes, type AccountFacts } from '../../../core/rules/accountNotes';
 import { SIGNATURE_PIECE } from '../../../core/rules/signatureWeapons';
 import { explainTeam, memberPhrase } from '../../../core/rules/teamExplain';
@@ -51,16 +52,20 @@ function combos(xs: string[], k: number): string[][] {
 const bestCache = new Map<string, TeamResult | undefined>();
 let cacheLib: Library | undefined;
 
-export function bestFor(dd: string, pool: string[], lib: Library, account: Account): TeamResult | undefined {
+/**
+ * `also`: characters tried beside `dd` even when their own game team doesn't list them: a team you made yourself is
+ * compared with the best team that could include its own members (decision 30).
+ */
+export function bestFor(dd: string, pool: string[], lib: Library, account: Account, also: string[] = []): TeamResult | undefined {
   if (cacheLib !== lib) {
     bestCache.clear();
     cacheLib = lib;
   }
-  const key = `${dd}|${[...new Set(pool)].sort().map((id) => `${id}:${account.eidolon(id)}:${account.enhanced(id) ?? '-'}`).join(',')}|${account.eidolon(dd)}:${account.enhanced(dd) ?? '-'}`;
+  const key = `${dd}|${[...new Set(pool)].sort().map((id) => `${id}:${account.eidolon(id)}:${account.enhanced(id) ?? '-'}`).join(',')}|${account.eidolon(dd)}:${account.enhanced(dd) ?? '-'}|${[...also].sort().join(',')}`;
   if (bestCache.has(key)) return bestCache.get(key);
   if (bestCache.size > 2000) bestCache.clear();
   // The best team found assumes every member is built for what the team wants (decision 26): 100% includes builds.
-  const found = findBest(dd, pool, lib, { ...account, ideal: true });
+  const found = findBest(dd, pool, lib, { ...account, ideal: true }, also);
   bestCache.set(key, found);
   return found;
 }
@@ -87,8 +92,8 @@ function shortlist(dd: string, partners: string[], lib: Library, account: Accoun
   return [...top, ...sustain];
 }
 
-function findBest(dd: string, pool: string[], lib: Library, account: Account): TeamResult | undefined {
-  let partners = pool.filter((id) => id !== dd && lib.sheets.has(id) && fits([dd, id]) && canPartner(id, dd, lib));
+function findBest(dd: string, pool: string[], lib: Library, account: Account, also: string[] = []): TeamResult | undefined {
+  let partners = pool.filter((id) => id !== dd && lib.sheets.has(id) && fits([dd, id]) && (canPartner(id, dd, lib) || also.includes(id)));
   if (!lib.sheets.has(dd) || !canCarry(dd, lib) || !partners.length) return undefined;
   partners = shortlist(dd, partners, lib, account);
   let best: TeamResult | undefined;
@@ -147,7 +152,7 @@ export function verdict(members: string[], a: TeamAccount, lib: Library = librar
     pool = [...lib.sheets.keys()];
     notes.push('You own fewer than four characters whose kits have been read, so this compares with every character instead.');
   } else pool = [...new Set([...owned, ...members])];
-  const best = bestFor(mine.dd, pool, lib, account);
+  const best = bestFor(mine.dd, pool, lib, account, mine.members);
   const top = best && compare(best, mine) > 0 ? best : mine;
   if (top.count <= 0) return { rated: false, why: `No team the check can find connects for ${name(mine.dd)} yet (best count ${top.count}).` };
   const percent = Math.max(0, Math.round((mine.count / top.count) * 100));
@@ -230,6 +235,8 @@ export function whoFits(members: string[], a: TeamAccount, lib: Library = librar
     const res = check([...members, c], lib, account, leadOf([...members, c], lib));
     if (!res.rated) continue;
     const r = res.best;
+    // Only teammates the carry's own game team lists (decision 30): no mix-matching.
+    if (r.members.some((m) => m !== r.dd && !canPartner(m, r.dd, lib))) continue;
     if (r.lines.some((l) => l.kind === 'weak-fit' && l.who === c)) continue;
     const how = connections(r, c, lib);
     if (!how.length) continue;
@@ -321,6 +328,7 @@ export function ifYouPull(id: string, a: TeamAccount, lib: Library = library()):
 
 export const hsrTeamRules: TeamRules = {
   method: METHOD,
+  fill: (p, a) => fillTeam(p, a.owned, (team, id) => fits([...team, id])),
   rated: (id) => library().sheets.has(id),
   verdict: (m, a) => verdict(m, a),
   whoFits: (m, a, o) => whoFits(m, a, library(), o),
@@ -386,17 +394,20 @@ export function gameTeams(raw: TeamPreset[], lib: Library = library()): TeamPres
   const name = (id: string) => lib.names.get(id) ?? id;
   const carries = new Set([...lib.sheets.values()].filter((s) => s.damage).map((s) => s.characterId));
   const seen = new Set<string>();
+  const made = new Map<string, number>();
   const out: TeamPreset[] = [];
   for (const t of raw) {
-    const centre = centreOf(t, carries);
-    const at = centre ? t.slots.findIndex((s) => s.characters[0] === centre) : -1;
+    // Only a carry's own team (decision 30): other pages' starter line-ups are never shown as teams.
+    if (!isOwnTeam(t, carries)) continue;
+    const page = pageOf(t) ?? '';
+    const at = t.slots.findIndex((s) => s.characters.includes(page));
     const slots = at > 0 ? [t.slots[at], ...t.slots.filter((_, i) => i !== at)].filter((s): s is TeamPreset['slots'][number] => !!s) : t.slots;
-    const key = slots.map((s) => s.characters[0]).sort().join(',');
+    const key = slots.map((s) => s.characters.join('+')).join(',');
     if (seen.has(key)) continue;
     seen.add(key);
-    const page = pageOf(t);
-    const lead = slots[0]?.characters[0];
-    out.push({ ...t, slots, name: lead ? `${name(lead)} team${page && page !== lead ? ` · with ${name(page)}` : ''}` : t.name });
+    const n = (made.get(page) ?? 0) + 1;
+    made.set(page, n);
+    out.push({ ...t, slots, name: `${name(page)} team${n > 1 ? ` ${n}` : ''}` });
   }
   return out;
 }

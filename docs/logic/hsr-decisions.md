@@ -116,3 +116,20 @@ team size and order, and the owner's ZZZ method's own counting.
     Morrow" doesn't say whose DMG rises; Planetary Rendezvous and Poised to Bloom depend on the wearer's element /
     a shared path the sheet can't name). ZZZ's "less DMG taken" is read as `heal` (tie-break only), as Lucia's
     shield is.
+30. **Only a carry's own game team is a team; no mix-matching (owner's report 2026-10-10).** The owner: "the march
+    team once again as example is bs no one runs march with phainon … I don't want random mix matching … if units
+    exist that do a job better obviously they should be picked". Cause: every character's page in the game shows a
+    starter line-up that forces that character beside today's top carry (March 7th's page: Phainon, March 7th, …);
+    decision 22 showed them as the carry's teams. Now:
+    - a team is shown only from its carry's own page (the page's character is a carry, in the team, and no other
+      carry is fixed alone in a slot: that marks a partner's page, e.g. Topaz's "Feixiao | Topaz | …");
+    - each slot is filled from your roster in the game's order: the first listed character you own, never one
+      twice (`src/core/rules/fillTeam.ts`, both games); a slot with none of yours shows its first pick;
+    - a carry's teammates are only the characters its own game team lists, in every place teams are made: best
+      team found, Who fits, Line-ups, If you pull. A team you made yourself is compared with the best team that can
+      also include its own members. 51 of 53 carries have an own team; Trailblazer · Destruction (Stelle) and
+      Aeon ★ Aha fall back to the pairing rule (decision 21) until the game lists one.
+    Acceptance test (team.test.ts): owning Phainon, Sunday, Cerydra and Dan Heng • Permansor Terrae, his one team
+    is exactly those four; no March 7th / Asta / Bronya team, and none of them (nor Tingyun, Sparkle) is suggested.
+    ZZZ has no game team lists in its data, so its squads stay from the check (zzz-decisions 55), filled the same way.
+

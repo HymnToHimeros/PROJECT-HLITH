@@ -6,7 +6,7 @@ import { check, type Line } from './check';
 import teamsJson from '../data/teams.json';
 import type { TeamPreset } from '../../../core/contract';
 import { buildLibrary, library, SHEETS } from './library';
-import { gameTeams, ifYouPull, lineUps, recommendedTeams, synergyLabel, verdict, whoFits } from './team';
+import { gameTeams, hsrTeamRules, ifYouPull, lineUps, recommendedTeams, synergyLabel, verdict, whoFits } from './team';
 
 const lib = library();
 const id = (name: string) => {
@@ -118,13 +118,16 @@ describe('HSR team rules for the Roster', () => {
     if (!v.rated) expect(v.why).toContain('Robin');
   });
 
-  it('Who fits, Line-ups and If you pull', () => {
-    const fits = whoFits([id('Feixiao'), id('Robin'), id('Aventurine')], own(team));
+  it('Who fits, Line-ups and If you pull (only teammates the carry’s own game team lists)', () => {
+    const mine = ['Feixiao', 'Topaz & Numby', 'Tribbie', 'Aventurine'];
+    const fits = whoFits([id('Feixiao'), id('Tribbie'), id('Aventurine')], own(mine));
     expect(fits.find((f) => f.id === id('Topaz & Numby'))?.how.some((h) => /Follow-Up/.test(h))).toBe(true);
-    const ups = lineUps(own([...team, 'Acheron', 'Jiaoqiu', 'Pela', 'Huohuo']));
+    // Robin isn't in Feixiao's own game team, so she is never suggested for him.
+    expect(whoFits([id('Feixiao')], own([...mine, 'Robin'])).some((f) => f.id === id('Robin'))).toBe(false);
+    const ups = lineUps(own([...mine, 'Acheron', 'Jiaoqiu', 'Pela', 'Huohuo']));
     expect(ups.length).toBe(2);
     expect(new Set(ups.flatMap((u) => u.members)).size).toBe(8);
-    const pull = ifYouPull(id('Topaz & Numby'), own(['Feixiao', 'Robin', 'Aventurine', 'Pela']));
+    const pull = ifYouPull(id('Topaz & Numby'), own(['Feixiao', 'Tribbie', 'Aventurine', 'Huohuo']));
     expect(pull?.percent).toBeGreaterThan(0);
   });
 });
@@ -135,10 +138,13 @@ describe('HSR: teams are built around real damage dealers (T19)', () => {
     for (const c of ['March 7th', 'Topaz & Numby', 'Moze', 'Dr. Ratio', 'Black Swan']) expect(lib.centres.has([...lib.names].find(([k, n]) => n === c && lib.sheets.get(k)?.damage)?.[0] ?? ''), c).toBe(false);
   });
 
-  it("the game's team from March 7th (Hunt)'s page leads with Feixiao and is named after her", () => {
-    const t = gameTeams(teamsJson as TeamPreset[]).find((x) => x.id === 'game-1224-1');
-    expect(t?.slots[0]?.characters[0]).toBe(id('Feixiao'));
-    expect(t?.name).toBe('Feixiao team · with March 7th');
+  it('only a carry’s own game team is a team: partner and starter pages (March 7th (Hunt), March 7th, Asta, Bronya) are not', () => {
+    const shown = gameTeams(teamsJson as TeamPreset[]);
+    for (const t of ['game-1224-1', 'game-1001-1', 'game-1009-1', 'game-1101-1']) expect(shown.some((x) => x.id === t), t).toBe(false);
+    const fei = shown.find((x) => x.id === 'game-1220-1');
+    expect(fei?.slots[0]?.characters).toEqual([id('Feixiao')]);
+    expect(fei?.name).toBe('Feixiao team');
+    expect(shown.filter((x) => x.slots.some((sl) => sl.characters.includes(id('Phainon')))).map((x) => x.name)).toEqual(['Phainon team']);
   });
 
   it('in a team with March 7th (Hunt) and Feixiao, Feixiao is the damage dealer, whoever is listed first', () => {
@@ -255,5 +261,30 @@ describe('HSR: a signature on another wearer of its path', () => {
     const lines = r.best.lines.filter((l) => l.piece === 'weapon:23026');
     expect(lines.length).toBeGreaterThan(0);
     expect(lines.every((l) => lib.names.get(l.who) === 'Sparkle' && l.kind !== 'locked')).toBe(true);
+  });
+});
+
+describe('HSR: the owner’s Phainon test (report 2026-10-10: no mix-matching, the better unit is picked)', () => {
+  const owned = ['Phainon', 'Sunday', 'Cerydra', 'Dan Heng • Permansor Terrae', 'March 7th', 'Asta', 'Bronya', 'Tingyun', 'Sparkle', 'Huohuo'];
+  const phainonTeams = () => gameTeams(teamsJson as TeamPreset[]).filter((t) => t.slots.some((s) => s.characters.includes(id('Phainon'))));
+  it('owning Phainon, Sunday, Cerydra and Dan Heng • Permansor Terrae, his team is exactly those four', () => {
+    const teams = phainonTeams();
+    expect(teams.length).toBe(1);
+    const t = teams[0];
+    if (!t) throw new Error('no Phainon team');
+    const members = hsrTeamRules.fill?.(t, own(owned)) ?? [];
+    expect([...members].sort()).toEqual(['Phainon', 'Sunday', 'Cerydra', 'Dan Heng • Permansor Terrae'].map(id).sort());
+    expect(members[0]).toBe(id('Phainon'));
+  });
+  it('no team with March 7th, Asta or Bronya is shown for Phainon, and none is suggested beside him', () => {
+    for (const t of phainonTeams()) for (const n of ['March 7th', 'Asta', 'Bronya']) expect(t.slots.some((s) => s.characters.includes(id(n))), n).toBe(false);
+    const fits = whoFits([id('Phainon')], own(owned)).map((f) => lib.names.get(f.id));
+    for (const n of ['March 7th', 'Asta', 'Bronya', 'Tingyun', 'Sparkle']) expect(fits, n).not.toContain(n);
+    expect(fits).toEqual(expect.arrayContaining(['Sunday', 'Cerydra', 'Dan Heng • Permansor Terrae']));
+  });
+  it('the best team found for Phainon comes from his own game team, never Tingyun + Sparkle + Huohuo', () => {
+    const v = verdict(['Phainon', 'Cerydra', 'Sunday', 'Dan Heng • Permansor Terrae'].map(id), own(owned));
+    if (!v.rated) throw new Error(v.why);
+    for (const n of ['Tingyun', 'Sparkle', 'March 7th', 'Asta', 'Bronya']) expect(v.bestMembers.map((m) => lib.names.get(m)), n).not.toContain(n);
   });
 });
