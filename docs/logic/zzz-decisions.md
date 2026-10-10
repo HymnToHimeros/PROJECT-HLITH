@@ -239,4 +239,9 @@ team size and order, and the owner's ZZZ method's own counting.
     same account). Before, it took the first owned in list order. The damage dealer's slot stays. On the owner's
     roster: Hugo, Banyue, Yixuan, Ellen, and Orphie & Magus take Dialyn or Lucia instead of Lighter or Koleda.
     Billy > Dialyn > Lucia is unchanged.
+64. **"Best found from your characters" cards (mirrors HSR decision 40, T41).** The same rule: a damage dealer
+    whose squads all stay under 90% gets their best squad found from your agents as its own card. ZZZ squads have no
+    healer-only slot, so the "carry is the sustain" part has nothing to change. On the owner's roster: Hugo,
+    Harumasa, Anton, Promeia, Remielle, Orphie & Magus, Pyrois and Corin get one (most of their squads miss an agent
+    the owner lacks).
 
