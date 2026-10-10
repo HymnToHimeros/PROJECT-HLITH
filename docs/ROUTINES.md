@@ -24,6 +24,7 @@ from this page.
 | `leaks-scan` | New leaks, e.g. the new-item lists in the nanoka.cc data. |
 | `events-scan` | New events, banners and versions. |
 | `game-data-refresh` | After a patch: new characters, items and kits. |
+| `research-routine` | The research routine: official notices the importers don't read, a second leak source (Hakushin), gaps in the lists. |
 
 The list lives in `supabase/functions/_shared/jobs.ts` (jobs with
 `target: { kind: 'external' }`). A new routine job = one entry there.
@@ -71,7 +72,7 @@ Body:
 | `failed` | Optional. Jobs whose run went wrong this time: `{ "job", "message" }`, message in plain words, up to 500 characters. Each is recorded as a red **error** run in Owner console → Scheduler → Run log, with the message as written. A job in `failed` is not also in `ran` and has no findings in the same delivery (one outcome per job). |
 | `next_at` | Optional. When the routine runs each job next (the cadence is self-adjusting): `{ "<job>": "<ISO time>" }`, after now and at most 31 days ahead. The Owner console shows it as "Next expected" and says **Overdue** once it has passed. A job reported without a time is expected on its fallback cadence (Mon, Wed, Fri 06:00 UTC). |
 | `findings` | Up to 100 per request. May be empty when `ran` or `failed` names a job. |
-| `job` | One of `leaks-scan`, `events-scan`, `game-data-refresh`. |
+| `job` | One of `leaks-scan`, `events-scan`, `game-data-refresh`, `research-routine`. |
 | `game_id` | Optional. `hsr`, `zzz` … (lower-case letters, digits, `-`). Leave out for findings about no single game. |
 | `kind` | `leak`, `event`, `banner`, `character` or `info`. |
 | `title` | Required, up to 300 characters. Plain words: what was found. |
@@ -158,6 +159,10 @@ pushing. READY to MANAGER like every other chat's PR. Never merged by itself
 **Rules.**
 - Honest data only: what a source says, with the source named. A leak is marked
   as a leak. No guesses.
+- The intake key never appears in the routine's text: its cloud environment's
+  network proxy adds it to requests to findings-intake by itself (the Action uses
+  the FINDINGS_INTAKE_KEY GitHub secret). Never ask for it in a chat, never put it
+  in the repo.
 - Never touches user data, never sends a key in text, never edits another chat's
   files except through a PR.
 - When it can't decide something, it delivers an `info` finding with the question
