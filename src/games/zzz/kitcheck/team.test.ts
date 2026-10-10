@@ -1,7 +1,7 @@
 // @vitest-environment node
 import { describe, expect, it } from 'vitest';
 import type { TeamAccount } from '../../../core/contract';
-import { buildLibrary, SHEETS } from './library';
+import { buildLibrary, library, SHEETS } from './library';
 import { ifYouPull, lineUps, recommendedTeams, synergyLabel, verdict, whoFits } from './team';
 
 /** Every agent is read now; leave one sheet out on purpose to test "not read yet". */
@@ -64,7 +64,8 @@ describe('Line-ups', () => {
 
 describe('Who fits', () => {
   it('for Starlight Billy: only agents whose kits connect, saying how', () => {
-    const fits = whoFits([BILLY], all);
+    // Every agent whose kit connects, owned or not (as on a character page).
+    const fits = whoFits([BILLY], all, library(), { includeUnowned: true });
     expect(fits.map((f) => f.id)).toEqual(expect.arrayContaining([DIALYN, LUCIA, PAN]));
     // Lighter (Stun) switches on Billy's Starlight, but his Ice and Fire buffs never count for a Physical Billy.
     const lighter = fits.find((f) => f.id === '1161');

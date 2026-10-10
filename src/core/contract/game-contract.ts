@@ -252,6 +252,8 @@ export interface TeamAccount {
   dupes: (id: string) => number;
   /** A game's second upgrade track (`GameContract.potential`); undefined = not saved or not owned. */
   potential?: (id: string) => number | undefined;
+  /** The weapon in the character's saved build, when one is saved (signature weapons). */
+  weapon?: (id: string) => { id?: string; name: string; refine?: number } | undefined;
 }
 
 /** One reason behind a team score. */
@@ -305,6 +307,17 @@ export interface FitSuggestion {
   /** How it connects, in words ("turns on Billy's Additional Ability"). */
   how: string[];
   withEveryone: boolean;
+  /** The team's % with this character added, against the best team found from the same pool (LOGIC-CORE). */
+  percent?: number;
+  /** What came from your account, in words: "E2 counted", "no Eidolons: scored at E0", "Signature weapon: not counted yet". */
+  fromAccount?: string[];
+  /** Not owned: scored as theory (no dupes, base kit). */
+  theory?: boolean;
+}
+
+/** Who fits options: by default only characters you own; `includeUnowned` adds the rest as theory. */
+export interface FitOptions {
+  includeUnowned?: boolean;
 }
 
 export interface PullValue {
@@ -320,7 +333,8 @@ export interface TeamRules {
   /** Can this character be rated yet (their kit has been read)? */
   rated: (id: string) => boolean;
   verdict: (members: string[], account: TeamAccount) => TeamVerdict;
-  whoFits: (members: string[], account: TeamAccount) => FitSuggestion[];
+  /** Sorted best first. Default: your own characters only; `includeUnowned` adds the rest as theory. */
+  whoFits: (members: string[], account: TeamAccount, options?: FitOptions) => FitSuggestion[];
   /** Best teams from owned characters, no character twice. */
   lineUps: (account: TeamAccount) => TeamIdea[];
   /** What a character adds to the account; null = not rated. */
