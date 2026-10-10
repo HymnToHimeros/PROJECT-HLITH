@@ -244,4 +244,6 @@ team size and order, and the owner's ZZZ method's own counting.
     healer-only slot, so the "carry is the sustain" part has nothing to change. On the owner's roster: Hugo,
     Harumasa, Anton, Promeia, Remielle, Pyrois and Corin get one (most of their squads miss an agent
     the owner lacks).
+65. **A leak's sheet that no longer matches its beta kit is not used (mirrors HSR decision 41, T43).** Same rule and
+    code path. ZZZ has no leak with a sheet today.
 

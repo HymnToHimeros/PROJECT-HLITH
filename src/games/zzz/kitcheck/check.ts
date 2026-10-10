@@ -5,6 +5,7 @@
  */
 import { BUILD_STAT_WORD, BUILT_POINTS, FIT_WORD, type BuildFit, type BuildStat } from '../../../core/rules/buildFit';
 import { ownDamagePart, partOf, sizeOf, typicalSize, value, type Part } from '../../../core/rules/kitValue';
+import { unreadWords } from '../../../core/rules/leaks';
 import { GENERAL_STATS, SPECIFIC_STATS, SUPPORT_STATS, type CharacterSheet, type Condition, type Entry, type Specialty, type Stat } from './types';
 
 export interface Profile {
@@ -26,6 +27,8 @@ export interface Library {
   names: Map<string, string>;
   /** Leaked characters (beta kit text) and where the leak came from (T39). */
   leaks?: Map<string, string>;
+  /** Leaks whose sheet no longer matches their beta kit text (T43): not read until read again; why. */
+  stale?: Map<string, string>;
   /**
    * Every W-Engine the check can read (T18 step 4): its specialty, its entries (piece `weapon:<id>`) and its label.
    * A signature's entries come from its agent's sheet; `madeFor` marks it (that agent reads it as a kit piece).
@@ -407,7 +410,7 @@ export const compare = (a: SquadResult, b: SquadResult) => a.value - b.value || 
  */
 export function checkSquad(members: string[], lib: Library, account: Account, dd?: string): CheckOutcome {
   const unread = members.filter((id) => !lib.sheets.has(id));
-  if (unread.length) return { rated: false, why: `not rated yet: ${unread.map((id) => lib.names.get(id) ?? id).join(', ')} not read yet`, unread };
+  if (unread.length) return { rated: false, why: unreadWords(unread, (id) => lib.names.get(id) ?? id, lib.stale), unread };
   const dds = dd ? [dd] : damageDealers(members, lib);
   if (!dds.length) return { rated: false, why: 'no damage dealer (Attack, Rupture, Armorer or Anomaly) in this squad' };
   let best: SquadResult | undefined;

@@ -2,7 +2,7 @@
 /** The cheat sheet's honesty tests (docs/logic/hsr-theory.md, Part A step 6). */
 import { describe, expect, it } from 'vitest';
 import characters from '../data/characters.json';
-import { KITS as kits, SHEETS } from './library';
+import { KITS as kits, library, SHEETS } from './library';
 import { GENERAL_STATS, SPECIFIC_STATS, SUPPORT_STATS } from './types';
 
 type K = { characterId: string; skills: { id: string; gameText: string }[] };
@@ -15,7 +15,9 @@ describe('HSR cheat sheet', () => {
     expect(new Set(ids).size).toBe(ids.length);
   });
 
-  it.each(SHEETS.map((s) => [`${s.name} (${s.characterId})`, s] as const))('%s: every quote word for word, every piece read', (_, sheet) => {
+  // Leaks' beta text changes between builds (T43): their sheets are checked below, without failing the build.
+  const isLeak = (id: string) => (characters as { id: string; leak?: unknown }[]).some((c) => c.id === id && c.leak);
+  it.each(SHEETS.filter((s) => !isLeak(s.characterId)).map((s) => [`${s.name} (${s.characterId})`, s] as const))('%s: every quote word for word, every piece read', (_, sheet) => {
     const kit = kitOf(sheet.characterId);
     expect(kit, 'kit text exists').toBeTruthy();
     expect(characters.find((c) => c.id === sheet.characterId)).toBeTruthy();
@@ -45,5 +47,13 @@ describe('HSR cheat sheet', () => {
       expect(read, `piece ${s.id} is read (an entry, or in "nothing" with why)`).toBe(true);
     }
     for (const p of Object.keys(sheet.nothing)) expect(text(p), `"nothing" piece ${p} exists`).toBeTruthy();
+  });
+
+  // T43: a leak whose beta text changed since its sheet was read is shown here as skipped, by name, until it is read
+  // again; the app doesn't use the old sheet meanwhile (it reads "not read yet" with why).
+  it.for(SHEETS.filter((s) => isLeak(s.characterId)).map((s) => [`${s.name} (${s.characterId})`, s] as const))('%s (leak): its sheet still matches the beta kit text', ([, sheet], ctx) => {
+    const why = library().stale?.get(sheet.characterId);
+    if (why) ctx.skip(`re-read: ${why}`);
+    expect(library().sheets.has(sheet.characterId)).toBe(true);
   });
 });
