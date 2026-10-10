@@ -13,10 +13,11 @@ Resume with: "continue from PROGRESS.md". Newest entry on top. Older entries:
   time-gated game data) and **LOGIC-CORE** (`docs/briefs/LOGIC-CORE.md`).
 
 ## Next
-- SCHEDULER: lists filled (see Done); next is keeping them current once the owner
-  decides the schedule (`npm run data:nanoka && npm run data:schedule`). LOGIC-CORE
-  refines Roster (kits, kit check, teams, builds, materials). Schedules for the
-  research routine are decided once both are done.
+- SCHEDULER: automatic news checks (T6 + T7), plan approved by MANAGER. Step 1 done
+  (when to check). Next: FRAME lets findings-intake take `failed` and `next_at`
+  (step 2), then the GitHub Action with one standing data PR (step 3), the routine
+  (step 4), first live test on the ZZZ 3.3 patch, 21 Oct (step 5). Auto-merge of
+  data-only PRs and the GitHub secret are the owner's call (MANAGER asks).
 - Live checks with real logins: HoYoLAB link, in-game history link, Assistant
   with your own key.
 - Later: phone push keys (VAPID) so the evening message is really sent;
@@ -33,6 +34,16 @@ Resume with: "continue from PROGRESS.md". Newest entry on top. Older entries:
   leak's sheet whose quoted lines changed (or that misses a new piece) is stale: the leak reads "not read yet" with
   why, and its sheet test is skipped with "re-read: …" instead of failing CI. Both games. hsr-decisions 41,
   zzz-decisions 65.
+- 2026-10-10 · **SCHEDULER: when to look for news** (branch `scheduler/rhythm`).
+  `npm run schedule:due` says whether now is a check time and when the next one
+  is (`--plan 21` lists them). Counted from patch day, never weekdays: daily in the
+  first two weeks of a version and from 2 days before the expected program
+  announcement to the next patch, every third day in between, plus a check an
+  hour after the expected pre-download notice, after patch-day maintenance and
+  after each new banner start. Expected times are the median of the last 3
+  versions' real ones, which `data:schedule` now records from the official news
+  list in `scripts/schedule/rhythm.json`. Rules: `scripts/schedule/rhythm.ts`;
+  tests (with the ZZZ 3.3 and HSR 4.7 examples): `tests/scheduleRhythm.test.ts`.
 - 2026-10-10 · **LOGIC-CORE: "Builds their teams want" follows the card and the switches (T42)** (branch
   `logic-core/build-wants-account`). The character page's build wants ask the team rules with FRAME's
   `useTeamAccount` (team lists, the assume and leak switches now count, not only roster and builds), and about the
