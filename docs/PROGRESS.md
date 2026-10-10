@@ -28,6 +28,11 @@ Resume with: "continue from PROGRESS.md". Newest entry on top. Older entries:
 - CI (`.github/workflows/ci.yml`) runs both on every pull request.
 
 ## Done
+- 2026-10-10 · **FRAME: Enhanced / Agent Potential per character** (branch `frame/potential-field`).
+  For LOGIC-CORE: the character page has an "Enhanced" (HSR: Not set / No / Yes) or
+  "Agent Potential" (ZZZ: Not set / 0–6) picker, only for characters whose kit has pieces
+  that need it. Saved with the roster and synced; team scores and Kit check read it
+  through `TeamAccount.potential`. "Not set" keeps those pieces locked, as before.
 - 2026-10-10 · **FRAME: faster check, shared release routine** (branch `frame/faster-checks-and-releases`).
   `docs/RELEASES.md`: the three chats agree together before anything goes live
   (READY / OK / WAIT, merge order, one at a time). CI: notes-only changes skip the

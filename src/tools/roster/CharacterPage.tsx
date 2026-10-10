@@ -11,7 +11,7 @@ import { KitCheck } from './KitCheck';
 import r from './roster.module.css';
 import { artOf, CharArt, dupesLabel, elementOf, entryOf, isUpcoming, rarityColor, roleLabel } from './shared';
 import { TeamRow, teamAccount } from './TeamParts';
-import { useBuilds, type RosterData } from './useRosterData';
+import { useBuilds, useKits, type RosterData } from './useRosterData';
 
 interface Props {
   data: RosterData;
@@ -169,6 +169,7 @@ export function CharacterPage({ data, character: c, several, onBack, openPulls, 
                 <span className={r.statSub}>{entry.owned ? (entry.dupes >= dupes.max ? 'Maxed' : `${dupes.max - entry.dupes} to max`) : 'Mark as owned first'}</span>
               </div>
             )}
+            <PotentialStat data={data} character={c} />
           </div>
         </div>
       </div>
@@ -672,5 +673,49 @@ function Materials({
         </button>
       )}
     </section>
+  );
+}
+
+/**
+ * The game's second upgrade track (HSR Enhanced kit, ZZZ Agent Potential), only for
+ * characters whose kit has pieces that need it. Kit check and team scores read it;
+ * "Not set" keeps those pieces locked, as the honest default.
+ */
+function PotentialStat({ data, character: c }: { data: RosterData; character: Character }) {
+  const { game, user } = data;
+  const track = game.potential;
+  const kits = useKits(game);
+  const kit = kits?.find((k) => k.characterId === c.id);
+  if (!track || !kit?.skills.some((s) => s.unlock?.potential || s.replacedAt)) return null;
+  const entry = entryOf(user.roster, c.id);
+  const onOff = track.max === 1;
+  const label = (n: number) => (onOff ? (n ? 'Yes' : 'No') : String(n));
+  const id = `potential-${c.id}`;
+  return (
+    <div className={r.stat}>
+      <label className={r.statLabel} htmlFor={id}>
+        {track.name}
+      </label>
+      <select
+        id={id}
+        className={r.input}
+        value={entry.potential ?? ''}
+        disabled={!entry.owned}
+        onChange={(e) => {
+          const rest = { owned: entry.owned, wanted: entry.wanted, dupes: entry.dupes };
+          setRosterEntry(game.id, c.id, e.target.value === '' ? rest : { ...rest, potential: Number(e.target.value) });
+        }}
+      >
+        <option value="">Not set</option>
+        {Array.from({ length: track.max + 1 }, (_, n) => (
+          <option key={n} value={n}>
+            {label(n)}
+          </option>
+        ))}
+      </select>
+      <span className={r.statSub}>
+        {!entry.owned ? 'Mark as owned first' : entry.potential === undefined ? `Kit check keeps ${track.name} parts locked until you set it` : 'Kit check and team scores use this'}
+      </span>
+    </div>
   );
 }
