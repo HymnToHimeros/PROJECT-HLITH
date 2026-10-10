@@ -39,8 +39,12 @@ Resume with: "continue from PROGRESS.md". Newest entry on top. Older entries:
   version ends, beta kit changes with the build the text came from, and LOGIC-CORE's
   kit sheets that went stale, from their `buildLibrary().stale`) and sends it to the owner's inbox. Permanent banners keep their stored end
   when the notice board's hour wobbles (it answered 11:00, 17:00 and 00:00 in a row).
-  Needs: FRAME's intake change (`failed`, `next_at`), the FINDINGS_INTAKE_KEY secret,
-  and "Allow GitHub Actions to create and approve pull requests".
+  Needs: the FINDINGS_INTAKE_KEY secret and "Allow GitHub Actions to create and approve pull requests".
+- 2026-10-10 · **LOGIC-CORE: a leak's sheet that no longer matches its beta kit is not used (T43)** (branch
+  `logic-core/stale-leak-sheets`). Beta kits change between builds and SCHEDULER re-imports them on every check. A
+  leak's sheet whose quoted lines changed (or that misses a new piece) is stale: the leak reads "not read yet" with
+  why, and its sheet test is skipped with "re-read: …" instead of failing CI. Both games. hsr-decisions 41,
+  zzz-decisions 65.
 - 2026-10-10 · **SCHEDULER: when to look for news** (branch `scheduler/rhythm`).
   `npm run schedule:due` says whether now is a check time and when the next one
   is (`--plan 21` lists them). Counted from patch day, never weekdays: daily in the

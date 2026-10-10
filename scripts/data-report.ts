@@ -47,7 +47,6 @@ try {
  * Why LOGIC-CORE's kit sheet for a character is stale: their `buildLibrary().stale`
  * (src/games/<game>/kitcheck/library.ts), loaded through Vite because app code imports
  * JSON and leaves out file endings. It reads kits.json as it is now, after the import.
- * Before that helper exists, a sheet that names the character is reported as "check it".
  */
 async function staleSheets(): Promise<Record<string, (id: string) => string | undefined>> {
   const out: Record<string, (id: string) => string | undefined> = {};
@@ -56,14 +55,9 @@ async function staleSheets(): Promise<Record<string, (id: string) => string | un
   try {
     for (const game of GAMES) {
       const lib = ((await vite.ssrLoadModule(`/src/games/${game}/kitcheck/library.ts`)) as { buildLibrary: () => { stale?: Map<string, string> } }).buildLibrary();
-      if (lib.stale instanceof Map) {
-        const stale = lib.stale;
-        out[game] = (id) => stale.get(id);
-        continue;
-      }
-      const files = execFileSync('git', ['ls-files', `src/games/${game}/kitcheck/sheet`], { cwd: ROOT, encoding: 'utf8' }).split('\n').filter((f) => /\.ts$/.test(f) && !/\.test\.ts$/.test(f));
-      const text = files.map((f) => readFileSync(resolve(ROOT, f), 'utf8')).join('\n');
-      out[game] = (id) => (new RegExp(`characterId: ["'\`]${id}["'\`]`).test(text) ? 'it has a sheet and its beta kit changed; check it' : undefined);
+      // No `stale` means no sheet is stale.
+      const stale = lib.stale ?? new Map<string, string>();
+      out[game] = (id) => stale.get(id);
     }
   } catch (e) {
     console.warn(`Kit sheets not checked: ${e instanceof Error ? e.message : String(e)}`);

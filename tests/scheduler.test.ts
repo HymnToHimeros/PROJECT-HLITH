@@ -2,13 +2,14 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it, vi } from 'vitest';
 import { deliver, readIntake, saveFindings, type DeliveryDb } from '../supabase/functions/_shared/findings.ts';
-import { EXTERNAL_JOB_IDS, FRAME_MESSAGE, JOBS, runnerOf, type JobDef } from '../supabase/functions/_shared/jobs.ts';
+import { EXTERNAL_JOB_IDS, FRAME_MESSAGE, JOBS, runnerOf, SELF_ADJUSTING, type JobDef } from '../supabase/functions/_shared/jobs.ts';
 import {
   callJobFunction,
   dedupeKey,
   describeCadence,
   dueJobs,
   effectiveCadence,
+  externalNext,
   lastSlot,
   lockFree,
   nextSlot,
@@ -60,8 +61,13 @@ describe('cadence', () => {
     expect(nextSlot(six, FRI_1700)).toBe(at('2026-10-09T18:00:00Z'));
   });
 
-  it('every job in the list has a cadence that reads', () => {
-    for (const j of JOBS) expect(parseCadence(j.cadence), j.id).not.toBeNull();
+  it('every job in the list has a cadence that reads (self-adjusting ones: their fallback reads)', () => {
+    for (const j of JOBS) {
+      if (j.cadence === SELF_ADJUSTING) {
+        expect(j.target.kind, j.id).toBe('external');
+        expect(parseCadence(j.fallbackCadence ?? ''), `${j.id} fallback`).not.toBeNull();
+      } else expect(parseCadence(j.cadence), j.id).not.toBeNull();
+    }
   });
 
   it('a broken owner override falls back to the default and says so', () => {
@@ -375,6 +381,60 @@ describe('findings intake (the routine’s deliveries)', () => {
       ['leaks-scan', 'Delivered 1 finding.', 'routine'],
     ]);
     expect(db.tables.scheduler_jobs?.find((j) => j.id === 'leaks-scan')).toMatchObject({ last_status: 'ok', last_run_at: new Date(NOW).toISOString(), next_due_at: '2026-10-12T06:00:00.000Z' });
+  });
+
+  it('failed runs and next_at: checked all-or-nothing (self-adjusting cadence)', () => {
+    const later = new Date(NOW + 86_400_000).toISOString();
+    const r = readIntake({ ran: ['leaks-scan'], failed: [{ job: 'game-data-refresh', message: 'nanoka.cc answered 503' }], next_at: { 'leaks-scan': later }, findings: [] }, NOW);
+    expect(r.ok).toBe(true);
+    if (r.ok) {
+      expect([...r.failed]).toEqual([['game-data-refresh', 'nanoka.cc answered 503']]);
+      expect([...r.nextAt]).toEqual([['leaks-scan', later]]);
+    }
+    // A failure alone is a delivery.
+    expect(readIntake({ failed: [{ job: 'events-scan', message: 'timed out' }], findings: [] }, NOW).ok).toBe(true);
+    const bad = (body: unknown) => (readIntake(body, NOW) as { ok: false; problems: string[] }).problems;
+    expect(bad({ failed: [{ job: 'backup', message: 'x' }], findings: [] })).toEqual([`failed[0].job: must be one of ${EXTERNAL_JOB_IDS.join(', ')}.`]);
+    expect(bad({ failed: [{ job: 'leaks-scan', message: ' ' }], findings: [] })).toEqual(['failed[0].message: missing (what went wrong, in plain words).']);
+    expect(bad({ failed: [{ job: 'leaks-scan', message: 'x'.repeat(501) }], findings: [] })).toEqual(['failed[0].message: longer than 500 characters.']);
+    expect(bad({ ran: ['leaks-scan'], failed: [{ job: 'leaks-scan', message: 'x' }], findings: [] })).toEqual(['failed: leaks-scan is also in "ran"; one outcome per job per delivery.']);
+    expect(bad({ failed: [{ job: 'leaks-scan', message: 'x' }], findings: [good] })).toEqual(['failed: leaks-scan also has findings; one outcome per job per delivery.']);
+    expect(bad({ ran: ['leaks-scan'], next_at: { backup: later }, findings: [] })).toEqual([`next_at.backup: not a job; use one of ${EXTERNAL_JOB_IDS.join(', ')}.`]);
+    expect(bad({ ran: ['leaks-scan'], next_at: { 'leaks-scan': new Date(NOW - 1000).toISOString() }, findings: [] })).toEqual(['next_at.leaks-scan: must be in the future (when the job runs next).']);
+    expect(bad({ ran: ['leaks-scan'], next_at: { 'leaks-scan': new Date(NOW + 32 * 86_400_000).toISOString() }, findings: [] })).toEqual(['next_at.leaks-scan: more than 31 days ahead.']);
+    expect(bad({ ran: ['leaks-scan'], next_at: { 'leaks-scan': 'soon' }, findings: [] })).toEqual(['next_at.leaks-scan: must be an ISO date-time, e.g. "2026-10-11T06:00:00Z".']);
+    expect(bad({ ran: ['leaks-scan'], next_at: [], findings: [] })).toEqual(['"next_at" must be an object: { "<job>": "<ISO time>" }.']);
+    // Every problem is listed at once: a bad "failed" entry and a bad finding together.
+    expect(bad({ failed: [{ job: 'events-scan', message: '' }], findings: [{ ...good, title: '' }] })).toEqual(['failed[0].message: missing (what went wrong, in plain words).', 'findings[0].title: missing.']);
+  });
+
+  it('a failed run is recorded red with the routine\'s words; next_at sets when each job is expected', async () => {
+    const db = fakeDb();
+    const later = new Date(NOW + 2 * 86_400_000).toISOString();
+    const r = readIntake({ ran: ['leaks-scan'], failed: [{ job: 'events-scan', message: 'timed out' }], next_at: { 'events-scan': later }, findings: [] }, NOW);
+    if (!r.ok) throw new Error(r.problems.join(' '));
+    const saved = await deliver(db, r.byJob, NOW, () => 'fallback', r.failed, r.nextAt);
+    expect(saved).toEqual([
+      { job: 'leaks-scan', delivered: 0, added: 0, known: 0 },
+      { job: 'events-scan', delivered: 0, added: 0, known: 0, failed: true },
+    ]);
+    expect(db.tables.scheduler_runs?.find((x) => x.job_id === 'events-scan')).toMatchObject({ status: 'error', message: 'timed out', started_by: 'routine' });
+    expect(db.tables.scheduler_jobs?.find((j) => j.id === 'events-scan')).toMatchObject({ last_status: 'error', last_message: 'timed out', next_due_at: later });
+    // No next_at for this job: its fallback cadence.
+    expect(db.tables.scheduler_jobs?.find((j) => j.id === 'leaks-scan')).toMatchObject({ last_status: 'ok', next_due_at: 'fallback' });
+  });
+
+  it('a routine job is expected when it said, overdue once that passed; else on its fallback after its last delivery', () => {
+    const job = must(JOBS.find((j) => j.id === 'leaks-scan'));
+    expect(job).toMatchObject({ cadence: SELF_ADJUSTING, status: 'live' });
+    const at = NOW + 3_600_000;
+    expect(externalNext(job, { cadence: null, last_run_at: new Date(NOW).toISOString(), next_due_at: new Date(at).toISOString() }, NOW)).toEqual({ at, overdue: false });
+    expect(externalNext(job, { cadence: null, last_run_at: new Date(NOW).toISOString(), next_due_at: new Date(at).toISOString() }, at + 1)).toEqual({ at, overdue: true });
+    // Never delivered: nothing expected yet.
+    expect(externalNext(job, { cadence: null, last_run_at: null, next_due_at: null }, NOW)).toEqual({ at: null, overdue: false });
+    // Delivered without a time: the fallback cadence (mon,wed,fri 06:00) after that delivery.
+    const fb = externalNext(job, { cadence: null, last_run_at: new Date(NOW).toISOString(), next_due_at: null }, NOW);
+    expect(fb.at).toBe(nextSlot(must(parseCadence('mon,wed,fri 06:00')), NOW));
   });
 });
 

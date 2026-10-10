@@ -293,4 +293,17 @@ team size and order, and the owner's ZZZ method's own counting.
       (Remembrance), 100% (was 83% with Huohuo). Best-found cards for Aventurine • Waveflair (Waveflair + Ashveil
       + Sunday + Robin • Summeretto, 91%: on the owner's Eidolons Sunday edges Mortenax Blade) and Silver Wolf
       LV.999. Every other HSR card is unchanged.
+41. **A leak's sheet that no longer matches its beta kit is not used (owner's job T43, both games, ZZZ decision 65
+    mirrors it).** The owner wants SCHEDULER to re-import leaks' beta kits on every check, because beta kits change a
+    lot between builds.
+    - A leak's sheet is **stale** when any quote it relies on is no longer word for word in its piece's current
+      text, or its kit has a piece the sheet doesn't read. Quotes it relies on: entries, scaling, damage notes, and
+      the alone part with its turns. Code: `staleReason` in `core/rules/leaks.ts`; the libraries check every leak's
+      sheet when they are built.
+    - A stale sheet is not used: the leak reads "not rated yet: <name> (its beta kit changed since it was read (…))
+      not read yet" wherever it appears. No score comes from old text.
+    - Tests: released characters stay word for word (a change still fails CI). A stale leak doesn't fail the build:
+      its sheet test shows as skipped with "re-read: …". SCHEDULER lists stale leak sheets in its finding / PR
+      summary, and LOGIC-CORE re-reads them.
+    - Today the only leak with a sheet is Nihilux (Aeon ★ Aha), and it matches: no score changes.
 

@@ -4,6 +4,7 @@ import characters from '../data/characters.json';
 import kitsJson from '../data/kits.json';
 import weapons from '../data/weapons.json';
 import { withSignatureWeapons } from '../../../core/rules/signatureWeapons';
+import { staleReason, type SheetQuote } from '../../../core/rules/leaks';
 import gameTeams from '../data/teams.json';
 import type { Library, Profile } from './check';
 import { groupA } from './sheet/groupA';
@@ -98,7 +99,26 @@ export function weaponLibrary(sheets: CharacterSheet[], weaponSheets: WeaponShee
   return out;
 }
 
+/** Every quote an HSR sheet relies on: entries and their scaling, damage notes, the alone part (T43). */
+export const sheetQuotes = (s: CharacterSheet): SheetQuote[] => [
+  ...s.entries.flatMap((e) => [{ piece: e.piece, quote: e.quote }, ...(e.scales ? [{ piece: e.piece, quote: e.scales.quote }] : [])]),
+  ...(s.damage?.quotes ?? []),
+  ...(s.damage?.alone ? [{ piece: s.damage.alone.piece, quote: s.damage.alone.quote }, ...(s.damage.alone.turns ? [{ piece: s.damage.alone.piece, quote: s.damage.alone.turns.quote }] : [])] : []),
+];
+/** The kit pieces a sheet reads: an entry or a "nothing" reason. */
+const readPieces = (s: CharacterSheet) => new Set([...s.entries.map((e) => e.piece), ...Object.keys(s.nothing)]);
+
 export function buildLibrary(sheets: CharacterSheet[] = SHEETS, kitList: Kit[] = KITS, teams: TeamPreset[] = gameTeams as TeamPreset[]): Library {
+  const leaks = new Map((characters as { id: string; leak?: { source: string } }[]).flatMap((c) => (c.leak ? [[c.id, c.leak.source] as const] : [])));
+  // T43: a leak's sheet whose beta text changed is not used until it is read again.
+  const stale = new Map(
+    sheets.flatMap((s) => {
+      if (!leaks.has(s.characterId)) return [];
+      const why = staleReason(sheetQuotes(s), readPieces(s), kitList.find((k) => k.characterId === s.characterId)?.skills);
+      return why ? [[s.characterId, why] as const] : [];
+    }),
+  );
+  sheets = sheets.filter((s) => !stale.has(s.characterId));
   const carries = new Set(sheets.filter((s) => s.damage).map((s) => s.characterId));
   const own = teams.filter((t) => isOwnTeam(t, carries));
   return {
@@ -116,7 +136,8 @@ export function buildLibrary(sheets: CharacterSheet[] = SHEETS, kitList: Kit[] =
     ),
     pieceLabels: new Map(kitList.map((k) => [k.characterId, new Map(k.skills.map((s) => [s.id, s.label] as const))])),
     names: new Map(characters.map((c) => [c.id, c.name])),
-    leaks: new Map((characters as { id: string; leak?: { source: string } }[]).flatMap((c) => (c.leak ? [[c.id, c.leak.source] as const] : []))),
+    leaks,
+    ...(stale.size ? { stale } : {}),
     weapons: weaponLibrary(sheets),
   };
 }
