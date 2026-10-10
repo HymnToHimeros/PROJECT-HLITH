@@ -28,6 +28,37 @@ Resume with: "continue from PROGRESS.md". Newest entry on top. Older entries:
 - CI (`.github/workflows/ci.yml`) runs both on every pull request.
 
 ## Done
+- 2026-10-10 · **LOGIC-CORE: your own team lists + hidden Trailblazer never used** (#76).
+  Where you edit a game team's slot lists (FRAME's editor, T29b), your lists decide who can join that carry
+  everywhere and fill the card in your order (decision 31). The Trailblazer your pick hides is never used in
+  any card, suggestion or best team (`TeamAccount.skip` from FRAME's `hiddenBy`).
+- 2026-10-10 · **LOGIC-CORE: HSR teams are each carry's own game team** (#75).
+  Owner's report: "Phainon team · with March 7th" was a starter line-up from March 7th's page. Now only a
+  carry's own game team is shown, each slot filled with the first character you own in the game's order, and
+  teammates are only ever picked from that team's lists. Owning Phainon, Sunday, Cerydra and Dan Heng PT,
+  those four are his one team (a test). Decision 30.
+- 2026-10-10 · **LOGIC-CORE: every equipped weapon counts (T18, step 4)** (#74).
+  All 109 Light Cones and 55 W-Engines that aren't signatures are read quote for quote. The one in a
+  character's saved build counts when its path / specialty is theirs (as in the game); otherwise the note
+  says "works only for X characters". Decision 29.
+- 2026-10-10 · **LOGIC-CORE: builds a team wants (T18, step 3)** (#73).
+  A teammate's buff that grows with their own stat makes the team want that build on them (Robin •
+  Summeretto with Phainon: HP). Saved builds are read in bands: built +2, partly +1, none 0 ("no build saved,
+  scored at base"); 100% assumes the team is built right. The team "Why" lists "Builds this team wants"; the
+  character page has "Builds their teams want". Both games (owner's ruling: the logic mirrors in both games;
+  the ZZZ method's examples hold at base builds). Decisions 25–28, zzz-decisions 56.
+- 2026-10-10 · **LOGIC-CORE: signature weapons count when equipped (T18, step 2)** (#69).
+  Every signature Light Cone and W-Engine (about 110) is read from its game text as part of the character's
+  kit. It counts only when that weapon is in the saved build; the "Why" and the account notes say so.
+  Decision 24.
+- 2026-10-10 · **LOGIC-CORE: team suggestions from your account (T18, step 1)** (#67).
+  Who fits ranks only characters you own by default, by the team's %, counting your Eidolons / Mindscapes
+  and Enhanced / Agent Potential; "include characters I don't own" adds the rest as theory. Each suggestion
+  leads with one short line of what counted ("Counted: E2, Enhanced kit.").
+- 2026-10-10 · **LOGIC-CORE: scores explain themselves in plain words (T17)** (#61).
+  Every team's "Why" opens with a sentence (who deals the damage, who connects with their kit), one line per
+  member (what they give, what they set off, points) and "To reach 100%". The kit lines that prove it are one
+  tap below. "If you pull" and Kit check notes are full sentences. Both games.
 - 2026-10-10 · **Eight more themes** (branch `worktree-agent-a9e6d8c564b992b99`). Account → Theme now offers
   Noctune Bloom, Astral Lagoon, Crimson Haze, Jade Whisper, Velvet Twilight, Midnight Sakura and two light
   ones, Ethereal Dune and Amber Mirage, each from the owner's palette with its own background art and emblem
