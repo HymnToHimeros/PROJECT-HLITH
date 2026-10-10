@@ -39,6 +39,15 @@ do tonight**, **how many pulls you'll have** when the banner you want arrives, a
 | 🔭 **Intel** | New content no other screen covers yet, always marked unverified. |
 | ✨ **Assistant** | Ask in plain words. It can propose plans and changes, and you approve or undo each one. |
 
+<p align="center">
+  <img src="docs/screenshots/pulls.png" alt="Pulls planner: pulls by each banner, chance to win and worst case" width="49%">
+  <img src="docs/screenshots/backlog.png" alt="Backlog: the story as a checklist, rewards still on the table" width="49%">
+</p>
+<p align="center">
+  <img src="docs/screenshots/calendar.png" alt="Calendar: banners, events and resets on one timeline" width="66%">
+  <img src="docs/screenshots/phone.png" alt="Today on a phone" width="24%">
+</p>
+
 **And around it:** sign in with Google, Discord or an email link · everything syncs
 between your devices · HoYoLAB link for live stamina, automatic daily check-in and code
 redemption, for several accounts at once · a profile page with picture, banner, bio and
@@ -133,7 +142,7 @@ permission.
 |---|---|
 | [FEATURES](docs/FEATURES.md) | Everything HLITH must do |
 | [ROADMAP](docs/ROADMAP.md) | What's done (ticks itself from the code) |
-| [PROGRESS](docs/PROGRESS.md) | Latest work and what's next |
+| [PROGRESS](docs/PROGRESS.md) · [HISTORY](docs/HISTORY.md) | Latest work and what's next · everything before |
 | [DESIGN](docs/DESIGN.md) · [design files](docs/design) | How it looks |
 | [WORKSTREAMS](docs/WORKSTREAMS.md) | Who builds what |
 | [SETUP](docs/SETUP.md) · [DEPLOY](docs/DEPLOY.md) | Outside settings and hosting |
