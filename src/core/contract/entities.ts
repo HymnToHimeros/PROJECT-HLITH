@@ -22,6 +22,18 @@ export interface Character {
   leak?: { source: string };
 }
 
+/** A weapon (Light Cone, W-Engine): what weapon banners feature (LOGIC-CORE). */
+export interface Weapon {
+  id: string;
+  name: string;
+  rarity: 'top' | 'mid' | 'low';
+  /** Picture (full URL), when the source has one that loads. */
+  icon?: string;
+  /** The character it is made for (their signature weapon), when the game data says so. */
+  madeFor?: string;
+  source?: string;
+}
+
 export interface Banner {
   id: string;
   type: string; // GameContract.bannerTypes[].id
@@ -87,6 +99,8 @@ export interface Material {
   id: string;
   name: string;
   kind: string; // 'ascension', 'skill', 'credits', …
+  /** Picture of the item (full URL), when the source has one (LOGIC-CORE). */
+  icon?: string;
   /** Stamina per run and expected drops per run, when known. */
   staminaPerRun?: number;
   dropsPerRun?: number;
@@ -150,6 +164,18 @@ export interface RecommendedBuild {
   weapons: string[];
   /** Skills to level first, tier by tier. Empty = the source doesn't say. */
   skillsFirst: string[][];
+  /** Picture and game text for each set and weapon named above, by name (LOGIC-CORE). */
+  items?: Record<string, BuildItem>;
+}
+
+/** A gear set or weapon in a recommended build: its picture and what it does, in the game's words. */
+export interface BuildItem {
+  /** Full URL of its picture. */
+  icon?: string;
+  /** Rarity as the game counts it (ZZZ: 2 B, 3 A, 4 S; HSR: 3–5 stars). */
+  rarity?: number;
+  /** Its effects, e.g. { label: '2-piece', text: 'CRIT Rate +8%' }. */
+  effects: { label: string; text: string }[];
 }
 
 export interface Version {

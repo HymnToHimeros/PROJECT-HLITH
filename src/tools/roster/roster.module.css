@@ -1361,3 +1361,123 @@ button.member:hover .memberArt {
   font-size: 13px;
   color: var(--ink-1);
 }
+
+/* ── How to build (character page) ── */
+.buildStep {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-2);
+  min-width: 0;
+}
+.buildStepTitle {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  margin: 0;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--ink-1);
+}
+.buildStepNum {
+  display: inline-grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  flex: none;
+  border-radius: 50%;
+  background: var(--bg-raised);
+  border: 1px solid var(--line-mid);
+  font: 600 11px var(--font-numbers);
+  color: var(--ink-2);
+}
+.itemList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-2);
+}
+.item {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--s-3);
+  padding: var(--s-2);
+  border-radius: 10px;
+  background: var(--bg-raised);
+  border: 1px solid var(--line-subtle);
+  min-width: 0;
+}
+.itemIcon {
+  width: 56px;
+  height: 56px;
+  flex: none;
+  object-fit: contain;
+  border-radius: 8px;
+  background: var(--bg-card);
+}
+.itemIconSm {
+  width: 28px;
+  height: 28px;
+  flex: none;
+  object-fit: contain;
+}
+.itemBody {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+.itemName {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink-1);
+}
+.itemBest {
+  font: 600 10px/1 var(--font-numbers);
+  padding: 3px 6px;
+  border-radius: 5px;
+  border: 1px solid var(--line-mid);
+  color: var(--ink-2);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.itemEffect {
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--ink-3);
+}
+.itemEffect strong {
+  color: var(--ink-2);
+  font-weight: 600;
+}
+.subList {
+  margin: 0;
+  padding-left: 1.4em;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 14px;
+  color: var(--ink-1);
+}
+.matName {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  min-width: 0;
+}
+
+/* ── Long lists: a filter and "Show more" (Teams, Team fit) ── */
+.teamFilter {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: var(--s-2) var(--s-3);
+}
+.teamFilter .searchField {
+  flex: 1 1 220px;
+}
