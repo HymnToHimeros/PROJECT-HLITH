@@ -2,6 +2,7 @@
 import { describe, expect, it } from 'vitest';
 import { checkOrder, checkSquad, type Account, type Line } from './check';
 import { buildLibrary, KITS as kits, library, SHEETS } from './library';
+import characters from '../data/characters.json';
 
 const BILLY = '1531';
 const DIALYN = '1481';
@@ -14,7 +15,10 @@ const account: Account = { mindscape: (id) => levels[id] ?? 0, potential: () => 
 const lib = library();
 
 describe('Part A: the cheat sheet is proven by the game text', () => {
-  it.each(SHEETS.map((s) => [s.name, s] as const))('%s: every quote is word for word, every piece is read', (_n, sheet) => {
+  // Leaks' beta text changes between builds (T43, mirrors HSR): a leak's sheet that no longer matches isn't used, and
+  // isn't a failed build; released agents stay strict here.
+  const isLeak = (id: string) => (characters as { id: string; leak?: unknown }[]).some((c) => c.id === id && c.leak);
+  it.each(SHEETS.filter((s) => !isLeak(s.characterId)).map((s) => [s.name, s] as const))('%s: every quote is word for word, every piece is read', (_n, sheet) => {
     const kit = kits.find((k) => k.characterId === sheet.characterId);
     expect(kit).toBeDefined();
     const text = new Map(kit?.skills.map((s) => [s.id, s.gameText]));
