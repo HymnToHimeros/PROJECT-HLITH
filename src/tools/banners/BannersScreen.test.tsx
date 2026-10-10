@@ -1,8 +1,9 @@
-import { fireEvent, render, screen, within } from '@testing-library/react';
+import { act, fireEvent, render, screen, within } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import type { Banner, Character, GameContract } from '../../core/contract';
 import type { ModuleId } from '../../core/contract';
-import { resetUserData, setRosterEntry } from '../../core/data/userData';
+import { reloadPrefs, updatePrefs } from '../../core/data/prefs';
+import { gameData, resetUserData, setRosterEntry } from '../../core/data/userData';
 import BannersScreen from './BannersScreen';
 import { resetHideLeaks } from './leakPref';
 
@@ -74,6 +75,7 @@ const cardTitles = () => screen.getAllByRole('article').map((a) => a.getAttribut
 describe('Banners screen', () => {
   beforeEach(() => {
     localStorage.clear();
+    reloadPrefs();
     resetUserData();
     resetHideLeaks();
   });
@@ -128,7 +130,7 @@ describe('Banners screen', () => {
     expect(screen.getAllByRole('article').every((a) => within(a).queryByText('EXAMPLE'))).toBe(true);
   });
 
-  it('filters live, upcoming and leaked banners, and says rerun watch has no data yet', async () => {
+  it('filters live, upcoming and leaked banners, and rerun watch says when release dates are missing', async () => {
     await show(realBanners);
     fireEvent.click(screen.getByRole('button', { name: 'Live' }));
     expect(cardTitles()).toEqual(['Live short', 'Live long']);
@@ -138,7 +140,42 @@ describe('Banners screen', () => {
     expect(cardTitles()).toEqual(['Leaked one']);
     fireEvent.click(screen.getByRole('button', { name: 'Rerun watch' }));
     expect(screen.queryAllByRole('article')).toHaveLength(0);
-    expect(screen.getByText(/Rerun watch: .*No data yet/)).toBeInTheDocument();
+    expect(screen.getByText(/5 banners have no release date .*no data yet/)).toBeInTheDocument();
+  });
+
+  it('rerun watch shows the banners the cards label “Rerun”', async () => {
+    const dated = makeGame(realBanners);
+    const withDates = { ...dated, data: { ...dated.data, characters: async () => [{ ...chars[0], releasedAt: iso(-400) }, { ...chars[1], releasedAt: iso(9) }, chars[2]] } } as GameContract;
+    render(<BannersScreen games={[withDates]} scope="aa" servers={{}} openTab={() => {}} open={() => {}} openAccount={() => {}} />);
+    await screen.findAllByRole('article');
+    expect(within(screen.getByRole('article', { name: 'Upcoming late' })).getByText(/· New/)).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'Rerun watch' }));
+    expect(cardTitles()).toEqual(['Live long', 'Upcoming soon']);
+  });
+
+  it('marks a featured character as wanted without touching owned or copies', async () => {
+    setRosterEntry('aa', 'c1', { owned: true, wanted: false, dupes: 2 });
+    await show(realBanners);
+    const card = screen.getByRole('article', { name: 'Live long' });
+    act(() => fireEvent.click(within(card).getByRole('button', { name: 'Add Star One to my wanted list' })));
+    expect(gameData('aa').roster.c1).toEqual({ owned: true, wanted: true, dupes: 2 });
+    expect(within(card).getByText('You own it (E2) · on your wanted list')).toBeInTheDocument();
+    act(() => fireEvent.click(within(card).getByRole('button', { name: 'Remove Star One from my wanted list' })));
+    expect(gameData('aa').roster.c1).toEqual({ owned: true, wanted: false, dupes: 2 });
+  });
+
+  it('“build a team first” opens Roster → Teams', async () => {
+    const open = vi.fn();
+    await show(realBanners, open);
+    fireEvent.click(within(screen.getByRole('article', { name: 'Live short' })).getByRole('button', { name: 'build a team first' }));
+    expect(open).toHaveBeenCalledWith('roster', 'teams');
+  });
+
+  it('with no banners at all, “Add my own banner” opens Edit mode', async () => {
+    act(() => updatePrefs((p) => ({ ...p, hideExamples: true })));
+    render(<BannersScreen games={[makeGame([])]} scope="aa" servers={{}} openTab={() => {}} open={() => {}} openAccount={() => {}} />);
+    fireEvent.click(await screen.findByRole('button', { name: 'Add my own banner' }));
+    expect(await screen.findByText(/Edit mode · Banners/)).toBeInTheDocument();
   });
 
   it('real banners without art get a full-size placeholder panel with the name, never sample art', async () => {
