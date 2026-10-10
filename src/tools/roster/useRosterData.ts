@@ -19,6 +19,8 @@ export interface RosterLists {
 export interface RosterData extends RosterLists {
   game: GameContract;
   user: GameUserData;
+  /** Leaks may join teams (T39): Roster "Show leaked" on and Banners "Hide leaks" off. Missing = no. */
+  showLeaks?: boolean;
 }
 
 // Some names carry the game's text markup (e.g. <unbreak>); show them as plain text.

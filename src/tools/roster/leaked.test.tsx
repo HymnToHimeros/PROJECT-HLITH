@@ -97,7 +97,8 @@ describe('Roster characters: order and leaks', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Rumoured Hero, leaked, unverified, wanted' }));
     const page = await screen.findByRole('article', { name: 'Rumoured Hero' });
     expect(within(page).getByRole('button', { name: 'Owned' })).toBeDisabled();
-    expect(within(page).getByText('test leak site')).toBeInTheDocument();
+    // Marked unverified with its source at the top and on If you pull (T39).
+    expect(within(page).getAllByText('test leak site')).toHaveLength(2);
   });
 
   it('says so honestly when leaks are shown but none are listed', async () => {

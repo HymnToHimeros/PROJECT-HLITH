@@ -8,11 +8,12 @@ import { exampleNeeds } from '../farm/examples';
 import { farmPlan } from '../farm/plan';
 import { exampleBuild, exampleScore } from './examples';
 import { BuildEditor } from './BuildEditor';
+import { StatTargets } from './StatTargets';
 import { BuildWants } from './BuildWants';
 import { KitCheck } from './KitCheck';
 import r from './roster.module.css';
 import { artOf, CharArt, dupesLabel, elementOf, entryOf, isUpcoming, rarityColor, roleLabel, toCharacterBuild } from './shared';
-import { TeamRow, teamAccount } from './TeamParts';
+import { Line, TeamRow, teamAccount } from './TeamParts';
 import { useBuilds, useKits, type RosterData } from './useRosterData';
 
 interface Props {
@@ -179,9 +180,11 @@ export function CharacterPage({ data, character: c, several, onBack, openPulls, 
 
       {/* Design order: Build score (or If you pull), Team fit, Materials. Secondary cards fold away below. */}
       <div className={r.cards}>
-        {entry.owned ? <BuildCard data={data} character={c} /> : <IfYouPull data={data} character={c} openPulls={openPulls} />}
+        {/* A leak can't be owned: it always gets If you pull (pre-pull, T39). */}
+        {entry.owned && !c.leak ? <BuildCard data={data} character={c} /> : <IfYouPull data={data} character={c} openPulls={openPulls} />}
         <TeamFit data={data} character={c} makePreset={makePreset} />
         <BuildWants data={data} character={c} />
+        <StatTargets data={data} character={c} />
         <section className={r.card} aria-labelledby={`how-to-build-${c.id}`}>
           <h3 className={r.cardTitle} id={`how-to-build-${c.id}`}>
             How to build {c.name}
@@ -563,6 +566,7 @@ function IfYouPull({ data, character, openPulls }: { data: RosterData; character
       <h3 className={r.cardTitle} id="if-you-pull">
         If you pull
       </h3>
+      {character.leak && <UnverifiedTag source={character.leak.source} />}
       {/* The Pulls workstream fills "pulls you hold" from the shared pull budget. */}
       <div className={r.pullRow}>
         <span className={r.pullBig} aria-hidden="true">
@@ -689,7 +693,7 @@ function WhoFits({ data, character: c }: { data: RosterData; character: Characte
 function PullValueLine({ data, character: c }: { data: RosterData; character: Character }) {
   const rules = data.game.rules.teams;
   const roster = data.user.roster;
-  const v = useMemo(() => (rules ? rules.ifYouPull(c.id, teamAccount(data)) : null), [rules, c.id, roster]); // eslint-disable-line react-hooks/exhaustive-deps
+  const v = useMemo(() => (rules ? rules.ifYouPull(c.id, teamAccount(data)) : null), [rules, c.id, roster, data.showLeaks]); // eslint-disable-line react-hooks/exhaustive-deps
   if (!rules) return null;
   if (!v)
     return (
@@ -702,7 +706,9 @@ function PullValueLine({ data, character: c }: { data: RosterData; character: Ch
       <summary className={r.whySummary}>For your teams: {v.percent ? `${v.percent}%` : 'No gain'}</summary>
       <ul className={r.whyList}>
         {v.why.map((w) => (
-          <li key={w}>{w}</li>
+          <li key={w}>
+            <Line text={w} />
+          </li>
         ))}
       </ul>
     </details>

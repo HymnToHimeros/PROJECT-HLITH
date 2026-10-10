@@ -71,7 +71,7 @@ export function Member({
 }
 
 /** What the game's team rules may know about you: who you own, their dupes and (when set) their potential. */
-export const teamAccount = (data: RosterData): TeamAccount => rosterAccount(data.user.roster, data.user.builds, hiddenBy(data.game), data.user.teamLists, data.user.assumeAverageBuilds);
+export const teamAccount = (data: RosterData): TeamAccount => rosterAccount(data.user.roster, data.user.builds, hiddenBy(data.game), data.user.teamLists, data.user.assumeAverageBuilds, data.showLeaks);
 
 const rosterAccount = (
   roster: RosterData['user']['roster'],
@@ -79,7 +79,10 @@ const rosterAccount = (
   hidden?: (id: string) => boolean,
   teamLists?: RosterData['user']['teamLists'],
   assumeAverage?: boolean,
+  showLeaks?: boolean,
 ): TeamAccount => ({
+  // Leaks join others' teams only when you show leaks (T39); a leak's own team still works, marked.
+  ...(showLeaks ? { showLeaks: true } : {}),
   // Your switch in Roster → Teams (T34): no saved build = signature + average build.
   ...(assumeAverage ? { assumeAverage: true } : {}),
   // Characters your protagonist pick hides (the other Trailblazer): never used in any team.
@@ -105,6 +108,20 @@ const rosterAccount = (
   },
 });
 
+/** True for the team rules' lines about a leak ("Leak: … unverified beta kit …", T39). */
+const isLeakLine = (text: string) => text.startsWith('Leak:');
+
+/** A line from the team rules; lines about a leak carry a visible "? UNVERIFIED" tag (T39). */
+export function Line({ text }: { text: string }) {
+  return isLeakLine(text) ? (
+    <>
+      <span className={r.leakTag}>? UNVERIFIED</span> {text}
+    </>
+  ) : (
+    <>{text}</>
+  );
+}
+
 /** The game's verdict on a team, from its team rules (LOGIC-CORE); null when the game has none. */
 export function useVerdict(data: RosterData, members: string[], skip = false): TeamVerdict | null {
   const rules = data.game.rules.teams;
@@ -114,9 +131,10 @@ export function useVerdict(data: RosterData, members: string[], skip = false): T
   const hidden = hiddenBy(data.game);
   const lists = data.user.teamLists;
   const assume = data.user.assumeAverageBuilds;
+  const leaks = data.showLeaks;
   return useMemo(
-    () => (skip || !rules ? null : rules.verdict(key ? key.split(',') : [], rosterAccount(roster, builds, hidden, lists, assume))),
-    [rules, key, roster, builds, hidden, lists, assume, skip],
+    () => (skip || !rules ? null : rules.verdict(key ? key.split(',') : [], rosterAccount(roster, builds, hidden, lists, assume, leaks))),
+    [rules, key, roster, builds, hidden, lists, assume, leaks, skip],
   );
 }
 
@@ -135,7 +153,7 @@ export function WhyScore({ verdict, data }: { verdict: TeamVerdict | null; data:
     <div className={r.stack}>
       {verdict.notes.map((n) => (
         <span key={n} className={r.muted}>
-          {n}
+          <Line text={n} />
         </span>
       ))}
       {groups.map(([g, title]) => {
@@ -227,7 +245,7 @@ export function WhyScore({ verdict, data }: { verdict: TeamVerdict | null; data:
             <ul className={r.whyList}>
               {ex.missing.map((m) => (
                 <li key={m} className={r.cardText}>
-                  {m}
+                  <Line text={m} />
                 </li>
               ))}
             </ul>

@@ -2,14 +2,14 @@
  * Screenshot scan of a character screen (R50): which fields the game's record
  * asks for (`scan.fields`), what each means, and how a confirmed reading is saved.
  *
- * Saved: owned + dupes (the roster), and level and weapon into the character's saved
- * build when the game has builds (`GameContract.build`). Gear and skills are read and
- * confirmed but entered in the build form, piece by piece.
+ * Saved: owned + dupes (the roster), and level, weapon and the stat screen totals (T35) into
+ * the character's saved build when the game has builds (`GameContract.build`). Gear and skills
+ * are read and confirmed but entered in the build form, piece by piece.
  */
 import type { GameContract } from '../../core/contract';
 import { gameData, setBuild, setRosterEntry, type RosterEntry } from '../../core/data/userData';
 
-export type FieldKind = 'level' | 'dupes' | 'text';
+export type FieldKind = 'level' | 'dupes' | 'text' | 'total';
 export interface ScanField {
   id: string;
   label: string;
@@ -21,8 +21,17 @@ export interface ScanField {
 
 const norm = (s: string) => s.toLowerCase().replace(/[^a-z0-9]/g, '').replace(/s$/, '');
 
+/** Field id of a stat screen total (T35), e.g. "total:CRIT Rate". */
+const TOTAL = 'total:';
+
 export function fieldsFor(game: GameContract): ScanField[] {
   const terms = game.terms;
+  // The stat screen's totals (BuildRules.totalStats): what Target stats compare against.
+  const totals = (game.build?.totalStats ?? []).map((stat): ScanField => ({ id: `${TOTAL}${stat}`, label: `${stat} total`, kind: 'total', saved: true }));
+  return [...fieldsFromRecord(game, terms), ...totals];
+}
+
+function fieldsFromRecord(game: GameContract, terms: GameContract['terms']): ScanField[] {
   return (game.scan?.fields ?? []).map((id): ScanField => {
     const n = norm(id);
     if (n === 'level') return { id, label: 'Level', kind: 'level', saved: Boolean(game.build), max: game.build?.levelMax ?? 100 };
@@ -43,6 +52,11 @@ export function checkValues(fields: ScanField[], values: ScanValues): Record<str
   for (const f of fields) {
     const v = (values[f.id] ?? '').trim();
     if (!v || f.kind === 'text') continue;
+    if (f.kind === 'total') {
+      const t = Number(v.replace(/%$/, '').trim());
+      if (!Number.isFinite(t) || t < 0) out[f.id] = `${f.label} must be a number (for a % stat, the number without the %).`;
+      continue;
+    }
     const n = Number(v);
     const min = f.kind === 'level' ? 1 : 0;
     if (!Number.isInteger(n) || n < min || (f.max !== undefined && n > f.max)) out[f.id] = `${f.label} must be a whole number from ${min} to ${f.max ?? '…'}.`;
@@ -64,7 +78,7 @@ export function saveScan(game: GameContract, characterId: string, values: ScanVa
   return entry;
 }
 
-/** Level and weapon from a scan go into the saved build; everything else in it stays. */
+/** Level, weapon and totals from a scan go into the saved build; everything else in it stays. */
 function saveBuildFields(game: GameContract, characterId: string, values: ScanValues): void {
   if (!game.build) return;
   const fields = fieldsFor(game);
@@ -74,13 +88,21 @@ function saveBuildFields(game: GameContract, characterId: string, values: ScanVa
   };
   const level = typed('level');
   const weapon = typed('text', true);
-  if (!level && !weapon) return;
+  const totals: Record<string, number> = {};
+  for (const f of fields) {
+    const v = f.kind === 'total' ? (values[f.id] ?? '').trim().replace(/%$/, '').trim() : '';
+    if (v) totals[f.id.slice(TOTAL.length)] = Number(v);
+  }
+  const anyTotal = Object.keys(totals).length > 0;
+  if (!level && !weapon && !anyTotal) return;
   const before = gameData(game.id).builds?.[characterId];
   const sameWeapon = before?.weapon && before.weapon.name.toLowerCase() === weapon.toLowerCase();
   setBuild(game.id, characterId, {
     ...(before ?? { gear: [] }),
     ...(level ? { level: Number(level) } : {}),
     ...(weapon ? { weapon: sameWeapon && before.weapon ? before.weapon : { name: weapon } } : {}),
+    // Totals you confirmed replace those stats; the others you saved stay.
+    ...(anyTotal ? { totals: { ...before?.totals, ...totals } } : {}),
     source: 'scan',
     updatedAt: new Date().toISOString(),
   });
