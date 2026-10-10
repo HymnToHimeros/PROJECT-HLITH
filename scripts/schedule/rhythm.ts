@@ -169,3 +169,35 @@ export function nextCheck(plans: Plan[], now: number): { game: string; slot: Slo
     .filter((x) => Date.parse(x.slot.at) > now)
     .sort((a, b) => Date.parse(a.slot.at) - Date.parse(b.slot.at))[0];
 }
+
+/**
+ * Key moments for the research routine (docs/ROUTINES.md): patch day, the expected program
+ * announcement and pre-download notice, new banner starts, and the first check of each quiet
+ * middle. Both games share a run when their moments fall within 12 hours of each other
+ * (one run, at the later time, so both are covered).
+ */
+export function keyMoments(plans: Plan[], now: number): { at: string; why: string[] }[] {
+  const KEY = /patch day|program announcement|pre-download|new banners start/;
+  const raw = plans.flatMap((p) => {
+    const middles = new Set<string>();
+    return p.slots
+      .filter((s) => {
+        if (s.why.some((w) => KEY.test(w))) return true;
+        const middle = s.why.find((w) => w.includes('middle'));
+        if (!middle || middles.has(middle)) return false;
+        middles.add(middle);
+        return true;
+      })
+      .map((s) => ({ at: Date.parse(s.at), why: s.why.map((w) => `${p.game.toUpperCase()} ${w}`) }));
+  });
+  raw.sort((a, b) => a.at - b.at);
+  const out: { at: number; first: number; why: string[] }[] = [];
+  for (const r of raw) {
+    const last = out.at(-1);
+    if (last && r.at - last.first < 12 * HOUR) {
+      last.at = r.at;
+      last.why.push(...r.why.filter((w) => !last.why.includes(w)));
+    } else out.push({ at: r.at, first: r.at, why: [...r.why] });
+  }
+  return out.filter((k) => k.at > now).map((k) => ({ at: new Date(k.at).toISOString(), why: k.why }));
+}
