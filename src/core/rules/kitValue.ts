@@ -25,7 +25,7 @@ const num = (s: string) => Number(s.replace(/,/g, ''));
 
 /**
  * The size a kit amount states, as a fraction; undefined when it isn't a percentage or a multiplier.
- * "+20%", "20%", "−20%", "up to +100.8%", "+50%, 2 turns", "×1.15 with 1 other Nihility" (→ 0.15), "+20% per stack, up to 2" (→ 0.4), "+11.2%/16.8%/22.4%" (→ 0.224),
+ * "+20%", "20%", "−20%", "up to +100.8%", "+50%, 2 turns", "×1.15 with 1 other Nihility" (→ 0.15), "+20% per stack, up to 2" (→ 0.4), "+11.2%/16.8%/22.4%" (→ 0.224), "+20% to +60%" (→ 0.6),
  * "(7 + 1.5 × Special Attack level)%" (at `level`).
  */
 export function sizeOf(amount: string, level = 12): number | undefined {
@@ -34,6 +34,12 @@ export function sizeOf(amount: string, level = 12): number | undefined {
   if (times?.[1]) return num(times[1]) - 1;
   const formula = /^\(\s*(-?\d+(?:\.\d+)?)\s*\+\s*(\d+(?:\.\d+)?)\s*×\s*[A-Za-z ]+level\s*\)\s*%/.exec(a);
   if (formula?.[1] && formula[2]) return (num(formula[1]) + num(formula[2]) * level) / 100;
+  // "+15% at 1 stack, +5% per extra stack, up to 5 stacks": at full stacks, 15% + 4 × 5% = 35%.
+  const extra = /^\+?(\d+(?:\.\d+)?)% at 1 stack,\s*\+(\d+(?:\.\d+)?)% per extra stack,\s*up to (\d+) stacks/.exec(a);
+  if (extra?.[1] && extra[2] && extra[3]) return (num(extra[1]) + num(extra[2]) * (num(extra[3]) - 1)) / 100;
+  // "+20% to +60% (fewer enemies, more)", "+20–60%": a range, counted at its top (the full setup).
+  const range = /^([+−-])?\s*(\d[\d,]*(?:\.\d+)?)%?\s*(?:to|–)\s*\+?(\d[\d,]*(?:\.\d+)?)%/.exec(a);
+  if (range?.[3]) return (num(range[3]) / 100) * (range[1] === '−' || range[1] === '-' ? -1 : 1);
   // "+11.2%/16.8%/22.4% with 1/2/3 Songbirds", "35%/50%": steps, counted at the last one (the full setup, like stacks).
   const steps = /^([+−-])?\s*(\d[\d,]*(?:\.\d+)?)%?(?:\s*\/\s*\d[\d,]*(?:\.\d+)?%?)+/.exec(a);
   if (steps && /%/.test(steps[0])) {

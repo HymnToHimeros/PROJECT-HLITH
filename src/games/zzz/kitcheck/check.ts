@@ -211,11 +211,18 @@ function reach(e: Entry, giver: string, dd: string, order: string[], lib: Librar
     if (l.notSpecialties?.includes(ddp.specialty)) return { kind: 'no', why: `not for ${SPECIALTY_WORD[ddp.specialty]}` };
   }
   const stats = e.gives.map((g) => g.stat);
-  const used = stats.filter((s) => (GENERAL_STATS.includes(s) && !notes?.ignores.includes(s)) || (SPECIFIC_STATS.includes(s) && !!notes?.uses.includes(s)));
+  const used = stats.filter((s) => !(s === 'atk' && !usesAtk(dd, lib)) && ((GENERAL_STATS.includes(s) && !notes?.ignores.includes(s)) || (SPECIFIC_STATS.includes(s) && !!notes?.uses.includes(s))));
   if (used.length) return { kind: 'buff', why: `reaches ${name(dd)}`, used };
   if (stats.some((s) => SUPPORT_STATS.includes(s))) return { kind: 'support', why: 'team support' };
   return { kind: 'no', why: `${name(dd)}'s damage doesn't use ${list([...new Set(stats)])}` };
 }
+
+/**
+ * T30 (owner via MANAGER, 2026-10-10): a buff counts only if it raises what the damage dealer's own damage scales on.
+ * A Rupture character's damage runs on Sheer Force ("using his Sheer Force stat as the DMG Multiplier"), not ATK:
+ * Astra Yao's +1,200 ATK gives Starlight - Billy nothing.
+ */
+export const usesAtk = (dd: string, lib: Library) => lib.profiles.get(dd)?.specialty !== 'rupture';
 
 /** Does this part of the entry grow with the giver's build (`scales.gives`; all of it when absent)? */
 const scalesWith = (e: Entry, stat: string) => !!e.scales && (!e.scales.gives || e.scales.gives.includes(stat as Stat));
@@ -223,6 +230,7 @@ const scalesWith = (e: Entry, stat: string) => !!e.scales && (!e.scales.gives ||
 /** Does the damage dealer's damage use this stat (general and not ignored, or specific and listed)? */
 function usedBy(g: { stat: Stat }, dd: string, lib: Library): boolean {
   const notes = lib.sheets.get(dd)?.damage;
+  if (g.stat === 'atk' && !usesAtk(dd, lib)) return false;
   return (GENERAL_STATS.includes(g.stat) && !notes?.ignores.includes(g.stat)) || (SPECIFIC_STATS.includes(g.stat) && !!notes?.uses.includes(g.stat));
 }
 

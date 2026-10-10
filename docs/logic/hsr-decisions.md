@@ -199,3 +199,17 @@ team size and order, and the owner's ZZZ method's own counting.
     abilities target Phainon" (+30% CRIT DMG) are now checked from the teammates' kits. Aventurine • Waveflair:
     teammates' Follow-Up ATKs and summon attacks feed his Fervor (chains), and as the only Elation character his
     damage counts as Follow-Up ATK (`addsKinds`), so Follow-Up buffs reach him. Code: `src/core/rules/kitValue.ts`.
+    After MANAGER's review (same day):
+    - **A buff counts only if it raises what the damage dealer's damage scales on** (owner): ATK counts only for a
+      carry whose damage lines name ATK, or name no stat at all (HP carries: Castorice, Mydei, Evernight, Mortenax
+      Blade). ZZZ: Rupture runs on Sheer Force, so ATK buffs don't count for them (Astra Yao's ATK and Billy).
+    - Firefly: in Complete Combustion her hits become Super Break DMG, which can't crit and has no DMG% bonus, so
+      CRIT and general DMG% don't count for her; a bonus to Break / Super Break DMG itself still does.
+    - A teammate's Super Break hit is sized against the carry's own ("60% Super Break DMG" against her "50%"); a
+      Super Break hit with no % is the game's plain one (100%).
+    - Kit lines read now (each the kit asking for a teammate): The Dahlia's Break Effect buff is kept up only by a
+      teammate who heals or shields her; Castorice's healing fills Newbud; The Herta's Interpretation grows with
+      teammates' Follow-Up ATKs and summon attacks, and with a second Erudition her stacks count double (×1.8 at
+      42 stacks, from her own numbers); Robin • Summeretto gives ATK (from her Max HP) to an ATK carry and CRIT DMG
+      to others, never both (`gives[].when`).
+    - Sizes: "+15% at 1 stack, +5% per extra stack, up to 5 stacks" counts at full stacks; "+20% to +60%" at its top.

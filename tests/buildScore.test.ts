@@ -92,3 +92,10 @@ describe('Build score', () => {
     expect([95, 80, 65, 45, 10].map(gradeOf)).toEqual(['S', 'A', 'B', 'C', 'D']);
   });
 });
+
+describe('No score from too little (FRAME’s report: "100/100 · S" from the level alone)', () => {
+  it('with fewer than 3 checked parts there is no score yet', () => {
+    const levelOnly: CharacterBuild = { characterId: '1005', level: 80, dupes: 0, gear: [] };
+    expect(hsr.rules.scoreBuild?.(levelOnly)).toMatchObject({ known: false });
+  });
+});

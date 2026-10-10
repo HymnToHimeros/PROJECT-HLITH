@@ -135,7 +135,15 @@ export interface Entry {
   /** Q1. Absent = always on. */
   on?: Condition;
   /** Q2. Empty = gives nothing to anyone (an event or a reaction only). */
-  gives: { stat: Stat; amount: string }[];
+  gives: {
+    stat: Stat;
+    amount: string;
+    /**
+     * One of two branches the kit picks by the damage dealer (T30): 'atk-carry' applies when their damage scales on ATK,
+     * 'other-carry' when it doesn't (Robin • Summeretto: ATK from her Max HP "if their ATK is higher", else CRIT DMG).
+     */
+    when?: 'atk-carry' | 'other-carry';
+  }[];
   /** Q3. */
   to: Recipient;
   /** Q4. */

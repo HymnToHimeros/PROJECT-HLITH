@@ -726,7 +726,10 @@ const firefly: CharacterSheet = {
   damage: {
     kinds: ['skill', 'basic', 'break', 'super-break'],
     uses: ['break-effect', 'break-efficiency'],
-    ignores: [],
+    // T30: in Complete Combustion her hits become Super Break DMG ("convert the Toughness Reduction of this attack into
+    // 1 instance of … Super Break DMG"), which can't crit and has no DMG% bonus (the game's Break formula): CRIT and
+    // general DMG% buffs don't count for her; a bonus to Break / Super Break DMG itself still does.
+    ignores: ['crit-rate', 'crit-dmg', 'dmg'],
     quotes: [
       { piece: 'skill-skill-fyrefly-type-iv-deathstar-overload', quote: "Deals Fire DMG equal to (0.2 × Break Effect + 200.0%) of SAM's ATK to this target." },
       { piece: 'skill-ultimate-fyrefly-type-iv-complete-combustion', quote: 'increases the Break DMG dealt by SAM to the enemy targets by 20.0%' },

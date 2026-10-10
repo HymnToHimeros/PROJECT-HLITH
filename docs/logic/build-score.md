@@ -19,7 +19,7 @@ guessed.
 | Main stat, per slot the game names (HSR Body, Feet, Planar Sphere, Link Rope; ZZZ Disc 4–6) | one of the recommended main stats | 100 or 0 |
 | Sub stats | share of sub stats on all entered pieces that are recommended; weighed by rolls when the rolls are known | 0–100 |
 
-**Score** = the average of the parts that have data, rounded. **Grade**: S 90+,
+**Score** = the average of the parts that have data, rounded, once at least 3 parts have data (fewer: "No data yet", so the level alone never reads as a perfect build). **Grade**: S 90+,
 A 75+, B 60+, C 40+, else D. The screen shows every part with its bar and its
 reason, and says how many parts had no data yet.
 

@@ -21,6 +21,8 @@ describe('Sizes from the kit text', () => {
     expect(sizeOf('+20% per stack, up to 2')).toBeCloseTo(0.4);
     expect(sizeOf('+11.2%/16.8%/22.4% with 1/2/3 Songbirds')).toBeCloseTo(0.224);
     expect(sizeOf('(7 + 1.5 × Special Attack level)%')).toBeCloseTo(0.25);
+    expect(sizeOf('+15% at 1 stack, +5% per extra stack, up to 5 stacks')).toBeCloseTo(0.35);
+    expect(sizeOf('+20% to +60% (fewer enemies, more)')).toBeCloseTo(0.6);
     expect(sizeOf('+600 ATK')).toBeUndefined();
   });
 
@@ -55,6 +57,14 @@ describe('The method’s count stays as written; the kit value ranks', () => {
     const mine = zzzVerdict(ids(['Starlight - Billy', 'Dialyn', 'Lucia']), all);
     expect(mine).toMatchObject({ rated: true, count: 9, bestMembers: ids(['Starlight - Billy', 'Dialyn', 'Lucia']) });
     expect(zzzVerdict(ids(['Starlight - Billy', 'Lucia', 'Pan Yinhu']), all)).toMatchObject({ rated: true, label: 'Partly' });
+  });
+
+  it('owner’s ruling: Astra Yao’s +1,200 ATK adds 0 to Starlight - Billy (his damage runs on Sheer Force, not ATK)', () => {
+    const lib = zzzLib();
+    const v = zzzVerdict(['Starlight - Billy', 'Dialyn', 'Astra Yao'].map((n) => idOf(lib, n)), all);
+    if (!v.rated) throw new Error('not rated');
+    const atk = v.reasons.find((r) => r.text.includes('ATK up to +1,200'));
+    expect(atk?.points ?? 0).toBe(0);
   });
 
   it('an Anomaly squad without a Stun loses nothing for it: no role is needed unless a kit asks for it', () => {
