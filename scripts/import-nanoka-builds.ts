@@ -8,7 +8,9 @@
  * recommendations). Every character at once: game data, not kit reading.
  * Codes are mapped through the tables below; an unknown code stops the script.
  *
- * Writes src/games/<game>/data/builds.json, and src/games/hsr/data/teams.json.
+ * Writes src/games/<game>/data/builds.json and weapons.json (every Light Cone /
+ * W-Engine in the newest game files, with its picture and, when the game data
+ * says so, who it's made for), and src/games/hsr/data/teams.json.
  */
 import { writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
@@ -26,7 +28,24 @@ const need = <T>(table: Record<string, T>, code: unknown, what: string, who: str
   if (v === undefined) throw new Error(`Unknown ${what} "${String(code)}" for ${who}. Add it to the table in scripts/import-nanoka-builds.ts.`);
   return v;
 };
-const plain = (s: string) => s.replace(/<[^>]+>/g, '').replace(/\u00a0/g, ' ').trim();
+const plain = (s: string) => s.replace(/<[^>]+>/g, '').replace(/\\n/g, '\n').replace(/\u00a0/g, ' ').trim();
+
+/** nanoka.cc serves each game picture as <file name>.webp. */
+const ASSETS = 'https://static.nanoka.cc/assets';
+const baseName = (path: string) => (path.split('/').at(-1) ?? '').replace(/\.png$/, '');
+const iconChecked = new Map<string, boolean>();
+/** Only pictures that really load are kept: a missing picture shows the name alone, never a broken image. */
+async function loads(url: string): Promise<string | undefined> {
+  if (!iconChecked.has(url)) iconChecked.set(url, (await fetch(url, { method: 'HEAD' })).ok);
+  return iconChecked.get(url) ? url : undefined;
+}
+/** HSR numbers in effect text: "#1[i]%" = the first parameter as a whole percent, "#2[f1]" = one decimal. */
+const fill = (text: string, params: number[]) =>
+  text.replace(/#(\d+)\[(i|f(\d))\](%?)/g, (_, n: string, kind: string, dec: string | undefined, pct: string) => {
+    const v = (params[Number(n) - 1] ?? NaN) * (pct ? 100 : 1);
+    if (Number.isNaN(v)) throw new Error(`No parameter ${n} for "${text}"`);
+    return `${kind === 'i' ? String(Math.round(v)) : v.toFixed(Number(dec))}${pct}`;
+  });
 
 interface Build {
   characterId: string;
@@ -39,7 +58,10 @@ interface Build {
   weapons: string[];
   /** Skills to level first, in order. Empty = the game doesn't say. */
   skillsFirst: string[][];
+  /** Picture and game text of each set and weapon, by name. */
+  items: Record<string, { icon?: string; rarity?: number; effects: { label: string; text: string }[] }>;
 }
+type Item = Build['items'][string];
 
 // ── ZZZ ──────────────────────────────────────────────────────────────
 /** Stat codes not named in any recommendation: the game's own pattern is x2 = %, x3 = flat (12101 Base ATK, 12102 ATK %, 12103 ATK). */
@@ -64,8 +86,20 @@ interface ZzzDetail {
 async function zzz(): Promise<Build[]> {
   const v = (await getJson<{ zzz: { live: string } }>(`${BASE}/manifest.json`)).zzz.live;
   const list = await getJson<Record<string, unknown>>(`${BASE}/zzz/${v}/character.json`);
-  const sets = await getJson<Record<string, { en: { name: string } }>>(`${BASE}/zzz/${v}/equipment.json`);
-  const weapons = await getJson<Record<string, { icon: string; en: string }>>(`${BASE}/zzz/${v}/weapon.json`);
+  const sets = await getJson<Record<string, { icon: string; en: { name: string; desc2: string; desc4: string } }>>(`${BASE}/zzz/${v}/equipment.json`);
+  const weapons = await getJson<Record<string, { icon: string; en: string; rank?: number }>>(`${BASE}/zzz/${v}/weapon.json`);
+  const setItem = async (id: number): Promise<Item | undefined> => {
+    const s = sets[String(id)];
+    if (!s) return undefined;
+    const icon = await loads(`${ASSETS}/zzz/${baseName(s.icon)}.webp`);
+    return { ...(icon ? { icon } : {}), effects: [{ label: '2-piece', text: plain(s.en.desc2) }, { label: '4-piece', text: plain(s.en.desc4) }] };
+  };
+  const weaponItem = async (id: string): Promise<Item> => {
+    const d = await getJson<{ rarity: number; icon: string; talents: Record<string, { name: string; desc: string }> }>(`${BASE}/zzz/${v}/en/weapon/${id}.json`);
+    const t = d.talents['1'];
+    const icon = await loads(`${ASSETS}/zzz/${baseName(d.icon)}.webp`);
+    return { ...(icon ? { icon } : {}), rarity: d.rarity, effects: t ? [{ label: `${plain(t.name)} (Phase 1)`, text: plain(t.desc) }] : [] };
+  };
   const details = new Map<string, ZzzDetail>();
   for (const id of Object.keys(list)) details.set(id, await getJson<ZzzDetail>(`${BASE}/zzz/${v}/en/character/${id}.json`));
   // Stat names as the game's own recommendations print them; "%" when the game formats it as a percentage.
@@ -81,8 +115,16 @@ async function zzz(): Promise<Build[]> {
     if (!fr?.slot4) continue;
     const setName = (s: number | undefined) => (s ? plain(need(sets, s, 'Drive Disc set', who).en.name) : undefined);
     // The agent's own W-Engine: the game files name it after them ("Weapon_S_<id>").
-    const own = Object.values(weapons).find((w) => w.icon === `Weapon_S_${id}`);
+    const ownId = Object.keys(weapons).find((w) => weapons[w]?.icon === `Weapon_S_${id}`);
+    const own = ownId ? weapons[ownId] : undefined;
     const pr = d.skill_priority?.[0];
+    const items: Build['items'] = {};
+    for (const sid of [fr.slot4, fr.slot2, fr.slot_sub]) {
+      const it = sid ? await setItem(sid) : undefined;
+      const nm = sid ? setName(sid) : undefined;
+      if (it && nm) items[nm] = it;
+    }
+    if (own && ownId) items[plain(own.en)] = await weaponItem(ownId);
     out.push({
       characterId: id,
       source: "the game's own recommendation (nanoka.cc)",
@@ -96,6 +138,7 @@ async function zzz(): Promise<Build[]> {
       subStats: (fr.part_sub_list ?? []).map((p) => need(stat, p, 'stat', who)),
       weapons: own ? [plain(own.en)] : [],
       skillsFirst: pr ? [pr.first_priority, pr.second_priority, pr.third_priority].map((tier) => tier.map((s) => need(ZZZ_SKILL, s, 'skill type', who))) : [],
+      items,
     });
   }
   return out;
@@ -142,8 +185,29 @@ interface HsrDetail {
 async function hsr(): Promise<{ builds: Build[]; teams: unknown[] }> {
   const v = (await getJson<{ hsr: { live: string } }>(`${BASE}/manifest.json`)).hsr.live;
   const list = await getJson<Record<string, { en: string }>>(`${BASE}/hsr/${v}/character.json`);
-  const relicSets = await getJson<Record<string, { en: string }>>(`${BASE}/hsr/${v}/relicset.json`);
+  const relicSets = await getJson<Record<string, { en: string; icon: string; set: Record<string, { en: string; ParamList: number[] }> }>>(`${BASE}/hsr/${v}/relicset.json`);
   const cones = await getJson<Record<string, { en: string }>>(`${BASE}/hsr/${v}/lightcone.json`);
+  const relicItem = async (id: number): Promise<Item | undefined> => {
+    const r = relicSets[String(id)];
+    if (!r) return undefined;
+    const icon = await loads(`${ASSETS}/hsr/itemfigures/${baseName(r.icon)}.webp`);
+    return { ...(icon ? { icon } : {}), effects: Object.entries(r.set).map(([n, e]) => ({ label: `${n}-piece`, text: plain(fill(e.en, e.ParamList)) })) };
+  };
+  const coneCache = new Map<number, Item>();
+  const coneItem = async (id: number): Promise<Item> => {
+    const hit = coneCache.get(id);
+    if (hit) return hit;
+    const d = await getJson<{ rarity: string; refinements: { name: string; desc: string; level: Record<string, { param_list: number[] }> } }>(`${BASE}/hsr/${v}/en/lightcone/${id}.json`);
+    const icon = await loads(`${ASSETS}/hsr/lightconemediumicon/${id}.webp`);
+    const rarity = Number(/(\d)$/.exec(d.rarity)?.[1]);
+    const item: Item = {
+      ...(icon ? { icon } : {}),
+      ...(rarity ? { rarity } : {}),
+      effects: [{ label: `${plain(d.refinements.name)} (Superimposition 1)`, text: plain(fill(d.refinements.desc, d.refinements.level['1']?.param_list ?? [])) }],
+    };
+    coneCache.set(id, item);
+    return item;
+  };
   const builds: Build[] = [];
   const teams: unknown[] = [];
   for (const id of Object.keys(list)) {
@@ -158,6 +222,12 @@ async function hsr(): Promise<{ builds: Build[]; teams: unknown[] }> {
         ['Planar Sphere', r.property_list5],
         ['Link Rope', r.property_list6],
       ];
+      const items: Build['items'] = {};
+      for (const sid of [...r.set4_id_list, ...r.set2_id_list]) {
+        const it = await relicItem(sid);
+        if (it) items[plain(need(relicSets, sid, 'relic set', who).en)] = it;
+      }
+      for (const c of d.lightcones ?? []) items[plain(need(cones, c, 'Light Cone', who).en)] = await coneItem(c);
       builds.push({
         characterId: id,
         source: "the game's own recommendation (nanoka.cc)",
@@ -169,6 +239,7 @@ async function hsr(): Promise<{ builds: Build[]; teams: unknown[] }> {
         subStats: (r.sub_affix_property_list ?? []).map((p) => need(HSR_STAT, p, 'stat', who)),
         weapons: (d.lightcones ?? []).map((c) => plain(need(cones, c, 'Light Cone', who).en)),
         skillsFirst: [],
+        items,
       });
     }
     // The game's first recommended team per character (the Teams screen lists every one).
@@ -183,6 +254,60 @@ async function hsr(): Promise<{ builds: Build[]; teams: unknown[] }> {
   return { builds, teams };
 }
 
+interface WeaponOut {
+  id: string;
+  name: string;
+  rarity: 'top' | 'mid' | 'low';
+  icon?: string;
+  madeFor?: string;
+  source: string;
+}
+const RARITY: Record<number, WeaponOut['rarity']> = { 5: 'top', 4: 'mid', 3: 'low' };
+
+/** ZZZ: every W-Engine in the newest files; an S-rank named after an agent ("Weapon_S_<id>") is made for them. */
+async function zzzWeapons(): Promise<WeaponOut[]> {
+  const v = (await getJson<{ zzz: { latest: string } }>(`${BASE}/manifest.json`)).zzz.latest;
+  const list = await getJson<Record<string, { icon: string; rank: number; en: string }>>(`${BASE}/zzz/${v}/weapon.json`);
+  const agents = new Set(Object.keys(await getJson<Record<string, unknown>>(`${BASE}/zzz/${v}/character.json`)));
+  const out: WeaponOut[] = [];
+  for (const [id, w] of Object.entries(list)) {
+    // ZZZ ranks: 4 = S, 3 = A, 2 = B; the same three steps as 5, 4, 3 stars.
+    const rarity = RARITY[w.rank + 1];
+    if (!rarity) throw new Error(`zzz weapon ${id}: unknown rank ${w.rank}`);
+    const icon = await loads(`${ASSETS}/zzz/${w.icon}.webp`);
+    const agent = /^Weapon_S_(\d+)$/.exec(w.icon)?.[1];
+    out.push({ id, name: plain(w.en), rarity, ...(icon ? { icon } : {}), ...(agent && agents.has(agent) ? { madeFor: agent } : {}), source: 'nanoka.cc' });
+  }
+  return out;
+}
+
+/**
+ * HSR: every Light Cone in the newest files. A 5★ Light Cone is "made for" a
+ * character when it is the first one the game recommends for them and for no
+ * one else (the game's own signature pick); otherwise it is left blank.
+ */
+async function hsrWeapons(): Promise<WeaponOut[]> {
+  const v = (await getJson<{ hsr: { latest: string } }>(`${BASE}/manifest.json`)).hsr.latest;
+  const list = await getJson<Record<string, { rank: string; en: string }>>(`${BASE}/hsr/${v}/lightcone.json`);
+  const chars = await getJson<Record<string, unknown>>(`${BASE}/hsr/${v}/character.json`);
+  const firstFor = new Map<string, string[]>();
+  for (const id of Object.keys(chars)) {
+    const d = await getJson<HsrDetail>(`${BASE}/hsr/${v}/en/character/${id}.json`);
+    const first = d.lightcones?.[0];
+    if (first !== undefined) firstFor.set(String(first), [...(firstFor.get(String(first)) ?? []), id]);
+  }
+  const out: WeaponOut[] = [];
+  for (const [id, c] of Object.entries(list)) {
+    const stars = Number(/(\d)$/.exec(c.rank)?.[1]);
+    const rarity = RARITY[stars];
+    if (!rarity) throw new Error(`hsr Light Cone ${id}: unknown rarity ${c.rank}`);
+    const icon = await loads(`${ASSETS}/hsr/lightconemediumicon/${id}.webp`);
+    const who = firstFor.get(id);
+    out.push({ id, name: plain(c.en), rarity, ...(icon ? { icon } : {}), ...(stars === 5 && who?.length === 1 && who[0] ? { madeFor: who[0] } : {}), source: 'nanoka.cc' });
+  }
+  return out;
+}
+
 const write = (game: string, file: string, data: unknown) => writeFileSync(resolve(ROOT, `src/games/${game}/data/${file}`), `${JSON.stringify(data, null, 1)}\n`);
 const z = await zzz();
 write('zzz', 'builds.json', z);
@@ -191,3 +316,8 @@ const h = await hsr();
 write('hsr', 'builds.json', h.builds);
 write('hsr', 'teams.json', h.teams);
 console.log(`hsr: ${h.builds.length} recommended builds, ${h.teams.length} recommended teams`);
+const zw = await zzzWeapons();
+write('zzz', 'weapons.json', zw);
+const hw = await hsrWeapons();
+write('hsr', 'weapons.json', hw);
+console.log(`weapons: zzz ${zw.length} (${zw.filter((w) => !w.icon).length} without a picture), hsr ${hw.length} (${hw.filter((w) => !w.icon).length} without a picture)`);

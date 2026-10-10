@@ -1,4 +1,4 @@
-import { act, fireEvent, render, screen, within } from '@testing-library/react';
+import { act, cleanup, fireEvent, render, screen, within } from '@testing-library/react';
 import { useState } from 'react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import type { Character, GameContract, Kit, TeamPreset, TeamRules } from '../../core/contract';
@@ -408,17 +408,59 @@ describe('Roster screen', () => {
     expect(screen.getAllByText('75%').length).toBeGreaterThan(0);
   });
 
-  it('the character page shows the recommended build with its source', async () => {
+  it('the character page shows how to build them, step by step, with pictures and the source', async () => {
     const base = makeGame(false);
     const builds = [
-      { characterId: 'c1', source: "the game's own recommendation", sets: [{ pieces: 4, options: ['Ember Set'] }], mainStats: { Body: ['CRIT Rate'] }, subStats: ['ATK %'], weapons: ['Spark Cone'], skillsFirst: [['Skill']] },
+      {
+        characterId: 'c1',
+        source: "the game's own recommendation",
+        sets: [
+          { pieces: 4, options: ['Ember Set'] },
+          { pieces: 2, options: ['Glow Set', 'Dim Set'] },
+        ],
+        mainStats: { Body: ['CRIT Rate'] },
+        subStats: ['ATK %', 'CRIT DMG'],
+        weapons: ['Spark Cone'],
+        skillsFirst: [['Skill']],
+        items: {
+          'Ember Set': { icon: 'https://example.test/ember.webp', effects: [{ label: '2-piece', text: 'Fire DMG +10%' }, { label: '4-piece', text: 'Skill DMG +20%' }] },
+          'Glow Set': { effects: [{ label: '2-piece', text: 'ATK +12%' }, { label: '4-piece', text: 'Never shown for 2 pieces' }] },
+          'Spark Cone': { icon: 'https://example.test/cone.webp', rarity: 5, effects: [{ label: 'Spark (Superimposition 1)', text: 'CRIT Rate +18%' }] },
+        },
+      },
     ];
     await show('characters', { ...base, data: { ...base.data, builds: async () => builds } });
     const page = await openPage('Newest Star');
-    fireEvent.click(within(page).getByText('Recommended build'));
-    expect(await within(page).findByText('Ember Set')).toBeInTheDocument();
-    expect(within(page).getByText('Spark Cone')).toBeInTheDocument();
-    expect(within(page).getByText("Source: the game's own recommendation.")).toBeInTheDocument();
+    const card = within(page).getByRole('region', { name: 'How to build Newest Star' });
+    expect(await within(card).findByText('Ember Set')).toBeInTheDocument();
+    expect(within(card).getByText('Skill DMG +20%')).toBeInTheDocument();
+    // A 2-piece slot only shows the 2-piece effect.
+    expect(within(card).getByText('ATK +12%')).toBeInTheDocument();
+    expect(within(card).queryByText('Never shown for 2 pieces')).toBeNull();
+    expect(within(card).getByText('Spark Cone')).toBeInTheDocument();
+    expect(within(card).getByText('CRIT Rate +18%')).toBeInTheDocument();
+    expect(card.querySelectorAll('img').length).toBe(2);
+    expect(within(card).getByText("Source: the game's own recommendation.")).toBeInTheDocument();
+  });
+
+  it('long team lists stay short: a few first, the rest one tap away, nothing dropped', async () => {
+    const many: TeamPreset[] = Array.from({ length: 9 }, (_, i) => ({ id: `t${i}`, name: `Team ${i + 1}`, slots: [{ characters: ['c1'] }, { characters: ['c3'] }], source: 'test' }));
+    await show('teams', makeGame(false, many));
+    const teams = screen.getByRole('region', { name: 'Recommended teams' });
+    expect(within(teams).getAllByRole('article')).toHaveLength(6);
+    fireEvent.click(within(teams).getByRole('button', { name: /Show 3 more/ }));
+    expect(within(teams).getAllByRole('article')).toHaveLength(9);
+    // A search finds a team by its name or a member's name.
+    fireEvent.change(within(teams).getByLabelText('Find a team'), { target: { value: 'Team 9' } });
+    expect(within(teams).getAllByRole('article').map((a) => a.getAttribute('aria-label'))).toEqual(['Team 9']);
+    cleanup();
+    // The character page shows three teams, then "Show N more teams with …".
+    await show('characters', makeGame(false, many));
+    const page = await openPage('Newest Star');
+    const fit = within(page).getByRole('region', { name: 'Team fit' });
+    expect(within(fit).getAllByText(/^Team \d$/)).toHaveLength(3);
+    fireEvent.click(within(fit).getByRole('button', { name: 'Show 6 more teams with Newest Star' }));
+    expect(within(fit).getAllByText(/^Team \d$/)).toHaveLength(9);
   });
 
   it('Kit check also opens from a team in Teams', async () => {

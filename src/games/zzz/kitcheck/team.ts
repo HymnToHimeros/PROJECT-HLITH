@@ -21,7 +21,24 @@ export function synergyLabel(percent: number, members: number): string {
 const isDamageDealer = (id: string, lib: Library) => DD_ORDER.includes(lib.profiles.get(id)?.specialty ?? 'support');
 
 /** The best squad the check finds for one damage dealer from a pool of characters (both orders tried). */
+/** Same question, same answer: bestFor is asked the same thing by every team on a screen, so answers are kept (keyed by the pool and its levels). */
+const bestCache = new Map<string, SquadResult | undefined>();
+let cacheLib: Library | undefined;
+
 export function bestFor(dd: string, pool: string[], lib: Library, account: Account): SquadResult | undefined {
+  if (cacheLib !== lib) {
+    bestCache.clear();
+    cacheLib = lib;
+  }
+  const key = `${dd}|${[...new Set(pool)].sort().map((id) => `${id}:${account.mindscape(id)}:${account.potential(id) ?? '-'}`).join(',')}|${account.mindscape(dd)}:${account.potential(dd) ?? '-'}`;
+  if (bestCache.has(key)) return bestCache.get(key);
+  if (bestCache.size > 2000) bestCache.clear();
+  const found = findBest(dd, pool, lib, account);
+  bestCache.set(key, found);
+  return found;
+}
+
+function findBest(dd: string, pool: string[], lib: Library, account: Account): SquadResult | undefined {
   let partners = pool.filter((id) => id !== dd && lib.sheets.has(id));
   if (!lib.sheets.has(dd) || !partners.length) return undefined;
   if (partners.length > PAIR_LIMIT) {
@@ -241,7 +258,7 @@ export function recommendedTeams(lib: Library = library()): TeamPreset[] {
     });
     out.push({
       id: `kit-check-${dd}`,
-      name: `${name(dd)} team`,
+      name: `${name(dd)} · best by kit check`,
       slots: [{ characters: [dd] }, ...places.map((p) => ({ characters: [...new Set(p)] }))],
       source: `${METHOD}: the best count for ${name(dd)} from every agent at Mindscape 0 (${first.count})`,
     });

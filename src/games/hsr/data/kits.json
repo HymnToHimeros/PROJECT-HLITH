@@ -13140,6 +13140,151 @@
     ]
   },
   {
+    "characterId": "1511",
+    "source": "nanoka.cc",
+    "version": "4.6.51",
+    "skills": [
+      {
+        "id": "skill-basic-atk-starfrost-showtime",
+        "label": "Basic ATK: Starfrost, Showtime! (Lv. 6)",
+        "kind": "skill",
+        "does": [],
+        "gameText": "Deals 50% Quantum Elation DMG to one designated enemy target."
+      },
+      {
+        "id": "skill-skill-this-emanator-was-certified-by-aha",
+        "label": "Skill: This Emanator Was Certified by Aha™ (Lv. 10)",
+        "kind": "skill",
+        "does": [],
+        "gameText": "Causes one designated ally to gain the \"Emanator of Elation\" state, then immediately launches a Follow-up ATK, dealing 50% Quantum Elation DMG to all enemies. \"Emanator of Elation\" state lasts for the entire battle until switching to the next target. The target with the \"Emanator of Elation\" state has their Elation stat increased by 20% and, at the start of their turn, causes Aeon ★ Aha to gain 1 point(s) of \"Wishpower.\""
+      },
+      {
+        "id": "skill-ultimate-aha-let-there-be-laughter",
+        "label": "Ultimate: Aha! Let There Be Laughter (Lv. 10)",
+        "kind": "skill",
+        "does": [],
+        "gameText": "Aeon ★ Aha gains the \"Faces of Elation\" state, lasting for 3 turn(s). At the start of each Aeon ★ Aha's turn, duration decreases by 1. Deals 200% Quantum Elation DMG to all enemies, then deals 5 instance(s) of DMG. Each instance deals 60% Quantum Elation DMG to one random enemy."
+      },
+      {
+        "id": "skill-talent-work-wonders-with-them",
+        "label": "Talent: Work Wonders with THEM (Lv. 10)",
+        "kind": "skill",
+        "does": [],
+        "gameText": "The Ultimate can be activated once \"Wishpower\" reaches 8 points. Aeon ★ Aha gains 1 point(s) of \"Wishpower\" after using Basic ATK, Skill, or Elation Skill. Once the team's Punchline reach 40 points for the first time, Aeon ★ Aha will immediately gain 1 points of \"Wishpower,\" then increase all allies' CRIT DMG by 24% for 3 turn(s). This can be triggered again after Aha's turn ends."
+      },
+      {
+        "id": "skill-technique-abracadabra",
+        "label": "Technique: ABRACADABRA!",
+        "kind": "skill",
+        "does": [],
+        "gameText": "After using the Technique, creates a special zone around this unit lasting 20 seconds. Enemies within the special zone are inflicted with \"Misjudgment.\" Enemies under \"Misjudgment\" cannot detect our targets. Upon entering combat, Aha immediately gains 1 extra turn that adds a fixed 20 Punchline to the count."
+      },
+      {
+        "id": "skill-elation-skill-yes-aha-at-full-moon",
+        "label": "Elation Skill: Yes Aha At Full Moon (Lv. 10)",
+        "kind": "skill",
+        "does": [],
+        "gameText": "Deals 60%Quantum Elation DMG to all enemies, then deals True DMG based on 20% of the total DMG dealt by this Aha Instant, equally distributed among all enemies."
+      },
+      {
+        "id": "skill-innate-trace-faces-of-elation-ex-nihilo",
+        "label": "Innate Trace: Faces of Elation ★ Ex Nihilo (Lv. 2)",
+        "kind": "skill",
+        "does": [],
+        "gameText": "While possessing the \"Faces of Elation\" state, Aeon ★ Aha causes allies' Path of Elation to ascend, enhancing Punchline and the \"Certified Banger\" state into Bliss and the \"Party Trick\" state. Bliss  recovers 10% of the consumed Punchline at the end of the \"Aha Instant\" turn. During \"Faces of Elation,\" DMG dealt by Aeon ★ Aha ignores 60% of the enemy target's DEF."
+      },
+      {
+        "id": "skill-talent-the-true-story-of-aha",
+        "label": "Talent: The True Story of Aha",
+        "kind": "skill",
+        "does": [],
+        "gameText": "When Aeon ★ Aha and teammates deal DMG, additionally deal \"Elation Debt\" effect equal to 25% of the DMG to the enemy target. During the enemy target's phase transition, they maintain the \"Elation Debt\" value, with a maximum not exceeding 10% of the target's Max HP."
+      },
+      {
+        "id": "trace-a-prank-on-aeons",
+        "label": "Trace: A Prank on Aeons",
+        "kind": "trace",
+        "does": [],
+        "gameText": "Skill's Follow-Up ATK additionally deals 20% Elation DMG of the corresponding Type to the target with \"Emanator of Elation\" state and recovers 1 Skill Point(s). The Elation DMG additionally dealt in this instance does not count as 1 instance of attack."
+      },
+      {
+        "id": "trace-a-carnival-in-whimsy",
+        "label": "Trace: A Carnival in Whimsy",
+        "kind": "trace",
+        "does": [],
+        "gameText": "When receiving healing or a Shield provided by a teammate, gains 1 point(s) of \"Wishpower.\" This can be triggered up to 1 times. The trigger count resets after using Ultimate."
+      },
+      {
+        "id": "trace-a-box-of-everything",
+        "label": "Trace: A Box of Everything",
+        "kind": "trace",
+        "does": [],
+        "gameText": "When Aeon ★ Aha's SPD is 125/150 or higher, Elation increases by 120%/150%."
+      },
+      {
+        "id": "eidolon-1",
+        "label": "Eidolon 1: Who Giggled at the Primordial Hush?",
+        "kind": "eidolon",
+        "unlock": {
+          "dupes": 1
+        },
+        "does": [],
+        "gameText": "When entering combat, immediately gain 4 point(s) of \"Wishpower,\" and merrymakes Elation DMG dealt by all ally targets by 15%."
+      },
+      {
+        "id": "eidolon-2",
+        "label": "Eidolon 2: Between THEIR Eyes and Yours",
+        "kind": "eidolon",
+        "unlock": {
+          "dupes": 2
+        },
+        "does": [],
+        "gameText": "Enhances Elation Path ascension effects:\n#{series_ref_skill_desc:UIText_SeriesSkillDescFormat,151129,2}"
+      },
+      {
+        "id": "eidolon-3",
+        "label": "Eidolon 3: A Stacked Deck of Sorrow and Joy",
+        "kind": "eidolon",
+        "unlock": {
+          "dupes": 3
+        },
+        "does": [],
+        "gameText": "Ultimate Lv. +2, up to a maximum of Lv. 15.\nBasic ATK Lv. +1, up to a maximum of Lv. 10.\nElation Skill Lv. +1, up to a maximum of Lv. 15."
+      },
+      {
+        "id": "eidolon-4",
+        "label": "Eidolon 4: A Joke's Fate Boxed in Black",
+        "kind": "eidolon",
+        "unlock": {
+          "dupes": 4
+        },
+        "does": [],
+        "gameText": "Increases the multiplier of the True DMG dealt by Elation Skills by 25% of the original multiplier. When Aeon ★ Aha deals Elation DMG, an additional 100% of the cumulative \"Certified Banger\" stacks possessed by teammates will be taken into the account."
+      },
+      {
+        "id": "eidolon-5",
+        "label": "Eidolon 5: Moi Onstage and Me Offstage",
+        "kind": "eidolon",
+        "unlock": {
+          "dupes": 5
+        },
+        "does": [],
+        "gameText": "Skill Lv. +2, up to a maximum of Lv. 15.\nTalent Lv. +2, up to a maximum of Lv. 15.\nElation Skill Lv. +1, up to a maximum of Lv. 15."
+      },
+      {
+        "id": "eidolon-6",
+        "label": "Eidolon 6: For THEY Said: You Are Elation",
+        "kind": "eidolon",
+        "unlock": {
+          "dupes": 6
+        },
+        "does": [],
+        "gameText": "Enemy targets always have the \"Elation Debt\" effect that is at least equal to 20% of the target's Max HP. The first time Aeon ★ Aha casts the Ultimate, Aha immediately gains 1 extra turn that adds a fixed 40 Punchline to the count. Each subsequent Ultimate cast advances the Aha's action by 20%."
+      }
+    ],
+    "beta": true
+  },
+  {
     "characterId": "1512",
     "source": "nanoka.cc",
     "version": "4.6",

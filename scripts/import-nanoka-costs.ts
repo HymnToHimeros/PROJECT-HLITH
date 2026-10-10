@@ -10,7 +10,8 @@
  * HSR character EXP per level is not in nanoka.cc's files (nor Yatta's); it is
  * left out and the Farm says so, never guessed.
  *
- * Writes src/games/<game>/data/costs.json and materials.json (every item used).
+ * Writes src/games/<game>/data/costs.json and materials.json (every item used,
+ * with its picture when nanoka.cc has one).
  */
 import { writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
@@ -33,6 +34,18 @@ async function getJson<T>(url: string): Promise<T> {
   return (await res.json()) as T;
 }
 
+/** nanoka.cc serves each game picture as <file name>.webp; ZZZ at the top, HSR items under itemfigures/. */
+const ASSETS = 'https://static.nanoka.cc/assets';
+const baseName = (path: string) => (path.split('/').at(-1) ?? '').replace(/\.png$/, '');
+const zzzIcon = (path: string | undefined) => (path ? `${ASSETS}/zzz/${baseName(path)}.webp` : undefined);
+const hsrItemIcon = (path: string | undefined) => (path ? `${ASSETS}/hsr/itemfigures/${baseName(path)}.webp` : undefined);
+/** Only pictures that really load are kept: a missing picture shows the name alone, never a broken image. */
+async function loads(url: string | undefined): Promise<string | undefined> {
+  if (!url) return undefined;
+  const res = await fetch(url, { method: 'HEAD' });
+  return res.ok ? url : undefined;
+}
+
 const clean = (items: Record<string, number>): Items => Object.fromEntries(Object.entries(items).filter(([, n]) => n > 0));
 
 // ── ZZZ ──────────────────────────────────────────────────────────────
@@ -52,11 +65,13 @@ const ZZZ_SKILLS: [string, string][] = [
 /** Agent EXP items, from their in-game descriptions (100 / 600 / 3,000 EXP; Icy Veins and ONE Esports quote the same). Checked: nanoka's level table totals 900,000 EXP for 1 → 60 = 300 Senior Logs, as Icy Veins says. */
 const ZZZ_EXP_ITEM = { item: '300003', itemExp: 3000, source: 'in-game item text (Senior Investigator Log: 3,000 EXP), as quoted by Icy Veins and ONE Esports' };
 
-async function zzz(): Promise<{ costs: Costs; used: Set<string>; names: Map<string, { name: string; kind: string }> }> {
+type Named = Map<string, { name: string; kind: string; icon?: string | undefined }>;
+
+async function zzz(): Promise<{ costs: Costs; used: Set<string>; names: Named }> {
   const manifest = await getJson<{ zzz: { live: string } }>(`${BASE}/manifest.json`);
   const v = manifest.zzz.live;
   const list = await getJson<Record<string, unknown>>(`${BASE}/zzz/${v}/character.json`);
-  const items = await getJson<Record<string, { name: string; class: number }>>(`${BASE}/zzz/${v}/en/item.json`);
+  const items = await getJson<Record<string, { name: string; class: number; icon?: string }>>(`${BASE}/zzz/${v}/en/item.json`);
   const costs: Costs = { source: 'nanoka.cc', version: v, exp: null, characters: {} };
   const used = new Set<string>();
   let expTable: number[] | null = null;
@@ -90,11 +105,12 @@ async function zzz(): Promise<{ costs: Costs; used: Set<string>; names: Map<stri
     used.add(ZZZ_EXP_ITEM.item);
   }
   const KIND: Record<number, string> = { 1: 'currency', 10: 'upgrade', 12: 'exp' };
-  const names = new Map([...used].map((i) => {
+  const names: Named = new Map();
+  for (const i of [...used]) {
     const it = items[i];
     if (!it) throw new Error(`zzz: item ${i} is not in nanoka.cc's item list.`);
-    return [i, { name: it.name, kind: KIND[it.class] ?? 'material' }];
-  }));
+    names.set(i, { name: it.name, kind: KIND[it.class] ?? 'material', icon: await loads(zzzIcon(it.icon)) });
+  }
   return { costs, used, names };
 }
 
@@ -106,11 +122,11 @@ interface HsrDetail {
 }
 const HSR_CAPS = [20, 30, 40, 50, 60, 70];
 
-async function hsr(): Promise<{ costs: Costs; names: Map<string, { name: string; kind: string }> }> {
+async function hsr(): Promise<{ costs: Costs; names: Named }> {
   const manifest = await getJson<{ hsr: { live: string } }>(`${BASE}/manifest.json`);
   const v = manifest.hsr.live;
   const list = await getJson<Record<string, unknown>>(`${BASE}/hsr/${v}/character.json`);
-  const items = await getJson<Record<string, { item_name: string; item_sub_type: string }>>(`${BASE}/hsr/${v}/en/item.json`);
+  const items = await getJson<Record<string, { item_name: string; item_sub_type: string; item_figure_icon_path?: string }>>(`${BASE}/hsr/${v}/en/item.json`);
   const costs: Costs = { source: 'nanoka.cc', version: v, exp: null, characters: {} };
   const used = new Set<string>();
   const toItems = (l: { item_id: number; item_num: number }[]) => clean(Object.fromEntries(l.map((x) => [String(x.item_id), x.item_num])));
@@ -130,17 +146,17 @@ async function hsr(): Promise<{ costs: Costs; names: Map<string, { name: string;
     for (const p of promotions) for (const i of Object.keys(p.items)) used.add(i);
     for (const s of skills) for (const m of Object.values(s.steps)) for (const i of Object.keys(m)) used.add(i);
   }
-  const names = new Map([...used].map((i) => {
+  const names: Named = new Map();
+  for (const i of [...used]) {
     const it = items[i];
     if (!it) throw new Error(`hsr: item ${i} is not in nanoka.cc's item list.`);
-    return [i, { name: it.item_name, kind: it.item_sub_type === 'Virtual' ? 'currency' : 'upgrade' }];
-  }));
+    names.set(i, { name: it.item_name, kind: it.item_sub_type === 'Virtual' ? 'currency' : 'upgrade', icon: await loads(hsrItemIcon(it.item_figure_icon_path)) });
+  }
   return { costs, names };
 }
 
 const write = (game: string, file: string, data: unknown) => writeFileSync(resolve(ROOT, `src/games/${game}/data/${file}`), `${JSON.stringify(data)}\n`);
-const materialsOf = (names: Map<string, { name: string; kind: string }>) =>
-  [...names].sort(([a], [b]) => Number(a) - Number(b)).map(([id, m]) => ({ id, name: m.name, kind: m.kind }));
+const materialsOf = (names: Named) => [...names].sort(([a], [b]) => Number(a) - Number(b)).map(([id, m]) => ({ id, name: m.name, kind: m.kind, ...(m.icon ? { icon: m.icon } : {}) }));
 
 const z = await zzz();
 write('zzz', 'costs.json', z.costs);
