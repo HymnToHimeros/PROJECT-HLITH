@@ -27,6 +27,19 @@ Resume with: "continue from PROGRESS.md". Newest entry on top. Older entries:
 - CI (`.github/workflows/ci.yml`) runs both on every pull request.
 
 ## Done
+- 2026-10-10 · **Live stamina, code login, roster leaks** (branch `frame/live-stamina`).
+  - Today's stamina tiles read HoYoLAB for every game with a linked account
+    (server or device): once on open, kept 5 minutes, counted forward only when
+    the game record's rate agrees with HoYoLAB's "full in"; errors show the
+    reason and Try again. Device-only copies keep "No data yet · Connect account".
+  - Codes "login expired": the saved Star Rail code login mixed two HoYoverse
+    accounts (account_id_v2 of the other saved account). The server now refuses
+    such a code login and reports a saved one instead of sending it; the app
+    checks account_id_v2 before saving, explains which three values to copy, and
+    "Replace code login" opens the paste box. Needs the hoyolab and
+    hoyolab-daily functions deployed; then paste fresh code logins for both.
+  - Roster: "Show leaked" (off by default) for characters with a leak source,
+    marked UNVERIFIED; wanted but never owned. Newest first stays the default.
 - 2026-10-10 · **Whole-site audit: about 70 flaws fixed** (branch `frame/audit-fixes`).
   Five audits (Today/Calendar/Events/Intel, Pulls/Banners, Roster/Farm/Scan,
   Account/Assistant/shell, Backlog/Edit mode), then fixes:
