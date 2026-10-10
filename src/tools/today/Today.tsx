@@ -391,7 +391,7 @@ function AddOwn({ days, kinds, tags, now, showExamples }: { days: GameToday[]; k
 
 function LiveBanners({ days, tags, now, showExamples }: { days: GameToday[]; tags: boolean; now: number; showExamples: boolean }) {
   const rows = days.flatMap((d) => d.banners.list.map((b) => ({ d, b, example: Boolean(d.lists.exampleIds?.has(b.id)) })));
-  const live = rows.filter(({ b }) => Date.parse(b.start) <= now && Date.parse(b.end) > now).sort((x, y) => Date.parse(x.b.end) - Date.parse(y.b.end));
+  const live = rows.filter(({ b }) => !b.permanent && Date.parse(b.start) <= now && Date.parse(b.end) > now).sort((x, y) => Date.parse(x.b.end) - Date.parse(y.b.end));
   const typeLabel = (g: GameContract, id: string) => g.bannerTypes.find((x) => x.id === id)?.label ?? id;
   // Sample art only ever decorates EXAMPLE banners.
   // Sample art only on examples; real banners use their own art or the lead character's portrait.
