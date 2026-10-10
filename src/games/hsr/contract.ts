@@ -19,6 +19,7 @@ import versions from './data/versions.json';
 import { KITS, SHEETS } from './kitcheck/library';
 import { withTags } from './kitcheck/tags';
 import { gameTeams, hsrTeamRules } from './kitcheck/team';
+import { hsrStatTargets } from './statTargets';
 
 const list = <T>(rows: unknown) => async () => rows as T[];
 const COMMUNITY = 'community pull-log statistics (not published by the game)';
@@ -211,6 +212,8 @@ export const hsr: GameContract = {
         { levelMax: 80, weaponLevelMax: 80, setSlots: (pieces) => (pieces === 4 ? ['Head', 'Hands', 'Body', 'Feet'] : ['Planar Sphere', 'Link Rope']) },
       ),
     teams: hsrTeamRules,
+    // End stats to build towards, only from numbers the game text states (T35).
+    statTargets: hsrStatTargets,
     materialsFor,
     materialsNote: "From the game data (nanoka.cc): ascension, every skill and every Trace to max. Character EXP 1 → 80 (5,797,920, from the game's own EXP table) is counted as Traveler's Guides (20,000 EXP each).",
   },

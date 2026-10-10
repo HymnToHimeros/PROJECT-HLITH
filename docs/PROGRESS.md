@@ -28,6 +28,12 @@ Resume with: "continue from PROGRESS.md". Newest entry on top. Older entries:
 - CI (`.github/workflows/ci.yml`) runs both on every pull request.
 
 ## Done
+- 2026-10-10 · **LOGIC-CORE: target stats to build towards (T35)** (branch `logic-core/stat-targets`).
+  Each character page can show the end stats to aim for, only where the game text states a number:
+  their kit (e.g. Jiaoqiu 140% Effect Hit Rate, Lucia 24,000 initial Max HP), their signature weapon,
+  and the sets the game recommends for them. Each one has its quote word for word and the working,
+  and a test checks every quote against the game data. No number in the text = "No data yet". "You"
+  comes from the saved build's totals (FRAME adds them to the form and scan). Both games.
 - 2026-10-10 · **ERROR-FIX: typing in a pop-up form works again** (branch `error-fix/typing-in-forms`).
   Owner's report: typing in the character page's "Enter build" form set off other things on
   the page. Cause: the pop-up panel (`BottomSheet`, FRAME's) re-ran its open step whenever

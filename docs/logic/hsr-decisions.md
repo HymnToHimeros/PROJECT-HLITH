@@ -158,4 +158,6 @@ team size and order, and the owner's ZZZ method's own counting.
       team that lists another carry alone further along (Aventurine • Waveflair's team 3) is kept.
     ZZZ: no game team lists and no solo-mode readings in its sheets, so nothing changes there (mirror rule: the
     same rules apply once ZZZ has the facts).
-
+35. **Target stats come only from numbers the game text states (owner's job T35, both games, ZZZ decision 59 mirrors it).**
+    Kit, signature weapon and the recommended sets' own conditions, each quoted word for word with the working shown;
+    no number in the text = "No data yet". Rules in `build-score.md`, "Target stats".

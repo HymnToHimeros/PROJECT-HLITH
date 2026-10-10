@@ -19,6 +19,7 @@ import { GEAR_SLOTS } from './gear';
 import { KITS, SHEETS } from './kitcheck/library';
 import { withTags } from './kitcheck/tags';
 import { recommendedTeams, zzzTeamRules } from './kitcheck/team';
+import { zzzStatTargets } from './statTargets';
 
 const list = <T>(rows: unknown) => async () => rows as T[];
 const COMMUNITY = 'community pull-log statistics (not published by the game)';
@@ -172,6 +173,8 @@ export const zzz: GameContract = {
         { levelMax: 60, weaponLevelMax: 60, setSlots: () => [] },
       ),
     teams: zzzTeamRules,
+    // End stats to build towards, only from numbers the game text states (T35).
+    statTargets: zzzStatTargets,
     materialsFor,
     materialsNote: 'From the game data (nanoka.cc): ascension, every skill and the Core Skill to max. Agent EXP is counted as Senior Investigator Logs (3,000 EXP each).',
   },

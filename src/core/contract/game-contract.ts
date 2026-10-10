@@ -238,6 +238,40 @@ export interface GameRules {
   scoreBuild?: (build: CharacterBuild) => Known<{ score: number; grade: string; parts?: BuildScorePart[]; basis?: string }>;
   /** Team scoring from kits (LOGIC-CORE). Every score explains itself with kit text. */
   teams?: TeamRules;
+  /**
+   * The end stats to build a character towards (owner's job T35, LOGIC-CORE): only numbers the game text states
+   * (kit, signature weapon, recommended sets), each with its quote; the saved build's totals as "you".
+   */
+  statTargets?: (characterId: string, build?: CharacterBuild) => StatTargets;
+}
+
+/** One stat to build towards, with the game text that sets it (LOGIC-CORE, T35). */
+export interface StatTargetRow {
+  /** The game's stat name, e.g. "Effect Hit Rate", "SPD", ZZZ "Impact". */
+  stat: string;
+  /** The target in plain words, e.g. "140%", "above 1800", "170 (steps 140 / 170)". */
+  target: string;
+  /** From the saved build's totals; undefined = no data yet. */
+  you?: string;
+  /** Whether the saved totals reach the target; undefined = no data yet. */
+  met?: boolean;
+  /** What reaching it does, in plain words. */
+  why: string;
+  /** Where the number comes from, e.g. "Kit: Trace: Hearth Kindle", "Set: Space Sealing Station (recommended)". */
+  source: string;
+  /** The game text, word for word. */
+  quote: string;
+  /** How the number follows from the text, when it isn't written as is, e.g. "80% + 4 × 15% = 140%". */
+  working?: string;
+  /** When it applies, e.g. "Enhanced kit", "E6", "with their signature equipped". */
+  condition?: string;
+}
+
+export interface StatTargets {
+  /** Empty = the game text gives no number for this character: show "No data yet". */
+  rows: StatTargetRow[];
+  /** The game's recommended main and sub stats: a direction to build towards, without numbers. */
+  direction?: { mains: Record<string, string[]>; subs: string[]; source: string };
 }
 
 /** The game facts the build form needs. Stat lists are suggestions; any name the game uses can be typed. */
