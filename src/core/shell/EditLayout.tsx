@@ -29,6 +29,8 @@ export function EditLayout({ games, scope, layout, onChange, onDone, scopeName }
   const missing = notAvailable(games, scope);
   const [drag, setDrag] = useState<{ id: ModuleId; over: number } | null>(null);
   const [announce, setAnnounce] = useState('');
+  // The layout from just before "Reset to default", so one tap brings it back.
+  const [beforeReset, setBeforeReset] = useState<LayoutState | null>(null);
   const rowsRef = useRef<HTMLDivElement>(null);
 
   const shown = drag ? reorder(visible, drag.id, drag.over) : visible;
@@ -67,7 +69,7 @@ export function EditLayout({ games, scope, layout, onChange, onDone, scopeName }
       <div className={p.editHead}>
         <span className={p.editLabel}>EDIT LAYOUT</span>
         <h3 className={p.editTitle}>{scopeName}</h3>
-        <p className={p.editNote}>Drag ⋮⋮ to reorder. Saved for this view only.</p>
+        <p className={p.editNote}>Drag ⋮⋮ to reorder. One order for every game.</p>
       </div>
       <div className={p.editBody}>
         <div className={p.rows} ref={rowsRef}>
@@ -90,7 +92,7 @@ export function EditLayout({ games, scope, layout, onChange, onDone, scopeName }
 
         {hidden.length > 0 && (
           <>
-            <span className={p.editSection}>HIDDEN · STILL IN THIS GAME</span>
+            <span className={p.editSection}>{scope === 'all' ? 'HIDDEN · STILL IN YOUR GAMES' : 'HIDDEN · STILL IN THIS GAME'}</span>
             <div className={p.rows}>
               {hidden.map((id) => (
                 <DragHandleRow key={id} label={MODULES[id].label} state="hidden" onRestore={() => onChange(restore(layout, id))} />
@@ -114,13 +116,33 @@ export function EditLayout({ games, scope, layout, onChange, onDone, scopeName }
               'Press and hold ⋮⋮ next to a module, then drag it up or down. On a keyboard, focus ⋮⋮ and use the arrow keys.',
               `The first ${PHONE_BAR_SIZE} modules sit in the phone’s bottom bar; the rest go under More.`,
               'Hide takes a module out of the menu. It stays in the game: Restore brings it back with everything you saved.',
-              'Each view (All games, or one game) keeps its own order. Reset to default puts this view back the way it came.',
+              'One order for every game and All games. Modules a game doesn’t have simply drop out. Reset to default puts the order back the way it came (Undo brings yours back).',
             ]}
           />
         </div>
       </div>
       <div className={p.actions}>
-        <Button onClick={() => onChange(reset())}>Reset to default</Button>
+        {beforeReset ? (
+          <Button
+            onClick={() => {
+              onChange(beforeReset);
+              setBeforeReset(null);
+              setAnnounce('Your order is back');
+            }}
+          >
+            Undo reset
+          </Button>
+        ) : (
+          <Button
+            onClick={() => {
+              setBeforeReset(layout);
+              onChange(reset());
+              setAnnounce('Order reset to default. Undo brings yours back.');
+            }}
+          >
+            Reset to default
+          </Button>
+        )}
         <Button variant="primary" onClick={onDone}>
           Done
         </Button>

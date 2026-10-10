@@ -3,7 +3,7 @@ import { BACKUP_EVERY_DAYS, daysSinceBackup } from '../../core/data/backup';
 import { usePrefs } from '../../core/data/prefs';
 import { useSyncStatus } from '../../core/data/sync';
 import type { PanelProps } from '../../core/registry/panels';
-import { cameFromApp } from '../../core/shell/route';
+import { accountPath, cameFromApp, navigate } from '../../core/shell/route';
 import { Button, HowTo, useNow } from '../../core/ui';
 import { LinkAccounts } from '../account-links/LinkAccount';
 import { FeedSettings } from '../feeds/FeedSettings';
@@ -59,6 +59,12 @@ export default function AccountPage(props: PanelProps) {
   const sections = sectionsFor({ isOwner, signedIn: Boolean(account) });
   const current = resolveSection(props.section, sections);
   const go = (id: string, detail?: string) => props.goSection?.(id, detail);
+  // An unknown section (or Owner console for a non-owner) shows Profile: make the address say so too.
+  // Waits for the owner check, so an owner reloading /account/owner isn't sent away.
+  const wrongAddress = Boolean(props.section) && props.section !== current && (props.section !== 'owner' || props.ownerChecked !== false);
+  useEffect(() => {
+    if (wrongAddress) navigate(accountPath(), true);
+  }, [wrongAddress, props.section]);
   const barRef = useRef<HTMLElement>(null);
   // On a phone the bar scrolls sideways: keep the open section in view.
   useEffect(() => {
@@ -70,7 +76,8 @@ export default function AccountPage(props: PanelProps) {
   const hint: Partial<Record<SectionId, string | undefined>> = {
     sync: syncSub(sync, now),
     backup: days === null ? 'No backup yet' : days >= BACKUP_EVERY_DAYS ? 'Time for a new one' : `Last ${days === 0 ? 'today' : `${days}d ago`}`,
-    notifications: prefs.notify?.enabled ? `Evening at ${prefs.notify.time}` : undefined,
+    // The evening message can't be sent yet (no push on the server), so no "Evening at 21:00" promise here.
+    notifications: prefs.notify?.enabled ? 'Preview only' : undefined,
     theme: prefs.theme === 'light' ? 'Light' : 'Dark',
     examples: prefs.hideExamples ? 'Hidden' : 'Shown',
   };

@@ -146,7 +146,7 @@ describe('DragHandleRow', () => {
   it('hidden rows offer Restore, unavailable rows offer nothing', () => {
     const onRestore = vi.fn();
     const { rerender } = render(<DragHandleRow label="Backlog" state="hidden" onRestore={onRestore} />);
-    fireEvent.click(screen.getByRole('button', { name: 'Restore' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Restore Backlog' }));
     expect(onRestore).toHaveBeenCalledOnce();
     rerender(<DragHandleRow label="Future" state="not-available" />);
     expect(screen.getByText('Not available for this game yet')).toBeInTheDocument();
@@ -155,7 +155,7 @@ describe('DragHandleRow', () => {
   it('normal rows have a labelled handle and Hide', () => {
     render(<DragHandleRow label="Pulls" state="normal" onHide={() => {}} />);
     expect(screen.getByRole('button', { name: 'Move Pulls' })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'Hide' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Hide Pulls' })).toBeInTheDocument();
   });
 });
 

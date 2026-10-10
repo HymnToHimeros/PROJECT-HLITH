@@ -16,20 +16,23 @@ export function App() {
 function Root() {
   const session = useSession(backend);
   const userId = session?.user.id;
-  const [ownerOf, setOwnerOf] = useState<string | null>(null);
+  // Which account the owner answer is for, and the answer (null until the server replies).
+  const [ownerAnswer, setOwnerAnswer] = useState<{ userId: string; owner: boolean } | null>(null);
 
   // Ask the server whether this account is an owner (public.is_owner()); only shows the Owner console row.
   useEffect(() => {
     if (!backend || !userId) return;
     let alive = true;
     void backend.rpc('is_owner').then(({ data }) => {
-      if (alive) setOwnerOf(data === true ? userId : null);
+      if (alive) setOwnerAnswer({ userId, owner: data === true });
     });
     return () => {
       alive = false;
     };
   }, [userId]);
-  const isOwner = Boolean(userId) && ownerOf === userId;
+  const isOwner = Boolean(userId) && ownerAnswer?.userId === userId && ownerAnswer.owner;
+  // Without an account there is nothing to ask; with one, wait for the server's answer.
+  const ownerChecked = !backend || !userId || ownerAnswer?.userId === userId;
 
   useEffect(() => {
     if (!backend) return markDeviceOnly();
@@ -57,5 +60,5 @@ function Root() {
     client && session
       ? { email: session.user.email ?? 'your account', provider, id: session.user.id, identities: methods, createdAt: session.user.created_at, onSignOut: () => void signOut(client) }
       : null;
-  return <Shell games={listGames()} account={account} isOwner={isOwner} />;
+  return <Shell games={listGames()} account={account} isOwner={isOwner} ownerChecked={ownerChecked} />;
 }

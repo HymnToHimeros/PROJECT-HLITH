@@ -7,6 +7,7 @@ import type { PanelProps } from '../../core/registry/panels';
 import { ExampleNotice, useSampleShown } from '../../core/ui';
 import AccountPage, { resolveSection, sectionsFor } from './AccountPage';
 import { DEVICE_KEY } from './profile';
+import { setupSteps } from './SetupChecklist';
 
 const game = {
   id: 'aa',
@@ -80,6 +81,17 @@ describe('Account page: section bar', () => {
     expect(resolveSection(undefined, sectionsFor({ isOwner: false, signedIn: false }))).toBe('profile');
   });
 
+  it('fixes the address when the asked-for section falls back to Profile, but waits for the owner check', () => {
+    window.history.replaceState(null, '', '/account/owner');
+    const { rerender } = render(<AccountPage {...props({ section: 'owner', ownerChecked: false })} />);
+    expect(window.location.pathname).toBe('/account/owner');
+    rerender(<AccountPage {...props({ section: 'owner', ownerChecked: true })} />);
+    expect(window.location.pathname).toBe('/account');
+    window.history.replaceState(null, '', '/account/nope');
+    rerender(<AccountPage {...props({ section: 'nope' })} />);
+    expect(window.location.pathname).toBe('/account');
+  });
+
   it('clicking a section asks for its address; the open one is marked', async () => {
     const p = props({ section: 'sync' });
     render(<AccountPage {...p} />);
@@ -124,7 +136,16 @@ describe('Account page: settings sections', () => {
     const list = within(screen.getByLabelText('Setup checklist'));
     expect(list.getByText(/Enter your currency in the Bank log/)).toHaveTextContent('(done)');
     expect(list.getByText(/Choose your server/)).toHaveTextContent('(to do)');
-    expect(list.getByText(/Connect HoYoLAB/)).toHaveTextContent('(to do)');
+    // This test copy has no server, so HoYoLAB and notifications can't be done here: they can be skipped.
+    expect(list.getByText(/Connect HoYoLAB/)).toHaveTextContent('(not possible here)');
+    expect(list.getByText(/Set up notifications/)).toHaveTextContent('(not possible here)');
+    expect(list.getByText('1/7')).toBeInTheDocument();
+    fireEvent.click(list.getByRole('button', { name: 'Skip: Connect HoYoLAB' }));
+    expect(getPrefs().skippedSetup).toEqual(['hoyolab']);
+    expect(list.getByText('2/7 · 1 skipped')).toBeInTheDocument();
+    expect(list.getByText(/Connect HoYoLAB/)).toHaveTextContent('(skipped)');
+    fireEvent.click(list.getByRole('button', { name: 'Undo skip: Connect HoYoLAB' }));
+    expect(getPrefs().skippedSetup).toEqual([]);
     fireEvent.click(list.getByRole('button', { name: 'Open History' }));
     expect(p.open).toHaveBeenCalledWith('pulls', 'history');
     fireEvent.click(list.getByRole('button', { name: 'Choose server' }));
@@ -133,6 +154,19 @@ describe('Account page: settings sections', () => {
     expect(list.getByText(/Choose your server/)).toHaveTextContent('(done)');
     fireEvent.click(screen.getByRole('button', { name: 'Open Calendar' }));
     expect(p.open).toHaveBeenCalledWith('calendar', undefined);
+  });
+
+  it('setup steps: HoYoLAB ticks for any linked account (server or device); notifications only for the calendar feed', () => {
+    const linked = { ...game, accountLinks: [{ provider: 'hoyolab', supports: [], config: { gameBiz: 'x_global' } }] } as unknown as GameContract;
+    const act0 = { games: [linked], open: vi.fn(), goTo: vi.fn() };
+    const facts = { accounts: [], feed: false, backup: false, server: true };
+    const step = (id: string, f = facts) => setupSteps([linked], {}, {}, f, act0).find((s) => s.id === id);
+    expect(step('hoyolab')?.done).toBe(false);
+    const serverAccount = { id: 's1', label: 'Main', where: 'server' as const, hoyolabId: '1', games: [{ gameId: 'aa' }], autoCheckin: true, autoRedeem: false, hasRedeemLogin: false };
+    expect(step('hoyolab', { ...facts, accounts: [serverAccount] })?.done).toBe(true);
+    expect(step('notify')?.done).toBe(false);
+    expect(step('notify', { ...facts, feed: true })?.done).toBe(true);
+    expect(step('notify', { ...facts, server: false })?.unavailable).toMatch(/server/);
   });
 
   it('Backup: restore checks the file first, then only adds', async () => {
@@ -154,6 +188,10 @@ describe('Account page: settings sections', () => {
     fireEvent.click(screen.getByRole('switch', { name: 'Banners ending' }));
     expect(getPrefs().notify?.items.banners).toBe(false);
     expect(screen.getByText(/needs sign-in/)).toBeInTheDocument();
+    // Can't be sent yet: said plainly, and no button to press that isn't there.
+    expect(screen.getByRole('switch', { name: /preview only/ })).toBeInTheDocument();
+    expect(screen.queryByText(/kept up to date by itself/)).toBeNull();
+    expect(screen.queryByText(/Create my calendar link/)).toBeNull();
   });
 });
 

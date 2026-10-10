@@ -43,6 +43,8 @@ export interface PanelProps {
    * still checked on the server.
    */
   isOwner?: boolean;
+  /** False while the server is still being asked whether the viewer is an owner. Missing = known. */
+  ownerChecked?: boolean;
   /** Account page: the section in the address (/account/<section>), e.g. 'game-settings'. Missing = Profile. */
   section?: string | undefined;
   /** Account page: the detail after the section (/account/game-settings/<game id>). */
