@@ -217,11 +217,9 @@ function Raven({ x, y, s, flip = false }: { x: number; y: number; s: number; fli
   return <path d={RAVEN} fill="currentColor" transform={`translate(${x} ${y}) scale(${flip ? -s : s} ${s}) translate(-50 -32)`} />;
 }
 
-/** A thorned vine along a gentle curve. */
-function Thorns({ d, n, seed }: { d: [number, number][]; n: number; seed: number }) {
-  // Catmull-Rom through the points, sampled for thorn positions.
-  const r = rng(seed);
-  const pt = (t: number) => {
+/** A smooth Catmull-Rom curve through the points: t in 0..1 → a point on it. */
+function spline(d: [number, number][]) {
+  return (t: number) => {
     const seg = Math.min(d.length - 2, Math.floor(t * (d.length - 1)));
     const u = t * (d.length - 1) - seg;
     const p0 = d[Math.max(0, seg - 1)] as [number, number];
@@ -231,6 +229,21 @@ function Thorns({ d, n, seed }: { d: [number, number][]; n: number; seed: number
     const cr = (a0: number, a1: number, a2: number, a3: number) => 0.5 * (2 * a1 + (-a0 + a2) * u + (2 * a0 - 5 * a1 + 4 * a2 - a3) * u * u + (-a0 + 3 * a1 - 3 * a2 + a3) * u * u * u);
     return [cr(p0[0], p1[0], p2[0], p3[0]), cr(p0[1], p1[1], p2[1], p3[1])] as const;
   };
+}
+
+/** The spline as a path. */
+const splinePath = (d: [number, number][], steps = 60) => {
+  const pt = spline(d);
+  return `M${Array.from({ length: steps + 1 }, (_, i) => pt(i / steps))
+    .map(([x, y]) => `${f(x)} ${f(y)}`)
+    .join('L')}`;
+};
+
+/** A thorned vine along a gentle curve. */
+function Thorns({ d, n, seed }: { d: [number, number][]; n: number; seed: number }) {
+  // Catmull-Rom through the points, sampled for thorn positions.
+  const r = rng(seed);
+  const pt = spline(d);
   const steps = 80;
   const line = Array.from({ length: steps + 1 }, (_, i) => pt(i / steps));
   const thorns: string[] = [];
@@ -322,6 +335,303 @@ function Filigree({ x, y, s }: { x: number; y: number; s: number }) {
 
 /** A cloud edge as soft overlapping arcs (light rays break through it). */
 const CLOUD = 'M0 60C10 30 50 24 66 40C74 10 120 0 140 28C156 8 200 10 208 40C232 30 262 44 260 64';
+
+/** An almond petal or leaf from its base (bx, by), pointing at deg, with a midrib. Sakura petals get a notched tip. */
+const petal = (bx: number, by: number, deg: number, l: number, w: number, notch = false, rib = true) => {
+  const rad = (deg * Math.PI) / 180;
+  const c = Math.cos(rad);
+  const s = Math.sin(rad);
+  const p = (px: number, py: number) => `${f(bx + px * c - py * s)} ${f(by + px * s + py * c)}`;
+  const tip = notch
+    ? `C${p(l * 0.82, -w)} ${p(l, -w * 0.6)} ${p(l, -w * 0.25)}L${p(l * 0.86, 0)}L${p(l, w * 0.25)}C${p(l, w * 0.6)} ${p(l * 0.82, w)}`
+    : `C${p(l * 0.75, -w)} ${p(l, -w * 0.2)} ${p(l, 0)}C${p(l, w * 0.2)} ${p(l * 0.75, w)}`;
+  return `M${p(0, 0)}C${p(l * 0.15, -w * 0.9)} ${p(l * 0.4, -w)} ${p(l * 0.55, -w)}${tip} ${p(l * 0.55, w)}C${p(l * 0.4, w)} ${p(l * 0.15, w * 0.9)} ${p(0, 0)}${rib ? `M${p(l * 0.1, 0)}L${p(l * 0.75, 0)}` : ''}`;
+};
+
+/** A night flower opening: rings of pointed petals round a centre, with stamens. */
+function Bloom({ x, y, r, petals = 8, layers = 3, rot = 0 }: { x: number; y: number; r: number; petals?: number; layers?: number; rot?: number }) {
+  const d: string[] = [];
+  for (let k = 0; k < layers; k++) {
+    const len = r * (1 - k * 0.24);
+    for (let i = 0; i < petals; i++) d.push(petal(x, y, rot + (360 * (i + k * 0.5)) / petals, len, len * 0.3, false, k === 0));
+  }
+  const stamens: string[] = [];
+  const dots: ReactNode[] = [];
+  for (let i = 0; i < 7; i++) {
+    const ang = ((rot - 90 + (i - 3) * 16) * Math.PI) / 180;
+    const ex = x + Math.cos(ang) * r * 0.42;
+    const ey = y + Math.sin(ang) * r * 0.42;
+    stamens.push(`M${x} ${y}L${f(ex)} ${f(ey)}`);
+    dots.push(<circle key={i} cx={f(ex)} cy={f(ey)} r={f(Math.max(2, r * 0.025))} fill="currentColor" stroke="none" />);
+  }
+  return (
+    <g fill="none">
+      <path d={d.join('')} />
+      <path d={stamens.join('')} strokeWidth={0.8} />
+      {dots}
+    </g>
+  );
+}
+
+/** A crescent moon: the lit edge of a circle of radius r, facing angle rot (degrees). */
+function Crescent({ x, y, r, rot = 0, fill = false }: { x: number; y: number; r: number; rot?: number; fill?: boolean }) {
+  // Outer arc half way round, inner arc back through a narrower ellipse.
+  const d = `M0 ${-r}A${r} ${r} 0 1 1 0 ${r}A${f(r * 0.62)} ${r} 0 1 0 0 ${-r}Z`;
+  return <path d={d} transform={`translate(${x} ${y}) rotate(${rot})`} fill={fill ? 'currentColor' : 'none'} fillOpacity={fill ? 0.35 : undefined} strokeWidth={1.6} />;
+}
+
+/** Small filled petals drifting across an area. */
+function Drift({ seed, n, w, h, x = 0, y = 0, size = 10, notch = false }: { seed: number; n: number; w: number; h: number; x?: number; y?: number; size?: number; notch?: boolean }) {
+  const r = rng(seed);
+  const d: string[] = [];
+  for (let i = 0; i < n; i++) {
+    const l = size * (0.6 + r() * 0.8);
+    d.push(petal(x + r() * w, y + r() * h, r() * 360, l, l * (notch ? 0.42 : 0.32), notch, false));
+  }
+  return <path d={d.join('')} fill="currentColor" fillOpacity={0.55} strokeWidth={0.6} />;
+}
+
+/** Sine-like wave lines, one under another, fading out. */
+function Waves({ x, y, w, n, gap, amp, len, seed }: { x: number; y: number; w: number; n: number; gap: number; amp: number; len: number; seed: number }) {
+  const r = rng(seed);
+  const out: ReactNode[] = [];
+  for (let i = 0; i < n; i++) {
+    const a = amp * (0.6 + r() * 0.8);
+    const ph = r() * len;
+    const pts: string[] = [];
+    for (let px = 0; px <= w; px += 16) pts.push(`${f(x + px)} ${f(y + i * gap + Math.sin(((px + ph) / len) * Math.PI * 2) * a)}`);
+    out.push(<path key={i} d={`M${pts.join('L')}`} fill="none" opacity={f(1 - (i / n) * 0.7)} />);
+  }
+  return <g>{out}</g>;
+}
+
+/** Ripples spreading on still water: flat ellipses, thinning outwards. */
+function Ripples({ x, y, r, n, flat = 0.24 }: { x: number; y: number; r: number; n: number; flat?: number }) {
+  return (
+    <g fill="none">
+      {Array.from({ length: n }, (_, i) => {
+        const rr = (r * (i + 1)) / n;
+        return <ellipse key={i} cx={x} cy={y} rx={f(rr)} ry={f(rr * flat)} strokeWidth={f(1.4 - (i / n) * 0.8)} strokeDasharray={i % 2 ? '3 6' : undefined} />;
+      })}
+    </g>
+  );
+}
+
+/** A wisp of smoke: a long S-curve ending in a curl. */
+function Wisp({ x, y, len, rise, curl, flip = false }: { x: number; y: number; len: number; rise: number; curl: number; flip?: boolean }) {
+  const k = flip ? -1 : 1;
+  const sweep = flip ? 0 : 1;
+  const d = `M${x} ${y}C${f(x + len * 0.35 * k)} ${f(y - rise * 1.2)} ${f(x + len * 0.6 * k)} ${f(y + rise * 0.5)} ${f(x + len * k)} ${f(y - rise)}a${curl} ${curl} 0 1 ${sweep} ${f(-curl * 1.2 * k)} ${f(-curl * 0.6)}a${f(curl * 0.6)} ${f(curl * 0.6)} 0 1 ${sweep} ${f(curl * 0.7 * k)} ${f(curl * 0.4)}`;
+  return <path d={d} fill="none" />;
+}
+
+/** A bamboo stalk, leaning a little, with nodes and a few leaves. */
+function Bamboo({ x, y, h, lean, seg, seed, w = 14 }: { x: number; y: number; h: number; lean: number; seg: number; seed: number; w?: number }) {
+  const r = rng(seed);
+  const n = Math.round(h / seg);
+  const at = (t: number) => [x + lean * t * t, y - h * t] as const;
+  const stalk: string[] = [];
+  const leaves: string[] = [];
+  for (let i = 0; i < n; i++) {
+    const [x0, y0] = at(i / n);
+    const [x1, y1] = at((i + 0.94) / n);
+    stalk.push(`M${f(x0 - w / 2)} ${f(y0 - 3)}L${f(x1 - w / 2)} ${f(y1)}M${f(x0 + w / 2)} ${f(y0 - 3)}L${f(x1 + w / 2)} ${f(y1)}`);
+    stalk.push(`M${f(x1 - w / 2 - 2)} ${f(y1 - 2)}Q${f(x1)} ${f(y1 + 3)} ${f(x1 + w / 2 + 2)} ${f(y1 - 2)}`);
+    if (i > 1 && r() > 0.45) {
+      const side = r() > 0.5 ? 1 : -1;
+      for (let j = 0; j < 3; j++) {
+        const l = 60 + r() * 50;
+        leaves.push(petal(x1 + (side * w) / 2, y1, (side > 0 ? -20 : 200) + side * (j * 24 - 10) + (r() - 0.5) * 16, l, l * 0.13));
+      }
+    }
+  }
+  return (
+    <g fill="none">
+      <path d={stalk.join('')} strokeWidth={1.3} />
+      <path d={leaves.join('')} fill="currentColor" fillOpacity={0.3} />
+    </g>
+  );
+}
+
+/** A jade bi: a disc with a round hole, carved with rows of little grain spirals. */
+function JadeDisc({ x, y, r }: { x: number; y: number; r: number }) {
+  const hole = r * 0.36;
+  const grains: string[] = [];
+  for (let row = 0; row < 2; row++) {
+    const rr = hole + ((r - hole) * (row + 0.8)) / 2.6;
+    const count = Math.round((2 * Math.PI * rr) / 46);
+    for (let i = 0; i < count; i++) {
+      const ang = (2 * Math.PI * (i + row * 0.5)) / count;
+      const gx = x + Math.cos(ang) * rr;
+      const gy = y + Math.sin(ang) * rr;
+      grains.push(`M${f(gx + 5)} ${f(gy)}a5 5 0 1 1 -5 -5a2.5 2.5 0 1 1 2.5 2.5`);
+    }
+  }
+  return (
+    <g fill="none">
+      <circle cx={x} cy={y} r={r} strokeWidth={2} />
+      <circle cx={x} cy={y} r={r * 0.96} strokeWidth={0.6} />
+      <circle cx={x} cy={y} r={hole} strokeWidth={2} />
+      <circle cx={x} cy={y} r={hole * 1.1} strokeWidth={0.6} />
+      <path d={grains.join('')} strokeWidth={0.7} />
+    </g>
+  );
+}
+
+/** Velvet drapes hanging in swags across the top, with folds and tassels. */
+function Drapes({ w, n, drop }: { w: number; n: number; drop: number }) {
+  const sw = w / n;
+  const folds: string[] = [];
+  const tassels: ReactNode[] = [];
+  for (let i = 0; i <= n; i++) {
+    const x0 = i * sw;
+    if (i < n) for (let k = 0; k < 4; k++) folds.push(`M${f(x0 + k * 10)} ${f(-10 + k * 6)}Q${f(x0 + sw / 2)} ${f(drop * (1 - k * 0.2))} ${f(x0 + sw - k * 10)} ${f(-10 + k * 6)}`);
+    const ty = drop * 0.5;
+    tassels.push(
+      <g key={i}>
+        <path d={`M${f(x0)} 0V${f(ty)}M${f(x0 - 5)} ${f(ty + 6)}l-3 ${f(drop * 0.22)}M${f(x0)} ${f(ty + 6)}v${f(drop * 0.25)}M${f(x0 + 5)} ${f(ty + 6)}l3 ${f(drop * 0.22)}`} />
+        <circle cx={f(x0)} cy={f(ty + 3)} r={4} fill="currentColor" />
+      </g>,
+    );
+  }
+  return (
+    <g fill="none">
+      <path d={folds.join('')} />
+      {tassels}
+    </g>
+  );
+}
+
+/** A simple open crown. */
+function Crown({ x, y, s }: { x: number; y: number; s: number }) {
+  return (
+    <g transform={`translate(${x} ${y}) scale(${s})`} strokeWidth={1.6 / s} fill="none">
+      <path d="M-50 20L-58 -22L-28 0L0 -36L28 0L58 -22L50 20ZM-50 30H50" />
+      {[-58, 0, 58].map((cx) => (
+        <circle key={cx} cx={cx} cy={cx ? -28 : -43} r={5} fill="currentColor" />
+      ))}
+    </g>
+  );
+}
+
+/** An eight-point star (two crossed squares) with a ring inside, as on tiled arches. */
+function StarTile({ x, y, r, rot = 0 }: { x: number; y: number; r: number; rot?: number }) {
+  const sq = (a0: number) =>
+    `M${Array.from({ length: 4 }, (_, i) => {
+      const ang = ((a0 + rot + i * 90) * Math.PI) / 180;
+      return `${f(x + Math.cos(ang) * r)} ${f(y + Math.sin(ang) * r)}`;
+    }).join('L')}Z`;
+  return (
+    <g fill="none">
+      <path d={sq(0) + sq(45)} />
+      <circle cx={x} cy={y} r={f(r * 0.5)} strokeWidth={0.7} />
+    </g>
+  );
+}
+
+/** A pointed horseshoe arch, doubled, standing on a base line. */
+function Arch({ x, y, w, h }: { x: number; y: number; w: number; h: number }) {
+  const one = (ww: number, hh: number) =>
+    `M${f(x - ww / 2)} ${y}V${f(y - hh * 0.55)}C${f(x - ww * 0.62)} ${f(y - hh * 0.9)} ${f(x - ww * 0.12)} ${f(y - hh * 0.92)} ${x} ${f(y - hh)}C${f(x + ww * 0.12)} ${f(y - hh * 0.92)} ${f(x + ww * 0.62)} ${f(y - hh * 0.9)} ${f(x + ww / 2)} ${f(y - hh * 0.55)}V${y}`;
+  return (
+    <g fill="none">
+      <path d={one(w, h)} strokeWidth={1.6} />
+      <path d={one(w * 0.84, h * 0.88)} strokeWidth={0.8} />
+      <path d={`M${f(x - w * 0.8)} ${y}H${f(x + w * 0.8)}`} />
+    </g>
+  );
+}
+
+/** A cherry blossom: five notched petals round a dotted centre. */
+function Blossom({ x, y, r, rot = 0 }: { x: number; y: number; r: number; rot?: number }) {
+  const d = Array.from({ length: 5 }, (_, i) => petal(x, y, rot + i * 72, r, r * 0.42, true, false)).join('');
+  return (
+    <g>
+      <path d={d} fill="currentColor" fillOpacity={0.3} />
+      <circle cx={x} cy={y} r={f(r * 0.14)} fill="currentColor" />
+    </g>
+  );
+}
+
+/** A branch along a curve with twigs, blossoms and buds. */
+function Branch({ d, seed, blossoms, size }: { d: [number, number][]; seed: number; blossoms: number; size: number }) {
+  const r = rng(seed);
+  const pt = spline(d);
+  const twigs: string[] = [];
+  const flowers: ReactNode[] = [];
+  for (let i = 0; i < blossoms; i++) {
+    const [x, y] = pt(Math.min(1, 0.15 + (0.85 * i) / blossoms + r() * 0.04));
+    const side = i % 2 ? 1 : -1;
+    const tl = size * (1.2 + r() * 1.4);
+    const ang = (r() * 70 - 35 + (side > 0 ? -60 : 120)) * (Math.PI / 180);
+    const ex = x + Math.cos(ang) * tl;
+    const ey = y + Math.sin(ang) * tl;
+    twigs.push(`M${f(x)} ${f(y)}Q${f((x + ex) / 2 + side * 6)} ${f((y + ey) / 2)} ${f(ex)} ${f(ey)}`);
+    if (r() > 0.25) flowers.push(<Blossom key={i} x={f(ex)} y={f(ey)} r={f(size * (0.7 + r() * 0.5))} rot={f(r() * 72)} />);
+    else flowers.push(<path key={i} d={petal(ex, ey, (ang * 180) / Math.PI, size * 0.7, size * 0.3, false, false)} fill="currentColor" fillOpacity={0.5} />);
+  }
+  return (
+    <g fill="none">
+      <path d={splinePath(d)} strokeWidth={3} />
+      <path d={twigs.join('')} strokeWidth={1.4} />
+      {flowers}
+    </g>
+  );
+}
+
+/** Wind-drawn dunes: long ridges with fine ripple lines on their slopes. */
+function Dunes({ w, y, n, seed }: { w: number; y: number; n: number; seed: number }) {
+  const r = rng(seed);
+  const ridges: string[] = [];
+  const ripples: string[] = [];
+  for (let i = 0; i < n; i++) {
+    const base = y + i * 70;
+    const pts: [number, number][] = Array.from({ length: 6 }, (_, k) => [(w * k) / 5 + (r() - 0.5) * 120, base + (r() - 0.5) * 90]);
+    ridges.push(splinePath(pts, 80));
+    const pt = spline(pts);
+    for (let k = 0; k < 14; k++) {
+      const [px, py] = pt(0.04 + (0.92 * k) / 13 + r() * 0.02);
+      const l = 30 + r() * 40;
+      ripples.push(`M${f(px - l / 2)} ${f(py + 14 + r() * 16)}q${f(l / 2)} -6 ${f(l)} 0`);
+    }
+  }
+  return (
+    <g fill="none">
+      <path d={ridges.join('')} strokeWidth={1.4} />
+      <path d={ripples.join('')} strokeWidth={0.7} />
+    </g>
+  );
+}
+
+/** Heat shimmer: short wavy dashes, as air quivers over hot sand. */
+function Shimmer({ x, y, w, n, seed }: { x: number; y: number; w: number; n: number; seed: number }) {
+  const r = rng(seed);
+  const d: string[] = [];
+  for (let i = 0; i < n; i++) {
+    const l = 40 + r() * 120;
+    let s = `M${f(x + r() * w)} ${f(y + i * 14 + r() * 6)}`;
+    for (let k = 0; k < l; k += 20) s += 'q5 -4 10 0t10 0';
+    d.push(s);
+  }
+  return <path d={d.join('')} fill="none" strokeWidth={0.9} />;
+}
+
+/** A sun with a ring and short rays. */
+function Sun({ x, y, r, rays = 24 }: { x: number; y: number; r: number; rays?: number }) {
+  const d: string[] = [];
+  for (let i = 0; i < rays; i++) {
+    const ang = (2 * Math.PI * i) / rays;
+    const r2 = r * (i % 2 ? 1.28 : 1.42);
+    d.push(`M${f(x + Math.cos(ang) * r * 1.14)} ${f(y + Math.sin(ang) * r * 1.14)}L${f(x + Math.cos(ang) * r2)} ${f(y + Math.sin(ang) * r2)}`);
+  }
+  return (
+    <g fill="none">
+      <circle cx={x} cy={y} r={r} strokeWidth={2} />
+      <circle cx={x} cy={y} r={r * 0.82} strokeWidth={0.6} strokeDasharray="2 6" />
+      <path d={d.join('')} />
+    </g>
+  );
+}
 
 // ── Compositions ────────────────────────────────────────────────────
 
@@ -518,7 +828,248 @@ function Ascendant() {
   );
 }
 
-const ART: Record<Theme, () => ReactNode> = { dark: Glacier, light: Light, candlelight: Candlelight, crimson: Crimson, bifrost: Bifrost, ascendant: Ascendant };
+function NoctuneBloom() {
+  return (
+    <>
+      <Field seed={61} n={60}>
+        <Glow x={1240} y={220} r={560} id="ag-n" strength={0.9} />
+        <Glow x={180} y={860} r={380} id="ag-n2" strength={0.6} />
+        <Drift seed={62} n={26} w={1600} h={1000} size={12} />
+      </Field>
+      <Crest>
+        <circle cx={520} cy={230} r={190} fill="none" strokeWidth={0.6} strokeDasharray="1 7" />
+        <Crescent x={520} y={230} r={120} rot={-30} fill />
+        <Bloom x={340} y={470} r={170} petals={9} rot={-8} />
+        <path d={glint(680, 420, 18)} fill="currentColor" className={a.twinkleSlow} />
+      </Crest>
+      <Base>
+        <path
+          d={splinePath([
+            [-20, 560],
+            [110, 470],
+            [180, 360],
+            [330, 300],
+            [420, 180],
+          ])}
+          fill="none"
+          strokeWidth={1.6}
+        />
+        <path d={petal(180, 360, 200, 90, 22) + petal(250, 320, -40, 80, 20)} fill="none" />
+        <Bloom x={420} y={180} r={70} petals={7} layers={2} rot={-20} />
+        <Bloom x={110} y={470} r={44} petals={6} layers={2} rot={30} />
+      </Base>
+    </>
+  );
+}
+
+function AstralLagoon() {
+  return (
+    <>
+      <Field seed={73} n={90}>
+        <Glow x={1200} y={200} r={520} id="ag-l" strength={0.8} />
+        <g className={a.drift}>
+          <Waves x={-80} y={640} w={1760} n={8} gap={38} amp={9} len={260} seed={74} />
+        </g>
+      </Field>
+      <Crest>
+        <circle cx={430} cy={230} r={100} fill="currentColor" fillOpacity={0.18} strokeWidth={1.6} />
+        <circle cx={430} cy={230} r={128} fill="none" strokeWidth={0.6} strokeDasharray="2 6" />
+        <path d="M60 420H800" strokeWidth={0.8} />
+        {/* The moon's reflection: short strokes that narrow towards the viewer. */}
+        <path d={Array.from({ length: 11 }, (_, i) => `M${f(430 - (90 - i * 6))} ${440 + i * 22}h${f((90 - i * 6) * 2)}`).join('')} strokeWidth={1.2} strokeDasharray="14 9" />
+        <Ripples x={430} y={640} r={340} n={6} />
+      </Crest>
+      <Base>
+        <Ripples x={260} y={380} r={230} n={5} flat={0.3} />
+        <path d={glint(260, 340, 16) + glint(120, 250, 9) + glint(420, 280, 11)} fill="currentColor" className={a.twinkle} />
+      </Base>
+    </>
+  );
+}
+
+function CrimsonHaze() {
+  return (
+    <>
+      <Field seed={89} n={34}>
+        <Glow x={1280} y={240} r={560} id="ag-h" strength={1} />
+        <Glow x={220} y={940} r={460} id="ag-h2" strength={0.9} />
+        <g className={a.drift} strokeWidth={1.2}>
+          <Wisp x={-40} y={760} len={720} rise={120} curl={34} />
+          <Wisp x={200} y={900} len={900} rise={180} curl={46} />
+          <Wisp x={1640} y={620} len={640} rise={110} curl={30} flip />
+          <Wisp x={1640} y={860} len={820} rise={160} curl={40} flip />
+        </g>
+      </Field>
+      <Crest>
+        {/* An eclipse: a dark disc with a ring of fire and a long corona. */}
+        <Rays x={440} y={330} n={30} from={0} to={360} len={360} id="ar-h" />
+        <circle cx={440} cy={330} r={120} fill="var(--bg-app)" fillOpacity={0.6} strokeWidth={2.4} />
+        <circle cx={440} cy={330} r={134} fill="none" strokeWidth={0.8} />
+        <circle cx={440} cy={330} r={200} fill="none" strokeWidth={0.6} strokeDasharray="1 8" />
+        <path d={glint(355, 245, 20)} fill="currentColor" className={a.twinkleSlow} />
+      </Crest>
+      <Base>
+        <g strokeWidth={1.4}>
+          <Wisp x={20} y={560} len={360} rise={150} curl={30} />
+          <Wisp x={-20} y={470} len={260} rise={170} curl={22} />
+          <Wisp x={120} y={600} len={460} rise={90} curl={36} />
+        </g>
+        <Stars seed={90} n={18} w={500} h={420} big={0} />
+      </Base>
+    </>
+  );
+}
+
+function JadeWhisper() {
+  return (
+    <>
+      <Field seed={97} n={36}>
+        <Glow x={1220} y={300} r={540} id="ag-j" strength={0.8} />
+        {/* Mist lying in long bands. */}
+        <g className={a.drift} strokeDasharray="60 18 4 18" strokeWidth={1.2}>
+          <path d="M-60 620C300 580 620 660 980 610S1500 580 1700 620" fill="none" />
+          <path d="M-60 700C260 670 700 740 1060 690S1520 670 1700 710" fill="none" opacity={0.7} />
+          <path d="M-60 790C380 760 760 820 1140 780S1560 770 1700 800" fill="none" opacity={0.5} />
+        </g>
+      </Field>
+      <Crest>
+        <path d="M430 0V110" strokeWidth={1.2} />
+        <JadeDisc x={430} y={330} r={220} />
+        <path d="M430 550V640M418 640h24l-4 90h-16Z" fill="none" strokeWidth={1.2} />
+      </Crest>
+      <Base>
+        <Bamboo x={160} y={640} h={620} lean={70} seg={92} seed={98} />
+        <Bamboo x={270} y={660} h={480} lean={-40} seg={80} seed={99} w={11} />
+        <Bamboo x={70} y={660} h={380} lean={30} seg={70} seed={100} w={9} />
+      </Base>
+    </>
+  );
+}
+
+function VelvetTwilight() {
+  return (
+    <>
+      <Field seed={103} n={90}>
+        <Glow x={1220} y={300} r={600} id="ag-v" strength={1} />
+        <Drapes w={1600} n={5} drop={150} />
+      </Field>
+      <Crest>
+        <circle cx={440} cy={360} r={210} fill="none" strokeWidth={0.6} strokeDasharray="1 6" />
+        <Crescent x={440} y={360} r={150} rot={200} fill />
+        <Crown x={385} y={300} s={0.9} />
+        <path d={glint(600, 230, 22) + glint(560, 520, 12)} fill="currentColor" className={a.twinkleSlow} />
+      </Crest>
+      <Base>
+        <Filigree x={300} y={400} s={1.4} />
+        <path d={glint(300, 220, 24)} fill="currentColor" className={a.twinkle} />
+        <circle cx={300} cy={220} r={44} fill="none" strokeWidth={0.8} strokeDasharray="2 6" />
+      </Base>
+    </>
+  );
+}
+
+function AmberMirage() {
+  return (
+    <>
+      <Field seed={113} n={24}>
+        <Glow x={1200} y={260} r={620} id="ag-m" strength={0.9} />
+        <g className={a.drift}>
+          <Shimmer x={-40} y={560} w={1600} n={18} seed={114} />
+        </g>
+      </Field>
+      <Crest>
+        <StarTile x={430} y={330} r={250} rot={22.5} />
+        <Sun x={430} y={330} r={110} />
+        <path d="M300 380h260M320 404h220M350 428h160" strokeWidth={1.2} strokeDasharray="18 8" />
+      </Crest>
+      <Base>
+        <Arch x={280} y={560} w={300} h={420} />
+        <StarTile x={280} y={250} r={46} />
+        <path d="M0 560C120 520 220 540 330 520S520 500 600 530" fill="none" strokeWidth={0.8} />
+      </Base>
+    </>
+  );
+}
+
+function MidnightSakura() {
+  return (
+    <>
+      <Field seed={127} n={60}>
+        <Glow x={1240} y={240} r={560} id="ag-s" strength={0.9} />
+        <Drift seed={128} n={30} w={1600} h={1000} size={13} notch />
+      </Field>
+      <Crest>
+        <circle cx={460} cy={320} r={180} fill="currentColor" fillOpacity={0.12} strokeWidth={1.2} />
+        <circle cx={460} cy={320} r={206} fill="none" strokeWidth={0.6} strokeDasharray="1 7" />
+        <Branch
+          d={[
+            [820, 120],
+            [660, 190],
+            [520, 220],
+            [380, 320],
+            [210, 360],
+          ]}
+          seed={7}
+          blossoms={9}
+          size={26}
+        />
+      </Crest>
+      <Base>
+        <Branch
+          d={[
+            [-30, 560],
+            [100, 470],
+            [170, 380],
+            [300, 330],
+            [430, 220],
+          ]}
+          seed={12}
+          blossoms={8}
+          size={24}
+        />
+      </Base>
+    </>
+  );
+}
+
+function EtherealDune() {
+  return (
+    <>
+      <Field seed={131} n={20}>
+        <Glow x={1180} y={280} r={600} id="ag-d" strength={0.9} />
+        <Dunes w={1600} y={620} n={4} seed={132} />
+      </Field>
+      <Crest>
+        <Sun x={440} y={300} r={120} rays={36} />
+        <circle cx={440} cy={300} r={190} fill="none" strokeWidth={0.6} strokeDasharray="1 7" />
+        <path d="M80 470C220 400 330 420 440 380S660 340 800 400" fill="none" strokeWidth={1.4} />
+        <path d="M200 160q12 -10 24 0q12 -10 24 0M270 120q9 -8 18 0q9 -8 18 0" fill="none" />
+      </Crest>
+      <Base>
+        <path d="M-20 440C120 380 260 470 380 400S520 330 560 360M-20 500C140 450 300 520 440 470M20 380c60 -30 130 -20 160 20" fill="none" strokeWidth={1.2} />
+        <path d="M380 400c40 -30 30 -80 -10 -80c-30 0 -40 30 -20 46" fill="none" />
+        <path d="M120 560l-6 -50M128 560l8 -44M136 560l-14 -38M300 560l-4 -40M306 560l10 -34" fill="none" />
+      </Base>
+    </>
+  );
+}
+
+const ART: Record<Theme, () => ReactNode> = {
+  dark: Glacier,
+  light: Light,
+  candlelight: Candlelight,
+  crimson: Crimson,
+  bifrost: Bifrost,
+  ascendant: Ascendant,
+  'noctune-bloom': NoctuneBloom,
+  'ethereal-dune': EtherealDune,
+  'astral-lagoon': AstralLagoon,
+  'crimson-haze': CrimsonHaze,
+  'jade-whisper': JadeWhisper,
+  'velvet-twilight': VelvetTwilight,
+  'amber-mirage': AmberMirage,
+  'midnight-sakura': MidnightSakura,
+};
 
 /** One small emblem per theme, for the theme picker. Uses the colours of whatever theme box it sits in. */
 export function ThemeMotif({ theme, className }: { theme: Theme; className?: string | undefined }) {
@@ -568,6 +1119,57 @@ export function ThemeMotif({ theme, className }: { theme: Theme; className?: str
         <Wing transform="translate(215 300) scale(0.44)" />
         <Wing transform="translate(185 300) scale(0.44)" flip />
       </g>
+    ),
+    'noctune-bloom': (
+      <>
+        <Crescent x={270} y={120} r={56} rot={-30} />
+        <Bloom x={190} y={240} r={120} petals={8} layers={2} rot={-8} />
+      </>
+    ),
+    'astral-lagoon': (
+      <>
+        <circle cx={200} cy={130} r={62} fill="none" strokeWidth={3} />
+        <path d="M40 230H360" />
+        <Ripples x={200} y={300} r={170} n={4} flat={0.26} />
+      </>
+    ),
+    'crimson-haze': (
+      <>
+        <Sun x={200} y={170} r={70} rays={32} />
+        <circle cx={200} cy={170} r={70} fill="currentColor" fillOpacity={0.25} stroke="none" />
+        <Wisp x={30} y={350} len={300} rise={60} curl={22} />
+      </>
+    ),
+    'jade-whisper': (
+      <>
+        <JadeDisc x={230} y={200} r={130} />
+        <Bamboo x={80} y={390} h={360} lean={20} seg={72} seed={98} w={10} />
+      </>
+    ),
+    'velvet-twilight': (
+      <>
+        <Crescent x={200} y={210} r={120} rot={200} />
+        <Crown x={160} y={180} s={0.75} />
+      </>
+    ),
+    'ethereal-dune': (
+      <>
+        <Sun x={200} y={170} r={70} rays={24} />
+        <path d="M20 300C120 250 200 280 260 250S340 230 380 250M20 350C140 310 260 360 380 320" fill="none" strokeWidth={2.4} />
+      </>
+    ),
+    'amber-mirage': (
+      <>
+        <StarTile x={200} y={200} r={150} rot={22.5} />
+        <circle cx={200} cy={200} r={56} fill="none" strokeWidth={3} />
+      </>
+    ),
+    'midnight-sakura': (
+      <>
+        <circle cx={220} cy={180} r={110} fill="none" strokeWidth={1.6} />
+        <Blossom x={150} y={250} r={60} rot={10} />
+        <Blossom x={290} y={130} r={36} rot={40} />
+      </>
     ),
   };
   return (
