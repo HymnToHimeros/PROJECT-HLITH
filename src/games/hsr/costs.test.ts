@@ -23,4 +23,11 @@ describe('HSR materials (nanoka.cc level-up costs)', () => {
     const ids = new Set(materials.map((m) => m.id));
     for (const n of materialsFor(ROBIN, { level: 1 }, { level: 80 })) expect(ids.has(n.material), n.material).toBe(true);
   });
+
+  it("character EXP 1 → 80 from the game's own table: 5,797,920 EXP = 290 Traveler's Guides", () => {
+    const none = skillsOf(ROBIN).map(() => 0);
+    const needs = materialsFor(ROBIN, { level: 1, skills: none }, { level: 80, skills: none });
+    expect(amount(needs, '213')).toBe(Math.ceil(5_797_920 / 20_000));
+    expect(materials.find((m) => m.id === '213')?.name).toBe("Traveler's Guide");
+  });
 });
