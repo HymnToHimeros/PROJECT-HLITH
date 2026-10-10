@@ -17,7 +17,7 @@ export default function IntelScreen({ games, scope }: ModuleScreenProps) {
     <div className={n.stack}>
       <div className={n.intro}>
         <p className={n.lead}>
-          New content that no other module covers yet. Everything stays unverified until the game confirms it; banners and dates from leaks also show in Banners and Calendar.
+          New content that no other module covers yet. Everything stays unverified until the game confirms it; banners, events and dates from leaks also show in Today, Events, Calendar, Banners and the Pulls planner.
         </p>
         <LeakSwitch />
       </div>
@@ -26,10 +26,10 @@ export default function IntelScreen({ games, scope }: ModuleScreenProps) {
           <>Each card is something new that isn’t out yet: a character, an area, an event or a change to the game.</>,
           <>Everything here is <strong>unverified</strong>: it comes from leaks or the game files and can still change. The source is always shown.</>,
           <>Use the buttons above the list to show only one kind.</>,
-          <>Don’t want spoilers? Turn on <strong>Hide leaks</strong>. It also hides leaks in Banners and Calendar.</>,
+          <>Don’t want spoilers? Turn on <strong>Hide leaks</strong>. It also hides leaks in Today, Events, Calendar, Banners and the Pulls planner.</>,
         ]}
       >
-        Leak alerts (a message when a character you want leaks) will come with the evening message in Account.
+        Leak alerts (a message when a character you want leaks) aren’t built yet.
       </HowTo>
       {hideLeaks ? <IntelHidden onShow={() => setHideLeaks(false)} /> : lists ? <Intel games={shown} lists={lists} now={now} /> : <p className={n.muted}>Loading…</p>}
     </div>
