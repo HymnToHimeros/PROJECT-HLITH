@@ -27,8 +27,9 @@ doing it said `LIVE`. Newest jobs at the bottom; live jobs move to Done.
 | T33 | Blind test of LOGIC-CORE's kit understanding: Aventurine • Waveflair's best team worked out alone, plus 6 carries the owner hasn't corrected (exactly 4 members, one archetype) | LOGIC-CORE | sent | Before any T30 building. |
 | T34 | Switch: assume signature weapon + average build for characters without a saved build | LOGIC-CORE + FRAME | sent | Plan first. |
 | T35 | Target end stats per character on the character page (you vs target), each number sourced | LOGIC-CORE + FRAME | sent | Owner: LOGIC-CORE must find the basis itself. Plan first. |
-| T37 | BUG: typing in the Roster build form triggers other page elements, so the form is unusable | FRAME | sent | High priority; test for every form. |
+| T37 | BUG: typing in the Roster build form triggers other page elements, so the form is unusable | ERROR-FIX | sent | High priority; test for every form. |
 | T36 | README made attractive for public visitors | FRAME | sent | |
+| T38 | ZZZ teams: two supports doing the same job (Lucia + Pan Yinhu for Starlight Billy) scored above a complementary team (Dialyn + Lucia). Scoring must handle overlap and role coverage | LOGIC-CORE | sent | Part of T30 + blind test. |
 
 ## Done
 | # | Job | Who | Live on |
