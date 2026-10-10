@@ -130,3 +130,16 @@ Each one can be changed: tell LOGIC-CORE which.
 38. **Disorder and Attribute Anomaly buffs have no specialty limit** when the
     text sets none; the Anomaly DMG stat already keeps them from Attack and
     Rupture damage dealers.
+
+## Added with groups F and G
+39. **One Ether Veil: Delusion Reprise at a time.** Sunna, Aria and Nangong Yu
+    all give "+50 ATK" from it, and the text says re-activating it cancels the
+    existing one, so the second and third count as duplicates.
+40. **Abloom-only buffs use the Anomaly DMG stat** (there is no separate
+    Abloom stat yet), so they count for any Anomaly damage dealer, even one
+    who never triggers Abloom. Known limit.
+41. **A damage dealer gaining something from their own Quick Assist reacts to
+    it** (Ellen's Quick Charge, Zhu Yuan's Shotshell, Evelyn's Binding Seal), so
+    a teammate who gives them a Quick Assist makes a chain.
+42. **Two different skills that each give a Quick Assist are two chains**
+    (Seth), as "one chain per cause" (decision 5).

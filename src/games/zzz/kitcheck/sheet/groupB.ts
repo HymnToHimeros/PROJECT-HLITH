@@ -558,6 +558,8 @@ export const sunna: CharacterSheet = {
       tag: 'Squad: +50 ATK',
       gives: [{ stat: 'atk', amount: '+50' }],
       to: 'squad',
+      // One Ether Veil: Delusion Reprise at a time: "Re-activating Ether Veil: Delusion Reprise will cancel the existing instance".
+      noStack: 'delusion-reprise-atk',
       setup: 'Use EX Special Attack: Special Photography Technique during Angelic Chord-ination.',
     },
     {
