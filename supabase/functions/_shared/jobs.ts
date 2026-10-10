@@ -11,12 +11,14 @@
  *  - the Supabase scheduler (target 'function' / 'frame'): fixed jobs, run by the one cron job;
  *  - an external routine (target 'external'): the "find new info" jobs need reading and
  *    judgement, so a separate scheduled Claude Code routine does them and delivers what it
- *    finds to the findings-intake function (docs/ROUTINES.md). Supabase never runs these;
- *    the cadence is what the routine is expected to keep, shown in the Owner console.
+ *    finds to the findings-intake function (docs/ROUTINES.md). Supabase never runs these.
+ *    Their cadence is "self-adjusting": with each delivery the routine says when it runs each
+ *    job next (next_at), and the Owner console expects it then ("Overdue" once that has passed).
+ *    `fallbackCadence` is used only when a delivery gives no time for a job.
  *
  * status 'frame' = the slot exists but the logic is not built yet. A 'frame' target runs
  * as a no-op that records "frame only — logic not built yet" and never writes findings.
- * An external job stays 'frame' until its routine is set up and delivering.
+ * An external job is 'live' once its routine is set up and delivering.
  *
  * Cadence (all times UTC): "daily 16:10", "mon,wed,fri 06:00", "every 6h".
  * See parseCadence in scheduler.ts.
@@ -37,8 +39,10 @@ export interface JobDef {
   label: string;
   /** What it does, in plain English. */
   does: string;
-  /** Default cadence. The owner can override it per job (scheduler_jobs.cadence). */
+  /** Default cadence, or SELF_ADJUSTING for routine jobs. The owner can override it per job (scheduler_jobs.cadence). */
   cadence: string;
+  /** Self-adjusting jobs: the cadence used when a delivery gives no next time for the job. */
+  fallbackCadence?: string;
   target: JobTarget;
   /** Workstream that owns the job's logic. */
   logicOwner: string;
@@ -46,6 +50,9 @@ export interface JobDef {
   /** Longest the scheduler waits for an answer. A job only starts when this much time is left in the run. */
   maxSeconds: number;
 }
+
+/** The cadence text of jobs whose routine says when it runs next (findings-intake next_at). */
+export const SELF_ADJUSTING = 'self-adjusting';
 
 export const JOBS: readonly JobDef[] = [
   {
@@ -82,30 +89,33 @@ export const JOBS: readonly JobDef[] = [
     id: 'leaks-scan',
     label: 'Leak scan',
     does: 'Looks for new leaks (for example the new-item lists in the nanoka.cc data) and delivers each one to Findings for you to approve or dismiss.',
-    cadence: 'mon,wed,fri 06:00',
+    cadence: SELF_ADJUSTING,
+    fallbackCadence: 'mon,wed,fri 06:00',
     target: { kind: 'external' },
     logicOwner: 'DATA workstream (routine chat)',
-    status: 'frame',
+    status: 'live',
     maxSeconds: 0,
   },
   {
     id: 'events-scan',
     label: 'Events and banners scan',
     does: 'Looks for new events, banners and versions and delivers each one to Findings for you to approve or dismiss.',
-    cadence: 'mon,wed,fri 06:00',
+    cadence: SELF_ADJUSTING,
+    fallbackCadence: 'mon,wed,fri 06:00',
     target: { kind: 'external' },
     logicOwner: 'DATA workstream (routine chat)',
-    status: 'frame',
+    status: 'live',
     maxSeconds: 0,
   },
   {
     id: 'game-data-refresh',
     label: 'Game data refresh',
     does: 'After a patch, looks for new characters, items and kits and delivers each one to Findings for you to approve or dismiss.',
-    cadence: 'mon,wed,fri 06:00',
+    cadence: SELF_ADJUSTING,
+    fallbackCadence: 'mon,wed,fri 06:00',
     target: { kind: 'external' },
     logicOwner: 'DATA workstream (routine chat)',
-    status: 'frame',
+    status: 'live',
     maxSeconds: 0,
   },
 ];

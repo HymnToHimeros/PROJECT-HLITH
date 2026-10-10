@@ -10,23 +10,35 @@ import { DEDUPE_DAYS, dedupeKey, FINDING_KINDS, freshFindings, type FindingKind,
 export const INTAKE_HEADER = 'x-intake-key';
 /** The Vault secret holding that key. */
 export const INTAKE_SECRET = 'findings_intake_key';
-export const INTAKE_LIMITS = { bodyBytes: 256_000, findings: 100, title: 300, payloadChars: 8_000, sourceName: 120, url: 1_000 } as const;
+export const INTAKE_LIMITS = { bodyBytes: 256_000, findings: 100, title: 300, payloadChars: 8_000, sourceName: 120, url: 1_000, failMessage: 500, nextAtDays: 31 } as const;
 /** Keys shorter than this are refused outright (the owner makes a long random one). */
 export const MIN_KEY_LENGTH = 32;
 
 const DAY = 86_400_000;
 
-export type Intake = { ok: true; byJob: Map<string, NewFinding[]> } | { ok: false; problems: string[] };
+export type Intake =
+  | {
+      ok: true;
+      byJob: Map<string, NewFinding[]>;
+      /** Jobs whose run went wrong this time, with the routine's own words. */
+      failed: Map<string, string>;
+      /** When the routine runs each job next (ISO), from `next_at`. */
+      nextAt: Map<string, string>;
+    }
+  | { ok: false; problems: string[] };
 
 /**
- * Checks a whole delivery: { ran?: [job, …], findings: [{ job, game_id?, kind, title, payload?, source, found_at? }] }.
+ * Checks a whole delivery: { ran?: [job, …], failed?: [{ job, message }], next_at?: { job: ISO }, findings: [{ job, game_id?, kind, title, payload?, source, found_at? }] }.
  * `ran` lists jobs the routine ran this time, so a run that found nothing is still recorded.
+ * `failed` lists jobs whose run went wrong (recorded as an error run, shown red); such a job has
+ * no findings and is not in `ran` in the same delivery. `next_at` says when the routine runs each
+ * job next (self-adjusting cadence): after now, at most INTAKE_LIMITS.nextAtDays days ahead.
  * All or nothing: any problem refuses the whole batch, with every problem listed, so the
  * routine can fix and resend. Nothing is guessed or filled in.
  */
 export function readIntake(body: unknown, now: number): Intake {
   const problems: string[] = [];
-  const b = body && typeof body === 'object' ? (body as { findings?: unknown; ran?: unknown }) : {};
+  const b = body && typeof body === 'object' ? (body as { findings?: unknown; ran?: unknown; failed?: unknown; next_at?: unknown }) : {};
   const list = b.findings;
   if (!Array.isArray(list)) return { ok: false, problems: ['Send JSON: { "ran": [ … ], "findings": [ … ] }.'] };
   if (list.length > INTAKE_LIMITS.findings) return { ok: false, problems: [`At most ${INTAKE_LIMITS.findings} findings per delivery; send the rest in another.`] };
@@ -34,7 +46,43 @@ export function readIntake(body: unknown, now: number): Intake {
   if (!Array.isArray(ran) || ran.some((j) => typeof j !== 'string' || !EXTERNAL_JOB_IDS.includes(j))) {
     return { ok: false, problems: [`"ran" must list job ids from: ${EXTERNAL_JOB_IDS.join(', ')}.`] };
   }
-  if (list.length === 0 && ran.length === 0) return { ok: false, problems: ['Nothing to deliver: "findings" is empty and "ran" names no job.'] };
+  const failed = new Map<string, string>();
+  if (b.failed !== undefined) {
+    if (!Array.isArray(b.failed)) return { ok: false, problems: ['"failed" must be a list: [{ "job": …, "message": … }].'] };
+    b.failed.forEach((raw, i) => {
+      const at = `failed[${i}]`;
+      const r = raw && typeof raw === 'object' && !Array.isArray(raw) ? (raw as Record<string, unknown>) : null;
+      const job = r && typeof r.job === 'string' ? r.job : '';
+      const message = r && typeof r.message === 'string' ? r.message.trim() : '';
+      if (!EXTERNAL_JOB_IDS.includes(job)) problems.push(`${at}.job: must be one of ${EXTERNAL_JOB_IDS.join(', ')}.`);
+      else if (failed.has(job)) problems.push(`${at}.job: ${job} is listed twice.`);
+      if (!message) problems.push(`${at}.message: missing (what went wrong, in plain words).`);
+      else if (message.length > INTAKE_LIMITS.failMessage) problems.push(`${at}.message: longer than ${INTAKE_LIMITS.failMessage} characters.`);
+      if (EXTERNAL_JOB_IDS.includes(job) && message && message.length <= INTAKE_LIMITS.failMessage) failed.set(job, message);
+    });
+  }
+  const nextAt = new Map<string, string>();
+  if (b.next_at !== undefined) {
+    if (!b.next_at || typeof b.next_at !== 'object' || Array.isArray(b.next_at)) return { ok: false, problems: ['"next_at" must be an object: { "<job>": "<ISO time>" }.'] };
+    for (const [job, value] of Object.entries(b.next_at as Record<string, unknown>)) {
+      const at = `next_at.${job}`;
+      if (!EXTERNAL_JOB_IDS.includes(job)) {
+        problems.push(`${at}: not a job; use one of ${EXTERNAL_JOB_IDS.join(', ')}.`);
+        continue;
+      }
+      const t = typeof value === 'string' ? Date.parse(value) : NaN;
+      if (!Number.isFinite(t)) problems.push(`${at}: must be an ISO date-time, e.g. "2026-10-11T06:00:00Z".`);
+      else if (t <= now) problems.push(`${at}: must be in the future (when the job runs next).`);
+      else if (t > now + INTAKE_LIMITS.nextAtDays * DAY) problems.push(`${at}: more than ${INTAKE_LIMITS.nextAtDays} days ahead.`);
+      else nextAt.set(job, new Date(t).toISOString());
+    }
+  }
+  for (const job of failed.keys()) {
+    if ((ran as string[]).includes(job)) problems.push(`failed: ${job} is also in "ran"; one outcome per job per delivery.`);
+    if (list.some((f) => f && typeof f === 'object' && (f as { job?: unknown }).job === job)) problems.push(`failed: ${job} also has findings; one outcome per job per delivery.`);
+  }
+  // "Nothing to deliver" only when nothing else is wrong: a broken "failed" entry says what to fix.
+  if (!problems.length && list.length === 0 && ran.length === 0 && failed.size === 0) return { ok: false, problems: ['Nothing to deliver: "findings" is empty and neither "ran" nor "failed" names a job.'] };
 
   const byJob = new Map<string, NewFinding[]>((ran as string[]).map((j) => [j, []]));
   list.forEach((raw, i) => {
@@ -77,7 +125,7 @@ export function readIntake(body: unknown, now: number): Intake {
     const f: NewFinding = { game_id: gameId, kind: r.kind as FindingKind, title, payload, source_name: sourceName, source_url: sourceUrl || null, ...(foundAt ? { found_at: foundAt } : {}) };
     byJob.set(job, [...(byJob.get(job) ?? []), f]);
   });
-  return problems.length ? { ok: false, problems } : { ok: true, byJob };
+  return problems.length ? { ok: false, problems } : { ok: true, byJob, failed, nextAt };
 }
 
 // ── Database ─────────────────────────────────────────────────────────
@@ -137,22 +185,27 @@ export interface DeliveryDb {
 
 /**
  * Saves one checked delivery from the routine: for each job, adds its new findings,
- * records a run ("Delivered N findings") and stamps the job row with the delivery time.
+ * records a run ("Delivered N findings", or an error run with the routine's message for a
+ * failed one) and stamps the job row with the delivery time and when it is expected next:
+ * the routine's own `next_at` when given, else `nextDue` (the fallback cadence).
  */
 export async function deliver(
   db: DeliveryDb,
   byJob: Map<string, NewFinding[]>,
   now: number,
   nextDue: (jobId: string, at: number) => string | null,
-): Promise<{ job: string; delivered: number; added: number; known: number }[]> {
-  const jobs = [...byJob.keys()];
+  failed: Map<string, string> = new Map(),
+  nextAt: Map<string, string> = new Map(),
+): Promise<{ job: string; delivered: number; added: number; known: number; failed?: true }[]> {
+  const jobs = [...new Set([...byJob.keys(), ...failed.keys()])];
+  const next = (job: string) => nextAt.get(job) ?? nextDue(job, now);
   const reg = await db.from('scheduler_jobs').upsert(
     jobs.map((id) => ({ id })),
     { onConflict: 'id', ignoreDuplicates: true },
   );
   if (reg.error) throw new Error(`Registering jobs failed: ${reg.error.message}`);
   const at = new Date(now).toISOString();
-  const out: { job: string; delivered: number; added: number; known: number }[] = [];
+  const out: { job: string; delivered: number; added: number; known: number; failed?: true }[] = [];
   for (const [job, list] of byJob) {
     const { added, known } = await saveFindings(db, job, list, 'routine', now);
     const message = `Delivered ${list.length} finding${list.length === 1 ? '' : 's'}${known ? ` (${known} already known)` : ''}.`;
@@ -160,9 +213,16 @@ export async function deliver(
       .from('scheduler_runs')
       .insert([{ job_id: job, started_at: at, finished_at: at, status: 'ok', message, counts: { delivered: list.length, added, known }, started_by: 'routine' }]);
     if (run.error) throw new Error(`Recording the delivery failed: ${run.error.message}`);
-    const upd = await db.from('scheduler_jobs').update({ last_run_at: at, last_status: 'ok', last_message: message, next_due_at: nextDue(job, now) }).eq('id', job);
+    const upd = await db.from('scheduler_jobs').update({ last_run_at: at, last_status: 'ok', last_message: message, next_due_at: next(job) }).eq('id', job);
     if (upd.error) throw new Error(`Updating ${job} failed: ${upd.error.message}`);
     out.push({ job, delivered: list.length, added, known });
+  }
+  for (const [job, message] of failed) {
+    const run = await db.from('scheduler_runs').insert([{ job_id: job, started_at: at, finished_at: at, status: 'error', message, counts: {}, started_by: 'routine' }]);
+    if (run.error) throw new Error(`Recording the failed run failed: ${run.error.message}`);
+    const upd = await db.from('scheduler_jobs').update({ last_run_at: at, last_status: 'error', last_message: message, next_due_at: next(job) }).eq('id', job);
+    if (upd.error) throw new Error(`Updating ${job} failed: ${upd.error.message}`);
+    out.push({ job, delivered: 0, added: 0, known: 0, failed: true });
   }
   return out;
 }

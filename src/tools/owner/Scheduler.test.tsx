@@ -34,9 +34,10 @@ describe('Owner console · Scheduler (this device only)', () => {
     expect(within(codes).queryByRole('button', { name: 'Run now' })).toBeNull();
     const routine = screen.getByRole('region', { name: 'Run by the external routine' });
     const leaks = within(routine).getByRole('article', { name: 'Leak scan' });
-    expect(within(leaks).getByText('FRAME')).toBeInTheDocument();
+    // The routine is delivering: live, and it says itself when it runs each job next.
+    expect(within(leaks).getByText('LIVE')).toBeInTheDocument();
     expect(within(leaks).getByText('External routine')).toBeInTheDocument();
-    expect(within(leaks).getByText('Mon, Wed, Fri at 06:00 UTC')).toBeInTheDocument();
+    expect(within(leaks).getByText('Self-adjusting: the routine says when it runs next')).toBeInTheDocument();
     expect(within(leaks).queryByRole('button', { name: 'Run now' })).toBeNull();
     const log = screen.getByRole('region', { name: 'Run log' });
     expect(within(log).getByText('EXAMPLE')).toBeInTheDocument();

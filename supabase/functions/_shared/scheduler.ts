@@ -7,7 +7,7 @@
  * Database side: supabase/migrations/0005_scheduler.sql. Job list: jobs.ts.
  */
 import { isScheduler } from './backupPlan.ts';
-import { FRAME_MESSAGE, JOBS, type JobDef } from './jobs.ts';
+import { FRAME_MESSAGE, JOBS, SELF_ADJUSTING, type JobDef } from './jobs.ts';
 
 const MINUTE = 60_000;
 const HOUR = 60 * MINUTE;
@@ -88,13 +88,30 @@ export interface JobRow {
 
 /** The cadence a job runs on: the owner's override when it reads correctly, else the default. */
 export function effectiveCadence(job: JobDef, row: Pick<JobRow, 'cadence'> | undefined): { cadence: Cadence; text: string; overridden: boolean; badOverride: boolean } {
-  const fallback = parseCadence(job.cadence) ?? { kind: 'daily', minute: 0 };
+  const fallback = parseCadence(job.cadence) ?? parseCadence(job.fallbackCadence ?? '') ?? { kind: 'daily', minute: 0 };
   if (row?.cadence) {
     const own = parseCadence(row.cadence);
     if (own) return { cadence: own, text: row.cadence, overridden: true, badOverride: false };
     return { cadence: fallback, text: job.cadence, overridden: false, badOverride: true };
   }
   return { cadence: fallback, text: job.cadence, overridden: false, badOverride: false };
+}
+
+/** Does the routine say when this job runs next (findings-intake next_at)? */
+export const selfAdjusting = (job: JobDef) => job.cadence === SELF_ADJUSTING;
+
+/**
+ * When an external routine's job is expected next, and whether it is overdue: the time the
+ * routine gave with its last delivery (next_due_at); without one, the job's fallback cadence
+ * after its last delivery. Never delivered = nothing expected yet (not overdue).
+ */
+export function externalNext(job: JobDef, row: Pick<JobRow, 'cadence' | 'last_run_at'> & { next_due_at?: string | null } | undefined, now: number): { at: number | null; overdue: boolean } {
+  const given = row?.next_due_at ? Date.parse(row.next_due_at) : NaN;
+  if (Number.isFinite(given)) return { at: given, overdue: now > given };
+  const last = row?.last_run_at ? Date.parse(row.last_run_at) : NaN;
+  if (!Number.isFinite(last)) return { at: null, overdue: false };
+  const at = nextSlot(effectiveCadence(job, row).cadence, last);
+  return { at, overdue: now > at };
 }
 
 /** Jobs the Supabase scheduler runs itself (not part of another job, not an external routine). */

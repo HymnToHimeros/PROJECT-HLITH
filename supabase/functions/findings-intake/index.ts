@@ -3,7 +3,9 @@
 // It sends its own narrow key in the x-intake-key header, checked against the Vault secret
 // findings_intake_key: that key can add findings and nothing else (never the service key).
 // Request format: docs/ROUTINES.md. Checked all-or-nothing; repeats within 30 days skipped;
-// every delivery is recorded as a run of its job ("Delivered N findings").
+// every delivery is recorded as a run of its job ("Delivered N findings", or an error run with
+// the routine's message for a job it reports as failed), and the job is expected next at the
+// time the routine gives (next_at, self-adjusting), else on its fallback cadence.
 import { createClient } from 'npm:@supabase/supabase-js@2';
 import { deliver, INTAKE_HEADER, INTAKE_LIMITS, MIN_KEY_LENGTH, readIntake, type DeliveryDb } from '../_shared/findings.ts';
 import { findJob } from '../_shared/jobs.ts';
@@ -35,14 +37,14 @@ Deno.serve(async (req) => {
   const intake = readIntake(body, now);
   if (!intake.ok) return json({ error: 'Nothing saved.', problems: intake.problems }, 400);
 
-  // Expected next delivery, from the job's cadence (the owner's override is not read here: the
-  // Owner console works it out again from the row).
+  // Expected next delivery when the routine gives no next_at: the job's fallback cadence (the
+  // owner's override is not read here).
   const nextDue = (jobId: string, at: number) => {
     const job = findJob(jobId);
     return job ? new Date(nextSlot(effectiveCadence(job, undefined).cadence, at)).toISOString() : null;
   };
   try {
-    const saved = await deliver(db as unknown as DeliveryDb, intake.byJob, now, nextDue);
+    const saved = await deliver(db as unknown as DeliveryDb, intake.byJob, now, nextDue, intake.failed, intake.nextAt);
     return json({ ok: true, saved });
   } catch (e) {
     return json({ error: e instanceof Error ? e.message : 'Saving failed.' }, 500);

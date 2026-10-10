@@ -43,6 +43,8 @@ Body:
 ```json
 {
   "ran": ["leaks-scan", "events-scan"],
+  "failed": [{ "job": "game-data-refresh", "message": "nanoka.cc answered 503" }],
+  "next_at": { "leaks-scan": "2026-10-11T06:00:00Z", "events-scan": "2026-10-12T06:00:00Z", "game-data-refresh": "2026-10-11T12:00:00Z" },
   "findings": [
     {
       "job": "leaks-scan",
@@ -60,7 +62,9 @@ Body:
 | Field | Rule |
 |---|---|
 | `ran` | Optional. Job ids the routine ran this time, so a run that found nothing still shows in the log ("Delivered 0 findings"). |
-| `findings` | Up to 100 per request. May be empty when `ran` names a job. |
+| `failed` | Optional. Jobs whose run went wrong this time: `{ "job", "message" }`, message in plain words, up to 500 characters. Each is recorded as a red **error** run in Owner console → Scheduler → Run log, with the message as written. A job in `failed` is not also in `ran` and has no findings in the same delivery (one outcome per job). |
+| `next_at` | Optional. When the routine runs each job next (the cadence is self-adjusting): `{ "<job>": "<ISO time>" }`, after now and at most 31 days ahead. The Owner console shows it as "Next expected" and says **Overdue** once it has passed. A job reported without a time is expected on its fallback cadence (Mon, Wed, Fri 06:00 UTC). |
+| `findings` | Up to 100 per request. May be empty when `ran` or `failed` names a job. |
 | `job` | One of `leaks-scan`, `events-scan`, `game-data-refresh`. |
 | `game_id` | Optional. `hsr`, `zzz` … (lower-case letters, digits, `-`). Leave out for findings about no single game. |
 | `kind` | `leak`, `event`, `banner`, `character` or `info`. |
