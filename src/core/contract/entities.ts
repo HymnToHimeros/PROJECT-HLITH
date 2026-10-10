@@ -222,7 +222,19 @@ export interface CharacterBuild {
   characterId: string;
   level: number;
   dupes: number;
-  /** The weapon by name; `id` when it matches the game's list, `level` when entered. */
-  weapon?: { name: string; id?: string; level?: number };
-  gear: { slot: string; main: string; subs: Record<string, number> }[];
+  /** The weapon by name; `id` when it matches the game's list, `level` when entered. `refine`: Superimposition / Phase. */
+  weapon?: { name: string; id?: string; level?: number; refine?: number };
+  /** Each piece: its slot, main stat, sub stats (stat → value), and when known its set and how many rolls went into each sub stat (LOGIC-CORE). */
+  gear: { slot: string; main: string; subs: Record<string, number>; set?: string; rolls?: Record<string, number> }[];
+  /** Skill name → level, when entered (LOGIC-CORE). */
+  skills?: Record<string, number>;
+}
+
+/** One checked part of a build score, shown on screen with how it was worked out (LOGIC-CORE). */
+export interface BuildScorePart {
+  label: string;
+  /** 0–100; null = no data yet (not counted). */
+  value: number | null;
+  /** In plain words: what was compared and what was found. */
+  detail: string;
 }
