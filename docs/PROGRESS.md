@@ -28,6 +28,11 @@ Resume with: "continue from PROGRESS.md". Newest entry on top. Older entries:
 - CI (`.github/workflows/ci.yml`) runs both on every pull request.
 
 ## Done
+- 2026-10-10 · **MANAGER is on** (branch `manager/jobs-list`). `docs/TASKS.md` holds every
+  open owner job with who has it and its state; the owner's screenshots are in
+  `docs/owner-reports/2026-10-10/`. Owner's rule: MANAGER approves and merges every PR
+  (`docs/RELEASES.md` routine, `docs/WORKSTREAMS.md` rule 9); chats send `READY` and
+  no longer merge their own PRs.
 - 2026-10-10 · **Two more chats: MANAGER and ERROR-FIX** (branch `frame/manager-error-fix`).
   `docs/WORKSTREAMS.md`: rules 7–8, both in Who's who, a routing table (which job goes
   to which chat). `docs/briefs/MANAGER.md` (the owner's front desk: routes every

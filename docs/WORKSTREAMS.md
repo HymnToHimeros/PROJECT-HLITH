@@ -31,6 +31,11 @@ creates starts with that name, so you can always tell who made what.
    several areas, or when the live site or `main` is broken. ERROR-FIX doesn't go
    looking for work on its own.
 
+9. **MANAGER approves and merges every PR (owner, 2026-10-10).** Open your PR and
+   send `READY` as `docs/RELEASES.md` says; MANAGER checks it, merges it in order and
+   tells you when to bring `main` into your branch. Don't merge your own PR (only
+   exception: an urgent fix for a broken live site when MANAGER doesn't answer).
+
 ## Who's who
 | Name | Branches | Builds | Roadmap items |
 |---|---|---|---|

@@ -26,11 +26,12 @@ doing it said `LIVE`. Newest jobs at the bottom; live jobs move to Done.
 | T17 | Kit check / Roster teams don't explain their reasoning ("Why 90%: count 9 of 10" is a number, not a reason). Screenshot `2-recommended-teams.png` | LOGIC-CORE leads, FRAME for the screen | sent | |
 | T18 | Make my own teams (pick the members myself, get them scored) | FRAME leads, LOGIC-CORE scores | sent | FRAME: a preset editor exists in Teams; finding out why the owner can't see or use it. Shown to the owner first. |
 | T19 | HSR recommended teams make no sense (e.g. built around March 7th); mixes whatever is possible instead of real teams | LOGIC-CORE | sent | |
-| T20 | Endgame out of Events; Events is only for the events that come every patch | SCHEDULER + FRAME | waiting on owner | Asked the owner where endgame goes instead. Data is already separate, so it's a small change. |
+| T20 | Several screens are badly designed / crowded (owner: endgame may stay in Events; MANAGER to find which). MANAGER's list: Today, Events, Calendar, Backlog, Banners (see note to FRAME) | FRAME | sent | Owner left the choice of screens to MANAGER. Redesigns are shown to the owner before going live. |
 | T21 | Banners screen looks like a card picker, not a banner tracker: redesign. Screenshot `3-banners-page.webp` | FRAME | sent | Show the owner the new look before it goes live. |
 | T22 | Auto-tick dailies from HoYoLAB: remember when stamina/battery should have been full; if the next sync shows less, the stamina was spent, so tick the dailies that prove it | FRAME | sent | |
 | T23 | More themes (owner sent 8 palettes) | FRAME | sent | |
 | T24 | Tidy the GitHub repo so it looks sorted, and update the README (asked before, not done) | FRAME | sent | |
+| T25 | MANAGER approves and merges every PR (owner's rule): written into `docs/RELEASES.md`, `docs/WORKSTREAMS.md` rule 9, MANAGER brief | MANAGER | working | In PR #54. |
 
 ## Done
 | # | Job | Who | Live on |
