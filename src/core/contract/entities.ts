@@ -18,6 +18,8 @@ export interface Character {
   portrait?: string;
   /** Where this entry came from, e.g. 'nanoka.cc'. */
   source?: string;
+  /** A leaked, not yet released character: shown only when the user asks for leaks, always marked unverified. */
+  leak?: { source: string };
 }
 
 export interface Banner {
