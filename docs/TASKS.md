@@ -12,7 +12,7 @@ doing it said `LIVE`. Newest jobs at the bottom; live jobs move to Done.
 | T7 | Schedules for the research routine (leaks, events, game data) | SCHEDULER | later | Owner: a task for the end. |
 | T8 | Live checks with real logins: HoYoLAB link, in-game history link, Assistant with own key | FRAME | waiting on owner | Needs the owner to sign in and try each. |
 | T9 | Phone push keys (VAPID) so the evening message is really sent | FRAME | later | Owner: phone notifications are a task for the end. |
-| T10 | Resend for sign-in mail at scale | FRAME | waiting on owner | Explained to the owner what Resend is; probably not needed for a personal app. |
+| T10 | Resend for sign-in mail at scale | FRAME | later | Owner: a last thing to add, low importance. |
 | T11 | Finish account deletions after 30 days | FRAME | sent | Listed as "later" in PROGRESS.md. |
 | T12 | Paste fresh HoYoLAB code logins for HSR and ZZZ (Account → Connected accounts) | owner | working | Owner says HoYoLAB is set up. FRAME checks whether reads/check-ins actually succeed. |
 | T13 | ZZZ 3.3 (21 Oct): event dates, A-rank featured agents, version end date | SCHEDULER | blocked | Nothing published yet; rerun `data:nanoka` + `data:schedule` on 21 Oct. |
