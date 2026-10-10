@@ -101,6 +101,7 @@ export interface TeamResult {
   support: number;
   chains: number;
   /** Someone heals or shields the team (or is Preservation / Abundance). */
+  /** Info only (decision 32): someone heals or shields. Never scored, ranked or required. */
   sustain: boolean;
   lines: Line[];
 }
@@ -362,8 +363,11 @@ export function checkTeam(members: string[], dd: string, lib: Library, account: 
   return { members: team, dd, count, support: lines.filter((l) => l.kind === 'support').length, chains: lines.filter((l) => l.kind === 'chain').length, sustain, lines };
 }
 
-/** Which team is better: one with sustain first (an HSR team without a healer or shield doesn't last), then the higher count, then more team support, then more chains. Positive = a is better. */
-export const compare = (a: TeamResult, b: TeamResult) => Number(a.sustain) - Number(b.sustain) || a.count - b.count || a.support - b.support || a.chains - b.chains;
+/**
+ * Which team is better: the higher count, then more team support, then more chains. Positive = a is better.
+ * A team does not need a healer or shield (owner's ruling 2026-10-10, decision 32): sustain is never a rule or a tiebreak.
+ */
+export const compare = (a: TeamResult, b: TeamResult) => a.count - b.count || a.support - b.support || a.chains - b.chains;
 
 /**
  * The whole check: pick the damage dealer (or use `dd`), check, and when two can

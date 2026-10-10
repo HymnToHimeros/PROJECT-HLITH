@@ -2,7 +2,7 @@
 /** The worked examples of docs/logic/hsr-theory.md, and what the Roster builds on the check. */
 import { describe, expect, it } from 'vitest';
 import type { TeamAccount } from '../../../core/contract';
-import { check, type Line } from './check';
+import { check, compare, type Line } from './check';
 import teamsJson from '../data/teams.json';
 import type { TeamPreset } from '../../../core/contract';
 import { buildLibrary, library, SHEETS } from './library';
@@ -65,12 +65,17 @@ describe('HSR check: worked examples', () => {
     expect(r.lines.some((l) => l.kind === 'not-counted' && /already counts once/.test(l.why))).toBe(true);
   });
 
-  it('a team without a healer or shield says so, and the best team always has one', () => {
-    expect(run('Feixiao', 'Sparkle', 'Robin', 'Silver Wolf').sustain).toBe(false);
-    for (const p of recommendedTeams()) {
-      const r = run(...p.slots.map((s) => lib.names.get(s.characters[0] ?? '') ?? ''));
-      expect(r.sustain, p.name).toBe(true);
-    }
+  it('a team does not need a healer or shield (owner’s ruling, decision 32): no penalty, no label, no tiebreak', () => {
+    const team = ['Aventurine • Waveflair', 'Mortenax Blade', 'Ashveil', 'Robin • Summeretto'].map(id);
+    const v = verdict(team, own(['Aventurine • Waveflair', 'Mortenax Blade', 'Ashveil', 'Robin • Summeretto']));
+    if (!v.rated) throw new Error(v.why);
+    expect(v.label).not.toMatch(/sustain/);
+    expect(v.notes.some((n) => /sustain/i.test(n))).toBe(false);
+    const healer = check(team.slice(0, 3).concat(id('Huohuo')), lib, e0, team[0]);
+    const none = check(team, lib, e0, team[0]);
+    if (!healer.rated || !none.rated) throw new Error('not rated');
+    // Equal counts rank the same whether or not someone heals: only count, team support and chains decide.
+    expect(compare({ ...none.best, sustain: false }, { ...none.best, sustain: true })).toBe(0);
   });
 
   it('only one Trailblazer form per team', () => {
