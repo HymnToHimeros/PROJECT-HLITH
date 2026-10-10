@@ -61,6 +61,15 @@ function allowedFor(teams: TeamPreset[]): Map<string, Set<string>> {
   return out;
 }
 
+function ownTeamsOf(teams: TeamPreset[]): Library['ownTeams'] {
+  const out: Library['ownTeams'] = new Map();
+  for (const t of teams) {
+    const page = pageOf(t);
+    if (page) out.set(page, [...(out.get(page) ?? []), { id: t.id, slots: t.slots.map((s) => s.characters) }]);
+  }
+  return out;
+}
+
 function pairs(teams: TeamPreset[]): Map<string, Set<string>> {
   const out = new Map<string, Set<string>>();
   for (const t of teams) {
@@ -94,6 +103,7 @@ export function buildLibrary(sheets: CharacterSheet[] = SHEETS, kitList: Kit[] =
     centres: new Set(own.map((t) => pageOf(t)).filter((x): x is string => !!x)),
     pairedWith: pairs(own),
     allowed: allowedFor(own),
+    ownTeams: ownTeamsOf(own),
     profiles: new Map(characters.map((c) => [c.id, { characterId: c.id, path: c.role as Path, element: c.element as Element } satisfies Profile])),
     sheets: new Map(sheets.map((s) => [s.characterId, s])),
     unlocks: new Map(

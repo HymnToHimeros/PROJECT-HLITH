@@ -3,7 +3,7 @@
  * should be picked"): for each slot, in the game's own order, the first listed character you own, never one twice.
  * A slot with none of yours shows its first pick. Game-free: each game hands over its own "may join" rule.
  */
-import type { TeamPreset } from '../contract';
+import type { TeamAccount, TeamPreset } from '../contract';
 
 export function fillTeam(preset: TeamPreset, owned: (id: string) => boolean, mayJoin: (team: string[], id: string) => boolean = () => true): string[] {
   const team: string[] = [];
@@ -13,4 +13,10 @@ export function fillTeam(preset: TeamPreset, owned: (id: string) => boolean, may
     if (pick) team.push(pick);
   }
   return team;
+}
+
+/** A game team with the owner's own slot lists where they edited them (hsr-decisions 31; both games). */
+export function withOwnerLists(preset: TeamPreset, account: TeamAccount): TeamPreset {
+  const l = account.teamList?.(preset.id);
+  return l && l.some((slot) => slot.length) ? { ...preset, slots: preset.slots.map((s, i) => (l[i]?.length ? { ...s, characters: l[i] } : s)) } : preset;
 }

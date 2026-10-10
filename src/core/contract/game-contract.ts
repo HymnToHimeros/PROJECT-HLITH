@@ -263,6 +263,13 @@ export interface TeamAccount {
   weapon?: (id: string) => { id?: string; name: string; refine?: number } | undefined;
   /** The character's saved build (owned characters only): team rules read which stats it is built for (T18). */
   build?: (id: string) => CharacterBuild | undefined;
+  /**
+   * The owner's own slot lists for one of the game's teams (preset id), in the order the card shows the slots;
+   * undefined = the game's lists. Team rules use them for who can join that carry and for `fill` (LOGIC-CORE).
+   */
+  teamList?: (presetId: string) => string[][] | undefined;
+  /** Characters the owner hid (the unpicked Trailblazer, FRAME's protagonist setting): never used in any team (LOGIC-CORE). */
+  skip?: (id: string) => boolean;
 }
 
 /** One reason behind a team score. */

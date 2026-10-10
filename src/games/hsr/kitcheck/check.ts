@@ -33,6 +33,8 @@ export interface Library {
    * tries for that carry (decision 30); a carry without one falls back to the pairing rule.
    */
   allowed: Map<string, Set<string>>;
+  /** Each carry's own game teams (preset id and slot lists), for the owner's edited lists (decision 31). */
+  ownTeams: Map<string, { id: string; slots: string[][] }[]>;
   /**
    * Every Light Cone the check can read (T18 step 4): its path, its entries (piece `weapon:<id>`) and its label.
    * A signature's entries come from its character's sheet; `madeFor` marks it (that character reads it as a kit piece).
@@ -69,6 +71,8 @@ export interface Account {
   buildFit?: (id: string, stat: BuildStat) => BuildFit | undefined;
   /** Assume every member is built for what the team wants: the best team found (decision 26). */
   ideal?: boolean;
+  /** The owner's own slot lists for a game team (preset id), when edited (decision 31). */
+  teamList?: (presetId: string) => string[][] | undefined;
 }
 
 export type Status = 'on' | 'off' | 'locked' | 'unknown' | 'replaced';
@@ -125,10 +129,11 @@ export const isCentre = (id: string, lib: Library) => canCarry(id, lib) && (lib.
  * Can this character be a partner on a team built around `dd`? Anyone who isn't a centre themself; another
  * centre only when the game's own teams put the two together (Saber with Gilgamesh, Mortenax Blade with Rin).
  */
-export const canPartner = (id: string, dd: string, lib: Library) => {
-  // A carry with its own game team only gets teammates that team lists (no mix-matching, owner's report 2026-10-10).
-  const allowed = lib.allowed.get(dd);
-  if (allowed) return allowed.has(id);
+export const canPartner = (id: string, dd: string, lib: Library, account?: Account) => {
+  // A carry with its own game team only gets teammates that team lists (no mix-matching, owner's report 2026-10-10);
+  // where the owner edited a team's slot lists, theirs count instead (decision 31).
+  const own = lib.ownTeams.get(dd);
+  if (own?.length) return own.some((t) => (account?.teamList?.(t.id) ?? t.slots).some((slot) => slot.includes(id)));
   return !isCentre(id, lib) || lib.centres.size === 0 || !!lib.pairedWith.get(dd)?.has(id);
 };
 
