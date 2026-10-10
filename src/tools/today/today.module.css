@@ -416,3 +416,31 @@
   flex-wrap: wrap;
   gap: 8px;
 }
+
+/* Live stamina: the tile, then one short line under it (reading, or the reason it failed). */
+.liveTile {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-1, 4px);
+}
+.liveTile > div:first-child {
+  flex: 1;
+}
+.liveNote {
+  font-size: 12px;
+  color: var(--ink-4);
+}
+.liveError {
+  font-size: 12px;
+  color: var(--ink-2);
+}
+.liveRetry {
+  min-height: var(--tap-min);
+  padding: 0 10px;
+  border-radius: var(--r-button);
+  border: 1px solid var(--line-mid);
+  background: var(--bg-raised);
+  color: var(--ink-1);
+  font: inherit;
+  cursor: pointer;
+}

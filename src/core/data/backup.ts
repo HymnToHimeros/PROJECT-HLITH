@@ -28,8 +28,9 @@ function otherKeys(): Record<string, string> {
   try {
     for (let i = 0; i < localStorage.length; i++) {
       const k = localStorage.key(i);
-      // hlith.secret.* (logins remembered on this device) never go into a backup file.
-      if (!k || !k.startsWith('hlith.') || k.startsWith('hlith.secret.') || k === PREFS_KEY || k === DATA_KEY) continue;
+      // hlith.secret.* (logins remembered on this device) never go into a backup file;
+      // hlith.cache.* (e.g. the last live stamina read) is only a short-lived copy.
+      if (!k || !k.startsWith('hlith.') || k.startsWith('hlith.secret.') || k.startsWith('hlith.cache.') || k === PREFS_KEY || k === DATA_KEY) continue;
       const v = localStorage.getItem(k);
       if (v !== null) out[k] = v;
     }

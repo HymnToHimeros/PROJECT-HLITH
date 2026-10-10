@@ -7,6 +7,7 @@ import { formatNumber } from '../../core/time/format';
 import { formatTime, nextDailyReset, nextWeeklyReset, serverRule } from '../../core/time/reset';
 import { BannerCard, CurrencyChip, ExampleNotice, ExampleTag, GameTag, HowTo, StatTile, Timer, UnverifiedTag } from '../../core/ui';
 import { cx } from '../../core/ui/cx';
+import { clock, fullInText, projectStamina, type LiveStamina } from '../account-links/liveStamina';
 import { pullsFor } from '../budget/budget';
 import { AddOwnButton, examplesFor } from './AddOwn';
 import type { GameLists } from './lists';
@@ -30,6 +31,10 @@ export interface TodayProps {
   openAccount: () => void;
   /** Open the server picker for one game (falls back to the Account panel). */
   openServer?: ((game: GameId) => void) | undefined;
+  /** Live stamina per game (main pool), read from a linked HoYoLAB account. Absent = no link. */
+  stamina?: Record<GameId, LiveStamina> | undefined;
+  /** Read one game's stamina again now. */
+  retryStamina?: ((game: GameId) => void) | undefined;
 }
 
 interface GameToday {
@@ -47,7 +52,7 @@ interface GameToday {
  * server and currency chips; Open tasks; Live banners; Coming up. Plus Tonight's
  * run and the Wishlist (Override 5: no design yet, built from the same parts).
  */
-export function Today({ games, servers, lists, user, now, open, openAccount, openServer }: TodayProps) {
+export function Today({ games, servers, lists, user, now, open, openAccount, openServer, stamina, retryStamina }: TodayProps) {
   const tags = games.length > 1;
   const prefs = usePrefs();
   const showExamples = useExamplesShown();
@@ -84,7 +89,17 @@ export function Today({ games, servers, lists, user, now, open, openAccount, ope
 
       <div className={t.tiles}>
         {days.map((d) => (
-          <Tiles key={d.game.id} day={d} tags={tags} now={now} open={open} chooseServer={() => chooseServer(d.game.id)} openAccount={openAccount} />
+          <Tiles
+            key={d.game.id}
+            day={d}
+            tags={tags}
+            now={now}
+            open={open}
+            chooseServer={() => chooseServer(d.game.id)}
+            openAccount={openAccount}
+            live={stamina?.[d.game.id] ?? { state: 'none' }}
+            retry={() => retryStamina?.(d.game.id)}
+          />
         ))}
       </div>
 
@@ -119,7 +134,7 @@ export function Today({ games, servers, lists, user, now, open, openAccount, ope
           'Tap the Server chip and pick the server you play on. Resets, ticks and tonight’s order all follow it.',
           'Tick a task in Open tasks when you’ve done it. Ticks clear by themselves at your server’s next reset.',
           'Tonight’s run lists what’s left, whatever runs out first at the top.',
-          'Pulls available comes from your Bank log (Pulls → Bank log). Stamina needs a live game link, so it says No data yet until then.',
+          'Pulls available comes from your Bank log (Pulls → Bank log). Stamina is read from HoYoLAB when an account is linked (Account → Connected accounts); until then it says No data yet.',
           'Mark characters as wanted in Roster: the Wishlist shows every banner they appear on.',
         ]}
       />
@@ -127,7 +142,25 @@ export function Today({ games, servers, lists, user, now, open, openAccount, ope
   );
 }
 
-function Tiles({ day, tags, now, open, chooseServer, openAccount }: { day: GameToday; tags: boolean; now: number; open: TodayProps['open']; chooseServer: () => void; openAccount: () => void }) {
+function Tiles({
+  day,
+  tags,
+  now,
+  open,
+  chooseServer,
+  openAccount,
+  live,
+  retry,
+}: {
+  day: GameToday;
+  tags: boolean;
+  now: number;
+  open: TodayProps['open'];
+  chooseServer: () => void;
+  openAccount: () => void;
+  live: LiveStamina;
+  retry: () => void;
+}) {
   const { game, serverId } = day;
   const tag = tags ? { label: game.short, vent: game.vent } : undefined;
   const server = game.servers.find((s) => s.id === serverId);
@@ -171,11 +204,76 @@ function Tiles({ day, tags, now, open, chooseServer, openAccount }: { day: GameT
           onFix={() => open('pulls', 'log')}
         />
       )}
-      {game.stamina.map((pool) => (
-        // Live stamina needs a game-account link (HoYoLAB, being built); until then it is honestly unknown.
-        <StatTile key={pool.id} label={pool.name} tag={tag} value={unknown('connect-account')} onFix={openAccount} />
-      ))}
+      {game.stamina.map((pool, i) =>
+        // HoYoLAB reports the main pool only; any other pool stays honestly unknown.
+        i === 0 ? (
+          <StaminaTile key={pool.id} label={pool.name} tag={tag} pool={pool} live={live} now={now} retry={retry} openAccount={openAccount} />
+        ) : (
+          <StatTile key={pool.id} label={pool.name} tag={tag} value={unknown('connect-account')} onFix={openAccount} />
+        ),
+      )}
     </>
+  );
+}
+
+/**
+ * The main stamina pool, live from HoYoLAB: "182/240", "Full in 5 h 47 min",
+ * and when it was read. Counted forward between reads only when the game record's
+ * rate agrees with HoYoLAB (liveStamina.ts). An error shows its reason and a retry.
+ */
+function StaminaTile({
+  label,
+  tag,
+  pool,
+  live,
+  now,
+  retry,
+  openAccount,
+}: {
+  label: string;
+  tag: { label: string; vent: string } | undefined;
+  pool: GameContract['stamina'][number];
+  live: LiveStamina;
+  now: number;
+  retry: () => void;
+  openAccount: () => void;
+}) {
+  if (live.state === 'none') return <StatTile label={label} tag={tag} value={unknown('connect-account')} onFix={openAccount} />;
+  if (live.state === 'loading')
+    return (
+      <div className={t.liveTile}>
+        <StatTile label={label} tag={tag} value={unknown()} />
+        <span className={t.liveNote} role="status">
+          Reading from HoYoLAB…
+        </span>
+      </div>
+    );
+  const reading = live.reading;
+  // After a failed re-read the last answer is shown as it was, not counted forward.
+  const p = reading ? (live.state === 'ok' ? projectStamina(reading, pool, now) : projectStamina(reading, undefined, Date.parse(reading.readAt))) : null;
+  const full = p ? fullInText(p.fullInSeconds) : null;
+  const when = reading ? clock(reading.readAt) : '';
+  const caption = p && reading ? [full, p.projected ? `counted on from HoYoLAB’s read at ${when}` : `as of ${when} (HoYoLAB)`].filter(Boolean).join(' · ') : undefined;
+  return (
+    <div className={t.liveTile}>
+      <StatTile
+        label={label}
+        tag={tag}
+        value={p && reading ? known(`${formatNumber(p.value)}/${formatNumber(p.max)}`, 'hoyolab', reading.readAt) : unknown()}
+        {...(p ? { progress: p.value / Math.max(1, p.max) } : {})}
+        {...(caption ? { caption } : {})}
+      />
+      {live.state === 'ok' && live.refreshing && <span className={t.liveNote}>Reading again…</span>}
+      {live.state === 'error' && (
+        <span className={t.liveError} role="alert">
+          {reading ? 'Couldn’t read it again: ' : 'Couldn’t read it: '}
+          {live.text}{' '}
+          <button type="button" className={t.liveRetry} onClick={retry}>
+            Try again
+          </button>
+        </span>
+      )}
+    </div>
   );
 }
 
