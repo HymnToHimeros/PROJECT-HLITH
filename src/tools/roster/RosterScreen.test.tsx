@@ -363,6 +363,16 @@ describe('Roster screen', () => {
     expect(within(page).getAllByText('fire damage').length).toBeGreaterThan(0);
   });
 
+  it('Kit check names its source and says when a kit has not been read yet', async () => {
+    const base = makeGame(true);
+    const unread: Kit[] = [{ characterId: 'c1', source: 'nanoka.cc', version: '3.3.4+19304006', beta: true, skills: [{ id: 'core', label: 'Core Passive: Glow', does: [], gameText: 'Glows.' }] }];
+    await show('characters', { ...base, data: { ...base.data, kits: async () => unread } });
+    const page = await openPage('Newest Star');
+    expect(await within(page).findByText(/Game text from nanoka\.cc \(game data 3\.3\.4\)\./)).toBeInTheDocument();
+    expect(within(page).getByText(/Not released yet: the text can still change\./)).toBeInTheDocument();
+    expect(within(page).getByText(/Not read yet: what each skill does is added next\./)).toBeInTheDocument();
+  });
+
   it('Kit check also opens from a team in Teams', async () => {
     await show('teams', makeGame(true));
     fireEvent.click(screen.getByRole('button', { name: 'Kit check' }));

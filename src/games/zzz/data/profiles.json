@@ -1,0 +1,436 @@
+[
+  {
+    "characterId": "1011",
+    "specialty": "stun",
+    "attribute": "electric",
+    "faction": "Cunning Hares",
+    "assistType": "defensive"
+  },
+  {
+    "characterId": "1021",
+    "specialty": "attack",
+    "attribute": "physical",
+    "faction": "Cunning Hares",
+    "assistType": "defensive"
+  },
+  {
+    "characterId": "1031",
+    "specialty": "support",
+    "attribute": "ether",
+    "faction": "Cunning Hares",
+    "assistType": "defensive"
+  },
+  {
+    "characterId": "1041",
+    "specialty": "attack",
+    "attribute": "fire",
+    "faction": "New Eridu Defense Force",
+    "assistType": "defensive"
+  },
+  {
+    "characterId": "1051",
+    "specialty": "rupture",
+    "attribute": "ice",
+    "faction": "Spook Shack",
+    "assistType": "defensive"
+  },
+  {
+    "characterId": "1061",
+    "specialty": "attack",
+    "attribute": "physical",
+    "faction": "Victoria Housekeeping Co.",
+    "assistType": "defensive"
+  },
+  {
+    "characterId": "1071",
+    "specialty": "defense",
+    "attribute": "physical",
+    "faction": "Sons of Calydon",
+    "assistType": "defensive"
+  },
+  {
+    "characterId": "1081",
+    "specialty": "attack",
+    "attribute": "physical",
+    "faction": "Cunning Hares",
+    "assistType": "evasive"
+  },
+  {
+    "characterId": "1091",
+    "specialty": "anomaly",
+    "attribute": "ice",
+    "faction": "Hollow Special Operations Section 6",
+    "assistType": "defensive"
+  },
+  {
+    "characterId": "1101",
+    "specialty": "stun",
+    "attribute": "fire",
+    "faction": "Belobog Heavy Industries",
+    "assistType": "defensive"
+  },
+  {
+    "characterId": "1111",
+    "specialty": "attack",
+    "attribute": "electric",
+    "faction": "Belobog Heavy Industries",
+    "assistType": "defensive"
+  },
+  {
+    "characterId": "1121",
+    "specialty": "defense",
+    "attribute": "fire",
+    "faction": "Belobog Heavy Industries",
+    "assistType": "defensive"
+  },
+  {
+    "characterId": "1131",
+    "specialty": "support",
+    "attribute": "ice",
+    "faction": "Hollow Special Operations Section 6",
+    "assistType": "defensive"
+  },
+  {
+    "characterId": "1141",
+    "specialty": "stun",
+    "attribute": "ice",
+    "faction": "Victoria Housekeeping Co.",
+    "assistType": "defensive"
+  },
+  {
+    "characterId": "1151",
+    "specialty": "support",
+    "attribute": "fire",
+    "faction": "Sons of Calydon",
+    "assistType": "defensive"
+  },
+  {
+    "characterId": "1161",
+    "specialty": "stun",
+    "attribute": "fire",
+    "faction": "Sons of Calydon",
+    "assistType": "defensive"
+  },
+  {
+    "characterId": "1171",
+    "specialty": "anomaly",
+    "attribute": "fire",
+    "faction": "Sons of Calydon",
+    "assistType": "defensive"
+  },
+  {
+    "characterId": "1181",
+    "specialty": "anomaly",
+    "attribute": "electric",
+    "faction": "Belobog Heavy Industries",
+    "assistType": "evasive"
+  },
+  {
+    "characterId": "1191",
+    "specialty": "attack",
+    "attribute": "ice",
+    "faction": "Victoria Housekeeping Co.",
+    "assistType": "defensive"
+  },
+  {
+    "characterId": "1201",
+    "specialty": "attack",
+    "attribute": "electric",
+    "faction": "Hollow Special Operations Section 6",
+    "assistType": "defensive"
+  },
+  {
+    "characterId": "1211",
+    "specialty": "support",
+    "attribute": "electric",
+    "faction": "Victoria Housekeeping Co.",
+    "assistType": "evasive"
+  },
+  {
+    "characterId": "1221",
+    "specialty": "anomaly",
+    "attribute": "electric",
+    "faction": "Hollow Special Operations Section 6",
+    "assistType": "defensive"
+  },
+  {
+    "characterId": "1241",
+    "specialty": "attack",
+    "attribute": "ether",
+    "faction": "New Eridu Public Security",
+    "assistType": "evasive"
+  },
+  {
+    "characterId": "1251",
+    "specialty": "stun",
+    "attribute": "electric",
+    "faction": "New Eridu Public Security",
+    "assistType": "defensive"
+  },
+  {
+    "characterId": "1261",
+    "specialty": "anomaly",
+    "attribute": "physical",
+    "faction": "New Eridu Public Security",
+    "assistType": "defensive"
+  },
+  {
+    "characterId": "1271",
+    "specialty": "defense",
+    "attribute": "electric",
+    "faction": "New Eridu Public Security",
+    "assistType": "defensive"
+  },
+  {
+    "characterId": "1281",
+    "specialty": "anomaly",
+    "attribute": "physical",
+    "faction": "Sons of Calydon",
+    "assistType": "defensive"
+  },
+  {
+    "characterId": "1291",
+    "specialty": "attack",
+    "attribute": "ice",
+    "faction": "Mockingbird",
+    "assistType": "defensive"
+  },
+  {
+    "characterId": "1301",
+    "specialty": "attack",
+    "attribute": "fire",
+    "faction": "New Eridu Defense Force",
+    "assistType": "defensive"
+  },
+  {
+    "characterId": "1311",
+    "specialty": "support",
+    "attribute": "ether",
+    "faction": "Stars of Lyra",
+    "assistType": "evasive"
+  },
+  {
+    "characterId": "1321",
+    "specialty": "attack",
+    "attribute": "fire",
+    "faction": "Stars of Lyra",
+    "assistType": "defensive"
+  },
+  {
+    "characterId": "1331",
+    "specialty": "anomaly",
+    "attribute": "ether",
+    "faction": "Mockingbird",
+    "assistType": "defensive"
+  },
+  {
+    "characterId": "1341",
+    "specialty": "defense",
+    "attribute": "ice",
+    "faction": "Krampus Compliance Authority",
+    "assistType": "defensive"
+  },
+  {
+    "characterId": "1351",
+    "specialty": "stun",
+    "attribute": "physical",
+    "faction": "Sons of Calydon",
+    "assistType": "evasive"
+  },
+  {
+    "characterId": "1361",
+    "specialty": "stun",
+    "attribute": "electric",
+    "faction": "New Eridu Defense Force",
+    "assistType": "defensive"
+  },
+  {
+    "characterId": "1371",
+    "specialty": "rupture",
+    "attribute": "ether",
+    "faction": "Yunkui Summit",
+    "assistType": "defensive"
+  },
+  {
+    "characterId": "1381",
+    "specialty": "attack",
+    "attribute": "electric",
+    "faction": "New Eridu Defense Force",
+    "assistType": "defensive"
+  },
+  {
+    "characterId": "1391",
+    "specialty": "stun",
+    "attribute": "fire",
+    "faction": "Yunkui Summit",
+    "assistType": "defensive"
+  },
+  {
+    "characterId": "1401",
+    "specialty": "anomaly",
+    "attribute": "physical",
+    "faction": "Spook Shack",
+    "assistType": "defensive"
+  },
+  {
+    "characterId": "1411",
+    "specialty": "support",
+    "attribute": "physical",
+    "faction": "Spook Shack",
+    "assistType": "defensive"
+  },
+  {
+    "characterId": "1421",
+    "specialty": "defense",
+    "attribute": "physical",
+    "faction": "Yunkui Summit",
+    "assistType": "defensive"
+  },
+  {
+    "characterId": "1431",
+    "specialty": "attack",
+    "attribute": "physical",
+    "faction": "Yunkui Summit",
+    "assistType": "defensive"
+  },
+  {
+    "characterId": "1441",
+    "specialty": "rupture",
+    "attribute": "fire",
+    "faction": "Spook Shack",
+    "assistType": "defensive"
+  },
+  {
+    "characterId": "1451",
+    "specialty": "support",
+    "attribute": "ether",
+    "faction": "Spook Shack",
+    "assistType": "defensive"
+  },
+  {
+    "characterId": "1461",
+    "specialty": "attack",
+    "attribute": "electric",
+    "faction": "New Eridu Defense Force",
+    "assistType": "defensive"
+  },
+  {
+    "characterId": "1471",
+    "specialty": "rupture",
+    "attribute": "fire",
+    "faction": "Krampus Compliance Authority",
+    "assistType": "defensive"
+  },
+  {
+    "characterId": "1481",
+    "specialty": "stun",
+    "attribute": "physical",
+    "faction": "Krampus Compliance Authority",
+    "assistType": "defensive"
+  },
+  {
+    "characterId": "1491",
+    "specialty": "support",
+    "attribute": "physical",
+    "faction": "Angels of Delusion",
+    "assistType": "defensive"
+  },
+  {
+    "characterId": "1501",
+    "specialty": "anomaly",
+    "attribute": "ether",
+    "faction": "Angels of Delusion",
+    "assistType": "defensive"
+  },
+  {
+    "characterId": "1511",
+    "specialty": "stun",
+    "attribute": "ether",
+    "faction": "Angels of Delusion",
+    "assistType": "defensive"
+  },
+  {
+    "characterId": "1521",
+    "specialty": "attack",
+    "attribute": "electric",
+    "faction": "New Eridu Public Security",
+    "assistType": "defensive"
+  },
+  {
+    "characterId": "1531",
+    "specialty": "rupture",
+    "attribute": "physical",
+    "faction": "Cunning Hares",
+    "assistType": "defensive"
+  },
+  {
+    "characterId": "1541",
+    "specialty": "anomaly",
+    "attribute": "ice",
+    "faction": "Krampus Compliance Authority",
+    "assistType": "defensive"
+  },
+  {
+    "characterId": "1551",
+    "specialty": "attack",
+    "attribute": "ether",
+    "faction": "Phaethon",
+    "assistType": "defensive"
+  },
+  {
+    "characterId": "1561",
+    "specialty": "anomaly",
+    "attribute": "windbite",
+    "faction": "Roscaelifer",
+    "assistType": "defensive"
+  },
+  {
+    "characterId": "1571",
+    "specialty": "stun",
+    "attribute": "fire",
+    "faction": "Roscaelifer",
+    "assistType": "defensive"
+  },
+  {
+    "characterId": "1581",
+    "specialty": "anomaly",
+    "attribute": "lumiflux",
+    "faction": "Covenant of Dayat",
+    "assistType": "defensive"
+  },
+  {
+    "characterId": "1591",
+    "specialty": "attack",
+    "attribute": "ice",
+    "faction": "Roscaelifer",
+    "assistType": "defensive"
+  },
+  {
+    "characterId": "1611",
+    "specialty": "armorer",
+    "attribute": "electric",
+    "faction": "Roscaelifer",
+    "assistType": "defensive"
+  },
+  {
+    "characterId": "1621",
+    "specialty": "stun",
+    "attribute": "windbite",
+    "faction": "Roscaelifer",
+    "assistType": "defensive"
+  },
+  {
+    "characterId": "1631",
+    "specialty": "attack",
+    "attribute": "windbite",
+    "faction": "New Eridu Public Security",
+    "assistType": "defensive"
+  },
+  {
+    "characterId": "1641",
+    "specialty": "anomaly",
+    "attribute": "fire",
+    "faction": "Krampus Compliance Authority",
+    "assistType": "defensive"
+  }
+]
