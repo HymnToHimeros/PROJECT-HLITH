@@ -29,6 +29,12 @@ Resume with: "continue from PROGRESS.md". Newest entry on top. Older entries:
 - CI (`.github/workflows/ci.yml`) runs both on every pull request.
 
 ## Done
+- 2026-10-10 · **SCHEDULER: the research routine's instructions and key moments** (branch
+  `scheduler/research-routine`, T6/T7 step 4a). `npm run schedule:due -- --key` gives the
+  routine's next key moment (patch day, expected program announcement and pre-download
+  notice, new banners, first quiet-middle check; both games share a run within 12 hours).
+  docs/ROUTINES.md has the routine's full instructions and the current "what runs where".
+  Next: FRAME adds the `research-routine` job (4b); triggers after MANAGER's go (4c).
 - 2026-10-10 · **SCHEDULER: the automatic data refresh** (branch `scheduler/auto-refresh`, T6/T7 step 3).
   `.github/workflows/data-refresh.yml` asks `schedule:due` every 2 hours; when a check
   is due it re-imports leaks and characters, all kits (leak kits included), versions,

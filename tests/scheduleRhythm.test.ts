@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { dueNow, expectedOffset, nextCheck, planChecks, type Plan, type SignalLog } from '../scripts/schedule/rhythm.ts';
+import { dueNow, expectedOffset, keyMoments, nextCheck, planChecks, type Plan, type SignalLog } from '../scripts/schedule/rhythm.ts';
 
 const DAY = 86_400_000;
 const hsr46 = { id: '4.6', start: '2026-09-27T22:00:00.000Z', end: '2026-11-10T22:00:00.000Z' };
@@ -64,5 +64,15 @@ describe('when to look for news', () => {
     expect(dueNow(plans, Date.parse('2026-10-19T06:00:00Z'), 2 * 3_600_000).map((d) => d.slot.at)).toEqual(['2026-10-19T05:06:00.000Z']);
     expect(dueNow(plans, Date.parse('2026-10-19T08:00:00Z'), 2 * 3_600_000)).toEqual([]);
     expect(nextCheck(plans, Date.parse('2026-10-19T08:00:00Z'))?.slot.at).toBe('2026-10-19T10:30:00.000Z');
+  });
+
+  it('key moments for the research routine: one run when both games meet within 12 hours', () => {
+    const plans = [planChecks('hsr', [hsr46], hsrLog, NOW, 21, ['2026-10-21T04:00:00.000Z']), planChecks('zzz', [zzz32], zzzLog, NOW, 21, ['2026-10-21T03:00:00.000Z'])].filter((p): p is Plan => Boolean(p));
+    expect(keyMoments(plans, NOW)).toEqual([
+      { at: '2026-10-14T10:30:00.000Z', why: ['HSR 4.6 middle: every 3 days'] },
+      { at: '2026-10-19T05:06:00.000Z', why: ['ZZZ pre-download notice expected'] },
+      { at: '2026-10-21T05:00:00.000Z', why: ['ZZZ 3.3 patch day: maintenance over', 'ZZZ new banners start', 'HSR new banners start'] },
+      { at: '2026-10-26T11:00:00.000Z', why: ['HSR next patch 2026-11-10: daily', 'HSR special program announcement expected'] },
+    ]);
   });
 });

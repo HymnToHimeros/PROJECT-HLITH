@@ -8,12 +8,14 @@
  *   node scripts/schedule-due.ts                  due in the last 2 hours? + the next check
  *   node scripts/schedule-due.ts --plan 21        every check of the next 21 days
  *   node scripts/schedule-due.ts --now 2026-10-19T05:30:00Z --window 3h
+ *   node scripts/schedule-due.ts --key            the research routine's next key moment
  *
  * Prints `due=true|false` and `next=<ISO>`; in a GitHub Action both also go to $GITHUB_OUTPUT.
+ * With --key also `next_key=<ISO>` and the key moments of the next 3 weeks (keyMoments in rhythm.ts).
  */
 import { appendFileSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
-import { dueNow, nextCheck, planChecks, type Plan, type SignalLog, type VersionSpan } from './schedule/rhythm.ts';
+import { dueNow, keyMoments, nextCheck, planChecks, type Plan, type SignalLog, type VersionSpan } from './schedule/rhythm.ts';
 
 const ROOT = resolve(import.meta.dirname, '..');
 const GAMES = ['hsr', 'zzz'];
@@ -28,6 +30,7 @@ const read = <T>(path: string): T => JSON.parse(readFileSync(resolve(ROOT, path)
 const now = arg('now') ? Date.parse(arg('now') ?? '') : Date.now();
 const windowMs = Number(/^(\d+(?:\.\d+)?)h$/.exec(arg('window') ?? '2h')?.[1] ?? 2) * HOUR;
 const planDays = arg('plan') ? Number(arg('plan')) : undefined;
+const key = process.argv.includes('--key');
 if (Number.isNaN(now) || Number.isNaN(windowMs)) throw new Error('Bad --now or --window.');
 
 const rhythm = read<Record<string, SignalLog>>('scripts/schedule/rhythm.json');
@@ -52,3 +55,9 @@ console.log(`due=${due.length > 0}`);
 for (const d of due) console.log(`  ${d.game} ${d.slot.at}: ${d.slot.why.join('; ')}`);
 console.log(`next=${next?.slot.at ?? ''}`);
 if (process.env.GITHUB_OUTPUT) appendFileSync(process.env.GITHUB_OUTPUT, `due=${due.length > 0}\nnext=${next?.slot.at ?? ''}\ngames=${[...new Set(due.map((d) => d.game))].join(',')}\n`);
+
+if (key) {
+  const moments = keyMoments(plans, now).filter((k) => Date.parse(k.at) < now + 21 * 24 * HOUR);
+  for (const k of moments) console.log(`  key ${k.at.slice(0, 16).replace('T', ' ')} UTC  ${k.why.join('; ')}`);
+  console.log(`next_key=${moments[0]?.at ?? ''}`);
+}
