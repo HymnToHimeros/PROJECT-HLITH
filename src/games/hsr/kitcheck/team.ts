@@ -8,7 +8,7 @@ import { BUILD_STAT_WORD, buildFit } from '../../../core/rules/buildFit';
 import { GEAR_SLOTS } from '../gear';
 import { canCarry, canPartner, check, compare, damageDealers, isCentre, labelOf, type Account, type Library, type Line, type TeamResult } from './check';
 import { isOwnTeam, library, pageOf } from './library';
-import { fillTeam, withOwnerLists } from '../../../core/rules/fillTeam';
+import { bestFill, withOwnerLists } from '../../../core/rules/fillTeam';
 import { accountNotes, type AccountFacts } from '../../../core/rules/accountNotes';
 import { SIGNATURE_PIECE } from '../../../core/rules/signatureWeapons';
 import { assumedLine, assumedWords } from '../../../core/rules/averageBuild';
@@ -352,7 +352,15 @@ export function ifYouPull(id: string, a: TeamAccount, lib: Library = library()):
 
 export const hsrTeamRules: TeamRules = {
   method: METHOD,
-  fill: (p, a) => fillTeam(withOwnerLists(p, a), a.owned, (team, id) => !a.skip?.(id) && fits([...team, id])),
+  // T40: the better unit is picked for each slot, by the kit value My teams scores with (same account, same check).
+  fill: (p, a) => {
+    const lib = library();
+    const account = toAccount(assume(a));
+    return bestFill(withOwnerLists(p, a), a, (team, id) => !a.skip?.(id) && fits([...team, id]), (team, dd) => {
+      const out = check(team, lib, account, dd ?? leadOf(team, lib));
+      return out.rated ? { value: out.best.value, dd: out.best.dd } : undefined;
+    });
+  },
   rated: (id) => library().sheets.has(id),
   // T34: the owner's "assume signature + average build" switch is applied once, here, for every question.
   verdict: (m, a) => verdict(m, assume(a)),

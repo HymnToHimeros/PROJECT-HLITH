@@ -128,11 +128,13 @@ export function explainTeam(mine: ExplainTeam, best: ExplainTeam, name: (id: str
   const byValue = mine.value !== undefined && best.value !== undefined;
   const gap = byValue ? (best.value ?? 0) - (mine.value ?? 0) : best.count - mine.count;
   const newcomers = best.members.filter((id) => !mine.members.includes(id));
-  const short = byValue ? `${percentOf(mine.value ?? 0, best.value ?? 0)}% of the best team found's kit value` : `${plural(gap, 'point')} short of the best team found`;
+  // The headline names the best team found, so a low % explains itself (owner, 2026-10-10).
+  const bestTeam = list(best.members.map(name));
+  const short = byValue ? `${percentOf(mine.value ?? 0, best.value ?? 0)}% of the kit value of the best team found (${bestTeam})` : `${plural(gap, 'point')} short of the best team found (${bestTeam})`;
   if (gap > 1e-9 && newcomers.length) {
     const leaving = mine.members.filter((id) => !best.members.includes(id));
     const against = byValue ? `kit value ${timesWords(best.value ?? 0)} against ${timesWords(mine.value ?? 0)} here (count ${best.count} against ${mine.count})` : `${best.count} points against ${mine.count} here`;
-    missing.unshift(`The best team found for ${dd} is ${list(best.members.map(name))}: ${against}${leaving.length ? `, swapping ${list(leaving.map(name))} for ${list(newcomers.map(name))}` : ''}.`);
+    missing.unshift(`The best team found for ${dd} is ${bestTeam}: ${against}${leaving.length ? `, swapping ${list(leaving.map(name))} for ${list(newcomers.map(name))}` : ''}.`);
     for (const id of newcomers) {
       const g = given(best, id, name);
       missing.push(`${name(id)} would bring: ${g.phrase} (${pts(g.points)}).`);

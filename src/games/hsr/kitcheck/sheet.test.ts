@@ -37,6 +37,8 @@ describe('HSR cheat sheet', () => {
       if (e.on && 'count' in e.on) expect(e.on.count.paths?.length || e.on.count.elements?.length, `${e.id}: condition names a path or element`).toBeTruthy();
     }
     for (const q of sheet.damage?.quotes ?? []) expect(text(q.piece), `damage quote in ${q.piece}`).toContain(q.quote);
+    const alone = sheet.damage?.alone;
+    if (alone) for (const q of [alone.quote, ...(alone.turns ? [alone.turns.quote] : [])]) expect(text(alone.piece), `alone quote in ${alone.piece}`).toContain(q);
     if (sheet.damage) expect(sheet.damage.kinds.length, 'damage kinds').toBeGreaterThan(0);
     for (const s of kit?.skills ?? []) {
       const read = sheet.entries.some((e) => e.piece === s.id) || s.id in sheet.nothing;

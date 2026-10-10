@@ -91,6 +91,13 @@ export type Condition =
    * ("a teammate who heals or shields Phainon", "a teammate whose abilities target Phainon"). Eidolons don't count.
    */
   | { teammate: { gives?: Stat[]; to?: Recipient[]; words: string } }
+  /**
+   * Named characters (decision 17, narrowed for T30): 'carry', the damage dealer is one of them (Cyrene's Ode to
+   * Worldbearing for Phainon); 'member', one of them is in the team besides the kit's owner (her Ode to Law, used on
+   * Cerydra); 'not-carry', the damage dealer is none of them (her +56% Ode, for anyone without an Ode of their own).
+   * A named condition that isn't met is no loss: the line is for someone else.
+   */
+  | { named: { ids: string[]; as: 'carry' | 'member' | 'not-carry'; words: string } }
   /** Cannot be checked from profiles (HP thresholds, enemy state is not a condition but setup): never counted as met. */
   | { unknown: string };
 
@@ -193,7 +200,16 @@ export interface DamageNotes {
    * Their main damage happens with the teammates gone (T30, owner: Phainon's domain, "other teammates depart and cannot
    * take action"): buffs from before count, but teammates' own hits, extra hits and set-off reactions don't.
    */
-  alone?: { piece: string; quote: string };
+  alone?: {
+    piece: string;
+    quote: string;
+    /**
+     * How many turns the alone part lasts (Phainon: "has 8 Khaslana's extra turn(s)"), from the same piece. A buff of
+     * theirs that a teammate switches on for N turns covers N of these, unless that teammate's line goes along
+     * (`staysWithCarry`; T40).
+     */
+    turns?: { count: number; quote: string };
+  };
 }
 
 export interface CharacterSheet {

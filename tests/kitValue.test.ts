@@ -132,4 +132,31 @@ describe('Kit facts read for T30', () => {
     if (!out.rated) throw new Error('not rated');
     expect(out.best.lines.find((l) => l.tag === 'Allies: ignore 15%+ DEF')?.why).toMatch(/can't follow/);
   });
+
+  it('Cyrene’s Odes (decision 17 narrowed): Phainon gets his own Ode, not the +56% one; Odes for absent characters cost nothing', () => {
+    const t = team(['Phainon', 'Cerydra', 'Cyrene', 'Dan Heng • Permansor Terrae']);
+    const out = check(t, lib, ideal, t[0]);
+    if (!out.rated) throw new Error('not rated');
+    const cy = out.best.lines.filter((l) => l.who === t[2] && !l.forDd);
+    expect(cy.find((l) => l.kind === 'buff' && l.tag.startsWith('Phainon: up to +100.8% CRIT DMG'))?.value).toBeGreaterThan(0);
+    // Ode to Earth through Dan Heng • Permansor Terrae: his Bondmate (Phainon) deals more.
+    expect(cy.some((l) => l.kind === 'buff' && l.tag === 'Bondmate: +33.6% DMG')).toBe(true);
+    expect(cy.find((l) => l.tag === 'Chosen ally: +56% DMG')).toMatchObject({ kind: 'not-counted', points: 0 });
+    expect(cy.find((l) => l.tag.startsWith('Aglaea:'))).toMatchObject({ kind: 'not-counted', points: 0 });
+    expect(cy.every((l) => l.points >= 0)).toBe(true);
+    // A damage dealer without an Ode of their own gets the +56%.
+    const s = team(['Seele', 'Cyrene', 'Sparkle', 'Huohuo']);
+    const out2 = check(s, lib, ideal, s[0]);
+    if (!out2.rated) throw new Error('not rated');
+    const all56 = out2.best.lines.find((l) => l.who === s[1] && l.tag === 'Chosen ally: +56% DMG');
+    expect(all56?.why).toMatch(/^reaches Seele/);
+    expect(all56?.value).toBeGreaterThan(0);
+  });
+
+  it('the game’s Phainon team as the card fills it (Cerydra, Cyrene, Dan Heng • Permansor Terrae) is within reach of the best found', () => {
+    const v = hsrVerdict(team(['Phainon', 'Cerydra', 'Cyrene', 'Dan Heng • Permansor Terrae']), all);
+    if (!v.rated) throw new Error('not rated');
+    expect(v.percent).toBeGreaterThanOrEqual(60);
+    expect(v.explain?.headline).toMatch(/% of the kit value of the best team found \(Phainon, Sunday, Cerydra and Dan Heng • Permansor Terrae\)\.$/);
+  });
 });

@@ -307,10 +307,13 @@ describe('HSR: the owner’s own team lists (decision 31)', () => {
   it('without an edit Robin • Summeretto is never suggested for Phainon (the game’s page doesn’t list her)', () => {
     expect(whoFits([id('Phainon')], own(owned)).some((f) => f.id === id('Robin • Summeretto'))).toBe(false);
   });
-  it('with the owner’s list, the card fills Phainon, Cerydra, Robin • Summeretto, Dan Heng • Permansor Terrae', () => {
+  it('with the owner’s list, the card can fill Phainon, Cerydra, Robin • Summeretto, Dan Heng • Permansor Terrae; the better unit still wins (T40)', () => {
     const t = phainon();
     if (!t) throw new Error('no Phainon team');
-    expect(hsrTeamRules.fill?.(t, withList())).toEqual(['Phainon', 'Cerydra', 'Robin • Summeretto', 'Dan Heng • Permansor Terrae'].map(id));
+    const noSunday = { ...withList(), owned: (x: string) => x !== id('Sunday') && withList().owned(x) };
+    expect(hsrTeamRules.fill?.(t, noSunday)).toEqual(['Phainon', 'Cerydra', 'Robin • Summeretto', 'Dan Heng • Permansor Terrae'].map(id));
+    // Her listing makes her a candidate; Sunday, owned, gives Phainon the higher kit value in that slot.
+    expect(hsrTeamRules.fill?.(t, withList())).toEqual(['Phainon', 'Cerydra', 'Sunday', 'Dan Heng • Permansor Terrae'].map(id));
   });
   it('and she becomes a teammate everywhere teams are made, with the Why saying the list is the owner’s', () => {
     expect(whoFits([id('Phainon')], withList()).some((f) => f.id === id('Robin • Summeretto'))).toBe(true);

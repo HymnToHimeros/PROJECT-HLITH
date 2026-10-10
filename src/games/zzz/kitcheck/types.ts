@@ -61,6 +61,11 @@ export type Condition =
   | { count: { specialty: Specialty; atLeast: number } }
   /** Every one of these. */
   | { all: Condition[] }
+  /**
+   * Named characters (mirrors HSR decision 38): 'carry', the damage dealer is one of them; 'member', one of them is in
+   * the squad besides the kit's owner; 'not-carry', the damage dealer is none of them. Not met is no loss.
+   */
+  | { named: { ids: string[]; as: 'carry' | 'member' | 'not-carry'; words: string } }
   /** Cannot be checked from profiles: never counted as met. */
   | { unknown: string };
 

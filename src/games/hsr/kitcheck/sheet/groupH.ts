@@ -2,7 +2,7 @@
  * Group H, read with the seven questions (docs/logic/hsr-theory.md, Part A).
  * Every quote is word for word from src/games/hsr/data/kits.json (tested).
  */
-import type { CharacterSheet } from '../types';
+import type { CharacterSheet, Condition } from '../types';
 
 const WEARER = "Raises the wearer's own stats; nothing for the team.";
 const TECH = 'Used before battle; not counted.';
@@ -431,7 +431,30 @@ export const evernight: CharacterSheet = {
   },
 };
 
-const odeOn = (who: string) => ({ unknown: `${who} is in the team and Cyrene uses this Ode on them` });
+// Decision 17 (narrowed, T30): an Ode for a named character counts when that character is the damage dealer, or is in
+// the team when the Ode helps someone else through them. Who has an Ode of their own: the Odes in her kit text, each
+// "When used on <name>" (Trailblazer (Remembrance), Aglaea, Tribbie, Mydei, Castorice, Anaxa, Hyacine, Cipher, Phainon,
+// Hysilens, Cerydra, Evernight, Dan Heng • Permansor Terrae; Ode to Ego is her own).
+const ODE_NAMES: Record<string, string> = {
+  '8007': 'Trailblazer (Remembrance)',
+  '8008': 'Trailblazer (Remembrance)',
+  '1402': 'Aglaea',
+  '1403': 'Tribbie',
+  '1404': 'Mydei',
+  '1405': 'Anaxa',
+  '1406': 'Cipher',
+  '1407': 'Castorice',
+  '1408': 'Phainon',
+  '1409': 'Hyacine',
+  '1410': 'Hysilens',
+  '1412': 'Cerydra',
+  '1413': 'Evernight',
+  '1414': 'Dan Heng • Permansor Terrae',
+  '1415': 'Cyrene',
+};
+const idsOf = (who: string) => Object.keys(ODE_NAMES).filter((id) => ODE_NAMES[id] === who);
+const odeFor = (who: string): Condition => ({ named: { ids: idsOf(who), as: 'carry', words: `${who} is the damage dealer (Cyrene uses this Ode on them)` } });
+const odeVia = (who: string): Condition => ({ named: { ids: idsOf(who), as: 'member', words: `${who} is in the team (Cyrene uses this Ode on them)` } });
 
 export const cyrene: CharacterSheet = {
   characterId: '1415',
@@ -480,6 +503,7 @@ export const cyrene: CharacterSheet = {
       piece: 'memosprite-this-ode-to-all-lives',
       quote: "When the character is not a Chrysos Heir, increases the target's DMG dealt by 56% for 2 turns.",
       tag: 'Chosen ally: +56% DMG',
+      on: { named: { ids: Object.keys(ODE_NAMES), as: 'not-carry', words: 'the damage dealer has no Ode of their own (a Chrysos Heir gets theirs instead)' } },
       gives: [{ stat: 'dmg', amount: '+56%' }],
       to: 'chosen-ally',
       setup: 'Demiurge on the field and uses the Ode on the damage dealer (a Chrysos Heir gets their own Ode instead).',
@@ -489,7 +513,7 @@ export const cyrene: CharacterSheet = {
       piece: 'memosprite-ode-to-romance',
       quote: 'Increases DMG dealt by Aglaea and Garmentmaker by 100.8%, and ignores 50.4% of the targets\' DEF, lasting until Aglaea exits the "Supreme Stance" state.',
       tag: 'Aglaea: +100.8% DMG, ignores 50.4% DEF',
-      on: odeOn('Aglaea'),
+      on: odeFor('Aglaea'),
       gives: [
         { stat: 'dmg', amount: '+100.8%' },
         { stat: 'def-shred', amount: '50.4% DEF ignored' },
@@ -502,8 +526,9 @@ export const cyrene: CharacterSheet = {
       piece: 'memosprite-ode-to-strife',
       quote: "Mydei's CRIT DMG increases by 280% during this attack.",
       tag: 'Mydei: +280% CRIT DMG on one attack',
-      on: odeOn('Mydei'),
-      gives: [{ stat: 'crit-dmg', amount: '+280% on one attack' }],
+      on: odeFor('Mydei'),
+      // One free "Godslayer Be God", once: an extra hit of his, not +280% on all his damage (T30). Typical size.
+      gives: [{ stat: 'extra-dmg', amount: 'one free "Godslayer Be God" at +280% CRIT DMG, once' }],
       to: 'chosen-ally',
       setup: 'Demiurge uses the Ode on Mydei while he is in "Vendetta".',
     },
@@ -512,8 +537,9 @@ export const cyrene: CharacterSheet = {
       piece: 'memosprite-ode-to-life-and-death',
       quote: 'For every 1% overflow amount consumed, increases the multiplier by 0.34% for the DMG dealt when this summoned Netherwing triggers the ability effect of its Talent "Wings Sweep the Ruins."',
       tag: 'Castorice: stronger "Wings Sweep the Ruins"',
-      on: odeOn('Castorice'),
-      gives: [{ stat: 'dmg', amount: '+0.34% multiplier per 1% overflow Newbud' }],
+      on: odeFor('Castorice'),
+      // A rate per point of overflow added to one ability's multiplier, not a DMG %: no size in the kit to compare. Typical.
+      gives: [{ stat: 'dmg', amount: 'a bigger "Wings Sweep the Ruins" multiplier for overflowing Newbud' }],
       to: 'chosen-ally',
       setup: 'Demiurge uses the Ode on Castorice; her Newbud overflows before Netherwing is summoned.',
     },
@@ -522,7 +548,7 @@ export const cyrene: CharacterSheet = {
       piece: 'memosprite-ode-to-reason',
       quote: 'All Erudition characters have their ATK increased by 84% and their dealt Skill DMG increased by 56%',
       tag: 'Erudition: +84% ATK, +56% Skill DMG',
-      on: odeOn('Anaxa'),
+      on: odeVia('Anaxa'),
       gives: [
         { stat: 'atk', amount: '+84%' },
         { stat: 'dmg', amount: '+56% Skill DMG' },
@@ -536,7 +562,7 @@ export const cyrene: CharacterSheet = {
       piece: 'memosprite-ode-to-trickery',
       quote: 'decreases the DEF of the "Patron" by 28% and decreases the DEF of all other enemy targets by 16.8%.',
       tag: 'Enemy: DEF −16.8% (Patron −28%)',
-      on: odeOn('Cipher'),
+      on: odeVia('Cipher'),
       gives: [{ stat: 'def-shred', amount: '16.8% (the "Patron" 28%)' }],
       to: 'enemy',
       setup: 'Demiurge uses the Ode on Cipher.',
@@ -544,10 +570,13 @@ export const cyrene: CharacterSheet = {
     {
       id: 'ode-to-worldbearing',
       piece: 'memosprite-ode-to-worldbearing',
-      quote: "for each point in excess, Khaslana's CRIT DMG increases by 16.8%, up to a max increase of 100.8%.",
-      tag: 'Phainon: up to +100.8% CRIT DMG',
-      on: odeOn('Phainon'),
-      gives: [{ stat: 'crit-dmg', amount: 'up to +100.8%' }],
+      quote: "for each point in excess, Khaslana's CRIT DMG increases by 16.8%, up to a max increase of 100.8%. While \"Eternal Ignition\" persists, increases Khaslana's CRIT Rate by 22.4%.",
+      tag: 'Phainon: up to +100.8% CRIT DMG, +22.4% CRIT Rate',
+      on: odeFor('Phainon'),
+      gives: [
+        { stat: 'crit-dmg', amount: 'up to +100.8%' },
+        { stat: 'crit-rate', amount: '+22.4%' },
+      ],
       to: 'chosen-ally',
       setup: 'Demiurge uses the Ode on Phainon; he Transforms with more than 12 Coreflame.',
     },
@@ -556,7 +585,7 @@ export const cyrene: CharacterSheet = {
       piece: 'memosprite-ode-to-ocean',
       quote: 'In this battle, increases the DMG dealt by Hysilens by 168%.',
       tag: 'Hysilens: +168% DMG',
-      on: odeOn('Hysilens'),
+      on: odeFor('Hysilens'),
       gives: [{ stat: 'dmg', amount: '+168%' }],
       to: 'chosen-ally',
       setup: 'Demiurge uses the Ode on Hysilens.',
@@ -566,7 +595,7 @@ export const cyrene: CharacterSheet = {
       piece: 'memosprite-ode-to-law',
       quote: 'increases the CRIT DMG of the character with "Military Merit" by 42%.',
       tag: '"Military Merit" ally: +42% CRIT DMG',
-      on: odeOn('Cerydra'),
+      on: odeVia('Cerydra'),
       gives: [{ stat: 'crit-dmg', amount: '+42%' }],
       to: 'chosen-ally',
       setup: 'Demiurge uses the Ode on Cerydra; the damage dealer has her "Military Merit".',
@@ -576,7 +605,7 @@ export const cyrene: CharacterSheet = {
       piece: 'memosprite-ode-to-time',
       quote: 'increases the DMG dealt when Evey uses the Memosprite Skill "Dream, Dissolving, as Dew" by 25.2%.',
       tag: 'Evernight: Evey\'s big hit +25.2% DMG',
-      on: odeOn('Evernight'),
+      on: odeFor('Evernight'),
       gives: [{ stat: 'dmg', amount: '+25.2%' }],
       to: 'chosen-ally',
       limits: { kinds: ['memosprite'] },
@@ -587,7 +616,7 @@ export const cyrene: CharacterSheet = {
       piece: 'memosprite-ode-to-earth',
       quote: 'When Dan Heng • Permansor Terrae holds "Ode to Earth," the "Bondmate" deals 33.6% increased DMG.',
       tag: 'Bondmate: +33.6% DMG',
-      on: odeOn('Dan Heng • Permansor Terrae'),
+      on: odeVia('Dan Heng • Permansor Terrae'),
       gives: [{ stat: 'dmg', amount: '+33.6%' }],
       to: 'chosen-ally',
       setup: 'Demiurge uses a Memosprite Skill; the damage dealer is Dan Heng • Permansor Terrae\'s Bondmate.',

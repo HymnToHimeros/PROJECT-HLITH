@@ -119,13 +119,20 @@ const before = (order: string[], id: string) => order[(order.indexOf(id) - 1 + o
 const after = (order: string[], id: string) => order[(order.indexOf(id) + 1) % order.length] ?? '';
 
 type CondResult = 'met' | 'not-met' | 'unknown';
+const hasNamed = (c: Condition | undefined): boolean => !!c && ('all' in c ? c.all.some(hasNamed) : 'named' in c);
 
-function evalCondition(c: Condition | undefined, self: string, order: string[], lib: Library): CondResult {
+function evalCondition(c: Condition | undefined, self: string, order: string[], lib: Library, dd?: string): CondResult {
   if (!c) return 'met';
   const me = lib.profiles.get(self);
   if ('unknown' in c) return 'unknown';
+  if ('named' in c) {
+    const q = c.named;
+    if (q.as === 'member') return order.some((id) => id !== self && q.ids.includes(id)) ? 'met' : 'not-met';
+    if (dd === undefined) return 'unknown';
+    return q.ids.includes(dd) === (q.as === 'carry') ? 'met' : 'not-met';
+  }
   if ('all' in c) {
-    const rs = c.all.map((x) => evalCondition(x, self, order, lib));
+    const rs = c.all.map((x) => evalCondition(x, self, order, lib, dd));
     return rs.includes('not-met') ? 'not-met' : rs.includes('unknown') ? 'unknown' : 'met';
   }
   if ('previous' in c) {
@@ -153,7 +160,7 @@ function evalCondition(c: Condition | undefined, self: string, order: string[], 
 }
 
 /** Part B step 3: locked, on, off or unknown, with the reason in words. */
-export function statusOf(e: Entry, who: string, order: string[], lib: Library, account: Account): { status: Status; why: string } {
+export function statusOf(e: Entry, who: string, order: string[], lib: Library, account: Account, dd?: string): { status: Status; why: string } {
   const unlock = lib.unlocks.get(who)?.get(e.piece);
   if (unlock?.weapon) {
     const w = account.weapon?.(who);
@@ -171,7 +178,7 @@ export function statusOf(e: Entry, who: string, order: string[], lib: Library, a
     if (p !== undefined && p >= unlock.replacedAt) return { status: 'replaced', why: `replaced: the Agent Potential ${unlock.replacedAt}+ version is on` };
   }
   if (e.unverified) return { status: 'unknown', why: `unclear text: ${e.unverified}` };
-  const r = evalCondition(e.on, who, order, lib);
+  const r = evalCondition(e.on, who, order, lib, dd);
   if (r === 'unknown') return { status: 'unknown', why: 'its condition cannot be checked from profiles' };
   if (r === 'not-met') return { status: 'off', why: `off: ${conditionWords(e.on, lib)} is not met in this squad` };
   return { status: 'on', why: e.on ? `on: ${conditionWords(e.on, lib)}` : 'always on' };
@@ -183,6 +190,7 @@ const list = (xs: string[]) => (xs.length < 2 ? (xs[0] ?? '') : `${xs.slice(0, -
 export function conditionWords(c: Condition | undefined, lib: Library): string {
   if (!c) return 'always';
   if ('unknown' in c) return c.unknown;
+  if ('named' in c) return c.named.words;
   if ('all' in c) return c.all.map((x) => conditionWords(x, lib)).join(', and ');
   if ('previous' in c) return `the character before is ${list(c.previous.specialties.map((s) => SPECIALTY_WORD[s]))}`;
   if ('count' in c) return `${c.count.atLeast} ${SPECIALTY_WORD[c.count.specialty]} characters in the squad`;
@@ -265,7 +273,7 @@ export function checkOrder(order: string[], dd: string, lib: Library, account: A
   const statuses = new Map<string, { status: Status; why: string }>();
   const key = (who: string, e: Entry) => `${who}:${e.id}`;
   const entries = new Map(order.map((who) => [who, entriesOf(who, lib, account)]));
-  for (const who of order) for (const e of entries.get(who) ?? []) statuses.set(key(who, e), statusOf(e, who, order, lib, account));
+  for (const who of order) for (const e of entries.get(who) ?? []) statuses.set(key(who, e), statusOf(e, who, order, lib, account, dd));
 
   for (const who of order) {
     for (const e of entries.get(who) ?? []) {
@@ -284,7 +292,9 @@ export function checkOrder(order: string[], dd: string, lib: Library, account: A
         continue;
       }
       if (st.status === 'off') {
-        lines.push({ ...base, kind: 'off', why: st.why, points: -1 });
+        // A line for a named character who isn't here (or isn't the damage dealer) is for another squad: no loss.
+        if (hasNamed(e.on)) lines.push({ ...base, kind: 'not-counted', why: `only when ${conditionWords(e.on, lib)}`, points: 0 });
+        else lines.push({ ...base, kind: 'off', why: st.why, points: -1 });
         continue;
       }
       // Step 6: entries the kits say do not stack count once.
