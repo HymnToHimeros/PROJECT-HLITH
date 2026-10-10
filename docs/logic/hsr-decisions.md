@@ -57,8 +57,9 @@ team size and order, and the owner's ZZZ method's own counting.
 16. **Spending your own HP counts as HP loss** for kits that react to allies
     losing HP (Castorice, Mydei, Evernight, Jingliu's Enhanced Talent).
 17. **Conditions on a named character** ("Saber is in the team", "Archer is in
-    the team", Cyrene's Odes for one character) and "only / no other X
-    character" are written as unknown: shown, never counted.
+    the team", Cyrene's Odes for one character) are checked from the team
+    (narrowed by decision 38): shown always, counted when met, and no loss when
+    not met. "Only / no other X character" stays unknown: shown, never counted.
 18. **Stats the sheet doesn't have** (damage reduction, Effect RES, enemy ATK or
     SPD down, removing enemy buffs) are read as nothing for the damage dealer.
 19. **Damage notes are written only from quotes.** Aventurine • Waveflair's
@@ -231,3 +232,26 @@ team size and order, and the owner's ZZZ method's own counting.
       their Zone, their memosprite) stays behind with them. Result: Phainon + Sunday + Cerydra + Dan Heng PT is his
       best team found; standard Robin 96%, Huohuo 95%, Robin • Summeretto 80% (different role, owner).
     - The best-team search always keeps the team's own members in the running.
+38. **Named characters are a team check; Cyrene's Odes (owner's card, 2026-10-10).** The owner's live card read
+    "Phainon team 36% · Weak" for the game's own Phainon team (Cerydra, Cyrene, Dan Heng • Permansor Terrae).
+    Cause: decision 17 left every Ode unknown, so Cyrene's "Ode to Worldbearing" for Phainon counted 0. Her
+    generic +56% Ode counted instead, but her kit says that one is only "When the character is not a Chrysos Heir".
+    - A condition on a named character is a plain team check (`named`): `carry`, the damage dealer is that character
+      (an Ode for Aglaea, Mydei, Castorice, Phainon, Hysilens, Evernight; Saber's boost from Gilgamesh; Archer's
+      ATK from Rin); `member`, that character is in the team (the Odes used on Anaxa, Cipher, Cerydra ("Military
+      Merit" holder) and Dan Heng • Permansor Terrae (his Bondmate); Rin and Archer's Joint Follow-Up and Skill
+      Points); `not-carry`, the damage dealer is none of them. A named line that isn't met is for another team:
+      shown, 0, no loss.
+    - Who has an Ode of their own: the Odes in Cyrene's kit text, each "When used on <name>": Trailblazer
+      (Remembrance), Aglaea, Tribbie, Mydei, Castorice, Anaxa, Hyacine, Cipher, Phainon, Hysilens, Cerydra,
+      Evernight, Dan Heng • Permansor Terrae. Her +56% counts only for a damage dealer not on that list.
+    - Ode to Worldbearing reads both of its numbers: "Khaslana's CRIT DMG increases by 16.8%, up to a max increase
+      of 100.8%" and "increases Khaslana's CRIT Rate by 22.4%". It names Khaslana, so it is his own (domain, 37).
+    - Ode to Strife is one free "Godslayer Be God" with +280% CRIT DMG, once: an extra hit of Mydei's at the
+      typical size, not +280% on all his damage. Ode to Life and Death adds a rate per point of overflow to one
+      ability's multiplier, not a DMG %: typical.
+    - The card's Why names the best team found: "N% of the kit value of the best team found (…)".
+    - Result (every character owned): the game's Phainon team 35% → 65% Good (owner's roster 68%); the best found
+      is still Phainon + Sunday + Cerydra + Dan Heng PT, the owner's team (88% Excellent on their roster,
+      unchanged). Aglaea's best now has Cyrene. Castorice, Mydei and Robin • Summeretto teams with Cyrene drop:
+      the +56% no longer reaches a Chrysos Heir.

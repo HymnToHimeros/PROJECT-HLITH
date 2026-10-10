@@ -618,7 +618,7 @@ const anaxa: CharacterSheet = {
   },
 };
 
-const ARCHER: Condition = { unknown: 'Archer is in the team' };
+const ARCHER: Condition = { named: { ids: ['1015'], as: 'member', words: 'Archer is in the team' } };
 
 const rinTohsaka: CharacterSheet = {
   characterId: '1508',
@@ -689,7 +689,7 @@ const rinTohsaka: CharacterSheet = {
       piece: 'trace-elegant-conduct',
       quote: 'If Archer is in the team, Archer also gains this effect.',
       tag: 'Archer: +150% ATK, +15% Quantum RES PEN',
-      on: ARCHER,
+      on: { named: { ids: ['1015'], as: 'carry', words: 'Archer is the damage dealer' } },
       gives: [
         { stat: 'atk', amount: '+150%' },
         { stat: 'res-pen', amount: '+15% Quantum' },

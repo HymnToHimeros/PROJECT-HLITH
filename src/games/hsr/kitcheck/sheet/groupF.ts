@@ -719,7 +719,7 @@ export const gilgamesh: CharacterSheet = {
       piece: 'skill-talent-i-grant-you-permission-to-strike',
       quote: 'Saber regenerates a fixed 120 Energy, and the next time she uses Ultimate, the DMG dealt becomes 200% of the original DMG.',
       tag: 'Saber: +120 Energy, next Ultimate DMG ×2',
-      on: { unknown: 'Saber is in the team' },
+      on: { named: { ids: ['1014'], as: 'carry', words: 'Saber is the damage dealer' } },
       gives: [
         { stat: 'energy', amount: '+120 (Saber)' },
         { stat: 'dmg', amount: 'next Ultimate deals 200% DMG (Saber)' },

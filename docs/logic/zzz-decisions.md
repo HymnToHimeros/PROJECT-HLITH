@@ -229,3 +229,8 @@ team size and order, and the owner's ZZZ method's own counting.
     Same day, mirrored from HSR decision 37: like with like for a squad with a healer; a support's own damage counts,
     sized from its kit against the carry's own hit; Rupture carries get nothing from ATK buffs (owner: Astra Yao's
     ATK gives Starlight - Billy nothing).
+62. **Named characters are a squad check (mirrors HSR decision 38, 2026-10-10).** A condition on a named character
+    (`named`: the damage dealer is them, they are in the squad, or the damage dealer is none of them) is checked from
+    the squad; when it isn't met, the line is for another squad: shown, 0, no loss. ZZZ has one today: Nangong Yu's
+    Polarity Disorder needs Aria in the squad. It stays unknown, because its text doesn't say whose DMG it is. No
+    ZZZ score changes. The Why names the best squad found ("N% of the kit value of the best team found (…)").

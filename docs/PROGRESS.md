@@ -28,6 +28,12 @@ Resume with: "continue from PROGRESS.md". Newest entry on top. Older entries:
 - CI (`.github/workflows/ci.yml`) runs both on every pull request.
 
 ## Done
+- 2026-10-10 · **LOGIC-CORE: Cyrene's Odes count; the Why names the best team** (branch `logic-core/cyrene-odes`).
+  The owner's live card read "Phainon team 36% Weak" (Cerydra, Cyrene, Dan Heng PT, the game's own list). Cyrene's
+  Ode for Phainon was never counted (named-character conditions were "unknown") and her +56% Ode counted for him
+  although her kit gives it only to non-Chrysos Heirs. Named characters are now a team check (decision 38): that
+  card reads 65% Good (owner's roster 68%), still below the owner's own team (88%). The card's Why names the best
+  team found.
 - 2026-10-10 · **LOGIC-CORE: Phainon's domain, Dan Heng • Permansor Terrae's Bondmate (T30, last item)** (branch `logic-core/phainon-bondmate`).
   Owner: Dan Heng PT's Bondmate goes with Phainon into his domain, so its extra hits and ATK keep counting there;
   teammates' field effects (their Zone, their memosprite) stay behind. Phainon + Sunday + Cerydra + Dan Heng PT is

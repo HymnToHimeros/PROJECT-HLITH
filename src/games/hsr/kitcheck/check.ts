@@ -155,9 +155,15 @@ type CondResult = 'met' | 'not-met' | 'unknown';
 
 const matches = (p: Profile | undefined, paths?: Path[], elements?: Element[]) => !!p && (!!paths?.includes(p.path) || !!elements?.includes(p.element));
 
-function evalCondition(c: Condition | undefined, self: string, team: string[], lib: Library): CondResult {
+function evalCondition(c: Condition | undefined, self: string, team: string[], lib: Library, dd?: string): CondResult {
   if (!c) return 'met';
   if ('unknown' in c) return 'unknown';
+  if ('named' in c) {
+    const q = c.named;
+    if (q.as === 'member') return team.some((id) => id !== self && q.ids.includes(id)) ? 'met' : 'not-met';
+    if (dd === undefined) return 'unknown';
+    return q.ids.includes(dd) === (q.as === 'carry') ? 'met' : 'not-met';
+  }
   if ('teammate' in c) {
     const q = c.teammate;
     const does = (id: string) =>
@@ -167,7 +173,7 @@ function evalCondition(c: Condition | undefined, self: string, team: string[], l
     return team.some((id) => id !== self && does(id)) ? 'met' : 'not-met';
   }
   if ('all' in c) {
-    const rs = c.all.map((x) => evalCondition(x, self, team, lib));
+    const rs = c.all.map((x) => evalCondition(x, self, team, lib, dd));
     return rs.includes('not-met') ? 'not-met' : rs.includes('unknown') ? 'unknown' : 'met';
   }
   const q = c.count;
@@ -176,7 +182,7 @@ function evalCondition(c: Condition | undefined, self: string, team: string[], l
 }
 
 /** Part B step 3: locked, replaced, on, off or unknown, with the reason in words. */
-export function statusOf(e: Entry, who: string, team: string[], lib: Library, account: Account): { status: Status; why: string } {
+export function statusOf(e: Entry, who: string, team: string[], lib: Library, account: Account, dd?: string): { status: Status; why: string } {
   const unlock = lib.unlocks.get(who)?.get(e.piece);
   if (unlock?.weapon) {
     const w = account.weapon?.(who);
@@ -194,7 +200,7 @@ export function statusOf(e: Entry, who: string, team: string[], lib: Library, ac
     if (p !== undefined && p >= unlock.replacedAt) return { status: 'replaced', why: 'replaced: the Enhanced version is on' };
   }
   if (e.unverified) return { status: 'unknown', why: `unclear text: ${e.unverified}` };
-  const r = evalCondition(e.on, who, team, lib);
+  const r = evalCondition(e.on, who, team, lib, dd);
   if (r === 'unknown') return { status: 'unknown', why: 'its condition cannot be checked from profiles' };
   if (r === 'not-met') return { status: 'off', why: `off: ${conditionWords(e.on)} is not met in this team` };
   return { status: 'on', why: e.on ? `on: ${conditionWords(e.on)}` : 'always on' };
@@ -203,12 +209,14 @@ export function statusOf(e: Entry, who: string, team: string[], lib: Library, ac
 const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 const list = (xs: string[], or = 'or') => (xs.length < 2 ? (xs[0] ?? '') : `${xs.slice(0, -1).join(', ')} ${or} ${xs[xs.length - 1] ?? ''}`);
 
+const hasNamed = (c: Condition | undefined): boolean => !!c && ('all' in c ? c.all.some(hasNamed) : 'named' in c);
 const hasAtMost = (c: Condition | undefined): boolean => !!c && ('all' in c ? c.all.some(hasAtMost) : 'count' in c && c.count.atMost !== undefined);
 
 export function conditionWords(c: Condition | undefined): string {
   if (!c) return 'always';
   if ('unknown' in c) return c.unknown;
   if ('teammate' in c) return c.teammate.words;
+  if ('named' in c) return c.named.words;
   if ('all' in c) return c.all.map(conditionWords).join(', and ');
   const q = c.count;
   const what = list([...(q.paths ?? []).map(cap), ...(q.elements ?? []).map(cap)]);
@@ -382,7 +390,7 @@ export function checkTeam(members: string[], dd: string, lib: Library, account: 
   const statuses = new Map<string, { status: Status; why: string }>();
   const key = (who: string, e: Entry) => `${who}:${e.id}`;
   const entries = new Map(team.map((who) => [who, entriesOf(who, lib, account)]));
-  for (const who of team) for (const e of entries.get(who) ?? []) statuses.set(key(who, e), statusOf(e, who, team, lib, account));
+  for (const who of team) for (const e of entries.get(who) ?? []) statuses.set(key(who, e), statusOf(e, who, team, lib, account, dd));
   const reactions = (entries.get(dd) ?? []).filter((x) => x.reacts && x.reacts.from !== 'self' && statuses.get(key(dd, x))?.status === 'on');
   const addedKinds = (entries.get(dd) ?? []).filter((x) => x.addsKinds && statuses.get(key(dd, x))?.status === 'on').flatMap((x) => x.addsKinds ?? []);
   let sustain = team.some((id) => ['preservation', 'abundance'].includes(lib.profiles.get(id)?.path ?? ''));
@@ -400,6 +408,8 @@ export function checkTeam(members: string[], dd: string, lib: Library, account: 
         // An option of the same kit that is on (an Eidolon that drops the condition) covers it: not a loss.
         const cover = e.noStack ? own.find((x) => x !== e && x.noStack === e.noStack && statuses.get(key(who, x))?.status === 'on') : undefined;
         if (cover) lines.push({ ...base, kind: 'not-counted', why: `${st.why}; ${cover.tag} applies instead`, points: 0 });
+        // A line for a named character who isn't here (or isn't the damage dealer) is for another team: no loss.
+        else if (hasNamed(e.on)) lines.push({ ...base, kind: 'not-counted', why: `only when ${conditionWords(e.on)}`, points: 0 });
         else lines.push({ ...base, kind: 'off', why: st.why, points: -1 });
         continue;
       }
@@ -426,7 +436,7 @@ export function checkTeam(members: string[], dd: string, lib: Library, account: 
         }
         if (e.on) {
           // A "no other X" condition is kept on by nobody in particular: no teammate is credited with it.
-          const helpers = hasAtMost(e.on) ? [] : team.filter((id) => id !== dd && evalCondition(e.on, dd, [dd, id], lib) === 'met');
+          const helpers = hasAtMost(e.on) ? [] : team.filter((id) => id !== dd && evalCondition(e.on, dd, [dd, id], lib, dd) === 'met');
           for (const id of helpers) contributed.add(id);
           // T30: what it gives the damage dealer, sized from the kit; an ability with no number counts as a typical buff.
           const own = sized(e, (g) => usedBy(g, dd, lib));

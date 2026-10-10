@@ -1291,11 +1291,11 @@ export const nangongYu: CharacterSheet = {
       quote:
         "When Nangong Yu and Aria are in the same squad, if Aria's Basic Attack: Perfect Pitch heavy attack hits an enemy that is both Stunned and affected by an Attribute Anomaly, and Nangong Yu fully participates in the attack, 1 stack of Dance Prowess will also be consumed to trigger Polarity Disorder on all enemies who meet the conditions.",
       tag: "Polarity Disorder from Aria's Perfect Pitch",
-      on: { all: [{ another: { specialties: ['anomaly'], sameFaction: true } }, { unknown: 'Aria is in the squad' }] },
+      on: { all: [{ another: { specialties: ['anomaly'], sameFaction: true } }, { named: { ids: ['1501'], as: 'member', words: 'Aria is in the squad' } }] },
       gives: [{ stat: 'anomaly-dmg', amount: 'Polarity Disorder: 25% of the Disorder DMG' }],
       to: 'teammate',
       setup: "Dance Prowess, then Aria's Perfect Pitch heavy attack hits an enemy both Stunned and under an Attribute Anomaly.",
-      unverified: "Needs Aria herself in the squad, which profiles can't name; and the text does not say whose DMG this Polarity Disorder is.",
+      unverified: 'The text does not say whose DMG this Polarity Disorder is.',
     },
     {
       id: 'misstep',
