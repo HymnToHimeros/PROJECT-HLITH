@@ -7,6 +7,7 @@ doing it said `LIVE`. Newest jobs at the bottom; live jobs move to Done.
 ## Open
 | # | Job | Who | State | Note |
 |---|---|---|---|---|
+| T36 | README made attractive for public visitors (#82) | FRAME | 2026-10-10 |
 | T5 | HSR "Interastral Peace Gala" reward (starts 21 Oct) | SCHEDULER | blocked | Sources say 500 or 60; filled from the official notice when the event opens 21 Oct. |
 | T6 | Keep the game lists current on a schedule | SCHEDULER | later | Owner: a task for the end, when everything else is done. |
 | T7 | Schedules for the research routine (leaks, events, game data) | SCHEDULER | later | Owner: a task for the end. |
@@ -24,7 +25,6 @@ doing it said `LIVE`. Newest jobs at the bottom; live jobs move to Done.
 | T34 | Switch: assume signature weapon + average build for characters without a saved build | LOGIC-CORE + FRAME | sent | Plan first. |
 | T35 | Target end stats per character on the character page (you vs target), each number sourced | LOGIC-CORE + FRAME | sent | Owner: LOGIC-CORE must find the basis itself. Plan first. |
 | T37 | BUG: typing in the Roster build form triggers other page elements, so the form is unusable | ERROR-FIX | sent | High priority; test for every form. |
-| T36 | README made attractive for public visitors | FRAME | sent | |
 | T38 | ZZZ teams: two supports doing the same job (Lucia + Pan Yinhu for Starlight Billy) scored above a complementary team (Dialyn + Lucia). Scoring must handle overlap and role coverage | LOGIC-CORE | sent | Part of T30 + blind test. |
 | T39 | Leaked characters usable in teams (beta kit text), Who fits, If you pull, so pre-pulling can be judged; marked leak/unverified | LOGIC-CORE | sent | Queued for after the owner's break. |
 
