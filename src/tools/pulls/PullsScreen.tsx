@@ -40,7 +40,10 @@ const HOW: Record<string, ReactNode[]> = {
       Chance by then, “official rates”: only the numbers the game publishes (base rate, hard pity, 50/50). “Community rates”: adds the rising odds near pity that player trackers measured. It is usually
       higher but not official.
     </>,
-    <>Chances need your pity. Import your history in the History tab, or type it into “Know your pity?” to try it out (that isn’t saved).</>,
+    <>
+      Chances need your pity. Import your history in the History tab, or type it into “Know your pity?”: try it out, or press “Save as my pity” to keep it (handy on phone or console, where importing is
+      hard). Imported history wins whenever it knows your pity; each card says which one it uses.
+    </>,
     <>
       “Not counted” lists income HLITH can’t prove yet, for example because you haven’t picked your server or a reward amount isn’t known. Those rows are left out, never guessed, so your real total
       can only be higher.
@@ -60,12 +63,13 @@ const HOW: Record<string, ReactNode[]> = {
     </>,
     <>Here pick “Balance check”, type those numbers exactly as the game shows them, and press Add entry. That becomes your bank.</>,
     <>Optional: log what you earn, buy or spend in between with the other kinds, and a note like “10 pulls”. A new balance check always resets the balance to what you typed.</>,
-    <>Nothing is ever edited or deleted. If you made a mistake, just add a new balance check. The Planner and Calculator use the newest balance.</>,
+    <>Made a mistake? Press Undo on that entry. It stays in the log, struck through and marked undone, and stops counting. Or add a new balance check. The Planner and Calculator use the newest balance.</>,
   ],
   history: [
     <>Pick one way in below: paste the in-game history link, pick the game’s cache file (same link, no command), or upload an export file from another tracker.</>,
     <>Each way opens its own step-by-step guide. They work on PC; on phones and consoles there is no simple way (see the note under the choices).</>,
-    <>Importing again only adds new pulls. Pulls are never changed or removed.</>,
+    <>Importing again only adds new pulls; stored pulls are never changed. If a file holds more than one account, you pick which one to import.</>,
+    <>Imported the wrong thing? Right after an import, “Undo this import” removes exactly the pulls that import added, nothing else.</>,
     <>After importing you see your pity per banner, your Luck report and every top result with the pulls it took. The Planner then shows real chances.</>,
   ],
 };
@@ -121,7 +125,7 @@ function GamePulls({ game, tab, serverId, now, many, signedIn, openTab, open, op
       <GameHeading game={game} show={many} />
       {anyExample && <ExampleNotice actions={actions}>{parts.join(' ')}</ExampleNotice>}
       {tab === 'planner' && <Planner game={game} data={data} serverId={serverId} now={now} tagged={many} openTab={openTab} />}
-      {tab === 'calculator' && <Calculator game={game} data={data} serverId={serverId} now={now} tagged={many} openModule={(m) => open(m)} />}
+      {tab === 'calculator' && <Calculator game={game} data={data} serverId={serverId} now={now} tagged={many} openModule={(m) => open(m)} openTab={openTab} />}
       {tab === 'log' && <BankLog game={game} data={data} />}
       {tab === 'history' && <History game={game} data={data} signedIn={signedIn} />}
     </section>

@@ -27,26 +27,30 @@ test('Assistant panel and Edit mode: no serious accessibility problems', async (
   await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
   let dialog = await openAssistant(page, isMobile);
   await expect(dialog.getByRole('region', { name: 'Example conversation' })).toBeVisible();
-  problems.push(...(await serious(page, 'chat, no key')));
+  // Browser tests run without the server: said first, and no key asked for in the chat.
+  await expect(dialog.getByText(/isn’t connected to its server/)).toBeVisible();
+  await expect(dialog.getByRole('region', { name: 'Add your Claude API key' })).toHaveCount(0);
+  problems.push(...(await serious(page, 'chat, no server')));
 
-  // With a key saved (on this device only).
-  await dialog.getByRole('textbox', { name: 'Claude API key' }).fill('sk-ant-api03-E2E_TEST_KEY_not_real_000000');
-  await dialog.getByRole('button', { name: 'Save key' }).click();
-  await expect(dialog.getByLabel('Message to the Assistant')).toBeVisible();
-  problems.push(...(await serious(page, 'chat, key saved')));
-
+  // A key can still be saved in Settings (on this device only).
   await dialog.getByRole('button', { name: 'Settings', exact: true }).click();
   await expect(dialog.getByText('WHICH MODEL ANSWERS')).toBeVisible();
+  await dialog.getByRole('textbox', { name: 'Claude API key' }).fill('sk-ant-api03-E2E_TEST_KEY_not_real_000000');
+  await dialog.getByRole('button', { name: 'Save key' }).click();
+  await expect(dialog.getByText('YOUR CLAUDE KEY')).toBeVisible();
   problems.push(...(await serious(page, 'settings')));
 
   await dialog.getByRole('button', { name: 'Edit lists', exact: true }).click();
   await dialog.getByRole('tab', { name: 'Backlog' }).click();
   await dialog.getByRole('button', { name: 'Add backlog item' }).click();
-  const form = dialog.getByRole('form', { name: 'Add backlog item' });
+  // The same form as on the Backlog screen.
+  const form = dialog.getByRole('form', { name: 'Add a backlog item' });
   problems.push(...(await serious(page, 'edit mode form')));
   await form.getByLabel('Name').fill('My own side quest chain');
-  await form.getByLabel('Steps in total').fill('8');
-  await form.getByRole('button', { name: 'Add backlog item' }).click();
+  await form.getByLabel('Category').selectOption('side-quests');
+  await form.getByRole('radio', { name: /Counter/ }).check();
+  await form.getByLabel('How much there is in total').fill('8');
+  await form.getByRole('button', { name: 'Add item' }).click();
   await expect(dialog.getByText('My own side quest chain')).toBeVisible();
   problems.push(...(await serious(page, 'edit mode list')));
 

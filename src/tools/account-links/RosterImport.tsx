@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import type { Character, GameContract } from '../../core/contract';
 import { backend } from '../../core/data/backend';
-import { useGameData } from '../../core/data/userData';
+import { gameData, setRosterEntry, useGameData, type RosterEntry } from '../../core/data/userData';
 import { BottomSheet, Button, ExampleTag, GameTag, HowTo, Segmented, UnverifiedTag } from '../../core/ui';
 import { accountsFor, importSources, type LinkedAccount } from './accounts';
 import c from './connections.module.css';
@@ -115,7 +115,7 @@ function ImportSheet({ games, onClose }: { games: GameContract[]; onClose: () =>
           <>Pick which HoYoLAB account reads each game (if you linked more than one, e.g. a main and an alt). Accounts are added in Account → Connected accounts. For one game you can also paste a login just for this import.</>,
           <>Press “Find my characters”. HLITH asks HoYoLAB which characters each account has, with their dupes and level.</>,
           <>Check each list. NEW = not marked as owned yet. RAISE = a higher dupe count than in HLITH.</>,
-          <>Press “Add” under a game. It only adds and raises: nothing you marked is removed or lowered, and wanted marks stay.</>,
+          <>Press “Add” under a game. It only adds and raises: nothing you marked is removed or lowered. Characters you now own leave your wanted list.</>,
         ]}
       >
         <p className={c.body}>HoYoLAB only shows characters you own. Anyone HoYoLAB lists that isn’t in HLITH’s list yet is shown but not added. Level and weapon are shown but not saved yet: HLITH doesn’t store builds yet.</p>
@@ -215,18 +215,40 @@ function ImportSheet({ games, onClose }: { games: GameContract[]; onClose: () =>
 }
 
 /** One game's preview and its own "Add" button, writing only to that game's roster. */
-function GameImport({ game, imported, who }: { game: GameContract; imported: HoyoCharacter[]; who: string }) {
+export function GameImport({ game, imported, who }: { game: GameContract; imported: HoyoCharacter[]; who: string }) {
   const characters = useCharacters(game);
   const roster = useGameData(game.id).roster;
   const [done, setDone] = useState<string | null>(null);
+  // What "Add" changed: each entry before and after, so Undo can put the earlier ones back.
+  const [undo, setUndo] = useState<{ id: string; before: RosterEntry | undefined; after: RosterEntry }[] | null>(null);
   // Re-plan whenever the roster changes, so the preview always matches what "Add" will do.
   const rows = useMemo(() => (characters ? planImport(game, imported, characters, roster) : null), [imported, characters, roster, game]);
   const changes = rows?.filter((r) => r.status === 'new' || r.status === 'update').length ?? 0;
   const word = game.terms.character.toLowerCase();
   const add = () => {
     if (!rows) return;
+    const touched = rows.flatMap((r) => (r.id && (r.status === 'new' || r.status === 'update') ? [r.id] : []));
+    const before = touched.map((id) => ({ id, before: roster[id] }));
     const { added, updated } = applyImport(game.id, rows, roster);
+    const now = gameData(game.id).roster;
+    setUndo(before.flatMap((b) => (now[b.id] ? [{ ...b, after: now[b.id] as RosterEntry }] : [])));
     setDone(`Added ${added} and raised ${game.dupes?.name ?? 'dupes'} for ${updated} in your ${game.short} roster. Nothing was removed.`);
+  };
+  const undoAdd = () => {
+    if (!undo) return;
+    const now = gameData(game.id).roster;
+    let changedSince = 0;
+    for (const u of undo) {
+      const cur = now[u.id];
+      // Only put back what this import set; anything you changed since stays as you left it.
+      if (!cur || cur.owned !== u.after.owned || cur.wanted !== u.after.wanted || cur.dupes !== u.after.dupes) {
+        changedSince++;
+        continue;
+      }
+      setRosterEntry(game.id, u.id, u.before ?? { owned: false, wanted: false, dupes: 0 });
+    }
+    setUndo(null);
+    setDone(`Undone: your ${game.short} roster is back as it was before this import.${changedSince ? ` ${changedSince === 1 ? 'One you changed since stays' : `${changedSince} you changed since stay`} as you set ${changedSince === 1 ? 'it' : 'them'}.` : ''}`);
   };
   return (
     <section className={c.card} aria-label={`Found on HoYoLAB for ${game.name}`}>
@@ -243,8 +265,11 @@ function GameImport({ game, imported, who }: { game: GameContract; imported: Hoy
         </Button>
       </div>
       {done && (
-        <span className={c.message} role="status">
-          {done}
+        <span className={c.row}>
+          <span className={c.message} role="status">
+            {done}
+          </span>
+          {undo && undo.length > 0 && <Button onClick={undoAdd}>Undo</Button>}
         </span>
       )}
       {!rows ? <span className={c.muted}>Loading the {word} list…</span> : rows.length === 0 ? <span className={c.muted}>HoYoLAB listed no {word}s for this account.</span> : <Rows game={game} rows={rows} />}

@@ -1,32 +1,17 @@
-import { useEffect, useRef, useState } from "react";
-import type { Character, Material, TeamPreset } from "../../core/contract";
-import { useExamplesShown } from "../../core/data/prefs";
-import { setFarm, setRosterEntry } from "../../core/data/userData";
-import { formatNumber } from "../../core/time/format";
-import {
-  ExampleTag,
-  GameTag,
-  HowTo,
-  NoData,
-  UnverifiedTag,
-} from "../../core/ui";
-import { exampleNeeds } from "../farm/examples";
-import { farmPlan } from "../farm/plan";
-import { exampleBuild, exampleScore } from "./examples";
-import { KitCheck } from "./KitCheck";
-import r from "./roster.module.css";
-import {
-  artOf,
-  CharArt,
-  dupesLabel,
-  elementOf,
-  entryOf,
-  isUpcoming,
-  rarityColor,
-  roleLabel,
-} from "./shared";
-import { TeamRow } from "./TeamParts";
-import type { RosterData } from "./useRosterData";
+import { useEffect, useRef, useState } from 'react';
+import type { Character, Material, TeamPreset } from '../../core/contract';
+import { useExamplesShown } from '../../core/data/prefs';
+import { setFarm, setRosterEntry } from '../../core/data/userData';
+import { formatNumber } from '../../core/time/format';
+import { ExampleTag, GameTag, HowTo, NoData, UnverifiedTag } from '../../core/ui';
+import { exampleNeeds } from '../farm/examples';
+import { farmPlan } from '../farm/plan';
+import { exampleBuild, exampleScore } from './examples';
+import { KitCheck } from './KitCheck';
+import r from './roster.module.css';
+import { artOf, CharArt, dupesLabel, elementOf, entryOf, isUpcoming, rarityColor, roleLabel } from './shared';
+import { TeamRow } from './TeamParts';
+import type { RosterData } from './useRosterData';
 
 interface Props {
   data: RosterData;
@@ -34,8 +19,10 @@ interface Props {
   several: boolean;
   onBack: () => void;
   /** Open Pulls on a tab (Planner, History). */
-  openPulls?: ((tab: "planner" | "history") => void) | undefined;
+  openPulls?: ((tab: 'planner' | 'history') => void) | undefined;
   openFarm?: (() => void) | undefined;
+  /** Open Teams with a new preset that already has this character in it. */
+  makePreset?: (() => void) | undefined;
 }
 
 /*
@@ -46,30 +33,20 @@ interface Props {
  */
 
 /** The character page (design): art, chips, name, Level · copies · Build score, then the cards. */
-export function CharacterPage({
-  data,
-  character: c,
-  several,
-  onBack,
-  openPulls,
-  openFarm,
-}: Props) {
+export function CharacterPage({ data, character: c, several, onBack, openPulls, openFarm, makePreset }: Props) {
   const { game, user } = data;
   const entry = entryOf(user.roster, c.id);
   const el = elementOf(game, c.element);
-  const save = (change: Partial<typeof entry>) =>
-    setRosterEntry(game.id, c.id, { ...entry, ...change });
+  const save = (change: Partial<typeof entry>) => setRosterEntry(game.id, c.id, { ...entry, ...change });
   const dupes = game.dupes;
   const farming = user.farm.includes(c.id);
+  const addToFarm = () => {
+    if (!farming) setFarm(game.id, [...user.farm, c.id]);
+  };
   const who = game.terms.character.toLowerCase();
   const top = useRef<HTMLDivElement>(null);
   useEffect(() => {
-    if (
-      typeof window.scrollTo === "function" &&
-      top.current &&
-      top.current.getBoundingClientRect().top < 0
-    )
-      window.scrollTo({ top: 0 });
+    if (typeof window.scrollTo === 'function' && top.current && top.current.getBoundingClientRect().top < 0) window.scrollTo({ top: 0 });
   }, []);
 
   return (
@@ -84,30 +61,21 @@ export function CharacterPage({
           <HowTo
             steps={[
               <>
-                Press <strong>Owned</strong> if you have this {who},{" "}
-                <strong>Wanted</strong> if you’re saving for them. Press again
-                to undo.
+                Press <strong>Owned</strong> if you have this {who}, <strong>Wanted</strong> if you’re saving for them. Press again to undo.
               </>,
               dupes ? (
                 <>
-                  Use − and + under {dupes.name} to set how many extra copies
-                  you have (0 to {dupes.max}).
+                  Use − and + under {dupes.name} to set how many extra copies you have (0 to {dupes.max}).
                 </>
               ) : (
                 <>This game has no extra copies to track.</>
               ),
               <>
-                <strong>Farm for {c.name}</strong> adds their materials to Farm,
-                and Today then tells you what to spend stamina on.
+                <strong>Farm for {c.name}</strong> adds their materials to Farm, and Today then tells you what to spend stamina on.
               </>,
+              <>HLITH can’t save a {who}’s level or build yet, so Level and Build score say “No data yet”, never a guess.</>,
               <>
-                Build score, level and team fit fill in once you import your
-                build (HoYoLAB link or a screenshot of the {who} screen). Until
-                then HLITH shows “No data yet”, never a guess.
-              </>,
-              <>
-                <strong>Kit check</strong> (further down, folded) shows what
-                each skill really does, with the game’s own text as proof.
+                <strong>Kit check</strong> (further down, folded) shows what each skill really does, with the game’s own text as proof.
               </>,
             ]}
           />
@@ -115,18 +83,8 @@ export function CharacterPage({
       </div>
 
       <div className={r.hero}>
-        <CharArt
-          name={c.name}
-          src={artOf(c, "art")}
-          elementColor={el?.color ?? "var(--ink-4)"}
-          className={r.heroArt}
-          label
-        >
-          <span
-            className={r.heroEdge}
-            style={{ background: rarityColor(c) }}
-            aria-hidden="true"
-          />
+        <CharArt name={c.name} src={artOf(c, 'art')} elementColor={el?.color ?? 'var(--ink-4)'} className={r.heroArt} label>
+          <span className={r.heroEdge} style={{ background: rarityColor(c) }} aria-hidden="true" />
         </CharArt>
         <div className={r.heroInfo}>
           <div className={r.chips}>
@@ -134,20 +92,14 @@ export function CharacterPage({
               {game.terms.rarity[c.rarity]}
             </span>
             <span className={r.chip}>
-              <span
-                className={r.chipDot}
-                style={{ background: el?.color ?? "var(--ink-4)" }}
-                aria-hidden="true"
-              />
+              <span className={r.chipDot} style={{ background: el?.color ?? 'var(--ink-4)' }} aria-hidden="true" />
               {el?.label ?? c.element}
             </span>
             <span className={r.chip}>{roleLabel(game, c.role)}</span>
             <span className={r.chipVent} style={{ background: game.vent }}>
               {game.short}
             </span>
-            {isUpcoming(c) && (
-              <UnverifiedTag source={c.source ?? "game files"} />
-            )}
+            {isUpcoming(c) && <UnverifiedTag source={c.source ?? 'game files'} />}
           </div>
           <h2 className={r.heroName}>{c.name}</h2>
           <div className={r.markRow} role="group" aria-label="Your roster">
@@ -155,33 +107,19 @@ export function CharacterPage({
               type="button"
               className={r.markBtn}
               aria-pressed={entry.owned}
-              onClick={() => save({ owned: !entry.owned })}
+              onClick={() =>
+                // Owning someone means you're no longer saving for them.
+                save(entry.owned ? { owned: false } : { owned: true, wanted: false })
+              }
             >
-              {entry.owned ? "✓ " : ""}Owned
+              {entry.owned ? '✓ ' : ''}Owned
             </button>
-            <button
-              type="button"
-              className={r.markBtn}
-              aria-pressed={entry.wanted}
-              onClick={() => save({ wanted: !entry.wanted })}
-            >
-              {entry.wanted ? "✓ " : ""}Wanted
+            <button type="button" className={r.markBtn} aria-pressed={entry.wanted} onClick={() => save({ wanted: !entry.wanted })}>
+              {entry.wanted ? '✓ ' : ''}Wanted
             </button>
-            {game.modules.includes("farm") && (
-              <button
-                type="button"
-                className={r.markBtn}
-                aria-pressed={farming}
-                onClick={() =>
-                  setFarm(
-                    game.id,
-                    farming
-                      ? user.farm.filter((id) => id !== c.id)
-                      : [...user.farm, c.id],
-                  )
-                }
-              >
-                {farming ? "✓ " : ""}Farm for {c.name}
+            {game.modules.includes('farm') && (
+              <button type="button" className={r.markBtn} aria-pressed={farming} onClick={() => setFarm(game.id, farming ? user.farm.filter((id) => id !== c.id) : [...user.farm, c.id])}>
+                {farming ? '✓ ' : ''}Farm for {c.name}
               </button>
             )}
             {farming && openFarm && (
@@ -196,100 +134,78 @@ export function CharacterPage({
               <span className={r.statValue} data-empty="true">
                 —
               </span>
-              {/* ROSTER-LOGIC / HoYoLAB import fills the level. */}
-              <span className={entry.owned ? r.statNoData : r.statSub}>
-                {entry.owned ? "No data yet · import a build" : "Not owned"}
-              </span>
+              {/* ROSTER-LOGIC adds a build store; until then no level is saved anywhere. */}
+              <span className={entry.owned ? r.statNoData : r.statSub}>{entry.owned ? 'No data yet · levels aren’t saved yet' : 'Not owned'}</span>
             </div>
             {dupes && (
               <div className={r.stat}>
                 <span className={r.statLabel}>{dupes.name}</span>
-                <div
-                  className={r.stepper}
-                  role="group"
-                  aria-label={`${dupes.name}s`}
-                >
+                <div className={r.stepper} role="group" aria-label={`${dupes.name}s`}>
                   <button
                     type="button"
                     className={r.stepBtn}
                     aria-label={`One ${dupes.name} less`}
                     disabled={!entry.owned || entry.dupes <= 0}
-                    onClick={() =>
-                      save({ dupes: Math.max(0, entry.dupes - 1) })
-                    }
+                    onClick={() => save({ dupes: Math.max(0, entry.dupes - 1) })}
                   >
                     −
                   </button>
-                  <span
-                    className={r.statValue}
-                    data-empty={!entry.owned}
-                    aria-live="polite"
-                  >
-                    {entry.owned ? dupesLabel(game, entry.dupes) : "—"}
+                  <span className={r.statValue} data-empty={!entry.owned} aria-live="polite">
+                    {entry.owned ? dupesLabel(game, entry.dupes) : '—'}
                   </span>
                   <button
                     type="button"
                     className={r.stepBtn}
                     aria-label={`One ${dupes.name} more`}
                     disabled={!entry.owned || entry.dupes >= dupes.max}
-                    onClick={() =>
-                      save({ dupes: Math.min(dupes.max, entry.dupes + 1) })
-                    }
+                    onClick={() => save({ dupes: Math.min(dupes.max, entry.dupes + 1) })}
                   >
                     +
                   </button>
                 </div>
-                <span className={r.statSub}>
-                  {entry.owned
-                    ? entry.dupes >= dupes.max
-                      ? "Maxed"
-                      : `${dupes.max - entry.dupes} to max`
-                    : "Mark as owned first"}
-                </span>
+                <span className={r.statSub}>{entry.owned ? (entry.dupes >= dupes.max ? 'Maxed' : `${dupes.max - entry.dupes} to max`) : 'Mark as owned first'}</span>
               </div>
             )}
-            <div className={r.stat}>
-              <span className={r.statLabel}>Build score</span>
-              <span className={r.statValue} data-empty="true">
-                —
-              </span>
-              <span className={r.statNoData}>No data yet</span>
-            </div>
           </div>
         </div>
       </div>
 
       {/* Design order: Build score (or If you pull), Team fit, Materials. Secondary cards fold away below. */}
       <div className={r.cards}>
-        {entry.owned ? (
-          <BuildCard data={data} />
-        ) : (
-          <IfYouPull data={data} openPulls={openPulls} />
-        )}
-        <TeamFit data={data} character={c} />
-        <Materials data={data} character={c} openFarm={openFarm} />
+        {entry.owned ? <BuildCard data={data} /> : <IfYouPull data={data} openPulls={openPulls} />}
+        <TeamFit data={data} character={c} makePreset={makePreset} />
+        <Materials
+          data={data}
+          character={c}
+          openFarm={
+            openFarm
+              ? () => {
+                  addToFarm();
+                  openFarm();
+                }
+              : undefined
+          }
+          farming={farming}
+        />
         {isUpcoming(c) && (
           <section className={r.card} aria-labelledby={`known-${c.id}`}>
             <h3 className={r.cardTitle} id={`known-${c.id}`}>
               What’s known
             </h3>
-            <p className={r.cardText}>
-              Not released yet. Everything here is from the game files and can
-              still change before release.
-            </p>
+            <p className={r.cardText}>Not released yet. Everything here is from the game files and can still change before release.</p>
             <div className={r.lineRow}>
               <span className={r.lineLabel}>Release date in the files</span>
               <span className={r.mono}>
                 {c.releasedAt
                   ? new Date(c.releasedAt).toLocaleDateString(undefined, {
-                      year: "numeric",
-                      month: "short",
-                      day: "numeric",
+                      year: 'numeric',
+                      month: 'short',
+                      day: 'numeric',
                     })
-                  : "—"}
+                  : '—'}
               </span>
             </div>
-            <UnverifiedTag source={c.source ?? "game files"} />
+            <UnverifiedTag source={c.source ?? 'game files'} />
           </section>
         )}
       </div>
@@ -297,8 +213,7 @@ export function CharacterPage({
       <div className={r.cards}>
         <details className={r.fold}>
           <summary className={r.foldSummary}>
-            Kit check{" "}
-            <span className={r.foldNote}>what each skill really does</span>
+            Kit check <span className={r.foldNote}>what each skill really does</span>
           </summary>
           <div className={r.foldBody}>
             <section className={r.card} aria-label="Kit check">
@@ -308,7 +223,7 @@ export function CharacterPage({
         </details>
         <details className={r.fold}>
           <summary className={r.foldSummary}>
-            Recommended build{" "}
+            Recommended build{' '}
             <span className={r.foldNote}>
               {game.terms.gear}, {game.terms.weapon}, stats
             </span>
@@ -316,12 +231,7 @@ export function CharacterPage({
           <div className={r.foldBody}>
             <section className={r.card} aria-label="Recommended build">
               {/* ROSTER-LOGIC fills recommended gear, weapon and stats from the build guides. */}
-              {[
-                `${game.terms.gear} sets`,
-                game.terms.weapon,
-                "Main stats",
-                `${game.terms.skill}: level first`,
-              ].map((label) => (
+              {[`${game.terms.gear} sets`, game.terms.weapon, 'Main stats', `${game.terms.skill}: level first`].map((label) => (
                 <div key={label} className={r.lineRow}>
                   <span className={r.lineLabel}>{label}</span>
                   <NoData dash={false} />
@@ -353,30 +263,15 @@ function BuildCard({ data }: { data: RosterData }) {
         </span>
         <span className={r.noBuildTitle}>No build data yet</span>
         <span className={r.cardText}>
-          Import {game.terms.gear} and {game.terms.weapon} from your in-game
-          profile to get a score. HLITH shows nothing rather than a guess.
+          HLITH can’t save builds ({game.terms.gear}, {game.terms.weapon}, level) yet, so there’s nothing to score. It shows nothing rather than a guess.
         </span>
-        {/* Import build mounts here (account-links builder: HoYoLAB import / screenshot scan). */}
-        <button
-          type="button"
-          className={r.outlineBtn}
-          disabled
-          title="Comes with the HoYoLAB link and the screenshot scan"
-        >
-          Import build
-        </button>
+        {/* Import build mounts here once ROSTER-LOGIC adds a build store (HoYoLAB import / screenshot scan). */}
       </div>
       {showExamples && (
-        <div
-          className={r.preview}
-          role="group"
-          aria-label="Example build score"
-        >
+        <div className={r.preview} role="group" aria-label="Example build score">
           <div className={r.previewHead}>
             <ExampleTag />
-            <span className={r.muted}>
-              What a score looks like once a build is imported
-            </span>
+            <span className={r.muted}>What a score looks like once a build is imported</span>
           </div>
           <div className={r.scoreRow}>
             <span className={r.scoreBig}>{ex.score}</span>
@@ -398,22 +293,10 @@ function BuildCard({ data }: { data: RosterData }) {
   );
 }
 
-function IfYouPull({
-  data,
-  openPulls,
-}: {
-  data: RosterData;
-  openPulls: Props["openPulls"];
-}) {
+function IfYouPull({ data, openPulls }: { data: RosterData; openPulls: Props['openPulls'] }) {
   const { game } = data;
-  const banner = game.bannerTypes.find(
-    (b) => b.target === "character" && b.pity.kind === "hard-pity",
-  );
-  const worst =
-    banner && banner.pity.kind === "hard-pity"
-      ? banner.pity.hardPity *
-        (banner.pity.featured?.guaranteeAfterLoss ? 2 : 1)
-      : null;
+  const banner = game.bannerTypes.find((b) => b.target === 'character' && b.pity.kind === 'hard-pity');
+  const worst = banner && banner.pity.kind === 'hard-pity' ? banner.pity.hardPity * (banner.pity.featured?.guaranteeAfterLoss ? 2 : 1) : null;
   return (
     <section className={r.card} aria-labelledby="if-you-pull">
       <h3 className={r.cardTitle} id="if-you-pull">
@@ -424,36 +307,23 @@ function IfYouPull({
         <span className={r.pullBig} aria-hidden="true">
           —
         </span>
-        <span className={r.pullOf}>
-          {worst ? `/ ${worst} worst case` : "/ worst case: no data yet"}
-        </span>
+        <span className={r.pullOf}>{worst ? `/ ${worst} worst case` : '/ worst case: no data yet'}</span>
       </div>
       <span className={r.track} aria-hidden="true" />
-      <span className={r.cardText}>
-        Pulls you hold: no data yet. Log what you have in Pulls → Bank log and
-        this shows whether you can get them even after a lost 50/50.
-      </span>
+      <span className={r.cardText}>Pulls you hold: no data yet. Log what you have in Pulls → Bank log and this shows whether you can get them even after a lost 50/50.</span>
       <div className={r.pityRow}>
         <span className={r.dashSmall} aria-hidden="true">
           —
         </span>
         <span className={r.grow}>Current pity and 50/50: no data yet</span>
         {openPulls && (
-          <button
-            type="button"
-            className={r.linkButton}
-            onClick={() => openPulls("history")}
-          >
+          <button type="button" className={r.linkButton} onClick={() => openPulls('history')}>
             Import
           </button>
         )}
       </div>
       {openPulls && (
-        <button
-          type="button"
-          className={r.linkButton}
-          onClick={() => openPulls("planner")}
-        >
+        <button type="button" className={r.linkButton} onClick={() => openPulls('planner')}>
           Plan pulls →
         </button>
       )}
@@ -461,19 +331,10 @@ function IfYouPull({
   );
 }
 
-function TeamFit({
-  data,
-  character: c,
-}: {
-  data: RosterData;
-  character: Character;
-}) {
+function TeamFit({ data, character: c, makePreset }: { data: RosterData; character: Character; makePreset?: (() => void) | undefined }) {
   const { game, user, presets } = data;
-  const inPreset = (p: TeamPreset) =>
-    p.slots.some((s) => s.characters.includes(c.id));
-  const recommended = presets.list
-    .map((p, i) => ({ p, i }))
-    .filter(({ p }) => inPreset(p));
+  const inPreset = (p: TeamPreset) => p.slots.some((s) => s.characters.includes(c.id));
+  const recommended = presets.list.map((p, i) => ({ p, i })).filter(({ p }) => inPreset(p));
   const mine = user.teams.filter((t) => t.members.includes(c.id));
   return (
     <section className={r.card} aria-labelledby="team-fit">
@@ -481,41 +342,31 @@ function TeamFit({
         Team fit
       </h3>
       {/* ROSTER-LOGIC fills "who fits" and the real synergy scores. */}
-      {recommended.length === 0 && mine.length === 0 && (
-        <p className={r.cardText}>
-          No preset uses this {game.terms.character.toLowerCase()} yet.
-        </p>
+      {recommended.length === 0 && mine.length === 0 && <p className={r.cardText}>No preset uses this {game.terms.character.toLowerCase()} yet.</p>}
+      {recommended.length === 0 && mine.length === 0 && makePreset && (
+        <button type="button" className={r.linkButton} onClick={makePreset}>
+          Make a preset with them →
+        </button>
       )}
       {recommended.map(({ p, i }) => (
         <TeamRow
           key={p.id}
           data={data}
           name={p.name}
-          members={p.slots
-            .map((s) => s.characters[0])
-            .filter((x): x is string => Boolean(x))}
+          members={p.slots.map((s) => s.characters[0]).filter((x): x is string => Boolean(x))}
           example={presets.example}
           score={presets.example ? exampleScore(i) : null}
         />
       ))}
       {mine.map((t) => (
-        <TeamRow
-          key={t.id}
-          data={data}
-          name={t.name}
-          members={t.members}
-          example={false}
-          score={null}
-        />
+        <TeamRow key={t.id} data={data} name={t.name} members={t.members} example={false} score={null} />
       ))}
     </section>
   );
 }
 
 function useMaterials(data: RosterData): Material[] | null {
-  const [state, setState] = useState<{ id: string; list: Material[] } | null>(
-    null,
-  );
+  const [state, setState] = useState<{ id: string; list: Material[] } | null>(null);
   const { game } = data;
   const needed = Boolean(game.rules.materialsFor);
   useEffect(() => {
@@ -536,10 +387,13 @@ function Materials({
   data,
   character: c,
   openFarm,
+  farming,
 }: {
   data: RosterData;
   character: Character;
+  /** Adds them to Farm (if they aren't there yet), then opens it. */
   openFarm?: (() => void) | undefined;
+  farming: boolean;
 }) {
   const { game } = data;
   const materials = useMaterials(data);
@@ -570,43 +424,27 @@ function Materials({
         ))
       ) : !example ? (
         <p className={r.cardText}>
-          Material amounts for {game.name}: <NoData dash={false} /> That part is
-          on us, not you.
+          Material amounts for {game.name}: <NoData dash={false} /> That part is on us, not you.
         </p>
       ) : (
         <>
-          <p className={r.cardText}>
-            Material amounts for {game.name} aren’t in HLITH yet (that part is
-            on us). These rows only show what it will look like.
-          </p>
-          {exampleNeeds(game, 1).map((m, i) => {
-            const have = Math.round(
-              m.amount * ([0.4, 1, 0.7, 0.2][i % 4] ?? 0),
-            );
-            return (
-              <div key={m.material} className={r.matRow}>
-                <div className={r.matTop}>
-                  <span className={r.lineLabel}>{m.name}</span>
-                  <span className={r.mono} data-done={have >= m.amount}>
-                    {have}/{m.amount}
-                  </span>
-                </div>
-                <span className={r.track} aria-hidden="true">
-                  <span
-                    className={r.fill}
-                    style={{
-                      width: `${Math.min(100, (have / m.amount) * 100)}%`,
-                    }}
-                  />
-                </span>
+          <p className={r.cardText}>Material amounts for {game.name} aren’t in HLITH yet (that part is on us). These rows only show what it will look like.</p>
+          {/* Same example rows as Farm; what you have isn't tracked, so it's "—" just like real data. */}
+          {exampleNeeds(game, 1).map((m) => (
+            <div key={m.material} className={r.matRow}>
+              <div className={r.matTop}>
+                <span className={r.lineLabel}>{m.name}</span>
+                <span className={r.mono}>—/{formatNumber(m.amount)}</span>
               </div>
-            );
-          })}
+              <span className={r.track} aria-hidden="true" />
+              <span className={r.statNoData}>Have: no data yet</span>
+            </div>
+          ))}
         </>
       )}
       {openFarm && (
         <button type="button" className={r.linkButton} onClick={openFarm}>
-          Plan it in Farm →
+          {farming ? 'Open Farm →' : 'Plan it in Farm →'}
         </button>
       )}
     </section>

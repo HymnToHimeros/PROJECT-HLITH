@@ -61,7 +61,11 @@ export function FeedSettings({ games, servers, signedIn, chooseServer }: Props) 
     <div className={a.stack}>
       <Card title="Evening message">
         <p className={a.text}>One short message each evening with what is still open before the reset: resets, banners and events about to end, your wanted characters.</p>
-        <Switch label="Evening message on this device" checked={notify.enabled} onChange={(on) => void turnOn(on)} disabled={permission === 'unsupported'} />
+        <p className={`${a.small} ${a.info}`}>
+          <strong>Preview only.</strong> HLITH can’t send this message by itself yet: you see it when you press Preview or Send a test. Your choices below are
+          kept for when sending works.
+        </p>
+        <Switch label="Evening message on this device (preview only)" checked={notify.enabled} onChange={(on) => void turnOn(on)} disabled={permission === 'unsupported'} />
         <span className={a.small} role="status">
           {permission === 'unsupported'
             ? 'This browser can’t show notifications.'
@@ -121,7 +125,7 @@ export function FeedSettings({ games, servers, signedIn, chooseServer }: Props) 
         )}
         {testNote && <p className={a.small}>{testNote}</p>}
         <p className={a.small}>
-          Honest status: sending it to your phone every evening, even with HLITH closed, needs push keys on HLITH’s server. The owner hasn’t set those up yet, so
+          Why preview only: sending it to your phone every evening, even with HLITH closed, needs push keys on HLITH’s server. The owner hasn’t set those up yet, so
           for now the message is built when you press Preview or Send a test.
         </p>
       </Card>
@@ -130,11 +134,16 @@ export function FeedSettings({ games, servers, signedIn, chooseServer }: Props) 
 
       <HowTo
         steps={[
-          'Switch on “Evening message on this device” and allow notifications when your browser asks.',
+          'Switch on “Evening message on this device (preview only)” and allow notifications when your browser asks.',
           'Pick the time and what it should mention. Each switch only adds lines when there is something real to say.',
-          'Press “Send a test” to see tonight’s message right now.',
-          'Calendar feed: press “Create my calendar link”, then “Add to my calendar”. Your resets, banners and events appear in your phone’s calendar and update by themselves.',
-          'If you shared the link by mistake, press “New link”: the old one stops working.',
+          'Press “Send a test” to see tonight’s message right now. HLITH can’t send it by itself yet.',
+          ...(hasServer() && signedIn
+            ? [
+                'Calendar feed: press “Create my calendar link”, then “Add to my calendar”. Your resets, banners and events appear in your phone’s calendar.',
+                'Resets repeat by themselves. After banners, events or your plans change, press “Update dates now” so the calendar gets the new dates.',
+                'If you shared the link by mistake, press “New link”: the old one stops working.',
+              ]
+            : []),
         ]}
       />
     </div>
@@ -176,7 +185,7 @@ function CalendarFeed({ games, servers, signedIn }: { games: GameContract[]; ser
   if (!ready) {
     return (
       <Card title="Calendar feed">
-        <p className={a.text}>Your resets, banners, events and plans in your phone’s or computer’s calendar, kept up to date by itself.</p>
+        <p className={a.text}>Your resets, banners, events and plans in your phone’s or computer’s calendar.</p>
         <p className={a.small}>
           No data yet: the calendar link is served by HLITH’s server and needs sign-in. {hasServer() ? 'Sign in to create your link.' : 'This site runs in “this device only” mode, so there is no server to serve it yet.'}
         </p>
@@ -186,7 +195,7 @@ function CalendarFeed({ games, servers, signedIn }: { games: GameContract[]; ser
   const url = row?.feed_enabled && row.feed_token ? feedUrl(row.feed_token) : null;
   return (
     <Card title="Calendar feed">
-      <p className={a.text}>Your resets, banners, events and plans in your phone’s or computer’s calendar, kept up to date by itself.</p>
+      <p className={a.text}>Your resets, banners, events and plans in your phone’s or computer’s calendar.</p>
       <span className={a.status} role="status">
         <span className={`${a.dot} ${url ? a.dotOk : ''}`} aria-hidden="true" />
         {row === undefined ? 'Checking…' : url ? 'Your calendar link is on' : 'No calendar link yet'}
@@ -218,6 +227,9 @@ function CalendarFeed({ games, servers, signedIn }: { games: GameContract[]; ser
               Switch off
             </Button>
           </div>
+          <p className={a.small}>
+            Resets repeat by themselves. Banner, event and plan dates are a copy saved {savedWhen(row?.updated_at)}; after they change, press Update dates now.
+          </p>
           <p className={a.small}>Anyone with the link can read your resets, dates and plan titles. Nothing else (no pulls, no bank log).</p>
         </>
       ) : (
@@ -234,4 +246,12 @@ function CalendarFeed({ games, servers, signedIn }: { games: GameContract[]; ser
       )}
     </Card>
   );
+}
+
+/** "on 3 Oct, 21:04" from the reminder row's last save, or a plain fallback. */
+function savedWhen(iso: string | undefined): string {
+  const t = iso ? Date.parse(iso) : NaN;
+  if (Number.isNaN(t)) return 'when you last pressed a button here';
+  const d = new Date(t);
+  return `on ${d.toLocaleDateString(undefined, { day: 'numeric', month: 'short' })}, ${d.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' })}`;
 }

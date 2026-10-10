@@ -3,7 +3,7 @@
  * and how a featured character fits your roster. Nothing here guesses: a
  * roster you haven't filled in gives "unknown", not "new for you".
  */
-import type { Banner, GameContract } from '../../core/contract';
+import type { Banner, Character, GameContract } from '../../core/contract';
 import type { RosterEntry } from '../../core/data/userData';
 
 export interface BannerSplit {
@@ -21,6 +21,21 @@ export function splitBanners(banners: Banner[], now: number, hideLeaks: boolean)
   const live = shown.filter((b) => Date.parse(b.start) <= now).sort((a, b) => Date.parse(a.end) - Date.parse(b.end) || a.id.localeCompare(b.id));
   const upcoming = shown.filter((b) => Date.parse(b.start) > now).sort((a, b) => Date.parse(a.start) - Date.parse(b.start) || a.id.localeCompare(b.id));
   return { live, upcoming, hiddenLeaks: open.length - shown.length };
+}
+
+const DAY = 86_400_000;
+
+/**
+ * "Rerun" when the featured character came out more than a week before the
+ * banner opens, "New" otherwise; null when that can't be told (weapon banner,
+ * no featured character, or no release date in the list).
+ */
+export function rerunLabel(game: GameContract, banner: Banner, characters: Map<string, Character>): 'Rerun' | 'New' | null {
+  const type = game.bannerTypes.find((t) => t.id === banner.type);
+  if (type?.target === 'weapon') return null;
+  const lead = banner.featured[0] ? characters.get(banner.featured[0]) : undefined;
+  if (!lead?.releasedAt) return null;
+  return Date.parse(lead.releasedAt) < Date.parse(banner.start) - 7 * DAY ? 'Rerun' : 'New';
 }
 
 export type Fit =

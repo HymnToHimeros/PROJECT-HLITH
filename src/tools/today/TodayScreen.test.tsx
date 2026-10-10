@@ -1,6 +1,7 @@
 import { act, fireEvent, render, screen, waitFor, within } from '@testing-library/react';
-import { beforeEach, describe, expect, it, vi } from 'vitest';
-import type { Banner, Character, GameContract } from '../../core/contract';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import type { Banner, Character, GameContract, GameEvent } from '../../core/contract';
+import { updatePrefs } from '../../core/data/prefs';
 import { gameData, resetUserData, setRosterEntry, setTick } from '../../core/data/userData';
 import { serverRule } from '../../core/time/reset';
 import { buildTasks, byUrgency, tickCounts } from './tasks';
@@ -70,6 +71,7 @@ describe('Today', () => {
     localStorage.clear();
     resetUserData();
   });
+  afterEach(() => updatePrefs((p) => ({ ...p, hideExamples: false })));
 
   it('a tick counts until the next daily reset, then clears by itself', async () => {
     act(() => setTick('aa', 'income:aa.daily', new Date(NOW - HOUR).toISOString()));
@@ -161,6 +163,35 @@ describe('Today', () => {
     expect(within(card).getByText('1/3')).toBeInTheDocument();
     expect(within(card).getAllByText('Daily').length).toBe(2);
     expect(within(card).getByText('Weekly')).toBeInTheDocument();
+  });
+
+  it('an event task ticked in Tonight’s run shows in Open tasks, can be unticked there, and both counts agree', async () => {
+    const ev: GameEvent = { id: 'ev1', title: 'Moon festival', kind: 'event', start: new Date(NOW - 48 * HOUR).toISOString(), end: new Date(NOW + 30 * HOUR).toISOString(), reward: null, currency: 'gem' };
+    const withEvent = { ...game, data: { ...game.data, events: async () => [ev] } } as GameContract;
+    render(<TodayScreen {...props({ games: [withEvent] })} />);
+    const run = await screen.findByLabelText('Tonight’s run');
+    fireEvent.click(within(run).getByRole('checkbox', { name: 'Done: Play Moon festival' }));
+    await waitFor(() => expect(within(screen.getByLabelText('Tonight’s run')).getByText('1/4 done')).toBeInTheDocument());
+    const card = screen.getByLabelText('Open tasks');
+    expect(within(card).getByText('1/4')).toBeInTheDocument();
+    expect(within(card).getByText('Event')).toBeInTheDocument();
+    const box = within(card).getByRole('checkbox', { name: 'Play Moon festival' });
+    expect(box).toBeChecked();
+    fireEvent.click(box);
+    await waitFor(() => expect(within(screen.getByLabelText('Open tasks')).getByText('0/4')).toBeInTheDocument());
+    expect(gameData('aa').ticks['event:ev1']).toBeFalsy();
+  });
+
+  it('with examples hidden, empty Live banners and Coming up offer to add your own', async () => {
+    act(() => updatePrefs((p) => ({ ...p, hideExamples: true })));
+    render(<TodayScreen {...props({ games: [makeGame(false)] })} />);
+    const live = await screen.findByLabelText('Live banners');
+    expect(within(live).getByText(/No banner on the list is live right now/)).toBeInTheDocument();
+    fireEvent.click(within(live).getByRole('button', { name: 'Add your own banner' }));
+    expect(screen.getByRole('dialog', { name: 'Edit mode · Banners · AA' })).toBeInTheDocument();
+    const coming = screen.getByLabelText('Coming up');
+    expect(within(coming).getByRole('button', { name: 'Add your own event' })).toBeInTheDocument();
+    expect(within(coming).getByRole('button', { name: 'Add your own banner' })).toBeInTheDocument();
   });
 
   it('All games: one merged screen with game tags', async () => {

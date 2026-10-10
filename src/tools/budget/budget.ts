@@ -44,6 +44,8 @@ export interface BudgetInput {
   /** Cycle start anchors when the game record has none (e.g. from the owner's lists). */
   cycleAnchors?: Record<string, number>;
   paidExtras: boolean;
+  /** Paid rows you switched off one by one while paid extras are on (income row ids). */
+  paidOff?: string[] | undefined;
 }
 
 export type RowStatus =
@@ -100,7 +102,7 @@ export function budget(input: BudgetInput): Budget {
       push({ ...base, occurrences: 0, amount: 0, status: 'skipped-backlog' });
       continue;
     }
-    if (row.paid && !input.paidExtras) {
+    if (row.paid && (!input.paidExtras || input.paidOff?.includes(row.id))) {
       push({ ...base, occurrences: 0, amount: 0, status: 'off-paid' });
       continue;
     }
@@ -163,7 +165,7 @@ export function budget(input: BudgetInput): Budget {
 
   // Events: open and ending after now count; done = already in the bank; skipped = zero.
   const eventRow = game.income.find((r) => r.schedule.kind === 'from-events');
-  const eventsOff = eventRow && ((eventRow.coveredByBacklog && enabledBacklog.has(eventRow.coveredByBacklog)) || (eventRow.paid && !input.paidExtras));
+  const eventsOff = eventRow && ((eventRow.coveredByBacklog && enabledBacklog.has(eventRow.coveredByBacklog)) || (eventRow.paid && (!input.paidExtras || Boolean(input.paidOff?.includes(eventRow.id)))));
   for (const e of eventsOff ? [] : (input.events ?? [])) {
     const base = { id: `event:${e.id}`, label: e.title, source: 'events' as const, currency: e.currency };
     if (e.state === 'done') push({ ...base, occurrences: 0, amount: 0, status: 'already-earned' });

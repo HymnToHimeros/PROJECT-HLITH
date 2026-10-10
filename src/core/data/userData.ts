@@ -30,6 +30,8 @@ export interface GameUserData {
   /** Income row id → when that pass runs out. */
   passes: Record<string, string>;
   paidExtras: boolean;
+  /** Paid rows switched off one by one (income row ids). Missing = none. */
+  paidOff?: string[];
   /** Event id → your state and claimed login days. Missing = open, nothing claimed. */
   events: Record<string, EventProgress>;
   /** Backlog item id → how many done. */
@@ -50,6 +52,11 @@ export interface GameUserData {
   plans: UserPlan[];
   /** Every change the Assistant made with your approval, with the value before, for Undo. Never removed. */
   assistantActions: AssistantAction[];
+  /**
+   * Pity you entered yourself, per banner type (for players who can't import history).
+   * A history import takes over once it knows the state. Missing = not entered.
+   */
+  pityManual?: Record<string, { pity: number; guaranteed: boolean; at: string }>;
 }
 
 /** The lists Edit mode can add to, change and hide in. */
@@ -122,6 +129,8 @@ export interface UserTeam {
 
 interface Store {
   version: 1;
+  /** When this data last changed (epoch ms). Sync keeps the newer copy; missing = never changed. */
+  updatedAt?: number;
   games: Record<GameId, GameUserData>;
 }
 
@@ -185,7 +194,7 @@ export function gameData(id: GameId): GameUserData {
 }
 
 function update(id: GameId, change: (g: GameUserData) => GameUserData): void {
-  store = { ...store, games: { ...store.games, [id]: change(gameData(id)) } };
+  store = { ...store, updatedAt: Date.now(), games: { ...store.games, [id]: change(gameData(id)) } };
   save();
 }
 
@@ -205,11 +214,16 @@ export function reverseLedgerEntry(game: GameId, entryId: string, at: string, no
 
 /** Add pulls; ones already stored (same game pull id) are ignored. Returns how many were new. */
 export function addPulls(game: GameId, incoming: PullRecord[]): number {
-  let added = 0;
+  return importPulls(game, incoming).length;
+}
+
+/** Add pulls; returns the ids that were new, so "Undo this import" can remove exactly those. */
+export function importPulls(game: GameId, incoming: PullRecord[]): string[] {
+  let added: string[] = [];
   update(game, (g) => {
     const seen = new Set(g.pulls.map((p) => p.id));
     const fresh = incoming.filter((p) => !seen.has(p.id));
-    added = fresh.length;
+    added = fresh.map((p) => p.id);
     return { ...g, pulls: [...g.pulls, ...fresh].sort((a, b) => a.time.localeCompare(b.time) || a.id.length - b.id.length || a.id.localeCompare(b.id)) };
   });
   return added;
@@ -217,6 +231,14 @@ export function addPulls(game: GameId, incoming: PullRecord[]): number {
 
 export function setPaidExtras(game: GameId, on: boolean): void {
   update(game, (g) => ({ ...g, paidExtras: on }));
+}
+
+/** Count one paid extra or not. Switching one on also switches paid extras on. */
+export function setPaidRow(game: GameId, rowId: string, on: boolean): void {
+  update(game, (g) => {
+    const off = (g.paidOff ?? []).filter((id) => id !== rowId);
+    return on ? { ...g, paidExtras: true, paidOff: off } : { ...g, paidOff: [...off, rowId] };
+  });
 }
 
 export function setPass(game: GameId, rowId: string, until: string | null): void {
@@ -251,10 +273,56 @@ export function saveTeam(game: GameId, team: UserTeam): void {
   update(game, (g) => ({ ...g, teams: [...g.teams.filter((t) => t.id !== team.id), team] }));
 }
 
+/** Delete one of your teams (you asked for it). Returns the team, so Undo can save it back. */
+export function deleteTeam(game: GameId, teamId: string): UserTeam | null {
+  const team = gameData(game).teams.find((t) => t.id === teamId) ?? null;
+  if (team) update(game, (g) => ({ ...g, teams: g.teams.filter((t) => t.id !== teamId) }));
+  return team;
+}
+
+/** Clear your progress on a backlog item (back to "No data yet"). */
+export function clearBacklogDone(game: GameId, itemId: string): void {
+  update(game, (g) => ({ ...g, backlog: Object.fromEntries(Object.entries(g.backlog).filter(([k]) => k !== itemId)) }));
+}
+
+/** Put backlog progress back exactly as it was (Undo): numbers restored, missing ones cleared. */
+export function restoreBacklogDone(game: GameId, before: Record<string, number | undefined>): void {
+  update(game, (g) => {
+    const merged: Record<string, number | undefined> = { ...g.backlog, ...before };
+    const next = Object.fromEntries(Object.entries(merged).filter((e): e is [string, number] => e[1] !== undefined));
+    return { ...g, backlog: next };
+  });
+}
+
+/** Save or clear the pity you entered yourself for one banner type. */
+export function setPityManual(game: GameId, bannerType: string, value: { pity: number; guaranteed: boolean } | null): void {
+  update(game, (g) => {
+    const rest = Object.fromEntries(Object.entries(g.pityManual ?? {}).filter(([k]) => k !== bannerType));
+    return { ...g, pityManual: value ? { ...rest, [bannerType]: { ...value, at: new Date().toISOString() } } : rest };
+  });
+}
+
+/** Undo an import: remove exactly the pulls with these ids (an import records them). Returns how many were removed. */
+export function removePulls(game: GameId, ids: string[]): number {
+  const drop = new Set(ids);
+  const before = gameData(game).pulls.length;
+  update(game, (g) => ({ ...g, pulls: g.pulls.filter((p) => !drop.has(p.id)) }));
+  return before - gameData(game).pulls.length;
+}
+
 export function setTick(game: GameId, taskId: string, at: string | null): void {
   update(game, (g) => {
     const rest = Object.fromEntries(Object.entries(g.ticks).filter(([k]) => k !== taskId));
     return { ...g, ticks: at ? { ...rest, [taskId]: at } : rest };
+  });
+}
+
+/** Edit mode: put a built-in item back to the list's version (your changes dropped; a hide stays). */
+export function revertOwnItem(game: GameId, kind: OwnKind, id: string, at: string): void {
+  update(game, (g) => {
+    const cur = g.ownItems[kind][id];
+    if (!cur || cur.mine) return g;
+    return { ...g, ownItems: { ...g.ownItems, [kind]: { ...g.ownItems[kind], [id]: { ...cur, fields: {}, at } } } };
   });
 }
 
@@ -353,10 +421,35 @@ export function mergeIntoUserData(games: Record<GameId, unknown>): number {
     if (merged !== store.games[id]) next = { ...next, [id]: merged };
   }
   if (next !== store.games) {
-    store = { ...store, games: next };
+    store = { ...store, updatedAt: Date.now(), games: next };
     save();
   }
   return count.added;
+}
+
+/** When your game data last changed (epoch ms); 0 = never. */
+export const userDataUpdatedAt = (): number => store.updatedAt ?? 0;
+
+/** Something in your game data changed (for sync). Returns an unsubscribe function. */
+export function subscribeUserData(l: () => void): () => void {
+  listeners.add(l);
+  return () => listeners.delete(l);
+}
+
+/**
+ * Sync: take your account's newer copy. The copy on this device is kept under a backup
+ * key first (never thrown away), so nothing is lost if the other copy was the wrong one.
+ */
+export function replaceUserData(next: { games: Record<GameId, unknown>; updatedAt?: number }): void {
+  try {
+    localStorage.setItem(`${KEY}.backup.${Date.now()}`, JSON.stringify(store));
+  } catch {
+    /* storage full or private mode: nothing to keep */
+  }
+  store = { version: 1, updatedAt: next.updatedAt ?? Date.now(), games: (next.games ?? {}) as Record<GameId, GameUserData> };
+  cache.clear();
+  unreadable = false;
+  save();
 }
 
 /** Test helper. */

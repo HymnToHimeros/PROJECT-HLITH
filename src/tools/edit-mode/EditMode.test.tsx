@@ -2,7 +2,7 @@ import { act, fireEvent, render, renderHook, screen, within } from '@testing-lib
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import type { BacklogItem, GameContract, GameEvent } from '../../core/contract';
 import { gameData, resetUserData, saveOwnItem, setOwnItemHidden } from '../../core/data/userData';
-import { EditMode } from './EditMode';
+import { EditLists, EditMode } from './EditMode';
 import { mergeOwnItems, mergeRows } from './merge';
 import { useWithOwnItems } from './useWithOwnItems';
 
@@ -83,10 +83,12 @@ describe('Edit mode: your own items on top of the built-in list', () => {
     render(<EditMode game={game} kind="backlog" />);
     expect(await screen.findByText('Story')).toBeInTheDocument();
     fireEvent.click(screen.getByRole('button', { name: 'Add backlog item' }));
-    const form = screen.getByRole('form', { name: 'Add backlog item' });
+    // The same form as on the Backlog screen (one editor for backlog items).
+    const form = screen.getByRole('form', { name: 'Add a backlog item' });
     fireEvent.change(within(form).getByLabelText('Name'), { target: { value: 'Hidden achievements' } });
-    fireEvent.change(within(form).getByLabelText('Steps in total'), { target: { value: '20' } });
-    fireEvent.change(within(form).getByLabelText(/Reward/), { target: { value: '100' } });
+    fireEvent.change(within(form).getByLabelText('Category'), { target: { value: 'achievements' } });
+    fireEvent.change(within(form).getByLabelText('How much there is in total'), { target: { value: '20' } });
+    fireEvent.change(within(form).getByLabelText(/Reward for all of it/), { target: { value: '100' } });
     fireEvent.submit(form);
     expect(screen.getByText('Hidden achievements')).toBeInTheDocument();
     expect(screen.getByText('YOURS')).toBeInTheDocument();
@@ -98,15 +100,52 @@ describe('Edit mode: your own items on top of the built-in list', () => {
     expect(gameData('aa').ownItems.backlog.bl1?.hidden).toBe(true);
   });
 
-  it('the screen: changing a built-in item stores only what you changed', async () => {
+  it('the screen: changing a built-in item stores only what you changed, keeps earlier changes, and can go back to the list’s version', async () => {
     render(<EditMode game={game} kind="backlog" />);
     await screen.findByText('Story');
     fireEvent.click(screen.getByRole('button', { name: 'Change Story' }));
     const form = screen.getByRole('form', { name: 'Change Story' });
-    fireEvent.change(within(form).getByLabelText('Steps in total'), { target: { value: '14' } });
+    fireEvent.change(within(form).getByLabelText('How much there is in total'), { target: { value: '14' } });
     fireEvent.submit(form);
     expect(gameData('aa').ownItems.backlog.bl1).toMatchObject({ mine: false, fields: { total: 14 } });
     expect(screen.getByText('CHANGED')).toBeInTheDocument();
+    // A second change keeps the first one.
+    fireEvent.click(screen.getByRole('button', { name: 'Change Story' }));
+    const again = screen.getByRole('form', { name: 'Change Story' });
+    fireEvent.change(within(again).getByLabelText('Name'), { target: { value: 'Story arc' } });
+    fireEvent.submit(again);
+    expect(gameData('aa').ownItems.backlog.bl1?.fields).toEqual({ total: 14, title: 'Story arc' });
+    fireEvent.click(screen.getByRole('button', { name: 'Back to the list’s version of Story arc' }));
+    expect(gameData('aa').ownItems.backlog.bl1?.fields).toEqual({});
+    expect(screen.getByText('Story')).toBeInTheDocument();
+    expect(screen.queryByText('CHANGED')).not.toBeInTheDocument();
+  });
+
+  it('the screen: emptying login days removes them', async () => {
+    saveOwnItem('aa', 'events', { id: 'own-l', mine: true, fields: { title: 'My login', kind: 'login', start: AT, end: '2026-10-12T10:00:00Z', currency: 'gem', reward: 70, loginDays: 7 }, hidden: false, at: AT });
+    render(<EditMode game={game} kind="events" />);
+    await screen.findByText('My login');
+    fireEvent.click(screen.getByRole('button', { name: 'Change My login' }));
+    const form = screen.getByRole('form', { name: 'Change My login' });
+    expect(within(form).getByLabelText('Login days')).toHaveValue('7');
+    fireEvent.change(within(form).getByLabelText('Login days'), { target: { value: '' } });
+    fireEvent.submit(form);
+    expect(gameData('aa').ownItems.events['own-l']?.fields).not.toHaveProperty('loginDays');
+    expect(gameData('aa').ownItems.events['own-l']?.fields).toMatchObject({ title: 'My login', reward: 70 });
+  });
+
+  it('Edit lists → Backlog uses the Backlog form and shows the Backlog examples', async () => {
+    const empty = { ...game, data: { ...game.data, backlog: async () => [] } } as unknown as GameContract;
+    render(<EditLists games={[empty]} initialGame="aa" />);
+    fireEvent.click(screen.getByRole('tab', { name: 'Backlog' }));
+    const row = await screen.findByText('Main story');
+    expect(within(row.closest('li') as HTMLElement).getByText('EXAMPLE')).toBeInTheDocument();
+    expect(within(row.closest('li') as HTMLElement).getByText(/^Main story · 6 to do/)).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'Change Main story' }));
+    const form = screen.getByRole('form', { name: 'Change Main story' });
+    expect(within(form).getByRole('radio', { name: /Checklist in order/ })).toBeChecked();
+    expect(within(form).getByLabelText(/Steps, one per line/)).toHaveValue('Prologue\nChapter 1\nChapter 2\nChapter 3 · start\nChapter 3 · end\nChapter 4 (latest)');
+    expect(within(form).queryByLabelText('Steps in total')).not.toBeInTheDocument();
   });
 
   it('the screen: a bad form says what to fix and saves nothing', async () => {

@@ -411,3 +411,8 @@
   text-align: right;
   font-weight: 500;
 }
+.addOwn {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}

@@ -149,6 +149,10 @@ describe('rule 6–7 · monthly pass and paid extras', () => {
     // Today + Sat + Sun resets before Sun 12:00 = 3 days.
     expect(row(b, 'pass')).toMatchObject({ occurrences: 3, amount: 270, status: 'counted' });
   });
+  it('one paid row can be switched off while the others stay on', () => {
+    const b = budget(base(game([pass]), { paidExtras: true, paidOff: ['pass'], passes: { pass: NOW + 30 * DAY } }));
+    expect(row(b, 'pass')?.status).toBe('off-paid');
+  });
   it('an expired or missing pass is not active', () => {
     expect(row(budget(base(game([pass]), { paidExtras: true })), 'pass')?.status).toBe('not-active');
     expect(row(budget(base(game([pass]), { paidExtras: true, passes: { pass: NOW - 1 } })), 'pass')?.status).toBe('not-active');

@@ -118,6 +118,7 @@ export function eventsBudget(game: GameContract, list: GameEvent[], user: GameUs
     until,
     bank: known({}, 'user'),
     paidExtras: user.paidExtras,
+    paidOff: user.paidOff,
     ...eventsForBudget(game, list, user, now, until),
   });
 }

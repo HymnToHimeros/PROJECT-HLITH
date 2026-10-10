@@ -1,9 +1,10 @@
-import { useEffect, useRef, type CSSProperties } from 'react';
+import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from 'react';
 import type { GameContract, GameId } from '../../core/contract';
 import { useExamplesShown } from '../../core/data/prefs';
-import type { UserPlan } from '../../core/data/userData';
+import { setPlanStatus, type UserPlan } from '../../core/data/userData';
 import { formatDateTime, formatRange } from '../../core/time/reset';
-import { CalendarBar, ExampleNotice, ExampleTag, GameTag, HowTo, Timer, UnverifiedTag } from '../../core/ui';
+import { BottomSheet, Button, CalendarBar, ExampleNotice, ExampleTag, GameTag, HowTo, Timer, UnverifiedTag } from '../../core/ui';
+import { AddOwnButton, examplesFor } from '../today/AddOwn';
 import type { GameLists } from '../today/lists';
 import { gameTimeline, type GameTimeline, type Lane, type Span } from './timeline';
 import c from './calendar.module.css';
@@ -48,6 +49,9 @@ function examplePlan(timelines: { game: GameContract; timeline: GameTimeline }[]
   return null;
 }
 
+/** Where the Assistant is: screens can't open it themselves, so say where its button sits. */
+const ASSISTANT_HINT = 'Open the Assistant (the Assistant button in the sidebar, ASK on a phone, or Ctrl+K) and approve a plan it proposes.';
+
 /** Calendar (R41), drawn to the design's Calendar: legend, timeline with lanes and a today line, then every date in order. */
 export function Calendar({ games, servers, lists, now, openAccount, openServer, plans: mine = [] }: CalendarProps) {
   const tags = games.length > 1;
@@ -58,8 +62,8 @@ export function Calendar({ games, servers, lists, now, openAccount, openServer, 
 
   const showExamples = useExamplesShown();
   const timelines = games.map((game) => {
-    const l = lists[game.id] ?? { characters: [], banners: [], events: [], versions: [], materials: [] };
-    return { game, timeline: gameTimeline({ game, serverId: servers[game.id], characters: l.characters, banners: l.banners, events: l.events, versions: l.versions, now, from, to, examples: showExamples }) };
+    const l = lists[game.id] ?? EMPTY_LISTS;
+    return { game, timeline: gameTimeline({ game, serverId: servers[game.id], characters: l.characters, banners: l.banners, events: l.events, versions: l.versions, now, from, to, examples: showExamples, exampleIds: l.exampleIds }) };
   });
   const laneExample = (lane: Lane) => timelines.some(({ timeline }) => timeline.example[lane]);
   // Your plans; with none yet, one EXAMPLE plan shows the look.
@@ -71,6 +75,12 @@ export function Calendar({ games, servers, lists, now, openAccount, openServer, 
   const anyExample = LANES.some((l) => laneExample(l.id)) || plan !== null;
   const zone = Intl.DateTimeFormat().resolvedOptions().timeZone;
   const chooseServer = (id: GameId) => (openServer ? openServer(id) : openAccount());
+  // A tapped plan bar (or Dates row) opens its details; Undo marks it undone (plans are never deleted).
+  const [picked, setPicked] = useState<{ game: GameContract; plan: UserPlan } | 'example' | null>(null);
+  const [undone, setUndone] = useState<{ game: GameContract; plan: UserPlan } | null>(null);
+  const pick = (id: string) => setPicked(id === plan?.id ? 'example' : (mine.find((m) => m.plan.id === id) ?? null));
+  const addOwn = (kind: 'events' | 'banners') =>
+    games.map((g) => <AddOwnButton key={`${g.id}:${kind}`} game={g} kind={kind} tag={tags} examples={examplesFor(g, lists[g.id] ?? EMPTY_LISTS, kind, now, showExamples)} />);
 
   // Mondays get a tick, as in the design.
   const ticks: number[] = [];
@@ -143,25 +153,32 @@ export function Calendar({ games, servers, lists, now, openAccount, openServer, 
               ))}
               <span className={c.today} style={{ left: `${todayPct}%` }} aria-hidden="true" />
               {LANES.map((lane) => (
-                <LaneRows key={lane.id} label={lane.label} example={laneExample(lane.id)} spans={timelines.flatMap(({ timeline }) => timeline.spans.filter((s) => s.lane === lane.id))} pct={pct} tags={tags} />
+                <LaneRows
+                  key={lane.id}
+                  label={lane.label}
+                  example={laneExample(lane.id)}
+                  spans={timelines.flatMap(({ timeline }) => timeline.spans.filter((s) => s.lane === lane.id))}
+                  pct={pct}
+                  tags={tags}
+                  addOwn={lane.id === 'banners' || lane.id === 'events' ? addOwn(lane.id) : undefined}
+                />
               ))}
               <Resets timelines={timelines} pct={pct} tags={tags} chooseServer={chooseServer} />
               <div className={c.laneHead}>
                 Your plans
                 {plan && <ExampleTag />}
               </div>
-              {myPlans.map((p) => (
-                <div key={p.id} className={c.row}>
-                  <CalendarBar kind="plan" title={p.title} range={formatRange(p.start, p.end)} left={pct(p.start)} width={Math.max(2, pct(p.end) - pct(p.start))} />
-                </div>
-              ))}
-              {myPlans.length > 0 ? null : plan ? (
-                <div className={c.row}>
-                  <CalendarBar kind="plan" title={plan.title} range={formatRange(plan.start, plan.end)} left={pct(plan.start)} width={Math.max(2, pct(plan.end) - pct(plan.start))} />
-                </div>
-              ) : (
-                <div className={c.emptyRow}>Plans you approve from the Assistant will show here.</div>
-              )}
+              {[...myPlans, ...(plan ? [plan] : [])].map((p) => {
+                const left = pct(p.start);
+                const width = Math.max(2, pct(p.end) - left);
+                return (
+                  <div key={p.id} className={c.row}>
+                    <CalendarBar kind="plan" title={p.title} range={formatRange(p.start, p.end)} left={left} width={width} />
+                    <button type="button" className={c.barBtn} style={{ left: `${left}%`, width: `${width}%` }} onClick={() => pick(p.id)} aria-label={`Plan: ${p.title}. Show details`} />
+                  </div>
+                );
+              })}
+              {myPlans.length === 0 && !plan && <div className={c.emptyRow}>No plans yet. {ASSISTANT_HINT} It shows here.</div>}
             </div>
           </div>
         </div>
@@ -177,6 +194,11 @@ export function Calendar({ games, servers, lists, now, openAccount, openServer, 
                 <span className={c.what}>
                   <span className={c.itemTitle}>{s.title}</span>
                   <span className={c.range}>{formatRange(s.start, s.end)}</span>
+                  {(s.id === plan?.id || myPlans.some((p) => p.id === s.id)) && (
+                    <button type="button" className={c.linkBtn} onClick={() => pick(s.id)} aria-label={`Details of plan ${s.title}`}>
+                      Plan details
+                    </button>
+                  )}
                 </span>
                 {s.leak && <UnverifiedTag source={s.leak.source} />}
                 {s.example && <ExampleTag />}
@@ -191,9 +213,54 @@ export function Calendar({ games, servers, lists, now, openAccount, openServer, 
             ))}
           </ol>
         ) : (
-          <p className={c.sub}>Nothing on the lists in the next five weeks.</p>
+          <>
+            <p className={c.sub}>Nothing on the lists in the next five weeks. Know an event or banner that’s coming? Add it yourself.</p>
+            <div className={c.addOwn}>
+              {addOwn('events')}
+              {addOwn('banners')}
+            </div>
+          </>
         )}
       </section>
+
+      {undone && (
+        <ExampleNotice
+          actions={[
+            {
+              label: 'Bring it back',
+              onClick: () => {
+                setPlanStatus(undone.game.id, undone.plan.id, 'active');
+                setUndone(null);
+              },
+            },
+          ]}
+        >
+          Plan “{undone.plan.title}” undone. It’s kept, just no longer on your calendar.
+        </ExampleNotice>
+      )}
+
+      <BottomSheet open={picked !== null} title={picked === 'example' ? 'Example plan' : 'Your plan'} onClose={() => setPicked(null)} side>
+        {picked === 'example' && plan ? (
+          <div className={c.details}>
+            <p className={c.itemTitle}>
+              {plan.title} <ExampleTag />
+            </p>
+            <p className={c.range}>{formatRange(plan.start, plan.end)}</p>
+            <p className={c.sub}>This plan is an example of how a plan looks. It isn’t saved. {ASSISTANT_HINT}</p>
+          </div>
+        ) : picked && picked !== 'example' ? (
+          <PlanDetails
+            game={picked.game}
+            plan={picked.plan}
+            tags={tags}
+            onUndo={() => {
+              setPlanStatus(picked.game.id, picked.plan.id, 'undone');
+              setUndone(picked);
+              setPicked(null);
+            }}
+          />
+        ) : null}
+      </BottomSheet>
 
       <HowTo
         steps={[
@@ -201,14 +268,14 @@ export function Calendar({ games, servers, lists, now, openAccount, openServer, 
           'Solid bars are confirmed dates. Dashed, striped bars are leaks: marked ? UNVERIFIED, with their source.',
           'Weekly resets follow the server you chose; tap “Choose server” if they are missing.',
           'On a phone, swipe the timeline sideways. The Dates list underneath has every date in order, with a countdown.',
-          'Plans you approve from the Assistant appear in “Your plans” with a dashed outline.',
+          'Plans you approve from the Assistant appear in “Your plans” with a dashed outline. Tap one to see it or undo it.',
         ]}
       />
     </div>
   );
 }
 
-function LaneRows({ label, example, spans, pct, tags }: { label: string; example: boolean; spans: Span[]; pct: (t: number) => number; tags: boolean }) {
+function LaneRows({ label, example, spans, pct, tags, addOwn }: { label: string; example: boolean; spans: Span[]; pct: (t: number) => number; tags: boolean; addOwn?: ReactNode }) {
   const sorted = [...spans].sort((a, b) => a.start - b.start || a.end - b.end);
   return (
     <>
@@ -216,7 +283,12 @@ function LaneRows({ label, example, spans, pct, tags }: { label: string; example
         {label}
         {example && <ExampleTag />}
       </div>
-      {sorted.length === 0 && <div className={c.emptyRow}>Nothing in these six weeks.</div>}
+      {sorted.length === 0 && (
+        <div className={c.emptyRow}>
+          Nothing in these six weeks.
+          {addOwn}
+        </div>
+      )}
       {sorted.map((s) => {
         const left = pct(s.start);
         return (
@@ -263,6 +335,39 @@ function Resets({ timelines, pct, tags, chooseServer }: { timelines: { game: Gam
     </>
   );
 }
+
+/** One of your plans: what, when, its steps, and Undo. */
+function PlanDetails({ game, plan, tags, onUndo }: { game: GameContract; plan: UserPlan; tags: boolean; onUndo: () => void }) {
+  const start = Date.parse(plan.start);
+  const end = plan.end ? Date.parse(plan.end) : null;
+  return (
+    <div className={c.details}>
+      <p className={c.itemTitle}>
+        {plan.title} {tags && <GameTag label={game.short} vent={game.vent} />}
+      </p>
+      <p className={c.range}>{end ? formatRange(start, end) : formatDateTime(start)}</p>
+      <p className={c.sub}>{plan.source === 'assistant' ? 'Proposed by the Assistant, approved by you.' : 'Made by you.'}</p>
+      {plan.note && <p className={c.sub}>{plan.note}</p>}
+      {plan.steps && plan.steps.length > 0 && (
+        <ol className={c.steps}>
+          {plan.steps.map((st, i) => (
+            <li key={i}>
+              {st.title}
+              {st.minutes ? ` · ${st.minutes} min` : ''}
+              {st.items?.length ? ` · ${st.items.join(', ')}` : ''}
+            </li>
+          ))}
+        </ol>
+      )}
+      <div>
+        <Button onClick={onUndo}>Undo plan</Button>
+      </div>
+      <p className={c.sub}>Undo takes it off your calendar. It isn’t deleted: you can bring it back right after.</p>
+    </div>
+  );
+}
+
+const EMPTY_LISTS: GameLists = { characters: [], banners: [], events: [], versions: [], materials: [] };
 
 const joinWords = (w: string[]) => (w.length <= 1 ? (w[0] ?? '') : `${w.slice(0, -1).join(', ')} and ${w[w.length - 1]}`);
 const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);

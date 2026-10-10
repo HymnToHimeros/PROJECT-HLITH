@@ -161,7 +161,7 @@ describe('roster import', () => {
     ]);
   });
 
-  it('only adds: never removes, never un-owns, never lowers dupes, keeps wanted', () => {
+  it('only adds: never removes, never un-owns, never lowers dupes; a newly owned character leaves the wanted list', () => {
     setRosterEntry('aa', '1001', { owned: true, wanted: true, dupes: 5 }); // higher than HoYoLAB says
     setRosterEntry('aa', '1004', { owned: true, wanted: false, dupes: 2 }); // not on HoYoLAB at all
     setRosterEntry('aa', '1003', { owned: false, wanted: true, dupes: 0 }); // wanted, now owned
@@ -180,7 +180,7 @@ describe('roster import', () => {
     expect(counts).toEqual({ added: 1, updated: 0 });
     expect(after['1001']).toEqual({ owned: true, wanted: true, dupes: 5 });
     expect(after['1004']).toEqual({ owned: true, wanted: false, dupes: 2 });
-    expect(after['1003']).toEqual({ owned: true, wanted: true, dupes: 6 });
+    expect(after['1003']).toEqual({ owned: true, wanted: false, dupes: 6 });
     expect(Object.keys(after).sort()).toEqual(['1001', '1003', '1004']);
   });
 
@@ -244,6 +244,19 @@ describe('Connected accounts', () => {
     expect(screen.getByRole('region', { name: 'HoYoLAB account Alt' })).toHaveTextContent('UID 800000001');
     expect(screen.getByText('Your HoYoLAB accounts · 2')).toBeInTheDocument();
     expect(document.body.textContent).not.toContain(TOKEN);
+  });
+  it('the example check-in reward uses the game’s own currency', () => {
+    const g = fakeGame({ currencies: [{ id: 'poly', name: 'Polychrome', perPull: 160 }] } as never);
+    render(<LinkAccounts games={[g]} />);
+    expect(screen.getByLabelText('Example accounts')).toHaveTextContent('got 20 × Polychrome');
+    expect(screen.getByLabelText('Example accounts')).not.toHaveTextContent('Stellar Jade');
+  });
+  it('an account covering a switched-off game says so, instead of quietly hiding it', () => {
+    const other = fakeGame({ id: 'bb', short: 'BB', name: 'Game B', accountLinks: [{ provider: 'hoyolab', supports: ['stamina'], config: { gameBiz: 'nap_global' } }] });
+    saveDeviceAccount({ label: 'Main', login: { ltuid_v2: '111111', ltoken_v2: TOKEN }, games: [{ gameId: 'aa' }, { gameId: 'bb' }] });
+    render(<LinkAccounts games={[fakeGame()]} allGames={[fakeGame(), other]} />);
+    const main = screen.getByRole('region', { name: 'HoYoLAB account Main' });
+    expect(main).toHaveTextContent('Also covers Game B, switched off in your games');
   });
   it('says so when no game has a link', () => {
     render(<LinkAccounts games={[fakeGame({ accountLinks: [] })]} />);

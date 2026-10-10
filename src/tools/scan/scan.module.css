@@ -1,0 +1,5 @@
+/* A field HLITH can't save yet: still typeable, but marked with a dashed box (no fading, so text keeps its contrast). */
+.unsaved input {
+  border-style: dashed;
+  background: transparent;
+}

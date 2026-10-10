@@ -1,6 +1,8 @@
 import { useMemo } from 'react';
 import type { ModuleScreenProps } from '../../core/registry/modules';
+import { useExamplesShown } from '../../core/data/prefs';
 import { useNow } from '../../core/ui';
+import { useHideLeaks } from '../banners/leakPref';
 import { inScope, useGameLists, WithUserData, withOwnItems } from '../today/lists';
 import { Calendar } from './Calendar';
 
@@ -10,6 +12,8 @@ export default function CalendarScreen({ games, scope, servers, openAccount, ope
   const now = fixedNow ?? liveNow;
   const shown = useMemo(() => inScope(games, scope), [games, scope]);
   const lists = useGameLists(shown);
+  const showExamples = useExamplesShown();
+  const hideLeaks = useHideLeaks();
   if (!lists) return null;
   return (
     <WithUserData games={shown}>
@@ -17,7 +21,7 @@ export default function CalendarScreen({ games, scope, servers, openAccount, ope
         <Calendar
           games={shown}
           servers={servers}
-          lists={withOwnItems(lists, user)}
+          lists={withOwnItems(shown, lists, user, { showExamples, hideLeaks, now })}
           plans={shown.flatMap((g) => (user[g.id]?.plans ?? []).filter((p) => p.status === 'active').map((p) => ({ game: g, plan: p })))}
           now={now}
           openAccount={openAccount}

@@ -149,15 +149,15 @@ describe('Edit layout', () => {
     render(<Shell games={[A, B]} />);
     openEdit();
     const dialog = within(screen.getByRole('dialog'));
-    fireEvent.click(dialog.getAllByRole('button', { name: 'Hide' })[8] as HTMLElement); // Intel
+    fireEvent.click(dialog.getByRole('button', { name: 'Hide Intel' }));
     expect(navLabels()).not.toContain('Intel');
     expect(dialog.getByText('HIDDEN · STILL IN THIS GAME')).toBeInTheDocument();
     expect(getPrefs().layouts.shared?.hidden).toEqual(['intel']); // one layout for every game
-    fireEvent.click(dialog.getByRole('button', { name: 'Restore' }));
+    fireEvent.click(dialog.getByRole('button', { name: 'Restore Intel' }));
     expect(navLabels()).toContain('Intel');
   });
 
-  it('arrow keys on the handle reorder, and Reset to default undoes it', () => {
+  it('arrow keys on the handle reorder, Reset to default undoes it, and Undo reset brings it back', () => {
     window.history.replaceState(null, '', '/aa/today');
     render(<Shell games={[A, B]} />);
     openEdit();
@@ -166,6 +166,19 @@ describe('Edit layout', () => {
     expect(navLabels().slice(0, 2)).toEqual(['Pulls', 'Today']);
     fireEvent.click(dialog.getByRole('button', { name: 'Reset to default' }));
     expect(navLabels().slice(0, 2)).toEqual(['Today', 'Pulls']);
+    fireEvent.click(dialog.getByRole('button', { name: 'Undo reset' }));
+    expect(navLabels().slice(0, 2)).toEqual(['Pulls', 'Today']);
+  });
+
+  it('says there is one order for every game, and All games names its hidden list honestly', () => {
+    window.history.replaceState(null, '', '/all/today');
+    render(<Shell games={[A, B]} />);
+    openEdit();
+    const dialog = within(screen.getByRole('dialog'));
+    expect(dialog.getByText(/One order for every game\./)).toBeInTheDocument();
+    expect(dialog.queryByText(/this view only/)).toBeNull();
+    fireEvent.click(dialog.getByRole('button', { name: 'Hide Intel' }));
+    expect(dialog.getByText('HIDDEN · STILL IN YOUR GAMES')).toBeInTheDocument();
   });
 
   it('never lets the last visible module be hidden', () => {
@@ -173,9 +186,9 @@ describe('Edit layout', () => {
     render(<Shell games={[A, B]} />);
     openEdit();
     const dialog = within(screen.getByRole('dialog'));
-    fireEvent.click(dialog.getAllByRole('button', { name: 'Hide' })[0] as HTMLElement);
-    fireEvent.click(dialog.getAllByRole('button', { name: 'Hide' })[0] as HTMLElement);
-    expect(dialog.queryAllByRole('button', { name: 'Hide' })).toHaveLength(0);
+    fireEvent.click(dialog.getAllByRole('button', { name: /^Hide / })[0] as HTMLElement);
+    fireEvent.click(dialog.getAllByRole('button', { name: /^Hide / })[0] as HTMLElement);
+    expect(dialog.queryAllByRole('button', { name: /^Hide / })).toHaveLength(0);
     expect(navLabels()).toHaveLength(1);
   });
 
@@ -185,6 +198,27 @@ describe('Edit layout', () => {
     openEdit();
     expect(screen.getByText('NOT IN THIS GAME')).toBeInTheDocument();
     expect(screen.getAllByText('Not available for this game yet')).toHaveLength(6);
+  });
+});
+
+const openEditFor = () => fireEvent.click(screen.getByRole('button', { name: 'Edit layout' }));
+
+describe('Hidden modules', () => {
+  it('a hidden module still opens from a link, with a note and Restore', () => {
+    window.history.replaceState(null, '', '/aa/today');
+    render(<Shell games={[A, B]} />);
+    openEditFor();
+    fireEvent.click(within(screen.getByRole('dialog')).getByRole('button', { name: 'Hide Farm' }));
+    fireEvent.click(within(screen.getByRole('dialog')).getByRole('button', { name: 'Done' }));
+    act(() => {
+      window.history.pushState(null, '', '/aa/farm');
+      window.dispatchEvent(new PopStateEvent('popstate'));
+    });
+    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Farm');
+    expect(screen.getByText(/Farm is hidden in your layout/)).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'Restore Farm' }));
+    expect(navLabels()).toContain('Farm');
+    expect(screen.queryByText(/Farm is hidden in your layout/)).toBeNull();
   });
 });
 
@@ -205,8 +239,8 @@ describe('Server picker', () => {
 describe('Your games', () => {
   it('turning a game off removes it from the switcher but never the last one', () => {
     render(<Shell games={[A, B]} />);
-    fireEvent.click(screen.getByRole('button', { name: 'Add or remove games' }));
-    expect(screen.getByRole('dialog', { name: 'Add a game' })).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'Choose which games show' }));
+    expect(screen.getByRole('dialog', { name: 'Choose which games show' })).toBeInTheDocument();
     fireEvent.click(screen.getByRole('switch', { name: 'Game B' }));
     expect(screen.queryByRole('button', { name: 'BB' })).toBeNull();
     expect(screen.getByRole('switch', { name: 'Game A' })).toBeDisabled();

@@ -37,7 +37,7 @@ test('switch game, open a module, edit the layout', async ({ page, isMobile }) =
   const edit = page.getByRole('dialog', { name: /Edit layout/ });
   await expect(edit.getByText('PHONE BAR ↑ · MORE ↓')).toBeVisible();
   const intelRow = edit.locator('[data-row]', { hasText: 'Intel' });
-  await intelRow.getByRole('button', { name: 'Hide' }).click();
+  await intelRow.getByRole('button', { name: 'Hide Intel' }).click();
   await expect(edit.getByText('HIDDEN · STILL IN THIS GAME')).toBeVisible();
   await page.reload();
   if (!isMobile) await expect(page.getByRole('navigation', { name: 'Modules' }).getByRole('link', { name: /Intel/ })).toHaveCount(0);

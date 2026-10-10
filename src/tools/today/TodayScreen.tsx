@@ -1,6 +1,8 @@
 import { useMemo } from 'react';
 import type { ModuleScreenProps } from '../../core/registry/modules';
+import { useExamplesShown } from '../../core/data/prefs';
 import { useNow } from '../../core/ui';
+import { useHideLeaks } from '../banners/leakPref';
 import { inScope, useGameLists, WithUserData, withOwnItems } from './lists';
 import { Today } from './Today';
 
@@ -14,6 +16,8 @@ export default function TodayScreen({ games, scope, servers, open, openAccount, 
   const now = fixedNow ?? liveNow;
   const shown = useMemo(() => inScope(games, scope), [games, scope]);
   const lists = useGameLists(shown);
+  const showExamples = useExamplesShown();
+  const hideLeaks = useHideLeaks();
   if (!lists) return null;
-  return <WithUserData games={shown}>{(user) => <Today games={shown} servers={servers} lists={withOwnItems(lists, user)} user={user} now={now} open={open} openAccount={openAccount} openServer={openServer} />}</WithUserData>;
+  return <WithUserData games={shown}>{(user) => <Today games={shown} servers={servers} lists={withOwnItems(shown, lists, user, { showExamples, hideLeaks, now })} user={user} now={now} open={open} openAccount={openAccount} openServer={openServer} />}</WithUserData>;
 }

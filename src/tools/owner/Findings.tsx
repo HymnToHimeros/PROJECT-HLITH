@@ -3,7 +3,7 @@ import { FINDING_KINDS } from '../../../supabase/functions/_shared/scheduler.ts'
 import type { GameContract } from '../../core/contract';
 import { ExampleNotice, ExampleTag, GameTag, HowTo, NoData, UnverifiedTag } from '../../core/ui';
 import o from './owner.module.css';
-import { decideFinding, jobLabel, onApprove, type Decision, type FindingView, type SchedulerData } from './schedulerData';
+import { decideFinding, jobLabel, onApprove, reopenFinding, type Decision, type FindingView, type SchedulerData } from './schedulerData';
 import { when } from './Scheduler';
 
 /*
@@ -46,12 +46,22 @@ export function Findings({ data, games }: Props) {
     }
   };
 
+  const reopen = async (f: FindingView) => {
+    setError(null);
+    try {
+      if (!example) await reopenFinding(f);
+      data.setLocal((d) => ({ ...d, findings: d.findings.map((x) => (x.id === f.id ? { ...x, status: 'new', decided_at: null } : x)) }));
+    } catch (e) {
+      setError(e instanceof Error ? e.message : 'Could not move it back.');
+    }
+  };
+
   return (
     <div className={o.stack}>
       <HowTo
         steps={[
           <>Jobs put what they find here: new leaks, events, banners, characters and other info. Each one says which job delivered it, whether it came from the routine, and when.</>,
-          <>Approve what is right, Dismiss what is not. Nothing is ever removed: dismissed findings stay under “Dismissed”.</>,
+          <>Approve what is right, Dismiss what is not. Nothing is ever removed: dismissed findings stay under “Dismissed”. Changed your mind? “Move back to new” puts it back in the inbox.</>,
           <>Approving marks the finding. Adding it to the built-in lists comes with the data workstream; until then approving changes nothing for users.</>,
           <>A finding the same job delivers again within 30 days is not added twice.</>,
         ]}
@@ -152,9 +162,14 @@ export function Findings({ data, games }: Props) {
                       </button>
                     </div>
                   ) : (
-                    <span className={o.note}>
-                      {f.status === 'approved' ? 'Approved' : 'Dismissed'} {when(f.decided_at)}
-                    </span>
+                    <div className={o.jobActions}>
+                      <span className={o.note}>
+                        {f.status === 'approved' ? 'Approved' : 'Dismissed'} {when(f.decided_at)}
+                      </span>
+                      <button type="button" className={o.smallBtn} onClick={() => void reopen(f)} aria-label={`Move back to new: ${f.title}`}>
+                        Move back to new
+                      </button>
+                    </div>
                   )}
                 </li>
               );

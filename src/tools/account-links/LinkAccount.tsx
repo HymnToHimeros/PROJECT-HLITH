@@ -39,9 +39,11 @@ const CODE_LIST = 'hoyo-codes.seria.moe';
  * per game. Each account reads live stamina, check-in and endgame per game; saved on
  * HLITH's server it can also check in and redeem codes by itself every day.
  */
-export function LinkAccounts({ games }: { games: GameContract[] }) {
+export function LinkAccounts({ games, allGames }: { games: GameContract[]; /** Every registered game, switched on or not. Missing = games. */ allGames?: GameContract[] }) {
   const linkable = games.filter((g) => hoyolabLink(g));
-  const { accounts, server, blocker, loadError, refresh } = useAccounts(linkable);
+  // Loaded for every game, so an account can say which switched-off games it still covers.
+  const allLinkable = (allGames ?? games).filter((g) => hoyolabLink(g));
+  const { accounts, server, blocker, loadError, refresh } = useAccounts(allLinkable);
   const [adding, setAdding] = useState(false);
 
   if (linkable.length === 0) {
@@ -84,7 +86,7 @@ export function LinkAccounts({ games }: { games: GameContract[] }) {
           <span className={c.label}>Your HoYoLAB accounts · {accounts.length}</span>
           {!showAdd && <Button onClick={() => setAdding(true)}>Add a HoYoLAB account</Button>}
         </div>
-        {accounts.length > 0 ? accounts.map((a) => <AccountCard key={a.id} account={a} games={linkable} server={server} blocker={blocker} refresh={refresh} />) : <ExampleAccounts games={linkable} />}
+        {accounts.length > 0 ? accounts.map((a) => <AccountCard key={a.id} account={a} games={linkable} offGames={allLinkable.filter((g) => !linkable.some((l) => l.id === g.id))} server={server} blocker={blocker} refresh={refresh} />) : <ExampleAccounts games={linkable} />}
       </section>
 
       {showAdd && (
@@ -109,7 +111,22 @@ export function LinkAccounts({ games }: { games: GameContract[] }) {
 
 // ── One account ──────────────────────────────────────────────────
 
-function AccountCard({ account, games, server, blocker, refresh }: { account: LinkedAccount; games: GameContract[]; server: ServerState | null; blocker: string | null; refresh: () => void }) {
+function AccountCard({
+  account,
+  games,
+  offGames = [],
+  server,
+  blocker,
+  refresh,
+}: {
+  account: LinkedAccount;
+  games: GameContract[];
+  /** Games this login can cover that are switched off in your games (their rows are hidden here). */
+  offGames?: GameContract[];
+  server: ServerState | null;
+  blocker: string | null;
+  refresh: () => void;
+}) {
   const [busy, setBusy] = useState(false);
   const [msg, setMsg] = useState<{ ok: boolean; text: string } | null>(null);
   const [mode, setMode] = useState<'view' | 'rename' | 'replace' | 'forget'>('view');
@@ -120,6 +137,7 @@ function AccountCard({ account, games, server, blocker, refresh }: { account: Li
     const game = games.find((x) => x.id === g.gameId);
     return game ? [{ ...g, game }] : [];
   });
+  const hiddenGames = offGames.filter((g) => account.games.some((x) => x.gameId === g.id));
 
   const done = (text: string | null, okText: string) => {
     setBusy(false);
@@ -244,6 +262,13 @@ function AccountCard({ account, games, server, blocker, refresh }: { account: Li
           </li>
         ))}
       </ul>
+      {hiddenGames.length > 0 && (
+        <span className={c.muted}>
+          Also covers {hiddenGames.map((g) => g.name).join(' and ')}, switched off in your games, so {hiddenGames.length === 1 ? 'it isn’t' : 'they aren’t'} listed here.
+          {onServer && account.autoCheckin ? ' Automatic daily check-in still runs for it on HLITH’s server (the switch below covers every game on this login).' : ''} Switch the game on
+          again (the + next to the game buttons) to see it here.
+        </span>
+      )}
 
       {onServer ? (
         <AutoSwitches account={account} server={server} blocker={blocker} refresh={refresh} />
@@ -834,8 +859,10 @@ const figures = (e: Pick<HoyoEndgame, 'stars' | 'score' | 'maxScore' | 'floor' |
 function ExampleAccounts({ games }: { games: GameContract[] }) {
   const shown = useExamplesShown();
   const first = games[0];
+  // The example reward uses the first game's own premium currency, never another game's.
+  const reward = first?.currencies.find((cur) => cur.perPull)?.name ?? first?.currencies[0]?.name;
   const examples = [
-    { label: 'Main', where: 'Saved on HLITH’s server · encrypted', games: games.slice(0, 2), line: 'Last automatic check-in: today 05:02 · got 20 × Stellar Jade' },
+    { label: 'Main', where: 'Saved on HLITH’s server · encrypted', games: games.slice(0, 2), line: `Last automatic check-in: today 05:02${reward ? ` · got 20 × ${reward}` : ''}` },
     { label: 'Alt', where: 'Remembered on this device only', games: games.slice(0, 1), line: null },
   ];
   if (!shown) return null; // Account → Example data: off

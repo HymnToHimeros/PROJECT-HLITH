@@ -1,8 +1,10 @@
 import { useState, type CSSProperties } from 'react';
 import type { Banner, BannerType, GameContract } from '../../core/contract';
 import { formatNumber } from '../../core/time/format';
-import { formatRange } from '../../core/time/reset';
-import { EmptyState, ExampleTag, GameTag, NoData, Timer, UnverifiedTag } from '../../core/ui';
+import { setPityManual } from '../../core/data/userData';
+import { formatDate, formatRange } from '../../core/time/reset';
+import { Button, EmptyState, ExampleTag, GameTag, NoData, Timer, UnverifiedTag } from '../../core/ui';
+import { useAddOwnBanner } from '../banners/AddOwnBanner';
 import { cx } from '../../core/ui/cx';
 import { budget, budgetPulls, pullsFor, type BudgetRow } from '../budget/budget';
 import { chance, pityFromHistory, worstCase, type OddsMode } from '../pity/pity';
@@ -28,7 +30,8 @@ type WhatIf = Record<string, { pulls: number; guaranteed: boolean }>;
  * Planner (design: Pulls → Planner): one card per banner with pulls you have
  * now, by the banner's end, the worst case and a verdict; chance to win when
  * your pity is known. A filter picks character or weapon banners (V1 feature),
- * and "Try your own pity" lets you see odds before importing (not saved).
+ * and "Know your pity?" lets you try odds before importing, or save your pity
+ * (for players who can't import). Each card says which pity it uses.
  */
 export function Planner({ game, data, serverId, now, tagged, openTab }: Props) {
   const [target, setTarget] = useState<Target>('all');
@@ -37,14 +40,16 @@ export function Planner({ game, data, serverId, now, tagged, openTab }: Props) {
   const typeOf = (b: Banner) => game.bannerTypes.find((t) => t.id === b.type);
   const banners = all.filter((b) => target === 'all' || typeOf(b)?.target === target).sort((a, b) => Date.parse(a.start) - Date.parse(b.start) || Date.parse(a.end) - Date.parse(b.end));
   const hasWeapon = all.some((b) => typeOf(b)?.target === 'weapon');
-  const noRealHistory = data.history.example;
   const pityTypes = game.bannerTypes.filter((t) => t.pity.kind === 'hard-pity' && all.some((b) => b.type === t.id));
+  // Example pulls stand in only where you haven't saved your own pity.
+  const examplePity = data.history.example && pityTypes.some((t) => !data.user.pityManual?.[t.id]);
+  const { openSheet, sheet } = useAddOwnBanner(game, data.banners.examples);
 
   return (
     <div className={p.stack}>
-      {noRealHistory && (
+      {examplePity && (
         <Strip action={{ label: 'Import in History', onClick: () => openTab('history') }}>
-          Chance to win needs your pity and 50/50 state. Pull history: no data yet, so the chances below use example pulls.
+          Chance to win needs your pity and 50/50 state. Pull history: no data yet, so the chances below use example pulls (unless you saved your own pity).
         </Strip>
       )}
       <div className={p.toolbar}>
@@ -60,18 +65,23 @@ export function Planner({ game, data, serverId, now, tagged, openTab }: Props) {
             ]}
           />
         )}
-        {pityTypes.length > 0 && <TryPity game={game} types={pityTypes} value={whatIf} onChange={setWhatIf} />}
+        {pityTypes.length > 0 && <TryPity game={game} types={pityTypes} value={whatIf} onChange={setWhatIf} data={data} />}
       </div>
       {banners.length === 0 ? (
-        <EmptyState title="No banners yet" body="No upcoming banners are listed for this game yet. They appear here as soon as the list has them." />
+        <EmptyState
+          title="No banners yet"
+          body="No upcoming banners are listed for this game yet. They appear here as soon as the list has them, or add one yourself to plan for it now."
+          action={{ label: 'Add my own banner', onClick: openSheet }}
+        />
       ) : (
         <div className={p.planGrid}>
           {banners.map((b) => {
             const type = typeOf(b);
-            return type ? <PlanCard key={b.id} game={game} banner={b} type={type} data={data} serverId={serverId} now={now} tagged={tagged} whatIf={whatIf[type.id]} /> : null;
+            return type ? <PlanCard key={b.id} game={game} banner={b} type={type} data={data} serverId={serverId} now={now} tagged={tagged} whatIf={whatIf[type.id]} openTab={openTab} /> : null;
           })}
         </div>
       )}
+      {sheet}
     </div>
   );
 }
@@ -85,9 +95,33 @@ interface CardProps {
   now: number;
   tagged: boolean;
   whatIf: WhatIf[string] | undefined;
+  openTab: (tab: string) => void;
 }
 
-function PlanCard({ game, banner: b, type, data, serverId, now, tagged, whatIf }: CardProps) {
+export type PitySource = 'what-if' | 'history' | 'saved' | 'example';
+const SOURCE_LABEL: Record<PitySource, string> = {
+  'what-if': 'Your pity (what-if, not saved)',
+  history: 'Pity from your history',
+  saved: 'Pity you saved',
+  example: 'Pity from example pulls',
+};
+
+/**
+ * Which pity the card uses, and where it comes from: what you're trying out
+ * first, then your imported history when it knows both pity and 50/50 state,
+ * then the pity you saved yourself, then example pulls. null = unknown.
+ */
+export function pityFor(data: Pick<PullsData, 'history' | 'user'>, typeId: string, whatIf: WhatIf[string] | undefined): { state: { pulls: number; guaranteed: boolean }; source: PitySource } | null {
+  if (whatIf) return { state: whatIf, source: 'what-if' };
+  const { pity, guaranteed } = pityFromHistory(data.history.list, typeId);
+  const fromHistory = pity.known && guaranteed.known ? { pulls: pity.value, guaranteed: guaranteed.value } : null;
+  if (fromHistory && !data.history.example) return { state: fromHistory, source: 'history' };
+  const saved = data.user.pityManual?.[typeId];
+  if (saved) return { state: { pulls: saved.pity, guaranteed: saved.guaranteed }, source: 'saved' };
+  return fromHistory ? { state: fromHistory, source: 'example' } : null;
+}
+
+function PlanCard({ game, banner: b, type, data, serverId, now, tagged, whatIf, openTab }: CardProps) {
   const start = Date.parse(b.start);
   const end = Date.parse(b.end);
   const upcoming = start > now;
@@ -102,21 +136,19 @@ function PlanCard({ game, banner: b, type, data, serverId, now, tagged, whatIf }
     until: horizon,
     bank: data.bank.value,
     paidExtras: data.user.paidExtras,
+    paidOff: data.user.paidOff,
     passes: Object.fromEntries(Object.entries(data.user.passes).map(([k, v]) => [k, Date.parse(v)])),
     ...data.budgetExtras(horizon),
   });
   const pullsBy = budgetPulls(game, byEnd, type.id);
-  const fromHistory = pityFromHistory(data.history.list, type.id);
-  const state = whatIf ?? {
-    pulls: fromHistory.pity.known ? fromHistory.pity.value : 0,
-    guaranteed: fromHistory.guaranteed.known ? fromHistory.guaranteed.value : false,
-  };
-  const stateKnown = Boolean(whatIf) || (fromHistory.pity.known && fromHistory.guaranteed.known);
+  const pick = pityFor(data, type.id, whatIf);
+  const state = pick?.state ?? { pulls: 0, guaranteed: false };
+  const stateKnown = pick !== null;
   const worst = worstCase(type.pity, state);
   const odds = (mode: OddsMode) => (stateKnown && pullsBy.known ? chance(type.pity, state, pullsBy.value, mode) : null);
   const official = odds('official');
   const community = odds('community');
-  const exampleNumbers = data.bank.example || (!whatIf && data.history.example);
+  const exampleNumbers = data.bank.example || pick?.source === 'example';
   const worstN = worst.known ? worst.value : null;
   const byN = pullsBy.known ? pullsBy.value : null;
   const short = worstN !== null && byN !== null ? worstN - byN : null;
@@ -126,7 +158,7 @@ function PlanCard({ game, banner: b, type, data, serverId, now, tagged, whatIf }
     <article className={cx(p.planCard, b.leak && p.leakCard)} style={{ '--vent': game.vent } as CSSProperties} aria-label={b.title}>
       <div className={p.kindRow}>
         <span className={p.kind}>{type.label}</span>
-        {(data.banners.example || exampleNumbers) && <ExampleTag />}
+        {(data.banners.exampleIds.has(b.id) || exampleNumbers) && <ExampleTag />}
         {b.leak && <UnverifiedTag source={b.leak.source} />}
         {tagged && <GameTag label={game.short} vent={game.vent} />}
       </div>
@@ -160,7 +192,8 @@ function PlanCard({ game, banner: b, type, data, serverId, now, tagged, whatIf }
       )}
       <div className={p.verdictRow}>
         {short === null ? (
-          <NoData dash={false} fix="enter-manually" />
+          // The fix only helps when the missing part is your bank.
+          byN === null && !data.bank.value.known ? <NoData dash={false} fix="enter-manually" onFix={() => openTab('log')} /> : <NoData dash={false} />
         ) : short <= 0 ? (
           <span className={p.ok}>Covers the worst case</span>
         ) : (
@@ -171,19 +204,28 @@ function PlanCard({ game, banner: b, type, data, serverId, now, tagged, whatIf }
       <dl className={p.odds}>
         <div className={p.oddsRow}>
           <dt>Chance by then · official rates</dt>
-          <dd className={p.oddsValue}>{official?.known ? percent(official.value) : <NoData dash={false} fix="import-history" />}</dd>
+          <dd className={p.oddsValue}>
+            {official?.known ? (
+              percent(official.value)
+            ) : !stateKnown ? (
+              <NoData dash={false} fix="import-history" onFix={() => openTab('history')} />
+            ) : !pullsBy.known && !data.bank.value.known ? (
+              <NoData dash={false} fix="enter-manually" onFix={() => openTab('log')} />
+            ) : (
+              <NoData dash={false} />
+            )}
+          </dd>
         </div>
         <div className={p.oddsRow}>
           <dt>Chance by then · community rates</dt>
           <dd className={p.oddsValue}>{community?.known ? percent(community.value) : <span className={p.muted}>not available</span>}</dd>
         </div>
-        {stateKnown && (
+        {pick && (
           <div className={p.oddsRow}>
-            <dt>{whatIf ? 'Your pity (what-if, not saved)' : 'Pity from your history'}</dt>
+            <dt>{SOURCE_LABEL[pick.source]}</dt>
             <dd className={p.oddsValue}>
               {state.pulls}
               {hard !== null ? `/${hard}` : ''} · {state.guaranteed ? 'guaranteed' : '50/50'}
-              {!whatIf && data.history.example ? ' · example' : ''}
             </dd>
           </div>
         )}
@@ -225,20 +267,32 @@ function Figure({ label, value, dim = false }: { label: string; value: number | 
   );
 }
 
-/** V1 feature: type your pity in to see the odds, before (or without) importing. Not saved anywhere. */
-function TryPity({ game, types, value, onChange }: { game: GameContract; types: BannerType[]; value: WhatIf; onChange: (v: WhatIf) => void }) {
+/**
+ * V1 feature: type your pity in to see the odds, before (or without) importing.
+ * Kept on this screen until you press "Save as my pity" (for players on phone or
+ * console, who can't import easily). Imported history still wins when it knows.
+ */
+function TryPity({ game, types, value, onChange, data }: { game: GameContract; types: BannerType[]; value: WhatIf; onChange: (v: WhatIf) => void; data: PullsData }) {
   const [typeId, setTypeId] = useState(types[0]?.id ?? '');
   const type = types.find((t) => t.id === typeId) ?? types[0];
   if (!type || type.pity.kind !== 'hard-pity') return null;
   const cur = value[type.id];
+  const saved = data.user.pityManual?.[type.id];
+  const fromHistory = pityFromHistory(data.history.list, type.id);
+  const historyWins = !data.history.example && fromHistory.pity.known && fromHistory.guaranteed.known;
   const hasFeatured = type.pity.featured !== undefined;
   const set = (next: { pulls: number; guaranteed: boolean } | null) => {
     const rest = Object.fromEntries(Object.entries(value).filter(([id]) => id !== type.id));
     onChange(next ? { ...rest, [type.id]: next } : rest);
   };
+  const save = () => {
+    if (!cur) return;
+    setPityManual(game.id, type.id, { pity: cur.pulls, guaranteed: cur.guaranteed });
+    set(null); // the saved pity shows from now on
+  };
   return (
     <details className={p.tryPity}>
-      <summary>Know your pity? Try it here</summary>
+      <summary>Know your pity? Try it or save it here</summary>
       <div className={p.tryBody}>
         <label className={p.field}>
           Banner
@@ -275,7 +329,20 @@ function TryPity({ game, types, value, onChange }: { game: GameContract; types: 
             </select>
           </label>
         )}
-        <span className={p.muted}>Only for trying out: kept on this screen, never saved. Importing your history replaces guesswork.</span>
+        <Button variant="primary" disabled={!cur} onClick={save}>
+          Save as my pity
+        </Button>
+        {saved && (
+          <Button variant="quiet" onClick={() => setPityManual(game.id, type.id, null)}>
+            Clear saved pity
+          </Button>
+        )}
+        <span className={p.muted}>
+          {saved
+            ? `Saved for ${type.label}: ${saved.pity}/${type.pity.hardPity} · ${saved.guaranteed ? 'guaranteed' : '50/50'}, on ${formatDate(Date.parse(saved.at))}. Update it after you pull.`
+            : 'Typing only tries it out on this screen. Save it to keep it, for example if you play on phone or console and can’t import.'}
+          {historyWins ? ' Your imported history knows this banner’s pity, so the cards use that instead.' : ''}
+        </span>
       </div>
     </details>
   );
