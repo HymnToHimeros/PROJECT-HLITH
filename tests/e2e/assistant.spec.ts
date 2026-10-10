@@ -27,16 +27,17 @@ test('Assistant panel and Edit mode: no serious accessibility problems', async (
   await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
   let dialog = await openAssistant(page, isMobile);
   await expect(dialog.getByRole('region', { name: 'Example conversation' })).toBeVisible();
-  problems.push(...(await serious(page, 'chat, no key')));
+  // Browser tests run without the server: said first, and no key asked for in the chat.
+  await expect(dialog.getByText(/isn’t connected to its server/)).toBeVisible();
+  await expect(dialog.getByRole('region', { name: 'Add your Claude API key' })).toHaveCount(0);
+  problems.push(...(await serious(page, 'chat, no server')));
 
-  // With a key saved (on this device only).
-  await dialog.getByRole('textbox', { name: 'Claude API key' }).fill('sk-ant-api03-E2E_TEST_KEY_not_real_000000');
-  await dialog.getByRole('button', { name: 'Save key' }).click();
-  await expect(dialog.getByLabel('Message to the Assistant')).toBeVisible();
-  problems.push(...(await serious(page, 'chat, key saved')));
-
+  // A key can still be saved in Settings (on this device only).
   await dialog.getByRole('button', { name: 'Settings', exact: true }).click();
   await expect(dialog.getByText('WHICH MODEL ANSWERS')).toBeVisible();
+  await dialog.getByRole('textbox', { name: 'Claude API key' }).fill('sk-ant-api03-E2E_TEST_KEY_not_real_000000');
+  await dialog.getByRole('button', { name: 'Save key' }).click();
+  await expect(dialog.getByText('YOUR CLAUDE KEY')).toBeVisible();
   problems.push(...(await serious(page, 'settings')));
 
   await dialog.getByRole('button', { name: 'Edit lists', exact: true }).click();

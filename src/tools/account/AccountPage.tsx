@@ -103,7 +103,7 @@ export default function AccountPage(props: PanelProps) {
       body = <ExamplesPage />;
       break;
     case 'connections':
-      body = <LinkAccounts games={games} />;
+      body = <LinkAccounts games={games} allGames={props.allGames} />;
       break;
     case 'guide':
       body = (

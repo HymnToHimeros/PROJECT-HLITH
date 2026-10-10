@@ -27,6 +27,8 @@ export interface AssistantProps {
   scope: GameId | 'all';
   servers: Record<GameId, string>;
   account: { email: string } | null;
+  /** Every registered game, switched on or not (Settings lists the changes made in all of them). Missing = games. */
+  allGames?: GameContract[];
   /** How messages travel (tests pass a fake). */
   transport?: Transport;
 }
@@ -38,7 +40,7 @@ const SUGGESTIONS: Record<'game' | 'all', string[]> = {
   all: ['Plan my session tonight', 'How much can I still earn this patch?', 'Which events am I behind on?'],
 };
 
-export function Assistant({ games, scope, servers, account, transport = functionTransport }: AssistantProps) {
+export function Assistant({ games, scope, servers, account, allGames, transport = functionTransport }: AssistantProps) {
   const chat = useChat();
   const settings = useSettings();
   const key = useKey();
@@ -54,14 +56,20 @@ export function Assistant({ games, scope, servers, account, transport = function
   const now = useNow(60_000);
   const spent = spentToday(settings, now);
   const overLimit = settings.dailyLimit !== null && spent >= settings.dailyLimit;
-  const connected = backend !== null;
+  // Messages go through HLITH's server function; without a server nothing can be sent (tests bring their own transport).
+  const connected = backend !== null || transport !== functionTransport;
+  const examplesShown = useExamplesShown();
 
   // Follow the conversation as it grows (not on open, so the top stays in view).
   useEffect(() => {
     if (chat.items.length > 0) endRef.current?.scrollIntoView?.({ block: 'nearest' });
   }, [chat.items.length, chat.thinking]);
 
-  const blocked = !key ? 'Add your Claude key first (above).' : overLimit ? `You reached today’s limit of ${formatUsd(settings.dailyLimit ?? 0)} on this device. Change it in Settings.` : null;
+  const blocked = !connected
+    ? 'Not available in this copy of HLITH (no server).'
+    : !key
+      ? 'Add your Claude key first (above).'
+      : overLimit ? `You reached today’s limit of ${formatUsd(settings.dailyLimit ?? 0)} on this device. Change it in Settings.` : null;
 
   const submit = async (text: string) => {
     if (blocked || chat.thinking || !key || !model) return;
@@ -131,17 +139,19 @@ export function Assistant({ games, scope, servers, account, transport = function
         </button>
       </div>
 
-      {view === 'settings' && <AssistantSettingsView games={inView} />}
+      {view === 'settings' && <AssistantSettingsView games={allGames ?? games} />}
       {view === 'lists' && <EditLists games={inView} initialGame={game?.id} />}
 
       {view === 'chat' && (
         <>
-          {!key && <KeySetup />}
-          {key && !connected && (
+          {/* Without the server no message can be sent, so say that first instead of asking for a paid key that can't be used here. */}
+          {!connected && (
             <p className={s.notice} role="note">
-              This copy of HLITH isn’t connected to its server, so the Assistant can’t send messages here. Everything else on this panel works.
+              This copy of HLITH isn’t connected to its server, so the Assistant can’t send messages here. You don’t need a Claude key for this copy. Settings and Edit
+              lists still work.
             </p>
           )}
+          {!key && connected && <KeySetup />}
           {key && connected && !account && (
             <p className={s.notice} role="note">
               Sign in (Account) to send messages: the Assistant runs through HLITH’s server function, which only answers signed-in users.
@@ -150,7 +160,11 @@ export function Assistant({ games, scope, servers, account, transport = function
 
           <div className={s.messages} aria-live="polite">
             {chat.items.length === 0 ? (
-              <ExampleChat game={game ?? games[0]} />
+              examplesShown ? (
+                <ExampleChat game={game ?? games[0]} />
+              ) : (
+                <p className={s.hint}>No messages yet. Ask about your pulls, events or what to do tonight; the Assistant answers from your own data.</p>
+              )
             ) : (
               chat.items.map((m) =>
                 m.role === 'user' ? (
@@ -225,7 +239,7 @@ export function Assistant({ games, scope, servers, account, transport = function
               <input
                 className={s.input}
                 aria-label="Message to the Assistant"
-                placeholder={blocked && !key ? 'Add your Claude key to start' : 'Ask about pulls, builds, farming…'}
+                placeholder={!connected ? 'Not available here' : blocked && !key ? 'Add your Claude key to start' : 'Ask about pulls, builds, farming…'}
                 value={draft}
                 onChange={(e) => setDraft(e.target.value)}
                 disabled={!!blocked}
@@ -258,7 +272,6 @@ function CostLine({ model, cost }: { model: string | undefined; cost: Cost }) {
 
 /** Shown while the chat is empty: what a chat looks like. Clearly an example; its buttons do nothing. */
 function ExampleChat({ game }: { game: GameContract | undefined }) {
-  const shown = useExamplesShown();
   const currency = game?.currencies.find((c) => c.perPull) ?? game?.currencies[0];
   const proposals: Proposal[] = game
     ? [
@@ -286,7 +299,6 @@ function ExampleChat({ game }: { game: GameContract | undefined }) {
         },
       ]
     : [];
-  if (!shown) return null; // Account → Example data: off
   return (
     <section className={s.example} aria-label="Example conversation">
       <div className={s.exampleHead}>

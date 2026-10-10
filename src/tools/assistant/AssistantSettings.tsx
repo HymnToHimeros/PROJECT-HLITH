@@ -3,6 +3,7 @@ import type { GameContract } from '../../core/contract';
 import { Button, useNow } from '../../core/ui';
 import { CostHowTo, KeySetup } from './KeySetup';
 import { formatUsd, MODELS, priceLine } from './models';
+import { useAllUserData } from '../../core/data/userData';
 import { ActionLog, ProposalsHowTo } from './Proposals';
 import { spentToday, updateSettings, useSettings } from './settings';
 import s from './assistant.module.css';
@@ -16,6 +17,8 @@ export function AssistantSettingsView({ games }: { games: GameContract[] }) {
   const now = useNow(60_000);
   const today = spentToday(settings, now);
   const chosen = MODELS.find((m) => m.id === settings.model);
+  const all = useAllUserData();
+  const anyChanges = games.some((g) => (all.games[g.id]?.assistantActions.length ?? 0) > 0);
 
   const saveLimit = () => {
     const v = limitDraft.trim();
@@ -100,9 +103,7 @@ export function AssistantSettingsView({ games }: { games: GameContract[] }) {
 
       <section className={s.section} aria-label="Changes the Assistant made">
         <span className={s.sectionLabel}>CHANGES THE ASSISTANT MADE</span>
-        {games.map((g) => (
-          <ActionLog key={g.id} game={g} showGame={games.length > 1} />
-        ))}
+        {anyChanges ? games.map((g) => <ActionLog key={g.id} game={g} showGame={games.length > 1} />) : <p className={s.p}>None yet.</p>}
         <p className={s.p}>Only changes you approved appear here. Undo puts things back; nothing is ever deleted.</p>
       </section>
     </div>
