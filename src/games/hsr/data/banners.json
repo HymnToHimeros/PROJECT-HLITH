@@ -1,5 +1,67 @@
 [
   {
+    "id": "birth-of-a-king-2025-07-11",
+    "type": "collab-light-cone",
+    "title": "Birth of a King",
+    "featured": [
+      "23045"
+    ],
+    "start": "2025-07-11T04:00:00.000Z",
+    "end": "2036-07-02T03:00:00.000Z",
+    "serverTime": {
+      "base": 8,
+      "start": true
+    },
+    "art": "https://static.nanoka.cc/assets/hsr/lightconemaxfigures/23045.webp",
+    "permanent": true
+  },
+  {
+    "id": "excalibur-excelsior-2025-07-11",
+    "type": "collab-character",
+    "title": "Excalibur Excelsior",
+    "featured": [
+      "1014"
+    ],
+    "start": "2025-07-11T04:00:00.000Z",
+    "end": "2036-07-02T03:00:00.000Z",
+    "serverTime": {
+      "base": 8,
+      "start": true
+    },
+    "permanent": true
+  },
+  {
+    "id": "i-am-the-bone-of-my-sword-2025-07-11",
+    "type": "collab-character",
+    "title": "I Am the Bone of My Sword",
+    "featured": [
+      "1015"
+    ],
+    "start": "2025-07-11T04:00:00.000Z",
+    "end": "2036-07-02T03:00:00.000Z",
+    "serverTime": {
+      "base": 8,
+      "start": true
+    },
+    "permanent": true
+  },
+  {
+    "id": "red-radiance-of-fuyuki-2025-07-11",
+    "type": "collab-light-cone",
+    "title": "Red Radiance of Fuyuki",
+    "featured": [
+      "23046"
+    ],
+    "start": "2025-07-11T04:00:00.000Z",
+    "end": "2036-07-02T03:00:00.000Z",
+    "serverTime": {
+      "base": 8,
+      "start": true
+    },
+    "art": "https://static.nanoka.cc/assets/hsr/lightconemaxfigures/23046.webp",
+    "permanent": true
+  },
+  {
     "id": "ad-astra-nova-2026-07-15",
     "type": "character",
     "title": "Ad Astra Nova",
@@ -72,6 +134,68 @@
       "base": 8,
       "end": true
     }
+  },
+  {
+    "id": "age-of-gods-golden-gate-2026-07-24",
+    "type": "collab-light-cone",
+    "title": "Age of Gods Golden Gate",
+    "featured": [
+      "23062"
+    ],
+    "start": "2026-07-24T04:00:00.000Z",
+    "end": "2036-07-02T03:00:00.000Z",
+    "serverTime": {
+      "base": 8,
+      "start": true
+    },
+    "art": "https://static.nanoka.cc/assets/hsr/lightconemaxfigures/23062.webp",
+    "permanent": true
+  },
+  {
+    "id": "kaleidic-coruscation-2026-07-24",
+    "type": "collab-light-cone",
+    "title": "Kaleidic Coruscation",
+    "featured": [
+      "23061"
+    ],
+    "start": "2026-07-24T04:00:00.000Z",
+    "end": "2036-07-02T03:00:00.000Z",
+    "serverTime": {
+      "base": 8,
+      "start": true
+    },
+    "art": "https://static.nanoka.cc/assets/hsr/lightconemaxfigures/23061.webp",
+    "permanent": true
+  },
+  {
+    "id": "of-the-beginning-enuma-elish-2026-07-24",
+    "type": "collab-character",
+    "title": "Of the Beginning, Enuma Elish",
+    "featured": [
+      "1509"
+    ],
+    "start": "2026-07-24T04:00:00.000Z",
+    "end": "2036-07-02T03:00:00.000Z",
+    "serverTime": {
+      "base": 8,
+      "start": true
+    },
+    "permanent": true
+  },
+  {
+    "id": "the-gem-coursing-in-red-2026-07-24",
+    "type": "collab-character",
+    "title": "The Gem Coursing in Red",
+    "featured": [
+      "1508"
+    ],
+    "start": "2026-07-24T04:00:00.000Z",
+    "end": "2036-07-02T03:00:00.000Z",
+    "serverTime": {
+      "base": 8,
+      "start": true
+    },
+    "permanent": true
   },
   {
     "id": "coalesced-truths-2026-08-05",

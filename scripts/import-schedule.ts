@@ -20,7 +20,7 @@
 import { readFileSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import type { BacklogItem, Banner, GameEvent, Version } from '../src/core/contract/entities.ts';
-import { amountOf, nameKey, noticeText, serverMark, slug, spanIn, versionFromNotice, type VersionTimes } from './schedule/text.ts';
+import { amountOf, at, nameKey, noticeText, serverMark, slug, spanIn, versionFromNotice, type VersionTimes } from './schedule/text.ts';
 import { fetchWiki, infobox, mainBox, poolBox, poolFeatured, rewardTotal, sectionLinks, statedTotal, wikiPrefix, wikiServer, wikiTime, type WikiPage } from './schedule/wiki.ts';
 
 const ROOT = resolve(import.meta.dirname, '..');
@@ -144,6 +144,18 @@ async function inGameNotices(g: Game): Promise<string[]> {
   return [...r.data.list, ...r.data.pic_list].map((a) => `${noticeText(a.title)}\n${noticeText(a.content)}`);
 }
 
+/**
+ * How long the notice board shows each notice (its own end time), by title. A permanent
+ * banner ("available long-term") has no end of its own; the notice's end says how long
+ * it is announced, which is what `Banner.end` holds when `permanent` is set.
+ */
+async function noticeEnds(g: Game): Promise<Map<string, string>> {
+  type Item = { title: string; end_time: string };
+  const r = await json<{ data: { timezone: number; list: { list: Item[] }[]; pic_list: { type_list: { list: Item[] }[] }[] } }>(g.notices.replace('getAnnContent', 'getAnnList'));
+  const items = [...r.data.list.flatMap((x) => x.list), ...r.data.pic_list.flatMap((x) => x.type_list.flatMap((t) => t.list))];
+  return new Map(items.map((a) => [noticeText(a.title), at(a.end_time.replace(/-/g, '/'), r.data.timezone)]));
+}
+
 // ── 3. Names → the game's ids (characters from our list, weapons from nanoka) ──
 
 async function idIndex(g: Game, wikiPages: Map<string, WikiPage>): Promise<{ index: Map<string, string>; weaponArt: Map<string, string> }> {
@@ -232,7 +244,7 @@ function officialSpan(title: string, notices: string[], versions: Map<string, Ve
   return undefined;
 }
 
-async function fromWiki(g: Game, versions: Map<string, VersionTimes>, notices: string[]) {
+async function fromWiki(g: Game, versions: Map<string, VersionTimes>, notices: string[], ends: Map<string, string>) {
   // Versions still relevant: running, ended recently, or announced (a wiki page exists).
   const wanted = [...versions.values()].filter((v) => !v.end || Date.parse(v.end) > NOW - KEEP_BACK).map((v) => v.id);
   const last = [...versions.keys()].at(-1) ?? '0.0';
@@ -255,6 +267,19 @@ async function fromWiki(g: Game, versions: Map<string, VersionTimes>, notices: s
     for (const t of sectionLinks(page.text, /^Events$/i)) if (ready(t) && !g.endgameOverview.test(t)) eventTitles.add(t);
   }
   const pages = await fetchWiki(g.wiki, [...bannerTitles, ...eventTitles]);
+  // Permanent warps from older collaborations stay in the game: follow the "alongside" links of
+  // permanent banners to the other permanent ones (e.g. the 2025 Fate warps next to the 2026 ones).
+  const older = new Set<string>();
+  for (const t of bannerTitles) {
+    const box = mainBox(pages.get(t)?.text ?? '');
+    if (!/^none$/i.test(box.time_end ?? '')) continue;
+    for (const [k, v] of Object.entries(box)) if (/^alongside\d*$/.test(k) && v && !bannerTitles.has(v)) older.add(v);
+  }
+  for (const [t, p] of await fetchWiki(g.wiki, [...older])) {
+    if (!/^none$/i.test(mainBox(p.text).time_end ?? '')) continue;
+    pages.set(t, p);
+    bannerTitles.add(t);
+  }
 
   // Event pages split into tabs ("subpage1 = Mechatron Exhibition") keep rewards on the tabs.
   const tabs: string[] = [];
@@ -298,6 +323,10 @@ async function fromWiki(g: Game, versions: Map<string, VersionTimes>, notices: s
       if (end && Math.abs(Date.parse(official.end) - Date.parse(end)) > 60_000) warn(g.id, `${title}: wiki end ${end}, official ${official.end} (official used)`);
       ({ start, end, startServer, endServer } = official);
     }
+    // A collaboration warp runs "long-term" (the wiki writes time_end = none): permanent, announced
+    // until the end of its official notice on the notice board.
+    const permanent = /^none$/i.test(box.time_end ?? '');
+    if (permanent && start && !end) end = [...ends].find(([n]) => /Collaboration Warp/i.test(n))?.[1];
     if (!type || !start || !end) {
       warn(g.id, `banner "${t}" left out: ${!type ? `unknown type "${box.type ?? ''}"` : 'no start or end yet'}`);
       continue;
@@ -313,7 +342,7 @@ async function fromWiki(g: Game, versions: Map<string, VersionTimes>, notices: s
     // A weapon banner's own picture: its featured Light Cone / W-Engine (nanoka).
     const lead = featured[0];
     const art = lead ? weaponArt.get(lead) : undefined;
-    banners.push({ id: `${slug(title)}-${dateOf(t) ?? start.slice(0, 10)}`, type, title, featured, start, end, ...serverMark(startServer, endServer), ...(art ? { art } : {}) });
+    banners.push({ id: `${slug(title)}-${dateOf(t) ?? start.slice(0, 10)}`, type, title, featured, start, end, ...serverMark(startServer, permanent ? false : endServer), ...(art ? { art } : {}), ...(permanent ? { permanent: true } : {}) });
   }
 
   // Keep only pictures that answer; a missing one falls back to the lead character's art on screen.
@@ -577,7 +606,8 @@ for (const g of GAMES) {
   // Only notices about what runs now: old version notices reuse the same names for older runs.
   const current = [...versions.values()].filter((v) => !v.end || Date.parse(v.end) > NOW).map((v) => texts.get(v.id) ?? '');
   const notices = [...(await inGameNotices(g)), ...current];
-  const { banners, events, announced } = await fromWiki(g, versions, notices);
+  const ends = await noticeEnds(g);
+  const { banners, events, announced } = await fromWiki(g, versions, notices, ends);
   announce(g, announced);
   const live = [...versions.values()].find((v) => Date.parse(v.start) <= NOW && v.end && NOW < Date.parse(v.end));
   const endgame = g.id === 'hsr' ? hsrEndgame(texts, versions) : await zzzEndgame(g, live?.end ? Date.parse(live.end) : undefined);

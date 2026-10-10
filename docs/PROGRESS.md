@@ -33,8 +33,9 @@ Resume with: "continue from PROGRESS.md". Newest entry on top. Older entries:
   time" now carries `serverTime { base: 8, start/end }`, so screens show it on the user's
   own server (America and Europe no longer see ends 13 / 7 h early). Light Cone and
   W-Engine banners get their picture (`Banner.art`, nanoka; each link checked).
-  HSR collaboration warps stay out: the game runs them with no end date ("time_end = none"
-  on the wiki, notice shown until 2036), and a banner needs an end. Told FRAME.
+  HSR Fate collaboration warps (Saber, Archer, Rin Tohsaka, Gilgamesh and their Light Cones)
+  are in as `permanent` banners (FRAME #45): the game runs them "long-term"; `end` is how
+  long the official notice is shown (2036).
   - **Rewards fixed:** a wiki page's own "Total Rewards" now wins over adding up its rows
     (The Final Callback was counted twice: 80 → 40), "/Rewards" sub-pages are read
     (Clink, Clank, Pinball Knight! 800, Diary of an Orbie Parent 300), multi-line reward
