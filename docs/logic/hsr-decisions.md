@@ -106,6 +106,16 @@ team size and order, and the owner's ZZZ method's own counting.
 28. **ZZZ counts builds too (owner's ruling 2026-10-10, see the standing rule above).** Same bands, same wants,
     same "Why"; ZZZ's 28 scaling lines (Astra Yao's ATK, Lucia's HP, Pan Yinhu's ATK…) count as HSR's do. The
     method's worked examples hold at base builds (zzz-decisions.md 56).
+29. **Whatever weapon is equipped counts, when its path or specialty is the wearer's (T18 step 4, both games).**
+    Every Light Cone (109) and W-Engine (55) that isn't a signature is read like a kit piece, quote for quote
+    (`src/games/<game>/kitcheck/weapons/`). In the game an HSR Light Cone's effect only works on its path and a
+    W-Engine's only for its specialty, so a weapon on the wrong wearer adds nothing and the account note says so
+    ("X: works only for Destruction characters, not counted."). A signature on someone else of its path (Robin's
+    Flowing Nightglow on Sparkle) brings the entries read in its owner's sheet. Same rules as kits: the wearer's own
+    stats with no team condition give the team nothing; unclear text is shown, never counted ("Unto Tomorrow's
+    Morrow" doesn't say whose DMG rises; Planetary Rendezvous and Poised to Bloom depend on the wearer's element /
+    a shared path the sheet can't name). ZZZ's "less DMG taken" is read as `heal` (tie-break only), as Lucia's
+    shield is.
 30. **Only a carry's own game team is a team; no mix-matching (owner's report 2026-10-10).** The owner: "the march
     team once again as example is bs no one runs march with phainon … I don't want random mix matching … if units
     exist that do a job better obviously they should be picked". Cause: every character's page in the game shows a

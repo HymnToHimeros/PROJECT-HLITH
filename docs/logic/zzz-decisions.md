@@ -200,4 +200,5 @@ team size and order, and the owner's ZZZ method's own counting.
     (hsr-decisions.md 25–28). The method's worked examples hold at base builds: Billy > Dialyn > Lucia = 9,
     Billy > Pan Yinhu > Lucia = 10. Fully built (Pan Yinhu for ATK, Lucia for HP) the second is 14 of 14 = 100%,
     and the first is 9 of 14 = 64% with no builds saved.
-
+57. **Every equipped W-Engine counts when its specialty is the wearer's** (T18 step 4, the standing rule): 55
+    W-Engines that aren't signatures are read quote for quote; see hsr-decisions.md 29.

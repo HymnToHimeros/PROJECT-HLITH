@@ -262,16 +262,22 @@ interface WeaponOut {
   rarity: 'top' | 'mid' | 'low';
   icon?: string;
   madeFor?: string;
-  /** A signature weapon's effect at its first refinement, in the game's words (the kit check reads it). */
+  /** The path (HSR) or specialty (ZZZ) whose wearers get its effect, as `role` in characters.json. */
+  role?: string;
+  /** The weapon's effect at its first refinement, in the game's words (the kit check reads it). */
   effect?: { name: string; text: string };
   source: string;
 }
+/** HSR Light Cone `baseType` → path, as `role` in characters.json. */
+const HSR_PATH: Record<string, string> = { Warrior: 'destruction', Rogue: 'hunt', Mage: 'erudition', Shaman: 'harmony', Warlock: 'nihility', Knight: 'preservation', Priest: 'abundance', Memory: 'remembrance', Elation: 'elation' };
+/** ZZZ W-Engine `type` → specialty, as `role` in characters.json. */
+const ZZZ_SPECIALTY: Record<number, string> = { 1: 'attack', 2: 'stun', 3: 'anomaly', 4: 'support', 5: 'defense', 6: 'rupture', 7: 'armorer' };
 const RARITY: Record<number, WeaponOut['rarity']> = { 5: 'top', 4: 'mid', 3: 'low' };
 
 /** ZZZ: every W-Engine in the newest files; an S-rank named after an agent ("Weapon_S_<id>") is made for them. */
 async function zzzWeapons(): Promise<WeaponOut[]> {
   const v = (await getJson<{ zzz: { latest: string } }>(`${BASE}/manifest.json`)).zzz.latest;
-  const list = await getJson<Record<string, { icon: string; rank: number; en: string }>>(`${BASE}/zzz/${v}/weapon.json`);
+  const list = await getJson<Record<string, { icon: string; rank: number; type: number; en: string }>>(`${BASE}/zzz/${v}/weapon.json`);
   const agents = new Set(Object.keys(await getJson<Record<string, unknown>>(`${BASE}/zzz/${v}/character.json`)));
   const out: WeaponOut[] = [];
   for (const [id, w] of Object.entries(list)) {
@@ -281,13 +287,14 @@ async function zzzWeapons(): Promise<WeaponOut[]> {
     const icon = await loads(`${ASSETS}/zzz/${w.icon}.webp`);
     const agent = /^Weapon_S_(\d+)$/.exec(w.icon)?.[1];
     const madeFor = agent && agents.has(agent) ? agent : undefined;
+    // Every W-Engine's effect (T18: whatever is equipped counts, not only signatures).
     let effect: WeaponOut['effect'];
-    if (madeFor) {
-      const d = await getJson<{ talents: Record<string, { name: string; desc: string }> }>(`${BASE}/zzz/${v}/en/weapon/${id}.json`);
-      const t = d.talents['1'];
-      if (t) effect = { name: plain(t.name), text: plain(t.desc) };
-    }
-    out.push({ id, name: plain(w.en), rarity, ...(icon ? { icon } : {}), ...(madeFor ? { madeFor } : {}), ...(effect ? { effect } : {}), source: 'nanoka.cc' });
+    const d = await getJson<{ talents: Record<string, { name: string; desc: string }> }>(`${BASE}/zzz/${v}/en/weapon/${id}.json`);
+    const t = d.talents['1'];
+    if (t) effect = { name: plain(t.name), text: plain(t.desc) };
+    const role = ZZZ_SPECIALTY[w.type];
+    if (!role) throw new Error(`zzz weapon ${id}: unknown type ${w.type}`);
+    out.push({ id, name: plain(w.en), rarity, ...(icon ? { icon } : {}), ...(madeFor ? { madeFor } : {}), role, ...(effect ? { effect } : {}), source: 'nanoka.cc' });
   }
   return out;
 }
@@ -299,7 +306,7 @@ async function zzzWeapons(): Promise<WeaponOut[]> {
  */
 async function hsrWeapons(): Promise<WeaponOut[]> {
   const v = (await getJson<{ hsr: { latest: string } }>(`${BASE}/manifest.json`)).hsr.latest;
-  const list = await getJson<Record<string, { rank: string; en: string }>>(`${BASE}/hsr/${v}/lightcone.json`);
+  const list = await getJson<Record<string, { rank: string; baseType: string; en: string }>>(`${BASE}/hsr/${v}/lightcone.json`);
   const chars = await getJson<Record<string, unknown>>(`${BASE}/hsr/${v}/character.json`);
   const firstFor = new Map<string, string[]>();
   for (const id of Object.keys(chars)) {
@@ -315,13 +322,14 @@ async function hsrWeapons(): Promise<WeaponOut[]> {
     const icon = await loads(`${ASSETS}/hsr/lightconemediumicon/${id}.webp`);
     const who = firstFor.get(id);
     const madeFor = stars === 5 && who?.length === 1 && who[0] ? who[0] : undefined;
+    // Every Light Cone's effect (T18: whatever is equipped counts, not only signatures).
     let effect: WeaponOut['effect'];
-    if (madeFor) {
-      const d = await getJson<{ refinements: { name: string; desc: string; level: Record<string, { param_list: number[] }> } }>(`${BASE}/hsr/${v}/en/lightcone/${id}.json`);
-      if (d.refinements?.desc) effect = { name: plain(d.refinements.name), text: plain(fill(d.refinements.desc, d.refinements.level['1']?.param_list ?? [])) };
-      else console.log(`  hsr Light Cone ${id} (${plain(c.en)}): no effect text in the files yet, left out`);
-    }
-    out.push({ id, name: plain(c.en), rarity, ...(icon ? { icon } : {}), ...(madeFor ? { madeFor } : {}), ...(effect ? { effect } : {}), source: 'nanoka.cc' });
+    const d = await getJson<{ refinements?: { name: string; desc: string; level: Record<string, { param_list: number[] }> } }>(`${BASE}/hsr/${v}/en/lightcone/${id}.json`);
+    if (d.refinements?.desc) effect = { name: plain(d.refinements.name), text: plain(fill(d.refinements.desc, d.refinements.level['1']?.param_list ?? [])) };
+    else console.log(`  hsr Light Cone ${id} (${plain(c.en)}): no effect text in the files yet, left out`);
+    const role = HSR_PATH[c.baseType];
+    if (!role) throw new Error(`hsr Light Cone ${id}: unknown path ${c.baseType}`);
+    out.push({ id, name: plain(c.en), rarity, ...(icon ? { icon } : {}), ...(madeFor ? { madeFor } : {}), role, ...(effect ? { effect } : {}), source: 'nanoka.cc' });
   }
   return out;
 }

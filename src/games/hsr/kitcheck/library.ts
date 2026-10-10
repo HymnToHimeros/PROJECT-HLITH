@@ -15,7 +15,9 @@ import { groupF } from './sheet/groupF';
 import { groupG } from './sheet/groupG';
 import { groupH } from './sheet/groupH';
 import { groupI } from './sheet/groupI';
-import type { CharacterSheet, Element, Path } from './types';
+import type { CharacterSheet, Element, Path, WeaponSheet } from './types';
+import { WEAPON_SHEETS } from './weapons';
+import { weaponPiece } from './check';
 
 /** Every kit, with each character's signature Light Cone as one more piece (counted only when equipped). */
 export const KITS: Kit[] = withSignatureWeapons(kitsJson as Kit[], weapons as Weapon[], 'Light Cone');
@@ -68,6 +70,23 @@ function pairs(teams: TeamPreset[]): Map<string, Set<string>> {
   return out;
 }
 
+/**
+ * Every Light Cone the check can read (T18 step 4). A signature's entries come from its character's sheet (piece
+ * `signature-weapon`); the rest from the weapon sheets. Entry ids get the weapon's id in front, so a Light Cone never
+ * clashes with the wearer's own entries.
+ */
+export function weaponLibrary(sheets: CharacterSheet[], weaponSheets: WeaponSheet[] = WEAPON_SHEETS, list: Weapon[] = weapons as Weapon[]): Library['weapons'] {
+  const out: Library['weapons'] = new Map();
+  for (const w of list) {
+    if (!w.role) continue;
+    const read = w.madeFor ? sheets.find((s) => s.characterId === w.madeFor)?.entries.filter((e) => e.piece === 'signature-weapon') : weaponSheets.find((s) => s.weaponId === w.id)?.entries;
+    if (!read) continue;
+    const entries = read.map((e) => ({ ...e, id: `w${w.id}-${e.id}`, piece: weaponPiece(w.id) }));
+    out.set(w.id, { name: w.name, role: w.role, ...(w.madeFor ? { madeFor: w.madeFor } : {}), label: `Light Cone: ${w.name}`, entries });
+  }
+  return out;
+}
+
 export function buildLibrary(sheets: CharacterSheet[] = SHEETS, kitList: Kit[] = KITS, teams: TeamPreset[] = gameTeams as TeamPreset[]): Library {
   const carries = new Set(sheets.filter((s) => s.damage).map((s) => s.characterId));
   const own = teams.filter((t) => isOwnTeam(t, carries));
@@ -85,6 +104,7 @@ export function buildLibrary(sheets: CharacterSheet[] = SHEETS, kitList: Kit[] =
     ),
     pieceLabels: new Map(kitList.map((k) => [k.characterId, new Map(k.skills.map((s) => [s.id, s.label] as const))])),
     names: new Map(characters.map((c) => [c.id, c.name])),
+    weapons: weaponLibrary(sheets),
   };
 }
 
