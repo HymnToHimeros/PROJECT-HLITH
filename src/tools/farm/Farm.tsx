@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import type { Character, GameContract, Material } from '../../core/contract';
 import { known, type Known } from '../../core/contract/known';
+import { useExamplesShown } from '../../core/data/prefs';
 import { setFarm, type GameUserData } from '../../core/data/userData';
 import { formatNumber } from '../../core/time/format';
 import { ExampleNotice, ExampleTag, GameTag, HowTo, NoData } from '../../core/ui';
@@ -42,11 +43,11 @@ interface Plan {
   days: Known<number>;
 }
 
-function planOf(g: FarmGame): Plan {
+function planOf(g: FarmGame, showExamples: boolean): Plan {
   const { game, user, characters, materials } = g;
   const chosen = user.farm.map((id) => characters.find((c) => c.id === id) ?? { id, name: id, rarity: 'mid' as const, element: '', role: '' });
   const real = farmPlan(game, user.farm, materials);
-  const example = chosen.length > 0 && !real.needs.known;
+  const example = showExamples && chosen.length > 0 && !real.needs.known;
   const rows = real.needs.known ? real.needs.value : example ? exampleNeeds(game, chosen.length) : [];
   const exampleHave = rows.map((r, i) => Math.round(r.amount * ([0.17, 0.3, 0.6, 0.1][i % 4] ?? 0)));
   const stamina = example ? known(rows.reduce((sum, r, i) => sum + (r.stamina.known ? Math.round(r.stamina.value * (1 - (exampleHave[i] ?? 0) / r.amount)) : 0), 0), 'user') : real.stamina;
@@ -56,7 +57,8 @@ function planOf(g: FarmGame): Plan {
 /** Farm (R40): pick characters → materials (have / need, runs, stamina), stamina total, days to finish, gear to farm. */
 export function Farm({ games, openRoster }: Props) {
   const several = games.length > 1;
-  const plans = games.map(planOf);
+  const showExamples = useExamplesShown();
+  const plans = games.map((g) => planOf(g, showExamples));
   const anyChosen = plans.some((p) => p.chosen.length > 0);
   const anyExample = plans.some((p) => p.example);
   const word = several ? 'character' : (games[0]?.game.terms.character.toLowerCase() ?? 'character');

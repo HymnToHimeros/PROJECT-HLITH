@@ -19,7 +19,7 @@ const NOUN: Record<OwnKind, { one: string; list: string }> = {
   backlog: { one: 'backlog item', list: 'Backlog' },
 };
 
-const ORIGIN_LABEL: Record<Origin, string> = { 'built-in': 'LIST', changed: 'CHANGED', mine: 'YOURS' };
+const ORIGIN_LABEL: Record<Origin, string> = { 'built-in': 'LIST', changed: 'CHANGED', mine: 'YOURS', example: 'EXAMPLE' };
 
 type AnyItem = OwnItemTypes[OwnKind];
 
@@ -40,10 +40,17 @@ function useBuiltIn<K extends OwnKind>(game: GameContract, kind: K): { list: Own
   return state?.key === key ? { list: state.list, loading: false } : { list: [], loading: true };
 }
 
-export function EditMode({ game, kind }: { game: GameContract; kind: OwnKind }) {
+/**
+ * `examples`: the screen's example items, passed while the game's list is empty and you have
+ * none of your own. They show here too, so you can change one (it becomes yours) or hide it.
+ */
+export function EditMode({ game, kind, examples }: { game: GameContract; kind: OwnKind; examples?: readonly AnyItem[] | undefined }) {
   const { list, loading } = useBuiltIn(game, kind);
-  const rows = useOwnRows(game, kind, list);
+  const ownRows = useOwnRows(game, kind, list);
   const own = useGameData(game.id).ownItems[kind];
+  const exampleRows: MergedRow<AnyItem>[] =
+    !loading && list.length === 0 && examples ? examples.filter((e) => !own[e.id]?.mine).map((e) => ({ item: e, origin: 'example' as const, hidden: Boolean(own[e.id]?.hidden) })) : [];
+  const rows = [...exampleRows, ...ownRows];
   const [showHidden, setShowHidden] = useState(false);
   const [editing, setEditing] = useState<{ row: MergedRow<AnyItem> | null } | null>(null);
   const noun = NOUN[kind];
@@ -59,6 +66,7 @@ export function EditMode({ game, kind }: { game: GameContract; kind: OwnKind }) 
           `Add ${noun.one}s the list doesn’t have yet with “Add ${noun.one}”. They show up in ${noun.list} next to the built-in ones, marked YOURS.`,
           `Change any ${noun.one} with “Change”. Your version wins; the list’s own entry is kept underneath, marked CHANGED.`,
           `Hide anything you don’t want to see with “Hide”. Nothing is deleted: “Show hidden” brings it back.`,
+          `Items marked EXAMPLE stand in while the game’s list is empty. Change one and it becomes yours; your own items then replace the examples.`,
           `When the list is updated, your own items, changes and hides stay exactly as you left them.`,
         ]}
       />
@@ -183,7 +191,7 @@ function ItemForm({ game, kind, row, onCancel, onSave }: FormProps) {
   const [total, setTotal] = useState(item.total ? String(item.total) : '');
   const [error, setError] = useState('');
   const noun = NOUN[kind].one;
-  const isMine = !row || row.origin === 'mine';
+  const isMine = !row || row.origin === 'mine' || row.origin === 'example';
   const f = (name: string) => `${uid}-${name}`;
 
   const submit = (e: FormEvent) => {
@@ -231,6 +239,7 @@ function ItemForm({ game, kind, row, onCancel, onSave }: FormProps) {
     <form className={s.form} onSubmit={submit} aria-label={row ? `Change ${row.item.title}` : `Add ${noun}`}>
       <h3 className={s.formTitle}>{row ? `Change “${row.item.title}”` : `Add your own ${noun}`}</h3>
       {row && !isMine && <p className={s.note}>This is a built-in {noun}. Your changes sit on top; the list’s own version is kept.</p>}
+      {row?.origin === 'example' && <p className={s.note}>This is an example. Saving makes it your own {noun}; your own items then replace the examples.</p>}
       <div className={s.grid}>
         <label className={`${s.field} ${s.wide}`} htmlFor={f('title')}>
           Name
@@ -364,7 +373,7 @@ export function EditLists({ games, initialGame }: { games: GameContract[]; initi
  * One-line entry point for a list screen: an "Edit list" button that opens
  * Edit mode for that game and list in a side panel (PC) or sheet (phone).
  */
-export function EditListButton({ game, kind }: { game: GameContract; kind: OwnKind }) {
+export function EditListButton({ game, kind, examples }: { game: GameContract; kind: OwnKind; examples?: readonly AnyItem[] | undefined }) {
   const [open, setOpen] = useState(false);
   const own = useGameData(game.id).ownItems[kind];
   const count = Object.values(own).filter((e) => e.mine && !e.hidden).length;
@@ -374,7 +383,7 @@ export function EditListButton({ game, kind }: { game: GameContract; kind: OwnKi
         Edit list{count ? ` · ${count} yours` : ''}
       </Button>
       <BottomSheet open={open} title={`Edit mode · ${NOUN[kind].list} · ${game.short}`} onClose={() => setOpen(false)} side>
-        <EditMode game={game} kind={kind} />
+        <EditMode game={game} kind={kind} examples={examples} />
       </BottomSheet>
     </>
   );

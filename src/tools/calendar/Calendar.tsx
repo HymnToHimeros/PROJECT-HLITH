@@ -1,5 +1,6 @@
 import { useEffect, useRef, type CSSProperties } from 'react';
 import type { GameContract, GameId } from '../../core/contract';
+import { useExamplesShown } from '../../core/data/prefs';
 import type { UserPlan } from '../../core/data/userData';
 import { formatDateTime, formatRange } from '../../core/time/reset';
 import { CalendarBar, ExampleNotice, ExampleTag, GameTag, HowTo, Timer, UnverifiedTag } from '../../core/ui';
@@ -55,9 +56,10 @@ export function Calendar({ games, servers, lists, now, openAccount, openServer, 
   const to = day0 + DAYS_AHEAD * DAY;
   const pct = (t: number) => Math.min(100, Math.max(0, ((t - from) / (to - from)) * 100));
 
+  const showExamples = useExamplesShown();
   const timelines = games.map((game) => {
     const l = lists[game.id] ?? { characters: [], banners: [], events: [], versions: [], materials: [] };
-    return { game, timeline: gameTimeline({ game, serverId: servers[game.id], characters: l.characters, banners: l.banners, events: l.events, versions: l.versions, now, from, to }) };
+    return { game, timeline: gameTimeline({ game, serverId: servers[game.id], characters: l.characters, banners: l.banners, events: l.events, versions: l.versions, now, from, to, examples: showExamples }) };
   });
   const laneExample = (lane: Lane) => timelines.some(({ timeline }) => timeline.example[lane]);
   // Your plans; with none yet, one EXAMPLE plan shows the look.
@@ -65,7 +67,7 @@ export function Calendar({ games, servers, lists, now, openAccount, openServer, 
     const start = Date.parse(p.start);
     return { id: p.id, game, lane: 'banners', title: p.title, start, end: p.end ? Date.parse(p.end) : start + 60 * 60_000, example: false };
   });
-  const plan = myPlans.length ? null : examplePlan(timelines, now);
+  const plan = myPlans.length || !showExamples ? null : examplePlan(timelines, now);
   const anyExample = LANES.some((l) => laneExample(l.id)) || plan !== null;
   const zone = Intl.DateTimeFormat().resolvedOptions().timeZone;
   const chooseServer = (id: GameId) => (openServer ? openServer(id) : openAccount());

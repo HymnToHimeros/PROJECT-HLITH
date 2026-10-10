@@ -43,8 +43,9 @@ const SOON = 4 * 86_400_000;
  */
 export function Events({ game, data, serverId, now, onChooseServer }: Props) {
   const [filter, setFilter] = useState<Filter>('all');
-  const until = data.versionEnd.at;
   const list = data.events.list;
+  // Version end unknown (examples hidden): count up to the last listed event's end.
+  const until = data.versionEnd.at ?? Math.max(now, ...list.map((ev) => Date.parse(ev.end)).filter(Number.isFinite));
   const example = data.events.example;
   const b = eventsBudget(game, list, data.user, now, until, serverId);
   const rows = new Map(b.rows.map((r) => [r.id, r]));

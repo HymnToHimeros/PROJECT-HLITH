@@ -54,7 +54,7 @@ function GameEvents({ game, serverId, now, heading, openAccount }: { game: GameC
   return (
     <section className={e.stack} aria-label={game.name}>
       <GameHeading game={game} show={heading} />
-      <EditListButton game={game} kind="events" />
+      <EditListButton game={game} kind="events" examples={data.examples} />
       {anyExample && <ExampleNotice actions={actions}>{parts.join(' ')}</ExampleNotice>}
       <Events game={game} data={data} serverId={serverId} now={now} onChooseServer={openAccount} />
     </section>

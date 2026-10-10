@@ -119,4 +119,20 @@ describe('Edit mode: your own items on top of the built-in list', () => {
     expect(screen.getByRole('alert')).toHaveTextContent('Set when it starts and ends.');
     expect(gameData('aa').ownItems.events).toEqual({});
   });
+
+  it('shows the screen’s examples while the list is empty: change one and it becomes yours, or hide it', async () => {
+    const empty = { ...game, data: { ...game.data, banners: async () => [] } } as unknown as GameContract;
+    const ex = [{ id: 'example-character', title: 'Example banner', type: 'character', featured: [], start: AT, end: '2026-10-20T10:00:00Z' }];
+    render(<EditMode game={empty} kind="banners" examples={ex} />);
+    const row = await screen.findByText('Example banner');
+    expect(within(row.closest('li') as HTMLElement).getByText('EXAMPLE')).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'Hide Example banner' }));
+    expect(gameData('aa').ownItems.banners['example-character']).toMatchObject({ hidden: true, mine: false });
+    fireEvent.click(screen.getByRole('button', { name: /Show hidden/ }));
+    fireEvent.click(screen.getByRole('button', { name: 'Show Example banner' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Change Example banner' }));
+    fireEvent.change(screen.getByLabelText('Name'), { target: { value: 'My banner' } });
+    fireEvent.click(screen.getByRole('button', { name: 'Save change' }));
+    expect(gameData('aa').ownItems.banners['example-character']).toMatchObject({ mine: true, fields: { title: 'My banner', type: 'character' } });
+  });
 });

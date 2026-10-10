@@ -51,6 +51,7 @@ interface GameToday {
 export function Today({ games, servers, lists, user, now, open, openAccount, openServer }: TodayProps) {
   const tags = games.length > 1;
   const prefs = usePrefs();
+  const showExamples = !prefs.hideExamples;
   const chooseServer = (id: GameId) => (openServer ? openServer(id) : openAccount());
   const days: GameToday[] = games.map((game) => {
     const l = lists[game.id] ?? { characters: [], banners: [], events: [], versions: [], materials: [] };
@@ -65,8 +66,8 @@ export function Today({ games, servers, lists, user, now, open, openAccount, ope
       user: u,
       lists: l,
       serverId,
-      banners: l.banners.length ? { list: l.banners, example: false } : { list: exampleBanners(game, l.characters, now), example: true },
-      events: l.events.length ? { list: l.events, example: false } : { list: exampleEvents(game, now), example: true },
+      banners: l.banners.length || !showExamples ? { list: l.banners, example: false } : { list: exampleBanners(game, l.characters, now), example: true },
+      events: l.events.length || !showExamples ? { list: l.events, example: false } : { list: exampleEvents(game, now), example: true },
       tasks,
     };
   });

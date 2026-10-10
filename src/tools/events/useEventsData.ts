@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import type { GameContract, GameEvent, Version } from '../../core/contract';
+import { useExamplesShown } from '../../core/data/prefs';
 import { useGameData, type GameUserData } from '../../core/data/userData';
 import { exampleVersionEnd } from '../pulls/examples';
 import { exampleEvents } from './examples';
@@ -11,13 +12,17 @@ export interface EventsData {
   user: GameUserData;
   /** The game's real events, or examples while its list is empty. */
   events: { list: GameEvent[]; example: boolean };
-  versionEnd: { at: number; example: boolean };
+  /** null = unknown (no version list, and examples are hidden in Account → Example data). */
+  versionEnd: { at: number | null; example: boolean };
+  /** Every example event (hidden ones too), for Edit mode, while examples stand in for the list; else undefined. */
+  examples: GameEvent[] | undefined;
   loading: boolean;
 }
 
 /** Events for one game, with examples filling the gaps. Your progress is always your own. */
 export function useEventsData(game: GameContract, now: number): EventsData {
   const user = useGameData(game.id);
+  const showExamples = useExamplesShown();
   const [lists, setLists] = useState<{ events: GameEvent[]; versions: Version[]; at: number } | null>(null);
 
   useEffect(() => {
@@ -38,8 +43,10 @@ export function useEventsData(game: GameContract, now: number): EventsData {
   const events = useWithOwnItems(game, 'events', lists?.events ?? NO_EVENTS);
   return {
     user,
-    events: events.length ? { list: events, example: false } : { list: examples, example: true },
-    versionEnd: current ? { at: Date.parse(current.end), example: false } : { at: exampleVersionEnd(at), example: true },
+    // Examples you hid in Edit mode stay hidden.
+    events: events.length || !showExamples ? { list: events, example: false } : { list: examples.filter((e) => !user.ownItems.events[e.id]?.hidden), example: true },
+    examples: events.length || !showExamples ? undefined : examples,
+    versionEnd: current ? { at: Date.parse(current.end), example: false } : showExamples ? { at: exampleVersionEnd(at), example: true } : { at: null, example: false },
     loading: lists === null,
   };
 }
