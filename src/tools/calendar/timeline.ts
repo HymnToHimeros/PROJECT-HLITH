@@ -133,3 +133,34 @@ export function moments(timelines: { game: GameContract; timeline: GameTimeline 
   }
   return out.sort((a, b) => a.at - b.at || a.text.localeCompare(b.text));
 }
+
+/** When an item next changes: its start if it hasn't started, else its end. Already over: never (sorts last). */
+export function nextChange(s: { start: number; end: number }, now: number): number {
+  if (s.end < now) return Number.POSITIVE_INFINITY;
+  return s.start > now ? s.start : s.end;
+}
+
+/** Pack bars into as few rows as possible: bars that don't overlap share a row. */
+export function packRows<T extends { start: number; end: number }>(spans: T[]): T[][] {
+  const rows: T[][] = [];
+  for (const s of [...spans].sort((a, b) => a.start - b.start || a.end - b.end)) {
+    const row = rows.find((r) => (r[r.length - 1]?.end ?? Number.NEGATIVE_INFINITY) <= s.start);
+    if (row) row.push(s);
+    else rows.push([s]);
+  }
+  return rows;
+}
+
+/**
+ * Fold a busy lane: keep the bars that change soonest, as long as they fit in `maxRows` packed rows.
+ * The rest go behind "Show N more". Nothing is dropped: shown + hidden is every bar.
+ */
+export function foldRows<T extends { start: number; end: number }>(spans: T[], now: number, maxRows: number): { shown: T[]; hidden: T[] } {
+  const shown: T[] = [];
+  const hidden: T[] = [];
+  for (const s of [...spans].sort((a, b) => nextChange(a, now) - nextChange(b, now) || a.start - b.start)) {
+    if (packRows([...shown, s]).length <= maxRows) shown.push(s);
+    else hidden.push(s);
+  }
+  return { shown, hidden };
+}
