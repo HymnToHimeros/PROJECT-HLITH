@@ -363,7 +363,8 @@
   .root {
     display: flex;
     flex-direction: column;
-    padding-bottom: calc(var(--phone-tab) + 18px + env(safe-area-inset-bottom));
+    /* Room for the tab bar and the ASK button above it (bottom 94px + 56px tall), so nothing ends up under ASK. */
+    padding-bottom: calc(94px + 56px + var(--s-4) + env(safe-area-inset-bottom));
   }
   .sidebar {
     display: none;
