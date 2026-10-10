@@ -90,7 +90,10 @@ describe('Banners screen', () => {
   it('timeline board: Now holds live banners, Next the next phase, Later the rest; permanent banners sit in "Always open"', async () => {
     await show([...realBanners, { id: 'collab', type: 'character', title: 'Collab forever', featured: ['c1'], start: iso(-60), end: iso(3650), permanent: true }]);
     const column = (label: string) => screen.getByText(label, { selector: 'span' }).closest('div')?.parentElement as HTMLElement;
-    const titles = (el: HTMLElement) => within(el).queryAllByRole('article').map((a) => a.getAttribute('aria-label'));
+    const titles = (el: HTMLElement) =>
+      within(el)
+        .queryAllByRole('article')
+        .map((a) => a.getAttribute('aria-label'));
     expect(titles(column('Now'))).toEqual(['Live short', 'Live long']);
     expect(titles(column('Next'))).toEqual(['Upcoming soon']);
     expect(titles(column('Later'))).toEqual(['Upcoming late', 'Leaked one']);
@@ -98,7 +101,7 @@ describe('Banners screen', () => {
     expect(titles(rail)).toEqual(['Collab forever']);
     expect(titles(column('Now'))).not.toContain('Collab forever');
     // The ruler shows the limited banners with a TODAY line.
-    expect(screen.getByRole('img', { name: 'AA banner timeline' })).toHaveTextContent('TODAY');
+    expect(await screen.findByRole('img', { name: 'AA banner timeline' })).toHaveTextContent('TODAY');
   });
 
   it('a weapon banner stacks under the character banner it belongs to', async () => {
@@ -117,11 +120,27 @@ describe('Banners screen', () => {
     expect(star.nextElementSibling?.getAttribute('aria-label')).toBe('Cone banner');
   });
 
-  it('a permanent banner says "Permanent" instead of a countdown', async () => {
+  it('a permanent banner is a compact row in "Always open", with no countdown', async () => {
     await show([{ id: 'collab', type: 'character', title: 'Collab forever', featured: ['c1'], start: iso(-60), end: iso(3650), permanent: true }]);
-    const card = screen.getByRole('article', { name: 'Collab forever' });
-    expect(within(card).getByText('Permanent')).toBeInTheDocument();
-    expect(within(card).queryByText(/ends in/)).not.toBeInTheDocument();
+    const rail = screen.getByRole('complementary', { name: 'Always open · AA' });
+    expect(rail).toHaveTextContent('1 permanent banner. No end date, so they sit outside the timeline.');
+    const row = within(rail).getByRole('article', { name: 'Collab forever' });
+    expect(within(row).getByText('Star One')).toBeInTheDocument();
+    expect(within(row).getByRole('button', { name: 'Add Star One to my wanted list' })).toBeInTheDocument();
+    expect(within(row).queryByText(/ends in/)).not.toBeInTheDocument();
+  });
+
+  it('live banners open as big cards; coming ones are compact and open big with their arrow', async () => {
+    await show(realBanners);
+    const live = screen.getByRole('article', { name: 'Live short' });
+    expect(within(live).getByText('Ends in')).toBeInTheDocument();
+    expect(within(live).getByRole('button', { name: 'Show less' })).toHaveAttribute('aria-expanded', 'true');
+    const soon = screen.getByRole('article', { name: 'Upcoming soon' });
+    expect(within(soon).queryByRole('button', { name: 'Plan pulls' })).not.toBeInTheDocument();
+    fireEvent.click(within(soon).getByRole('button', { name: 'Details' }));
+    const opened = screen.getByRole('article', { name: 'Upcoming soon' });
+    expect(within(opened).getByText('Opens in')).toBeInTheDocument();
+    expect(within(opened).getByRole('button', { name: 'Plan pulls' })).toBeInTheDocument();
   });
 
   it('shows leaks as unverified with their source, and the switch hides them and is remembered', async () => {
@@ -204,8 +223,8 @@ describe('Banners screen', () => {
   it('“build a team first” opens Roster → Teams', async () => {
     const open = vi.fn();
     await show(realBanners, open);
+    // A live banner shows it straight away.
     const tile = screen.getByRole('article', { name: 'Live short' });
-    fireEvent.click(within(tile).getByRole('button', { name: 'Details' }));
     fireEvent.click(within(tile).getByRole('button', { name: 'build a team first' }));
     expect(open).toHaveBeenCalledWith('roster', 'teams');
   });
@@ -239,7 +258,10 @@ describe('Banners screen', () => {
     const game = makeGame([{ id: 'cone', type: 'weapon', title: 'Cone banner', featured: ['w1', 'w2'], start: iso(-2), end: iso(8) }]);
     const withWeapons = {
       ...game,
-      bannerTypes: [...game.bannerTypes, { id: 'weapon', label: 'Cone banner', pullItem: 'gem', target: 'weapon', pity: { kind: 'hard-pity', hardPity: 80, baseRate: 0.008, featured: { winRate: 0.75, guaranteeAfterLoss: true } } }],
+      bannerTypes: [
+        ...game.bannerTypes,
+        { id: 'weapon', label: 'Cone banner', pullItem: 'gem', target: 'weapon', pity: { kind: 'hard-pity', hardPity: 80, baseRate: 0.008, featured: { winRate: 0.75, guaranteeAfterLoss: true } } },
+      ],
       data: {
         ...game.data,
         weapons: async () => [

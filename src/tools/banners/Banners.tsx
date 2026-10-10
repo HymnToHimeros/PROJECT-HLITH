@@ -1,4 +1,4 @@
-import { useState, type CSSProperties, type ReactNode } from 'react';
+import { useLayoutEffect, useState, type CSSProperties } from 'react';
 import type { Banner, Character, GameContract, ModuleId, Weapon } from '../../core/contract';
 import { formatDate, formatRange } from '../../core/time/reset';
 import { EmptyState, ExampleNotice, ExampleTag, GameTag, NoData, Timer, UnverifiedTag } from '../../core/ui';
@@ -13,6 +13,16 @@ import { useAddOwnBanner } from './AddOwnBanner';
 
 export type BannerFilter = 'all' | 'live' | 'upcoming' | 'leaks' | 'reruns';
 
+/** What one game puts on the shared time ruler: its character banners and where its phases begin. */
+export interface Lane {
+  game: GameContract;
+  bars: { id: string; title: string; start: number; end: number; leak: boolean }[];
+  /** First start of the Next phase, and of the Later phase; undefined when nothing is listed. */
+  next: number | undefined;
+  later: number | undefined;
+  weapons: boolean;
+}
+
 interface Props {
   game: GameContract;
   now: number;
@@ -20,6 +30,8 @@ interface Props {
   hideLeaks: boolean;
   filter: BannerFilter;
   open: (module: ModuleId, tab?: string) => void;
+  /** Reports this game's row for the shared ruler at the top of the screen. */
+  onLane: (lane: Lane) => void;
 }
 
 const DAY = 86_400_000;
@@ -38,31 +50,52 @@ interface Group {
 }
 
 /**
- * Banners for one game as a timeline board (owner's pick, direction 2): a time ruler with a
- * TODAY line, then Now / Next / Later columns. Each character banner is a tile with its weapon
- * banner stacked under it. Permanent banners sit apart in an "Always open" rail. On a phone
- * the columns become tabs.
+ * Banners for one game as a timeline board (owner's pick, direction 2, as in the mock-up):
+ * Now / Next / Later columns under the shared ruler. A live banner is a big card with its art;
+ * coming ones are compact tiles with their weapon banner stacked under them. Permanent banners
+ * sit apart as compact rows in an "Always open" rail. On a phone the columns become tabs.
  */
-export function GameBanners({ game, now, many, hideLeaks, filter, open }: Props) {
+export function GameBanners({ game, now, many, hideLeaks, filter, open, onLane }: Props) {
   const data = useBannersData(game, now);
   const { openSheet, sheet } = useAddOwnBanner(game, data.examples);
   const [tab, setTab] = useState<Phase>('now');
-  if (data.loading) return null;
   const { live, upcoming, hiddenLeaks } = splitBanners(data.banners.list, now, hideLeaks);
-  const isWeapon = (b: Banner) => game.bannerTypes.find((t) => t.id === b.type)?.target === 'weapon';
-  const keep = (b: Banner) =>
-    filter === 'leaks' ? Boolean(b.leak) : filter === 'reruns' ? rerunLabel(game, b, data.characters) === 'Rerun' : true;
-  const permanent = live.filter((b) => b.permanent).filter(keep);
-  const limitedLive = live.filter((b) => !b.permanent);
+  const isWeapon = (x: Banner) => game.bannerTypes.find((t) => t.id === x.type)?.target === 'weapon';
+  const limitedLive = live.filter((x) => !x.permanent);
   // Next = the next phase (everything opening within two days of the first upcoming start); Later = the rest.
-  const firstStart = upcoming.length ? Math.min(...upcoming.map((b) => Date.parse(b.start))) : 0;
-  const phaseOf = (b: Banner): Phase => (Date.parse(b.start) <= now ? 'now' : Date.parse(b.start) <= firstStart + 2 * DAY ? 'next' : 'later');
-  const shown = [...limitedLive, ...upcoming].filter(keep).filter((b) => (filter === 'live' ? phaseOf(b) === 'now' : filter === 'upcoming' ? phaseOf(b) !== 'now' : true));
-  const columns = Object.fromEntries(PHASES.map(({ id }) => [id, groupBanners(shown.filter((b) => phaseOf(b) === id), isWeapon, data, now)])) as Record<Phase, Group[]>;
+  const firstStart = upcoming.length ? Math.min(...upcoming.map((x) => Date.parse(x.start))) : 0;
+  const phaseOf = (x: Banner): Phase => (Date.parse(x.start) <= now ? 'now' : Date.parse(x.start) <= firstStart + 2 * DAY ? 'next' : 'later');
+  const laterStarts = upcoming.filter((x) => phaseOf(x) === 'later').map((x) => Date.parse(x.start));
+  const lane: Lane = {
+    game,
+    bars: [...limitedLive, ...upcoming].filter((x) => !isWeapon(x)).map((x) => ({ id: x.id, title: x.title, start: Date.parse(x.start), end: Date.parse(x.end), leak: Boolean(x.leak) })),
+    next: upcoming.length ? firstStart : undefined,
+    later: laterStarts.length ? Math.min(...laterStarts) : undefined,
+    weapons: game.bannerTypes.some((t) => t.target === 'weapon'),
+  };
+  // Before paint, so the ruler doesn't pop in a frame late. The screen keeps the old row when nothing changed, so this doesn't loop.
+  useLayoutEffect(() => {
+    if (!data.loading) onLane(lane);
+  });
+  if (data.loading) return null;
+  const keep = (x: Banner) => (filter === 'leaks' ? Boolean(x.leak) : filter === 'reruns' ? rerunLabel(game, x, data.characters) === 'Rerun' : true);
+  const permanent = live.filter((x) => x.permanent).filter(keep);
+  const shown = [...limitedLive, ...upcoming].filter(keep).filter((x) => (filter === 'live' ? phaseOf(x) === 'now' : filter === 'upcoming' ? phaseOf(x) !== 'now' : true));
+  const columns = Object.fromEntries(
+    PHASES.map(({ id }) => [
+      id,
+      groupBanners(
+        shown.filter((x) => phaseOf(x) === id),
+        isWeapon,
+        data,
+        now,
+      ),
+    ]),
+  ) as Record<Phase, Group[]>;
   const nothing = live.length === 0 && upcoming.length === 0 && hiddenLeaks === 0;
   const unknownRerun = [...live, ...upcoming].filter((x) => rerunLabel(game, x, data.characters) === null && !isWeapon(x)).length;
   const counts = Object.fromEntries(PHASES.map(({ id }) => [id, columns[id].length])) as Record<Phase, number>;
-  const tile = (b: Banner, paired = false) => <BannerTile key={b.id} game={game} banner={b} data={data} tagged={many} open={open} now={now} paired={paired} />;
+  const tile = (x: Banner, phase: Phase, paired = false) => <BannerTile key={x.id} game={game} banner={x} data={data} open={open} now={now} paired={paired} hero={phase === 'now' && !paired} />;
   return (
     <section className={b.stack} aria-label={game.name} style={{ '--vent': game.vent } as CSSProperties}>
       <div className={b.headRow}>
@@ -71,9 +104,7 @@ export function GameBanners({ game, now, many, hideLeaks, filter, open }: Props)
         <EditListButton game={game} kind="banners" examples={data.examples} />
       </div>
       {data.banners.example && (
-        <ExampleNotice>
-          The banner list for this game still has to be added by us (not you), so these banners and their art are examples. The roster labels on them are your own.
-        </ExampleNotice>
+        <ExampleNotice>The banner list for this game still has to be added by us (not you), so these banners and their art are examples. The roster labels on them are your own.</ExampleNotice>
       )}
       {nothing ? (
         <EmptyState
@@ -86,12 +117,13 @@ export function GameBanners({ game, now, many, hideLeaks, filter, open }: Props)
           {filter === 'reruns' && (
             <Strip>
               Rerun watch: live and upcoming banners whose featured character came out more than a week before the banner opens.
-              {unknownRerun > 0 ? ` ${unknownRerun} ${unknownRerun === 1 ? 'banner has' : 'banners have'} no release date for the character, so ${unknownRerun === 1 ? 'it isn’t' : 'they aren’t'} sorted: no data yet.` : ''}
+              {unknownRerun > 0
+                ? ` ${unknownRerun} ${unknownRerun === 1 ? 'banner has' : 'banners have'} no release date for the character, so ${unknownRerun === 1 ? 'it isn’t' : 'they aren’t'} sorted: no data yet.`
+                : ''}
             </Strip>
           )}
           <div className={cx(b.boardWrap, permanent.length > 0 && b.withRail)}>
             <div className={b.boardMain}>
-              <Ruler game={game} banners={[...limitedLive, ...upcoming].filter((x) => !isWeapon(x))} now={now} />
               <div className={b.tabs} role="tablist" aria-label={`${game.short} phases`}>
                 {PHASES.map(({ id, label }) => (
                   <button key={id} type="button" role="tab" aria-selected={tab === id} className={b.tabBtn} onClick={() => setTab(id)}>
@@ -99,14 +131,21 @@ export function GameBanners({ game, now, many, hideLeaks, filter, open }: Props)
                   </button>
                 ))}
               </div>
-              <div className={b.board}>
+              <div className={cx(b.board, many && b.boardLabelled)}>
+                {many && (
+                  <div className={b.gameLabel} aria-hidden="true">
+                    <span>{game.name}</span>
+                  </div>
+                )}
                 {PHASES.map(({ id, label }) => {
                   const list = columns[id];
                   const first = list[0]?.lead;
                   const note =
                     id === 'now'
                       ? list.length
-                        ? 'Live now'
+                        ? first && !first.permanent
+                          ? `Live · ${countdown(Date.parse(first.end) - now)} until the first one ends`
+                          : 'Live now'
                         : 'Nothing limited is live'
                       : first
                         ? `${formatRange(Date.parse(first.start), Date.parse(first.end))} · opens in ${countdown(Date.parse(first.start) - now)}`
@@ -120,18 +159,23 @@ export function GameBanners({ game, now, many, hideLeaks, filter, open }: Props)
                         <span className={b.columnNote}>{note}</span>
                       </div>
                       {list.map((g) => (
-                        <div key={g.lead.id} className={b.group}>
-                          {tile(g.lead)}
-                          {g.weapons.map((w) => tile(w, true))}
+                        <div key={g.lead.id} className={cx(b.group, g.weapons.length > 0 && b.pair)}>
+                          {tile(g.lead, id)}
+                          {g.weapons.map((w) => tile(w, id, true))}
                         </div>
                       ))}
+                      {list.length === 0 && <div className={b.emptyCell} aria-hidden="true" />}
                     </div>
                   );
                 })}
               </div>
               {shown.length === 0 && (
                 <p className={b.muted}>
-                  {filter === 'leaks' && hideLeaks ? 'Leaks are hidden. Switch on “Show leaks” to see them.' : filter === 'reruns' ? 'No reruns among the live and upcoming banners.' : 'Nothing here right now.'}
+                  {filter === 'leaks' && hideLeaks
+                    ? 'Leaks are hidden. Switch on “Show leaks” to see them.'
+                    : filter === 'reruns'
+                      ? 'No reruns among the live and upcoming banners.'
+                      : 'Nothing here right now.'}
                 </p>
               )}
               {hiddenLeaks > 0 && (
@@ -140,7 +184,7 @@ export function GameBanners({ game, now, many, hideLeaks, filter, open }: Props)
                 </p>
               )}
             </div>
-            {permanent.length > 0 && <AlwaysOpen game={game} banners={permanent} isWeapon={isWeapon} tile={tile} />}
+            {permanent.length > 0 && <AlwaysOpen game={game} banners={permanent} isWeapon={isWeapon} data={data} open={open} />}
           </div>
         </>
       )}
@@ -157,7 +201,7 @@ const countdown = (ms: number) => {
 };
 
 /** Character banners in order, each with the weapon banners that run beside it; unpaired weapon banners stand alone. */
-function groupBanners(list: Banner[], isWeapon: (b: Banner) => boolean, data: BannersData, now: number): Group[] {
+function groupBanners(list: Banner[], isWeapon: (x: Banner) => boolean, data: BannersData, now: number): Group[] {
   const sorted = [...list].sort((x, y) => (Date.parse(x.start) <= now ? Date.parse(x.end) - Date.parse(y.end) : Date.parse(x.start) - Date.parse(y.start)) || x.id.localeCompare(y.id));
   const chars = sorted.filter((x) => !isWeapon(x));
   const used = new Set<string>();
@@ -178,76 +222,177 @@ function groupBanners(list: Banner[], isWeapon: (b: Banner) => boolean, data: Ba
   return groups;
 }
 
-/** The time ruler: one bar per character banner (leaks dashed), weekly ticks and a TODAY line. */
-function Ruler({ game, banners, now }: { game: GameContract; banners: Banner[]; now: number }) {
-  if (banners.length === 0) return null;
-  const from = Math.max(Math.min(...banners.map((x) => Date.parse(x.start))), now - 21 * DAY);
-  const to = Math.min(Math.max(...banners.map((x) => Date.parse(x.end)), now + 28 * DAY), now + 84 * DAY);
+/** Two rows are the same when every bar and phase start matches; the screen keeps the old one then. */
+export const sameLane = (x: Lane, y: Lane) =>
+  x.game === y.game &&
+  x.next === y.next &&
+  x.later === y.later &&
+  x.weapons === y.weapons &&
+  x.bars.length === y.bars.length &&
+  x.bars.every((bar, i) => {
+    const o = y.bars[i];
+    return o !== undefined && bar.id === o.id && bar.title === o.title && bar.start === o.start && bar.end === o.end && bar.leak === o.leak;
+  });
+
+/**
+ * One time ruler for every game on the screen (as in the mock-up): a row per game with its
+ * character banners (leaks dashed), Now / Next / Later marked along the top, weekly dates,
+ * a TODAY line and a legend.
+ */
+export function SharedRuler({ lanes, now }: { lanes: Lane[]; now: number }) {
+  const all = lanes.flatMap((l) => l.bars);
+  if (all.length === 0) return null;
+  const from = Math.max(Math.min(...all.map((x) => x.start)), now - 21 * DAY);
+  const to = Math.min(Math.max(...all.map((x) => x.end), now + 28 * DAY), now + 84 * DAY);
   const span = Math.max(to - from, DAY);
-  const pct = (t: number) => `${(Math.min(Math.max(t, from), to) - from) / span * 100}%`;
-  // Pack bars into rows so ones that don't overlap share a row.
-  const rows: Banner[][] = [];
-  for (const x of [...banners].sort((a, c) => Date.parse(a.start) - Date.parse(c.start))) {
-    const row = rows.find((r) => r.every((y) => Date.parse(y.end) <= Date.parse(x.start) || Date.parse(y.start) >= Date.parse(x.end)));
-    if (row) row.push(x);
-    else rows.push([x]);
-  }
+  const at = (t: number) => ((Math.min(Math.max(t, from), to) - from) / span) * 100;
+  const pct = (t: number) => `${at(t)}%`;
+  const starts = (key: 'next' | 'later') => lanes.map((l) => l[key]).filter((t): t is number => t !== undefined && t < to);
+  const next = starts('next').length ? Math.min(...starts('next')) : undefined;
+  const later = starts('later').length ? Math.min(...starts('later')) : undefined;
+  const phases = [
+    { id: 'now', label: 'NOW', from, to: next ?? later ?? to },
+    ...(next !== undefined ? [{ id: 'next', label: 'NEXT', from: next, to: later ?? to }] : []),
+    ...(later !== undefined ? [{ id: 'later', label: 'LATER', from: later, to }] : []),
+  ];
   const ticks: number[] = [];
   for (let t = from - (from % DAY) + DAY; t < to; t += 7 * DAY) ticks.push(t);
+  const name = `${lanes.map((l) => l.game.short).join(' and ')} banner timeline`;
   return (
-    // Focusable so keyboard users can scroll it sideways on a phone.
-    <div className={b.ruler} role="img" aria-label={`${game.short} banner timeline`} tabIndex={0}>
-      <div className={b.rulerInner}>
-        {rows.map((row, i) => (
-          <div key={i} className={b.rulerRow}>
-            {row.map((x) => (
-              <span
-                key={x.id}
-                className={cx(b.rulerBar, x.leak && b.rulerLeak)}
-                style={{ left: pct(Date.parse(x.start)), width: `calc(${pct(Date.parse(x.end))} - ${pct(Date.parse(x.start))})` }}
-                title={`${x.title} · ${formatRange(Date.parse(x.start), Date.parse(x.end))}`}
-              >
-                {x.leak ? '? leak' : x.title}
+    <section className={b.ruler} aria-label="Timeline">
+      {/* Focusable so keyboard users can scroll it sideways on a phone. */}
+      <div className={b.rulerScroll} role="img" aria-label={name} tabIndex={0}>
+        <div className={b.rulerInner}>
+          <div className={b.rulerOverlay} aria-hidden="true">
+            {phases.map((p) => (
+              <span key={p.id} className={cx(b.rulerPhase, p.id === 'now' && b.rulerPhaseNow)} style={{ left: pct(p.from), width: `${at(p.to) - at(p.from)}%` }}>
+                <span className={b.rulerPhaseLabel}>{p.label}</span>
+              </span>
+            ))}
+            {now >= from && now <= to && (
+              <span className={b.today} style={{ left: pct(now) }}>
+                <span className={b.todayLabel}>TODAY {formatDate(now).toUpperCase()}</span>
+              </span>
+            )}
+          </div>
+          {lanes.map((l) => (
+            <div key={l.game.id} className={b.rulerLane} style={{ '--gv': l.game.vent } as CSSProperties}>
+              <span className={b.rulerGame}>{l.game.short}</span>
+              <div className={b.rulerRows}>
+                {packRows(l.bars).map((row, i) => (
+                  <div key={i} className={b.rulerRow}>
+                    {row.map((x) => (
+                      <span
+                        key={x.id}
+                        className={cx(b.rulerBar, x.leak && b.rulerLeak)}
+                        style={{ left: pct(x.start), width: `calc(${pct(x.end)} - ${pct(x.start)})` }}
+                        title={`${x.title} · ${formatRange(x.start, x.end)}`}
+                      >
+                        {x.leak ? '? leak' : x.title}
+                      </span>
+                    ))}
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
+          <div className={b.rulerTicks} aria-hidden="true">
+            {ticks.map((t) => (
+              <span key={t} className={b.rulerTick} style={{ left: pct(t) }}>
+                {formatDate(t)}
               </span>
             ))}
           </div>
-        ))}
-        <div className={b.rulerTicks} aria-hidden="true">
-          {ticks.map((t) => (
-            <span key={t} className={b.rulerTick} style={{ left: pct(t) }}>
-              {formatDate(t)}
-            </span>
-          ))}
         </div>
-        {now >= from && now <= to && (
-          <span className={b.today} style={{ left: pct(now) }} aria-hidden="true">
-            <span className={b.todayLabel}>TODAY</span>
+      </div>
+      <p className={b.legend}>
+        {lanes.map((l) => (
+          <span key={l.game.id} style={{ '--gv': l.game.vent } as CSSProperties}>
+            <i className={b.legendSwatch} aria-hidden="true" />
+            {l.game.short} banner
+          </span>
+        ))}
+        {all.some((x) => x.leak) && (
+          <span>
+            <i className={cx(b.legendSwatch, b.legendLeak)} aria-hidden="true" />
+            Leak, unverified
           </span>
         )}
-      </div>
-    </div>
+        {lanes.some((l) => l.weapons) && <span>Weapon banners run alongside their character</span>}
+      </p>
+    </section>
   );
 }
 
-/** Permanent banners: open all the time, so they sit apart from the limited ones. Weapon ones fold away. */
-function AlwaysOpen({ game, banners, isWeapon, tile }: { game: GameContract; banners: Banner[]; isWeapon: (b: Banner) => boolean; tile: (b: Banner) => ReactNode }) {
+/** Bars that don't overlap share a row. */
+function packRows<T extends { start: number; end: number }>(bars: T[]): T[][] {
+  const rows: T[][] = [];
+  for (const x of [...bars].sort((a, c) => a.start - c.start)) {
+    const row = rows.find((r) => r.every((y) => y.end <= x.start || y.start >= x.end));
+    if (row) row.push(x);
+    else rows.push([x]);
+  }
+  return rows;
+}
+
+/** Permanent banners: open all the time, so they sit apart from the limited ones as compact rows. Weapon ones fold away. */
+function AlwaysOpen({ game, banners, isWeapon, data, open }: { game: GameContract; banners: Banner[]; isWeapon: (x: Banner) => boolean; data: BannersData; open: TileProps['open'] }) {
   const chars = banners.filter((x) => !isWeapon(x));
   const weapons = banners.filter(isWeapon);
   const [showWeapons, setShowWeapons] = useState(false);
+  const row = (x: Banner) => <RailRow key={x.id} game={game} banner={x} data={data} open={open} weapon={isWeapon(x)} />;
   return (
     <aside className={b.rail} aria-label={`Always open · ${game.short}`}>
-      <h3 className={b.sectionLabel}>ALWAYS OPEN · {banners.length}</h3>
-      <p className={b.muted}>Permanent banners with no end date, kept apart from the limited ones.</p>
-      {chars.map((x) => tile(x))}
+      <div className={b.railHead}>
+        <h3 className={b.sectionLabel}>ALWAYS OPEN</h3>
+        <GameTag label={game.short} vent={game.vent} />
+      </div>
+      <p className={b.muted}>
+        {banners.length} permanent {banners.length === 1 ? 'banner' : 'banners'}. No end date, so they sit outside the timeline.
+      </p>
+      <div className={b.railList}>{chars.map(row)}</div>
       {weapons.length > 0 && (
         <>
           <button type="button" className={b.railToggle} aria-expanded={showWeapons} onClick={() => setShowWeapons((v) => !v)}>
-            {showWeapons ? 'Hide' : 'Show'} {weapons.length} {game.terms.weapon} {weapons.length === 1 ? 'banner' : 'banners'}
+            <span>
+              {showWeapons ? 'Hide' : ''} {weapons.length} {game.terms.weapon} {weapons.length === 1 ? 'banner' : 'banners'}
+            </span>
+            <Chevron up={showWeapons} />
           </button>
-          {showWeapons && weapons.map((x) => tile(x))}
+          {showWeapons && <div className={b.railList}>{weapons.map(row)}</div>}
         </>
       )}
+      <button type="button" className={b.railPlan} onClick={() => open('pulls', 'planner')}>
+        Plan pulls on a permanent banner →
+      </button>
     </aside>
+  );
+}
+
+/** One permanent banner as a compact row: picture, who, your fit, Want. */
+function RailRow({ game, banner, data, open, weapon }: { game: GameContract; banner: Banner; data: BannersData; open: TileProps['open']; weapon: boolean }) {
+  const w = weapon ? data.weapons.get(banner.featured[0] ?? '') : undefined;
+  const c = weapon ? (w?.madeFor ? data.characters.get(w.madeFor) : undefined) : data.characters.get(banner.featured[0] ?? '');
+  const pic = weapon ? w?.icon : c?.portrait;
+  const name = weapon ? (w?.name ?? banner.title) : (c?.name ?? banner.title);
+  const rarity = weapon ? w?.rarity : c?.rarity;
+  const el = c ? game.elements.find((e) => e.id === c.element) : undefined;
+  return (
+    <article
+      className={b.railRow}
+      aria-label={banner.title}
+      title={`${banner.title} · permanent, since ${formatDate(Date.parse(banner.start))}`}
+      style={{ '--el': el?.color ?? 'var(--line-strong)' } as CSSProperties}
+    >
+      {pic ? <img src={pic} alt="" loading="lazy" className={cx(b.railPic, weapon && b.alsoWeapon)} /> : <span className={b.railPic} aria-hidden="true" />}
+      <span className={b.railText}>
+        <span className={b.alsoName}>
+          {name} {rarity && rarity !== 'low' && <span className={rarity === 'top' ? b.top : b.mid}>{game.terms.rarity[rarity]}</span>}
+        </span>
+        {c && <FitPill game={game} character={c} data={data} open={open} />}
+      </span>
+      {!weapon && c && <WantStar game={game} character={c} data={data} />}
+    </article>
   );
 }
 
@@ -255,16 +400,29 @@ interface TileProps {
   game: GameContract;
   banner: Banner;
   data: BannersData;
-  tagged: boolean;
   open: (module: ModuleId, tab?: string) => void;
   now: number;
   /** A weapon banner stacked under its character banner. */
   paired: boolean;
+  /** Opens as the big card (live banners); the others start compact. */
+  hero: boolean;
 }
 
-/** One banner: compact (picture, what, who, your fit, Want, time left, Plan pulls); Details opens the rest. */
-function BannerTile({ game, banner, data, tagged, open, now, paired }: TileProps) {
-  const [details, setDetails] = useState(false);
+function Chevron({ up }: { up: boolean }) {
+  return (
+    <svg viewBox="0 0 16 16" className={b.chev} aria-hidden="true">
+      <path d={up ? 'M4 10l4-4 4 4' : 'M4 6l4 4 4-4'} />
+    </svg>
+  );
+}
+
+/**
+ * One banner. Big (live, or opened): art with the title over it, a large countdown, the
+ * featured character with your fit and Want, the others featured, team fit, Plan pulls.
+ * Compact (coming up): picture, what, who, your fit, Want, time; the arrow opens it big.
+ */
+function BannerTile({ game, banner, data, open, now, paired, hero }: TileProps) {
+  const [big, setBig] = useState(hero);
   const type = game.bannerTypes.find((t) => t.id === banner.type);
   const start = Date.parse(banner.start);
   const end = Date.parse(banner.end);
@@ -284,35 +442,53 @@ function BannerTile({ game, banner, data, tagged, open, now, paired }: TileProps
   const live = start <= now;
   const progress = live && !banner.permanent && end > start ? Math.min(1, Math.max(0, (now - start) / (end - start))) : null;
   const others = isWeapon ? weapons.slice(1) : featured.slice(1);
-  const detailsId = `banner-details-${game.id}-${banner.id}`;
-  return (
-    <article
-      className={cx(b.tile, paired && b.tilePaired, banner.leak && b.leak)}
-      aria-label={banner.title}
-      style={{ '--el': element?.color ?? 'var(--line-strong)' } as CSSProperties}
-    >
-      <div className={b.tileTop}>
+  const artLabel = art ? (isExample ? 'SAMPLE ART' : '') : 'NO ART YET';
+  const initials = (leadWeapon?.name ?? lead?.name ?? banner.title).slice(0, 2);
+  const style = { '--el': element?.color ?? 'var(--line-strong)' } as CSSProperties;
+  const kind = (
+    <span className={b.kind}>
+      {type?.label ?? 'Banner'}
+      {rerun && <span className={cx(b.rerun, rerun === 'New' && b.rerunNew)}>· {rerun}</span>}
+    </span>
+  );
+  const tags = <>{isExample && <ExampleTag />}</>;
+  const toggle = (
+    <button type="button" className={b.iconBtn} aria-expanded={big} aria-label={big ? 'Show less' : 'Details'} title={big ? 'Show less' : 'Details'} onClick={() => setBig((v) => !v)}>
+      <Chevron up={big} />
+    </button>
+  );
+  const weaponLine = isWeapon && leadWeapon && (
+    <span className={b.sub}>
+      <strong className={b.charName}>{leadWeapon.name}</strong>{' '}
+      {leadWeapon.rarity !== 'low' && <span className={leadWeapon.rarity === 'top' ? b.top : b.mid}>{game.terms.rarity[leadWeapon.rarity]}</span>}
+    </span>
+  );
+  const missing = (
+    <>
+      {isWeapon && weapons.length === 0 && <span className={b.sub}>{`${game.terms.weapon} banner · ${game.terms.weapon} list not in HLITH yet`}</span>}
+      {!isWeapon && featured.length === 0 && <span className={b.sub}>Featured character not in the list yet</span>}
+    </>
+  );
+
+  if (!big) {
+    return (
+      <article className={cx(b.tile, paired && b.tilePaired, banner.leak && b.leak)} aria-label={banner.title} style={style}>
         <div className={cx(b.thumb, !art && b.thumbEmpty, isWeapon && art && b.thumbWeapon)}>
-          {art ? <img src={art} alt="" loading="lazy" className={cx(b.thumbImg, isWeapon && b.thumbImgWeapon)} /> : <span aria-hidden="true">{(leadWeapon?.name ?? lead?.name ?? banner.title).slice(0, 2)}</span>}
-          <span className={b.artLabel}>{art ? (isExample ? 'SAMPLE ART' : '') : 'NO ART YET'}</span>
+          {art ? <img src={art} alt="" loading="lazy" className={cx(b.thumbImg, isWeapon && b.thumbImgWeapon)} /> : <span aria-hidden="true">{initials}</span>}
+          <span className={b.artLabel}>{artLabel}</span>
         </div>
         <div className={b.tileBody}>
           <div className={b.kindRow}>
-            <span className={b.kind}>
-              {type?.label ?? 'Banner'}
-              {rerun && ` · ${rerun}`}
+            {kind}
+            {tags}
+            <span className={b.tools}>
+              {!isWeapon && lead && <WantStar game={game} character={lead} data={data} />}
+              {toggle}
             </span>
-            {isExample && <ExampleTag />}
-            {tagged && <GameTag label={game.short} vent={game.vent} />}
-            {!isWeapon && lead && <WantStar game={game} character={lead} data={data} />}
           </div>
           <h4 className={b.tileTitle}>{banner.title}</h4>
           {banner.leak && <UnverifiedTag source={banner.leak.source} />}
-          {isWeapon && leadWeapon && (
-            <span className={b.sub}>
-              <strong className={b.charName}>{leadWeapon.name}</strong> {leadWeapon.rarity !== 'low' && <span className={leadWeapon.rarity === 'top' ? b.top : b.mid}>{game.terms.rarity[leadWeapon.rarity]}</span>}
-            </span>
-          )}
+          {weaponLine}
           {lead && (
             <div className={b.leadRow}>
               <span className={b.sub}>
@@ -322,37 +498,64 @@ function BannerTile({ game, banner, data, tagged, open, now, paired }: TileProps
               <FitPill game={game} character={lead} data={data} open={open} />
             </div>
           )}
-          {isWeapon && weapons.length === 0 && <span className={b.sub}>{`${game.terms.weapon} banner · ${game.terms.weapon} list not in HLITH yet`}</span>}
-          {!isWeapon && featured.length === 0 && <span className={b.sub}>Featured character not in the list yet</span>}
+          {missing}
+          <div className={b.timeRow}>
+            {progress !== null && <ProgressBar progress={progress} />}
+            <span className={b.timer}>{banner.permanent ? <span>Permanent</span> : live ? <Timer to={end} deadline prefix="ends in" /> : <Timer to={start} prefix="opens in" />}</span>
+          </div>
         </div>
-      </div>
-      <div className={b.timeRow}>
-        <span className={b.timer}>{banner.permanent ? <span>Permanent</span> : live ? <Timer to={end} deadline prefix="ends in" /> : <Timer to={start} prefix="opens in" />}</span>
-        <span className={b.dates}>{banner.permanent ? `since ${formatDate(start)}` : formatRange(start, end)}</span>
-      </div>
-      {progress !== null && (
-        <span className={b.bar} role="img" aria-label={`${Math.round(progress * 100)}% of the banner has passed`}>
-          <span className={b.barFill} style={{ width: `${progress * 100}%` }} />
-        </span>
-      )}
-      <div className={b.tileActions}>
-        <button type="button" className={b.detailsBtn} aria-expanded={details} aria-controls={detailsId} onClick={() => setDetails((v) => !v)}>
-          {details ? 'Less' : 'Details'}
-        </button>
-        <span className={b.grow} />
-        <button type="button" className={b.plan} onClick={() => open('pulls', 'planner')}>
-          Plan pulls
-        </button>
-      </div>
-      <div id={detailsId} className={b.details} hidden={!details}>
-        {!isWeapon && lead && [element?.label, role?.label].filter(Boolean).length > 0 && (
-          <span className={b.sub}>
-            {lead.name}: {[element?.label, role?.label].filter(Boolean).join(' · ')}
+      </article>
+    );
+  }
+
+  return (
+    <article className={cx(b.tile, b.hero, paired && b.tilePaired, banner.leak && b.leak)} aria-label={banner.title} style={style}>
+      <div className={cx(b.heroArt, !art && b.thumbEmpty, isWeapon && b.heroArtWeapon)}>
+        {art ? (
+          <img src={art} alt="" loading="lazy" className={cx(b.heroImg, isWeapon && b.heroImgWeapon)} />
+        ) : (
+          <span className={b.heroInitials} aria-hidden="true">
+            {initials}
           </span>
         )}
+        <span className={b.artLabel}>{artLabel}</span>
+        <span className={b.heroTools}>{toggle}</span>
+        <div className={b.heroText}>
+          <div className={b.kindRow}>
+            {kind}
+            {tags}
+          </div>
+          <h4 className={b.heroTitle}>{banner.title}</h4>
+        </div>
+      </div>
+      <div className={b.heroBody}>
+        {banner.leak && <UnverifiedTag source={banner.leak.source} />}
+        <span className={b.dates}>{banner.permanent ? `since ${formatDate(start)}` : formatRange(start, end)}</span>
+        <div className={b.countdown}>
+          <span className={b.alsoLabel}>{banner.permanent ? 'Permanent' : live ? 'Ends in' : 'Opens in'}</span>
+          <div className={b.countdownRow}>
+            {!banner.permanent && <Timer to={live ? end : start} deadline={live} className={cx(b.bigTimer)} />}
+            {progress !== null && <ProgressBar progress={progress} />}
+          </div>
+        </div>
+        {weaponLine}
+        {lead && (
+          <div className={b.heroLead}>
+            <span className={b.sub}>
+              {isWeapon ? 'Made for ' : ''}
+              <strong className={b.heroName}>{lead.name}</strong> <span className={lead.rarity === 'top' ? b.top : b.mid}>{game.terms.rarity[lead.rarity]}</span>
+              {!isWeapon && [element?.label, role?.label].filter(Boolean).length > 0 && <span className={b.heroEl}> {[element?.label, role?.label].filter(Boolean).join(' · ')}</span>}
+            </span>
+            <div className={b.heroActions}>
+              <FitPill game={game} character={lead} data={data} open={open} />
+              {!isWeapon && <WantStar game={game} character={lead} data={data} big />}
+            </div>
+          </div>
+        )}
+        {missing}
         {others.length > 0 && (
           <div className={b.also}>
-            <span className={b.alsoLabel}>Also featured</span>
+            <span className={b.alsoLabel}>Also featured{!isWeapon && others[0] ? ` · ${game.terms.rarity[(others[0] as Character).rarity] ?? ''}` : ''}</span>
             <ul className={b.alsoList}>
               {isWeapon
                 ? (others as Weapon[]).map((w) => {
@@ -389,27 +592,39 @@ function BannerTile({ game, banner, data, tagged, open, now, paired }: TileProps
           </div>
         )}
         {!isWeapon && lead && <TeamLine character={lead} data={data} open={open} />}
+        <button type="button" className={b.planBig} onClick={() => open('pulls', 'planner')}>
+          Plan pulls
+        </button>
       </div>
     </article>
   );
 }
 
+function ProgressBar({ progress }: { progress: number }) {
+  return (
+    <span className={b.bar} role="img" aria-label={`${Math.round(progress * 100)}% of the banner has passed`}>
+      <span className={b.barFill} style={{ width: `${progress * 100}%` }} />
+    </span>
+  );
+}
+
 const wantLabel = (c: Character, wanted: boolean) => (wanted ? `Remove ${c.name} from my wanted list` : `Add ${c.name} to my wanted list`);
 
-/** A star to want a character. Only the wanted mark changes; owned, copies and Potential stay as they are. */
-function WantStar({ game, character: c, data }: { game: GameContract; character: Character; data: BannersData }) {
+/** A star to want a character (big: with the word "Want"). Only the wanted mark changes; owned, copies and Potential stay as they are. */
+function WantStar({ game, character: c, data, big = false }: { game: GameContract; character: Character; data: BannersData; big?: boolean }) {
   const entry = data.user.roster[c.id];
   const wanted = entry?.wanted ?? false;
   return (
     <button
       type="button"
-      className={cx(b.star, wanted && b.wantOn)}
+      className={cx(big ? b.wantBig : b.star, wanted && b.wantOn)}
       aria-pressed={wanted}
       aria-label={wantLabel(c, wanted)}
       title={wantLabel(c, wanted)}
       onClick={() => setRosterEntry(game.id, c.id, { ...entry, owned: entry?.owned ?? false, dupes: entry?.dupes ?? 0, wanted: !wanted })}
     >
-      {wanted ? '★' : '☆'}
+      <span aria-hidden="true">{wanted ? '★' : '☆'}</span>
+      {big && <span>{wanted ? 'Wanted' : 'Want'}</span>}
     </button>
   );
 }
@@ -454,7 +669,9 @@ function LatestChanges({ data, game, now }: { data: BannersData; game: GameContr
     return <Strip>Latest changes to the banner list: no data yet. They appear here once list updates keep a change log.</Strip>;
   }
   const next = data.banners.list.filter((x) => data.banners.exampleIds.has(x.id) && Date.parse(x.start) > now);
-  const items = next.slice(0, 2).map((x) => ({ id: x.id, kind: x.leak ? 'Leak' : 'Official', text: `${x.title} ${x.leak ? 'rumoured' : 'confirmed'} for ${formatRange(Date.parse(x.start), Date.parse(x.end))}` }));
+  const items = next
+    .slice(0, 2)
+    .map((x) => ({ id: x.id, kind: x.leak ? 'Leak' : 'Official', text: `${x.title} ${x.leak ? 'rumoured' : 'confirmed'} for ${formatRange(Date.parse(x.start), Date.parse(x.end))}` }));
   if (items.length === 0) return null;
   return (
     <section className={b.changes} aria-label={`Latest changes, ${game.name}`}>

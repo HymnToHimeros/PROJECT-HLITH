@@ -1,8 +1,8 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import type { ModuleScreenProps } from '../../core/registry/modules';
 import { HowTo, useNow } from '../../core/ui';
 import { Filters, Switch } from '../pulls/shared';
-import { GameBanners, type BannerFilter } from './Banners';
+import { GameBanners, SharedRuler, sameLane, type BannerFilter, type Lane } from './Banners';
 import b from './banners.module.css';
 import { setHideLeaks, useHideLeaks } from './leakPref';
 
@@ -17,6 +17,10 @@ export default function BannersScreen({ games, scope, open }: ModuleScreenProps)
   const hideLeaks = useHideLeaks();
   const [filter, setFilter] = useState<BannerFilter>('all');
   const shown = scope === 'all' ? games : games.filter((g) => g.id === scope);
+  // Each game's board reports its row for the one shared ruler on top.
+  const [lanes, setLanes] = useState<Record<string, Lane>>({});
+  const onLane = useCallback((lane: Lane) => setLanes((prev) => (prev[lane.game.id] && sameLane(prev[lane.game.id] as Lane, lane) ? prev : { ...prev, [lane.game.id]: lane })), []);
+  const shownLanes = shown.flatMap((g) => (lanes[g.id]?.game === g ? [lanes[g.id] as Lane] : []));
   return (
     <div className={b.page}>
       <HowTo
@@ -24,8 +28,8 @@ export default function BannersScreen({ games, scope, open }: ModuleScreenProps)
         steps={[
           <>Each card is a banner that is live now or coming up. The time on the right counts down to its end (orange in the last 3 days) or to when it opens.</>,
           <>
-            Under the title: “You own it (E2)” means the featured character is in your roster, with its copies. “On your wanted list” means you marked it as wanted. “New for you” means it isn’t
-            in your roster. If your roster is empty HLITH says “No data yet” instead of guessing: add your characters in Roster.
+            Under the title: “You own it (E2)” means the featured character is in your roster, with its copies. “On your wanted list” means you marked it as wanted. “New for you” means it isn’t in
+            your roster. If your roster is empty HLITH says “No data yet” instead of guessing: add your characters in Roster.
           </>,
           <>“Teammates owned 2/3” counts how many of the other members of one of your saved teams you own. Save a team in Roster → Teams to see it.</>,
           <>
@@ -54,8 +58,9 @@ export default function BannersScreen({ games, scope, open }: ModuleScreenProps)
           ]}
         />
       </div>
+      <SharedRuler lanes={shownLanes} now={now} />
       {shown.map((g) => (
-        <GameBanners key={g.id} game={g} now={now} many={shown.length > 1} hideLeaks={hideLeaks} filter={filter} open={open} />
+        <GameBanners key={g.id} game={g} now={now} many={shown.length > 1} hideLeaks={hideLeaks} filter={filter} open={open} onLane={onLane} />
       ))}
     </div>
   );
