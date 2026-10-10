@@ -1,6 +1,6 @@
 // @vitest-environment node
 import { describe, expect, it } from 'vitest';
-import { checkOrder, checkSquad, type Account } from './check';
+import { checkOrder, checkSquad, type Account, type Line } from './check';
 import { buildLibrary, KITS as kits, library, SHEETS } from './library';
 
 const BILLY = '1531';
@@ -234,5 +234,24 @@ describe('Group E: Anomaly DMG is a stat only some damage dealers use', () => {
     expect(billy.lines.find((l) => l.entry === 'gnawed-assault-crit')).toMatchObject({ kind: 'not-counted', points: 0 });
     const piper = checkOrder([PIPER, JANE, LUCIA], PIPER, lib, m0);
     expect(piper.lines.find((l) => l.entry === 'gnawed-assault-crit')).toMatchObject({ kind: 'buff', points: 1 });
+  });
+});
+
+describe('Signature W-Engines count only when equipped (T18)', () => {
+  const lucia = (lines: Line[]) => lines.find((l) => l.who === LUCIA && l.entry === 'sig-dreamlit-hearth');
+  it('no W-Engine saved: Lucia’s Dreamlit Hearth is locked and the method’s count of 9 stands', () => {
+    const r = checkOrder([BILLY, DIALYN, LUCIA], BILLY, lib, account);
+    expect(lucia(r.lines)?.kind).toBe('locked');
+    expect(r.count).toBe(9);
+  });
+  it('another W-Engine saved: still locked, and names it', () => {
+    const r = checkOrder([BILLY, DIALYN, LUCIA], BILLY, lib, { ...account, weapon: () => ({ id: '0', name: 'Starlight Engine' }) });
+    expect(lucia(r.lines)?.kind).toBe('locked');
+    expect(lucia(r.lines)?.why).toMatch(/Starlight Engine/);
+  });
+  it('Dreamlit Hearth saved on Lucia: the piece is read, the count does not drop', () => {
+    const r = checkOrder([BILLY, DIALYN, LUCIA], BILLY, lib, { ...account, weapon: (x) => (x === LUCIA ? { id: '14145', name: 'Dreamlit Hearth' } : undefined) });
+    expect(lucia(r.lines)?.kind).not.toBe('locked');
+    expect(r.count).toBeGreaterThanOrEqual(9);
   });
 });

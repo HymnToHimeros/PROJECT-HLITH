@@ -28,6 +28,11 @@ Resume with: "continue from PROGRESS.md". Newest entry on top. Older entries:
 - CI (`.github/workflows/ci.yml`) runs both on every pull request.
 
 ## Done
+- 2026-10-10 · **LOGIC-CORE: signature weapons count when equipped (T18, step 2)** (branch `logic-core/signature-weapons`).
+  Every signature Light Cone and W-Engine is read from its game text as part of the
+  character's kit (about 110). It counts in team scores only when that weapon is in the
+  character's saved build; the "Why" says "Signature X counted", "not counted (no weapon
+  saved)" or "your build has Y, not X". Decision 24 in `docs/logic/hsr-decisions.md`.
 - 2026-10-10 · **LOGIC-CORE: team suggestions from your account (T18, step 1)** (branch `logic-core/account-fits`).
   Who fits takes options: by default only characters you own, ranked by the team's %,
   counting your Eidolons / Mindscapes and Enhanced / Agent Potential; "include characters
