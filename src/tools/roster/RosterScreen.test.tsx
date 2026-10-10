@@ -252,7 +252,7 @@ describe('Roster screen', () => {
     const card = screen.getByRole('article', { name: 'Fire team' });
     fireEvent.click(within(card).getByRole('button', { name: 'Save as my team' }));
     const sheet = await screen.findByRole('dialog', { name: 'New team' });
-    expect(within(sheet).getByLabelText('Preset name')).toHaveValue('Fire team');
+    expect(within(sheet).getByLabelText('Team name')).toHaveValue('Fire team');
     expect(within(sheet).getByRole('button', { name: 'Newest Star, not owned' })).toHaveAttribute('aria-pressed', 'true');
     fireEvent.click(within(sheet).getByRole('button', { name: 'Older Star, not owned' }));
     fireEvent.click(within(sheet).getByRole('button', { name: 'Save team' }));
@@ -270,7 +270,7 @@ describe('Roster screen', () => {
     const ideas = screen.getByRole('region', { name: 'Teams you can build' });
     fireEvent.click(within(ideas).getByRole('button', { name: /Newest Star team: \d characters away/ }));
     const sheet = await screen.findByRole('dialog', { name: 'New team' });
-    expect(within(sheet).getByLabelText('Preset name')).toHaveValue('Newest Star team');
+    expect(within(sheet).getByLabelText('Team name')).toHaveValue('Newest Star team');
   });
 
   it('example Ideas say "Ready to play" only for a team you fully own', async () => {

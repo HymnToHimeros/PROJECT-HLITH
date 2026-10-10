@@ -583,7 +583,7 @@ function TeamEditor({
     <form className={r.stack} onSubmit={submit}>
       {gamePicker}
       <label className={r.field}>
-        <span className={r.fieldLabel}>Preset name</span>
+        <span className={r.fieldLabel}>Team name</span>
         <input className={r.input} value={name} onChange={(e) => setName(e.target.value)} required />
       </label>
       <p className={r.summary}>
