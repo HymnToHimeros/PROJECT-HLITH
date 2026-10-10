@@ -28,6 +28,14 @@ Resume with: "continue from PROGRESS.md". Newest entry on top. Older entries:
 - CI (`.github/workflows/ci.yml`) runs both on every pull request.
 
 ## Done
+- 2026-10-10 · **FRAME: calm Backlog** (branch `frame/calm-backlog`, owner job T20).
+  The main story now leads with "where you are": the chapter you are on, "12 of 26
+  done", a progress bar and the reward left. The full chapter list is folded behind
+  "Show all N chapters" (only the last done, current and next chapter show, numbered);
+  plain lists longer than 8 rows show 6 and fold the rest the same way. The pulls
+  switch has a visible "Counts toward pulls" label. Nothing removed; ticking, Edit,
+  hide/undo all work folded or open. Page height on PC 1440: HSR 1835 → 900 px,
+  All 3537 → 1540 px; phone All 4155 → 1995 px.
 - 2026-10-10 · **Two more chats: MANAGER and ERROR-FIX** (branch `frame/manager-error-fix`).
   `docs/WORKSTREAMS.md`: rules 7–8, both in Who's who, a routing table (which job goes
   to which chat). `docs/briefs/MANAGER.md` (the owner's front desk: routes every
