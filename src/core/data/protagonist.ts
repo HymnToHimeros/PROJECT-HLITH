@@ -88,7 +88,6 @@ export function withProtagonist(game: GameContract, pick: string | undefined): G
   const ready = game.data.characters().then((all) => (forms = protagonistForms(game, pick, all)));
   const kept = <T extends { characterId: string }>(list: T[], f: Forms) => list.filter((x) => !f.hidden.has(x.characterId));
   const { kits, builds } = game.data;
-  const teamRules = game.rules.teams;
   const wrapped: GameContract = {
     ...game,
     data: {
@@ -101,18 +100,7 @@ export function withProtagonist(game: GameContract, pick: string | undefined): G
       ...(kits ? { kits: async () => kept(await kits(), await ready) } : {}),
       ...(builds ? { builds: async () => kept(await builds(), await ready) } : {}),
     },
-    rules: {
-      ...game.rules,
-      ...(teamRules
-        ? {
-            teams: {
-              ...teamRules,
-              whoFits: (members, account, options) => teamRules.whoFits(members, account, options).filter((s) => !forms?.hidden.has(s.id)),
-              lineUps: (account) => teamRules.lineUps(account).filter((idea) => !idea.members.some((id) => forms?.hidden.has(id))),
-            },
-          }
-        : {}),
-    },
+    // Team rules leave hidden characters out themselves, through TeamAccount.skip = hiddenBy(game).
   };
   byPick.set(pick, wrapped);
   originals.set(wrapped, game);

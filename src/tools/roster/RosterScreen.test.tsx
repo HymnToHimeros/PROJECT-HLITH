@@ -2,7 +2,7 @@ import { act, cleanup, fireEvent, render, screen, within } from '@testing-librar
 import { useState } from 'react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import type { Character, GameContract, Kit, TeamPreset, TeamRules } from '../../core/contract';
-import { gameData, resetUserData, saveTeam, setBuild, setRosterEntry } from '../../core/data/userData';
+import { gameData, resetUserData, saveTeam, setBuild, setRosterEntry, setTeamList } from '../../core/data/userData';
 import RosterScreen from './RosterScreen';
 
 const chars: Character[] = [
@@ -65,6 +65,8 @@ function makeGame(withKits: boolean, presets: TeamPreset[] = [preset]): GameCont
     sources: [],
   };
 }
+
+const saveTeamListForTest = () => setTeamList('aa', 'p1', [['c1'], ['c4', 'c3'], ['c2']]);
 
 const show = async (tab: 'characters' | 'teams', game = makeGame(false), games: GameContract[] = [game], scope = 'aa') => {
   render(<RosterScreen games={games} scope={scope} tab={tab} servers={{}} openTab={() => {}} open={() => {}} openAccount={() => {}} />);
@@ -257,6 +259,50 @@ describe('Roster screen', () => {
     fireEvent.click(within(sheet).getByRole('button', { name: 'Older Star, not owned' }));
     fireEvent.click(within(sheet).getByRole('button', { name: 'Save team' }));
     expect(gameData('aa').teams[0]).toMatchObject({ name: 'Fire team', members: ['c1', 'c3'] });
+  });
+
+  it('Edit team list: reorder, add and remove per slot; saved as yours, tagged on the card, and reset to the game’s list', async () => {
+    await show('teams');
+    const card = () => screen.getByRole('article', { name: 'Fire team' });
+    fireEvent.click(within(card()).getByRole('button', { name: 'Edit team list' }));
+    const sheet = await screen.findByRole('dialog', { name: 'Team list · Fire team' });
+    fireEvent.click(within(sheet).getByRole('button', { name: 'Move Shield Friend earlier in slot 2' }));
+    fireEvent.click(within(sheet).getByRole('button', { name: 'Remove Helper from slot 2' }));
+    fireEvent.click(within(sheet).getByRole('button', { name: '+ Add to slot 2' }));
+    fireEvent.change(within(sheet).getByLabelText('Add to slot 2'), { target: { value: 'older' } });
+    fireEvent.click(within(within(sheet).getByRole('list', { name: 'Characters to add to slot 2' })).getByRole('button', { name: /Older Star/ }));
+    fireEvent.click(within(sheet).getByRole('button', { name: 'Save team list' }));
+    expect(gameData('aa').teamLists?.p1?.slots).toEqual([['c1'], ['c4', 'c2'], ['c2']]);
+    expect(within(card()).getByText('Edited by you')).toBeInTheDocument();
+    expect(within(card()).getByRole('list', { name: 'Who else fits' })).toHaveTextContent('or Older Star');
+
+    // Reset puts the game's lists back; saving them removes your edit. Nothing else in your data changes.
+    fireEvent.click(within(card()).getByRole('button', { name: 'Edit team list' }));
+    const again = await screen.findByRole('dialog', { name: 'Team list · Fire team' });
+    fireEvent.click(within(again).getByRole('button', { name: 'Reset to the game’s list' }));
+    fireEvent.click(within(again).getByRole('button', { name: 'Save team list' }));
+    expect(gameData('aa').teamLists?.p1).toBeUndefined();
+    expect(within(card()).queryByText('Edited by you')).not.toBeInTheDocument();
+  });
+
+  it('Cancel in Edit team list changes nothing', async () => {
+    await show('teams');
+    fireEvent.click(within(screen.getByRole('article', { name: 'Fire team' })).getByRole('button', { name: 'Edit team list' }));
+    const sheet = await screen.findByRole('dialog', { name: 'Team list · Fire team' });
+    fireEvent.click(within(sheet).getByRole('button', { name: 'Remove Helper from slot 2' }));
+    fireEvent.click(within(sheet).getByRole('button', { name: 'Cancel' }));
+    expect(gameData('aa').teamLists).toBeUndefined();
+  });
+
+  it('team rules get your edited lists (TeamAccount.teamList) and fill the card from them', async () => {
+    const fill = vi.fn((p: TeamPreset, account: Parameters<NonNullable<TeamRules['fill']>>[1]) => (account.teamList?.(p.id) ?? p.slots.map((sl) => sl.characters)).map((sl) => sl[0] ?? ''));
+    const game = { ...makeGame(false), rules: { teams: { method: 'm', rated: () => false, verdict: () => ({ rated: false, why: '' }), whoFits: () => [], lineUps: () => [], ifYouPull: () => null, fill } as TeamRules } };
+    act(() => {
+      saveTeamListForTest();
+    });
+    await show('teams', game);
+    const members = within(screen.getByRole('article', { name: 'Fire team' })).getAllByTitle(/·/).map((m) => m.getAttribute('title')?.split(' · ')[0]);
+    expect(members).toEqual(['Newest Star', 'Shield Friend', 'Older Star']);
   });
 
   it('example Ideas never contradict your roster, and tapping one makes it a preset', async () => {

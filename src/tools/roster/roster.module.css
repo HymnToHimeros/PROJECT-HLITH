@@ -1696,3 +1696,49 @@ button.member:hover .memberArt {
   display: block;
   color: var(--ink-3);
 }
+
+/* Team list editor (T29): one block per slot, rows with earlier / later / remove. */
+.listSlot {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-2);
+  margin: 0;
+  padding: var(--s-3);
+  border: 1px solid var(--line-default);
+  border-radius: var(--r-card);
+  background: var(--bg-raised);
+}
+.listRows {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.listRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 4px 6px;
+  border-radius: var(--r-row);
+  background: var(--bg-card);
+  border: 1px solid var(--line-subtle);
+}
+.listTools {
+  display: flex;
+  gap: 2px;
+  margin-left: auto;
+}
+.listTools button {
+  min-width: 36px;
+}
+.editedTag {
+  font: 600 10.5px/1 var(--font-numbers);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 3px 6px;
+  border-radius: var(--r-tag);
+  border: 1px solid color-mix(in srgb, var(--glacier) 55%, transparent);
+  color: var(--glacier);
+}

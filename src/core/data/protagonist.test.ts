@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it } from 'vitest';
-import type { Character, GameContract, TeamAccount } from '../contract';
+import type { Character, GameContract } from '../contract';
 import { chooseProtagonist, hiddenBy, withProtagonist } from './protagonist';
 import { getPrefs, reloadPrefs } from './prefs';
 import { gameData, resetUserData, setRosterEntry } from './userData';
@@ -32,25 +32,8 @@ const game = {
     teams: async () => [{ id: 't', name: 'Team', source: 'game', slots: [{ characters: ['b-fire', 'a-fire'] }, { characters: ['friend'] }] }],
     kits: async () => chars.map((c) => ({ characterId: c.id, skills: [] })),
   },
-  rules: {
-    teams: {
-      method: 'm',
-      rated: () => true,
-      verdict: () => ({ rated: false, why: '' }),
-      whoFits: () => [
-        { id: 'b-ice', count: 2, how: [], withEveryone: true },
-        { id: 'friend', count: 1, how: [], withEveryone: true },
-      ],
-      lineUps: () => [
-        { members: ['b-fire', 'friend'], count: 2, why: '' },
-        { members: ['a-fire', 'friend'], count: 2, why: '' },
-      ],
-      ifYouPull: () => null,
-    },
-  },
 } as unknown as GameContract;
 
-const account = {} as TeamAccount;
 const ids = async (g: GameContract) => (await g.data.characters()).map((c) => c.id);
 
 describe('your main character (T27)', () => {
@@ -73,8 +56,6 @@ describe('your main character (T27)', () => {
     expect((await g.data.kits?.())?.map((k) => k.characterId)).toEqual(['a-fire', 'a-ice', 'friend']);
     // Game teams use your pick's matching form, never the same one twice.
     expect((await g.data.teams())[0]?.slots).toEqual([{ characters: ['a-fire'] }, { characters: ['friend'] }]);
-    expect(g.rules.teams?.whoFits([], account).map((s) => s.id)).toEqual(['friend']);
-    expect(g.rules.teams?.lineUps(account).map((i) => i.members)).toEqual([['a-fire', 'friend']]);
     // For team rules (TeamAccount.skip).
     expect(['a-fire', 'b-fire', 'b-ice', 'friend'].map(hiddenBy(g))).toEqual([false, true, true, false]);
     expect(hiddenBy(game)('b-fire')).toBe(false);

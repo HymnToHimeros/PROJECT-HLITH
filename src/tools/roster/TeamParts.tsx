@@ -71,11 +71,18 @@ export function Member({
 }
 
 /** What the game's team rules may know about you: who you own, their dupes and (when set) their potential. */
-export const teamAccount = (data: RosterData): TeamAccount => rosterAccount(data.user.roster, data.user.builds, hiddenBy(data.game));
+export const teamAccount = (data: RosterData): TeamAccount => rosterAccount(data.user.roster, data.user.builds, hiddenBy(data.game), data.user.teamLists);
 
-const rosterAccount = (roster: RosterData['user']['roster'], builds?: RosterData['user']['builds'], hidden?: (id: string) => boolean): TeamAccount => ({
+const rosterAccount = (
+  roster: RosterData['user']['roster'],
+  builds?: RosterData['user']['builds'],
+  hidden?: (id: string) => boolean,
+  teamLists?: RosterData['user']['teamLists'],
+): TeamAccount => ({
   // Characters your protagonist pick hides (the other Trailblazer): never used in any team.
   ...(hidden ? { skip: hidden } : {}),
+  // Your own lists for a game team's slots (T29); undefined = the game's list.
+  teamList: (presetId) => teamLists?.[presetId]?.slots,
   // The weapon in an owned character's saved build (signature weapons, T18).
   weapon: (id) => {
     const w = entryOf(roster, id).owned ? builds?.[id]?.weapon : undefined;
@@ -102,7 +109,8 @@ export function useVerdict(data: RosterData, members: string[], skip = false): T
   const roster = data.user.roster;
   const builds = data.user.builds;
   const hidden = hiddenBy(data.game);
-  return useMemo(() => (skip || !rules ? null : rules.verdict(key ? key.split(',') : [], rosterAccount(roster, builds, hidden))), [rules, key, roster, builds, hidden, skip]);
+  const lists = data.user.teamLists;
+  return useMemo(() => (skip || !rules ? null : rules.verdict(key ? key.split(',') : [], rosterAccount(roster, builds, hidden, lists))), [rules, key, roster, builds, hidden, lists, skip]);
 }
 
 /** Why a team scores what it does: every point with the kit text that earned it. */
