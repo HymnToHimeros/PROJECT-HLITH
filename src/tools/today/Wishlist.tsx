@@ -27,7 +27,7 @@ export function wishlistRows(games: WishlistGame[], now: number) {
   return games
     .flatMap(({ game, user, characters, banners, exampleIds }) =>
       banners
-        .filter((b) => Date.parse(b.end) > now)
+        .filter((b) => !b.permanent && Date.parse(b.end) > now)
         .flatMap((b) =>
           b.featured
             .filter((id) => user.roster[id]?.wanted)

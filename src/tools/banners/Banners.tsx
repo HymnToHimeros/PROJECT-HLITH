@@ -1,6 +1,6 @@
 import type { CSSProperties } from 'react';
 import type { Banner, Character, GameContract, ModuleId } from '../../core/contract';
-import { formatRange } from '../../core/time/reset';
+import { formatDate, formatRange } from '../../core/time/reset';
 import { EmptyState, ExampleNotice, ExampleTag, GameTag, NoData, Timer, UnverifiedTag } from '../../core/ui';
 import { cx } from '../../core/ui/cx';
 import { GameHeading, Strip } from '../pulls/shared';
@@ -128,8 +128,8 @@ function BannerItem({ game, banner, state, data, tagged, open }: ItemProps) {
         </div>
         <h4 className={b.title}>{banner.title}</h4>
         <div className={b.whenRow}>
-          <span>{formatRange(start, end)}</span>
-          {state === 'live' ? <Timer to={end} deadline prefix="ends in" /> : <Timer to={start} prefix="opens in" />}
+          <span>{banner.permanent ? `since ${formatDate(start)}` : formatRange(start, end)}</span>
+          {banner.permanent && state === 'live' ? <span>Permanent</span> : state === 'live' ? <Timer to={end} deadline prefix="ends in" /> : <Timer to={start} prefix="opens in" />}
         </div>
         {featured.map((c) => (
           <FeaturedLines key={c.id} game={game} character={c} data={data} weapon={isWeapon} open={open} />

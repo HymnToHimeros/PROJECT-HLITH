@@ -39,6 +39,11 @@ export interface Banner {
   serverTime?: { base: number; start?: boolean; end?: boolean };
   /** Banner art (e.g. a weapon banner's light cone / W-Engine picture). Missing = the lead character's art. */
   art?: string;
+  /**
+   * Always available (e.g. a permanent collaboration warp). `end` then only says how long it is
+   * announced; screens show "Permanent" instead of a countdown and leave it off timelines and plans.
+   */
+  permanent?: boolean;
 }
 
 export interface GameEvent {
