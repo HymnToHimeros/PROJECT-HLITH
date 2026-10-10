@@ -131,6 +131,22 @@ export interface Kit {
   skills: KitSkill[];
 }
 
+/** A recommended build for one character, with who recommends it (LOGIC-CORE). */
+export interface RecommendedBuild {
+  characterId: string;
+  /** Who recommends it, shown with it. */
+  source: string;
+  /** Gear sets: each with how many pieces and the options, best first. */
+  sets: { pieces: number; options: string[] }[];
+  /** Main stats by gear slot, e.g. { 'Disc 4': ['CRIT Rate'] }. */
+  mainStats: Record<string, string[]>;
+  subStats: string[];
+  /** Weapons, best first. Empty = none recommended. */
+  weapons: string[];
+  /** Skills to level first, tier by tier. Empty = the source doesn't say. */
+  skillsFirst: string[][];
+}
+
 export interface Version {
   id: string; // '3.6'
   start: ISODate;

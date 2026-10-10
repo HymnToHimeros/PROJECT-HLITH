@@ -14,7 +14,8 @@ export type Specialty = 'attack' | 'stun' | 'anomaly' | 'support' | 'defense' | 
  * extra hit counted as the damage dealer's own, e.g. Sunna's Cat's Gaze).
  * Stats only some use (counted only when the damage dealer's notes say so):
  * sheer-force, sheer-dmg, max-hp, anomaly-proficiency, anomaly-buildup,
- * anomaly-dmg (Attribute Anomaly, Disorder, Assault, Burn, Corruption DMG only).
+ * anomaly-dmg (Attribute Anomaly, Disorder, Assault, Burn, Corruption DMG only),
+ * aftershock-dmg (Aftershock DMG only).
  * Team support (tie-break only): daze, energy, stun-duration, decibels,
  * free-ultimate, heal, duration, own-damage (the giver's own damage).
  */
@@ -35,6 +36,7 @@ export type Stat =
   | 'anomaly-proficiency'
   | 'anomaly-buildup'
   | 'anomaly-dmg'
+  | 'aftershock-dmg'
   | 'daze'
   | 'energy'
   | 'stun-duration'
@@ -45,13 +47,13 @@ export type Stat =
   | 'own-damage';
 
 export const GENERAL_STATS: readonly Stat[] = ['dmg', 'crit-dmg', 'crit-rate', 'atk', 'res-ignore', 'def-shred', 'dmg-taken', 'stun-dmg-multiplier', 'pen', 'extra-hit'];
-export const SPECIFIC_STATS: readonly Stat[] = ['sheer-force', 'sheer-dmg', 'max-hp', 'anomaly-proficiency', 'anomaly-buildup', 'anomaly-dmg'];
+export const SPECIFIC_STATS: readonly Stat[] = ['sheer-force', 'sheer-dmg', 'max-hp', 'anomaly-proficiency', 'anomaly-buildup', 'anomaly-dmg', 'aftershock-dmg'];
 export const SUPPORT_STATS: readonly Stat[] = ['daze', 'energy', 'stun-duration', 'decibels', 'free-ultimate', 'heal', 'duration', 'own-damage'];
 
 /** Question 1: when is it on? Absent = always (no squad condition). */
 export type Condition =
-  /** Another squad member is one of these specialties, shares the attribute or faction, or has one of these attributes (any one is enough). */
-  | { another: { specialties?: Specialty[]; sameAttribute?: boolean; sameFaction?: boolean; attributes?: string[] } }
+  /** Another squad member is one of these specialties, shares the attribute or faction, has one of these attributes or assist types ('defensive', 'evasive'); any one is enough. */
+  | { another: { specialties?: Specialty[]; sameAttribute?: boolean; sameFaction?: boolean; attributes?: string[]; assistTypes?: string[] } }
   /** The character directly before this one in the squad order is one of these. */
   | { previous: { specialties: Specialty[] } }
   /** At least this many squad members (this one included) have the specialty. */

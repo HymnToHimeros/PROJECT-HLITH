@@ -408,6 +408,19 @@ describe('Roster screen', () => {
     expect(screen.getAllByText('75%').length).toBeGreaterThan(0);
   });
 
+  it('the character page shows the recommended build with its source', async () => {
+    const base = makeGame(false);
+    const builds = [
+      { characterId: 'c1', source: "the game's own recommendation", sets: [{ pieces: 4, options: ['Ember Set'] }], mainStats: { Body: ['CRIT Rate'] }, subStats: ['ATK %'], weapons: ['Spark Cone'], skillsFirst: [['Skill']] },
+    ];
+    await show('characters', { ...base, data: { ...base.data, builds: async () => builds } });
+    const page = await openPage('Newest Star');
+    fireEvent.click(within(page).getByText('Recommended build'));
+    expect(await within(page).findByText('Ember Set')).toBeInTheDocument();
+    expect(within(page).getByText('Spark Cone')).toBeInTheDocument();
+    expect(within(page).getByText("Source: the game's own recommendation.")).toBeInTheDocument();
+  });
+
   it('Kit check also opens from a team in Teams', async () => {
     await show('teams', makeGame(true));
     fireEvent.click(screen.getByRole('button', { name: 'Kit check' }));

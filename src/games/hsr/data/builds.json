@@ -1,0 +1,4840 @@
+[
+ {
+  "characterId": "1001",
+  "source": "the game's own recommendation (nanoka.cc)",
+  "sets": [
+   {
+    "pieces": 4,
+    "options": [
+     "Knight of Purity Palace",
+     "Self-Enshrouded Recluse",
+     "Guard of Wuthering Snow"
+    ]
+   },
+   {
+    "pieces": 2,
+    "options": [
+     "Belobog of the Architects",
+     "Broken Keel",
+     "Lushaka, the Sunken Seas"
+    ]
+   }
+  ],
+  "mainStats": {
+   "Body": [
+    "DEF %",
+    "Effect Hit Rate"
+   ],
+   "Feet": [
+    "SPD",
+    "DEF %"
+   ],
+   "Planar Sphere": [
+    "DEF %"
+   ],
+   "Link Rope": [
+    "DEF %"
+   ]
+  },
+  "subStats": [
+   "DEF %",
+   "SPD",
+   "Effect Hit Rate",
+   "Effect RES"
+  ],
+  "weapons": [
+   "Day One of My New Life",
+   "Moment of Victory",
+   "Texture of Memories"
+  ],
+  "skillsFirst": []
+ },
+ {
+  "characterId": "1002",
+  "source": "the game's own recommendation (nanoka.cc)",
+  "sets": [
+   {
+    "pieces": 4,
+    "options": [
+     "Eagle of Twilight Line",
+     "Scholar Lost in Erudition",
+     "Musketeer of Wild Wheat"
+    ]
+   },
+   {
+    "pieces": 2,
+    "options": [
+     "Firmament Frontline: Glamoth",
+     "Space Sealing Station",
+     "Rutilant Arena"
+    ]
+   }
+  ],
+  "mainStats": {
+   "Body": [
+    "CRIT Rate",
+    "CRIT DMG"
+   ],
+   "Feet": [
+    "SPD",
+    "ATK %"
+   ],
+   "Planar Sphere": [
+    "Wind DMG Boost"
+   ],
+   "Link Rope": [
+    "ATK %"
+   ]
+  },
+  "subStats": [
+   "CRIT Rate",
+   "CRIT DMG",
+   "ATK %",
+   "SPD"
+  ],
+  "weapons": [
+   "Cruising in the Stellar Sea",
+   "In the Night",
+   "Only Silence Remains"
+  ],
+  "skillsFirst": []
+ },
+ {
+  "characterId": "1003",
+  "source": "the game's own recommendation (nanoka.cc)",
+  "sets": [
+   {
+    "pieces": 4,
+    "options": [
+     "The Ashblazing Grand Duke",
+     "Firesmith of Lava-Forging",
+     "Iron Cavalry Against the Scourge"
+    ]
+   },
+   {
+    "pieces": 2,
+    "options": [
+     "Inert Salsotto",
+     "Sigonia, the Unclaimed Desolation",
+     "Space Sealing Station"
+    ]
+   }
+  ],
+  "mainStats": {
+   "Body": [
+    "CRIT Rate",
+    "CRIT DMG"
+   ],
+   "Feet": [
+    "SPD",
+    "ATK %"
+   ],
+   "Planar Sphere": [
+    "Fire DMG Boost"
+   ],
+   "Link Rope": [
+    "ATK %",
+    "Energy Regeneration Rate"
+   ]
+  },
+  "subStats": [
+   "CRIT Rate",
+   "CRIT DMG",
+   "ATK %",
+   "SPD"
+  ],
+  "weapons": [
+   "Night on the Milky Way",
+   "Before Dawn",
+   "Today Is Another Peaceful Day"
+  ],
+  "skillsFirst": []
+ },
+ {
+  "characterId": "1004",
+  "source": "the game's own recommendation (nanoka.cc)",
+  "sets": [
+   {
+    "pieces": 4,
+    "options": [
+     "Pioneer Diver of Dead Waters",
+     "Wastelander of Banditry Desert",
+     "Scholar Lost in Erudition"
+    ]
+   },
+   {
+    "pieces": 2,
+    "options": [
+     "Rutilant Arena",
+     "Space Sealing Station",
+     "Pan-Cosmic Commercial Enterprise"
+    ]
+   }
+  ],
+  "mainStats": {
+   "Body": [
+    "CRIT Rate",
+    "CRIT DMG"
+   ],
+   "Feet": [
+    "SPD"
+   ],
+   "Planar Sphere": [
+    "Imaginary DMG Boost"
+   ],
+   "Link Rope": [
+    "ATK %",
+    "Energy Regeneration Rate"
+   ]
+  },
+  "subStats": [
+   "CRIT Rate",
+   "CRIT DMG",
+   "ATK %",
+   "SPD",
+   "Effect Hit Rate"
+  ],
+  "weapons": [
+   "In the Name of the World",
+   "Along the Passing Shore",
+   "Good Night and Sleep Well"
+  ],
+  "skillsFirst": []
+ },
+ {
+  "characterId": "1005",
+  "source": "the game's own recommendation (nanoka.cc)",
+  "sets": [
+   {
+    "pieces": 4,
+    "options": [
+     "Prisoner in Deep Confinement",
+     "Band of Sizzling Thunder",
+     "Musketeer of Wild Wheat"
+    ]
+   },
+   {
+    "pieces": 2,
+    "options": [
+     "Revelry by the Sea",
+     "Firmament Frontline: Glamoth",
+     "Space Sealing Station"
+    ]
+   }
+  ],
+  "mainStats": {
+   "Body": [
+    "Effect Hit Rate",
+    "ATK %"
+   ],
+   "Feet": [
+    "SPD"
+   ],
+   "Planar Sphere": [
+    "Lightning DMG Boost",
+    "ATK %"
+   ],
+   "Link Rope": [
+    "Energy Regeneration Rate",
+    "ATK %"
+   ]
+  },
+  "subStats": [
+   "ATK %",
+   "SPD",
+   "Effect Hit Rate"
+  ],
+  "weapons": [
+   "Patience Is All You Need",
+   "Reforged Remembrance",
+   "Solitary Healing"
+  ],
+  "skillsFirst": []
+ },
+ {
+  "characterId": "1006",
+  "source": "the game's own recommendation (nanoka.cc)",
+  "sets": [
+   {
+    "pieces": 4,
+    "options": [
+     "Genius of Brilliant Stars",
+     "Thief of Shooting Meteor",
+     "Pioneer Diver of Dead Waters"
+    ]
+   },
+   {
+    "pieces": 2,
+    "options": [
+     "Penacony, Land of the Dreams",
+     "Pan-Cosmic Commercial Enterprise",
+     "Talia: Kingdom of Banditry"
+    ]
+   }
+  ],
+  "mainStats": {
+   "Body": [
+    "Effect Hit Rate",
+    "CRIT Rate"
+   ],
+   "Feet": [
+    "SPD"
+   ],
+   "Planar Sphere": [
+    "Quantum DMG Boost"
+   ],
+   "Link Rope": [
+    "Energy Regeneration Rate"
+   ]
+  },
+  "subStats": [
+   "SPD",
+   "Effect Hit Rate",
+   "CRIT Rate",
+   "CRIT DMG",
+   "ATK %"
+  ],
+  "weapons": [
+   "Incessant Rain",
+   "Lies Dance on the Breeze",
+   "Before the Tutorial Mission Starts"
+  ],
+  "skillsFirst": []
+ },
+ {
+  "characterId": "1008",
+  "source": "the game's own recommendation (nanoka.cc)",
+  "sets": [
+   {
+    "pieces": 4,
+    "options": [
+     "Band of Sizzling Thunder",
+     "Scholar Lost in Erudition",
+     "Pioneer Diver of Dead Waters"
+    ]
+   },
+   {
+    "pieces": 2,
+    "options": [
+     "Rutilant Arena",
+     "Space Sealing Station",
+     "Celestial Differentiator"
+    ]
+   }
+  ],
+  "mainStats": {
+   "Body": [
+    "CRIT Rate",
+    "CRIT DMG"
+   ],
+   "Feet": [
+    "SPD"
+   ],
+   "Planar Sphere": [
+    "Lightning DMG Boost",
+    "ATK %"
+   ],
+   "Link Rope": [
+    "ATK %"
+   ]
+  },
+  "subStats": [
+   "CRIT Rate",
+   "CRIT DMG",
+   "ATK %",
+   "SPD"
+  ],
+  "weapons": [
+   "A Secret Vow",
+   "On the Fall of an Aeon"
+  ],
+  "skillsFirst": []
+ },
+ {
+  "characterId": "1009",
+  "source": "the game's own recommendation (nanoka.cc)",
+  "sets": [
+   {
+    "pieces": 4,
+    "options": [
+     "Messenger Traversing Hackerspace",
+     "Thief of Shooting Meteor",
+     "Guard of Wuthering Snow"
+    ]
+   },
+   {
+    "pieces": 2,
+    "options": [
+     "Fleet of the Ageless",
+     "Broken Keel",
+     "Sprightly Vonwacq"
+    ]
+   }
+  ],
+  "mainStats": {
+   "Body": [
+    "HP %",
+    "CRIT Rate"
+   ],
+   "Feet": [
+    "SPD"
+   ],
+   "Planar Sphere": [
+    "Fire DMG Boost",
+    "HP %"
+   ],
+   "Link Rope": [
+    "Energy Regeneration Rate"
+   ]
+  },
+  "subStats": [
+   "SPD",
+   "ATK %",
+   "CRIT Rate",
+   "CRIT DMG"
+  ],
+  "weapons": [
+   "Carve the Moon, Weave the Clouds",
+   "Planetary Rendezvous"
+  ],
+  "skillsFirst": []
+ },
+ {
+  "characterId": "1013",
+  "source": "the game's own recommendation (nanoka.cc)",
+  "sets": [
+   {
+    "pieces": 4,
+    "options": [
+     "Hunter of Glacial Forest",
+     "Musketeer of Wild Wheat",
+     "Scholar Lost in Erudition"
+    ]
+   },
+   {
+    "pieces": 2,
+    "options": [
+     "Sigonia, the Unclaimed Desolation",
+     "Inert Salsotto",
+     "Duran, Dynasty of Running Wolves"
+    ]
+   }
+  ],
+  "mainStats": {
+   "Body": [
+    "CRIT Rate",
+    "CRIT DMG"
+   ],
+   "Feet": [
+    "ATK %",
+    "SPD"
+   ],
+   "Planar Sphere": [
+    "Ice DMG Boost",
+    "ATK %"
+   ],
+   "Link Rope": [
+    "ATK %",
+    "Energy Regeneration Rate"
+   ]
+  },
+  "subStats": [
+   "CRIT Rate",
+   "CRIT DMG",
+   "ATK %",
+   "SPD"
+  ],
+  "weapons": [
+   "Night on the Milky Way",
+   "Today Is Another Peaceful Day",
+   "Eternal Calculus"
+  ],
+  "skillsFirst": []
+ },
+ {
+  "characterId": "1014",
+  "source": "the game's own recommendation (nanoka.cc)",
+  "sets": [
+   {
+    "pieces": 4,
+    "options": [
+     "Wavestrider Captain",
+     "As Navigator Isee Sees It",
+     "Scholar Lost in Erudition"
+    ]
+   },
+   {
+    "pieces": 2,
+    "options": [
+     "Cosmic Life Sciences Institute",
+     "Inert Salsotto",
+     "Space Sealing Station"
+    ]
+   }
+  ],
+  "mainStats": {
+   "Body": [
+    "CRIT Rate",
+    "CRIT DMG"
+   ],
+   "Feet": [
+    "ATK %",
+    "SPD"
+   ],
+   "Planar Sphere": [
+    "Wind DMG Boost",
+    "ATK %"
+   ],
+   "Link Rope": [
+    "ATK %",
+    "Energy Regeneration Rate"
+   ]
+  },
+  "subStats": [
+   "CRIT Rate",
+   "CRIT DMG",
+   "ATK %",
+   "SPD"
+  ],
+  "weapons": [
+   "A Thankless Coronation",
+   "On the Fall of an Aeon"
+  ],
+  "skillsFirst": []
+ },
+ {
+  "characterId": "1015",
+  "source": "the game's own recommendation (nanoka.cc)",
+  "sets": [
+   {
+    "pieces": 4,
+    "options": [
+     "Genius of Brilliant Stars",
+     "Scholar Lost in Erudition",
+     "Musketeer of Wild Wheat"
+    ]
+   },
+   {
+    "pieces": 2,
+    "options": [
+     "Rutilant Arena",
+     "Space Sealing Station",
+     "Inert Salsotto"
+    ]
+   }
+  ],
+  "mainStats": {
+   "Body": [
+    "CRIT Rate",
+    "CRIT DMG"
+   ],
+   "Feet": [
+    "ATK %",
+    "SPD"
+   ],
+   "Planar Sphere": [
+    "Quantum DMG Boost",
+    "ATK %"
+   ],
+   "Link Rope": [
+    "ATK %",
+    "Energy Regeneration Rate"
+   ]
+  },
+  "subStats": [
+   "CRIT Rate",
+   "CRIT DMG",
+   "ATK %",
+   "SPD"
+  ],
+  "weapons": [
+   "The Hell Where Ideals Burn",
+   "Cruising in the Stellar Sea"
+  ],
+  "skillsFirst": []
+ },
+ {
+  "characterId": "1101",
+  "source": "the game's own recommendation (nanoka.cc)",
+  "sets": [
+   {
+    "pieces": 4,
+    "options": [
+     "Messenger Traversing Hackerspace",
+     "Eagle of Twilight Line",
+     "Sacerdos' Relived Ordeal"
+    ]
+   },
+   {
+    "pieces": 2,
+    "options": [
+     "Lushaka, the Sunken Seas",
+     "Broken Keel",
+     "Fleet of the Ageless"
+    ]
+   }
+  ],
+  "mainStats": {
+   "Body": [
+    "CRIT DMG"
+   ],
+   "Feet": [
+    "SPD"
+   ],
+   "Planar Sphere": [
+    "HP %",
+    "DEF %"
+   ],
+   "Link Rope": [
+    "Energy Regeneration Rate"
+   ]
+  },
+  "subStats": [
+   "CRIT DMG",
+   "SPD",
+   "Effect RES"
+  ],
+  "weapons": [
+   "But the Battle Isn't Over",
+   "A Grounded Ascent",
+   "Past and Future"
+  ],
+  "skillsFirst": []
+ },
+ {
+  "characterId": "1102",
+  "source": "the game's own recommendation (nanoka.cc)",
+  "sets": [
+   {
+    "pieces": 4,
+    "options": [
+     "Genius of Brilliant Stars",
+     "Scholar Lost in Erudition",
+     "Musketeer of Wild Wheat"
+    ]
+   },
+   {
+    "pieces": 2,
+    "options": [
+     "Firmament Frontline: Glamoth",
+     "Space Sealing Station",
+     "Inert Salsotto"
+    ]
+   }
+  ],
+  "mainStats": {
+   "Body": [
+    "CRIT Rate",
+    "CRIT DMG"
+   ],
+   "Feet": [
+    "SPD",
+    "ATK %"
+   ],
+   "Planar Sphere": [
+    "Quantum DMG Boost",
+    "ATK %"
+   ],
+   "Link Rope": [
+    "ATK %"
+   ]
+  },
+  "subStats": [
+   "CRIT Rate",
+   "CRIT DMG",
+   "ATK %",
+   "SPD"
+  ],
+  "weapons": [
+   "In the Night",
+   "Cruising in the Stellar Sea",
+   "Sleep Like the Dead"
+  ],
+  "skillsFirst": []
+ },
+ {
+  "characterId": "1103",
+  "source": "the game's own recommendation (nanoka.cc)",
+  "sets": [
+   {
+    "pieces": 4,
+    "options": [
+     "Band of Sizzling Thunder",
+     "Pioneer Diver of Dead Waters",
+     "Scholar Lost in Erudition"
+    ]
+   },
+   {
+    "pieces": 2,
+    "options": [
+     "Space Sealing Station",
+     "Inert Salsotto",
+     "Sigonia, the Unclaimed Desolation"
+    ]
+   }
+  ],
+  "mainStats": {
+   "Body": [
+    "CRIT Rate",
+    "CRIT DMG"
+   ],
+   "Feet": [
+    "SPD"
+   ],
+   "Planar Sphere": [
+    "Lightning DMG Boost",
+    "ATK %"
+   ],
+   "Link Rope": [
+    "ATK %",
+    "Energy Regeneration Rate"
+   ]
+  },
+  "subStats": [
+   "CRIT Rate",
+   "CRIT DMG",
+   "ATK %",
+   "SPD"
+  ],
+  "weapons": [
+   "Make the World Clamor",
+   "Eternal Calculus",
+   "The Seriousness of Breakfast"
+  ],
+  "skillsFirst": []
+ },
+ {
+  "characterId": "1104",
+  "source": "the game's own recommendation (nanoka.cc)",
+  "sets": [
+   {
+    "pieces": 4,
+    "options": [
+     "Knight of Purity Palace",
+     "Self-Enshrouded Recluse",
+     "Guard of Wuthering Snow"
+    ]
+   },
+   {
+    "pieces": 2,
+    "options": [
+     "Belobog of the Architects",
+     "Broken Keel",
+     "Lushaka, the Sunken Seas"
+    ]
+   }
+  ],
+  "mainStats": {
+   "Body": [
+    "DEF %"
+   ],
+   "Feet": [
+    "SPD"
+   ],
+   "Planar Sphere": [
+    "DEF %"
+   ],
+   "Link Rope": [
+    "Energy Regeneration Rate",
+    "DEF %"
+   ]
+  },
+  "subStats": [
+   "DEF %",
+   "SPD",
+   "Effect Hit Rate",
+   "Effect RES"
+  ],
+  "weapons": [
+   "Moment of Victory",
+   "Day One of My New Life",
+   "Trend of the Universal Market"
+  ],
+  "skillsFirst": []
+ },
+ {
+  "characterId": "1105",
+  "source": "the game's own recommendation (nanoka.cc)",
+  "sets": [
+   {
+    "pieces": 4,
+    "options": [
+     "Passerby of Wandering Cloud",
+     "Messenger Traversing Hackerspace",
+     "Sacerdos' Relived Ordeal"
+    ]
+   },
+   {
+    "pieces": 2,
+    "options": [
+     "Fleet of the Ageless",
+     "Lushaka, the Sunken Seas",
+     "Broken Keel"
+    ]
+   }
+  ],
+  "mainStats": {
+   "Body": [
+    "Outgoing Healing Boost",
+    "HP %"
+   ],
+   "Feet": [
+    "SPD"
+   ],
+   "Planar Sphere": [
+    "HP %"
+   ],
+   "Link Rope": [
+    "HP %",
+    "Energy Regeneration Rate"
+   ]
+  },
+  "subStats": [
+   "HP %",
+   "SPD",
+   "Effect RES"
+  ],
+  "weapons": [
+   "Post-Op Conversation",
+   "Shared Feeling",
+   "Quid Pro Quo"
+  ],
+  "skillsFirst": []
+ },
+ {
+  "characterId": "1106",
+  "source": "the game's own recommendation (nanoka.cc)",
+  "sets": [
+   {
+    "pieces": 4,
+    "options": [
+     "Hunter of Glacial Forest",
+     "Guard of Wuthering Snow",
+     "Eagle of Twilight Line"
+    ]
+   },
+   {
+    "pieces": 2,
+    "options": [
+     "Penacony, Land of the Dreams",
+     "Broken Keel",
+     "Sprightly Vonwacq"
+    ]
+   }
+  ],
+  "mainStats": {
+   "Body": [
+    "Effect Hit Rate",
+    "CRIT Rate"
+   ],
+   "Feet": [
+    "SPD"
+   ],
+   "Planar Sphere": [
+    "HP %",
+    "Ice DMG Boost"
+   ],
+   "Link Rope": [
+    "Energy Regeneration Rate"
+   ]
+  },
+  "subStats": [
+   "SPD",
+   "Effect Hit Rate",
+   "CRIT Rate",
+   "CRIT DMG",
+   "ATK %"
+  ],
+  "weapons": [
+   "Resolution Shines As Pearls of Sweat",
+   "Before the Tutorial Mission Starts",
+   "Good Night and Sleep Well"
+  ],
+  "skillsFirst": []
+ },
+ {
+  "characterId": "1107",
+  "source": "the game's own recommendation (nanoka.cc)",
+  "sets": [
+   {
+    "pieces": 4,
+    "options": [
+     "Champion of Streetwise Boxing",
+     "Longevous Disciple",
+     "The Ashblazing Grand Duke"
+    ]
+   },
+   {
+    "pieces": 2,
+    "options": [
+     "Inert Salsotto",
+     "Duran, Dynasty of Running Wolves",
+     "Space Sealing Station"
+    ]
+   }
+  ],
+  "mainStats": {
+   "Body": [
+    "CRIT Rate",
+    "CRIT DMG"
+   ],
+   "Feet": [
+    "ATK %"
+   ],
+   "Planar Sphere": [
+    "Physical DMG Boost"
+   ],
+   "Link Rope": [
+    "Energy Regeneration Rate",
+    "ATK %"
+   ]
+  },
+  "subStats": [
+   "CRIT Rate",
+   "CRIT DMG",
+   "ATK %",
+   "SPD"
+  ],
+  "weapons": [
+   "Something Irreplaceable",
+   "On the Fall of an Aeon",
+   "Dance at Sunset"
+  ],
+  "skillsFirst": []
+ },
+ {
+  "characterId": "1108",
+  "source": "the game's own recommendation (nanoka.cc)",
+  "sets": [
+   {
+    "pieces": 4,
+    "options": [
+     "Eagle of Twilight Line",
+     "Prisoner in Deep Confinement",
+     "Musketeer of Wild Wheat"
+    ]
+   },
+   {
+    "pieces": 2,
+    "options": [
+     "Space Sealing Station",
+     "Pan-Cosmic Commercial Enterprise",
+     "Firmament Frontline: Glamoth"
+    ]
+   }
+  ],
+  "mainStats": {
+   "Body": [
+    "ATK %"
+   ],
+   "Feet": [
+    "SPD"
+   ],
+   "Planar Sphere": [
+    "Wind DMG Boost"
+   ],
+   "Link Rope": [
+    "ATK %"
+   ]
+  },
+  "subStats": [
+   "ATK %",
+   "SPD",
+   "Effect Hit Rate"
+  ],
+  "weapons": [
+   "Eyes of the Prey",
+   "Good Night and Sleep Well",
+   "Solitary Healing"
+  ],
+  "skillsFirst": []
+ },
+ {
+  "characterId": "1109",
+  "source": "the game's own recommendation (nanoka.cc)",
+  "sets": [
+   {
+    "pieces": 4,
+    "options": [
+     "Pioneer Diver of Dead Waters",
+     "Scholar Lost in Erudition",
+     "Firesmith of Lava-Forging"
+    ]
+   },
+   {
+    "pieces": 2,
+    "options": [
+     "Space Sealing Station",
+     "Rutilant Arena",
+     "Celestial Differentiator"
+    ]
+   }
+  ],
+  "mainStats": {
+   "Body": [
+    "CRIT Rate",
+    "CRIT DMG"
+   ],
+   "Feet": [
+    "SPD"
+   ],
+   "Planar Sphere": [
+    "Fire DMG Boost"
+   ],
+   "Link Rope": [
+    "ATK %"
+   ]
+  },
+  "subStats": [
+   "CRIT Rate",
+   "CRIT DMG",
+   "ATK %",
+   "SPD"
+  ],
+  "weapons": [
+   "The Moles Welcome You",
+   "Woof! Walk Time!",
+   "On the Fall of an Aeon"
+  ],
+  "skillsFirst": []
+ },
+ {
+  "characterId": "1110",
+  "source": "the game's own recommendation (nanoka.cc)",
+  "sets": [
+   {
+    "pieces": 4,
+    "options": [
+     "Passerby of Wandering Cloud",
+     "Messenger Traversing Hackerspace",
+     "Guard of Wuthering Snow"
+    ]
+   },
+   {
+    "pieces": 2,
+    "options": [
+     "Fleet of the Ageless",
+     "Broken Keel",
+     "Lushaka, the Sunken Seas"
+    ]
+   }
+  ],
+  "mainStats": {
+   "Body": [
+    "Outgoing Healing Boost",
+    "HP %"
+   ],
+   "Feet": [
+    "SPD"
+   ],
+   "Planar Sphere": [
+    "HP %"
+   ],
+   "Link Rope": [
+    "HP %",
+    "Energy Regeneration Rate"
+   ]
+  },
+  "subStats": [
+   "HP %",
+   "SPD",
+   "Effect RES"
+  ],
+  "weapons": [
+   "Warmth Shortens Cold Nights",
+   "Post-Op Conversation"
+  ],
+  "skillsFirst": []
+ },
+ {
+  "characterId": "1111",
+  "source": "the game's own recommendation (nanoka.cc)",
+  "sets": [
+   {
+    "pieces": 4,
+    "options": [
+     "Champion of Streetwise Boxing",
+     "Prisoner in Deep Confinement",
+     "Musketeer of Wild Wheat"
+    ]
+   },
+   {
+    "pieces": 2,
+    "options": [
+     "Space Sealing Station",
+     "Talia: Kingdom of Banditry",
+     "Rutilant Arena"
+    ]
+   }
+  ],
+  "mainStats": {
+   "Body": [
+    "ATK %"
+   ],
+   "Feet": [
+    "SPD"
+   ],
+   "Planar Sphere": [
+    "Physical DMG Boost"
+   ],
+   "Link Rope": [
+    "ATK %"
+   ]
+  },
+  "subStats": [
+   "ATK %",
+   "SPD",
+   "Break Effect",
+   "CRIT Rate",
+   "CRIT DMG"
+  ],
+  "weapons": [
+   "Resolution Shines As Pearls of Sweat",
+   "Good Night and Sleep Well"
+  ],
+  "skillsFirst": []
+ },
+ {
+  "characterId": "1112",
+  "source": "the game's own recommendation (nanoka.cc)",
+  "sets": [
+   {
+    "pieces": 4,
+    "options": [
+     "The Ashblazing Grand Duke",
+     "Firesmith of Lava-Forging",
+     "Pioneer Diver of Dead Waters"
+    ]
+   },
+   {
+    "pieces": 2,
+    "options": [
+     "The Wondrous BananAmusement Park",
+     "Inert Salsotto",
+     "Duran, Dynasty of Running Wolves"
+    ]
+   }
+  ],
+  "mainStats": {
+   "Body": [
+    "CRIT Rate",
+    "CRIT DMG"
+   ],
+   "Feet": [
+    "ATK %",
+    "SPD"
+   ],
+   "Planar Sphere": [
+    "Fire DMG Boost"
+   ],
+   "Link Rope": [
+    "ATK %"
+   ]
+  },
+  "subStats": [
+   "CRIT Rate",
+   "CRIT DMG",
+   "ATK %",
+   "SPD"
+  ],
+  "weapons": [
+   "Worrisome, Blissful",
+   "Swordplay",
+   "Sleep Like the Dead"
+  ],
+  "skillsFirst": []
+ },
+ {
+  "characterId": "1201",
+  "source": "the game's own recommendation (nanoka.cc)",
+  "sets": [
+   {
+    "pieces": 4,
+    "options": [
+     "Genius of Brilliant Stars",
+     "Musketeer of Wild Wheat",
+     "Thief of Shooting Meteor"
+    ]
+   },
+   {
+    "pieces": 2,
+    "options": [
+     "Rutilant Arena",
+     "Celestial Differentiator",
+     "Space Sealing Station"
+    ]
+   }
+  ],
+  "mainStats": {
+   "Body": [
+    "CRIT Rate",
+    "CRIT DMG"
+   ],
+   "Feet": [
+    "SPD"
+   ],
+   "Planar Sphere": [
+    "Quantum DMG Boost"
+   ],
+   "Link Rope": [
+    "ATK %"
+   ]
+  },
+  "subStats": [
+   "CRIT Rate",
+   "CRIT DMG",
+   "ATK %",
+   "SPD"
+  ],
+  "weapons": [
+   "Today Is Another Peaceful Day",
+   "The Seriousness of Breakfast",
+   "Before Dawn"
+  ],
+  "skillsFirst": []
+ },
+ {
+  "characterId": "1202",
+  "source": "the game's own recommendation (nanoka.cc)",
+  "sets": [
+   {
+    "pieces": 4,
+    "options": [
+     "Sacerdos' Relived Ordeal",
+     "Messenger Traversing Hackerspace",
+     "Eagle of Twilight Line"
+    ]
+   },
+   {
+    "pieces": 2,
+    "options": [
+     "Sprightly Vonwacq",
+     "Penacony, Land of the Dreams",
+     "Fleet of the Ageless"
+    ]
+   }
+  ],
+  "mainStats": {
+   "Body": [
+    "ATK %"
+   ],
+   "Feet": [
+    "SPD"
+   ],
+   "Planar Sphere": [
+    "ATK %"
+   ],
+   "Link Rope": [
+    "Energy Regeneration Rate"
+   ]
+  },
+  "subStats": [
+   "SPD",
+   "ATK %",
+   "Effect RES"
+  ],
+  "weapons": [
+   "Carve the Moon, Weave the Clouds",
+   "Dance! Dance! Dance!",
+   "Planetary Rendezvous"
+  ],
+  "skillsFirst": []
+ },
+ {
+  "characterId": "1203",
+  "source": "the game's own recommendation (nanoka.cc)",
+  "sets": [
+   {
+    "pieces": 4,
+    "options": [
+     "Passerby of Wandering Cloud",
+     "Sacerdos' Relived Ordeal",
+     "Musketeer of Wild Wheat"
+    ]
+   },
+   {
+    "pieces": 2,
+    "options": [
+     "Space Sealing Station",
+     "Lushaka, the Sunken Seas",
+     "Sprightly Vonwacq"
+    ]
+   }
+  ],
+  "mainStats": {
+   "Body": [
+    "Outgoing Healing Boost",
+    "ATK %"
+   ],
+   "Feet": [
+    "SPD"
+   ],
+   "Planar Sphere": [
+    "ATK %"
+   ],
+   "Link Rope": [
+    "ATK %",
+    "Energy Regeneration Rate"
+   ]
+  },
+  "subStats": [
+   "ATK %",
+   "SPD",
+   "Effect RES"
+  ],
+  "weapons": [
+   "Echoes of the Coffin",
+   "Perfect Timing",
+   "Time Waits for No One"
+  ],
+  "skillsFirst": []
+ },
+ {
+  "characterId": "1204",
+  "source": "the game's own recommendation (nanoka.cc)",
+  "sets": [
+   {
+    "pieces": 4,
+    "options": [
+     "The Ashblazing Grand Duke",
+     "Band of Sizzling Thunder",
+     "Scholar Lost in Erudition"
+    ]
+   },
+   {
+    "pieces": 2,
+    "options": [
+     "The Wondrous BananAmusement Park",
+     "Inert Salsotto",
+     "Sigonia, the Unclaimed Desolation"
+    ]
+   }
+  ],
+  "mainStats": {
+   "Body": [
+    "CRIT Rate",
+    "CRIT DMG"
+   ],
+   "Feet": [
+    "SPD"
+   ],
+   "Planar Sphere": [
+    "Lightning DMG Boost"
+   ],
+   "Link Rope": [
+    "ATK %"
+   ]
+  },
+  "subStats": [
+   "CRIT Rate",
+   "CRIT DMG",
+   "ATK %",
+   "SPD"
+  ],
+  "weapons": [
+   "Before Dawn",
+   "Night on the Milky Way",
+   "Today Is Another Peaceful Day"
+  ],
+  "skillsFirst": []
+ },
+ {
+  "characterId": "1205",
+  "source": "the game's own recommendation (nanoka.cc)",
+  "sets": [
+   {
+    "pieces": 4,
+    "options": [
+     "Longevous Disciple",
+     "Eagle of Twilight Line",
+     "Musketeer of Wild Wheat"
+    ]
+   },
+   {
+    "pieces": 2,
+    "options": [
+     "Bone Collection's Serene Demesne",
+     "Inert Salsotto",
+     "Rutilant Arena"
+    ]
+   }
+  ],
+  "mainStats": {
+   "Body": [
+    "CRIT Rate",
+    "CRIT DMG"
+   ],
+   "Feet": [
+    "SPD",
+    "HP %"
+   ],
+   "Planar Sphere": [
+    "Wind DMG Boost",
+    "HP %"
+   ],
+   "Link Rope": [
+    "HP %"
+   ]
+  },
+  "subStats": [
+   "CRIT Rate",
+   "CRIT DMG",
+   "HP %",
+   "SPD"
+  ],
+  "weapons": [
+   "The Unreachable Side",
+   "A Secret Vow",
+   "Ninja Record: Sound Hunt"
+  ],
+  "skillsFirst": []
+ },
+ {
+  "characterId": "1206",
+  "source": "the game's own recommendation (nanoka.cc)",
+  "sets": [
+   {
+    "pieces": 4,
+    "options": [
+     "Champion of Streetwise Boxing",
+     "Thief of Shooting Meteor",
+     "Iron Cavalry Against the Scourge"
+    ]
+   },
+   {
+    "pieces": 2,
+    "options": [
+     "Firmament Frontline: Glamoth",
+     "Talia: Kingdom of Banditry",
+     "Space Sealing Station"
+    ]
+   }
+  ],
+  "mainStats": {
+   "Body": [
+    "CRIT Rate",
+    "CRIT DMG"
+   ],
+   "Feet": [
+    "SPD",
+    "ATK %"
+   ],
+   "Planar Sphere": [
+    "Physical DMG Boost"
+   ],
+   "Link Rope": [
+    "ATK %",
+    "Break Effect"
+   ]
+  },
+  "subStats": [
+   "CRIT Rate",
+   "CRIT DMG",
+   "ATK %",
+   "SPD",
+   "Break Effect"
+  ],
+  "weapons": [
+   "Swordplay",
+   "Cruising in the Stellar Sea"
+  ],
+  "skillsFirst": []
+ },
+ {
+  "characterId": "1207",
+  "source": "the game's own recommendation (nanoka.cc)",
+  "sets": [
+   {
+    "pieces": 4,
+    "options": [
+     "Musketeer of Wild Wheat",
+     "Wastelander of Banditry Desert",
+     "Thief of Shooting Meteor"
+    ]
+   },
+   {
+    "pieces": 2,
+    "options": [
+     "Fleet of the Ageless",
+     "Penacony, Land of the Dreams",
+     "Sprightly Vonwacq"
+    ]
+   }
+  ],
+  "mainStats": {
+   "Body": [
+    "CRIT Rate"
+   ],
+   "Feet": [
+    "SPD"
+   ],
+   "Planar Sphere": [
+    "Imaginary DMG Boost"
+   ],
+   "Link Rope": [
+    "Energy Regeneration Rate",
+    "ATK %"
+   ]
+  },
+  "subStats": [
+   "SPD",
+   "ATK %",
+   "CRIT Rate",
+   "CRIT DMG"
+  ],
+  "weapons": [
+   "Past and Future",
+   "Carve the Moon, Weave the Clouds"
+  ],
+  "skillsFirst": []
+ },
+ {
+  "characterId": "1208",
+  "source": "the game's own recommendation (nanoka.cc)",
+  "sets": [
+   {
+    "pieces": 4,
+    "options": [
+     "Longevous Disciple",
+     "Guard of Wuthering Snow",
+     "Genius of Brilliant Stars"
+    ]
+   },
+   {
+    "pieces": 2,
+    "options": [
+     "Fleet of the Ageless",
+     "Broken Keel",
+     "Sprightly Vonwacq"
+    ]
+   }
+  ],
+  "mainStats": {
+   "Body": [
+    "HP %"
+   ],
+   "Feet": [
+    "SPD",
+    "HP %"
+   ],
+   "Planar Sphere": [
+    "HP %"
+   ],
+   "Link Rope": [
+    "Energy Regeneration Rate",
+    "HP %"
+   ]
+  },
+  "subStats": [
+   "HP %",
+   "DEF %",
+   "Effect RES",
+   "SPD"
+  ],
+  "weapons": [
+   "She Already Shut Her Eyes",
+   "Texture of Memories",
+   "Trend of the Universal Market"
+  ],
+  "skillsFirst": []
+ },
+ {
+  "characterId": "1209",
+  "source": "the game's own recommendation (nanoka.cc)",
+  "sets": [
+   {
+    "pieces": 4,
+    "options": [
+     "Hunter of Glacial Forest",
+     "Pioneer Diver of Dead Waters",
+     "Scholar Lost in Erudition"
+    ]
+   },
+   {
+    "pieces": 2,
+    "options": [
+     "Firmament Frontline: Glamoth",
+     "Space Sealing Station",
+     "Inert Salsotto"
+    ]
+   }
+  ],
+  "mainStats": {
+   "Body": [
+    "CRIT DMG"
+   ],
+   "Feet": [
+    "SPD"
+   ],
+   "Planar Sphere": [
+    "Ice DMG Boost"
+   ],
+   "Link Rope": [
+    "ATK %"
+   ]
+  },
+  "subStats": [
+   "CRIT Rate",
+   "CRIT DMG",
+   "ATK %",
+   "SPD"
+  ],
+  "weapons": [
+   "Sleep Like the Dead",
+   "In the Night",
+   "Cruising in the Stellar Sea"
+  ],
+  "skillsFirst": []
+ },
+ {
+  "characterId": "1210",
+  "source": "the game's own recommendation (nanoka.cc)",
+  "sets": [
+   {
+    "pieces": 4,
+    "options": [
+     "Prisoner in Deep Confinement",
+     "Musketeer of Wild Wheat",
+     "Firesmith of Lava-Forging"
+    ]
+   },
+   {
+    "pieces": 2,
+    "options": [
+     "Space Sealing Station",
+     "Pan-Cosmic Commercial Enterprise",
+     "Talia: Kingdom of Banditry"
+    ]
+   }
+  ],
+  "mainStats": {
+   "Body": [
+    "ATK %"
+   ],
+   "Feet": [
+    "SPD"
+   ],
+   "Planar Sphere": [
+    "Fire DMG Boost"
+   ],
+   "Link Rope": [
+    "ATK %"
+   ]
+  },
+  "subStats": [
+   "ATK %",
+   "SPD",
+   "Effect Hit Rate"
+  ],
+  "weapons": [
+   "Eyes of the Prey",
+   "Good Night and Sleep Well",
+   "Solitary Healing"
+  ],
+  "skillsFirst": []
+ },
+ {
+  "characterId": "1211",
+  "source": "the game's own recommendation (nanoka.cc)",
+  "sets": [
+   {
+    "pieces": 4,
+    "options": [
+     "Passerby of Wandering Cloud",
+     "Messenger Traversing Hackerspace",
+     "Guard of Wuthering Snow"
+    ]
+   },
+   {
+    "pieces": 2,
+    "options": [
+     "Fleet of the Ageless",
+     "Broken Keel",
+     "Lushaka, the Sunken Seas"
+    ]
+   }
+  ],
+  "mainStats": {
+   "Body": [
+    "Outgoing Healing Boost",
+    "HP %"
+   ],
+   "Feet": [
+    "SPD"
+   ],
+   "Planar Sphere": [
+    "HP %"
+   ],
+   "Link Rope": [
+    "HP %",
+    "Energy Regeneration Rate"
+   ]
+  },
+  "subStats": [
+   "HP %",
+   "SPD",
+   "Effect RES"
+  ],
+  "weapons": [
+   "Time Waits for No One",
+   "Quid Pro Quo",
+   "Post-Op Conversation"
+  ],
+  "skillsFirst": []
+ },
+ {
+  "characterId": "1212",
+  "source": "the game's own recommendation (nanoka.cc)",
+  "sets": [
+   {
+    "pieces": 4,
+    "options": [
+     "Scholar Lost in Erudition",
+     "Hunter of Glacial Forest",
+     "Genius of Brilliant Stars"
+    ]
+   },
+   {
+    "pieces": 2,
+    "options": [
+     "Bone Collection's Serene Demesne",
+     "Rutilant Arena",
+     "Inert Salsotto"
+    ]
+   }
+  ],
+  "mainStats": {
+   "Body": [
+    "HP %",
+    "CRIT DMG"
+   ],
+   "Feet": [
+    "SPD",
+    "HP %"
+   ],
+   "Planar Sphere": [
+    "Ice DMG Boost"
+   ],
+   "Link Rope": [
+    "Energy Regeneration Rate",
+    "HP %"
+   ]
+  },
+  "subStats": [
+   "CRIT Rate",
+   "CRIT DMG",
+   "HP %",
+   "SPD"
+  ],
+  "weapons": [
+   "I Shall Be My Own Sword",
+   "Flame of Blood, Blaze My Path",
+   "A Secret Vow"
+  ],
+  "skillsFirst": []
+ },
+ {
+  "characterId": "1213",
+  "source": "the game's own recommendation (nanoka.cc)",
+  "sets": [
+   {
+    "pieces": 4,
+    "options": [
+     "The Edacious Heretic",
+     "Musketeer of Wild Wheat",
+     "Wastelander of Banditry Desert"
+    ]
+   },
+   {
+    "pieces": 2,
+    "options": [
+     "Rutilant Arena",
+     "Celestial Differentiator",
+     "Space Sealing Station"
+    ]
+   }
+  ],
+  "mainStats": {
+   "Body": [
+    "CRIT Rate",
+    "CRIT DMG"
+   ],
+   "Feet": [
+    "SPD",
+    "ATK %"
+   ],
+   "Planar Sphere": [
+    "Imaginary DMG Boost"
+   ],
+   "Link Rope": [
+    "ATK %"
+   ]
+  },
+  "subStats": [
+   "CRIT Rate",
+   "CRIT DMG",
+   "ATK %",
+   "SPD"
+  ],
+  "weapons": [
+   "Brighter Than the Sun",
+   "On the Fall of an Aeon",
+   "Under the Blue Sky"
+  ],
+  "skillsFirst": []
+ },
+ {
+  "characterId": "1214",
+  "source": "the game's own recommendation (nanoka.cc)",
+  "sets": [
+   {
+    "pieces": 4,
+    "options": [
+     "Genius of Brilliant Stars",
+     "Thief of Shooting Meteor",
+     "Iron Cavalry Against the Scourge"
+    ]
+   },
+   {
+    "pieces": 2,
+    "options": [
+     "Talia: Kingdom of Banditry",
+     "Inert Salsotto",
+     "Space Sealing Station"
+    ]
+   }
+  ],
+  "mainStats": {
+   "Body": [
+    "CRIT Rate",
+    "CRIT DMG"
+   ],
+   "Feet": [
+    "SPD",
+    "ATK %"
+   ],
+   "Planar Sphere": [
+    "Quantum DMG Boost",
+    "ATK %"
+   ],
+   "Link Rope": [
+    "Break Effect",
+    "ATK %"
+   ]
+  },
+  "subStats": [
+   "Break Effect",
+   "CRIT Rate",
+   "CRIT DMG",
+   "ATK %",
+   "SPD"
+  ],
+  "weapons": [
+   "Indelible Promise",
+   "Under the Blue Sky"
+  ],
+  "skillsFirst": []
+ },
+ {
+  "characterId": "1215",
+  "source": "the game's own recommendation (nanoka.cc)",
+  "sets": [
+   {
+    "pieces": 4,
+    "options": [
+     "Messenger Traversing Hackerspace",
+     "Musketeer of Wild Wheat",
+     "Sacerdos' Relived Ordeal"
+    ]
+   },
+   {
+    "pieces": 2,
+    "options": [
+     "Lushaka, the Sunken Seas",
+     "Sprightly Vonwacq",
+     "Broken Keel"
+    ]
+   }
+  ],
+  "mainStats": {
+   "Body": [
+    "HP %",
+    "DEF %"
+   ],
+   "Feet": [
+    "SPD"
+   ],
+   "Planar Sphere": [
+    "HP %",
+    "DEF %"
+   ],
+   "Link Rope": [
+    "Energy Regeneration Rate"
+   ]
+  },
+  "subStats": [
+   "SPD",
+   "Effect RES"
+  ],
+  "weapons": [
+   "Planetary Rendezvous",
+   "Carve the Moon, Weave the Clouds"
+  ],
+  "skillsFirst": []
+ },
+ {
+  "characterId": "1217",
+  "source": "the game's own recommendation (nanoka.cc)",
+  "sets": [
+   {
+    "pieces": 4,
+    "options": [
+     "Passerby of Wandering Cloud",
+     "Messenger Traversing Hackerspace",
+     "Eagle of Twilight Line"
+    ]
+   },
+   {
+    "pieces": 2,
+    "options": [
+     "Fleet of the Ageless",
+     "Broken Keel",
+     "Lushaka, the Sunken Seas"
+    ]
+   }
+  ],
+  "mainStats": {
+   "Body": [
+    "Outgoing Healing Boost",
+    "HP %"
+   ],
+   "Feet": [
+    "SPD"
+   ],
+   "Planar Sphere": [
+    "HP %"
+   ],
+   "Link Rope": [
+    "Energy Regeneration Rate"
+   ]
+  },
+  "subStats": [
+   "HP %",
+   "SPD",
+   "Effect RES"
+  ],
+  "weapons": [
+   "Night of Fright",
+   "Hey, Over Here",
+   "Shared Feeling"
+  ],
+  "skillsFirst": []
+ },
+ {
+  "characterId": "1218",
+  "source": "the game's own recommendation (nanoka.cc)",
+  "sets": [
+   {
+    "pieces": 4,
+    "options": [
+     "Prisoner in Deep Confinement",
+     "Eagle of Twilight Line",
+     "Guard of Wuthering Snow"
+    ]
+   },
+   {
+    "pieces": 2,
+    "options": [
+     "Pan-Cosmic Commercial Enterprise",
+     "Fleet of the Ageless",
+     "Sprightly Vonwacq"
+    ]
+   }
+  ],
+  "mainStats": {
+   "Body": [
+    "Effect Hit Rate"
+   ],
+   "Feet": [
+    "SPD"
+   ],
+   "Planar Sphere": [
+    "Fire DMG Boost"
+   ],
+   "Link Rope": [
+    "Energy Regeneration Rate"
+   ]
+  },
+  "subStats": [
+   "Effect Hit Rate",
+   "ATK %",
+   "SPD"
+  ],
+  "weapons": [
+   "Those Many Springs",
+   "Solitary Healing",
+   "Before the Tutorial Mission Starts"
+  ],
+  "skillsFirst": []
+ },
+ {
+  "characterId": "1220",
+  "source": "the game's own recommendation (nanoka.cc)",
+  "sets": [
+   {
+    "pieces": 4,
+    "options": [
+     "The Wind-Soaring Valorous",
+     "Eagle of Twilight Line",
+     "The Ashblazing Grand Duke"
+    ]
+   },
+   {
+    "pieces": 2,
+    "options": [
+     "Duran, Dynasty of Running Wolves",
+     "Inert Salsotto",
+     "Firmament Frontline: Glamoth"
+    ]
+   }
+  ],
+  "mainStats": {
+   "Body": [
+    "CRIT Rate",
+    "CRIT DMG"
+   ],
+   "Feet": [
+    "SPD"
+   ],
+   "Planar Sphere": [
+    "Wind DMG Boost",
+    "ATK %"
+   ],
+   "Link Rope": [
+    "ATK %"
+   ]
+  },
+  "subStats": [
+   "CRIT Rate",
+   "CRIT DMG",
+   "ATK %",
+   "SPD"
+  ],
+  "weapons": [
+   "I Venture Forth to Hunt",
+   "Baptism of Pure Thought",
+   "Cruising in the Stellar Sea"
+  ],
+  "skillsFirst": []
+ },
+ {
+  "characterId": "1221",
+  "source": "the game's own recommendation (nanoka.cc)",
+  "sets": [
+   {
+    "pieces": 4,
+    "options": [
+     "The Wind-Soaring Valorous",
+     "Pioneer Diver of Dead Waters",
+     "Champion of Streetwise Boxing"
+    ]
+   },
+   {
+    "pieces": 2,
+    "options": [
+     "Duran, Dynasty of Running Wolves",
+     "Inert Salsotto",
+     "Space Sealing Station"
+    ]
+   }
+  ],
+  "mainStats": {
+   "Body": [
+    "CRIT Rate",
+    "CRIT DMG"
+   ],
+   "Feet": [
+    "ATK %"
+   ],
+   "Planar Sphere": [
+    "Physical DMG Boost",
+    "ATK %"
+   ],
+   "Link Rope": [
+    "ATK %",
+    "Energy Regeneration Rate"
+   ]
+  },
+  "subStats": [
+   "CRIT Rate",
+   "CRIT DMG",
+   "ATK %",
+   "SPD"
+  ],
+  "weapons": [
+   "Dance at Sunset",
+   "Something Irreplaceable",
+   "On the Fall of an Aeon"
+  ],
+  "skillsFirst": []
+ },
+ {
+  "characterId": "1222",
+  "source": "the game's own recommendation (nanoka.cc)",
+  "sets": [
+   {
+    "pieces": 4,
+    "options": [
+     "Iron Cavalry Against the Scourge",
+     "Thief of Shooting Meteor",
+     "Passerby of Wandering Cloud"
+    ]
+   },
+   {
+    "pieces": 2,
+    "options": [
+     "Forge of the Kalpagni Lantern",
+     "Talia: Kingdom of Banditry",
+     "Fleet of the Ageless"
+    ]
+   }
+  ],
+  "mainStats": {
+   "Body": [
+    "Outgoing Healing Boost"
+   ],
+   "Feet": [
+    "SPD"
+   ],
+   "Planar Sphere": [
+    "ATK %"
+   ],
+   "Link Rope": [
+    "Energy Regeneration Rate",
+    "Break Effect"
+   ]
+  },
+  "subStats": [
+   "Break Effect",
+   "SPD",
+   "ATK %"
+  ],
+  "weapons": [
+   "Scent Alone Stays True",
+   "Echoes of the Coffin",
+   "What Is Real?"
+  ],
+  "skillsFirst": []
+ },
+ {
+  "characterId": "1223",
+  "source": "the game's own recommendation (nanoka.cc)",
+  "sets": [
+   {
+    "pieces": 4,
+    "options": [
+     "Pioneer Diver of Dead Waters",
+     "Band of Sizzling Thunder",
+     "The Wind-Soaring Valorous"
+    ]
+   },
+   {
+    "pieces": 2,
+    "options": [
+     "Duran, Dynasty of Running Wolves",
+     "Izumo Gensei and Takama Divine Realm",
+     "Space Sealing Station"
+    ]
+   }
+  ],
+  "mainStats": {
+   "Body": [
+    "CRIT Rate",
+    "CRIT DMG"
+   ],
+   "Feet": [
+    "SPD",
+    "ATK %"
+   ],
+   "Planar Sphere": [
+    "Lightning DMG Boost"
+   ],
+   "Link Rope": [
+    "ATK %"
+   ]
+  },
+  "subStats": [
+   "CRIT Rate",
+   "CRIT DMG",
+   "ATK %",
+   "SPD"
+  ],
+  "weapons": [
+   "Swordplay",
+   "Cruising in the Stellar Sea",
+   "Worrisome, Blissful"
+  ],
+  "skillsFirst": []
+ },
+ {
+  "characterId": "1224",
+  "source": "the game's own recommendation (nanoka.cc)",
+  "sets": [
+   {
+    "pieces": 4,
+    "options": [
+     "Musketeer of Wild Wheat",
+     "Wastelander of Banditry Desert",
+     "Pioneer Diver of Dead Waters"
+    ]
+   },
+   {
+    "pieces": 2,
+    "options": [
+     "Rutilant Arena",
+     "Izumo Gensei and Takama Divine Realm",
+     "Space Sealing Station"
+    ]
+   }
+  ],
+  "mainStats": {
+   "Body": [
+    "CRIT Rate",
+    "CRIT DMG"
+   ],
+   "Feet": [
+    "SPD"
+   ],
+   "Planar Sphere": [
+    "Imaginary DMG Boost"
+   ],
+   "Link Rope": [
+    "ATK %"
+   ]
+  },
+  "subStats": [
+   "CRIT Rate",
+   "CRIT DMG",
+   "ATK %",
+   "SPD"
+  ],
+  "weapons": [
+   "Sleep Like the Dead",
+   "Cruising in the Stellar Sea",
+   "Swordplay"
+  ],
+  "skillsFirst": []
+ },
+ {
+  "characterId": "1225",
+  "source": "the game's own recommendation (nanoka.cc)",
+  "sets": [
+   {
+    "pieces": 4,
+    "options": [
+     "Iron Cavalry Against the Scourge",
+     "Thief of Shooting Meteor",
+     "Watchmaker, Master of Dream Machinations"
+    ]
+   },
+   {
+    "pieces": 2,
+    "options": [
+     "Forge of the Kalpagni Lantern",
+     "Sprightly Vonwacq",
+     "Talia: Kingdom of Banditry"
+    ]
+   }
+  ],
+  "mainStats": {
+   "Body": [
+    "Effect Hit Rate"
+   ],
+   "Feet": [
+    "SPD"
+   ],
+   "Planar Sphere": [
+    "HP %"
+   ],
+   "Link Rope": [
+    "Energy Regeneration Rate",
+    "Break Effect"
+   ]
+  },
+  "subStats": [
+   "Break Effect",
+   "SPD",
+   "Effect Hit Rate"
+  ],
+  "weapons": [
+   "Long Road Leads Home",
+   "Resolution Shines As Pearls of Sweat",
+   "Before the Tutorial Mission Starts"
+  ],
+  "skillsFirst": []
+ },
+ {
+  "characterId": "1301",
+  "source": "the game's own recommendation (nanoka.cc)",
+  "sets": [
+   {
+    "pieces": 4,
+    "options": [
+     "Iron Cavalry Against the Scourge",
+     "Thief of Shooting Meteor",
+     "Passerby of Wandering Cloud"
+    ]
+   },
+   {
+    "pieces": 2,
+    "options": [
+     "Forge of the Kalpagni Lantern",
+     "Talia: Kingdom of Banditry",
+     "Fleet of the Ageless"
+    ]
+   }
+  ],
+  "mainStats": {
+   "Body": [
+    "Outgoing Healing Boost"
+   ],
+   "Feet": [
+    "SPD"
+   ],
+   "Planar Sphere": [
+    "HP %",
+    "DEF %"
+   ],
+   "Link Rope": [
+    "Break Effect",
+    "Energy Regeneration Rate"
+   ]
+  },
+  "subStats": [
+   "SPD",
+   "Break Effect",
+   "Effect RES"
+  ],
+  "weapons": [
+   "What Is Real?",
+   "Quid Pro Quo"
+  ],
+  "skillsFirst": []
+ },
+ {
+  "characterId": "1302",
+  "source": "the game's own recommendation (nanoka.cc)",
+  "sets": [
+   {
+    "pieces": 4,
+    "options": [
+     "Scholar Lost in Erudition",
+     "Champion of Streetwise Boxing",
+     "Genius of Brilliant Stars"
+    ]
+   },
+   {
+    "pieces": 2,
+    "options": [
+     "Inert Salsotto",
+     "Sigonia, the Unclaimed Desolation",
+     "Celestial Differentiator"
+    ]
+   }
+  ],
+  "mainStats": {
+   "Body": [
+    "CRIT Rate",
+    "CRIT DMG"
+   ],
+   "Feet": [
+    "SPD",
+    "ATK %"
+   ],
+   "Planar Sphere": [
+    "Physical DMG Boost"
+   ],
+   "Link Rope": [
+    "ATK %",
+    "Energy Regeneration Rate"
+   ]
+  },
+  "subStats": [
+   "CRIT Rate",
+   "CRIT DMG",
+   "ATK %",
+   "SPD"
+  ],
+  "weapons": [
+   "An Instant Before A Gaze",
+   "Today Is Another Peaceful Day",
+   "Eternal Calculus"
+  ],
+  "skillsFirst": []
+ },
+ {
+  "characterId": "1303",
+  "source": "the game's own recommendation (nanoka.cc)",
+  "sets": [
+   {
+    "pieces": 4,
+    "options": [
+     "Watchmaker, Master of Dream Machinations",
+     "Thief of Shooting Meteor",
+     "Messenger Traversing Hackerspace"
+    ]
+   },
+   {
+    "pieces": 2,
+    "options": [
+     "Talia: Kingdom of Banditry",
+     "Penacony, Land of the Dreams",
+     "Sprightly Vonwacq"
+    ]
+   }
+  ],
+  "mainStats": {
+   "Body": [
+    "HP %",
+    "DEF %"
+   ],
+   "Feet": [
+    "SPD"
+   ],
+   "Planar Sphere": [
+    "HP %",
+    "DEF %"
+   ],
+   "Link Rope": [
+    "Break Effect",
+    "Energy Regeneration Rate"
+   ]
+  },
+  "subStats": [
+   "Break Effect",
+   "SPD",
+   "Effect RES"
+  ],
+  "weapons": [
+   "Past Self in Mirror",
+   "In Pursuit of the Wind",
+   "Dance! Dance! Dance!"
+  ],
+  "skillsFirst": []
+ },
+ {
+  "characterId": "1304",
+  "source": "the game's own recommendation (nanoka.cc)",
+  "sets": [
+   {
+    "pieces": 4,
+    "options": [
+     "Knight of Purity Palace",
+     "Self-Enshrouded Recluse",
+     "Pioneer Diver of Dead Waters"
+    ]
+   },
+   {
+    "pieces": 2,
+    "options": [
+     "Inert Salsotto",
+     "Belobog of the Architects",
+     "Broken Keel"
+    ]
+   }
+  ],
+  "mainStats": {
+   "Body": [
+    "DEF %",
+    "CRIT DMG"
+   ],
+   "Feet": [
+    "DEF %",
+    "SPD"
+   ],
+   "Planar Sphere": [
+    "DEF %",
+    "Imaginary DMG Boost"
+   ],
+   "Link Rope": [
+    "DEF %"
+   ]
+  },
+  "subStats": [
+   "DEF %",
+   "CRIT Rate",
+   "CRIT DMG",
+   "SPD"
+  ],
+  "weapons": [
+   "Inherently Unjust Destiny",
+   "Trend of the Universal Market",
+   "Moment of Victory"
+  ],
+  "skillsFirst": []
+ },
+ {
+  "characterId": "1305",
+  "source": "the game's own recommendation (nanoka.cc)",
+  "sets": [
+   {
+    "pieces": 4,
+    "options": [
+     "Pioneer Diver of Dead Waters",
+     "Wastelander of Banditry Desert",
+     "The Ashblazing Grand Duke"
+    ]
+   },
+   {
+    "pieces": 2,
+    "options": [
+     "Duran, Dynasty of Running Wolves",
+     "Inert Salsotto",
+     "Firmament Frontline: Glamoth"
+    ]
+   }
+  ],
+  "mainStats": {
+   "Body": [
+    "CRIT DMG",
+    "CRIT Rate"
+   ],
+   "Feet": [
+    "SPD"
+   ],
+   "Planar Sphere": [
+    "Imaginary DMG Boost"
+   ],
+   "Link Rope": [
+    "ATK %"
+   ]
+  },
+  "subStats": [
+   "CRIT Rate",
+   "CRIT DMG",
+   "ATK %",
+   "SPD"
+  ],
+  "weapons": [
+   "Baptism of Pure Thought",
+   "Cruising in the Stellar Sea",
+   "Sleep Like the Dead"
+  ],
+  "skillsFirst": []
+ },
+ {
+  "characterId": "1306",
+  "source": "the game's own recommendation (nanoka.cc)",
+  "sets": [
+   {
+    "pieces": 4,
+    "options": [
+     "Sacerdos' Relived Ordeal",
+     "Messenger Traversing Hackerspace",
+     "Eagle of Twilight Line"
+    ]
+   },
+   {
+    "pieces": 2,
+    "options": [
+     "Lushaka, the Sunken Seas",
+     "Broken Keel",
+     "Penacony, Land of the Dreams"
+    ]
+   }
+  ],
+  "mainStats": {
+   "Body": [
+    "CRIT DMG"
+   ],
+   "Feet": [
+    "SPD"
+   ],
+   "Planar Sphere": [
+    "HP %",
+    "DEF %"
+   ],
+   "Link Rope": [
+    "Energy Regeneration Rate"
+   ]
+  },
+  "subStats": [
+   "CRIT DMG",
+   "SPD",
+   "Effect RES"
+  ],
+  "weapons": [
+   "Earthly Escapade",
+   "Dance! Dance! Dance!",
+   "But the Battle Isn't Over"
+  ],
+  "skillsFirst": []
+ },
+ {
+  "characterId": "1307",
+  "source": "the game's own recommendation (nanoka.cc)",
+  "sets": [
+   {
+    "pieces": 4,
+    "options": [
+     "Prisoner in Deep Confinement",
+     "Eagle of Twilight Line",
+     "Musketeer of Wild Wheat"
+    ]
+   },
+   {
+    "pieces": 2,
+    "options": [
+     "Pan-Cosmic Commercial Enterprise",
+     "Revelry by the Sea",
+     "Space Sealing Station"
+    ]
+   }
+  ],
+  "mainStats": {
+   "Body": [
+    "Effect Hit Rate"
+   ],
+   "Feet": [
+    "ATK %",
+    "SPD"
+   ],
+   "Planar Sphere": [
+    "Wind DMG Boost"
+   ],
+   "Link Rope": [
+    "ATK %"
+   ]
+  },
+  "subStats": [
+   "ATK %",
+   "Effect Hit Rate",
+   "SPD"
+  ],
+  "weapons": [
+   "Reforged Remembrance",
+   "Eyes of the Prey",
+   "Solitary Healing"
+  ],
+  "skillsFirst": []
+ },
+ {
+  "characterId": "1308",
+  "source": "the game's own recommendation (nanoka.cc)",
+  "sets": [
+   {
+    "pieces": 4,
+    "options": [
+     "Pioneer Diver of Dead Waters",
+     "Scholar Lost in Erudition",
+     "Band of Sizzling Thunder"
+    ]
+   },
+   {
+    "pieces": 2,
+    "options": [
+     "Izumo Gensei and Takama Divine Realm",
+     "Inert Salsotto",
+     "Space Sealing Station"
+    ]
+   }
+  ],
+  "mainStats": {
+   "Body": [
+    "CRIT Rate",
+    "CRIT DMG"
+   ],
+   "Feet": [
+    "ATK %",
+    "SPD"
+   ],
+   "Planar Sphere": [
+    "Lightning DMG Boost",
+    "ATK %"
+   ],
+   "Link Rope": [
+    "ATK %"
+   ]
+  },
+  "subStats": [
+   "CRIT Rate",
+   "CRIT DMG",
+   "ATK %",
+   "SPD"
+  ],
+  "weapons": [
+   "Along the Passing Shore",
+   "Good Night and Sleep Well",
+   "Boundless Choreo"
+  ],
+  "skillsFirst": []
+ },
+ {
+  "characterId": "1309",
+  "source": "the game's own recommendation (nanoka.cc)",
+  "sets": [
+   {
+    "pieces": 4,
+    "options": [
+     "Musketeer of Wild Wheat",
+     "Champion of Streetwise Boxing",
+     "Prisoner in Deep Confinement"
+    ]
+   },
+   {
+    "pieces": 2,
+    "options": [
+     "Fleet of the Ageless",
+     "Space Sealing Station",
+     "Sprightly Vonwacq"
+    ]
+   }
+  ],
+  "mainStats": {
+   "Body": [
+    "ATK %"
+   ],
+   "Feet": [
+    "ATK %"
+   ],
+   "Planar Sphere": [
+    "ATK %",
+    "Physical DMG Boost"
+   ],
+   "Link Rope": [
+    "Energy Regeneration Rate"
+   ]
+  },
+  "subStats": [
+   "ATK %",
+   "ATK",
+   "SPD"
+  ],
+  "weapons": [
+   "Flowing Nightglow",
+   "For Tomorrow's Journey",
+   "But the Battle Isn't Over"
+  ],
+  "skillsFirst": []
+ },
+ {
+  "characterId": "1310",
+  "source": "the game's own recommendation (nanoka.cc)",
+  "sets": [
+   {
+    "pieces": 4,
+    "options": [
+     "Iron Cavalry Against the Scourge",
+     "Wastelander of Banditry Desert",
+     "Firesmith of Lava-Forging"
+    ]
+   },
+   {
+    "pieces": 2,
+    "options": [
+     "Forge of the Kalpagni Lantern",
+     "Talia: Kingdom of Banditry",
+     "Rutilant Arena"
+    ]
+   }
+  ],
+  "mainStats": {
+   "Body": [
+    "ATK %"
+   ],
+   "Feet": [
+    "SPD"
+   ],
+   "Planar Sphere": [
+    "ATK %"
+   ],
+   "Link Rope": [
+    "Break Effect"
+   ]
+  },
+  "subStats": [
+   "Break Effect",
+   "SPD",
+   "ATK %"
+  ],
+  "weapons": [
+   "Whereabouts Should Dreams Rest",
+   "On the Fall of an Aeon",
+   "Indelible Promise"
+  ],
+  "skillsFirst": []
+ },
+ {
+  "characterId": "1312",
+  "source": "the game's own recommendation (nanoka.cc)",
+  "sets": [
+   {
+    "pieces": 4,
+    "options": [
+     "Hunter of Glacial Forest",
+     "Scholar Lost in Erudition",
+     "Musketeer of Wild Wheat"
+    ]
+   },
+   {
+    "pieces": 2,
+    "options": [
+     "Inert Salsotto",
+     "Space Sealing Station",
+     "Firmament Frontline: Glamoth"
+    ]
+   }
+  ],
+  "mainStats": {
+   "Body": [
+    "CRIT Rate",
+    "CRIT DMG"
+   ],
+   "Feet": [
+    "SPD",
+    "ATK %"
+   ],
+   "Planar Sphere": [
+    "Ice DMG Boost"
+   ],
+   "Link Rope": [
+    "ATK %"
+   ]
+  },
+  "subStats": [
+   "CRIT Rate",
+   "CRIT DMG",
+   "ATK %",
+   "SPD"
+  ],
+  "weapons": [
+   "On the Fall of an Aeon",
+   "The Moles Welcome You"
+  ],
+  "skillsFirst": []
+ },
+ {
+  "characterId": "1313",
+  "source": "the game's own recommendation (nanoka.cc)",
+  "sets": [
+   {
+    "pieces": 4,
+    "options": [
+     "Sacerdos' Relived Ordeal",
+     "Messenger Traversing Hackerspace",
+     "Eagle of Twilight Line"
+    ]
+   },
+   {
+    "pieces": 2,
+    "options": [
+     "Lushaka, the Sunken Seas",
+     "Broken Keel",
+     "Sprightly Vonwacq"
+    ]
+   }
+  ],
+  "mainStats": {
+   "Body": [
+    "CRIT DMG"
+   ],
+   "Feet": [
+    "SPD"
+   ],
+   "Planar Sphere": [
+    "HP %",
+    "DEF %"
+   ],
+   "Link Rope": [
+    "Energy Regeneration Rate"
+   ]
+  },
+  "subStats": [
+   "CRIT DMG",
+   "SPD",
+   "Effect RES"
+  ],
+  "weapons": [
+   "A Grounded Ascent",
+   "But the Battle Isn't Over",
+   "Past and Future"
+  ],
+  "skillsFirst": []
+ },
+ {
+  "characterId": "1314",
+  "source": "the game's own recommendation (nanoka.cc)",
+  "sets": [
+   {
+    "pieces": 4,
+    "options": [
+     "Genius of Brilliant Stars",
+     "The Ashblazing Grand Duke",
+     "Musketeer of Wild Wheat"
+    ]
+   },
+   {
+    "pieces": 2,
+    "options": [
+     "Sigonia, the Unclaimed Desolation",
+     "Inert Salsotto",
+     "Space Sealing Station"
+    ]
+   }
+  ],
+  "mainStats": {
+   "Body": [
+    "CRIT Rate"
+   ],
+   "Feet": [
+    "ATK %",
+    "SPD"
+   ],
+   "Planar Sphere": [
+    "Quantum DMG Boost"
+   ],
+   "Link Rope": [
+    "Energy Regeneration Rate",
+    "ATK %"
+   ]
+  },
+  "subStats": [
+   "CRIT Rate",
+   "CRIT DMG",
+   "ATK %",
+   "SPD"
+  ],
+  "weapons": [
+   "Yet Hope Is Priceless",
+   "Eternal Calculus",
+   "Night on the Milky Way"
+  ],
+  "skillsFirst": []
+ },
+ {
+  "characterId": "1315",
+  "source": "the game's own recommendation (nanoka.cc)",
+  "sets": [
+   {
+    "pieces": 4,
+    "options": [
+     "Thief of Shooting Meteor",
+     "Iron Cavalry Against the Scourge",
+     "Musketeer of Wild Wheat"
+    ]
+   },
+   {
+    "pieces": 2,
+    "options": [
+     "Talia: Kingdom of Banditry",
+     "Forge of the Kalpagni Lantern",
+     "Space Sealing Station"
+    ]
+   }
+  ],
+  "mainStats": {
+   "Body": [
+    "CRIT Rate",
+    "ATK %"
+   ],
+   "Feet": [
+    "SPD"
+   ],
+   "Planar Sphere": [
+    "Physical DMG Boost"
+   ],
+   "Link Rope": [
+    "Break Effect"
+   ]
+  },
+  "subStats": [
+   "Break Effect",
+   "SPD",
+   "ATK %",
+   "CRIT Rate",
+   "CRIT DMG"
+  ],
+  "weapons": [
+   "Sailing Towards a Second Life",
+   "River Flows in Spring"
+  ],
+  "skillsFirst": []
+ },
+ {
+  "characterId": "1317",
+  "source": "the game's own recommendation (nanoka.cc)",
+  "sets": [
+   {
+    "pieces": 4,
+    "options": [
+     "Iron Cavalry Against the Scourge",
+     "Thief of Shooting Meteor",
+     "Watchmaker, Master of Dream Machinations"
+    ]
+   },
+   {
+    "pieces": 2,
+    "options": [
+     "Talia: Kingdom of Banditry",
+     "Forge of the Kalpagni Lantern",
+     "Space Sealing Station"
+    ]
+   }
+  ],
+  "mainStats": {
+   "Body": [
+    "ATK %"
+   ],
+   "Feet": [
+    "SPD"
+   ],
+   "Planar Sphere": [
+    "ATK %"
+   ],
+   "Link Rope": [
+    "Break Effect",
+    "Energy Regeneration Rate"
+   ]
+  },
+  "subStats": [
+   "Break Effect",
+   "SPD",
+   "ATK %"
+  ],
+  "weapons": [
+   "Ninjutsu Inscription: Dazzling Evilbreaker",
+   "After the Charmony Fall"
+  ],
+  "skillsFirst": []
+ },
+ {
+  "characterId": "1321",
+  "source": "the game's own recommendation (nanoka.cc)",
+  "sets": [
+   {
+    "pieces": 4,
+    "options": [
+     "Iron Cavalry Against the Scourge",
+     "Thief of Shooting Meteor",
+     "Watchmaker, Master of Dream Machinations"
+    ]
+   },
+   {
+    "pieces": 2,
+    "options": [
+     "Forge of the Kalpagni Lantern",
+     "Sprightly Vonwacq",
+     "Talia: Kingdom of Banditry"
+    ]
+   }
+  ],
+  "mainStats": {
+   "Body": [
+    "HP %",
+    "DEF %"
+   ],
+   "Feet": [
+    "SPD"
+   ],
+   "Planar Sphere": [
+    "HP %",
+    "DEF %"
+   ],
+   "Link Rope": [
+    "Break Effect",
+    "Energy Regeneration Rate"
+   ]
+  },
+  "subStats": [
+   "Break Effect",
+   "SPD"
+  ],
+  "weapons": [
+   "Never Forget Her Flame",
+   "Long Road Leads Home",
+   "Resolution Shines As Pearls of Sweat"
+  ],
+  "skillsFirst": []
+ },
+ {
+  "characterId": "1401",
+  "source": "the game's own recommendation (nanoka.cc)",
+  "sets": [
+   {
+    "pieces": 4,
+    "options": [
+     "Scholar Lost in Erudition",
+     "Hunter of Glacial Forest",
+     "Musketeer of Wild Wheat"
+    ]
+   },
+   {
+    "pieces": 2,
+    "options": [
+     "Izumo Gensei and Takama Divine Realm",
+     "Rutilant Arena",
+     "Sigonia, the Unclaimed Desolation"
+    ]
+   }
+  ],
+  "mainStats": {
+   "Body": [
+    "CRIT Rate",
+    "CRIT DMG"
+   ],
+   "Feet": [
+    "SPD",
+    "ATK %"
+   ],
+   "Planar Sphere": [
+    "Ice DMG Boost"
+   ],
+   "Link Rope": [
+    "ATK %",
+    "Energy Regeneration Rate"
+   ]
+  },
+  "subStats": [
+   "CRIT Rate",
+   "CRIT DMG",
+   "ATK %",
+   "SPD"
+  ],
+  "weapons": [
+   "Into the Unreachable Veil",
+   "Eternal Calculus",
+   "Night on the Milky Way"
+  ],
+  "skillsFirst": []
+ },
+ {
+  "characterId": "1402",
+  "source": "the game's own recommendation (nanoka.cc)",
+  "sets": [
+   {
+    "pieces": 4,
+    "options": [
+     "Hero of Triumphant Song",
+     "Musketeer of Wild Wheat",
+     "Band of Sizzling Thunder"
+    ]
+   },
+   {
+    "pieces": 2,
+    "options": [
+     "The Wondrous BananAmusement Park",
+     "Fleet of the Ageless",
+     "Space Sealing Station"
+    ]
+   }
+  ],
+  "mainStats": {
+   "Body": [
+    "CRIT Rate",
+    "CRIT DMG"
+   ],
+   "Feet": [
+    "SPD"
+   ],
+   "Planar Sphere": [
+    "Lightning DMG Boost"
+   ],
+   "Link Rope": [
+    "Energy Regeneration Rate",
+    "ATK %"
+   ]
+  },
+  "subStats": [
+   "CRIT Rate",
+   "CRIT DMG",
+   "ATK %",
+   "SPD"
+  ],
+  "weapons": [
+   "Time Woven Into Gold",
+   "Geniuses' Greetings",
+   "Sweat Now, Cry Less"
+  ],
+  "skillsFirst": []
+ },
+ {
+  "characterId": "1403",
+  "source": "the game's own recommendation (nanoka.cc)",
+  "sets": [
+   {
+    "pieces": 4,
+    "options": [
+     "Poet of Mourning Collapse",
+     "Genius of Brilliant Stars",
+     "Musketeer of Wild Wheat"
+    ]
+   },
+   {
+    "pieces": 2,
+    "options": [
+     "Bone Collection's Serene Demesne",
+     "Fleet of the Ageless",
+     "Lushaka, the Sunken Seas"
+    ]
+   }
+  ],
+  "mainStats": {
+   "Body": [
+    "CRIT DMG",
+    "CRIT Rate"
+   ],
+   "Feet": [
+    "HP %"
+   ],
+   "Planar Sphere": [
+    "Quantum DMG Boost",
+    "HP %"
+   ],
+   "Link Rope": [
+    "Energy Regeneration Rate",
+    "HP %"
+   ]
+  },
+  "subStats": [
+   "CRIT Rate",
+   "CRIT DMG",
+   "HP %"
+  ],
+  "weapons": [
+   "If Time Were a Flower",
+   "Dance! Dance! Dance!"
+  ],
+  "skillsFirst": []
+ },
+ {
+  "characterId": "1404",
+  "source": "the game's own recommendation (nanoka.cc)",
+  "sets": [
+   {
+    "pieces": 4,
+    "options": [
+     "Scholar Lost in Erudition",
+     "Longevous Disciple",
+     "Wastelander of Banditry Desert"
+    ]
+   },
+   {
+    "pieces": 2,
+    "options": [
+     "Bone Collection's Serene Demesne",
+     "Rutilant Arena",
+     "Fleet of the Ageless"
+    ]
+   }
+  ],
+  "mainStats": {
+   "Body": [
+    "HP %",
+    "CRIT DMG"
+   ],
+   "Feet": [
+    "SPD",
+    "HP %"
+   ],
+   "Planar Sphere": [
+    "Imaginary DMG Boost",
+    "HP %"
+   ],
+   "Link Rope": [
+    "HP %"
+   ]
+  },
+  "subStats": [
+   "CRIT Rate",
+   "CRIT DMG",
+   "HP %",
+   "SPD"
+  ],
+  "weapons": [
+   "Flame of Blood, Blaze My Path",
+   "The Unreachable Side",
+   "Ninja Record: Sound Hunt"
+  ],
+  "skillsFirst": []
+ },
+ {
+  "characterId": "1405",
+  "source": "the game's own recommendation (nanoka.cc)",
+  "sets": [
+   {
+    "pieces": 4,
+    "options": [
+     "Eagle of Twilight Line",
+     "Pioneer Diver of Dead Waters",
+     "Scholar Lost in Erudition"
+    ]
+   },
+   {
+    "pieces": 2,
+    "options": [
+     "Rutilant Arena",
+     "Izumo Gensei and Takama Divine Realm",
+     "Sprightly Vonwacq"
+    ]
+   }
+  ],
+  "mainStats": {
+   "Body": [
+    "CRIT Rate",
+    "CRIT DMG"
+   ],
+   "Feet": [
+    "SPD",
+    "ATK %"
+   ],
+   "Planar Sphere": [
+    "Wind DMG Boost",
+    "ATK %"
+   ],
+   "Link Rope": [
+    "Energy Regeneration Rate",
+    "ATK %"
+   ]
+  },
+  "subStats": [
+   "CRIT Rate",
+   "CRIT DMG",
+   "ATK %",
+   "SPD"
+  ],
+  "weapons": [
+   "Life Should Be Cast to Flames",
+   "The Great Cosmic Enterprise",
+   "Eternal Calculus"
+  ],
+  "skillsFirst": []
+ },
+ {
+  "characterId": "1406",
+  "source": "the game's own recommendation (nanoka.cc)",
+  "sets": [
+   {
+    "pieces": 4,
+    "options": [
+     "Pioneer Diver of Dead Waters",
+     "Genius of Brilliant Stars",
+     "Messenger Traversing Hackerspace"
+    ]
+   },
+   {
+    "pieces": 2,
+    "options": [
+     "Lushaka, the Sunken Seas",
+     "Fleet of the Ageless",
+     "Sprightly Vonwacq"
+    ]
+   }
+  ],
+  "mainStats": {
+   "Body": [
+    "CRIT DMG"
+   ],
+   "Feet": [
+    "SPD"
+   ],
+   "Planar Sphere": [
+    "Quantum DMG Boost",
+    "ATK %"
+   ],
+   "Link Rope": [
+    "ATK %",
+    "Energy Regeneration Rate"
+   ]
+  },
+  "subStats": [
+   "SPD",
+   "ATK %",
+   "CRIT DMG",
+   "CRIT Rate"
+  ],
+  "weapons": [
+   "Lies Dance on the Breeze",
+   "Resolution Shines As Pearls of Sweat"
+  ],
+  "skillsFirst": []
+ },
+ {
+  "characterId": "1407",
+  "source": "the game's own recommendation (nanoka.cc)",
+  "sets": [
+   {
+    "pieces": 4,
+    "options": [
+     "Poet of Mourning Collapse",
+     "Genius of Brilliant Stars",
+     "Longevous Disciple"
+    ]
+   },
+   {
+    "pieces": 2,
+    "options": [
+     "Bone Collection's Serene Demesne",
+     "Fleet of the Ageless",
+     "The Wondrous BananAmusement Park"
+    ]
+   }
+  ],
+  "mainStats": {
+   "Body": [
+    "CRIT DMG"
+   ],
+   "Feet": [
+    "HP %"
+   ],
+   "Planar Sphere": [
+    "Quantum DMG Boost",
+    "HP %"
+   ],
+   "Link Rope": [
+    "HP %"
+   ]
+  },
+  "subStats": [
+   "CRIT Rate",
+   "CRIT DMG",
+   "HP %"
+  ],
+  "weapons": [
+   "Make Farewells More Beautiful",
+   "Sweat Now, Cry Less",
+   "The Flower Remembers"
+  ],
+  "skillsFirst": []
+ },
+ {
+  "characterId": "1408",
+  "source": "the game's own recommendation (nanoka.cc)",
+  "sets": [
+   {
+    "pieces": 4,
+    "options": [
+     "Wavestrider Captain",
+     "As Navigator Isee Sees It",
+     "Champion of Streetwise Boxing"
+    ]
+   },
+   {
+    "pieces": 2,
+    "options": [
+     "Arcadia of Woven Dreams",
+     "Rutilant Arena",
+     "Space Sealing Station"
+    ]
+   }
+  ],
+  "mainStats": {
+   "Body": [
+    "CRIT Rate",
+    "CRIT DMG"
+   ],
+   "Feet": [
+    "ATK %"
+   ],
+   "Planar Sphere": [
+    "Physical DMG Boost",
+    "ATK %"
+   ],
+   "Link Rope": [
+    "ATK %"
+   ]
+  },
+  "subStats": [
+   "CRIT Rate",
+   "CRIT DMG",
+   "ATK %"
+  ],
+  "weapons": [
+   "Thus Burns the Dawn",
+   "On the Fall of an Aeon",
+   "A Trail of Bygone Blood"
+  ],
+  "skillsFirst": []
+ },
+ {
+  "characterId": "1409",
+  "source": "the game's own recommendation (nanoka.cc)",
+  "sets": [
+   {
+    "pieces": 4,
+    "options": [
+     "Warrior Goddess of Sun and Thunder",
+     "Passerby of Wandering Cloud",
+     "Messenger Traversing Hackerspace"
+    ]
+   },
+   {
+    "pieces": 2,
+    "options": [
+     "Giant Tree of Rapt Brooding",
+     "Fleet of the Ageless",
+     "Sprightly Vonwacq"
+    ]
+   }
+  ],
+  "mainStats": {
+   "Body": [
+    "Outgoing Healing Boost"
+   ],
+   "Feet": [
+    "SPD"
+   ],
+   "Planar Sphere": [
+    "HP %"
+   ],
+   "Link Rope": [
+    "Energy Regeneration Rate",
+    "HP %"
+   ]
+  },
+  "subStats": [
+   "HP %",
+   "SPD",
+   "Effect RES",
+   "CRIT DMG"
+  ],
+  "weapons": [
+   "Long May Rainbows Adorn the Sky",
+   "Memory's Curtain Never Falls"
+  ],
+  "skillsFirst": []
+ },
+ {
+  "characterId": "1410",
+  "source": "the game's own recommendation (nanoka.cc)",
+  "sets": [
+   {
+    "pieces": 4,
+    "options": [
+     "Prisoner in Deep Confinement",
+     "Champion of Streetwise Boxing",
+     "Musketeer of Wild Wheat"
+    ]
+   },
+   {
+    "pieces": 2,
+    "options": [
+     "Revelry by the Sea",
+     "Space Sealing Station",
+     "Firmament Frontline: Glamoth"
+    ]
+   }
+  ],
+  "mainStats": {
+   "Body": [
+    "Effect Hit Rate",
+    "ATK %"
+   ],
+   "Feet": [
+    "SPD",
+    "ATK %"
+   ],
+   "Planar Sphere": [
+    "Physical DMG Boost"
+   ],
+   "Link Rope": [
+    "Energy Regeneration Rate",
+    "ATK %"
+   ]
+  },
+  "subStats": [
+   "Effect Hit Rate",
+   "SPD",
+   "ATK %"
+  ],
+  "weapons": [
+   "Why Does the Ocean Sing",
+   "Before the Tutorial Mission Starts",
+   "Holiday Thermae Escapade"
+  ],
+  "skillsFirst": []
+ },
+ {
+  "characterId": "1412",
+  "source": "the game's own recommendation (nanoka.cc)",
+  "sets": [
+   {
+    "pieces": 4,
+    "options": [
+     "Sacerdos' Relived Ordeal",
+     "Eagle of Twilight Line",
+     "Musketeer of Wild Wheat"
+    ]
+   },
+   {
+    "pieces": 2,
+    "options": [
+     "Lushaka, the Sunken Seas",
+     "Fleet of the Ageless",
+     "Space Sealing Station"
+    ]
+   }
+  ],
+  "mainStats": {
+   "Body": [
+    "ATK %"
+   ],
+   "Feet": [
+    "SPD",
+    "ATK %"
+   ],
+   "Planar Sphere": [
+    "ATK %"
+   ],
+   "Link Rope": [
+    "Energy Regeneration Rate",
+    "ATK %"
+   ]
+  },
+  "subStats": [
+   "ATK %",
+   "SPD",
+   "CRIT DMG"
+  ],
+  "weapons": [
+   "Epoch Etched in Golden Blood",
+   "A Grounded Ascent",
+   "Carve the Moon, Weave the Clouds"
+  ],
+  "skillsFirst": []
+ },
+ {
+  "characterId": "1413",
+  "source": "the game's own recommendation (nanoka.cc)",
+  "sets": [
+   {
+    "pieces": 4,
+    "options": [
+     "World-Remaking Deliverer",
+     "Hunter of Glacial Forest",
+     "Longevous Disciple"
+    ]
+   },
+   {
+    "pieces": 2,
+    "options": [
+     "Bone Collection's Serene Demesne",
+     "Arcadia of Woven Dreams",
+     "The Wondrous BananAmusement Park"
+    ]
+   }
+  ],
+  "mainStats": {
+   "Body": [
+    "CRIT DMG",
+    "CRIT Rate"
+   ],
+   "Feet": [
+    "SPD",
+    "HP %"
+   ],
+   "Planar Sphere": [
+    "Ice DMG Boost",
+    "HP %"
+   ],
+   "Link Rope": [
+    "HP %"
+   ]
+  },
+  "subStats": [
+   "CRIT Rate",
+   "CRIT DMG",
+   "SPD",
+   "HP %"
+  ],
+  "weapons": [
+   "To Evernight's Stars",
+   "Sweat Now, Cry Less",
+   "The Flower Remembers"
+  ],
+  "skillsFirst": []
+ },
+ {
+  "characterId": "1414",
+  "source": "the game's own recommendation (nanoka.cc)",
+  "sets": [
+   {
+    "pieces": 4,
+    "options": [
+     "Self-Enshrouded Recluse",
+     "Sacerdos' Relived Ordeal",
+     "Musketeer of Wild Wheat"
+    ]
+   },
+   {
+    "pieces": 2,
+    "options": [
+     "Lushaka, the Sunken Seas",
+     "Space Sealing Station",
+     "Penacony, Land of the Dreams"
+    ]
+   }
+  ],
+  "mainStats": {
+   "Body": [
+    "ATK %"
+   ],
+   "Feet": [
+    "SPD",
+    "ATK %"
+   ],
+   "Planar Sphere": [
+    "ATK %"
+   ],
+   "Link Rope": [
+    "Energy Regeneration Rate",
+    "ATK %"
+   ]
+  },
+  "subStats": [
+   "ATK %",
+   "SPD"
+  ],
+  "weapons": [
+   "Though Worlds Apart",
+   "Journey, Forever Peaceful"
+  ],
+  "skillsFirst": []
+ },
+ {
+  "characterId": "1415",
+  "source": "the game's own recommendation (nanoka.cc)",
+  "sets": [
+   {
+    "pieces": 4,
+    "options": [
+     "World-Remaking Deliverer",
+     "Messenger Traversing Hackerspace",
+     "Hero of Triumphant Song"
+    ]
+   },
+   {
+    "pieces": 2,
+    "options": [
+     "Amphoreus, The Eternal Land",
+     "Bone Collection's Serene Demesne",
+     "Giant Tree of Rapt Brooding"
+    ]
+   }
+  ],
+  "mainStats": {
+   "Body": [
+    "CRIT DMG"
+   ],
+   "Feet": [
+    "SPD"
+   ],
+   "Planar Sphere": [
+    "HP %",
+    "Ice DMG Boost"
+   ],
+   "Link Rope": [
+    "HP %"
+   ]
+  },
+  "subStats": [
+   "SPD",
+   "CRIT DMG",
+   "CRIT Rate",
+   "HP %"
+  ],
+  "weapons": [
+   "This Love, Forever",
+   "Memory's Curtain Never Falls",
+   "Victory In a Blink"
+  ],
+  "skillsFirst": []
+ },
+ {
+  "characterId": "1501",
+  "source": "the game's own recommendation (nanoka.cc)",
+  "sets": [
+   {
+    "pieces": 4,
+    "options": [
+     "Ever-Glorious Magical Girl",
+     "Wavestrider Captain"
+    ]
+   },
+   {
+    "pieces": 2,
+    "options": [
+     "Tengoku@Livestream",
+     "The Wondrous BananAmusement Park",
+     "Rutilant Arena"
+    ]
+   }
+  ],
+  "mainStats": {
+   "Body": [
+    "CRIT Rate",
+    "CRIT DMG"
+   ],
+   "Feet": [
+    "ATK %"
+   ],
+   "Planar Sphere": [
+    "ATK %"
+   ],
+   "Link Rope": [
+    "ATK %",
+    "Energy Regeneration Rate"
+   ]
+  },
+  "subStats": [
+   "CRIT Rate",
+   "CRIT DMG",
+   "ATK %"
+  ],
+  "weapons": [
+   "Dazzled by a Flowery World",
+   "Today's Good Luck"
+  ],
+  "skillsFirst": []
+ },
+ {
+  "characterId": "1502",
+  "source": "the game's own recommendation (nanoka.cc)",
+  "sets": [
+   {
+    "pieces": 4,
+    "options": [
+     "Diviner of Distant Reach",
+     "Messenger Traversing Hackerspace"
+    ]
+   },
+   {
+    "pieces": 2,
+    "options": [
+     "Lushaka, the Sunken Seas",
+     "Sprightly Vonwacq",
+     "Broken Keel"
+    ]
+   }
+  ],
+  "mainStats": {
+   "Body": [
+    "CRIT DMG",
+    "CRIT Rate"
+   ],
+   "Feet": [
+    "SPD"
+   ],
+   "Planar Sphere": [
+    "HP %",
+    "DEF %"
+   ],
+   "Link Rope": [
+    "Energy Regeneration Rate"
+   ]
+  },
+  "subStats": [
+   "SPD",
+   "CRIT DMG",
+   "CRIT Rate"
+  ],
+  "weapons": [
+   "When She Decided to See",
+   "Mushy Shroomy's Adventures"
+  ],
+  "skillsFirst": []
+ },
+ {
+  "characterId": "1503",
+  "source": "the game's own recommendation (nanoka.cc)",
+  "sets": [
+   {
+    "pieces": 4,
+    "options": [
+     "Dreamlit Actor",
+     "Diviner of Distant Reach",
+     "Messenger Traversing Hackerspace"
+    ]
+   },
+   {
+    "pieces": 2,
+    "options": [
+     "Sprightly Vonwacq",
+     "Lushaka, the Sunken Seas",
+     "Broken Keel"
+    ]
+   }
+  ],
+  "mainStats": {
+   "Body": [
+    "Outgoing Healing Boost"
+   ],
+   "Feet": [
+    "SPD",
+    "DEF %"
+   ],
+   "Planar Sphere": [
+    "DEF %"
+   ],
+   "Link Rope": [
+    "Energy Regeneration Rate",
+    "DEF %"
+   ]
+  },
+  "subStats": [
+   "DEF %",
+   "SPD"
+  ],
+  "weapons": [
+   "Colors for Tomorrow",
+   "Mushy Shroomy's Adventures"
+  ],
+  "skillsFirst": []
+ },
+ {
+  "characterId": "1504",
+  "source": "the game's own recommendation (nanoka.cc)",
+  "sets": [
+   {
+    "pieces": 4,
+    "options": [
+     "The Ashblazing Grand Duke",
+     "Pioneer Diver of Dead Waters",
+     "The Wind-Soaring Valorous"
+    ]
+   },
+   {
+    "pieces": 2,
+    "options": [
+     "City of Converging Stars",
+     "Duran, Dynasty of Running Wolves",
+     "Sigonia, the Unclaimed Desolation"
+    ]
+   }
+  ],
+  "mainStats": {
+   "Body": [
+    "CRIT Rate",
+    "CRIT DMG"
+   ],
+   "Feet": [
+    "SPD",
+    "ATK %"
+   ],
+   "Planar Sphere": [
+    "Lightning DMG Boost",
+    "ATK %"
+   ],
+   "Link Rope": [
+    "ATK %",
+    "Energy Regeneration Rate"
+   ]
+  },
+  "subStats": [
+   "SPD",
+   "CRIT DMG",
+   "CRIT Rate",
+   "ATK %"
+  ],
+  "weapons": [
+   "The Finale of a Lie",
+   "I Venture Forth to Hunt",
+   "Worrisome, Blissful"
+  ],
+  "skillsFirst": []
+ },
+ {
+  "characterId": "1505",
+  "source": "the game's own recommendation (nanoka.cc)",
+  "sets": [
+   {
+    "pieces": 4,
+    "options": [
+     "Ever-Glorious Magical Girl",
+     "Wavestrider Captain",
+     "Champion of Streetwise Boxing"
+    ]
+   },
+   {
+    "pieces": 2,
+    "options": [
+     "Punklorde Stage Zero",
+     "Sigonia, the Unclaimed Desolation",
+     "Space Sealing Station"
+    ]
+   }
+  ],
+  "mainStats": {
+   "Body": [
+    "CRIT Rate",
+    "CRIT DMG"
+   ],
+   "Feet": [
+    "SPD",
+    "ATK %"
+   ],
+   "Planar Sphere": [
+    "ATK %",
+    "Physical DMG Boost"
+   ],
+   "Link Rope": [
+    "Energy Regeneration Rate",
+    "ATK %"
+   ]
+  },
+  "subStats": [
+   "CRIT Rate",
+   "CRIT DMG",
+   "SPD",
+   "ATK %"
+  ],
+  "weapons": [
+   "Until the Flowers Bloom Again",
+   "Today's Good Luck",
+   "Tomorrow, Together"
+  ],
+  "skillsFirst": []
+ },
+ {
+  "characterId": "1506",
+  "source": "the game's own recommendation (nanoka.cc)",
+  "sets": [
+   {
+    "pieces": 4,
+    "options": [
+     "Ever-Glorious Magical Girl",
+     "Wavestrider Captain",
+     "Wastelander of Banditry Desert"
+    ]
+   },
+   {
+    "pieces": 2,
+    "options": [
+     "Punklorde Stage Zero",
+     "Sigonia, the Unclaimed Desolation",
+     "Tengoku@Livestream"
+    ]
+   }
+  ],
+  "mainStats": {
+   "Body": [
+    "CRIT Rate",
+    "CRIT DMG"
+   ],
+   "Feet": [
+    "SPD"
+   ],
+   "Planar Sphere": [
+    "HP %",
+    "DEF %"
+   ],
+   "Link Rope": [
+    "DEF %",
+    "HP %"
+   ]
+  },
+  "subStats": [
+   "SPD",
+   "CRIT Rate",
+   "CRIT DMG"
+  ],
+  "weapons": [
+   "Welcome to the Cosmic City",
+   "Today's Good Luck"
+  ],
+  "skillsFirst": []
+ },
+ {
+  "characterId": "1507",
+  "source": "the game's own recommendation (nanoka.cc)",
+  "sets": [
+   {
+    "pieces": 4,
+    "options": [
+     "Divine-Querying Master Smith",
+     "Pioneer Diver of Dead Waters",
+     "Longevous Disciple"
+    ]
+   },
+   {
+    "pieces": 2,
+    "options": [
+     "Bone Collection's Serene Demesne",
+     "Inert Salsotto",
+     "Duran, Dynasty of Running Wolves"
+    ]
+   }
+  ],
+  "mainStats": {
+   "Body": [
+    "CRIT Rate",
+    "CRIT DMG"
+   ],
+   "Feet": [
+    "SPD",
+    "HP %"
+   ],
+   "Planar Sphere": [
+    "Fire DMG Boost",
+    "HP %"
+   ],
+   "Link Rope": [
+    "HP %",
+    "Energy Regeneration Rate"
+   ]
+  },
+  "subStats": [
+   "HP %",
+   "CRIT Rate",
+   "CRIT DMG",
+   "SPD"
+  ],
+  "weapons": [
+   "Reforged in Hellfire",
+   "Lies Dance on the Breeze",
+   "Before the Tutorial Mission Starts"
+  ],
+  "skillsFirst": []
+ },
+ {
+  "characterId": "1508",
+  "source": "the game's own recommendation (nanoka.cc)",
+  "sets": [
+   {
+    "pieces": 4,
+    "options": [
+     "Genius of Brilliant Stars",
+     "Scholar Lost in Erudition",
+     "Musketeer of Wild Wheat"
+    ]
+   },
+   {
+    "pieces": 2,
+    "options": [
+     "Tengoku@Livestream",
+     "Rutilant Arena",
+     "Space Sealing Station"
+    ]
+   }
+  ],
+  "mainStats": {
+   "Body": [
+    "CRIT Rate",
+    "CRIT DMG"
+   ],
+   "Feet": [
+    "ATK %",
+    "SPD"
+   ],
+   "Planar Sphere": [
+    "Quantum DMG Boost",
+    "ATK %"
+   ],
+   "Link Rope": [
+    "ATK %",
+    "Energy Regeneration Rate"
+   ]
+  },
+  "subStats": [
+   "CRIT Rate",
+   "CRIT DMG",
+   "ATK %",
+   "SPD"
+  ],
+  "weapons": [
+   "Flickering Stars",
+   "Into the Unreachable Veil",
+   "Eternal Calculus"
+  ],
+  "skillsFirst": []
+ },
+ {
+  "characterId": "1509",
+  "source": "the game's own recommendation (nanoka.cc)",
+  "sets": [
+   {
+    "pieces": 4,
+    "options": [
+     "Scholar Lost in Erudition",
+     "As Navigator Isee Sees It",
+     "Band of Sizzling Thunder"
+    ]
+   },
+   {
+    "pieces": 2,
+    "options": [
+     "Cosmic Life Sciences Institute",
+     "Sigonia, the Unclaimed Desolation",
+     "Inert Salsotto"
+    ]
+   }
+  ],
+  "mainStats": {
+   "Body": [
+    "CRIT Rate",
+    "CRIT DMG"
+   ],
+   "Feet": [
+    "ATK %",
+    "SPD"
+   ],
+   "Planar Sphere": [
+    "Lightning DMG Boost",
+    "ATK %"
+   ],
+   "Link Rope": [
+    "ATK %",
+    "Energy Regeneration Rate"
+   ]
+  },
+  "subStats": [
+   "CRIT Rate",
+   "CRIT DMG",
+   "ATK %",
+   "SPD"
+  ],
+  "weapons": [
+   "I Am As You Behold",
+   "A Thankless Coronation",
+   "On the Fall of an Aeon"
+  ],
+  "skillsFirst": []
+ },
+ {
+  "characterId": "1510",
+  "source": "the game's own recommendation (nanoka.cc)",
+  "sets": [
+   {
+    "pieces": 4,
+    "options": [
+     "As Navigator Isee Sees It",
+     "Wavestrider Captain",
+     "Firesmith of Lava-Forging"
+    ]
+   },
+   {
+    "pieces": 2,
+    "options": [
+     "Fallen Star Anchorage",
+     "Inert Salsotto",
+     "The Wondrous BananAmusement Park"
+    ]
+   }
+  ],
+  "mainStats": {
+   "Body": [
+    "CRIT Rate",
+    "CRIT DMG"
+   ],
+   "Feet": [
+    "ATK %",
+    "SPD"
+   ],
+   "Planar Sphere": [
+    "Fire DMG Boost",
+    "ATK %"
+   ],
+   "Link Rope": [
+    "Energy Regeneration Rate",
+    "ATK %"
+   ]
+  },
+  "subStats": [
+   "CRIT Rate",
+   "CRIT DMG",
+   "ATK %",
+   "SPD"
+  ],
+  "weapons": [
+   "A Star That Lights the Night",
+   "Into the Unreachable Veil",
+   "Eternal Calculus"
+  ],
+  "skillsFirst": []
+ },
+ {
+  "characterId": "1512",
+  "source": "the game's own recommendation (nanoka.cc)",
+  "sets": [
+   {
+    "pieces": 4,
+    "options": [
+     "World-Remaking Deliverer",
+     "Sacerdos' Relived Ordeal",
+     "Messenger Traversing Hackerspace"
+    ]
+   },
+   {
+    "pieces": 2,
+    "options": [
+     "Amphoreus, The Eternal Land",
+     "Sprightly Vonwacq",
+     "Lushaka, the Sunken Seas"
+    ]
+   }
+  ],
+  "mainStats": {
+   "Body": [
+    "HP %",
+    "CRIT DMG"
+   ],
+   "Feet": [
+    "SPD",
+    "HP %"
+   ],
+   "Planar Sphere": [
+    "HP %",
+    "Wind DMG Boost"
+   ],
+   "Link Rope": [
+    "Energy Regeneration Rate",
+    "HP %"
+   ]
+  },
+  "subStats": [
+   "CRIT Rate",
+   "CRIT DMG",
+   "HP %",
+   "SPD"
+  ],
+  "weapons": [
+   "Rise and Sing",
+   "To Evernight's Stars",
+   "Memory's Curtain Never Falls"
+  ],
+  "skillsFirst": []
+ },
+ {
+  "characterId": "1513",
+  "source": "the game's own recommendation (nanoka.cc)",
+  "sets": [
+   {
+    "pieces": 4,
+    "options": [
+     "Ever-Glorious Magical Girl",
+     "Genius of Brilliant Stars"
+    ]
+   },
+   {
+    "pieces": 2,
+    "options": [
+     "Punklorde Stage Zero",
+     "The Wondrous BananAmusement Park",
+     "Sigonia, the Unclaimed Desolation"
+    ]
+   }
+  ],
+  "mainStats": {
+   "Body": [
+    "CRIT Rate",
+    "CRIT DMG"
+   ],
+   "Feet": [
+    "SPD"
+   ],
+   "Planar Sphere": [
+    "Quantum DMG Boost",
+    "HP %"
+   ],
+   "Link Rope": [
+    "Energy Regeneration Rate"
+   ]
+  },
+  "subStats": [
+   "CRIT Rate",
+   "CRIT DMG",
+   "SPD"
+  ],
+  "weapons": [
+   "Summer Rides the Surf",
+   "Today's Good Luck",
+   "A Little Getaway"
+  ],
+  "skillsFirst": []
+ },
+ {
+  "characterId": "8001",
+  "source": "the game's own recommendation (nanoka.cc)",
+  "sets": [
+   {
+    "pieces": 4,
+    "options": [
+     "Champion of Streetwise Boxing",
+     "Scholar Lost in Erudition",
+     "Musketeer of Wild Wheat"
+    ]
+   },
+   {
+    "pieces": 2,
+    "options": [
+     "Rutilant Arena",
+     "Space Sealing Station",
+     "Inert Salsotto"
+    ]
+   }
+  ],
+  "mainStats": {
+   "Body": [
+    "CRIT Rate",
+    "CRIT DMG"
+   ],
+   "Feet": [
+    "SPD"
+   ],
+   "Planar Sphere": [
+    "Physical DMG Boost"
+   ],
+   "Link Rope": [
+    "ATK %"
+   ]
+  },
+  "subStats": [
+   "CRIT Rate",
+   "CRIT DMG",
+   "ATK %",
+   "SPD"
+  ],
+  "weapons": [
+   "Brighter Than the Sun",
+   "Woof! Walk Time!",
+   "Under the Blue Sky"
+  ],
+  "skillsFirst": []
+ },
+ {
+  "characterId": "8002",
+  "source": "the game's own recommendation (nanoka.cc)",
+  "sets": [
+   {
+    "pieces": 4,
+    "options": [
+     "Champion of Streetwise Boxing",
+     "Scholar Lost in Erudition",
+     "Musketeer of Wild Wheat"
+    ]
+   },
+   {
+    "pieces": 2,
+    "options": [
+     "Rutilant Arena",
+     "Space Sealing Station",
+     "Inert Salsotto"
+    ]
+   }
+  ],
+  "mainStats": {
+   "Body": [
+    "CRIT Rate",
+    "CRIT DMG"
+   ],
+   "Feet": [
+    "SPD"
+   ],
+   "Planar Sphere": [
+    "Physical DMG Boost"
+   ],
+   "Link Rope": [
+    "ATK %"
+   ]
+  },
+  "subStats": [
+   "CRIT Rate",
+   "CRIT DMG",
+   "ATK %",
+   "SPD"
+  ],
+  "weapons": [
+   "Brighter Than the Sun",
+   "Woof! Walk Time!",
+   "Under the Blue Sky"
+  ],
+  "skillsFirst": []
+ },
+ {
+  "characterId": "8003",
+  "source": "the game's own recommendation (nanoka.cc)",
+  "sets": [
+   {
+    "pieces": 4,
+    "options": [
+     "Knight of Purity Palace",
+     "Self-Enshrouded Recluse",
+     "Guard of Wuthering Snow"
+    ]
+   },
+   {
+    "pieces": 2,
+    "options": [
+     "Belobog of the Architects",
+     "Broken Keel",
+     "Fleet of the Ageless"
+    ]
+   }
+  ],
+  "mainStats": {
+   "Body": [
+    "DEF %"
+   ],
+   "Feet": [
+    "SPD"
+   ],
+   "Planar Sphere": [
+    "DEF %"
+   ],
+   "Link Rope": [
+    "DEF %"
+   ]
+  },
+  "subStats": [
+   "DEF %",
+   "SPD",
+   "Effect RES"
+  ],
+  "weapons": [
+   "Moment of Victory",
+   "Texture of Memories",
+   "Trend of the Universal Market"
+  ],
+  "skillsFirst": []
+ },
+ {
+  "characterId": "8004",
+  "source": "the game's own recommendation (nanoka.cc)",
+  "sets": [
+   {
+    "pieces": 4,
+    "options": [
+     "Knight of Purity Palace",
+     "Self-Enshrouded Recluse",
+     "Guard of Wuthering Snow"
+    ]
+   },
+   {
+    "pieces": 2,
+    "options": [
+     "Belobog of the Architects",
+     "Broken Keel",
+     "Fleet of the Ageless"
+    ]
+   }
+  ],
+  "mainStats": {
+   "Body": [
+    "DEF %"
+   ],
+   "Feet": [
+    "SPD"
+   ],
+   "Planar Sphere": [
+    "DEF %"
+   ],
+   "Link Rope": [
+    "DEF %"
+   ]
+  },
+  "subStats": [
+   "DEF %",
+   "SPD",
+   "Effect RES"
+  ],
+  "weapons": [
+   "Moment of Victory",
+   "Texture of Memories",
+   "Trend of the Universal Market"
+  ],
+  "skillsFirst": []
+ },
+ {
+  "characterId": "8005",
+  "source": "the game's own recommendation (nanoka.cc)",
+  "sets": [
+   {
+    "pieces": 4,
+    "options": [
+     "Watchmaker, Master of Dream Machinations",
+     "Thief of Shooting Meteor",
+     "Messenger Traversing Hackerspace"
+    ]
+   },
+   {
+    "pieces": 2,
+    "options": [
+     "Talia: Kingdom of Banditry",
+     "Forge of the Kalpagni Lantern",
+     "Fleet of the Ageless"
+    ]
+   }
+  ],
+  "mainStats": {
+   "Body": [
+    "HP %",
+    "DEF %"
+   ],
+   "Feet": [
+    "SPD"
+   ],
+   "Planar Sphere": [
+    "DEF %",
+    "HP %"
+   ],
+   "Link Rope": [
+    "Break Effect"
+   ]
+  },
+  "subStats": [
+   "Break Effect",
+   "SPD"
+  ],
+  "weapons": [
+   "In Pursuit of the Wind",
+   "Past Self in Mirror",
+   "Dance! Dance! Dance!"
+  ],
+  "skillsFirst": []
+ },
+ {
+  "characterId": "8006",
+  "source": "the game's own recommendation (nanoka.cc)",
+  "sets": [
+   {
+    "pieces": 4,
+    "options": [
+     "Watchmaker, Master of Dream Machinations",
+     "Thief of Shooting Meteor",
+     "Messenger Traversing Hackerspace"
+    ]
+   },
+   {
+    "pieces": 2,
+    "options": [
+     "Talia: Kingdom of Banditry",
+     "Forge of the Kalpagni Lantern",
+     "Fleet of the Ageless"
+    ]
+   }
+  ],
+  "mainStats": {
+   "Body": [
+    "HP %",
+    "DEF %"
+   ],
+   "Feet": [
+    "SPD"
+   ],
+   "Planar Sphere": [
+    "DEF %",
+    "HP %"
+   ],
+   "Link Rope": [
+    "Break Effect"
+   ]
+  },
+  "subStats": [
+   "Break Effect",
+   "SPD"
+  ],
+  "weapons": [
+   "In Pursuit of the Wind",
+   "Past Self in Mirror",
+   "Dance! Dance! Dance!"
+  ],
+  "skillsFirst": []
+ },
+ {
+  "characterId": "8007",
+  "source": "the game's own recommendation (nanoka.cc)",
+  "sets": [
+   {
+    "pieces": 4,
+    "options": [
+     "Hero of Triumphant Song",
+     "Hunter of Glacial Forest",
+     "Eagle of Twilight Line"
+    ]
+   },
+   {
+    "pieces": 2,
+    "options": [
+     "Lushaka, the Sunken Seas",
+     "Penacony, Land of the Dreams",
+     "The Wondrous BananAmusement Park"
+    ]
+   }
+  ],
+  "mainStats": {
+   "Body": [
+    "CRIT DMG"
+   ],
+   "Feet": [
+    "SPD",
+    "ATK %"
+   ],
+   "Planar Sphere": [
+    "Ice DMG Boost"
+   ],
+   "Link Rope": [
+    "Energy Regeneration Rate",
+    "ATK %"
+   ]
+  },
+  "subStats": [
+   "CRIT DMG",
+   "SPD",
+   "ATK %"
+  ],
+  "weapons": [
+   "Victory In a Blink",
+   "Memory's Curtain Never Falls"
+  ],
+  "skillsFirst": []
+ },
+ {
+  "characterId": "8008",
+  "source": "the game's own recommendation (nanoka.cc)",
+  "sets": [
+   {
+    "pieces": 4,
+    "options": [
+     "Hero of Triumphant Song",
+     "Hunter of Glacial Forest",
+     "Eagle of Twilight Line"
+    ]
+   },
+   {
+    "pieces": 2,
+    "options": [
+     "Lushaka, the Sunken Seas",
+     "Penacony, Land of the Dreams",
+     "The Wondrous BananAmusement Park"
+    ]
+   }
+  ],
+  "mainStats": {
+   "Body": [
+    "CRIT DMG"
+   ],
+   "Feet": [
+    "SPD",
+    "ATK %"
+   ],
+   "Planar Sphere": [
+    "Ice DMG Boost"
+   ],
+   "Link Rope": [
+    "Energy Regeneration Rate",
+    "ATK %"
+   ]
+  },
+  "subStats": [
+   "CRIT DMG",
+   "SPD",
+   "ATK %"
+  ],
+  "weapons": [
+   "Victory In a Blink",
+   "Memory's Curtain Never Falls"
+  ],
+  "skillsFirst": []
+ },
+ {
+  "characterId": "8009",
+  "source": "the game's own recommendation (nanoka.cc)",
+  "sets": [
+   {
+    "pieces": 4,
+    "options": [
+     "Diviner of Distant Reach",
+     "Ever-Glorious Magical Girl",
+     "Musketeer of Wild Wheat"
+    ]
+   },
+   {
+    "pieces": 2,
+    "options": [
+     "Lushaka, the Sunken Seas",
+     "Punklorde Stage Zero",
+     "Space Sealing Station"
+    ]
+   }
+  ],
+  "mainStats": {
+   "Body": [
+    "CRIT DMG",
+    "CRIT Rate"
+   ],
+   "Feet": [
+    "SPD",
+    "ATK %"
+   ],
+   "Planar Sphere": [
+    "ATK %"
+   ],
+   "Link Rope": [
+    "Energy Regeneration Rate",
+    "ATK %"
+   ]
+  },
+  "subStats": [
+   "CRIT Rate",
+   "CRIT DMG",
+   "SPD",
+   "ATK %"
+  ],
+  "weapons": [
+   "When She Decided to See",
+   "Elation Brimming With Blessings",
+   "Tomorrow, Together"
+  ],
+  "skillsFirst": []
+ },
+ {
+  "characterId": "8010",
+  "source": "the game's own recommendation (nanoka.cc)",
+  "sets": [
+   {
+    "pieces": 4,
+    "options": [
+     "Diviner of Distant Reach",
+     "Ever-Glorious Magical Girl",
+     "Musketeer of Wild Wheat"
+    ]
+   },
+   {
+    "pieces": 2,
+    "options": [
+     "Lushaka, the Sunken Seas",
+     "Punklorde Stage Zero",
+     "Space Sealing Station"
+    ]
+   }
+  ],
+  "mainStats": {
+   "Body": [
+    "CRIT DMG",
+    "CRIT Rate"
+   ],
+   "Feet": [
+    "SPD",
+    "ATK %"
+   ],
+   "Planar Sphere": [
+    "ATK %"
+   ],
+   "Link Rope": [
+    "Energy Regeneration Rate",
+    "ATK %"
+   ]
+  },
+  "subStats": [
+   "CRIT Rate",
+   "CRIT DMG",
+   "SPD",
+   "ATK %"
+  ],
+  "weapons": [
+   "When She Decided to See",
+   "Elation Brimming With Blessings",
+   "Tomorrow, Together"
+  ],
+  "skillsFirst": []
+ }
+]

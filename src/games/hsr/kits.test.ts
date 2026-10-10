@@ -9,8 +9,9 @@ const ids = new Set(characters.map((c) => c.id));
 const text = (id: string, piece: string) => list.find((k) => k.characterId === id)?.skills.find((s) => s.id === piece)?.gameText ?? '';
 
 describe('HSR kit text', () => {
-  it('group A is in, and no one else (group by group, never all at once)', () => {
-    expect(list.map((k) => k.characterId)).toEqual(['1006', '1106', '1112', '1218', '1220', '1222', '1303', '1304', '1308', '1309', '1310', '8005', '8006']);
+  it('every released character has kit text (read group by group: A, then one group per path)', () => {
+    const released = characters.filter((c) => !('leak' in c && c.leak)).map((c) => c.id);
+    expect(list.map((k) => k.characterId).sort()).toEqual([...released].sort());
   });
 
   it.each(list.map((k) => [k.characterId, k] as const))('%s: known character, skills, three Traces, Eidolons 1–6, no markup left', (id, kit) => {
