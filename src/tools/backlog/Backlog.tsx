@@ -1,11 +1,12 @@
 import { useId, useState, type CSSProperties, type FormEvent } from 'react';
 import type { BacklogItem, GameContract } from '../../core/contract';
-import { saveOwnItem, setBacklogCategory, setBacklogDone, setOwnItemHidden } from '../../core/data/userData';
+import { clearBacklogDone, gameData, restoreBacklogDone, revertOwnItem, saveOwnItem, setBacklogCategory, setBacklogDone, setOwnItemHidden, useGameData } from '../../core/data/userData';
 import { formatNumber } from '../../core/time/format';
 import { BottomSheet, Button, ExampleTag, NoData } from '../../core/ui';
 import { cx } from '../../core/ui/cx';
 import { newOwnId } from '../edit-mode/merge';
 import { Switch } from '../pulls/shared';
+import { exampleBacklog } from './examples';
 import { categories, categoryIds, categoryLabel, estimate, groupsOf, isDone, openCount, shapeOf, type CategoryView, type ItemView, type Shape } from './backlog';
 import b from './backlog.module.css';
 import type { BacklogData, BacklogRow } from './useBacklogData';
@@ -147,6 +148,8 @@ function CategoryPanel({
 }) {
   const [openGroups, setOpenGroups] = useState<Set<string>>(new Set());
   const [confirmAll, setConfirmAll] = useState(false);
+  /** What progress was before "All done", so Undo puts it back exactly (missing = no data). */
+  const [undoAll, setUndoAll] = useState<Record<string, number | undefined> | null>(null);
   const items = cat?.items ?? [];
   const groups = groupsOf(items);
   const named = groups.filter((g) => g.name !== null);
@@ -185,6 +188,8 @@ function CategoryPanel({
                   type="button"
                   className={b.link}
                   onClick={() => {
+                    const mine = gameData(game.id).backlog;
+                    setUndoAll(Object.fromEntries(items.map((v) => [v.item.id, mine[v.item.id]])));
                     for (const v of items) setBacklogDone(game.id, v.item.id, v.item.total);
                     setConfirmAll(false);
                   }}
@@ -193,6 +198,20 @@ function CategoryPanel({
                 </button>
                 <button type="button" className={b.link} onClick={() => setConfirmAll(false)}>
                   Cancel
+                </button>
+              </span>
+            ) : undoAll ? (
+              <span className={b.confirm} role="status">
+                All {Object.keys(undoAll).length} marked done.
+                <button
+                  type="button"
+                  className={b.link}
+                  onClick={() => {
+                    restoreBacklogDone(game.id, undoAll);
+                    setUndoAll(null);
+                  }}
+                >
+                  Undo
                 </button>
               </span>
             ) : (
@@ -301,11 +320,17 @@ function Group({ title, items, open, onToggle, ctx }: { title: string; items: It
 function EditButtons({ view, ctx }: { view: ItemView; ctx: RowCtx }) {
   if (!ctx.editing) return null;
   const t = view.item.title;
+  const changed = ctx.data.rows.some((r) => r.item.id === view.item.id && r.origin === 'changed');
   return (
     <span className={b.rowEdit}>
       <Button className={b.small} onClick={() => ctx.onChange(view.item.id)} aria-label={`Change ${t}`}>
         Change
       </Button>
+      {changed && (
+        <Button className={b.small} onClick={() => revertOwnItem(ctx.game.id, 'backlog', view.item.id, new Date().toISOString())} aria-label={`Back to the list’s version of ${t}`}>
+          Back to the list’s version
+        </Button>
+      )}
       <Button className={b.small} onClick={() => setOwnItemHidden(ctx.game.id, 'backlog', view.item.id, true, new Date().toISOString())} aria-label={`Hide ${t}`}>
         Hide
       </Button>
@@ -431,6 +456,8 @@ function Counter({ view, ctx }: { view: ItemView; ctx: RowCtx }) {
               aria-label={`Done for ${item.title}`}
               onChange={(e) => {
                 setDraft(e.target.value);
+                // An empty box clears your progress (back to "No data yet").
+                if (e.target.value.trim() === '') return clearBacklogDone(ctx.game.id, item.id);
                 const n = Number.parseInt(e.target.value, 10);
                 if (Number.isFinite(n)) setBacklogDone(ctx.game.id, item.id, Math.min(item.total, Math.max(0, n)));
               }}
@@ -458,6 +485,7 @@ function Counter({ view, ctx }: { view: ItemView; ctx: RowCtx }) {
 /** "Still on the table": pulls from what you haven't done yet, in the categories that count. Real items only. */
 function Summary({ game, cats, example, name, openCalculator }: { game: GameContract; cats: CategoryView[]; example: boolean; name: (id: string) => string; openCalculator: () => void }) {
   const est = estimate(game, cats);
+  const none = cats.length === 0;
   const counted = Object.keys(est.counted).length > 0;
   const unknownCount = cats.filter((c) => c.enabled).reduce((a, c) => a + c.unknown.filter((v) => !isDone(v) && v.item.reward !== 0).length, 0);
   const notes: string[] = [];
@@ -471,18 +499,24 @@ function Summary({ game, cats, example, name, openCalculator }: { game: GameCont
       <div className={b.heroMain}>
         {example ? (
           <span className={b.heroNote}>
-            <NoData dash={false} /> Examples are never counted: enter your own items or progress and this fills in.
+            <NoData dash={false} /> Examples are never counted: add your own items, or change an example in Edit, and this fills in.
           </span>
-        ) : counted || !est.anyEnabled ? (
+        ) : none ? (
+          <span className={b.heroNote}>
+            <NoData dash={false} /> Add your own items in Edit and this fills in.
+          </span>
+        ) : !est.anyEnabled ? (
+          <span className={b.heroNote}>All categories switched off</span>
+        ) : counted ? (
           <>
-            <span className={b.heroValue}>{formatNumber(counted ? est.pulls : 0)}</span>
+            <span className={b.heroValue}>{formatNumber(est.pulls)}</span>
             <span className={b.heroUnit}>pulls of one-time rewards</span>
           </>
         ) : (
           <NoData />
         )}
       </div>
-      {!example && <span className={b.muted}>{notes.join(' · ')}</span>}
+      {!example && !none && <span className={b.muted}>{notes.join(' · ')}</span>}
       <span className={b.heroAction}>
         <Button variant="primary" onClick={openCalculator}>
           Open calculator
@@ -498,17 +532,40 @@ const SHAPES: { id: Shape; label: string; hint: string }[] = [
   { id: 'steps', label: 'Checklist in order', hint: 'Steps one after another, like story chapters: you tap where you are.' },
 ];
 
-/** Add or change a backlog item. Built-in items keep only what you changed; examples become your own item. */
-function ItemForm({ game, row, category, categories: cats, rows, onDone }: { game: GameContract; row: BacklogRow | null; category: string; categories: string[]; rows: BacklogRow[]; onDone: () => void }) {
+/** The kind a new item in this category usually is. */
+const defaultShape = (category: string): Shape => (category === 'story' ? 'steps' : category === 'side-quests' ? 'check' : 'counter');
+
+const splitSteps = (text: string) =>
+  text
+    .split('\n')
+    .map((s) => s.trim())
+    .filter(Boolean);
+
+export interface ItemFormProps {
+  game: GameContract;
+  row: BacklogRow | null;
+  category: string;
+  categories: string[];
+  rows: BacklogRow[];
+  onDone: () => void;
+}
+
+/**
+ * Add or change a backlog item. Built-in items keep only what you changed (on top of your
+ * earlier changes); examples become your own item. Also used by Assistant → Edit lists.
+ */
+export function ItemForm({ game, row, category, categories: cats, rows, onDone }: ItemFormProps) {
   const uid = useId();
+  const user = useGameData(game.id);
   const item: Partial<BacklogItem> = row?.item ?? {};
   const premium = game.currencies.find((c) => c.perPull && !c.paid)?.id ?? game.currencies[0]?.id ?? '';
   const [title, setTitle] = useState(item.title ?? '');
   const [cat, setCat] = useState(item.category ?? category);
   const [newCat, setNewCat] = useState('');
-  const [shape, setShape] = useState<Shape>(row ? shapeOf(row.item) : category === 'story' ? 'steps' : category === 'side-quests' ? 'check' : 'counter');
+  const [shape, setShape] = useState<Shape>(row ? shapeOf(row.item) : defaultShape(category));
+  const [shapePicked, setShapePicked] = useState(false);
   const [group, setGroup] = useState(item.group ?? '');
-  const [total, setTotal] = useState(item.total && !item.steps ? String(item.total) : '');
+  const [total, setTotal] = useState(row && shapeOf(row.item) === 'counter' ? String(row.item.total) : '');
   const [percent, setPercent] = useState(item.unit === '%');
   const [steps, setSteps] = useState((item.steps ?? []).join('\n'));
   const [noReward, setNoReward] = useState(item.reward === 0);
@@ -519,6 +576,31 @@ function ItemForm({ game, row, category, categories: cats, rows, onDone }: { gam
   const f = (n: string) => `${uid}-${n}`;
   const groups = [...new Set(rows.filter((r) => r.item.category === cat && r.item.group).map((r) => r.item.group as string))];
 
+  // Progress already on this item: yours, or the example's (which becomes yours when you save).
+  const id = row?.item.id;
+  const mineDone = id === undefined ? undefined : user.backlog[id];
+  const exampleDone = row?.origin === 'example' && id !== undefined ? exampleBacklog(game).done[id] : undefined;
+  const prior = mineDone ?? exampleDone;
+  const kindChanged = row !== null && (shape !== shapeOf(row.item) || (shape === 'counter' && percent !== (row.item.unit === '%')));
+  const newTotal = shape === 'steps' ? splitSteps(steps).length : shape === 'check' ? 1 : percent ? 100 : Number(total);
+  const of = row ? ` of ${formatNumber(row.item.total)}` : '';
+  const progressNote =
+    prior === undefined
+      ? ''
+      : kindChanged
+        ? `Changing the kind clears its ${mineDone === undefined ? 'example ' : ''}progress (${formatNumber(prior)}${of}). Enter yours again after saving.`
+        : Number.isInteger(newTotal) && newTotal >= 1 && prior > newTotal
+          ? `Its progress (${formatNumber(prior)}) is more than the new total, so it will be set to ${formatNumber(newTotal)}.`
+          : mineDone === undefined
+            ? `Its example progress (${formatNumber(prior)}${of}) becomes yours when you save. You can change it any time.`
+            : '';
+
+  const pickCategory = (c: string) => {
+    setCat(c);
+    // A new item takes the usual kind for its category, unless you picked one yourself.
+    if (!row && !shapePicked) setShape(defaultShape(c));
+  };
+
   const submit = (e: FormEvent) => {
     e.preventDefault();
     const category = cat === '__new' ? newCat.trim().toLowerCase().replace(/\s+/g, '-') : cat;
@@ -528,10 +610,7 @@ function ItemForm({ game, row, category, categories: cats, rows, onDone }: { gam
     if (rewardNum !== null && (!Number.isFinite(rewardNum) || rewardNum < 0)) return setError('The reward must be a number (or empty if you don’t know it).');
     let fields: Partial<BacklogItem> = { title: title.trim(), category, reward: rewardNum, currency };
     if (shape === 'steps') {
-      const list = steps
-        .split('\n')
-        .map((s) => s.trim())
-        .filter(Boolean);
+      const list = splitSteps(steps);
       if (list.length < 1) return setError('Write the steps, one per line.');
       fields = { ...fields, steps: list, total: list.length };
     } else if (shape === 'check') {
@@ -545,15 +624,23 @@ function ItemForm({ game, row, category, categories: cats, rows, onDone }: { gam
     fields.note = note.trim();
     fields.unit = shape === 'counter' && percent ? '%' : '';
     const at = new Date().toISOString();
+    const hidden = row?.hidden ?? false;
     if (row && (row.origin === 'built-in' || row.origin === 'changed')) {
-      // A built-in item: keep only what you actually changed, on top of the list's version.
+      // A built-in item: keep only what you actually changed, on top of your earlier changes and the list's version.
       const base = row.item as unknown as Record<string, unknown>;
       const empty = (v: unknown) => v === undefined || v === '' || (Array.isArray(v) && v.length === 0);
       const changed = Object.fromEntries(Object.entries(fields).filter(([k, v]) => !(empty(v) && empty(base[k])) && JSON.stringify(base[k]) !== JSON.stringify(v))) as Partial<BacklogItem>;
-      if (Object.keys(changed).length > 0) saveOwnItem(game.id, 'backlog', { id: row.item.id, mine: false, fields: changed, hidden: false, at });
+      const before = gameData(game.id).ownItems.backlog[row.item.id]?.fields ?? {};
+      if (Object.keys(changed).length > 0) saveOwnItem(game.id, 'backlog', { id: row.item.id, mine: false, fields: { ...before, ...changed }, hidden, at });
     } else {
       // Your own item, a new one, or an example you changed (it becomes yours, same id, so your progress stays).
-      saveOwnItem(game.id, 'backlog', { id: row?.item.id ?? newOwnId(Date.now()), mine: true, fields, hidden: false, at });
+      saveOwnItem(game.id, 'backlog', { id: row?.item.id ?? newOwnId(Date.now()), mine: true, fields, hidden, at });
+    }
+    if (id !== undefined && prior !== undefined && fields.total !== undefined) {
+      if (kindChanged) {
+        if (mineDone !== undefined) clearBacklogDone(game.id, id);
+      } else if (prior > fields.total) setBacklogDone(game.id, id, fields.total);
+      else if (mineDone === undefined) setBacklogDone(game.id, id, prior);
     }
     onDone();
   };
@@ -568,7 +655,7 @@ function ItemForm({ game, row, category, categories: cats, rows, onDone }: { gam
       </label>
       <label className={b.field} htmlFor={f('cat')}>
         Category
-        <select id={f('cat')} className={b.textInput} value={cat} onChange={(e) => setCat(e.target.value)}>
+        <select id={f('cat')} className={b.textInput} value={cat} onChange={(e) => pickCategory(e.target.value)}>
           {[...new Set([...cats, cat])]
             .filter((c) => c !== '__new')
             .map((c) => (
@@ -589,7 +676,15 @@ function ItemForm({ game, row, category, categories: cats, rows, onDone }: { gam
         <legend>Kind</legend>
         {SHAPES.map((s) => (
           <label key={s.id} className={b.radio}>
-            <input type="radio" name={f('shape')} checked={shape === s.id} onChange={() => setShape(s.id)} />
+            <input
+              type="radio"
+              name={f('shape')}
+              checked={shape === s.id}
+              onChange={() => {
+                setShape(s.id);
+                setShapePicked(true);
+              }}
+            />
             <span>
               {s.label} <small className={b.muted}>{s.hint}</small>
             </span>
@@ -651,6 +746,11 @@ function ItemForm({ game, row, category, categories: cats, rows, onDone }: { gam
         Note (optional)
         <input id={f('note')} className={b.textInput} value={note} onChange={(e) => setNote(e.target.value)} autoComplete="off" />
       </label>
+      {progressNote && (
+        <p className={b.muted} role="status">
+          {progressNote}
+        </p>
+      )}
       {error && (
         <p className={b.error} role="alert">
           {error}

@@ -42,11 +42,14 @@ test('Assistant panel and Edit mode: no serious accessibility problems', async (
   await dialog.getByRole('button', { name: 'Edit lists', exact: true }).click();
   await dialog.getByRole('tab', { name: 'Backlog' }).click();
   await dialog.getByRole('button', { name: 'Add backlog item' }).click();
-  const form = dialog.getByRole('form', { name: 'Add backlog item' });
+  // The same form as on the Backlog screen.
+  const form = dialog.getByRole('form', { name: 'Add a backlog item' });
   problems.push(...(await serious(page, 'edit mode form')));
   await form.getByLabel('Name').fill('My own side quest chain');
-  await form.getByLabel('Steps in total').fill('8');
-  await form.getByRole('button', { name: 'Add backlog item' }).click();
+  await form.getByLabel('Category').selectOption('side-quests');
+  await form.getByRole('radio', { name: /Counter/ }).check();
+  await form.getByLabel('How much there is in total').fill('8');
+  await form.getByRole('button', { name: 'Add item' }).click();
   await expect(dialog.getByText('My own side quest chain')).toBeVisible();
   problems.push(...(await serious(page, 'edit mode list')));
 
