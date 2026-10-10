@@ -24,7 +24,14 @@ describe('ticks that HoYoLAB proves', () => {
   it('stamina lower than the last read counted forward = spent, so "Spend Trailblaze Power" is ticked', () => {
     // 100 at 10:00; one hour later it would be 110 by itself. HoYoLAB says 40.
     const out = autoTicks({ game: hsr, rule, previous: read(100, '2026-10-10T10:00:00Z'), next: read(40, '2026-10-10T11:00:00Z'), dailies: null, ticks: {} });
-    expect(out).toEqual([{ taskId: 'stamina:trailblaze-power', at: '2026-10-10T11:00:00Z', why: 'HoYoLAB: Trailblaze Power went from 110 to 40, so it was spent' }]);
+    expect(out).toEqual([{ taskId: 'stamina:trailblaze-power', at: '2026-10-10T11:00:00Z', why: 'HoYoLAB: Trailblaze Power is 40, it should be 110 by now, so it was spent' }]);
+  });
+
+  it('spent, then refilled past the last read: still ticked, because it is below what it should be by now', () => {
+    // 50 at 10:00. By 16:00 it should be 110 (one point per 6 min). HoYoLAB says 70: higher than
+    // the last read, but 40 short of what it should be, so 40 were spent in between.
+    const out = autoTicks({ game: hsr, rule, previous: read(50, '2026-10-10T10:00:00Z'), next: read(70, '2026-10-10T16:00:00Z'), dailies: null, ticks: {} });
+    expect(out.map((t) => t.why)).toEqual(['HoYoLAB: Trailblaze Power is 70, it should be 110 by now, so it was spent']);
   });
 
   it('stamina that only grew proves nothing', () => {

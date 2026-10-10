@@ -1,7 +1,7 @@
 /**
  * Ticks that HoYoLAB's numbers prove, taken on each live stamina read (owner's ask):
- * - Stamina spent: the new read is lower than the last read counted forward with the
- *   game's rate. Stamina only goes up by itself, so a drop means it was spent. It counts
+ * - Stamina spent: the new read is lower than what it should be by now (the last read plus
+ *   the refill for the time passed, capped at full). Only spending makes it lower. It counts
  *   only when the last read was in the same game day (otherwise the spending may have
  *   been yesterday).
  * - Dailies done: HoYoLAB's daily activity is full (HSR Daily Training, ZZZ Daily
@@ -44,7 +44,7 @@ export function autoTicks({ game, rule, previous, next, dailies, ticks }: Input)
     const expected = projectStamina(previous, pool, readMs).value;
     const id = `stamina:${pool.id}`;
     if (sameDay && next.current < expected && open(id)) {
-      out.push({ taskId: id, at, why: `HoYoLAB: ${pool.name} went from ${expected} to ${next.current}, so it was spent` });
+      out.push({ taskId: id, at, why: `HoYoLAB: ${pool.name} is ${next.current}, it should be ${expected} by now, so it was spent` });
     }
   }
 
