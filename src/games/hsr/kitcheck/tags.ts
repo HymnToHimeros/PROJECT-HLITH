@@ -1,25 +1,28 @@
 /** Kit check tags: the cheat sheet's answers laid onto the kit text, each tag with its quote. */
 import type { Kit } from '../../../core/contract';
-import { conditionWords, KIND_WORD } from './check';
+import { conditionWords, EVENT_WORD, KIND_WORD } from './check';
 import type { CharacterSheet, Entry } from './types';
 
 const WHO: Record<Entry['to'], string> = {
-  self: 'for themself',
-  allies: 'for all allies',
-  teammates: 'for teammates (not themself)',
-  'chosen-ally': 'for one ally you pick',
-  enemy: 'on the enemy',
+  self: 'Goes to them only',
+  allies: 'Goes to every ally, them included',
+  teammates: 'Goes to their teammates, not them',
+  'chosen-ally': 'Goes to one ally you pick (your damage dealer)',
+  enemy: 'Works on the enemy, so whoever hits it gains',
 };
+const FROM = { self: 'they', teammates: 'a teammate', any: 'anyone' } as const;
 
+/** The tag in plain sentences: who gets it, when it's on, limits, what it sets off, what you must do. */
 function noteOf(e: Entry): string {
-  const parts = [WHO[e.to]];
-  if (e.on) parts.push(`when ${conditionWords(e.on)}`);
-  if (e.limits?.kinds) parts.push(`only ${e.limits.kinds.map((k) => KIND_WORD[k]).join(', ')}`);
-  if (e.limits?.paths) parts.push(`only ${e.limits.paths.join(', ')}`);
-  if (e.limits?.elements) parts.push(`only ${e.limits.elements.join(', ')}`);
-  if (e.unverified) parts.push(`unverified: ${e.unverified}`);
-  parts.push(`setup: ${e.setup}`);
-  return parts.join(' · ');
+  const out = [`${WHO[e.to]}.`];
+  if (e.on) out.push(`Only on when the team has ${conditionWords(e.on).replace(/ in the team$/, '')}.`);
+  const only = [...(e.limits?.kinds ?? []).map((k) => KIND_WORD[k]), ...(e.limits?.paths ?? []), ...(e.limits?.elements ?? [])];
+  if (only.length) out.push(`Counts only for ${only.join(', ')}.`);
+  if (e.causes) out.push(`Makes a ${EVENT_WORD[e.causes]}, which some damage dealers' kits react to.`);
+  if (e.reacts) out.push(`Reacts when ${FROM[e.reacts.from]} make${e.reacts.from === 'self' ? '' : 's'} a ${EVENT_WORD[e.reacts.event]}.`);
+  if (e.unverified) out.push(`Not counted: the text is unclear (${e.unverified}).`);
+  out.push(`In the fight: ${e.setup}`);
+  return out.join(' ');
 }
 
 export function withTags(kits: Kit[], sheets: CharacterSheet[]): Kit[] {

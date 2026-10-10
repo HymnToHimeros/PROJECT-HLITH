@@ -34,6 +34,26 @@ Resume with: "continue from PROGRESS.md". Newest entry on top. Older entries:
   team" in the empty card); "preset" is "team" everywhere. Your own teams get the same
   synergy % and Why as recommended ones; edit, share, delete with Undo as before.
   Fixed a test that read the Characters grid before it redrew (leaked.test.tsx).
+- 2026-10-10 · **LOGIC-CORE: team suggestions from your account (T18, step 1)** (branch `logic-core/account-fits`).
+  Who fits takes options: by default only characters you own, ranked by the team's %,
+  counting your Eidolons / Mindscapes and Enhanced / Agent Potential; "include characters
+  I don't own" adds the rest as theory. Each suggestion says what came from your account
+  ("E2 counted", "Enhanced kit: not saved, scored without it", "Weapon in your build: …,
+  its effect isn't counted yet"). Next: signature weapon effects read into the cheat sheets.
+- 2026-10-10 · **LOGIC-CORE: scores explain themselves in plain words (T17)** (branch `logic-core/plain-reasons`).
+  Every team's "Why" now opens with a sentence (who deals the damage, who connects
+  with their kit), one line per member (what they give the damage dealer, what they
+  set off, points), and "To reach 100%" (points lost, the best team found and what
+  its members would bring). The kit lines that prove it are one tap below. "If you
+  pull" says what the character would give; Kit check notes are full sentences
+  (who gets it, when it's on, what it sets off, what you must do). Both games.
+- 2026-10-10 · **LOGIC-CORE: HSR teams built around real damage dealers (T19)** (branch `logic-core/hsr-real-teams`).
+  Cause: the check let any Hunt/Erudition character be a team's centre, and the game's
+  team for March 7th (Hunt) was imported with her first, though the game builds it
+  around Feixiao. Now centres come from the game's own teams (March 7th (Hunt), Topaz,
+  Moze, Dr. Ratio, Herta, Serval, Jade, Black Swan are partners), the game's teams are
+  listed led by their centre, and HSR no longer lists made-up "best by kit check" teams.
+  Decisions 21–23 in `docs/logic/hsr-decisions.md`.
 - 2026-10-10 · **Two more chats: MANAGER and ERROR-FIX** (branch `frame/manager-error-fix`).
   `docs/WORKSTREAMS.md`: rules 7–8, both in Who's who, a routing table (which job goes
   to which chat). `docs/briefs/MANAGER.md` (the owner's front desk: routes every

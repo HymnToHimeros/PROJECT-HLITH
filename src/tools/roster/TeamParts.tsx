@@ -17,7 +17,21 @@ export function statusOf(data: RosterData, id: string): Status {
  * One team member as a small portrait (art fills it; else an element-tinted
  * placeholder). Sample art is used only when the team is an EXAMPLE.
  */
-export function Member({ data, id, example, size = 'md', showName = false, onOpen }: { data: RosterData; id: string; example: boolean; size?: 'sm' | 'md'; showName?: boolean; onOpen?: ((id: string) => void) | undefined }) {
+export function Member({
+  data,
+  id,
+  example,
+  size = 'md',
+  showName = false,
+  onOpen,
+}: {
+  data: RosterData;
+  id: string;
+  example: boolean;
+  size?: 'sm' | 'md';
+  showName?: boolean;
+  onOpen?: ((id: string) => void) | undefined;
+}) {
   const c = data.byId.get(id);
   const name = c?.name ?? id;
   const status = statusOf(data, id);
@@ -55,9 +69,14 @@ export function Member({ data, id, example, size = 'md', showName = false, onOpe
 }
 
 /** What the game's team rules may know about you: who you own, their dupes and (when set) their potential. */
-export const teamAccount = (data: RosterData): TeamAccount => rosterAccount(data.user.roster);
+export const teamAccount = (data: RosterData): TeamAccount => rosterAccount(data.user.roster, data.user.builds);
 
-const rosterAccount = (roster: RosterData['user']['roster']): TeamAccount => ({
+const rosterAccount = (roster: RosterData['user']['roster'], builds?: RosterData['user']['builds']): TeamAccount => ({
+  // The weapon in an owned character's saved build (signature weapons, T18).
+  weapon: (id) => {
+    const w = entryOf(roster, id).owned ? builds?.[id]?.weapon : undefined;
+    return w ? { name: w.name, ...(w.id ? { id: w.id } : {}), ...(w.refine !== undefined ? { refine: w.refine } : {}) } : undefined;
+  },
   owned: (id) => entryOf(roster, id).owned,
   dupes: (id) => entryOf(roster, id).dupes,
   potential: (id) => {
@@ -71,7 +90,8 @@ export function useVerdict(data: RosterData, members: string[], skip = false): T
   const rules = data.game.rules.teams;
   const key = members.join(',');
   const roster = data.user.roster;
-  return useMemo(() => (skip || !rules ? null : rules.verdict(key ? key.split(',') : [], rosterAccount(roster))), [rules, key, roster, skip]);
+  const builds = data.user.builds;
+  return useMemo(() => (skip || !rules ? null : rules.verdict(key ? key.split(',') : [], rosterAccount(roster, builds))), [rules, key, roster, builds, skip]);
 }
 
 /** Why a team scores what it does: every point with the kit text that earned it. */
@@ -84,54 +104,94 @@ export function WhyScore({ verdict, data }: { verdict: TeamVerdict | null; data:
     ['tie-break', 'Team support · only breaks ties'],
     ['not-counted', 'Shown, not counted'],
   ];
+  const ex = verdict.explain;
+  const proof = (
+    <div className={r.stack}>
+      {verdict.notes.map((n) => (
+        <span key={n} className={r.muted}>
+          {n}
+        </span>
+      ))}
+      {groups.map(([g, title]) => {
+        const rows = verdict.reasons.filter((x) => x.group === g);
+        if (!rows.length) return null;
+        const list = (
+          <ul className={r.whyList}>
+            {rows.map((x, i) => (
+              <li key={i} className={r.whyItem}>
+                <span className={r.whyPoints}>{x.points > 0 ? `+${x.points}` : x.points < 0 ? `−${-x.points}` : '·'}</span>
+                <span>
+                  {x.text}
+                  {x.proof && (
+                    <span className={r.whyQuote}>
+                      {x.proof.skill}: “{x.proof.quote}”
+                    </span>
+                  )}
+                </span>
+              </li>
+            ))}
+          </ul>
+        );
+        // Locked, off-target and possible lines can be long: folded away, one tap to open.
+        return g === 'not-counted' ? (
+          <details key={g} className={r.why}>
+            <summary className={r.whySummary}>
+              {title} ({rows.length})
+            </summary>
+            {list}
+          </details>
+        ) : (
+          <div key={g} className={r.stack}>
+            <span className={r.label}>{title.toUpperCase()}</span>
+            {list}
+          </div>
+        );
+      })}
+      <span className={r.muted}>Rules: {data.game.rules.teams?.method}</span>
+    </div>
+  );
+  const how = `count ${verdict.count} of ${verdict.best} · ${verdict.unordered ? `damage dealer ${name(verdict.order[0] ?? '')}` : `order ${verdict.order.map(name).join(' > ')}`}`;
+  // Plain words first (owner's report T17): who carries, what each member gives them, what's missing to reach 100%;
+  // the kit lines that prove it stay one tap further down.
+  if (!ex)
+    return (
+      <details className={r.why}>
+        <summary className={r.whySummary}>
+          Why {verdict.percent}%: {how}
+        </summary>
+        {proof}
+      </details>
+    );
   return (
     <details className={r.why}>
       <summary className={r.whySummary}>
-        Why {verdict.percent}%: count {verdict.count} of {verdict.best} ·{' '}
-        {verdict.unordered ? `damage dealer ${name(verdict.order[0] ?? '')}` : `order ${verdict.order.map(name).join(' > ')}`}
+        Why {verdict.percent}%: {ex.headline}
       </summary>
       <div className={r.stack}>
-        {verdict.notes.map((n) => (
-          <span key={n} className={r.muted}>
-            {n}
-          </span>
-        ))}
-        {groups.map(([g, title]) => {
-          const rows = verdict.reasons.filter((x) => x.group === g);
-          if (!rows.length) return null;
-          const list = (
+        <ul className={r.whyList}>
+          {ex.members.map((m) => (
+            <li key={m.id} className={r.whyItem}>
+              <span className={r.whyPoints}>{m.points > 0 ? `+${m.points}` : m.points < 0 ? `−${-m.points}` : '·'}</span>
+              <span>{m.text}</span>
+            </li>
+          ))}
+        </ul>
+        {ex.missing.length > 0 && (
+          <>
+            <span className={r.label}>TO REACH 100%</span>
             <ul className={r.whyList}>
-              {rows.map((x, i) => (
-                <li key={i} className={r.whyItem}>
-                  <span className={r.whyPoints}>{x.points > 0 ? `+${x.points}` : x.points < 0 ? `−${-x.points}` : '·'}</span>
-                  <span>
-                    {x.text}
-                    {x.proof && (
-                      <span className={r.whyQuote}>
-                        {x.proof.skill}: “{x.proof.quote}”
-                      </span>
-                    )}
-                  </span>
+              {ex.missing.map((m) => (
+                <li key={m} className={r.cardText}>
+                  {m}
                 </li>
               ))}
             </ul>
-          );
-          // Locked, off-target and possible lines can be long: folded away, one tap to open.
-          return g === 'not-counted' ? (
-            <details key={g} className={r.why}>
-              <summary className={r.whySummary}>
-                {title} ({rows.length})
-              </summary>
-              {list}
-            </details>
-          ) : (
-            <div key={g} className={r.stack}>
-              <span className={r.label}>{title.toUpperCase()}</span>
-              {list}
-            </div>
-          );
-        })}
-        <span className={r.muted}>Rules: {data.game.rules.teams?.method}</span>
+          </>
+        )}
+        <details className={r.why}>
+          <summary className={r.whySummary}>The kit lines that prove it ({how})</summary>
+          {proof}
+        </details>
       </div>
     </details>
   );
