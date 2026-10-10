@@ -7,6 +7,7 @@ doing it said `LIVE`. Newest jobs at the bottom; live jobs move to Done.
 ## Open
 | # | Job | Who | State | Note |
 |---|---|---|---|---|
+| T33 | Blind test checked by LOGIC-CORE against game lists + owner teams: 3 match, 4 mostly (sustain slot swapped for damage, newer characters), Feixiao 1 of 3 (explained from kits) | LOGIC-CORE | 2026-10-10 |
 | T34 | Switch in Roster → Teams: assume signature + average build when none is saved (#84 rules, #85 switch) | LOGIC-CORE + FRAME | 2026-10-10 |
 | T37 | BUG fixed: typing in the build form (and every pop-up form) keeps the cursor in the field (#83) | ERROR-FIX | 2026-10-10 |
 | T36 | README made attractive for public visitors (#82) | FRAME | 2026-10-10 |
@@ -22,8 +23,7 @@ doing it said `LIVE`. Newest jobs at the bottom; live jobs move to Done.
 | T15 | HSR leak "Nihilux": confirm official name | SCHEDULER | blocked | Probably Aeon ★ Aha (already marked as a leak); confirm when announced. |
 | T18 | Make my own teams (pick the members myself, get them scored) | FRAME leads, LOGIC-CORE scores | working | LIVE: My teams picker (#59), account suggestions (#67), signature weapons (#69), build wants (#73). Next: every equipped weapon (#74). |
 | T28 | Standing rule: every logic rule is the same in HSR and ZZZ, except game-specific facts; ZZZ counts builds like HSR | LOGIC-CORE | working | In #73 (ZZZ counts builds like HSR; standing mirror rule in decisions files). |
-| T30 | HSR scoring still doesn't understand kits (owner's own Aventurine • Waveflair team 47%, "best" again Tingyun + Sparkle). Owner: teams do NOT need a sustain/healer. Wants scoring that understands buff size, conditions, how kits interact | LOGIC-CORE | working | Remove sustain rule now; explain this team; plan for kit-interaction scoring to owner. |
-| T33 | Blind test of LOGIC-CORE's kit understanding: Aventurine • Waveflair's best team worked out alone, plus 6 carries the owner hasn't corrected (exactly 4 members, one archetype) | LOGIC-CORE | working | Owner can\'t judge teams they don\'t know. LOGIC-CORE compares the 8 answers with the game\'s lists + owner\'s corrections, then T30 plan. |
+| T30 | HSR scoring still doesn't understand kits (owner's own Aventurine • Waveflair team 47%, "best" again Tingyun + Sparkle). Owner: teams do NOT need a sustain/healer. Wants scoring that understands buff size, conditions, how kits interact | LOGIC-CORE | working | Plan approved: buff size + zone (same zone adds), relevance from the carry\'s kit, roles only when a kit asks, order (ZZZ). Tests: owner\'s 3 teams on top. ~4 data steps + engine + Why. |
 | T35 | Target end stats per character on the character page (you vs target), each number sourced | LOGIC-CORE + FRAME | working | Rules live (#86): only numbers the game text states, quote + working. FRAME building the page card, totals form, scan. |
 | T38 | ZZZ teams: two supports doing the same job (Lucia + Pan Yinhu for Starlight Billy) scored above a complementary team (Dialyn + Lucia). Scoring must handle overlap and role coverage | LOGIC-CORE | working | Covered by T30. Owner: no "Stun needed" rule (Anomaly teams want none); roles needed only when the carry\'s kit asks. |
 | T39 | Leaked characters usable in teams (beta kit text), Who fits, If you pull, so pre-pulling can be judged; marked leak/unverified | LOGIC-CORE | working | Rules live (#87): leaks usable when shown, marked unverified; importers auto-add leaks, "No name yet". FRAME wires the switch + "If you pull" card after T35. |
