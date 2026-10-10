@@ -71,14 +71,17 @@ export function Member({
 }
 
 /** What the game's team rules may know about you: who you own, their dupes and (when set) their potential. */
-export const teamAccount = (data: RosterData): TeamAccount => rosterAccount(data.user.roster, data.user.builds, hiddenBy(data.game), data.user.teamLists);
+export const teamAccount = (data: RosterData): TeamAccount => rosterAccount(data.user.roster, data.user.builds, hiddenBy(data.game), data.user.teamLists, data.user.assumeAverageBuilds);
 
 const rosterAccount = (
   roster: RosterData['user']['roster'],
   builds?: RosterData['user']['builds'],
   hidden?: (id: string) => boolean,
   teamLists?: RosterData['user']['teamLists'],
+  assumeAverage?: boolean,
 ): TeamAccount => ({
+  // Your switch in Roster → Teams (T34): no saved build = signature + average build.
+  ...(assumeAverage ? { assumeAverage: true } : {}),
   // Characters your protagonist pick hides (the other Trailblazer): never used in any team.
   ...(hidden ? { skip: hidden } : {}),
   // Your own lists for a game team's slots (T29); undefined = the game's list.
@@ -110,7 +113,11 @@ export function useVerdict(data: RosterData, members: string[], skip = false): T
   const builds = data.user.builds;
   const hidden = hiddenBy(data.game);
   const lists = data.user.teamLists;
-  return useMemo(() => (skip || !rules ? null : rules.verdict(key ? key.split(',') : [], rosterAccount(roster, builds, hidden, lists))), [rules, key, roster, builds, hidden, lists, skip]);
+  const assume = data.user.assumeAverageBuilds;
+  return useMemo(
+    () => (skip || !rules ? null : rules.verdict(key ? key.split(',') : [], rosterAccount(roster, builds, hidden, lists, assume))),
+    [rules, key, roster, builds, hidden, lists, assume, skip],
+  );
 }
 
 /** Why a team scores what it does: every point with the kit text that earned it. */

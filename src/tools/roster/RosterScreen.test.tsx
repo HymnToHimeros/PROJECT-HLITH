@@ -314,12 +314,20 @@ describe('Roster screen', () => {
     await show('teams');
     expect(screen.queryByRole('switch', { name: /Assume signature \+ average build/ })).not.toBeInTheDocument();
     cleanup();
-    const rules = { method: 'm', rated: () => false, verdict: () => ({ rated: false, why: '' }), whoFits: () => [], lineUps: () => [], ifYouPull: () => null } as unknown as TeamRules;
+    const seen: (boolean | undefined)[] = [];
+    const fill = (p: TeamPreset, account: Parameters<NonNullable<TeamRules['fill']>>[1]) => {
+      seen.push(account.assumeAverage);
+      return p.slots.map((sl) => sl.characters[0] ?? '');
+    };
+    const rules = { method: 'm', rated: () => false, verdict: () => ({ rated: false, why: '' }), whoFits: () => [], lineUps: () => [], ifYouPull: () => null, fill } as unknown as TeamRules;
     await show('teams', { ...makeGame(false), rules: { teams: rules } });
+    expect(seen.at(-1)).toBeUndefined();
     const sw = screen.getByRole('switch', { name: 'Assume signature + average build when none is saved' });
     expect(sw).toHaveAttribute('aria-checked', 'false');
     fireEvent.click(sw);
     expect(gameData('aa').assumeAverageBuilds).toBe(true);
+    // The team rules get it with the account (TeamAccount.assumeAverage).
+    expect(seen.at(-1)).toBe(true);
     expect(screen.getByRole('switch', { name: 'Assume signature + average build when none is saved' })).toHaveAttribute('aria-checked', 'true');
   });
 
