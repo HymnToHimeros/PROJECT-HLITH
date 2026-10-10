@@ -85,7 +85,8 @@ export function Characters({ data, several, onOpen }: Props) {
     setShow('all');
   };
 
-  const save = (x: Row, change: Partial<RosterEntry>) => setRosterEntry(x.d.game.id, x.c.id, { ...x.e, ...change });
+  // Owning someone means you're no longer saving for them: marking Owned clears Wanted.
+  const save = (x: Row, change: Partial<RosterEntry>) => setRosterEntry(x.d.game.id, x.c.id, { ...x.e, ...change, ...(change.owned && !x.e.owned ? { wanted: false } : {}) });
   const onTile = (x: Row) => {
     if (tap === 'open') onOpen(x.d.game.id, x.c.id);
     else if (tap === 'owned') save(x, { owned: !x.e.owned });
@@ -276,6 +277,9 @@ export function Characters({ data, several, onOpen }: Props) {
           </button>
           <button type="button" className={r.smallBtn} disabled={!picked.size} onClick={() => bulk({ owned: false })}>
             Not owned
+          </button>
+          <button type="button" className={r.smallBtn} disabled={!picked.size} onClick={() => bulk({ wanted: false })}>
+            Not wanted
           </button>
         </div>
       )}
