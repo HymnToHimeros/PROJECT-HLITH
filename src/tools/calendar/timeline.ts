@@ -62,7 +62,8 @@ export function gameTimeline({ game, serverId, banners, events, versions, now, f
   // list is empty, its examples one by one (`exampleIds`, the same ones every screen uses).
   const isExample = (id: string) => Boolean(exampleIds?.has(id));
   const typeLabel = (id: string) => game.bannerTypes.find((t) => t.id === id)?.label ?? id;
-  for (const b of banners) {
+  // Permanent banners would span years: they stay off the timeline.
+  for (const b of banners.filter((x) => !x.permanent)) {
     spans.push({ id: `banner:${b.id}`, game, lane: 'banners', title: `${b.title} · ${typeLabel(b.type)}`, start: Date.parse(b.start), end: Date.parse(b.end), leak: b.leak, example: isExample(b.id) });
   }
   const exBanners = banners.some((b) => isExample(b.id));

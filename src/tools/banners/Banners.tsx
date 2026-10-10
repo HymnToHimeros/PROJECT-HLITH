@@ -1,6 +1,6 @@
 import type { CSSProperties } from 'react';
 import type { Banner, Character, GameContract, ModuleId, Weapon } from '../../core/contract';
-import { formatRange } from '../../core/time/reset';
+import { formatDate, formatRange } from '../../core/time/reset';
 import { EmptyState, ExampleNotice, ExampleTag, GameTag, NoData, Timer, UnverifiedTag } from '../../core/ui';
 import { cx } from '../../core/ui/cx';
 import { GameHeading, Strip } from '../pulls/shared';
@@ -113,7 +113,7 @@ function BannerItem({ game, banner, state, data, tagged, open }: ItemProps) {
     <article className={cx(b.card, banner.leak && b.leak)} aria-label={banner.title} style={{ '--el': element?.color ?? 'var(--line-strong)' } as CSSProperties}>
       <div className={cx(b.art, !art && b.artEmpty)}>
         {art ? (
-          <img src={art} alt="" loading="lazy" className={cx(b.artImg, isWeapon && leadWeapon && !banner.art && b.artWeapon)} />
+          <img src={art} alt="" loading="lazy" className={cx(b.artImg, isWeapon && b.artWeapon)} />
         ) : (
           <span className={b.artName} aria-hidden="true">
             {leadWeapon?.name ?? lead?.name ?? banner.title}
@@ -133,8 +133,8 @@ function BannerItem({ game, banner, state, data, tagged, open }: ItemProps) {
         </div>
         <h4 className={b.title}>{banner.title}</h4>
         <div className={b.whenRow}>
-          <span>{formatRange(start, end)}</span>
-          {state === 'live' ? <Timer to={end} deadline prefix="ends in" /> : <Timer to={start} prefix="opens in" />}
+          <span>{banner.permanent ? `since ${formatDate(start)}` : formatRange(start, end)}</span>
+          {banner.permanent && state === 'live' ? <span>Permanent</span> : state === 'live' ? <Timer to={end} deadline prefix="ends in" /> : <Timer to={start} prefix="opens in" />}
         </div>
         {isWeapon &&
           weapons.map((w) => {

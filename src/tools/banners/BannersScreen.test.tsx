@@ -87,6 +87,13 @@ describe('Banners screen', () => {
     expect(screen.queryByText(/Example data/)).not.toBeInTheDocument();
   });
 
+  it('a permanent banner says "Permanent" instead of a countdown', async () => {
+    await show([{ id: 'collab', type: 'character', title: 'Collab forever', featured: ['c1'], start: iso(-60), end: iso(3650), permanent: true }]);
+    const card = screen.getByRole('article', { name: 'Collab forever' });
+    expect(within(card).getByText('Permanent')).toBeInTheDocument();
+    expect(within(card).queryByText(/ends in/)).not.toBeInTheDocument();
+  });
+
   it('shows leaks as unverified with their source, and the switch hides them and is remembered', async () => {
     await show(realBanners);
     const leak = screen.getByRole('article', { name: 'Leaked one' });
