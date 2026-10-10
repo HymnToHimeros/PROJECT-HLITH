@@ -28,6 +28,13 @@ Resume with: "continue from PROGRESS.md". Newest entry on top. Older entries:
 - CI (`.github/workflows/ci.yml`) runs both on every pull request.
 
 ## Done
+- 2026-10-10 · **LOGIC-CORE: HSR teams built around real damage dealers (T19)** (branch `logic-core/hsr-real-teams`).
+  Cause: the check let any Hunt/Erudition character be a team's centre, and the game's
+  team for March 7th (Hunt) was imported with her first, though the game builds it
+  around Feixiao. Now centres come from the game's own teams (March 7th (Hunt), Topaz,
+  Moze, Dr. Ratio, Herta, Serval, Jade, Black Swan are partners), the game's teams are
+  listed led by their centre, and HSR no longer lists made-up "best by kit check" teams.
+  Decisions 21–23 in `docs/logic/hsr-decisions.md`.
 - 2026-10-10 · **Two more chats: MANAGER and ERROR-FIX** (branch `frame/manager-error-fix`).
   `docs/WORKSTREAMS.md`: rules 7–8, both in Who's who, a routing table (which job goes
   to which chat). `docs/briefs/MANAGER.md` (the owner's front desk: routes every
