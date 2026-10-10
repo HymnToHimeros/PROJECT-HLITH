@@ -7,6 +7,7 @@ const kit = (gameText: string, extra: { id: string; label: string; gameText: str
   id: 'k',
   characterId: '1511',
   beta: true,
+  version: '4.6.52',
   skills: [{ id: 'skill', label: 'Skill: Laugh', gameText }, ...extra],
 });
 
@@ -16,17 +17,17 @@ describe('what an automatic refresh changed', () => {
     expect(kitDiff(kit('a', [{ id: 'trace', label: 'Trace: Encore', gameText: '…' }]), kit('a'))).toEqual(['gone: Trace: Encore']);
   });
 
-  it('reports a leak\'s beta kit change with the build and the sheets to re-check, as an info finding', () => {
+  it('reports a leak\'s beta kit change with the kit\'s own build and its stale sheet, as an info finding', () => {
     const chars = [{ id: '1511', name: 'Nihilux (Aeon ★ Aha)', leak: { source: 'nanoka.cc' } }];
     const r = report('hsr', { ...empty, characters: chars, kits: [kit('Deals 100%')] }, { ...empty, characters: chars, kits: [kit('Deals 120%')] }, {
-      build: '4.6.52',
+      build: '4.6.53',
       now: NOW,
-      sheetsFor: (id) => (id === '1511' ? ['src/games/hsr/kitcheck/sheet/groupI.ts'] : []),
+      staleSheet: (id) => (id === '1511' ? 'its beta kit changed since it was read (1 quoted line changed)' : undefined),
     });
     expect(r.kitChanged).toEqual(['1511']);
-    expect(r.lines).toEqual(['HSR: Nihilux (Aeon ★ Aha): beta kit changed in build 4.6.52 (1 part)', '  - changed: Skill: Laugh', '  - LOGIC-CORE: re-check src/games/hsr/kitcheck/sheet/groupI.ts']);
+    expect(r.lines).toEqual(['HSR: Nihilux (Aeon ★ Aha): beta kit changed in build 4.6.52 (1 part)', '  - changed: Skill: Laugh', "  - LOGIC-CORE: re-read Nihilux (Aeon ★ Aha)'s kit sheet (its beta kit changed since it was read (1 quoted line changed))"]);
     expect(r.findings).toEqual([
-      expect.objectContaining({ job: 'leaks-scan', kind: 'info', source: { name: 'nanoka.cc, build 4.6.52', url: 'https://nanoka.cc/hsr' }, payload: expect.objectContaining({ staleSheets: ['src/games/hsr/kitcheck/sheet/groupI.ts'] }) }),
+      expect.objectContaining({ job: 'leaks-scan', kind: 'info', source: { name: 'nanoka.cc, build 4.6.52', url: 'https://nanoka.cc/hsr' }, payload: expect.objectContaining({ build: '4.6.52', staleSheet: expect.stringContaining('1 quoted line') }) }),
     ]);
   });
 

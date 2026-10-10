@@ -56,15 +56,15 @@ export function kitDiff(before: Item | undefined, after: Item): string[] {
 }
 
 export interface ReportOptions {
-  /** nanoka's newest build, named on leak lines. */
+  /** nanoka's newest build, named on leak lines (a beta kit names its own build, `kit.version`). */
   build?: string;
   now: number;
-  /** LOGIC-CORE's kit sheets for a character, named when its beta kit changes. */
-  sheetsFor?: (characterId: string) => string[];
+  /** Why LOGIC-CORE's kit sheet for this character is stale (their buildLibrary().stale), or undefined. */
+  staleSheet?: (characterId: string) => string | undefined;
 }
 
 /** Compare one game's lists before and after a refresh. */
-export function report(game: string, before: Lists, after: Lists, { build, now, sheetsFor = () => [] }: ReportOptions): Report {
+export function report(game: string, before: Lists, after: Lists, { build, now, staleSheet = () => undefined }: ReportOptions): Report {
   const lines: string[] = [];
   const findings: Finding[] = [];
   const kitChanged: string[] = [];
@@ -137,20 +137,21 @@ export function report(game: string, before: Lists, after: Lists, { build, now, 
     const changes = kitDiff(o, k);
     if (!changes.length) continue;
     kitChanged.push(id);
-    const sheets = sheetsFor(id);
+    const stale = staleSheet(id);
     const who = nameOf(c) || id;
-    const line = `${G}: ${who}: ${o ? 'beta kit changed' : 'beta kit added'}${build ? ` in build ${build}` : ''} (${changes.length} part${changes.length === 1 ? '' : 's'})`;
+    const from = k.beta && typeof k.version === 'string' ? k.version : build;
+    const line = `${G}: ${who}: ${o ? 'beta kit changed' : 'beta kit added'}${from ? ` in build ${from}` : ''} (${changes.length} part${changes.length === 1 ? '' : 's'})`;
     lines.push(line);
     for (const ch of changes.slice(0, 12)) lines.push(`  - ${ch}`);
     if (changes.length > 12) lines.push(`  - … ${changes.length - 12} more`);
-    if (sheets.length) lines.push(`  - LOGIC-CORE: re-check ${sheets.join(', ')}`);
+    if (stale) lines.push(`  - LOGIC-CORE: re-read ${who}'s kit sheet (${stale})`);
     findings.push({
       job: 'leaks-scan',
       game_id: game,
       kind: 'info',
       title: line,
-      payload: { characterId: id, changes: changes.slice(0, 40), ...(sheets.length ? { staleSheets: sheets, note: 'LOGIC-CORE: re-check these sheets' } : {}) },
-      source: nanoka,
+      payload: { characterId: id, ...(from ? { build: from } : {}), changes: changes.slice(0, 40), ...(stale ? { staleSheet: stale, note: 'LOGIC-CORE: re-read this kit sheet' } : {}) },
+      source: { ...nanoka, name: `nanoka.cc${from ? `, build ${from}` : ''}` },
     });
   }
   return { lines, findings, kitChanged };

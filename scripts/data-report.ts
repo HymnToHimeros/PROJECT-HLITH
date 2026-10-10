@@ -43,14 +43,36 @@ try {
   // Build numbers are only named in the summary; leave them out when nanoka does not answer.
 }
 
-/** LOGIC-CORE's hand-read kit sheets that name this character (src/games/<game>/kitcheck/sheet/). */
-function sheetsFor(game: string): (id: string) => string[] {
-  const dir = resolve(ROOT, `src/games/${game}/kitcheck/sheet`);
-  if (!existsSync(dir)) return () => [];
-  const files = execFileSync('git', ['ls-files', `src/games/${game}/kitcheck/sheet`], { cwd: ROOT, encoding: 'utf8' }).split('\n').filter((f) => /\.(json|ts)$/.test(f) && !/\.test\.ts$/.test(f));
-  const text = new Map(files.map((f) => [f, readFileSync(resolve(ROOT, f), 'utf8')]));
-  return (id) => files.filter((f) => new RegExp(`["'\`]${id}["'\`]`).test(text.get(f) ?? ''));
+/**
+ * Why LOGIC-CORE's kit sheet for a character is stale: their `buildLibrary().stale`
+ * (src/games/<game>/kitcheck/library.ts), loaded through Vite because app code imports
+ * JSON and leaves out file endings. It reads kits.json as it is now, after the import.
+ * Before that helper exists, a sheet that names the character is reported as "check it".
+ */
+async function staleSheets(): Promise<Record<string, (id: string) => string | undefined>> {
+  const out: Record<string, (id: string) => string | undefined> = {};
+  const { createServer } = await import('vite');
+  const vite = await createServer({ configFile: false, root: ROOT, logLevel: 'silent', appType: 'custom', server: { middlewareMode: true, hmr: false, ws: false }, optimizeDeps: { noDiscovery: true, include: [] } });
+  try {
+    for (const game of GAMES) {
+      const lib = ((await vite.ssrLoadModule(`/src/games/${game}/kitcheck/library.ts`)) as { buildLibrary: () => { stale?: Map<string, string> } }).buildLibrary();
+      if (lib.stale instanceof Map) {
+        const stale = lib.stale;
+        out[game] = (id) => stale.get(id);
+        continue;
+      }
+      const files = execFileSync('git', ['ls-files', `src/games/${game}/kitcheck/sheet`], { cwd: ROOT, encoding: 'utf8' }).split('\n').filter((f) => /\.ts$/.test(f) && !/\.test\.ts$/.test(f));
+      const text = files.map((f) => readFileSync(resolve(ROOT, f), 'utf8')).join('\n');
+      out[game] = (id) => (new RegExp(`characterId: ["'\`]${id}["'\`]`).test(text) ? 'it has a sheet and its beta kit changed; check it' : undefined);
+    }
+  } catch (e) {
+    console.warn(`Kit sheets not checked: ${e instanceof Error ? e.message : String(e)}`);
+  } finally {
+    await vite.close();
+  }
+  return out;
 }
+const stale = await staleSheets();
 
 const lines: string[] = [];
 const findings: Finding[] = [];
@@ -58,7 +80,7 @@ for (const game of GAMES) {
   const path = (l: string) => `src/games/${game}/data/${l}.json`;
   const before = Object.fromEntries(LISTS.map((l) => [l, atHead(path(l))])) as unknown as Lists;
   const after = Object.fromEntries(LISTS.map((l) => [l, now(path(l))])) as unknown as Lists;
-  const r = report(game, before, after, { build: builds[game], now: Date.now(), sheetsFor: sheetsFor(game) });
+  const r = report(game, before, after, { build: builds[game], now: Date.now(), ...(stale[game] ? { staleSheet: stale[game] } : {}) });
   lines.push(...r.lines);
   findings.push(...r.findings);
 }

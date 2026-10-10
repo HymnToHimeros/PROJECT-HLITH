@@ -36,8 +36,8 @@ Resume with: "continue from PROGRESS.md". Newest entry on top. Older entries:
   changes on one standing PR (`scheduler/auto-data`) and merges it by itself only when
   every changed file is a data list and the check is green. `scripts/data-report.ts`
   writes the plain summary (new leaks, confirmations, new banners/events, moved
-  version ends, beta kit changes with the build and the kit sheets LOGIC-CORE should
-  re-read) and sends it to the owner's inbox. Permanent banners keep their stored end
+  version ends, beta kit changes with the build the text came from, and LOGIC-CORE's
+  kit sheets that went stale, from their `buildLibrary().stale`) and sends it to the owner's inbox. Permanent banners keep their stored end
   when the notice board's hour wobbles (it answered 11:00, 17:00 and 00:00 in a row).
   Needs: FRAME's intake change (`failed`, `next_at`), the FINDINGS_INTAKE_KEY secret,
   and "Allow GitHub Actions to create and approve pull requests".
