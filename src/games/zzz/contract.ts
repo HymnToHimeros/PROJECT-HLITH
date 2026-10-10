@@ -15,7 +15,7 @@ import teams from './data/teams.json';
 import sampleArt from './data/sample-art.json';
 import versions from './data/versions.json';
 import { materialsFor } from './costs';
-import { GEAR_SLOTS } from './gear';
+import { GEAR_SLOTS, LEVEL_MAX, SET_SLOTS } from './gear';
 import { KITS, SHEETS } from './kitcheck/library';
 import { withTags } from './kitcheck/tags';
 import { recommendedTeams, zzzTeamRules } from './kitcheck/team';
@@ -169,7 +169,7 @@ export const zzz: GameContract = {
       scoreBuild(
         b,
         (builds as unknown as RecommendedBuild[]).find((x) => x.characterId === b.characterId),
-        { levelMax: 60, weaponLevelMax: 60, setSlots: () => [] },
+        { levelMax: LEVEL_MAX, weaponLevelMax: 60, setSlots: SET_SLOTS },
       ),
     teams: zzzTeamRules,
     materialsFor,
