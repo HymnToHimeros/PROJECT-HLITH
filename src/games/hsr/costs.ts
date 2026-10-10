@@ -2,7 +2,7 @@
  * HSR level-up costs (scripts/import-nanoka-costs.ts, nanoka.cc): what a
  * character needs from one level to another. Pure, no guessing: a character
  * the data doesn't cover needs nothing listed (the screen says "No data yet").
- * Character EXP per level is not in the game data we have yet, so it is not counted (the Farm says so).
+ * Character EXP per level comes from the game's own EXP table, counted in Traveler's Guides (scripts/import-nanoka-costs.ts).
  */
 import type { BuildLevel, MaterialNeed } from '../../core/contract';
 import costs from './data/costs.json';

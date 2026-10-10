@@ -31,6 +31,11 @@ creates starts with that name, so you can always tell who made what.
    several areas, or when the live site or `main` is broken. ERROR-FIX doesn't go
    looking for work on its own.
 
+9. **MANAGER approves and merges every PR (owner, 2026-10-10).** Open your PR and
+   send `READY` as `docs/RELEASES.md` says; MANAGER checks it, merges it in order and
+   tells you when to bring `main` into your branch. Don't merge your own PR (only
+   exception: an urgent fix for a broken live site when MANAGER doesn't answer).
+
 ## Who's who
 | Name | Branches | Builds | Roadmap items |
 |---|---|---|---|
@@ -100,6 +105,11 @@ stays the base; never rename an id that is already in a list.
     `items` (`BuildItem`: picture, rarity, effects) to `RecommendedBuild`, and
     optional `unordered` to a rated `TeamVerdict` (HSR teams have no order).
     Farm, the character page ("How to build") and Why % use them.
+  - 2026-10-10 · LOGIC-CORE added optional `set`, `rolls`, `weapon.refine` and
+    `skills` to `CharacterBuild`, the `BuildScorePart` type, and optional `parts`
+    and `basis` on `scoreBuild`'s result; the character page's Build score card
+    shows them. The game-free scoring lives in `src/core/rules/buildScore.ts`
+    (games pass their facts; rules: `docs/logic/build-score.md`).
   - 2026-10-10 · LOGIC-CORE added the `Weapon` entity and optional
     `data.weapons` (Light Cones, W-Engines with picture and "made for"), from
     `npm run data:builds` (`weapons.json`, both games). LOGIC-CORE changed
