@@ -7,6 +7,7 @@ import { formatNumber } from '../../core/time/format';
 import { ExampleNotice, ExampleTag, GameTag, HowTo, NoData } from '../../core/ui';
 import { artOf, CharArt } from '../roster/shared';
 import { exampleNeeds } from './examples';
+import { useBuilds } from '../roster/useRosterData';
 import { daysToFinish, farmPlan, perDay, type NeedRow } from './plan';
 import f from './farm.module.css';
 
@@ -103,6 +104,14 @@ export function Farm({ games, openRoster }: Props) {
             <section className={f.card} aria-label="Materials">
               <h3 className={f.cardTitle}>Materials</h3>
               {plans.flatMap((p) => p.rows.map((row) => <MaterialRow key={`${p.g.game.id}:${row.material}`} plan={p} row={row} several={several} />))}
+              {plans
+                .filter((p) => p.chosen.length > 0 && p.amountsKnown && p.g.game.rules.materialsNote)
+                .map((p) => (
+                  <span key={`note-${p.g.game.id}`} className={f.sub}>
+                    {several ? `${p.g.game.short}: ` : ''}
+                    {p.g.game.rules.materialsNote}
+                  </span>
+                ))}
               {plans.every((p) => p.rows.length === 0) && (
                 <span className={f.sub}>
                   <NoData dash={false} /> Material amounts for {plans.filter((p) => !p.amountsKnown && p.chosen.length > 0).map((p) => p.g.game.name).join(' and ') || 'these games'} aren’t in HLITH yet. That part is on us, not you.
@@ -111,7 +120,6 @@ export function Farm({ games, openRoster }: Props) {
             </section>
             <section className={f.card} aria-label="Gear to farm">
               <h3 className={f.cardTitle}>{several ? 'Gear to farm' : `${games[0]?.game.terms.gear ?? 'Gear'} to farm`}</h3>
-              {/* ROSTER-LOGIC fills each character's recommended gear from their build. */}
               {plans.flatMap((p) =>
                 p.chosen.map((c) => {
                   const el = p.g.game.elements.find((e) => e.id === c.element);
@@ -123,8 +131,7 @@ export function Farm({ games, openRoster }: Props) {
                           {c.name}
                           {several && <GameTag label={p.g.game.short} vent={p.g.game.vent} />}
                         </span>
-                        <NoData dash={false} />
-                        <span className={f.sub}>{p.g.game.terms.gear} come from this build, which isn’t in HLITH yet.</span>
+                        <GearFor game={p.g.game} characterId={c.id} />
                       </div>
                     </div>
                   );
@@ -295,3 +302,23 @@ export function newestPerGame<T extends { g: { game: { id: string } }; c: Charac
   return out;
 }
 
+
+/** A character's recommended gear sets from the game's recommended build (game.data.builds), or "No data yet". */
+function GearFor({ game, characterId }: { game: GameContract; characterId: string }) {
+  const builds = useBuilds(game);
+  if (builds === null) return <span className={f.sub}>Loading…</span>;
+  const b = builds.find((x) => x.characterId === characterId);
+  const sets = b?.sets.filter((s) => s.options.length) ?? [];
+  if (!b || !sets.length)
+    return (
+      <>
+        <NoData dash={false} />
+        <span className={f.sub}>{game.terms.gear}: no recommended build for them yet.</span>
+      </>
+    );
+  return (
+    <span className={f.sub}>
+      {sets.map((s) => `${s.pieces}-piece: ${s.options.join(' or ')}`).join(' · ')} ({b.source})
+    </span>
+  );
+}

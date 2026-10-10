@@ -2,19 +2,21 @@
  * Zenless Zone Zero. Numbers here are checked against the sources listed at the
  * bottom; anything not confirmed stays null and shows "No data yet".
  */
-import type { BacklogItem, Banner, Character, GameContract, GameEvent, Kit, Material, TeamPreset, Version, SampleArt } from '../../core/contract';
+import type { BacklogItem, Banner, Character, GameContract, GameEvent, Kit, RecommendedBuild, Material, TeamPreset, Version, SampleArt } from '../../core/contract';
 import backlog from './data/backlog.json';
 import banners from './data/banners.json';
 import characters from './data/characters.json';
 import events from './data/events.json';
+import builds from './data/builds.json';
 import kits from './data/kits.json';
 import materials from './data/materials.json';
 import teams from './data/teams.json';
 import sampleArt from './data/sample-art.json';
 import versions from './data/versions.json';
+import { materialsFor } from './costs';
 import { SHEETS } from './kitcheck/library';
 import { withTags } from './kitcheck/tags';
-import { zzzTeamRules } from './kitcheck/team';
+import { recommendedTeams, zzzTeamRules } from './kitcheck/team';
 
 const list = <T>(rows: unknown) => async () => rows as T[];
 const COMMUNITY = 'community pull-log statistics (not published by the game)';
@@ -130,15 +132,22 @@ export const zzz: GameContract = {
     events: list<GameEvent>(events),
     backlog: list<BacklogItem>(backlog),
     materials: list<Material>(materials),
-    teams: list<TeamPreset>(teams),
+    // Recommended teams: the best squads the kit check finds for each damage dealer (docs/logic/zzz-method.md).
+    teams: async () => [...(teams as TeamPreset[]), ...recommendedTeams()],
     sampleArt: async () => sampleArt as SampleArt[],
     versions: list<Version>(versions),
     // Kit text with the cheat sheet's tags (docs/logic/zzz-method.md, Part A).
     kits: async () => withTags(kits as Kit[], SHEETS),
+    // The game's own recommended builds (npm run data:builds).
+    builds: list<RecommendedBuild>(builds),
   },
   accountLinks: [{ provider: 'hoyolab', supports: ['stamina', 'checkin', 'roster', 'endgame'], config: { gameBiz: 'nap_global' } }],
   scan: { screen: 'character', fields: ['level', 'mindscape', 'w-engine', 'drive-discs', 'skills'] },
-  rules: { teams: zzzTeamRules },
+  rules: {
+    teams: zzzTeamRules,
+    materialsFor,
+    materialsNote: 'From the game data (nanoka.cc): ascension, every skill and the Core Skill to max. Agent EXP is counted as Senior Investigator Logs (3,000 EXP each).',
+  },
   sources: [
     { what: 'Agent list (names, rank, specialty, attribute)', source: 'nanoka.cc data files, game data 3.3.4, used with permission', entered: '2026-10-09', verified: false },
     { what: 'Pull rates, hard pity, 50/50 and 75/25', source: 'official rates shown on the in-game Signal Search details page', entered: '2026-10-09', verified: false },

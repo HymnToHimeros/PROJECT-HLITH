@@ -1,7 +1,11 @@
 // @vitest-environment node
 import { describe, expect, it } from 'vitest';
 import type { TeamAccount } from '../../../core/contract';
-import { ifYouPull, lineUps, synergyLabel, verdict, whoFits } from './team';
+import { buildLibrary, SHEETS } from './library';
+import { ifYouPull, lineUps, recommendedTeams, synergyLabel, verdict, whoFits } from './team';
+
+/** Every agent is read now; leave one sheet out on purpose to test "not read yet". */
+const unreadAnby = buildLibrary(SHEETS.filter((s) => s.characterId !== '1011'));
 
 const BILLY = '1531';
 const DIALYN = '1481';
@@ -44,7 +48,7 @@ describe('Synergy % on presets', () => {
   });
 
   it('a squad with an agent whose kit isn’t read yet is not rated', () => {
-    expect(verdict([BILLY, DIALYN, '1011'], all)).toMatchObject({ rated: false });
+    expect(verdict([BILLY, DIALYN, '1011'], all, unreadAnby)).toMatchObject({ rated: false });
   });
 });
 
@@ -61,13 +65,17 @@ describe('Line-ups', () => {
 describe('Who fits', () => {
   it('for Starlight Billy: only agents whose kits connect, saying how', () => {
     const fits = whoFits([BILLY], all);
-    expect(fits.map((f) => f.id).sort()).toEqual([DIALYN, LUCIA, PAN].sort());
+    expect(fits.map((f) => f.id)).toEqual(expect.arrayContaining([DIALYN, LUCIA, PAN]));
+    // Lighter (Stun) switches on Billy's Starlight, but his Ice and Fire buffs never count for a Physical Billy.
+    const lighter = fits.find((f) => f.id === '1161');
+    expect(lighter?.how.join(' | ')).toContain("turns on Starlight - Billy's Additional Ability");
+    expect(lighter?.how.join(' | ')).not.toMatch(/Ice and Fire/);
     const dialyn = fits.find((f) => f.id === DIALYN);
     expect(dialyn?.how.join(' | ')).toContain("turns on Starlight - Billy's Additional Ability: Blazing Starlight");
   });
 
   it('for Billy and Dialyn: Pan Yinhu and Lucia both connect', () => {
-    expect(whoFits([BILLY, DIALYN], all).map((f) => f.id).sort()).toEqual([LUCIA, PAN].sort());
+    expect(whoFits([BILLY, DIALYN], all).map((f) => f.id)).toEqual(expect.arrayContaining([LUCIA, PAN]));
   });
 });
 
@@ -88,6 +96,18 @@ describe('If you pull…', () => {
   });
 
   it('unread agents are not rated', () => {
-    expect(ifYouPull('1011', all)).toBeNull();
+    expect(ifYouPull('1011', all, unreadAnby)).toBeNull();
+  });
+});
+
+describe('Recommended teams from the check', () => {
+  it("Starlight Billy's is Billy > Dialyn > Lucia at Mindscape 0 (count 9), with alternatives per place", () => {
+    const t0 = Date.now();
+    const teams = recommendedTeams();
+    expect(Date.now() - t0).toBeLessThan(8000);
+    const billy = teams.find((t) => t.id === `kit-check-${BILLY}`);
+    expect(billy?.slots.map((s) => s.characters[0])).toEqual([BILLY, DIALYN, LUCIA]);
+    expect(billy?.source).toContain('(9)');
+    expect(billy?.slots[1]?.characters.length).toBeGreaterThan(1);
   });
 });

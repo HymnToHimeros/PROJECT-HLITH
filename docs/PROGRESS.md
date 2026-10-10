@@ -35,6 +35,51 @@ Resume with: "continue from PROGRESS.md". Newest entry on top. Older entries:
   W-Engine banners get their picture (`Banner.art`, nanoka; each link checked).
   HSR collaboration warps stay out: the game runs them with no end date ("time_end = none"
   on the wiki, notice shown until 2036), and a banner needs an end. Told FRAME.
+- 2026-10-10 · **LOGIC-CORE: every ZZZ agent read; materials for both games** (branch `logic-core/zzz-groups-f-i`).
+  - ZZZ groups F (Aria, Promeia, Velina, Remielle, Grace, Nangong Yu, Pulchra),
+    G (Ellen, Soukaku, Zhu Yuan, Qingyi, Nicole, Evelyn, Seth), H (Soldier 0 -
+    Anby, Trigger, Orphie & Magus, Pyrois, Sigrid, Caesar, Koleda) and I (Anby,
+    Nekomata, Soldier 11, Corin, Billy, Ben, and Severian and Phoenix from beta
+    text). All 62 agents: Kit check tags, scores, Who fits, If you pull.
+  - Engine: Aftershock DMG stat, assist-type conditions, one Ether Veil:
+    Delusion Reprise at a time. Decisions 39–50 in `docs/logic/zzz-decisions.md`.
+  - Step 4 started: `npm run data:costs` (nanoka.cc) fills ascension, skill,
+    Core Skill and Trace costs for every ZZZ agent and HSR character, and ZZZ
+    Agent EXP. Farm and the character page's "Materials to max" now show real
+    amounts, with a note saying what they cover. HSR character EXP isn't
+    counted yet (no source found that HLITH can read).
+  - Recommended builds: `npm run data:builds` reads the game's own
+    recommendation for every character (ZZZ: Drive Disc sets, main and sub
+    stats, the agent's own W-Engine, which skills to level first; HSR: relic
+    and planar sets, main and sub stats, Light Cones). Shown on the character
+    page (Recommended build) and in Farm (Gear to farm), source named.
+  - HSR kit text for every released character (98), imported group by group
+    (A, then one group per path). Kit check shows it; tags and scores wait for
+    the owner's OK on `docs/logic/hsr-theory.md`.
+  - ZZZ recommended teams from the kit check: the best squad per damage dealer
+    from every agent at Mindscape 0, two alternatives per place, each scored
+    against your roster (a team is scored for its first member).
+  - HSR recommended teams: the game's own (first team per character, 93),
+    each place with its backups. Their scores wait for the HSR theory OK.
+- 2026-10-10 · **LOGIC-CORE: ZZZ groups B to E, HSR kit text and theory** (branch `logic-core/zzz-groups-d-e`, replaces PR #41).
+  - ZZZ group D read (Yixuan, Ju Fufu, Yidhari, Manato, Claret, Astra Yao,
+    Yuzuha) and group E (Miyabi, Yanagi, Burnice, Jane, Vivian, Alice, Piper).
+    New stat "Anomaly DMG": Disorder / Assault / Attribute Anomaly buffs count
+    only for damage dealers whose own text proves they deal it. 33 of 62 ZZZ
+    agents are read now.
+  - ZZZ group B read (Lycaon, Lighter, Roxy, Hugo, Sunna, Ye Shunguang, Zhao) and
+    group C (Banyue, Norma, Cissia, Harumasa, Lucy, Seed, Rina, Anton). Tests
+    from the method: Ye + Sunna + Zhao = 9, Lighter's Ice/Fire buffs don't reach
+    a Physical damage dealer, Dialyn's and Roxy's +2s Stun don't stack.
+  - Importer: Agent Potential (base text "Replaced" once Potential is saved),
+    live text for released agents (beta only for unreleased), blank glossary
+    words filled from zzz.gachabase.net, every formula shape.
+  - HSR: `npm run data:hsr-kits` imports group A's kit text (13 characters:
+    Feixiao, Topaz, Robin, Aventurine, Acheron, Jiaoqiu, Pela, Silver Wolf,
+    Firefly, Ruan Mei, Harmony Trailblazer ×2, Lingsha), with Traces,
+    Eidolons, memosprites and Enhanced kits. Kit check shows it.
+  - `docs/logic/hsr-theory.md`: the HSR theory, waiting for the owner's OK.
+    No HSR scoring code until then.
 - 2026-10-10 · **LOGIC-CORE steps 2–3 for group A: Kit check tags and team scores** (branch `logic-core/zzz-kit-check-a`).
   - Cheat sheet (Part A) for Starlight Billy, Dialyn, Lucia, Pan Yinhu:
     `src/games/zzz/kitcheck/sheet/groupA.ts`. Every entry answers the seven

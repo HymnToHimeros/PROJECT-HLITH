@@ -10,9 +10,12 @@ export type Specialty = 'attack' | 'stun' | 'anomaly' | 'support' | 'defense' | 
 /**
  * What a piece gives (question 2), by stat.
  * Damage stats every damage dealer uses: dmg, crit-dmg, crit-rate, atk,
- * res-ignore, def-shred, dmg-taken, stun-dmg-multiplier, pen.
+ * res-ignore, def-shred, dmg-taken, stun-dmg-multiplier, pen, extra-hit (an
+ * extra hit counted as the damage dealer's own, e.g. Sunna's Cat's Gaze).
  * Stats only some use (counted only when the damage dealer's notes say so):
- * sheer-force, sheer-dmg, max-hp, anomaly-proficiency, anomaly-buildup.
+ * sheer-force, sheer-dmg, max-hp, anomaly-proficiency, anomaly-buildup,
+ * anomaly-dmg (Attribute Anomaly, Disorder, Assault, Burn, Corruption DMG only),
+ * aftershock-dmg (Aftershock DMG only).
  * Team support (tie-break only): daze, energy, stun-duration, decibels,
  * free-ultimate, heal, duration, own-damage (the giver's own damage).
  */
@@ -26,11 +29,14 @@ export type Stat =
   | 'dmg-taken'
   | 'stun-dmg-multiplier'
   | 'pen'
+  | 'extra-hit'
   | 'sheer-force'
   | 'sheer-dmg'
   | 'max-hp'
   | 'anomaly-proficiency'
   | 'anomaly-buildup'
+  | 'anomaly-dmg'
+  | 'aftershock-dmg'
   | 'daze'
   | 'energy'
   | 'stun-duration'
@@ -40,14 +46,14 @@ export type Stat =
   | 'duration'
   | 'own-damage';
 
-export const GENERAL_STATS: readonly Stat[] = ['dmg', 'crit-dmg', 'crit-rate', 'atk', 'res-ignore', 'def-shred', 'dmg-taken', 'stun-dmg-multiplier', 'pen'];
-export const SPECIFIC_STATS: readonly Stat[] = ['sheer-force', 'sheer-dmg', 'max-hp', 'anomaly-proficiency', 'anomaly-buildup'];
+export const GENERAL_STATS: readonly Stat[] = ['dmg', 'crit-dmg', 'crit-rate', 'atk', 'res-ignore', 'def-shred', 'dmg-taken', 'stun-dmg-multiplier', 'pen', 'extra-hit'];
+export const SPECIFIC_STATS: readonly Stat[] = ['sheer-force', 'sheer-dmg', 'max-hp', 'anomaly-proficiency', 'anomaly-buildup', 'anomaly-dmg', 'aftershock-dmg'];
 export const SUPPORT_STATS: readonly Stat[] = ['daze', 'energy', 'stun-duration', 'decibels', 'free-ultimate', 'heal', 'duration', 'own-damage'];
 
 /** Question 1: when is it on? Absent = always (no squad condition). */
 export type Condition =
-  /** Another squad member is one of these specialties, shares the attribute or faction, or has one of these attributes (any one is enough). */
-  | { another: { specialties?: Specialty[]; sameAttribute?: boolean; sameFaction?: boolean; attributes?: string[] } }
+  /** Another squad member is one of these specialties, shares the attribute or faction, has one of these attributes or assist types ('defensive', 'evasive'); any one is enough. */
+  | { another: { specialties?: Specialty[]; sameAttribute?: boolean; sameFaction?: boolean; attributes?: string[]; assistTypes?: string[] } }
   /** The character directly before this one in the squad order is one of these. */
   | { previous: { specialties: Specialty[] } }
   /** At least this many squad members (this one included) have the specialty. */
@@ -57,8 +63,8 @@ export type Condition =
   /** Cannot be checked from profiles: never counted as met. */
   | { unknown: string };
 
-/** Question 3: who gets it? */
-export type Recipient = 'self' | 'squad' | 'enemy' | 'previous' | 'next' | 'switch-in';
+/** Question 3: who gets it? `teammate` = one other squad member the game picks (Seed's "Vanguard"), never the giver. */
+export type Recipient = 'self' | 'squad' | 'enemy' | 'previous' | 'next' | 'switch-in' | 'teammate';
 
 /** Question 4: limits on who can use it. */
 export interface Limits {
@@ -91,8 +97,8 @@ export interface Entry {
   limits?: Limits;
   /** Q5: this entry makes an event happen for someone… */
   causes?: { event: GameEventKind; whose: Whose };
-  /** …or reacts when this character does that event. */
-  reacts?: GameEventKind;
+  /** …or reacts when this character does that event (or any of these events). */
+  reacts?: GameEventKind | GameEventKind[];
   /** Q6: what must be set up in the fight, or why nothing is needed. */
   setup: string;
   /** Q7: "does not stack with similar effects": entries sharing this key count once. */

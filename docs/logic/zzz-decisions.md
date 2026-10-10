@@ -70,3 +70,120 @@ Each one can be changed: tell LOGIC-CORE which.
 21. **Best fit for me** (Characters → Sort) ranks by the "If you pull…" %
     (for an owned agent: what your teams lose without them). Unread agents come
     last.
+
+## Added with group B
+22. **Released agents are read from the live game version** (nanoka.cc's
+    manifest names it, 3.2 today); only unreleased agents use the newer beta
+    files, marked beta. Roxy's beta file had blank pieces mid-rewrite.
+23. **Glossary words the files leave blank** (Roxy's "Wind Energy", "Eye of the
+    Storm", "Cleanse") are filled from the same game text on zzz.gachabase.net
+    (another game-data site), matched by context and listed in the importer.
+    An unknown one stops the importer.
+24. **Agent Potential** has two versions of some pieces: the base text (until
+    Potential I) and the Potential text. With Potential unknown, the base counts
+    and the Potential version is locked; with Potential saved, the base shows as
+    "Replaced" (method: a stronger version replaces the weaker one).
+25. **Hugo's "1/2 Stun characters: ATK +300/900"** is read as two entries: +300
+    with one Stun teammate, +900 (an upgrade) with two. As the method counts
+    upgrades as their own entries, two Stun characters switch on both.
+26. **Roxy's Mindscape 6 Wind RES ignore is unverified**: "The DMG dealt by
+    attacks ignores 15% …" doesn't say whose attacks.
+27. **Sunna's Cat's Gaze** counts as a buff for Attack and Anomaly damage
+    dealers: the extra hit "is treated as DMG dealt by the triggering Agent".
+
+## Added with group C
+28. **"Their abilities switched on" only counts abilities that help the damage
+    dealer.** Seed's Direct Strike goes to her "Vanguard" (an Attack teammate),
+    so when Seed is the damage dealer it is shown but not counted; when the
+    teammate is the damage dealer it counts as a buff. New recipient: "one
+    teammate".
+29. **Norma's Chain Attack and Mindscape 4 Decibels go to the character before
+    her**: her Core Passive replaces "the Quick Assist" of Hat Trick, which the
+    text gives to the previous character.
+30. **Cissia's "1/2 Electric characters" counts herself**, so the first tier is
+    always on and the second needs another Electric character.
+31. **Numbers from the old app differ for some squads** (Harumasa + Norma + Lucy:
+    7 then, 5 now; Cissia + Dialyn + Rina: 5 then, 6 now). The worked examples
+    in the method (Billy 9 and 10, Banyue 9, Ye 9) all match exactly; the others
+    came from the old app's own reading and can't be checked line by line.
+
+## Added with group D
+32. **One ability can react to several events** (Manato's Remnant Flame: his
+    Ultimate and his Chain Attack).
+33. **Claret's damage ignores ATK and CRIT DMG buffs**: "skill DMG Multipliers
+    are based on DEF" and she "doesn't receive the CRIT DMG Bonus". The ATK
+    part is a reading of the DEF sentence.
+34. **Some kits score high because their Additional Ability is several
+    entries** (Yixuan: four). That is decision 2 as the method is written; the
+    method's own "rebuild" list (weights by kind) is the real fix.
+35. **Text that says "attacks ignore … RES" without saying whose is
+    unverified** (Yixuan M2, Claret M2), as Roxy M6.
+36. **Abilities that work "within Ether Veil: Wellspring"** (Yidhari) are not
+    reactions to every Ether Veil: other characters' Veils have other names.
+
+## Added with group E
+37. **"Anomaly DMG" is a stat only some damage dealers use** (method question
+    4: "a stat only some damage dealers use"). Buffs to Attribute Anomaly,
+    Disorder, Assault, Burn or Corruption DMG count only when the damage
+    dealer's own notes prove they deal it (Piper: "Piper's Physical Anomaly
+    Buildup Rate increases"). Assault buffs stay Physical-only.
+38. **Disorder and Attribute Anomaly buffs have no specialty limit** when the
+    text sets none; the Anomaly DMG stat already keeps them from Attack and
+    Rupture damage dealers.
+
+## Added with groups F and G
+39. **One Ether Veil: Delusion Reprise at a time.** Sunna, Aria and Nangong Yu
+    all give "+50 ATK" from it, and the text says re-activating it cancels the
+    existing one, so the second and third count as duplicates.
+40. **Abloom-only buffs use the Anomaly DMG stat** (there is no separate
+    Abloom stat yet), so they count for any Anomaly damage dealer, even one
+    who never triggers Abloom. Known limit.
+41. **A damage dealer gaining something from their own Quick Assist reacts to
+    it** (Ellen's Quick Charge, Zhu Yuan's Shotshell, Evelyn's Binding Seal), so
+    a teammate who gives them a Quick Assist makes a chain.
+42. **Two different skills that each give a Quick Assist are two chains**
+    (Seth), as "one chain per cause" (decision 5).
+
+## Added with group I
+43. **Shields count as team support** (stat "heal"): there is no Shield stat,
+    and a shield doesn't raise damage. Ben's +16% CRIT Rate for shielded
+    characters reaches the whole squad, because his Core Passive shields all.
+44. **Phoenix (beta)**: her "Scorch" is read as a state on the enemy and
+    counted; her text never says what applies it. Beta text can change: she is
+    re-read on release, as the method says.
+
+## Materials (step 4)
+45. **Costs come from nanoka.cc** (ascension, every skill level, Core Skill,
+    Traces), for every character at once: this is game data, not kit reading.
+46. **ZZZ Agent EXP** is counted in Senior Investigator Logs (3,000 EXP each,
+    from the item's in-game text as quoted by Icy Veins and ONE Esports).
+    Checked: nanoka.cc's EXP table gives 900,000 for 1 → 60 = 300 Logs, the
+    number Icy Veins lists.
+47. **HSR character EXP is not counted yet**: neither nanoka.cc nor Yatta has
+    the per-level table, and the wiki that has it blocks automated reading.
+    The Farm says so instead of guessing.
+
+## Added with group H: every agent is read
+48. **Conditions can ask for an assist type** (Caesar: "another member who can
+    activate Defensive Assist"), from the profiles.
+49. **"Aftershock DMG" is a stat only some damage dealers use**, like Anomaly
+    DMG (decision 37): it counts for Soldier 0 - Anby and Orphie & Magus, whose
+    own text proves their damage is Aftershock DMG.
+50. **Pyrois's Mindscape 6 is hidden in the game data** ("Mindscape Effect
+    Hidden"); it is read when the game shows it.
+
+## Recommended builds (step 4)
+51. **Builds are the game's own recommendation** (nanoka.cc's copy of it), the
+    only source that is game data rather than a guide. Guides (Prydwen and
+    the like) can be added later as a second, named source.
+52. **The ZZZ W-Engine shown is the agent's own**: the game files name it after
+    them ("Weapon_S_<agent id>"). Agents without one show "No data yet".
+53. **Build score and saving a scanned build** need a place to save builds,
+    which the app doesn't have yet (FRAME's saved data). Until then the
+    character page keeps saying "No build data yet".
+54. **A team's first member is its damage dealer** when they can be one (the
+    lead of a preset or recommended team); otherwise the method's step 1 picks.
+    So "Cissia team" is scored for Cissia, not for Seed in the same squad.
+55. **Recommended teams (ZZZ) come from the check itself**: for every damage
+    dealer, the best squad from every agent at Mindscape 0, with the two best
+    alternatives per place. Source named on each card.

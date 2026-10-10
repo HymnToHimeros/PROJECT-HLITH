@@ -108,6 +108,8 @@ export interface KitSkill {
   kind?: 'skill' | 'core' | 'additional' | 'mindscape' | 'potential' | 'trace' | 'eidolon';
   /** Only active from this dupe level (1–6) or potential level; absent = base kit. */
   unlock?: { dupes?: number; potential?: number };
+  /** No longer applies from this level: a stronger version (`unlock` at the same level) replaces it. */
+  replacedAt?: { potential: number };
   /** What it does, in a few words. Empty until the kit has been read. */
   does: string[];
   /** Each tag with the exact words of `gameText` that prove it. */
@@ -127,6 +129,22 @@ export interface Kit {
   /** Not released yet: the text can change before release. */
   beta?: boolean;
   skills: KitSkill[];
+}
+
+/** A recommended build for one character, with who recommends it (LOGIC-CORE). */
+export interface RecommendedBuild {
+  characterId: string;
+  /** Who recommends it, shown with it. */
+  source: string;
+  /** Gear sets: each with how many pieces and the options, best first. */
+  sets: { pieces: number; options: string[] }[];
+  /** Main stats by gear slot, e.g. { 'Disc 4': ['CRIT Rate'] }. */
+  mainStats: Record<string, string[]>;
+  subStats: string[];
+  /** Weapons, best first. Empty = none recommended. */
+  weapons: string[];
+  /** Skills to level first, tier by tier. Empty = the source doesn't say. */
+  skillsFirst: string[][];
 }
 
 export interface Version {

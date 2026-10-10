@@ -2,11 +2,14 @@
  * Honkai: Star Rail. Numbers here are checked against the sources listed at the
  * bottom; anything not confirmed stays null and shows "No data yet".
  */
-import type { BacklogItem, Banner, Character, GameContract, GameEvent, Material, SampleArt, TeamPreset, Version } from '../../core/contract';
+import type { BacklogItem, Banner, Character, GameContract, GameEvent, Kit, RecommendedBuild, Material, SampleArt, TeamPreset, Version } from '../../core/contract';
 import backlog from './data/backlog.json';
 import banners from './data/banners.json';
 import characters from './data/characters.json';
 import events from './data/events.json';
+import builds from './data/builds.json';
+import kits from './data/kits.json';
+import { materialsFor } from './costs';
 import materials from './data/materials.json';
 import teams from './data/teams.json';
 import sampleArt from './data/sample-art.json';
@@ -156,11 +159,18 @@ export const hsr: GameContract = {
     teams: list<TeamPreset>(teams),
     sampleArt: async () => sampleArt as SampleArt[],
     versions: list<Version>(versions),
-    // No kits yet: Kit check shows "No data yet" until kit data is added (Override 1).
+    // Kit text, group by group (npm run data:hsr-kits). Tags and team scores wait for the owner's OK on docs/logic/hsr-theory.md.
+    kits: list<Kit>(kits),
+    // The game's own recommended builds (npm run data:builds).
+    builds: list<RecommendedBuild>(builds),
   },
   accountLinks: [{ provider: 'hoyolab', supports: ['stamina', 'checkin', 'roster', 'endgame'], config: { gameBiz: 'hkrpg_global' } }],
   scan: { screen: 'character', fields: ['level', 'eidolon', 'light-cone', 'relics', 'traces'] },
-  rules: {},
+  // Level-up costs from nanoka.cc; team scoring waits for the owner's OK on docs/logic/hsr-theory.md.
+  rules: {
+    materialsFor,
+    materialsNote: "From the game data (nanoka.cc): ascension, every skill and every Trace to max. Character EXP isn't counted yet: the per-level EXP table isn't in the data HLITH reads.",
+  },
   sources: [
     { what: 'Character list (names, rarity, path, element, release date)', source: 'nanoka.cc data files, game data 4.6.51, used with permission', entered: '2026-10-09', verified: false },
     { what: 'Pull rates, hard pity, 50/50 and 75/25', source: 'official rates shown on the in-game Warp details page', entered: '2026-10-09', verified: false },

@@ -19,7 +19,10 @@
     "roadmap": "node scripts/roadmap.ts",
     "data:nanoka": "node scripts/import-nanoka.ts",
     "data:kits": "node scripts/import-nanoka-kits.ts",
-    "data:schedule": "node scripts/import-schedule.ts"
+    "data:schedule": "node scripts/import-schedule.ts",
+    "data:hsr-kits": "node scripts/import-nanoka-hsr-kits.ts",
+    "data:costs": "node scripts/import-nanoka-costs.ts",
+    "data:builds": "node scripts/import-nanoka-builds.ts"
   },
   "dependencies": {
     "@fontsource-variable/archivo": "^5.3.0",

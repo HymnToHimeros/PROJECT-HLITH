@@ -26,8 +26,23 @@ describe('ZZZ profiles (docs/logic/zzz-method.md: every character needs one)', (
 });
 
 describe('ZZZ kit text', () => {
-  it('group A is in: Starlight Billy, Dialyn, Lucia, Pan Yinhu', () => {
-    expect(kits.map((k) => k.characterId).sort()).toEqual(['1421', '1451', '1481', '1531']);
+  it('groups A to I are in: every agent, read group by group (group by group, never all at once)', () => {
+    const groupA = ['1421', '1451', '1481', '1531']; // Pan Yinhu, Lucia, Dialyn, Starlight Billy
+    const groupB = ['1141', '1161', '1291', '1341', '1431', '1491', '1621']; // Lycaon, Lighter, Hugo, Zhao, Ye Shunguang, Sunna, Roxy
+    const groupC = ['1111', '1151', '1201', '1211', '1461', '1471', '1521', '1571']; // Anton, Lucy, Harumasa, Rina, Seed, Banyue, Cissia, Norma
+    const groupD = ['1051', '1311', '1371', '1391', '1411', '1441', '1611']; // Yidhari, Astra Yao, Yixuan, Ju Fufu, Yuzuha, Manato, Claret
+    const groupE = ['1091', '1171', '1221', '1261', '1281', '1331', '1401']; // Miyabi, Burnice, Yanagi, Jane, Piper, Vivian, Alice
+    const groupF = ['1181', '1351', '1501', '1511', '1541', '1561', '1581']; // Grace, Pulchra, Aria, Nangong Yu, Promeia, Velina, Remielle
+    const groupG = ['1031', '1131', '1191', '1241', '1251', '1271', '1321']; // Nicole, Soukaku, Ellen, Zhu Yuan, Qingyi, Seth, Evelyn
+    const groupH = ['1071', '1101', '1301', '1361', '1381', '1551', '1591']; // Caesar, Koleda, Orphie & Magus, Trigger, Soldier 0 - Anby, Pyrois, Sigrid
+    const groupI = ['1011', '1021', '1041', '1061', '1081', '1121', '1631', '1641']; // Anby, Nekomata, Soldier 11, Corin, Billy, Ben, Severian, Phoenix
+    expect(kits.map((k) => k.characterId).sort()).toEqual([...groupA, ...groupB, ...groupC, ...groupD, ...groupE, ...groupF, ...groupG, ...groupH, ...groupI].sort());
+    // The two not released yet are read from the beta files and say so.
+    expect((kits as { characterId: string; beta?: boolean }[]).filter((k) => k.beta).map((k) => k.characterId)).toEqual(['1631', '1641']);
+  });
+
+  it('released agents are read from the live version, not beta text', () => {
+    for (const k of kits as { characterId: string; version: string; beta?: boolean }[]) if (!k.beta) expect(k.version, k.characterId).not.toContain('+');
   });
 
   it.each(kits.map((k) => [k.characterId, k] as const))('%s: known character, every part present, unique ids, no markup left', (id, kit) => {
@@ -35,7 +50,9 @@ describe('ZZZ kit text', () => {
     expect(kit.source).toBe('nanoka.cc');
     const pieceIds = kit.skills.map((s) => s.id);
     expect(new Set(pieceIds).size).toBe(pieceIds.length);
-    for (const want of ['core-passive', 'additional-ability', 'mindscape-1', 'mindscape-2', 'mindscape-3', 'mindscape-4', 'mindscape-5', 'mindscape-6']) expect(pieceIds).toContain(want);
+    expect(pieceIds.some((p) => p.startsWith('core-passive'))).toBe(true);
+    expect(pieceIds.some((p) => p.startsWith('additional-ability'))).toBe(true);
+    for (const want of ['mindscape-1', 'mindscape-2', 'mindscape-3', 'mindscape-4', 'mindscape-5', 'mindscape-6']) expect(pieceIds).toContain(want);
     expect(kit.skills.filter((s) => s.kind === 'skill').length).toBeGreaterThan(5);
     for (const s of kit.skills) {
       expect(s.gameText.length, s.id).toBeGreaterThan(10);

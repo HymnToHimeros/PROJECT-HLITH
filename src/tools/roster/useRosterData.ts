@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import type { Character, GameContract, GameId, Kit, SampleArt, TeamPreset } from '../../core/contract';
+import type { Character, GameContract, GameId, Kit, RecommendedBuild, SampleArt, TeamPreset } from '../../core/contract';
 import { useExamplesShown } from '../../core/data/prefs';
 import type { GameUserData } from '../../core/data/userData';
 import { examplePresets } from './examples';
@@ -86,4 +86,30 @@ export function useKits(game: GameContract): Kit[] | null {
   }, [game]);
   if (!game.data.kits) return [];
   return state?.game === game ? state.kits : null;
+}
+
+// Builds are loaded once per game, only when a screen shows them.
+const buildCache = new WeakMap<GameContract, Promise<RecommendedBuild[]>>();
+
+/** The game's recommended builds: null while loading; [] when the game has none. */
+export function useBuilds(game: GameContract): RecommendedBuild[] | null {
+  const [state, setState] = useState<{ game: GameContract; builds: RecommendedBuild[] } | null>(null);
+  useEffect(() => {
+    const load = game.data.builds;
+    if (!load) return;
+    let alive = true;
+    let p = buildCache.get(game);
+    if (!p) {
+      p = load().catch(() => []);
+      buildCache.set(game, p);
+    }
+    void p.then((builds) => {
+      if (alive) setState({ game, builds });
+    });
+    return () => {
+      alive = false;
+    };
+  }, [game]);
+  if (!game.data.builds) return [];
+  return state?.game === game ? state.builds : null;
 }
