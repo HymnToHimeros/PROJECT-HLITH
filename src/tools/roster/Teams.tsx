@@ -9,6 +9,7 @@ import r from './roster.module.css';
 import { artOf, byNewest, CharArt, elementOf, entryOf, SectionHead, tagOf } from './shared';
 import { Member, Score, teamAccount, useVerdict, WhyScore } from './TeamParts';
 import type { RosterData } from './useRosterData';
+import { Switch } from '../pulls/shared';
 
 /** A preset to start the editor with (copied from a recommended team, or from a character page). */
 export interface PresetDraft {
@@ -86,16 +87,73 @@ export function Teams({ data, several, onOpen, openCharacters, openAccount, draf
     <div className={r.stack}>
       {anyExample && (
         <ExampleNotice actions={ownsAnyone ? [] : [{ label: 'Mark who I own', onClick: openCharacters }]}>
-          The recommended teams, their numbers and the ideas below are examples built from the {word} list, not advice. Real recommended teams and scoring still have to be added by us. Your roster and your own presets are always yours.
+          The recommended teams, their numbers and the ideas below are examples built from the {word} list, not advice. Real recommended teams and scoring still have to be added by us. Your roster and your own teams are always yours.
         </ExampleNotice>
       )}
+
+      <section className={r.stack} aria-labelledby="my-teams">
+        <SectionHead title="My teams" id="my-teams" note={`Pick anyone, up to ${size} each; scored like the recommended teams`}>
+          {first && (
+            <Button variant="primary" onClick={() => setEditing({ data: first, team: null })}>
+              Make a team
+            </Button>
+          )}
+        </SectionHead>
+        {removed && (
+          <p className={r.undoRow} role="status">
+            <span className={r.grow}>Deleted “{removed.team.name}”.</span>
+            <Button
+              onClick={() => {
+                saveTeam(removed.game, removed.team);
+                setRemoved(null);
+              }}
+            >
+              Undo
+            </Button>
+          </p>
+        )}
+        {mine.length === 0 ? (
+          <div className={r.emptyCard}>
+            <span className={r.label}>NO DATA YET</span>
+            <span className={r.emptyTitle}>No teams of your own yet</span>
+            <span className={r.cardText}>Pick who’s in it yourself (anyone, owned or not). HLITH scores it and explains why, like the recommended teams below.</span>
+            {first && (
+              <Button variant="primary" onClick={() => setEditing({ data: first, team: null })}>
+                Make my first team
+              </Button>
+            )}
+          </div>
+        ) : (
+          <div className={r.teamGrid}>
+            {mine.map(({ d, t }) => (
+              <TeamCard
+                key={`${d.game.id}:${t.id}`}
+                data={d}
+                several={several}
+                name={t.name}
+                members={t.members}
+                example={false}
+                score={null}
+                onOpen={(id) => onOpen(d.game.id, id)}
+                actions={
+                  <>
+                    <Button onClick={() => setKitFor({ data: d, name: t.name, members: t.members })}>Kit check</Button>
+                    <Button onClick={() => setEditing({ data: d, team: t })}>Edit</Button>
+                    <ShareTeam game={d.game} team={t} />
+                  </>
+                }
+              />
+            ))}
+          </div>
+        )}
+      </section>
 
       <section className={r.stack} aria-labelledby="recommended-teams">
         <SectionHead title="Recommended teams" id="recommended-teams" note="Each place lists who fits it, best first, with whether you own them.">
           <span className={r.howSmall}>
             <HowTo
               steps={[
-                <>A preset is a team you play: up to {size} {word}s. Press <strong>New preset</strong> (or <strong>Save as my preset</strong> on a recommended team), name it and pick who’s in it. Your owned {word}s come first; you can add anyone.</>,
+                <>My teams are teams you play: up to {size} {word}s. Press <strong>Make a team</strong> (or <strong>Save as my team</strong> on a recommended team), name it and pick who’s in it. Your owned {word}s come first; you can add anyone.</>,
                 <>Recommended teams list who fits each place, best first, and whether you own them.</>,
                 <>The number on each team is how well it fits your roster. It fills in once team scoring is added; until then it says “No data yet” (example teams show an example number).</>,
                 <><strong>Kit check</strong> on any team shows what each member’s skills really do, with the game’s own text as proof.</>,
@@ -144,7 +202,7 @@ export function Teams({ data, several, onOpen, openCharacters, openAccount, draf
                 actions={
                   <>
                     <Button onClick={() => setKitFor({ data: d, name: p.name, members })}>Kit check</Button>
-                    <Button onClick={() => copyPreset(d, p)}>Save as my preset</Button>
+                    <Button onClick={() => copyPreset(d, p)}>Save as my team</Button>
                   </>
                 }
               />
@@ -155,58 +213,6 @@ export function Teams({ data, several, onOpen, openCharacters, openAccount, draf
           <Button onClick={() => setShown((n) => n + TEAMS_MORE)}>
             Show {Math.min(TEAMS_MORE, matching.length - recommended.length)} more ({matching.length - recommended.length} hidden)
           </Button>
-        )}
-      </section>
-
-      <section className={r.stack} aria-labelledby="your-presets">
-        <SectionHead title="Your presets" id="your-presets" note={`Teams you made · up to ${size} each`}>
-          {first && (
-            <Button variant="primary" onClick={() => setEditing({ data: first, team: null })}>
-              New preset
-            </Button>
-          )}
-        </SectionHead>
-        {removed && (
-          <p className={r.undoRow} role="status">
-            <span className={r.grow}>Deleted “{removed.team.name}”.</span>
-            <Button
-              onClick={() => {
-                saveTeam(removed.game, removed.team);
-                setRemoved(null);
-              }}
-            >
-              Undo
-            </Button>
-          </p>
-        )}
-        {mine.length === 0 ? (
-          <div className={r.emptyCard}>
-            <span className={r.label}>NO DATA YET</span>
-            <span className={r.emptyTitle}>No team presets yet</span>
-            <span className={r.cardText}>Build a team from your roster and HLITH scores it against recommended teams.</span>
-          </div>
-        ) : (
-          <div className={r.teamGrid}>
-            {mine.map(({ d, t }) => (
-              <TeamCard
-                key={`${d.game.id}:${t.id}`}
-                data={d}
-                several={several}
-                name={t.name}
-                members={t.members}
-                example={false}
-                score={null}
-                onOpen={(id) => onOpen(d.game.id, id)}
-                actions={
-                  <>
-                    <Button onClick={() => setKitFor({ data: d, name: t.name, members: t.members })}>Kit check</Button>
-                    <Button onClick={() => setEditing({ data: d, team: t })}>Edit</Button>
-                    <ShareTeam game={d.game} team={t} />
-                  </>
-                }
-              />
-            ))}
-          </div>
         )}
       </section>
 
@@ -235,7 +241,7 @@ export function Teams({ data, several, onOpen, openCharacters, openAccount, draf
         {kitFor && <KitCheck game={kitFor.data.game} title={false} characters={kitFor.members.map((id) => kitFor.data.byId.get(id)).filter((x): x is Character => Boolean(x))} />}
       </BottomSheet>
 
-      <BottomSheet open={editing !== null} side title={editing?.team ? 'Edit preset' : 'New preset'} onClose={closeEditor}>
+      <BottomSheet open={editing !== null} side title={editing?.team ? 'Edit team' : 'New team'} onClose={closeEditor}>
         {editing !== null && (
           <TeamEditor
             key={editing.team ? editing.team.id : `new-${editing.data.game.id}`}
@@ -396,10 +402,10 @@ function RatedIdeas({ data, several, head, onPick }: { data: RosterData; several
     <>
       <section className={r.card} aria-label={`Teams you can build${several ? ` · ${game.short}` : ''}`}>
         {head('Teams you can build')}
-        <span className={r.cardText}>Your best teams from the {word}s you own, no {word} twice, checked kit by kit. Tap one to make it a preset.</span>
+        <span className={r.cardText}>Your best teams from the {word}s you own, no {word} twice, checked kit by kit. Tap one to make it your team.</span>
         {ideas.length ? (
           ideas.map((t) => (
-            <button key={t.members.join()} type="button" className={`${r.ideaRow} ${r.ideaBtn}`} onClick={() => onPick(t.members)} aria-label={`${t.members.map(name).join(', ')}: count ${t.count}. Make it a preset`} title={t.why}>
+            <button key={t.members.join()} type="button" className={`${r.ideaRow} ${r.ideaBtn}`} onClick={() => onPick(t.members)} aria-label={`${t.members.map(name).join(', ')}: count ${t.count}. Make it my team`} title={t.why}>
               <span className={r.lineLabel}>{t.members.map(name).join(' > ')}</span>
               <span className={r.ideaState}>count {t.count}</span>
             </button>
@@ -457,11 +463,11 @@ function ExampleIdeas({
     <>
       <section className={r.card} aria-label={`Teams you can build${several ? ` · ${game.short}` : ''}`}>
         {head('Teams you can build')}
-        <span className={r.cardText}>Recommended teams checked against the {word}s you own. Tap one to make it a preset.</span>
+        <span className={r.cardText}>Recommended teams checked against the {word}s you own. Tap one to make it your team.</span>
         {/* ROSTER-LOGIC: who fits each place, from your owned characters. */}
         {ranked.length ? (
           ranked.slice(0, 3).map(({ p, missing }) => (
-            <button key={p.id} type="button" className={`${r.ideaRow} ${r.ideaBtn}`} onClick={() => onPick(p)} aria-label={`${p.name}: ${readiness(missing, word)}. Make it a preset`}>
+            <button key={p.id} type="button" className={`${r.ideaRow} ${r.ideaBtn}`} onClick={() => onPick(p)} aria-label={`${p.name}: ${readiness(missing, word)}. Make it my team`}>
               <span className={r.lineLabel}>{p.name}</span>
               <span className={r.ideaState}>{readiness(missing, word)}</span>
               <ExampleTag />
@@ -473,7 +479,7 @@ function ExampleIdeas({
       </section>
       <section className={r.card} aria-label={`If you pull${several ? ` · ${game.short}` : ''}`}>
         {head('If you pull…')}
-        <span className={r.cardText}>Characters you’re saving for, checked against your roster: the best team they make, and which of your presets they make better.</span>
+        <span className={r.cardText}>Characters you’re saving for, checked against your roster: the best team they make, and which of your teams they make better.</span>
         {pull && pullName ? (
           <div className={r.ideaRow}>
             <span className={r.lineLabel}>{pullName}</span>
@@ -494,7 +500,7 @@ function EndgameRecord({ data, several, head, ready, openAccount }: { data: Rost
     <>
       <section className={r.card} aria-label={`Endgame record${several ? ` · ${game.short}` : ''}`}>
         {head('Endgame record')}
-        <span className={r.cardText}>The teams you used in {game.terms.endgame.slice(0, 2).join(' and ') || 'endgame'}, read from your HoYoLAB profile. A team that matches a preset shows its name.</span>
+        <span className={r.cardText}>The teams you used in {game.terms.endgame.slice(0, 2).join(' and ') || 'endgame'}, read from your HoYoLAB profile. A team that matches one of yours shows its name.</span>
         {/* Endgame import mounts here (account-links builder: HoYoLAB link). The example only names a team you could really field. */}
         {ready ? (
           <div className={r.ideaRow}>
@@ -580,7 +586,7 @@ function TeamEditor({
     <form className={r.stack} onSubmit={submit}>
       {gamePicker}
       <label className={r.field}>
-        <span className={r.fieldLabel}>Preset name</span>
+        <span className={r.fieldLabel}>Team name</span>
         <input className={r.input} value={name} onChange={(e) => setName(e.target.value)} required />
       </label>
       <p className={r.summary}>
@@ -597,6 +603,7 @@ function TeamEditor({
           </button>
         </p>
       )}
+      <Suggestions data={data} members={members} full={full} onAdd={toggle} />
       <label className={r.field}>
         <span className={r.fieldLabel}>Search</span>
         <input className={r.input} type="search" value={query} onChange={(e) => setQuery(e.target.value)} placeholder={`${game.terms.character} name`} />
@@ -633,15 +640,83 @@ function TeamEditor({
       )}
       <div className={r.cardActions}>
         <Button type="submit" variant="primary" disabled={!members.length}>
-          Save preset
+          Save team
         </Button>
         <Button onClick={onDone}>Cancel</Button>
         {team && (
           <Button variant="quiet" onClick={() => onDelete(team)}>
-            Delete preset
+            Delete team
           </Button>
         )}
       </div>
     </form>
+  );
+}
+
+/**
+ * Who to add next, ranked by the team's % with them (LOGIC-CORE's whoFits). By default only
+ * characters you own, scored with what your account has (copies, Enhanced / Potential, the
+ * weapon in a saved build); the switch adds everyone else, scored as theory (base kit).
+ */
+function Suggestions({ data, members, full, onAdd }: { data: RosterData; members: string[]; full: boolean; onAdd: (id: string) => void }) {
+  const rules = data.game.rules.teams;
+  const [unowned, setUnowned] = useState(false);
+  const verdict = useVerdict(data, members, members.length === 0);
+  const key = members.join(',');
+  const user = data.user;
+  const fits = useMemo(
+    () => (rules && key ? rules.whoFits(key.split(','), teamAccount(data), { includeUnowned: unowned }).filter((f) => !key.split(',').includes(f.id)).slice(0, 8) : []),
+    [rules, key, unowned, user], // eslint-disable-line react-hooks/exhaustive-deps
+  );
+  if (!rules) return null;
+  const word = data.game.terms.character.toLowerCase();
+  const name = (id: string) => data.byId.get(id)?.name ?? id;
+  return (
+    <section className={r.suggest} aria-label="Suggested teammates">
+      <div className={r.suggestHead}>
+        <span className={r.fieldLabel}>Suggested teammates</span>
+        {verdict?.rated && members.length > 1 && <span className={r.suggestNow}>Team now: {verdict.percent}%</span>}
+        <span className={r.grow} />
+        <span className={r.suggestSwitch}>
+          <Switch checked={unowned} onChange={setUnowned} label={`Include ${word}s I don’t own`} />
+          <span>Include {word}s I don’t own</span>
+        </span>
+      </div>
+      {members.length === 0 ? (
+        <p className={r.muted}>Pick a first {word} and HLITH suggests who fits with them, best first, from what you own.</p>
+      ) : fits.length === 0 ? (
+        <p className={r.muted}>
+          {verdict && !verdict.rated ? verdict.why : unowned ? `No ${word} adds to this team yet.` : `None of the ${word}s you own adds to this team. Switch on “Include ${word}s I don’t own” to see the rest as theory.`}
+        </p>
+      ) : (
+        <ul className={r.suggestList}>
+          {fits.map((f) => {
+            const c = data.byId.get(f.id);
+            const el = c ? elementOf(data.game, c.element) : undefined;
+            const notes = [...(f.fromAccount ?? []), ...f.how.slice(0, 1)];
+            return (
+              <li key={f.id}>
+                <button
+                  type="button"
+                  className={r.suggestItem}
+                  disabled={full}
+                  onClick={() => onAdd(f.id)}
+                  aria-label={`Add ${name(f.id)}${f.percent !== undefined ? `: team ${f.percent}%` : ''}${f.theory ? ', not owned, theory' : ''}`}
+                >
+                  {c && <CharArt name={c.name} src={artOf(c, 'portrait')} elementColor={el?.color ?? 'var(--ink-4)'} className={r.memberArtSm} />}
+                  <span className={r.suggestText}>
+                    <span className={r.suggestName}>
+                      {name(f.id)} {f.theory && <span className={r.suggestTheory}>Theory · not owned</span>}
+                    </span>
+                    {notes.length > 0 && <span className={r.suggestNotes}>{notes.join(' ')}</span>}
+                  </span>
+                  <span className={r.suggestPct}>{f.percent !== undefined ? `${f.percent}%` : `+${f.count}`}</span>
+                </button>
+              </li>
+            );
+          })}
+        </ul>
+      )}
+    </section>
   );
 }

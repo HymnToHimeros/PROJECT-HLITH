@@ -73,9 +73,7 @@
   position: relative;
   aspect-ratio: 16 / 7;
   border-bottom: 3px solid var(--vent);
-  background:
-    linear-gradient(180deg, transparent 55%, color-mix(in srgb, var(--bg-card) 55%, transparent)),
-    color-mix(in srgb, var(--el) 14%, var(--bg-raised));
+  background: linear-gradient(180deg, transparent 55%, color-mix(in srgb, var(--bg-card) 55%, transparent)), color-mix(in srgb, var(--el) 14%, var(--bg-raised));
   display: flex;
   align-items: center;
   justify-content: center;
@@ -85,8 +83,7 @@
   border-bottom-style: dashed;
 }
 .artEmpty {
-  background:
-    repeating-linear-gradient(135deg, color-mix(in srgb, var(--el) 16%, var(--bg-raised)) 0 10px, var(--bg-inset) 10px 20px);
+  background: repeating-linear-gradient(135deg, color-mix(in srgb, var(--el) 16%, var(--bg-raised)) 0 10px, var(--bg-inset) 10px 20px);
 }
 .artImg {
   position: absolute;
@@ -137,8 +134,18 @@
 }
 .kind {
   flex: 1;
-  font-size: 12px;
-  color: var(--ink-4);
+  min-width: 0;
+  font: 600 10.5px/1.3 var(--font-numbers);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+.rerun {
+  margin-left: 4px;
+  color: var(--ink-2);
+}
+.rerunNew {
+  color: var(--ok);
 }
 .title {
   margin: 0;
@@ -311,4 +318,790 @@
   flex-direction: column;
   gap: 2px;
   min-width: 0;
+}
+
+.headRow {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--s-2);
+}
+.grow {
+  flex: 1;
+}
+
+/* Timeline board (owner's pick, drawn after the mock-up): one shared ruler, Now / Next / Later, "Always open" rail. */
+.boardWrap {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--s-4);
+  align-items: start;
+}
+.withRail {
+  grid-template-columns: minmax(0, 1fr) 260px;
+}
+.boardMain {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-3);
+  min-width: 0;
+}
+
+/* Shared ruler */
+.ruler {
+  background: var(--bg-shell);
+  border: 1px solid var(--line-subtle);
+  border-radius: var(--r-card);
+  padding: 14px 16px 12px;
+  min-width: 0;
+}
+.rulerScroll {
+  overflow-x: auto;
+}
+.rulerInner {
+  position: relative;
+  min-width: 600px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-top: 28px;
+}
+/* Phases, TODAY: drawn over the bar area (right of the game labels). */
+.rulerOverlay {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 40px;
+  right: 0;
+  pointer-events: none;
+}
+.rulerPhase {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  border-left: 1px solid var(--line-default);
+}
+.rulerPhaseNow {
+  background: linear-gradient(180deg, color-mix(in srgb, var(--ink-2) 6%, transparent), color-mix(in srgb, var(--ink-2) 1.5%, transparent));
+}
+.rulerPhaseLabel {
+  position: absolute;
+  top: 2px;
+  left: 8px;
+  font: 700 11px/1 var(--font-numbers);
+  letter-spacing: 0.14em;
+  color: var(--ink-4);
+}
+.rulerPhaseNow .rulerPhaseLabel {
+  color: var(--ink-1);
+}
+.rulerLane {
+  display: grid;
+  grid-template-columns: 40px minmax(0, 1fr);
+  align-items: start;
+}
+.rulerGame {
+  justify-self: start;
+  margin-top: 2px;
+  padding: 0 4px;
+  border-radius: 3px;
+  background: var(--gv);
+  color: var(--bg-app);
+  font: 700 9.5px/16px var(--font-numbers);
+  letter-spacing: 0.04em;
+}
+.rulerRows {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.rulerRow {
+  position: relative;
+  height: 14px;
+}
+.rulerBar {
+  position: absolute;
+  top: 0;
+  height: 14px;
+  border-radius: 4px;
+  background: color-mix(in srgb, var(--gv) 86%, #000);
+  color: var(--bg-app);
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 14px;
+  padding: 0 6px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.rulerLeak {
+  background: repeating-linear-gradient(135deg, transparent 0 5px, color-mix(in srgb, var(--ember-soft) 18%, transparent) 5px 10px);
+  border: 1px dashed var(--ember-soft);
+  color: var(--ember-soft);
+  line-height: 12px;
+}
+.rulerTicks {
+  position: relative;
+  height: 16px;
+  margin-left: 40px;
+}
+.rulerTick {
+  position: absolute;
+  top: 3px;
+  transform: translateX(-50%);
+  font: 600 10.5px/1 var(--font-numbers);
+  color: var(--ink-4);
+  white-space: nowrap;
+}
+.today {
+  position: absolute;
+  top: 0;
+  bottom: 16px;
+  width: 2px;
+  background: var(--ember-soft);
+  box-shadow: 0 0 14px color-mix(in srgb, var(--ember-soft) 50%, transparent);
+  z-index: 1;
+}
+.todayLabel {
+  position: absolute;
+  top: 0;
+  left: 6px;
+  padding: 3px 6px;
+  border-radius: var(--r-tag);
+  background: var(--ember-soft);
+  color: var(--bg-app);
+  font: 700 11px/1 var(--font-numbers);
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+}
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 14px;
+  margin: 10px 0 0;
+  font-size: 12px;
+  color: var(--ink-4);
+}
+.legendSwatch {
+  display: inline-block;
+  width: 14px;
+  height: 8px;
+  margin-right: 6px;
+  border-radius: 2px;
+  vertical-align: middle;
+  background: var(--gv);
+}
+.legendLeak {
+  background: transparent;
+  border: 1px dashed var(--ember-soft);
+}
+
+/* Board */
+.tabs {
+  display: none;
+}
+.board {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  align-items: start;
+}
+.boardLabelled {
+  grid-template-columns: 26px repeat(3, minmax(0, 1fr));
+}
+.gameLabel {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  align-self: stretch;
+  padding-top: 76px;
+}
+.gameLabel span {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font: 800 13px/1 var(--font-numbers);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--vent);
+  white-space: nowrap;
+}
+.column {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+.columnHead {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 10px 12px;
+  border-radius: var(--r-row);
+  border: 1px solid var(--line-default);
+  background: var(--bg-card);
+}
+.columnNow .columnHead {
+  border-color: color-mix(in srgb, var(--ember-soft) 55%, transparent);
+  box-shadow: inset 0 2px 0 var(--ember-soft);
+}
+.columnLabel {
+  font-weight: 800;
+  font-stretch: 112%;
+  font-size: 15px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-1);
+}
+.columnNote {
+  font-size: 12px;
+  color: var(--ink-4);
+}
+.emptyCell {
+  min-height: 40px;
+  border: 1px dashed var(--line-default);
+  border-radius: var(--r-row);
+}
+.group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+/* A character banner with its weapon banner under it. */
+.pair {
+  padding: 6px;
+  border-radius: var(--r-card);
+  background: color-mix(in srgb, var(--ink-1) 2%, transparent);
+  border: 1px solid var(--line-subtle);
+}
+
+/* Compact tile */
+.tile {
+  position: relative;
+  display: grid;
+  grid-template-columns: 62px minmax(0, 1fr);
+  gap: 10px;
+  padding: 8px;
+  min-width: 0;
+  border-radius: var(--r-row);
+  background: var(--bg-card);
+  border: 1px solid var(--line-default);
+  box-shadow: inset 3px 0 0 var(--vent);
+}
+.tile.leak {
+  background: repeating-linear-gradient(135deg, var(--bg-card) 0 8px, var(--hatch) 8px 16px);
+  border: 1.5px dashed var(--ember-soft);
+  box-shadow: none;
+}
+.tilePaired {
+  grid-template-columns: 44px minmax(0, 1fr);
+}
+.thumb {
+  position: relative;
+  width: 62px;
+  height: 78px;
+  border-radius: 7px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(120% 90% at 50% 20%, color-mix(in srgb, var(--el) 30%, transparent), transparent 70%), var(--bg-inset);
+  font: 800 18px var(--font-numbers);
+  color: color-mix(in srgb, var(--el) 40%, var(--ink-2));
+}
+.tilePaired .thumb {
+  width: 44px;
+  height: 56px;
+}
+.thumbEmpty {
+  background: repeating-linear-gradient(135deg, color-mix(in srgb, var(--el) 16%, var(--bg-raised)) 0 8px, var(--bg-inset) 8px 16px);
+}
+.leak .thumb {
+  background: transparent;
+  border: 1px dashed var(--line-empty);
+}
+.thumbWeapon {
+  background: radial-gradient(70% 60% at 50% 50%, color-mix(in srgb, var(--el) 38%, transparent), transparent 75%), var(--bg-inset);
+}
+.thumbImg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 12%;
+}
+.thumbImgWeapon {
+  object-fit: contain;
+  padding: 5px;
+}
+.thumb .artLabel {
+  top: auto;
+  bottom: 3px;
+  left: 3px;
+  font-size: 7px;
+  padding: 2px 3px;
+}
+.tileBody {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+.tools {
+  display: flex;
+  gap: 4px;
+  margin-left: auto;
+}
+.tileTitle {
+  margin: 0;
+  font-weight: 700;
+  font-size: 13.5px;
+  line-height: 1.25;
+  text-wrap: balance;
+  color: var(--ink-1);
+}
+.leadRow {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4px 6px;
+}
+.leadRow .sub {
+  font-size: 12.5px;
+}
+.leadRow .fit {
+  padding: 1px 7px;
+  font-size: 11.5px;
+}
+.timeRow {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 8px;
+  margin-top: 2px;
+}
+.timer {
+  grid-column: 2;
+  font: 700 12px var(--font-numbers);
+  color: var(--ink-1);
+}
+.dates {
+  font-size: 13px;
+  color: var(--ink-3);
+}
+.bar {
+  display: block;
+  height: 5px;
+  border-radius: 999px;
+  background: var(--bg-track);
+  overflow: hidden;
+}
+.barFill {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--vent);
+}
+.iconBtn,
+.star {
+  flex: none;
+  width: 28px;
+  height: 28px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border-radius: 7px;
+  border: 1px solid var(--line-strong);
+  background: var(--bg-raised);
+  color: var(--ink-3);
+  font-size: 14px;
+  line-height: 1;
+  cursor: pointer;
+}
+.iconBtn:hover,
+.star:hover {
+  border-color: var(--glacier);
+  color: var(--glacier);
+}
+.chev {
+  width: 13px;
+  height: 13px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.wantOn,
+.wantOn:hover {
+  border-color: color-mix(in srgb, var(--rarity-top) 60%, transparent);
+  color: var(--rarity-top);
+  background: color-mix(in srgb, var(--rarity-top) 12%, var(--bg-card));
+}
+
+/* Big card (live banners, or a tile opened with its arrow) */
+.hero {
+  display: block;
+  padding: 0;
+  overflow: hidden;
+  border-radius: var(--r-card);
+  border-left: 3px solid var(--vent);
+  box-shadow: none;
+}
+.heroArt {
+  position: relative;
+  height: 150px;
+  overflow: hidden;
+  background: radial-gradient(60% 120% at 70% 30%, color-mix(in srgb, var(--el) 35%, transparent), transparent 70%), var(--bg-inset);
+}
+.heroArt::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(0deg, var(--bg-card) 8%, color-mix(in srgb, var(--bg-card) 82%, transparent) 45%, transparent 85%);
+  pointer-events: none;
+}
+.heroArtWeapon {
+  background: radial-gradient(60% 80% at 50% 40%, color-mix(in srgb, var(--el) 30%, transparent), transparent 75%), var(--bg-inset);
+}
+.heroImg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 40%;
+  transform: scale(1.6);
+  transform-origin: 60% 42%;
+}
+.heroImgWeapon {
+  object-position: center 30%;
+  transform: scale(1.15);
+  transform-origin: 50% 30%;
+}
+.heroInitials {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding-bottom: 40px;
+  font: 800 34px var(--font-words);
+  color: color-mix(in srgb, var(--el) 50%, var(--ink-3));
+}
+.heroTools {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 2;
+}
+.heroText {
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  bottom: 8px;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.heroText .kind {
+  color: var(--ink-2);
+}
+.heroTitle {
+  margin: 0;
+  font: 800 19px/1.05 var(--font-words);
+  font-stretch: 112%;
+  color: var(--ink-1);
+  text-wrap: balance;
+}
+.heroBody {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 4px 12px 12px;
+}
+.countdown {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.countdownRow {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 10px;
+}
+.countdownRow .bar {
+  height: 6px;
+}
+.bigTimer {
+  font: 700 22px/1 var(--font-numbers);
+  color: var(--ink-1);
+}
+.heroLead {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.heroName {
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--ink-1);
+}
+.heroEl {
+  font-size: 12.5px;
+  color: var(--ink-3);
+}
+.heroActions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+.heroActions .fit {
+  align-self: center;
+  padding: 4px 10px;
+  font-size: 12.5px;
+}
+.wantBig {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 36px;
+  padding: 0 12px;
+  border-radius: var(--r-button);
+  border: 1px solid var(--line-strong);
+  background: var(--bg-raised);
+  color: var(--ink-1);
+  font: inherit;
+  font-size: 13.5px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.planBig {
+  min-height: var(--tap-min);
+  border: 0;
+  border-radius: var(--r-button);
+  background: var(--vent);
+  color: var(--bg-app);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.planBig:hover {
+  filter: brightness(1.08);
+}
+.also {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.alsoLabel {
+  font: 600 10.5px/1.2 var(--font-numbers);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-5);
+}
+.alsoList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.alsoItem {
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  font-size: 13px;
+}
+.alsoItem .fit {
+  padding: 2px 7px;
+  font-size: 11.5px;
+}
+.alsoItem .sub {
+  font-size: 11.5px;
+}
+.alsoPic {
+  width: 28px;
+  height: 28px;
+  flex: none;
+  border-radius: 6px;
+  object-fit: cover;
+  object-position: 50% 15%;
+  background: var(--bg-inset);
+}
+.alsoWeapon {
+  object-fit: contain;
+}
+.alsoText {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+.alsoItem .alsoText .fit {
+  align-self: flex-start;
+}
+.alsoName {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink-1);
+  min-width: 0;
+}
+.alsoFor {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4px;
+  font-size: 11.5px;
+  color: var(--ink-3);
+}
+.alsoFor .fit {
+  padding: 1px 6px;
+  font-size: 11px;
+}
+
+/* Always open rail: compact rows */
+.rail {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 14px;
+  border-radius: var(--r-card);
+  border: 1px solid var(--line-subtle);
+  background: var(--bg-shell);
+}
+.railHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.rail > .muted {
+  font-size: 12.5px;
+  margin-bottom: 8px;
+}
+.railList {
+  display: flex;
+  flex-direction: column;
+}
+.railRow {
+  display: grid;
+  grid-template-columns: 36px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 0;
+  border-top: 1px solid var(--line-subtle);
+  min-width: 0;
+}
+.railPic {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  object-fit: cover;
+  object-position: 50% 15%;
+  background: radial-gradient(120% 90% at 50% 20%, color-mix(in srgb, var(--el) 30%, transparent), transparent 70%), var(--bg-inset);
+}
+.railText {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 3px;
+  min-width: 0;
+}
+.railText .fit {
+  padding: 2px 7px;
+  font-size: 11.5px;
+}
+.railText .sub {
+  font-size: 11.5px;
+}
+.railToggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  min-height: var(--tap-min);
+  padding: 0 2px;
+  border: 0;
+  border-top: 1px solid var(--line-subtle);
+  background: none;
+  color: var(--ink-2);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.railPlan {
+  align-self: flex-start;
+  min-height: 36px;
+  padding: 0 2px;
+  border: 0;
+  background: none;
+  color: var(--ink-1);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.railPlan:hover {
+  color: var(--glacier);
+}
+
+/* Narrow: the rail goes under the board; on a phone the columns become tabs. */
+@media (max-width: 1180px) {
+  .withRail {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+@media (max-width: 819px) {
+  .rulerBar {
+    font-size: 0;
+    padding: 0;
+  }
+  .tabs {
+    display: flex;
+    gap: 4px;
+    padding: 3px;
+    border-radius: var(--r-button);
+    background: var(--bg-inset);
+  }
+  .tabBtn {
+    flex: 1;
+    min-height: 40px;
+    border: 0;
+    border-radius: var(--r-segment);
+    background: transparent;
+    color: var(--ink-3);
+    font: 700 12px var(--font-numbers);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+  .tabBtn[aria-selected='true'] {
+    background: var(--bg-raised);
+    color: var(--ink-1);
+    box-shadow: inset 0 -2px 0 var(--ember-soft);
+  }
+  .tabCount {
+    color: var(--ink-4);
+  }
+  .board,
+  .boardLabelled {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .gameLabel {
+    display: none;
+  }
+  .column[data-active='false'] {
+    display: none;
+  }
+  .columnLabel {
+    display: none;
+  }
 }
