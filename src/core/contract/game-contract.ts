@@ -263,6 +263,15 @@ export interface TeamReason {
   proof?: { who: string; skill: string; quote: string };
 }
 
+/** A team score in plain words (LOGIC-CORE): the headline, one line per member, and what is missing to reach 100%. */
+export interface TeamExplain {
+  headline: string;
+  /** Each member: what they give the damage dealer (or, for the damage dealer, what the team switches on), and the points that earns. */
+  members: { id: string; text: string; points: number }[];
+  /** What costs points and what the best team has that this one lacks. Empty at 100% with nothing lost. */
+  missing: string[];
+}
+
 export type TeamVerdict =
   | {
       rated: true;
@@ -278,6 +287,8 @@ export type TeamVerdict =
       unordered?: boolean;
       reasons: TeamReason[];
       notes: string[];
+      /** The score in plain words, before the proof list. */
+      explain?: TeamExplain;
     }
   | { rated: false; why: string };
 

@@ -6,6 +6,7 @@
 import type { FitSuggestion, PullValue, TeamAccount, TeamIdea, TeamPreset, TeamReason, TeamRules, TeamVerdict } from '../../../core/contract';
 import { canCarry, canPartner, check, compare, damageDealers, isCentre, type Account, type Library, type Line, type TeamResult } from './check';
 import { centreOf, library, pageOf } from './library';
+import { explainTeam, memberPhrase } from '../../../core/rules/teamExplain';
 
 export const METHOD = 'HSR Kit Check theory v2 (docs/logic/hsr-theory.md)';
 /** Partners kept per damage dealer before teams of four are tried, once the pool is bigger than this. */
@@ -93,6 +94,8 @@ const centresIn = (ids: string[], lib: Library) => {
   return centres.length ? centres : ids.filter((id) => canCarry(id, lib));
 };
 
+const asExplain = (r: TeamResult) => ({ members: r.members, dd: r.dd, count: r.count, lines: r.lines });
+
 const ownedRead = (a: TeamAccount, lib: Library) => [...lib.sheets.keys()].filter((id) => a.owned(id));
 
 function reasonOf(l: Line, lib: Library): TeamReason {
@@ -152,6 +155,7 @@ export function verdict(members: string[], a: TeamAccount, lib: Library = librar
     order: mine.members,
     unordered: true,
     reasons: mine.lines.map((l) => reasonOf(l, lib)),
+    explain: explainTeam({ members: mine.members, dd: mine.dd, count: mine.count, lines: mine.lines }, { members: top.members, dd: top.dd, count: top.count, lines: top.lines }, name),
     notes: [summary(mine), ...notes],
   };
 }
@@ -233,7 +237,9 @@ export function ifYouPull(id: string, a: TeamAccount, lib: Library = library()):
     const withAll = bestFor(id, all, lib, account);
     if (withYours && withAll && withAll.count > 0) {
       const p = Math.max(0, Math.round((withYours.count / withAll.count) * 100));
-      why.push(`As a damage dealer: ${teamWords(withYours, lib)} counts ${withYours.count} from your characters, against ${withAll.count} with every character (${p}%).`);
+      why.push(
+        `As a damage dealer: your best team for them is ${teamWords(withYours, lib)} (${withYours.count} points; the best with every character is ${withAll.count}, so ${p}%). There ${memberPhrase(asExplain(withYours), id, name)}.`,
+      );
       percent = Math.max(percent, p);
     }
   }
@@ -244,7 +250,9 @@ export function ifYouPull(id: string, a: TeamAccount, lib: Library = library()):
     if (!lifted || !possible || possible.count <= 0 || !lifted.members.includes(id)) continue;
     if (lifted.count > (now?.count ?? 0)) {
       const p = Math.round((lifted.count / possible.count) * 100);
-      why.push(`As a teammate: ${name(dd)} goes from ${now?.count ?? 0} to ${lifted.count} (${teamWords(lifted, lib)}); ${name(dd)}'s best possible is ${possible.count} (${p}%).`);
+      why.push(
+        `As a teammate: ${name(dd)}'s best team of yours goes from ${now?.count ?? 0} to ${lifted.count} points (${teamWords(lifted, lib)}; the most possible is ${possible.count}, so ${p}%). ${name(id)} ${memberPhrase(asExplain(lifted), id, name)}.`,
+      );
       percent = Math.max(percent, p);
     }
   }

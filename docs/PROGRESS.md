@@ -28,6 +28,13 @@ Resume with: "continue from PROGRESS.md". Newest entry on top. Older entries:
 - CI (`.github/workflows/ci.yml`) runs both on every pull request.
 
 ## Done
+- 2026-10-10 · **LOGIC-CORE: scores explain themselves in plain words (T17)** (branch `logic-core/plain-reasons`).
+  Every team's "Why" now opens with a sentence (who deals the damage, who connects
+  with their kit), one line per member (what they give the damage dealer, what they
+  set off, points), and "To reach 100%" (points lost, the best team found and what
+  its members would bring). The kit lines that prove it are one tap below. "If you
+  pull" says what the character would give; Kit check notes are full sentences
+  (who gets it, when it's on, what it sets off, what you must do). Both games.
 - 2026-10-10 · **LOGIC-CORE: HSR teams built around real damage dealers (T19)** (branch `logic-core/hsr-real-teams`).
   Cause: the check let any Hunt/Erudition character be a team's centre, and the game's
   team for March 7th (Hunt) was imported with her first, though the game builds it
