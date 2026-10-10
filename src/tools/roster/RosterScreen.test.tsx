@@ -4,6 +4,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import type { Character, GameContract, Kit, TeamPreset, TeamRules } from '../../core/contract';
 import { gameData, resetUserData, saveTeam, setBuild, setRosterEntry, setTeamList } from '../../core/data/userData';
 import RosterScreen from './RosterScreen';
+import { setShowLeaked } from './leakedPref';
 
 const chars: Character[] = [
   { id: 'c1', name: 'Newest Star', rarity: 'top', element: 'fire', role: 'attack', releasedAt: '2026-09-01' },
@@ -524,6 +525,37 @@ describe('Roster screen', () => {
     expect(scoreBuild).toHaveBeenCalledWith(
       expect.objectContaining({ weapon: { name: 'Spark Cone', refine: 2 }, gear: [{ slot: 'Head', main: '', subs: { SPD: 4 }, set: 'Ember Set', rolls: { SPD: 2 } }] }),
     );
+  });
+
+  it('leaks in teams (T39): the rules get showLeaks from "Show leaked" + "Hide leaks"; a leak\'s page shows If you pull, marked unverified', async () => {
+    const leak: Character = { id: 'c9', name: 'Rumoured One', rarity: 'top', element: 'fire', role: 'attack', leak: { source: 'a test leaker' } };
+    const seen: (boolean | undefined)[] = [];
+    const ifYouPull = (_id: string, account: Parameters<TeamRules['ifYouPull']>[1]) => {
+      seen.push(account.showLeaks);
+      return { percent: 12, why: ['Leak: Rumoured One: unverified beta kit, may change (a test leaker).', 'Buffs Newest Star.'] };
+    };
+    const rules = { method: 'm', rated: () => false, verdict: () => ({ rated: false, why: '' }), whoFits: () => [], lineUps: () => [], ifYouPull } as unknown as TeamRules;
+    const base = makeGame(false);
+    const game: GameContract = { ...base, data: { ...base.data, characters: async () => [...chars, leak] }, rules: { teams: rules } };
+
+    // Leaks off (the default): the rules hear showLeaks off.
+    await show('characters', game);
+    fireEvent.click(screen.getByRole('button', { name: /^Older Star/ }));
+    await screen.findByRole('article', { name: 'Older Star' });
+    expect(seen.at(-1)).toBeUndefined();
+    cleanup();
+
+    // "Show leaked" on: the leak is listed, its page has If you pull marked unverified, and its leak line is tagged.
+    setShowLeaked(true);
+    await show('characters', game);
+    fireEvent.click(screen.getByRole('button', { name: /^Rumoured One/ }));
+    const page = await screen.findByRole('article', { name: 'Rumoured One' });
+    expect(seen.at(-1)).toBe(true);
+    const pull = within(page).getByRole('region', { name: 'If you pull' });
+    expect(within(pull).getAllByText('? UNVERIFIED').length).toBeGreaterThanOrEqual(2);
+    expect(within(pull).getByText('a test leaker')).toBeInTheDocument();
+    expect(within(page).queryByRole('region', { name: 'Build score' })).not.toBeInTheDocument();
+    setShowLeaked(false);
   });
 
   it('Target stats: you / target per stat from the saved totals, proof one tap below; totals entered in the build form (T35)', async () => {
