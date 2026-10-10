@@ -1,7 +1,7 @@
 /**
  * What a team score took from your account, in plain words (owner's job T18):
  * dupes, the second upgrade track (HSR Enhanced, ZZZ Agent Potential) and the
- * saved weapon. Honest: what isn't saved is said, and scored at base.
+ * signature weapon in the saved build. Honest: what isn't saved is said, and scored at base.
  */
 import type { TeamAccount } from '../contract';
 
@@ -14,6 +14,8 @@ export interface AccountFacts {
   trackLevels?: boolean;
   /** Pieces of this character's kit the check left locked. */
   locked: number;
+  /** Their signature weapon (id and name), when they have one. */
+  signature?: { id: string; name: string };
 }
 
 export function accountNotes(id: string, account: TeamAccount, facts: AccountFacts): { notes: string[]; theory: boolean } {
@@ -28,6 +30,9 @@ export function accountNotes(id: string, account: TeamAccount, facts: AccountFac
   }
   if (facts.locked) notes.push(`${facts.locked} kit piece${facts.locked === 1 ? '' : 's'} still locked at this level.`);
   const w = account.weapon?.(id);
-  notes.push(w ? `Weapon in your build: ${w.name}. Its effect isn't counted yet.` : 'No weapon saved: weapon effects aren’t counted.');
+  const sig = facts.signature;
+  if (!sig) notes.push(w ? `Weapon in your build: ${w.name} (only signature weapons are counted).` : 'No signature weapon to count.');
+  else if (w && w.id === sig.id) notes.push(`Signature weapon counted: ${sig.name} (from your saved build).`);
+  else notes.push(w ? `Your build has ${w.name}, not their signature ${sig.name}: not counted.` : `Signature ${sig.name}: not counted (no weapon in their saved build).`);
   return { notes, theory: false };
 }

@@ -7,6 +7,7 @@ import type { FitOptions, FitSuggestion, PullValue, TeamAccount, TeamIdea, TeamP
 import { checkSquad, compare, DD_ORDER, type Account, type Library, type Line, type SquadResult } from './check';
 import { library } from './library';
 import { accountNotes } from '../../../core/rules/accountNotes';
+import { SIGNATURE_PIECE } from '../../../core/rules/signatureWeapons';
 import { explainTeam, memberPhrase } from '../../../core/rules/teamExplain';
 
 export const METHOD = 'ZZZ Kit Check method (docs/logic/zzz-method.md)';
@@ -153,7 +154,10 @@ export function whoFits(members: string[], a: TeamAccount, lib: Library = librar
     const percent = top > 0 ? Math.max(0, Math.round((r.count / top) * 100)) : 0;
     const hasTrack = [...(lib.unlocks.get(c)?.values() ?? [])].some((u) => u.potential || u.replacedAt);
     const locked = r.lines.filter((l) => l.who === c && l.kind === 'locked').length;
-    const { notes, theory } = accountNotes(c, a, { dupePrefix: 'M', ...(hasTrack ? { track: 'Agent Potential', trackLevels: true } : {}), locked });
+    const sigId = lib.unlocks.get(c)?.get(SIGNATURE_PIECE)?.weapon;
+    const sigLabel = lib.pieceLabels.get(c)?.get(SIGNATURE_PIECE);
+    const signature = sigId && sigLabel ? { id: sigId, name: sigLabel.replace(/^Signature [^:]+: /, '').replace(/ · .*$/, '') } : undefined;
+    const { notes, theory } = accountNotes(c, a, { dupePrefix: 'M', ...(hasTrack ? { track: 'Agent Potential', trackLevels: true } : {}), locked, ...(signature ? { signature } : {}) });
     out.push({ id: c, count: r.count, how, withEveryone, percent, fromAccount: notes, theory });
   }
   return out.sort((x, y) => (y.percent ?? 0) - (x.percent ?? 0) || Number(y.withEveryone) - Number(x.withEveryone) || y.count - x.count);

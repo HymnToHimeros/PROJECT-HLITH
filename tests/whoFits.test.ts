@@ -24,7 +24,7 @@ describe('Who fits from your account (T18)', () => {
     const robin = fits.find((f) => f.id === idOf(h, 'Robin'));
     expect(robin?.theory).toBe(false);
     expect(robin?.fromAccount).toContain('E2 counted.');
-    expect(robin?.fromAccount?.some((n) => /No weapon saved/.test(n))).toBe(true);
+    expect(robin?.fromAccount?.some((n) => /Signature Flowing Nightglow: not counted \(no weapon in their saved build\)/.test(n))).toBe(true);
   });
 
   it('"Include characters I don’t own" adds the rest, marked as theory', () => {
@@ -34,10 +34,14 @@ describe('Who fits from your account (T18)', () => {
     expect(topaz?.fromAccount?.[0]).toMatch(/^Not owned: scored as theory at E0/);
   });
 
-  it('a saved weapon is named, and said not to be counted yet (no guessing)', () => {
-    const withWeapon = account({ [fei]: 0, [idOf(h, 'Robin')]: 0 }, { weapon: (id) => (id === idOf(h, 'Robin') ? { name: 'Flowing Nightglow' } : undefined) });
-    const robin = hsrFits([fei], withWeapon, h).find((f) => f.id === idOf(h, 'Robin'));
-    expect(robin?.fromAccount).toContain("Weapon in your build: Flowing Nightglow. Its effect isn't counted yet.");
+  it('the signature weapon counts only when the saved build has it; another weapon is named and not counted', () => {
+    const robinId = idOf(h, 'Robin');
+    const nightglow = h.unlocks.get(robinId)?.get('signature-weapon')?.weapon ?? '';
+    const withSig = account({ [fei]: 0, [robinId]: 0 }, { weapon: (id) => (id === robinId ? { id: nightglow, name: 'Flowing Nightglow' } : undefined) });
+    const robin = hsrFits([fei], withSig, h).find((f) => f.id === robinId);
+    expect(robin?.fromAccount).toContain('Signature weapon counted: Flowing Nightglow (from your saved build).');
+    const other = account({ [fei]: 0, [robinId]: 0 }, { weapon: (id) => (id === robinId ? { name: 'Dance! Dance! Dance!' } : undefined) });
+    expect(hsrFits([fei], other, h).find((f) => f.id === robinId)?.fromAccount).toContain('Your build has Dance! Dance! Dance!, not their signature Flowing Nightglow: not counted.');
   });
 
   it('ZZZ: Mindscapes and Agent Potential from the account', () => {
