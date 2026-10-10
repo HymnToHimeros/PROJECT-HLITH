@@ -3,16 +3,19 @@
  * teams, Line-ups, Who fits, "If you pull…" % and recommended teams. Same
  * shape as ZZZ (src/games/zzz/kitcheck/team.ts), with teams of four and no order.
  */
-import type { FitSuggestion, PullValue, TeamAccount, TeamIdea, TeamPreset, TeamReason, TeamRules, TeamVerdict } from '../../../core/contract';
+import type { FitOptions, FitSuggestion, PullValue, TeamAccount, TeamIdea, TeamPreset, TeamReason, TeamRules, TeamVerdict } from '../../../core/contract';
 import { canCarry, canPartner, check, compare, damageDealers, isCentre, type Account, type Library, type Line, type TeamResult } from './check';
 import { centreOf, library, pageOf } from './library';
+import { accountNotes } from '../../../core/rules/accountNotes';
+import { SIGNATURE_PIECE } from '../../../core/rules/signatureWeapons';
+import { explainTeam, memberPhrase } from '../../../core/rules/teamExplain';
 
 export const METHOD = 'HSR Kit Check theory v2 (docs/logic/hsr-theory.md)';
 /** Partners kept per damage dealer before teams of four are tried, once the pool is bigger than this. */
 const PAIR_LIMIT = 10;
 const SIZE = 4;
 
-const toAccount = (a: TeamAccount): Account => ({ eidolon: (id) => (a.owned(id) ? a.dupes(id) : 0), enhanced: (id) => a.potential?.(id) });
+const toAccount = (a: TeamAccount): Account => ({ eidolon: (id) => (a.owned(id) ? a.dupes(id) : 0), enhanced: (id) => a.potential?.(id), weapon: (id) => (a.owned(id) ? a.weapon?.(id) : undefined) });
 
 /** The Trailblazer is one character: at most one of their forms (ids 8001–8010) in a team. */
 const isTrailblazer = (id: string) => id.startsWith('80') && id.length === 4;
@@ -93,6 +96,8 @@ const centresIn = (ids: string[], lib: Library) => {
   return centres.length ? centres : ids.filter((id) => canCarry(id, lib));
 };
 
+const asExplain = (r: TeamResult) => ({ members: r.members, dd: r.dd, count: r.count, lines: r.lines });
+
 const ownedRead = (a: TeamAccount, lib: Library) => [...lib.sheets.keys()].filter((id) => a.owned(id));
 
 function reasonOf(l: Line, lib: Library): TeamReason {
@@ -152,6 +157,7 @@ export function verdict(members: string[], a: TeamAccount, lib: Library = librar
     order: mine.members,
     unordered: true,
     reasons: mine.lines.map((l) => reasonOf(l, lib)),
+    explain: explainTeam({ members: mine.members, dd: mine.dd, count: mine.count, lines: mine.lines }, { members: top.members, dd: top.dd, count: top.count, lines: top.lines }, name),
     notes: [summary(mine), ...notes],
   };
 }
@@ -170,10 +176,12 @@ function connections(r: TeamResult, c: string, lib: Library): string[] {
   return [...new Set(how)];
 }
 
-export function whoFits(members: string[], a: TeamAccount, lib: Library = library()): FitSuggestion[] {
+export function whoFits(members: string[], a: TeamAccount, lib: Library = library(), options: FitOptions = {}): FitSuggestion[] {
   const account = toAccount(a);
   const out: FitSuggestion[] = [];
-  for (const c of lib.sheets.keys()) {
+  // Your own characters by default; the rest only when asked, as theory.
+  const pool = [...lib.sheets.keys()].filter((c) => options.includeUnowned || a.owned(c));
+  for (const c of pool) {
     if (members.includes(c) || !fits([...members, c])) continue;
     const res = check([...members, c], lib, account, leadOf([...members, c], lib));
     if (!res.rated) continue;
@@ -183,9 +191,19 @@ export function whoFits(members: string[], a: TeamAccount, lib: Library = librar
     if (!how.length) continue;
     const others = members.filter((m) => m !== r.dd);
     const withEveryone = c === r.dd ? others.every((m) => r.lines.some((l) => l.who === m && (l.kind === 'buff' || l.kind === 'chain'))) : r.lines.some((l) => l.who === c && (l.kind === 'buff' || l.kind === 'chain'));
-    out.push({ id: c, count: r.count, how, withEveryone });
+    // % against the best team found for the same damage dealer from the same pool.
+    const best = bestFor(r.dd, [...new Set([...pool, ...members])], lib, account);
+    const top = best && compare(best, r) > 0 ? best.count : r.count;
+    const percent = top > 0 ? Math.max(0, Math.round((r.count / top) * 100)) : 0;
+    const hasTrack = [...(lib.unlocks.get(c)?.values() ?? [])].some((u) => u.potential || u.replacedAt);
+    const locked = r.lines.filter((l) => l.who === c && l.kind === 'locked').length;
+    const sigId = lib.unlocks.get(c)?.get(SIGNATURE_PIECE)?.weapon;
+    const sigLabel = lib.pieceLabels.get(c)?.get(SIGNATURE_PIECE);
+    const signature = sigId && sigLabel ? { id: sigId, name: sigLabel.replace(/^Signature [^:]+: /, '').replace(/ · .*$/, '') } : undefined;
+    const { notes, theory } = accountNotes(c, a, { dupePrefix: 'E', ...(hasTrack ? { track: 'Enhanced kit' } : {}), locked, ...(signature ? { signature } : {}) });
+    out.push({ id: c, count: r.count, how, withEveryone, percent, fromAccount: notes, theory });
   }
-  return out.sort((x, y) => Number(y.withEveryone) - Number(x.withEveryone) || y.count - x.count);
+  return out.sort((x, y) => (y.percent ?? 0) - (x.percent ?? 0) || Number(y.withEveryone) - Number(x.withEveryone) || y.count - x.count);
 }
 
 export function lineUps(a: TeamAccount, lib: Library = library()): TeamIdea[] {
@@ -233,7 +251,9 @@ export function ifYouPull(id: string, a: TeamAccount, lib: Library = library()):
     const withAll = bestFor(id, all, lib, account);
     if (withYours && withAll && withAll.count > 0) {
       const p = Math.max(0, Math.round((withYours.count / withAll.count) * 100));
-      why.push(`As a damage dealer: ${teamWords(withYours, lib)} counts ${withYours.count} from your characters, against ${withAll.count} with every character (${p}%).`);
+      why.push(
+        `As a damage dealer: your best team for them is ${teamWords(withYours, lib)} (${withYours.count} points; the best with every character is ${withAll.count}, so ${p}%). There ${memberPhrase(asExplain(withYours), id, name)}.`,
+      );
       percent = Math.max(percent, p);
     }
   }
@@ -244,7 +264,9 @@ export function ifYouPull(id: string, a: TeamAccount, lib: Library = library()):
     if (!lifted || !possible || possible.count <= 0 || !lifted.members.includes(id)) continue;
     if (lifted.count > (now?.count ?? 0)) {
       const p = Math.round((lifted.count / possible.count) * 100);
-      why.push(`As a teammate: ${name(dd)} goes from ${now?.count ?? 0} to ${lifted.count} (${teamWords(lifted, lib)}); ${name(dd)}'s best possible is ${possible.count} (${p}%).`);
+      why.push(
+        `As a teammate: ${name(dd)}'s best team of yours goes from ${now?.count ?? 0} to ${lifted.count} points (${teamWords(lifted, lib)}; the most possible is ${possible.count}, so ${p}%). ${name(id)} ${memberPhrase(asExplain(lifted), id, name)}.`,
+      );
       percent = Math.max(percent, p);
     }
   }
@@ -256,7 +278,7 @@ export const hsrTeamRules: TeamRules = {
   method: METHOD,
   rated: (id) => library().sheets.has(id),
   verdict: (m, a) => verdict(m, a),
-  whoFits: (m, a) => whoFits(m, a),
+  whoFits: (m, a, o) => whoFits(m, a, library(), o),
   lineUps: (a) => lineUps(a),
   ifYouPull: (id, a) => ifYouPull(id, a),
 };

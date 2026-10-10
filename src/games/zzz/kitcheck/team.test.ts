@@ -1,7 +1,7 @@
 // @vitest-environment node
 import { describe, expect, it } from 'vitest';
 import type { TeamAccount } from '../../../core/contract';
-import { buildLibrary, SHEETS } from './library';
+import { buildLibrary, library, SHEETS } from './library';
 import { ifYouPull, lineUps, recommendedTeams, synergyLabel, verdict, whoFits } from './team';
 
 /** Every agent is read now; leave one sheet out on purpose to test "not read yet". */
@@ -64,7 +64,8 @@ describe('Line-ups', () => {
 
 describe('Who fits', () => {
   it('for Starlight Billy: only agents whose kits connect, saying how', () => {
-    const fits = whoFits([BILLY], all);
+    // Every agent whose kit connects, owned or not (as on a character page).
+    const fits = whoFits([BILLY], all, library(), { includeUnowned: true });
     expect(fits.map((f) => f.id)).toEqual(expect.arrayContaining([DIALYN, LUCIA, PAN]));
     // Lighter (Stun) switches on Billy's Starlight, but his Ice and Fire buffs never count for a Physical Billy.
     const lighter = fits.find((f) => f.id === '1161');
@@ -86,7 +87,9 @@ describe('If you pull…', () => {
     expect(v).toMatchObject({ percent: 0 });
     const owner = ifYouPull(LUCIA, account([BILLY, DIALYN, PAN], { [BILLY]: 1, [PAN]: 6 }));
     expect(owner?.percent).toBe(100);
-    expect(owner?.why.join(' ')).toContain('As a teammate: Starlight - Billy goes from');
+    expect(owner?.why.join(' ')).toContain("As a teammate: Starlight - Billy's best squad of yours goes from");
+    // And in plain words what Lucia gives him.
+    expect(owner?.why.join(' ')).toMatch(/Lucia gives Starlight - Billy /);
   });
 
   it('as a damage dealer: Billy with your agents against every agent', () => {

@@ -98,6 +98,25 @@ export const sparxie: CharacterSheet = {
       reacts: { event: 'extra-turn', from: 'any' },
       setup: 'An Aha Instant ends.',
     },
+    {
+      id: 'lc-sp-limit',
+      piece: 'signature-weapon',
+      quote: 'for every 1 Elation character in the team, increases the Skill Point upper limit by 1, up to a max increase of 3.',
+      tag: 'Team: +1 max Skill Point per Elation character',
+      on: { count: { paths: ['elation'], atLeast: 1, others: true } },
+      gives: [{ stat: 'skill-points', amount: '+1 max per Elation character (her too), up to +3' }],
+      to: 'allies',
+      setup: 'Sparxie on the field.',
+    },
+    {
+      id: 'lc-stream-promo',
+      piece: 'signature-weapon',
+      quote: 'If 4 or more Skill Points are consumed in the same turn, the wearer gains "Stream Promo," which increases all allies\' Elation by 20%.',
+      tag: 'Allies: +20% Elation',
+      gives: [{ stat: 'elation', amount: '+20%' }],
+      to: 'allies',
+      setup: 'She spends 4 or more Skill Points in one turn.',
+    },
   ],
   nothing: {
     'skill-basic-atk-cat-got-your-flametongue': FIRE,
@@ -434,6 +453,15 @@ export const evanescia: CharacterSheet = {
       to: 'self',
       setup: 'A teammate\'s "Certified Banger" ends.',
     },
+    {
+      id: 'lc-vulnerability',
+      piece: 'signature-weapon',
+      quote: 'When the wearer uses Elation Skill, increases the DMG received by all enemies by 15.0% for 2 turn(s).',
+      tag: 'Enemy: DMG taken +15%',
+      gives: [{ stat: 'vulnerability', amount: '+15%' }],
+      to: 'enemy',
+      setup: 'Evanescia uses her Elation Skill; 2 turns.',
+    },
   ],
   nothing: {
     'skill-basic-atk-syllabus-pop-quiz': PHYS,
@@ -515,6 +543,7 @@ export const silverWolf999: CharacterSheet = {
     'eidolon-3': LEVELS,
     'eidolon-4': SELF_HER,
     'eidolon-5': LEVELS,
+    'signature-weapon': "Raises the wearer's own stats and gains Punchline (her Punchline event is counted with her Skill); nothing more for the team.",
   },
 };
 
@@ -629,6 +658,15 @@ export const aeonAha: CharacterSheet = {
       causes: 'extra-turn',
       setup: "Aha's first Ultimate.",
     },
+    {
+      id: 'lc-def-ignore',
+      piece: 'signature-weapon',
+      quote: "Then, causes all allies to ignore 16% of the enemy target's DEF when dealing DMG during this combat.",
+      tag: 'Allies: DMG ignores 16% DEF',
+      gives: [{ stat: 'def-shred', amount: '16%' }],
+      to: 'allies',
+      setup: 'Aha uses its Skill on another ally (at most once every 2 turns); lasts the whole combat.',
+    },
   ],
   nothing: {
     'skill-basic-atk-starfrost-showtime': 'Deals Quantum Elation DMG only; nothing for the team.',
@@ -707,6 +745,15 @@ export const aventurineWaveflair: CharacterSheet = {
       gives: [{ stat: 'def-shred', amount: '18% DEF ignored' }],
       to: 'allies',
       setup: 'He uses his Skill (3 turns).',
+    },
+    {
+      id: 'lc-sp',
+      piece: 'signature-weapon',
+      quote: 'When every wave starts or after the wearer uses Elation Skill 3 time(s), recovers 1 Skill Point.',
+      tag: 'Team: +1 Skill Point',
+      gives: [{ stat: 'skill-points', amount: '+1 each wave and per 3 Elation Skills' }],
+      to: 'allies',
+      setup: 'A wave starts, or he uses his Elation Skill 3 times.',
     },
   ],
   nothing: {

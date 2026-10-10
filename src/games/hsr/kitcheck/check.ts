@@ -16,7 +16,7 @@ export interface Library {
   profiles: Map<string, Profile>;
   sheets: Map<string, CharacterSheet>;
   /** Kit piece → unlock level, per character (`potential` 1 = the Enhanced kit). */
-  unlocks: Map<string, Map<string, { dupes?: number; potential?: number; replacedAt?: number }>>;
+  unlocks: Map<string, Map<string, { dupes?: number; potential?: number; replacedAt?: number; weapon?: string }>>;
   /** Kit piece → its label ("Trace: Inert Respiration"), per character. */
   pieceLabels: Map<string, Map<string, string>>;
   names: Map<string, string>;
@@ -33,7 +33,8 @@ export interface Library {
 export interface Account {
   eidolon: (id: string) => number;
   /** 1 = has the Enhanced kit, 0 = not; undefined = not saved. */
-  enhanced: (id: string) => number | undefined;
+  enhanced: (id: string) => number | undefined;  /** The weapon in the saved build (signature weapons); undefined = none saved. */
+  weapon?: (id: string) => { id?: string; name: string } | undefined;
 }
 
 export type Status = 'on' | 'off' | 'locked' | 'unknown' | 'replaced';
@@ -109,6 +110,11 @@ function evalCondition(c: Condition | undefined, self: string, team: string[], l
 /** Part B step 3: locked, replaced, on, off or unknown, with the reason in words. */
 export function statusOf(e: Entry, who: string, team: string[], lib: Library, account: Account): { status: Status; why: string } {
   const unlock = lib.unlocks.get(who)?.get(e.piece);
+  if (unlock?.weapon) {
+    const w = account.weapon?.(who);
+    if (!w) return { status: 'locked', why: 'locked: needs their signature weapon equipped (none saved in their build)' };
+    if (w.id !== unlock.weapon) return { status: 'locked', why: `locked: needs their signature weapon; the saved build has ${w.name}` };
+  }
   if (unlock?.dupes && account.eidolon(who) < unlock.dupes) return { status: 'locked', why: `locked: needs E${unlock.dupes}, you have E${account.eidolon(who)}` };
   if (unlock?.potential) {
     const p = account.enhanced(who);
@@ -179,7 +185,7 @@ function reach(e: Entry, giver: string, dd: string, lib: Library): Reach {
   return { kind: 'no', why: `${name(dd)}'s damage doesn't use ${list([...new Set(stats)].map(statWord))}` };
 }
 
-const EVENT_WORD: Record<GameEventKind, string> = {
+export const EVENT_WORD: Record<GameEventKind, string> = {
   'follow-up': 'Follow-Up ATK',
   'summon-attack': 'summon or memosprite attack',
   debuff: 'debuff on enemies',

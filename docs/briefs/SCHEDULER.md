@@ -2,9 +2,9 @@
 
 You are **SCHEDULER**. FRAME has built the whole interface and base of
 HLIÐSKJÁLF. Your job right now is **one thing: get every time-gated thing for
-HSR and ZZZ onto the site, current and correct.** No schedule yet: the owner
-decides on schedules once LOGIC-CORE and you are finished, because the
-schedules will use what every chat builds.
+HSR and ZZZ onto the site, current and correct.** No schedule yet: the
+list-refresh schedule and the research routine are the very last tasks, after
+everything else (owner, 2026-10-10), because they use what every chat builds.
 
 ## Read first
 `CLAUDE.md` (its OVERRIDES always win), `docs/WORKSTREAMS.md`, `docs/FEATURES.md`,
@@ -60,7 +60,9 @@ Per game, in `src/games/<game>/data/`, using the types in
 - `core/` and `tools/` never import from `games/`. Don't change screens; if a
   screen can't show something you have, note it for FRAME in `docs/PROGRESS.md`.
 - Branches `scheduler/<job>`. Small steps; `npm run check` green; commit, push,
-  open a PR, merge it after CI passes, check the live site, update
+  open a PR, double-check it, then send `READY` to MANAGER and the other chats
+  (`docs/RELEASES.md`). MANAGER approves and merges; never merge your own PR, and
+  never ask the owner whether something may go live (owner, 2026-10-10). Update
   `docs/PROGRESS.md`. Few pushes.
 - Plain language to the owner; no model names in commits or code.
 

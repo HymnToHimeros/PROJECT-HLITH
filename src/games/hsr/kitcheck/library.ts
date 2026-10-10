@@ -1,7 +1,9 @@
 /** The HSR kit check's ingredients, built from the game data and the cheat sheet. */
-import type { Kit, TeamPreset } from '../../../core/contract';
+import type { Kit, TeamPreset, Weapon } from '../../../core/contract';
 import characters from '../data/characters.json';
-import kits from '../data/kits.json';
+import kitsJson from '../data/kits.json';
+import weapons from '../data/weapons.json';
+import { withSignatureWeapons } from '../../../core/rules/signatureWeapons';
 import gameTeams from '../data/teams.json';
 import type { Library, Profile } from './check';
 import { groupA } from './sheet/groupA';
@@ -14,6 +16,9 @@ import { groupG } from './sheet/groupG';
 import { groupH } from './sheet/groupH';
 import { groupI } from './sheet/groupI';
 import type { CharacterSheet, Element, Path } from './types';
+
+/** Every kit, with each character's signature Light Cone as one more piece (counted only when equipped). */
+export const KITS: Kit[] = withSignatureWeapons(kitsJson as Kit[], weapons as Weapon[], 'Light Cone');
 
 /** Every character read so far, group by group. */
 export const SHEETS: CharacterSheet[] = [...groupA, ...groupB, ...groupC, ...groupD, ...groupE, ...groupF, ...groupG, ...groupH, ...groupI];
@@ -40,7 +45,7 @@ function pairs(teams: TeamPreset[]): Map<string, Set<string>> {
   return out;
 }
 
-export function buildLibrary(sheets: CharacterSheet[] = SHEETS, kitList: Kit[] = kits as Kit[], teams: TeamPreset[] = gameTeams as TeamPreset[]): Library {
+export function buildLibrary(sheets: CharacterSheet[] = SHEETS, kitList: Kit[] = KITS, teams: TeamPreset[] = gameTeams as TeamPreset[]): Library {
   const carries = new Set(sheets.filter((s) => s.damage).map((s) => s.characterId));
   return {
     centres: new Set(teams.map((t) => centreOf(t, carries)).filter((x): x is string => !!x)),

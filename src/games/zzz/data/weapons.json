@@ -383,6 +383,10 @@
   "rarity": "top",
   "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1021.webp",
   "madeFor": "1021",
+  "effect": {
+   "name": "Metal Cat Claws",
+   "text": "Increases Physical DMG by 20%. The equipper's DMG increases by 25% when hitting the enemy from behind."
+  },
   "source": "nanoka.cc"
  },
  {
@@ -391,6 +395,10 @@
   "rarity": "top",
   "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1041.webp",
   "madeFor": "1041",
+  "effect": {
+   "name": "Scorching Breath",
+   "text": "Upon hitting an enemy with a Basic Attack, Dash Attack, or Dodge Counter, the equipper's ATK increases by 3.5% for 8s, stacking up to 8 times. This effect can trigger once every 0.5s. The duration of each stack is calculated separately."
+  },
   "source": "nanoka.cc"
  },
  {
@@ -399,6 +407,10 @@
   "rarity": "top",
   "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1051.webp",
   "madeFor": "1051",
+  "effect": {
+   "name": "Heartfelt Caress",
+   "text": "When the equipper's HP decreases, their Ice Sheer DMG increases by 6%, stacking up to 3 times and lasting 25s. The duration of each stack is calculated separately. This effect can trigger once every 0.5s. When the equipper's HP falls to 50% of Max HP or below, CRIT Rate increases by 20%."
+  },
   "source": "nanoka.cc"
  },
  {
@@ -407,6 +419,10 @@
   "rarity": "top",
   "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1071.webp",
   "madeFor": "1071",
+  "effect": {
+   "name": "Invincible Rider",
+   "text": "The Shield value provided by the equipper increases by 30%. When any squad member triggers Interrupt or Perfect Dodge, all squad members' DMG increases by 18% and Daze dealt increases by 12% for 20s. Passive effects of the same name do not stack."
+  },
   "source": "nanoka.cc"
  },
  {
@@ -415,6 +431,10 @@
   "rarity": "top",
   "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1091.webp",
   "madeFor": "1091",
+  "effect": {
+   "name": "Frost-Stained Star",
+   "text": "CRIT DMG increases by 50%. When using an EX Special Attack or when any squad member applies an Attribute Anomaly to an enemy, the equipper's Ice DMG increases by 20%, stacking up to 2 times and lasting 15s. The duration of each stack is calculated separately."
+  },
   "source": "nanoka.cc"
  },
  {
@@ -423,6 +443,10 @@
   "rarity": "top",
   "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1101.webp",
   "madeFor": "1101",
+  "effect": {
+   "name": "Passionate Construction",
+   "text": "While off-field, the equipper's Energy Regen increases by 0.6/s.\nWhen using an EX Special Attack, the equipper's Impact is increased by 10% for 10s, stacking up to 2 times. The duration of each stack is calculated separately."
+  },
   "source": "nanoka.cc"
  },
  {
@@ -431,6 +455,10 @@
   "rarity": "top",
   "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1141.webp",
   "madeFor": "1141",
+  "effect": {
+   "name": "Binding Chains",
+   "text": "When an attack hits an enemy, DMG and Daze from Basic Attacks increase by 6% for 8s, stacking up to 5 times. This effect can trigger at most once during each skill. The duration of each stack is calculated separately."
+  },
   "source": "nanoka.cc"
  },
  {
@@ -439,6 +467,10 @@
   "rarity": "top",
   "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1161.webp",
   "madeFor": "1161",
+  "effect": {
+   "name": "Flowing Flame",
+   "text": "Upon launching a Quick Assist or Perfect Assist, the equipper's Impact increases by 25% for 8s. When the equipper launches and hits an enemy with a Basic Attack, apply Wilt to the target for 30s, stacking up to 20 times, repeated triggers reset the duration. When any squad member hits an enemy, for every stack of Wilt applied to the target, the CRIT DMG of the Ice DMG and Fire DMG dealt by that attack increases by 1.5%. Only one instance of this effect can exist in the same squad."
+  },
   "source": "nanoka.cc"
  },
  {
@@ -447,6 +479,10 @@
   "rarity": "top",
   "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1171.webp",
   "madeFor": "1171",
+  "effect": {
+   "name": "Fuel on the Rocks",
+   "text": "While off-field, the equipper's Energy Regen increases by 0.6/s. When hitting an enemy with an EX Special Attack or Assist Attack, the equipper's DMG increases by 3.5%, stacking up to 10 times and lasting for 6s. This effect can trigger once every 0.3s. While off-field, the stack effect is doubled. Repeated triggers reset the duration. Upon obtaining the DMG increase effect, if the number of current stacks is greater than or equal to 5, then the equipper's Anomaly Proficiency increases by 50. This Anomaly Proficiency increase does not stack and lasts for 6s."
+  },
   "source": "nanoka.cc"
  },
  {
@@ -455,6 +491,10 @@
   "rarity": "top",
   "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1181.webp",
   "madeFor": "1181",
+  "effect": {
+   "name": "Data Flood",
+   "text": "Increases ATK by 12%.\nWhen using a Special Attack or EX Special Attack, the equipper's Anomaly Proficiency is increased by 25 for 8s, stacking up to 3 times. The duration of each stack is calculated separately."
+  },
   "source": "nanoka.cc"
  },
  {
@@ -463,6 +503,10 @@
   "rarity": "top",
   "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1191.webp",
   "madeFor": "1191",
+  "effect": {
+   "name": "Lord of Seas",
+   "text": "Increases Ice DMG by 25%. Upon hitting an enemy with a Basic Attack, the equipper's CRIT Rate increases by 10% for 8s. When dealing Ice DMG with a Dash Attack, the equipper's CRIT Rate increases by an additional 10% for 15s. The duration of each effect is calculated separately."
+  },
   "source": "nanoka.cc"
  },
  {
@@ -471,6 +515,10 @@
   "rarity": "top",
   "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1201.webp",
   "madeFor": "1201",
+  "effect": {
+   "name": "Growth Through Adversity",
+   "text": "CRIT Rate increases by 10%. Dash Attack Electric DMG increases by 40%. When any squad member applies an Attribute Anomaly or Stuns an enemy, the equipper's CRIT Rate increases by an additional 10% for 15s."
+  },
   "source": "nanoka.cc"
  },
  {
@@ -479,6 +527,10 @@
   "rarity": "top",
   "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1211.webp",
   "madeFor": "1211",
+  "effect": {
+   "name": "Punishment",
+   "text": "While off-field, the equipper's Energy Regen increases by 0.6/s. Attacks from the equipper increase all units' DMG against a struck target by 10% for 3 seconds. During this period, this effect is further increased by 1.7% every 0.5s, up to a maximum additional increase of 10.2%. Repeated triggers only refresh the duration without refreshing the DMG increase effect. Passive effects of the same name do not stack."
+  },
   "source": "nanoka.cc"
  },
  {
@@ -487,6 +539,10 @@
   "rarity": "top",
   "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1221.webp",
   "madeFor": "1221",
+  "effect": {
+   "name": "Time-Devouring Stratagem",
+   "text": "The equipper's Electric Anomaly Buildup Rate increases by 30%. When Special Attacks or EX Special Attacks hit enemies suffering an Attribute Anomaly, the equipper's Anomaly Proficiency increases by 75 for 15s.\nWhen the equipper's Anomaly Proficiency is greater than or equal to 375, Disorder DMG inflicted by the equipper increases by 25%."
+  },
   "source": "nanoka.cc"
  },
  {
@@ -495,6 +551,10 @@
   "rarity": "top",
   "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1241.webp",
   "madeFor": "1241",
+  "effect": {
+   "name": "Security Patrol",
+   "text": "Increases CRIT Rate by 15%. Launching an EX Special Attack grants the equipper 8 Charge stacks, up to a maximum of 8 stacks. Whenever the equipper's Basic Attack or Dash Attack deals Ether DMG, consumes a Charge stack and increases the skill's DMG by 35%."
+  },
   "source": "nanoka.cc"
  },
  {
@@ -503,6 +563,10 @@
   "rarity": "top",
   "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1251.webp",
   "madeFor": "1251",
+  "effect": {
+   "name": "Ringing Melody",
+   "text": "When a Basic Attack hits an enemy, gain 1 stack of Tea-riffic. Each stack of Tea-riffic increases the user's Impact by 0.7%, stacking up to 30 times, and lasting for 8s. The duration of each stack is calculated separately. Upon acquiring Tea-riffic, if the equipper possesses stacks of Tea-riffic greater than or equal to 15, all squad members' DMG is increased by 20% for 10s. Passive effects of the same name do not stack."
+  },
   "source": "nanoka.cc"
  },
  {
@@ -511,6 +575,10 @@
   "rarity": "top",
   "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1261.webp",
   "madeFor": "1261",
+  "effect": {
+   "name": "Indulge in the Hunt",
+   "text": "Upon activating a Dash Attack, gain 1 stack of Predatory Instinct. Each stack of Predatory Instinct increases the equipper's Physical DMG by 12% for 10s, stacking up to 3 times. This effect can trigger once every 0.5s and repeated triggers reset the duration. When entering combat or triggering Perfect Dodge, gain 3 stacks of Predatory Instinct. While Predatory Instinct is at maximum stacks, the equipper's Anomaly Buildup Rate increases by 40%."
+  },
   "source": "nanoka.cc"
  },
  {
@@ -519,6 +587,10 @@
   "rarity": "top",
   "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1291.webp",
   "madeFor": "1291",
+  "effect": {
+   "name": "False Personas",
+   "text": "Increases CRIT DMG by 45%. When using an EX Special Attack, Chain Attack, or Ultimate to deal Ice DMG, the equipper gains the Absolute Zero Death Sentence effect for 3s. While Absolute Zero Death Sentence is active, the character ignores 25% of the enemy's DEF when landing a hit."
+  },
   "source": "nanoka.cc"
  },
  {
@@ -527,6 +599,10 @@
   "rarity": "top",
   "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1301.webp",
   "madeFor": "1301",
+  "effect": {
+   "name": "Flame-Devouring Choir",
+   "text": "Increases CRIT Rate by 20%. When the equipper triggers an Aftershock that deals Fire DMG, their attacks ignore 15% of the target's DEF for 8s. Can stack once every 3s, up to 2 stacks. Repeated triggers reset the duration."
+  },
   "source": "nanoka.cc"
  },
  {
@@ -535,6 +611,10 @@
   "rarity": "top",
   "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1311.webp",
   "madeFor": "1311",
+  "effect": {
+   "name": "Untold Beauty",
+   "text": "When any squad member enters the field through a Quick Assist, Chain Attack, Defensive Assist, or Evasive Assist, the equipper gains 5 Energy. This effect can trigger once every 5s. When the equipper consumes 25 or more Energy, the DMG dealt by all squad members increases by 10%, stacking up to 2 times, and lasting 20s. Repeated triggers reset the duration. Only one instance of this effect can exist in the same squad."
+  },
   "source": "nanoka.cc"
  },
  {
@@ -543,6 +623,10 @@
   "rarity": "top",
   "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1321.webp",
   "madeFor": "1321",
+  "effect": {
+   "name": "String & Melody",
+   "text": "CRIT DMG increases by 50%. When the equipper enters combat, or activates a Chain Attack or Ultimate, they gain 1 stack of Heartstring. Each stack of Heartstring allows the equipper's Chain Attack and Ultimate to ignore 12.5% of the target's Fire RES, stacking up to 2 times and lasting 30s. Repeated triggers reset the duration."
+  },
   "source": "nanoka.cc"
  },
  {
@@ -551,6 +635,10 @@
   "rarity": "top",
   "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1331.webp",
   "madeFor": "1331",
+  "effect": {
+   "name": "Silver Spiked Feathers",
+   "text": "Increases Anomaly Buildup Rate by 40%. When the equipper deals Ether DMG, their Anomaly Proficiency increases by 20 for 5s, stacking up to 6 times. This effect can trigger once every 0.5s, and repeated triggers reset the duration."
+  },
   "source": "nanoka.cc"
  },
  {
@@ -559,6 +647,10 @@
   "rarity": "top",
   "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1341.webp",
   "madeFor": "1341",
+  "effect": {
+   "name": "Fragile Sweetness",
+   "text": "The equipper's Energy Regen increases by 0.46/s. All squad members gain 10% ATK and 10% Max HP. Only one instance of this effect can exist in the same squad. When the equipper activates or extends an Ether Veil, all squad members gain 30% CRIT DMG for 60s. Repeated triggers reset the duration."
+  },
   "source": "nanoka.cc"
  },
  {
@@ -567,6 +659,10 @@
   "rarity": "top",
   "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1361.webp",
   "madeFor": "1361",
+  "effect": {
+   "name": "Wind Seeker",
+   "text": "When the equipper's Aftershock hits an enemy, causing Electric DMG, the target's DEF is reduced by 25% for 5s. Passive effects of the same name do not stack. When this effect is triggered, if the equipper is not the active character, they gain 1 stack of Spirit Lock, up to a maximum of 3 stacks. This can trigger only once per use of a skill. Each stack of Spirit Lock increases the equipper's Impact by 4%, lasting 12s. The duration of each stack is calculated separately. At full stacks of Spirit Lock, the equipper's Impact increases by an additional 8%."
+  },
   "source": "nanoka.cc"
  },
  {
@@ -575,6 +671,10 @@
   "rarity": "top",
   "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1371.webp",
   "madeFor": "1371",
+  "effect": {
+   "name": "Cloud Flow",
+   "text": "CRIT Rate increases by 20%. When the equipper launches an EX Special Attack, the character gains 1 stack of Qingming Companion effect, stacking up to 2 times and lasting 15s. On entering combat, immediately gain 2 stacks. Repeated triggers reset the duration. Each stack of the Qingming Companion effect increases the equipper's Ether DMG by 8%, and increases Ultimate and EX Special Attack Ether Sheer DMG by 10%."
+  },
   "source": "nanoka.cc"
  },
  {
@@ -583,6 +683,10 @@
   "rarity": "top",
   "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1381.webp",
   "madeFor": "1381",
+  "effect": {
+   "name": "Tranquil Blossom",
+   "text": "CRIT DMG is increased by 30%. When the equipper lands a hit with a Basic Attack, Special Attack, or Aftershock, they gain 1 stack of a buff. Each stack increases the equipper's CRIT DMG by an additional 10%, stacking up to 3 times. The effect lasts for 30s, with each stack's duration calculated separately, and can only be triggered once per use of a skill. With all 3 stacks, the equipper's Electric DMG increases by 20%."
+  },
   "source": "nanoka.cc"
  },
  {
@@ -591,6 +695,10 @@
   "rarity": "top",
   "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1391.webp",
   "madeFor": "1391",
+  "effect": {
+   "name": "Tiger Spirit Rising",
+   "text": "The Daze dealt by the equipper's EX Special Attack, Chain Attack, and Ultimate increases by 28%.\nWhen using a Chain Attack or Ultimate to deal Fire DMG, the DMG dealt by all squad members increases by 10%, stacking up to 2 times and lasting 30s. The duration of each stack is calculated separately. Triggers once per use of a skill. Only one instance of this effect can exist in the same squad."
+  },
   "source": "nanoka.cc"
  },
  {
@@ -599,6 +707,10 @@
   "rarity": "top",
   "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1401.webp",
   "madeFor": "1401",
+  "effect": {
+   "name": "Gift of Stardust",
+   "text": "The equipper's Anomaly Mastery increases by 60. When inflicting Assault, the equipper's Physical DMG increases by 20% for 20s, stacking up to 2 times. Repeated triggers reset the duration. When the equipper enters combat, immediately gain 2 stacks."
+  },
   "source": "nanoka.cc"
  },
  {
@@ -607,6 +719,10 @@
   "rarity": "top",
   "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1411.webp",
   "madeFor": "1411",
+  "effect": {
+   "name": "Exquisitely Ingenious",
+   "text": "When the equipper's EX Special Attack or Ultimate deals Physical DMG, their Anomaly Mastery increases by 30 for 40s. When the equipper's Aftershock hits an enemy, all squad members' Anomaly Proficiency increases by 60 for 40s. Only one instance of this effect can exist in the same squad."
+  },
   "source": "nanoka.cc"
  },
  {
@@ -615,6 +731,10 @@
   "rarity": "top",
   "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1431.webp",
   "madeFor": "1431",
+  "effect": {
+   "name": "Jade Soul, Frozen Heart",
+   "text": "The equipper's DMG ignores 20% of the target's Physical RES. When the equipper activates an Ether Veil, the equipper's DMG increases by 25% and CRIT DMG increases by 25% for 40s. Repeated triggers reset the duration."
+  },
   "source": "nanoka.cc"
  },
  {
@@ -623,6 +743,10 @@
   "rarity": "top",
   "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1451.webp",
   "madeFor": "1451",
+  "effect": {
+   "name": "Moontide Epic",
+   "text": "The equipper's Energy Regen increases by 0.4/s. When the equipper activates Ether Veil or extends its duration, all squad members gain 25% increased DMG and 15% increased Max HP for 45s. Repeated triggers reset the duration. Only one instance of this effect can exist in the same squad."
+  },
   "source": "nanoka.cc"
  },
  {
@@ -631,6 +755,10 @@
   "rarity": "top",
   "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1461.webp",
   "madeFor": "1461",
+  "effect": {
+   "name": "Sprouting Core",
+   "text": "Increases CRIT Rate by 15%. When the equipper deals DMG with a Basic Attack or EX Special Attack, they gain 1 stack of a buff. Each stack increases the equipper's Electric DMG by 12.5%, up to 2 stacks. Each stack lasts 40s. The duration of each stack is calculated separately. Can trigger once per use of a skill. At 2 stacks, the wearer's Basic Attack and Ultimate DMG ignore 20% of enemy DEF."
+  },
   "source": "nanoka.cc"
  },
  {
@@ -639,6 +767,10 @@
   "rarity": "top",
   "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1471.webp",
   "madeFor": "1471",
+  "effect": {
+   "name": "Purging Karmic Fire",
+   "text": "CRIT Rate increases by 20%. When the equipper launches an EX Special Attack, their Fire Sheer DMG increases by 9%, stacking up to 2 times and lasting 20s. The duration of each stack is calculated separately."
+  },
   "source": "nanoka.cc"
  },
  {
@@ -647,6 +779,10 @@
   "rarity": "top",
   "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1481.webp",
   "madeFor": "1481",
+  "effect": {
+   "name": "24/7",
+   "text": "While off-field, the equipper's Energy Regen increases by 1.5/s. When the equipper deals Physical DMG with an EX Special Attack, the Daze dealt by the equipper's attacks increases by 9% for 10s, stacking up to 3 times. At 3 stacks, all squad members gain 30% additional CRIT DMG for 40s. Repeated triggers reset the duration. Only one instance of this CRIT DMG boost effect can exist in the same squad."
+  },
   "source": "nanoka.cc"
  },
  {
@@ -655,6 +791,10 @@
   "rarity": "top",
   "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1491.webp",
   "madeFor": "1491",
+  "effect": {
+   "name": "Decibel Monologue",
+   "text": "While not the active character, the equipper's Energy Regen increases by 0.6/s. When the equipper uses an EX Special Attack and deals Physical DMG, all squad members gain a buff that increases DMG dealt by 12.5% for 40s, stacking up to 2 times. Repeated triggers reset the duration. At 2 stacks, characters gain an additional 10% ATK. Only one instance of this effect can exist in the same squad."
+  },
   "source": "nanoka.cc"
  },
  {
@@ -663,6 +803,10 @@
   "rarity": "top",
   "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1501.webp",
   "madeFor": "1501",
+  "effect": {
+   "name": "Energetic Strike",
+   "text": "Increases the equipper's Anomaly Proficiency by 90. When the equipper is an Ether character, and comes on-field or uses a Special Attack or EX Special Attack, they gain a buff: DMG dealt to enemies afflicted with Attribute Anomalies increases by 20%, and all Attribute Anomaly DMG and Disorder DMG they trigger increases by 10%, lasting 15s. Repeated triggers reset the duration, and the effect is removed when switching off-field."
+  },
   "source": "nanoka.cc"
  },
  {
@@ -671,6 +815,10 @@
   "rarity": "top",
   "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1511.webp",
   "madeFor": "1511",
+  "effect": {
+   "name": "Disco Demon",
+   "text": "The equipper's Anomaly Proficiency increases by 90. When the equipper's EX Special Attack or Basic Attack deals Ether DMG, all squad members' DMG dealt increases by 15% for 40s, stacking up to 2 times. This effect can trigger once per use of a skill and repeated triggers reset the duration. With 2 stacks, the equipper's Anomaly Proficiency increases by an additional 60. Only one instance of this effect can exist in the same squad."
+  },
   "source": "nanoka.cc"
  },
  {
@@ -679,6 +827,10 @@
   "rarity": "top",
   "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1521.webp",
   "madeFor": "1521",
+  "effect": {
+   "name": "Bioengineered Venom",
+   "text": "CRIT Rate increases by 25%. When the equipper consumes at least 20 Energy in a single instance, every 20 Energy consumed grants 3s of a buff: when dealing Electric DMG, ignore 28% of the target's DEF. Repeated triggers extend the duration, up to a maximum of 30s. When entering combat, gain 10s of this buff. While the equipper is not the active character, the duration no longer decreases."
+  },
   "source": "nanoka.cc"
  },
  {
@@ -687,6 +839,10 @@
   "rarity": "top",
   "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1531.webp",
   "madeFor": "1531",
+  "effect": {
+   "name": "Knight's Morale",
+   "text": "Increases CRIT Rate by 20%. When the equipper launches a Special Attack, their Physical Sheer DMG increases by 10%, stacking up to 2 times and lasting 30s. Repeated triggers reset the duration."
+  },
   "source": "nanoka.cc"
  },
  {
@@ -695,6 +851,10 @@
   "rarity": "top",
   "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1541.webp",
   "madeFor": "1541",
+  "effect": {
+   "name": "Terminating Verdict",
+   "text": "When an Ice attribute equipper uses a Special Attack or EX Special Attack, their Ice DMG is increased by 20% for 40s, stacking up to 2 times, once per use of a skill. Repeated triggers refresh the duration. At 2 stacks, the equipper's Abloom DMG dealt is increased by an additional 35%."
+  },
   "source": "nanoka.cc"
  },
  {
@@ -710,6 +870,10 @@
   "rarity": "top",
   "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1561.webp",
   "madeFor": "1561",
+  "effect": {
+   "name": "Flawless Etiquette",
+   "text": "The equipper's Anomaly Proficiency increases by 70. When the equipper's EX Special Attack deals Wind DMG, the DMG dealt by their Vortex and Windswept increases by 7% for 40s, stacking up to 2 times. Repeated triggers reset the duration. This effect can trigger once per skill use. At 2 stacks, all squad members gain 60 Anomaly Proficiency. Only one instance of this effect can exist in the same squad."
+  },
   "source": "nanoka.cc"
  },
  {
@@ -718,6 +882,10 @@
   "rarity": "top",
   "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1571.webp",
   "madeFor": "1571",
+  "effect": {
+   "name": "The Genius's Follower",
+   "text": "The equipper's Impact increases by 30, and their DMG ignores 15% of the target's Fire RES. When the equipper is not the active character, Energy Regen increases by 0.4/s. When the equipper deals Fire DMG with an EX Special Attack, all Agents' DMG increases by 12.5% for 30s, stacking up to 2 times. Repeated triggers reset the duration. This effect can trigger once per skill. Only one instance of this effect can exist in the same squad."
+  },
   "source": "nanoka.cc"
  },
  {
@@ -726,6 +894,10 @@
   "rarity": "top",
   "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1581.webp",
   "madeFor": "1581",
+  "effect": {
+   "name": "Paradise Lost",
+   "text": "Increases Anomaly Proficiency by 96. When the equipper triggers a Refringe reaction, they gain 20% increased Anomaly DMG, and all squad members gain 30% increased DMG dealt. Both effects last 30s. Repeated triggers reset the duration."
+  },
   "source": "nanoka.cc"
  },
  {
@@ -734,6 +906,10 @@
   "rarity": "top",
   "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1591.webp",
   "madeFor": "1591",
+  "effect": {
+   "name": "Knight's Rite",
+   "text": "When the equipper's Basic Attack or EX Special Attack's heavy attack hits an enemy, they gain 1 stack of Battle Edge, increasing CRIT DMG by 32% for 25s. Battle Edge can stack up to 2 times, and each skill type can provide up to 1 stack. Repeated triggers refresh the duration of all Battle Edge.\nAt 2 stacks of Battle Edge, the equipper gains Bonechill: Their DMG ignores 20% of the target's Ice RES."
+  },
   "source": "nanoka.cc"
  },
  {
@@ -742,6 +918,10 @@
   "rarity": "top",
   "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1611.webp",
   "madeFor": "1611",
+  "effect": {
+   "name": "Bloodthirst",
+   "text": "The equipper's CRIT Rate increases by 25%, and Electric DMG increases by 15%. When the equipper uses an EX Special Attack or triggers Maim, Electric Sharp DMG dealt increases by 10% for 40s. Repeated triggers reset the duration."
+  },
   "source": "nanoka.cc"
  },
  {
@@ -750,6 +930,10 @@
   "rarity": "top",
   "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1621.webp",
   "madeFor": "1621",
+  "effect": {
+   "name": "Sleepless Eternal Night",
+   "text": "The equipper's CRIT Rate increases by 24%. DMG dealt ignores 15% of the target's Wind RES. When the equipper uses an EX Special Attack to deal Wind DMG, Daze dealt increases by 16%, and DMG dealt by all other squad members increases by 20%, for 50s. Repeated triggers reset the duration. Only one instance of the DMG increase effect can exist in the same squad."
+  },
   "source": "nanoka.cc"
  },
  {
@@ -758,6 +942,10 @@
   "rarity": "top",
   "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1631.webp",
   "madeFor": "1631",
+  "effect": {
+   "name": "Evil Hunt in Hand",
+   "text": "Increases the equipper's CRIT Rate by 24%. When the equipper's [Basic Attack] hits an enemy, increases their own ATK by 10%, and the DMG dealt ignores 16% of the target's Wind RES for 16s."
+  },
   "source": "nanoka.cc"
  },
  {
@@ -766,6 +954,10 @@
   "rarity": "top",
   "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1641.webp",
   "madeFor": "1641",
+  "effect": {
+   "name": "Hatch Day",
+   "text": "Increases the equipper's Anomaly Proficiency by 90. When Attribute Anomaly DMG dealt by any squad member to an enemy CRITs, the equipper's Fire DMG increases by 40% for 20s. Repeated triggers reset the duration."
+  },
   "source": "nanoka.cc"
  }
 ]
