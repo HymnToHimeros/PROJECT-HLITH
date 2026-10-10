@@ -3,7 +3,7 @@
  * presets, Line-ups, Who fits and "If you pull…" %. Decisions the method leaves
  * open are written down in docs/logic/zzz-decisions.md.
  */
-import type { FitSuggestion, PullValue, TeamAccount, TeamIdea, TeamReason, TeamRules, TeamVerdict } from '../../../core/contract';
+import type { FitSuggestion, PullValue, TeamAccount, TeamIdea, TeamPreset, TeamReason, TeamRules, TeamVerdict } from '../../../core/contract';
 import { checkSquad, compare, DD_ORDER, type Account, type Library, type Line, type SquadResult } from './check';
 import { library } from './library';
 
@@ -61,7 +61,9 @@ export function summary(r: SquadResult): string {
 export function verdict(members: string[], a: TeamAccount, lib: Library = library()): TeamVerdict {
   const name = (id: string) => lib.names.get(id) ?? id;
   const account = toAccount(a);
-  const out = checkSquad(members, lib, account);
+  // A team's first member is its damage dealer when they can be one (the lead of a preset); otherwise Part B step 1 picks.
+  const lead = members[0] && isDamageDealer(members[0], lib) ? members[0] : undefined;
+  const out = checkSquad(members, lib, account, lead);
   if (!out.rated) return { rated: false, why: out.why };
   const mine = out.best;
   const owned = ownedRead(a, lib);
@@ -207,3 +209,42 @@ export const zzzTeamRules: TeamRules = {
   lineUps: (a) => lineUps(a),
   ifYouPull: (id, a) => ifYouPull(id, a),
 };
+
+/**
+ * Recommended teams from the check itself: for every damage dealer, the best
+ * squad the check finds from every agent at Mindscape 0 (no Potential). Each
+ * place lists the best pick first, then the two that score best beside the rest.
+ */
+export function recommendedTeams(lib: Library = library()): TeamPreset[] {
+  const name = (id: string) => lib.names.get(id) ?? id;
+  const m0: Account = { mindscape: () => 0, potential: () => undefined };
+  const all = [...lib.sheets.keys()];
+  const out: TeamPreset[] = [];
+  for (const dd of all.filter((id) => isDamageDealer(id, lib))) {
+    const first = bestFor(dd, all, lib, m0);
+    if (!first || first.count <= 0) continue;
+    // Alternatives for each place: whoever scores best with the damage dealer and the other partner.
+    const partners = first.order.slice(1);
+    const places = partners.map((p) => {
+      const others = partners.filter((x) => x !== p);
+      const ranked = all
+        .filter((x) => x !== dd && !partners.includes(x))
+        .map((x) => {
+          const out = checkSquad([dd, ...others, x], lib, m0, dd);
+          return { x, r: out.rated ? out.best : undefined };
+        })
+        .filter((c): c is { x: string; r: SquadResult } => !!c.r && c.r.count > 0)
+        .sort((a, b) => compare(b.r, a.r))
+        .slice(0, 2)
+        .map((c) => c.x);
+      return [p, ...ranked];
+    });
+    out.push({
+      id: `kit-check-${dd}`,
+      name: `${name(dd)} team`,
+      slots: [{ characters: [dd] }, ...places.map((p) => ({ characters: [...new Set(p)] }))],
+      source: `${METHOD}: the best count for ${name(dd)} from every agent at Mindscape 0 (${first.count})`,
+    });
+  }
+  return out;
+}

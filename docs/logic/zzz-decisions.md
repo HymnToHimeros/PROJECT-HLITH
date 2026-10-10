@@ -130,3 +130,60 @@ Each one can be changed: tell LOGIC-CORE which.
 38. **Disorder and Attribute Anomaly buffs have no specialty limit** when the
     text sets none; the Anomaly DMG stat already keeps them from Attack and
     Rupture damage dealers.
+
+## Added with groups F and G
+39. **One Ether Veil: Delusion Reprise at a time.** Sunna, Aria and Nangong Yu
+    all give "+50 ATK" from it, and the text says re-activating it cancels the
+    existing one, so the second and third count as duplicates.
+40. **Abloom-only buffs use the Anomaly DMG stat** (there is no separate
+    Abloom stat yet), so they count for any Anomaly damage dealer, even one
+    who never triggers Abloom. Known limit.
+41. **A damage dealer gaining something from their own Quick Assist reacts to
+    it** (Ellen's Quick Charge, Zhu Yuan's Shotshell, Evelyn's Binding Seal), so
+    a teammate who gives them a Quick Assist makes a chain.
+42. **Two different skills that each give a Quick Assist are two chains**
+    (Seth), as "one chain per cause" (decision 5).
+
+## Added with group I
+43. **Shields count as team support** (stat "heal"): there is no Shield stat,
+    and a shield doesn't raise damage. Ben's +16% CRIT Rate for shielded
+    characters reaches the whole squad, because his Core Passive shields all.
+44. **Phoenix (beta)**: her "Scorch" is read as a state on the enemy and
+    counted; her text never says what applies it. Beta text can change: she is
+    re-read on release, as the method says.
+
+## Materials (step 4)
+45. **Costs come from nanoka.cc** (ascension, every skill level, Core Skill,
+    Traces), for every character at once: this is game data, not kit reading.
+46. **ZZZ Agent EXP** is counted in Senior Investigator Logs (3,000 EXP each,
+    from the item's in-game text as quoted by Icy Veins and ONE Esports).
+    Checked: nanoka.cc's EXP table gives 900,000 for 1 → 60 = 300 Logs, the
+    number Icy Veins lists.
+47. **HSR character EXP is not counted yet**: neither nanoka.cc nor Yatta has
+    the per-level table, and the wiki that has it blocks automated reading.
+    The Farm says so instead of guessing.
+
+## Added with group H: every agent is read
+48. **Conditions can ask for an assist type** (Caesar: "another member who can
+    activate Defensive Assist"), from the profiles.
+49. **"Aftershock DMG" is a stat only some damage dealers use**, like Anomaly
+    DMG (decision 37): it counts for Soldier 0 - Anby and Orphie & Magus, whose
+    own text proves their damage is Aftershock DMG.
+50. **Pyrois's Mindscape 6 is hidden in the game data** ("Mindscape Effect
+    Hidden"); it is read when the game shows it.
+
+## Recommended builds (step 4)
+51. **Builds are the game's own recommendation** (nanoka.cc's copy of it), the
+    only source that is game data rather than a guide. Guides (Prydwen and
+    the like) can be added later as a second, named source.
+52. **The ZZZ W-Engine shown is the agent's own**: the game files name it after
+    them ("Weapon_S_<agent id>"). Agents without one show "No data yet".
+53. **Build score and saving a scanned build** need a place to save builds,
+    which the app doesn't have yet (FRAME's saved data). Until then the
+    character page keeps saying "No build data yet".
+54. **A team's first member is its damage dealer** when they can be one (the
+    lead of a preset or recommended team); otherwise the method's step 1 picks.
+    So "Cissia team" is scored for Cissia, not for Seed in the same squad.
+55. **Recommended teams (ZZZ) come from the check itself**: for every damage
+    dealer, the best squad from every agent at Mindscape 0, with the two best
+    alternatives per place. Source named on each card.

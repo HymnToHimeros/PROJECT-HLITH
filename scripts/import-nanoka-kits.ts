@@ -39,6 +39,14 @@ const GROUPS: Record<string, string[]> = {
   D: ['1371', '1391', '1051', '1441', '1611', '1311', '1411'],
   // Anomaly: Miyabi, Yanagi, Burnice, Jane, Vivian, Alice, Piper.
   E: ['1091', '1221', '1171', '1261', '1331', '1401', '1281'],
+  // Newer Anomaly and Stun: Aria, Promeia, Velina, Remielle, Grace, Nangong Yu, Pulchra.
+  F: ['1501', '1541', '1561', '1581', '1181', '1511', '1351'],
+  // Attack and their partners: Ellen, Soukaku, Zhu Yuan, Qingyi, Nicole, Evelyn, Seth.
+  G: ['1191', '1131', '1241', '1251', '1031', '1321', '1271'],
+  // Attack and Stun: Soldier 0 - Anby, Trigger, Orphie & Magus, Pyrois, Sigrid, Caesar, Koleda.
+  H: ['1381', '1361', '1301', '1551', '1591', '1071', '1101'],
+  // The rest, and the two not released yet (beta text): Anby, Nekomata, Soldier 11, Corin, Billy, Ben, Severian, Phoenix.
+  I: ['1011', '1021', '1041', '1061', '1081', '1121', '1631', '1641'],
 };
 
 // Specialty and attribute codes, as in scripts/import-nanoka.ts.
@@ -81,6 +89,11 @@ const TERM: Record<string, string> = {
   1000038: 'Cleanse', // Roxy: "it triggers Cleanse, reverting Contamination"
   1000039: 'Wind Energy', // Roxy: "Gain 1 point of Wind Energy for every 25 Energy consumed"
   1000040: 'Eye of the Storm', // Roxy: "generates 1 Eye of the Storm at the current position"
+};
+/** Terms a character's own files name somewhere (<Term:id>Name</Term>): a blank use of the same term gets that name. */
+const NAMED_TERMS = new Map<string, string>();
+const learnTerms = (raw: unknown) => {
+  for (const m of JSON.stringify(raw).matchAll(/<Term:(\d+)>([^<]+)<\/Term>/g)) if (m[1] && m[2] && !NAMED_TERMS.has(m[1])) NAMED_TERMS.set(m[1], m[2]);
 };
 /** AvatarSkillLevel(n) in level formulas: which skill's level the number follows. */
 const SKILL_LEVEL: Record<string, string> = { 0: 'Basic Attack', 1: 'Special Attack', 2: 'Dodge', 3: 'Chain Attack', 6: 'Assist' };
@@ -141,7 +154,9 @@ function formula(expr: string, mult: number, decimals: number, who: string): str
 export function plainText(raw: string, who: string): string {
   let t = raw
     .replace(/<color=[^>]*>|<\/color>/g, '')
-    .replace(/<Term:(\d+)>([^<]*)<\/Term>/g, (_m, id: string, word: string) => word || need(TERM, id, 'glossary term', who))
+    .replace(/<Term:(\d+)>([^<]*)<\/Term>/g, (_m, id: string, word: string) => word || TERM[id] || NAMED_TERMS.get(id) || need(TERM, id, 'glossary term', who))
+    // A tag the file never closes (Severian's beta Entry Skill): the same name.
+    .replace(/<Term:(\d+)>/g, (_m, id: string) => TERM[id] || NAMED_TERMS.get(id) || need(TERM, id, 'glossary term', who))
     .replace(/<IconMap:([A-Za-z_]+)>/g, (_m, icon: string) => `[${need(ICON, icon, 'button icon', who)}]`)
     .replace(/\{LAYOUT_[A-Z]+#[^}]*\}(?=\{LAYOUT_)/g, '')
     .replace(/\{LAYOUT_FALLBACK#([^}]*)\}/g, '$1')
@@ -276,7 +291,10 @@ for (const id of ids) {
   profiles.push(profileOf(id, d));
   if (!wanted.has(id)) continue;
   const released = id in live;
-  kits.push(released ? kitOf(id, await detail(id, manifest.zzz.live), manifest.zzz.live, false) : kitOf(id, d, VERSION, true));
+  const text = released ? await detail(id, manifest.zzz.live) : d;
+  NAMED_TERMS.clear();
+  learnTerms(text);
+  kits.push(kitOf(id, text, released ? manifest.zzz.live : VERSION, !released));
 }
 for (const id of wanted) if (!(id in all)) throw new Error(`Group character ${id} is not in nanoka.cc's ${VERSION} list.`);
 

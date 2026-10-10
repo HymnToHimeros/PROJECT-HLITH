@@ -103,7 +103,8 @@ function evalCondition(c: Condition | undefined, self: string, order: string[], 
       !!a.specialties?.includes(p.specialty) ||
       (!!a.sameAttribute && p.attribute === me.attribute) ||
       (!!a.sameFaction && p.faction === me.faction) ||
-      !!a.attributes?.includes(p.attribute)
+      !!a.attributes?.includes(p.attribute) ||
+      !!a.assistTypes?.includes(p.assistType)
     );
   });
   return ok ? 'met' : 'not-met';
@@ -141,6 +142,7 @@ export function conditionWords(c: Condition | undefined, lib: Library): string {
   const parts: string[] = [];
   if (c.another.specialties?.length) parts.push(list(c.another.specialties.map((s) => SPECIALTY_WORD[s])));
   if (c.another.attributes?.length) parts.push(`${list(c.another.attributes)} attribute`);
+  if (c.another.assistTypes?.length) parts.push(`a ${list(c.another.assistTypes)} assist character`);
   if (c.another.sameAttribute) parts.push('the same attribute');
   if (c.another.sameFaction) parts.push('the same faction');
   return `another member is ${parts.join(', or shares ')}`;
@@ -167,7 +169,7 @@ function reach(e: Entry, giver: string, dd: string, order: string[], lib: Librar
   const used = stats.filter((s) => (GENERAL_STATS.includes(s) && !notes?.ignores.includes(s)) || (SPECIFIC_STATS.includes(s) && !!notes?.uses.includes(s)));
   if (used.length) return { kind: 'buff', why: `reaches ${name(dd)}` };
   if (stats.some((s) => SUPPORT_STATS.includes(s))) return { kind: 'support', why: 'team support' };
-  return { kind: 'no', why: `${name(dd)}'s damage doesn't use ${list(stats)}` };
+  return { kind: 'no', why: `${name(dd)}'s damage doesn't use ${list([...new Set(stats)])}` };
 }
 
 /** Parts B steps 3–8 for one order with a set damage dealer. */

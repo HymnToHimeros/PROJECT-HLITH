@@ -28,6 +28,32 @@ Resume with: "continue from PROGRESS.md". Newest entry on top. Older entries:
 - CI (`.github/workflows/ci.yml`) runs both on every pull request.
 
 ## Done
+- 2026-10-10 · **LOGIC-CORE: every ZZZ agent read; materials for both games** (branch `logic-core/zzz-groups-f-i`).
+  - ZZZ groups F (Aria, Promeia, Velina, Remielle, Grace, Nangong Yu, Pulchra),
+    G (Ellen, Soukaku, Zhu Yuan, Qingyi, Nicole, Evelyn, Seth), H (Soldier 0 -
+    Anby, Trigger, Orphie & Magus, Pyrois, Sigrid, Caesar, Koleda) and I (Anby,
+    Nekomata, Soldier 11, Corin, Billy, Ben, and Severian and Phoenix from beta
+    text). All 62 agents: Kit check tags, scores, Who fits, If you pull.
+  - Engine: Aftershock DMG stat, assist-type conditions, one Ether Veil:
+    Delusion Reprise at a time. Decisions 39–50 in `docs/logic/zzz-decisions.md`.
+  - Step 4 started: `npm run data:costs` (nanoka.cc) fills ascension, skill,
+    Core Skill and Trace costs for every ZZZ agent and HSR character, and ZZZ
+    Agent EXP. Farm and the character page's "Materials to max" now show real
+    amounts, with a note saying what they cover. HSR character EXP isn't
+    counted yet (no source found that HLITH can read).
+  - Recommended builds: `npm run data:builds` reads the game's own
+    recommendation for every character (ZZZ: Drive Disc sets, main and sub
+    stats, the agent's own W-Engine, which skills to level first; HSR: relic
+    and planar sets, main and sub stats, Light Cones). Shown on the character
+    page (Recommended build) and in Farm (Gear to farm), source named.
+  - HSR kit text for every released character (98), imported group by group
+    (A, then one group per path). Kit check shows it; tags and scores wait for
+    the owner's OK on `docs/logic/hsr-theory.md`.
+  - ZZZ recommended teams from the kit check: the best squad per damage dealer
+    from every agent at Mindscape 0, two alternatives per place, each scored
+    against your roster (a team is scored for its first member).
+  - HSR recommended teams: the game's own (first team per character, 93),
+    each place with its backups. Their scores wait for the HSR theory OK.
 - 2026-10-10 · **LOGIC-CORE: ZZZ groups B to E, HSR kit text and theory** (branch `logic-core/zzz-groups-d-e`, replaces PR #41).
   - ZZZ group D read (Yixuan, Ju Fufu, Yidhari, Manato, Claret, Astra Yao,
     Yuzuha) and group E (Miyabi, Yanagi, Burnice, Jane, Vivian, Alice, Piper).
