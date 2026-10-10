@@ -26,7 +26,7 @@ doing it said `LIVE`. Newest jobs at the bottom; live jobs move to Done.
 | T33 | Blind test of LOGIC-CORE's kit understanding: Aventurine • Waveflair's best team worked out alone, plus 6 carries the owner hasn't corrected (exactly 4 members, one archetype) | owner | waiting on owner | All 8 answers given to the owner; T30 waits on their verdict. |
 | T35 | Target end stats per character on the character page (you vs target), each number sourced | LOGIC-CORE + FRAME | working | Rules live (#86): only numbers the game text states, quote + working. FRAME building the page card, totals form, scan. |
 | T38 | ZZZ teams: two supports doing the same job (Lucia + Pan Yinhu for Starlight Billy) scored above a complementary team (Dialyn + Lucia). Scoring must handle overlap and role coverage | LOGIC-CORE | sent | Part of T30 + blind test. |
-| T39 | Leaked characters usable in teams (beta kit text), Who fits, If you pull, so pre-pulling can be judged; marked leak/unverified | LOGIC-CORE | sent | Plan approved: kit-line partners marked "no game team list yet"; importers auto-add leaks, placeholder names show "No name yet". SCHEDULER keeps leak data current. After T35. |
+| T39 | Leaked characters usable in teams (beta kit text), Who fits, If you pull, so pre-pulling can be judged; marked leak/unverified | LOGIC-CORE | working | Rules live (#87): leaks usable when shown, marked unverified; importers auto-add leaks, "No name yet". FRAME wires the switch + "If you pull" card after T35. |
 
 ## Done
 | # | Job | Who | Live on |
