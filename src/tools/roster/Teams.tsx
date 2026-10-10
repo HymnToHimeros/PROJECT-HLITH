@@ -8,7 +8,7 @@ import { ShareTeam } from '../share/ShareTeam';
 import { KitCheck } from './KitCheck';
 import r from './roster.module.css';
 import { artOf, byNewest, CharArt, elementOf, entryOf, SectionHead, tagOf } from './shared';
-import { Line, Member, Score, teamAccount, useVerdict, WhyScore } from './TeamParts';
+import { Line, Member, Score, teamAccount, useTeamAccount, useVerdict, WhyScore } from './TeamParts';
 import { slotsOf, TeamListEditor } from './TeamListEditor';
 import type { RosterData } from './useRosterData';
 import { Switch } from '../pulls/shared';
@@ -422,10 +422,10 @@ function RatedIdeas({ data, several, head, onPick }: { data: RosterData; several
   const word = game.terms.character.toLowerCase();
   const name = (id: string) => data.byId.get(id)?.name ?? id;
   const roster = data.user.roster;
-  const ideas = useMemo(() => (rules ? rules.lineUps(teamAccount(data)) : []), [rules, roster]); // eslint-disable-line react-hooks/exhaustive-deps
+  const account = useTeamAccount(data);
+  const ideas = useMemo(() => (rules ? rules.lineUps(account) : []), [rules, account]);
   const pulls = useMemo(() => {
     if (!rules) return [];
-    const account = teamAccount(data);
     const notOwned = data.characters.filter((c) => !entryOf(roster, c.id).owned && rules.rated(c.id));
     const wanted = notOwned.filter((c) => entryOf(roster, c.id).wanted);
     return (wanted.length ? wanted : notOwned)
@@ -433,7 +433,7 @@ function RatedIdeas({ data, several, head, onPick }: { data: RosterData; several
       .filter((x): x is { c: Character; v: NonNullable<typeof x.v> } => x.v !== null)
       .sort((a, b) => b.v.percent - a.v.percent)
       .slice(0, 3);
-  }, [rules, roster]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [rules, account, roster, data.characters]);
   const rated = data.characters.filter((c) => rules?.rated(c.id)).length;
   const coverage = `Only ${word}s whose kits have been read count: ${rated} of ${data.characters.length} so far.`;
   return (
@@ -703,10 +703,10 @@ function Suggestions({ data, members, full, onAdd }: { data: RosterData; members
   const [unowned, setUnowned] = useState(false);
   const verdict = useVerdict(data, members, members.length === 0);
   const key = members.join(',');
-  const user = data.user;
+  const account = useTeamAccount(data);
   const fits = useMemo(
-    () => (rules && key ? rules.whoFits(key.split(','), teamAccount(data), { includeUnowned: unowned }).filter((f) => !key.split(',').includes(f.id)).slice(0, 8) : []),
-    [rules, key, unowned, user], // eslint-disable-line react-hooks/exhaustive-deps
+    () => (rules && key ? rules.whoFits(key.split(','), account, { includeUnowned: unowned }).filter((f) => !key.split(',').includes(f.id)).slice(0, 8) : []),
+    [rules, key, unowned, account],
   );
   if (!rules) return null;
   const word = data.game.terms.character.toLowerCase();

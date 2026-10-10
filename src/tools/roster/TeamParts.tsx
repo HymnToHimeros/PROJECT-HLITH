@@ -73,6 +73,18 @@ export function Member({
 /** What the game's team rules may know about you: who you own, their dupes and (when set) their potential. */
 export const teamAccount = (data: RosterData): TeamAccount => rosterAccount(data.user.roster, data.user.builds, hiddenBy(data.game), data.user.teamLists, data.user.assumeAverageBuilds, data.showLeaks);
 
+/**
+ * The same account, kept while nothing it reads changes: a cached team result keyed on it is
+ * worked out again whenever your roster, builds, team lists, Trailblazer pick or the average-build
+ * and leak switches change, and never kept from before (a cache keyed on the roster alone was).
+ */
+export function useTeamAccount(data: RosterData): TeamAccount {
+  const { roster, builds, teamLists, assumeAverageBuilds } = data.user;
+  const hidden = hiddenBy(data.game);
+  const leaks = data.showLeaks;
+  return useMemo(() => rosterAccount(roster, builds, hidden, teamLists, assumeAverageBuilds, leaks), [roster, builds, hidden, teamLists, assumeAverageBuilds, leaks]);
+}
+
 const rosterAccount = (
   roster: RosterData['user']['roster'],
   builds?: RosterData['user']['builds'],
