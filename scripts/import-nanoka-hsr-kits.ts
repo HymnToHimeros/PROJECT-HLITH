@@ -24,6 +24,22 @@ const GROUPS: Record<string, string[]> = {
   // follow-up (Feixiao, Topaz, Robin, Aventurine), debuff (Acheron, Jiaoqiu, Pela, Silver Wolf),
   // Super Break (Firefly, Ruan Mei, Harmony Trailblazer ×2, Lingsha).
   A: ['1220', '1112', '1309', '1304', '1308', '1218', '1106', '1006', '1310', '1303', '8005', '8006', '1222'],
+  // Preservation and Abundance.
+  B: ['1001', '1104', '1105', '1110', '1203', '1208', '1211', '1217', '1301', '1414', '8003', '8004'],
+  // Hunt.
+  C: ['1002', '1015', '1102', '1206', '1209', '1223', '1224', '1305', '1315', '1504'],
+  // Erudition.
+  D: ['1003', '1013', '1103', '1201', '1204', '1302', '1314', '1317', '1401', '1405', '1508', '1510'],
+  // Nihility.
+  E: ['1004', '1005', '1108', '1111', '1210', '1225', '1307', '1321', '1406', '1410', '1507'],
+  // Destruction.
+  F: ['1008', '1014', '1107', '1109', '1205', '1212', '1213', '1214', '1221', '1312', '1404', '1408', '1509', '8001', '8002'],
+  // Harmony.
+  G: ['1009', '1101', '1202', '1207', '1215', '1306', '1313', '1403', '1412'],
+  // Remembrance.
+  H: ['1402', '1407', '1409', '1413', '1415', '1512', '8007', '8008'],
+  // Elation.
+  I: ['1501', '1502', '1503', '1505', '1506', '1513', '8009', '8010'],
 };
 
 interface Skill {
@@ -115,7 +131,13 @@ function piecesOf(set: Kitset, memo: Detail['memosprite'] | undefined, who: stri
   const out: Piece[] = [];
   const seen = new Set<string>();
   const add = (p: Piece) => {
-    if (seen.has(p.id)) throw new Error(`${who}: two pieces with the id ${p.id}.`);
+    // Two skills can share a name (the Preservation Trailblazer's two Basic ATKs): same text = once, else numbered.
+    if (seen.has(p.id)) {
+      if (out.some((x) => x.id === p.id && x.gameText === p.gameText)) return;
+      let n = 2;
+      while (seen.has(`${p.id}-${n}`)) n++;
+      p = { ...p, id: `${p.id}-${n}` };
+    }
     seen.add(p.id);
     out.push(p);
   };
@@ -131,6 +153,10 @@ function piecesOf(set: Kitset, memo: Detail['memosprite'] | undefined, who: stri
     add({ id: `skill-${slug(s.type_name)}-${slug(name(s.name))}${suffix}`, label: `${s.type_name}: ${name(s.name)}${lv > 1 ? ` (Lv. ${lv})` : ''}`, kind: 'skill', does: [], gameText: plainText(s.desc, params, who) });
   }
   for (const s of Object.values(memo?.skills ?? {})) {
+    if (!s.desc) {
+      console.log(`  ${who}: memosprite "${s.type_name}: ${s.name}" has no text (part of another skill), skipped`);
+      continue;
+    }
     const levels = Object.keys(s.level ?? {}).map(Number);
     const lv = levels.length ? levelFor(s, set.skill_trees) : 1;
     const params = s.level?.[String(lv)]?.param_list ?? [];

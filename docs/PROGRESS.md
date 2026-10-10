@@ -46,6 +46,9 @@ Resume with: "continue from PROGRESS.md". Newest entry on top. Older entries:
     stats, the agent's own W-Engine, which skills to level first; HSR: relic
     and planar sets, main and sub stats, Light Cones). Shown on the character
     page (Recommended build) and in Farm (Gear to farm), source named.
+  - HSR kit text for every released character (98), imported group by group
+    (A, then one group per path). Kit check shows it; tags and scores wait for
+    the owner's OK on `docs/logic/hsr-theory.md`.
   - HSR recommended teams: the game's own (first team per character, 93),
     each place with its backups. Their scores wait for the HSR theory OK.
 - 2026-10-10 · **LOGIC-CORE: ZZZ groups B to E, HSR kit text and theory** (branch `logic-core/zzz-groups-d-e`, replaces PR #41).
