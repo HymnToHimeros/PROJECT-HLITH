@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState, type FormEvent, type ReactNode } from 'react';
+import { useCallback, useEffect, useMemo, useState, type FormEvent, type ReactNode } from 'react';
 import type { Character, TeamPreset } from '../../core/contract';
 import { deleteTeam, saveTeam, type UserTeam } from '../../core/data/userData';
 import { BottomSheet, Button, ExampleNotice, ExampleTag, GameTag, HowTo, NoData } from '../../core/ui';
@@ -7,7 +7,7 @@ import { ShareTeam } from '../share/ShareTeam';
 import { KitCheck } from './KitCheck';
 import r from './roster.module.css';
 import { artOf, byNewest, CharArt, elementOf, entryOf, SectionHead, tagOf } from './shared';
-import { Member, Score } from './TeamParts';
+import { Member, Score, teamAccount, useVerdict, WhyScore } from './TeamParts';
 import type { RosterData } from './useRosterData';
 
 /** A preset to start the editor with (copied from a recommended team, or from a character page). */
@@ -243,6 +243,7 @@ function TeamCard({
 }) {
   const tag = tagOf(data.game, several);
   const nameOf = (id: string) => data.byId.get(id)?.name ?? id;
+  const verdict = useVerdict(data, members, example);
   return (
     <article className={r.teamCard} aria-label={name}>
       <div className={r.teamTop}>
@@ -258,8 +259,9 @@ function TeamCard({
             ))}
           </div>
         </div>
-        <Score score={score} example={example} big />
+        <Score score={score} example={example} big verdict={verdict} />
       </div>
+      {!example && <WhyScore verdict={verdict} data={data} />}
       {preset && preset.slots.some((s) => s.characters.length > 1) && (
         <ol className={r.alts} aria-label="Who else fits">
           {preset.slots.map((s, i) =>
@@ -300,11 +302,10 @@ function pullIdea(data: RosterData, teams: TeamPreset[]): { id: string; line: st
   return { id: pick.id, line: pick.lead ? `leads ${pick.p.name}` : `fits ${pick.p.name}` };
 }
 
-/** Team ideas, "if you pull" and the endgame record: ROSTER-LOGIC and the HoYoLAB link fill these. Example rows until then, always true to your roster. */
+/** Team ideas and "if you pull" come from the game's team rules (LOGIC-CORE) where it has them; the endgame record from the HoYoLAB link. Example rows otherwise, always true to your roster. */
 function Ideas({ data, several, onPick, openAccount }: { data: RosterData; several: boolean; onPick: (p: TeamPreset) => void; openAccount?: (() => void) | undefined }) {
   const { game, presets } = data;
   const tag = tagOf(game, several);
-  const word = game.terms.character.toLowerCase();
   const ex = presets.example ? presets.list : [];
   const ranked = ex.map((p) => ({ p, missing: missingFrom(data, firsts(p)) })).sort((a, b) => a.missing - b.missing);
   const pull = pullIdea(data, ex);
@@ -316,6 +317,101 @@ function Ideas({ data, several, onPick, openAccount }: { data: RosterData; sever
       {tag && <GameTag {...tag} />}
     </div>
   );
+  const rules = game.rules.teams;
+  return (
+    <>
+      {rules ? (
+        <RatedIdeas data={data} several={several} head={head} onPick={(members) => onPick({ id: 'line-up', name: `${members.map((id) => data.byId.get(id)?.name ?? id)[0] ?? ''} team`, slots: members.map((id) => ({ characters: [id] })), source: rules.method })} />
+      ) : (
+        <ExampleIdeas data={data} several={several} head={head} ranked={ranked} pull={pull} pullName={pullName} onPick={onPick} />
+      )}
+      <EndgameRecord data={data} several={several} head={head} ready={ready} openAccount={openAccount} />
+    </>
+  );
+}
+
+/** Line-ups and "If you pull…" from the game's team rules: real, explained, from your roster. */
+function RatedIdeas({ data, several, head, onPick }: { data: RosterData; several: boolean; head: (t: string) => ReactNode; onPick: (members: string[]) => void }) {
+  const { game } = data;
+  const rules = game.rules.teams;
+  const word = game.terms.character.toLowerCase();
+  const name = (id: string) => data.byId.get(id)?.name ?? id;
+  const roster = data.user.roster;
+  const ideas = useMemo(() => (rules ? rules.lineUps(teamAccount(data)) : []), [rules, roster]); // eslint-disable-line react-hooks/exhaustive-deps
+  const pulls = useMemo(() => {
+    if (!rules) return [];
+    const account = teamAccount(data);
+    const notOwned = data.characters.filter((c) => !entryOf(roster, c.id).owned && rules.rated(c.id));
+    const wanted = notOwned.filter((c) => entryOf(roster, c.id).wanted);
+    return (wanted.length ? wanted : notOwned)
+      .map((c) => ({ c, v: rules.ifYouPull(c.id, account) }))
+      .filter((x): x is { c: Character; v: NonNullable<typeof x.v> } => x.v !== null)
+      .sort((a, b) => b.v.percent - a.v.percent)
+      .slice(0, 3);
+  }, [rules, roster]); // eslint-disable-line react-hooks/exhaustive-deps
+  const rated = data.characters.filter((c) => rules?.rated(c.id)).length;
+  const coverage = `Only ${word}s whose kits have been read count: ${rated} of ${data.characters.length} so far.`;
+  return (
+    <>
+      <section className={r.card} aria-label={`Teams you can build${several ? ` · ${game.short}` : ''}`}>
+        {head('Teams you can build')}
+        <span className={r.cardText}>Your best teams from the {word}s you own, no {word} twice, checked kit by kit. Tap one to make it a preset.</span>
+        {ideas.length ? (
+          ideas.map((t) => (
+            <button key={t.members.join()} type="button" className={`${r.ideaRow} ${r.ideaBtn}`} onClick={() => onPick(t.members)} aria-label={`${t.members.map(name).join(', ')}: count ${t.count}. Make it a preset`} title={t.why}>
+              <span className={r.lineLabel}>{t.members.map(name).join(' > ')}</span>
+              <span className={r.ideaState}>count {t.count}</span>
+            </button>
+          ))
+        ) : (
+          <NoData />
+        )}
+        <span className={r.muted}>{coverage}</span>
+      </section>
+      <section className={r.card} aria-label={`If you pull${several ? ` · ${game.short}` : ''}`}>
+        {head('If you pull…')}
+        <span className={r.cardText}>What {/^[aeiou]/i.test(word) ? 'an' : 'a'} {word} you don’t own would add to your teams, tested at no extra copies. 0% means no gain.</span>
+        {pulls.length ? (
+          pulls.map(({ c, v }) => (
+            <details key={c.id} className={r.why}>
+              <summary className={r.whySummary}>
+                <span className={r.lineLabel}>{c.name}</span>&nbsp;<span className={r.ideaState}>{v.percent ? `${v.percent}%` : 'No gain'}</span>
+              </summary>
+              <ul className={r.whyList}>
+                {v.why.map((w) => (
+                  <li key={w}>{w}</li>
+                ))}
+              </ul>
+            </details>
+          ))
+        ) : (
+          <NoData />
+        )}
+        <span className={r.muted}>{coverage}</span>
+      </section>
+    </>
+  );
+}
+
+function ExampleIdeas({
+  data,
+  several,
+  head,
+  ranked,
+  pull,
+  pullName,
+  onPick,
+}: {
+  data: RosterData;
+  several: boolean;
+  head: (t: string) => ReactNode;
+  ranked: { p: TeamPreset; missing: number }[];
+  pull: { id: string; line: string } | null;
+  pullName: string | null;
+  onPick: (p: TeamPreset) => void;
+}) {
+  const { game } = data;
+  const word = game.terms.character.toLowerCase();
   return (
     <>
       <section className={r.card} aria-label={`Teams you can build${several ? ` · ${game.short}` : ''}`}>
@@ -347,6 +443,14 @@ function Ideas({ data, several, onPick, openAccount }: { data: RosterData; sever
           <NoData />
         )}
       </section>
+    </>
+  );
+}
+
+function EndgameRecord({ data, several, head, ready, openAccount }: { data: RosterData; several: boolean; head: (t: string) => ReactNode; ready: TeamPreset | undefined; openAccount?: (() => void) | undefined }) {
+  const { game } = data;
+  return (
+    <>
       <section className={r.card} aria-label={`Endgame record${several ? ` · ${game.short}` : ''}`}>
         {head('Endgame record')}
         <span className={r.cardText}>The teams you used in {game.terms.endgame.slice(0, 2).join(' and ') || 'endgame'}, read from your HoYoLAB profile. A team that matches a preset shows its name.</span>

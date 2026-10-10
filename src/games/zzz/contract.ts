@@ -12,6 +12,9 @@ import materials from './data/materials.json';
 import teams from './data/teams.json';
 import sampleArt from './data/sample-art.json';
 import versions from './data/versions.json';
+import { SHEETS } from './kitcheck/library';
+import { withTags } from './kitcheck/tags';
+import { zzzTeamRules } from './kitcheck/team';
 
 const list = <T>(rows: unknown) => async () => rows as T[];
 const COMMUNITY = 'community pull-log statistics (not published by the game)';
@@ -130,11 +133,12 @@ export const zzz: GameContract = {
     teams: list<TeamPreset>(teams),
     sampleArt: async () => sampleArt as SampleArt[],
     versions: list<Version>(versions),
-    kits: list<Kit>(kits),
+    // Kit text with the cheat sheet's tags (docs/logic/zzz-method.md, Part A).
+    kits: async () => withTags(kits as Kit[], SHEETS),
   },
   accountLinks: [{ provider: 'hoyolab', supports: ['stamina', 'checkin', 'roster', 'endgame'], config: { gameBiz: 'nap_global' } }],
   scan: { screen: 'character', fields: ['level', 'mindscape', 'w-engine', 'drive-discs', 'skills'] },
-  rules: {},
+  rules: { teams: zzzTeamRules },
   sources: [
     { what: 'Agent list (names, rank, specialty, attribute)', source: 'nanoka.cc data files, game data 3.3.4, used with permission', entered: '2026-10-09', verified: false },
     { what: 'Pull rates, hard pity, 50/50 and 75/25', source: 'official rates shown on the in-game Signal Search details page', entered: '2026-10-09', verified: false },
