@@ -1,0 +1,163 @@
+# Keeps the game lists current by itself (SCHEDULER, T6/T7; docs/ROUTINES.md).
+#
+# Every 2 hours it asks `node scripts/schedule-due.ts` whether now is a check time
+# (counted from patch day: scripts/schedule/rhythm.ts). Most runs stop there.
+# When a check is due (or someone starts it by hand):
+#   1. re-imports leaks and characters, leak kits, and versions/banners/events/endgame;
+#   2. runs the full check (lint, types, unit tests, build, browser tests) on the result;
+#   3. puts the changes on ONE standing PR (branch scheduler/auto-data) with a plain summary;
+#   4. merges it by itself only when every changed file is a data list
+#      (src/games/*/data/*.json or scripts/schedule/rhythm.json) and the check is green.
+#      Anything else waits for MANAGER;
+#   5. reports the run, its findings and the next check time to the owner's inbox
+#      (findings-intake, with the FINDINGS_INTAKE_KEY secret).
+# A PR opened with the built-in token does not start CI, which is why step 2 runs here.
+name: Data refresh
+
+on:
+  schedule:
+    - cron: '17 */2 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: data-refresh
+  cancel-in-progress: false
+
+env:
+  BRANCH: scheduler/auto-data
+  INTAKE_URL: https://qywvnvwfsknfcxgpbivo.supabase.co/functions/v1/findings-intake
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Is a check due?
+        id: plan
+        run: |
+          node scripts/schedule-due.ts
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then echo "go=true" >> "$GITHUB_OUTPUT"; else grep -q '^due=true' "$GITHUB_OUTPUT" && echo "go=true" >> "$GITHUB_OUTPUT" || echo "go=false" >> "$GITHUB_OUTPUT"; fi
+
+      - if: steps.plan.outputs.go == 'true'
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - if: steps.plan.outputs.go == 'true'
+        run: npm ci
+
+      # Each import may fail on its own (a source down or changed); the others still run.
+      - name: Leaks and characters (nanoka.cc)
+        id: nanoka
+        if: steps.plan.outputs.go == 'true'
+        continue-on-error: true
+        run: npm run data:nanoka
+      - name: Kits, leaks included
+        id: kits
+        if: steps.plan.outputs.go == 'true'
+        continue-on-error: true
+        run: npm run data:kits && npm run data:hsr-kits
+      - name: Versions, banners, events, endgame (official notices + wiki)
+        id: schedule
+        if: steps.plan.outputs.go == 'true'
+        continue-on-error: true
+        run: npm run data:schedule
+
+      - name: What changed
+        id: diff
+        if: steps.plan.outputs.go == 'true'
+        run: |
+          files=$(git status --porcelain --untracked-files=all | awk '{print $2}')
+          echo "$files"
+          if [ -z "$files" ]; then echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; fi
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+          if echo "$files" | grep -qvE '^src/games/[^/]+/data/[^/]+\.json$|^scripts/schedule/rhythm\.json$'; then
+            echo "data_only=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "data_only=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Full check
+        id: check
+        if: steps.diff.outputs.changed == 'true'
+        continue-on-error: true
+        run: |
+          npm run check
+          npx playwright install --with-deps chromium
+          CI=true npm run e2e
+
+      - name: Summary and inbox report
+        if: steps.plan.outputs.go == 'true'
+        run: |
+          failed=()
+          [ "${{ steps.nanoka.outcome }}" = "failure" ] && failed+=(--failed "leaks-scan: the nanoka.cc import failed (see the Data refresh run on GitHub)")
+          [ "${{ steps.kits.outcome }}" = "failure" ] && failed+=(--failed "game-data-refresh: the kit import failed (see the Data refresh run on GitHub)")
+          [ "${{ steps.schedule.outcome }}" = "failure" ] && failed+=(--failed "events-scan: the notices/wiki import failed (see the Data refresh run on GitHub)")
+          if [ "${{ steps.check.outcome }}" = "failure" ]; then
+            failed+=(--failed "game-data-refresh: the refreshed lists did not pass the check; PR on $BRANCH waits for SCHEDULER")
+          fi
+          node scripts/data-report.ts --summary "$RUNNER_TEMP/summary.md" --intake "$RUNNER_TEMP/intake.json" --next "${{ steps.plan.outputs.next }}" "${failed[@]}"
+          cat "$RUNNER_TEMP/summary.md" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Standing PR, merged when data only and green
+        if: steps.diff.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git switch -C "$BRANCH"
+          git add -A
+          git commit -q -m "Data refresh $(date -u +%Y-%m-%d): lists from the official notices, wiki and nanoka.cc" -m "$(cat "$RUNNER_TEMP/summary.md")"
+          git push -f origin "$BRANCH"
+          {
+            echo "Automatic data refresh (.github/workflows/data-refresh.yml, run ${{ github.run_id }})."
+            echo
+            cat "$RUNNER_TEMP/summary.md"
+            echo
+            echo "Data files only: ${{ steps.diff.outputs.data_only }} · full check: ${{ steps.check.outcome }}"
+          } > "$RUNNER_TEMP/body.md"
+          pr=$(gh pr list --head "$BRANCH" --state open --json number --jq '.[0].number')
+          if [ -z "$pr" ]; then
+            gh pr create --head "$BRANCH" --base main --title "Data refresh (automatic)" --body-file "$RUNNER_TEMP/body.md"
+            pr=$(gh pr list --head "$BRANCH" --state open --json number --jq '.[0].number')
+          else
+            gh pr edit "$pr" --body-file "$RUNNER_TEMP/body.md"
+          fi
+          if [ "${{ steps.diff.outputs.data_only }}" = "true" ] && [ "${{ steps.check.outcome }}" = "success" ]; then
+            gh pr merge "$pr" --squash --delete-branch || echo "::warning::PR #$pr could not merge by itself; it waits for MANAGER."
+          else
+            echo "::warning::PR #$pr waits for MANAGER (data only: ${{ steps.diff.outputs.data_only }}, check: ${{ steps.check.outcome }})."
+          fi
+
+      - name: Report to the owner's inbox
+        if: always() && steps.plan.outputs.go == 'true'
+        env:
+          KEY: ${{ secrets.FINDINGS_INTAKE_KEY }}
+        run: |
+          if [ -z "$KEY" ]; then echo "::warning::FINDINGS_INTAKE_KEY is not set; nothing sent to the inbox."; exit 0; fi
+          [ -f "$RUNNER_TEMP/intake.json" ] || { echo "No report was made."; exit 1; }
+          code=$(curl -sS -o "$RUNNER_TEMP/answer.json" -w '%{http_code}' -X POST "$INTAKE_URL" \
+            -H 'Content-Type: application/json' -H "x-intake-key: $KEY" --data-binary @"$RUNNER_TEMP/intake.json")
+          cat "$RUNNER_TEMP/answer.json"; echo
+          [ "$code" = "200" ]
+
+      # A failed import or check shows as a failed run (GitHub emails the owner), after the report.
+      - name: Result
+        if: steps.plan.outputs.go == 'true'
+        run: |
+          for o in "${{ steps.nanoka.outcome }}" "${{ steps.kits.outcome }}" "${{ steps.schedule.outcome }}" "${{ steps.check.outcome }}"; do
+            [ "$o" = "failure" ] && exit 1
+          done
+          exit 0

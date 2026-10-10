@@ -29,6 +29,18 @@ Resume with: "continue from PROGRESS.md". Newest entry on top. Older entries:
 - CI (`.github/workflows/ci.yml`) runs both on every pull request.
 
 ## Done
+- 2026-10-10 · **SCHEDULER: the automatic data refresh** (branch `scheduler/auto-refresh`, T6/T7 step 3).
+  `.github/workflows/data-refresh.yml` asks `schedule:due` every 2 hours; when a check
+  is due it re-imports leaks and characters, all kits (leak kits included), versions,
+  banners, events and endgame, runs the full check (browser tests included), puts the
+  changes on one standing PR (`scheduler/auto-data`) and merges it by itself only when
+  every changed file is a data list and the check is green. `scripts/data-report.ts`
+  writes the plain summary (new leaks, confirmations, new banners/events, moved
+  version ends, beta kit changes with the build and the kit sheets LOGIC-CORE should
+  re-read) and sends it to the owner's inbox. Permanent banners keep their stored end
+  when the notice board's hour wobbles (it answered 11:00, 17:00 and 00:00 in a row).
+  Needs: FRAME's intake change (`failed`, `next_at`), the FINDINGS_INTAKE_KEY secret,
+  and "Allow GitHub Actions to create and approve pull requests".
 - 2026-10-10 · **SCHEDULER: when to look for news** (branch `scheduler/rhythm`).
   `npm run schedule:due` says whether now is a check time and when the next one
   is (`--plan 21` lists them). Counted from patch day, never weekdays: daily in the

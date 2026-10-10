@@ -624,7 +624,15 @@ function merge<T extends { id: string; start?: string }>(file: string, fresh: T[
   const path = resolve(ROOT, file);
   const old = JSON.parse(readFileSync(path, 'utf8')) as T[];
   const byId = new Map(old.map((x) => [x.id, x]));
-  for (const x of fresh) byId.set(x.id, x);
+  for (const x of fresh) {
+    // A permanent banner's end is only how long its notice is shown (years away), and the
+    // notice board answers with a different hour from one request to the next: keep the
+    // stored end unless it really moved, so automatic runs don't report a change each time.
+    const was = byId.get(x.id) as (T & { permanent?: boolean; end?: string }) | undefined;
+    const now = x as T & { permanent?: boolean; end?: string };
+    if (now.permanent && was?.end && now.end && Math.abs(Date.parse(was.end) - Date.parse(now.end)) <= 2 * DAY) now.end = was.end;
+    byId.set(x.id, x);
+  }
   const list = [...byId.values()].sort((a, b) => (Date.parse(a.start ?? '') || 0) - (Date.parse(b.start ?? '') || 0) || a.id.localeCompare(b.id));
   writeFileSync(path, `${JSON.stringify(list, null, 2)}\n`);
   return list;
