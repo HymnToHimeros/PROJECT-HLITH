@@ -51,9 +51,9 @@ interface Group {
 
 /**
  * Banners for one game as a timeline board (owner's pick, direction 2, as in the mock-up):
- * Now / Next / Later columns under the shared ruler. A live banner is a big card with its art;
- * coming ones are compact tiles with their weapon banner stacked under them. Permanent banners
- * sit apart as compact rows in an "Always open" rail. On a phone the columns become tabs.
+ * Now / Next / Later columns under the shared ruler. Every banner is a big card with its art
+ * (owner: all like the Now one), its weapon banner stacked under it. Permanent banners sit apart
+ * as compact rows in an "Always open" rail. On a phone the columns become tabs.
  */
 export function GameBanners({ game, now, many, hideLeaks, filter, open, onLane }: Props) {
   const data = useBannersData(game, now);
@@ -95,7 +95,8 @@ export function GameBanners({ game, now, many, hideLeaks, filter, open, onLane }
   const nothing = live.length === 0 && upcoming.length === 0 && hiddenLeaks === 0;
   const unknownRerun = [...live, ...upcoming].filter((x) => rerunLabel(game, x, data.characters) === null && !isWeapon(x)).length;
   const counts = Object.fromEntries(PHASES.map(({ id }) => [id, columns[id].length])) as Record<Phase, number>;
-  const tile = (x: Banner, phase: Phase, paired = false) => <BannerTile key={x.id} game={game} banner={x} data={data} open={open} now={now} paired={paired} hero={phase === 'now' && !paired} />;
+  // Owner: every banner looks like the big Now card; the arrow folds one down to a compact tile.
+  const tile = (x: Banner, paired = false) => <BannerTile key={x.id} game={game} banner={x} data={data} open={open} now={now} paired={paired} />;
   return (
     <section className={b.stack} aria-label={game.name} style={{ '--vent': game.vent } as CSSProperties}>
       <div className={b.headRow}>
@@ -160,8 +161,8 @@ export function GameBanners({ game, now, many, hideLeaks, filter, open, onLane }
                       </div>
                       {list.map((g) => (
                         <div key={g.lead.id} className={cx(b.group, g.weapons.length > 0 && b.pair)}>
-                          {tile(g.lead, id)}
-                          {g.weapons.map((w) => tile(w, id, true))}
+                          {tile(g.lead)}
+                          {g.weapons.map((w) => tile(w, true))}
                         </div>
                       ))}
                       {list.length === 0 && <div className={b.emptyCell} aria-hidden="true" />}
@@ -404,8 +405,6 @@ interface TileProps {
   now: number;
   /** A weapon banner stacked under its character banner. */
   paired: boolean;
-  /** Opens as the big card (live banners); the others start compact. */
-  hero: boolean;
 }
 
 function Chevron({ up }: { up: boolean }) {
@@ -417,12 +416,12 @@ function Chevron({ up }: { up: boolean }) {
 }
 
 /**
- * One banner. Big (live, or opened): art with the title over it, a large countdown, the
- * featured character with your fit and Want, the others featured, team fit, Plan pulls.
- * Compact (coming up): picture, what, who, your fit, Want, time; the arrow opens it big.
+ * One banner. Big (as it opens): art with the title over it, a large countdown, the featured
+ * character with your fit and Want, the others featured, team fit, Plan pulls. Its arrow folds
+ * it to a compact tile (picture, what, who, your fit, Want, time) and back.
  */
-function BannerTile({ game, banner, data, open, now, paired, hero }: TileProps) {
-  const [big, setBig] = useState(hero);
+function BannerTile({ game, banner, data, open, now, paired }: TileProps) {
+  const [big, setBig] = useState(true);
   const type = game.bannerTypes.find((t) => t.id === banner.type);
   const start = Date.parse(banner.start);
   const end = Date.parse(banner.end);

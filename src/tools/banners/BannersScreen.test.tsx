@@ -130,17 +130,19 @@ describe('Banners screen', () => {
     expect(within(row).queryByText(/ends in/)).not.toBeInTheDocument();
   });
 
-  it('live banners open as big cards; coming ones are compact and open big with their arrow', async () => {
+  it('every banner opens as a big card (owner: all like the Now one); its arrow folds it to a compact tile and back', async () => {
     await show(realBanners);
     const live = screen.getByRole('article', { name: 'Live short' });
     expect(within(live).getByText('Ends in')).toBeInTheDocument();
-    expect(within(live).getByRole('button', { name: 'Show less' })).toHaveAttribute('aria-expanded', 'true');
     const soon = screen.getByRole('article', { name: 'Upcoming soon' });
-    expect(within(soon).queryByRole('button', { name: 'Plan pulls' })).not.toBeInTheDocument();
-    fireEvent.click(within(soon).getByRole('button', { name: 'Details' }));
-    const opened = screen.getByRole('article', { name: 'Upcoming soon' });
-    expect(within(opened).getByText('Opens in')).toBeInTheDocument();
-    expect(within(opened).getByRole('button', { name: 'Plan pulls' })).toBeInTheDocument();
+    expect(within(soon).getByText('Opens in')).toBeInTheDocument();
+    expect(within(soon).getByRole('button', { name: 'Plan pulls' })).toBeInTheDocument();
+    fireEvent.click(within(soon).getByRole('button', { name: 'Show less' }));
+    const folded = screen.getByRole('article', { name: 'Upcoming soon' });
+    expect(within(folded).queryByRole('button', { name: 'Plan pulls' })).not.toBeInTheDocument();
+    expect(within(folded).getByText(/opens in/)).toBeInTheDocument();
+    fireEvent.click(within(folded).getByRole('button', { name: 'Details' }));
+    expect(within(screen.getByRole('article', { name: 'Upcoming soon' })).getByRole('button', { name: 'Plan pulls' })).toBeInTheDocument();
   });
 
   it('shows leaks as unverified with their source, and the switch hides them and is remembered', async () => {
