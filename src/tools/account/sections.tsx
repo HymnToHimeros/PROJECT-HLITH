@@ -4,6 +4,7 @@ import { BACKUP_EVERY_DAYS, daysSinceBackup, downloadBackup, parseBackup, restor
 import { updatePrefs, usePrefs } from '../../core/data/prefs';
 import { canSync, syncNow, type SyncStatus } from '../../core/data/sync';
 import { ServerPicker } from '../../core/shell/ServerPicker';
+import { ProtagonistPicker } from '../../core/shell/ProtagonistPicker';
 import { setTheme, THEMES, themeInfo } from '../../core/theme/theme';
 import { ThemeMotif } from '../../core/theme/ThemeArt';
 import { formatDate, formatTime } from '../../core/time/reset';
@@ -302,6 +303,14 @@ export function GameSettingsPage({ games, allGames, now, focus, onBack }: { game
         )}
         <Switch label="Show server time" hint="A small clock next to each screen’s title." checked={Boolean(prefs.showServerTime)} onChange={(on) => updatePrefs((p) => ({ ...p, showServerTime: on }))} />
       </Card>
+      {games.some((g) => g.protagonist) && (
+        <Card title="Your main character">
+          <p className={a.small}>Pick yours: their entries count as owned in Roster and teams, and the other one is hidden everywhere. Switching back shows them again; nothing is deleted.</p>
+          {games.map((g) => (
+            <ProtagonistPicker key={g.id} game={g} legend />
+          ))}
+        </Card>
+      )}
       <Card title="Your games">
         <p className={a.small}>Games in the switcher. Turning one off never deletes its data.</p>
         {allGames.map((g) => {

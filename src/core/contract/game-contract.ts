@@ -61,6 +61,13 @@ export interface GameContract {
   potential?: { name: string; max: number };
   /** What a saved build holds for this game (character page form, scan). Missing = builds can't be saved. */
   build?: BuildRules;
+  /**
+   * A main character the player picks once, who comes in several forms (HSR: the Trailblazer,
+   * Caelus or Stelle, one entry per Path). `of` says which option and which form an entry is;
+   * undefined = not the main character. Once picked, the other option's entries are hidden
+   * everywhere and the picked one's count as owned. Missing = the game has no such choice.
+   */
+  protagonist?: { label: string; options: { id: string; name: string }[]; of: (c: Character) => { option: string; form: string } | undefined };
 
   // ── Economy ────────────────────────────────────────────────────
   currencies: Currency[];

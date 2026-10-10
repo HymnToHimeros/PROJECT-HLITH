@@ -1578,3 +1578,22 @@ button.member:hover .memberArt {
 .whyList .partRow > .muted {
   grid-column: 1 / -1;
 }
+
+/* "Which Trailblazer is yours?" at the top of Roster, until you pick (T27). */
+.mainPick {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-2);
+  padding: 12px 14px;
+  border-radius: var(--r-card);
+  border: 1px solid color-mix(in srgb, var(--vent) 45%, var(--line-default));
+  background: var(--bg-card);
+}
+.mainPickText {
+  margin: 0;
+  font-size: 13.5px;
+  color: var(--ink-3);
+}
+.mainPickText strong {
+  color: var(--ink-1);
+}
