@@ -261,6 +261,8 @@ export interface TeamAccount {
    * undefined = the game's lists. Team rules use them for who can join that carry and for `fill` (LOGIC-CORE).
    */
   teamList?: (presetId: string) => string[][] | undefined;
+  /** Characters the owner hid (the unpicked Trailblazer, FRAME's protagonist setting): never used in any team (LOGIC-CORE). */
+  skip?: (id: string) => boolean;
 }
 
 /** One reason behind a team score. */

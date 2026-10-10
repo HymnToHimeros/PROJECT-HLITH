@@ -121,7 +121,9 @@ stays the base; never rename an id that is already in a list.
     team's members as you'd field them (first owned per slot, game order). Roster Teams and
     the character page's Team fit use it (one line each).
   - 2026-10-10 · LOGIC-CORE added optional `teamList(presetId)` to `TeamAccount`: the owner's
-    own slot lists for a game team (FRAME stores them with the account as `teamLists`).
+    own slot lists for a game team (FRAME stores them with the account as `teamLists`), and
+    optional `skip(id)`: characters the owner hid (FRAME fills it with `hiddenBy(game)`); no
+    team, suggestion, best team or card ever uses them.
   - 2026-10-10 · LOGIC-CORE added optional `set`, `rolls`, `weapon.refine` and
     `skills` to `CharacterBuild`, the `BuildScorePart` type, and optional `parts`
     and `basis` on `scoreBuild`'s result; the character page's Build score card

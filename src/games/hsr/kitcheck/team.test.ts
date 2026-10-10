@@ -310,3 +310,18 @@ describe('HSR: the owner’s own team lists (decision 31)', () => {
     expect(v.notes.some((n) => /edited by you/.test(n))).toBe(true);
   });
 });
+
+describe('HSR: characters the owner hid (the unpicked Trailblazer) are never used', () => {
+  const caelus = new Set(['8001', '8003', '8005', '8007', '8009']);
+  const everyone = [...lib.sheets.keys()];
+  const a = { owned: () => true, dupes: () => 0, skip: (x: string) => caelus.has(x) };
+  it('no card, suggestion or best team uses a hidden Trailblazer', () => {
+    for (const t of gameTeams(teamsJson as TeamPreset[])) for (const m of hsrTeamRules.fill?.(t, a) ?? []) expect(caelus.has(m), `${t.name}: ${m}`).toBe(false);
+    for (const dd of ['Castorice', 'Phainon', 'Feixiao']) {
+      expect(whoFits([id(dd)], a).some((f) => caelus.has(f.id)), dd).toBe(false);
+      const v = verdict([id(dd)], a);
+      if (v.rated) expect(v.bestMembers.some((m) => caelus.has(m)), dd).toBe(false);
+    }
+    expect(everyone.some((x) => caelus.has(x))).toBe(true);
+  });
+});

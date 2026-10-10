@@ -119,7 +119,9 @@ const centresIn = (ids: string[], lib: Library) => {
 
 const asExplain = (r: TeamResult) => ({ members: r.members, dd: r.dd, count: r.count, lines: r.lines });
 
-const ownedRead = (a: TeamAccount, lib: Library) => [...lib.sheets.keys()].filter((id) => a.owned(id));
+/** Every read character the account doesn't hide (the unpicked Trailblazer: `skip`, FRAME's protagonist setting). */
+const readable = (lib: Library, a: TeamAccount) => [...lib.sheets.keys()].filter((id) => !a.skip?.(id));
+const ownedRead = (a: TeamAccount, lib: Library) => readable(lib, a).filter((id) => a.owned(id));
 
 function reasonOf(l: Line, lib: Library): TeamReason {
   const name = (id: string) => lib.names.get(id) ?? id;
@@ -153,7 +155,7 @@ export function verdict(members: string[], a: TeamAccount, lib: Library = librar
   const notes: string[] = [];
   let pool: string[];
   if (owned.length < SIZE) {
-    pool = [...lib.sheets.keys()];
+    pool = readable(lib, a);
     notes.push('You own fewer than four characters whose kits have been read, so this compares with every character instead.');
   } else pool = [...new Set([...owned, ...members])];
   const best = bestFor(mine.dd, pool, lib, account, mine.members);
@@ -163,7 +165,7 @@ export function verdict(members: string[], a: TeamAccount, lib: Library = librar
   if (!mine.sustain) notes.push('No sustain: nobody in this team heals or shields, and no Preservation or Abundance character.');
   if (percent >= 100) notes.push(`100% means the check knows no better team for ${name(mine.dd)} from your characters.`);
   else notes.push(`Best for ${name(mine.dd)} from your characters: ${teamWords(top, lib)} counts ${top.count}.`);
-  const every = bestFor(mine.dd, [...lib.sheets.keys()], lib, account);
+  const every = bestFor(mine.dd, readable(lib, a), lib, account);
   if (every && every.count > top.count) notes.push(`From every character: ${teamWords(every, lib)} counts ${every.count}.`);
   if (out.other && !lead) notes.push(`With ${name(out.other.dd)} as the damage dealer it counts ${out.other.count}.`);
   if ((lib.ownTeams.get(mine.dd) ?? []).some((t) => account.teamList?.(t.id))) notes.push(`Team lists for ${name(mine.dd)} edited by you: teammates come from your lists.`);
@@ -234,7 +236,7 @@ export function whoFits(members: string[], a: TeamAccount, lib: Library = librar
   const account = toAccount(a);
   const out: FitSuggestion[] = [];
   // Your own characters by default; the rest only when asked, as theory.
-  const pool = [...lib.sheets.keys()].filter((c) => options.includeUnowned || a.owned(c));
+  const pool = readable(lib, a).filter((c) => options.includeUnowned || a.owned(c));
   for (const c of pool) {
     if (members.includes(c) || !fits([...members, c])) continue;
     const res = check([...members, c], lib, account, leadOf([...members, c], lib));
@@ -298,7 +300,7 @@ export function lineUps(a: TeamAccount, lib: Library = library()): TeamIdea[] {
 export function ifYouPull(id: string, a: TeamAccount, lib: Library = library()): PullValue | null {
   if (!lib.sheets.has(id)) return null;
   const account = toAccount(a);
-  const all = [...lib.sheets.keys()];
+  const all = readable(lib, a);
   const base = ownedRead(a, lib).filter((x) => x !== id);
   const name = (x: string) => lib.names.get(x) ?? x;
   const why: string[] = [];
@@ -333,7 +335,7 @@ export function ifYouPull(id: string, a: TeamAccount, lib: Library = library()):
 
 export const hsrTeamRules: TeamRules = {
   method: METHOD,
-  fill: (p, a) => fillTeam(withOwnerLists(p, a), a.owned, (team, id) => fits([...team, id])),
+  fill: (p, a) => fillTeam(withOwnerLists(p, a), a.owned, (team, id) => !a.skip?.(id) && fits([...team, id])),
   rated: (id) => library().sheets.has(id),
   verdict: (m, a) => verdict(m, a),
   whoFits: (m, a, o) => whoFits(m, a, library(), o),

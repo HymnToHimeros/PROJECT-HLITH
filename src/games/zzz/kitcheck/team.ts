@@ -77,7 +77,9 @@ function findBest(dd: string, pool: string[], lib: Library, account: Account): S
 
 const asExplain = (r: SquadResult) => ({ members: r.order, dd: r.dd, count: r.count, lines: r.lines });
 
-const ownedRead = (a: TeamAccount, lib: Library) => [...lib.sheets.keys()].filter((id) => a.owned(id));
+/** Every read character the account doesn't hide (the unpicked Trailblazer: `skip`, FRAME's protagonist setting). */
+const readable = (lib: Library, a: TeamAccount) => [...lib.sheets.keys()].filter((id) => !a.skip?.(id));
+const ownedRead = (a: TeamAccount, lib: Library) => readable(lib, a).filter((id) => a.owned(id));
 
 function reasonOf(l: Line, lib: Library): TeamReason {
   const name = (id: string) => lib.names.get(id) ?? id;
@@ -105,7 +107,7 @@ export function verdict(members: string[], a: TeamAccount, lib: Library = librar
   const notes: string[] = [];
   let pool: string[];
   if (owned.length < 3) {
-    pool = [...lib.sheets.keys()];
+    pool = readable(lib, a);
     notes.push('You own fewer than three agents whose kits have been read, so this compares with every agent instead.');
   } else pool = [...new Set([...owned, ...members])];
   const best = bestFor(mine.dd, pool, lib, account);
@@ -114,7 +116,7 @@ export function verdict(members: string[], a: TeamAccount, lib: Library = librar
   const percent = Math.max(0, Math.round((mine.count / top.count) * 100));
   if (percent >= 100) notes.push(`100% means the check knows no better squad for ${name(mine.dd)} from your agents.`);
   else notes.push(`Best for ${name(mine.dd)} from your agents: ${top.order.map(name).join(' > ')} counts ${top.count}.`);
-  const every = bestFor(mine.dd, [...lib.sheets.keys()], lib, account);
+  const every = bestFor(mine.dd, readable(lib, a), lib, account);
   if (every && every.count > top.count) notes.push(`From every agent, ${every.order.map(name).join(' > ')} counts ${every.count}.`);
   if (out.other && out.other.count !== mine.count) notes.push(`The other order, ${out.other.order.map(name).join(' > ')}, counts ${out.other.count}.`);
   notes.push('A higher count means more of the kits connect, not more damage.');
@@ -151,7 +153,7 @@ export function whoFits(members: string[], a: TeamAccount, lib: Library = librar
   const account = toAccount(a);
   const out: FitSuggestion[] = [];
   // Your own agents by default; the rest only when asked, as theory.
-  const pool = [...lib.sheets.keys()].filter((c) => options.includeUnowned || a.owned(c));
+  const pool = readable(lib, a).filter((c) => options.includeUnowned || a.owned(c));
   for (const c of pool) {
     if (members.includes(c)) continue;
     const res = checkSquad([...members, c], lib, account);
@@ -223,7 +225,7 @@ export function ifYouPull(id: string, a: TeamAccount, lib: Library = library()):
   const name = (x: string) => lib.names.get(x) ?? x;
   // A character you don't own is tested at M0 (toAccount gives 0 for anyone not owned).
   const account = toAccount(a);
-  const all = [...lib.sheets.keys()];
+  const all = readable(lib, a);
   const base = ownedRead(a, lib).filter((x) => x !== id);
   const why: string[] = [];
   let percent = 0;
@@ -257,7 +259,7 @@ export function ifYouPull(id: string, a: TeamAccount, lib: Library = library()):
 
 export const zzzTeamRules: TeamRules = {
   method: METHOD,
-  fill: (p, a) => fillTeam(withOwnerLists(p, a), a.owned),
+  fill: (p, a) => fillTeam(withOwnerLists(p, a), a.owned, (_team, id) => !a.skip?.(id)),
   rated: (id) => library().sheets.has(id),
   verdict: (m, a) => verdict(m, a),
   whoFits: (m, a, o) => whoFits(m, a, library(), o),
