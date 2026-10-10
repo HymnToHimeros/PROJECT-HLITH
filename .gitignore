@@ -10,3 +10,6 @@ playwright-report/
 
 # Temporary copies used by parallel builders
 .claude/worktrees/
+
+# Logs from local runs
+*.log
