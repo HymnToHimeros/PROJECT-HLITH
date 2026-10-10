@@ -28,6 +28,14 @@ Resume with: "continue from PROGRESS.md". Newest entry on top. Older entries:
 - CI (`.github/workflows/ci.yml`) runs both on every pull request.
 
 ## Done
+- 2026-10-10 · **FRAME: calmer Events screen (T20)** (branch `frame/calm-events`).
+  Rows grouped into Ending soon / Running now / Coming up (first 4, rest behind
+  "Show N more"); Done or skipped and Ended fold behind "Show N". Each row has one
+  Done button (Reopen once settled); Skip and switching sit in a ⋯ menu (new shared
+  `Menu` in `src/core/ui`). Every change shows a line with Undo; login days stay as
+  they were. Rewards in their own column, sized by worth: 4+ pulls stand out, rows
+  worth 0 stay quiet. "Edit list" moved next to the filters. Nothing removed. Page
+  height: all games PC 3079 → 2653 px, HSR 1704 → 1476; phone 5972 → 5012, 3447 → 2856.
 - 2026-10-10 · **Two more chats: MANAGER and ERROR-FIX** (branch `frame/manager-error-fix`).
   `docs/WORKSTREAMS.md`: rules 7–8, both in Who's who, a routing table (which job goes
   to which chat). `docs/briefs/MANAGER.md` (the owner's front desk: routes every
