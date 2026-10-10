@@ -10,7 +10,7 @@ import { canCarry, canPartner, check, compare, damageDealers, isCentre, labelOf,
 import { SUSTAIN_STATS } from './types';
 import { isOwnTeam, library, pageOf } from './library';
 import { bestFill, withOwnerLists } from '../../../core/rules/fillTeam';
-import { bestFoundCards } from '../../../core/rules/bestCards';
+import { bestFoundCards, cachedCards } from '../../../core/rules/bestCards';
 import { accountNotes, type AccountFacts } from '../../../core/rules/accountNotes';
 import { SIGNATURE_PIECE } from '../../../core/rules/signatureWeapons';
 import { assumedLine, assumedWords } from '../../../core/rules/averageBuild';
@@ -413,7 +413,7 @@ export const hsrTeamRules: TeamRules = {
   whoFits: (m, a, o) => whoFits(m, assume(a), library(), o),
   lineUps: (a) => lineUps(assume(a)),
   ifYouPull: (id, a) => ifYouPull(id, assume(a)),
-  bestCards: (ps, a) => bestCards(ps, a),
+  bestCards: (ps, a) => cachedCards('hsr', ps, readable(library(), a).filter((id) => a.owned(id)), a, () => bestCards(ps, a)),
 };
 
 /**

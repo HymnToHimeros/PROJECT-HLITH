@@ -44,6 +44,17 @@ describe('HSR: Aventurine • Waveflair (no game list has Mortenax Blade, Ashvei
   });
 });
 
+describe('the same question gets the same answer without a new search (FRAME: the screen asks on every render)', () => {
+  it('a second call with an equal account returns the kept cards', () => {
+    const a = owning(['Aventurine • Waveflair', 'Mortenax Blade', 'Ashveil', 'Robin • Summeretto', 'Huohuo', 'Yao Guang']);
+    const first = hsrTeamRules.bestCards?.(presets, a);
+    const again = hsrTeamRules.bestCards?.(presets, { ...a });
+    expect(again).toBe(first);
+    // A change in what's owned asks again.
+    expect(hsrTeamRules.bestCards?.(presets, owning(['Aventurine • Waveflair', 'Mortenax Blade', 'Ashveil', 'Robin • Summeretto']))).not.toBe(first);
+  });
+});
+
 describe('HSR: Castorice heals allies herself, so her sustain slot may take anyone her game teams list', () => {
   it('her card fills Cyrene + Tribbie + Trailblazer (Remembrance) when no healer would do more', () => {
     const card = presets.find((t) => t.id === 'game-1407-1');

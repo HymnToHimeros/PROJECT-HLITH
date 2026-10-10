@@ -4,7 +4,7 @@
  * open are written down in docs/logic/zzz-decisions.md.
  */
 import { bestFill, withOwnerLists } from '../../../core/rules/fillTeam';
-import { bestFoundCards } from '../../../core/rules/bestCards';
+import { bestFoundCards, cachedCards } from '../../../core/rules/bestCards';
 import type { FitOptions, FitSuggestion, PullValue, TeamAccount, TeamIdea, TeamPreset, TeamReason, TeamRules, TeamVerdict, TeamWant } from '../../../core/contract';
 import { BUILD_STAT_WORD, buildFit } from '../../../core/rules/buildFit';
 import { GEAR_SLOTS } from '../gear';
@@ -324,7 +324,7 @@ export const zzzTeamRules: TeamRules = {
   whoFits: (m, a, o) => whoFits(m, assume(a), library(), o),
   lineUps: (a) => lineUps(assume(a)),
   ifYouPull: (id, a) => ifYouPull(id, assume(a)),
-  bestCards: (ps, a) => bestCards(ps, a),
+  bestCards: (ps, a) => cachedCards('zzz', ps, readable(library(), a).filter((id) => a.owned(id)), a, () => bestCards(ps, a)),
 };
 
 /**
