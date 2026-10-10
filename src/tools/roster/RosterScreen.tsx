@@ -3,6 +3,8 @@ import type { GameContract } from '../../core/contract';
 import type { ModuleScreenProps } from '../../core/registry/modules';
 import { usePrefs } from '../../core/data/prefs';
 import { ProtagonistPicker } from '../../core/shell/ProtagonistPicker';
+import { useHideLeaks } from '../banners/leakPref';
+import { useShowLeaked } from './leakedPref';
 import { CharacterPage } from './CharacterPage';
 import { Characters } from './Characters';
 import r from './roster.module.css';
@@ -40,6 +42,10 @@ export default function RosterScreen({ games, scope, tab, openTab, open, openAcc
   const game = inScope.find((g) => g.id === picked) ?? inScope[0];
   const shown = useMemo(() => (game ? [game] : []), [game]);
   const lists = useRosterLists(shown);
+  // The same rule as the Characters list: leaks show (and may join teams) only when you ask for them.
+  const showLeaked = useShowLeaked();
+  const hideLeaks = useHideLeaks();
+  const showLeaks = showLeaked && !hideLeaks;
   const current: Tab = tab === 'teams' ? 'teams' : 'characters';
   // The open character belongs to the tab it was opened from; switching tabs goes back to that tab's list.
   const [page, setPage] = useState<{ tab: Tab; game: string; id: string } | null>(null);
@@ -68,7 +74,7 @@ export default function RosterScreen({ games, scope, tab, openTab, open, openAcc
         const data: RosterData[] = shown.flatMap((g) => {
           const l = lists[g.id];
           const user = users[g.id];
-          return l && user ? [{ ...l, game: g, user }] : [];
+          return l && user ? [{ ...l, game: g, user, showLeaks }] : [];
         });
         const openPage = (gameId: string, id: string) => setPage({ tab: current, game: gameId, id });
         const pageData = page && page.tab === current ? data.find((d) => d.game.id === page.game) : undefined;

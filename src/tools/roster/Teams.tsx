@@ -7,7 +7,7 @@ import { ShareTeam } from '../share/ShareTeam';
 import { KitCheck } from './KitCheck';
 import r from './roster.module.css';
 import { artOf, byNewest, CharArt, elementOf, entryOf, SectionHead, tagOf } from './shared';
-import { Member, Score, teamAccount, useVerdict, WhyScore } from './TeamParts';
+import { Line, Member, Score, teamAccount, useVerdict, WhyScore } from './TeamParts';
 import { slotsOf, TeamListEditor } from './TeamListEditor';
 import type { RosterData } from './useRosterData';
 import { Switch } from '../pulls/shared';
@@ -456,7 +456,9 @@ function RatedIdeas({ data, several, head, onPick }: { data: RosterData; several
               </summary>
               <ul className={r.whyList}>
                 {v.why.map((w) => (
-                  <li key={w}>{w}</li>
+                  <li key={w}>
+                    <Line text={w} />
+                  </li>
                 ))}
               </ul>
             </details>
@@ -736,7 +738,7 @@ function Suggestions({ data, members, full, onAdd }: { data: RosterData; members
                   {c && <CharArt name={c.name} src={artOf(c, 'portrait')} elementColor={el?.color ?? 'var(--ink-4)'} className={r.memberArtSm} />}
                   <span className={r.suggestText}>
                     <span className={r.suggestName}>
-                      {name(f.id)} {f.theory && <span className={r.suggestTheory}>Theory · not owned</span>}
+                      {name(f.id)} {c?.leak && <span className={r.leakTag}>? UNVERIFIED</span>} {f.theory && <span className={r.suggestTheory}>Theory · not owned</span>}
                     </span>
                     {notes.length > 0 && <span className={r.suggestNotes}>{notes.join(' ')}</span>}
                   </span>

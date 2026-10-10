@@ -1763,3 +1763,16 @@ button.member:hover .memberArt {
   font-weight: 600;
   color: var(--ink-1);
 }
+
+/* Leaks in team text (T39): always marked, like everywhere else. */
+.leakTag {
+  display: inline-flex;
+  align-items: center;
+  padding: 1px 5px;
+  border-radius: var(--r-tag);
+  border: 1px dashed var(--ember-soft);
+  color: var(--ember-soft);
+  font: 700 10px/1.4 var(--font-numbers);
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+}
