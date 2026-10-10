@@ -55,6 +55,7 @@ export const zzz: GameContract = {
     { id: 'armorer', label: 'Armorer' },
   ],
   dupes: { prefix: 'M', name: 'Mindscape', max: 6 },
+  potential: { name: 'Agent Potential', max: 6 },
   currencies: [
     { id: 'polychrome', name: 'Polychrome', perPull: 160 },
     { id: 'encrypted-master-tape', name: 'Encrypted Master Tape', pullItemFor: ['exclusive', 'w-engine'] },

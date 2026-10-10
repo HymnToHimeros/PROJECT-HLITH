@@ -52,6 +52,12 @@ export interface GameContract {
   roles: { id: string; label: string }[];
   /** Absent = the game has no dupe system; Roster hides the column. */
   dupes?: { prefix: string; name: string; max: number };
+  /**
+   * A second upgrade track some characters have (ZZZ Agent Potential 0–6, HSR Enhanced
+   * kit: max 1 = on/off). The character page offers it only for characters whose kit has
+   * pieces that need it. Saved per character; not set = team rules treat it as unknown.
+   */
+  potential?: { name: string; max: number };
 
   // ── Economy ────────────────────────────────────────────────────
   currencies: Currency[];
@@ -228,7 +234,7 @@ export interface GameRules {
 export interface TeamAccount {
   owned: (id: string) => boolean;
   dupes: (id: string) => number;
-  /** A game's second upgrade track (ZZZ Agent Potential); undefined = not saved. */
+  /** A game's second upgrade track (`GameContract.potential`); undefined = not saved or not owned. */
   potential?: (id: string) => number | undefined;
 }
 
