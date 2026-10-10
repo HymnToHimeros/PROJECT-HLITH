@@ -65,6 +65,11 @@ export interface GameUserData {
    * the game's list. Game data updates never touch it.
    */
   teamLists?: Record<string, TeamList>;
+  /**
+   * Roster → Teams (T34): owned characters with no saved build are scored with their signature
+   * weapon and an average build. Missing = off.
+   */
+  assumeAverageBuilds?: boolean;
 }
 
 export interface TeamList {
@@ -289,6 +294,11 @@ export function clearBuild(game: GameId, characterId: string): SavedBuild | null
   const before = gameData(game).builds?.[characterId] ?? null;
   if (before) update(game, (g) => ({ ...g, builds: Object.fromEntries(Object.entries(g.builds ?? {}).filter(([id]) => id !== characterId)) }));
   return before;
+}
+
+/** Score owned characters without a saved build as signature + average build (T34), or not. */
+export function setAssumeAverageBuilds(game: GameId, on: boolean): void {
+  update(game, (g) => ({ ...g, assumeAverageBuilds: on }));
 }
 
 /** Save your own lists for one game team (replaces your earlier edit of it). */
