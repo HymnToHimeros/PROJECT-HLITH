@@ -78,11 +78,13 @@ jobs:
         id: diff
         if: steps.plan.outputs.go == 'true'
         run: |
-          files=$(git status --porcelain --untracked-files=all | awk '{print $2}')
+          files=$( { git diff --name-only; git ls-files --others --exclude-standard; } | sort -u)
+          deleted=$(git diff --name-only --diff-filter=D)
           echo "$files"
           if [ -z "$files" ]; then echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; fi
           echo "changed=true" >> "$GITHUB_OUTPUT"
-          if echo "$files" | grep -qvE '^src/games/[^/]+/data/[^/]+\.json$|^scripts/schedule/rhythm\.json$'; then
+          # Only changed or new data lists merge by themselves; a deleted file always goes to MANAGER.
+          if [ -n "$deleted" ] || echo "$files" | grep -qvE '^src/games/[^/]+/data/[^/]+\.json$|^scripts/schedule/rhythm\.json$'; then
             echo "data_only=false" >> "$GITHUB_OUTPUT"
           else
             echo "data_only=true" >> "$GITHUB_OUTPUT"
