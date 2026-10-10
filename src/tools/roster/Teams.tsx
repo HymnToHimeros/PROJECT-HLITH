@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState, type FormEvent, type ReactNode } from 'react';
 import type { Character, TeamPreset } from '../../core/contract';
-import { deleteTeam, saveTeam, type UserTeam } from '../../core/data/userData';
+import { deleteTeam, saveTeam, setAssumeAverageBuilds, type UserTeam } from '../../core/data/userData';
 import { BottomSheet, Button, ExampleNotice, ExampleTag, GameTag, HowTo, NoData } from '../../core/ui';
 import { exampleScore } from './examples';
 import { ShareTeam } from '../share/ShareTeam';
@@ -151,6 +151,24 @@ export function Teams({ data, several, onOpen, openCharacters, openAccount, draf
           </div>
         )}
       </section>
+
+      {data
+        .filter((d) => d.game.rules.teams && !d.presets.example)
+        .map((d) => (
+          <div key={d.game.id} className={r.assumeRow}>
+            <Switch
+              checked={Boolean(d.user.assumeAverageBuilds)}
+              onChange={(on) => setAssumeAverageBuilds(d.game.id, on)}
+              label={`Assume signature + average build when none is saved${several ? ` (${d.game.short})` : ''}`}
+            />
+            <span className={r.assumeText}>
+              <span className={r.assumeLabel}>Assume signature + average build when none is saved</span>
+              <span className={r.muted}>
+                Characters you own with no saved build are scored with their signature {d.game.terms.weapon} and an average build (the game’s recommended sets and main stats, 1 roll per recommended sub stat).
+              </span>
+            </span>
+          </div>
+        ))}
 
       <section className={r.stack} aria-labelledby="recommended-teams">
         <SectionHead title="Recommended teams" id="recommended-teams" note="Each place lists who fits it, best first, with whether you own them.">

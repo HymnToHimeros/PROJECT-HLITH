@@ -310,6 +310,19 @@ describe('Roster screen', () => {
     expect(members).toEqual(['Newest Star', 'Shield Friend', 'Older Star']);
   });
 
+  it('"Assume signature + average build" shows only with team scoring, starts off and is saved per game (T34)', async () => {
+    await show('teams');
+    expect(screen.queryByRole('switch', { name: /Assume signature \+ average build/ })).not.toBeInTheDocument();
+    cleanup();
+    const rules = { method: 'm', rated: () => false, verdict: () => ({ rated: false, why: '' }), whoFits: () => [], lineUps: () => [], ifYouPull: () => null } as unknown as TeamRules;
+    await show('teams', { ...makeGame(false), rules: { teams: rules } });
+    const sw = screen.getByRole('switch', { name: 'Assume signature + average build when none is saved' });
+    expect(sw).toHaveAttribute('aria-checked', 'false');
+    fireEvent.click(sw);
+    expect(gameData('aa').assumeAverageBuilds).toBe(true);
+    expect(screen.getByRole('switch', { name: 'Assume signature + average build when none is saved' })).toHaveAttribute('aria-checked', 'true');
+  });
+
   it('example Ideas never contradict your roster, and tapping one makes it a preset', async () => {
     await show('teams', makeGame(false, []));
     // Nobody owned: no example team is "Ready to play", none claims an endgame record, and nobody "makes their own team better".
