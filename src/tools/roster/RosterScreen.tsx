@@ -1,11 +1,11 @@
-import { useMemo, useState, type CSSProperties } from 'react';
+import { useCallback, useMemo, useState, type CSSProperties } from 'react';
 import type { GameContract } from '../../core/contract';
 import type { ModuleScreenProps } from '../../core/registry/modules';
 import { CharacterPage } from './CharacterPage';
 import { Characters } from './Characters';
 import r from './roster.module.css';
 import { WithUserData } from './shared';
-import { Teams } from './Teams';
+import { Teams, type PresetDraft } from './Teams';
 import { useRosterLists, type RosterData } from './useRosterData';
 
 type Tab = 'characters' | 'teams';
@@ -32,7 +32,7 @@ const writeGame = (id: string) => {
  * Always one game at a time: in All games a game switch at the top picks which.
  * Opening a character replaces the grid with its page, with "← Roster" back.
  */
-export default function RosterScreen({ games, scope, tab, openTab, open }: ModuleScreenProps) {
+export default function RosterScreen({ games, scope, tab, openTab, open, openAccount }: ModuleScreenProps) {
   const inScope = useMemo(() => (scope === 'all' ? games : games.filter((g) => g.id === scope)), [games, scope]);
   const [picked, setPicked] = useState<string | null>(readGame);
   const game = inScope.find((g) => g.id === picked) ?? inScope[0];
@@ -41,6 +41,9 @@ export default function RosterScreen({ games, scope, tab, openTab, open }: Modul
   const current: Tab = tab === 'teams' ? 'teams' : 'characters';
   // The open character belongs to the tab it was opened from; switching tabs goes back to that tab's list.
   const [page, setPage] = useState<{ tab: Tab; game: string; id: string } | null>(null);
+  // "Make a preset with them" on a character page: Teams opens its editor with this, once.
+  const [draft, setDraft] = useState<PresetDraft | null>(null);
+  const draftUsed = useCallback(() => setDraft(null), []);
   const choose = (id: string) => {
     setPicked(id);
     writeGame(id);
@@ -78,6 +81,11 @@ export default function RosterScreen({ games, scope, tab, openTab, open }: Modul
               onBack={() => setPage(null)}
               openPulls={pageData.game.modules.includes('pulls') ? (t) => open('pulls', t) : undefined}
               openFarm={pageData.game.modules.includes('farm') ? () => open('farm') : undefined}
+              makePreset={() => {
+                setDraft({ game: pageData.game.id, members: [character.id] });
+                setPage(null);
+                openTab('teams');
+              }}
             />
           );
         }
@@ -85,7 +93,7 @@ export default function RosterScreen({ games, scope, tab, openTab, open }: Modul
           <div className={r.stack}>
             {switcher}
             {current === 'teams' ? (
-              <Teams data={data} several={false} onOpen={openPage} openCharacters={() => openTab('characters')} />
+              <Teams data={data} several={false} onOpen={openPage} openCharacters={() => openTab('characters')} openAccount={openAccount} draft={draft} onDraftUsed={draftUsed} />
             ) : (
               <Characters data={data} several={false} onOpen={openPage} />
             )}

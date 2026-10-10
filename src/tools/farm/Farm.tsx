@@ -37,8 +37,8 @@ interface Plan {
   chosen: Character[];
   rows: NeedRow[];
   example: boolean;
-  /** Example "have" amounts, only on example rows. Real have isn't tracked yet. */
-  exampleHave: number[];
+  /** The game's material amounts are known (else nothing can be added up). */
+  amountsKnown: boolean;
   stamina: Known<number>;
   days: Known<number>;
 }
@@ -49,9 +49,9 @@ function planOf(g: FarmGame, showExamples: boolean): Plan {
   const real = farmPlan(game, user.farm, materials);
   const example = showExamples && chosen.length > 0 && !real.needs.known;
   const rows = real.needs.known ? real.needs.value : example ? exampleNeeds(game, chosen.length) : [];
-  const exampleHave = rows.map((r, i) => Math.round(r.amount * ([0.17, 0.3, 0.6, 0.1][i % 4] ?? 0)));
-  const stamina = example ? known(rows.reduce((sum, r, i) => sum + (r.stamina.known ? Math.round(r.stamina.value * (1 - (exampleHave[i] ?? 0) / r.amount)) : 0), 0), 'user') : real.stamina;
-  return { g, chosen, rows, example, exampleHave, stamina, days: daysToFinish(stamina, game.stamina[0]) };
+  // What you have isn't tracked (not even in examples), so the stamina tile is exactly the sum of the rows below.
+  const stamina = example ? known(rows.reduce((sum, r) => sum + (r.stamina.known ? r.stamina.value : 0), 0), 'user') : real.stamina;
+  return { g, chosen, rows, example, amountsKnown: real.needs.known, stamina, days: daysToFinish(stamina, game.stamina[0]) };
 }
 
 /** Farm (R40): pick characters → materials (have / need, runs, stamina), stamina total, days to finish, gear to farm. */
@@ -102,8 +102,12 @@ export function Farm({ games, openRoster }: Props) {
           <div className={f.columns}>
             <section className={f.card} aria-label="Materials">
               <h3 className={f.cardTitle}>Materials</h3>
-              {plans.flatMap((p) => p.rows.map((row, i) => <MaterialRow key={`${p.g.game.id}:${row.material}`} plan={p} row={row} index={i} several={several} />))}
-              {plans.every((p) => p.rows.length === 0) && <NoData />}
+              {plans.flatMap((p) => p.rows.map((row) => <MaterialRow key={`${p.g.game.id}:${row.material}`} plan={p} row={row} several={several} />))}
+              {plans.every((p) => p.rows.length === 0) && (
+                <span className={f.sub}>
+                  <NoData dash={false} /> Material amounts for {plans.filter((p) => !p.amountsKnown && p.chosen.length > 0).map((p) => p.g.game.name).join(' and ') || 'these games'} aren’t in HLITH yet. That part is on us, not you.
+                </span>
+              )}
             </section>
             <section className={f.card} aria-label="Gear to farm">
               <h3 className={f.cardTitle}>{several ? 'Gear to farm' : `${games[0]?.game.terms.gear ?? 'Gear'} to farm`}</h3>
@@ -128,7 +132,7 @@ export function Farm({ games, openRoster }: Props) {
               )}
               {openRoster && (
                 <button type="button" className={f.linkButton} onClick={openRoster}>
-                  Builds live on each character’s page in Roster →
+                  Open Roster →
                 </button>
               )}
             </section>
@@ -153,7 +157,7 @@ function Tiles({ plan, several }: { plan: Plan; several: boolean }) {
         {stamina.known ? (
           <span className={f.tileSub}>for every material listed {example && <ExampleTag />}</span>
         ) : (
-          <span className={f.tileNoData}>No data yet · some materials have no drop rate</span>
+          <span className={f.tileNoData}>{plan.amountsKnown ? 'No data yet · some materials have no drop rate' : `No data yet · material amounts for ${g.game.short} aren’t in HLITH yet`}</span>
         )}
       </div>
       <div className={f.tile}>
@@ -171,10 +175,8 @@ function Tiles({ plan, several }: { plan: Plan; several: boolean }) {
   );
 }
 
-function MaterialRow({ plan, row, index, several }: { plan: Plan; row: NeedRow; index: number; several: boolean }) {
+function MaterialRow({ plan, row, several }: { plan: Plan; row: NeedRow; several: boolean }) {
   const { g, example } = plan;
-  const have = example ? (plan.exampleHave[index] ?? 0) : null;
-  const pct = have === null ? 0 : Math.min(100, (have / row.amount) * 100);
   return (
     <div className={f.matRow}>
       <span className={f.rowTitle}>
@@ -182,16 +184,13 @@ function MaterialRow({ plan, row, index, several }: { plan: Plan; row: NeedRow; 
         {several && <GameTag label={g.game.short} vent={g.game.vent} />}
         {example && <ExampleTag />}
       </span>
-      <span className={f.matValue} data-done={have !== null && have >= row.amount}>
-        {have === null ? `—/${formatNumber(row.amount)}` : `${formatNumber(have)}/${formatNumber(row.amount)}`}
-      </span>
-      <span className={f.track} aria-hidden="true">
-        <span className={f.fill} style={{ width: `${pct}%`, background: g.game.vent }} />
-      </span>
+      {/* What you have isn't tracked yet: "—" on real and example rows alike. */}
+      <span className={f.matValue}>—/{formatNumber(row.amount)}</span>
+      <span className={f.track} aria-hidden="true" />
       <span className={f.matMeta}>
         {row.runs.known ? `${formatNumber(row.runs.value)} runs` : '— runs'} · {row.stamina.known ? formatNumber(row.stamina.value) : '—'} stamina
       </span>
-      {have === null && <span className={f.tileNoData}>Have: no data yet</span>}
+      <span className={f.tileNoData}>Have: no data yet</span>
     </div>
   );
 }
@@ -201,9 +200,11 @@ function Picker({ games, several, word }: { games: FarmGame[]; several: boolean;
   const q = query.trim().toLowerCase();
   const all = games.flatMap((g) => g.characters.map((c) => ({ g, c, on: g.user.farm.includes(c.id), wanted: Boolean(g.user.roster[c.id]?.wanted) })));
   const chosen = games.flatMap((g) => g.user.farm.map((id) => all.find((x) => x.g === g && x.c.id === id)).filter((x): x is (typeof all)[number] => Boolean(x)));
+  // Picks that aren't in the character list (any more): still yours, shown so you can remove them.
+  const missing = games.flatMap((g) => g.user.farm.filter((id) => !g.characters.some((c) => c.id === id)).map((id) => ({ g, id })));
   const rest = all.filter((x) => !x.on);
   const wanted = rest.filter((x) => x.wanted);
-  const pool = q ? rest.filter((x) => x.c.name.toLowerCase().includes(q)) : [...wanted, ...newest(rest.filter((x) => !x.wanted))];
+  const pool = q ? rest.filter((x) => x.c.name.toLowerCase().includes(q)) : [...wanted, ...newestPerGame(rest.filter((x) => !x.wanted))];
   const suggestions = pool.slice(0, SUGGEST);
   const toggle = (x: (typeof all)[number]) => setFarm(x.g.game.id, x.on ? x.g.user.farm.filter((id) => id !== x.c.id) : [...x.g.user.farm, x.c.id]);
 
@@ -236,11 +237,29 @@ function Picker({ games, several, word }: { games: FarmGame[]; several: boolean;
         <h3 className={f.cardTitle} id="farm-for">
           Farm for
         </h3>
-        <span className={f.count}>{chosen.length} chosen</span>
+        <span className={f.count}>{chosen.length + missing.length} chosen</span>
       </div>
-      {chosen.length > 0 && (
+      {chosen.length + missing.length > 0 && (
         <ul className={f.chips} aria-label="Chosen">
           {chosen.map(chip)}
+          {missing.map(({ g, id }) => (
+            <li key={`${g.game.id}:${id}`}>
+              <button
+                type="button"
+                className={f.chip}
+                aria-pressed="true"
+                aria-label={`Remove ${id} (not in the ${word} list)`}
+                title={`Not in the ${g.game.short} ${word} list any more`}
+                onClick={() => setFarm(g.game.id, g.user.farm.filter((x) => x !== id))}
+              >
+                {id} · not in the list
+                {several && <GameTag label={g.game.short} vent={g.game.vent} />}
+                <span aria-hidden="true" className={f.chipMark}>
+                  ×
+                </span>
+              </button>
+            </li>
+          ))}
         </ul>
       )}
       <label className={f.searchLabel}>
@@ -262,4 +281,17 @@ function Picker({ games, several, word }: { games: FarmGame[]; several: boolean;
 }
 
 const newest = <T extends { c: Character }>(xs: T[]) => [...xs].sort((a, b) => (b.c.releasedAt ?? '').localeCompare(a.c.releasedAt ?? '') || a.c.name.localeCompare(b.c.name));
+
+/**
+ * Newest first within each game (no release dates: by name), then the games
+ * take turns, so one game's dates never push another game off the list.
+ */
+export function newestPerGame<T extends { g: { game: { id: string } }; c: Character }>(xs: T[]): T[] {
+  const byGame = new Map<string, T[]>();
+  for (const x of xs) byGame.set(x.g.game.id, [...(byGame.get(x.g.game.id) ?? []), x]);
+  const lists = [...byGame.values()].map(newest);
+  const out: T[] = [];
+  for (let i = 0; out.length < xs.length; i++) for (const l of lists) if (l[i]) out.push(l[i] as T);
+  return out;
+}
 

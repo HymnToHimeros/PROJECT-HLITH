@@ -1262,3 +1262,43 @@ button.member:hover .memberArt {
   align-items: center;
   gap: var(--s-2);
 }
+
+/* An Ideas row you can tap (opens the preset editor). */
+.ideaBtn {
+  width: 100%;
+  padding: 0;
+  border: 0;
+  border-bottom: 1px solid var(--line-subtle);
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.ideaBtn:hover .lineLabel {
+  color: var(--ink-1);
+  text-decoration: underline;
+}
+
+/* Preset editor: a name with its owned / not owned word under it. */
+.pickText {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+/* A short status line with an Undo button (after deleting a preset). */
+.undoRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s-2) var(--s-3);
+  padding: 8px 12px;
+  border-radius: var(--r-row);
+  border: 1px solid var(--line-default);
+  background: var(--bg-raised);
+  color: var(--ink-2);
+  font-size: 13px;
+}

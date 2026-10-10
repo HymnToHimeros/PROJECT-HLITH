@@ -1,6 +1,6 @@
-import { useCallback, useState, type FormEvent, type ReactNode } from 'react';
+import { useCallback, useEffect, useState, type FormEvent, type ReactNode } from 'react';
 import type { Character, TeamPreset } from '../../core/contract';
-import { saveTeam, type UserTeam } from '../../core/data/userData';
+import { deleteTeam, saveTeam, type UserTeam } from '../../core/data/userData';
 import { BottomSheet, Button, ExampleNotice, ExampleTag, GameTag, HowTo, NoData } from '../../core/ui';
 import { exampleScore } from './examples';
 import { ShareTeam } from '../share/ShareTeam';
@@ -10,11 +10,29 @@ import { artOf, byNewest, CharArt, elementOf, entryOf, SectionHead, tagOf } from
 import { Member, Score } from './TeamParts';
 import type { RosterData } from './useRosterData';
 
+/** A preset to start the editor with (copied from a recommended team, or from a character page). */
+export interface PresetDraft {
+  game: string;
+  name?: string;
+  members: string[];
+}
+
 interface Props {
   data: RosterData[];
   several: boolean;
   onOpen: (game: string, id: string) => void;
   openCharacters: () => void;
+  /** Open Account (to link HoYoLAB). */
+  openAccount?: (() => void) | undefined;
+  /** Open the preset editor pre-filled, once, when Teams appears. */
+  draft?: PresetDraft | null | undefined;
+  onDraftUsed?: (() => void) | undefined;
+}
+
+interface Editing {
+  data: RosterData;
+  team: UserTeam | null;
+  draft?: { name?: string | undefined; members: string[] } | undefined;
 }
 
 /*
@@ -28,11 +46,20 @@ interface Props {
 const firsts = (p: TeamPreset) => p.slots.map((s) => s.characters[0]).filter((x): x is string => Boolean(x));
 
 /** Roster → Teams (design): preset cards with portraits and a score, your own presets, ideas and Kit check. */
-export function Teams({ data, several, onOpen, openCharacters }: Props) {
+export function Teams({ data, several, onOpen, openCharacters, openAccount, draft, onDraftUsed }: Props) {
   const [kitFor, setKitFor] = useState<{ data: RosterData; name: string; members: string[] } | null>(null);
-  const [editing, setEditing] = useState<{ data: RosterData; team: UserTeam | null } | null>(null);
+  const [editing, setEditing] = useState<Editing | null>(() => {
+    const d = draft && data.find((x) => x.game.id === draft.game);
+    return d && draft ? { data: d, team: null, draft: { name: draft.name, members: draft.members } } : null;
+  });
+  // The draft is used once; clear it so coming back to Teams doesn't open the editor again.
+  useEffect(() => {
+    if (draft) onDraftUsed?.();
+  }, [draft, onDraftUsed]);
+  const [removed, setRemoved] = useState<{ game: string; team: UserTeam } | null>(null);
   const closeKit = useCallback(() => setKitFor(null), []);
   const closeEditor = useCallback(() => setEditing(null), []);
+  const copyPreset = (d: RosterData, p: TeamPreset) => setEditing({ data: d, team: null, draft: { name: p.name, members: firsts(p) } });
   const anyExample = data.some((d) => d.presets.example && d.presets.list.length > 0);
   const ownsAnyone = data.some((d) => Object.values(d.user.roster).some((e) => e.owned));
   const mine = data.flatMap((d) => d.user.teams.map((t) => ({ d, t })));
@@ -54,7 +81,7 @@ export function Teams({ data, several, onOpen, openCharacters }: Props) {
           <span className={r.howSmall}>
             <HowTo
               steps={[
-                <>A preset is a team you play: up to {size} {word}s. Press <strong>New preset</strong>, name it and pick {word}s you own.</>,
+                <>A preset is a team you play: up to {size} {word}s. Press <strong>New preset</strong> (or <strong>Save as my preset</strong> on a recommended team), name it and pick who’s in it. Your owned {word}s come first; you can add anyone.</>,
                 <>Recommended teams list who fits each place, best first, and whether you own them.</>,
                 <>The number on each team is how well it fits your roster. It fills in once team scoring is added; until then it says “No data yet” (example teams show an example number).</>,
                 <><strong>Kit check</strong> on any team shows what each member’s skills really do, with the game’s own text as proof.</>,
@@ -78,7 +105,12 @@ export function Teams({ data, several, onOpen, openCharacters }: Props) {
                 example={d.presets.example}
                 score={d.presets.example ? exampleScore(i) : null}
                 onOpen={(id) => onOpen(d.game.id, id)}
-                actions={<Button onClick={() => setKitFor({ data: d, name: p.name, members: firsts(p) })}>Kit check</Button>}
+                actions={
+                  <>
+                    <Button onClick={() => setKitFor({ data: d, name: p.name, members: firsts(p) })}>Kit check</Button>
+                    <Button onClick={() => copyPreset(d, p)}>Save as my preset</Button>
+                  </>
+                }
               />
             ))}
           </div>
@@ -93,6 +125,19 @@ export function Teams({ data, several, onOpen, openCharacters }: Props) {
             </Button>
           )}
         </SectionHead>
+        {removed && (
+          <p className={r.undoRow} role="status">
+            <span className={r.grow}>Deleted “{removed.team.name}”.</span>
+            <Button
+              onClick={() => {
+                saveTeam(removed.game, removed.team);
+                setRemoved(null);
+              }}
+            >
+              Undo
+            </Button>
+          </p>
+        )}
         {mine.length === 0 ? (
           <div className={r.emptyCard}>
             <span className={r.label}>NO DATA YET</span>
@@ -131,7 +176,7 @@ export function Teams({ data, several, onOpen, openCharacters }: Props) {
         <div className={r.foldBody}>
           <div className={r.cards}>
             {data.map((d) => (
-              <Ideas key={d.game.id} data={d} several={several} />
+              <Ideas key={d.game.id} data={d} several={several} onPick={(p) => copyPreset(d, p)} openAccount={openAccount} />
             ))}
           </div>
         </div>
@@ -156,8 +201,14 @@ export function Teams({ data, several, onOpen, openCharacters }: Props) {
             all={data}
             data={editing.data}
             team={editing.team}
+            draft={editing.draft}
             onGame={(d) => setEditing({ data: d, team: null })}
             onDone={closeEditor}
+            onDelete={(team) => {
+              const gone = deleteTeam(editing.data.game.id, team.id);
+              if (gone) setRemoved({ game: editing.data.game.id, team: gone });
+              setEditing(null);
+            }}
             openCharacters={() => {
               setEditing(null);
               openCharacters();
@@ -227,13 +278,38 @@ function TeamCard({
   );
 }
 
-/** Team ideas, "if you pull" and the endgame record: ROSTER-LOGIC and the HoYoLAB link fill these. Example rows until then. */
-function Ideas({ data, several }: { data: RosterData; several: boolean }) {
+/** How many of a team's first picks you don't own yet (checked against your real roster). */
+const missingFrom = (data: RosterData, members: string[]) => members.filter((id) => !entryOf(data.user.roster, id).owned).length;
+
+const readiness = (missing: number, word: string) => (missing === 0 ? 'Ready to play' : missing === 1 ? `One ${word} away` : `${missing} ${word}s away`);
+
+/**
+ * Who "If you pull" talks about: a character you want and don't own, else one you
+ * don't own from the teams shown. Never someone you own, and never "X makes X's own team better".
+ */
+function pullIdea(data: RosterData, teams: TeamPreset[]): { id: string; line: string } | null {
+  const notOwned = (id: string) => !entryOf(data.user.roster, id).owned;
+  const wanted = new Set(
+    Object.entries(data.user.roster)
+      .filter(([, e]) => e.wanted && !e.owned)
+      .map(([id]) => id),
+  );
+  const inTeams = teams.flatMap((p) => p.slots.flatMap((s, i) => s.characters.map((id) => ({ id, p, lead: i === 0 }))));
+  const pick = inTeams.find((x) => wanted.has(x.id) && !x.lead) ?? inTeams.find((x) => wanted.has(x.id)) ?? inTeams.find((x) => notOwned(x.id) && !x.lead);
+  if (!pick) return null;
+  return { id: pick.id, line: pick.lead ? `leads ${pick.p.name}` : `fits ${pick.p.name}` };
+}
+
+/** Team ideas, "if you pull" and the endgame record: ROSTER-LOGIC and the HoYoLAB link fill these. Example rows until then, always true to your roster. */
+function Ideas({ data, several, onPick, openAccount }: { data: RosterData; several: boolean; onPick: (p: TeamPreset) => void; openAccount?: (() => void) | undefined }) {
   const { game, presets } = data;
   const tag = tagOf(game, several);
+  const word = game.terms.character.toLowerCase();
   const ex = presets.example ? presets.list : [];
-  const wantedId = Object.entries(data.user.roster).find(([, e]) => e.wanted && !e.owned)?.[0];
-  const pullName = (wantedId && data.byId.get(wantedId)?.name) ?? ex[0]?.name.replace(/ team$/, '');
+  const ranked = ex.map((p) => ({ p, missing: missingFrom(data, firsts(p)) })).sort((a, b) => a.missing - b.missing);
+  const pull = pullIdea(data, ex);
+  const pullName = pull ? (data.byId.get(pull.id)?.name ?? pull.id) : null;
+  const ready = ranked.find((x) => x.missing === 0)?.p;
   const head = (title: string) => (
     <div className={r.cardHead}>
       <h4 className={r.cardTitle}>{title}</h4>
@@ -244,15 +320,15 @@ function Ideas({ data, several }: { data: RosterData; several: boolean }) {
     <>
       <section className={r.card} aria-label={`Teams you can build${several ? ` · ${game.short}` : ''}`}>
         {head('Teams you can build')}
-        <span className={r.cardText}>Real recommended teams made only of {game.terms.character.toLowerCase()}s you own. Tap one to make it a preset.</span>
+        <span className={r.cardText}>Recommended teams checked against the {word}s you own. Tap one to make it a preset.</span>
         {/* ROSTER-LOGIC: who fits each place, from your owned characters. */}
-        {ex.length ? (
-          ex.slice(0, 2).map((p, i) => (
-            <div key={p.id} className={r.ideaRow}>
+        {ranked.length ? (
+          ranked.slice(0, 3).map(({ p, missing }) => (
+            <button key={p.id} type="button" className={`${r.ideaRow} ${r.ideaBtn}`} onClick={() => onPick(p)} aria-label={`${p.name}: ${readiness(missing, word)}. Make it a preset`}>
               <span className={r.lineLabel}>{p.name}</span>
-              <span className={r.ideaState}>{i === 0 ? 'Ready to play' : 'One character away'}</span>
+              <span className={r.ideaState}>{readiness(missing, word)}</span>
               <ExampleTag />
-            </div>
+            </button>
           ))
         ) : (
           <NoData />
@@ -261,10 +337,10 @@ function Ideas({ data, several }: { data: RosterData; several: boolean }) {
       <section className={r.card} aria-label={`If you pull${several ? ` · ${game.short}` : ''}`}>
         {head('If you pull…')}
         <span className={r.cardText}>Characters you’re saving for, checked against your roster: the best team they make, and which of your presets they make better.</span>
-        {ex.length && pullName ? (
+        {pull && pullName ? (
           <div className={r.ideaRow}>
             <span className={r.lineLabel}>{pullName}</span>
-            <span className={r.ideaState}>makes {ex[1]?.name ?? ex[0]?.name} better</span>
+            <span className={r.ideaState}>{pull.line}</span>
             <ExampleTag />
           </div>
         ) : (
@@ -274,17 +350,23 @@ function Ideas({ data, several }: { data: RosterData; several: boolean }) {
       <section className={r.card} aria-label={`Endgame record${several ? ` · ${game.short}` : ''}`}>
         {head('Endgame record')}
         <span className={r.cardText}>The teams you used in {game.terms.endgame.slice(0, 2).join(' and ') || 'endgame'}, read from your HoYoLAB profile. A team that matches a preset shows its name.</span>
-        {/* Endgame import mounts here (account-links builder: HoYoLAB link). */}
-        {ex[0] ? (
+        {/* Endgame import mounts here (account-links builder: HoYoLAB link). The example only names a team you could really field. */}
+        {ready ? (
           <div className={r.ideaRow}>
             <span className={r.lineLabel}>{game.terms.endgame[0] ?? 'Endgame'}</span>
-            <span className={r.ideaState}>{ex[0].name}</span>
+            <span className={r.ideaState}>{ready.name}</span>
             <ExampleTag />
           </div>
         ) : (
           <NoData />
         )}
-        <span className={r.muted}>Link HoYoLAB in Account to import it.</span>
+        {openAccount ? (
+          <button type="button" className={r.linkButton} onClick={openAccount}>
+            Link HoYoLAB in Account to import it →
+          </button>
+        ) : (
+          <span className={r.muted}>Link HoYoLAB in Account to import it.</span>
+        )}
       </section>
     </>
   );
@@ -294,24 +376,37 @@ function TeamEditor({
   all,
   data,
   team,
+  draft,
   onGame,
   onDone,
+  onDelete,
   openCharacters,
 }: {
   all: RosterData[];
   data: RosterData;
   team: UserTeam | null;
+  draft?: { name?: string | undefined; members: string[] } | undefined;
   onGame: (d: RosterData) => void;
   onDone: () => void;
+  onDelete: (team: UserTeam) => void;
   openCharacters: () => void;
 }) {
   const { game } = data;
-  const [name, setName] = useState(team?.name ?? `Team ${data.user.teams.length + 1}`);
-  const [members, setMembers] = useState<string[]>(team?.members ?? []);
+  const [name, setName] = useState(team?.name ?? draft?.name ?? `Team ${data.user.teams.length + 1}`);
+  const [members, setMembers] = useState<string[]>(team?.members ?? draft?.members.slice(0, data.teamSize) ?? []);
   const [query, setQuery] = useState('');
-  const owned = data.characters.filter((c) => entryOf(data.user.roster, c.id).owned || members.includes(c.id)).sort(byNewest);
+  const [showAll, setShowAll] = useState(false);
+  // 0 owned, 1 wanted (not owned), 2 everyone else.
+  const rank = (id: string) => {
+    const e = entryOf(data.user.roster, id);
+    return e.owned ? 0 : e.wanted ? 1 : 2;
+  };
+  // Owned first, then wanted, then everyone else. A preset may include anyone, owned or not.
+  const sorted = [...data.characters].sort((a, b) => rank(a.id) - rank(b.id) || byNewest(a, b));
+  const ownsAnyone = sorted.some((c) => rank(c.id) === 0);
   const q = query.trim().toLowerCase();
-  const shown = owned.filter((c) => !q || c.name.toLowerCase().includes(q));
+  const shown = sorted.filter((c) => (q ? c.name.toLowerCase().includes(q) : showAll || rank(c.id) < 2 || members.includes(c.id)));
+  const hidden = q ? 0 : sorted.length - shown.length;
   const full = members.length >= data.teamSize;
   const word = game.terms.character.toLowerCase();
 
@@ -336,17 +431,6 @@ function TeamEditor({
     </label>
   );
 
-  if (owned.length === 0) {
-    return (
-      <div className={r.stack}>
-        {gamePicker}
-        <p className={r.muted}>Presets are made from the {word}s you own. Mark them as owned in Characters first.</p>
-        <Button variant="primary" onClick={openCharacters}>
-          Go to Characters
-        </Button>
-      </div>
-    );
-  }
   return (
     <form className={r.stack} onSubmit={submit}>
       {gamePicker}
@@ -360,19 +444,34 @@ function TeamEditor({
         </span>
         {members.length > 0 && <span className={r.muted}>{members.map((id) => data.byId.get(id)?.name ?? id).join(', ')}</span>}
       </p>
+      {!ownsAnyone && (
+        <p className={r.summary}>
+          <span className={r.muted}>You haven’t marked anyone as owned yet, so everyone shows as not owned. You can still pick them.</span>
+          <button type="button" className={r.linkButton} onClick={openCharacters}>
+            Mark who I own
+          </button>
+        </p>
+      )}
       <label className={r.field}>
         <span className={r.fieldLabel}>Search</span>
         <input className={r.input} type="search" value={query} onChange={(e) => setQuery(e.target.value)} placeholder={`${game.terms.character} name`} />
       </label>
-      <ul className={r.pickList} aria-label="Your characters">
+      <ul className={r.pickList} aria-label={`${game.terms.character}s to pick`}>
         {shown.map((c) => {
           const on = members.includes(c.id);
           const el = elementOf(game, c.element);
+          const k = rank(c.id);
+          const label = k === 0 ? 'owned' : k === 1 ? 'wanted · not owned' : 'not owned';
           return (
             <li key={c.id}>
-              <button type="button" className={r.pick} aria-pressed={on} aria-label={c.name} disabled={!on && full} onClick={() => toggle(c.id)}>
+              <button type="button" className={r.pick} aria-pressed={on} aria-label={`${c.name}, ${label}`} disabled={!on && full} onClick={() => toggle(c.id)}>
                 <CharArt name={c.name} src={artOf(c, 'portrait')} elementColor={el?.color ?? 'var(--ink-4)'} className={r.memberArtSm} />
-                <span className={r.grow}>{c.name}</span>
+                <span className={r.pickText}>
+                  <span>{c.name}</span>
+                  <span className={r.memberState} data-status={k === 0 ? 'owned' : k === 1 ? 'wanted' : 'gap'}>
+                    {label}
+                  </span>
+                </span>
                 <span className={r.pickMark} aria-hidden="true">
                   {on ? '✓' : ''}
                 </span>
@@ -381,11 +480,22 @@ function TeamEditor({
           );
         })}
       </ul>
+      {shown.length === 0 && <p className={r.muted}>{q ? `No ${word} matches “${query}”.` : `No ${word}s owned or wanted yet.`}</p>}
+      {hidden > 0 && (
+        <button type="button" className={r.linkButton} onClick={() => setShowAll(true)}>
+          Show all ({hidden} more, not owned)
+        </button>
+      )}
       <div className={r.cardActions}>
         <Button type="submit" variant="primary" disabled={!members.length}>
           Save preset
         </Button>
         <Button onClick={onDone}>Cancel</Button>
+        {team && (
+          <Button variant="quiet" onClick={() => onDelete(team)}>
+            Delete preset
+          </Button>
+        )}
       </div>
     </form>
   );

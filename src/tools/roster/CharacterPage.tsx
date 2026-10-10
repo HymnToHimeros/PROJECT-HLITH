@@ -36,6 +36,8 @@ interface Props {
   /** Open Pulls on a tab (Planner, History). */
   openPulls?: ((tab: "planner" | "history") => void) | undefined;
   openFarm?: (() => void) | undefined;
+  /** Open Teams with a new preset that already has this character in it. */
+  makePreset?: (() => void) | undefined;
 }
 
 /*
@@ -53,6 +55,7 @@ export function CharacterPage({
   onBack,
   openPulls,
   openFarm,
+  makePreset,
 }: Props) {
   const { game, user } = data;
   const entry = entryOf(user.roster, c.id);
@@ -61,6 +64,9 @@ export function CharacterPage({
     setRosterEntry(game.id, c.id, { ...entry, ...change });
   const dupes = game.dupes;
   const farming = user.farm.includes(c.id);
+  const addToFarm = () => {
+    if (!farming) setFarm(game.id, [...user.farm, c.id]);
+  };
   const who = game.terms.character.toLowerCase();
   const top = useRef<HTMLDivElement>(null);
   useEffect(() => {
@@ -101,9 +107,8 @@ export function CharacterPage({
                 and Today then tells you what to spend stamina on.
               </>,
               <>
-                Build score, level and team fit fill in once you import your
-                build (HoYoLAB link or a screenshot of the {who} screen). Until
-                then HLITH shows “No data yet”, never a guess.
+                HLITH can’t save a {who}’s level or build yet, so Level and
+                Build score say “No data yet”, never a guess.
               </>,
               <>
                 <strong>Kit check</strong> (further down, folded) shows what
@@ -155,7 +160,10 @@ export function CharacterPage({
               type="button"
               className={r.markBtn}
               aria-pressed={entry.owned}
-              onClick={() => save({ owned: !entry.owned })}
+              onClick={() =>
+                // Owning someone means you're no longer saving for them.
+                save(entry.owned ? { owned: false } : { owned: true, wanted: false })
+              }
             >
               {entry.owned ? "✓ " : ""}Owned
             </button>
@@ -196,9 +204,9 @@ export function CharacterPage({
               <span className={r.statValue} data-empty="true">
                 —
               </span>
-              {/* ROSTER-LOGIC / HoYoLAB import fills the level. */}
+              {/* ROSTER-LOGIC adds a build store; until then no level is saved anywhere. */}
               <span className={entry.owned ? r.statNoData : r.statSub}>
-                {entry.owned ? "No data yet · import a build" : "Not owned"}
+                {entry.owned ? "No data yet · levels aren’t saved yet" : "Not owned"}
               </span>
             </div>
             {dupes && (
@@ -248,13 +256,6 @@ export function CharacterPage({
                 </span>
               </div>
             )}
-            <div className={r.stat}>
-              <span className={r.statLabel}>Build score</span>
-              <span className={r.statValue} data-empty="true">
-                —
-              </span>
-              <span className={r.statNoData}>No data yet</span>
-            </div>
           </div>
         </div>
       </div>
@@ -266,8 +267,20 @@ export function CharacterPage({
         ) : (
           <IfYouPull data={data} openPulls={openPulls} />
         )}
-        <TeamFit data={data} character={c} />
-        <Materials data={data} character={c} openFarm={openFarm} />
+        <TeamFit data={data} character={c} makePreset={makePreset} />
+        <Materials
+          data={data}
+          character={c}
+          openFarm={
+            openFarm
+              ? () => {
+                  addToFarm();
+                  openFarm();
+                }
+              : undefined
+          }
+          farming={farming}
+        />
         {isUpcoming(c) && (
           <section className={r.card} aria-labelledby={`known-${c.id}`}>
             <h3 className={r.cardTitle} id={`known-${c.id}`}>
@@ -353,18 +366,11 @@ function BuildCard({ data }: { data: RosterData }) {
         </span>
         <span className={r.noBuildTitle}>No build data yet</span>
         <span className={r.cardText}>
-          Import {game.terms.gear} and {game.terms.weapon} from your in-game
-          profile to get a score. HLITH shows nothing rather than a guess.
+          HLITH can’t save builds ({game.terms.gear}, {game.terms.weapon},
+          level) yet, so there’s nothing to score. It shows nothing rather than
+          a guess.
         </span>
-        {/* Import build mounts here (account-links builder: HoYoLAB import / screenshot scan). */}
-        <button
-          type="button"
-          className={r.outlineBtn}
-          disabled
-          title="Comes with the HoYoLAB link and the screenshot scan"
-        >
-          Import build
-        </button>
+        {/* Import build mounts here once ROSTER-LOGIC adds a build store (HoYoLAB import / screenshot scan). */}
       </div>
       {showExamples && (
         <div
@@ -464,9 +470,11 @@ function IfYouPull({
 function TeamFit({
   data,
   character: c,
+  makePreset,
 }: {
   data: RosterData;
   character: Character;
+  makePreset?: (() => void) | undefined;
 }) {
   const { game, user, presets } = data;
   const inPreset = (p: TeamPreset) =>
@@ -485,6 +493,11 @@ function TeamFit({
         <p className={r.cardText}>
           No preset uses this {game.terms.character.toLowerCase()} yet.
         </p>
+      )}
+      {recommended.length === 0 && mine.length === 0 && makePreset && (
+        <button type="button" className={r.linkButton} onClick={makePreset}>
+          Make a preset with them →
+        </button>
       )}
       {recommended.map(({ p, i }) => (
         <TeamRow
@@ -536,10 +549,13 @@ function Materials({
   data,
   character: c,
   openFarm,
+  farming,
 }: {
   data: RosterData;
   character: Character;
+  /** Adds them to Farm (if they aren't there yet), then opens it. */
   openFarm?: (() => void) | undefined;
+  farming: boolean;
 }) {
   const { game } = data;
   const materials = useMaterials(data);
@@ -579,34 +595,22 @@ function Materials({
             Material amounts for {game.name} aren’t in HLITH yet (that part is
             on us). These rows only show what it will look like.
           </p>
-          {exampleNeeds(game, 1).map((m, i) => {
-            const have = Math.round(
-              m.amount * ([0.4, 1, 0.7, 0.2][i % 4] ?? 0),
-            );
-            return (
-              <div key={m.material} className={r.matRow}>
-                <div className={r.matTop}>
-                  <span className={r.lineLabel}>{m.name}</span>
-                  <span className={r.mono} data-done={have >= m.amount}>
-                    {have}/{m.amount}
-                  </span>
-                </div>
-                <span className={r.track} aria-hidden="true">
-                  <span
-                    className={r.fill}
-                    style={{
-                      width: `${Math.min(100, (have / m.amount) * 100)}%`,
-                    }}
-                  />
-                </span>
+          {/* Same example rows as Farm; what you have isn't tracked, so it's "—" just like real data. */}
+          {exampleNeeds(game, 1).map((m) => (
+            <div key={m.material} className={r.matRow}>
+              <div className={r.matTop}>
+                <span className={r.lineLabel}>{m.name}</span>
+                <span className={r.mono}>—/{formatNumber(m.amount)}</span>
               </div>
-            );
-          })}
+              <span className={r.track} aria-hidden="true" />
+              <span className={r.statNoData}>Have: no data yet</span>
+            </div>
+          ))}
         </>
       )}
       {openFarm && (
         <button type="button" className={r.linkButton} onClick={openFarm}>
-          Plan it in Farm →
+          {farming ? "Open Farm →" : "Plan it in Farm →"}
         </button>
       )}
     </section>
