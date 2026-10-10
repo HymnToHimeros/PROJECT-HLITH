@@ -90,3 +90,19 @@ Each one can be changed: tell LOGIC-CORE which.
     attacks ignores 15% …" doesn't say whose attacks.
 27. **Sunna's Cat's Gaze** counts as a buff for Attack and Anomaly damage
     dealers: the extra hit "is treated as DMG dealt by the triggering Agent".
+
+## Added with group C
+28. **"Their abilities switched on" only counts abilities that help the damage
+    dealer.** Seed's Direct Strike goes to her "Vanguard" (an Attack teammate),
+    so when Seed is the damage dealer it is shown but not counted; when the
+    teammate is the damage dealer it counts as a buff. New recipient: "one
+    teammate".
+29. **Norma's Chain Attack and Mindscape 4 Decibels go to the character before
+    her**: her Core Passive replaces "the Quick Assist" of Hat Trick, which the
+    text gives to the previous character.
+30. **Cissia's "1/2 Electric characters" counts herself**, so the first tier is
+    always on and the second needs another Electric character.
+31. **Numbers from the old app differ for some squads** (Harumasa + Norma + Lucy:
+    7 then, 5 now; Cissia + Dialyn + Rina: 5 then, 6 now). The worked examples
+    in the method (Billy 9 and 10, Banyue 9, Ye 9) all match exactly; the others
+    came from the old app's own reading and can't be checked line by line.

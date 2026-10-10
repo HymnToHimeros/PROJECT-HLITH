@@ -202,3 +202,23 @@ describe('Group B: the method’s other examples', () => {
     expect(full.lines.find((l) => l.entry === 'p-other-attributes')).toMatchObject({ kind: 'not-counted' });
   });
 });
+
+describe('Group C', () => {
+  const SEED = '1461';
+  const CISSIA = '1521';
+  const SUNNA = '1491';
+  const BANYUE = '1471';
+  const m0: Account = { mindscape: () => 0, potential: () => undefined };
+  const owner: Account = { mindscape: (id) => ({ [BILLY]: 1, [PAN]: 6 })[id] ?? 0, potential: () => undefined };
+
+  it("a damage dealer's ability that goes to a teammate is not 'theirs switched on' (Seed's Vanguard buff)", () => {
+    const asSeed = checkOrder([SEED, CISSIA, SUNNA], SEED, lib, m0);
+    expect(asSeed.lines.find((l) => l.who === SEED && l.entry === 'direct-strike')).toMatchObject({ kind: 'not-counted', points: 0 });
+    const asCissia = checkOrder([CISSIA, SEED, SUNNA], CISSIA, lib, m0);
+    expect(asCissia.lines.find((l) => l.who === SEED && l.entry === 'direct-strike')).toMatchObject({ kind: 'buff', points: 1 });
+  });
+
+  it('the method’s example: Banyue > Pan Yinhu > Lucia counts 9', () => {
+    expect(checkOrder([BANYUE, PAN, LUCIA], BANYUE, lib, owner).count).toBe(9);
+  });
+});

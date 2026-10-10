@@ -59,8 +59,8 @@ export type Condition =
   /** Cannot be checked from profiles: never counted as met. */
   | { unknown: string };
 
-/** Question 3: who gets it? */
-export type Recipient = 'self' | 'squad' | 'enemy' | 'previous' | 'next' | 'switch-in';
+/** Question 3: who gets it? `teammate` = one other squad member the game picks (Seed's "Vanguard"), never the giver. */
+export type Recipient = 'self' | 'squad' | 'enemy' | 'previous' | 'next' | 'switch-in' | 'teammate';
 
 /** Question 4: limits on who can use it. */
 export interface Limits {

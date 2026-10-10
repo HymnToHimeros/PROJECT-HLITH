@@ -6,10 +6,11 @@ import profiles from '../data/profiles.json';
 import type { Library, Profile } from './check';
 import { groupA } from './sheet/groupA';
 import { groupB } from './sheet/groupB';
+import { groupC } from './sheet/groupC';
 import type { CharacterSheet } from './types';
 
 /** Every character read so far, group by group. */
-export const SHEETS: CharacterSheet[] = [...groupA, ...groupB];
+export const SHEETS: CharacterSheet[] = [...groupA, ...groupB, ...groupC];
 
 export function buildLibrary(sheets: CharacterSheet[] = SHEETS, kitList: Kit[] = kits as Kit[]): Library {
   return {

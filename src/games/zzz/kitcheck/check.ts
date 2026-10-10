@@ -213,6 +213,11 @@ export function checkOrder(order: string[], dd: string, lib: Library, account: A
         seenNoStack.set(e.noStack, `${name(who)}'s ${e.tag}`);
       }
       if (who === dd) {
+        // Only an ability that helps the damage dealer counts as "theirs switched on" (decision 28).
+        if (e.on && (e.to === 'teammate' || e.to === 'previous' || e.to === 'next')) {
+          lines.push({ ...base, kind: 'not-counted', why: `${st.why}, but it goes to a teammate, not to ${name(dd)}`, points: 0 });
+          continue;
+        }
         if (e.on) {
           // Who switches it on: each teammate who would meet the condition alone.
           const helpers = order.filter((id) => id !== dd && evalCondition(e.on, dd, [dd, id], lib) === 'met');
