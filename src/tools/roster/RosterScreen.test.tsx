@@ -199,6 +199,11 @@ describe('Roster screen', () => {
     await show('teams');
     fireEvent.click(screen.getByRole('button', { name: 'Make a team' }));
     const sheet = await screen.findByRole('dialog', { name: 'New team' });
+    // Typing in the search keeps the cursor there.
+    const search = within(sheet).getAllByRole('searchbox')[0] as HTMLInputElement;
+    search.focus();
+    for (const v of ['N', 'Ne', '']) fireEvent.change(search, { target: { value: v } });
+    expect(document.activeElement).toBe(search);
     fireEvent.click(within(sheet).getByRole('button', { name: 'Newest Star, owned' }));
     fireEvent.click(within(sheet).getByRole('button', { name: 'Helper, owned' }));
     await act(async () => {
@@ -524,6 +529,11 @@ describe('Roster screen', () => {
     expect(within(page).getByText('No data yet · enter it in Build score')).toBeInTheDocument();
     fireEvent.click(within(page).getByRole('button', { name: 'Enter build' }));
     const form = await screen.findByRole('form', { name: 'Edit build of Older Star' });
+    // Typing keeps the cursor in the field (it used to jump out after the first letter).
+    const cone = within(form).getByLabelText('Cone');
+    cone.focus();
+    for (const v of ['N', 'Ni', 'Nig']) fireEvent.change(cone, { target: { value: v } });
+    expect(document.activeElement).toBe(cone);
     fireEvent.change(within(form).getByLabelText('Older Star’s level (1–80)'), { target: { value: '99' } });
     fireEvent.change(within(form).getByLabelText('Cone'), { target: { value: 'Night on the Milky Way' } });
     fireEvent.change(within(form).getByLabelText('Superimposition'), { target: { value: '2' } });

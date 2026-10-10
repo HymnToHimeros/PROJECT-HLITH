@@ -73,6 +73,15 @@ Resume with: "continue from PROGRESS.md". Newest entry on top. Older entries:
   carry's own game team is shown, each slot filled with the first character you own in the game's order, and
   teammates are only ever picked from that team's lists. Phainon + Sunday + Cerydra + Dan Heng PT is his one
   team when owned. Decision 30.
+- 2026-10-10 · **ERROR-FIX: typing in a pop-up form works again** (branch `error-fix/typing-in-forms`).
+  Owner's report: typing in the character page's "Enter build" form set off other things on
+  the page. Cause: the pop-up panel (`BottomSheet`, FRAME's) re-ran its open step whenever
+  the screen behind it redrew, which every keystroke does; that moved the cursor out of the
+  field after one letter. It now runs only when the panel opens or closes. Tests: typing
+  several letters in a panel field, in the build form and in Make a team keeps the cursor there.
+  Also today (no code): history secret scan, clean apart from the public Supabase key and fake
+  test logins; the owner's Gmail was removed from all commit author lines (owner ran the
+  rewrite, verified 0 left). GitHub Support request for old pull-request copies is with the owner.
 - 2026-10-10 · **SCHEDULER: Nihilux found under her leak name** (branch `scheduler/nihilux-leak-name`).
   Nihilux was already listed as a leak (HSR id 1511), but under the display name the
   beta files give, "Aeon ★ Aha"; the same files name the character `nihilux`. Leaked
