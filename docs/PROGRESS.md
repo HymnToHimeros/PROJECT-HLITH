@@ -28,6 +28,12 @@ Resume with: "continue from PROGRESS.md". Newest entry on top. Older entries:
 - CI (`.github/workflows/ci.yml`) runs both on every pull request.
 
 ## Done
+- 2026-10-10 · **FRAME: GitHub tidy and README** (branch `frame/tidy-readme`, owner job T24).
+  `docs/README.md` sorts every doc by what you'd open it for (files stay where they are:
+  code, migrations and the chats' rules point at them). README brought up to date
+  (HoYoLAB ticks, builds, Enhanced / Potential, themes, owner console, five chats) with
+  fresh screenshots. A stray `preview.log` removed and `*.log` ignored. Merged branches
+  are auto-deleted by GitHub; two stale ones are left for the owner to delete.
 - 2026-10-10 · **Two more chats: MANAGER and ERROR-FIX** (branch `frame/manager-error-fix`).
   `docs/WORKSTREAMS.md`: rules 7–8, both in Who's who, a routing table (which job goes
   to which chat). `docs/briefs/MANAGER.md` (the owner's front desk: routes every
