@@ -7,9 +7,9 @@ doing it said `LIVE`. Newest jobs at the bottom; live jobs move to Done.
 ## Open
 | # | Job | Who | State | Note |
 |---|---|---|---|---|
-| T1 | Save a build per character (PR #50) | FRAME | working | Approved by the chats, waiting to merge. |
+| T1 | Save a build per character (PR #50): character page → Build score → "Enter build" | FRAME | 2026-10-10 |
 | T2 | MANAGER and ERROR-FIX chats (PR #51) | FRAME | working | Approved by the chats, merges right after #50. MANAGER and ERROR-FIX session ids are in it. |
-| T3 | Build score | LOGIC-CORE | working | Starts after T1 merges. |
+| T3 | Build score (`scoreBuild`) | LOGIC-CORE | working | Started after #50 went live. |
 | T4 | HSR character EXP in Farm amounts | LOGIC-CORE | blocked | No source found that HLITH can read. |
 | T5 | HSR "Interastral Peace Gala" reward (starts 21 Oct) | SCHEDULER | blocked | Sources say 500 or 60; filled from the official notice when the event opens 21 Oct. |
 | T6 | Keep the game lists current on a schedule | SCHEDULER | waiting on owner | Owner decides how often (`data:nanoka` then `data:schedule`). |
@@ -26,3 +26,4 @@ doing it said `LIVE`. Newest jobs at the bottom; live jobs move to Done.
 ## Done
 | # | Job | Who | Live on |
 |---|---|---|---|
+| T1 | Save a build per character (PR #50): character page → Build score → "Enter build" | FRAME | 2026-10-10 |
