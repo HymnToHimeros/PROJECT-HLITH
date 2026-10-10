@@ -22,6 +22,8 @@ doing it said `LIVE`. Newest jobs at the bottom; live jobs move to Done.
 | T27 | HSR: pick your Trailblazer (Caelus or Stelle) so that Trailblazer's entries are auto-marked owned in Roster; ZZZ needs nothing | FRAME | working | Owner: other Trailblazer hidden. FRAME building. |
 | T28 | Standing rule: every logic rule is the same in HSR and ZZZ, except game-specific facts; ZZZ counts builds like HSR | LOGIC-CORE | working | In #73 (ZZZ counts builds like HSR; standing mirror rule in decisions files). |
 | T29 | HSR teams still mix-match (Phainon + March 7th / Asta / Bronya; "best" = Tingyun, Sparkle, Huohuo). Owner: when a better unit for a job exists, pick it. Test: Phainon + Sunday + Cerydra + Dan Heng PT must be Phainon's top team | LOGIC-CORE | working | Fix (a) merged as #75: only each carry's own game team, filled from roster. Next: owner-editable team list (b), priority because Robin • Summeretto is missing from Phainon's game list. |
+| T30 | HSR scoring still doesn't understand kits (owner's own Aventurine • Waveflair team 47%, "best" again Tingyun + Sparkle). Owner: teams do NOT need a sustain/healer. Wants scoring that understands buff size, conditions, how kits interact | LOGIC-CORE | working | Remove sustain rule now; explain this team; plan for kit-interaction scoring to owner. |
+| T31 | Remove owner's Gmail from git history (Option A + GitHub Support) | ERROR-FIX | blocked | ERROR-FIX's Auto mode blocks history-changing git; owner switches its mode so they can approve each command. All chats except FRAME confirmed frozen. |
 
 ## Done
 | # | Job | Who | Live on |
