@@ -147,14 +147,21 @@ export function staminaSources(games: GameContract[], accounts: LinkedAccount[])
   });
 }
 
-/** Live stamina per game id, plus a way to read one game again now. */
-export function useLiveStamina(games: GameContract[]): { stamina: Record<GameId, LiveStamina>; retry: (gameId: GameId) => void } {
+/** A fresh HoYoLAB answer: the reading before it (if any), the new one, and the daily activity. */
+export type OnReading = (game: GameContract, previous: StaminaReading | null, next: StaminaReading, dailies: { current: number; max: number } | null | undefined) => void;
+
+/** Live stamina per game id, plus a way to read one game again now. `onReading` hears every fresh answer. */
+export function useLiveStamina(games: GameContract[], onReading?: OnReading): { stamina: Record<GameId, LiveStamina>; retry: (gameId: GameId) => void } {
   const { accounts, blocker, signedIn, server, loadError } = useAccounts(games);
   // Signed in: wait for the server's list, so a device login isn't read first and then replaced.
   const pending = !blocker && signedIn && !server && !loadError;
   const sources = useMemo(() => (blocker || pending ? [] : staminaSources(games, accounts)), [games, accounts, blocker, pending]);
   const [state, setState] = useState<Record<GameId, LiveStamina>>({});
   const inFlight = useRef(new Set<string>());
+  const hear = useRef(onReading);
+  useEffect(() => {
+    hear.current = onReading;
+  }, [onReading]);
 
   const read = useCallback(async (src: ReturnType<typeof staminaSources>[number], force: boolean) => {
     if (!backend) return;
@@ -175,6 +182,7 @@ export function useLiveStamina(games: GameContract[]): { stamina: Record<GameId,
     else if (res.answer.stamina) {
       const reading: StaminaReading = { ...res.answer.stamina, readAt: res.answer.readAt };
       saveReading(id, reading);
+      hear.current?.(src.game, cached, reading, res.answer.dailies);
       next = { state: 'ok', reading, refreshing: false };
     } else next = { state: 'error', text: res.answer.problems.stamina?.text ?? 'HoYoLAB answered without a stamina value.', ...(cached ? { reading: cached } : {}) };
     setState((s) => ({ ...s, [src.game.id]: next }));
