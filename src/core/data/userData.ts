@@ -278,11 +278,8 @@ export function clearBacklogDone(game: GameId, itemId: string): void {
 /** Put backlog progress back exactly as it was (Undo): numbers restored, missing ones cleared. */
 export function restoreBacklogDone(game: GameId, before: Record<string, number | undefined>): void {
   update(game, (g) => {
-    const next = { ...g.backlog };
-    for (const [id, v] of Object.entries(before)) {
-      if (v === undefined) delete next[id];
-      else next[id] = v;
-    }
+    const merged: Record<string, number | undefined> = { ...g.backlog, ...before };
+    const next = Object.fromEntries(Object.entries(merged).filter((e): e is [string, number] => e[1] !== undefined));
     return { ...g, backlog: next };
   });
 }
