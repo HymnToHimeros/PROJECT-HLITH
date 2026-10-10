@@ -26,6 +26,7 @@ export const BACKUP_TABLES = [
   'scheduler_jobs',
   'scheduler_runs',
   'scheduler_findings',
+  'announcements',
 ] as const;
 
 export const BACKUP_BUCKET = 'backups';

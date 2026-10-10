@@ -7,6 +7,9 @@
 import { useSyncExternalStore } from 'react';
 import type { GameId, ModuleId } from '../contract';
 import type { LayoutState, Scope } from '../registry/layout';
+import type { Theme } from '../theme/themes';
+
+export type { Theme } from '../theme/themes';
 
 export interface Prefs {
   version: 1;
@@ -17,7 +20,7 @@ export interface Prefs {
   layouts: Record<Scope, LayoutState>;
   servers: Record<GameId, string>;
   lastModule: Record<Scope, ModuleId>;
-  /** Account → Theme. Missing = dark. */
+  /** Account → Theme (one of THEME_IDS in theme/themes.ts). Missing or unknown = dark (Glacier). */
   theme?: Theme;
   /** When you last downloaded a backup (epoch ms). Missing = never. */
   lastBackupAt?: number;
@@ -40,8 +43,6 @@ export interface Prefs {
   /** Account → Guide: setup checklist steps you chose to skip (step ids). Missing = none. */
   skippedSetup?: string[];
 }
-
-export type Theme = 'dark' | 'light';
 
 export interface NotifyPrefs {
   /** The evening message is on for this device. */
@@ -130,4 +131,10 @@ export function reloadPrefs(): void {
 /** Are examples shown? (Account → Example data.) Every screen that can show examples asks this. */
 export function useExamplesShown(): boolean {
   return !usePrefs().hideExamples;
+}
+
+/** UTC offset of the user's chosen server for a game (undefined = none chosen). Used to show "server time" ends at the right moment. */
+export function useServerOffset(game: { id: string; servers: { id: string; utcOffset: number }[] }): number | undefined {
+  const servers = usePrefs().servers;
+  return game.servers.find((s) => s.id === servers[game.id])?.utcOffset;
 }

@@ -24,6 +24,7 @@ const tables = vi.hoisted(() => ({
       decided_at: null,
     },
   ],
+  catalog_items: [] as object[],
 }));
 vi.mock('../../core/data/backend', () => {
   const query = (table: keyof typeof tables) => {
@@ -31,6 +32,7 @@ vi.mock('../../core/data/backend', () => {
       select: () => q,
       order: () => q,
       limit: () => q,
+      eq: () => q,
       update: (patch: object) => ({
         eq: async (_c: string, id: unknown) => {
           calls.updates.push({ table, patch, id });
@@ -98,13 +100,18 @@ describe('Owner console · Scheduler with the server', () => {
     expect(calls.updates).toContainEqual({ table: 'scheduler_jobs', patch: { enabled: false }, id: 'backup' });
   });
 
-  it('Approve saves the decision with who and when', async () => {
+  it('Approve saves the decision with who and when; a leak with no details opens the Lists form', async () => {
     renderConsole();
     fireEvent.click(screen.getByRole('tab', { name: /Findings/ }));
     const approve = await screen.findByRole('button', { name: 'Approve: Real leak' });
     await act(async () => fireEvent.click(approve));
     const saved = calls.updates.find((u) => u.table === 'scheduler_findings');
     expect(saved).toMatchObject({ id: 'f1', patch: { status: 'approved', decided_by: 'owner-1' } });
+    // Nothing to add yet: the Lists tab opens with the form, for the owner to finish.
+    expect(screen.getByRole('tab', { name: 'Lists' })).toHaveAttribute('aria-selected', 'true');
+    expect(await screen.findByRole('form', { name: 'Add event' })).toBeInTheDocument();
+    expect(screen.getByText(/Still needed: id, title, kind, start, end/)).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('tab', { name: /Findings/ }));
     expect(screen.getByText('0 new')).toBeInTheDocument();
     // Changed your mind: back to the inbox, undecided.
     fireEvent.change(screen.getByLabelText('Status'), { target: { value: 'approved' } });

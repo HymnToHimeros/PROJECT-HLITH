@@ -23,6 +23,15 @@ Per game, in `src/games/<game>/data/`, using the types in
 | `backlog.json` | `BacklogItem` | Permanent content: the main story as one item with `steps` (chapters in order, `reward: 0`), side quests as single items (`total: 1`) with `group` = region, permanent events and modes as counters with their reward, exploration per region with `unit: "%"`, achievements. `reward: null` when unknown, `0` when there is none; `note` for where a number came from. |
 | `characters.json` | `Character` | Add characters that are new since the list was made (`scripts/import-nanoka.ts`), and fill `releasedAt` for every character that lacks it (ZZZ has none yet; Roster sorts newest first by it). Leaked, unreleased characters go in with `leak: { source }` so Roster can show them on request, marked unverified. Don't redo the list; kits and builds belong to LOGIC-CORE. |
 
+## Fields FRAME added for you (2026-10-10)
+- `serverTime: { base, start?, end? }` on banners and events: times the game gives
+  in server time. Write them in one server's clock (`base` = its UTC offset, e.g. 8
+  for Asia) and flag which of start/end follow the server clock; every screen moves
+  them to the user's server.
+- `Banner.art`: a picture for the banner itself (light cone / W-Engine banners).
+- HSR collaboration warps: banner types `collab-character` and `collab-light-cone`
+  (no odds shown until their pity rules are confirmed).
+
 ## Rules
 - **Sources (owner, 2026-10-09):** SCHEDULER judges which sources are
   trustworthy. nanoka.cc is one trusted source (good quality, carries leaks),

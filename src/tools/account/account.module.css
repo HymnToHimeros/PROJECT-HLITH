@@ -398,3 +398,108 @@
   outline: 1px solid var(--vent);
   outline-offset: 6px;
 }
+
+/* ── Account → Theme: a card per theme with a live preview in that theme's own colours ── */
+.themeGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(240px, 100%), 1fr));
+  gap: var(--s-3);
+}
+.themeCard {
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  border-radius: var(--r-card);
+  background: var(--bg-raised);
+  border: 1px solid var(--line-default);
+  color: var(--ink-1);
+  text-align: left;
+  cursor: pointer;
+  overflow: hidden;
+  min-width: 0;
+}
+.themeCard:hover {
+  border-color: var(--line-strong);
+}
+.themeCard[aria-checked='true'] {
+  border-color: var(--vent);
+  box-shadow: 0 0 0 1px var(--vent);
+}
+.themePreview {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  height: 112px;
+  padding: var(--s-3);
+  background:
+    radial-gradient(90% 120% at 100% 0%, color-mix(in srgb, var(--art-glow) 30%, transparent), transparent 70%),
+    var(--bg-app);
+  color: var(--ink-1);
+  border-bottom: 1px solid var(--line-default);
+  overflow: hidden;
+}
+.themeMotif {
+  position: absolute;
+  right: -14px;
+  top: -10px;
+  width: 132px;
+  height: 132px;
+  color: var(--art-ink);
+  opacity: 0.55;
+}
+.miniCard {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 58%;
+  padding: 8px 10px;
+  border-radius: 8px;
+  background: var(--bg-card);
+  border: 1px solid var(--line-mid);
+}
+.miniTitle {
+  font-weight: 800;
+  font-stretch: 110%;
+  font-size: 15px;
+  line-height: 1;
+  color: var(--ink-1);
+}
+.miniLine {
+  height: 4px;
+  border-radius: 2px;
+  background: var(--ink-3);
+  opacity: 0.8;
+}
+.miniShort {
+  width: 60%;
+  background: var(--ink-5);
+}
+.miniDots {
+  display: flex;
+  gap: 4px;
+}
+.miniDots i {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+.themeMeta {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--s-3);
+  padding: var(--s-3) 14px 14px;
+}
+.themeMeta .ring {
+  margin-top: 1px;
+}
+.themeCard[aria-checked='true'] .ring {
+  border-color: var(--vent);
+}
+.themeCard[aria-checked='true'] .ring::after {
+  content: '';
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--vent);
+}

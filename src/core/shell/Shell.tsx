@@ -4,14 +4,18 @@ import { updatePrefs, usePrefs } from '../data/prefs';
 import { canSync, syncNow, useSyncStatus, type SyncStatus } from '../data/sync';
 import { defaultLayout, hiddenIn, phoneBar, restore, slot, type LayoutState, type Scope } from '../registry/layout';
 import { moduleScreen, MODULES, type ModuleScreenProps } from '../registry/modules';
+import { useIdentity } from '../registry/identity';
 import { panel, type PanelAccount, type PanelId, type PanelProps } from '../registry/panels';
 import { useTheme } from '../theme/theme';
+import { ThemeArt, ThemeMotif } from '../theme/ThemeArt';
 import { formatTime, serverRule } from '../time/reset';
 import { BottomSheet } from '../ui/BottomSheet';
 import { Button } from '../ui/Button';
+import { initials } from '../ui/CharacterTile';
 import { useSampleShown } from '../ui/sampleMarker';
 import { Segmented } from '../ui/Segmented';
 import { useNow } from '../ui/useNow';
+import { AnnouncementStrip } from './AnnouncementStrip';
 import { EditLayout } from './EditLayout';
 import { accountPath, navigate, parseAccountRoute, parseRoute, routePath, usePath } from './route';
 import { ServerPicker } from './ServerPicker';
@@ -52,7 +56,8 @@ export function Shell({ games: registered, account = null, isOwner = false, owne
   const now = useNow(60_000);
   const phone = useIsPhone();
   const sample = useSampleShown();
-  useTheme();
+  const theme = useTheme();
+  const identity = useIdentity(account);
   const [sheet, setSheet] = useState<Sheet>(null);
   // The game scope you came from, so the Account page keeps its colour and "back" lands there.
   const [homeScope, setHomeScope] = useState<Scope | null>(null);
@@ -189,14 +194,12 @@ export function Shell({ games: registered, account = null, isOwner = false, owne
       </button>
     </div>
   );
-  const avatar = (size: 'sm' | 'md' | 'lg') => (
-    <span className={`${s.avatar} ${size === 'lg' ? s.avatarLg : size === 'md' ? s.avatarMd : ''}`} aria-hidden="true">
-      {account?.email.charAt(0).toUpperCase()}
-    </span>
-  );
+  // Your name from Account → Profile, else the part of your email before the @.
+  const displayName = identity?.name ?? (account ? (account.email.split('@')[0] ?? null) : null);
 
   return (
     <div className={s.root} style={{ '--vent': ventOf(scope) } as CSSProperties}>
+      <ThemeArt theme={theme} />
       {!phone && (
         <aside className={s.sidebar} aria-label="Main">
           <div className={s.brand}>
@@ -220,6 +223,10 @@ export function Shell({ games: registered, account = null, isOwner = false, owne
               </a>
             ))}
           </nav>
+          {/* The theme's emblem fills the empty part of the sidebar; it shrinks away when the menu needs the room. */}
+          <div className={s.sideArt} aria-hidden="true">
+            <ThemeMotif theme={theme} className={s.sideMotif} />
+          </div>
           <div className={s.sideFoot}>
             <SyncLine status={sync} now={now} onClick={onSyncClick} />
             <button type="button" className={s.assistantBtn} onClick={() => setSheet('assistant')}>
@@ -229,13 +236,7 @@ export function Shell({ games: registered, account = null, isOwner = false, owne
                 ⌘K
               </span>
             </button>
-            <button type="button" className={s.accountBtn} onClick={() => openAccount()} aria-current={acct ? 'page' : undefined}>
-              {avatar('sm')}
-              <span className={s.grow}>Account</span>
-              <span className={s.dots} aria-hidden="true">
-                ···
-              </span>
-            </button>
+            <ProfileCard name={displayName} avatarUrl={identity?.avatarUrl ?? null} bannerUrl={identity?.bannerUrl ?? null} current={Boolean(acct)} onClick={() => openAccount()} />
           </div>
         </aside>
       )}
@@ -247,13 +248,14 @@ export function Shell({ games: registered, account = null, isOwner = false, owne
           <span className={s.topSpacer} />
           <SyncDot status={sync} now={now} onClick={onSyncClick} />
           <button type="button" className={s.avatarBtn} onClick={() => openAccount()} aria-label="Account" aria-current={acct ? 'page' : undefined}>
-            {avatar('md')}
+            <Avatar url={identity?.avatarUrl ?? null} name={displayName} className={`${s.avatar} ${s.avatarMd}`} />
           </button>
         </header>
       )}
 
       {/* ── Module slot ── */}
       <main className={s.main}>
+        <AnnouncementStrip />
         {acct ? (
           <>
             <div className={s.header}>
@@ -447,6 +449,54 @@ export function Shell({ games: registered, account = null, isOwner = false, owne
         )}
       </BottomSheet>
     </div>
+  );
+}
+
+/** Your picture, or your initials, or a plain figure when there is no name yet. */
+export function Avatar({ url, name, className }: { url: string | null; name: string | null; className: string | undefined }) {
+  // A picture that fails to load (deleted, offline) falls back to the initials.
+  const [broken, setBroken] = useState<string | null>(null);
+  const letters = name ? initials(name) : '';
+  return (
+    <span className={className} aria-hidden="true">
+      {url && url !== broken ? (
+        <img src={url} alt="" onError={() => setBroken(url)} />
+      ) : letters ? (
+        letters
+      ) : (
+        <svg viewBox="0 0 24 24" className={s.figure} focusable="false">
+          <circle cx="12" cy="9" r="4" />
+          <path d="M4.5 21c.8-4.2 3.8-6.5 7.5-6.5s6.7 2.3 7.5 6.5" />
+        </svg>
+      )}
+    </span>
+  );
+}
+
+/**
+ * The sidebar's account row as a small profile card: your banner behind, fading into
+ * the sidebar, and your picture and name over it. Without a banner it shows the
+ * theme's own glow; without a picture, your initials.
+ */
+export function ProfileCard({ name, avatarUrl, bannerUrl, current, onClick }: { name: string | null; avatarUrl: string | null; bannerUrl: string | null; current: boolean; onClick: () => void }) {
+  const [broken, setBroken] = useState<string | null>(null);
+  const banner = bannerUrl && bannerUrl !== broken ? bannerUrl : null;
+  return (
+    <button type="button" className={s.profileCard} onClick={onClick} aria-current={current ? 'page' : undefined} data-banner={banner ? 'picture' : 'theme'}>
+      <span className={s.profileBanner} aria-hidden="true">
+        {banner && <img src={banner} alt="" onError={() => setBroken(banner)} />}
+      </span>
+      <span className={s.profileRow}>
+        <Avatar url={avatarUrl} name={name} className={s.profileAvatar} />
+        <span className={s.profileText}>
+          <span className={s.profileName}>{name ?? 'Your profile'}</span>
+          <span className={s.profileSub}>Account</span>
+        </span>
+        <span className={s.dots} aria-hidden="true">
+          ···
+        </span>
+      </span>
+    </button>
   );
 }
 

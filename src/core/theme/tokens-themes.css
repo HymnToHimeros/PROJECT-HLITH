@@ -1,0 +1,189 @@
+/*
+ * PROJECT-HLITH themes beyond Glacier and Light. Same token names as tokens.css.
+ * Each block switches on with <html data-theme="…"> (Account → Theme), and the
+ * same values apply inside a [data-theme-preview="…"] box (the theme picker's
+ * mini previews). Contrast is tested for every theme in tests/themes.test.ts with
+ * the same rules as Glacier, including text over the background art.
+ */
+
+/* Candlelight · from the owner's palette A: 3AM Breakup #320A08, Chestnut Leather
+   #5E251D, Umber Rust #785338, Doe #B78861, Teaberry Blossom #B2493E, Peach Patch #F4D59F. */
+:root[data-theme='candlelight'],
+[data-theme-preview='candlelight'] {
+  color-scheme: dark;
+
+  --bg-void: #0a0403;
+  --bg-app: #110706;
+  --bg-shell: #170a08;
+  --bg-card: #1c0d0a;
+  --bg-inset: #23110d;
+  --bg-raised: #281410;
+  --bg-track: #36190f;
+
+  --line-subtle: #2a120d;
+  --line-default: #3a1914;
+  --line-mid: #47201a;
+  --line-strong: #5e251d;
+  --line-empty: #785338;
+  --ghost: #5a3a28;
+  --hatch: #1f0e0b;
+
+  --ink-1: #fbead0;
+  --ink-2: #f4d59f;
+  --ink-3: #dcb68e;
+  --ink-4: #c0926a;
+  --ink-5: #c0926a;
+  --glacier: #e8b680;
+  --ok: #a8d08d;
+
+  --ember: #ff7a35;
+  --ember-soft: #ff9b62;
+
+  --vent-all: #f1e2b4;
+  --on-vent: #08090b;
+
+  --rarity-top: #f0c063;
+  --rarity-mid: #9fc0dc;
+
+  --art-ink: #f4d59f;
+  --art-glow: #b2493e;
+  --art-opacity: 0.15;
+
+  --scrim: rgb(10 4 3 / 0.65);
+}
+
+/* Crimson Rose · from the owner's palette B: Baby Barn Owl #C4C1B8, Intrigue #635B51,
+   Burnt Crimson #551F22, Seal Brown #301415, Nuln Oil #130F0D. */
+:root[data-theme='crimson'],
+[data-theme-preview='crimson'] {
+  color-scheme: dark;
+
+  --bg-void: #0b0807;
+  --bg-app: #130f0d;
+  --bg-shell: #18110f;
+  --bg-card: #1d1413;
+  --bg-inset: #241817;
+  --bg-raised: #2a1b1b;
+  --bg-track: #3a2224;
+
+  --line-subtle: #261a19;
+  --line-default: #33201f;
+  --line-mid: #402827;
+  --line-strong: #5a2a2c;
+  --line-empty: #635b51;
+  --ghost: #4a3b3a;
+  --hatch: #1a1211;
+
+  --ink-1: #efebe4;
+  --ink-2: #dedad1;
+  --ink-3: #c4c1b8;
+  --ink-4: #a8a096;
+  --ink-5: #a8a096;
+  --glacier: #e0959a;
+  --ok: #93c9a3;
+
+  --ember: #ff6a3d;
+  --ember-soft: #ff8e6a;
+
+  --vent-all: #d6d2c8;
+  --on-vent: #08090b;
+
+  --rarity-top: #e8b85c;
+  --rarity-mid: #a3c1e0;
+
+  --art-ink: #c4c1b8;
+  --art-glow: #8a2a30;
+  --art-opacity: 0.15;
+
+  --scrim: rgb(11 8 7 / 0.65);
+}
+
+/* Bifröst · deep night blue, starlight and a violet-teal aurora. */
+:root[data-theme='bifrost'],
+[data-theme-preview='bifrost'] {
+  color-scheme: dark;
+
+  --bg-void: #03050c;
+  --bg-app: #060a16;
+  --bg-shell: #091020;
+  --bg-card: #0c1428;
+  --bg-inset: #111b33;
+  --bg-raised: #142039;
+  --bg-track: #1b2846;
+
+  --line-subtle: #121c33;
+  --line-default: #1a2542;
+  --line-mid: #212e50;
+  --line-strong: #2b3a62;
+  --line-empty: #44557f;
+  --ghost: #34436b;
+  --hatch: #0e1630;
+
+  --ink-1: #eaf0ff;
+  --ink-2: #d2defc;
+  --ink-3: #a9b8dc;
+  --ink-4: #8a9bc4;
+  --ink-5: #8a9bc4;
+  --glacier: #8fb8ff;
+  --ok: #6fe0c0;
+
+  --ember: #ff7a3d;
+  --ember-soft: #ff9a6b;
+
+  --vent-all: #c8d8ff;
+  --on-vent: #08090b;
+
+  --rarity-top: #f0c66a;
+  --rarity-mid: #9fb6ff;
+
+  --art-ink: #b9cbff;
+  --art-glow: #6b5bd6;
+  --art-opacity: 0.15;
+
+  --scrim: rgb(3 5 12 / 0.65);
+}
+
+/* Ascendant · light: warm marble, dark bronze ink, gold edges. */
+:root[data-theme='ascendant'],
+[data-theme-preview='ascendant'] {
+  color-scheme: light;
+
+  --bg-void: #d8d2c6;
+  --bg-app: #efebe3;
+  --bg-shell: #e7e2d8;
+  --bg-card: #fbf9f5;
+  --bg-inset: #e6e0d4;
+  --bg-raised: #f4f0e9;
+  --bg-track: #dcd5c7;
+
+  --line-subtle: #e3ddd1;
+  --line-default: #d6cebf;
+  --line-mid: #cbc2b1;
+  --line-strong: #b6aa94;
+  --line-empty: #8c806b;
+  --ghost: #c9bfad;
+  --hatch: #ebe6dc;
+
+  --ink-1: #17130d;
+  --ink-2: #2a241a;
+  --ink-3: #463d2f;
+  --ink-4: #574c3b;
+  --ink-5: #574c3b;
+  --glacier: #75560f;
+  --ok: #1f6b45;
+
+  --ember: #ff6a1f;
+  --ember-soft: #a3400b;
+
+  --vent-all: #e6d49c;
+  --on-vent: #08090b;
+
+  --rarity-top: #855600;
+  --rarity-mid: #1d5f8c;
+
+  --art-ink: #8a6a2a;
+  --art-glow: #e8c870;
+  --art-opacity: 0.15;
+
+  --scrim: rgb(23 19 13 / 0.35);
+}
