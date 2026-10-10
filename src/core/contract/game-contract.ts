@@ -58,6 +58,8 @@ export interface GameContract {
    * pieces that need it. Saved per character; not set = team rules treat it as unknown.
    */
   potential?: { name: string; max: number };
+  /** What a saved build holds for this game (character page form, scan). Missing = builds can't be saved. */
+  build?: BuildRules;
 
   // ── Economy ────────────────────────────────────────────────────
   currencies: Currency[];
@@ -228,6 +230,19 @@ export interface GameRules {
   scoreBuild?: (build: CharacterBuild) => Known<{ score: number; grade: string }>;
   /** Team scoring from kits (LOGIC-CORE). Every score explains itself with kit text. */
   teams?: TeamRules;
+}
+
+/** The game facts the build form needs. Stat lists are suggestions; any name the game uses can be typed. */
+export interface BuildRules {
+  levelMax: number;
+  weaponLevelMax: number;
+  /** What extra weapon copies are called (Superimposition, Phase) and their max. */
+  refine: { name: string; max: number };
+  /** Gear slots in game order, with the main stats each can roll. */
+  slots: { id: string; label: string; mains: string[] }[];
+  subStats: string[];
+  /** Skills with their highest level (bonus levels from dupes included). */
+  skills: { name: string; max: number }[];
 }
 
 /** What team scoring may know about the viewer's account. Not owned = no dupes. */

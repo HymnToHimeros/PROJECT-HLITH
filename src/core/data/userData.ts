@@ -5,7 +5,7 @@
  * Append-only: entries and pulls are never edited or removed, only added.
  */
 import { useSyncExternalStore } from 'react';
-import type { BacklogItem, Banner, GameEvent, GameId, PullRecord } from '../contract';
+import type { BacklogItem, Banner, GameEvent, GameId, PullRecord, SavedBuild } from '../contract';
 import { known, unknown, type Known } from '../contract/known';
 import { mergeAdd } from './merge';
 
@@ -57,6 +57,8 @@ export interface GameUserData {
    * A history import takes over once it knows the state. Missing = not entered.
    */
   pityManual?: Record<string, { pity: number; guaranteed: boolean; at: string }>;
+  /** Character id → the build you saved (level, weapon, gear, skills). Missing = none saved. */
+  builds?: Record<string, SavedBuild>;
 }
 
 /** The lists Edit mode can add to, change and hide in. */
@@ -264,6 +266,18 @@ export function setBacklogCategory(game: GameId, category: string, counted: bool
 
 export function setRosterEntry(game: GameId, characterId: string, entry: RosterEntry): void {
   update(game, (g) => ({ ...g, roster: { ...g.roster, [characterId]: entry } }));
+}
+
+/** Save a character's build (replaces the one saved before). */
+export function setBuild(game: GameId, characterId: string, build: SavedBuild): void {
+  update(game, (g) => ({ ...g, builds: { ...g.builds, [characterId]: build } }));
+}
+
+/** Clear a character's saved build; returns it so Undo can put it back with `setBuild`. */
+export function clearBuild(game: GameId, characterId: string): SavedBuild | null {
+  const before = gameData(game).builds?.[characterId] ?? null;
+  if (before) update(game, (g) => ({ ...g, builds: Object.fromEntries(Object.entries(g.builds ?? {}).filter(([id]) => id !== characterId)) }));
+  return before;
 }
 
 export function setFarm(game: GameId, characterIds: string[]): void {

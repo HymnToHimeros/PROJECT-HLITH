@@ -32,6 +32,19 @@ Resume with: "continue from PROGRESS.md". Newest entry on top. Older entries:
   Farm and "Materials to max" now include character EXP 1 → 80 for HSR:
   5,797,920 EXP = 290 Traveler's Guides, from the game's own EXP table
   (DimbreathBot/TurnBasedGameData). No HSR material amount is missing any more.
+- 2026-10-10 · **Two more chats: MANAGER and ERROR-FIX** (branch `frame/manager-error-fix`).
+  `docs/WORKSTREAMS.md`: rules 7–8, both in Who's who, a routing table (which job goes
+  to which chat). `docs/briefs/MANAGER.md` (the owner's front desk: routes every
+  owner message, keeps `docs/TASKS.md`, reports back) and `docs/briefs/ERROR-FIX.md`
+  (fixes bugs only when a chat asks). `docs/RELEASES.md` updated for five chats.
+- 2026-10-10 · **FRAME: save a build per character** (branch `frame/build-store`).
+  Build score on the character page: "Enter build" opens a form for level, weapon
+  (picked from the game's list, with level and Superimposition / Phase), every gear
+  piece (set, main stat, up to four extra stats) and skill levels. Empty fields stay
+  empty; a wrong number is named and nothing saves. Saved builds sync, show on the
+  page (level in the header), can be edited, and cleared with Undo. A screenshot scan
+  saves level and weapon into the build. The score itself waits for LOGIC-CORE's
+  `scoreBuild`. Browser tests: "every module opens" is one test per screen.
 - 2026-10-10 · **FRAME: Enhanced / Agent Potential per character** (branch `frame/potential-field`).
   For LOGIC-CORE: the character page has an "Enhanced" (HSR: Not set / No / Yes) or
   "Agent Potential" (ZZZ: Not set / 0–6) picker, only for characters whose kit has pieces
