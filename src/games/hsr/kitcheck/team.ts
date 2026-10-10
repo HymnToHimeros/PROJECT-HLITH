@@ -109,7 +109,7 @@ const centresIn = (ids: string[], lib: Library) => {
   return centres.length ? centres : ids.filter((id) => canCarry(id, lib));
 };
 
-const asExplain = (r: TeamResult) => ({ members: r.members, dd: r.dd, count: r.count, lines: r.lines });
+const asExplain = (r: TeamResult) => ({ members: r.members, dd: r.dd, count: r.count, lines: r.lines, ...(r.coDds ? { coDds: r.coDds } : {}) });
 
 /** Every read character the account doesn't hide (the unpicked Trailblazer: `skip`, FRAME's protagonist setting). */
 const readable = (lib: Library, a: TeamAccount) => [...lib.sheets.keys()].filter((id) => !a.skip?.(id));
@@ -119,7 +119,7 @@ function reasonOf(l: Line, lib: Library): TeamReason {
   const name = (id: string) => lib.names.get(id) ?? id;
   const group: TeamReason['group'] = l.kind === 'support' ? 'tie-break' : l.points !== 0 ? 'counted' : 'not-counted';
   const proof = l.piece && l.quote ? { who: name(l.who), skill: labelOf(lib, l.who, l.piece), quote: l.quote } : undefined;
-  return { points: l.points, group, text: `${name(l.who)} · ${l.tag}: ${l.why}`, ...(proof ? { proof } : {}) };
+  return { points: l.points, group, text: `${name(l.who)} · ${l.tag}${l.forDd ? ` (for ${name(l.forDd)})` : ''}: ${l.why}`, ...(proof ? { proof } : {}) };
 }
 
 export function summary(r: TeamResult): string {
@@ -173,7 +173,7 @@ export function verdict(members: string[], a: TeamAccount, lib: Library = librar
     unordered: true,
     reasons: mine.lines.map((l) => reasonOf(l, lib)),
     ...(wantsOf(mine, lib).length ? { wants: wantsOf(mine, lib) } : {}),
-    explain: explainTeam({ members: mine.members, dd: mine.dd, count: mine.count, lines: mine.lines }, { members: top.members, dd: top.dd, count: top.count, lines: top.lines }, name),
+    explain: explainTeam(asExplain(mine), asExplain(top), name),
     notes: [summary(mine), ...notes],
   };
 }

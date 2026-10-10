@@ -78,8 +78,11 @@ export const SUSTAIN_STATS: readonly Stat[] = ['heal', 'shield'];
 
 /** Question 1: when is it on? Absent = always (no team condition). */
 export type Condition =
-  /** At least `atLeast` team members (the owner of the kit not counted when `others`) have one of these paths or elements. */
-  | { count: { paths?: Path[]; elements?: Element[]; atLeast: number; others?: boolean } }
+  /**
+   * At least `atLeast` team members (the owner of the kit not counted when `others`) have one of these paths or
+   * elements, and when `atMost` is set, no more than that ("the only Elation character": atLeast 0, atMost 0).
+   */
+  | { count: { paths?: Path[]; elements?: Element[]; atLeast: number; atMost?: number; others?: boolean } }
   /** Every one of these. */
   | { all: Condition[] }
   /** Cannot be checked from profiles (HP thresholds, enemy state is not a condition but setup): never counted as met. */

@@ -27,13 +27,17 @@ const own = (names: string[], dupes = 0): TeamAccount => {
 };
 
 describe('HSR check: worked examples', () => {
-  it('1. Feixiao + Topaz + Robin + Aventurine: Proof of Debt counts (Follow-Up ATK), two Follow-Up chains, count 9', () => {
+  it('1. Feixiao + Topaz + Robin + Aventurine: Proof of Debt counts (Follow-Up ATK), two Follow-Up chains, 9 for Feixiao', () => {
     const r = run('Feixiao', 'Topaz & Numby', 'Robin', 'Aventurine');
     expect(has(r.lines, 'buff', 'Topaz & Numby', /Follow-Up ATK DMG taken/)).toBe(true);
     expect(has(r.lines, 'chain', 'Topaz & Numby', /Follow-Up/)).toBe(true);
     expect(has(r.lines, 'chain', 'Aventurine', /Follow-Up/)).toBe(true);
     expect(r.sustain).toBe(true);
-    expect(r.count).toBe(9);
+    // The worked example counts Feixiao's side: 9. Topaz is a carry on Feixiao's own game team, so what reaches
+    // her counts too (decision 33): the team total adds her side.
+    expect(r.lines.filter((l) => !l.forDd).reduce((n, l) => n + l.points, 0)).toBe(9);
+    expect(r.coDds).toEqual([id('Topaz & Numby')]);
+    expect(r.count).toBeGreaterThan(9);
   });
 
   it('2. Acheron + Jiaoqiu + Pela + Aventurine: The Abyss switched on by Nihility teammates, every debuff chains, count 9', () => {
@@ -328,5 +332,28 @@ describe('HSR: characters the owner hid (the unpicked Trailblazer) are never use
       if (v.rated) expect(v.bestMembers.some((m) => caelus.has(m)), dd).toBe(false);
     }
     expect(everyone.some((x) => caelus.has(x))).toBe(true);
+  });
+});
+
+describe('HSR: the owner’s Team 1 (Aventurine • Waveflair, Mortenax Blade, Ashveil, Robin • Summeretto)', () => {
+  const team = ['Aventurine • Waveflair', 'Mortenax Blade', 'Ashveil', 'Robin • Summeretto'];
+  const v = () => verdict(team.map(id), own(team));
+  it('solo modes are read: no other Elation / Nihility switches them on, and the duo branch costs nothing', () => {
+    const r = check(team.map(id), lib, e0, id('Aventurine • Waveflair'));
+    if (!r.rated) throw new Error(r.why);
+    const lines = r.best.lines;
+    expect(lines.some((l) => l.entry === 'revel-solo-follow-up' && l.kind === 'switched-on')).toBe(true);
+    expect(lines.some((l) => l.entry === 'heart-self-dmg' && l.points > 0)).toBe(true);
+    expect(lines.some((l) => l.points < 0 && (l.entry === 'revel-elation' || /another Nihility/.test(l.tag)))).toBe(false);
+  });
+  it('it is the game’s own multi-carry team: Mortenax Blade’s and Ashveil’s damage count too', () => {
+    const r = check(team.map(id), lib, e0, id('Aventurine • Waveflair'));
+    if (!r.rated) throw new Error(r.why);
+    expect([...(r.best.coDds ?? [])].sort()).toEqual([id('Mortenax Blade'), id('Ashveil')].sort());
+    const x = v();
+    if (!x.rated) throw new Error(x.why);
+    expect(x.explain?.headline).toMatch(/^Aventurine • Waveflair deals the damage, with (Mortenax Blade and Ashveil|Ashveil and Mortenax Blade)\./);
+    expect(x.label).not.toMatch(/sustain/);
+    expect(x.percent).toBeGreaterThanOrEqual(65);
   });
 });

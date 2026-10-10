@@ -15,6 +15,8 @@ export interface ExplainLine {
   why: string;
   points: number;
   helpers?: string[];
+  /** Counted for a second damage dealer of the team, not the main one (hsr-decisions 33). */
+  forDd?: string;
   /** A build line (T18): the build the team wants on `who` and how theirs fits. */
   build?: { stat: string; have: string; fit: Fit; max: number };
 }
@@ -22,6 +24,8 @@ export interface ExplainLine {
 export interface ExplainTeam {
   members: string[];
   dd: string;
+  /** Other damage dealers whose damage counts too (hsr-decisions 33). */
+  coDds?: string[];
   count: number;
   lines: ExplainLine[];
 }
@@ -40,11 +44,12 @@ const chainWords = (why: string) => {
 
 /** What one member brings to the damage dealer, as a phrase without the name ("gives …; sets off …"), and the points it earns. */
 function given(t: ExplainTeam, who: string, name: (id: string) => string): { phrase: string; points: number } {
-  const own = t.lines.filter((l) => l.who === who);
+  const all = t.lines.filter((l) => l.who === who);
+  const own = all.filter((l) => !l.forDd);
   const counted = own.filter((l) => l.points > 0);
   const lost = own.filter((l) => l.points < 0);
   const support = own.filter((l) => l.kind === 'support');
-  const turnedOn = t.lines.filter((l) => l.kind === 'switched-on' && l.helpers?.includes(who));
+  const turnedOn = t.lines.filter((l) => !l.forDd && l.kind === 'switched-on' && l.helpers?.includes(who));
   const dd = name(t.dd);
   const parts: string[] = [];
   if (who === t.dd) {
@@ -67,7 +72,24 @@ function given(t: ExplainTeam, who: string, name: (id: string) => string): { phr
           : `the team wants them built for ${statWords(l.build.stat)}: ${FIT_WORD[l.build.fit]}${l.build.fit === 'no-build' ? '' : ` (${l.build.have})`}`,
       );
   for (const l of lost) parts.push(l.kind === 'weak-fit' ? `brings nothing ${dd} uses (−1)` : `${bare(l.tag)}: ${l.why} (−1)`);
-  const points = counted.reduce((n, l) => n + l.points, 0) + lost.reduce((n, l) => n + l.points, 0);
+  // Second damage dealers (decision 33): what this member does for each of them, in the same words.
+  for (const co of t.coDds ?? []) {
+    const forCo = all.filter((l) => l.forDd === co);
+    if (!forCo.length) continue;
+    const up = forCo.filter((l) => l.points > 0);
+    if (who === co) {
+      const on = up.filter((l) => l.kind === 'switched-on');
+      parts.push(`deals damage too${on.length ? `; the team switches on ${list(on.map((l) => bare(l.tag)))}` : ''}`);
+    } else {
+      const buffs = up.filter((l) => l.kind === 'buff');
+      if (buffs.length) parts.push(`gives ${name(co)} ${list(buffs.map((l) => bare(l.tag)))}`);
+      for (const c of up.filter((l) => l.kind === 'chain')) parts.push(chainWords(c.why));
+      const on = t.lines.filter((l) => l.forDd === co && l.kind === 'switched-on' && l.helpers?.includes(who));
+      if (on.length) parts.push(`switches on ${name(co)}'s ${list(on.map((l) => `“${bare(l.tag)}”`))}`);
+    }
+    for (const l of forCo.filter((x) => x.points < 0)) parts.push(`${bare(l.tag)} (for ${name(co)}): ${l.why} (−1)`);
+  }
+  const points = all.reduce((n, l) => n + l.points, 0);
   return { phrase: parts.join('; ') || 'nothing that counts for this team', points };
 }
 
@@ -104,6 +126,7 @@ export function explainTeam(mine: ExplainTeam, best: ExplainTeam, name: (id: str
     }
   }
   const helpers = members.filter((m) => m.id !== mine.dd && m.points > 0).map((m) => name(m.id));
-  const headline = `${dd} deals the damage. ${helpers.length ? `${list(helpers)} ${helpers.length === 1 ? 'connects' : 'connect'} with ${dd}'s kit` : `No teammate connects with ${dd}'s kit`}${gap > 0 ? (newcomers.length ? `; ${plural(gap, 'point')} short of the best team found` : `; ${plural(gap, 'point')} more when fully built`) : '; no better team found'}.`;
+  const co = (mine.coDds ?? []).map(name);
+  const headline = `${dd} deals the damage${co.length ? `, with ${list(co)}` : ''}. ${helpers.length ? `${list(helpers)} ${helpers.length === 1 ? 'connects' : 'connect'} with ${dd}'s kit` : `No teammate connects with ${dd}'s kit`}${gap > 0 ? (newcomers.length ? `; ${plural(gap, 'point')} short of the best team found` : `; ${plural(gap, 'point')} more when fully built`) : '; no better team found'}.`;
   return { headline, members, missing };
 }

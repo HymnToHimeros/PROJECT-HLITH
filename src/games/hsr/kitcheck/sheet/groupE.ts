@@ -1152,16 +1152,19 @@ const mortenaxBlade: CharacterSheet = {
       to: 'allies',
       limits: { kinds: ['ultimate'] },
       setup: 'His Zone is up (after his Ultimate).',
+      noStack: 'mortenax-heart-refined',
     },
     {
       id: 'heart-self-dmg',
       piece: 'trace-heart-refined-ad-infinitum',
       quote: 'Otherwise, DMG dealt by Mortenax Blade additionally increases by 75%.',
       tag: 'Himself: +75% DMG with no other Nihility',
-      on: { unknown: 'no other Nihility character besides him in the team' },
+      on: { count: { paths: ['nihility'], atLeast: 0, atMost: 0, others: true } },
       gives: [{ stat: 'dmg', amount: '+75%' }],
       to: 'self',
       setup: 'His Zone is up (after his Ultimate).',
+      // Solo branch of "Heart Refined": exclusive with the "another Nihility" branch, which it covers.
+      noStack: 'mortenax-heart-refined',
     },
     {
       id: 'e1-res',
