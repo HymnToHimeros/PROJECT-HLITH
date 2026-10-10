@@ -24,6 +24,16 @@ Per game, in `src/games/<game>/data/`, using the types in
 | `characters.json` | `Character` | Add characters that are new since the list was made (`scripts/import-nanoka.ts`), and fill `releasedAt` for every character that lacks it (ZZZ has none yet; Roster sorts newest first by it). Leaked, unreleased characters go in with `leak: { source }` so Roster can show them on request, marked unverified. Don't redo the list; kits and builds belong to LOGIC-CORE. |
 
 ## Rules
+- **Sources (owner, 2026-10-09):** SCHEDULER judges which sources are
+  trustworthy. nanoka.cc is one trusted source (good quality, carries leaks),
+  not the only one. Always check the official channels (HoYoverse news pages,
+  version announcements, in-game notices); they are the final word on dates
+  and banners. Other sources (wikis, trackers) case by case; dates and banners
+  need an official source or two reliable sources that agree.
+- **Backlog (owner, 2026-10-09):** mostly the user's own list; it estimates
+  what permanent and long-cycle content can still pay out on their account.
+  Built-in items only for the important shared things (main story first);
+  never try to make it complete.
 - **Honest data:** every entry must come from a named source (nanoka.cc, used
   with its owner's permission; official game sites and announcements). A value
   the source doesn't give stays `null` or is left out, never guessed. Dates in

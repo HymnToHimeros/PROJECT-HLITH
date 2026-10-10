@@ -45,6 +45,13 @@ test('Example data off hides every example; on brings them back', async ({ page 
 
   await page.goto('/account/examples');
   await page.getByRole('switch', { name: 'Show example data' }).check();
-  await page.goto('/hsr/events');
-  await expect(page.getByText('EXAMPLE', { exact: true }).first()).toBeVisible();
+  // Real lists replace examples where they exist (events, banners…), so look for any screen that still shows one.
+  const shown: string[] = [];
+  for (const p of PAGES) {
+    await page.goto(`/hsr/${p}`);
+    await expect(page.getByText('Loading…')).toHaveCount(0);
+    await page.waitForLoadState('networkidle');
+    if ((await page.getByText('EXAMPLE', { exact: true }).count()) > 0) shown.push(p);
+  }
+  expect(shown.length, 'no screen shows an example after switching them back on').toBeGreaterThan(0);
 });

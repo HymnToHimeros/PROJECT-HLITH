@@ -1,1 +1,40 @@
-[]
+[
+  {
+    "id": "zzz.main-story",
+    "category": "story",
+    "title": "Phaethon's Story (main story)",
+    "total": 27,
+    "reward": null,
+    "currency": "polychrome",
+    "steps": [
+      "Season 1 Chapter 0: Business x Strangeness x Justness",
+      "Season 1 Chapter 1A: Cat's Lost & Found (A)",
+      "Season 1 Chapter 1B: Cat's Lost & Found (B)",
+      "Season 1 Chapter 2A: A Call From the Hollow's Heart (A)",
+      "Season 1 Chapter 2B: A Call From the Hollow's Heart (B)",
+      "Season 1 Chapter 2IA: Mission Unthinkable (A)",
+      "Season 1 Chapter 2IB: Mission Unthinkable (B)",
+      "Season 1 Chapter 3A: The Midnight Pursuit (A)",
+      "Season 1 Chapter 3B: The Midnight Pursuit (B)",
+      "Season 1 Chapter 4A: Tour de Inferno (A)",
+      "Season 1 Chapter 4B: Tour de Inferno (B)",
+      "Season 1 Chapter 5A: A Storm of Falling Stars (A)",
+      "Season 1 Chapter 5B: A Storm of Falling Stars (B)",
+      "Season 1 - Epilogue (A): Bury Your Tears With the Past (A)",
+      "Season 1 - Epilogue (B): Bury Your Tears With the Past (B)",
+      "Season 2 Chapter 1: Where Clouds Embrace the Dawn",
+      "Season 2 Chapter 2: The Impending Crash of Waves",
+      "Season 2 Chapter 3: Do Not Go Gentle Into That Good Night",
+      "Season 2 Chapter 4: Memories of Dreams Bygone",
+      "Season 2 Chapter 5: On the Precipice of the Abyss",
+      "Season 2 Chapter 6: To Be Fuel for the Night",
+      "Season 2 Interlude: Encore for an Old Dream",
+      "Season 2 Chapter Epilogue (A): New: Eridan Sunset (A)",
+      "Season 2 Chapter Epilogue (B): New: Eridan Sunset (B)",
+      "Season 3 Chapter 1: A Sleepwalker's Confession",
+      "Season 3 Chapter 2: The Long Goodbye",
+      "Season 3 Chapter 3: Their Secret Histories"
+    ],
+    "note": "Chapters from the Season pages of zenless-zone-zero.fandom.com. Rewards per chapter: no data yet."
+  }
+]
