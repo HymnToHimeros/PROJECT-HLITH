@@ -6,11 +6,15 @@ import './core/theme/tokens-light.css';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { App } from './App';
+import { withCatalog } from './core/data/catalog';
+import { catalogRows } from './core/data/catalogSource';
 import { registerGame, registerModuleScreen, registerPanel } from './core/registry';
 import { applyTheme, savedTheme } from './core/theme/theme';
-import { games } from './games';
+import { games as seedGames } from './games';
 import { SharedTeamRoute } from './tools/share/ShareTeam';
 
+// Each game's built-in lists, with the owner's updates (Owner console → Lists) laid over them.
+const games = seedGames.map((g) => withCatalog(g, () => catalogRows()));
 for (const game of games) registerGame(game);
 registerModuleScreen('pulls', () => import('./tools/pulls/PullsScreen'));
 registerModuleScreen('events', () => import('./tools/events/EventsScreen'));

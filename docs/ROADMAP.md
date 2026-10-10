@@ -11,7 +11,7 @@ so it can't drift from the real code. Never tick a box by hand; add the proof.
 Who builds what: see `docs/WORKSTREAMS.md`.
 
 <!-- roadmap:summary -->
-**63 of 63 done** `████████████████████` 100%
+**64 of 64 done** `████████████████████` 100%
 
 **Everything on the roadmap is done.**
 
@@ -23,7 +23,7 @@ Who builds what: see `docs/WORKSTREAMS.md`.
 | Phase 3 · Accounts and data | `██████████` | 5 / 5 |
 | Phase 4 · Engines | `██████████` | 4 / 4 |
 | Phase 5 · Modules | `██████████` | 17 / 17 |
-| Phase 6 · Connections and extras | `██████████` | 15 / 15 |
+| Phase 6 · Connections and extras | `██████████` | 16 / 16 |
 | Phase 7 · Launch | `██████████` | 3 / 3 |
 <!-- /roadmap:summary -->
 
@@ -99,6 +99,7 @@ Who builds what: see `docs/WORKSTREAMS.md`.
 - [x] R57 ★ Delete my account · proof: `supabase/functions/delete-account/index.ts`
 - [x] R58 Owner console · proof: `src/tools/owner/OwnerConsole.tsx`
 - [x] R62 ★ HoYoLAB: several accounts, one import and scan button, automatic daily check-in and codes · proof: `supabase/migrations/0003_hoyolab_links.sql`, `supabase/functions/hoyolab-daily/index.ts`, `src/tools/account-links/accounts.ts`, `tests/hoyolabAuto.test.ts`
+- [x] R64 ★ Owner console tools: edit the built-in lists for everyone, approved findings go into the lists, announcements, real numbers · proof: `src/tools/owner/Lists.tsx`, `src/tools/owner/Announcements.tsx`, `src/core/shell/AnnouncementStrip.tsx`, `supabase/migrations/0008_owner_console.sql`, `src/tools/owner/Lists.live.test.tsx`
 - [x] R63 ★ Scheduler frame: one cron job runs every fixed job, findings inbox for the external routine, Owner console Scheduler and Findings tabs · proof: `supabase/functions/scheduler/index.ts`, `supabase/functions/findings-intake/index.ts`, `src/tools/owner/Scheduler.tsx`, `src/tools/owner/Findings.tsx`
 
 ## Phase 7 · Launch

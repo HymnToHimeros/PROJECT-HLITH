@@ -3,13 +3,15 @@ import { FINDING_KINDS } from '../../../supabase/functions/_shared/scheduler.ts'
 import type { GameContract } from '../../core/contract';
 import { ExampleNotice, ExampleTag, GameTag, HowTo, NoData, UnverifiedTag } from '../../core/ui';
 import o from './owner.module.css';
-import { decideFinding, jobLabel, onApprove, reopenFinding, type Decision, type FindingView, type SchedulerData } from './schedulerData';
+import { planApproval, type Draft } from './approve';
+import { decideFinding, jobLabel, reopenFinding, type Decision, type FindingView, type SchedulerData } from './schedulerData';
 import { when } from './Scheduler';
 
 /*
  * Owner console → Findings: the inbox of what the jobs found (new leaks, events, info).
- * Approve or Dismiss. Approving only marks the finding; writing it into the built-in
- * lists is the data workstream's logic, behind onApprove (schedulerData.ts).
+ * Approve or Dismiss. Approving a complete event, banner, character or leak adds it to
+ * the built-in lists (onApprove in schedulerData.ts); an incomplete one opens the Lists
+ * form pre-filled. "Move back to new" retires what the approval added.
  */
 
 const KIND_LABEL: Record<string, string> = { leak: 'Leak', event: 'Event', banner: 'Banner', character: 'Character', info: 'Info' };
@@ -17,14 +19,18 @@ const KIND_LABEL: Record<string, string> = { leak: 'Leak', event: 'Event', banne
 interface Props {
   data: SchedulerData & { setLocal: (f: (d: SchedulerData) => SchedulerData) => void };
   games: GameContract[];
+  /** Opens Owner console → Lists with this item in the form, for the owner to complete. */
+  onDraft?: (draft: Draft) => void;
 }
 
-export function Findings({ data, games }: Props) {
+export function Findings({ data, games, onDraft }: Props) {
   const example = data.mode === 'example';
   const [game, setGame] = useState('all');
   const [kind, setKind] = useState('all');
   const [status, setStatus] = useState<Decision | 'all'>('new');
   const [error, setError] = useState<string | null>(null);
+  const [said, setSaid] = useState<string | null>(null);
+  const gameOf = (f: FindingView) => games.find((g) => g.id === f.game_id);
 
   const gameIds = [...new Set([...games.map((g) => g.id), ...data.findings.map((f) => f.game_id).filter((g): g is string => Boolean(g))])];
   const gameName = (id: string) => games.find((g) => g.id === id)?.short ?? id.toUpperCase();
@@ -33,12 +39,21 @@ export function Findings({ data, games }: Props) {
 
   const decide = async (f: FindingView, to: Exclude<Decision, 'new'>) => {
     setError(null);
+    setSaid(null);
     try {
       let decidedAt = new Date().toISOString();
       if (example) {
-        if (to === 'approved') await onApprove({ ...f, status: to, decided_at: decidedAt });
+        if (to === 'approved') {
+          const plan = planApproval(f, gameOf(f));
+          setSaid(plan.ok ? 'Example only: approving it here writes nothing to the lists (this site runs without a server).' : `Approved. ${plan.reason}`);
+        }
       } else {
-        decidedAt = await decideFinding(f, to);
+        const done = await decideFinding(f, to, gameOf(f));
+        decidedAt = done.decidedAt;
+        if (done.result) {
+          setSaid(done.result.message);
+          if (done.result.kind === 'needs-form') onDraft?.(done.result.draft);
+        }
       }
       data.setLocal((d) => ({ ...d, findings: d.findings.map((x) => (x.id === f.id ? { ...x, status: to, decided_at: decidedAt } : x)) }));
     } catch (e) {
@@ -48,8 +63,12 @@ export function Findings({ data, games }: Props) {
 
   const reopen = async (f: FindingView) => {
     setError(null);
+    setSaid(null);
     try {
-      if (!example) await reopenFinding(f);
+      if (!example) {
+        const undone = await reopenFinding(f, gameOf(f));
+        if (undone) setSaid(undone);
+      }
       data.setLocal((d) => ({ ...d, findings: d.findings.map((x) => (x.id === f.id ? { ...x, status: 'new', decided_at: null } : x)) }));
     } catch (e) {
       setError(e instanceof Error ? e.message : 'Could not move it back.');
@@ -62,7 +81,7 @@ export function Findings({ data, games }: Props) {
         steps={[
           <>Jobs put what they find here: new leaks, events, banners, characters and other info. Each one says which job delivered it, whether it came from the routine, and when.</>,
           <>Approve what is right, Dismiss what is not. Nothing is ever removed: dismissed findings stay under “Dismissed”. Changed your mind? “Move back to new” puts it back in the inbox.</>,
-          <>Approving marks the finding. Adding it to the built-in lists comes with the data workstream; until then approving changes nothing for users.</>,
+          <>Approving a complete event, banner, character or leak adds it to that game’s built-in list for everyone (they see it after reload). If something is missing, the Lists form opens with what the finding gave, so you can finish it. Info findings only get marked.</>,
           <>A finding the same job delivers again within 30 days is not added twice.</>,
         ]}
       />
@@ -70,6 +89,11 @@ export function Findings({ data, games }: Props) {
       {error && (
         <p className={o.alert} role="alert">
           {error}
+        </p>
+      )}
+      {said && (
+        <p className={o.said} role="status">
+          {said}
         </p>
       )}
 
