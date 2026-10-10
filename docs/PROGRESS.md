@@ -28,14 +28,12 @@ Resume with: "continue from PROGRESS.md". Newest entry on top. Older entries:
 - CI (`.github/workflows/ci.yml`) runs both on every pull request.
 
 ## Done
-- 2026-10-10 · **Calmer Calendar (T20, Calendar part)** (branch `frame/calm-calendar`).
-  Nothing removed, only folded and merged. Timeline: bars that don't overlap share a
-  row, rows grouped by lane then game, thinner rows, a busy lane shows up to 4 rows
-  per game (what changes soonest) with "Show N more"; the date scale with a TODAY
-  mark stays in view while scrolling on a PC; lane names and "Show more" stay in view
-  when the phone timeline scrolls sideways. Dates: soonest change first, grouped
-  "Next 7 days" / "In 1–2 weeks", up to 8 shown, "Show N more dates" opens every
-  date (with "Later"). All games at 1440px: 4,978 → 1,841 px tall; HSR: 2,752 → 1,455.
+- 2026-10-10 · **FRAME: GitHub tidy and README** (branch `frame/tidy-readme`, owner job T24).
+  `docs/README.md` sorts every doc by what you'd open it for (files stay where they are:
+  code, migrations and the chats' rules point at them). README brought up to date
+  (HoYoLAB ticks, builds, Enhanced / Potential, themes, owner console, five chats) with
+  fresh screenshots. A stray `preview.log` removed and `*.log` ignored. Merged branches
+  are auto-deleted by GitHub; two stale ones are left for the owner to delete.
 - 2026-10-10 · **FRAME: live banner art the same size; HoYoLAB ticks dailies** (branch `frame/owner-jobs-1`, owner jobs T16, T22).
   Today's live banners: every card is the same height, so every art box is the same
   size and crops the same way (titles stop at two lines). Each live stamina read now
