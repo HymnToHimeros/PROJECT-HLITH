@@ -172,6 +172,11 @@ export interface Entry {
    * so Follow-Up ATK buffs reach him in that team.
    */
   addsKinds?: DamageKind[];
+  /**
+   * Attached to the damage dealer, not to the giver's own turns, so it goes with them where teammates can't act (T30):
+   * Dan Heng • Permansor Terrae's Bondmate and Souldragon go with Phainon into his domain (owner, 2026-10-10). Says why.
+   */
+  staysWithCarry?: string;
 }
 
 /** Part A step 5: what a damage dealer's damage is and uses. */

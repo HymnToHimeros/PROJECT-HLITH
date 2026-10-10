@@ -108,13 +108,28 @@ describe('Kit facts read for T30', () => {
     expect(out.best.lines.filter((l) => l.who === t[3] && l.tag === 'One ally: acts now, +30% DMG' && (l.value ?? 0) > 0)).toHaveLength(1);
   });
 
-  it('owner’s teams: Aventurine • Waveflair’s is the best found; Phainon’s with Dan Heng • Permansor Terrae stays within reach of the best that keeps a healer', () => {
+  it('owner’s teams: Aventurine • Waveflair’s and Phainon’s are the best found', () => {
     const wf = hsrVerdict(team(['Aventurine • Waveflair', 'Mortenax Blade', 'Ashveil', 'Robin • Summeretto']), all);
     if (!wf.rated) throw new Error('not rated');
     expect(wf.bestMembers).toEqual(team(['Aventurine • Waveflair', 'Mortenax Blade', 'Ashveil', 'Robin • Summeretto']));
     const ph = hsrVerdict(team(['Phainon', 'Sunday', 'Cerydra', 'Dan Heng • Permansor Terrae']), all);
     if (!ph.rated) throw new Error('not rated');
     expect(ph.notes).toContain('This team has a healer or shielder, so the best team found keeps one too.');
-    expect(ph.percent).toBeGreaterThanOrEqual(60);
+    expect([...(ph.bestMembers ?? [])].sort()).toEqual([...team(['Phainon', 'Sunday', 'Cerydra', 'Dan Heng • Permansor Terrae'])].sort());
+  });
+
+  it('Phainon’s domain (owner): Dan Heng • Permansor Terrae’s Bondmate goes with him, so Dan Heng beats standard Robin and Huohuo; teammates’ field effects stay behind', () => {
+    const value = (ns: string[]) => {
+      const t = team(ns);
+      const out = check(t, lib, ideal, t[0]);
+      return out.rated ? out.best.value : 0;
+    };
+    const dh = value(['Phainon', 'Sunday', 'Cerydra', 'Dan Heng • Permansor Terrae']);
+    expect(dh).toBeGreaterThan(value(['Phainon', 'Sunday', 'Cerydra', 'Robin']));
+    expect(dh).toBeGreaterThan(value(['Phainon', 'Sunday', 'Cerydra', 'Huohuo']));
+    const t = team(['Phainon', 'Sunday', 'Cerydra', 'Robin • Summeretto']);
+    const out = check(t, lib, ideal, t[0]);
+    if (!out.rated) throw new Error('not rated');
+    expect(out.best.lines.find((l) => l.tag === 'Allies: ignore 15%+ DEF')?.why).toMatch(/can't follow/);
   });
 });

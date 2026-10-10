@@ -223,6 +223,11 @@ team size and order, and the owner's ZZZ method's own counting.
     - Phainon: "When Phainon is targeted by an ability from any other target, gains 1 Coreflame": every teammate with
       an ability aimed at one chosen ally charges his domain (event `targets-ally`). In his domain "other teammates
       depart and cannot take action" (`damage.alone`): teammates' own hits and extra hits don't count for him there;
-      their buffs from before do. Open (owner asked): what makes Dan Heng • Permansor Terrae better than standard
-      Robin and Huohuo for him; until then the Why shows this reading.
+      their buffs from before do.
+    - **Phainon and Dan Heng • Permansor Terrae (owner, 2026-10-10):** "his skill aka the dragon bond thing is the only
+      ability … that goes with him into his domain". The kit text doesn't say it (only "'Bondmate' only applies to
+      the most recent target of Dan Heng • Permansor Terrae's Skill"), so the owner is the source: Bondmate lines
+      (`staysWithCarry`) keep counting in the domain. A teammate's field effect ("on the field", "within the Zone":
+      their Zone, their memosprite) stays behind with them. Result: Phainon + Sunday + Cerydra + Dan Heng PT is his
+      best team found; standard Robin 96%, Huohuo 95%, Robin • Summeretto 80% (different role, owner).
     - The best-team search always keeps the team's own members in the running.

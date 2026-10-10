@@ -28,6 +28,10 @@ Resume with: "continue from PROGRESS.md". Newest entry on top. Older entries:
 - CI (`.github/workflows/ci.yml`) runs both on every pull request.
 
 ## Done
+- 2026-10-10 · **LOGIC-CORE: Phainon's domain, Dan Heng • Permansor Terrae's Bondmate (T30, last item)** (branch `logic-core/phainon-bondmate`).
+  Owner: Dan Heng PT's Bondmate goes with Phainon into his domain, so its extra hits and ATK keep counting there;
+  teammates' field effects (their Zone, their memosprite) stay behind. Phainon + Sunday + Cerydra + Dan Heng PT is
+  now his best team found; standard Robin and Huohuo just below, Robin • Summeretto close (different role).
 - 2026-10-10 · **LOGIC-CORE: team scores read the kit numbers (T30)** (branch `logic-core/kit-value`).
   The count of connecting kit lines stays (the ZZZ method's counts untouched); a kit value now ranks teams and
   gives the %: every buff at its size in the kit text, buffs of one kind add up (Lucia's and Pan Yinhu's Sheer

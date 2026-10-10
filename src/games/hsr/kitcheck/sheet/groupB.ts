@@ -867,6 +867,7 @@ export const danHengPermansorTerrae: CharacterSheet = {
       tag: 'Bondmate: extra hit (Souldragon Follow-Up ATK)',
       gives: [{ stat: 'extra-dmg', amount: "80% of the Bondmate's ATK as Additional DMG, 2 actions" }],
       to: 'chosen-ally',
+      staysWithCarry: 'The Bondmate and their Souldragon go with Phainon into his domain (owner, 2026-10-10).',
       causes: 'follow-up',
       setup: 'Make the damage dealer the Bondmate (his Skill), then use his Ultimate.',
     },
@@ -890,6 +891,7 @@ export const danHengPermansorTerrae: CharacterSheet = {
       gives: [{ stat: 'atk', amount: '15% of his ATK' }],
       scales: { stat: 'atk', quote: "by an amount equal to 15% of Dan Heng • Permansor Terrae's ATK" },
       to: 'chosen-ally',
+      staysWithCarry: 'The Bondmate and their Souldragon go with Phainon into his domain (owner, 2026-10-10).',
       setup: 'Make the damage dealer the Bondmate with his Skill.',
     },
     {
@@ -908,6 +910,7 @@ export const danHengPermansorTerrae: CharacterSheet = {
       tag: 'Bondmate: one more extra hit',
       gives: [{ stat: 'extra-dmg', amount: "40% of the Bondmate's ATK as Additional DMG" }],
       to: 'chosen-ally',
+      staysWithCarry: 'The Bondmate and their Souldragon go with Phainon into his domain (owner, 2026-10-10).',
       setup: 'The damage dealer is the Bondmate and Souldragon is enhanced (his Ultimate).',
     },
     {
@@ -929,6 +932,7 @@ export const danHengPermansorTerrae: CharacterSheet = {
       tag: "Bondmate: Souldragon's extra hit doubled",
       gives: [{ stat: 'extra-dmg', amount: '200% of the original Additional DMG' }],
       to: 'chosen-ally',
+      staysWithCarry: 'The Bondmate and their Souldragon go with Phainon into his domain (owner, 2026-10-10).',
       setup: 'The damage dealer is the Bondmate and Souldragon is enhanced (his Ultimate).',
     },
     {
