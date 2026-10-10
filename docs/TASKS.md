@@ -29,6 +29,7 @@ doing it said `LIVE`. Newest jobs at the bottom; live jobs move to Done.
 | T38 | ZZZ teams: two supports doing the same job (Lucia + Pan Yinhu for Starlight Billy) scored above a complementary team (Dialyn + Lucia). Scoring must handle overlap and role coverage | LOGIC-CORE | working | Covered by T30. Owner: no "Stun needed" rule (Anomaly teams want none); roles needed only when the carry\'s kit asks. |
 | T40 | Recommended teams wrong while My teams scores right (Phainon: only Cerydra + Cyrene + Dan Heng PT at 36%). Same scoring for both; check every recommended team in both games is up to date | LOGIC-CORE | live | #92: Cyrene's Odes count; each card slot takes the best owned pick; Phainon card 36% → 91%. |
 | T41 | Carries who sustain themselves (Aventurine • Waveflair) free the sustain slot; "Best found from your characters" card when a card is under 90% | LOGIC-CORE (+ FRAME OK on Teams.tsx) | live | #93: "Best found from your characters" cards (Waveflair, Silver Wolf LV.999, 7 ZZZ); Castorice counts as her own healer. |
+| T42 | Character page "Builds their teams want": refresh on switches/team lists/leaks; use the members the card shows | LOGIC-CORE | sent | After FRAME's #94 (stale team results fix). |
 
 ## Done
 | # | Job | Who | Live on |
