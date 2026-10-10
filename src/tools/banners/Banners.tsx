@@ -100,7 +100,7 @@ function BannerItem({ game, banner, state, data, tagged, open }: ItemProps) {
   const lead = featured[0];
   const isExample = data.banners.exampleIds.has(banner.id);
   // Sample art only ever illustrates example banners; real banners use the character's own art.
-  const art = lead ? (isExample ? (data.sampleArt.get(lead.id) ?? lead.art) : lead.art) : undefined;
+  const art = banner.art ?? (lead ? (isExample ? (data.sampleArt.get(lead.id) ?? lead.art) : lead.art) : undefined);
   const element = lead ? game.elements.find((e) => e.id === lead.element) : undefined;
   const isWeapon = type?.target === 'weapon';
   const rerun = rerunLabel(game, banner, data.characters);

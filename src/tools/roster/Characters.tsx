@@ -1,9 +1,11 @@
 import { useId, useMemo, useState } from 'react';
 import type { Character } from '../../core/contract';
 import { setRosterEntry, type RosterEntry } from '../../core/data/userData';
-import { EmptyState, GameTag, HowTo } from '../../core/ui';
+import { EmptyState, GameTag, HowTo, UnverifiedTag } from '../../core/ui';
 import { RosterImport } from '../account-links/RosterImport';
+import { useHideLeaks } from '../banners/leakPref';
 import { ScanEntry } from '../scan/Scan';
+import { setShowLeaked, useShowLeaked } from './leakedPref';
 import r from './roster.module.css';
 import { artOf, byNewest, CharArt, dupesLabel, elementOf, entryOf, rarityColor, subtitleOf, tagOf } from './shared';
 import { teamAccount } from './TeamParts';
@@ -41,7 +43,12 @@ const TAP: { id: Tap; label: string }[] = [
   { id: 'select', label: 'Select several' },
 ];
 
-/** Roster → Characters (design): "N of M owned", All / Owned / Not owned, and the tile grid. */
+/**
+ * Roster → Characters (design): "N of M owned", All / Owned / Not owned, and the tile grid.
+ * Newest first by default (release date; undated after dated, then by name).
+ * Leaked characters (Character.leak) appear only with "Show leaked" on, marked
+ * unverified with their source; they can be wanted but not owned.
+ */
 export function Characters({ data, several, onOpen }: Props) {
   const [query, setQuery] = useState('');
   const [element, setElement] = useState('');
@@ -54,7 +61,14 @@ export function Characters({ data, several, onOpen }: Props) {
   const [filtersOpen, setFiltersOpen] = useState(false);
   const panelId = useId();
 
-  const rows: Row[] = useMemo(() => data.flatMap((d) => d.characters.map((c) => ({ d, c, e: entryOf(d.user.roster, c.id), key: `${d.game.id}:${c.id}` }))), [data]);
+  const showLeaked = useShowLeaked();
+  const hideLeaks = useHideLeaks();
+  // "Hide leaks" (Banners) wins: with it on, leaked characters stay hidden here too.
+  const leaksShown = showLeaked && !hideLeaks;
+  const allRows: Row[] = useMemo(() => data.flatMap((d) => d.characters.map((c) => ({ d, c, e: entryOf(d.user.roster, c.id), key: `${d.game.id}:${c.id}` }))), [data]);
+  const released = useMemo(() => allRows.filter((x) => !x.c.leak), [allRows]);
+  const leakedCount = allRows.length - released.length;
+  const rows = leaksShown ? allRows : released;
   const word = several ? 'character' : (data[0]?.game.terms.character.toLowerCase() ?? 'character');
   const elements = [...new Set(data.flatMap((d) => d.game.elements.map((e) => e.label)))];
   const rarityWord = (k: 'top' | 'mid') => [...new Set(data.map((d) => d.game.terms.rarity[k]))].join(' · ');
@@ -89,7 +103,8 @@ export function Characters({ data, several, onOpen }: Props) {
   }, [rows, query, element, rarity, show, sort]);
   const canFit = data.some((d) => d.game.rules.teams);
 
-  const owned = rows.filter((x) => x.e.owned).length;
+  // "N of M owned" counts released characters only: a leak can't be owned.
+  const owned = released.filter((x) => x.e.owned).length;
   const wanted = rows.filter((x) => x.e.wanted).length;
   const filtered = Boolean(query || element || rarity || show !== 'all');
   const anyDates = rows.some((x) => x.c.releasedAt);
@@ -101,7 +116,10 @@ export function Characters({ data, several, onOpen }: Props) {
   };
 
   // Owning someone means you're no longer saving for them: marking Owned clears Wanted.
-  const save = (x: Row, change: Partial<RosterEntry>) => setRosterEntry(x.d.game.id, x.c.id, { ...x.e, ...change, ...(change.owned && !x.e.owned ? { wanted: false } : {}) });
+  const save = (x: Row, change: Partial<RosterEntry>) => {
+    if (x.c.leak && (change.owned || change.dupes)) return; // leaked: wanted only, never owned
+    setRosterEntry(x.d.game.id, x.c.id, { ...x.e, ...change, ...(change.owned && !x.e.owned ? { wanted: false } : {}) });
+  };
   const onTile = (x: Row) => {
     if (tap === 'open') onOpen(x.d.game.id, x.c.id);
     else if (tap === 'owned') save(x, { owned: !x.e.owned });
@@ -122,7 +140,7 @@ export function Characters({ data, several, onOpen }: Props) {
     setPicked(new Set());
   };
 
-  if (rows.length === 0) {
+  if (released.length === 0 && !(leaksShown && leakedCount > 0)) {
     return <EmptyState title={`No ${word} list yet`} body={`This game’s ${word} list hasn’t been added yet. It appears here as soon as it is.`} />;
   }
 
@@ -241,7 +259,7 @@ export function Characters({ data, several, onOpen }: Props) {
 
       <div className={r.countRow}>
         <p className={r.count}>
-          <strong className={r.countNum}>{owned}</strong> of {rows.length} owned
+          <strong className={r.countNum}>{owned}</strong> of {released.length} owned
           {wanted > 0 && (
             <>
               {' · '}
@@ -256,7 +274,16 @@ export function Characters({ data, several, onOpen }: Props) {
             </button>
           ))}
         </div>
+        <div className={r.seg} role="group" aria-label="Leaks">
+          <button type="button" className={r.segBtn} aria-pressed={leaksShown} disabled={hideLeaks} onClick={() => setShowLeaked(!showLeaked)}>
+            Show leaked
+          </button>
+        </div>
       </div>
+
+      {hideLeaks && <p className={r.muted}>Leaked characters stay hidden while “Hide leaks” is on (Banners).</p>}
+      {leaksShown && leakedCount === 0 && <p className={r.muted}>No leaked characters listed yet.</p>}
+      {leaksShown && leakedCount > 0 && <p className={r.muted}>Leaked characters are marked UNVERIFIED with where the leak came from. You can mark them wanted, not owned.</p>}
 
       {tap !== 'open' && tap !== 'select' && (
         <p className={r.summary}>
@@ -342,7 +369,7 @@ function Tile({ row, several, selecting, picked, onClick }: { row: Row; several:
   const tag = tagOf(game, several);
   const el = elementOf(game, c.element);
   const dupes = e.owned ? dupesLabel(game, e.dupes) : undefined;
-  const label = `${c.name}${several ? ` (${game.short})` : ''}${e.owned ? ', owned' : ''}${e.wanted ? ', wanted' : ''}`;
+  const label = `${c.name}${several ? ` (${game.short})` : ''}${c.leak ? ', leaked, unverified' : ''}${e.owned ? ', owned' : ''}${e.wanted ? ', wanted' : ''}`;
   return (
     <button type="button" className={r.tile} data-owned={e.owned} onClick={onClick} aria-label={label} aria-pressed={selecting ? picked : undefined}>
       <CharArt name={c.name} src={artOf(c, 'portrait')} elementColor={el?.color ?? 'var(--ink-4)'} className={r.tileArt}>
@@ -365,6 +392,7 @@ function Tile({ row, several, selecting, picked, onClick }: { row: Row; several:
       <span className={r.tileText}>
         <span className={r.tileName}>{c.name}</span>
         <span className={r.tileMeta}>{subtitleOf(game, c)}</span>
+        {c.leak && <UnverifiedTag source={c.leak.source} />}
       </span>
     </button>
   );

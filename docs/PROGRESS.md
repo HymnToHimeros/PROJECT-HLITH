@@ -91,6 +91,45 @@ Resume with: "continue from PROGRESS.md". Newest entry on top. Older entries:
     piece with its game text, the source, and "Not read yet" until tags come.
   - Next: read group A into the cheat sheet (the seven questions, tags with
     quotes), then group B (needs Agent Potential reading, e.g. Lycaon).
+- 2026-10-10 · **Live stamina, code login, roster leaks** (branch `frame/live-stamina`).
+  - Today's stamina tiles read HoYoLAB for every game with a linked account
+    (server or device): once on open, kept 5 minutes, counted forward only when
+    the game record's rate agrees with HoYoLAB's "full in"; errors show the
+    reason and Try again. Device-only copies keep "No data yet · Connect account".
+  - Codes "login expired": the saved Star Rail code login mixed two HoYoverse
+    accounts (account_id_v2 of the other saved account). The server now refuses
+    such a code login and reports a saved one instead of sending it; the app
+    checks account_id_v2 before saving, explains which three values to copy, and
+    "Replace code login" opens the paste box. Needs the hoyolab and
+    hoyolab-daily functions deployed; then paste fresh code logins for both.
+  - Roster: "Show leaked" (off by default) for characters with a leak source,
+    marked UNVERIFIED; wanted but never owned. Newest first stays the default.
+- 2026-10-10 · **Owner console does real work** (branch `frame/owner-console`).
+  - Lists tab: pick a game and a list (Events, Banners, Backlog, Characters,
+    Versions), see the game files' items (LIST) and yours (OWNER); add, change,
+    retire and bring back items. Saved to `catalog_items`; everyone sees it after
+    reload. Every screen now reads lists through one wrapper (`withCatalog` in
+    `src/main.tsx`), so people's own changes and hides still sit on top.
+  - Findings: Approve adds a complete event, banner, character or leak to the
+    list; an incomplete one opens the Lists form pre-filled. "Move back to new"
+    retires it again.
+  - Announcements tab (migration 0008, table `announcements`): write, schedule,
+    end now. A strip shows at the top of the app; each person can hide one.
+  - Overview: real numbers from `owner_stats()` (accounts, active in 7 days,
+    HoYoLAB accounts, findings waiting, last run per job); "No data yet" if the
+    call fails. Migration 0008 tested on local Postgres (non-owners can't write,
+    everyone signed in reads, `owner_stats` refuses non-owners).
+- 2026-10-10 · **Themes and background art** (branch `frame/themes`, not pushed).
+  - Six themes in Account → Theme, each a full colour set plus its own art:
+    Glacier (the old Dark, still the default), Candlelight (owner's palette A),
+    Crimson Rose (palette B), Bifröst (starry night), Ascendant (light marble and
+    gold) and Light. Cards with a live preview; applies at once; synced.
+  - Background art drawn in code (wings, halo, rays, rings, runes, the nine
+    worlds, ravens, thorns, roses, sigil, stars), behind the page, very faint.
+    Tests check every theme's text contrast, including over the art.
+  - Sidebar account row is now a profile card: your banner fading into the
+    sidebar, a bigger picture, your name. Falls back to initials and the theme glow.
+  - Account → Profile: the banner melts into the card and glows softly past it.
 - 2026-10-10 · **Whole-site audit: about 70 flaws fixed** (branch `frame/audit-fixes`).
   Five audits (Today/Calendar/Events/Intel, Pulls/Banners, Roster/Farm/Scan,
   Account/Assistant/shell, Backlog/Edit mode), then fixes:

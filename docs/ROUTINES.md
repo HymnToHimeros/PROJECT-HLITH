@@ -65,11 +65,27 @@ Body:
 | `game_id` | Optional. `hsr`, `zzz` … (lower-case letters, digits, `-`). Leave out for findings about no single game. |
 | `kind` | `leak`, `event`, `banner`, `character` or `info`. |
 | `title` | Required, up to 300 characters. Plain words: what was found. |
-| `payload` | Optional object, up to 8,000 characters as JSON: the details the data workstream needs to add it to the lists later (names, dates, ids). |
+| `payload` | Optional object, up to 8,000 characters as JSON: the details needed to add it to the lists (names, dates, ids). See "Payload that goes straight into the lists" below. |
 | `source` | Required. `name` = who or what it came from; `url` = optional http(s) link. Leaks always show their source. |
 | `found_at` | Optional ISO time when it was found; not in the future, not over a year old. Missing = time of delivery. |
 
 The whole request is at most 256 KB.
+
+### Payload that goes straight into the lists
+When the owner presses Approve, a finding whose payload has every field below is
+added to that game's built-in list at once (Owner console → Lists). If anything
+is missing, the Lists form opens with what the payload gave, for the owner to finish.
+- `event`: `title`, `kind` (`event`, `login`, `web`, `endgame`, `bonus`), `start`,
+  `end` (ISO times). Optional: `reward` (number), `currency`, `loginDays`, `id`.
+- `banner`: `title`, `type` (the game's banner type id or label), `start`, `end`.
+  Optional: `featured` (list of ids), `id`.
+- `character`: `name` (or `character`), `rarity` (`top`/`mid` or the game's word,
+  e.g. `5★`, `S`), `element`, `role` (id or label). Optional: `releasedAt`, `id`.
+- `leak`: the same fields as the thing leaked; it is marked as a leak with the
+  finding's source. Add `"list": "characters" | "banners" | "events"` if it is
+  not obvious.
+- `info`: never goes into a list.
+Without `id`, a stable id is made from the name (events: name + start date).
 
 ## Answers
 - `200 { "ok": true, "saved": [{ "job", "delivered", "added", "known" }] }`:

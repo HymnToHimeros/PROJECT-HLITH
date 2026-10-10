@@ -4,6 +4,7 @@ import { usePrefs } from '../../core/data/prefs';
 import { useSyncStatus } from '../../core/data/sync';
 import type { PanelProps } from '../../core/registry/panels';
 import { accountPath, cameFromApp, navigate } from '../../core/shell/route';
+import { themeInfo } from '../../core/theme/theme';
 import { Button, HowTo, useNow } from '../../core/ui';
 import { LinkAccounts } from '../account-links/LinkAccount';
 import { FeedSettings } from '../feeds/FeedSettings';
@@ -78,7 +79,7 @@ export default function AccountPage(props: PanelProps) {
     backup: days === null ? 'No backup yet' : days >= BACKUP_EVERY_DAYS ? 'Time for a new one' : `Last ${days === 0 ? 'today' : `${days}d ago`}`,
     // The evening message can't be sent yet (no push on the server), so no "Evening at 21:00" promise here.
     notifications: prefs.notify?.enabled ? 'Preview only' : undefined,
-    theme: prefs.theme === 'light' ? 'Light' : 'Dark',
+    theme: themeInfo(prefs.theme).name,
     examples: prefs.hideExamples ? 'Hidden' : 'Shown',
   };
 

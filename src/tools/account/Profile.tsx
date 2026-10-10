@@ -124,24 +124,30 @@ export function ProfileSection({ games, account, open, goSection }: Props) {
   return (
     <div className={p.stack}>
       <section className={p.hero} aria-label="Your profile">
-        <div className={p.banner} style={{ background: defaultBanner(games) }}>
+        {/* A soft, blurred copy of the banner glows out around the card, so the banner flows out instead of ending on an edge. */}
+        <div className={p.bannerGlow} style={{ background: defaultBanner(games) }} aria-hidden="true" data-banner-glow>
           {banner && <img src={banner} alt="" className={p.bannerImg} />}
         </div>
-        <div className={p.heroBody}>
-          <Avatar src={avatar} letter={name ?? account?.email ?? ''} />
-          <div className={p.identity}>
-            <h2 className={p.name}>{name ?? 'Your profile'}</h2>
-            <span className={p.meta}>
-              {account ? `Signed in with ${METHOD_LABEL[account.provider ?? ''] ?? account.provider ?? 'your account'}` : 'This device only'} · {where}
-            </span>
+        <div className={p.heroCard}>
+          <div className={`${p.banner} ${p.bannerSoft}`} style={{ background: defaultBanner(games) }}>
+            {banner && <img src={banner} alt="" className={p.bannerImg} />}
           </div>
-          <div className={p.heroActions}>
-            <Button variant="primary" onClick={() => setEditing(true)}>
-              Edit profile
-            </Button>
+          <div className={p.heroBody}>
+            <Avatar src={avatar} letter={name ?? account?.email ?? ''} />
+            <div className={p.identity}>
+              <h2 className={p.name}>{name ?? 'Your profile'}</h2>
+              <span className={p.meta}>
+                {account ? `Signed in with ${METHOD_LABEL[account.provider ?? ''] ?? account.provider ?? 'your account'}` : 'This device only'} · {where}
+              </span>
+            </div>
+            <div className={p.heroActions}>
+              <Button variant="primary" onClick={() => setEditing(true)}>
+                Edit profile
+              </Button>
+            </div>
           </div>
+          {profile.bio ? <p className={p.bio}>{profile.bio}</p> : <p className={p.bioEmpty}>No bio yet. Edit profile to add a few words about you.</p>}
         </div>
-        {profile.bio ? <p className={p.bio}>{profile.bio}</p> : <p className={p.bioEmpty}>No bio yet. Edit profile to add a few words about you.</p>}
       </section>
 
       {state.error && (

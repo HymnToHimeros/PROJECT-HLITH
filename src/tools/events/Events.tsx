@@ -71,7 +71,9 @@ export function Events({ game, data, serverId, now, onChooseServer }: Props) {
   );
   const live = groups.live.filter(keep);
   const upcoming = groups.upcoming.filter(keep);
-  const cycleList = filter === 'all' || filter === 'endgame' ? cycles(game, now) : [];
+  // The game record's endgame cycles only when the list has no endgame events of its own (else they'd show twice).
+  const listHasEndgame = list.some((ev) => ev.kind === 'endgame');
+  const cycleList = !listHasEndgame && (filter === 'all' || filter === 'endgame') ? cycles(game, now) : [];
   // Endgame cycles always list, so "empty" is about events: with none running or coming up, point to Edit list.
   const noEvents = live.length === 0 && upcoming.length === 0;
 

@@ -31,6 +31,14 @@ export interface Banner {
   end: ISODate;
   /** Leaks carry their source and show as unverified. */
   leak?: { source: string };
+  /**
+   * Times the game gives in "server time" (the same clock time on every server). `base` is the
+   * UTC offset the times above are written in (e.g. 8 for the Asia server); `start`/`end` say
+   * which of the two follow the server clock. Screens shift them to the user's chosen server.
+   */
+  serverTime?: { base: number; start?: boolean; end?: boolean };
+  /** Banner art (e.g. a weapon banner's light cone / W-Engine picture). Missing = the lead character's art. */
+  art?: string;
 }
 
 export interface GameEvent {
@@ -43,6 +51,12 @@ export interface GameEvent {
   currency: string;
   loginDays?: number;
   leak?: { source: string };
+  /**
+   * Times the game gives in "server time" (the same clock time on every server). `base` is the
+   * UTC offset the times above are written in (e.g. 8 for the Asia server); `start`/`end` say
+   * which of the two follow the server clock. Screens shift them to the user's chosen server.
+   */
+  serverTime?: { base: number; start?: boolean; end?: boolean };
 }
 
 export interface BacklogItem {

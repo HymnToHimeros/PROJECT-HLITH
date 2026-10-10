@@ -99,7 +99,7 @@ export function CharacterPage({ data, character: c, several, onBack, openPulls, 
             <span className={r.chipVent} style={{ background: game.vent }}>
               {game.short}
             </span>
-            {isUpcoming(c) && <UnverifiedTag source={c.source ?? 'game files'} />}
+            {c.leak ? <UnverifiedTag source={c.leak.source} /> : isUpcoming(c) && <UnverifiedTag source={c.source ?? 'game files'} />}
           </div>
           <h2 className={r.heroName}>{c.name}</h2>
           <div className={r.markRow} role="group" aria-label="Your roster">
@@ -107,6 +107,9 @@ export function CharacterPage({ data, character: c, several, onBack, openPulls, 
               type="button"
               className={r.markBtn}
               aria-pressed={entry.owned}
+              // A leaked character isn't out yet: it can be wanted, not owned (un-owning stays possible).
+              disabled={Boolean(c.leak) && !entry.owned}
+              title={c.leak && !entry.owned ? 'Leaked, not released yet: you can mark it wanted, not owned.' : undefined}
               onClick={() =>
                 // Owning someone means you're no longer saving for them.
                 save(entry.owned ? { owned: false } : { owned: true, wanted: false })

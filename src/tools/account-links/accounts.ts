@@ -223,6 +223,19 @@ export function readRedeemLogin(text: string): { ok: true; login: RedeemLogin } 
   return { ok: true, login: { account_id_v2: found.account_id_v2, account_mid_v2: found.account_mid_v2, cookie_token_v2: found.cookie_token_v2 } };
 }
 
+/**
+ * The code login must be the same HoYoverse account as the saved login: its
+ * account_id_v2 is the same number as the account's HoYoLAB ID (ltuid_v2).
+ * HLITH's server checks this too (and ltmid_v2 against account_mid_v2).
+ */
+export const sameAccount = (redeem: RedeemLogin, hoyolabId: string): boolean => redeem.account_id_v2 === hoyolabId;
+
+/** True when HoYoverse's latest answer for this account's codes was "login not accepted". */
+export function codeLoginRefused(rows: RedemptionRow[], linkId: string): RedemptionRow | null {
+  const last = latestRedemptions(rows, linkId, 1)[0];
+  return last?.status === 'login' ? last : null;
+}
+
 /** Gift codes are letters and digits; pasted text is split on anything else. */
 export function readCodes(text: string): string[] {
   return [...new Set(text.toUpperCase().split(/[^A-Z0-9]+/).filter((c) => /^[A-Z0-9]{4,30}$/.test(c)))];
