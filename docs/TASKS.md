@@ -25,6 +25,7 @@ doing it said `LIVE`. Newest jobs at the bottom; live jobs move to Done.
 | T26 | Team scores count saved builds: bigger stat → higher score (roughly, steps are fine); the build a support should run depends on the team (e.g. HP Robin • Summeretto for Phainon); only when a build is saved; option to see which build fits which team | LOGIC-CORE leads, FRAME screen | working | LOGIC-CORE plan: step 3 build-wants (bands: built +2 / partly +1 / not 0 / no build "scored at base"; "This team wants…" in Why; "Builds her teams want" on character page), step 4 every equipped weapon. Hard thresholds ("at 150% Break") wait for total stats. |
 | T27 | HSR: pick your Trailblazer (Caelus or Stelle) so that Trailblazer's entries are auto-marked owned in Roster; ZZZ needs nothing | FRAME | working | Owner: other Trailblazer hidden. FRAME building. |
 | T28 | Standing rule: every logic rule is the same in HSR and ZZZ, except game-specific facts; ZZZ counts builds like HSR | LOGIC-CORE | sent | Owner's words in decisions files; zzz-method.md untouched. |
+| T29 | HSR teams still mix-match (Phainon + March 7th / Asta / Bronya; "best" = Tingyun, Sparkle, Huohuo). Owner: when a better unit for a job exists, pick it. Test: Phainon + Sunday + Cerydra + Dan Heng PT must be Phainon's top team | LOGIC-CORE | working | Top priority. Cause: teams copied from the game's starter line-ups; score counts kinds of buff, not size or real strength. LOGIC-CORE to send fix options; owner decides. |
 
 ## Done
 | # | Job | Who | Live on |
