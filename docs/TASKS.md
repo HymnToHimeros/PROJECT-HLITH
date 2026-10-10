@@ -7,8 +7,8 @@ doing it said `LIVE`. Newest jobs at the bottom; live jobs move to Done.
 ## Open
 | # | Job | Who | State | Note |
 |---|---|---|---|---|
+| T2 | MANAGER and ERROR-FIX chats (PR #51) | FRAME | 2026-10-10 |
 | T1 | Save a build per character (PR #50): character page → Build score → "Enter build" | FRAME | 2026-10-10 |
-| T2 | MANAGER and ERROR-FIX chats (PR #51) | FRAME | working | Approved by the chats, merges right after #50. MANAGER and ERROR-FIX session ids are in it. |
 | T3 | Build score (`scoreBuild`) | LOGIC-CORE | working | #50 is live, so it can start now. |
 | T4 | HSR character EXP in Farm amounts | LOGIC-CORE | working | Source found (the game's own EXP table: 1 → 80 = 290 Traveler's Guides). PR #53. |
 | T5 | HSR "Interastral Peace Gala" reward (starts 21 Oct) | SCHEDULER | blocked | Sources say 500 or 60; filled from the official notice when the event opens 21 Oct. |
@@ -22,11 +22,11 @@ doing it said `LIVE`. Newest jobs at the bottom; live jobs move to Done.
 | T13 | ZZZ 3.3 (21 Oct): event dates, A-rank featured agents, version end date | SCHEDULER | blocked | Nothing published yet; rerun `data:nanoka` + `data:schedule` on 21 Oct. |
 | T14 | HSR 4.7 (starts 11 Nov): versions, banners, events | SCHEDULER | blocked | Waits for the announcement (special program around late Oct). |
 | T15 | HSR leak "Nihilux": confirm official name | SCHEDULER | blocked | Probably Aeon ★ Aha (already marked as a leak); confirm when announced. |
-| T16 | Live banners card (Today): art scales wrong. Screenshot `docs/owner-reports/2026-10-10/1-live-banners-scaling.png` | FRAME | sent | |
+| T16 | Live banners card (Today): art scales wrong. Screenshot `docs/owner-reports/2026-10-10/1-live-banners-scaling.png` | FRAME | working | FRAME's order: T16, T22, T23, T24, T18, T21, T17. |
 | T17 | Kit check / Roster teams don't explain their reasoning ("Why 90%: count 9 of 10" is a number, not a reason). Screenshot `2-recommended-teams.png` | LOGIC-CORE leads, FRAME for the screen | sent | |
-| T18 | Make my own teams (pick the members myself, get them scored) | FRAME leads, LOGIC-CORE scores | sent | |
+| T18 | Make my own teams (pick the members myself, get them scored) | FRAME leads, LOGIC-CORE scores | sent | FRAME: a preset editor exists in Teams; finding out why the owner can't see or use it. Shown to the owner first. |
 | T19 | HSR recommended teams make no sense (e.g. built around March 7th); mixes whatever is possible instead of real teams | LOGIC-CORE | sent | |
-| T20 | Endgame out of Events; Events is only for the events that come every patch | SCHEDULER + FRAME | waiting on owner | Asked the owner where endgame goes instead. |
+| T20 | Endgame out of Events; Events is only for the events that come every patch | SCHEDULER + FRAME | waiting on owner | Asked the owner where endgame goes instead. Data is already separate, so it's a small change. |
 | T21 | Banners screen looks like a card picker, not a banner tracker: redesign. Screenshot `3-banners-page.webp` | FRAME | sent | Show the owner the new look before it goes live. |
 | T22 | Auto-tick dailies from HoYoLAB: remember when stamina/battery should have been full; if the next sync shows less, the stamina was spent, so tick the dailies that prove it | FRAME | sent | |
 | T23 | More themes (owner sent 8 palettes) | FRAME | sent | |
@@ -35,4 +35,5 @@ doing it said `LIVE`. Newest jobs at the bottom; live jobs move to Done.
 ## Done
 | # | Job | Who | Live on |
 |---|---|---|---|
+| T2 | MANAGER and ERROR-FIX chats (PR #51) | FRAME | 2026-10-10 |
 | T1 | Save a build per character (PR #50): character page → Build score → "Enter build" | FRAME | 2026-10-10 |
