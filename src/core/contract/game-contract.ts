@@ -306,6 +306,13 @@ export interface TeamAccount {
   teamList?: (presetId: string) => string[][] | undefined;
   /** Characters the owner hid (the unpicked Trailblazer, FRAME's protagonist setting): never used in any team (LOGIC-CORE). */
   skip?: (id: string) => boolean;
+  /**
+   * The owner's "Assume signature + average build" switch (T34, saved with the account): owned characters with no
+   * saved build are scored with their signature weapon and an average build. Off or missing = scored at base.
+   */
+  assumeAverage?: boolean;
+  /** Set by the team rules, not the app: this character's weapon and build are assumed (T34), not saved (LOGIC-CORE). */
+  assumed?: (id: string) => boolean;
 }
 
 /** One reason behind a team score. */

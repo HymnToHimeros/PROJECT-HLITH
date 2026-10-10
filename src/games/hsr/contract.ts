@@ -11,7 +11,7 @@ import builds from './data/builds.json';
 import weapons from './data/weapons.json';
 import { scoreBuild } from '../../core/rules/buildScore';
 import { materialsFor } from './costs';
-import { GEAR_SLOTS } from './gear';
+import { GEAR_SLOTS, LEVEL_MAX, SET_SLOTS } from './gear';
 import materials from './data/materials.json';
 import teams from './data/teams.json';
 import sampleArt from './data/sample-art.json';
@@ -210,7 +210,7 @@ export const hsr: GameContract = {
       scoreBuild(
         b,
         (builds as unknown as RecommendedBuild[]).find((x) => x.characterId === b.characterId),
-        { levelMax: 80, weaponLevelMax: 80, setSlots: (pieces) => (pieces === 4 ? ['Head', 'Hands', 'Body', 'Feet'] : ['Planar Sphere', 'Link Rope']) },
+        { levelMax: LEVEL_MAX, weaponLevelMax: 80, setSlots: SET_SLOTS },
       ),
     teams: hsrTeamRules,
     // End stats to build towards, only from numbers the game text states (T35).

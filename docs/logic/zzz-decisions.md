@@ -202,6 +202,10 @@ team size and order, and the owner's ZZZ method's own counting.
     and the first is 9 of 14 = 64% with no builds saved.
 57. **Every equipped W-Engine counts when its specialty is the wearer's** (T18 step 4, the standing rule): 55
     W-Engines that aren't signatures are read quote for quote; see hsr-decisions.md 29.
+58. **Assume signature + average build (owner's job T34, both games, HSR decision 34 mirrors it).** With the owner's
+    switch on, owned characters with no saved build are scored with their signature weapon and an average build made
+    from the game's own recommendation (rules in `build-score.md`, "Assumed builds"). It is said in the Why; a saved
+    build always wins; switch off = scored at base, as before.
 59. **Target stats come only from numbers the game text states (owner's job T35, both games, HSR decision 35 mirrors it).**
     Kit, signature weapon and the recommended sets' own conditions, each quoted word for word with the working shown;
     no number in the text = "No data yet". Rules in `build-score.md`, "Target stats".

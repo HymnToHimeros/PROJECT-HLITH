@@ -7,3 +7,7 @@ export const GEAR_SLOTS: { id: string; label: string; mains: string[] }[] = [
   { id: 'Disc 5', label: 'Disc 5', mains: ['HP %', 'ATK %', 'DEF %', 'PEN Ratio', 'Physical DMG Bonus', 'Fire DMG Bonus', 'Ice DMG Bonus', 'Electric DMG Bonus', 'Ether DMG Bonus', 'Wind DMG Bonus'] },
   { id: 'Disc 6', label: 'Disc 6', mains: ['HP %', 'ATK %', 'DEF %', 'Anomaly Mastery', 'Impact', 'Energy Regen'] },
 ];
+
+/** Drive Disc sets fit any disc: no fixed slots. */
+export const SET_SLOTS = (): string[] => [];
+export const LEVEL_MAX = 60;
