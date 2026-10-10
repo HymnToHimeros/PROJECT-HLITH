@@ -26,7 +26,7 @@ describe('ZZZ profiles (docs/logic/zzz-method.md: every character needs one)', (
 });
 
 describe('ZZZ kit text', () => {
-  it('groups A to G are in, and no one else (group by group, never all at once)', () => {
+  it('groups A to I are in: every agent, read group by group (group by group, never all at once)', () => {
     const groupA = ['1421', '1451', '1481', '1531']; // Pan Yinhu, Lucia, Dialyn, Starlight Billy
     const groupB = ['1141', '1161', '1291', '1341', '1431', '1491', '1621']; // Lycaon, Lighter, Hugo, Zhao, Ye Shunguang, Sunna, Roxy
     const groupC = ['1111', '1151', '1201', '1211', '1461', '1471', '1521', '1571']; // Anton, Lucy, Harumasa, Rina, Seed, Banyue, Cissia, Norma
@@ -34,7 +34,11 @@ describe('ZZZ kit text', () => {
     const groupE = ['1091', '1171', '1221', '1261', '1281', '1331', '1401']; // Miyabi, Burnice, Yanagi, Jane, Piper, Vivian, Alice
     const groupF = ['1181', '1351', '1501', '1511', '1541', '1561', '1581']; // Grace, Pulchra, Aria, Nangong Yu, Promeia, Velina, Remielle
     const groupG = ['1031', '1131', '1191', '1241', '1251', '1271', '1321']; // Nicole, Soukaku, Ellen, Zhu Yuan, Qingyi, Seth, Evelyn
-    expect(kits.map((k) => k.characterId).sort()).toEqual([...groupA, ...groupB, ...groupC, ...groupD, ...groupE, ...groupF, ...groupG].sort());
+    const groupH = ['1071', '1101', '1301', '1361', '1381', '1551', '1591']; // Caesar, Koleda, Orphie & Magus, Trigger, Soldier 0 - Anby, Pyrois, Sigrid
+    const groupI = ['1011', '1021', '1041', '1061', '1081', '1121', '1631', '1641']; // Anby, Nekomata, Soldier 11, Corin, Billy, Ben, Severian, Phoenix
+    expect(kits.map((k) => k.characterId).sort()).toEqual([...groupA, ...groupB, ...groupC, ...groupD, ...groupE, ...groupF, ...groupG, ...groupH, ...groupI].sort());
+    // The two not released yet are read from the beta files and say so.
+    expect((kits as { characterId: string; beta?: boolean }[]).filter((k) => k.beta).map((k) => k.characterId)).toEqual(['1631', '1641']);
   });
 
   it('released agents are read from the live version, not beta text', () => {

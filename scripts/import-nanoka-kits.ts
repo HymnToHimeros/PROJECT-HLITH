@@ -43,6 +43,10 @@ const GROUPS: Record<string, string[]> = {
   F: ['1501', '1541', '1561', '1581', '1181', '1511', '1351'],
   // Attack and their partners: Ellen, Soukaku, Zhu Yuan, Qingyi, Nicole, Evelyn, Seth.
   G: ['1191', '1131', '1241', '1251', '1031', '1321', '1271'],
+  // Attack and Stun: Soldier 0 - Anby, Trigger, Orphie & Magus, Pyrois, Sigrid, Caesar, Koleda.
+  H: ['1381', '1361', '1301', '1551', '1591', '1071', '1101'],
+  // The rest, and the two not released yet (beta text): Anby, Nekomata, Soldier 11, Corin, Billy, Ben, Severian, Phoenix.
+  I: ['1011', '1021', '1041', '1061', '1081', '1121', '1631', '1641'],
 };
 
 // Specialty and attribute codes, as in scripts/import-nanoka.ts.
@@ -151,6 +155,8 @@ export function plainText(raw: string, who: string): string {
   let t = raw
     .replace(/<color=[^>]*>|<\/color>/g, '')
     .replace(/<Term:(\d+)>([^<]*)<\/Term>/g, (_m, id: string, word: string) => word || TERM[id] || NAMED_TERMS.get(id) || need(TERM, id, 'glossary term', who))
+    // A tag the file never closes (Severian's beta Entry Skill): the same name.
+    .replace(/<Term:(\d+)>/g, (_m, id: string) => TERM[id] || NAMED_TERMS.get(id) || need(TERM, id, 'glossary term', who))
     .replace(/<IconMap:([A-Za-z_]+)>/g, (_m, icon: string) => `[${need(ICON, icon, 'button icon', who)}]`)
     .replace(/\{LAYOUT_[A-Z]+#[^}]*\}(?=\{LAYOUT_)/g, '')
     .replace(/\{LAYOUT_FALLBACK#([^}]*)\}/g, '$1')
