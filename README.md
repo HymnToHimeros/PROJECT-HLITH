@@ -144,6 +144,6 @@ permission.
 | [ROADMAP](docs/ROADMAP.md) | What's done (ticks itself from the code) |
 | [PROGRESS](docs/PROGRESS.md) · [HISTORY](docs/HISTORY.md) | Latest work and what's next · everything before |
 | [DESIGN](docs/DESIGN.md) · [design files](docs/design) | How it looks |
-| [WORKSTREAMS](docs/WORKSTREAMS.md) | Who builds what |
+| [WORKSTREAMS](docs/WORKSTREAMS.md) · [RELEASES](docs/RELEASES.md) | Who builds what · how the chats agree an update goes live |
 | [SETUP](docs/SETUP.md) · [DEPLOY](docs/DEPLOY.md) | Outside settings and hosting |
 | [ROUTINES](docs/ROUTINES.md) | How the research routine delivers findings |
