@@ -28,7 +28,12 @@ Resume with: "continue from PROGRESS.md". Newest entry on top. Older entries:
 - CI (`.github/workflows/ci.yml`) runs both on every pull request.
 
 ## Done
-- 2026-10-10 · **LOGIC-CORE: ZZZ groups B and C, HSR kit text and theory** (branch `logic-core/zzz-groups-b-c-hsr-theory`).
+- 2026-10-10 · **LOGIC-CORE: ZZZ groups B to E, HSR kit text and theory** (branch `logic-core/zzz-groups-d-e`, replaces PR #41).
+  - ZZZ group D read (Yixuan, Ju Fufu, Yidhari, Manato, Claret, Astra Yao,
+    Yuzuha) and group E (Miyabi, Yanagi, Burnice, Jane, Vivian, Alice, Piper).
+    New stat "Anomaly DMG": Disorder / Assault / Attribute Anomaly buffs count
+    only for damage dealers whose own text proves they deal it. 33 of 62 ZZZ
+    agents are read now.
   - ZZZ group B read (Lycaon, Lighter, Roxy, Hugo, Sunna, Ye Shunguang, Zhao) and
     group C (Banyue, Norma, Cissia, Harumasa, Lucy, Seed, Rina, Anton). Tests
     from the method: Ye + Sunna + Zhao = 9, Lighter's Ice/Fire buffs don't reach
