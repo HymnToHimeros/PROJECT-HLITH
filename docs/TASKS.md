@@ -40,7 +40,8 @@ doing it said `LIVE`. Newest jobs at the bottom; live jobs move to Done.
 | T50 | App feels fluid (page/tab transitions, hover/press, toasts, sliders) + every theme gets a small signature animation like Glacier's spinning emblem; Animations on/reduced/off switch; reduced-motion respected | FRAME | live | #114 (Animations On/Reduced/Off in Account → Theme). |
 | T51 | Outsider test of the live site: new test account, fill everything, use every function (PC + phone), fix every error found, one final report | ERROR-FIX | working | Owner 2026-10-11, overnight. Test account deleted at the end. |
 | T52 | Customise everything (look, layout, roster, banners/calendar, formats, feedback; one Customise hub) + profile and badges; unique owner badge ("above the high seat, watching from the sky"), lore badge for all, earned badges from real data only | FRAME | working | #117 LIVE (profile card, badges, owner badge "Above the High Seat", Look, start screen). Next: T52b hub+formats, T52c roster/banners/calendar, T52d Today/backgrounds/haptics. |
-| T53 | Standard 5★ pools for HSR + ZZZ (historyMapping.standardTop) so the Luck report can tell 50/50 wins from losses | SCHEDULER | sent | Found by T51 outsider test (#115). |
+| T53 | Standard 5★ pools for HSR + ZZZ (historyMapping.standardTop) so the Luck report can tell 50/50 wins from losses | SCHEDULER | live | #116 (+ HSR main story 10,330 Stellar Jade; ZZZ story reward no source). |
+| T54 | Build score card said "no recommended build" when the build just has too few parts (Kafka); fix wording + test all released have builds; beta builds for Severian/Phoenix marked "beta, may change" | LOGIC-CORE | working | Found by T51. |
 
 ## Done
 | # | Job | Who | Live on |
