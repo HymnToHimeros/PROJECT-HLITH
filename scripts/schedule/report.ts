@@ -98,6 +98,11 @@ export function report(game: string, before: Lists, after: Lists, { build, now, 
       line = `${G}: ${nameOf(o)} officially confirmed${nameOf(o) === nameOf(c) ? '' : ` as ${nameOf(c)}`}${c.releasedAt ? `, out ${day(c.releasedAt)}` : ''}`;
       job = 'leaks-scan';
     } else if (nameOf(o) !== nameOf(c)) line = `${G}: ${nameOf(o)} is now called ${nameOf(c)}`;
+    else if (o.art !== c.art || o.portrait !== c.portrait) {
+      // Pictures alone: a line in the summary, no inbox finding.
+      lines.push(`${G}: ${nameOf(c)}: pictures updated`);
+      continue;
+    }
     if (!line) continue;
     lines.push(line);
     findings.push({ job, game_id: game, kind: 'info', title: line, payload: { id: c.id }, source: job === 'leaks-scan' && leak ? nanoka : official });

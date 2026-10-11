@@ -12,7 +12,7 @@ const NIHILUX = '1511';
 // A real account: owns the released characters, never a leak (a leak can be wanted, not owned).
 const account = (lib: { leaks?: Map<string, string> }, showLeaks = false): TeamAccount => ({ owned: (id) => !lib.leaks?.has(id), dupes: () => 0, showLeaks });
 
-describe('HSR: Nihilux (Aeon ★ Aha), a leak with beta kit text', () => {
+describe('HSR: Aeon ★ Aha, a leak with beta kit text', () => {
   const lib = hsrLib();
 
   it('is listed as a leak, with where it came from', () => {
@@ -22,8 +22,8 @@ describe('HSR: Nihilux (Aeon ★ Aha), a leak with beta kit text', () => {
   it('If you pull (pre-pull): says it is a leak first, that there is no game team list yet, then what they would carry', () => {
     const v = hsrPull(NIHILUX, account(lib), lib);
     if (!v) throw new Error('not rated');
-    expect(v.why[0]).toMatch(/^Leak: Nihilux \(Aeon ★ Aha\): unverified beta kit, may change \(.+\)\.$/);
-    expect(v.why[1]).toBe('No game team list yet for Nihilux (Aeon ★ Aha): teammates are the characters whose kits connect with theirs.');
+    expect(v.why[0]).toMatch(/^Leak: Aeon ★ Aha: unverified beta kit, may change \(.+\)\.$/);
+    expect(v.why[1]).toBe('No game team list yet for Aeon ★ Aha: teammates are the characters whose kits connect with theirs.');
     expect(v.why.some((w) => w.startsWith('As a damage dealer: your best team for them is'))).toBe(true);
     expect(v.percent).toBeGreaterThan(0);
     expect(v.percent).toBeLessThanOrEqual(100);
@@ -33,9 +33,9 @@ describe('HSR: Nihilux (Aeon ★ Aha), a leak with beta kit text', () => {
     const fits = hsrFits([NIHILUX], account(lib), lib).slice(0, 3).map((f) => f.id);
     const v = hsrVerdict([NIHILUX, ...fits], account(lib), lib);
     if (!v.rated || !v.explain) throw new Error('not rated');
-    expect(v.notes.some((n) => n.startsWith('Leak: Nihilux (Aeon ★ Aha): unverified beta kit, may change'))).toBe(true);
-    expect(v.explain.missing.slice(-2)[0]).toMatch(/^Leak: Nihilux/);
-    expect(v.explain.missing.at(-1)).toMatch(/^No game team list yet for Nihilux/);
+    expect(v.notes.some((n) => n.startsWith('Leak: Aeon ★ Aha: unverified beta kit, may change'))).toBe(true);
+    expect(v.explain.missing.slice(-2)[0]).toMatch(/^Leak: Aeon ★ Aha/);
+    expect(v.explain.missing.at(-1)).toMatch(/^No game team list yet for Aeon ★ Aha/);
   });
 
   it('hidden leaks join no released character’s pool; shown, they are marked wherever they are suggested', () => {
@@ -44,7 +44,7 @@ describe('HSR: Nihilux (Aeon ★ Aha), a leak with beta kit text', () => {
     expect(hidden.some((f) => f.id === NIHILUX)).toBe(false);
     const v = hsrVerdict(['Feixiao', 'Topaz & Numby', 'Robin', 'Aventurine'].map((n) => idOf(lib, n)), account(lib), lib);
     if (!v.rated) throw new Error('not rated');
-    expect(v.notes.join(' ')).not.toMatch(/Nihilux|Leak:/);
+    expect(v.notes.join(' ')).not.toMatch(/Aeon ★ Aha|Leak:/);
     const shown = hsrFits([NIHILUX], account(lib, true), lib, { includeUnowned: true });
     for (const f of shown.filter((x) => lib.leaks?.has(x.id))) expect(f.fromAccount?.[0]).toMatch(/^Leak: /);
   });

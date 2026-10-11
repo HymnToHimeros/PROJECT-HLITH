@@ -23,7 +23,7 @@ describe('core: when a sheet is stale', () => {
   });
 });
 
-describe('HSR: Nihilux (Aeon ★ Aha), a leak', () => {
+describe('HSR: Aeon ★ Aha, a leak', () => {
   it('is a leak with a sheet that matches today’s beta text', () => {
     expect((characters as { id: string; leak?: unknown }[]).find((c) => c.id === NIHILUX)?.leak).toBeTruthy();
     expect(SHEETS.some((s) => s.characterId === NIHILUX)).toBe(true);
