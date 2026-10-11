@@ -1,9 +1,11 @@
 import AxeBuilder from '@axe-core/playwright';
+import { settled } from './settle';
 import { expect, test, type Page } from '@playwright/test';
 
 // R62: one import and one scan button in All games, one list of HoYoLAB accounts,
 // with no serious accessibility problems and no sideways scroll at PC and phone sizes.
 const axeProblems = async (page: Page, where: string) => {
+  await settled(page);
   const result = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa']).analyze();
   return result.violations.filter((v) => v.impact === 'serious' || v.impact === 'critical').map((v) => `${where}: ${v.id} (${v.nodes.length}) ${v.help} → ${v.nodes[0]?.target.join(' ')}`);
 };

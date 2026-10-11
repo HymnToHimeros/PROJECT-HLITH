@@ -1,4 +1,5 @@
 import AxeBuilder from '@axe-core/playwright';
+import { settled } from './settle';
 import { expect, test, type Page } from '@playwright/test';
 
 // R46, R48, R49: the Assistant panel (chat, settings, proposals) and Edit mode
@@ -15,6 +16,7 @@ const openAssistant = async (page: Page, isMobile: boolean) => {
 };
 
 const serious = async (page: Page, where: string) => {
+  await settled(page);
   const result = await new AxeBuilder({ page }).include('[role="dialog"]').withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa']).analyze();
   return result.violations
     .filter((v) => v.impact === 'serious' || v.impact === 'critical')

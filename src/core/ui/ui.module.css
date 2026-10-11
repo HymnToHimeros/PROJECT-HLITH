@@ -770,3 +770,53 @@
   margin-top: var(--s-3);
   color: var(--ink-3);
 }
+
+/* ── Motion (T50): quick feedback, transform and opacity only. Reduced = no movement, Off = none
+   (tokens.css). ── */
+.button,
+.segment {
+  transition:
+    background-color var(--dur-1) var(--ease),
+    border-color var(--dur-1) var(--ease),
+    color var(--dur-1) var(--ease),
+    box-shadow var(--dur-1) var(--ease),
+    transform var(--dur-1) var(--ease),
+    filter var(--dur-1) var(--ease);
+}
+.button:active:not(:disabled),
+.segment:active {
+  transform: scale(0.97);
+}
+/* Bars fill from the left when they appear, and glide when the value changes. */
+.fill {
+  transform-origin: left center;
+  animation: fill-in var(--dur-3) var(--ease) both;
+  transition: width var(--dur-3) var(--ease);
+}
+@keyframes fill-in {
+  from {
+    transform: scaleX(0);
+  }
+}
+/* Tiles and banner cards lift a little under the pointer (not on touch screens). */
+.charTile,
+.banner {
+  transition:
+    transform var(--dur-2) var(--ease),
+    border-color var(--dur-2) var(--ease);
+}
+@media (hover: hover) {
+  .charTile:hover,
+  .banner:hover {
+    transform: translateY(-2px);
+  }
+}
+:global(:root[data-motion='reduced']) .button:active,
+:global(:root[data-motion='reduced']) .segment:active,
+:global(:root[data-motion='reduced']) .charTile:hover,
+:global(:root[data-motion='reduced']) .banner:hover {
+  transform: none;
+}
+:global(:root[data-motion='reduced']) .fill {
+  animation: none;
+}

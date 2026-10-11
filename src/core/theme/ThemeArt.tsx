@@ -767,7 +767,9 @@ function Light() {
     <>
       <Field seed={3} n={26} />
       <Crest>
-        <Rings x={430} y={360} r={250} ticks={48} />
+        <g className={a.spin}>
+          <Rings x={430} y={360} r={250} ticks={48} />
+        </g>
         <NineWorlds x={430} y={360} r={130} />
       </Crest>
     </>
@@ -782,11 +784,11 @@ function Candlelight() {
         <Rays x={1220} y={140} n={14} from={60} to={200} len={1000} id="ar-c" />
       </Field>
       <Crest view="0 0 900 800">
-        <g strokeWidth={1.2}>
+        <g strokeWidth={1.2} className={a.bob}>
           <Wing transform="translate(470 420)" />
           <Wing transform="translate(430 420)" flip />
         </g>
-        <ellipse cx={450} cy={230} rx={92} ry={26} fill="none" strokeWidth={2} />
+        <ellipse cx={450} cy={230} rx={92} ry={26} fill="none" strokeWidth={2} className={a.breathe} />
         <ellipse cx={450} cy={230} rx={110} ry={34} fill="none" strokeWidth={0.6} strokeDasharray="2 6" />
         <path d={glint(450, 120, 22)} fill="currentColor" className={a.twinkleSlow} />
       </Crest>
@@ -817,7 +819,9 @@ function Crimson() {
           seed={5}
         />
         <Sigil x={440} y={330} r={110} />
-        <RuneRing x={440} y={330} r={300} size={18} count={20} start={3} />
+        <g className={a.spinBack}>
+          <RuneRing x={440} y={330} r={300} size={18} count={20} start={3} />
+        </g>
       </Crest>
       <Base>
         <Thorns
@@ -843,7 +847,9 @@ function Crimson() {
           n={24}
           seed={13}
         />
-        <Rose x={180} y={230} r={46} rot={20} />
+        <g className={a.swaySlow}>
+          <Rose x={180} y={230} r={46} rot={20} />
+        </g>
         <Rose x={300} y={440} r={34} rot={140} />
         <Rose x={60} y={420} r={26} rot={250} />
       </Base>
@@ -868,14 +874,18 @@ function Bifrost() {
         <g stroke="currentColor">{arcs}</g>
       </Field>
       <Crest>
-        <Rings x={440} y={340} r={260} ticks={96} />
+        <g className={a.spin}>
+          <Rings x={440} y={340} r={260} ticks={96} />
+        </g>
         <ellipse cx={440} cy={340} rx={330} ry={90} fill="none" transform="rotate(-18 440 340)" strokeWidth={0.8} />
         <ellipse cx={440} cy={340} rx={300} ry={60} fill="none" transform="rotate(24 440 340)" strokeWidth={0.6} strokeDasharray="3 6" />
         <circle cx={440} cy={340} r={36} fill="currentColor" opacity={0.5} />
       </Crest>
       <Base>
-        <Raven x={200} y={360} s={1.3} />
-        <Raven x={360} y={280} s={0.9} />
+        <g className={a.bob}>
+          <Raven x={200} y={360} s={1.3} />
+          <Raven x={360} y={280} s={0.9} />
+        </g>
       </Base>
     </>
   );
@@ -885,13 +895,15 @@ function Ascendant() {
   return (
     <>
       <Field seed={5} n={50}>
-        <Rays x={260} y={-40} n={12} from={20} to={80} len={1250} id="ar-a" />
+        <g className={a.breathe}>
+          <Rays x={260} y={-40} n={12} from={20} to={80} len={1250} id="ar-a" />
+        </g>
         <Glow x={1180} y={420} r={540} id="ag-a" strength={0.9} />
       </Field>
       <Crest view="0 0 900 800">
-        <circle cx={450} cy={250} r={96} fill="none" strokeWidth={2} />
+        <circle cx={450} cy={250} r={96} fill="none" strokeWidth={2} className={a.breathe} />
         <circle cx={450} cy={250} r={120} fill="none" strokeWidth={0.6} strokeDasharray="2 6" />
-        <g strokeWidth={1.3}>
+        <g strokeWidth={1.3} className={a.bob}>
           <Wing transform="translate(480 440) scale(1.05)" />
           <Wing transform="translate(420 440) scale(1.05)" flip />
         </g>
@@ -914,12 +926,16 @@ function NoctuneBloom() {
       <Field seed={61} n={60}>
         <Glow x={1240} y={220} r={560} id="ag-n" strength={0.9} />
         <Glow x={180} y={860} r={380} id="ag-n2" strength={0.6} />
-        <Drift seed={62} n={26} w={1600} h={1000} size={12} />
+        <g className={a.fall}>
+          <Drift seed={62} n={26} w={1600} h={1000} size={12} />
+        </g>
       </Field>
       <Crest>
         <circle cx={520} cy={230} r={190} fill="none" strokeWidth={0.6} strokeDasharray="1 7" />
         <Crescent x={520} y={230} r={120} rot={-30} fill />
-        <Bloom x={340} y={470} r={170} petals={9} rot={-8} />
+        <g className={a.spin}>
+          <Bloom x={340} y={470} r={170} petals={9} rot={-8} />
+        </g>
         <path d={glint(680, 420, 18)} fill="currentColor" className={a.twinkleSlow} />
       </Crest>
       <Base>
@@ -957,7 +973,9 @@ function AstralLagoon() {
         <path d="M60 420H800" strokeWidth={0.8} />
         {/* The moon's reflection: short strokes that narrow towards the viewer. */}
         <path d={Array.from({ length: 11 }, (_, i) => `M${f(430 - (90 - i * 6))} ${440 + i * 22}h${f((90 - i * 6) * 2)}`).join('')} strokeWidth={1.2} strokeDasharray="14 9" />
-        <Ripples x={430} y={640} r={340} n={6} />
+        <g className={a.pulse}>
+          <Ripples x={430} y={640} r={340} n={6} />
+        </g>
       </Crest>
       <Base>
         <Ripples x={260} y={380} r={230} n={5} flat={0.3} />
@@ -982,7 +1000,9 @@ function CrimsonHaze() {
       </Field>
       <Crest>
         {/* An eclipse: a dark disc with a ring of fire and a long corona. */}
-        <Rays x={440} y={330} n={30} from={0} to={360} len={360} id="ar-h" />
+        <g className={a.spin}>
+          <Rays x={440} y={330} n={30} from={0} to={360} len={360} id="ar-h" />
+        </g>
         <circle cx={440} cy={330} r={120} fill="var(--bg-app)" fillOpacity={0.6} strokeWidth={2.4} />
         <circle cx={440} cy={330} r={134} fill="none" strokeWidth={0.8} />
         <circle cx={440} cy={330} r={200} fill="none" strokeWidth={0.6} strokeDasharray="1 8" />
@@ -1014,11 +1034,15 @@ function JadeWhisper() {
       </Field>
       <Crest>
         <path d="M430 0V110" strokeWidth={1.2} />
-        <JadeDisc x={430} y={330} r={220} />
+        <g className={a.spin}>
+          <JadeDisc x={430} y={330} r={220} />
+        </g>
         <path d="M430 550V640M418 640h24l-4 90h-16Z" fill="none" strokeWidth={1.2} />
       </Crest>
       <Base>
-        <Bamboo x={160} y={640} h={620} lean={70} seg={92} seed={98} />
+        <g className={a.swaySlow}>
+          <Bamboo x={160} y={640} h={620} lean={70} seg={92} seed={98} />
+        </g>
         <Bamboo x={270} y={660} h={480} lean={-40} seg={80} seed={99} w={11} />
         <Bamboo x={70} y={660} h={380} lean={30} seg={70} seed={100} w={9} />
       </Base>
@@ -1031,12 +1055,16 @@ function VelvetTwilight() {
     <>
       <Field seed={103} n={90}>
         <Glow x={1220} y={300} r={600} id="ag-v" strength={1} />
-        <Drapes w={1600} n={5} drop={150} />
+        <g className={a.sway}>
+          <Drapes w={1600} n={5} drop={150} />
+        </g>
       </Field>
       <Crest>
         <circle cx={440} cy={360} r={210} fill="none" strokeWidth={0.6} strokeDasharray="1 6" />
         <Crescent x={440} y={360} r={150} rot={200} fill />
-        <Crown x={385} y={300} s={0.9} />
+        <g className={a.bob}>
+          <Crown x={385} y={300} s={0.9} />
+        </g>
         <path d={glint(600, 230, 22) + glint(560, 520, 12)} fill="currentColor" className={a.twinkleSlow} />
       </Crest>
       <Base>
@@ -1058,8 +1086,12 @@ function AmberMirage() {
         </g>
       </Field>
       <Crest>
-        <StarTile x={430} y={330} r={250} rot={22.5} />
-        <Sun x={430} y={330} r={110} />
+        <g className={a.spinBack}>
+          <StarTile x={430} y={330} r={250} rot={22.5} />
+        </g>
+        <g className={a.spin}>
+          <Sun x={430} y={330} r={110} />
+        </g>
         <path d="M300 380h260M320 404h220M350 428h160" strokeWidth={1.2} strokeDasharray="18 8" />
       </Crest>
       <Base>
@@ -1076,7 +1108,9 @@ function MidnightSakura() {
     <>
       <Field seed={127} n={60}>
         <Glow x={1240} y={240} r={560} id="ag-s" strength={0.9} />
-        <Drift seed={128} n={30} w={1600} h={1000} size={13} notch />
+        <g className={a.fall}>
+          <Drift seed={128} n={30} w={1600} h={1000} size={13} notch />
+        </g>
       </Field>
       <Crest>
         <circle cx={460} cy={320} r={180} fill="currentColor" fillOpacity={0.12} strokeWidth={1.2} />
@@ -1117,10 +1151,14 @@ function EtherealDune() {
     <>
       <Field seed={131} n={20}>
         <Glow x={1180} y={280} r={600} id="ag-d" strength={0.9} />
-        <Dunes w={1600} y={620} n={4} seed={132} />
+        <g className={a.drift}>
+          <Dunes w={1600} y={620} n={4} seed={132} />
+        </g>
       </Field>
       <Crest>
-        <Sun x={440} y={300} r={120} rays={36} />
+        <g className={`${a.spin} ${a.breathe}`}>
+          <Sun x={440} y={300} r={120} rays={36} />
+        </g>
         <circle cx={440} cy={300} r={190} fill="none" strokeWidth={0.6} strokeDasharray="1 7" />
         <path d="M80 470C220 400 330 420 440 380S660 340 800 400" fill="none" strokeWidth={1.4} />
         <path d="M200 160q12 -10 24 0q12 -10 24 0M270 120q9 -8 18 0q9 -8 18 0" fill="none" />
@@ -1139,11 +1177,15 @@ function EmeraldSalon() {
     <>
       <Field seed={141} n={20}>
         <Glow x={1240} y={260} r={620} id="ag-e" strength={0.9} />
-        <Drapes w={1600} n={4} drop={170} />
+        <g className={a.sway}>
+          <Drapes w={1600} n={4} drop={170} />
+        </g>
         <Checker x={800} y={760} w={1500} rows={7} cols={14} depth={260} />
       </Field>
       <Crest>
-        <OrnateFrame x={260} y={150} w={360} h={440} />
+        <g className={a.breathe}>
+          <OrnateFrame x={260} y={150} w={360} h={440} />
+        </g>
         <Filigree x={440} y={370} s={1.1} />
       </Crest>
       <Base>
@@ -1159,7 +1201,9 @@ function IndigoHour() {
   return (
     <>
       <Field seed={151} n={50}>
-        <LightShaft x={980} y={120} w={150} len={760} id="ag-ih" />
+        <g className={a.breathe}>
+          <LightShaft x={980} y={120} w={150} len={760} id="ag-ih" />
+        </g>
         <Glow x={1180} y={620} r={460} id="ag-ig" strength={0.8} />
         <g className={a.drift}>
           <Wisp x={200} y={780} len={420} rise={90} curl={30} />
@@ -1184,7 +1228,15 @@ function RoseLace() {
       <Field seed={161} n={18}>
         <Glow x={1220} y={240} r={600} id="ag-r" strength={0.9} />
         <Lace x={-20} y={40} w={1640} n={40} r={22} />
-        <path d={[heart(1180, 420, 18), heart(1320, 300, 12), heart(240, 700, 14), heart(1460, 620, 10)].join('')} fill="currentColor" className={a.twinkleSlow} />
+        {[
+          [1180, 420, 18, 0],
+          [1320, 300, 12, -3],
+          [240, 700, 14, -6],
+          [1460, 620, 10, -8],
+          [700, 820, 12, -4.5],
+        ].map(([x, y, r, delay]) => (
+          <path key={`${x}-${y}`} d={heart(x as number, y as number, r as number)} fill="currentColor" className={a.rise} style={{ animationDelay: `${delay}s` }} />
+        ))}
       </Field>
       <Crest>
         <OrnateFrame x={300} y={190} w={300} h={380} />

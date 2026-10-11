@@ -176,7 +176,10 @@ export default function AccountPage(props: PanelProps) {
       </nav>
       <section className={pg.body} aria-label={label}>
         {current !== 'profile' && <h2 className={pg.sectionTitle}>{label}</h2>}
-        <div className={a.stack}>{body}</div>
+        {/* Keyed by section, so switching sections plays the enter animation (T50). */}
+        <div key={current} className={`${a.stack} hlith-stagger`}>
+          {body}
+        </div>
       </section>
     </div>
   );
