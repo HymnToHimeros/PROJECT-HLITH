@@ -112,9 +112,20 @@ export async function fetchHistory(
       q.set('page', String(page));
       q.set('size', '20');
       q.set('end_id', endId);
-      const res = await fetchFn(`https://${link.host}${PATH}?${q.toString()}`);
+      // HoYoverse down, or a page that isn't JSON (an error page): a plain "server" error, never a crash.
+      let res: Awaited<ReturnType<Fetch>>;
+      try {
+        res = await fetchFn(`https://${link.host}${PATH}?${q.toString()}`);
+      } catch {
+        return { ok: false, error: 'server', message: 'could not reach the history server' };
+      }
       if (!res.ok) return { ok: false, error: res.status === 429 ? 'blocked' : 'server' };
-      const body = (await res.json()) as ApiPage;
+      let body: ApiPage;
+      try {
+        body = (await res.json()) as ApiPage;
+      } catch {
+        return { ok: false, error: 'server', message: 'the history server sent something that isn’t JSON' };
+      }
       if (body.retcode === -101 || body.retcode === -100) return { ok: false, error: 'expired' };
       if (body.retcode !== 0) return { ok: false, error: 'server', message: body.message ?? `retcode ${String(body.retcode)}` };
       const rows = body.data?.list ?? [];

@@ -29,6 +29,13 @@ Resume with: "continue from PROGRESS.md". Newest entry on top. Older entries:
 - CI (`.github/workflows/ci.yml`) runs both on every pull request.
 
 ## Done
+- 2026-10-11 · **ERROR-FIX: logins tested in a simulated way** (branch `error-fix/simulated-logins`, owner's T51).
+  `tests/simulated.test.ts` runs the real HoYoLAB, history-link and Assistant code against faked
+  answers (expired cookie, captcha, rate limits, HoYoLAB down, wrong region, multi-page history,
+  re-import, empty history, expired link, wrong key, 429, busy, timeout): plain messages, no
+  secrets, nothing duplicated. Fixed: the history link crashed when HoYoverse was down or sent a
+  web page; now a plain "server" error. Read-only check: the owner's real HoYoLAB check-in job
+  ran OK on 10 Oct 16:15 UTC and claimed both games' rewards.
 - 2026-10-11 · **SCHEDULER: main story Jade, standard pools, research routine live** (branch
   `scheduler/story-rewards`). HSR main story reward = 10,330 Stellar Jade, the sum of its 193
   missions' stated rewards on the wiki (`storyJade` in import-schedule.ts); ZZZ stays unknown, no
