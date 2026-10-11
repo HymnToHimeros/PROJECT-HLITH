@@ -34,8 +34,9 @@ doing it said `LIVE`. Newest jobs at the bottom; live jobs move to Done.
 | T44 | Roster: leaked characters (any source) always at the top, newest first; Aeon Aha is at the bottom now | FRAME | sent | Owner 2026-10-11. |
 | T45 | Installable app on phone + PC (PWA: manifest, icons, service worker, update toast, install hint); base for phone push | FRAME | sent | Owner 2026-10-11 (compared with their other site). |
 | T46 | BUG: findings-intake answers 401 to the Data refresh Action and to the routine's proxy key | ERROR-FIX | live | New key (owner) + #107; run #3 ok, Bearer path ok, v76. |
-| T47 | More themes + one owner-only BL/yaoi-mood theme (colour, light and ornament only; no pictures of people, nothing explicit) | FRAME | sent | Owner 2026-10-11. After #109. Owner sees screenshots before merge. |
+| T47 | More themes (3 public) + owner-only BL themes: private bucket, owner-only loading, upload a picture per theme | FRAME | working | Owner: drawn sample "horrible", dropped. AI image generator = separate paid option, owner to decide. Screenshots before merge. |
 | T48 | BUG: leak tiles in Roster show a "? UNVERIFIED" tag + squeezed source text under the tile (Aeon Aha); tiles must look like all others, marker as an in-picture chip, sources on the character page only | ERROR-FIX | sent | Owner 2026-10-11 screenshot. |
+| T49 | BUG: banner card art cropped badly (legs, weapon parts); art must fit each frame on its own, both games | ERROR-FIX | sent | Owner 2026-10-11 screenshot (ZZZ Banners). |
 
 ## Done
 | # | Job | Who | Live on |
