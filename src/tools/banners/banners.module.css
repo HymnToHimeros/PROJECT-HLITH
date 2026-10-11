@@ -628,11 +628,8 @@
   inset: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  object-position: 50% 12%;
 }
 .thumbImgWeapon {
-  object-fit: contain;
   padding: 5px;
 }
 .thumb .artLabel {
@@ -770,15 +767,31 @@
   inset: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  object-position: center 40%;
-  transform: scale(1.6);
-  transform-origin: 60% 42%;
 }
+/* The text sits over the lower part of the hero: the weapon fits in the part above it. */
 .heroImgWeapon {
-  object-position: center 30%;
-  transform: scale(1.15);
-  transform-origin: 50% 30%;
+  height: 68%;
+  padding: 6px 12px 0;
+}
+/* Banner art (BannerArt.tsx): character art cropped with the face in view (the position is set
+   per picture from its real shape), weapon art whole over a blurred copy of itself. */
+.artCover {
+  object-fit: cover;
+  object-position: 50% 15%;
+}
+.artWhole {
+  object-fit: contain;
+  object-position: center;
+}
+.artBackdrop {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: blur(14px) saturate(1.2);
+  opacity: 0.45;
+  transform: scale(1.2);
 }
 .heroInitials {
   position: absolute;
