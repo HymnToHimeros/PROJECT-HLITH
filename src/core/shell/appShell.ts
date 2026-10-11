@@ -75,8 +75,33 @@ export function resetAppShell(patch: Partial<AppShellState> = {}): void {
 let started = false;
 
 /**
+ * Is this site reachable? Asks for /sw.js straight from the network: the worker never answers for
+ * it, so a kept copy can't make an offline device look online. The browser's own online flag is
+ * only a hint (it can stay true with no connection), so the "Offline" note follows this answer.
+ */
+async function reachable(): Promise<boolean> {
+  try {
+    const res = await fetch(`/sw.js?online=${Date.now()}`, { method: 'HEAD', cache: 'no-store' });
+    return res.type !== 'error';
+  } catch {
+    return false;
+  }
+}
+
+let probing: ReturnType<typeof setTimeout> | null = null;
+/** Checks the connection now; while offline, again every 5 s until it's back. */
+function probe(): void {
+  if (probing) clearTimeout(probing);
+  probing = null;
+  void reachable().then((ok) => {
+    set({ online: ok });
+    if (!ok) probing = setTimeout(probe, 5000);
+  });
+}
+
+/**
  * Called once at start-up. Online/offline and the install offer are watched everywhere; the
- * service worker is registered only in the built app (never in development or tests).
+ * connection check and the service worker run only in the built app (never in development or tests).
  */
 export function startAppShell(opts: { register: boolean } = { register: import.meta.env.PROD }): void {
   if (started || typeof window === 'undefined') return;
@@ -94,7 +119,16 @@ export function startAppShell(opts: { register: boolean } = { register: import.m
   });
   window.matchMedia?.('(display-mode: standalone)').addEventListener?.('change', () => set({ installed: standalone() }));
 
-  if (!opts.register || !('serviceWorker' in navigator)) return;
+  if (!opts.register) return;
+  // In the built app the connection is checked for real: at start, when the browser says it
+  // changed, and when the app comes back to the front.
+  probe();
+  window.addEventListener('online', probe);
+  window.addEventListener('offline', probe);
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible') probe();
+  });
+  if (!('serviceWorker' in navigator)) return;
   const sw = navigator.serviceWorker;
   // The new version took over (after "Reload"): load the page once with it.
   let reloading = false;

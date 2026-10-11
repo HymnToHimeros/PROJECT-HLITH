@@ -2,7 +2,7 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { fileURLToPath } from 'node:url';
-import { appShell } from './appShell';
+import { appShell } from './appShell.ts';
 
 // Tool settings live in config/; the app itself is the project root.
 const here = fileURLToPath(new URL('.', import.meta.url));
