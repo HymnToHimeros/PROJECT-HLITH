@@ -126,8 +126,8 @@ export const JOBS: readonly JobDef[] = [
     fallbackCadence: 'mon 08:50',
     target: { kind: 'external' },
     logicOwner: 'SCHEDULER workstream (research routine)',
-    // Live once its routine delivers (one-line change then).
-    status: 'frame',
+    // Live: the research routine (docs/ROUTINES.md § Research routine) delivers for it.
+    status: 'live',
     maxSeconds: 0,
   },
 ];

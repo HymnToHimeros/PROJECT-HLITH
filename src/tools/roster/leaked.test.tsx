@@ -115,4 +115,20 @@ describe('Roster characters: order and leaks', () => {
     expect(screen.getByRole('button', { name: 'Show leaked' })).toBeDisabled();
     expect(screen.getByText(/stay hidden while “Hide leaks” is on/)).toBeInTheDocument();
   });
+  it('shown leaks always come first, newest first among them, whatever the sort (owner)', async () => {
+    const older: Character = { ...leak, id: '1405', name: 'Older Leak', rarity: 'mid' };
+    const newer: Character = { ...leak, id: '1511', name: 'Newer Leak', rarity: 'mid' };
+    await show([...released, older, newer]);
+    fireEvent.click(screen.getByRole('button', { name: 'Show leaked' }));
+    await screen.findByRole('button', { name: 'Newer Leak, leaked, unverified' });
+    const top = () => names(screen.getByRole('list', { name: /Characters/ })).slice(0, 3);
+    // Newest first (default): both leaks above every released character, the newer one first.
+    expect(top()).toEqual(['Newer Leak, leaked, unverified', 'Older Leak, leaked, unverified', 'Newest Star']);
+    fireEvent.click(screen.getByRole('button', { name: /^Filters/ }));
+    // Name and Rarity order only the released ones: "Abe" and the 5★ stay below the leaks.
+    fireEvent.change(screen.getByLabelText('Sort'), { target: { value: 'name' } });
+    expect(top()).toEqual(['Newer Leak, leaked, unverified', 'Older Leak, leaked, unverified', 'Abe Undated']);
+    fireEvent.change(screen.getByLabelText('Sort'), { target: { value: 'rarity' } });
+    expect(top()).toEqual(['Newer Leak, leaked, unverified', 'Older Leak, leaked, unverified', 'Newest Star']);
+  });
 });
