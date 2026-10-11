@@ -33,6 +33,22 @@ describe('moderation: silence, ban, remove (0015, T60b)', () => {
     expect(bannedBlock).toMatch(/as restrictive for update to authenticated using \(not \(select public\.is_banned\(\)\)\) with check/);
   });
 
+  it('stored files follow the same rules: every bucket refuses a banned account, avatars refuse new pictures while silenced', () => {
+    // No bucket filter on the ban: it covers every bucket, including ones added later.
+    expect(sql).toMatch(/"banned: no reading files" on storage\.objects as restrictive for select to authenticated\s+using \(not \(select public\.is_banned\(\)\)\);/);
+    expect(sql).toMatch(/"banned: no adding files" on storage\.objects as restrictive for insert to authenticated\s+with check \(not \(select public\.is_banned\(\)\)\);/);
+    expect(sql).toMatch(/"banned: no changing files" on storage\.objects as restrictive for update to authenticated\s+using \(not \(select public\.is_banned\(\)\)\) with check \(not \(select public\.is_banned\(\)\)\);/);
+    // Nothing anywhere lets people delete files.
+    expect(all).not.toMatch(/on storage\.objects for (delete|all)\b/i);
+    expect(sql).toMatch(/"silenced: no new profile pictures" on storage\.objects as restrictive for insert to authenticated\s+with check \(bucket_id <> 'avatars' or not \(select public\.is_silenced\(\)\)\);/);
+    expect(sql).toMatch(/"silenced: no changing profile pictures" on storage\.objects as restrictive for update/);
+  });
+
+  it('only the server itself can ask which accounts are banned (for its scheduled jobs)', () => {
+    expect(sql).toContain('revoke all on function public.banned_among(uuid[]) from public, anon, authenticated;');
+    expect(sql).toContain('grant execute on function public.banned_among(uuid[]) to service_role;');
+  });
+
   it('a silenced account can’t write to any community or sharing table, now or later', () => {
     const covered = arrayIn(silencedBlock);
     const facing = [...all.matchAll(/create table public\.((?:community|share)_\w+)/g)].map((m) => m[1] as string);

@@ -13,6 +13,7 @@ import { isScheduler } from '../_shared/backupPlan.ts';
 import type { GameBiz } from '../_shared/hoyolab.ts';
 import { CODE_SOURCE, parseCodeList, runLinks } from '../_shared/hoyolabAuto.ts';
 import { activeLinks, dbStore, saveCodeList, type Db } from '../_shared/hoyolabStore.ts';
+import { withoutBanned } from '../_shared/moderation.ts';
 
 const json = (body: unknown, status = 200) => new Response(JSON.stringify(body), { status, headers: { 'Content-Type': 'application/json' } });
 
@@ -47,7 +48,8 @@ Deno.serve(async (req) => {
   // 2. Saved accounts with a switch on. Free-plan functions stop after 150 s, so new work
   // stops at 120 s; whatever is left is picked up by the next run.
   try {
-    const links = await activeLinks(db);
+    // A suspended account's saved logins aren't used (T60b).
+    const links = await withoutBanned(db, await activeLinks(db));
     const summary = await runLinks(links, dbStore(db), deps, {
       startedBy: 'auto',
       deadline: started + 120_000,

@@ -19,6 +19,13 @@ Owner: "see who also joined … instant ban/remove or silence … not an iron fi
   sees the suspended screen with **Download my data**, and nothing else works. Enforcement is
   RLS (every table) + requireUser (every server function); only export-data passes
   `allowBanned` (read-only, own rows), and a test checks no other function does.
+- **Stored files**: restrictive policies on every bucket refuse a banned account (read, add,
+  change; there are no delete policies at all); while silenced, no new profile pictures or
+  banners (they show on shared cards). Private uploads like backgrounds still work.
+- **Jobs that act for people** skip banned accounts via `public.banned_among` (service role
+  only, `_shared/moderation.ts`): the HoYoLAB daily run, and the calendar feed (a link, not a
+  sign-in, so it never passes requireUser). The evening message is user-triggered and goes
+  through requireUser. Tests: `tests/moderation.test.ts`, `tests/moderationJobs.test.ts`.
 - **requireUser** (every user-facing server function): refuses banned accounts (Auth's
   banned_until and `is_banned()` asked as the caller).
 - **App**: Owner console → Users (search, sort, confirm with duration + reason, log); a calm
@@ -27,5 +34,5 @@ Owner: "see who also joined … instant ban/remove or silence … not an iron fi
 - Purge removes restrictions and log rows (and the log rows the account wrote); backups copy
   them; export includes them. Terms: new "6. Moderation". Privacy: what the owner sees, and the log.
 - After merge: apply 0015 if skipped; deploy every function using requireUser (assistant,
-  delete-account, evening-message, export-data, gacha-import, hoyolab), plus purge-accounts
-  and backup.
+  delete-account, evening-message, export-data, gacha-import, hoyolab), plus hoyolab-daily,
+  ics-feed, purge-accounts and backup.

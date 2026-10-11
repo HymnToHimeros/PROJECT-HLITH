@@ -6,6 +6,7 @@
 // "Switch off" stops it. Reads only.
 import { createClient } from 'npm:@supabase/supabase-js@2';
 import { isFeedToken } from '../_shared/accountPlan.ts';
+import { bannedAmong } from '../_shared/moderation.ts';
 import { buildIcs } from '../_shared/ics.ts';
 import { readSchedule } from '../_shared/schedule.ts';
 
@@ -20,9 +21,15 @@ Deno.serve(async (req) => {
   if (!url || !serviceKey) return text('The server is missing its settings.', 500);
 
   const db = createClient(url, serviceKey, { auth: { persistSession: false } });
-  const { data, error } = await db.from('reminder_settings').select('schedule, feed_enabled').eq('feed_token', token).maybeSingle();
+  const { data, error } = await db.from('reminder_settings').select('user_id, schedule, feed_enabled').eq('feed_token', token).maybeSingle();
   if (error) return text('Could not read the calendar right now.', 500);
   if (!data || !data.feed_enabled) return text('This calendar link was switched off or replaced.', 404);
+  // The link is the key, so it never passes requireUser: a suspended account's feed stops here (T60b).
+  try {
+    if ((await bannedAmong(db, [String(data.user_id)])).size) return text('This calendar is paused.', 403);
+  } catch {
+    return text('Could not read the calendar right now.', 500);
+  }
 
   const ics = buildIcs(readSchedule(data.schedule), Date.now());
   return new Response(req.method === 'HEAD' ? null : ics, {

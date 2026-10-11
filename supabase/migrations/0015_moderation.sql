@@ -17,7 +17,8 @@
 --   * A silenced account keeps its own HLITH but can't appear in anything others see: its
 --     profile card is not shown with teams it shares, and it can't write to community tables.
 --     Every new community or sharing table must get the same silence policy
---     (tests/moderation.test.ts checks it).
+--     (tests/moderation.test.ts checks it). No new profile pictures or banners while silenced.
+--   * Stored files follow the same rules (every bucket refuses a banned account).
 --   * owner_users(): every account, without email addresses: profile name and picture,
 --     sign-in methods, joined, last active, tester, owner, status.
 --   * moderate(): owner only, never on yourself or another owner.
@@ -65,6 +66,15 @@ language sql stable security definer set search_path = public as $$
   );
 $$;
 
+-- For the server's own scheduled jobs that act for people (service role only): which of these
+-- accounts are banned right now, so the jobs skip them (_shared/moderation.ts).
+create or replace function public.banned_among(p_users uuid[]) returns uuid[]
+language sql stable security definer set search_path = public as $$
+  select coalesce(array_agg(user_id), '{}') from public.account_restrictions where user_id = any (p_users) and banned_until > now();
+$$;
+revoke all on function public.banned_among(uuid[]) from public, anon, authenticated;
+grant execute on function public.banned_among(uuid[]) to service_role;
+
 -- ── Banned: refused everywhere ────────────────────────────────────
 -- Restrictive policies are added to the existing ones (all must pass). No delete policies.
 do $$
@@ -82,6 +92,16 @@ begin
   end loop;
 end $$;
 
+-- Stored files too: every bucket, so a banned account can't read, upload or replace any file
+-- (there are no delete policies on files at all). The scheduled jobs that act for people
+-- (HoYoLAB daily, the calendar feed) skip banned accounts on their own (_shared/moderation.ts).
+create policy "banned: no reading files" on storage.objects as restrictive for select to authenticated
+  using (not (select public.is_banned()));
+create policy "banned: no adding files" on storage.objects as restrictive for insert to authenticated
+  with check (not (select public.is_banned()));
+create policy "banned: no changing files" on storage.objects as restrictive for update to authenticated
+  using (not (select public.is_banned())) with check (not (select public.is_banned()));
+
 -- ── Silenced: nothing community-facing ────────────────────────────
 do $$
 declare
@@ -92,6 +112,12 @@ begin
     execute format('create policy %I on public.%I as restrictive for update to authenticated using (not (select public.is_silenced())) with check (not (select public.is_silenced()))', 'silenced: no changing', t);
   end loop;
 end $$;
+
+-- Profile pictures and banners show on shared profile cards: no new ones while silenced.
+create policy "silenced: no new profile pictures" on storage.objects as restrictive for insert to authenticated
+  with check (bucket_id <> 'avatars' or not (select public.is_silenced()));
+create policy "silenced: no changing profile pictures" on storage.objects as restrictive for update to authenticated
+  using (bucket_id <> 'avatars' or not (select public.is_silenced())) with check (bucket_id <> 'avatars' or not (select public.is_silenced()));
 
 -- The profile card shown with shared teams (0011), now also hidden while silenced or banned.
 create or replace function public.profile_card(p_user uuid) returns jsonb
