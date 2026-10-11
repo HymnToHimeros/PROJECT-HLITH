@@ -39,6 +39,10 @@ describe('Owner console · Scheduler (this device only)', () => {
     expect(within(leaks).getByText('External routine')).toBeInTheDocument();
     expect(within(leaks).getByText('Self-adjusting: the routine says when it runs next')).toBeInTheDocument();
     expect(within(leaks).queryByRole('button', { name: 'Run now' })).toBeNull();
+    // The research routine is listed too, as a frame until its routine delivers.
+    const research = within(routine).getByRole('article', { name: 'Research routine' });
+    expect(within(research).getByText('FRAME')).toBeInTheDocument();
+    expect(within(research).getByText('Self-adjusting: the routine says when it runs next')).toBeInTheDocument();
     const log = screen.getByRole('region', { name: 'Run log' });
     expect(within(log).getByText('EXAMPLE')).toBeInTheDocument();
     expect(within(log).getAllByText(/^Example:/).length).toBeGreaterThan(0);

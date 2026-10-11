@@ -16,6 +16,7 @@ import {
   ownerByToken,
   parseCadence,
   readFindings,
+  runnable,
   runScheduler,
   whoCalls,
   type JobResult,
@@ -262,8 +263,15 @@ describe('the job list', () => {
     expect(by.backup).toMatchObject({ status: 'live', target: { kind: 'function', name: 'backup' } });
     expect(by['hoyolab-daily']).toMatchObject({ status: 'live', cadence: 'daily 16:10' });
     expect(by['codes-refresh']?.target).toEqual({ kind: 'included', in: 'hoyolab-daily' });
-    expect([...EXTERNAL_JOB_IDS].sort()).toEqual(['events-scan', 'game-data-refresh', 'leaks-scan']);
+    expect([...EXTERNAL_JOB_IDS].sort()).toEqual(['events-scan', 'game-data-refresh', 'leaks-scan', 'research-routine']);
     for (const id of EXTERNAL_JOB_IDS) expect(runnerOf(must(by[id]))).toBe('External routine');
+  });
+
+  it('the research routine is a self-adjusting routine job, a frame until its routine delivers', () => {
+    const job = must(JOBS.find((j) => j.id === 'research-routine'));
+    expect(job).toMatchObject({ label: 'Research routine', cadence: SELF_ADJUSTING, fallbackCadence: 'mon 08:50', target: { kind: 'external' }, status: 'frame' });
+    expect(describeCadence(effectiveCadence(job, undefined).cadence)).toBe('Mon at 08:50 UTC');
+    expect(runnable(job)).toBe(false);
   });
 
   it('every live function job has its function folder and a config entry', () => {
@@ -391,6 +399,11 @@ describe('findings intake (the routine’s deliveries)', () => {
       expect([...r.failed]).toEqual([['game-data-refresh', 'nanoka.cc answered 503']]);
       expect([...r.nextAt]).toEqual([['leaks-scan', later]]);
     }
+    // The research routine is a job like the others: in ran, failed and next_at.
+    const research = readIntake({ ran: ['research-routine'], next_at: { 'research-routine': later }, findings: [{ ...good, job: 'research-routine' }] }, NOW);
+    expect(research.ok && research.byJob.get('research-routine')?.length).toBe(1);
+    expect(research.ok && research.nextAt.get('research-routine')).toBe(later);
+    expect(readIntake({ failed: [{ job: 'research-routine', message: 'notice page answered 404' }], findings: [] }, NOW).ok).toBe(true);
     // A failure alone is a delivery.
     expect(readIntake({ failed: [{ job: 'events-scan', message: 'timed out' }], findings: [] }, NOW).ok).toBe(true);
     const bad = (body: unknown) => (readIntake(body, NOW) as { ok: false; problems: string[] }).problems;
