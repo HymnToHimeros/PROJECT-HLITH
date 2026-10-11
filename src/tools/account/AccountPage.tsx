@@ -93,7 +93,7 @@ export default function AccountPage(props: PanelProps) {
       body = <ProfileSection games={games} account={account} isOwner={props.isOwner === true} open={props.open} goSection={go} />;
       break;
     case 'customise':
-      body = <CustomisePage games={games} editLayout={props.editLayout} goSection={go} />;
+      body = <CustomisePage games={games} editLayout={props.editLayout} goSection={go} userId={account?.id} />;
       break;
     case 'sync':
       body = <SyncPage status={sync} now={now} signedIn={Boolean(account)} />;

@@ -3,6 +3,7 @@ import { setTick } from '../../core/data/userData';
 import { GameTag } from '../../core/ui';
 import { byUrgency, type Task } from './tasks';
 import t from './today.module.css';
+import { feedback } from '../../core/ui/feedback';
 
 interface Props {
   tasks: Task[];
@@ -36,7 +37,10 @@ export function TonightsRun({ tasks, noServer, tags, now }: Props) {
             <li key={`${task.game.id}:${task.id}`}>
               <label className={t.task}>
                 <span className={t.order}>{i + 1}</span>
-                <input type="checkbox" checked={false} onChange={() => setTick(task.game.id, task.id, new Date(now).toISOString())} aria-label={`Done: ${task.label}`} />
+                <input type="checkbox" checked={false} onChange={() => {
+                    setTick(task.game.id, task.id, new Date(now).toISOString());
+                    feedback('done');
+                  }} aria-label={`Done: ${task.label}`} />
                 <span className={t.taskBody}>
                   <span className={t.taskTop}>
                     {task.label}

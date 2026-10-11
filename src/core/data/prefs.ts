@@ -65,6 +65,12 @@ export interface Prefs {
   eventKindColours?: Record<string, string>;
   /** …and Banners as cards (default) or a compact list. */
   bannerView?: 'cards' | 'list';
+  /** Customise → Today (T52d): tools/today/cardsPref.ts. Missing = the design's layout. */
+  today?: { left?: string[]; right?: string[]; hidden?: string[] };
+  /** Customise → Background picture (T52d): data/backgrounds.ts. Missing = the theme's own art only. */
+  backgrounds?: Record<string, { file: string; strength: number; version: number } | undefined>;
+  /** Customise → Feedback (T52d): a short buzz on phones and soft sounds when you tick or save. Missing = off. */
+  feedback?: { haptics?: boolean; sounds?: boolean };
   /** Customise → Roster (T52c): tiles and the Characters view you last used. */
   roster?: { tileSize?: 'small' | 'normal' | 'large'; hideOnTile?: string[]; view?: { sort?: string; show?: string; element?: string; rarity?: string; tag?: string } };
   /** Account → Layout → Start screen (T52): the module HLITH opens on. Missing = the last one you had open. */

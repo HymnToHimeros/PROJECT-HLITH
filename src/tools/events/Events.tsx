@@ -15,6 +15,7 @@ import e from './events.module.css';
 import type { EventsData } from './useEventsData';
 import { hiddenKinds, KIND_LABEL, kindColour } from './kindPrefs';
 import { usePrefs } from '../../core/data/prefs';
+import { feedback } from '../../core/ui/feedback';
 
 type State = EventProgress['state'];
 const KIND = KIND_LABEL;
@@ -95,6 +96,7 @@ export function Events({ game, data, serverId, now, onChooseServer, actions, lev
     if (prev.state === state) return;
     // Login days claimed stay as they are; only the state changes.
     setEventProgress(game.id, key, { ...prev, state });
+    feedback(state === 'open' ? 'undo' : 'done');
     setUndone(null);
     setLast({ key, title, prev, state });
   };

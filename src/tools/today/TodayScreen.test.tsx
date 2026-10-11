@@ -121,6 +121,17 @@ describe('Today', () => {
     expect(screen.getAllByText(/No data yet/).length).toBeGreaterThan(1);
   });
 
+  it('Customise → Today: hidden cards don’t show and the columns follow your order (T52d)', async () => {
+    updatePrefs((p) => ({ ...p, today: { left: ['banners', 'tasks'], right: ['coming'], hidden: ['wishlist', 'tiles'] } }));
+    const { container } = render(<TodayScreen {...props()} />);
+    await screen.findByRole('region', { name: 'Open tasks' });
+    expect(screen.queryByText('Power', { selector: 'span' })).toBeNull();
+    expect(screen.queryByRole('region', { name: /Wishlist/ })).toBeNull();
+    const labels = [...container.querySelectorAll('section[aria-label]')].map((s) => s.getAttribute('aria-label'));
+    expect(labels.indexOf('Live banners')).toBeLessThan(labels.indexOf('Open tasks'));
+    updatePrefs((p) => ({ ...p, today: {} }));
+  });
+
   it('stamina is honest: no live link, so no number', async () => {
     render(<TodayScreen {...props()} />);
     const tile = (await screen.findByText('Power', { selector: 'span' })).closest('div')?.parentElement as HTMLElement;

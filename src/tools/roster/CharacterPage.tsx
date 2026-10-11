@@ -17,6 +17,7 @@ import { Line, TeamRow, teamAccount, useTeamAccount } from './TeamParts';
 import { useBuilds, useKits, type RosterData } from './useRosterData';
 import { formatFullDate } from '../../core/time/reset';
 import { MyLabels } from './MyLabels';
+import { feedback } from '../../core/ui/feedback';
 
 interface Props {
   data: RosterData;
@@ -42,7 +43,10 @@ export function CharacterPage({ data, character: c, several, onBack, openPulls, 
   const { game, user } = data;
   const entry = entryOf(user.roster, c.id);
   const el = elementOf(game, c.element);
-  const save = (change: Partial<typeof entry>) => setRosterEntry(game.id, c.id, { ...entry, ...change });
+  const save = (change: Partial<typeof entry>) => {
+    setRosterEntry(game.id, c.id, { ...entry, ...change });
+    feedback(change.owned === false || change.wanted === false ? 'undo' : 'done');
+  };
   const dupes = game.dupes;
   const farming = user.farm.includes(c.id);
   const addToFarm = () => {

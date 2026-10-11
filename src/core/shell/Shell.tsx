@@ -14,6 +14,8 @@ import { useMotion } from '../theme/motion';
 import { useGlide } from './useGlide';
 import { useOwnerTheme, useTheme } from '../theme/theme';
 import { OwnerArt } from '../theme/OwnerArt';
+import a from '../theme/art.module.css';
+import { useBackground } from '../data/backgrounds';
 import { ThemeArt, ThemeMotif } from '../theme/ThemeArt';
 import { formatTime, serverRule } from '../time/reset';
 import { BottomSheet } from '../ui/BottomSheet';
@@ -229,11 +231,18 @@ export function Shell({ games: registered, account = null, isOwner = false, owne
     </div>
   );
   // Your name from Account → Profile, else the part of your email before the @.
+  // Customise → Background picture: this page's, else this theme's, else every page's.
+  const background = useBackground([...(active ? [`page:${active}` as const] : []), `theme:${ownerTheme ? `owner:${ownerTheme.id}` : theme}`, 'all']);
   const displayName = identity?.name ?? (account ? (account.email.split('@')[0] ?? null) : null);
 
   return (
     <div className={s.root} style={{ '--vent': ventOf(scope) } as CSSProperties}>
       {ownerTheme ? <OwnerArt theme={ownerTheme} /> : <ThemeArt theme={theme} />}
+      {background && (
+        <div className={a.art} style={{ opacity: 1 }} aria-hidden="true" data-art="yours">
+          <img className={a.yourPicture} src={background.url} alt="" decoding="async" style={{ opacity: background.strength }} />
+        </div>
+      )}
       {!phone && (
         <aside className={s.sidebar} aria-label="Main">
           <div className={s.brand}>

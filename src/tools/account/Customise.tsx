@@ -31,8 +31,12 @@ import { EVENT_KINDS, hiddenKinds, KIND_LABEL } from '../events/kindPrefs';
 import { TILE_PARTS, type TilePart } from '../roster/tileParts';
 import a from './account.module.css';
 import { Switch } from './parts';
+import { feedback } from '../../core/ui/feedback';
+import { removeBackground, saveBackground, setBackgroundStrength, cleanBackgrounds, STRENGTH_MAX, STRENGTH_MIN, type Slot } from '../../core/data/backgrounds';
+import { cleanToday, moveCard, TODAY_CARD_LABEL, TOP_PARTS, type TodayCard, type TodayLayout } from '../today/cardsPref';
+import { useState } from 'react';
 
-type Section = 'look' | 'colours' | 'schedule' | 'layout' | 'format' | 'roster' | 'lists';
+type Section = 'look' | 'colours' | 'schedule' | 'layout' | 'format' | 'roster' | 'lists' | 'today' | 'feedback';
 
 /** What "Reset this section" puts back: the setting is removed, so the default shows again. Nothing else is touched. */
 const without = (p: Prefs, keys: (keyof Prefs)[]): Prefs => Object.fromEntries(Object.entries(p).filter(([k]) => !keys.includes(k as keyof Prefs))) as unknown as Prefs;
@@ -44,6 +48,8 @@ const RESET: Record<Section, (p: Prefs) => Prefs> = {
   format: (p) => without(p, ['format']),
   roster: (p) => without(p, ['roster']),
   lists: (p) => without(p, ['hiddenEventKinds', 'eventKindColours', 'bannerView']),
+  today: (p) => without(p, ['today']),
+  feedback: (p) => without(p, ['feedback']),
 };
 /** A copy without the empty entries. */
 const compact = <T extends Record<string, unknown>>(o: T): T => Object.fromEntries(Object.entries(o).filter(([, v]) => v !== undefined && v !== '' && v !== null)) as T;
@@ -84,7 +90,7 @@ const setFormat = (change: { [K in keyof DisplayFormat]?: DisplayFormat[K] | und
  * the preview at the top shows it. "Reset this section" puts that section back to the default
  * and touches nothing else. Lists from the games never change any of it.
  */
-export function CustomisePage({ games, editLayout, goSection }: { games: GameContract[]; editLayout: () => void; goSection: (section: string) => void }) {
+export function CustomisePage({ games, editLayout, goSection, userId }: { games: GameContract[]; editLayout: () => void; goSection: (section: string) => void; userId?: string | undefined }) {
   const prefs = usePrefs();
   const look = lookOf(prefs);
   const format = cleanFormat(prefs.format);
@@ -204,8 +210,28 @@ export function CustomisePage({ games, editLayout, goSection }: { games: GameCon
         </p>
       </Card>
 
+      <BackgroundCard prefs={prefs} userId={userId} />
+      <TodayCardEditor prefs={prefs} />
       <RosterCard prefs={prefs} />
       <ListsCard prefs={prefs} tone={tone} />
+
+      <Card id="feedback" title="Feedback" changed={Boolean(prefs.feedback?.haptics || prefs.feedback?.sounds)}>
+        <Switch
+          label="Buzz on phones"
+          hint="A short buzz when you tick a task or mark something done or owned (phones that allow it)."
+          checked={Boolean(prefs.feedback?.haptics)}
+          onChange={(on) => updatePrefs((p) => ({ ...p, feedback: { ...p.feedback, haptics: on } }))}
+        />
+        <Switch
+          label="Soft sounds"
+          hint="One quiet note when you tick or mark something; a lower one when you undo."
+          checked={Boolean(prefs.feedback?.sounds)}
+          onChange={(on) => {
+            updatePrefs((p) => ({ ...p, feedback: { ...p.feedback, sounds: on } }));
+            if (on) feedback('done');
+          }}
+        />
+      </Card>
 
       <section className={a.card} aria-label="More to make yours">
         <h3 className={a.cardTitle}>More to make yours</h3>
@@ -509,6 +535,162 @@ function ListsCard({ prefs, tone }: { prefs: Prefs; tone: 'dark' | 'light' }) {
         </div>
       ))}
       <p className={a.small}>Hidden kinds still count toward what you can earn in Pulls; they just don’t show here. Countdown style is under Time and format.</p>
+    </Card>
+  );
+}
+
+/** Shrinks a picture in the browser to at most 1920 px wide, as a JPEG (what gets stored). */
+async function shrink(file: File): Promise<string> {
+  const bitmap = await createImageBitmap(file);
+  const scale = Math.min(1, 1920 / bitmap.width, 1200 / bitmap.height);
+  const canvas = document.createElement('canvas');
+  canvas.width = Math.round(bitmap.width * scale);
+  canvas.height = Math.round(bitmap.height * scale);
+  canvas.getContext('2d')?.drawImage(bitmap, 0, 0, canvas.width, canvas.height);
+  return canvas.toDataURL('image/jpeg', 0.82);
+}
+
+function BackgroundCard({ prefs, userId }: { prefs: Prefs; userId: string | undefined }) {
+  const owners = useOwnerThemes();
+  const choices = cleanBackgrounds(prefs.backgrounds);
+  const [slot, setSlot] = useState<Slot>('all');
+  const [busy, setBusy] = useState(false);
+  const [note, setNote] = useState<string | null>(null);
+  const current = choices[slot];
+  const slotName = (s: Slot) =>
+    s === 'all'
+      ? 'Every page'
+      : s.startsWith('theme:owner:')
+        ? `Theme: ${owners.status === 'ready' ? (owners.themes.find((t) => `theme:owner:${t.id}` === s)?.name ?? 'yours') : 'yours'}`
+        : s.startsWith('theme:')
+          ? `Theme: ${themeInfo(s.slice(6)).name}`
+          : `Page: ${MODULES[s.slice(5) as ModuleId]?.label ?? s.slice(5)}`;
+  const pick = async (file: File | undefined) => {
+    if (!file) return;
+    if (!/^image\/(png|jpeg|webp)$/.test(file.type)) return setNote('Pick a PNG, JPG or WebP picture.');
+    setBusy(true);
+    setNote(null);
+    try {
+      await saveBackground(slot, await shrink(file), userId);
+      setNote(`Saved for ${slotName(slot).toLowerCase()}.`);
+    } catch (e) {
+      setNote(e instanceof Error ? e.message : 'That didn’t save.');
+    } finally {
+      setBusy(false);
+    }
+  };
+  return (
+    <section className={a.card} aria-labelledby="customise-background">
+      <h3 className={a.cardTitle} id="customise-background">
+        Background picture
+      </h3>
+      <p className={a.small}>
+        A picture of your own behind the page: on every page, with one theme, or on one page. The most specific one shows. It’s toned down so text stays readable.{' '}
+        {userId ? 'Kept in your own private storage: only you can see it.' : 'Kept in this browser only.'}
+      </p>
+      <label className={a.small}>
+        Where{' '}
+        <select className={a.input} style={{ maxWidth: 260 }} value={slot} onChange={(e) => setSlot(e.target.value as Slot)} aria-label="Where the picture shows">
+          <option value="all">Every page</option>
+          <optgroup label="With a theme">
+            {THEMES.map((t) => (
+              <option key={t.id} value={`theme:${t.id}`}>
+                {t.name}
+              </option>
+            ))}
+            {owners.status === 'ready' &&
+              owners.themes.map((t) => (
+                <option key={t.id} value={`theme:owner:${t.id}`}>
+                  {t.name} (only for you)
+                </option>
+              ))}
+          </optgroup>
+          <optgroup label="On one page">
+            {Object.values(MODULES).map((m) => (
+              <option key={m.id} value={`page:${m.id}`}>
+                {m.label}
+              </option>
+            ))}
+          </optgroup>
+        </select>
+      </label>
+      <div className={a.actions}>
+        <label className={a.filePick}>
+          <input type="file" accept="image/png,image/jpeg,image/webp" className={a.fileInput} disabled={busy} onChange={(e) => void pick(e.target.files?.[0]).finally(() => (e.target.value = ''))} />
+          {busy ? 'Saving…' : current ? 'Change picture' : 'Choose a picture'}
+        </label>
+        {current && (
+          <Button variant="quiet" onClick={() => removeBackground(slot)}>
+            Stop showing it here
+          </Button>
+        )}
+      </div>
+      {current && (
+        <label className={a.small}>
+          Strength{' '}
+          <input
+            type="range"
+            min={STRENGTH_MIN}
+            max={STRENGTH_MAX}
+            step={0.01}
+            value={current.strength}
+            onChange={(e) => setBackgroundStrength(slot, Number(e.target.value))}
+            aria-label="Picture strength"
+          />
+        </label>
+      )}
+      {note && (
+        <p className={a.small} role="status">
+          {note}
+        </p>
+      )}
+      {Object.keys(choices).length > 0 && (
+        <p className={a.small}>
+          Pictures set: {(Object.keys(choices) as Slot[]).map(slotName).join(' · ')}
+        </p>
+      )}
+    </section>
+  );
+}
+
+function TodayCardEditor({ prefs }: { prefs: Prefs }) {
+  const layout = cleanToday(prefs.today);
+  const save = (next: TodayLayout) => updatePrefs((p) => ({ ...p, today: next }));
+  const toggle = (part: TodayLayout['hidden'][number], on: boolean) => save({ ...layout, hidden: on ? layout.hidden.filter((x) => x !== part) : [...layout.hidden, part] });
+  const changed = prefs.today !== undefined;
+  const row = (c: TodayCard, side: 'left' | 'right', i: number, n: number) => (
+    <li key={c} className={a.todayRow}>
+      <Switch label={TODAY_CARD_LABEL[c]} checked={!layout.hidden.includes(c)} onChange={(on) => toggle(c, on)} />
+      <div className={a.actions}>
+        <Button variant="quiet" disabled={i === 0} onClick={() => save(moveCard(layout, c, 'up'))} aria-label={`Move ${TODAY_CARD_LABEL[c]} up`}>
+          ↑
+        </Button>
+        <Button variant="quiet" disabled={i === n - 1} onClick={() => save(moveCard(layout, c, 'down'))} aria-label={`Move ${TODAY_CARD_LABEL[c]} down`}>
+          ↓
+        </Button>
+        <Button variant="quiet" onClick={() => save(moveCard(layout, c, side === 'left' ? 'right' : 'left'))} aria-label={`Move ${TODAY_CARD_LABEL[c]} to the ${side === 'left' ? 'right' : 'left'} column`}>
+          {side === 'left' ? 'To right →' : '← To left'}
+        </Button>
+      </div>
+    </li>
+  );
+  return (
+    <Card id="today" title="Today" changed={changed}>
+      {TOP_PARTS.map((part) => (
+        <Switch key={part} label={TODAY_CARD_LABEL[part]} checked={!layout.hidden.includes(part)} onChange={(on) => toggle(part, on)} />
+      ))}
+      <div className={a.todayColumns}>
+        {(['left', 'right'] as const).map((side) => (
+          <div key={side}>
+            <span className={a.label}>{side === 'left' ? 'Left column' : 'Right column'}</span>
+            <ul className={a.todayList} aria-label={side === 'left' ? 'Left column' : 'Right column'}>
+              {layout[side].map((c, i) => row(c, side, i, layout[side].length))}
+              {layout[side].length === 0 && <li className={a.small}>Empty</li>}
+            </ul>
+          </div>
+        ))}
+      </div>
+      <p className={a.small}>On a phone the left column comes first, then the right.</p>
     </Card>
   );
 }
