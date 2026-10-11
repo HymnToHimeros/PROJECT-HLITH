@@ -25,8 +25,18 @@ export const PURGE_TABLES = [
   'user_game_data',
   'user_settings',
   'profiles',
+  'community_members',
   'owners',
   'account_deletion_requests',
+] as const;
+
+/**
+ * Tables where the account appears under another column than user_id: the invite links
+ * it used or made (T60). Removed before the rows above.
+ */
+export const PURGE_BY_COLUMN = [
+  { table: 'community_invites', column: 'used_by' },
+  { table: 'community_invites', column: 'created_by' },
 ] as const;
 
 /** Storage buckets where each account has its own folder (<user id>/…). */
@@ -58,7 +68,8 @@ export const coversExport = () => USER_TABLES.every((t) => (PURGE_TABLES as read
 
 export interface PurgeClient {
   wipeHoyolabLogins(userId: string): Promise<void>;
-  deleteRows(table: string, userId: string): Promise<number>;
+  /** Removes the account's rows; `column` defaults to user_id. */
+  deleteRows(table: string, userId: string, column?: string): Promise<number>;
   listFolder(bucket: string, userId: string): Promise<string[]>;
   removeFiles(bucket: string, paths: string[]): Promise<void>;
   deleteSignIn(userId: string): Promise<void>;
@@ -74,6 +85,7 @@ export async function purgeAccount(c: PurgeClient, userId: string): Promise<{ ro
     files += names.length;
   }
   let rows = 0;
+  for (const { table, column } of PURGE_BY_COLUMN) rows += await c.deleteRows(table, userId, column);
   for (const table of PURGE_TABLES) rows += await c.deleteRows(table, userId);
   await c.deleteSignIn(userId);
   return { rows, files };

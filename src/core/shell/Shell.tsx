@@ -27,7 +27,7 @@ import { useNow } from '../ui/useNow';
 import { AnnouncementStrip } from './AnnouncementStrip';
 import { AppStatus } from './AppStatus';
 import { EditLayout } from './EditLayout';
-import { accountPath, navigate, parseAccountRoute, parseRoute, routePath, usePath } from './route';
+import { accountPath, COMMUNITY_PATH, isCommunityPath, navigate, parseAccountRoute, parseRoute, routePath, usePath } from './route';
 import { ServerPicker } from './ServerPicker';
 import { useIsPhone } from './useIsPhone';
 import s from './shell.module.css';
@@ -41,6 +41,8 @@ interface Props {
   isOwner?: boolean;
   /** False while the server is still being asked whether this account is an owner. */
   ownerChecked?: boolean;
+  /** A community member: tester or owner (public.is_member() on the server, T60). Shows the Community link. */
+  isMember?: boolean;
 }
 
 type Sheet = null | 'more' | 'edit' | 'games' | 'assistant';
@@ -66,7 +68,7 @@ export const resetStartScreen = () => {
   startShown = false;
 };
 
-export function Shell({ games: registered, account = null, isOwner = false, ownerChecked = true }: Props) {
+export function Shell({ games: registered, account = null, isOwner = false, ownerChecked = true, isMember = false }: Props) {
   const prefs = usePrefs();
   const sync = useSyncStatus();
   const path = usePath();
@@ -92,7 +94,10 @@ export function Shell({ games: registered, account = null, isOwner = false, owne
   const scopes: Scope[] = games.length > 1 ? ['all', ...games.map((g) => g.id)] : games.map((g) => g.id);
 
   const acct = parseAccountRoute(path);
-  const route = acct ? { scope: homeScope, module: null, tab: null } : parseRoute(path);
+  // Pages outside the modules: Account (/account/…) and Community (/community, T60).
+  const community = isCommunityPath(path);
+  const page = Boolean(acct) || community;
+  const route = page ? { scope: homeScope, module: null, tab: null } : parseRoute(path);
   const scope: Scope = route.scope && scopes.includes(route.scope) ? route.scope : prefs.defaultScope && scopes.includes(prefs.defaultScope) ? prefs.defaultScope : (scopes[0] ?? 'all');
   const theme = useTheme(scope, now);
   const ownerTheme = useOwnerTheme(scope, now);
@@ -103,9 +108,9 @@ export function Shell({ games: registered, account = null, isOwner = false, owne
   // Hidden modules stay reachable: a Guide or checklist button (or an old link) opens them, with a Restore note.
   const hiddenHere = hiddenIn(games, scope, layout);
   // Account → Layout → Start screen: only for the first screen of a visit opened without a module in the address.
-  const start = !startShown && !acct && !route.module ? prefs.startModule : undefined;
+  const start = !startShown && !page && !route.module ? prefs.startModule : undefined;
   const remembered = (start && visible.includes(start) ? start : undefined) ?? prefs.lastModule[scope];
-  const active: ModuleId | undefined = acct
+  const active: ModuleId | undefined = page
     ? undefined
     : route.module && (visible.includes(route.module) || hiddenHere.includes(route.module))
       ? route.module
@@ -113,8 +118,8 @@ export function Shell({ games: registered, account = null, isOwner = false, owne
         ? remembered
         : visible[0];
   useEffect(() => {
-    if (route.module || acct) startShown = true;
-  }, [route.module, acct]);
+    if (route.module || page) startShown = true;
+  }, [route.module, page]);
   const { bar, more } = phoneBar(visible);
   // The sliding "you are here" markers (T50): sidebar row and bottom-bar glyph.
   const navRef = useGlide<HTMLElement>('[aria-current="page"]', [active, visible.join(','), phone]);
@@ -133,10 +138,10 @@ export function Shell({ games: registered, account = null, isOwner = false, owne
 
   // Keep the address in step with what is shown.
   useEffect(() => {
-    if (acct || !active) return;
+    if (page || !active) return;
     const want = routePath(scope, active, tabInPath(active, activeTab));
     if (path !== want) navigate(want, true);
-  }, [acct, active, activeTab, scope, path]);
+  }, [page, active, activeTab, scope, path]);
 
   useEffect(() => {
     if (active && prefs.lastModule[scope] !== active) {
@@ -159,10 +164,17 @@ export function Shell({ games: registered, account = null, isOwner = false, owne
   const close = useCallback(() => setSheet(null), []);
   /** The Account page is a full page at /account/<section>; the browser's back button returns. */
   const openAccount = (section?: unknown, detail?: string) => {
-    if (!acct) setHomeScope(scope);
+    if (!page) setHomeScope(scope);
     setSheet(null);
     // Screens often pass this straight to onClick, so ignore anything that isn't a section name.
     navigate(accountPath(typeof section === 'string' ? section : null, detail));
+  };
+  /** The Community page (members only, T60). */
+  const openCommunity = (e?: MouseEvent) => {
+    e?.preventDefault();
+    if (!page) setHomeScope(scope);
+    setSheet(null);
+    navigate(COMMUNITY_PATH);
   };
   /** "Choose server" anywhere: Account → Game settings, with that game's picker first. */
   const openServer = (id: GameId) => openAccount('game-settings', id);
@@ -185,12 +197,13 @@ export function Shell({ games: registered, account = null, isOwner = false, owne
     scope,
     servers: prefs.servers,
     account,
-    close: acct ? () => go(scope)() : close,
+    close: page ? () => go(scope)() : close,
     open: (m, t) => go(scope, m, t)(),
     editLayout: () => setSheet('edit'),
     // Shows the Owner console section; every owner write is still checked on the server by public.is_owner().
     isOwner,
     ownerChecked,
+    isMember,
     section: acct?.section ?? undefined,
     detail: acct?.detail ?? undefined,
     goSection: (section, detail) => openAccount(section, detail),
@@ -266,6 +279,21 @@ export function Shell({ games: registered, account = null, isOwner = false, owne
               </a>
             ))}
           </nav>
+          {isMember && (
+            <>
+              <div className={s.navHead}>
+                <span className={s.navLabel}>COMMUNITY</span>
+              </div>
+              <nav className={s.nav} aria-label="Community">
+                <a href={COMMUNITY_PATH} className={s.navItem} aria-current={community ? 'page' : undefined} onClick={openCommunity}>
+                  <span className={s.glyph} aria-hidden="true">
+                    CM
+                  </span>
+                  Community
+                </a>
+              </nav>
+            </>
+          )}
           {/* The theme's emblem fills the empty part of the sidebar; it shrinks away when the menu needs the room. */}
           <div className={s.sideArt} aria-hidden="true">
             <ThemeMotif theme={theme} className={s.sideMotif} />
@@ -300,7 +328,27 @@ export function Shell({ games: registered, account = null, isOwner = false, owne
       <main className={s.main}>
         <AppStatus />
         <AnnouncementStrip />
-        {acct ? (
+        {community ? (
+          <>
+            <div className={s.header}>
+              <div className={s.headerText}>
+                <div className={s.scopeLabel}>MEMBERS ONLY</div>
+                <h1 className={s.title}>Community</h1>
+              </div>
+            </div>
+            <div className={s.content}>
+              {panel('community') ? (
+                <Suspense fallback={<p className={s.note}>Loading…</p>}>
+                  <div className="hlith-enter">
+                    <PanelSlot id="community" {...panelProps} />
+                  </div>
+                </Suspense>
+              ) : (
+                <p className={s.note}>The community page isn’t available here.</p>
+              )}
+            </div>
+          </>
+        ) : acct ? (
           <>
             <div className={s.header}>
               <div className={s.headerText}>
@@ -402,7 +450,7 @@ export function Shell({ games: registered, account = null, isOwner = false, owne
             {bar.map((id) => (
               <PhoneTab key={id} id={id} current={id === active} onOpen={go(scope, id)} onLongPress={() => setSheet('edit')} />
             ))}
-            <button type="button" className={s.tab} aria-current={active && more.includes(active) ? 'page' : undefined} onClick={() => setSheet('more')}>
+            <button type="button" className={s.tab} aria-current={(active && more.includes(active)) || community ? 'page' : undefined} onClick={() => setSheet('more')}>
               <span className={s.tabGlyph} aria-hidden="true">
                 ···
               </span>
@@ -436,6 +484,14 @@ export function Shell({ games: registered, account = null, isOwner = false, owne
               {MODULES[id].label}
             </a>
           ))}
+          {isMember && (
+            <a href={COMMUNITY_PATH} className={s.sheetTile} aria-current={community ? 'page' : undefined} onClick={openCommunity}>
+              <span className={s.tileGlyph} aria-hidden="true">
+                CM
+              </span>
+              Community
+            </a>
+          )}
         </div>
         <p className={s.note}>Your first 4 modules sit in the bar. Long-press any tab to change the order.</p>
       </BottomSheet>

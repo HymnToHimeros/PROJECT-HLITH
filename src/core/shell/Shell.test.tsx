@@ -333,4 +333,15 @@ describe('Shell: your background picture (T52d)', () => {
     const again = render(<Shell games={[A, B]} />);
     await waitFor(() => expect(again.container.querySelector('[data-art="yours"] img')?.getAttribute('src')).toBe('data:image/jpeg;base64,UFVMTFM='));
   });
+  it('the Community link shows only for members (T60), and /community opens the page without picking a module', () => {
+    const { unmount } = render(<Shell games={[A, B]} />);
+    expect(screen.queryByRole('navigation', { name: 'Community' })).toBeNull();
+    unmount();
+    render(<Shell games={[A, B]} isMember />);
+    const link = within(screen.getByRole('navigation', { name: 'Community' })).getByRole('link', { name: /Community/ });
+    fireEvent.click(link);
+    expect(window.location.pathname).toBe('/community');
+    expect(screen.getByRole('heading', { level: 1, name: 'Community' })).toBeInTheDocument();
+    expect(link).toHaveAttribute('aria-current', 'page');
+  });
 });

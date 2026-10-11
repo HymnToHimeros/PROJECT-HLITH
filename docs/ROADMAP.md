@@ -11,9 +11,9 @@ so it can't drift from the real code. Never tick a box by hand; add the proof.
 Who builds what: see `docs/WORKSTREAMS.md`.
 
 <!-- roadmap:summary -->
-**65 of 65 done** `████████████████████` 100%
+**66 of 73 done** `██████████████████░░` 90%
 
-**Everything on the roadmap is done.**
+**Next up:** R67 The HLIÐSKJÁLF Discord inside the Community page (WidgetBot)
 
 | Phase | Progress | Done |
 |---|---|---|
@@ -25,6 +25,7 @@ Who builds what: see `docs/WORKSTREAMS.md`.
 | Phase 5 · Modules | `██████████` | 17 / 17 |
 | Phase 6 · Connections and extras | `██████████` | 17 / 17 |
 | Phase 7 · Launch | `██████████` | 3 / 3 |
+| Phase 8 · Community (planned: the owner wants members first) | `█░░░░░░░░░` | 1 / 8 |
 <!-- /roadmap:summary -->
 
 ## Phase 0 · Foundation
@@ -107,3 +108,13 @@ Who builds what: see `docs/WORKSTREAMS.md`.
 - [x] R59 Accessibility and phone pass · proof: `tests/e2e/accessibility.spec.ts`
 - [x] R60 Live on the web (Cloudflare Pages) · proof: `docs/DEPLOY.md`
 - [x] R61 Light theme (after it's designed) · proof: `src/core/theme/tokens-light.css`
+
+## Phase 8 · Community (planned: the owner wants members first)
+- [x] R66 ★ Community groundwork: tester role on the server, one-time invite links, Owner console → Members, members-only Community page · proof: `supabase/migrations/0014_community_members.sql`, `src/tools/community/CommunityPage.tsx`, `src/tools/owner/Members.tsx`, `tests/community.test.ts`
+- [ ] R67 The HLIÐSKJÁLF Discord inside the Community page (WidgetBot) · proof: `src/tools/community/DiscordEmbed.tsx`
+- [ ] R68 Share to Discord: cards for teams, pulls and profiles · proof: `src/tools/community/ShareToDiscord.tsx`
+- [ ] R69 Discord Linked Roles from HLITH (tester, badges) · proof: `supabase/functions/discord-linked-roles/index.ts`
+- [ ] R70 HLITH bot for the community server · proof: `supabase/functions/discord-bot/index.ts`
+- [ ] R71 Earned picture rights (upload rights unlocked by taking part) · proof: `src/tools/community/PictureRights.tsx`
+- [ ] R72 Leaderboards (opt-in) · proof: `src/tools/community/Leaderboards.tsx`
+- [ ] R73 Polls · proof: `src/tools/community/Polls.tsx`

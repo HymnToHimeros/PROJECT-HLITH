@@ -34,6 +34,10 @@ export function parseAccountRoute(path: string): AccountRoute | null {
   return { section: section ? decodeURIComponent(section) : null, detail: detail ? decodeURIComponent(detail) : null };
 }
 
+/** The Community page (T60): /community. Shown in the menu to members only; the server checks every read. */
+export const COMMUNITY_PATH = '/community';
+export const isCommunityPath = (path: string): boolean => path.replace(/\/+$/, '') === COMMUNITY_PATH;
+
 export const accountPath = (section?: string | null, detail?: string | null): string =>
   ['/account', section && encodeURIComponent(section), section && detail && encodeURIComponent(detail)].filter(Boolean).join('/');
 

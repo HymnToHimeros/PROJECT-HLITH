@@ -1,0 +1,136 @@
+/* Community page (T60). No design yet (CLAUDE.md Override 5): HLIÐSKJÁLF's tokens only. */
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-4);
+  max-width: 760px;
+}
+.note {
+  margin: 0;
+  font-size: 14px;
+  color: var(--ink-3);
+}
+.alert {
+  margin: 0;
+  padding: 12px 14px;
+  border-radius: var(--r-button);
+  border: 1px dashed var(--ember-soft);
+  background: var(--bg-card);
+  color: var(--ink-1);
+  font-size: 14px;
+  line-height: 1.45;
+  max-width: 760px;
+}
+
+/* The welcome: the sky above the high seat, quietly. */
+.hero {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-3);
+  padding: var(--s-6) var(--s-5);
+  border: 1px solid var(--line-default);
+  border-radius: var(--r-hero);
+  background:
+    radial-gradient(70% 140% at 100% 0%, color-mix(in srgb, var(--glacier) 14%, transparent), transparent 65%),
+    var(--bg-card);
+  max-width: 760px;
+  overflow: hidden;
+}
+.label {
+  font-family: var(--font-numbers);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  color: var(--ink-4);
+}
+.title {
+  margin: 0;
+  font-size: 26px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  line-height: 1.15;
+  color: var(--ink-1);
+}
+.lead {
+  margin: 0;
+  font-size: 18px;
+  color: var(--glacier);
+  font-weight: 600;
+}
+.text {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--ink-2);
+  max-width: 60ch;
+}
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-2);
+  margin-top: var(--s-2);
+}
+
+.facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-3) var(--s-6);
+  margin: var(--s-2) 0 0;
+  padding-top: var(--s-4);
+  border-top: 1px solid var(--line-default);
+}
+.fact {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.fact dt {
+  font-size: 12px;
+  color: var(--ink-4);
+}
+.factValue {
+  margin: 0;
+  font-family: var(--font-numbers);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--ink-1);
+}
+
+/* The empty place the Discord will go. */
+.slot {
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: var(--s-2);
+  min-height: 280px;
+  padding: var(--s-6) var(--s-4);
+  border: 1px dashed var(--line-empty);
+  border-radius: var(--r-hero);
+  background: color-mix(in srgb, var(--bg-inset) 70%, transparent);
+  text-align: center;
+  max-width: 760px;
+}
+.slotLabel {
+  font-family: var(--font-numbers);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  color: var(--ink-4);
+}
+.slotText {
+  margin: 0;
+  font-size: 15px;
+  color: var(--ink-3);
+}
+
+@media (max-width: 640px) {
+  .hero {
+    padding: var(--s-5) var(--s-4);
+  }
+  .title {
+    font-size: 22px;
+  }
+  .slot {
+    min-height: 200px;
+  }
+}

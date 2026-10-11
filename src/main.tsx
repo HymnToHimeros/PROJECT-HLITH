@@ -33,6 +33,7 @@ registerModuleScreen('calendar', () => import('./tools/calendar/CalendarScreen')
 registerModuleScreen('farm', () => import('./tools/farm/FarmScreen'));
 registerPanel('assistant', () => import('./tools/assistant/AssistantPanel'));
 registerPanel('account', () => import('./tools/account/AccountPage'));
+registerPanel('community', () => import('./tools/community/CommunityPage'));
 registerIdentity(useShellIdentity); // the sidebar's profile card: picture, banner, name
 applyTheme(scheduledTheme(savedTheme(), getPrefs().themeSchedule, 'all', new Date())); // before the first paint, so nobody sees a flash of the wrong theme
 applyMotion(savedMotion()); // animations on / reduced / off, before anything moves

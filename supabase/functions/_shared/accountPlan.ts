@@ -21,6 +21,7 @@ export const USER_TABLES = [
   'hoyolab_checkins',
   'hoyolab_redemptions',
   'hoyolab_my_codes',
+  'community_members',
 ] as const;
 
 /**

@@ -5,6 +5,8 @@ import s from './signin.module.css';
 interface Props {
   onProvider: (provider: 'google' | 'discord') => Promise<string | null>;
   onEmail: (email: string) => Promise<string | null>;
+  /** An invite link (T60) was opened on this device: say so, and open email sign-in too. */
+  invited?: boolean;
 }
 
 /** The public pages (T55: plain pages outside the app, open without signing in) and the fan notice. */
@@ -24,8 +26,20 @@ export function LegalLinks() {
   );
 }
 
-/** Remembered on this device once an owner or tester unlocks email sign-in. */
+/**
+ * Remembered on this device once an owner or tester unlocks email sign-in. While signed in
+ * the server's answer decides (T60, rememberTester): a tester or the owner keeps it, anyone
+ * else loses it. Signed out, the device can't ask, so "Owner or tester?" can still set it.
+ */
 export const TESTER_KEY = 'hlith.signin.tester';
+export function rememberTester(on: boolean): void {
+  try {
+    if (on) localStorage.setItem(TESTER_KEY, '1');
+    else localStorage.removeItem(TESTER_KEY);
+  } catch {
+    /* storage blocked: nothing to remember */
+  }
+}
 const readTester = () => {
   try {
     return localStorage.getItem(TESTER_KEY) === '1';
@@ -37,14 +51,15 @@ const readTester = () => {
 /**
  * Login (DESIGN §4). Discord comes first, then Google; both are open to everyone (owner, T55:
  * Google's sign-in is published). The email link (no mail service set up yet, T10) is shown
- * greyed out with "Not open to the public yet". "Owner or tester?" unlocks it on this device.
+ * greyed out with "isn't open to the public yet". "Owner or tester?" unlocks it on this device,
+ * and so does an invite link (T60).
  */
-export function SignIn({ onProvider, onEmail }: Props) {
+export function SignIn({ onProvider, onEmail, invited = false }: Props) {
   const [email, setEmail] = useState('');
   const [sent, setSent] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
-  const [tester, setTester] = useState(readTester);
+  const [tester, setTester] = useState(() => invited || readTester());
 
   const run = async (task: () => Promise<string | null>, after?: () => void) => {
     setBusy(true);
@@ -74,6 +89,11 @@ export function SignIn({ onProvider, onEmail }: Props) {
         <div className="t-label">PROJECT-HLITH</div>
         <h1 className={`t-display ${s.name}`}>HLIÐSKJÁLF</h1>
         <p className={s.lead}>One seat, every world. Sign in to see your games.</p>
+        {invited && (
+          <p className={s.invited} role="status">
+            <strong>You’ve been invited to test HLIÐSKJÁLF.</strong> Sign in with Discord, Google or email, then accept the invite.
+          </p>
+        )}
         <p className={s.about}>
           A free command hub for Honkai: Star Rail and Zenless Zone Zero: plan pulls, track dailies, events and your roster, on phone and PC.{' '}
           <a href="/about">What it does</a>
