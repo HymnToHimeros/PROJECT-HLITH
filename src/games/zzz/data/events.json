@@ -492,5 +492,34 @@
       "start": true,
       "end": true
     }
+  },
+  {
+    "id": "all-new-program-2026-10-21",
+    "title": "All-New Program",
+    "kind": "login",
+    "start": "2026-10-21T03:00:00.000Z",
+    "end": "2026-11-29T19:59:59.000Z",
+    "reward": 10,
+    "currency": "encrypted-master-tape",
+    "serverTime": {
+      "base": 8,
+      "end": true
+    },
+    "loginDays": 7
+  },
+  {
+    "id": "en-nah-into-your-lap-2026-11-11",
+    "title": "\"En-Nah\" Into Your Lap",
+    "kind": "login",
+    "start": "2026-11-11T02:00:00.000Z",
+    "end": "2026-11-29T19:59:59.000Z",
+    "reward": 10,
+    "currency": "boopon",
+    "serverTime": {
+      "base": 8,
+      "start": true,
+      "end": true
+    },
+    "loginDays": 7
   }
 ]
