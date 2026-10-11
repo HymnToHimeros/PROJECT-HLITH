@@ -42,6 +42,12 @@ Resume with: "continue from PROGRESS.md". Newest entry on top. Older entries:
   (version 67); calls without the key get 401, GET gets 405. Check of a real delivery
   waits for SCHEDULER's first Action run. The example-data browser test now names the
   screen and the open requests if a screen never stops loading (30 s each).
+- 2026-10-10 · **SCHEDULER: the research routine's instructions and key moments** (branch
+  `scheduler/research-routine`, T6/T7 step 4a). `npm run schedule:due -- --key` gives the
+  routine's next key moment (patch day, expected program announcement and pre-download
+  notice, new banners, first quiet-middle check; both games share a run within 12 hours).
+  docs/ROUTINES.md has the routine's full instructions and the current "what runs where".
+  Next: FRAME adds the `research-routine` job (4b); triggers after MANAGER's go (4c).
 - 2026-10-10 · **SCHEDULER: the automatic data refresh** (branch `scheduler/auto-refresh`, T6/T7 step 3).
   `.github/workflows/data-refresh.yml` asks `schedule:due` every 2 hours; when a check
   is due it re-imports leaks and characters, all kits (leak kits included), versions,
