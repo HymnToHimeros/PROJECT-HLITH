@@ -11,7 +11,8 @@
 #      Anything else waits for MANAGER;
 #   5. reports the run, its findings and the next check time to the owner's inbox
 #      (findings-intake, with the FINDINGS_INTAKE_KEY secret).
-# A PR opened with the built-in token does not start CI, which is why step 2 runs here.
+# A PR opened with the built-in token does not start CI, which is why step 2 runs here; before
+# merging it also starts the real CI on its branch (main requires its `check`) and waits for it.
 name: Data refresh
 
 on:
@@ -22,6 +23,7 @@ on:
 permissions:
   contents: write
   pull-requests: write
+  actions: write
 
 concurrency:
   group: data-refresh
@@ -138,7 +140,21 @@ jobs:
             gh pr edit "$pr" --body-file "$RUNNER_TEMP/body.md"
           fi
           if [ "${{ steps.diff.outputs.data_only }}" = "true" ] && [ "${{ steps.check.outcome }}" = "success" ]; then
-            gh pr merge "$pr" --squash --delete-branch || echo "::warning::PR #$pr could not merge by itself; it waits for MANAGER."
+            # main requires CI's `check`. A PR opened with the built-in token starts no CI, so start
+            # the real CI on this branch and wait for it; merge only when it passes.
+            sha=$(git rev-parse HEAD)
+            gh workflow run ci.yml --ref "$BRANCH"
+            run=""
+            for _ in $(seq 1 30); do
+              run=$(gh run list --workflow ci.yml --branch "$BRANCH" --event workflow_dispatch --json databaseId,headSha --jq ".[] | select(.headSha == \"$sha\") | .databaseId" | head -1)
+              [ -n "$run" ] && break
+              sleep 10
+            done
+            if [ -n "$run" ] && gh run watch "$run" --exit-status >/dev/null; then
+              gh pr merge "$pr" --squash --delete-branch || echo "::warning::PR #$pr could not merge by itself; it waits for MANAGER."
+            else
+              echo "::warning::CI did not pass for PR #$pr; it waits for MANAGER."
+            fi
           else
             echo "::warning::PR #$pr waits for MANAGER (data only: ${{ steps.diff.outputs.data_only }}, check: ${{ steps.check.outcome }})."
           fi

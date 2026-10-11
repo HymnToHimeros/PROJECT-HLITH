@@ -3,6 +3,9 @@ on:
   push:
     branches: [main]
   pull_request:
+  # Started by the Data refresh Action for its own PR branch: a PR opened with the built-in
+  # token starts no CI by itself, and main requires this workflow's `check`.
+  workflow_dispatch:
 
 # A newer push to the same pull request stops the older, now useless run.
 concurrency:
@@ -28,6 +31,8 @@ jobs:
             range="${{ github.event.before }}..${{ github.sha }}"
           fi
           files=$(git diff --name-only "$range" 2>/dev/null) || files=everything
+          # A started-by-hand run (workflow_dispatch) has no range to compare: always check everything.
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then files=everything; fi
           echo "$files"
           if [ -n "$files" ] && { echo "$files" | grep -qvE '^docs/|\.md$' || echo "$files" | grep -qx 'docs/ROADMAP.md'; }; then
             echo "code=true" >> "$GITHUB_OUTPUT"
