@@ -22,7 +22,7 @@ doing it said `LIVE`. Newest jobs at the bottom; live jobs move to Done.
 | T11 | Finish account deletions after 30 days | FRAME | sent | Listed as "later" in PROGRESS.md. |
 | T13 | ZZZ 3.3 (21 Oct): event dates, A-rank featured agents, version end date | SCHEDULER | blocked | Nothing published yet; rerun `data:nanoka` + `data:schedule` on 21 Oct. |
 | T14 | HSR 4.7 (starts 11 Nov): versions, banners, events | SCHEDULER | blocked | Waits for the announcement (special program around late Oct). |
-| T15 | HSR leak "Nihilux": confirm official name | SCHEDULER | working | Owner 2026-10-11: official name is Aeon Aha. Rename data PR (official source named). |
+| T15 | HSR leak "Nihilux": confirm official name | SCHEDULER | live | #103: shown as "Aeon ★ Aha" (HoYoverse preview 15 Sep + owner), still marked leak until release. |
 | T18 | Make my own teams (pick the members myself, get them scored) | FRAME leads, LOGIC-CORE scores | working | LIVE: My teams picker (#59), account suggestions (#67), signature weapons (#69), build wants (#73). Next: every equipped weapon (#74). |
 | T28 | Standing rule: every logic rule is the same in HSR and ZZZ, except game-specific facts; ZZZ counts builds like HSR | LOGIC-CORE | working | In #73 (ZZZ counts builds like HSR; standing mirror rule in decisions files). |
 | T30 | HSR scoring still doesn't understand kits (owner's own Aventurine • Waveflair team 47%, "best" again Tingyun + Sparkle). Owner: teams do NOT need a sustain/healer. Wants scoring that understands buff size, conditions, how kits interact | LOGIC-CORE | live | Kit-number scoring (#90) + Phainon/Dan Heng PT Bondmate in his domain (#91, owner's rule). All 3 owner teams best found. |
