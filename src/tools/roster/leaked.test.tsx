@@ -64,7 +64,7 @@ describe('Roster characters: order and leaks', () => {
     expect(names(screen.getByRole('list', { name: /Characters/ }))).toEqual(['Abe Undated', 'Newest Star', 'Older Star', 'Zed Undated']);
   });
 
-  it('leaked characters are hidden until “Show leaked”, then marked unverified with their source', async () => {
+  it('leaked characters are hidden until “Show leaked”, then marked LEAK on a tile the same as any other', async () => {
     const list = await show([...released, leak]);
     expect(names(list)).not.toContain('Rumoured Hero, leaked, unverified');
     const toggle = screen.getByRole('button', { name: 'Show leaked' });
@@ -74,8 +74,12 @@ describe('Roster characters: order and leaks', () => {
     const tile = await screen.findByRole('button', { name: 'Rumoured Hero, leaked, unverified' });
     const shown = screen.getByRole('list', { name: /Characters/ });
     expect(names(shown)).toContain('Rumoured Hero, leaked, unverified');
-    expect(within(tile).getByText('? UNVERIFIED')).toBeInTheDocument();
-    expect(within(tile).getByText('test leak site')).toBeInTheDocument();
+    // A LEAK chip in the picture where NOT OWNED would be; no tag or source text under the tile
+    // (it would make the tile taller than the rest). The source is on the character page.
+    expect(within(tile).getByText('LEAK')).toBeInTheDocument();
+    expect(within(tile).queryByText('NOT OWNED')).toBeNull();
+    expect(within(tile).queryByText('? UNVERIFIED')).toBeNull();
+    expect(within(tile).queryByText('test leak site')).toBeNull();
     // A leak isn't counted as something you could own.
     expect(screen.getByText(/of 4 owned/)).toBeInTheDocument();
     // Remembered in this browser.
@@ -97,6 +101,8 @@ describe('Roster characters: order and leaks', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Rumoured Hero, leaked, unverified, wanted' }));
     const page = await screen.findByRole('article', { name: 'Rumoured Hero' });
     expect(within(page).getByRole('button', { name: 'Owned' })).toBeDisabled();
+    // The page keeps the unverified mark and where the leak came from.
+    expect(within(page).getAllByText('test leak site').length).toBeGreaterThan(0);
     // Marked unverified with its source at the top and on If you pull (T39).
     expect(within(page).getAllByText('test leak site')).toHaveLength(2);
   });
