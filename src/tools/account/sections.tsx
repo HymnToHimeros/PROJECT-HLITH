@@ -6,10 +6,7 @@ import { canSync, syncNow, type SyncStatus } from '../../core/data/sync';
 import { ServerPicker } from '../../core/shell/ServerPicker';
 import { ProtagonistPicker } from '../../core/shell/ProtagonistPicker';
 import { OWNER_PREFIX, useOwnerThemes, type OwnerTheme } from '../../core/theme/ownerThemes';
-import { ACCENT_LABEL, ACCENT_VALUE, ACCENTS, CORNERS, CORNERS_LABEL, lookOf, SPACING_LABEL, SPACINGS, TEXT_SIZE_LABEL, TEXT_SIZES, type Look as LookPrefs } from '../../core/theme/look';
 import { motionFor, setMotion, type Motion } from '../../core/theme/motion';
-import { MODULES } from '../../core/registry/modules';
-import type { ModuleId } from '../../core/contract';
 import { setTheme, THEMES, themeInfo } from '../../core/theme/theme';
 import { ThemeMotif } from '../../core/theme/ThemeArt';
 import { formatDate, formatTime } from '../../core/time/reset';
@@ -467,7 +464,7 @@ export function ThemePage() {
         the background art never sits under your cards or makes text harder to read.
       </p>
       <Animations />
-      <Look />
+      <p className={a.small}>Accent colour, font, text size, card style and a theme schedule are in Account → Customise.</p>
     </>
   );
 }
@@ -499,95 +496,6 @@ function Animations() {
       ) : (
         <p className={a.small}>Following your device’s setting for now.</p>
       )}
-    </section>
-  );
-}
-
-const setLook = (change: Partial<LookPrefs>) => updatePrefs((p) => ({ ...p, look: { ...lookOf(p), ...change } }));
-
-/** Account → Theme → Look (T52): accent, text size, spacing and corners over any theme. */
-function Look() {
-  const prefs = usePrefs();
-  const look = lookOf(prefs);
-  const tone = (document.documentElement.dataset.tone === 'light' ? 'light' : 'dark') as 'dark' | 'light';
-  const accent = look.accent ?? 'theme';
-  return (
-    <section className={a.card} aria-labelledby="look-title">
-      <h3 className={a.cardTitle} id="look-title">
-        Look
-      </h3>
-      <p className={a.small}>Make any theme yours. Every choice keeps text readable: each accent is checked against every theme.</p>
-      <div className={a.accentRow} role="radiogroup" aria-label="Accent colour">
-        {ACCENTS.map((id) => (
-          <button
-            key={id}
-            type="button"
-            role="radio"
-            aria-checked={accent === id}
-            className={a.accentChip}
-            style={{ '--chip': id === 'theme' ? 'var(--ink-3)' : ACCENT_VALUE[id][tone] } as CSSProperties}
-            onClick={() => setLook({ accent: id })}
-          >
-            <span className={a.accentDot} aria-hidden="true" />
-            {ACCENT_LABEL[id]}
-          </button>
-        ))}
-      </div>
-      <div className={a.lookRow}>
-        <span className={a.small}>Text size</span>
-        <Segmented label="Text size" value={look.textSize ?? 'normal'} onChange={(v) => setLook({ textSize: v })} options={TEXT_SIZES.map((id) => ({ id, label: TEXT_SIZE_LABEL[id] }))} />
-      </div>
-      <div className={a.lookRow}>
-        <span className={a.small}>Spacing</span>
-        <Segmented label="Spacing" value={look.spacing ?? 'normal'} onChange={(v) => setLook({ spacing: v })} options={SPACINGS.map((id) => ({ id, label: SPACING_LABEL[id] }))} />
-      </div>
-      <div className={a.lookRow}>
-        <span className={a.small}>Card corners</span>
-        <Segmented label="Card corners" value={look.corners ?? 'soft'} onChange={(v) => setLook({ corners: v })} options={CORNERS.map((id) => ({ id, label: CORNERS_LABEL[id] }))} />
-      </div>
-      {Object.keys(look).length > 0 && (
-        <div className={a.actions}>
-          <Button variant="quiet" onClick={() => updatePrefs((p) => ({ ...p, look: {} }))}>
-            Back to the theme as designed
-          </Button>
-        </div>
-      )}
-    </section>
-  );
-}
-
-/** Account → Layout → Start screen (T52): which module HLITH opens on. */
-export function StartScreen() {
-  const choice = usePrefs().startModule;
-  return (
-    <section className={a.card} aria-labelledby="start-title">
-      <h3 className={a.cardTitle} id="start-title">
-        Start screen
-      </h3>
-      <label className={a.small}>
-        Open HLITH on{' '}
-        <select
-          className={a.input}
-          style={{ maxWidth: 240 }}
-          value={choice ?? ''}
-          onChange={(e) =>
-            updatePrefs((p) => {
-              const next = { ...p };
-              if (e.target.value) next.startModule = e.target.value as ModuleId;
-              else delete next.startModule;
-              return next;
-            })
-          }
-        >
-          <option value="">The screen I had open last</option>
-          {Object.values(MODULES).map((m) => (
-            <option key={m.id} value={m.id}>
-              {m.label}
-            </option>
-          ))}
-        </select>
-      </label>
-      <p className={a.small}>A link that names a screen still opens that screen. A hidden module can’t be the start screen; the first one in your layout opens instead.</p>
     </section>
   );
 }

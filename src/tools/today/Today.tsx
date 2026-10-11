@@ -1,4 +1,4 @@
-import { useState, type CSSProperties } from 'react';
+import { useState, type CSSProperties, type ReactNode } from 'react';
 import type { Banner, GameContract, GameEvent, GameId, ModuleId, Version } from '../../core/contract';
 import { known, unknown } from '../../core/contract/known';
 import { getPrefs, useExamplesShown, usePrefs } from '../../core/data/prefs';
@@ -16,6 +16,8 @@ import { buildTasks, type Task } from './tasks';
 import { TonightsRun } from './TonightsRun';
 import { Wishlist } from './Wishlist';
 import t from './today.module.css';
+import { cleanToday, type TodayCard } from './cardsPref';
+import { feedback } from '../../core/ui/feedback';
 
 const DAY = 86_400_000;
 const WEEKDAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
@@ -78,6 +80,23 @@ export function Today({ games, servers, lists, user, now, open, openAccount, ope
   });
   const anyExample = days.some((d) => d.banners.example || d.events.example);
   const noServer = days.filter((d) => !d.serverId).map((d) => d.game);
+  // Customise → Today: which cards show, in which column, in what order.
+  const layout = cleanToday(prefs.today);
+  const cards: Record<TodayCard, ReactNode> = {
+    tasks: <OpenTasks key="tasks" days={days} tags={tags} now={now} hideTicked={Boolean(prefs.hideTicked)} />,
+    tonight: <TonightsRun key="tonight" tasks={days.flatMap((d) => d.tasks)} noServer={noServer} tags={tags} now={now} />,
+    wishlist: (
+      <Wishlist
+        key="wishlist"
+        games={days.map((d) => ({ game: d.game, user: d.user, characters: d.lists.characters, banners: d.banners.list, example: d.banners.example, exampleIds: d.lists.exampleIds }))}
+        tags={tags}
+        now={now}
+        openRoster={() => open('roster', 'characters')}
+      />
+    ),
+    banners: <LiveBanners key="banners" days={days} tags={tags} now={now} showExamples={showExamples} />,
+    coming: <ComingUp key="coming" days={days} tags={tags} now={now} showExamples={showExamples} />,
+  };
 
   return (
     <div className={t.page}>
@@ -88,48 +107,43 @@ export function Today({ games, servers, lists, user, now, open, openAccount, ope
         </ExampleNotice>
       )}
 
-      <div className={t.tiles}>
-        {days.map((d) => (
-          <Tiles
-            key={d.game.id}
-            day={d}
-            tags={tags}
-            now={now}
-            open={open}
-            chooseServer={() => chooseServer(d.game.id)}
-            openAccount={openAccount}
-            live={stamina?.[d.game.id] ?? { state: 'none' }}
-            retry={() => retryStamina?.(d.game.id)}
-          />
-        ))}
-      </div>
-
-      <div className={t.chipRow}>
-        {days
-          .filter((d) => d.serverId)
-          .map((d) => (
-            <ServerChip key={d.game.id} game={d.game} serverId={d.serverId} onClick={() => chooseServer(d.game.id)} />
+      {!layout.hidden.includes('tiles') && (
+        <div className={t.tiles}>
+          {days.map((d) => (
+            <Tiles
+              key={d.game.id}
+              day={d}
+              tags={tags}
+              now={now}
+              open={open}
+              chooseServer={() => chooseServer(d.game.id)}
+              openAccount={openAccount}
+              live={stamina?.[d.game.id] ?? { state: 'none' }}
+              retry={() => retryStamina?.(d.game.id)}
+            />
           ))}
-        {days.map((d) => (
-          <Currencies key={d.game.id} day={d} tag={tags} openLog={() => open('pulls', 'log')} />
-        ))}
-      </div>
+        </div>
+      )}
+
+      {!layout.hidden.includes('chips') && (
+        <div className={t.chipRow}>
+          {days
+            .filter((d) => d.serverId)
+            .map((d) => (
+              <ServerChip key={d.game.id} game={d.game} serverId={d.serverId} onClick={() => chooseServer(d.game.id)} />
+            ))}
+          {days.map((d) => (
+            <Currencies key={d.game.id} day={d} tag={tags} openLog={() => open('pulls', 'log')} />
+          ))}
+        </div>
+      )}
 
       <div className={t.columns}>
-        <div className={t.stack}>
-          <OpenTasks days={days} tags={tags} now={now} hideTicked={Boolean(prefs.hideTicked)} />
-          <TonightsRun tasks={days.flatMap((d) => d.tasks)} noServer={noServer} tags={tags} now={now} />
-          <Wishlist
-            games={days.map((d) => ({ game: d.game, user: d.user, characters: d.lists.characters, banners: d.banners.list, example: d.banners.example, exampleIds: d.lists.exampleIds }))}
-            tags={tags}
-            now={now}
-            openRoster={() => open('roster', 'characters')}
-          />
-        </div>
-        <div className={t.stack}>
-          <LiveBanners days={days} tags={tags} now={now} showExamples={showExamples} />
-          <ComingUp days={days} tags={tags} now={now} showExamples={showExamples} />
-        </div>
+        {(['left', 'right'] as const).map((side) => (
+          <div key={side} className={t.stack}>
+            {layout[side].filter((c) => !layout.hidden.includes(c)).map((c) => cards[c])}
+          </div>
+        ))}
       </div>
 
       <HowTo
@@ -377,7 +391,10 @@ function OpenTasks({ days, tags, now, hideTicked }: { days: GameToday[]; tags: b
                 className={t.checkInput}
                 checked={isDone}
                 disabled={!d.serverId}
-                onChange={(e) => setTick(d.game.id, task.id, e.target.checked ? new Date(now).toISOString() : null)}
+                onChange={(e) => {
+                  setTick(d.game.id, task.id, e.target.checked ? new Date(now).toISOString() : null);
+                  feedback(e.target.checked ? 'done' : 'undo');
+                }}
                 aria-label={task.label}
               />
               <span className={t.checkBox} aria-hidden="true" style={{ '--box-vent': d.game.vent } as CSSProperties}>

@@ -1,7 +1,9 @@
 /** Locale-aware numbers and the countdown rules from DESIGN.md (Layer 4 · Timer). */
+import { numberLocale } from './displayFormat';
 
+/** Grouped the way Customise → Time and format says (displayFormat.ts); missing = the device's own way. */
 export function formatNumber(n: number, locale?: string): string {
-  return new Intl.NumberFormat(locale).format(n);
+  return new Intl.NumberFormat(numberLocale(locale)).format(n);
 }
 
 const MIN = 60_000;

@@ -4,6 +4,7 @@
  * is done in UTC with that offset; only display uses the viewer's time zone.
  */
 import type { GameContract } from '../contract';
+import { clockOptions, orderedDate } from './displayFormat';
 
 const MIN = 60_000;
 const HOUR = 60 * MIN;
@@ -69,20 +70,38 @@ export interface Viewer {
 const opts = (v: Viewer, o: Intl.DateTimeFormatOptions): Intl.DateTimeFormatOptions =>
   v.timeZone ? { ...o, timeZone: v.timeZone } : o;
 
+// Customise → Time and format (displayFormat.ts) adjusts the clock and the date order; missing = the locale's own.
 export function formatTime(t: number, v: Viewer = {}): string {
-  return new Intl.DateTimeFormat(v.locale, opts(v, { hour: '2-digit', minute: '2-digit' })).format(t);
+  return new Intl.DateTimeFormat(v.locale, opts(v, { hour: '2-digit', minute: '2-digit', ...clockOptions() })).format(t);
 }
 
 export function formatDate(t: number, v: Viewer = {}): string {
-  return new Intl.DateTimeFormat(v.locale, opts(v, { day: 'numeric', month: 'short' })).format(t);
+  return orderedDate(t, v.locale, v.timeZone) ?? new Intl.DateTimeFormat(v.locale, opts(v, { day: 'numeric', month: 'short' })).format(t);
+}
+
+/** A date with its year ("11 Oct 2026"), e.g. "member since". */
+export function formatFullDate(t: number, v: Viewer = {}): string {
+  return orderedDate(t, v.locale, v.timeZone, true) ?? new Intl.DateTimeFormat(v.locale, opts(v, { day: 'numeric', month: 'short', year: 'numeric' })).format(t);
 }
 
 export function formatDateTime(t: number, v: Viewer = {}): string {
-  return new Intl.DateTimeFormat(v.locale, opts(v, { weekday: 'short', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })).format(t);
+  const day = orderedDate(t, v.locale, v.timeZone);
+  if (day) return `${new Intl.DateTimeFormat(v.locale, opts(v, { weekday: 'short' })).format(t)} ${day}, ${formatTime(t, v)}`;
+  return new Intl.DateTimeFormat(v.locale, opts(v, { weekday: 'short', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit', ...clockOptions() })).format(t);
+}
+
+/** A day with its weekday ("Sat 11 Oct"). */
+export function formatDay(t: number, v: Viewer = {}): string {
+  const day = orderedDate(t, v.locale, v.timeZone);
+  if (day) return `${new Intl.DateTimeFormat(v.locale, opts(v, { weekday: 'short' })).format(t)} ${day}`;
+  return new Intl.DateTimeFormat(v.locale, opts(v, { weekday: 'short', day: 'numeric', month: 'short' })).format(t);
 }
 
 /** "12–26 Oct", "28 Oct – 3 Nov" style, in the viewer's locale. */
 export function formatRange(start: number, end: number, v: Viewer = {}): string {
+  const a = orderedDate(start, v.locale, v.timeZone);
+  const b = orderedDate(end, v.locale, v.timeZone);
+  if (a && b) return a === b ? a : `${a} – ${b}`;
   return new Intl.DateTimeFormat(v.locale, opts(v, { day: 'numeric', month: 'short' })).formatRange(start, end);
 }
 

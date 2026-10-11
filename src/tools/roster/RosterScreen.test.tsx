@@ -1,8 +1,9 @@
 import { act, cleanup, fireEvent, render, screen, waitFor, within } from '@testing-library/react';
 import { useState } from 'react';
+import { reloadPrefs, updatePrefs } from '../../core/data/prefs';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import type { Character, GameContract, Kit, TeamPreset, TeamRules } from '../../core/contract';
-import { gameData, resetUserData, saveTeam, setBuild, setRosterEntry, setTeamList } from '../../core/data/userData';
+import { gameData, resetUserData, saveTeam, setCharacterTags, setNickname, setBuild, setRosterEntry, setTeamList } from '../../core/data/userData';
 import RosterScreen from './RosterScreen';
 import { setShowLeaked } from './leakedPref';
 
@@ -87,9 +88,49 @@ const openPage = async (name: string) => {
   return screen.findByRole('article', { name });
 };
 
+describe('Roster: your labels and remembered view (T52c)', () => {
+  beforeEach(() => {
+    localStorage.clear();
+    reloadPrefs();
+    resetUserData();
+  });
+
+  it('nicknames show on tiles and are searchable; tags filter the grid', async () => {
+    setNickname('aa', 'c1', '  Sparky  ');
+    setCharacterTags('aa', 'c1', ['main team', 'main team', ' to build ']);
+    setCharacterTags('aa', 'c3', ['main team']);
+    expect(gameData('aa').tags?.c1).toEqual(['main team', 'to build']);
+    await show('characters');
+    expect(tileNames()[0]).toBe('Newest Star (“Sparky”)');
+    openFilters();
+    fireEvent.change(screen.getByLabelText('Your tag'), { target: { value: 'main team' } });
+    expect(tileNames()).toEqual(['Newest Star (“Sparky”)', 'Helper']);
+    fireEvent.change(screen.getByLabelText('Your tag'), { target: { value: '' } });
+    fireEvent.change(screen.getByLabelText('Search'), { target: { value: 'sparky' } });
+    expect(tileNames()).toEqual(['Newest Star (“Sparky”)']);
+    setNickname('aa', 'c1', '');
+    expect(gameData('aa').nicknames).toEqual({});
+  });
+
+  it('remembers sort and filters for next time; Customise can switch tile parts off', async () => {
+    await show('characters');
+    openFilters();
+    fireEvent.change(screen.getByLabelText('Sort'), { target: { value: 'name' } });
+    fireEvent.click(within(screen.getByRole('group', { name: 'Show' })).getByRole('button', { name: 'Not owned' }));
+    cleanup();
+    updatePrefs((p) => ({ ...p, roster: { ...p.roster, hideOnTile: ['rarity'], tileSize: 'small' } }));
+    await show('characters');
+    expect(tileNames()).toEqual(['Helper', 'Newest Star', 'Older Star', 'Shield Friend']);
+    expect(within(screen.getByRole('group', { name: 'Show' })).getByRole('button', { name: 'Not owned' })).toHaveAttribute('aria-pressed', 'true');
+    expect(screen.queryByText('5★')).toBeNull();
+    expect(screen.getByRole('list', { name: /Characters/ })).toHaveAttribute('data-size', 'small');
+  });
+});
+
 describe('Roster screen', () => {
   beforeEach(() => {
     localStorage.clear();
+    reloadPrefs();
     resetUserData();
   });
 

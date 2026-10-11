@@ -70,6 +70,10 @@ export interface GameUserData {
    * weapon and an average build. Missing = off.
    */
   assumeAverageBuilds?: boolean;
+  /** Your own tags per character (T52c), e.g. "main team", "to build". Missing = none. */
+  tags?: Record<string, string[]>;
+  /** Your own nickname per character (T52c). Missing = the game's name. */
+  nicknames?: Record<string, string>;
 }
 
 export interface TeamList {
@@ -282,6 +286,29 @@ export function setBacklogCategory(game: GameId, category: string, counted: bool
 
 export function setRosterEntry(game: GameId, characterId: string, entry: RosterEntry): void {
   update(game, (g) => ({ ...g, roster: { ...g.roster, [characterId]: entry } }));
+}
+
+export const TAG_MAX = 24;
+export const TAGS_PER_CHARACTER = 8;
+export const NICKNAME_MAX = 30;
+const tagText = (t: string) => t.replace(/\s+/g, ' ').trim().slice(0, TAG_MAX);
+
+/** Your tags on one character (T52c): trimmed, no doubles, at most 8. An empty list removes them. */
+export function setCharacterTags(game: GameId, characterId: string, tags: string[]): void {
+  const clean = [...new Set(tags.map(tagText).filter(Boolean))].slice(0, TAGS_PER_CHARACTER);
+  update(game, (g) => {
+    const rest = Object.fromEntries(Object.entries(g.tags ?? {}).filter(([id]) => id !== characterId));
+    return { ...g, tags: clean.length ? { ...rest, [characterId]: clean } : rest };
+  });
+}
+
+/** Your nickname for one character (T52c); empty = back to the game's name. */
+export function setNickname(game: GameId, characterId: string, nickname: string): void {
+  const clean = nickname.replace(/\s+/g, ' ').trim().slice(0, NICKNAME_MAX);
+  update(game, (g) => {
+    const rest = Object.fromEntries(Object.entries(g.nicknames ?? {}).filter(([id]) => id !== characterId));
+    return { ...g, nicknames: clean ? { ...rest, [characterId]: clean } : rest };
+  });
 }
 
 /** Save a character's build (replaces the one saved before). */

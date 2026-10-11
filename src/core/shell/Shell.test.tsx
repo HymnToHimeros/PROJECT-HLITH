@@ -1,10 +1,11 @@
-import { act, fireEvent, render, screen, within } from '@testing-library/react';
+import { act, fireEvent, render, screen, waitFor, within } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import type { GameContract } from '../contract';
 import { getPrefs, reloadPrefs } from '../data/prefs';
 import { registerIdentity, resetIdentity } from '../registry/identity';
 import { setTheme } from '../theme/theme';
-import { Shell } from './Shell';
+import { resetStartScreen, Shell } from './Shell';
+import { updatePrefs } from '../data/prefs';
 
 const base = (over: Partial<GameContract>): GameContract => ({
   id: 'aa',
@@ -290,5 +291,46 @@ describe('Your games', () => {
     fireEvent.click(screen.getByRole('switch', { name: 'Game B' }));
     expect(screen.queryByRole('button', { name: 'BB' })).toBeNull();
     expect(screen.getByRole('switch', { name: 'Game A' })).toBeDisabled();
+  });
+});
+
+describe('Shell: Customise → Layout and Game colours (T52b)', () => {
+  it('opens on your default game, your start screen and the tab you chose', () => {
+    resetStartScreen();
+    updatePrefs((p) => ({ ...p, defaultScope: 'bb', startModule: 'pulls', startTabs: { pulls: 'history' } }));
+    render(<Shell games={[A, B]} />);
+    expect(window.location.pathname).toBe('/bb/pulls/history');
+  });
+
+  it('a link that names a screen still wins over the start screen', () => {
+    resetStartScreen();
+    updatePrefs((p) => ({ ...p, startModule: 'pulls' }));
+    window.history.replaceState(null, '', '/aa/roster');
+    render(<Shell games={[A, B]} />);
+    expect(window.location.pathname).toMatch(/^\/aa\/roster/);
+  });
+
+  it('a game in your own colour tints with that colour; an untested colour is ignored', () => {
+    updatePrefs((p) => ({ ...p, gameVents: { aa: '#8FD3F0', bb: '#ff0000' } }));
+    window.history.replaceState(null, '', '/aa/today');
+    const { container } = render(<Shell games={[A, B]} />);
+    expect(container.innerHTML).toContain('#8FD3F0');
+    expect(container.innerHTML).not.toContain('#ff0000');
+  });
+});
+
+describe('Shell: your background picture (T52d)', () => {
+  it('shows this page’s picture over the theme’s art, else every page’s', async () => {
+    localStorage.setItem('hlith.background.all', 'data:image/jpeg;base64,QUxM');
+    localStorage.setItem('hlith.background.page:pulls', 'data:image/jpeg;base64,UFVMTFM=');
+    updatePrefs((p) => ({ ...p, backgrounds: { all: { file: 'device', strength: 0.2, version: 1 }, 'page:pulls': { file: 'device', strength: 0.1, version: 1 } } }));
+    window.history.replaceState(null, '', '/aa/today');
+    const { container, unmount } = render(<Shell games={[A, B]} />);
+    const pic = () => container.querySelector('[data-art="yours"] img');
+    await waitFor(() => expect(pic()?.getAttribute('src')).toBe('data:image/jpeg;base64,QUxM'));
+    unmount();
+    window.history.replaceState(null, '', '/aa/pulls');
+    const again = render(<Shell games={[A, B]} />);
+    await waitFor(() => expect(again.container.querySelector('[data-art="yours"] img')?.getAttribute('src')).toBe('data:image/jpeg;base64,UFVMTFM='));
   });
 });

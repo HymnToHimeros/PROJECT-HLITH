@@ -65,7 +65,7 @@ beforeEach(() => {
 describe('Account page: section bar', () => {
   it('lists the sections in order; Owner console only for owners; Sign out only when signed in', async () => {
     const { rerender } = render(<AccountPage {...props()} />);
-    expect(barLabels()).toEqual(['Profile', 'Sync', 'Backup', 'Notifications', 'Game settings', 'Example data', 'Connected accounts', 'Guide', 'Layout', 'Theme', 'Sign in']);
+    expect(barLabels()).toEqual(['Profile', 'Customise', 'Sync', 'Backup', 'Notifications', 'Game settings', 'Example data', 'Connected accounts', 'Guide', 'Layout', 'Theme', 'Sign in']);
     expect(bar().queryByRole('button', { name: /Sign out/ })).toBeNull();
     const onSignOut = vi.fn();
     rerender(<AccountPage {...props({ isOwner: true, account: { email: 'a@b.c', provider: 'discord', onSignOut } })} />);

@@ -80,6 +80,15 @@ describe('Banners screen', () => {
     resetHideLeaks();
   });
 
+  it('Customise → compact list: one row per banner, same order, with its countdown (T52c)', async () => {
+    updatePrefs((p) => ({ ...p, bannerView: 'list' }));
+    await show(realBanners);
+    expect(cardTitles()).toEqual(['Live short', 'Live long', 'Upcoming soon', 'Upcoming late', 'Leaked one']);
+    const row = screen.getByRole('article', { name: 'Live short' });
+    expect(row).toHaveTextContent('Star Two');
+    expect(row).toHaveTextContent(/ends in/);
+  });
+
   it('lists live banners first (ending soonest on top), then upcoming (starting soonest on top), and drops ended ones', async () => {
     await show(realBanners);
     expect(cardTitles()).toEqual(['Live short', 'Live long', 'Upcoming soon', 'Upcoming late', 'Leaked one']);

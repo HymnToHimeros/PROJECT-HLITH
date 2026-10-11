@@ -17,7 +17,7 @@ creates starts with that name, so you can always tell who made what.
    message that chat yourself with `send_message` (Claude Code Remote tools) instead of
    waiting for the owner: say what, where (file, PR) and what you need. Answer messages
    you get, do the fix if it is yours, and reply when it is done. Still write anything
-   lasting into `docs/PROGRESS.md`. Session ids are in the table below; `list_sessions`
+   lasting into `docs/PROGRESS.md` ("Done" entries: one file each in `docs/progress/`). Session ids are in the table below; `list_sessions`
    finds a chat whose id changed.
 7. **MANAGER is the owner's front desk (owner, 2026-10-10).** The owner writes to
    MANAGER; MANAGER sends each job to the chat it belongs to (routing table below).

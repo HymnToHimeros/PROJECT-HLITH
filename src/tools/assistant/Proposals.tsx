@@ -10,6 +10,7 @@ import { Button, ExampleTag, GameTag, HowTo } from '../../core/ui';
 import { setProposalStatus, type ProposalStatus } from './chat';
 import { applyProposal, KIND_LABEL, undoProposal, type Proposal } from './proposals';
 import s from './assistant.module.css';
+import { formatDate, formatTime } from '../../core/time/reset';
 
 interface CardProps {
   proposal: Proposal;
@@ -143,7 +144,7 @@ function ActionRow({ game, action: a, showGame }: { game: GameContract; action: 
       {showGame && <GameTag label={game.short} vent={game.vent} />}
       <span className={a.status === 'undone' ? s.undone : undefined}>
         {a.summary}
-        <span className={s.meta}> · {new Date(a.at).toLocaleString(undefined, { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}</span>
+        <span className={s.meta}> · {`${formatDate(Date.parse(a.at))}, ${formatTime(Date.parse(a.at))}`}</span>
         {error && (
           <span className={s.problem} role="alert">
             {' '}

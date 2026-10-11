@@ -560,11 +560,42 @@ async function zzzEndgame(g: Game, versionEnd: number | undefined): Promise<Game
  * end, so the step someone marked stays the same step. Rewards per chapter are
  * not listed anywhere complete, so the reward stays unknown (null).
  */
+/**
+ * Stellar Jade from the main story: each chapter page lists its missions ("==Mission List=="),
+ * each mission page states its rewards ("|rewards = …; Stellar Jade*80; …"). Undefined when a
+ * chapter or mission page is missing, so a partial sum is never shown as the total.
+ */
+async function storyJade(g: Game, chapters: string[]): Promise<{ total: number; missions: number } | undefined> {
+  const chapterPages = await fetchWiki(g.wiki, chapters);
+  const missions: string[] = [];
+  for (const ch of chapters) {
+    const text = chapterPages.get(ch)?.text;
+    const list = text?.split(/^==\s*Mission List\s*==\s*$/m)[1]?.split(/^==[^=]/m)[0];
+    if (!list) {
+      warn(g.id, `main story chapter "${ch}": no mission list on the wiki`);
+      return undefined;
+    }
+    for (const m of list.matchAll(/^#\s*\[\[([^\]|#]+)/gm)) missions.push((m[1] ?? '').trim());
+  }
+  const pages = await fetchWiki(g.wiki, missions);
+  let total = 0;
+  for (const m of missions) {
+    const box = pages.get(m) ? mainBox(pages.get(m)?.text ?? '') : undefined;
+    if (!box) {
+      warn(g.id, `main story mission "${m}": no wiki page`);
+      return undefined;
+    }
+    total += amountOf((box.rewards ?? '').replace(/,(?=\d{3})/g, ''), g.premium.item);
+  }
+  return { total, missions: missions.length };
+}
+
 async function mainStory(g: Game): Promise<BacklogItem | undefined> {
   if (g.id === 'hsr') {
     const page = (await fetchWiki(g.wiki, ['Trailblaze Mission'])).get('Trailblaze Mission');
     if (!page) return undefined;
     const steps: string[] = [];
+    const chapters: string[] = [];
     let world = '';
     const seen = new Set<string>();
     for (const line of page.text.split('\n')) {
@@ -578,18 +609,24 @@ async function mainStory(g: Game): Promise<BacklogItem | undefined> {
         continue;
       }
       const c = /^\|\s*'''\[\[([^\]|]+)(?:\|([^\]]+))?\]\]'''/.exec(line);
-      if (c && world) steps.push(`${world}: ${(c[2] ?? c[1] ?? '').trim()}`);
+      if (c && world) {
+        steps.push(`${world}: ${(c[2] ?? c[1] ?? '').trim()}`);
+        chapters.push((c[1] ?? '').trim());
+      }
     }
     if (steps.length === 0) return undefined;
+    const jade = await storyJade(g, chapters);
     return {
       id: 'hsr.main-story',
       category: 'story',
       title: 'Trailblaze Missions (main story)',
       total: steps.length,
-      reward: null,
+      reward: jade?.total ?? null,
       currency: g.premium.id,
       steps,
-      note: 'Chapters from honkai-star-rail.fandom.com/wiki/Trailblaze_Mission. Rewards per chapter: no data yet.',
+      note: jade
+        ? `Chapters from honkai-star-rail.fandom.com/wiki/Trailblaze_Mission; Stellar Jade is the sum of the ${jade.missions} missions' rewards on their wiki pages.`
+        : 'Chapters from honkai-star-rail.fandom.com/wiki/Trailblaze_Mission. Rewards: not every mission page lists them yet.',
     };
   }
   const titles = ['Season 1', 'Season 2', 'Season 3', 'Season 4', 'Season 5'];
@@ -613,7 +650,7 @@ async function mainStory(g: Game): Promise<BacklogItem | undefined> {
     reward: null,
     currency: g.premium.id,
     steps,
-    note: 'Chapters from the Season pages of zenless-zone-zero.fandom.com. Rewards per chapter: no data yet.',
+    note: 'Chapters from the Season pages of zenless-zone-zero.fandom.com. Polychrome: no source lists it yet (the wiki episode pages leave rewards empty).',
   };
 }
 

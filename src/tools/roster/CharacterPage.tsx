@@ -16,6 +16,9 @@ import r from './roster.module.css';
 import { artOf, CharArt, dupesLabel, elementOf, entryOf, isUpcoming, rarityColor, roleLabel, toCharacterBuild } from './shared';
 import { Line, TeamRow, teamAccount, useTeamAccount } from './TeamParts';
 import { useBuilds, useKits, type RosterData } from './useRosterData';
+import { formatFullDate } from '../../core/time/reset';
+import { MyLabels } from './MyLabels';
+import { feedback } from '../../core/ui/feedback';
 
 interface Props {
   data: RosterData;
@@ -41,7 +44,10 @@ export function CharacterPage({ data, character: c, several, onBack, openPulls, 
   const { game, user } = data;
   const entry = entryOf(user.roster, c.id);
   const el = elementOf(game, c.element);
-  const save = (change: Partial<typeof entry>) => setRosterEntry(game.id, c.id, { ...entry, ...change });
+  const save = (change: Partial<typeof entry>) => {
+    setRosterEntry(game.id, c.id, { ...entry, ...change });
+    feedback(change.owned === false || change.wanted === false ? 'undo' : 'done');
+  };
   const dupes = game.dupes;
   const farming = user.farm.includes(c.id);
   const addToFarm = () => {
@@ -105,7 +111,10 @@ export function CharacterPage({ data, character: c, several, onBack, openPulls, 
             </span>
             {c.leak ? <UnverifiedTag source={c.leak.source} /> : isUpcoming(c) && <UnverifiedTag source={c.source ?? 'game files'} />}
           </div>
-          <h2 className={r.heroName}>{c.name}</h2>
+          <h2 className={r.heroName}>
+            {c.name}
+            {user.nicknames?.[c.id] && <span className={r.heroNick}> “{user.nicknames[c.id]}”</span>}
+          </h2>
           <div className={r.markRow} role="group" aria-label="Your roster">
             <button
               type="button"
@@ -135,6 +144,7 @@ export function CharacterPage({ data, character: c, several, onBack, openPulls, 
               </button>
             )}
           </div>
+          <MyLabels game={game.id} user={user} character={c} />
           <div className={r.heroStats}>
             <div className={r.stat}>
               <span className={r.statLabel}>Level</span>
@@ -508,7 +518,7 @@ function BuildCard({ data, character: c }: { data: RosterData; character: Charac
           </dl>
           <div className={r.tapRow}>
             <span className={`${r.muted} ${r.grow}`}>
-              Saved {new Date(saved.updatedAt).toLocaleDateString()} · {saved.source === 'scan' ? 'from a screenshot scan' : saved.source === 'hoyolab' ? 'from HoYoLAB' : 'entered by you'}
+              Saved {formatFullDate(Date.parse(saved.updatedAt))} · {saved.source === 'scan' ? 'from a screenshot scan' : saved.source === 'hoyolab' ? 'from HoYoLAB' : 'entered by you'}
             </span>
             <Button variant="quiet" onClick={() => setCleared(clearBuild(game.id, c.id))}>
               Clear build

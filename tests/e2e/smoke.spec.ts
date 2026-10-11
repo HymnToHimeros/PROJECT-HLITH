@@ -67,7 +67,7 @@ test('the Account page: section bar, a section, browser back, theme', async ({ p
   await expect(page).toHaveURL(/\/account$/);
   await expect(page.getByRole('heading', { level: 1 })).toHaveText('Account');
   const bar = page.getByRole('navigation', { name: 'Account sections' });
-  for (const s of ['Profile', 'Sync', 'Backup', 'Notifications', 'Game settings', 'Connected accounts', 'Guide', 'Layout', 'Theme']) {
+  for (const s of ['Profile', 'Customise', 'Sync', 'Backup', 'Notifications', 'Game settings', 'Connected accounts', 'Guide', 'Layout', 'Theme']) {
     await expect(bar.getByRole('link', { name: new RegExp(`^${s}`) })).toBeVisible();
   }
   await expect(bar.getByRole('link', { name: 'Owner console' })).toHaveCount(0); // owners only

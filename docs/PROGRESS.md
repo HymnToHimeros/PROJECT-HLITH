@@ -1,7 +1,11 @@
 # PROJECT-HLITH · PROGRESS.md
 
-Resume with: "continue from PROGRESS.md". Newest entry on top. Older entries:
-`docs/HISTORY.md`.
+Resume with: "continue from PROGRESS.md". Older entries: `docs/HISTORY.md`.
+
+**New "Done" entries go in `docs/progress/`, one file each** (`YYYY-MM-DD-<chat>-<job>.md`;
+newest first by name: `ls -r docs/progress`). Several chats finish work at once, and one shared
+list made every pull request conflict here. A file of your own never does. The list under
+Done below is the older history.
 
 ## Now
 - **HLITH is live:** https://project-hlith.hliskjlf.workers.dev. Sign-in with
@@ -29,11 +33,22 @@ Resume with: "continue from PROGRESS.md". Newest entry on top. Older entries:
 - CI (`.github/workflows/ci.yml`) runs both on every pull request.
 
 ## Done
-- 2026-10-11 · **LOGIC-CORE: recommended builds for everyone; the build card says why there's no score (T54)**
-  (branch `logic-core/missing-builds`). No released character lacked a recommended build (Kafka included): a build
-  saved with fewer than 3 parts read "no recommended build". Now it says to add sets, main stats or sub stats.
-  Severian, Phoenix (ZZZ) and Aeon ★ Aha (HSR) get the beta files' recommendation, marked "beta, may change". A test
-  lists any released character without one.
+Newer entries: `docs/progress/` (one file each). Older ones:
+- 2026-10-11 · **ERROR-FIX: logins tested in a simulated way** (branch `error-fix/simulated-logins`, owner's T51).
+  `tests/simulated.test.ts` runs the real HoYoLAB, history-link and Assistant code against faked
+  answers (expired cookie, captcha, rate limits, HoYoLAB down, wrong region, multi-page history,
+  re-import, empty history, expired link, wrong key, 429, busy, timeout): plain messages, no
+  secrets, nothing duplicated. Fixed: the history link crashed when HoYoverse was down or sent a
+  web page; now a plain "server" error. Read-only check: the owner's real HoYoLAB check-in job
+  ran OK on 10 Oct 16:15 UTC and claimed both games' rewards.
+- 2026-10-11 · **SCHEDULER: main story Jade, standard pools, research routine live** (branch
+  `scheduler/story-rewards`). HSR main story reward = 10,330 Stellar Jade, the sum of its 193
+  missions' stated rewards on the wiki (`storyJade` in import-schedule.ts); ZZZ stays unknown, no
+  source lists it. `historyMapping.standardTop` for both games (Stellar Warp / Stable Channel top
+  results) so the Luck report judges 50/50s from imports; `tests/standardPool.test.ts` guards it.
+  Research routine (T7 step 4c): trigger `trig_01VraA5pyqxiujkH81FqtEee`, daily 10:45 UTC, acts only
+  on key-moment days (docs/ROUTINES.md); heartbeat `trig_01MgSqXeCBk7EtgjwkdDthUX` disabled. First
+  real run 14 Oct.
 - 2026-10-11 · **FRAME: profile card, badges and Look (T52)** (branch `frame/profile-badges`).
   Account → Profile is now a card like an in-game one: banner, framed picture, name in your
   colour, title, your badge, up to 4 favourite characters or teams, and your own pull numbers.
