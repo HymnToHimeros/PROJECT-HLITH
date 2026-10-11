@@ -7,7 +7,7 @@ import { useHideLeaks } from '../banners/leakPref';
 import { ScanEntry } from '../scan/Scan';
 import { setShowLeaked, useShowLeaked } from './leakedPref';
 import r from './roster.module.css';
-import { artOf, byNewest, CharArt, dupesLabel, elementOf, entryOf, rarityColor, subtitleOf, tagOf } from './shared';
+import { artOf, byNewest, CharArt, dupesLabel, elementOf, entryOf, leaksFirst, rarityColor, subtitleOf, tagOf } from './shared';
 import { teamAccount } from './TeamParts';
 import type { RosterData } from './useRosterData';
 
@@ -47,7 +47,8 @@ const TAP: { id: Tap; label: string }[] = [
  * Roster → Characters (design): "N of M owned", All / Owned / Not owned, and the tile grid.
  * Newest first by default (release date; undated after dated, then by name).
  * Leaked characters (Character.leak) appear only with "Show leaked" on, marked
- * unverified with their source; they can be wanted but not owned.
+ * unverified with their source; they can be wanted but not owned. Shown leaks always come
+ * first, newest first among them, whatever the sort (owner: they are the newest).
  */
 export function Characters({ data, several, onOpen }: Props) {
   const [query, setQuery] = useState('');
@@ -91,7 +92,7 @@ export function Characters({ data, several, onOpen }: Props) {
         const v = x.d.game.rules.teams?.ifYouPull(x.c.id, teamAccount(x.d));
         if (v) fit.set(x.key, v.percent);
       }
-    const order = (a: Row, b: Row) =>
+    const chosen = (a: Row, b: Row) =>
       sort === 'fit'
         ? (fit.get(b.key) ?? -1) - (fit.get(a.key) ?? -1) || byNewest(a.c, b.c)
         : sort === 'name'
@@ -99,6 +100,8 @@ export function Characters({ data, several, onOpen }: Props) {
           : sort === 'rarity' && a.c.rarity !== b.c.rarity
             ? (a.c.rarity === 'top' ? -1 : 1)
             : byNewest(a.c, b.c);
+    // Leaked characters always come first, newest first among them (owner); the chosen sort orders the rest.
+    const order = (a: Row, b: Row) => (a.c.leak || b.c.leak ? leaksFirst(a.c, b.c) : chosen(a, b));
     return rows.filter(keep).sort(order);
   }, [rows, query, element, rarity, show, sort]);
   const canFit = data.some((d) => d.game.rules.teams);
