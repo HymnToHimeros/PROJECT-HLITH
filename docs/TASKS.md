@@ -41,7 +41,7 @@ doing it said `LIVE`. Newest jobs at the bottom; live jobs move to Done.
 | T51 | Outsider test of the live site: new test account, fill everything, use every function (PC + phone), fix every error found, one final report | ERROR-FIX | live | Report given. Fixes #115, #118; data #116, #120. Real sign-up test needs owner (throwaway email blocked). |
 | T52 | Customise everything (look, layout, roster, banners/calendar, formats, feedback; one Customise hub) + profile and badges; unique owner badge ("above the high seat, watching from the sky"), lore badge for all, earned badges from real data only | FRAME | working | #117 LIVE (profile, badges). #119 merged (Customise hub: look, game colours, theme schedule, layout, formats, roster tags/nicknames, event kinds, compact banners, Today layout, haptics/sounds, private backgrounds). Waiting LIVE. |
 | T53 | Standard 5★ pools for HSR + ZZZ (historyMapping.standardTop) so the Luck report can tell 50/50 wins from losses | SCHEDULER | live | #116 (+ HSR main story 10,330 Stellar Jade; ZZZ story reward no source). |
-| T54 | Build score card said "no recommended build" when the build just has too few parts (Kafka); fix wording + test all released have builds; beta builds for Severian/Phoenix marked "beta, may change" | LOGIC-CORE | working | #120 merged; all released have builds; beta builds for Aha, Severian, Phoenix. Waiting LIVE. |
+| T54 | Build score card said "no recommended build" when the build just has too few parts (Kafka); fix wording + test all released have builds; beta builds for Severian/Phoenix marked "beta, may change" | LOGIC-CORE | live | #120 merged; all released have builds; beta builds for Aha, Severian, Phoenix. |
 
 ## Done
 | # | Job | Who | Live on |
