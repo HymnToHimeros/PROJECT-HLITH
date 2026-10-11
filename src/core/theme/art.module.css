@@ -230,3 +230,20 @@
     transform: scale(1.05);
   }
 }
+
+/* Your own background picture (T52d), over the theme's art, at the strength you chose (max 25%).
+   It is toned toward the page first (squeezed contrast, darker on dark themes, lighter on light
+   ones), so its brightest or darkest spot shifts the page colour no more than the theme's own
+   art may (tests/themes.test.ts: 16%), and text keeps its contrast. */
+.yourPicture {
+  filter: contrast(0.6) brightness(0.7);
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 30%;
+}
+:root[data-tone='light'] .yourPicture {
+  filter: contrast(0.5) brightness(1.5);
+}

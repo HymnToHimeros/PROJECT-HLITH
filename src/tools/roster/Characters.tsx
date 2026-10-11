@@ -1,5 +1,6 @@
 import { useId, useMemo, useState } from 'react';
 import type { Character } from '../../core/contract';
+import { getPrefs, updatePrefs, usePrefs } from '../../core/data/prefs';
 import { setRosterEntry, type RosterEntry } from '../../core/data/userData';
 import { EmptyState, GameTag, HowTo } from '../../core/ui';
 import { RosterImport } from '../account-links/RosterImport';
@@ -8,6 +9,7 @@ import { ScanEntry } from '../scan/Scan';
 import { setShowLeaked, useShowLeaked } from './leakedPref';
 import r from './roster.module.css';
 import { artOf, byNewest, CharArt, dupesLabel, elementOf, entryOf, leaksFirst, rarityColor, subtitleOf, tagOf } from './shared';
+import { allTags } from './MyLabels';
 import { teamAccount } from './TeamParts';
 import type { RosterData } from './useRosterData';
 
@@ -50,12 +52,28 @@ const TAP: { id: Tap; label: string }[] = [
  * unverified with their source; they can be wanted but not owned. Shown leaks always come
  * first, newest first among them, whatever the sort (owner: they are the newest).
  */
+/** The view you used last (Customise → Roster remembers it): sort, show, element, rarity and tag. */
+const savedView = () => getPrefs().roster?.view ?? {};
+const remember = (change: Record<string, string>) =>
+  updatePrefs((p) => ({ ...p, roster: { ...p.roster, view: Object.fromEntries(Object.entries({ ...p.roster?.view, ...change }).filter(([, v]) => v)) } }));
+const pickOf = <T extends string>(list: readonly T[], v: unknown, fallback: T): T => ((list as readonly unknown[]).includes(v) ? (v as T) : fallback);
+
 export function Characters({ data, several, onOpen }: Props) {
   const [query, setQuery] = useState('');
-  const [element, setElement] = useState('');
-  const [rarity, setRarity] = useState('');
-  const [show, setShow] = useState<Show>('all');
-  const [sort, setSort] = useState<Sort>('newest');
+  const [element, setElementState] = useState(() => savedView().element ?? '');
+  const [rarity, setRarityState] = useState(() => savedView().rarity ?? '');
+  const [show, setShowState] = useState<Show>(() => pickOf(['all', 'owned', 'not-owned', 'wanted'], savedView().show, 'all'));
+  const [sort, setSortState] = useState<Sort>(() => pickOf(['newest', 'name', 'rarity', 'fit'], savedView().sort, 'newest'));
+  const [tagFilter, setTagState] = useState(() => savedView().tag ?? '');
+  const setElement = (v: string) => (setElementState(v), remember({ element: v }));
+  const setRarity = (v: string) => (setRarityState(v), remember({ rarity: v }));
+  const setShow = (v: Show) => (setShowState(v), remember({ show: v === 'all' ? '' : v }));
+  const setSort = (v: Sort) => (setSortState(v), remember({ sort: v === 'newest' ? '' : v }));
+  const setTag = (v: string) => (setTagState(v), remember({ tag: v }));
+  const rosterPrefs = usePrefs().roster;
+  const tileSize = rosterPrefs?.tileSize ?? 'normal';
+  const hideOnTile = new Set(rosterPrefs?.hideOnTile ?? []);
+  const tags = allTags(data.map((d) => d.user));
   const [tap, setTap] = useState<Tap>('open');
   const [picked, setPicked] = useState<Set<string>>(new Set());
   // Search, element / rarity / sort and quick marking live behind one "Filters" button, closed by default.
@@ -77,7 +95,8 @@ export function Characters({ data, several, onOpen }: Props) {
   const list = useMemo(() => {
     const q = query.trim().toLowerCase();
     const keep = ({ d, c, e }: Row) => {
-      if (q && !`${c.name} ${subtitleOf(d.game, c)}`.toLowerCase().includes(q)) return false;
+      if (q && !`${c.name} ${d.user.nicknames?.[c.id] ?? ''} ${subtitleOf(d.game, c)} ${(d.user.tags?.[c.id] ?? []).join(' ')}`.toLowerCase().includes(q)) return false;
+      if (tagFilter && !(d.user.tags?.[c.id] ?? []).includes(tagFilter)) return false;
       if (element && elementOf(d.game, c.element)?.label !== element) return false;
       if (rarity && c.rarity !== rarity) return false;
       if (show === 'owned' && !e.owned) return false;
@@ -103,18 +122,19 @@ export function Characters({ data, several, onOpen }: Props) {
     // Leaked characters always come first, newest first among them (owner); the chosen sort orders the rest.
     const order = (a: Row, b: Row) => (a.c.leak || b.c.leak ? leaksFirst(a.c, b.c) : chosen(a, b));
     return rows.filter(keep).sort(order);
-  }, [rows, query, element, rarity, show, sort]);
+  }, [rows, query, element, rarity, show, sort, tagFilter]);
   const canFit = data.some((d) => d.game.rules.teams);
 
   // "N of M owned" counts released characters only: a leak can't be owned.
   const owned = released.filter((x) => x.e.owned).length;
   const wanted = rows.filter((x) => x.e.wanted).length;
-  const filtered = Boolean(query || element || rarity || show !== 'all');
+  const filtered = Boolean(query || element || rarity || tagFilter || show !== 'all');
   const anyDates = rows.some((x) => x.c.releasedAt);
   const clear = () => {
     setQuery('');
     setElement('');
     setRarity('');
+    setTag('');
     setShow('all');
   };
 
@@ -148,7 +168,7 @@ export function Characters({ data, several, onOpen }: Props) {
   }
 
   const game = data[0]?.game;
-  const extras = [query, element, rarity, sort !== 'newest', tap !== 'open'].filter(Boolean).length;
+  const extras = [query, element, rarity, tagFilter, sort !== 'newest', tap !== 'open'].filter(Boolean).length;
 
   return (
     <div className={r.stack}>
@@ -183,7 +203,7 @@ export function Characters({ data, several, onOpen }: Props) {
           <div className={r.tools}>
             <label className={`${r.field} ${r.searchField}`}>
               <span className={r.fieldLabel}>Search</span>
-              <input className={r.input} type="search" value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Name, role, element…" />
+              <input className={r.input} type="search" value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Name, nickname, tag, role, element…" />
             </label>
             <label className={r.field}>
               <span className={r.fieldLabel}>Element</span>
@@ -204,6 +224,19 @@ export function Characters({ data, several, onOpen }: Props) {
                 <option value="mid">{rarityWord('mid')}</option>
               </select>
             </label>
+            {tags.length > 0 && (
+              <label className={r.field}>
+                <span className={r.fieldLabel}>Your tag</span>
+                <select className={r.input} value={tagFilter} onChange={(e) => setTag(e.target.value)}>
+                  <option value="">Any tag</option>
+                  {tags.map((t) => (
+                    <option key={t} value={t}>
+                      {t}
+                    </option>
+                  ))}
+                </select>
+              </label>
+            )}
             <label className={r.field}>
               <span className={r.fieldLabel}>Sort</span>
               <select className={r.input} value={sort} onChange={(e) => setSort(e.target.value as Sort)}>
@@ -352,10 +385,10 @@ export function Characters({ data, several, onOpen }: Props) {
       {list.length === 0 ? (
         <p className={r.muted}>No {word}s match these filters.</p>
       ) : (
-        <ul className={r.grid} aria-label={several ? 'Characters' : `${data[0]?.game.terms.character ?? 'Character'}s`}>
+        <ul className={r.grid} data-size={tileSize} aria-label={several ? 'Characters' : `${data[0]?.game.terms.character ?? 'Character'}s`}>
           {list.map((x) => (
             <li key={x.key}>
-              <Tile row={x} several={several} selecting={tap === 'select'} picked={picked.has(x.key)} onClick={() => onTile(x)} />
+              <Tile row={x} several={several} selecting={tap === 'select'} picked={picked.has(x.key)} hide={hideOnTile} onClick={() => onTile(x)} />
             </li>
           ))}
         </ul>
@@ -366,26 +399,30 @@ export function Characters({ data, several, onOpen }: Props) {
 
 const copiesWord = (data: RosterData[]) => [...new Set(data.flatMap((d) => (d.game.dupes ? [`${d.game.dupes.name}s`] : [])))].join(' or ') || 'copies';
 
-function Tile({ row, several, selecting, picked, onClick }: { row: Row; several: boolean; selecting: boolean; picked: boolean; onClick: () => void }) {
+function Tile({ row, several, selecting, picked, hide, onClick }: { row: Row; several: boolean; selecting: boolean; picked: boolean; hide: Set<string>; onClick: () => void }) {
   const { d, c, e } = row;
+  const nick = d.user.nicknames?.[c.id];
+  const myTags = hide.has('tags') ? [] : (d.user.tags?.[c.id] ?? []);
   const game = d.game;
   const tag = tagOf(game, several);
   const el = elementOf(game, c.element);
   const dupes = e.owned ? dupesLabel(game, e.dupes) : undefined;
-  const label = `${c.name}${several ? ` (${game.short})` : ''}${c.leak ? ', leaked, unverified' : ''}${e.owned ? ', owned' : ''}${e.wanted ? ', wanted' : ''}`;
+  const label = `${c.name}${nick ? ` (“${nick}”)` : ''}${several ? ` (${game.short})` : ''}${c.leak ? ', leaked, unverified' : ''}${e.owned ? ', owned' : ''}${e.wanted ? ', wanted' : ''}`;
   return (
     <button type="button" className={r.tile} data-owned={e.owned} onClick={onClick} aria-label={label} aria-pressed={selecting ? picked : undefined}>
       <CharArt name={c.name} src={artOf(c, 'portrait')} elementColor={el?.color ?? 'var(--ink-4)'} className={r.tileArt}>
-        <span className={r.elementDot} style={{ background: el?.color ?? 'var(--ink-4)' }} title={el?.label} aria-hidden="true" />
+        {!hide.has('element') && <span className={r.elementDot} style={{ background: el?.color ?? 'var(--ink-4)' }} title={el?.label} aria-hidden="true" />}
         <span className={r.tileTopRight}>
           {tag && <GameTag {...tag} />}
           {e.wanted && <span className={r.wantedBadge}>WANTED</span>}
         </span>
-        <span className={r.tileRarity} style={{ color: rarityColor(c) }}>
-          {game.terms.rarity[c.rarity]}
-        </span>
+        {!hide.has('rarity') && (
+          <span className={r.tileRarity} style={{ color: rarityColor(c) }}>
+            {game.terms.rarity[c.rarity]}
+          </span>
+        )}
         {/* A leak can't be owned: its chip says LEAK instead (the source and details are on its page). */}
-        {e.owned ? dupes && <span className={r.dupeBadge}>{dupes}</span> : <span className={r.notOwned}>{c.leak ? 'LEAK' : 'NOT OWNED'}</span>}
+        {e.owned ? dupes && !hide.has('copies') && <span className={r.dupeBadge}>{dupes}</span> : <span className={r.notOwned}>{c.leak ? 'LEAK' : 'NOT OWNED'}</span>}
         <span className={r.rarityEdge} style={{ background: rarityColor(c) }} aria-hidden="true" />
         {selecting && (
           <span className={r.check} data-on={picked} aria-hidden="true">
@@ -394,8 +431,17 @@ function Tile({ row, several, selecting, picked, onClick }: { row: Row; several:
         )}
       </CharArt>
       <span className={r.tileText}>
-        <span className={r.tileName}>{c.name}</span>
-        <span className={r.tileMeta}>{subtitleOf(game, c)}</span>
+        <span className={r.tileName}>{nick ?? c.name}</span>
+        {!hide.has('role') && <span className={r.tileMeta}>{nick ? `${c.name} · ` : ''}{subtitleOf(game, c)}</span>}
+        {myTags.length > 0 && (
+          <span className={r.tileTags}>
+            {myTags.map((t) => (
+              <span key={t} className={r.tileTag}>
+                {t}
+              </span>
+            ))}
+          </span>
+        )}
       </span>
     </button>
   );

@@ -11,6 +11,7 @@ import { EditListButton } from '../edit-mode/EditMode';
 import { setRosterEntry } from '../../core/data/userData';
 import { useAddOwnBanner } from './AddOwnBanner';
 import { BannerArt } from './BannerArt';
+import { usePrefs } from '../../core/data/prefs';
 
 export type BannerFilter = 'all' | 'live' | 'upcoming' | 'leaks' | 'reruns';
 
@@ -60,6 +61,8 @@ export function GameBanners({ game, now, many, hideLeaks, filter, open, onLane }
   const data = useBannersData(game, now);
   const { openSheet, sheet } = useAddOwnBanner(game, data.examples);
   const [tab, setTab] = useState<Phase>('now');
+  // Customise → Events, banners and calendar: big cards (default) or a compact list.
+  const compact = usePrefs().bannerView === 'list';
   const { live, upcoming, hiddenLeaks } = splitBanners(data.banners.list, now, hideLeaks);
   const isWeapon = (x: Banner) => game.bannerTypes.find((t) => t.id === x.type)?.target === 'weapon';
   const limitedLive = live.filter((x) => !x.permanent);
@@ -97,7 +100,8 @@ export function GameBanners({ game, now, many, hideLeaks, filter, open, onLane }
   const unknownRerun = [...live, ...upcoming].filter((x) => rerunLabel(game, x, data.characters) === null && !isWeapon(x)).length;
   const counts = Object.fromEntries(PHASES.map(({ id }) => [id, columns[id].length])) as Record<Phase, number>;
   // Owner: every banner looks like the big Now card; the arrow folds one down to a compact tile.
-  const tile = (x: Banner, paired = false) => <BannerTile key={x.id} game={game} banner={x} data={data} open={open} now={now} paired={paired} />;
+  const tile = (x: Banner, paired = false) =>
+    compact ? <CompactBanner key={x.id} game={game} banner={x} data={data} open={open} now={now} paired={paired} /> : <BannerTile key={x.id} game={game} banner={x} data={data} open={open} now={now} paired={paired} />;
   return (
     <section className={b.stack} aria-label={game.name} style={{ '--vent': game.vent } as CSSProperties}>
       <div className={b.headRow}>
@@ -421,6 +425,33 @@ function Chevron({ up }: { up: boolean }) {
  * character with your fit and Want, the others featured, team fit, Plan pulls. Its arrow folds
  * it to a compact tile (picture, what, who, your fit, Want, time) and back.
  */
+/** One banner as a single row (Customise → compact list): picture, who, which banner, when. */
+function CompactBanner({ game, banner, data, now }: TileProps) {
+  const type = game.bannerTypes.find((t) => t.id === banner.type);
+  const weapon = type?.target === 'weapon';
+  const w = weapon ? data.weapons.get(banner.featured[0] ?? '') : undefined;
+  const c = weapon ? (w?.madeFor ? data.characters.get(w.madeFor) : undefined) : data.characters.get(banner.featured[0] ?? '');
+  const pic = weapon ? w?.icon : c?.portrait;
+  const name = weapon ? (w?.name ?? banner.title) : (c?.name ?? banner.title);
+  const el = c ? game.elements.find((e) => e.id === c.element) : undefined;
+  const start = Date.parse(banner.start);
+  const end = Date.parse(banner.end);
+  const live = start <= now;
+  return (
+    <article className={cx(b.railRow, b.compactRow)} aria-label={banner.title} style={{ '--el': el?.color ?? 'var(--line-strong)' } as CSSProperties}>
+      {pic ? <img src={pic} alt="" loading="lazy" className={cx(b.railPic, weapon && b.alsoWeapon)} /> : <span className={b.railPic} aria-hidden="true" />}
+      <span className={b.railText}>
+        <span className={b.alsoName}>
+          {name} {banner.leak && <UnverifiedTag source={banner.leak.source} />}
+        </span>
+        <span className={b.sub}>{type?.label ?? banner.type}</span>
+      </span>
+      <span className={b.timer}>{banner.permanent ? 'Permanent' : live ? <Timer to={end} deadline prefix="ends in" /> : <Timer to={start} prefix="opens in" />}</span>
+      {!weapon && c && <WantStar game={game} character={c} data={data} />}
+    </article>
+  );
+}
+
 function BannerTile({ game, banner, data, open, now, paired }: TileProps) {
   const [big, setBig] = useState(true);
   const type = game.bannerTypes.find((t) => t.id === banner.type);

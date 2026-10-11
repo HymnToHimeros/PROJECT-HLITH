@@ -1842,3 +1842,65 @@ button.member:hover .memberArt {
   font-size: 13px;
   color: var(--ink-2);
 }
+
+/* Your labels (T52c): nickname and tags on the character page, tags on tiles. */
+.labels {
+  display: grid;
+  gap: 6px;
+  max-width: 520px;
+}
+.heroNick {
+  font-weight: 500;
+  font-size: 0.6em;
+  color: var(--ink-3);
+}
+.tagRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+}
+.tagAdd {
+  display: flex;
+  gap: 6px;
+  flex: 1 1 220px;
+}
+.tagChip,
+.tagSuggest {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 32px;
+  padding: 0 10px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-pill);
+  background: var(--bg-inset);
+  color: var(--ink-2);
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+.tagSuggest {
+  border-style: dashed;
+  color: var(--ink-3);
+}
+.tileTags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+.tileTag {
+  padding: 1px 6px;
+  border-radius: var(--r-pill);
+  background: var(--bg-inset);
+  color: var(--ink-3);
+  font-size: 10.5px;
+  line-height: 1.5;
+}
+/* Tile size (Customise → Roster). */
+.grid[data-size='small'] {
+  grid-template-columns: repeat(auto-fill, minmax(112px, 1fr));
+}
+.grid[data-size='large'] {
+  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+}

@@ -48,7 +48,31 @@ export interface Prefs {
   /** Account → Theme → Animations. Missing = follow the device (reduced when it asks for less motion). */
   motion?: 'on' | 'reduced' | 'off';
   /** Account → Theme → Look (T52): accent, text size, spacing, corners (theme/look.ts). Missing = the theme as designed. */
-  look?: { accent?: string; textSize?: string; spacing?: string; corners?: string };
+  look?: { accent?: string; textSize?: string; spacing?: string; corners?: string; font?: string; cards?: string };
+  /** Customise → Look → Game colours (T52b): your own colour per game, from theme/vents.ts. Missing = the game's own. */
+  gameVents?: Record<GameId, string>;
+  /** Customise → Theme schedule (T52b): theme/schedule.ts. Missing = always the theme above. */
+  themeSchedule?: unknown;
+  /** Customise → Time and format (T52b): time/displayFormat.ts. Missing = this device's own way. */
+  format?: { clock?: string | undefined; date?: string | undefined; numbers?: string | undefined; weekStart?: string | undefined };
+  /** Customise → Layout: the game (or All games) HLITH opens on. Missing = All games (or the only game). */
+  defaultScope?: string;
+  /** Customise → Layout: the tab a module opens on, per module. Missing = its first tab. */
+  startTabs?: Partial<Record<ModuleId, string>>;
+  /** Customise → Events, banners and calendar (T52c): event kinds you don't want to see. Missing = all. */
+  hiddenEventKinds?: string[];
+  /** …and your colour per event kind (an accent id from theme/look.ts). Missing = the default. */
+  eventKindColours?: Record<string, string>;
+  /** …and Banners as cards (default) or a compact list. */
+  bannerView?: 'cards' | 'list';
+  /** Customise → Today (T52d): tools/today/cardsPref.ts. Missing = the design's layout. */
+  today?: { left?: string[]; right?: string[]; hidden?: string[] };
+  /** Customise → Background picture (T52d): data/backgrounds.ts. Missing = the theme's own art only. */
+  backgrounds?: Record<string, { file: string; strength: number; version: number } | undefined>;
+  /** Customise → Feedback (T52d): a short buzz on phones and soft sounds when you tick or save. Missing = off. */
+  feedback?: { haptics?: boolean; sounds?: boolean };
+  /** Customise → Roster (T52c): tiles and the Characters view you last used. */
+  roster?: { tileSize?: 'small' | 'normal' | 'large'; hideOnTile?: string[]; view?: { sort?: string; show?: string; element?: string; rarity?: string; tag?: string } };
   /** Account → Layout → Start screen (T52): the module HLITH opens on. Missing = the last one you had open. */
   startModule?: ModuleId;
 }

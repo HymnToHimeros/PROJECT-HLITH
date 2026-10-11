@@ -1,7 +1,11 @@
 # PROJECT-HLITH · PROGRESS.md
 
-Resume with: "continue from PROGRESS.md". Newest entry on top. Older entries:
-`docs/HISTORY.md`.
+Resume with: "continue from PROGRESS.md". Older entries: `docs/HISTORY.md`.
+
+**New "Done" entries go in `docs/progress/`, one file each** (`YYYY-MM-DD-<chat>-<job>.md`;
+newest first by name: `ls -r docs/progress`). Several chats finish work at once, and one shared
+list made every pull request conflict here. A file of your own never does. The list under
+Done below is the older history.
 
 ## Now
 - **HLITH is live:** https://project-hlith.hliskjlf.workers.dev. Sign-in with
@@ -29,6 +33,7 @@ Resume with: "continue from PROGRESS.md". Newest entry on top. Older entries:
 - CI (`.github/workflows/ci.yml`) runs both on every pull request.
 
 ## Done
+Newer entries: `docs/progress/` (one file each). Older ones:
 - 2026-10-11 · **ERROR-FIX: logins tested in a simulated way** (branch `error-fix/simulated-logins`, owner's T51).
   `tests/simulated.test.ts` runs the real HoYoLAB, history-link and Assistant code against faked
   answers (expired cookie, captcha, rate limits, HoYoLAB down, wrong region, multi-page history,

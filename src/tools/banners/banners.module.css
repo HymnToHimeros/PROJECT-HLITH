@@ -1118,3 +1118,11 @@
     display: none;
   }
 }
+/* Customise → compact list (T52c): one row per banner, with its countdown and want star. */
+.compactRow {
+  grid-template-columns: 36px minmax(0, 1fr) auto auto;
+  padding: 8px 10px;
+  border: 1px solid var(--line-default);
+  border-radius: var(--r-row);
+  background: var(--bg-card);
+}

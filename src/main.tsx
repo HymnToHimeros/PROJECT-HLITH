@@ -12,6 +12,8 @@ import { catalogRows } from './core/data/catalogSource';
 import { registerGame, registerIdentity, registerModuleScreen, registerPanel } from './core/registry';
 import { startAppShell } from './core/shell/appShell';
 import { applyMotion, savedMotion } from './core/theme/motion';
+import { getPrefs } from './core/data/prefs';
+import { scheduledTheme } from './core/theme/schedule';
 import { applyTheme, savedTheme } from './core/theme/theme';
 import { games as seedGames } from './games';
 import { SharedTeamRoute } from './tools/share/ShareTeam';
@@ -32,7 +34,7 @@ registerModuleScreen('farm', () => import('./tools/farm/FarmScreen'));
 registerPanel('assistant', () => import('./tools/assistant/AssistantPanel'));
 registerPanel('account', () => import('./tools/account/AccountPage'));
 registerIdentity(useShellIdentity); // the sidebar's profile card: picture, banner, name
-applyTheme(savedTheme()); // before the first paint, so nobody sees a flash of the wrong theme
+applyTheme(scheduledTheme(savedTheme(), getPrefs().themeSchedule, 'all', new Date())); // before the first paint, so nobody sees a flash of the wrong theme
 applyMotion(savedMotion()); // animations on / reduced / off, before anything moves
 startAppShell(); // installable app: offline, updates, install offer (T45)
 

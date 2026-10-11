@@ -19,10 +19,12 @@ export function useGlide<T extends HTMLElement>(selector: string, deps: unknown[
       }
       const box = list.getBoundingClientRect();
       const r = el.getBoundingClientRect();
-      list.style.setProperty('--glide-x', `${r.left - box.left + list.scrollLeft}px`);
-      list.style.setProperty('--glide-y', `${r.top - box.top + list.scrollTop}px`);
-      list.style.setProperty('--glide-w', `${r.width}px`);
-      list.style.setProperty('--glide-h', `${r.height}px`);
+      // Screen pixels per CSS pixel: more than 1 when the page is zoomed (Customise → Text size).
+      const k = list.offsetWidth > 0 && box.width > 0 ? box.width / list.offsetWidth : 1;
+      list.style.setProperty('--glide-x', `${(r.left - box.left) / k + list.scrollLeft}px`);
+      list.style.setProperty('--glide-y', `${(r.top - box.top) / k + list.scrollTop}px`);
+      list.style.setProperty('--glide-w', `${r.width / k}px`);
+      list.style.setProperty('--glide-h', `${r.height / k}px`);
       list.dataset.glide = 'on';
     };
     place();

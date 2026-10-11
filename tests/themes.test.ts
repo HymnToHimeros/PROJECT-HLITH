@@ -4,6 +4,7 @@ import { resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { contrast, ventProblems } from '../src/core/theme/contrast';
 import { ACCENT_VALUE } from '../src/core/theme/look';
+import { VENT_CHOICES } from '../src/core/theme/vents';
 import { THEME_IDS, THEMES } from '../src/core/theme/themes';
 import { games } from '../src/games';
 
@@ -117,6 +118,18 @@ describe('accent colours (Account → Theme → Look, T52)', () => {
       for (const info of THEMES) {
         const t = themes.get(info.id) ?? {};
         for (const s of SURFACES) expect(contrast(v[info.tone], hex(t, s)), `${id} on ${info.id} ${s}`).toBeGreaterThanOrEqual(4.5);
+      }
+    });
+  }
+});
+
+describe('your own game colours (Customise → Look, T52b)', () => {
+  for (const v of VENT_CHOICES) {
+    it(`${v.label} passes the vent rule and reads as text on every dark theme`, () => {
+      for (const info of THEMES) {
+        const t = themes.get(info.id) ?? {};
+        expect(ventProblems(v.value, hex(t, 'on-vent')), `${v.label} on ${info.id}`).toEqual([]);
+        if (info.tone === 'dark') for (const s of ['bg-app', 'bg-shell']) expect(contrast(v.value, hex(t, s)), `${v.label} on ${info.id} ${s}`).toBeGreaterThanOrEqual(4.5);
       }
     });
   }

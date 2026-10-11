@@ -7,6 +7,7 @@ import { Card, Switch } from '../account/parts';
 import a from '../account/account.module.css';
 import { feedUrl, hasServer, newToken, readReminders, saveReminders, type ReminderRow } from './server';
 import { buildSnapshot } from './snapshot';
+import { formatDate, formatTime } from '../../core/time/reset';
 
 interface Props {
   games: GameContract[];
@@ -252,6 +253,5 @@ function CalendarFeed({ games, servers, signedIn }: { games: GameContract[]; ser
 function savedWhen(iso: string | undefined): string {
   const t = iso ? Date.parse(iso) : NaN;
   if (Number.isNaN(t)) return 'when you last pressed a button here';
-  const d = new Date(t);
-  return `on ${d.toLocaleDateString(undefined, { day: 'numeric', month: 'short' })}, ${d.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' })}`;
+  return `on ${formatDate(t)}, ${formatTime(t)}`;
 }

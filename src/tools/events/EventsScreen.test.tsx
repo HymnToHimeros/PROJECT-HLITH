@@ -113,6 +113,17 @@ describe('Events screen', () => {
     expect(gameData('aa').events['lg']?.daysClaimed).toBe(1);
   });
 
+  it('Customise: kinds you switched off don’t show; a kind can have your colour (T52c)', async () => {
+    const now = Date.now();
+    const ev = (id: string, kind: GameEvent['kind']) => ({ id, title: id, kind, start: new Date(now - DAY).toISOString(), end: new Date(now + 5 * DAY).toISOString(), reward: 100, currency: 'gem' });
+    updatePrefs((p) => ({ ...p, hiddenEventKinds: ['login'], eventKindColours: { event: 'rose' } }));
+    await show(makeGame([ev('Big event', 'event'), ev('Daily login', 'login')], false));
+    expect(row('Big event')).toBeInTheDocument();
+    expect(screen.queryByRole('listitem', { name: 'Daily login' })).toBeNull();
+    expect(within(row('Big event')).getByText('Event')).toHaveAttribute('data-coloured');
+    updatePrefs((p) => ({ ...p, hiddenEventKinds: [], eventKindColours: {} }));
+  });
+
   it('Hide leaks hides leaked events here too', async () => {
     act(() => setHideLeaks(true));
     await show();

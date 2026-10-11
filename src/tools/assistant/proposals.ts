@@ -25,6 +25,7 @@ import {
   type UserPlan,
 } from '../../core/data/userData';
 import type { Lookup } from './context';
+import { formatDateTime } from '../../core/time/reset';
 
 export type ProposalKind = 'bank' | 'event' | 'backlog' | 'roster' | 'today' | 'plan' | 'route';
 
@@ -60,7 +61,7 @@ const str = (v: unknown) => (typeof v === 'string' ? v : '');
 const int = (v: unknown) => (typeof v === 'number' && Number.isInteger(v) && v >= 0 ? v : null);
 const when = (s: string) => {
   const t = Date.parse(s);
-  return Number.isFinite(t) ? new Date(t).toLocaleString(undefined, { weekday: 'short', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }) : null;
+  return Number.isFinite(t) ? formatDateTime(t) : null;
 };
 
 /** Read one tool call into a card. Anything it can't check gets a `problem` and no Approve button. */
