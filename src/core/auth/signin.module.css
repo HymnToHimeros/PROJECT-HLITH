@@ -148,3 +148,18 @@
   outline: 2px solid var(--glacier);
   outline-offset: 2px;
 }
+
+/* An invite link was opened (T60). */
+.invited {
+  margin: 0;
+  padding: var(--s-3) var(--s-4);
+  border: 1px solid color-mix(in srgb, var(--glacier) 45%, var(--line-default));
+  border-radius: var(--r-card);
+  background: color-mix(in srgb, var(--glacier) 8%, var(--bg-card));
+  color: var(--ink-2);
+  font-size: 14px;
+  line-height: 1.5;
+}
+.invited strong {
+  color: var(--ink-1);
+}

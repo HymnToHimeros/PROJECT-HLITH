@@ -1,6 +1,6 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { SignIn, TESTER_KEY } from './SignIn';
+import { rememberTester, SignIn, TESTER_KEY } from './SignIn';
 
 describe('SignIn', () => {
   beforeEach(() => localStorage.clear());
@@ -47,5 +47,18 @@ describe('SignIn', () => {
     expect(screen.getByRole('link', { name: 'Privacy policy' })).toHaveAttribute('href', '/privacy');
     expect(screen.getByRole('link', { name: 'Terms of service' })).toHaveAttribute('href', '/terms');
     expect(screen.getByText(/fan-made tool, not affiliated with HoYoverse/)).toBeInTheDocument();
+  });
+
+  it('an invite link says so and opens email sign-in too (T60)', () => {
+    render(<SignIn onProvider={async () => null} onEmail={async () => null} invited />);
+    expect(screen.getByRole('status')).toHaveTextContent('You’ve been invited to test HLIÐSKJÁLF.');
+    expect(screen.getByLabelText('Email')).toBeEnabled();
+  });
+
+  it('signed in, the server’s answer decides whether this device keeps email sign-in (T60)', () => {
+    rememberTester(true);
+    expect(localStorage.getItem(TESTER_KEY)).toBe('1');
+    rememberTester(false);
+    expect(localStorage.getItem(TESTER_KEY)).toBeNull();
   });
 });

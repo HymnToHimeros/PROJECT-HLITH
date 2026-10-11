@@ -6,7 +6,7 @@ import type { GameContract, GameId, ModuleId } from '../contract';
  * Assistant panel. Their content lives in tools/, attached by main.tsx, so the shell
  * never imports tools/.
  */
-export type PanelId = 'account' | 'assistant';
+export type PanelId = 'account' | 'assistant' | 'community';
 
 /** A signed-in account, as the shell knows it. */
 export interface PanelAccount {
@@ -45,6 +45,11 @@ export interface PanelProps {
   isOwner?: boolean;
   /** False while the server is still being asked whether the viewer is an owner. Missing = known. */
   ownerChecked?: boolean;
+  /**
+   * The viewer is a community member: a tester or the owner (public.is_member() on the server, T60).
+   * Only decides what the menu shows; the server refuses community data to anyone else.
+   */
+  isMember?: boolean;
   /** Account page: the section in the address (/account/<section>), e.g. 'game-settings'. Missing = Profile. */
   section?: string | undefined;
   /** Account page: the detail after the section (/account/game-settings/<game id>). */

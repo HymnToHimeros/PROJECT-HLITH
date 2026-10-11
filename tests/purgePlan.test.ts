@@ -2,7 +2,7 @@
 import { describe, expect, it } from 'vitest';
 import { USER_TABLES } from '../supabase/functions/_shared/accountPlan';
 import { BACKUP_TABLES } from '../supabase/functions/_shared/backupPlan';
-import { coversExport, duePurges, oldBackupFolders, PURGE_TABLES, purgeAccount, type PurgeClient } from '../supabase/functions/_shared/purgePlan';
+import { coversExport, duePurges, oldBackupFolders, PURGE_BY_COLUMN, PURGE_TABLES, purgeAccount, type PurgeClient } from '../supabase/functions/_shared/purgePlan';
 
 const now = Date.parse('2026-11-20T12:00:00Z');
 
@@ -20,7 +20,8 @@ describe('finishing account deletions (T11)', () => {
   it('covers every table an export covers, plus every user table the backup copies', () => {
     expect(coversExport()).toBe(true);
     const userTables = BACKUP_TABLES.filter((t) => !['catalog_items', 'hoyolab_codes', 'scheduler_jobs', 'scheduler_runs', 'scheduler_findings', 'announcements'].includes(t));
-    expect(userTables.filter((t) => !(PURGE_TABLES as readonly string[]).includes(t))).toEqual([]);
+    const purged = [...PURGE_TABLES, ...PURGE_BY_COLUMN.map((p) => p.table)] as readonly string[];
+    expect(userTables.filter((t) => !purged.includes(t))).toEqual([]);
     expect(USER_TABLES.length).toBeGreaterThan(10);
   });
 
@@ -28,7 +29,7 @@ describe('finishing account deletions (T11)', () => {
     const calls: string[] = [];
     const c: PurgeClient = {
       wipeHoyolabLogins: async () => void calls.push('wipe'),
-      deleteRows: async (t) => (calls.push(`rows:${t}`), 1),
+      deleteRows: async (t, _u, col) => (calls.push(`rows:${t}${col ? `.${col}` : ''}`), 1),
       listFolder: async (b) => (b === 'avatars' ? ['avatar.jpg', 'banner.jpg'] : []),
       removeFiles: async (b, paths) => void calls.push(`files:${b}:${paths.join(',')}`),
       deleteSignIn: async () => void calls.push('signin'),
@@ -39,7 +40,9 @@ describe('finishing account deletions (T11)', () => {
     expect(calls.indexOf('rows:hoyolab_checkins')).toBeLessThan(calls.indexOf('rows:hoyolab_links'));
     expect(calls.indexOf('rows:hoyolab_redemptions')).toBeLessThan(calls.indexOf('rows:hoyolab_links'));
     expect(calls.at(-1)).toBe('signin');
-    expect(out).toEqual({ rows: PURGE_TABLES.length, files: 2 });
+    // Membership and invite links go too (T60): the links it used and the ones it made.
+    expect(calls).toEqual(expect.arrayContaining(['rows:community_members', 'rows:community_invites.used_by', 'rows:community_invites.created_by']));
+    expect(out).toEqual({ rows: PURGE_TABLES.length + PURGE_BY_COLUMN.length, files: 2 });
   });
 
   it('stops at the first error so the request stays and is tried again next run', async () => {
