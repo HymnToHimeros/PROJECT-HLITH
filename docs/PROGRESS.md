@@ -29,6 +29,12 @@ Resume with: "continue from PROGRESS.md". Newest entry on top. Older entries:
 - CI (`.github/workflows/ci.yml`) runs both on every pull request.
 
 ## Done
+- 2026-10-11 · **ERROR-FIX: leak tiles the same size as every other tile** (branch `error-fix/leak-tile-size`, owner's T48).
+  In Roster → Characters a leaked character's tile carried a "? UNVERIFIED" tag and its whole
+  source note under the name, so it was much taller than the rest. Now a leak shows a "LEAK"
+  chip in the picture where "NOT OWNED" would be (a leak can't be owned), nothing extra below.
+  The unverified mark and the source stay on the character page. Same grid for HSR, ZZZ and All
+  games; team pickers never showed it. Screenshots: `docs/owner-reports/2026-10-11/leak-tile/`.
 - 2026-10-11 · **ERROR-FIX: findings inbox said "Not allowed." to everyone** (branch `error-fix/findings-intake-401`).
   Cause (found with FRAME): the Vault secret `findings_intake_key` was 11 characters; keys under
   32 are refused, so even the right key failed. The owner replaces it (Vault, GitHub secret,
