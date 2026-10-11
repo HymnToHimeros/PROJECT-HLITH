@@ -29,6 +29,15 @@ Resume with: "continue from PROGRESS.md". Newest entry on top. Older entries:
 - CI (`.github/workflows/ci.yml`) runs both on every pull request.
 
 ## Done
+- 2026-10-11 · **FRAME: Account → Customise (T52b)** (branch `frame/customise-hub`).
+  One place to make the app yours, with a live preview and "Reset this section" on each card
+  (it removes only that section's settings). Look: accent colour, font (Archivo, your device's,
+  a book serif), text size, spacing, card corners, solid or glass cards. Game colours: your own
+  colour per game from 8 choices tested like a game's own. Theme schedule: one theme, day and
+  night at your times, or one per game. Layout: start screen, default game, the tab each module
+  opens on. Time and format: 12/24-hour, date order, number grouping, first day of the week,
+  read by every formatter. All are synced settings; game list updates never touch them.
+  Screenshots: `docs/owner-reports/2026-10-11/customise/`.
 - 2026-10-11 · **FRAME: profile card, badges and Look (T52)** (branch `frame/profile-badges`).
   Account → Profile is now a card like an in-game one: banner, framed picture, name in your
   colour, title, your badge, up to 4 favourite characters or teams, and your own pull numbers.
