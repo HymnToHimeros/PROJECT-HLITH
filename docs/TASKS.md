@@ -37,6 +37,7 @@ doing it said `LIVE`. Newest jobs at the bottom; live jobs move to Done.
 | T47 | More themes (3 public) + owner-only BL themes: private bucket, owner-only loading, upload a picture per theme | FRAME | working | #113 merged (owner said yes). Waiting on FRAME LIVE + owner click steps. AI image generator: talk later (owner). |
 | T48 | BUG: leak tiles in Roster had a "? UNVERIFIED" tag + source text under the tile | ERROR-FIX | live | #110 (LEAK chip, same size). |
 | T49 | BUG: banner card art cropped badly (legs, weapon parts); art must fit each frame on its own, both games | ERROR-FIX | live | #112 (per-picture crop, weapons whole). |
+| T50 | App feels fluid (page/tab transitions, hover/press, toasts, sliders) + every theme gets a small signature animation like Glacier's spinning emblem; Animations on/reduced/off switch; reduced-motion respected | FRAME | sent | Owner 2026-10-11. Recordings (GIF/webm) to MANAGER. |
 
 ## Done
 | # | Job | Who | Live on |
