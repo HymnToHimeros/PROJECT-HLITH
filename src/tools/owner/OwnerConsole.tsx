@@ -8,6 +8,7 @@ import type { Draft } from './approve';
 import { Findings } from './Findings';
 import { Lists } from './Lists';
 import { Members } from './Members';
+import { Users } from './Users';
 import o from './owner.module.css';
 import { OwnerThemesAdmin } from './OwnerThemesAdmin';
 import { Scheduler, when } from './Scheduler';
@@ -22,7 +23,7 @@ import { jobLabel, useSchedulerData } from './schedulerData';
  * not shown as controls: editing game records and the leak-source list, named once in
  * one "planned" line. Nothing here ever touches anyone's progress.
  *
- * Tabs: Overview (this file), Lists (Lists.tsx: the built-in lists in catalog_items),
+ * Tabs: Overview (this file), Users (Users.tsx: everyone who joined, silence, ban, remove, T60b), Lists (Lists.tsx: the built-in lists in catalog_items),
  * Announcements (Announcements.tsx), Members (Members.tsx: testers and invite links, T60), Scheduler (Scheduler.tsx) and Findings (Findings.tsx),
  * the last two reading the scheduler tables through schedulerData.ts, and Owner themes
  * (OwnerThemesAdmin.tsx: the owner-only themes in the private store, T47).
@@ -61,11 +62,11 @@ const LISTS: { id: keyof Counts; label: string }[] = [
 const pad = (n: number) => String(n).padStart(2, '0');
 const WEEKDAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
-type OwnerTab = 'overview' | 'lists' | 'announcements' | 'members' | 'scheduler' | 'findings' | 'themes';
-const OWNER_TABS: readonly string[] = ['overview', 'lists', 'announcements', 'members', 'scheduler', 'findings', 'themes'];
+type OwnerTab = 'overview' | 'users' | 'lists' | 'announcements' | 'members' | 'scheduler' | 'findings' | 'themes';
+const OWNER_TABS: readonly string[] = ['overview', 'users', 'lists', 'announcements', 'members', 'scheduler', 'findings', 'themes'];
 
 /** The owner's console: Overview, Lists, Announcements, Scheduler, Findings. The tab can live in the address (props.tab / openTab). */
-export default function OwnerConsole(props: ModuleScreenProps) {
+export default function OwnerConsole(props: ModuleScreenProps & { selfId?: string | undefined }) {
   const [own, setOwn] = useState<OwnerTab>('overview');
   const tab: OwnerTab = props.tab && OWNER_TABS.includes(props.tab) ? (props.tab as OwnerTab) : own;
   const setTab = (t: OwnerTab) => {
@@ -91,6 +92,7 @@ export default function OwnerConsole(props: ModuleScreenProps) {
         onChange={setTab}
         options={[
           { id: 'overview', label: 'Overview' },
+          { id: 'users', label: 'Users' },
           { id: 'lists', label: 'Lists' },
           { id: 'announcements', label: 'Announcements' },
           { id: 'members', label: 'Members' },
@@ -100,6 +102,7 @@ export default function OwnerConsole(props: ModuleScreenProps) {
         ]}
       />
       {tab === 'overview' && <Overview {...props} />}
+      {tab === 'users' && <Users selfId={props.selfId} />}
       {tab === 'lists' && <Lists games={props.games} draft={draft} clearDraft={clearDraft} />}
       {tab === 'announcements' && <Announcements />}
       {tab === 'members' && <Members />}

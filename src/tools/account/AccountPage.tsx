@@ -148,7 +148,7 @@ export default function AccountPage(props: PanelProps) {
       break;
     case 'owner':
       // Every game record, not only the ones switched on in your switcher; the tab lives in the address (/account/owner/findings).
-      body = <OwnerConsole games={props.allGames} scope={scope} servers={props.servers} tab={props.detail} openTab={(t) => go('owner', t)} open={props.open} openAccount={() => go('profile')} />;
+      body = <OwnerConsole games={props.allGames} scope={scope} servers={props.servers} tab={props.detail} openTab={(t) => go('owner', t)} open={props.open} openAccount={() => go('profile')} selfId={props.account?.id} />;
       break;
     case 'sign-in':
       body = <SignInPage />;
