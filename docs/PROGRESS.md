@@ -29,6 +29,13 @@ Resume with: "continue from PROGRESS.md". Newest entry on top. Older entries:
 - CI (`.github/workflows/ci.yml`) runs both on every pull request.
 
 ## Done
+- 2026-10-11 · **ERROR-FIX: outsider test, round 1** (branch `error-fix/outsider-test`, owner's T51).
+  A first-time user's run through every module, both games and All games, phone and PC, on the
+  same code as the live site ("this device only" build: a test account couldn't be made from
+  here). Fixed: Severian's and Phoenix's portraits were blank (the wiki refuses its pictures to
+  other sites; the import no longer uses them); the Luck report said "needs History" right after
+  an import (now: the standard pool isn't listed yet); ZZZ Banners text was white on lime in
+  light themes (now readable; the theme test covers it). Before/after: `docs/owner-reports/2026-10-11/outsider-test/`.
 - 2026-10-11 · **FRAME: 3 new themes and owner-only themes (T47)** (branch `frame/owner-themes`).
   Public: Emerald Salon, Indigo Hour (dark) and Rose Lace (light), same tests as every theme.
   Owner-only: themes kept in a private storage bucket (`owner-themes`, 0010, owners only),
