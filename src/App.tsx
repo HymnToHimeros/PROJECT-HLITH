@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 import { currentProvider, sendEmailLink, signInWith, signOut, useSession } from './core/auth/session';
+import { FirstRun } from './core/auth/FirstRun';
+import { serverGate, setGate, type Gate } from './core/auth/gate';
 import { captureInvite, pendingInvite, ROLES_CHANGED } from './core/auth/invite';
 import { rememberTester, SignIn } from './core/auth/SignIn';
 import { setStanding, standingFrom, useStanding } from './core/auth/standing';
@@ -93,6 +95,33 @@ function Root() {
   }, [userId, rolesAsked]);
   const { banned, standing } = useStanding();
 
+  // First run (T62): accept the current Terms and Privacy policy and choose a username before
+  // the app opens. If the server can't answer (for example an older server), the app isn't
+  // blocked: the server's own rules still refuse app data until both are done.
+  const [gateAnswer, setGateAnswer] = useState<{ userId: string; gate: Gate | null } | null>(null);
+  useEffect(() => {
+    if (!serverGate || !userId) return setGate(null);
+    let alive = true;
+    void serverGate.load().then(
+      (gate) => {
+        if (!alive) return;
+        setGateAnswer({ userId, gate });
+        setGate(gate);
+      },
+      () => alive && setGateAnswer({ userId, gate: null }),
+    );
+    return () => {
+      alive = false;
+    };
+  }, [userId]);
+  const gate = userId && gateAnswer?.userId === userId ? gateAnswer.gate : undefined;
+  const gateOpen = !serverGate || !userId || gate === null || gate?.accepted === true;
+  const onGate = (next: Gate) => {
+    if (!userId) return;
+    setGateAnswer({ userId, gate: next });
+    setGate(next);
+  };
+
   // Back from signing in with an invite waiting: open the Community page to accept it.
   useEffect(() => {
     if (userId && pendingInvite() && !isCommunityPath(window.location.pathname)) navigate(COMMUNITY_PATH, true);
@@ -110,7 +139,8 @@ function Root() {
   useEffect(() => {
     if (!backend) return markDeviceOnly();
     if (session === null) return markSignedOut();
-    if (!userId) return;
+    // Nothing is saved to the account before the first-run steps are done.
+    if (!userId || !gateOpen) return;
     let stop: (() => void) | undefined;
     let cancelled = false;
     void startSync(supabaseSettings(backend, userId), 1500, supabaseGameData(backend, userId)).then((s) => (cancelled ? s() : (stop = s)));
@@ -118,12 +148,14 @@ function Root() {
       cancelled = true;
       stop?.();
     };
-  }, [session, userId]);
+  }, [session, userId, gateOpen]);
 
   const client = backend;
   if (client && session === undefined) return null; // checking sign-in; keeps the page from flashing
   if (client && session && banned) return <Suspended until={standing.bannedUntil} onSignOut={() => void signOut(client)} onDownload={() => downloadMyData(client)} />;
   if (client && session === null && refusedAsBanned) return <Suspended until={null} />;
+  if (client && session && gate === undefined) return null; // asking where the account stands
+  if (client && session && serverGate && gate && !gate.accepted) return <FirstRun gate={gate} api={serverGate} onDone={onGate} onSignOut={() => void signOut(client)} />;
   if (client && session === null) {
     return <SignIn onProvider={(p) => signInWith(client, p)} onEmail={(email) => sendEmailLink(client, email)} invited={invitedAtStart !== null} />;
   }

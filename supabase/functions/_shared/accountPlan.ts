@@ -24,6 +24,7 @@ export const USER_TABLES = [
   'community_members',
   'account_restrictions',
   'moderation_actions',
+  'account_identity',
 ] as const;
 
 /**

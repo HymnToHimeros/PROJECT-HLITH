@@ -88,6 +88,7 @@ export const PRIVACY: LegalPage = {
       ],
     },
     { p: '**Your settings and game data.** What you enter or import in the app: your games and servers, layout and look, bank log, imported pulls, roster, builds, teams, plans, backlog and event progress, and today’s ticks. It is stored with your account so it follows you to every device.' },
+    { p: '**Your username and agreeing to these terms.** The username you choose (others see it on your profile card, in the community and in the owner’s lists), when you last changed it, and which version of the Terms of service and this Privacy policy you agreed to and when. It’s removed with your account.' },
     { p: '**Your profile.** The name, bio, title, picture and banner you choose, and which characters and badges you show. Profile pictures and banners you upload are stored as **public links** (anyone who has the exact link can open the picture) so they can be shown; your name, bio and data are not public.' },
     { p: '**Your profile card, only if you switch it on.** If you turn on “Show my profile card with teams I share”, anyone signed in to HLIÐSKJÁLF who opens a team link you shared can see your card: your name, picture, title, badge, showcase and pull counts, as far as your privacy switches allow. It is off unless you turn it on.' },
     { p: '**Background pictures** you upload are kept in private storage that only your account can read.' },

@@ -28,6 +28,7 @@ export const PURGE_TABLES = [
   'community_members',
   'moderation_actions',
   'account_restrictions',
+  'account_identity',
   'owners',
   'account_deletion_requests',
 ] as const;

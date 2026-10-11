@@ -30,18 +30,29 @@ describe('requireUser', () => {
     // Auth's own ban…
     expect(await requireUser(`Bearer ${JWT}`, env, auth(200, { id: 'u1', role: 'authenticated', banned_until: '2026-10-12T00:00:00Z' }), { now })).toEqual({ ok: false, banned: true });
     // …a ban that already ran out doesn't count…
-    const past = (url: string) => (url.endsWith('/rpc/is_banned') ? { ok: true, json: async () => false } : { ok: true, json: async () => ({ id: 'u1', role: 'authenticated', banned_until: '2026-10-01T00:00:00Z' }) });
+    const past = (url: string) => (url.endsWith('/rpc/my_gate') ? { ok: true, json: async () => ({ banned: false, accepted: true }) } : { ok: true, json: async () => ({ id: 'u1', role: 'authenticated', banned_until: '2026-10-01T00:00:00Z' }) });
     expect(await requireUser(`Bearer ${JWT}`, env, async (u) => past(u), { now })).toEqual({ ok: true, userId: 'u1' });
     // …and HLITH's ban, asked as the caller.
     const calls: { url: string; method?: string }[] = [];
     const hlith = async (url: string, init: { method?: string }) => {
       calls.push({ url, method: init.method });
-      return url.endsWith('/rpc/is_banned') ? { ok: true, json: async () => true } : { ok: true, json: async () => ({ id: 'u1', role: 'authenticated' }) };
+      return url.endsWith('/rpc/my_gate') ? { ok: true, json: async () => ({ banned: true, accepted: true }) } : { ok: true, json: async () => ({ id: 'u1', role: 'authenticated' }) };
     };
     expect(await requireUser(`Bearer ${JWT}`, env, hlith, { now })).toEqual({ ok: false, banned: true });
-    expect(calls.at(-1)).toEqual({ url: 'https://p.supabase.co/rest/v1/rpc/is_banned', method: 'POST' });
+    expect(calls.at(-1)).toEqual({ url: 'https://p.supabase.co/rest/v1/rpc/my_gate', method: 'POST' });
     // Only Export my data lets a banned account through, to download its own data.
     expect(await requireUser(`Bearer ${JWT}`, env, hlith, { now, allowBanned: true })).toEqual({ ok: true, userId: 'u1', banned: true });
+  });
+
+  it('refuses an account that hasn’t finished the first-run steps, except where it lets them through (T62)', async () => {
+    const gate = (accepted: boolean) => async (url: string) =>
+      url.endsWith('/rpc/my_gate') ? { ok: true, json: async () => ({ banned: false, accepted }) } : { ok: true, json: async () => ({ id: 'u1', role: 'authenticated' }) };
+    expect(await requireUser(`Bearer ${JWT}`, env, gate(false))).toEqual({ ok: false, unaccepted: true });
+    expect(await requireUser(`Bearer ${JWT}`, env, gate(false), { allowUnaccepted: true })).toEqual({ ok: true, userId: 'u1' });
+    expect(await requireUser(`Bearer ${JWT}`, env, gate(true))).toEqual({ ok: true, userId: 'u1' });
+    // An older server without my_gate: only Auth's own answer counts.
+    const old = async (url: string) => (url.endsWith('/rpc/my_gate') ? { ok: false, json: async () => ({}) } : { ok: true, json: async () => ({ id: 'u1', role: 'authenticated' }) });
+    expect(await requireUser(`Bearer ${JWT}`, env, old)).toEqual({ ok: true, userId: 'u1' });
   });
 
   it('only Export my data lets banned accounts through; every other server function refuses them', async () => {
@@ -58,5 +69,8 @@ describe('requireUser', () => {
     const allowing = users.filter((f) => readFileSync(resolve(dir, f, 'index.ts'), 'utf8').includes('allowBanned: true'));
     expect(users.length).toBeGreaterThan(4);
     expect(allowing).toEqual(['export-data']);
+    // Before the first-run steps: only Export my data and Delete my account (T62).
+    const unaccepted = users.filter((f) => readFileSync(resolve(dir, f, 'index.ts'), 'utf8').includes('allowUnaccepted: true'));
+    expect(unaccepted.sort()).toEqual(['delete-account', 'export-data']);
   });
 });

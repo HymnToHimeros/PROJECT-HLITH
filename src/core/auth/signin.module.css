@@ -166,3 +166,100 @@
 .invited strong {
   color: var(--ink-1);
 }
+
+/* First run (FirstRun.tsx, T62): accept the Terms and Privacy policy, choose a username. */
+.step {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-3);
+}
+.stepTitle {
+  margin: 0;
+  font-size: 26px;
+  font-weight: 800;
+  line-height: 1.2;
+  color: var(--ink-1);
+}
+.summary {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-2);
+  padding: var(--s-3) var(--s-4);
+  border: 1px solid var(--line-default);
+  border-radius: var(--r-card);
+  background: var(--bg-card);
+}
+.summaryTitle {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--ink-1);
+}
+.summaryList {
+  margin: 0;
+  padding-left: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--ink-3);
+}
+.summaryLink {
+  font-size: 13px;
+  color: var(--glacier);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.agree {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--s-3);
+  padding: var(--s-3);
+  border: 1px solid var(--line-mid);
+  border-radius: var(--r-button);
+  font-size: 14px;
+  line-height: 1.45;
+  color: var(--ink-1);
+  cursor: pointer;
+}
+.agree input {
+  width: 20px;
+  height: 20px;
+  margin: 1px 0 0;
+  flex: none;
+  accent-color: var(--glacier);
+}
+.fieldLabel {
+  font-size: 13px;
+  color: var(--ink-3);
+}
+.hint,
+.hintOk,
+.hintBad {
+  margin: 0;
+  font-size: 13px;
+}
+.hint {
+  color: var(--ink-4);
+}
+.hintOk {
+  color: var(--ok);
+}
+.hintBad {
+  color: var(--ember-soft);
+}
+.leave {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-2);
+  margin-top: var(--s-2);
+  padding-top: var(--s-3);
+  border-top: 1px solid var(--line-default);
+}
+.leaveRow {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--s-2);
+}

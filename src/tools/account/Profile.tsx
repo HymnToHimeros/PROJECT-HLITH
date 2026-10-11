@@ -22,6 +22,8 @@ import {
 } from './profile';
 import { METHOD_LABEL, showcaseCards, type Fix, type ShowcaseCard } from './showcase';
 import { storeFor, useProfile } from './useProfile';
+import { UsernameCard } from './UsernameCard';
+import { useGate } from '../../core/auth/gate';
 import { BadgeList } from './BadgeList';
 import { CardEditor } from './CardEditor';
 import { badgeStates, type BadgeState } from './badges';
@@ -106,6 +108,7 @@ export function ProfileSection({ games, account, isOwner = false, open, goSectio
   const lists = useLists(games);
   const { profile } = state;
   const badges = useBadges(games, profile, isOwner, account?.id);
+  const gate = useGate();
 
   const cards = useMemo(() => {
     void all; // re-read when your data changes
@@ -162,6 +165,7 @@ export function ProfileSection({ games, account, isOwner = false, open, goSectio
       <section className={p.hero} aria-label="Your profile">
         <ProfileCard
           {...card}
+          handle={gate?.username}
           note={
             <>
               {account ? `Signed in with ${METHOD_LABEL[account.provider ?? ''] ?? account.provider ?? 'your account'}` : 'This device only'} · {where}
@@ -176,6 +180,8 @@ export function ProfileSection({ games, account, isOwner = false, open, goSectio
         />
         {profile.bio ? <p className={p.bio}>{profile.bio}</p> : <p className={p.bioEmpty}>No bio yet. Customise profile to add a few words about you.</p>}
       </section>
+
+      {account && gate?.username && <UsernameCard gate={gate} />}
 
       {state.error && (
         <p className={p.warn} role="alert">
