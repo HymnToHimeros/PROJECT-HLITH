@@ -6,10 +6,11 @@ import { canSync, syncNow, type SyncStatus } from '../../core/data/sync';
 import { ServerPicker } from '../../core/shell/ServerPicker';
 import { ProtagonistPicker } from '../../core/shell/ProtagonistPicker';
 import { OWNER_PREFIX, useOwnerThemes, type OwnerTheme } from '../../core/theme/ownerThemes';
+import { motionFor, setMotion, type Motion } from '../../core/theme/motion';
 import { setTheme, THEMES, themeInfo } from '../../core/theme/theme';
 import { ThemeMotif } from '../../core/theme/ThemeArt';
 import { formatDate, formatTime } from '../../core/time/reset';
-import { Button, HowTo } from '../../core/ui';
+import { Button, HowTo, Segmented } from '../../core/ui';
 import { callFunction, hasServer, type DeletionRequest } from '../feeds/server';
 import a from './account.module.css';
 import { ago, Card, Switch } from './parts';
@@ -462,7 +463,39 @@ export function ThemePage() {
         Changes straight away. Saved with your settings, so it follows you to other devices once you sign in. Game colours stay the same in every theme, and
         the background art never sits under your cards or makes text harder to read.
       </p>
+      <Animations />
     </>
+  );
+}
+
+const MOTION_LABEL: Record<Motion, string> = { on: 'On', reduced: 'Reduced', off: 'Off' };
+const MOTION_SAYS: Record<Motion, string> = {
+  on: 'Pages, cards and buttons move softly, and every theme has its own small background animation.',
+  reduced: 'Things still fade in, but nothing slides, turns or floats.',
+  off: 'Nothing moves at all.',
+};
+
+/** Account → Theme → Animations (T50): on, reduced or off; not chosen = follows the device. */
+function Animations() {
+  const choice = usePrefs().motion;
+  const now = motionFor(choice);
+  return (
+    <section className={a.card} aria-labelledby="motion-title">
+      <h3 className={a.cardTitle} id="motion-title">
+        Animations
+      </h3>
+      <Segmented label="Animations" value={now} onChange={(m) => setMotion(m)} options={(['on', 'reduced', 'off'] as const).map((id) => ({ id, label: MOTION_LABEL[id] }))} />
+      <p className={a.small}>{MOTION_SAYS[now]}</p>
+      {choice ? (
+        <div className={a.actions}>
+          <Button variant="quiet" onClick={() => setMotion(undefined)}>
+            Follow my device
+          </Button>
+        </div>
+      ) : (
+        <p className={a.small}>Following your device’s setting for now.</p>
+      )}
+    </section>
   );
 }
 

@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
 import type { Known } from '../contract/known';
+import { CountUp } from './CountUp';
 import { cx } from './cx';
 import { NoData } from './NoData';
 import { GameTag } from './Tags';
@@ -25,7 +26,9 @@ export function StatTile({ label, value, progress, caption, urgent = false, tag,
       </div>
       {value.known ? (
         <>
-          <span className={s.statValue}>{value.value}</span>
+          <span className={s.statValue}>
+            <CountUp>{value.value}</CountUp>
+          </span>
           {progress !== undefined && (
             <div className={s.track} role="progressbar" aria-label={label} aria-valuenow={Math.round(clamp(progress) * 100)} aria-valuemin={0} aria-valuemax={100}>
               <div className={s.fill} style={{ width: `${clamp(progress) * 100}%` }} />
