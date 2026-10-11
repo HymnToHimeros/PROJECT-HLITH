@@ -29,6 +29,14 @@ Resume with: "continue from PROGRESS.md". Newest entry on top. Older entries:
 - CI (`.github/workflows/ci.yml`) runs both on every pull request.
 
 ## Done
+- 2026-10-11 · **SCHEDULER: main story Jade, standard pools, research routine live** (branch
+  `scheduler/story-rewards`). HSR main story reward = 10,330 Stellar Jade, the sum of its 193
+  missions' stated rewards on the wiki (`storyJade` in import-schedule.ts); ZZZ stays unknown, no
+  source lists it. `historyMapping.standardTop` for both games (Stellar Warp / Stable Channel top
+  results) so the Luck report judges 50/50s from imports; `tests/standardPool.test.ts` guards it.
+  Research routine (T7 step 4c): trigger `trig_01VraA5pyqxiujkH81FqtEee`, daily 10:45 UTC, acts only
+  on key-moment days (docs/ROUTINES.md); heartbeat `trig_01MgSqXeCBk7EtgjwkdDthUX` disabled. First
+  real run 14 Oct.
 - 2026-10-11 · **ERROR-FIX: outsider test, round 1** (branch `error-fix/outsider-test`, owner's T51).
   A first-time user's run through every module, both games and All games, phone and PC, on the
   same code as the live site ("this device only" build: a test account couldn't be made from
