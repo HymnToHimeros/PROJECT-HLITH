@@ -91,6 +91,7 @@ export const PRIVACY: LegalPage = {
     { p: '**Your profile.** The name, bio, title, picture and banner you choose, and which characters and badges you show. Profile pictures and banners you upload are stored as **public links** (anyone who has the exact link can open the picture) so they can be shown; your name, bio and data are not public.' },
     { p: '**Your profile card, only if you switch it on.** If you turn on “Show my profile card with teams I share”, anyone signed in to HLIÐSKJÁLF who opens a team link you shared can see your card: your name, picture, title, badge, showcase and pull counts, as far as your privacy switches allow. It is off unless you turn it on.' },
     { p: '**Background pictures** you upload are kept in private storage that only your account can read.' },
+    { p: '**Moderation (only if it happens).** If the owner silences, suspends or removes your account, we keep what was done, when, until when, and the owner’s reason, so it can end on time and be looked back on. It’s included when you export your data and removed with your account.' },
     { p: '**Tester role and invites (only if you’re invited).** If you accept an invite link, we keep that you’re a tester, when you joined and which invite you used. For each invite link we keep the owner’s own note, when it was made, used or cancelled, and who used it; the link’s secret itself is not kept, only a fingerprint of it. The owner sees testers’ profile names and when they joined. Deleting your account removes your tester role and the invite records with your account on them.' },
     {
       p: '**HoYoLAB link (optional).** To show live stamina or do the daily check-in and redeem codes, HLIÐSKJÁLF needs your HoYoLAB login (the login cookie values). You choose how it is kept: used once and not stored; remembered only in your browser; or saved on our server so the daily check-in can run while you’re away. A login saved on the server is kept in an encrypted vault, readable only by our server functions. We also keep your HoYoLAB account number, your game accounts’ UIDs, nicknames, servers and levels, and the results of each check-in and code redemption. “Forget” overwrites the saved login straight away and stops everything automatic; the link’s record and its history stay until you delete your account.',
@@ -118,7 +119,7 @@ export const PRIVACY: LegalPage = {
     { p: 'They process data only to provide their part of the service. Data that leaves the UK (for example to Anthropic, or Cloudflare’s worldwide network) is protected by those companies’ standard data-protection terms. The UK has an adequacy decision from the EU, so data kept there is treated like data kept in the EU.' },
 
     { h: 'Who can see your data' },
-    { p: 'In the app, only you (and, if you switched your profile card on, people who open a team link you shared, as above). The person who runs HLIÐSKJÁLF can technically access the database and storage to run, back up and fix the service, and will only do so for that. The owner’s console in the app shows totals only (for example how many accounts there are) and the list of invited testers (profile name and when they joined), never anyone’s data.' },
+    { p: 'In the app, only you (and, if you switched your profile card on, people who open a team link you shared, as above). The person who runs HLIÐSKJÁLF can technically access the database and storage to run, back up and fix the service, and will only do so for that. The owner’s console in the app shows totals (for example how many accounts there are), the list of invited testers, and a list of accounts with only: profile name and picture, how you sign in (Discord, Google or email, never the address), when you joined and were last active, whether you’re a tester, and whether the account is silenced, suspended or being deleted. Never your email address or your data.' },
 
     { h: 'What we never do' },
     { list: ['Sell, rent or trade your data.', 'Show ads or use your data for advertising.', 'Track you across other sites, or use analytics or fingerprinting.', 'Read your HoYoLAB login for anything other than the features you switched on.'] },
@@ -191,19 +192,24 @@ export const TERMS: LegalPage = {
     },
     { p: 'We may remove content or suspend accounts that break these rules, and will tell you why where we can.' },
 
-    { h: '6. Your content' },
+    { h: '6. Moderation' },
+    {
+      p: `To keep HLIÐSKJÁLF safe for everyone, the owner may, for accounts that break these rules or harm others: **silence** an account for a time (it keeps using its own HLIÐSKJÁLF, but can’t share or show up in anything others see), **suspend** it for a time or for good (it can’t use HLIÐSKJÁLF, but its data is kept and it can still download it), or **remove** it (suspended now and deleted after 30 days, the same as deleting it yourself; this can be undone until then). Questions or disagreements: ${CONTACT}.`,
+    },
+
+    { h: '7. Your content' },
     { p: 'What you enter and upload stays yours. You let us store it and show it to you (and to others only where you chose to, such as public profile pictures or your profile card) so the service can work. That permission ends when you delete it or your account.' },
 
-    { h: '7. Game content and names' },
+    { h: '8. Game content and names' },
     { p: 'Game names, characters, art and data shown in HLIÐSKJÁLF belong to HoYoverse and are used for fan, informational purposes. Lists and numbers come from public sources and the community and may be incomplete, early or wrong; leaks are always marked unverified.' },
 
-    { h: '8. No warranty' },
+    { h: '9. No warranty' },
     { p: 'HLIÐSKJÁLF is provided free and **as is**, without any warranty. Plans, odds, timers and recommendations are estimates. We do our best to keep it working and your data safe, but we can’t promise it will always be available, correct or free of errors. Keep your own backups (Account → Backup).' },
 
-    { h: '9. Liability' },
+    { h: '10. Liability' },
     { p: 'As far as the law allows, we are not liable for indirect losses or for losses in your games or game accounts (for example a missed reward or a pull decision). Nothing in these terms limits rights you have as a consumer that can’t be limited by law.' },
 
-    { h: '10. Changes and ending' },
+    { h: '11. Changes and ending' },
     {
       list: [
         'We may change or stop features, or the service as a whole. If HLIÐSKJÁLF is going to close, we will tell you in the app in advance so you can export your data.',
@@ -212,12 +218,12 @@ export const TERMS: LegalPage = {
       ],
     },
 
-    { h: '11. Copyright and licence' },
+    { h: '12. Copyright and licence' },
     {
       p: `HLIÐSKJÁLF’s own code, design, texts, themes, artwork, badges, rules and data files are © 2026 HymnToHimeros, all rights reserved. You may use the app here for your own personal use. Copying, hosting or reusing any of it needs written permission: see the [LICENSE](${LICENSE_URL}). The names HLIÐSKJÁLF, PROJECT-HLITH and HLITH and the emblem may not be used for other projects. Open-source parts and fonts keep their own licences; game content belongs to HoYoverse.`,
     },
 
-    { h: '12. Contact' },
+    { h: '13. Contact' },
     { p: `Questions about these terms: ${CONTACT}.` },
     { note: FAN_NOTICE },
   ],

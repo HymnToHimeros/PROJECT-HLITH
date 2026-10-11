@@ -11,7 +11,7 @@ so it can't drift from the real code. Never tick a box by hand; add the proof.
 Who builds what: see `docs/WORKSTREAMS.md`.
 
 <!-- roadmap:summary -->
-**66 of 73 done** `██████████████████░░` 90%
+**67 of 74 done** `██████████████████░░` 91%
 
 **Next up:** R67 The HLIÐSKJÁLF Discord inside the Community page (WidgetBot)
 
@@ -25,7 +25,7 @@ Who builds what: see `docs/WORKSTREAMS.md`.
 | Phase 5 · Modules | `██████████` | 17 / 17 |
 | Phase 6 · Connections and extras | `██████████` | 17 / 17 |
 | Phase 7 · Launch | `██████████` | 3 / 3 |
-| Phase 8 · Community (planned: the owner wants members first) | `█░░░░░░░░░` | 1 / 8 |
+| Phase 8 · Community (planned: the owner wants members first) | `██░░░░░░░░` | 2 / 9 |
 <!-- /roadmap:summary -->
 
 ## Phase 0 · Foundation
@@ -111,6 +111,7 @@ Who builds what: see `docs/WORKSTREAMS.md`.
 
 ## Phase 8 · Community (planned: the owner wants members first)
 - [x] R66 ★ Community groundwork: tester role on the server, one-time invite links, Owner console → Members, members-only Community page · proof: `supabase/migrations/0014_community_members.sql`, `src/tools/community/CommunityPage.tsx`, `src/tools/owner/Members.tsx`, `tests/community.test.ts`
+- [x] R74 ★ Owner console → Users: everyone who joined (no emails), silence, ban, remove with undo, action log · proof: `supabase/migrations/0015_moderation.sql`, `src/core/auth/Suspended.tsx`, `src/tools/owner/Users.tsx`, `tests/moderation.test.ts`
 - [ ] R67 The HLIÐSKJÁLF Discord inside the Community page (WidgetBot) · proof: `src/tools/community/DiscordEmbed.tsx`
 - [ ] R68 Share to Discord: cards for teams, pulls and profiles · proof: `src/tools/community/ShareToDiscord.tsx`
 - [ ] R69 Discord Linked Roles from HLITH (tester, badges) · proof: `supabase/functions/discord-linked-roles/index.ts`

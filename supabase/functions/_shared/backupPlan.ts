@@ -29,6 +29,8 @@ export const BACKUP_TABLES = [
   'announcements',
   'community_members',
   'community_invites',
+  'account_restrictions',
+  'moderation_actions',
 ] as const;
 
 export const BACKUP_BUCKET = 'backups';

@@ -22,6 +22,8 @@ export const USER_TABLES = [
   'hoyolab_redemptions',
   'hoyolab_my_codes',
   'community_members',
+  'account_restrictions',
+  'moderation_actions',
 ] as const;
 
 /**

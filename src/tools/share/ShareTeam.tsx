@@ -1,5 +1,7 @@
 import { useCallback, useId, useMemo, useState, useSyncExternalStore } from 'react';
 import { useSession } from '../../core/auth/session';
+import { useStanding } from '../../core/auth/standing';
+import { formatDateTime } from '../../core/time/reset';
 import { backend } from '../../core/data/backend';
 import { Switch } from '../account/parts';
 import { storeFor, useProfile } from '../account/useProfile';
@@ -20,13 +22,23 @@ const nameFrom = (list: Character[] | null) => (id: string) => list?.find((ch) =
 export function ShareTeam({ game, team }: { game: GameContract; team: UserTeam }) {
   const [open, setOpen] = useState(false);
   const close = useCallback(() => setOpen(false), []);
+  // A silenced account (T60b) keeps its teams but can't share them for now.
+  const { silenced, standing } = useStanding();
+  const until = standing.silencedUntil ?? standing.bannedUntil;
   return (
     <>
       <Button variant="quiet" onClick={() => setOpen(true)}>
         Share
       </Button>
       <BottomSheet open={open} side title={`Share · ${team.name}`} onClose={close}>
-        {open && <ShareSheet game={game} team={team} onClose={close} />}
+        {open &&
+          (silenced ? (
+            <p className={c.muted} role="status">
+              Sharing is paused for your account{until && until !== Infinity ? ` until ${formatDateTime(until)}` : ''}. Your teams are all still here.
+            </p>
+          ) : (
+            <ShareSheet game={game} team={team} onClose={close} />
+          ))}
       </BottomSheet>
     </>
   );

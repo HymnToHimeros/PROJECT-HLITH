@@ -85,6 +85,9 @@
   color: var(--glacier);
   text-underline-offset: 3px;
 }
+.about a {
+  text-decoration: underline; /* inside a sentence: more than colour */
+}
 .legal {
   display: grid;
   gap: var(--s-2);

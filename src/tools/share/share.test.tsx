@@ -3,7 +3,8 @@ import { beforeEach, describe, expect, it } from 'vitest';
 import { gameData, resetUserData, saveTeam } from '../../core/data/userData';
 import { fakeGame } from '../account-links/fakeGame';
 import { decodeTeam, encodeTeam, shareUrl, teamAsText } from './shareLink';
-import { SharedTeamRoute, SharedTeamView } from './ShareTeam';
+import { setStanding } from '../../core/auth/standing';
+import { SharedTeamRoute, SharedTeamView, ShareTeam } from './ShareTeam';
 import type { CardRow } from './SharedBy';
 
 const team = { game: 'aa', name: 'Fire Party · ÐÁ 🔥', members: ['1003', '1002', '1001'] };
@@ -119,5 +120,16 @@ describe('shared by: the sharer’s profile card (T52)', () => {
     render(<SharedTeamView game={fakeGame()} team={team} load={async () => row()} />);
     expect(await screen.findByText('Fire Queen')).toBeInTheDocument();
     expect(screen.queryByRole('article')).toBeNull();
+  });
+});
+
+describe('a silenced account (T60b)', () => {
+  it('keeps its teams but can’t share them while the silence runs', () => {
+    setStanding({ bannedUntil: null, silencedUntil: Date.now() + 86_400_000 });
+    render(<ShareTeam game={fakeGame()} team={{ id: 't1', name: 'Night', members: [] }} />);
+    fireEvent.click(screen.getByRole('button', { name: 'Share' }));
+    expect(screen.getByRole('status')).toHaveTextContent(/Sharing is paused for your account until .*Your teams are all still here\./);
+    expect(screen.queryByRole('button', { name: 'Copy link' })).toBeNull();
+    setStanding(null);
   });
 });

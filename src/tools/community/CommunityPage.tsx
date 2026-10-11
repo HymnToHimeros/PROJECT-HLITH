@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import { announceRolesChanged, pendingInvite, setPendingInvite } from '../../core/auth/invite';
+import { useStanding } from '../../core/auth/standing';
 import type { PanelProps } from '../../core/registry/panels';
-import { formatDate } from '../../core/time/reset';
+import { formatDate, formatDateTime } from '../../core/time/reset';
 import { Button } from '../../core/ui';
 import { serverCommunity, type CommunityApi, type CommunityHome, type InviteStatus } from './communityData';
 import c from './community.module.css';
@@ -34,6 +35,7 @@ export default function CommunityPage({ account, api = serverCommunity }: PanelP
   const [busy, setBusy] = useState(false);
   const [round, setRound] = useState(0);
   const signedIn = Boolean(account);
+  const { silenced, standing } = useStanding();
 
   useEffect(() => {
     if (!api || !signedIn) return;
@@ -153,6 +155,12 @@ export default function CommunityPage({ account, api = serverCommunity }: PanelP
               The community is being built.
             </h2>
             <p className={c.lead}>You’re one of the first.</p>
+            {silenced && (
+              <p className={c.text} role="status">
+                Your account is silenced
+                {standing.silencedUntil && standing.silencedUntil !== Infinity ? ` until ${formatDateTime(standing.silencedUntil)}` : ''}: you can look around, but not post or share.
+              </p>
+            )}
             <dl className={c.facts}>
               <div className={c.fact}>
                 <dt>Members so far</dt>
