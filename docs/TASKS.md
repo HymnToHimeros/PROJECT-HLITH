@@ -34,7 +34,7 @@ doing it said `LIVE`. Newest jobs at the bottom; live jobs move to Done.
 | T44 | Roster: leaked characters (any source) always at the top, newest first | FRAME | live | #104 (FRAME checked live bundle). |
 | T45 | Installable app on phone + PC (PWA: manifest, icons, offline, Update ready, install hint) | FRAME | live | #109. Owner tested iPhone + PC OK (no Android to test). |
 | T46 | BUG: findings-intake answers 401 to the Data refresh Action and to the routine's proxy key | ERROR-FIX | live | New key (owner) + #107; run #3 ok, Bearer path ok, v76. |
-| T47 | More themes (3 public) + owner-only BL themes: private bucket, owner-only loading, upload a picture per theme | FRAME | working | #113 merged (owner said yes). Waiting on FRAME LIVE + owner click steps. AI image generator: talk later (owner). |
+| T47 | More themes (3 public) + owner-only BL themes: private bucket, owner-only loading, upload a picture per theme | FRAME | live | #113; bucket owner-themes private with owner-only policies. AI image generator: talk later (owner). |
 | T48 | BUG: leak tiles in Roster had a "? UNVERIFIED" tag + source text under the tile | ERROR-FIX | live | #110 (LEAK chip, same size). |
 | T49 | BUG: banner card art cropped badly (legs, weapon parts); art must fit each frame on its own, both games | ERROR-FIX | live | #112 (per-picture crop, weapons whole). |
 | T50 | App feels fluid (page/tab transitions, hover/press, toasts, sliders) + every theme gets a small signature animation like Glacier's spinning emblem; Animations on/reduced/off switch; reduced-motion respected | FRAME | sent | Owner 2026-10-11. Recordings (GIF/webm) to MANAGER. |
