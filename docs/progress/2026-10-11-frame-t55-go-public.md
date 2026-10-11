@@ -9,5 +9,9 @@ T11: a daily job (`purge-accounts`, migration 0013) finishes deletions after the
 (rows, pictures, saved HoYoLAB logins, the sign-in) and removes nightly backups older than 30 days;
 tested in a local database. Also fixed: the Assistant key no longer goes into backup files.
 Screenshots: `docs/owner-reports/2026-10-11/go-public/`.
+Sign-in: Discord is open to everyone and first; Google and the email link are greyed out ("Not
+open to the public yet. Sign in with Discord."), and "Owner or tester? Use Google or email" unlocks
+them on that device. Supabase's Discord sign-in always asks for identify + email and needs the
+email, so it can't be dropped; the policy says exactly what Discord gives us.
 Left for the owner: fill in [CONTACT EMAIL]; in Google Cloud, set the homepage, privacy and terms
 links on the OAuth consent screen and publish the app.

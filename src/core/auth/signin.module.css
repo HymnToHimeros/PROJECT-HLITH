@@ -109,3 +109,36 @@
   line-height: 1.45;
   color: var(--ink-4);
 }
+
+/* Google and email: not open to the public yet (owner, T55). Greyed out until an owner or tester unlocks them. */
+.open,
+.closed {
+  display: grid;
+  gap: var(--s-3);
+}
+.closed :is(button, input) {
+  opacity: 0.55;
+}
+.closedNote {
+  margin: 0;
+  font-size: 13px;
+  color: var(--ink-3);
+  text-align: center;
+}
+.testerLink {
+  justify-self: center;
+  min-height: var(--tap-min);
+  padding: 0 var(--s-2);
+  border: 0;
+  background: none;
+  color: var(--ink-4);
+  font: inherit;
+  font-size: 12px;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+.testerLink:focus-visible {
+  outline: 2px solid var(--glacier);
+  outline-offset: 2px;
+}

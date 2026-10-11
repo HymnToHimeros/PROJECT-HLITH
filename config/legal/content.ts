@@ -48,7 +48,7 @@ export const ABOUT: LegalPage = {
     { h: 'Your data' },
     { p: 'No ads, no tracking, nothing sold. Your data is private to your account and you can export or delete it at any time. Read the [Privacy policy](/privacy) and the [Terms of service](/terms).' },
     { h: 'Get started' },
-    { p: '[Open HLIÐSKJÁLF](/) and sign in with Google, Discord or an email link. It’s free.' },
+    { p: '[Open HLIÐSKJÁLF](/) and sign in with Discord. It’s free. Sign-in with Google or an email link opens to everyone later.' },
     { note: FAN_NOTICE },
   ],
 };
@@ -73,7 +73,16 @@ export const PRIVACY: LegalPage = {
     { p: `HLIÐSKJÁLF (also called PROJECT-HLITH or HLITH) is a free, fan-made tool run by one person (“we” below). Questions, requests about your data, or anything else: **${CONTACT}**.` },
 
     { h: 'What we keep, and why' },
-    { p: '**Your account.** When you sign in with Google, Discord or an email link, our sign-in provider keeps your email address, which sign-in methods you used, and when you created the account and last signed in. We use this only to let you sign in and keep your data yours.' },
+    {
+      p: '**Your account.** Signing in is handled by our sign-in provider (Supabase). It keeps what the sign-in service hands over, which sign-in methods you used, when you created the account and last signed in, and short sign-in logs (with your IP address) to keep accounts safe. We use this only to let you sign in and keep your data yours, and never show your email to anyone else.',
+    },
+    {
+      list: [
+        '**Discord** (open to everyone): your Discord user ID, username, display name, avatar picture link and the email address on your Discord account. Discord always shares the email for this kind of sign-in (the “identify” and “email” permissions), and our sign-in provider needs it to create an account; HLIÐSKJÁLF doesn’t email you or use it for anything else. We never see your Discord password, messages or servers.',
+        '**Google** (not open to the public yet): your Google account ID, name, email address and profile picture link.',
+        '**Email link** (not open to the public yet): only your email address.',
+      ],
+    },
     { p: '**Your settings and game data.** What you enter or import in the app: your games and servers, layout and look, bank log, imported pulls, roster, builds, teams, plans, backlog and event progress, and today’s ticks. It is stored with your account so it follows you to every device.' },
     { p: '**Your profile.** The name, bio, title, picture and banner you choose, and which characters and badges you show. Profile pictures and banners you upload are stored as **public links** (anyone who has the exact link can open the picture) so they can be shown; your name, bio and data are not public.' },
     { p: '**Your profile card, only if you switch it on.** If you turn on “Show my profile card with teams I share”, anyone signed in to HLIÐSKJÁLF who opens a team link you shared can see your card: your name, picture, title, badge, showcase and pull counts, as far as your privacy switches allow. It is off unless you turn it on.' },
@@ -95,7 +104,7 @@ export const PRIVACY: LegalPage = {
       list: [
         '**Supabase** (database, sign-in, file storage and server functions). Our project is hosted in **London, United Kingdom** (AWS eu-west-2).',
         '**Cloudflare** (delivers the website). It sees technical request data such as your IP address, as any web host does.',
-        '**Google** or **Discord**, if you sign in with them; sign-in emails are sent through Supabase.',
+        '**Discord** (or **Google**, once open), when you sign in with them; sign-in emails (once open) are sent through Supabase.',
         '**HoYoverse / HoYoLAB**, only for the HoYoLAB and history-link features you use: our server talks to them with your login or link on your behalf.',
         '**Anthropic**, only if you use the Assistant, with your own key and under your own agreement with Anthropic. Anthropic is in the United States.',
         '**static.nanoka.cc**, a community site the game art pictures are loaded from. Your browser fetches the pictures directly, so that site sees your IP address (but not which page you were on).',
