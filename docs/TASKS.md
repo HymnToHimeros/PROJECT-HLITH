@@ -34,6 +34,7 @@ doing it said `LIVE`. Newest jobs at the bottom; live jobs move to Done.
 | T44 | Roster: leaked characters (any source) always at the top, newest first; Aeon Aha is at the bottom now | FRAME | sent | Owner 2026-10-11. |
 | T45 | Installable app on phone + PC (PWA: manifest, icons, service worker, update toast, install hint); base for phone push | FRAME | sent | Owner 2026-10-11 (compared with their other site). |
 | T46 | BUG: findings-intake answers 401 to the Data refresh Action and to the routine's proxy key | ERROR-FIX | working | Cause: Vault key was 11 chars. Owner replaced it (3 places); Data refresh run #3 delivered OK. Left: #107 (Bearer header, clear 500), ERROR-FIX deploys. |
+| T47 | More themes + one owner-only BL/yaoi-mood theme (colour, light and ornament only; no pictures of people, nothing explicit) | FRAME | sent | Owner 2026-10-11. After #109. Owner sees screenshots before merge. |
 
 ## Done
 | # | Job | Who | Live on |
