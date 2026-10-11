@@ -783,16 +783,100 @@
   opacity: 0.6;
 }
 
+/* ── Motion (T50): one marker per menu glides to the active item (useGlide.ts sets the
+   --glide-* variables), instead of each item drawing its own. Off/Reduced: it just moves. ── */
+.nav {
+  position: relative;
+}
+.nav[data-glide='on'] .navItem[aria-current='page']::before {
+  opacity: 0;
+}
+.nav[data-glide='on']::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 3px;
+  height: calc(var(--glide-h) - 22px);
+  border-radius: 2px;
+  background: var(--vent);
+  transform: translateY(calc(var(--glide-y) + 11px));
+  transition:
+    transform var(--dur-3) var(--ease),
+    height var(--dur-3) var(--ease);
+  pointer-events: none;
+}
+.navItem {
+  transition:
+    background-color var(--dur-1) var(--ease),
+    color var(--dur-1) var(--ease);
+}
+@media (max-width: 819px) {
+  .bottomBar[data-glide='on']::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: var(--glide-w);
+    height: var(--glide-h);
+    border-radius: var(--r-segment);
+    background: var(--vent);
+    transform: translate(var(--glide-x), var(--glide-y));
+    transition:
+      transform var(--dur-3) var(--ease),
+      width var(--dur-3) var(--ease);
+    pointer-events: none;
+  }
+  .bottomBar[data-glide='on'] .tab[aria-current='page'] .tabGlyph {
+    background: transparent;
+  }
+  .tab {
+    position: relative;
+    z-index: 1;
+    transition: color var(--dur-1) var(--ease);
+  }
+  .tabGlyph {
+    transition:
+      background-color var(--dur-1) var(--ease),
+      color var(--dur-1) var(--ease);
+  }
+  .tab:active .tabGlyph {
+    transform: scale(0.92);
+  }
+}
+
 /* Owner-theme ornaments (T47), switched on by the theme (<html data-ornaments="hearts …">).
-   Hearts: the active module is marked with a small heart instead of a bar. */
-:global([data-ornaments~='hearts']) .navItem[aria-current='page']::before {
+   Hearts: the active module is marked with a small heart that pulses softly (T50). */
+:global([data-ornaments~='hearts']) .navItem[aria-current='page']::before,
+:global([data-ornaments~='hearts']) .nav[data-glide='on']::after {
   left: -2px;
-  top: 50%;
-  bottom: auto;
   width: 10px;
   height: 9px;
   border-radius: 0;
-  transform: translateY(-50%);
   -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 9'%3E%3Cpath d='M5 9 .7 4.6A2.6 2.6 0 0 1 5 1.3a2.6 2.6 0 0 1 4.3 3.3Z'/%3E%3C/svg%3E") center / contain no-repeat;
   mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 9'%3E%3Cpath d='M5 9 .7 4.6A2.6 2.6 0 0 1 5 1.3a2.6 2.6 0 0 1 4.3 3.3Z'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+:global([data-ornaments~='hearts']) .navItem[aria-current='page']::before {
+  top: 50%;
+  bottom: auto;
+  transform: translateY(-50%);
+}
+:global([data-ornaments~='hearts']) .nav[data-glide='on']::after {
+  transform: translateY(calc(var(--glide-y) + var(--glide-h) / 2 - 4.5px));
+  animation: heart-beat 2.4s var(--ease) infinite;
+}
+@keyframes heart-beat {
+  0%,
+  100% {
+    scale: 1;
+  }
+  12% {
+    scale: 1.25;
+  }
+  24% {
+    scale: 1;
+  }
+}
+:global(:root[data-motion='reduced']) .nav[data-glide='on']::after {
+  animation: none;
 }

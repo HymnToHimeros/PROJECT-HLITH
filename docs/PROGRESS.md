@@ -36,6 +36,14 @@ Resume with: "continue from PROGRESS.md". Newest entry on top. Older entries:
   other sites; the import no longer uses them); the Luck report said "needs History" right after
   an import (now: the standard pool isn't listed yet); ZZZ Banners text was white on lime in
   light themes (now readable; the theme test covers it). Before/after: `docs/owner-reports/2026-10-11/outsider-test/`.
+- 2026-10-11 · **FRAME: the app moves (T50)** (branch `frame/animations`).
+  Screens and cards ease in one after another, buttons and tabs give press feedback, tiles lift
+  under the pointer, folded sections ease open, notes slide in (bubbles pop with that ornament),
+  bars fill, numbers tick up, and the sidebar and bottom-bar markers glide to the active item.
+  Every theme has its own slow background animation (Glacier's turning ring was the model);
+  owner themes: the picture drifts in slowly, the gold frame glows, hearts pulse. Account →
+  Theme → Animations: On, Reduced (fades only) or Off; not chosen = follows the device.
+  Transform and opacity only. Recordings: `docs/owner-reports/2026-10-11/animations/`.
 - 2026-10-11 · **FRAME: 3 new themes and owner-only themes (T47)** (branch `frame/owner-themes`).
   Public: Emerald Salon, Indigo Hour (dark) and Rose Lace (light), same tests as every theme.
   Owner-only: themes kept in a private storage bucket (`owner-themes`, 0010, owners only),

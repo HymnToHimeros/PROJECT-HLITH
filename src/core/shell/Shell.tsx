@@ -7,6 +7,8 @@ import { defaultLayout, hiddenIn, phoneBar, restore, slot, type LayoutState, typ
 import { moduleScreen, MODULES, type ModuleScreenProps } from '../registry/modules';
 import { useIdentity } from '../registry/identity';
 import { panel, type PanelAccount, type PanelId, type PanelProps } from '../registry/panels';
+import { useMotion } from '../theme/motion';
+import { useGlide } from './useGlide';
 import { useOwnerTheme, useTheme } from '../theme/theme';
 import { OwnerArt } from '../theme/OwnerArt';
 import { ThemeArt, ThemeMotif } from '../theme/ThemeArt';
@@ -61,6 +63,7 @@ export function Shell({ games: registered, account = null, isOwner = false, owne
   const sample = useSampleShown();
   const theme = useTheme();
   const ownerTheme = useOwnerTheme();
+  useMotion();
   const identity = useIdentity(account);
   const [sheet, setSheet] = useState<Sheet>(null);
   // The game scope you came from, so the Account page keeps its colour and "back" lands there.
@@ -91,6 +94,9 @@ export function Shell({ games: registered, account = null, isOwner = false, owne
         ? remembered
         : visible[0];
   const { bar, more } = phoneBar(visible);
+  // The sliding "you are here" markers (T50): sidebar row and bottom-bar glyph.
+  const navRef = useGlide<HTMLElement>('[aria-current="page"]', [active, visible.join(','), phone]);
+  const barRef = useGlide<HTMLElement>(`[aria-current="page"] .${s.tabGlyph}`, [active, bar.join(','), phone]);
   // The open tab. The address is the truth once it names the module: /hsr/pulls/log is the Bank log, /hsr/pulls the first tab
   // (so the back button works). Without the module in the address, the last tab you picked there.
   const urlTab = route.module === active && route.tab && tabsOf(active)?.some((t) => t.id === route.tab) ? route.tab : null;
@@ -218,7 +224,7 @@ export function Shell({ games: registered, account = null, isOwner = false, owne
               Edit layout
             </button>
           </div>
-          <nav className={s.nav} aria-label="Modules">
+          <nav ref={navRef} className={s.nav} aria-label="Modules">
             {visible.map((id) => (
               <a key={id} href={routePath(scope, id)} className={s.navItem} aria-current={id === active ? 'page' : undefined} onClick={go(scope, id)}>
                 <span className={s.glyph} aria-hidden="true">
@@ -329,6 +335,8 @@ export function Shell({ games: registered, account = null, isOwner = false, owne
               )}
               {active && moduleScreen(active) ? (
                 <Suspense fallback={<p className={s.note}>Loading…</p>}>
+                  {/* Keyed by screen and tab, so each change plays the enter animation once (T50). */}
+                  <div key={`${scope}:${active}:${activeTab ?? ''}`} className="hlith-enter">
                   <ModuleSlot
                     id={active}
                     games={games}
@@ -340,6 +348,7 @@ export function Shell({ games: registered, account = null, isOwner = false, owne
                     openAccount={() => openAccount()}
                     openServer={openServer}
                   />
+                  </div>
                 </Suspense>
               ) : (
                 <section className={s.placeholder}>
@@ -357,7 +366,7 @@ export function Shell({ games: registered, account = null, isOwner = false, owne
 
       {phone && (
         <>
-          <nav className={s.bottomBar} aria-label="Modules (phone)">
+          <nav ref={barRef} className={s.bottomBar} aria-label="Modules (phone)">
             {bar.map((id) => (
               <PhoneTab key={id} id={id} current={id === active} onOpen={go(scope, id)} onLongPress={() => setSheet('edit')} />
             ))}

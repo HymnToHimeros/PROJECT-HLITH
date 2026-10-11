@@ -181,9 +181,63 @@ button {
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  * {
-    transition: none !important;
-    animation: none !important;
+/* ── Motion (T50) ──────────────────────────────────────────────────
+   Quick and small, transform and opacity only. <html data-motion> is on, reduced or off
+   (Account → Theme → Animations; not chosen = follows the device, theme/motion.ts).
+   Reduced: things fade but nothing slides (--rise: 0); the background art stands still
+   (art.module.css). Off: nothing animates at all. */
+:root {
+  --dur-1: 140ms;
+  --dur-2: 220ms;
+  --dur-3: 360ms;
+  --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --rise: 8px;
+}
+:root[data-motion='reduced'] {
+  --rise: 0px;
+}
+:root[data-motion='off'] *,
+:root[data-motion='off'] *::before,
+:root[data-motion='off'] *::after {
+  transition: none !important;
+  animation: none !important;
+}
+@keyframes hlith-enter {
+  from {
+    opacity: 0;
+    transform: translateY(var(--rise));
   }
+}
+/* A screen or section coming in: its parts ease in one after another. */
+.hlith-enter {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-4);
+}
+.hlith-enter > *,
+.hlith-stagger > * {
+  animation: hlith-enter var(--dur-3) var(--ease) both;
+}
+.hlith-enter > :nth-child(2),
+.hlith-stagger > :nth-child(2) {
+  animation-delay: 40ms;
+}
+.hlith-enter > :nth-child(3),
+.hlith-stagger > :nth-child(3) {
+  animation-delay: 80ms;
+}
+.hlith-enter > :nth-child(4),
+.hlith-stagger > :nth-child(4) {
+  animation-delay: 120ms;
+}
+.hlith-enter > :nth-child(n + 5),
+.hlith-stagger > :nth-child(n + 5) {
+  animation-delay: 160ms;
+}
+/* Opening a folded section (How to use this, steps, details): its contents ease in. */
+details[open] > :not(summary) {
+  animation: hlith-enter var(--dur-2) var(--ease) both;
+}
+summary {
+  transition: color var(--dur-1) var(--ease);
 }

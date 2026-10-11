@@ -45,6 +45,8 @@ export interface Prefs {
   hideExamples?: boolean;
   /** Account → Guide: setup checklist steps you chose to skip (step ids). Missing = none. */
   skippedSetup?: string[];
+  /** Account → Theme → Animations. Missing = follow the device (reduced when it asks for less motion). */
+  motion?: 'on' | 'reduced' | 'off';
 }
 
 export interface NotifyPrefs {
