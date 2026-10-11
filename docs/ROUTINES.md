@@ -166,6 +166,10 @@ the delivery, never skipped silently.
    `ran: ["research-routine"]` (or `failed` with what went wrong, under 500
    characters), the findings, and `next_at: { "research-routine": <next key moment
    + 30 min> }` (`node scripts/schedule-due.ts --key`).
+   Guard against a second delivery: before sending, check for the file
+   `/tmp/hlith-delivered`; if it exists, this run already delivered (for example
+   a re-sent turn in the same session), so don't send again. Right after a 200,
+   write that file.
 
 **Its PRs.** Branch `scheduler/research-<date>`. `npm run check` green before
 pushing. When the session has no GitHub tools to open the PR, it pushes the branch
