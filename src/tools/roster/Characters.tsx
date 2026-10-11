@@ -1,7 +1,7 @@
 import { useId, useMemo, useState } from 'react';
 import type { Character } from '../../core/contract';
 import { setRosterEntry, type RosterEntry } from '../../core/data/userData';
-import { EmptyState, GameTag, HowTo, UnverifiedTag } from '../../core/ui';
+import { EmptyState, GameTag, HowTo } from '../../core/ui';
 import { RosterImport } from '../account-links/RosterImport';
 import { useHideLeaks } from '../banners/leakPref';
 import { ScanEntry } from '../scan/Scan';
@@ -286,7 +286,7 @@ export function Characters({ data, several, onOpen }: Props) {
 
       {hideLeaks && <p className={r.muted}>Leaked characters stay hidden while “Hide leaks” is on (Banners).</p>}
       {leaksShown && leakedCount === 0 && <p className={r.muted}>No leaked characters listed yet.</p>}
-      {leaksShown && leakedCount > 0 && <p className={r.muted}>Leaked characters are marked UNVERIFIED with where the leak came from. You can mark them wanted, not owned.</p>}
+      {leaksShown && leakedCount > 0 && <p className={r.muted}>Leaked characters are marked LEAK; open one to see where the leak came from. You can mark them wanted, not owned.</p>}
 
       {tap !== 'open' && tap !== 'select' && (
         <p className={r.summary}>
@@ -384,7 +384,8 @@ function Tile({ row, several, selecting, picked, onClick }: { row: Row; several:
         <span className={r.tileRarity} style={{ color: rarityColor(c) }}>
           {game.terms.rarity[c.rarity]}
         </span>
-        {e.owned ? dupes && <span className={r.dupeBadge}>{dupes}</span> : <span className={r.notOwned}>NOT OWNED</span>}
+        {/* A leak can't be owned: its chip says LEAK instead (the source and details are on its page). */}
+        {e.owned ? dupes && <span className={r.dupeBadge}>{dupes}</span> : <span className={r.notOwned}>{c.leak ? 'LEAK' : 'NOT OWNED'}</span>}
         <span className={r.rarityEdge} style={{ background: rarityColor(c) }} aria-hidden="true" />
         {selecting && (
           <span className={r.check} data-on={picked} aria-hidden="true">
@@ -395,7 +396,6 @@ function Tile({ row, several, selecting, picked, onClick }: { row: Row; several:
       <span className={r.tileText}>
         <span className={r.tileName}>{c.name}</span>
         <span className={r.tileMeta}>{subtitleOf(game, c)}</span>
-        {c.leak && <UnverifiedTag source={c.leak.source} />}
       </span>
     </button>
   );
