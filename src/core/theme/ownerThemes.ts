@@ -1,5 +1,5 @@
 /**
- * Owner-only themes (T47). Their names, colours, drawn scenes and pictures are never in the
+ * Owner-only themes (T47). Their names, colours and pictures are never in the
  * public repo or the app bundle: they live in the private `owner-themes` storage bucket
  * (supabase/migrations/0010_owner_themes.sql, owners only) as `manifest.json` plus the files it
  * names. The app downloads them at run time only after the server says the account is an owner,
@@ -27,18 +27,56 @@ export interface OwnerThemeEntry {
   tone: 'dark' | 'light';
   /** Token name (without --) → value. Colours as #rrggbb; `art-opacity` / `owner-art-opacity` as 0–1. */
   tokens: Record<string, string>;
-  /** The drawn scene, a file in the bucket (e.g. scenes/<id>.svg). */
-  scene?: string;
-  /** The owner's own picture for this theme, a file in the bucket; shown instead of the scene. */
+  /** The owner's own picture for this theme, a file in the bucket. None = colours and ornaments only. */
   picture?: string;
   ornaments: Ornament[];
 }
 
 export interface OwnerTheme extends OwnerThemeEntry {
-  /** Ready to show (blob: links made from the downloaded files), or missing. */
-  sceneUrl?: string;
+  /** Ready to show (a blob: link made from the downloaded picture), or missing. */
   pictureUrl?: string;
 }
+
+/**
+ * Colour sets to start an owner theme from (Owner console → Owner themes → Add a theme). Only
+ * colours; the theme's name, picture and ornaments are the owner's and stay in the private store.
+ * Each passes the same contrast rules as the built-in themes (tested).
+ */
+export const OWNER_PRESETS: { id: string; label: string; tone: 'dark' | 'light'; tokens: Record<string, string> }[] = [
+  {
+    id: 'indigo',
+    label: 'Indigo night with gold and pink',
+    tone: 'dark',
+    tokens: {
+      'bg-void': '#07061a', 'bg-app': '#0d0a26', 'bg-shell': '#120e2e', 'bg-card': '#171236', 'bg-inset': '#1d1740', 'bg-raised': '#221b49',
+      'line-default': '#2a2252', 'line-strong': '#4a3b80',
+      'ink-1': '#f6eefb', 'ink-2': '#ecd9f2', 'ink-3': '#d6bfe2', 'ink-4': '#c4a8d6', 'ink-5': '#c4a8d6',
+      glacier: '#ffb3c9', 'rarity-top': '#f2c879', 'vent-all': '#ffd6e3', 'art-ink': '#f2c879', 'art-glow': '#6b3f9a', 'owner-art-opacity': '0.5',
+    },
+  },
+  {
+    id: 'emerald',
+    label: 'Emerald velvet with gold and wine',
+    tone: 'dark',
+    tokens: {
+      'bg-void': '#040c09', 'bg-app': '#06120e', 'bg-shell': '#081712', 'bg-card': '#0c1d17', 'bg-inset': '#11251e', 'bg-raised': '#152b23',
+      'line-default': '#1b3329', 'line-strong': '#3a5a3e',
+      'ink-1': '#f1ede0', 'ink-2': '#e0d8bf', 'ink-3': '#c9bf9e', 'ink-4': '#b3a983', 'ink-5': '#b3a983',
+      glacier: '#e7a3b4', 'rarity-top': '#e8c06a', 'vent-all': '#e0d8bf', 'art-ink': '#d9b86a', 'art-glow': '#6e1f33', 'owner-art-opacity': '0.5',
+    },
+  },
+  {
+    id: 'blush',
+    label: 'Blush and wine (light)',
+    tone: 'light',
+    tokens: {
+      'bg-void': '#e9d3d6', 'bg-app': '#fbf1f2', 'bg-shell': '#f6e6e8', 'bg-card': '#fffafa', 'bg-inset': '#f3e1e4', 'bg-raised': '#fdf5f6',
+      'line-default': '#e6ccd1', 'line-strong': '#c49aa3',
+      'ink-1': '#2a0f17', 'ink-2': '#3d1822', 'ink-3': '#5a2533', 'ink-4': '#6b2e3d', 'ink-5': '#6b2e3d',
+      glacier: '#8a2a46', 'rarity-top': '#855600', 'vent-all': '#f2c9d4', 'art-ink': '#a33a5a', 'art-glow': '#f0a8bc', 'owner-art-opacity': '0.35',
+    },
+  },
+];
 
 /** Glacier's own values: what an owner theme keeps unless it sets its own. */
 const BASE = { 'ink-5': '#768a9e', 'bg-app': '#08090b', 'bg-card': '#0e1115' } as const;
@@ -84,11 +122,10 @@ export function readOwnerTheme(raw: unknown): { theme: OwnerThemeEntry } | { pro
     problems.push(`${at}: ${what} must be a file path inside the bucket.`);
     return undefined;
   };
-  const scene = file(r.scene, 'scene');
   const picture = file(r.picture, 'picture');
   const ornaments = Array.isArray(r.ornaments) ? r.ornaments.filter((o): o is Ornament => (ORNAMENTS as readonly unknown[]).includes(o)) : [];
   if (problems.length) return { problems };
-  return { theme: { id, name, mood, tone, tokens, ornaments, ...(scene ? { scene } : {}), ...(picture ? { picture } : {}) } };
+  return { theme: { id, name, mood, tone, tokens, ornaments, ...(picture ? { picture } : {}) } };
 }
 
 /** The whole manifest: `{ "themes": [ … ] }`. Good themes are kept, bad ones listed with why. */
@@ -180,9 +217,8 @@ export async function loadOwnerThemes(source: OwnerThemeSource): Promise<void> {
     };
     const loaded: OwnerTheme[] = [];
     for (const t of themes) {
-      const sceneUrl = await url(t.scene, t.id, 'scene');
       const pictureUrl = await url(t.picture, t.id, 'picture');
-      loaded.push({ ...t, ...(sceneUrl ? { sceneUrl } : {}), ...(pictureUrl ? { pictureUrl } : {}) });
+      loaded.push({ ...t, ...(pictureUrl ? { pictureUrl } : {}) });
     }
     if (mine !== generation) {
       made.forEach((u) => URL.revokeObjectURL(u));

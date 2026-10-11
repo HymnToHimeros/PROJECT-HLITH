@@ -1,9 +1,9 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { reloadPrefs } from '../data/prefs';
-import { clearOwnerThemes, loadOwnerThemes, ownerThemeFor, ownerThemesState, readOwnerManifest, readOwnerTheme, type OwnerThemeSource } from './ownerThemes';
+import { clearOwnerThemes, loadOwnerThemes, OWNER_PRESETS, ownerThemeFor, ownerThemesState, readOwnerManifest, readOwnerTheme, type OwnerThemeSource } from './ownerThemes';
 import { applyTheme } from './theme';
 
-const good = { id: 'night', name: 'Night', mood: 'A dark room', tone: 'dark', tokens: { 'bg-app': '#120d33', 'bg-card': '#1a1440', 'ink-5': '#9a92c8', 'owner-art-opacity': '0.5' }, scene: 'scenes/night.svg', ornaments: ['hearts', 'nope'] };
+const good = { id: 'night', name: 'Night', mood: 'A dark room', tone: 'dark', tokens: { 'bg-app': '#120d33', 'bg-card': '#1a1440', 'ink-5': '#9a92c8', 'owner-art-opacity': '0.5' }, picture: 'pictures/night.webp', ornaments: ['hearts', 'nope'] };
 
 /** A fake private store: path → text. */
 const store = (files: Record<string, string>): OwnerThemeSource => ({ download: async (p) => (p in files ? new Blob([files[p] as string]) : null) });
@@ -32,7 +32,7 @@ describe('owner-only themes (T47)', () => {
   });
 
   it('file paths stay inside the bucket', () => {
-    expect('problems' in readOwnerTheme({ ...good, scene: '../secrets.json' })).toBe(true);
+    expect('problems' in readOwnerTheme({ ...good, picture: '../secrets.json' })).toBe(true);
     expect('problems' in readOwnerTheme({ ...good, picture: 'https://x.example/a.png' })).toBe(true);
   });
 
@@ -43,11 +43,11 @@ describe('owner-only themes (T47)', () => {
   });
 
   it('loads the manifest and files, applies the colours on top of Glacier, and forgets them on sign-out', async () => {
-    const create = vi.spyOn(URL, 'createObjectURL').mockImplementation(() => 'blob:scene');
+    const create = vi.spyOn(URL, 'createObjectURL').mockImplementation(() => 'blob:picture');
     const revoke = vi.spyOn(URL, 'revokeObjectURL').mockImplementation(() => undefined);
-    await loadOwnerThemes(store({ 'manifest.json': JSON.stringify({ themes: [good] }), 'scenes/night.svg': '<svg/>' }));
+    await loadOwnerThemes(store({ 'manifest.json': JSON.stringify({ themes: [good] }), 'pictures/night.webp': 'img' }));
     const s = ownerThemesState();
-    expect(s.status === 'ready' && s.themes[0]).toMatchObject({ id: 'night', sceneUrl: 'blob:scene' });
+    expect(s.status === 'ready' && s.themes[0]).toMatchObject({ id: 'night', pictureUrl: 'blob:picture' });
     expect(ownerThemeFor('owner:night')?.name).toBe('Night');
     expect(ownerThemeFor('dark')).toBeUndefined();
 
@@ -64,7 +64,7 @@ describe('owner-only themes (T47)', () => {
 
     clearOwnerThemes();
     expect(ownerThemesState()).toEqual({ status: 'none' });
-    expect(revoke).toHaveBeenCalledWith('blob:scene');
+    expect(revoke).toHaveBeenCalledWith('blob:picture');
     // Saved choice kept, but without the loaded theme it shows Glacier.
     applyTheme('owner:night');
     expect(root.dataset.theme).toBe('dark');
@@ -77,7 +77,11 @@ describe('owner-only themes (T47)', () => {
     expect(ownerThemesState()).toEqual({ status: 'ready', themes: [], problems: [] });
     await loadOwnerThemes(store({ 'manifest.json': JSON.stringify({ themes: [good] }) }));
     const s = ownerThemesState();
-    expect(s.status === 'ready' && s.problems).toEqual(['night: scene scenes/night.svg isn’t in the bucket.']);
+    expect(s.status === 'ready' && s.problems).toEqual(['night: picture pictures/night.webp isn’t in the bucket.']);
+  });
+
+  it('every starting colour set passes the same checks as an uploaded theme', () => {
+    for (const p of OWNER_PRESETS) expect(readOwnerTheme({ id: p.id, name: p.label.slice(0, 40), tone: p.tone, tokens: p.tokens, ornaments: [] }), p.id).toHaveProperty('theme');
   });
 
   it('a store that can’t be reached is an error, not an empty list', async () => {

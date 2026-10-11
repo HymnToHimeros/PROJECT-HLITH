@@ -10,6 +10,7 @@ import { useBannersData, type BannersData } from './useBannersData';
 import { EditListButton } from '../edit-mode/EditMode';
 import { setRosterEntry } from '../../core/data/userData';
 import { useAddOwnBanner } from './AddOwnBanner';
+import { BannerArt } from './BannerArt';
 
 export type BannerFilter = 'all' | 'live' | 'upcoming' | 'leaks' | 'reruns';
 
@@ -473,7 +474,7 @@ function BannerTile({ game, banner, data, open, now, paired }: TileProps) {
     return (
       <article className={cx(b.tile, paired && b.tilePaired, banner.leak && b.leak)} aria-label={banner.title} style={style}>
         <div className={cx(b.thumb, !art && b.thumbEmpty, isWeapon && art && b.thumbWeapon)}>
-          {art ? <img src={art} alt="" loading="lazy" className={cx(b.thumbImg, isWeapon && b.thumbImgWeapon)} /> : <span aria-hidden="true">{initials}</span>}
+          {art ? <BannerArt src={art} weapon={isWeapon} className={cx(b.thumbImg, isWeapon && b.thumbImgWeapon)} /> : <span aria-hidden="true">{initials}</span>}
           <span className={b.artLabel}>{artLabel}</span>
         </div>
         <div className={b.tileBody}>
@@ -511,7 +512,7 @@ function BannerTile({ game, banner, data, open, now, paired }: TileProps) {
     <article className={cx(b.tile, b.hero, paired && b.tilePaired, banner.leak && b.leak)} aria-label={banner.title} style={style}>
       <div className={cx(b.heroArt, !art && b.thumbEmpty, isWeapon && b.heroArtWeapon)}>
         {art ? (
-          <img src={art} alt="" loading="lazy" className={cx(b.heroImg, isWeapon && b.heroImgWeapon)} />
+          <BannerArt src={art} weapon={isWeapon} className={cx(b.heroImg, isWeapon && b.heroImgWeapon)} />
         ) : (
           <span className={b.heroInitials} aria-hidden="true">
             {initials}

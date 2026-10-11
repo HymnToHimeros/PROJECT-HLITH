@@ -34,9 +34,31 @@ Resume with: "continue from PROGRESS.md". Newest entry on top. Older entries:
   Owner-only: themes kept in a private storage bucket (`owner-themes`, 0010, owners only),
   downloaded at run time only after the server says owner; other accounts never ask for them
   and the picker doesn't list them. Colours are checked (hex only, ink.5 4.5:1); background is
-  the owner's own picture or a drawn scene; ornaments (hearts, bubbles, gold frame). Owner
-  console → Owner themes uploads a theme pack and a picture per theme. Nothing owner-only is
+  the owner's own picture (none until uploaded); ornaments (hearts, bubbles, gold frame). Owner
+  console → Owner themes adds a theme (name, colour set, ornaments) and a picture per theme. Nothing owner-only is
   in the repo. Screenshots of the public themes: `docs/owner-reports/2026-10-11/new-themes/`.
+- 2026-10-11 · **ERROR-FIX: banner pictures fit their frames** (branch `error-fix/banner-art-fit`, owner's T49).
+  Banner cards cropped every picture at one fixed spot (40 % down, zoomed 1.6×), so tall ZZZ
+  agent art showed legs and weapons showed a slice. Now `BannerArt` crops character art from
+  the picture's own shape (face about a third down the frame; `artFit.ts`, tested) and shows
+  W-Engines / Light Cones whole over a blurred copy of themselves. Big and small cards, both
+  games, phone and PC. Before/after: `docs/owner-reports/2026-10-11/banner-art/`.
+- 2026-10-11 · **ERROR-FIX: leak tiles the same size as every other tile** (branch `error-fix/leak-tile-size`, owner's T48).
+  In Roster → Characters a leaked character's tile carried a "? UNVERIFIED" tag and its whole
+  source note under the name, so it was much taller than the rest. Now a leak shows a "LEAK"
+  chip in the picture where "NOT OWNED" would be (a leak can't be owned), nothing extra below.
+  The unverified mark and the source stay on the character page. Same grid for HSR, ZZZ and All
+  games; team pickers never showed it. Screenshots: `docs/owner-reports/2026-10-11/leak-tile/`.
+- 2026-10-11 · **FRAME: HLITH installs as an app (T45)** (branch `frame/installable-app`).
+  Manifest (HLIÐSKJÁLF / HLITH, standalone, dark tokens), icons from the emblem
+  (`scripts/app-icons.ts` → `public/icons/`, plain + maskable + Apple), iPhone tags, and the
+  notch / home bar kept clear in the installed app. A service worker, written at build time
+  (`config/appShell.ts`), keeps only the app's own files: offline the app opens with what the
+  device has saved and says "Offline"; Supabase, HoYoLAB and art are never stored. A new deploy
+  shows "Update ready" with Reload, never a stuck old version. Account → Guide has "Install
+  HLITH as an app" (Install button in Chrome/Edge, steps for iPhone, Android and PC), hidden
+  once installed; the setup checklist ticks it. Base for iPhone push later (T9).
+  Screenshots: `docs/owner-reports/2026-10-11/installable-app/`.
 - 2026-10-11 · **ERROR-FIX: findings inbox said "Not allowed." to everyone** (branch `error-fix/findings-intake-401`).
   Cause (found with FRAME): the Vault secret `findings_intake_key` was 11 characters; keys under
   32 are refused, so even the right key failed. The owner replaces it (Vault, GitHub secret,

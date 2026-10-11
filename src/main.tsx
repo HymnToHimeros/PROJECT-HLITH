@@ -10,6 +10,7 @@ import { App } from './App';
 import { withCatalog } from './core/data/catalog';
 import { catalogRows } from './core/data/catalogSource';
 import { registerGame, registerIdentity, registerModuleScreen, registerPanel } from './core/registry';
+import { startAppShell } from './core/shell/appShell';
 import { applyTheme, savedTheme } from './core/theme/theme';
 import { games as seedGames } from './games';
 import { SharedTeamRoute } from './tools/share/ShareTeam';
@@ -31,6 +32,7 @@ registerPanel('assistant', () => import('./tools/assistant/AssistantPanel'));
 registerPanel('account', () => import('./tools/account/AccountPage'));
 registerIdentity(useShellIdentity); // the sidebar's profile card: picture, banner, name
 applyTheme(savedTheme()); // before the first paint, so nobody sees a flash of the wrong theme
+startAppShell(); // installable app: offline, updates, install offer (T45)
 
 const root = document.getElementById('root');
 if (!root) throw new Error('PROJECT-HLITH: #root element missing from index.html');

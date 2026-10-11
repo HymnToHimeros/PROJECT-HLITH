@@ -3,13 +3,13 @@ import type { OwnerTheme } from './ownerThemes';
 import a from './art.module.css';
 
 /**
- * An owner theme's background (T47): the owner's own picture, else the theme's drawn scene,
- * filling the art layer behind the page. Both come from the private bucket as blob: links
- * (ownerThemes.ts); nothing here names or holds any of them. A gold frame is drawn on top when
+ * An owner theme's background (T47): the owner's own picture filling the art layer behind the
+ * page, or nothing until one is uploaded. It comes from the private bucket as a blob: link
+ * (ownerThemes.ts); nothing here names or holds it. A gold frame is drawn on top when
  * the theme asks for it. Fixed behind the page, never takes clicks.
  */
 export const OwnerArt = memo(function OwnerArt({ theme }: { theme: OwnerTheme }) {
-  const src = theme.pictureUrl ?? theme.sceneUrl;
+  const src = theme.pictureUrl;
   return (
     <div className={`${a.art} ${a.ownerArt}`} aria-hidden="true" data-art="owner">
       {src && <img className={a.ownerPicture} src={src} alt="" decoding="async" />}

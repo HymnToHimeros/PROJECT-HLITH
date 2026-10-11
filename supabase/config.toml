@@ -40,7 +40,7 @@ file_size_limit = "2MiB"
 allowed_mime_types = ["image/png", "image/jpeg", "image/webp", "image/gif"]
 
 # Owner-only themes (T47): private, owners only (storage policies in 0010_owner_themes.sql).
-# Holds the owner themes' manifest, drawn scenes and the owner's own pictures; never public.
+# Holds the owner themes' manifest and the owner's own pictures; never public.
 [storage.buckets.owner-themes]
 public = false
 file_size_limit = "10MiB"

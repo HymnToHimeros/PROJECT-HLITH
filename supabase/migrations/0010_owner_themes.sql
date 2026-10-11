@@ -1,6 +1,6 @@
 -- Owner-only themes (T47): a private picture store that only owners can read or write.
 --
--- The themes themselves (their names, colours, drawn scenes and the owner's own pictures)
+-- The themes themselves (their names, colours and the owner's own pictures)
 -- are never in the public repo or the public app bundle. They live here, in a private
 -- bucket, as a manifest (manifest.json) plus the files it names. The app downloads them at
 -- run time only after the server says the signed-in account is an owner (public.is_owner()),

@@ -18,6 +18,7 @@ import { useSampleShown } from '../ui/sampleMarker';
 import { Segmented } from '../ui/Segmented';
 import { useNow } from '../ui/useNow';
 import { AnnouncementStrip } from './AnnouncementStrip';
+import { AppStatus } from './AppStatus';
 import { EditLayout } from './EditLayout';
 import { accountPath, navigate, parseAccountRoute, parseRoute, routePath, usePath } from './route';
 import { ServerPicker } from './ServerPicker';
@@ -259,6 +260,7 @@ export function Shell({ games: registered, account = null, isOwner = false, owne
 
       {/* ── Module slot ── */}
       <main className={s.main}>
+        <AppStatus />
         <AnnouncementStrip />
         {acct ? (
           <>

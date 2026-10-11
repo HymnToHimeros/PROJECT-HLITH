@@ -374,10 +374,10 @@ export function ExamplesPage() {
   );
 }
 
-/** An owner theme's card: its own colours and picture (or scene), from the private store. */
+/** An owner theme's card: its own colours and picture, from the private store. */
 function OwnerThemeCard({ t, checked }: { t: OwnerTheme; checked: boolean }) {
   const vars = Object.fromEntries(Object.entries(t.tokens).map(([k, v]) => [`--${k}`, v])) as CSSProperties;
-  const art = t.pictureUrl ?? t.sceneUrl;
+  const art = t.pictureUrl;
   return (
     <button type="button" role="radio" aria-checked={checked} className={a.themeCard} onClick={() => setTheme(`${OWNER_PREFIX}${t.id}`)}>
       <span className={a.themePreview} style={{ ...vars, ...(art ? { backgroundImage: `url(${art})`, backgroundSize: 'cover', backgroundPosition: 'center 30%' } : {}) }} aria-hidden="true">
