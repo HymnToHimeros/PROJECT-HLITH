@@ -1,7 +1,7 @@
 // @vitest-environment node
 import { readFileSync } from 'node:fs';
 import { describe, expect, it, vi } from 'vitest';
-import { deliver, readIntake, saveFindings, type DeliveryDb } from '../supabase/functions/_shared/findings.ts';
+import { deliver, intakeKeyOf, readIntake, saveFindings, type DeliveryDb } from '../supabase/functions/_shared/findings.ts';
 import { EXTERNAL_JOB_IDS, FRAME_MESSAGE, JOBS, runnerOf, SELF_ADJUSTING, type JobDef } from '../supabase/functions/_shared/jobs.ts';
 import {
   callJobFunction,
@@ -389,6 +389,18 @@ describe('findings intake (the routine’s deliveries)', () => {
       ['leaks-scan', 'Delivered 1 finding.', 'routine'],
     ]);
     expect(db.tables.scheduler_jobs?.find((j) => j.id === 'leaks-scan')).toMatchObject({ last_status: 'ok', last_run_at: new Date(NOW).toISOString(), next_due_at: '2026-10-12T06:00:00.000Z' });
+  });
+
+  it('takes the key from x-intake-key, else from Authorization: Bearer', () => {
+    const key = 'k'.repeat(40);
+    const h = (o: Record<string, string>) => new Headers(o);
+    expect(intakeKeyOf(h({ 'x-intake-key': key }))).toBe(key);
+    expect(intakeKeyOf(h({ Authorization: `Bearer ${key}` }))).toBe(key);
+    // x-intake-key wins (an Authorization header may carry the project's public key).
+    expect(intakeKeyOf(h({ 'x-intake-key': key, Authorization: 'Bearer public-key' }))).toBe(key);
+    expect(intakeKeyOf(h({ 'x-intake-key': '  ', Authorization: `bearer ${key}` }))).toBe(key);
+    expect(intakeKeyOf(h({ Authorization: `Basic ${key}` }))).toBe('');
+    expect(intakeKeyOf(h({}))).toBe('');
   });
 
   it('failed runs and next_at: checked all-or-nothing (self-adjusting cadence)', () => {

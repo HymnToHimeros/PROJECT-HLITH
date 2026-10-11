@@ -14,6 +14,16 @@ export const INTAKE_LIMITS = { bodyBytes: 256_000, findings: 100, title: 300, pa
 /** Keys shorter than this are refused outright (the owner makes a long random one). */
 export const MIN_KEY_LENGTH = 32;
 
+/**
+ * The key a delivery carries: the x-intake-key header, else `Authorization: Bearer <key>` (some
+ * callers, such as a network proxy that adds the key itself, can only use that header). '' if none.
+ */
+export function intakeKeyOf(headers: { get(name: string): string | null }): string {
+  const own = headers.get(INTAKE_HEADER)?.trim();
+  if (own) return own;
+  return headers.get('authorization')?.match(/^Bearer\s+(\S+)\s*$/i)?.[1] ?? '';
+}
+
 const DAY = 86_400_000;
 
 export type Intake =

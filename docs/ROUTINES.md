@@ -46,6 +46,9 @@ POST https://qywvnvwfsknfcxgpbivo.supabase.co/functions/v1/findings-intake
 Content-Type: application/json
 x-intake-key: <findings_intake_key>
 ```
+(`Authorization: Bearer <findings_intake_key>` works too, for callers that can only set that
+header. A key under 32 characters is always refused, so the Vault key must be at least 32.
+A 500 "Could not check the key" means the lookup failed, not that the key is wrong.)
 Body:
 ```json
 {

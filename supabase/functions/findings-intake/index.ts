@@ -7,7 +7,7 @@
 // the routine's message for a job it reports as failed), and the job is expected next at the
 // time the routine gives (next_at, self-adjusting), else on its fallback cadence.
 import { createClient } from 'npm:@supabase/supabase-js@2';
-import { deliver, INTAKE_HEADER, INTAKE_LIMITS, MIN_KEY_LENGTH, readIntake, type DeliveryDb } from '../_shared/findings.ts';
+import { deliver, INTAKE_LIMITS, intakeKeyOf, MIN_KEY_LENGTH, readIntake, type DeliveryDb } from '../_shared/findings.ts';
 import { findJob } from '../_shared/jobs.ts';
 import { effectiveCadence, nextSlot } from '../_shared/scheduler.ts';
 
@@ -19,11 +19,13 @@ Deno.serve(async (req) => {
   const serviceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY');
   if (!url || !serviceKey) return json({ error: 'The server is missing its settings.' }, 500);
 
-  const key = req.headers.get(INTAKE_HEADER) ?? '';
+  const key = intakeKeyOf(req.headers);
   if (key.length < MIN_KEY_LENGTH) return json({ error: 'Not allowed.' }, 401);
   const db = createClient(url, serviceKey, { auth: { persistSession: false } });
   const ok = await db.rpc('findings_intake_key_ok', { p_key: key });
-  if (ok.error || ok.data !== true) return json({ error: 'Not allowed.' }, 401);
+  // A lookup that failed says nothing about the key: a server problem, not "Not allowed".
+  if (ok.error) return json({ error: 'Could not check the key (database lookup failed); try again later.' }, 500);
+  if (ok.data !== true) return json({ error: 'Not allowed.' }, 401);
 
   const text = await req.text();
   if (new TextEncoder().encode(text).length > INTAKE_LIMITS.bodyBytes) return json({ error: `Larger than ${INTAKE_LIMITS.bodyBytes} bytes; split the delivery.` }, 413);

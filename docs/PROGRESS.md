@@ -29,6 +29,12 @@ Resume with: "continue from PROGRESS.md". Newest entry on top. Older entries:
 - CI (`.github/workflows/ci.yml`) runs both on every pull request.
 
 ## Done
+- 2026-10-11 · **FRAME: why findings-intake answered 401; clearer errors** (branch `frame/intake-key-lookup`).
+  Cause: the Vault key `findings_intake_key` is 11 characters; the function and
+  `findings_intake_key_ok` refuse anything under 32, so no copy of it can pass. Owner
+  replaces it with a 40+ character key in Vault, the GitHub secret and the environment
+  secret. Code: a failed key lookup is now a 500 "Could not check the key", not a 401;
+  the key is also taken from `Authorization: Bearer` when x-intake-key is missing.
 - 2026-10-11 · **SCHEDULER: Nihilux is Aeon ★ Aha, by name** (branch `scheduler/aha-official-name`, T15).
   HoYoverse revealed Aha as playable in 4.7 (character preview, 15 Sep 2026; owner, 11 Oct).
   `scripts/import-nanoka.ts` has a `REVEALED` table: an unreleased character whose name is
