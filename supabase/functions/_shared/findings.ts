@@ -14,6 +14,40 @@ export const INTAKE_LIMITS = { bodyBytes: 256_000, findings: 100, title: 300, pa
 /** Keys shorter than this are refused outright (the owner makes a long random one). */
 export const MIN_KEY_LENGTH = 32;
 
+/**
+ * The key a delivery carries: the x-intake-key header, else "Authorization: Bearer <key>"
+ * (some callers' proxies put a stored key there). Spaces and line breaks around it are
+ * dropped: a key copied with a trailing newline is still the same key.
+ */
+export function intakeKeyFrom(headers: Headers): string {
+  const own = headers.get(INTAKE_HEADER)?.trim();
+  if (own) return own;
+  const bearer = /^Bearer\s+(.+)$/i.exec(headers.get('authorization')?.trim() ?? '');
+  return bearer?.[1]?.trim() ?? '';
+}
+
+export type KeyCheck = { ok: true } | { ok: false; status: 401 | 500; error: string };
+
+type Rpc = PromiseLike<{ data: unknown; error: { message: string } | null }>;
+/** Said when the Vault secret itself is unusable: no key could ever pass. */
+export const INTAKE_NOT_READY = `The intake key in Vault (${INTAKE_SECRET}) is missing or shorter than ${MIN_KEY_LENGTH} characters.`;
+
+/**
+ * Checks the key: first that the Vault secret is usable (`findings_intake_key_ready`), then the
+ * key against it (`findings_intake_key_ok`). A wrong or missing key is 401; an unusable Vault
+ * secret or a check that couldn't run is 500 with the reason, so a broken setup never looks
+ * like a wrong key.
+ */
+export async function checkIntakeKey(key: string, db: { ready: () => Rpc; keyOk: (key: string) => Rpc }): Promise<KeyCheck> {
+  const ready = await db.ready();
+  if (ready.error) return { ok: false, status: 500, error: `Couldn't check the key: ${ready.error.message}` };
+  if (ready.data !== true) return { ok: false, status: 500, error: INTAKE_NOT_READY };
+  if (key.length < MIN_KEY_LENGTH) return { ok: false, status: 401, error: 'Not allowed.' };
+  const res = await db.keyOk(key);
+  if (res.error) return { ok: false, status: 500, error: `Couldn't check the key: ${res.error.message}` };
+  return res.data === true ? { ok: true } : { ok: false, status: 401, error: 'Not allowed.' };
+}
+
 const DAY = 86_400_000;
 
 export type Intake =

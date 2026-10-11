@@ -1,13 +1,13 @@
 // Supabase Edge Function: findings intake. The external routine (a scheduled Claude Code
 // chat that looks for leaks, events and new game data) delivers what it found here.
-// It sends its own narrow key in the x-intake-key header, checked against the Vault secret
+// It sends its own narrow key in the x-intake-key header (or Authorization: Bearer), checked against the Vault secret
 // findings_intake_key: that key can add findings and nothing else (never the service key).
 // Request format: docs/ROUTINES.md. Checked all-or-nothing; repeats within 30 days skipped;
 // every delivery is recorded as a run of its job ("Delivered N findings", or an error run with
 // the routine's message for a job it reports as failed), and the job is expected next at the
 // time the routine gives (next_at, self-adjusting), else on its fallback cadence.
 import { createClient } from 'npm:@supabase/supabase-js@2';
-import { deliver, INTAKE_HEADER, INTAKE_LIMITS, MIN_KEY_LENGTH, readIntake, type DeliveryDb } from '../_shared/findings.ts';
+import { checkIntakeKey, deliver, INTAKE_LIMITS, intakeKeyFrom, readIntake, type DeliveryDb } from '../_shared/findings.ts';
 import { findJob } from '../_shared/jobs.ts';
 import { effectiveCadence, nextSlot } from '../_shared/scheduler.ts';
 
@@ -19,11 +19,12 @@ Deno.serve(async (req) => {
   const serviceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY');
   if (!url || !serviceKey) return json({ error: 'The server is missing its settings.' }, 500);
 
-  const key = req.headers.get(INTAKE_HEADER) ?? '';
-  if (key.length < MIN_KEY_LENGTH) return json({ error: 'Not allowed.' }, 401);
   const db = createClient(url, serviceKey, { auth: { persistSession: false } });
-  const ok = await db.rpc('findings_intake_key_ok', { p_key: key });
-  if (ok.error || ok.data !== true) return json({ error: 'Not allowed.' }, 401);
+  const check = await checkIntakeKey(intakeKeyFrom(req.headers), {
+    ready: () => db.rpc('findings_intake_key_ready'),
+    keyOk: (key) => db.rpc('findings_intake_key_ok', { p_key: key }),
+  });
+  if (!check.ok) return json({ error: check.error }, check.status);
 
   const text = await req.text();
   if (new TextEncoder().encode(text).length > INTAKE_LIMITS.bodyBytes) return json({ error: `Larger than ${INTAKE_LIMITS.bodyBytes} bytes; split the delivery.` }, 413);

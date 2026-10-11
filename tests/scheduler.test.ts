@@ -1,7 +1,7 @@
 // @vitest-environment node
 import { readFileSync } from 'node:fs';
 import { describe, expect, it, vi } from 'vitest';
-import { deliver, readIntake, saveFindings, type DeliveryDb } from '../supabase/functions/_shared/findings.ts';
+import { checkIntakeKey, deliver, INTAKE_NOT_READY, intakeKeyFrom, readIntake, saveFindings, type DeliveryDb } from '../supabase/functions/_shared/findings.ts';
 import { EXTERNAL_JOB_IDS, FRAME_MESSAGE, JOBS, runnerOf, SELF_ADJUSTING, type JobDef } from '../supabase/functions/_shared/jobs.ts';
 import {
   callJobFunction,
@@ -483,3 +483,39 @@ function fakeDb() {
   };
   return Object.assign(db, { tables });
 }
+
+describe('findings intake key', () => {
+  const KEY = 'k'.repeat(40);
+  const ok = <T,>(data: T) => async () => ({ data, error: null });
+  const fail = (message: string) => async () => ({ data: null, error: { message } });
+  const vault = (stored: string) => ({ ready: ok(stored.length >= 32), keyOk: async (key: string) => ({ data: key === stored, error: null }) });
+
+  it('reads x-intake-key, else a Bearer key, without surrounding spaces or line breaks', () => {
+    expect(intakeKeyFrom(new Headers({ 'x-intake-key': ` ${KEY}\n` }))).toBe(KEY);
+    expect(intakeKeyFrom(new Headers({ authorization: `Bearer ${KEY}` }))).toBe(KEY);
+    expect(intakeKeyFrom(new Headers({ 'x-intake-key': KEY, authorization: 'Bearer something-else' }))).toBe(KEY);
+    expect(intakeKeyFrom(new Headers())).toBe('');
+  });
+
+  it('the right key passes, a wrong or short one is 401', async () => {
+    expect(await checkIntakeKey(KEY, vault(KEY))).toEqual({ ok: true });
+    expect(await checkIntakeKey('x'.repeat(40), vault(KEY))).toEqual({ ok: false, status: 401, error: 'Not allowed.' });
+    expect(await checkIntakeKey('short', vault(KEY))).toEqual({ ok: false, status: 401, error: 'Not allowed.' });
+  });
+
+  it('a Vault key that is missing or too short is 500 with a plain message, whatever is sent', async () => {
+    const short = 'a'.repeat(11); // what was in Vault on 2026-10-11
+    expect(await checkIntakeKey(short, vault(short))).toEqual({ ok: false, status: 500, error: INTAKE_NOT_READY });
+    expect(await checkIntakeKey(KEY, vault(''))).toEqual({ ok: false, status: 500, error: INTAKE_NOT_READY });
+    expect(INTAKE_NOT_READY).toBe('The intake key in Vault (findings_intake_key) is missing or shorter than 32 characters.');
+  });
+
+  it('a check that cannot run is 500 with the reason, not "Not allowed."', async () => {
+    expect(await checkIntakeKey(KEY, { ready: fail('function findings_intake_key_ready() does not exist'), keyOk: ok(true) })).toEqual({
+      ok: false,
+      status: 500,
+      error: "Couldn't check the key: function findings_intake_key_ready() does not exist",
+    });
+    expect(await checkIntakeKey(KEY, { ready: ok(true), keyOk: fail('permission denied') })).toEqual({ ok: false, status: 500, error: "Couldn't check the key: permission denied" });
+  });
+});
