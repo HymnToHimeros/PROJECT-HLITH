@@ -15,7 +15,7 @@ doing it said `LIVE`. Newest jobs at the bottom; live jobs move to Done.
 | T36 | README made attractive for public visitors (#82) | FRAME | 2026-10-10 |
 | T5 | HSR "Interastral Peace Gala" reward (starts 21 Oct) | SCHEDULER | blocked | Sources say 500 or 60; filled from the official notice when the event opens 21 Oct. |
 | T6 | Keep the game lists current on a schedule | SCHEDULER | working | Owner started it 2026-10-10, together with T7. Plan first. |
-| T7 | Research routine: several checks a week (leaks, official notices, confirmations), more in the first/last 2 weeks of the 6-week cycle; SCHEDULER picks days/times itself and self-corrects per version; finds auto-update the app | SCHEDULER (+ FRAME step 2) | working | Merged: #96 rhythm, #97 intake (FRAME), #99 GitHub Action. Waiting on owner's 2 GitHub settings before first run; step 4 (Claude routine) planning. Plan approved: anchored on patch day, busy first/last 2 weeks, learns offsets per version (rhythm.json); GitHub Action every 2h + Claude routine. Step 1 SCHEDULER, step 2 FRAME findings-intake. Owner: data-only PRs auto-merge YES; owner adds FINDINGS_INTAKE_KEY secret (where to find it: SCHEDULER tells MANAGER). Owner: re-check leaked characters' beta kits every run (kits change between betas). |
+| T7 | Research routine: several checks a week, more in first/last 2 weeks; self-adjusting | SCHEDULER | working | Daily 10:45 UTC trigger with start check (self-re-arm not possible); test delivered; #108 #111 merged. Hakushin gone (DNS), HSR second source DimbreathBot. First real run 14 Oct. |
 | T8 | Live checks with real logins: HoYoLAB link, in-game history link, Assistant with own key | FRAME | waiting on owner | Needs the owner to sign in and try each. |
 | T9 | Phone push keys (VAPID) so the evening message is really sent | FRAME | later | Owner: phone notifications are a task for the end. |
 | T10 | Resend for sign-in mail at scale | FRAME | later | Owner: a last thing to add, low importance. |
@@ -31,11 +31,11 @@ doing it said `LIVE`. Newest jobs at the bottom; live jobs move to Done.
 | T41 | Carries who sustain themselves (Aventurine • Waveflair) free the sustain slot; "Best found from your characters" card when a card is under 90% | LOGIC-CORE (+ FRAME OK on Teams.tsx) | live | #93: "Best found from your characters" cards (Waveflair, Silver Wolf LV.999, 7 ZZZ); Castorice counts as her own healer. |
 | T42 | Character page "Builds their teams want": refresh on switches/team lists/leaks; use the members the card shows | LOGIC-CORE | live | #95 (with FRAME's #94: all Roster team results refresh on switches, lists, builds). |
 | T43 | Leak kit sheets go "stale" (not scored, says so) when the beta kit text changes; data updates not blocked | LOGIC-CORE | live | #98: stale leak sheets aren't scored ("beta kit changed"); data updates not blocked. |
-| T44 | Roster: leaked characters (any source) always at the top, newest first; Aeon Aha is at the bottom now | FRAME | sent | Owner 2026-10-11. |
-| T45 | Installable app on phone + PC (PWA: manifest, icons, service worker, update toast, install hint); base for phone push | FRAME | sent | Owner 2026-10-11 (compared with their other site). |
+| T44 | Roster: leaked characters (any source) always at the top, newest first | FRAME | live | #104 (FRAME checked live bundle). |
+| T45 | Installable app on phone + PC (PWA: manifest, icons, offline, Update ready, install hint) | FRAME | working | #109 merged 2026-10-11; waiting on FRAME LIVE. |
 | T46 | BUG: findings-intake answers 401 to the Data refresh Action and to the routine's proxy key | ERROR-FIX | live | New key (owner) + #107; run #3 ok, Bearer path ok, v76. |
 | T47 | More themes (3 public) + owner-only BL themes: private bucket, owner-only loading, upload a picture per theme | FRAME | working | Owner: drawn sample "horrible", dropped. AI image generator = separate paid option, owner to decide. Screenshots before merge. |
-| T48 | BUG: leak tiles in Roster show a "? UNVERIFIED" tag + squeezed source text under the tile (Aeon Aha); tiles must look like all others, marker as an in-picture chip, sources on the character page only | ERROR-FIX | sent | Owner 2026-10-11 screenshot. |
+| T48 | BUG: leak tiles in Roster had a "? UNVERIFIED" tag + source text under the tile | ERROR-FIX | working | #110 merged (LEAK chip, same size); waiting on LIVE. |
 | T49 | BUG: banner card art cropped badly (legs, weapon parts); art must fit each frame on its own, both games | ERROR-FIX | sent | Owner 2026-10-11 screenshot (ZZZ Banners). |
 
 ## Done
