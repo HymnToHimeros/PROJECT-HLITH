@@ -947,7 +947,7 @@
   },
   {
     "id": "1511",
-    "name": "Nihilux (Aeon ★ Aha)",
+    "name": "Aeon ★ Aha",
     "rarity": "top",
     "element": "quantum",
     "role": "elation",
@@ -955,7 +955,7 @@
     "portrait": "https://static.nanoka.cc/assets/hsr/avatarshopicon/1511.webp",
     "source": "nanoka.cc",
     "leak": {
-      "source": "nanoka.cc, game files of build 4.6.51 (live is 4.6)"
+      "source": "name: HoYoverse character preview, 15 Sep 2026; kit and details: nanoka.cc, game files of build 4.6.51 (live is 4.6)"
     }
   },
   {

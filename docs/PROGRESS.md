@@ -29,6 +29,11 @@ Resume with: "continue from PROGRESS.md". Newest entry on top. Older entries:
 - CI (`.github/workflows/ci.yml`) runs both on every pull request.
 
 ## Done
+- 2026-10-11 · **SCHEDULER: Nihilux is Aeon ★ Aha, by name** (branch `scheduler/aha-official-name`, T15).
+  HoYoverse revealed Aha as playable in 4.7 (character preview, 15 Sep 2026; owner, 11 Oct).
+  `scripts/import-nanoka.ts` has a `REVEALED` table: an unreleased character whose name is
+  official shows under that name, no leak code name, and stays marked as a leak (source names
+  both) until release, since kit and details are still beta.
 - 2026-10-10 · **SCHEDULER: the research routine's instructions and key moments** (branch
   `scheduler/research-routine`, T6/T7 step 4a). `npm run schedule:due -- --key` gives the
   routine's next key moment (patch day, expected program announcement and pre-download

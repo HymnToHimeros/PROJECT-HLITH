@@ -18,14 +18,14 @@ describe('what an automatic refresh changed', () => {
   });
 
   it('reports a leak\'s beta kit change with the kit\'s own build and its stale sheet, as an info finding', () => {
-    const chars = [{ id: '1511', name: 'Nihilux (Aeon ★ Aha)', leak: { source: 'nanoka.cc' } }];
+    const chars = [{ id: '1511', name: 'Aeon ★ Aha', leak: { source: 'nanoka.cc' } }];
     const r = report('hsr', { ...empty, characters: chars, kits: [kit('Deals 100%')] }, { ...empty, characters: chars, kits: [kit('Deals 120%')] }, {
       build: '4.6.53',
       now: NOW,
       staleSheet: (id) => (id === '1511' ? 'its beta kit changed since it was read (1 quoted line changed)' : undefined),
     });
     expect(r.kitChanged).toEqual(['1511']);
-    expect(r.lines).toEqual(['HSR: Nihilux (Aeon ★ Aha): beta kit changed in build 4.6.52 (1 part)', '  - changed: Skill: Laugh', "  - LOGIC-CORE: re-read Nihilux (Aeon ★ Aha)'s kit sheet (its beta kit changed since it was read (1 quoted line changed))"]);
+    expect(r.lines).toEqual(['HSR: Aeon ★ Aha: beta kit changed in build 4.6.52 (1 part)', '  - changed: Skill: Laugh', "  - LOGIC-CORE: re-read Aeon ★ Aha's kit sheet (its beta kit changed since it was read (1 quoted line changed))"]);
     expect(r.findings).toEqual([
       expect.objectContaining({ job: 'leaks-scan', kind: 'info', source: { name: 'nanoka.cc, build 4.6.52', url: 'https://nanoka.cc/hsr' }, payload: expect.objectContaining({ build: '4.6.52', staleSheet: expect.stringContaining('1 quoted line') }) }),
     ]);
