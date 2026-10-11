@@ -121,44 +121,57 @@ Run log, "by routine"), and each finding shows which job delivered it and when.
 - Never call any other HLITH function and never send the service key.
 
 ## Research routine
-The instructions the scheduled chat follows. Its trigger prompt only says: "Read
-docs/ROUTINES.md § Research routine in PROJECT-HLITH and do it." Changing what it
-does = a reviewed PR to this section.
+The instructions the scheduled chat follows ("HLITH research routine", a Claude
+Code routine in the cloud environment). Changing what it does = a reviewed PR to
+this section; the routine's own prompt only adds the daily start check below.
 
-**When it runs.** At key moments only (`node scripts/schedule-due.ts --key`):
-patch day after maintenance, the expected special-program announcement and
-pre-download notice, new banner starts, and the first check of each quiet
-middle. Both games share a run when they fall within 12 hours. A weekly heartbeat
-(Mondays about 08:50 UTC) only checks that the next run is set.
+**When it runs.** The routine starts every day at 10:45 UTC and first asks
+`node scripts/schedule-due.ts --key --now <24 hours ago>`. When `next_key` is
+empty or still in the future, no key moment fell in the last 24 hours: it stops
+at once (no delivery, no notification). Key moments: patch day after maintenance,
+the expected special-program announcement and pre-download notice, new banner
+starts, and the first check of each quiet middle (`keyMoments` in
+`scripts/schedule/rhythm.ts`).
 
-**Each run, in order.**
-1. `git pull` on main, `npm ci`. Note the time.
-2. Official notices the importers don't read (official news list and in-game
-   notice board, both games, since the last run):
+**Each run, in order.** Every step is done; a step that can't be done is named in
+the delivery, never skipped silently.
+1. `git clone https://github.com/HymnToHimeros/PROJECT-HLITH` (or `git pull` on
+   main), `npm ci`. Note the time.
+2. Official notices, both games, posted since the last run. These official
+   sources work from the cloud environment; read them directly (not news sites):
+   - official news list:
+     `https://sg-public-api-static.hoyoverse.com/content_v2_user/app/<app>/getContentList?iChanId=<channel>&iPageSize=50&iPage=1&sLangKey=en-us&isPreview=0`
+     (HSR app `113fe6d3b4514cdd` channel 250; ZZZ app `3e9196a4b9274bd7` channel 296;
+     one post: `.../getContent?iInfoId=<id>&sLangKey=en-us&isPreview=0`);
+   - in-game notice boards: the `notices` URLs in `scripts/import-schedule.ts`
+     (`getAnnList` for titles, `getAnnContent` for text).
+   What to deliver:
    - special program / livestream date and time → `info` finding;
    - redeem codes from the program → `info` finding (the HoYoLAB job tries codes);
-   - a new version's announced characters, banners and events → if a leaked
-     character now has its official name, a data PR that fixes the name, plus an
-     `info` finding.
+   - a leaked character's official name → a data PR that adds it to `REVEALED` in
+     `scripts/import-nanoka.ts` (with the source), plus an `info` finding.
 3. A second leak source next to nanoka.cc: Hakushin (hsr.hakush.in,
-   zzz.hakush.in; for HSR also the DimbreathBot data). Something there that our
-   lists don't have → a `leak` finding with the source named and the payload
-   fields from "Payload that goes straight into the lists". Never into the lists
-   directly.
+   zzz.hakush.in; for HSR also the DimbreathBot data on raw.githubusercontent.com).
+   Something there that our lists don't have → a `leak` finding with the source
+   named and the payload fields from "Payload that goes straight into the lists".
+   Never into the lists directly. If a host is blocked by the environment's
+   network settings, say which one in the delivery.
 4. Gaps: run `npm run data:schedule` and read its notes ("left out: no start
    yet", rewards unknown). Fill only what a source proves (official notice, wiki,
    game8), as a small data PR.
-5. Data refresh health: read the last runs of the Data refresh Action. When an
-   import broke because a source changed, fix the importer in a PR.
-6. Deliver: one request to findings-intake with `ran: ["research-routine"]` (or
-   `failed` with what went wrong), the findings, and
-   `next_at: { "research-routine": <next key moment + 30 min> }`.
-7. Re-arm: set this routine's trigger to run once at the next key moment + 30
-   minutes (`update_trigger`, `run_once_at`, `enabled: true`).
+5. Data refresh health: read the last runs of the Data refresh Action
+   (`https://api.github.com/repos/HymnToHimeros/PROJECT-HLITH/actions/workflows/data-refresh.yml/runs?per_page=5`).
+   When an import broke because a source changed, fix the importer in a PR.
+6. Deliver **once** at the end: one request to findings-intake with
+   `ran: ["research-routine"]` (or `failed` with what went wrong, under 500
+   characters), the findings, and `next_at: { "research-routine": <next key moment
+   + 30 min> }` (`node scripts/schedule-due.ts --key`).
 
 **Its PRs.** Branch `scheduler/research-<date>`. `npm run check` green before
-pushing. READY to MANAGER like every other chat's PR. Never merged by itself
-(judgement was involved).
+pushing. When the session has no GitHub tools to open the PR, it pushes the branch
+and delivers an `info` finding "branch scheduler/research-<date> ready: <what>",
+and SCHEDULER opens the PR. READY to MANAGER like every other chat's PR. Never
+merged by itself (judgement was involved).
 
 **Rules.**
 - Honest data only: what a source says, with the source named. A leak is marked
@@ -171,6 +184,3 @@ pushing. READY to MANAGER like every other chat's PR. Never merged by itself
   files except through a PR.
 - When it can't decide something, it delivers an `info` finding with the question
   and leaves it.
-- A missed re-arm is caught by the heartbeat, which re-arms the routine and
-  delivers `failed` for `research-routine` ("missed its re-arm; re-armed for …").
-
