@@ -12,9 +12,10 @@ doing it said `LIVE`. Newest jobs at the bottom; live jobs move to Done.
 | T8 | Live checks with real logins: HoYoLAB link, in-game history link, Assistant with own key | FRAME | waiting on owner | Needs the owner to sign in and try each. |
 | T9 | Phone push keys (VAPID) so the evening message is really sent | FRAME | later | Owner: phone notifications are a task for the end. |
 | T10 | Resend for sign-in mail at scale | FRAME | later | Owner: a last thing to add, low importance. |
-| T11 | Finish account deletions after 30 days | FRAME | sent | Listed as "later" in PROGRESS.md. |
+| T11 | Finish account deletions after 30 days | FRAME | sent | Part of T55 (going public). |
 | T13 | ZZZ 3.3 (21 Oct): event dates, A-rank featured agents, version end date | SCHEDULER | blocked | Nothing published yet; rerun `data:nanoka` + `data:schedule` on 21 Oct. |
 | T14 | HSR 4.7 (starts 11 Nov): versions, banners, events | SCHEDULER | blocked | Waits for the announcement (special program around late Oct). |
+| T55 | Go public: privacy policy + terms pages, links + not-affiliated notice, public homepage; then Google OAuth publish (owner steps), sign-in email at scale (T10), deletions (T11) | FRAME (+ owner) | sent | Owner 2026-10-11. Needs owner: contact email, own domain yes/no. |
 
 ## Done
 | # | Job | Who | Live on |
