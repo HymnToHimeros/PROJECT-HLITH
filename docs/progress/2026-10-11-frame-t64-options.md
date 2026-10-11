@@ -11,4 +11,6 @@ Sheets only; nothing is built into the app yet.
   - Frames 1–12, name styles 1–12 (7–12 new).
 - Owner on round 2: icon jobs approved as proposed; frames 1–12 and name styles 1–12 all kept as options; the badges were the same topic restyled.
 - Round 3 (badges only): `docs/owner-reports/2026-10-11/t64-options-round3/`. Badge 0 (today's) plus 8 new subjects, each with its own shape, colours and style: Draupnir, Geri & Freki, Gungnir, Sól & Máni, Nine Realms, Urnes Serpent, Valhalla's Gate, Gjallarhorn.
+- Owner on round 3: keep ALL badges 0–8 as owner choices; wants new, different frames and name styles.
+- Round 4: `docs/owner-reports/2026-10-11/t64-options-round4/`. Frames 13–20 and name styles 13–20, each a new shape/look and each matched to a round-3 badge (8 full sets: badge N + frame N+12 + name N+12).
 - Next: owner picks → T64 Part B (profile customization).
