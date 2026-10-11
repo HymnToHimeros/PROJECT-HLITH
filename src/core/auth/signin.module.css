@@ -109,8 +109,14 @@
   line-height: 1.45;
   color: var(--ink-4);
 }
+/* A link inside a sentence is underlined, not only coloured. */
+.fan a {
+  color: var(--glacier);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
 
-/* Google and email: not open to the public yet (owner, T55). Greyed out until an owner or tester unlocks them. */
+/* Email sign-in: not open to the public yet (owner, T55). Greyed out until an owner or tester unlocks them. */
 .open,
 .closed {
   display: grid;
