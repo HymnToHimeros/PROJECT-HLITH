@@ -152,6 +152,12 @@ stays the base; never rename an id that is already in a list.
     characters" cards, `source: 'best-found'` (`BEST_FOUND` in `core/rules/bestCards.ts`). LOGIC-CORE changed
     FRAME's `src/tools/roster/Teams.tsx` (with MANAGER's OK): the cards are appended to Recommended teams, tagged
     "Best found" with the existing tag style, with no "Edit team list" and their own source line.
+- Beta recommended builds (T54): `npm run data:builds` also reads the beta files' recommendation for characters in
+  our lists that the live files don't have yet (upcoming agents, leaks), marked `beta` and `version`. When the
+  scheduled refresh re-imports leaks' beta kits, run `npm run data:builds` too, so the beta builds stay current.
+  (LOGIC-CORE added optional `beta` and `version` to `RecommendedBuild`, and a score with no recommendation is now
+  `unknown()` with no fix, while too few parts is `unknown('enter-manually')`. FRAME's CharacterPage build card says
+  which; 2 lines, MANAGER's OK.)
 - Leaks' beta kits (T43): when SCHEDULER re-imports a leak whose beta text changed, LOGIC-CORE's sheet for it goes
   stale. It is not used (the leak reads "not read yet" with why), and its sheet test shows as skipped with
   "re-read: …" instead of failing. SCHEDULER lists those in its finding / PR summary; LOGIC-CORE re-reads them.

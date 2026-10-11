@@ -29,6 +29,11 @@ Resume with: "continue from PROGRESS.md". Newest entry on top. Older entries:
 - CI (`.github/workflows/ci.yml`) runs both on every pull request.
 
 ## Done
+- 2026-10-11 · **LOGIC-CORE: recommended builds for everyone; the build card says why there's no score (T54)**
+  (branch `logic-core/missing-builds`). No released character lacked a recommended build (Kafka included): a build
+  saved with fewer than 3 parts read "no recommended build". Now it says to add sets, main stats or sub stats.
+  Severian, Phoenix (ZZZ) and Aeon ★ Aha (HSR) get the beta files' recommendation, marked "beta, may change". A test
+  lists any released character without one.
 - 2026-10-11 · **FRAME: profile card, badges and Look (T52)** (branch `frame/profile-badges`).
   Account → Profile is now a card like an in-game one: banner, framed picture, name in your
   colour, title, your badge, up to 4 favourite characters or teams, and your own pull numbers.

@@ -14161,5 +14161,155 @@
     ]
    }
   }
+ },
+ {
+  "characterId": "1511",
+  "source": "the game's own recommendation in beta build 4.6.51 (nanoka.cc), beta, may change",
+  "beta": true,
+  "version": "4.6.51",
+  "sets": [
+   {
+    "pieces": 4,
+    "options": [
+     "Dreamlit Actor",
+     "Diviner of Distant Reach",
+     "Sacerdos' Relived Ordeal"
+    ]
+   },
+   {
+    "pieces": 2,
+    "options": [
+     "God's Moment of Joy",
+     "Sprightly Vonwacq",
+     "Broken Keel"
+    ]
+   }
+  ],
+  "mainStats": {
+   "Body": [
+    "CRIT Rate",
+    "CRIT DMG"
+   ],
+   "Feet": [
+    "SPD"
+   ],
+   "Planar Sphere": [
+    "HP %",
+    "DEF %"
+   ],
+   "Link Rope": [
+    "DEF %",
+    "HP %"
+   ]
+  },
+  "subStats": [
+   "CRIT Rate",
+   "CRIT DMG",
+   "SPD"
+  ],
+  "weapons": [
+   "Upon the First Echo of \"Aha\"",
+   "Tomorrow, Together",
+   "Mushy Shroomy's Adventures"
+  ],
+  "skillsFirst": [],
+  "items": {
+   "Dreamlit Actor": {
+    "icon": "https://static.nanoka.cc/assets/hsr/itemfigures/71060.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "Increases SPD by 6%."
+     },
+     {
+      "label": "4-piece",
+      "text": "When the wearer uses their Skill or Ultimate on one other ally target, increases the ability target's Elation by 16%, lasting for 3 turn(s). If the wearer has 10 or more points of Certified Banger, additionally increases all ally targets' CRIT DMG by 12%, lasting for 3 turn(s)."
+     }
+    ]
+   },
+   "Diviner of Distant Reach": {
+    "icon": "https://static.nanoka.cc/assets/hsr/itemfigures/71053.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "Increases SPD by 6%."
+     },
+     {
+      "label": "4-piece",
+      "text": "Before entering combat, if the wearer's SPD is greater than or equal to 120/160, increases the wearer's CRIT Rate by 10%/18%. When the wearer uses Elation Skill for the first time in each battle, increases all allies' Elation by 10%. This effect cannot stack."
+     }
+    ]
+   },
+   "Sacerdos' Relived Ordeal": {
+    "icon": "https://static.nanoka.cc/assets/hsr/itemfigures/71038.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "Increases SPD by 6%."
+     },
+     {
+      "label": "4-piece",
+      "text": "When using Skill or Ultimate on one ally target, increases the ability target's CRIT DMG by 18%, lasting for 2 turn(s). This effect can stack up to 2 time(s)."
+     }
+    ]
+   },
+   "God's Moment of Joy": {
+    "icon": "https://static.nanoka.cc/assets/hsr/itemfigures/71062.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "Increases the wearer's SPD by 6%. When the wearer's Elation reaches 40% or higher, the wearer's action advances by 40% immediately when entering combat."
+     }
+    ]
+   },
+   "Sprightly Vonwacq": {
+    "icon": "https://static.nanoka.cc/assets/hsr/itemfigures/71019.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "Increases the wearer's Energy Regeneration Rate by 5%. When the wearer's SPD reaches 120 or higher, the wearer's action is Advanced Forward by 40% immediately upon entering battle."
+     }
+    ]
+   },
+   "Broken Keel": {
+    "icon": "https://static.nanoka.cc/assets/hsr/itemfigures/71023.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "Increases the wearer's Effect RES by 10%. When the wearer's Effect RES is at 30% or higher, all allies' CRIT DMG increases by 10%."
+     }
+    ]
+   },
+   "Upon the First Echo of \"Aha\"": {
+    "icon": "https://static.nanoka.cc/assets/hsr/lightconemediumicon/23065.webp",
+    "rarity": 5,
+    "effects": [
+     {
+      "label": "Improv Tour (Superimposition 1)",
+      "text": "Increases the wearer's base Speed by 12. When using a Skill on one other ally, gains 10 Punchline. This effect can trigger at most once every 2 turn(s). Then, causes all allies to ignore 16% of the enemy target's DEF when dealing DMG during this combat. This effect cannot be stacked."
+     }
+    ]
+   },
+   "Tomorrow, Together": {
+    "icon": "https://static.nanoka.cc/assets/hsr/lightconemediumicon/22007.webp",
+    "rarity": 4,
+    "effects": [
+     {
+      "label": "Companion (Superimposition 1)",
+      "text": "Increases the wearer's CRIT DMG by 12%. After the wearer uses their Ultimate, increases all allies' Elation by 8%, lasting for 1 turn(s)."
+     }
+    ]
+   },
+   "Mushy Shroomy's Adventures": {
+    "icon": "https://static.nanoka.cc/assets/hsr/lightconemediumicon/21064.webp",
+    "rarity": 4,
+    "effects": [
+     {
+      "label": "Rumble (Superimposition 1)",
+      "text": "Increases the wearer's Elation by 12%. When the wearer uses an Elation Skill, increases Elation DMG taken by all enemies by 6% for 2 turn(s)."
+     }
+    ]
+   }
+  }
  }
 ]

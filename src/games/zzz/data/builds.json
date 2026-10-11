@@ -5986,5 +5986,215 @@
     ]
    }
   }
+ },
+ {
+  "characterId": "1631",
+  "source": "the game's own recommendation in beta build 3.3.12+19476086 (nanoka.cc), beta, may change",
+  "beta": true,
+  "version": "3.3.12+19476086",
+  "sets": [
+   {
+    "pieces": 4,
+    "options": [
+     "Dawn's Bloom"
+    ]
+   },
+   {
+    "pieces": 2,
+    "options": [
+     "Puffer Electro",
+     "Branch & Blade Song"
+    ]
+   }
+  ],
+  "mainStats": {
+   "Disc 4": [
+    "CRIT Rate"
+   ],
+   "Disc 5": [
+    "CRIT DMG"
+   ],
+   "Disc 6": [
+    "PEN Ratio"
+   ]
+  },
+  "subStats": [
+   "CRIT Rate",
+   "CRIT DMG",
+   "ATK %"
+  ],
+  "weapons": [
+   "Incarcerating Grip"
+  ],
+  "skillsFirst": [
+   [
+    "Core Skill",
+    "Basic Attack"
+   ],
+   [
+    "Chain Attack",
+    "Special Attack",
+    "Assist"
+   ],
+   [
+    "Dodge"
+   ]
+  ],
+  "items": {
+   "Dawn's Bloom": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitDawnsBloom.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "Increases Basic Attack DMG by 15%."
+     },
+     {
+      "label": "4-piece",
+      "text": "Increases Basic Attack DMG by 20%. When equipped by an Attack character, using an EX Special Attack or Ultimate will further increase Basic Attack DMG by 20% for 25s. Repeated triggers reset the duration."
+     }
+    ]
+   },
+   "Puffer Electro": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitPufferElectro.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "PEN Ratio +8%"
+     },
+     {
+      "label": "4-piece",
+      "text": "Ultimate DMG increases by 20%. Launching an Ultimate increases the equipper's ATK by 15% for 12s."
+     }
+    ]
+   },
+   "Branch & Blade Song": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitBranch&BladeSong.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "CRIT DMG +16%"
+     },
+     {
+      "label": "4-piece",
+      "text": "When Anomaly Mastery exceeds or equals 115 points, the equipper's CRIT DMG increases by 30%. When any squad member applies Freeze or triggers the Shatter effect on an enemy, the equipper's CRIT Rate increases by 12%, lasting 15s."
+     }
+    ]
+   },
+   "Incarcerating Grip": {
+    "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1631.webp",
+    "rarity": 4,
+    "effects": [
+     {
+      "label": "Evil Caught in Hand (Phase 1)",
+      "text": "The equipper's CRIT Rate increases by 20%. When the equipper's Basic Attack hits an enemy, their ATK increases by 10%, and their DMG ignores 15% of the target's Wind RES for 16s."
+     }
+    ]
+   }
+  }
+ },
+ {
+  "characterId": "1641",
+  "source": "the game's own recommendation in beta build 3.3.12+19476086 (nanoka.cc), beta, may change",
+  "beta": true,
+  "version": "3.3.12+19476086",
+  "sets": [
+   {
+    "pieces": 4,
+    "options": [
+     "Freedom Blues"
+    ]
+   },
+   {
+    "pieces": 2,
+    "options": [
+     "Phaethon's Melody",
+     "Chaos Jazz"
+    ]
+   }
+  ],
+  "mainStats": {
+   "Disc 4": [
+    "Anomaly Mastery"
+   ],
+   "Disc 5": [
+    "Anomaly Proficiency"
+   ],
+   "Disc 6": [
+    "Fire DMG Bonus"
+   ]
+  },
+  "subStats": [
+   "Anomaly Proficiency",
+   "ATK %",
+   "ATK"
+  ],
+  "weapons": [
+   "Plume of Rebirth"
+  ],
+  "skillsFirst": [
+   [
+    "Core Skill",
+    "Basic Attack"
+   ],
+   [
+    "Special Attack",
+    "Chain Attack"
+   ],
+   [
+    "Assist",
+    "Dodge"
+   ]
+  ],
+  "items": {
+   "Freedom Blues": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitFreedomBlues.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "Anomaly Proficiency +30"
+     },
+     {
+      "label": "4-piece",
+      "text": "When an EX Special Attack hits an enemy, reduce the target's Anomaly Buildup RES to the equipper's Attribute by 20% for 8s. This effect does not stack with others of the same attribute."
+     }
+    ]
+   },
+   "Phaethon's Melody": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitSavior.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "Anomaly Mastery +8%."
+     },
+     {
+      "label": "4-piece",
+      "text": "When any squad member uses an EX Special Attack, the equipper's Anomaly Proficiency increases by 45 for 8s. If the character using the EX Special Attack is not the equipper, the equipper's Ether DMG is increased by 25%."
+     }
+    ]
+   },
+   "Chaos Jazz": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitChaosJazz.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "Anomaly Proficiency +30"
+     },
+     {
+      "label": "4-piece",
+      "text": "Fire DMG and Electric DMG increases by 15%. While off-field, EX Special Attack and Assist Attack DMG increases by 20%. When switching on-field, this buff continues for 5s, and this continuation effect can trigger once every 7.5s."
+     }
+    ]
+   },
+   "Plume of Rebirth": {
+    "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1641.webp",
+    "rarity": 4,
+    "effects": [
+     {
+      "label": "Hatching Day (Phase 1)",
+      "text": "The equipper's Anomaly Proficiency increases by 90. When Anomaly DMG dealt by any squad member to an enemy triggers a critical hit, the equipper's Fire DMG increases by 40% for 20s. Repeated triggers reset the duration."
+     }
+    ]
+   }
+  }
  }
 ]
