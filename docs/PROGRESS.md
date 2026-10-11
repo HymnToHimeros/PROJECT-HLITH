@@ -29,6 +29,13 @@ Resume with: "continue from PROGRESS.md". Newest entry on top. Older entries:
 - CI (`.github/workflows/ci.yml`) runs both on every pull request.
 
 ## Done
+- 2026-10-11 · **ERROR-FIX: findings inbox said "Not allowed." to everyone** (branch `error-fix/findings-intake-401`).
+  Cause (found with FRAME): the Vault secret `findings_intake_key` was 11 characters; keys under
+  32 are refused, so even the right key failed. The owner replaces it (Vault, GitHub secret,
+  environment network secret). Now a missing or too-short Vault key answers 500 with that plain
+  message (migration 0009, `findings_intake_key_ready`), a check that can't run answers 500 with
+  its reason, and the key is also read from `Authorization: Bearer`, trimmed. Tests in
+  `tests/scheduler.test.ts`.
 - 2026-10-11 · **SCHEDULER: Nihilux is Aeon ★ Aha, by name** (branch `scheduler/aha-official-name`, T15).
   HoYoverse revealed Aha as playable in 4.7 (character preview, 15 Sep 2026; owner, 11 Oct).
   `scripts/import-nanoka.ts` has a `REVEALED` table: an unreleased character whose name is

@@ -46,6 +46,7 @@ POST https://qywvnvwfsknfcxgpbivo.supabase.co/functions/v1/findings-intake
 Content-Type: application/json
 x-intake-key: <findings_intake_key>
 ```
+(`Authorization: Bearer <findings_intake_key>` works too, for callers whose proxy adds the key there.)
 Body:
 ```json
 {
@@ -105,7 +106,10 @@ Without `id`, a stable id is made from the name (events: name + start date).
 - `400 { "error": "Nothing saved.", "problems": [ … ] }`: something is wrong;
   **nothing** from the request was saved. Each problem names the field
   (`findings[2].kind: …`). Fix and send again.
-- `401`: wrong or missing key (or the Vault secret does not exist yet).
+- `401`: wrong or missing key.
+- `500 "The intake key in Vault … is missing or shorter than 32 characters."`: the
+  Vault secret `findings_intake_key` is the problem, not your key; no key can pass until
+  it is replaced with one of at least 32 characters (and the callers get the same one).
 - `413`: request larger than 256 KB; split it.
 
 Every delivery is recorded as a run of its job (Owner console → Scheduler →

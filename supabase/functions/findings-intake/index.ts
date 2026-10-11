@@ -20,7 +20,10 @@ Deno.serve(async (req) => {
   if (!url || !serviceKey) return json({ error: 'The server is missing its settings.' }, 500);
 
   const db = createClient(url, serviceKey, { auth: { persistSession: false } });
-  const check = await checkIntakeKey(intakeKeyFrom(req.headers), (key) => db.rpc('findings_intake_key_ok', { p_key: key }));
+  const check = await checkIntakeKey(intakeKeyFrom(req.headers), {
+    ready: () => db.rpc('findings_intake_key_ready'),
+    keyOk: (key) => db.rpc('findings_intake_key_ok', { p_key: key }),
+  });
   if (!check.ok) return json({ error: check.error }, check.status);
 
   const text = await req.text();
