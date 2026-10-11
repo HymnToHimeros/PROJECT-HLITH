@@ -37,7 +37,7 @@ doing it said `LIVE`. Newest jobs at the bottom; live jobs move to Done.
 | T47 | More themes (3 public) + owner-only BL themes: private bucket, owner-only loading, upload a picture per theme | FRAME | live | #113; bucket owner-themes private with owner-only policies. AI image generator: talk later (owner). |
 | T48 | BUG: leak tiles in Roster had a "? UNVERIFIED" tag + source text under the tile | ERROR-FIX | live | #110 (LEAK chip, same size). |
 | T49 | BUG: banner card art cropped badly (legs, weapon parts); art must fit each frame on its own, both games | ERROR-FIX | live | #112 (per-picture crop, weapons whole). |
-| T50 | App feels fluid (page/tab transitions, hover/press, toasts, sliders) + every theme gets a small signature animation like Glacier's spinning emblem; Animations on/reduced/off switch; reduced-motion respected | FRAME | sent | Owner 2026-10-11. Recordings (GIF/webm) to MANAGER. |
+| T50 | App feels fluid (page/tab transitions, hover/press, toasts, sliders) + every theme gets a small signature animation like Glacier's spinning emblem; Animations on/reduced/off switch; reduced-motion respected | FRAME | live | #114 (Animations On/Reduced/Off in Account → Theme). |
 | T51 | Outsider test of the live site: new test account, fill everything, use every function (PC + phone), fix every error found, one final report | ERROR-FIX | sent | Owner 2026-10-11, overnight. Test account deleted at the end. |
 
 ## Done
