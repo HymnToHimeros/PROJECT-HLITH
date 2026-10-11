@@ -14,6 +14,32 @@ export const INTAKE_LIMITS = { bodyBytes: 256_000, findings: 100, title: 300, pa
 /** Keys shorter than this are refused outright (the owner makes a long random one). */
 export const MIN_KEY_LENGTH = 32;
 
+/**
+ * The key a delivery carries: the x-intake-key header, else "Authorization: Bearer <key>"
+ * (some callers' proxies put a stored key there). Spaces and line breaks around it are
+ * dropped: a key copied with a trailing newline is still the same key.
+ */
+export function intakeKeyFrom(headers: Headers): string {
+  const own = headers.get(INTAKE_HEADER)?.trim();
+  if (own) return own;
+  const bearer = /^Bearer\s+(.+)$/i.exec(headers.get('authorization')?.trim() ?? '');
+  return bearer?.[1]?.trim() ?? '';
+}
+
+export type KeyCheck = { ok: true } | { ok: false; status: 401 | 500; error: string };
+
+/**
+ * Checks the key against the Vault secret through `findings_intake_key_ok`. A wrong or
+ * missing key is 401; a check that couldn't run (database error) is 500 with the reason,
+ * so a broken setup never looks like a wrong key.
+ */
+export async function checkIntakeKey(key: string, keyOk: (key: string) => PromiseLike<{ data: unknown; error: { message: string } | null }>): Promise<KeyCheck> {
+  if (key.length < MIN_KEY_LENGTH) return { ok: false, status: 401, error: 'Not allowed.' };
+  const res = await keyOk(key);
+  if (res.error) return { ok: false, status: 500, error: `Couldn't check the key: ${res.error.message}` };
+  return res.data === true ? { ok: true } : { ok: false, status: 401, error: 'Not allowed.' };
+}
+
 const DAY = 86_400_000;
 
 export type Intake =

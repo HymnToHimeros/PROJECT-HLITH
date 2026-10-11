@@ -1,7 +1,7 @@
 // @vitest-environment node
 import { readFileSync } from 'node:fs';
 import { describe, expect, it, vi } from 'vitest';
-import { deliver, readIntake, saveFindings, type DeliveryDb } from '../supabase/functions/_shared/findings.ts';
+import { checkIntakeKey, deliver, intakeKeyFrom, readIntake, saveFindings, type DeliveryDb } from '../supabase/functions/_shared/findings.ts';
 import { EXTERNAL_JOB_IDS, FRAME_MESSAGE, JOBS, runnerOf, SELF_ADJUSTING, type JobDef } from '../supabase/functions/_shared/jobs.ts';
 import {
   callJobFunction,
@@ -483,3 +483,26 @@ function fakeDb() {
   };
   return Object.assign(db, { tables });
 }
+
+describe('findings intake key', () => {
+  const KEY = 'k'.repeat(40);
+  const vault = (stored: string) => async (key: string) => ({ data: key === stored, error: null });
+
+  it('reads x-intake-key, else a Bearer key, without surrounding spaces or line breaks', () => {
+    expect(intakeKeyFrom(new Headers({ 'x-intake-key': ` ${KEY}\n` }))).toBe(KEY);
+    expect(intakeKeyFrom(new Headers({ authorization: `Bearer ${KEY}` }))).toBe(KEY);
+    expect(intakeKeyFrom(new Headers({ 'x-intake-key': KEY, authorization: 'Bearer something-else' }))).toBe(KEY);
+    expect(intakeKeyFrom(new Headers())).toBe('');
+  });
+
+  it('the right key passes, a wrong or short one is 401', async () => {
+    expect(await checkIntakeKey(KEY, vault(KEY))).toEqual({ ok: true });
+    expect(await checkIntakeKey('x'.repeat(40), vault(KEY))).toEqual({ ok: false, status: 401, error: 'Not allowed.' });
+    expect(await checkIntakeKey('short', vault(KEY))).toEqual({ ok: false, status: 401, error: 'Not allowed.' });
+  });
+
+  it('a check that cannot run is 500 with the reason, not "Not allowed."', async () => {
+    const broken = async () => ({ data: null, error: { message: 'function findings_intake_key_ok does not exist' } });
+    expect(await checkIntakeKey(KEY, broken)).toEqual({ ok: false, status: 500, error: "Couldn't check the key: function findings_intake_key_ok does not exist" });
+  });
+});
