@@ -32,6 +32,7 @@ doing it said `LIVE`. Newest jobs at the bottom; live jobs move to Done.
 | T42 | Character page "Builds their teams want": refresh on switches/team lists/leaks; use the members the card shows | LOGIC-CORE | live | #95 (with FRAME's #94: all Roster team results refresh on switches, lists, builds). |
 | T43 | Leak kit sheets go "stale" (not scored, says so) when the beta kit text changes; data updates not blocked | LOGIC-CORE | live | #98: stale leak sheets aren't scored ("beta kit changed"); data updates not blocked. |
 | T44 | Roster: leaked characters (any source) always at the top, newest first; Aeon Aha is at the bottom now | FRAME | sent | Owner 2026-10-11. |
+| T45 | Installable app on phone + PC (PWA: manifest, icons, service worker, update toast, install hint); base for phone push | FRAME | sent | Owner 2026-10-11 (compared with their other site). |
 
 ## Done
 | # | Job | Who | Live on |
