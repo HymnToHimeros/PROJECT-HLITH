@@ -29,6 +29,14 @@ Resume with: "continue from PROGRESS.md". Newest entry on top. Older entries:
 - CI (`.github/workflows/ci.yml`) runs both on every pull request.
 
 ## Done
+- 2026-10-11 · **SCHEDULER: main story Jade, standard pools, research routine live** (branch
+  `scheduler/story-rewards`). HSR main story reward = 10,330 Stellar Jade, the sum of its 193
+  missions' stated rewards on the wiki (`storyJade` in import-schedule.ts); ZZZ stays unknown, no
+  source lists it. `historyMapping.standardTop` for both games (Stellar Warp / Stable Channel top
+  results) so the Luck report judges 50/50s from imports; `tests/standardPool.test.ts` guards it.
+  Research routine (T7 step 4c): trigger `trig_01VraA5pyqxiujkH81FqtEee`, daily 10:45 UTC, acts only
+  on key-moment days (docs/ROUTINES.md); heartbeat `trig_01MgSqXeCBk7EtgjwkdDthUX` disabled. First
+  real run 14 Oct.
 - 2026-10-11 · **FRAME: profile card, badges and Look (T52)** (branch `frame/profile-badges`).
   Account → Profile is now a card like an in-game one: banner, framed picture, name in your
   colour, title, your badge, up to 4 favourite characters or teams, and your own pull numbers.

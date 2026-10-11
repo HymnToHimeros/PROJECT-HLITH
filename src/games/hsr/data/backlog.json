@@ -4,7 +4,7 @@
     "category": "story",
     "title": "Trailblaze Missions (main story)",
     "total": 26,
-    "reward": null,
+    "reward": 10330,
     "currency": "stellar-jade",
     "steps": [
       "Herta Space Station: Today Is Yesterday's Tomorrow",
@@ -34,6 +34,6 @@
       "Planarcadia: To Roll the Stars in Astropolis",
       "Planarcadia: Dance With the Beast Before Moonrise"
     ],
-    "note": "Chapters from honkai-star-rail.fandom.com/wiki/Trailblaze_Mission. Rewards per chapter: no data yet."
+    "note": "Chapters from honkai-star-rail.fandom.com/wiki/Trailblaze_Mission; Stellar Jade is the sum of the 193 missions' rewards on their wiki pages."
   }
 ]
