@@ -150,12 +150,14 @@ the delivery, never skipped silently.
    - redeem codes from the program → `info` finding (the HoYoLAB job tries codes);
    - a leaked character's official name → a data PR that adds it to `REVEALED` in
      `scripts/import-nanoka.ts` (with the source), plus an `info` finding.
-3. A second leak source next to nanoka.cc: Hakushin (hsr.hakush.in,
-   zzz.hakush.in; for HSR also the DimbreathBot data on raw.githubusercontent.com).
-   Something there that our lists don't have → a `leak` finding with the source
-   named and the payload fields from "Payload that goes straight into the lists".
-   Never into the lists directly. If a host is blocked by the environment's
-   network settings, say which one in the delivery.
+3. A second leak source next to nanoka.cc. HSR: the DimbreathBot data
+   (`https://raw.githubusercontent.com/DimbreathBot/TurnBasedGameData/main/…`,
+   e.g. `ExcelOutput/AvatarConfig.json` for characters). ZZZ: none yet, so nanoka.cc
+   plus official reveals. (Hakushin, hsr/zzz.hakush.in, no longer exists in DNS
+   since October 2026.) Something there that our lists don't have → a `leak`
+   finding with the source named and the payload fields from "Payload that goes
+   straight into the lists". Never into the lists directly. If a source can't be
+   reached, say which one in the delivery.
 4. Gaps: run `npm run data:schedule` and read its notes ("left out: no start
    yet", rewards unknown). Fill only what a source proves (official notice, wiki,
    game8), as a small data PR.
