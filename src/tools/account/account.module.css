@@ -503,3 +503,12 @@
   border-radius: 50%;
   background: var(--vent);
 }
+
+/* Account → Theme: the owner's own themes (T47), above the built-in ones. */
+.ownerThemes {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-3);
+  padding-bottom: var(--s-4);
+  border-bottom: 1px solid var(--line-default);
+}

@@ -1,10 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, type CSSProperties } from 'react';
 import type { GameContract, GameId } from '../../core/contract';
 import { BACKUP_EVERY_DAYS, daysSinceBackup, downloadBackup, parseBackup, restoreBackup, summarize, type Backup } from '../../core/data/backup';
 import { updatePrefs, usePrefs } from '../../core/data/prefs';
 import { canSync, syncNow, type SyncStatus } from '../../core/data/sync';
 import { ServerPicker } from '../../core/shell/ServerPicker';
 import { ProtagonistPicker } from '../../core/shell/ProtagonistPicker';
+import { OWNER_PREFIX, useOwnerThemes, type OwnerTheme } from '../../core/theme/ownerThemes';
 import { setTheme, THEMES, themeInfo } from '../../core/theme/theme';
 import { ThemeMotif } from '../../core/theme/ThemeArt';
 import { formatDate, formatTime } from '../../core/time/reset';
@@ -373,10 +374,62 @@ export function ExamplesPage() {
   );
 }
 
+/** An owner theme's card: its own colours and picture, from the private store. */
+function OwnerThemeCard({ t, checked }: { t: OwnerTheme; checked: boolean }) {
+  const vars = Object.fromEntries(Object.entries(t.tokens).map(([k, v]) => [`--${k}`, v])) as CSSProperties;
+  const art = t.pictureUrl;
+  return (
+    <button type="button" role="radio" aria-checked={checked} className={a.themeCard} onClick={() => setTheme(`${OWNER_PREFIX}${t.id}`)}>
+      <span className={a.themePreview} style={{ ...vars, ...(art ? { backgroundImage: `url(${art})`, backgroundSize: 'cover', backgroundPosition: 'center 30%' } : {}) }} aria-hidden="true">
+        <span className={a.miniCard}>
+          <span className={a.miniTitle}>Aa</span>
+          <span className={a.miniLine} />
+          <span className={`${a.miniLine} ${a.miniShort}`} />
+        </span>
+      </span>
+      <span className={a.themeMeta}>
+        <span className={a.ring} aria-hidden="true" />
+        <span className={a.rowText}>
+          <span className={a.rowTitle}>{t.name}</span>
+          {t.mood && <span className={a.rowSub}>{t.mood}</span>}
+        </span>
+      </span>
+    </button>
+  );
+}
+
+/**
+ * Owner-only themes (T47): shown only after they have loaded from the private store, which
+ * happens only for an owner account. For anyone else this section doesn't exist.
+ */
+function OwnerThemes({ choice }: { choice: unknown }) {
+  const owner = useOwnerThemes();
+  if (owner.status === 'none') return null;
+  return (
+    <section aria-label="Only for you" className={a.ownerThemes}>
+      <h3 className={a.cardTitle}>Only for you</h3>
+      {owner.status === 'loading' && <p className={a.small}>Loading your own themes…</p>}
+      {owner.status === 'error' && <p className={a.small}>Your own themes couldn’t load: {owner.message}</p>}
+      {owner.status === 'ready' &&
+        (owner.themes.length === 0 ? (
+          <p className={a.small}>No themes of your own yet. Add them in Owner console → Owner themes.</p>
+        ) : (
+          <div className={a.themeGrid} role="radiogroup" aria-label="Your own themes">
+            {owner.themes.map((t) => (
+              <OwnerThemeCard key={t.id} t={t} checked={choice === `${OWNER_PREFIX}${t.id}`} />
+            ))}
+          </div>
+        ))}
+    </section>
+  );
+}
+
 export function ThemePage() {
-  const theme = themeInfo(usePrefs().theme).id;
+  const choice = usePrefs().theme;
+  const theme = typeof choice === 'string' && choice.startsWith(OWNER_PREFIX) ? null : themeInfo(choice).id;
   return (
     <>
+      <OwnerThemes choice={choice} />
       <div className={a.themeGrid} role="radiogroup" aria-label="Theme">
         {THEMES.map((t) => (
           <button key={t.id} type="button" role="radio" aria-checked={theme === t.id} className={a.themeCard} onClick={() => setTheme(t.id)}>

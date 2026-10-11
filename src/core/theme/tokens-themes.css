@@ -555,3 +555,140 @@
 
   --scrim: rgb(6 8 15 / 0.65);
 }
+
+/* Emerald Salon · dark. Emerald velvet drapes, gold frames and a checker floor:
+   a grand old salon at night. */
+:root[data-theme='emerald-salon'],
+[data-theme-preview='emerald-salon'] {
+  color-scheme: dark;
+
+  --bg-void: #040c09;
+  --bg-app: #06120e;
+  --bg-shell: #081712;
+  --bg-card: #0c1d17;
+  --bg-inset: #11251e;
+  --bg-raised: #152b23;
+  --bg-track: #1d3a2f;
+
+  --line-subtle: #13261f;
+  --line-default: #1b3329;
+  --line-mid: #234034;
+  --line-strong: #3a5a3e;
+  --line-empty: #6a7a4a;
+  --ghost: #2e4a3c;
+  --hatch: #0d1c16;
+
+  --ink-1: #f1ede0;
+  --ink-2: #e0d8bf;
+  --ink-3: #c9bf9e;
+  --ink-4: #b3a983;
+  --ink-5: #b3a983;
+  --glacier: #d9b86a;
+  --ok: #8fdcb4;
+
+  --ember: #ff7a45;
+  --ember-soft: #ffa274;
+
+  --vent-all: #e0d8bf;
+  --on-vent: #08090b;
+
+  --rarity-top: #e8c06a;
+  --rarity-mid: #9cc6e6;
+
+  --art-ink: #d9b86a;
+  --art-glow: #1f5a40;
+  --art-opacity: 0.14;
+
+  --scrim: rgb(4 12 9 / 0.65);
+}
+
+/* Indigo Hour · dark. A deep indigo room after dark, one warm shaft of golden light
+   from a high window, and slow steam. */
+:root[data-theme='indigo-hour'],
+[data-theme-preview='indigo-hour'] {
+  color-scheme: dark;
+
+  --bg-void: #07061a;
+  --bg-app: #0b0a24;
+  --bg-shell: #0f0d2c;
+  --bg-card: #141134;
+  --bg-inset: #1a163e;
+  --bg-raised: #1f1a47;
+  --bg-track: #2a2358;
+
+  --line-subtle: #1a163c;
+  --line-default: #231d4a;
+  --line-mid: #2c2556;
+  --line-strong: #43397a;
+  --line-empty: #6e5e9e;
+  --ghost: #3a3168;
+  --hatch: #120f30;
+
+  --ink-1: #f2eefc;
+  --ink-2: #ddd5f5;
+  --ink-3: #c2b8e6;
+  --ink-4: #ab9fd6;
+  --ink-5: #ab9fd6;
+  --glacier: #f2c879;
+  --ok: #8fdcb4;
+
+  --ember: #ff7a45;
+  --ember-soft: #ffa274;
+
+  --vent-all: #ddd5f5;
+  --on-vent: #08090b;
+
+  --rarity-top: #f0c46a;
+  --rarity-mid: #a9c4f5;
+
+  --art-ink: #f2c879;
+  --art-glow: #4a3a9a;
+  --art-opacity: 0.14;
+
+  --scrim: rgb(7 6 26 / 0.65);
+}
+
+/* Rose Lace · light. Blush paper, wine-red ink, lace edges and small hearts. */
+:root[data-theme='rose-lace'],
+[data-theme-preview='rose-lace'] {
+  color-scheme: light;
+
+  --bg-void: #e9d3d6;
+  --bg-app: #fbf1f2;
+  --bg-shell: #f6e6e8;
+  --bg-card: #fffafa;
+  --bg-inset: #f3e1e4;
+  --bg-raised: #fdf5f6;
+  --bg-track: #ecd5d9;
+
+  --line-subtle: #f1dfe2;
+  --line-default: #e6ccd1;
+  --line-mid: #dbbcc2;
+  --line-strong: #c49aa3;
+  --line-empty: #946570;
+  --ghost: #d8b7be;
+  --hatch: #f7eaec;
+
+  --ink-1: #2a0f17;
+  --ink-2: #3d1822;
+  --ink-3: #5a2533;
+  --ink-4: #6b2e3d;
+  --ink-5: #6b2e3d;
+  --glacier: #8a2a46;
+  --ok: #1f6b45;
+
+  --ember: #ff6a1f;
+  --ember-soft: #a3400b;
+
+  --vent-all: #f2c9d4;
+  --on-vent: #08090b;
+
+  --rarity-top: #855600;
+  --rarity-mid: #1d5f8c;
+
+  --art-ink: #a33a5a;
+  --art-glow: #f0a8bc;
+  --art-opacity: 0.14;
+
+  --scrim: rgb(42 15 23 / 0.35);
+}

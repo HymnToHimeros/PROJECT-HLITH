@@ -4,7 +4,7 @@ import { usePrefs } from '../../core/data/prefs';
 import { useSyncStatus } from '../../core/data/sync';
 import type { PanelProps } from '../../core/registry/panels';
 import { accountPath, cameFromApp, navigate } from '../../core/shell/route';
-import { themeInfo } from '../../core/theme/theme';
+import { themeInfo, useOwnerTheme } from '../../core/theme/theme';
 import { Button, HowTo, useNow } from '../../core/ui';
 import { LinkAccounts } from '../account-links/LinkAccount';
 import { FeedSettings } from '../feeds/FeedSettings';
@@ -73,6 +73,7 @@ export default function AccountPage(props: PanelProps) {
     barRef.current?.querySelector<HTMLElement>('[aria-current="page"]')?.scrollIntoView?.({ block: 'nearest', inline: 'nearest' });
   }, [current]);
   const days = daysSinceBackup(now);
+  const ownerTheme = useOwnerTheme();
   const scopeShort = scope === 'all' ? 'All games' : (games.find((g) => g.id === scope)?.short ?? scope);
 
   const hint: Partial<Record<SectionId, string | undefined>> = {
@@ -80,7 +81,7 @@ export default function AccountPage(props: PanelProps) {
     backup: days === null ? 'No backup yet' : days >= BACKUP_EVERY_DAYS ? 'Time for a new one' : `Last ${days === 0 ? 'today' : `${days}d ago`}`,
     // The evening message can't be sent yet (no push on the server), so no "Evening at 21:00" promise here.
     notifications: prefs.notify?.enabled ? 'Preview only' : undefined,
-    theme: themeInfo(prefs.theme).name,
+    theme: ownerTheme?.name ?? themeInfo(prefs.theme).name,
     examples: prefs.hideExamples ? 'Hidden' : 'Shown',
   };
 

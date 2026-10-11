@@ -7,7 +7,8 @@ import { defaultLayout, hiddenIn, phoneBar, restore, slot, type LayoutState, typ
 import { moduleScreen, MODULES, type ModuleScreenProps } from '../registry/modules';
 import { useIdentity } from '../registry/identity';
 import { panel, type PanelAccount, type PanelId, type PanelProps } from '../registry/panels';
-import { useTheme } from '../theme/theme';
+import { useOwnerTheme, useTheme } from '../theme/theme';
+import { OwnerArt } from '../theme/OwnerArt';
 import { ThemeArt, ThemeMotif } from '../theme/ThemeArt';
 import { formatTime, serverRule } from '../time/reset';
 import { BottomSheet } from '../ui/BottomSheet';
@@ -59,6 +60,7 @@ export function Shell({ games: registered, account = null, isOwner = false, owne
   const phone = useIsPhone();
   const sample = useSampleShown();
   const theme = useTheme();
+  const ownerTheme = useOwnerTheme();
   const identity = useIdentity(account);
   const [sheet, setSheet] = useState<Sheet>(null);
   // The game scope you came from, so the Account page keeps its colour and "back" lands there.
@@ -202,7 +204,7 @@ export function Shell({ games: registered, account = null, isOwner = false, owne
 
   return (
     <div className={s.root} style={{ '--vent': ventOf(scope) } as CSSProperties}>
-      <ThemeArt theme={theme} />
+      {ownerTheme ? <OwnerArt theme={ownerTheme} /> : <ThemeArt theme={theme} />}
       {!phone && (
         <aside className={s.sidebar} aria-label="Main">
           <div className={s.brand}>

@@ -2,10 +2,12 @@ import { useEffect, useState } from 'react';
 import { currentProvider, sendEmailLink, signInWith, signOut, useSession } from './core/auth/session';
 import { SignIn } from './core/auth/SignIn';
 import { backend } from './core/data/backend';
+import { supabaseOwnerThemes } from './core/data/ownerThemesSource';
 import { supabaseGameData, supabaseSettings } from './core/data/supabaseSettings';
 import { markDeviceOnly, markSignedOut, startSync } from './core/data/sync';
 import { listGames } from './core/registry';
 import { Shell } from './core/shell/Shell';
+import { clearOwnerThemes, loadOwnerThemes } from './core/theme/ownerThemes';
 import { Preview } from './core/ui/Preview';
 
 export function App() {
@@ -33,6 +35,13 @@ function Root() {
   const isOwner = Boolean(userId) && ownerAnswer?.userId === userId && ownerAnswer?.owner === true;
   // Without an account there is nothing to ask; with one, wait for the server's answer.
   const ownerChecked = !backend || !userId || ownerAnswer?.userId === userId;
+
+  // Owner-only themes (T47): downloaded from the private bucket only once the server says owner;
+  // for anyone else nothing is asked for, and signing out forgets them.
+  useEffect(() => {
+    if (backend && isOwner) void loadOwnerThemes(supabaseOwnerThemes(backend));
+    else clearOwnerThemes();
+  }, [isOwner, userId]);
 
   useEffect(() => {
     if (!backend) return markDeviceOnly();
