@@ -23,14 +23,19 @@ export interface Backup {
   extra: Record<string, string>;
 }
 
+/**
+ * Never in a backup file, and never restored from one: logins remembered on this device
+ * (hlith.secret.*), your own Assistant key (it stays in this browser, as Account says), and
+ * short-lived copies (hlith.cache.*).
+ */
+const isPrivate = (k: string) => k.startsWith('hlith.secret.') || k.startsWith('hlith.cache.') || k === 'hlith.assistant.key';
+
 function otherKeys(): Record<string, string> {
   const out: Record<string, string> = {};
   try {
     for (let i = 0; i < localStorage.length; i++) {
       const k = localStorage.key(i);
-      // hlith.secret.* (logins remembered on this device) never go into a backup file;
-      // hlith.cache.* (e.g. the last live stamina read) is only a short-lived copy.
-      if (!k || !k.startsWith('hlith.') || k.startsWith('hlith.secret.') || k.startsWith('hlith.cache.') || k === PREFS_KEY || k === DATA_KEY) continue;
+      if (!k || !k.startsWith('hlith.') || isPrivate(k) || k === PREFS_KEY || k === DATA_KEY) continue;
       const v = localStorage.getItem(k);
       if (v !== null) out[k] = v;
     }
@@ -111,6 +116,8 @@ export function restoreBackup(backup: Backup): number {
   added += count.added;
   try {
     for (const [k, v] of Object.entries(backup.extra)) {
+      // A file made before this rule (or edited by hand) can't put a key or login back.
+      if (!k.startsWith('hlith.') || isPrivate(k)) continue;
       if (localStorage.getItem(k) === null) {
         localStorage.setItem(k, v);
         added += 1;

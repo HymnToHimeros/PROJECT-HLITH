@@ -7,6 +7,20 @@ interface Props {
   onEmail: (email: string) => Promise<string | null>;
 }
 
+/** The public pages (T55: plain pages outside the app, open without signing in) and the fan notice. */
+export function LegalLinks() {
+  return (
+    <footer className={s.legal}>
+      <nav aria-label="About HLIÐSKJÁLF" className={s.legalLinks}>
+        <a href="/about">About</a>
+        <a href="/privacy">Privacy policy</a>
+        <a href="/terms">Terms of service</a>
+      </nav>
+      <p className={s.fan}>HLIÐSKJÁLF is a fan-made tool, not affiliated with HoYoverse. Game names and art belong to HoYoverse.</p>
+    </footer>
+  );
+}
+
 /** Login: Google, Discord, or an email sign-in link (DESIGN §4). */
 export function SignIn({ onProvider, onEmail }: Props) {
   const [email, setEmail] = useState('');
@@ -33,6 +47,10 @@ export function SignIn({ onProvider, onEmail }: Props) {
         <div className="t-label">PROJECT-HLITH</div>
         <h1 className={`t-display ${s.name}`}>HLIÐSKJÁLF</h1>
         <p className={s.lead}>One seat, every world. Sign in to see your games.</p>
+        <p className={s.about}>
+          A free command hub for Honkai: Star Rail and Zenless Zone Zero: plan pulls, track dailies, events and your roster, on phone and PC.{' '}
+          <a href="/about">What it does</a>
+        </p>
         <Button className={s.wide} disabled={busy} onClick={() => void run(() => onProvider('google'))}>
           Continue with Google
         </Button>
@@ -70,6 +88,7 @@ export function SignIn({ onProvider, onEmail }: Props) {
           </p>
         )}
         <p className={s.foot}>Your data is private to your account. Times show in your local time.</p>
+        <LegalLinks />
       </div>
     </main>
   );
