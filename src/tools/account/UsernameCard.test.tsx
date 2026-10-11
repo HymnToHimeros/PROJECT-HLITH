@@ -13,6 +13,7 @@ const gate = (over: Partial<Gate> = {}): Gate => ({
   nextChangeAt: null,
   suggested: null,
   accepted: false,
+  owner: false,
   ...over,
 });
 

@@ -13,6 +13,7 @@ const gate = (over: Partial<Gate> = {}): Gate => ({
   nextChangeAt: null,
   suggested: null,
   accepted: false,
+  owner: false,
   ...over,
 });
 
@@ -61,6 +62,13 @@ describe('first run (T62)', () => {
     await vi.waitFor(() => expect(onDone).toHaveBeenCalledWith(expect.objectContaining({ username: 'Mira.Rose', accepted: true })));
   });
 
+  it('the owner may choose a reserved name like HLITH', async () => {
+    render(<FirstRun gate={gate({ termsOk: true, privacyOk: true, owner: true })} api={fakeApi()} onDone={() => {}} onSignOut={() => {}} />);
+    fireEvent.change(screen.getByLabelText('Username'), { target: { value: 'HLITH' } });
+    expect(await screen.findByText('Available.')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Continue' })).toBeEnabled();
+  });
+
   it('a new version only asks step 1 again', () => {
     render(<FirstRun gate={gate({ termsOk: false, privacyOk: true, username: 'Mira' })} api={fakeApi()} onDone={() => {}} onSignOut={() => {}} />);
     expect(screen.getByText('UPDATED TERMS')).toBeInTheDocument();
@@ -100,6 +108,7 @@ describe('first run (T62)', () => {
       nextChangeAt: Date.parse('2026-11-10T00:00:00Z'),
       suggested: null,
       accepted: false,
+      owner: false,
     });
   });
 });

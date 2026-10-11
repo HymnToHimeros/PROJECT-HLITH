@@ -3,7 +3,7 @@ import { readdirSync, readFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { LEGAL_VERSIONS } from '../config/legal/versions';
-import { BLOCKED, checkUsername, RESERVED, usernameKey } from '../src/core/auth/username';
+import { BLOCKED, checkUsername, RESERVED, RESERVED_WORDS, usernameKey } from '../src/core/auth/username';
 import { findDestructive, userTables, wallProblems } from './lib/migration-rules';
 
 const DIR = resolve(__dirname, '../supabase/migrations');
@@ -14,7 +14,7 @@ const all = readdirSync(DIR)
   .map((f) => readFileSync(join(DIR, f), 'utf8'))
   .join('\n');
 const body = (src: string, fn: string) => src.match(new RegExp(`create or replace function public\\.${fn}\\([\\s\\S]*?(?:end \\$\\$;|\\$\\$;)`))?.[0] ?? '';
-const words = (fn: string) => [...(body(sql, fn).match(/array\[([^\]]*)\]/)?.[1] ?? '').matchAll(/'([^']+)'/g)].map((m) => m[1] as string);
+const words = (fn: string, nth = 0) => [...([...body(sql, fn).matchAll(/array\[([^\]]*)\]/g)][nth]?.[1] ?? '').matchAll(/'([^']+)'/g)].map((m) => m[1] as string);
 
 describe('first run: accept the Terms and Privacy policy, choose a username (0016, T62)', () => {
   it('only adds; the new table is walled off and has no write policy at all', () => {
@@ -54,7 +54,20 @@ describe('first run: accept the Terms and Privacy policy, choose a username (001
 
   it('names that could pass for HLIÐSKJÁLF or its staff are refused, also hidden with dots or look-alike digits', () => {
     expect(words('username_reserved').sort()).toEqual([...RESERVED].sort());
+    expect(words('username_reserved', 1)).toEqual([...RESERVED_WORDS]);
     for (const n of ['owner', 'TheOwner', 'Admin_Mira', 'hlith.fan', 'h_l_i_t_h', 'm0d3rat0r', 'Support', 'staff99', 'official.news', 'SYSTEM', 'hlidskjalf', 'project.hlith']) expect(checkUsername(n), n).toBe('reserved');
+  });
+
+  it('“mod” only as a word of its own, not inside words like model or modern', () => {
+    for (const n of ['mod', 'Mod_Mira', 'mira.mod', 'mod123', 'm0d', 'x_m0d_y']) expect(checkUsername(n), n).toBe('reserved');
+    for (const n of ['model', 'modern', 'Commodore', 'mode_7', 'nomad']) expect(checkUsername(n), n).toBe('ok');
+  });
+
+  it('the owner may use reserved names (checked on the server), but never slurs', () => {
+    expect(body(sql, 'username_status')).toMatch(/if public\.username_reserved\(p_name\) and not public\.is_owner\(\) then return 'reserved'; end if;/);
+    for (const n of ['HLITH', 'hlidskjalf.owner', 'Admin', 'mod']) expect(checkUsername(n, true), n).toBe('ok');
+    expect(checkUsername('fuck_it', true)).toBe('blocked');
+    expect(body(sql, 'my_gate')).toMatch(/'owner', public\.is_owner\(\),/);
   });
 
   it('slurs and swearing are refused; ordinary words that contain a short one are not', () => {

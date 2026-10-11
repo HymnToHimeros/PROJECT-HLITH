@@ -10,7 +10,8 @@ Privacy policy are shown again and must be confirmed as read, understood and agr
     (a test keeps them equal). Raising one asks everyone again (only step 1).
   - Usernames: 3–20 letters, numbers, _ . ; unique ignoring case; reserved names (owner, admin,
     mod, moderator, hlith, hlidskjalf, hliðskjálf, project-hlith, support, staff, official,
-    system, anywhere in the name, also with dots/underscores/look-alike digits) and a short
+    system, anywhere in the name, also with dots/underscores/look-alike digits; "mod" only as a
+    word of its own, not in model/modern; the owner may use them) and a short
     slur/swearing list are refused. Words that hide short slurs (therapist, peacock…) pass.
     Change at most once every 30 days (the first change after choosing is free); old names free.
   - Until both are done: restrictive policies stop adding/changing app data and files; reading,

@@ -25,6 +25,7 @@ export function UsernameCard({ gate, api = serverGate }: { gate: Gate; api?: Gat
           api={api}
           initial={gate.username ?? ''}
           current={gate.username}
+          owner={gate.owner}
           submitLabel="Save username"
           onCancel={() => setEditing(false)}
           onSaved={(next) => {

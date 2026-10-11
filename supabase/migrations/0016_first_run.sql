@@ -46,12 +46,18 @@ language sql immutable as $$
   select translate(lower(coalesce(p_name, '')), '013457._', 'oieast');
 $$;
 
--- Anything containing these could pass for HLIÐSKJÁLF or its staff.
+-- Names that could pass for HLIÐSKJÁLF or its staff: anything containing the longer ones, and
+-- "mod" as a word of its own (mod, mod_x, x.mod, mod123, m0d), not inside words like "model".
+-- The owner may use them (checked in username_status).
 create or replace function public.username_reserved(p_name text) returns boolean
 language sql immutable as $$
   select exists (
-    select 1 from unnest(array['owner', 'admin', 'mod', 'moderator', 'hlith', 'hlidskjalf', 'hliðskjálf', 'projecthlith', 'support', 'staff', 'official', 'system']) r
+    select 1 from unnest(array['owner', 'admin', 'moderator', 'hlith', 'hlidskjalf', 'hliðskjálf', 'projecthlith', 'support', 'staff', 'official', 'system']) r
     where public.username_key(p_name) like '%' || public.username_key(r) || '%'
+  ) or exists (
+    select 1 from unnest(array['mod']) w
+    where w = any (regexp_split_to_array(lower(coalesce(p_name, '')), '[^a-z]+'))
+       or w = any (regexp_split_to_array(translate(lower(coalesce(p_name, '')), '013457', 'oieast'), '[^a-z]+'))
   );
 $$;
 
@@ -73,7 +79,7 @@ begin
     raise exception 'sign in first' using errcode = '42501';
   end if;
   if p_name is null or p_name !~ '^[A-Za-z0-9_.]{3,20}$' then return 'invalid'; end if;
-  if public.username_reserved(p_name) then return 'reserved'; end if;
+  if public.username_reserved(p_name) and not public.is_owner() then return 'reserved'; end if;
   if public.username_blocked(p_name) then return 'blocked'; end if;
   if exists (select 1 from public.account_identity where lower(username) = lower(p_name) and user_id = auth.uid()) then return 'yours'; end if;
   if exists (select 1 from public.account_identity where lower(username) = lower(p_name)) then return 'taken'; end if;
@@ -111,6 +117,7 @@ begin
     'next_change_at', case when me.username_changed_at is not null then me.username_changed_at + interval '30 days' end,
     'suggested', case when me.username is null and public.username_status(btrim(shown)) = 'ok' then btrim(shown) end,
     'banned', public.is_banned(),
+    'owner', public.is_owner(),
     'accepted', public.has_accepted()
   );
 end $$;

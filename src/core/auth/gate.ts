@@ -19,6 +19,8 @@ export interface Gate {
   /** The display name, when it would be a valid, free username. */
   suggested: string | null;
   accepted: boolean;
+  /** The owner may choose reserved names (the server checks this too). */
+  owner: boolean;
 }
 
 export function gateFrom(row: unknown): Gate {
@@ -33,6 +35,7 @@ export function gateFrom(row: unknown): Gate {
     nextChangeAt: Number.isNaN(next) ? null : next,
     suggested: typeof r.suggested === 'string' ? r.suggested : null,
     accepted: r.accepted === true,
+    owner: r.owner === true,
   };
 }
 

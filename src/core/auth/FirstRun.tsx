@@ -98,7 +98,7 @@ function UsernameStep({ gate, api, onDone }: { gate: Gate; api: GateApi; onDone:
         Choose a username
       </h1>
       <p className={s.about}>It’s how you show up in HLIÐSKJÁLF: on your profile card, in the community and to the owner. You can change it later, once every 30 days.</p>
-      <UsernameForm api={api} initial={gate.suggested ?? ''} submitLabel="Continue" onSaved={onDone} />
+      <UsernameForm api={api} initial={gate.suggested ?? ''} owner={gate.owner} submitLabel="Continue" onSaved={onDone} />
     </section>
   );
 }
@@ -108,6 +108,7 @@ export function UsernameForm({
   api,
   initial,
   current = null,
+  owner = false,
   submitLabel,
   onSaved,
   onCancel,
@@ -115,6 +116,8 @@ export function UsernameForm({
   api: GateApi;
   initial: string;
   current?: string | null;
+  /** The owner may choose reserved names. */
+  owner?: boolean;
   submitLabel: string;
   onSaved: (g: Gate) => void;
   onCancel?: () => void;
@@ -125,7 +128,7 @@ export function UsernameForm({
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const trimmed = name.trim();
-  const local = checkUsername(trimmed);
+  const local = checkUsername(trimmed, owner);
 
   // Ask the server whether a well-formed name is free, a moment after typing stops.
   useEffect(() => {
