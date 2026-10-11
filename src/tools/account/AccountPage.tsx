@@ -14,7 +14,7 @@ import { Guide } from './Guide';
 import { InstallApp } from './InstallApp';
 import pg from './page.module.css';
 import { ProfileSection } from './Profile';
-import { BackupPage, ExamplesPage, GameSettingsPage, SignInPage, SyncPage, syncSub, ThemePage } from './sections';
+import { BackupPage, ExamplesPage, GameSettingsPage, SignInPage, StartScreen, SyncPage, syncSub, ThemePage } from './sections';
 import { SetupChecklist } from './SetupChecklist';
 
 export type SectionId = 'profile' | 'sync' | 'backup' | 'notifications' | 'game-settings' | 'examples' | 'connections' | 'guide' | 'layout' | 'theme' | 'owner' | 'sign-in';
@@ -132,6 +132,7 @@ export default function AccountPage(props: PanelProps) {
               </Button>
             </div>
           </section>
+          <StartScreen />
           <HowTo steps={['Press “Edit layout”.', 'Drag the ⋮⋮ handle (or use the arrow keys on it) to change the order.', 'Hide a module you never use; “Restore” brings it back. “Reset to default” undoes everything.']} />
         </>
       );

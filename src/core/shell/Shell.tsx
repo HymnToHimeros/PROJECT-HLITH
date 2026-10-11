@@ -7,6 +7,7 @@ import { defaultLayout, hiddenIn, phoneBar, restore, slot, type LayoutState, typ
 import { moduleScreen, MODULES, type ModuleScreenProps } from '../registry/modules';
 import { useIdentity } from '../registry/identity';
 import { panel, type PanelAccount, type PanelId, type PanelProps } from '../registry/panels';
+import { useLook } from '../theme/look';
 import { useMotion } from '../theme/motion';
 import { useGlide } from './useGlide';
 import { useOwnerTheme, useTheme } from '../theme/theme';
@@ -64,6 +65,7 @@ export function Shell({ games: registered, account = null, isOwner = false, owne
   const theme = useTheme();
   const ownerTheme = useOwnerTheme();
   useMotion();
+  useLook();
   const identity = useIdentity(account);
   const [sheet, setSheet] = useState<Sheet>(null);
   // The game scope you came from, so the Account page keeps its colour and "back" lands there.
@@ -85,7 +87,9 @@ export function Shell({ games: registered, account = null, isOwner = false, owne
   const visible = slot(games, scope, layout);
   // Hidden modules stay reachable: a Guide or checklist button (or an old link) opens them, with a Restore note.
   const hiddenHere = hiddenIn(games, scope, layout);
-  const remembered = prefs.lastModule[scope];
+  // Account → Layout → Start screen: only for the first screen of a visit opened without a module in the address.
+  const start = useRef(!acct && !route.module ? prefs.startModule : undefined);
+  const remembered = (start.current && visible.includes(start.current) ? start.current : undefined) ?? prefs.lastModule[scope];
   const active: ModuleId | undefined = acct
     ? undefined
     : route.module && (visible.includes(route.module) || hiddenHere.includes(route.module))
@@ -93,6 +97,9 @@ export function Shell({ games: registered, account = null, isOwner = false, owne
       : remembered && visible.includes(remembered)
         ? remembered
         : visible[0];
+  useEffect(() => {
+    if (route.module) start.current = undefined;
+  }, [route.module]);
   const { bar, more } = phoneBar(visible);
   // The sliding "you are here" markers (T50): sidebar row and bottom-bar glyph.
   const navRef = useGlide<HTMLElement>('[aria-current="page"]', [active, visible.join(','), phone]);

@@ -3,6 +3,7 @@ import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { contrast, ventProblems } from '../src/core/theme/contrast';
+import { ACCENT_VALUE } from '../src/core/theme/look';
 import { THEME_IDS, THEMES } from '../src/core/theme/themes';
 import { games } from '../src/games';
 
@@ -105,6 +106,18 @@ describe('themes', () => {
           if (info.tone === 'dark') for (const s of ['bg-app', 'bg-shell']) expect(contrast(g.vent, hex(t, s)), `${g.short} on ${s}`).toBeGreaterThanOrEqual(4.5);
         }
       });
+    });
+  }
+});
+
+describe('accent colours (Account → Theme → Look, T52)', () => {
+  // The accent replaces --glacier, a text colour: it must pass wherever glacier must, on every theme of its tone.
+  for (const [id, v] of Object.entries(ACCENT_VALUE)) {
+    it(`${id} reaches 4.5:1 on every surface of every theme`, () => {
+      for (const info of THEMES) {
+        const t = themes.get(info.id) ?? {};
+        for (const s of SURFACES) expect(contrast(v[info.tone], hex(t, s)), `${id} on ${info.id} ${s}`).toBeGreaterThanOrEqual(4.5);
+      }
     });
   }
 });
