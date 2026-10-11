@@ -236,7 +236,7 @@
    ones), so its brightest or darkest spot shifts the page colour no more than the theme's own
    art may (tests/themes.test.ts: 16%), and text keeps its contrast. */
 .yourPicture {
-  filter: contrast(0.45) brightness(0.55);
+  filter: contrast(0.6) brightness(0.7);
   position: absolute;
   inset: 0;
   width: 100%;
@@ -245,5 +245,5 @@
   object-position: center 30%;
 }
 :root[data-tone='light'] .yourPicture {
-  filter: contrast(0.4) brightness(1.5);
+  filter: contrast(0.5) brightness(1.5);
 }

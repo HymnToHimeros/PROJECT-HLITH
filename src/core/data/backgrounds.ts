@@ -16,7 +16,7 @@ import { getPrefs, updatePrefs, usePrefs } from './prefs';
 export const BACKGROUNDS_BUCKET = 'backgrounds';
 export const STRENGTH_MIN = 0.06;
 export const STRENGTH_MAX = 0.25;
-export const STRENGTH_DEFAULT = 0.16;
+export const STRENGTH_DEFAULT = 0.2;
 
 export type Slot = 'all' | `theme:${string}` | `page:${string}`;
 export interface BackgroundChoice {
