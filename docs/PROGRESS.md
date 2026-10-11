@@ -1,7 +1,11 @@
 # PROJECT-HLITH · PROGRESS.md
 
-Resume with: "continue from PROGRESS.md". Newest entry on top. Older entries:
-`docs/HISTORY.md`.
+Resume with: "continue from PROGRESS.md". Older entries: `docs/HISTORY.md`.
+
+**New "Done" entries go in `docs/progress/`, one file each** (`YYYY-MM-DD-<chat>-<job>.md`;
+newest first by name: `ls -r docs/progress`). Several chats finish work at once, and one shared
+list made every pull request conflict here. A file of your own never does. The list under
+Done below is the older history.
 
 ## Now
 - **HLITH is live:** https://project-hlith.hliskjlf.workers.dev. Sign-in with
@@ -29,22 +33,15 @@ Resume with: "continue from PROGRESS.md". Newest entry on top. Older entries:
 - CI (`.github/workflows/ci.yml`) runs both on every pull request.
 
 ## Done
-- 2026-10-11 · **FRAME: Customise Roster, lists, Today, feedback and backgrounds (T52c–d)** (branch `frame/customise-hub`).
-  Roster: tile size, what a tile shows, remembered sort and filters, your own nicknames and tags
-  per character (searchable, filterable). Events and Calendar: switch kinds off, your colour per
-  kind. Banners: big cards or a compact list. Countdowns: time left, the date, or both. Today:
-  which cards show, in which column and order. Feedback: phone buzz and soft sounds (off by
-  default). Background picture on every page, with a theme or on one page, toned down so text
-  stays readable; signed in it's in a new private bucket, own folder only (migration 0012).
-- 2026-10-11 · **FRAME: Account → Customise (T52b)** (branch `frame/customise-hub`).
-  One place to make the app yours, with a live preview and "Reset this section" on each card
-  (it removes only that section's settings). Look: accent colour, font (Archivo, your device's,
-  a book serif), text size, spacing, card corners, solid or glass cards. Game colours: your own
-  colour per game from 8 choices tested like a game's own. Theme schedule: one theme, day and
-  night at your times, or one per game. Layout: start screen, default game, the tab each module
-  opens on. Time and format: 12/24-hour, date order, number grouping, first day of the week,
-  read by every formatter. All are synced settings; game list updates never touch them.
-  Screenshots: `docs/owner-reports/2026-10-11/customise/`.
+Newer entries: `docs/progress/` (one file each). Older ones:
+- 2026-10-11 · **SCHEDULER: main story Jade, standard pools, research routine live** (branch
+  `scheduler/story-rewards`). HSR main story reward = 10,330 Stellar Jade, the sum of its 193
+  missions' stated rewards on the wiki (`storyJade` in import-schedule.ts); ZZZ stays unknown, no
+  source lists it. `historyMapping.standardTop` for both games (Stellar Warp / Stable Channel top
+  results) so the Luck report judges 50/50s from imports; `tests/standardPool.test.ts` guards it.
+  Research routine (T7 step 4c): trigger `trig_01VraA5pyqxiujkH81FqtEee`, daily 10:45 UTC, acts only
+  on key-moment days (docs/ROUTINES.md); heartbeat `trig_01MgSqXeCBk7EtgjwkdDthUX` disabled. First
+  real run 14 Oct.
 - 2026-10-11 · **FRAME: profile card, badges and Look (T52)** (branch `frame/profile-badges`).
   Account → Profile is now a card like an in-game one: banner, framed picture, name in your
   colour, title, your badge, up to 4 favourite characters or teams, and your own pull numbers.
