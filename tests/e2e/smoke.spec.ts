@@ -88,7 +88,7 @@ test('the Account page: section bar, a section, browser back, theme', async ({ p
 test('Profile: edit name, bio and cards on this device; it survives a reload', async ({ page }) => {
   await page.goto('/account');
   await expect(page.getByRole('region', { name: 'Pulls imported' })).toContainText('No data yet');
-  await page.getByRole('button', { name: 'Edit profile' }).click();
+  await page.getByRole('button', { name: 'Customise profile' }).click();
   await page.getByLabel('Display name').fill('Mira');
   await page.getByLabel(/^Bio/).fill('Story first, pulls second.');
   await page.getByRole('switch', { name: 'Member since' }).click();
@@ -124,7 +124,7 @@ const testPicture = async (page: import('@playwright/test').Page, w: number, h: 
 
 test('Profile: pick a picture and a banner, move and zoom them, and save exactly that', async ({ page }) => {
   await page.goto('/account');
-  await page.getByRole('button', { name: 'Edit profile' }).click();
+  await page.getByRole('button', { name: 'Customise profile' }).click();
 
   await page.getByLabel('Choose picture').setInputFiles(await testPicture(page, 1200, 800));
   const sheet = page.getByRole('dialog', { name: 'Adjust picture' });

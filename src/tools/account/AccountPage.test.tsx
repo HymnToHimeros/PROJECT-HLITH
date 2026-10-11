@@ -216,6 +216,58 @@ describe('Account page: settings sections', () => {
   });
 });
 
+describe('Account page: profile card and badges (T52)', () => {
+  it('everyone gets Seated on HLIÐSKJÁLF; earned badges come from data; the rest say Not yet', async () => {
+    act(() => setRosterEntry('aa', 'c1', { owned: true, wanted: false, dupes: 0 }));
+    render(<AccountPage {...props()} />);
+    const card = await screen.findByRole('article', { name: /Profile card/ });
+    expect(card).toHaveTextContent('Seated on HLIÐSKJÁLF');
+    const list = screen.getByRole('region', { name: 'Badges' });
+    expect(within(list).getByRole('listitem', { name: 'Seated on HLIÐSKJÁLF: earned' })).toBeInTheDocument();
+    expect(within(list).getByRole('listitem', { name: 'The Hall Fills: earned' })).toBeInTheDocument();
+    expect(within(list).getByRole('listitem', { name: 'First Light: not yet' })).toBeInTheDocument();
+    expect(within(list).queryByText(/Above the High Seat/)).toBeNull(); // the owner badge isn't even listed for others
+  });
+
+  it('the owner (server says so) gets the owner badge on the card and can pick its name and the sky frame', async () => {
+    render(<AccountPage {...props({ isOwner: true })} />);
+    const card = await screen.findByRole('article', { name: /Profile card/ });
+    expect(card).toHaveTextContent('Above the High Seat');
+    fireEvent.click(screen.getByRole('button', { name: 'Customise profile' }));
+    fireEvent.click(screen.getByRole('radio', { name: 'The Watcher Above' }));
+    fireEvent.click(screen.getByRole('radio', { name: /Sky and ravens/ }));
+    fireEvent.click(screen.getByRole('button', { name: 'Save profile' }));
+    await waitFor(() => expect(screen.queryByRole('form', { name: 'Edit profile' })).toBeNull());
+    expect(screen.getByRole('article', { name: /Profile card/ })).toHaveTextContent('The Watcher Above');
+    expect(JSON.parse(localStorage.getItem(DEVICE_KEY) ?? '{}')).toMatchObject({ ownerTitle: 'The Watcher Above', frame: 'sky' });
+  });
+
+  it('a saved sky frame or owner badge never shows for anyone else', async () => {
+    localStorage.setItem(DEVICE_KEY, JSON.stringify({ ...EMPTY_PROFILE, frame: 'sky', pinnedBadge: 'owner' }));
+    render(<AccountPage {...props()} />);
+    const card = await screen.findByRole('article', { name: /Profile card/ });
+    expect(card).toHaveTextContent('Seated on HLIÐSKJÁLF');
+    expect(card.querySelector('[data-frame="sky"]')).toBeNull();
+    fireEvent.click(screen.getByRole('button', { name: 'Customise profile' }));
+    expect(screen.queryByRole('radio', { name: /Sky and ravens/ })).toBeNull();
+  });
+
+  it('customise: title and a showcase of up to 4, in the live preview', async () => {
+    act(() => setRosterEntry('aa', 'c1', { owned: true, wanted: false, dupes: 0 }));
+    render(<AccountPage {...props()} />);
+    fireEvent.click(await screen.findByRole('button', { name: 'Customise profile' }));
+    fireEvent.change(screen.getByLabelText(/^Title/), { target: { value: 'Seer of every world' } });
+    // Owned characters with art can be the picture or banner (this test's characters have none, so only "my own").
+    expect((await screen.findByLabelText('Picture')).querySelectorAll('option')).toHaveLength(1);
+    fireEvent.click(within(await screen.findByRole('group', { name: 'AA showcase choices' })).getByRole('button', { name: 'Ash' }));
+    const preview = within(screen.getByRole('region', { name: 'Preview' }));
+    expect(preview.getByText('Seer of every world')).toBeInTheDocument();
+    expect(within(preview.getByRole('list', { name: 'Showcase' })).getByText('Ash')).toBeInTheDocument();
+    // On this device nothing can be shown to others.
+    expect(screen.getByRole('region', { name: 'Who sees your card' })).toHaveTextContent('Needs an account');
+  });
+});
+
 describe('Account page: Profile', () => {
   it('starts honest: initial, default banner, every data card says No data yet with a way to add it', async () => {
     const p = props();
@@ -238,7 +290,7 @@ describe('Account page: Profile', () => {
       setRosterEntry('aa', 'c2', { owned: false, wanted: true, dupes: 0 });
     });
     const view = render(<AccountPage {...props()} />);
-    fireEvent.click(await screen.findByRole('button', { name: 'Edit profile' }));
+    fireEvent.click(await screen.findByRole('button', { name: 'Customise profile' }));
     fireEvent.change(screen.getByLabelText('Display name'), { target: { value: 'Mira' } });
     fireEvent.change(screen.getByLabelText(/^Bio/), { target: { value: 'Pulls only for the story.' } });
     const pins = within(await screen.findByRole('group', { name: 'Pin AA characters' }));
@@ -246,7 +298,9 @@ describe('Account page: Profile', () => {
     fireEvent.click(pins.getByRole('button', { name: /Ash/ }));
     fireEvent.click(screen.getByRole('switch', { name: 'Member since' }));
     fireEvent.click(screen.getByRole('button', { name: 'Save profile' }));
-    expect(await screen.findByRole('heading', { name: 'Mira' })).toBeInTheDocument();
+    // The editor's live preview shows the name too: wait for the editor to close first.
+    await waitFor(() => expect(screen.queryByRole('form', { name: 'Edit profile' })).toBeNull());
+    expect(screen.getByRole('heading', { name: 'Mira' })).toBeInTheDocument();
     expect(screen.getByText('Pulls only for the story.')).toBeInTheDocument();
     expect(screen.queryByRole('region', { name: 'Member since' })).toBeNull();
     const chars = screen.getByRole('region', { name: 'Characters owned' });
@@ -266,7 +320,7 @@ describe('Account page: Profile', () => {
       setRosterEntry('aa', 'c2', { owned: true, wanted: false, dupes: 0 });
     });
     render(<AccountPage {...props()} />);
-    fireEvent.click(await screen.findByRole('button', { name: 'Edit profile' }));
+    fireEvent.click(await screen.findByRole('button', { name: 'Customise profile' }));
     const pins = within(await screen.findByRole('group', { name: 'Pin AA characters' }));
     expect(screen.getByText('1 / 6 pinned')).toBeInTheDocument();
     fireEvent.click(pins.getByRole('button', { name: 'Unpin Ash (not owned)' }));
@@ -287,7 +341,7 @@ describe('Account page: Profile', () => {
 
   it('refuses a file that isn’t a picture or is over 2 MB, in plain words', async () => {
     render(<AccountPage {...props()} />);
-    fireEvent.click(await screen.findByRole('button', { name: 'Edit profile' }));
+    fireEvent.click(await screen.findByRole('button', { name: 'Customise profile' }));
     fireEvent.change(screen.getByLabelText('Choose picture'), { target: { files: [new File(['x'], 'notes.txt', { type: 'text/plain' })] } });
     expect(await screen.findByRole('alert')).toHaveTextContent('isn’t a picture');
     const big = new File([new Uint8Array(2 * 1024 * 1024 + 1)], 'big.png', { type: 'image/png' });

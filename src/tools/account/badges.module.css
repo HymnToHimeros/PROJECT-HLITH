@@ -1,0 +1,227 @@
+/* Badge medallions (BadgeMark.tsx) and the badge list (T52). Tokens only. */
+
+.mark {
+  flex: none;
+  display: block;
+  overflow: visible;
+}
+
+/* ── Earned and locked ─────────────────────────────────── */
+.disc {
+  fill: var(--bg-inset);
+}
+.seatDisc {
+  fill: color-mix(in srgb, var(--glacier) 10%, var(--bg-inset));
+}
+.ring {
+  fill: none;
+  stroke: var(--glacier);
+  stroke-width: 2;
+}
+.ringEarned {
+  fill: none;
+  stroke: var(--rarity-top);
+  stroke-width: 2.2;
+}
+.ringLocked {
+  fill: none;
+  stroke: var(--line-empty);
+  stroke-width: 1.5;
+  stroke-dasharray: 3 3;
+}
+.ringInner {
+  fill: none;
+  stroke: var(--line-strong);
+  stroke-width: 0.8;
+}
+.rune {
+  fill: none;
+  stroke: var(--rarity-top);
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.glyph {
+  fill: none;
+  stroke: var(--glacier);
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.glyphSoft {
+  fill: none;
+  stroke: var(--glacier);
+  stroke-width: 1.2;
+  stroke-linecap: round;
+  opacity: 0.6;
+}
+.locked .rune {
+  stroke: var(--ink-5);
+  opacity: 0.55;
+}
+.locked .disc {
+  fill: transparent;
+}
+
+/* ── The owner's badge: ravens turn, stars glint, a light passes over the gold ── */
+.ravens {
+  transform-box: view-box;
+  transform-origin: 32px 32px;
+}
+.sheen {
+  opacity: 0;
+  transform-box: view-box;
+  transform-origin: 32px 32px;
+}
+.eye {
+  transform-box: view-box;
+  transform-origin: 32px 32px;
+}
+:root[data-motion='on'] .ravens {
+  animation: raven-orbit 26s linear infinite;
+}
+:root[data-motion='on'] .star {
+  animation: star-glint 4.2s ease-in-out infinite;
+}
+:root[data-motion='on'] .sheen {
+  animation: sheen-pass 7s ease-in-out infinite;
+}
+:root[data-motion='on'] .eye,
+:root[data-motion='reduced'] .eye {
+  animation: eye-breathe 6s ease-in-out infinite;
+}
+:root[data-motion='reduced'] .eye {
+  animation-name: eye-glow;
+}
+@keyframes raven-orbit {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes star-glint {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.25;
+  }
+}
+@keyframes sheen-pass {
+  0%,
+  55% {
+    opacity: 0;
+    transform: rotate(25deg) translateX(0);
+  }
+  60% {
+    opacity: 1;
+  }
+  85%,
+  100% {
+    opacity: 0;
+    transform: rotate(25deg) translateX(110px);
+  }
+}
+@keyframes eye-breathe {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.06);
+  }
+}
+@keyframes eye-glow {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.82;
+  }
+}
+
+/* ── The badge list ────────────────────────────────────── */
+.list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(232px, 1fr));
+  gap: var(--s-3);
+}
+.item {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: var(--s-3);
+  align-items: start;
+  padding: var(--s-3);
+  border: 1px solid var(--line-default);
+  border-radius: var(--r-card);
+  background: var(--bg-card);
+}
+.itemLocked {
+  border-style: dashed;
+  border-color: var(--line-mid);
+  background: transparent;
+}
+.itemOwner {
+  grid-column: 1 / -1;
+  border-color: color-mix(in srgb, var(--rarity-top) 55%, var(--line-default));
+  background:
+    radial-gradient(120% 140% at 0% 0%, color-mix(in srgb, #3a2f86 38%, transparent), transparent 60%),
+    var(--bg-card);
+}
+.itemText {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+.itemName {
+  margin: 0;
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--ink-1);
+}
+.itemOwner .itemName {
+  color: var(--rarity-top);
+  font-size: 16px;
+}
+.itemHow {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.45;
+  color: var(--ink-3);
+}
+.itemMeta {
+  font-family: var(--font-numbers);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ink-4);
+}
+.notYet {
+  composes: itemMeta;
+  color: var(--ink-5);
+}
+.summary {
+  margin: 0;
+  font-size: 13px;
+  color: var(--ink-3);
+}
+.summary strong {
+  font-family: var(--font-numbers);
+  color: var(--ink-1);
+}
+.go {
+  justify-self: start;
+  margin-top: var(--s-1);
+}
+.wrap {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-3);
+}
+.heading {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 700;
+}

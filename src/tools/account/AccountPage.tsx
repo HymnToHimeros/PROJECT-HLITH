@@ -88,7 +88,7 @@ export default function AccountPage(props: PanelProps) {
   let body: ReactNode;
   switch (current) {
     case 'profile':
-      body = <ProfileSection games={games} account={account} open={props.open} goSection={go} />;
+      body = <ProfileSection games={games} account={account} isOwner={props.isOwner === true} open={props.open} goSection={go} />;
       break;
     case 'sync':
       body = <SyncPage status={sync} now={now} signedIn={Boolean(account)} />;
