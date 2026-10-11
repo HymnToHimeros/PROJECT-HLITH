@@ -79,12 +79,47 @@ describe('account rows (public.profiles)', () => {
       bio: 'Hi',
       avatar_path: 'u1/avatar.jpg',
       banner_path: null,
-      showcase: { pinned: { aa: ['c1'] }, hidden_cards: ['pulls'] },
+      showcase: {
+        pinned: { aa: ['c1'] },
+        hidden_cards: ['pulls'],
+        look: { title: null, frame: 'none', name_color: 'ink', pinned_badge: null, owner_title: null, avatar_char: null, banner_char: null },
+        featured: [],
+        privacy: { card: false, stats: true, badges: true, showcase: true },
+      },
       updated_at: '2026-10-01T00:00:00.000Z',
     });
     expect(fromRow(row)).toEqual(p);
+    // The T52 card fields make the round trip too.
+    const t52 = {
+      ...p,
+      title: 'Seer of worlds',
+      frame: 'runes' as const,
+      nameColor: 'gold' as const,
+      pinnedBadge: 'hall' as const,
+      avatarChar: { game: 'aa', id: 'c1' },
+      featured: [{ kind: 'team' as const, game: 'aa', id: 't1' }],
+      privacy: { card: true, stats: false, badges: true, showcase: true },
+    };
+    expect(fromRow(toRow(t52, 'u1'))).toEqual(t52);
     expect(fromRow(null)).toEqual(EMPTY_PROFILE);
     expect(fromRow({ user_id: 'u1', display_name: null, bio: null, avatar_path: null, banner_path: null, showcase: null })).toEqual(EMPTY_PROFILE);
+  });
+
+  it('keeps the card fields to what the app knows (T52)', () => {
+    const p = cleanProfile({
+      title: '  A   very long title '.repeat(10),
+      frame: 'laser',
+      nameColor: 'red',
+      pinnedBadge: 'made-up',
+      ownerTitle: 'Emperor',
+      avatarChar: { game: 'aa', id: '../x' },
+      featured: [1, 2, 3, 4, 5].map((n) => ({ kind: 'character', game: 'aa', id: `c${n}` })),
+      privacy: { card: 'yes' },
+    });
+    expect(p.title?.length).toBe(60);
+    expect([p.frame, p.nameColor, p.pinnedBadge, p.ownerTitle, p.avatarChar]).toEqual(['none', 'ink', null, null, null]);
+    expect(p.featured.map((f) => f.id)).toEqual(['c1', 'c2', 'c3', 'c4']);
+    expect(p.privacy.card).toBe(false); // nothing shows to others unless switched on
   });
 
   it('refuses to put picture data into the row (pictures go to storage first)', () => {

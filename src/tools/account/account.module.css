@@ -512,3 +512,50 @@
   padding-bottom: var(--s-4);
   border-bottom: 1px solid var(--line-default);
 }
+
+/* Account → Theme → Look (T52): accent colour chips. */
+.accentRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-2);
+}
+.accentChip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+  min-height: var(--tap-min);
+  padding: 0 var(--s-3);
+  border: 1px solid var(--line-default);
+  border-radius: var(--r-pill);
+  background: var(--bg-inset);
+  color: var(--ink-2);
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+  transition:
+    border-color var(--dur-1) var(--ease),
+    transform var(--dur-1) var(--ease);
+}
+.accentChip[aria-checked='true'] {
+  border-color: var(--chip);
+  box-shadow: inset 0 0 0 1px var(--chip);
+  color: var(--ink-1);
+}
+.accentChip:active {
+  transform: scale(0.97);
+}
+.accentChip:focus-visible {
+  outline: 2px solid var(--glacier);
+  outline-offset: 2px;
+}
+.accentDot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--chip);
+}
+.lookRow {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-1);
+}

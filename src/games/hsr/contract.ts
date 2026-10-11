@@ -178,7 +178,7 @@ export const hsr: GameContract = {
     gachaTypes: { '1': 'standard', '2': 'departure', '11': 'character', '12': 'light-cone' },
     rarity: { '5': 'top', '4': 'mid', '3': 'low' },
     // Stellar Warp (standard) 5★: Himeko, Welt, Bronya, Gepard, Clara, Yanqing, Bailu and their
-    // seven light cones (game8.co/games/Honkai-Star-Rail/archives/408765, prydwen.gg gacha guide).
+    // seven light cones (pool box on honkai-star-rail.fandom.com/wiki/Stellar_Warp, checked 2026-10-11; game8 408765).
     standardTop: ['1003', '1004', '1101', '1104', '1107', '1209', '1211', '23000', '23002', '23003', '23004', '23005', '23012', '23013'],
   },
   historyImporters: [

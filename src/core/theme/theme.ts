@@ -10,6 +10,7 @@
  */
 import { useEffect } from 'react';
 import { getPrefs, updatePrefs, usePrefs } from '../data/prefs';
+import { applyLook, lookOf, setOwnerLook } from './look';
 import { isOwnerThemeId, ownerThemeFor, useOwnerThemes, type OwnerTheme, type OwnerThemeId } from './ownerThemes';
 import { isTheme, themeInfo, type Theme } from './themes';
 
@@ -25,7 +26,11 @@ export function applyTheme(theme: unknown): void {
   const root = document.documentElement;
   for (const name of ownerTokens) root.style.removeProperty(name);
   ownerTokens = [];
+  // The accent (look.ts) is put back on top after the theme's own colours.
+  root.style.removeProperty('--glacier');
+  delete root.dataset.accent;
   const owner = ownerThemeFor(theme);
+  setOwnerLook(owner ? { surfaces: ['bg-app', 'bg-card', 'bg-shell', 'bg-inset', 'bg-raised'].flatMap((k) => owner.tokens[k] ?? []), glacier: owner.tokens.glacier } : { surfaces: [] });
   if (owner) {
     root.dataset.theme = 'owner';
     root.dataset.tone = owner.tone;
@@ -35,6 +40,7 @@ export function applyTheme(theme: unknown): void {
       ownerTokens.push(`--${k}`);
     }
     document.querySelector('meta[name="theme-color"]')?.setAttribute('content', owner.tokens['bg-app'] ?? '#08090b');
+    applyLook(lookOf(getPrefs()));
     return;
   }
   delete root.dataset.ornaments;
@@ -42,6 +48,7 @@ export function applyTheme(theme: unknown): void {
   root.dataset.theme = info.id;
   root.dataset.tone = info.tone;
   document.querySelector('meta[name="theme-color"]')?.setAttribute('content', info.app);
+  applyLook(lookOf(getPrefs()));
 }
 
 /** Applies the saved theme whenever it changes (or an owner theme finishes loading). */

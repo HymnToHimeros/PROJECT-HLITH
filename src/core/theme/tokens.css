@@ -87,6 +87,45 @@
   --scrim: rgb(5 6 7 / 0.6);
 }
 
+/* Account → Theme → Look (T52, theme/look.ts). Text size zooms the app a step, so words and
+   the space around them grow together; spacing and corners change their tokens. */
+:root[data-spacing='compact'] {
+  --s-3: 10px;
+  --s-4: 12px;
+  --s-5: 16px;
+  --s-6: 18px;
+  --s-7: 22px;
+}
+:root[data-spacing='roomy'] {
+  --s-3: 14px;
+  --s-4: 20px;
+  --s-5: 24px;
+  --s-6: 30px;
+  --s-7: 36px;
+}
+:root[data-corners='sharp'] {
+  --r-segment: 3px;
+  --r-row: 3px;
+  --r-button: 4px;
+  --r-card: 4px;
+  --r-hero: 5px;
+  --r-sheet: 8px;
+}
+:root[data-corners='round'] {
+  --r-segment: 12px;
+  --r-row: 14px;
+  --r-button: 16px;
+  --r-card: 20px;
+  --r-hero: 24px;
+  --r-sheet: 28px;
+}
+:root[data-text='large'] body {
+  zoom: 1.1;
+}
+:root[data-text='larger'] body {
+  zoom: 1.22;
+}
+
 *,
 *::before,
 *::after {

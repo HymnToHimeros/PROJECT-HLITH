@@ -1,10 +1,15 @@
-import { useCallback, useId, useState, useSyncExternalStore } from 'react';
+import { useCallback, useId, useMemo, useState, useSyncExternalStore } from 'react';
+import { useSession } from '../../core/auth/session';
+import { backend } from '../../core/data/backend';
+import { Switch } from '../account/parts';
+import { storeFor, useProfile } from '../account/useProfile';
 import type { Character, GameContract } from '../../core/contract';
 import { saveTeam, useGameData, type UserTeam } from '../../core/data/userData';
 import { BottomSheet, Button, CharacterTile, HowTo } from '../../core/ui';
 import c from '../account-links/connections.module.css';
 import { useCharacters } from '../account-links/RosterImport';
 import { decodeTeam, DECODE_TEXT, FRAGMENT_KEY, shareUrl, teamAsText, type SharedTeam } from './shareLink';
+import { SharedBy, type CardLoader } from './SharedBy';
 
 const nameFrom = (list: Character[] | null) => (id: string) => list?.find((ch) => ch.id === id)?.name ?? `Unknown (${id})`;
 
@@ -31,7 +36,14 @@ function ShareSheet({ game, team, onClose }: { game: GameContract; team: UserTea
   const id = useId();
   const characters = useCharacters(game);
   const [note, setNote] = useState<{ ok: boolean; text: string } | null>(null);
-  const shared: SharedTeam = { game: game.id, name: team.name, members: team.members };
+  // T52: your profile card can go with the link, if you allowed it in Profile → Customise → Who sees your card.
+  const session = useSession(backend);
+  const userId = session?.user.id;
+  const store = useMemo(() => storeFor(userId), [userId]);
+  const profile = useProfile(store);
+  const cardAllowed = Boolean(userId) && store.mode === 'account' && profile.profile.privacy.card;
+  const [withCard, setWithCard] = useState(true);
+  const shared: SharedTeam = { game: game.id, name: team.name, members: team.members, ...(cardAllowed && withCard && userId ? { by: userId } : {}) };
   const url = shareUrl(window.location.origin, shared);
   const text = teamAsText(game.name, shared, nameFrom(characters), url);
   const canShare = typeof navigator !== 'undefined' && 'share' in navigator;
@@ -78,8 +90,20 @@ function ShareSheet({ game, team, onClose }: { game: GameContract; team: UserTea
           <>Prefer something else? Copy the team as text, save it as a picture, or use your phone’s share menu.</>,
         ]}
       >
-        <p className={c.body}>The team is written into the link itself (after the #). Nothing is stored on a server. The link holds only the team name and who’s in it, nothing about you. Browsers don’t send the part after # to any server.</p>
+        <p className={c.body}>
+          The team is written into the link itself (after the #). Nothing is stored on a server. The link holds only the team name and who’s in it, and, if you choose to show your profile card,
+          your account id so HLITH can show it. Browsers don’t send the part after # to any server.
+        </p>
       </HowTo>
+      {userId && !profile.loading && (
+        <div className={c.tight}>
+          {cardAllowed ? (
+            <Switch label="Show my profile card with it" hint="Whoever opens the link (signed in) sees your card next to the team." checked={withCard} onChange={setWithCard} />
+          ) : (
+            <span className={c.muted}>Your profile card stays private. To show it with teams you share, switch it on in Account → Profile → Customise profile → Who sees your card.</span>
+          )}
+        </div>
+      )}
       <div className={c.tight}>
         <label className={c.field} htmlFor={`${id}-link`}>
           Share link
@@ -175,7 +199,7 @@ export function SharedTeamRoute({ games }: { games: GameContract[] }) {
       ) : !game ? (
         <SharedProblem text="This team is for a game HLITH doesn’t have." />
       ) : (
-        <SharedTeamView key={hash} game={game} team={decoded.team} />
+        <SharedTeamView key={hash} game={game} team={decoded.team} games={games} />
       )}
     </BottomSheet>
   );
@@ -193,7 +217,7 @@ function SharedProblem({ text }: { text: string }) {
 }
 
 /** Read-only view of a shared team, with "Save to my teams" (adds a new team; never replaces one). */
-export function SharedTeamView({ game, team }: { game: GameContract; team: SharedTeam }) {
+export function SharedTeamView({ game, team, games = [game], load }: { game: GameContract; team: SharedTeam; games?: GameContract[]; load?: CardLoader | null }) {
   const characters = useCharacters(game);
   const mine = useGameData(game.id);
   const [saved, setSaved] = useState(false);
@@ -216,6 +240,7 @@ export function SharedTeamView({ game, team }: { game: GameContract; team: Share
           Close
         </Button>
       </div>
+      {team.by && <SharedBy by={team.by} games={games} {...(load !== undefined ? { load } : {})} />}
       <ul className={c.memberGrid} aria-label="Team members">
         {team.members.map((m) => {
           const ch = byId.get(m);

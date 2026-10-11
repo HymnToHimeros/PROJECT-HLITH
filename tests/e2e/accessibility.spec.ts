@@ -89,7 +89,7 @@ test('no serious accessibility problems · account', async ({ page }) => {
     await scan(path);
   }
   await page.goto('/account');
-  await page.getByRole('button', { name: 'Edit profile' }).click();
+  await page.getByRole('button', { name: 'Customise profile' }).click();
   await expect(page.getByRole('form', { name: 'Edit profile' })).toBeVisible();
   await scan('/account (edit profile)');
   // The Adjust picture sheet, with a picked file.
