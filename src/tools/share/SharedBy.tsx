@@ -12,6 +12,8 @@ import c from '../account-links/connections.module.css';
 /** What public.profile_card() returns (supabase/migrations/0011_profile_card.sql); null = not shown. */
 export interface CardRow {
   display_name: string | null;
+  /** The username (T62, migration 0016); missing on older servers. */
+  username?: string | null;
   avatar_path: string | null;
   banner_path: string | null;
   title: string | null;
@@ -69,7 +71,8 @@ export function cardFromRow(row: CardRow, games: GameContract[], characters: Rec
   });
   const total = BADGES.filter((b) => b.id !== 'owner' || row.owner).length;
   return {
-    name: row.display_name?.trim() || 'A HLITH user',
+    name: row.display_name?.trim() || row.username || 'A HLITH user',
+    handle: row.username ?? null,
     title: look.title,
     avatarUrl: avatarChar?.portrait ?? imageUrl(row.avatar_path),
     bannerUrl: bannerChar?.art ?? bannerChar?.portrait ?? imageUrl(row.banner_path),

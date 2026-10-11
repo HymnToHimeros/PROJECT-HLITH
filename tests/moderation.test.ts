@@ -25,7 +25,9 @@ describe('moderation: silence, ban, remove (0015, T60b)', () => {
   });
 
   it('a banned account is refused on every table with people’s data: reading, adding and changing', () => {
-    const covered = arrayIn(bannedBlock);
+    // The 0015 list, plus tables added later with their own "banned: no reading" policy.
+    const later = [...all.matchAll(/create policy "banned: no reading" on public\.(\w+) as restrictive/g)].map((m) => m[1] as string);
+    const covered = [...arrayIn(bannedBlock), ...later];
     const people = userTables(all).filter((t) => !['account_restrictions', 'moderation_actions'].includes(t));
     expect(people.filter((t) => !covered.includes(t))).toEqual([]);
     expect(bannedBlock).toMatch(/as restrictive for select to authenticated using \(not \(select public\.is_banned\(\)\)\)/);

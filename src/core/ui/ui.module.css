@@ -787,6 +787,11 @@
 .segment:active {
   transform: scale(0.97);
 }
+/* A button that can't be pressed yet looks it (T62: Continue before the box is ticked). */
+.button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
 /* Bars fill from the left when they appear, and glide when the value changes. */
 .fill {
   transform-origin: left center;

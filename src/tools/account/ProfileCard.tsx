@@ -26,6 +26,8 @@ export interface CardStats {
 
 export interface ProfileCardProps {
   name: string;
+  /** The username (T62), shown as @name under the name. */
+  handle?: string | null | undefined;
   title: string | null;
   avatarUrl: string | null;
   bannerUrl: string | null;
@@ -58,7 +60,7 @@ export const badgeName = (id: BadgeId, ownerTitle?: OwnerTitle | null) => (id ==
  * with (if you allowed it). Everything on it comes from the data given; nothing is filled in.
  */
 export function ProfileCard(props: ProfileCardProps) {
-  const { name, title, avatarUrl, bannerUrl, bannerFallback, frame, nameColor, vent, badge, ownerTitle, featured, stats, badgeCount, note, actions, compact } = props;
+  const { name, handle, title, avatarUrl, bannerUrl, bannerFallback, frame, nameColor, vent, badge, ownerTitle, featured, stats, badgeCount, note, actions, compact } = props;
   const owner = badge === 'owner';
   const style = { '--card-vent': vent } as CSSProperties;
   return (
@@ -73,6 +75,7 @@ export function ProfileCard(props: ProfileCardProps) {
           <h2 className={c.name} data-color={nameColor}>
             {name}
           </h2>
+          {handle && <p className={c.handle}>@{handle}</p>}
           {title && <p className={c.title}>{title}</p>}
           {note && <p className={c.note}>{note}</p>}
         </div>

@@ -31,6 +31,7 @@ export const BACKUP_TABLES = [
   'community_invites',
   'account_restrictions',
   'moderation_actions',
+  'account_identity',
 ] as const;
 
 export const BACKUP_BUCKET = 'backups';
