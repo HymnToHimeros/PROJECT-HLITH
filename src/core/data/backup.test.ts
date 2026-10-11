@@ -43,6 +43,18 @@ describe('backup', () => {
     localStorage.removeItem('hlith.secret.hoyolab.accounts');
   });
 
+  it('never puts your Assistant key into a backup file, and never restores one from a file', () => {
+    localStorage.setItem('hlith.assistant.key', 'sk-ant-secret');
+    localStorage.setItem('hlith.assistant.settings', '{"model":"x"}');
+    const b = buildBackup();
+    expect(b.extra['hlith.assistant.key']).toBeUndefined();
+    expect(b.extra['hlith.assistant.settings']).toBe('{"model":"x"}');
+    localStorage.clear();
+    restoreBackup({ ...b, extra: { ...b.extra, 'hlith.assistant.key': 'sk-ant-from-file' } });
+    expect(localStorage.getItem('hlith.assistant.key')).toBeNull();
+    expect(localStorage.getItem('hlith.assistant.settings')).toBe('{"model":"x"}');
+  });
+
   it('rejects files that are not an HLITH backup, before touching anything', () => {
     expect(parseBackup('not json').ok).toBe(false);
     expect(parseBackup('{"info":{"uigf_version":"v4.0"}}')).toEqual({ ok: false, error: expect.stringMatching(/isn’t an HLITH backup/) });

@@ -76,6 +76,16 @@ export const JOBS: readonly JobDef[] = [
     maxSeconds: 135,
   },
   {
+    id: 'account-purge',
+    label: 'Finish account deletions',
+    does: 'Removes for good every account whose 30-day deletion grace period is over (rows, pictures, saved HoYoLAB logins, the sign-in), and nightly backups older than 30 days.',
+    cadence: 'daily 03:20',
+    target: { kind: 'function', name: 'purge-accounts' },
+    logicOwner: 'FRAME workstream',
+    status: 'live',
+    maxSeconds: 120,
+  },
+  {
     id: 'codes-refresh',
     label: 'Code list refresh',
     does: 'Copies the public list of redeem codes into the database. Already part of the HoYoLAB daily job, so it never runs on its own.',

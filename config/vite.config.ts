@@ -3,6 +3,7 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { fileURLToPath } from 'node:url';
 import { appShell } from './appShell.ts';
+import { legalPages } from './legal/pages.ts';
 
 // Tool settings live in config/; the app itself is the project root.
 const here = fileURLToPath(new URL('.', import.meta.url));
@@ -11,7 +12,8 @@ export default defineConfig({
   root: fileURLToPath(new URL('..', import.meta.url)),
   envDir: here,
   // appShell: the service worker that lets the installed app open offline (T45).
-  plugins: [react(), appShell()],
+  // legalPages: /about, /privacy and /terms as plain HTML that opens without signing in (T55).
+  plugins: [react(), appShell(), legalPages()],
   test: {
     environment: 'jsdom',
     include: ['src/**/*.test.{ts,tsx}', 'tests/**/*.test.ts'],

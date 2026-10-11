@@ -17,6 +17,7 @@ import { ProfileSection } from './Profile';
 import { CustomisePage } from './Customise';
 import { BackupPage, ExamplesPage, GameSettingsPage, SignInPage, SyncPage, syncSub, ThemePage } from './sections';
 import { SetupChecklist } from './SetupChecklist';
+import { LegalLinks } from '../../core/auth/SignIn';
 
 export type SectionId = 'profile' | 'customise' | 'sync' | 'backup' | 'notifications' | 'game-settings' | 'examples' | 'connections' | 'guide' | 'layout' | 'theme' | 'owner' | 'sign-in';
 
@@ -186,6 +187,8 @@ export default function AccountPage(props: PanelProps) {
         <div key={current} className={`${a.stack} hlith-stagger`}>
           {body}
         </div>
+        {/* T55: the public pages and the fan notice, on every Account section. */}
+        <LegalLinks />
       </section>
     </div>
   );

@@ -246,8 +246,9 @@ function DeleteAccount({ signedIn }: { signedIn: boolean }) {
       ) : (
         <>
           <p className={a.text}>
-            Sure? Nothing is removed today. In 30 days your settings, bank log, pulls, roster, plans and reminders on the server are deleted for good. Data in this
-            browser stays until you clear it.
+            Sure? Nothing is removed today. In 30 days everything of your account on HLITH’s server is deleted for good: your settings and game data, profile,
+            pictures, saved HoYoLAB logins and reminders, and then the sign-in itself. Backup copies are gone within a further 30 days. Data in this browser stays
+            until you clear it.
           </p>
           <label className={a.switchRow}>
             <span className={a.switchText}>Type DELETE to confirm</span>
