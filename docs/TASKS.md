@@ -36,7 +36,7 @@ doing it said `LIVE`. Newest jobs at the bottom; live jobs move to Done.
 | T46 | BUG: findings-intake answers 401 to the Data refresh Action and to the routine's proxy key | ERROR-FIX | live | New key (owner) + #107; run #3 ok, Bearer path ok, v76. |
 | T47 | More themes (3 public) + owner-only BL themes: private bucket, owner-only loading, upload a picture per theme | FRAME | working | Owner: drawn sample "horrible", dropped. AI image generator = separate paid option, owner to decide. Screenshots before merge. |
 | T48 | BUG: leak tiles in Roster had a "? UNVERIFIED" tag + source text under the tile | ERROR-FIX | live | #110 (LEAK chip, same size). |
-| T49 | BUG: banner card art cropped badly (legs, weapon parts); art must fit each frame on its own, both games | ERROR-FIX | sent | Owner 2026-10-11 screenshot (ZZZ Banners). |
+| T49 | BUG: banner card art cropped badly (legs, weapon parts); art must fit each frame on its own, both games | ERROR-FIX | live | #112 (per-picture crop, weapons whole). |
 
 ## Done
 | # | Job | Who | Live on |
