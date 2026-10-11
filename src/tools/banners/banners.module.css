@@ -406,7 +406,7 @@
   padding: 0 4px;
   border-radius: 3px;
   background: var(--gv);
-  color: var(--bg-app);
+  color: var(--on-vent);
   font: 700 9.5px/16px var(--font-numbers);
   letter-spacing: 0.04em;
 }
@@ -425,7 +425,7 @@
   height: 14px;
   border-radius: 4px;
   background: color-mix(in srgb, var(--gv) 86%, #000);
-  color: var(--bg-app);
+  color: var(--on-vent);
   font-size: 10px;
   font-weight: 700;
   line-height: 14px;
@@ -897,7 +897,7 @@
   border: 0;
   border-radius: var(--r-button);
   background: var(--vent);
-  color: var(--bg-app);
+  color: var(--on-vent);
   font: inherit;
   font-size: 14px;
   font-weight: 700;
