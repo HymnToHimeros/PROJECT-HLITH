@@ -16,6 +16,9 @@ doing it said `LIVE`. Newest jobs at the bottom; live jobs move to Done.
 | T13 | ZZZ 3.3 (21 Oct): event dates, A-rank featured agents, version end date | SCHEDULER | blocked | Nothing published yet; rerun `data:nanoka` + `data:schedule` on 21 Oct. |
 | T14 | HSR 4.7 (starts 11 Nov): versions, banners, events | SCHEDULER | blocked | Waits for the announcement (special program around late Oct). |
 | T55 | Go public: privacy policy + terms pages, links + not-affiliated notice, public homepage; then Google OAuth publish (owner steps), sign-in email at scale (T10), deletions (T11) | FRAME (+ owner) | working | #121 merged: /about /privacy /terms, Discord-first sign-in (Google/email greyed, tester unlock), purge after 30 days, backups 30 days. Left: contact email (owner), Google publish (owner), domain + Resend later. |
+| T56 | Tight licence: LICENSE "All rights reserved" (view only as GitHub requires; no copying/hosting/derivatives/AI training; names + emblem protected), package.json, copyright footer, docs/COPYRIGHT.md takedown templates | FRAME | sent | Owner 2026-10-11: repo stays public (Actions minutes). |
+| T57 | Owner checklist on PC: new private-use email → fill [CONTACT EMAIL]; move GitHub/Cloudflare/Supabase/Discord/Google Cloud to it; GitHub protection (secret scanning + push protection, Dependabot alerts, main branch rule, private vulnerability reporting); Google OAuth publish later | owner + MANAGER | waiting on owner | Steps given when owner is on PC. |
+| T58 | Help to push HLITH into the public eye (TikTok, showcase, posts) | MANAGER | later | Owner will ask. |
 
 ## Done
 | # | Job | Who | Live on |
