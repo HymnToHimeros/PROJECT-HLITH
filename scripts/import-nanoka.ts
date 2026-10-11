@@ -179,33 +179,6 @@ async function wikiDates(game: 'hsr' | 'zzz', list: Out[]): Promise<void> {
 }
 
 /**
- * Pictures nanoka doesn't have yet (announced, unreleased agents): the wiki's
- * copies of the official reveal art, "Agent <full name> Portrait.png" and "Icon.png".
- */
-async function wikiArt(game: 'hsr' | 'zzz', list: Out[]): Promise<void> {
-  if (game !== 'zzz') return;
-  const missing = list.filter((c) => !c.art || !c.portrait);
-  if (missing.length === 0) return;
-  const pages = await fetchWiki(
-    WIKI[game],
-    missing.map((c) => c.name),
-  );
-  for (const c of missing) {
-    const full = pages.get(c.name)?.title;
-    if (!full) continue;
-    const files = { art: `File:Agent ${full} Portrait.png`, portrait: `File:Agent ${full} Icon.png` };
-    const url = `https://${WIKI[game]}/api.php?action=query&prop=imageinfo&iiprop=url&format=json&formatversion=2&titles=${encodeURIComponent(Object.values(files).join('|'))}`;
-    const data = await getJson<{ query?: { pages?: { title: string; imageinfo?: { url: string }[] }[] } }>(url);
-    const found = new Map((data.query?.pages ?? []).map((p) => [p.title, p.imageinfo?.[0]?.url]));
-    const art = found.get(files.art);
-    const portrait = found.get(files.portrait);
-    if (!c.art && art) c.art = art;
-    if (!c.portrait && portrait) c.portrait = portrait;
-    if (art || portrait) console.log(`  ${c.name}: pictures from the wiki (official reveal art)`);
-  }
-}
-
-/**
  * Unreleased characters whose name HoYoverse has already revealed: shown under that name
  * (no leak code name), still marked as a leak until release, since only the name is official.
  */
@@ -246,7 +219,8 @@ for (const [game, read] of [
   }
   await wikiDates(game, list);
   await checkArt(list);
-  await wikiArt(game, list);
+  // No pictures from the wiki: it refuses them to other sites (a page on HLITH gets 404),
+  // so they never show. A character without nanoka art shows "No art yet" until nanoka has it.
   writeFileSync(resolve(ROOT, `src/games/${game}/data/characters.json`), `${JSON.stringify(list, null, 2)}\n`);
   console.log(`${game}: ${list.length} characters (${list.filter((c) => c.leak).length} leaked, ${list.filter((c) => c.releasedAt).length} with a release date)`);
 }

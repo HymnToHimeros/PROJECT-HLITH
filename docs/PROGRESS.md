@@ -44,6 +44,13 @@ Resume with: "continue from PROGRESS.md". Newest entry on top. Older entries:
   `owners` and checks badges and numbers from your own rows. Account → Theme → Look: accent
   colour (each one tested at 4.5:1 on every theme), text size, spacing, card corners;
   Account → Layout: start screen. Screenshots: `docs/owner-reports/2026-10-11/profile-badges/`.
+- 2026-10-11 · **ERROR-FIX: outsider test, round 1** (branch `error-fix/outsider-test`, owner's T51).
+  A first-time user's run through every module, both games and All games, phone and PC, on the
+  same code as the live site ("this device only" build: a test account couldn't be made from
+  here). Fixed: Severian's and Phoenix's portraits were blank (the wiki refuses its pictures to
+  other sites; the import no longer uses them); the Luck report said "needs History" right after
+  an import (now: the standard pool isn't listed yet); ZZZ Banners text was white on lime in
+  light themes (now readable; the theme test covers it). Before/after: `docs/owner-reports/2026-10-11/outsider-test/`.
 - 2026-10-11 · **FRAME: the app moves (T50)** (branch `frame/animations`).
   Screens and cards ease in one after another, buttons and tabs give press feedback, tiles lift
   under the pointer, folded sections ease open, notes slide in (bubbles pop with that ornament),
