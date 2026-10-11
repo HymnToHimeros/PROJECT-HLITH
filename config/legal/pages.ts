@@ -1,5 +1,5 @@
 import type { Plugin } from 'vite';
-import { FAN_NOTICE, PAGES, type Block, type LegalPage } from './content.ts';
+import { COPYRIGHT, FAN_NOTICE, LICENSE_URL, PAGES, type Block, type LegalPage } from './content.ts';
 
 /**
  * The public pages (T55) as plain HTML files: /about, /privacy and /terms. They open without
@@ -42,6 +42,7 @@ strong{color:var(--ink1)}
 ul{padding-left:22px}li{margin:6px 0}
 .note{margin-top:36px;padding:12px 14px;border:1px solid var(--line);border-radius:10px;background:var(--card);font-size:14px}
 footer{margin-top:40px;padding-top:16px;border-top:1px solid var(--line);font-size:14px;color:var(--ink4)}
+footer p{margin:0 0 6px;color:var(--ink4)}
 `;
 
 export function renderPage(page: LegalPage): string {
@@ -72,7 +73,7 @@ export function renderPage(page: LegalPage): string {
 ${heading}
 ${page.blocks.map(block).join('\n')}
 </main>
-<footer>PROJECT-HLITH · ${esc(FAN_NOTICE)}</footer>
+<footer><p>PROJECT-HLITH · ${esc(FAN_NOTICE)}</p><p>${esc(COPYRIGHT).replace('LICENSE', `<a href="${LICENSE_URL}">LICENSE</a>`)}</p></footer>
 </div>
 </body>
 </html>

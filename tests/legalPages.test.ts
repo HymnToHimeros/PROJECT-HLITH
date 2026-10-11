@@ -22,10 +22,28 @@ describe('public pages: About, Privacy, Terms (T55)', () => {
     expect(inline('**a** [b](/privacy) [c](javascript:alert(1)) <img>')).toBe('<strong>a</strong> <a href="/privacy">b</a> [c](javascript:alert(1)) &lt;img&gt;');
   });
 
-  it('a contact placeholder for the owner to fill in, and no one’s personal address', () => {
-    expect(text(PRIVACY)).toContain(CONTACT);
-    expect(text(TERMS)).toContain(CONTACT);
-    for (const p of PAGES) expect(text(p)).not.toMatch(/@(gmail|outlook|hotmail|yahoo|icloud|proton)/i);
+  it('the project’s public contact address on every page, and no other address anywhere', () => {
+    expect(CONTACT).toBe('hlidskjalf.contact@gmail.com');
+    for (const p of PAGES) {
+      expect(text(p)).toContain(CONTACT);
+      const html = renderPage(p);
+      expect(html).not.toContain('[CONTACT EMAIL]');
+      for (const addr of html.match(/[\w.+-]+@[\w-]+(?:\.[\w-]+)+/g) ?? []) expect(addr).toBe(CONTACT);
+    }
+    const license = readFileSync(resolve(__dirname, '../LICENSE'), 'utf8');
+    for (const addr of license.match(/[\w.+-]+@[\w-]+(?:\.[\w-]+)+/g) ?? []) expect(addr).toBe(CONTACT);
+    expect(license).toContain(CONTACT);
+  });
+
+  it('the copyright line and the LICENSE link, on every page and in the terms', () => {
+    for (const p of PAGES) {
+      const html = renderPage(p);
+      expect(html).toContain('© 2026 HymnToHimeros. All rights reserved. See <a href="https://github.com/HymnToHimeros/PROJECT-HLITH/blob/main/LICENSE">LICENSE</a>.');
+    }
+    expect(text(TERMS)).toContain('[LICENSE](https://github.com/HymnToHimeros/PROJECT-HLITH/blob/main/LICENSE)');
+    const license = readFileSync(resolve(__dirname, '../LICENSE'), 'utf8');
+    expect(license).toContain('Copyright (c) 2026 HymnToHimeros (HLIÐSKJÁLF / PROJECT-HLITH). All rights reserved.');
+    expect(JSON.parse(readFileSync(resolve(__dirname, '../package.json'), 'utf8'))).toMatchObject({ private: true, license: 'SEE LICENSE IN LICENSE' });
   });
 
   it('the privacy policy says what the code does', () => {
@@ -47,6 +65,9 @@ describe('public pages: About, Privacy, Terms (T55)', () => {
     expect(code).not.toMatch(/document\.cookie\s*=|gtag\(|googletagmanager|plausible|posthog|sentry/i);
     // Exactly what Discord sign-in gives us (Supabase always asks Discord for identify + email).
     expect(t).toContain('Discord user ID, username, display name, avatar picture link and the email address');
+    // And Google sign-in: only the openid, email and profile permissions.
+    expect(t).toContain('**Google** (open to everyone): your Google account ID, name, email address and profile picture link');
+    expect(t).toContain('“openid”, “email” and “profile”');
     // The Assistant key never goes into a backup file.
     expect(t).toContain('never in backup files');
     expect(readFileSync(resolve(__dirname, '../src/core/data/backup.ts'), 'utf8')).toContain("k === 'hlith.assistant.key'");

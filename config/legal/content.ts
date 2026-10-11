@@ -5,7 +5,7 @@
  * in and without the app's JavaScript.
  *
  * If what the app does with data changes, change this text in the same pull request.
- * [CONTACT EMAIL] is filled in by the owner; nobody's personal address goes here.
+ * CONTACT is the project's public contact address (owner's choice); no personal address goes here.
  *
  * Markup in the strings: **bold** and [text](link). Nothing else.
  */
@@ -21,7 +21,9 @@ export interface LegalPage {
   blocks: Block[];
 }
 
-export const CONTACT = '[CONTACT EMAIL]';
+export const CONTACT = 'hlidskjalf.contact@gmail.com';
+export const COPYRIGHT = '© 2026 HymnToHimeros. All rights reserved. See LICENSE.';
+export const LICENSE_URL = 'https://github.com/HymnToHimeros/PROJECT-HLITH/blob/main/LICENSE';
 export const UPDATED = '11 October 2026';
 export const FAN_NOTICE = 'HLIÐSKJÁLF is a fan-made tool. It is not affiliated with, endorsed or sponsored by HoYoverse (COGNOSPHERE PTE. LTD.). Game names, characters and art belong to HoYoverse.';
 
@@ -48,7 +50,9 @@ export const ABOUT: LegalPage = {
     { h: 'Your data' },
     { p: 'No ads, no tracking, nothing sold. Your data is private to your account and you can export or delete it at any time. Read the [Privacy policy](/privacy) and the [Terms of service](/terms).' },
     { h: 'Get started' },
-    { p: '[Open HLIÐSKJÁLF](/) and sign in with Discord. It’s free. Sign-in with Google or an email link opens to everyone later.' },
+    { p: '[Open HLIÐSKJÁLF](/) and sign in with Discord or Google. It’s free. Sign-in with an email link opens to everyone later.' },
+    { h: 'Contact' },
+    { p: `Questions, ideas or problems: **${CONTACT}**.` },
     { note: FAN_NOTICE },
   ],
 };
@@ -79,7 +83,7 @@ export const PRIVACY: LegalPage = {
     {
       list: [
         '**Discord** (open to everyone): your Discord user ID, username, display name, avatar picture link and the email address on your Discord account. Discord always shares the email for this kind of sign-in (the “identify” and “email” permissions), and our sign-in provider needs it to create an account; HLIÐSKJÁLF doesn’t email you or use it for anything else. We never see your Discord password, messages or servers.',
-        '**Google** (not open to the public yet): your Google account ID, name, email address and profile picture link.',
+        '**Google** (open to everyone): your Google account ID, name, email address and profile picture link. HLIÐSKJÁLF asks Google only for the basic “openid”, “email” and “profile” permissions, and our sign-in provider keeps these to create and recognise your account; HLIÐSKJÁLF doesn’t email you or use them for anything else. We never see your Google password, contacts, files, mail or anything else in your Google account.',
         '**Email link** (not open to the public yet): only your email address.',
       ],
     },
@@ -104,7 +108,7 @@ export const PRIVACY: LegalPage = {
       list: [
         '**Supabase** (database, sign-in, file storage and server functions). Our project is hosted in **London, United Kingdom** (AWS eu-west-2).',
         '**Cloudflare** (delivers the website). It sees technical request data such as your IP address, as any web host does.',
-        '**Discord** (or **Google**, once open), when you sign in with them; sign-in emails (once open) are sent through Supabase.',
+        '**Discord** or **Google**, when you sign in with them; sign-in emails (once open) are sent through Supabase.',
         '**HoYoverse / HoYoLAB**, only for the HoYoLAB and history-link features you use: our server talks to them with your login or link on your behalf.',
         '**Anthropic**, only if you use the Assistant, with your own key and under your own agreement with Anthropic. Anthropic is in the United States.',
         '**static.nanoka.cc**, a community site the game art pictures are loaded from. Your browser fetches the pictures directly, so that site sees your IP address (but not which page you were on).',
@@ -122,7 +126,7 @@ export const PRIVACY: LegalPage = {
     {
       list: [
         'Your data is kept while your account exists.',
-        '**Deleting your account** starts a 30-day grace period: you can still sign in, export everything, or change your mind. After 30 days, everything is removed for good: your rows, your uploaded pictures, your saved HoYoLAB logins and your sign-in account. Nightly backups that still hold it are removed within a further 30 days.',
+        '**Deleting your account** starts a 30-day grace period: you can still sign in, export everything, or change your mind. After 30 days, everything is removed for good: your rows, your uploaded pictures, your saved HoYoLAB logins and your sign-in account (with what Discord or Google gave us). Nightly backups that still hold it are removed within a further 30 days.',
         'Request logs kept by Supabase and Cloudflare follow their own short retention.',
       ],
     },
@@ -207,7 +211,12 @@ export const TERMS: LegalPage = {
       ],
     },
 
-    { h: '11. Contact' },
+    { h: '11. Copyright and licence' },
+    {
+      p: `HLIÐSKJÁLF’s own code, design, texts, themes, artwork, badges, rules and data files are © 2026 HymnToHimeros, all rights reserved. You may use the app here for your own personal use. Copying, hosting or reusing any of it needs written permission: see the [LICENSE](${LICENSE_URL}). The names HLIÐSKJÁLF, PROJECT-HLITH and HLITH and the emblem may not be used for other projects. Open-source parts and fonts keep their own licences; game content belongs to HoYoverse.`,
+    },
+
+    { h: '12. Contact' },
     { p: `Questions about these terms: ${CONTACT}.` },
     { note: FAN_NOTICE },
   ],
