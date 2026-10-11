@@ -29,6 +29,13 @@ Resume with: "continue from PROGRESS.md". Newest entry on top. Older entries:
 - CI (`.github/workflows/ci.yml`) runs both on every pull request.
 
 ## Done
+- 2026-10-11 · **ERROR-FIX: logins tested in a simulated way** (branch `error-fix/simulated-logins`, owner's T51).
+  `tests/simulated.test.ts` runs the real HoYoLAB, history-link and Assistant code against faked
+  answers (expired cookie, captcha, rate limits, HoYoLAB down, wrong region, multi-page history,
+  re-import, empty history, expired link, wrong key, 429, busy, timeout): plain messages, no
+  secrets, nothing duplicated. Fixed: the history link crashed when HoYoverse was down or sent a
+  web page; now a plain "server" error. Read-only check: the owner's real HoYoLAB check-in job
+  ran OK on 10 Oct 16:15 UTC and claimed both games' rewards.
 - 2026-10-11 · **FRAME: profile card, badges and Look (T52)** (branch `frame/profile-badges`).
   Account → Profile is now a card like an in-game one: banner, framed picture, name in your
   colour, title, your badge, up to 4 favourite characters or teams, and your own pull numbers.
