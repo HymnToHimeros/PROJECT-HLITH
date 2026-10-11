@@ -29,6 +29,16 @@ Resume with: "continue from PROGRESS.md". Newest entry on top. Older entries:
 - CI (`.github/workflows/ci.yml`) runs both on every pull request.
 
 ## Done
+- 2026-10-11 · **FRAME: HLITH installs as an app (T45)** (branch `frame/installable-app`).
+  Manifest (HLIÐSKJÁLF / HLITH, standalone, dark tokens), icons from the emblem
+  (`scripts/app-icons.ts` → `public/icons/`, plain + maskable + Apple), iPhone tags, and the
+  notch / home bar kept clear in the installed app. A service worker, written at build time
+  (`config/appShell.ts`), keeps only the app's own files: offline the app opens with what the
+  device has saved and says "Offline"; Supabase, HoYoLAB and art are never stored. A new deploy
+  shows "Update ready" with Reload, never a stuck old version. Account → Guide has "Install
+  HLITH as an app" (Install button in Chrome/Edge, steps for iPhone, Android and PC), hidden
+  once installed; the setup checklist ticks it. Base for iPhone push later (T9).
+  Screenshots: `docs/owner-reports/2026-10-11/installable-app/`.
 - 2026-10-11 · **SCHEDULER: Nihilux is Aeon ★ Aha, by name** (branch `scheduler/aha-official-name`, T15).
   HoYoverse revealed Aha as playable in 4.7 (character preview, 15 Sep 2026; owner, 11 Oct).
   `scripts/import-nanoka.ts` has a `REVEALED` table: an unreleased character whose name is

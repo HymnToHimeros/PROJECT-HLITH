@@ -5,6 +5,7 @@ import { hoyolabLink } from '../account-links/hoyolab';
 import { useAccounts } from '../account-links/useAccounts';
 import { updatePrefs, usePrefs } from '../../core/data/prefs';
 import { hasServer, readReminders } from '../feeds/server';
+import { useAppShell } from '../../core/shell/appShell';
 import { Button } from '../../core/ui';
 import { WithUserData } from '../today/lists';
 import type { GameUserData } from '../../core/data/userData';
@@ -34,6 +35,8 @@ export interface SetupFacts {
   backup: boolean;
   /** HLITH's server is reachable for you (connected and signed in). */
   server: boolean;
+  /** Opened as the installed app (home screen / own window), not in a browser tab. */
+  installed?: boolean;
 }
 
 /** Each step ticks itself from your real data; nothing is ticked by hand (you can only Skip one). */
@@ -65,6 +68,14 @@ export function setupSteps(games: GameContract[], servers: Record<GameId, string
       action: { label: 'Open Notifications', onClick: () => act.goTo('notifications') },
     },
     { id: 'backup', title: 'Download a backup', why: 'A backup file is a copy you hold yourself, on top of sync.', done: extra.backup, action: { label: 'Open Backup', onClick: () => act.goTo('backup') } },
+    // Ticks when HLITH runs as the installed app; the steps are in the "Install HLITH as an app" card above.
+    {
+      id: 'install',
+      title: 'Install HLITH as an app',
+      why: 'Opens from your home screen in its own window, also offline.',
+      done: Boolean(extra.installed),
+      action: { label: 'How to install', onClick: () => document.getElementById('install-app')?.scrollIntoView({ behavior: 'smooth', block: 'start' }) },
+    },
   ];
 }
 
@@ -97,10 +108,11 @@ export function SetupChecklist(props: Props) {
   const server = hasServer() && signedIn;
   const feed = useFeedOn(server);
   const skipped = new Set(prefs.skippedSetup ?? []);
+  const { installed } = useAppShell();
   return (
     <WithUserData games={props.games}>
       {(data) => {
-        const steps = setupSteps(props.games, prefs.servers, data, { accounts, feed, backup: Boolean(prefs.lastBackupAt), server }, props);
+        const steps = setupSteps(props.games, prefs.servers, data, { accounts, feed, backup: Boolean(prefs.lastBackupAt), server, installed }, props);
         const done = steps.filter((s) => s.done).length;
         const skips = steps.filter((s) => !s.done && skipped.has(s.id)).length;
         const handled = done + skips;

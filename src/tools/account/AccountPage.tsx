@@ -11,6 +11,7 @@ import { FeedSettings } from '../feeds/FeedSettings';
 import OwnerConsole from '../owner/OwnerConsole';
 import a from './account.module.css';
 import { Guide } from './Guide';
+import { InstallApp } from './InstallApp';
 import pg from './page.module.css';
 import { ProfileSection } from './Profile';
 import { BackupPage, ExamplesPage, GameSettingsPage, SignInPage, SyncPage, syncSub, ThemePage } from './sections';
@@ -109,6 +110,7 @@ export default function AccountPage(props: PanelProps) {
     case 'guide':
       body = (
         <>
+          <InstallApp />
           <SetupChecklist games={games} open={props.open} goTo={(id) => go(id)} />
           <Guide open={props.open} />
         </>
