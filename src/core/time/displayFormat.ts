@@ -11,12 +11,15 @@ export interface DisplayFormat {
   /** 1,234.5 / 1.234,5 / 1 234,5 */
   numbers?: 'comma' | 'dot' | 'space';
   weekStart?: 'mon' | 'sun';
+  /** Countdowns: time left ("2d 04h", the default), the date and time it happens, or both. */
+  countdown?: 'left' | 'date' | 'both';
 }
 
 export const CLOCKS = ['12h', '24h'] as const;
 export const DATE_ORDERS = ['dmy', 'mdy', 'ymd'] as const;
 export const NUMBER_STYLES = ['comma', 'dot', 'space'] as const;
 export const WEEK_STARTS = ['mon', 'sun'] as const;
+export const COUNTDOWNS = ['left', 'date', 'both'] as const;
 
 const pick = <T extends string>(list: readonly T[], v: unknown): T | undefined => ((list as readonly unknown[]).includes(v) ? (v as T) : undefined);
 
@@ -27,6 +30,8 @@ export function cleanFormat(raw: unknown): DisplayFormat {
   const date = pick(DATE_ORDERS, r.date);
   const numbers = pick(NUMBER_STYLES, r.numbers);
   const weekStart = pick(WEEK_STARTS, r.weekStart);
+  const countdown = pick(COUNTDOWNS, r.countdown);
+  if (countdown && countdown !== 'left') out.countdown = countdown;
   if (clock) out.clock = clock;
   if (date) out.date = date;
   if (numbers) out.numbers = numbers;

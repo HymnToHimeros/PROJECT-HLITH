@@ -52,9 +52,11 @@ interface Input {
   examples?: boolean;
   /** Which banners and events are examples (from withOwnItems). */
   exampleIds?: ReadonlySet<string> | undefined;
+  /** Event kinds you chose not to see (Customise → Events, banners and calendar). */
+  hiddenKinds?: readonly GameEvent['kind'][] | undefined;
 }
 
-export function gameTimeline({ game, serverId, banners, events, versions, now, from, to, examples: showExamples = true, exampleIds }: Input): GameTimeline {
+export function gameTimeline({ game, serverId, banners, events, versions, now, from, to, examples: showExamples = true, exampleIds, hiddenKinds = [] }: Input): GameTimeline {
   const spans: Span[] = [];
   const inWindow = (s: number, e: number) => e > from && s < to;
 
@@ -69,13 +71,13 @@ export function gameTimeline({ game, serverId, banners, events, versions, now, f
   const exBanners = banners.some((b) => isExample(b.id));
 
   // Events and endgame: endgame comes from endgame events, else from cycle rows with a known start, else examples.
-  const eventList = events;
+  const eventList = events.filter((e) => !hiddenKinds.includes(e.kind));
   const exEvents = events.some((e) => isExample(e.id));
   for (const e of eventList) {
     spans.push({ id: `event:${e.id}`, game, lane: e.kind === 'endgame' ? 'endgame' : 'events', title: e.title, start: Date.parse(e.start), end: Date.parse(e.end), leak: e.leak, example: isExample(e.id) });
   }
   let exEndgame = false;
-  if (!eventList.some((e) => e.kind === 'endgame')) {
+  if (!hiddenKinds.includes('endgame') && !eventList.some((e) => e.kind === 'endgame')) {
     for (const row of game.income) {
       if (row.schedule.kind !== 'cycle' || !row.schedule.anchor) continue;
       const len = row.schedule.days * DAY;

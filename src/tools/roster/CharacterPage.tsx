@@ -16,6 +16,7 @@ import { artOf, CharArt, dupesLabel, elementOf, entryOf, isUpcoming, rarityColor
 import { Line, TeamRow, teamAccount, useTeamAccount } from './TeamParts';
 import { useBuilds, useKits, type RosterData } from './useRosterData';
 import { formatFullDate } from '../../core/time/reset';
+import { MyLabels } from './MyLabels';
 
 interface Props {
   data: RosterData;
@@ -105,7 +106,10 @@ export function CharacterPage({ data, character: c, several, onBack, openPulls, 
             </span>
             {c.leak ? <UnverifiedTag source={c.leak.source} /> : isUpcoming(c) && <UnverifiedTag source={c.source ?? 'game files'} />}
           </div>
-          <h2 className={r.heroName}>{c.name}</h2>
+          <h2 className={r.heroName}>
+            {c.name}
+            {user.nicknames?.[c.id] && <span className={r.heroNick}> “{user.nicknames[c.id]}”</span>}
+          </h2>
           <div className={r.markRow} role="group" aria-label="Your roster">
             <button
               type="button"
@@ -135,6 +139,7 @@ export function CharacterPage({ data, character: c, several, onBack, openPulls, 
               </button>
             )}
           </div>
+          <MyLabels game={game.id} user={user} character={c} />
           <div className={r.heroStats}>
             <div className={r.stat}>
               <span className={r.statLabel}>Level</span>

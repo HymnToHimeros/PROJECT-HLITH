@@ -27,9 +27,12 @@ import { cleanFormat, type DisplayFormat } from '../../core/time/displayFormat';
 import { formatNumber } from '../../core/time/format';
 import { formatDate, formatDateTime, formatTime } from '../../core/time/reset';
 import { Button, GameTag, Segmented, useNow } from '../../core/ui';
+import { EVENT_KINDS, hiddenKinds, KIND_LABEL } from '../events/kindPrefs';
+import { TILE_PARTS, type TilePart } from '../roster/tileParts';
 import a from './account.module.css';
+import { Switch } from './parts';
 
-type Section = 'look' | 'colours' | 'schedule' | 'layout' | 'format';
+type Section = 'look' | 'colours' | 'schedule' | 'layout' | 'format' | 'roster' | 'lists';
 
 /** What "Reset this section" puts back: the setting is removed, so the default shows again. Nothing else is touched. */
 const without = (p: Prefs, keys: (keyof Prefs)[]): Prefs => Object.fromEntries(Object.entries(p).filter(([k]) => !keys.includes(k as keyof Prefs))) as unknown as Prefs;
@@ -39,6 +42,8 @@ const RESET: Record<Section, (p: Prefs) => Prefs> = {
   schedule: (p) => without(p, ['themeSchedule']),
   layout: (p) => without(p, ['startModule', 'defaultScope', 'startTabs']),
   format: (p) => without(p, ['format']),
+  roster: (p) => without(p, ['roster']),
+  lists: (p) => without(p, ['hiddenEventKinds', 'eventKindColours', 'bannerView']),
 };
 /** A copy without the empty entries. */
 const compact = <T extends Record<string, unknown>>(o: T): T => Object.fromEntries(Object.entries(o).filter(([, v]) => v !== undefined && v !== '' && v !== null)) as T;
@@ -182,10 +187,25 @@ export function CustomisePage({ games, editLayout, goSection }: { games: GameCon
             ]}
           />
         </Row>
+        <Row label="Countdowns">
+          <Segmented
+            label="Countdowns"
+            value={format.countdown ?? 'left'}
+            onChange={(v) => setFormat({ countdown: v === 'left' ? undefined : v })}
+            options={[
+              { id: 'left', label: 'Time left' },
+              { id: 'date', label: 'The date' },
+              { id: 'both', label: 'Both' },
+            ]}
+          />
+        </Row>
         <p className={a.small}>
           Now: {formatDateTime(now)} · {formatNumber(12480)} · Game resets stay on each server’s own clock; only how times are written changes.
         </p>
       </Card>
+
+      <RosterCard prefs={prefs} />
+      <ListsCard prefs={prefs} tone={tone} />
 
       <section className={a.card} aria-label="More to make yours">
         <h3 className={a.cardTitle}>More to make yours</h3>
@@ -395,6 +415,100 @@ function LayoutCard({ games, prefs, editLayout }: { games: GameContract[]; prefs
       <div className={a.actions}>
         <Button onClick={editLayout}>Order and hide modules</Button>
       </div>
+    </Card>
+  );
+}
+
+const TILE_PART_LABEL: Record<TilePart, string> = { copies: 'Copies (E0, M1…)', element: 'Element dot', rarity: 'Rarity', role: 'Role and element line', tags: 'Your tags' };
+
+function RosterCard({ prefs }: { prefs: Prefs }) {
+  const roster = prefs.roster ?? {};
+  const hidden = roster.hideOnTile ?? [];
+  const set = (change: Partial<NonNullable<Prefs['roster']>>) => updatePrefs((p) => ({ ...p, roster: { ...p.roster, ...change } }));
+  return (
+    <Card id="roster" title="Roster" changed={Object.keys(roster).length > 0}>
+      <Row label="Tile size">
+        <Segmented
+          label="Tile size"
+          value={roster.tileSize ?? 'normal'}
+          onChange={(v) => set({ tileSize: v })}
+          options={[
+            { id: 'small', label: 'Small' },
+            { id: 'normal', label: 'Normal' },
+            { id: 'large', label: 'Large' },
+          ]}
+        />
+      </Row>
+      <span className={a.small}>A tile shows</span>
+      {TILE_PARTS.map((part) => (
+        <Switch
+          key={part}
+          label={TILE_PART_LABEL[part]}
+          checked={!hidden.includes(part)}
+          onChange={(on) => set({ hideOnTile: on ? hidden.filter((x) => x !== part) : [...hidden, part] })}
+        />
+      ))}
+      <p className={a.small}>
+        Roster remembers your last sort and filters. Nicknames and your own tags (“main team”, “to build”) are set on each character’s page and can be searched and filtered.
+      </p>
+      {roster.view && Object.keys(roster.view).length > 0 && (
+        <div className={a.actions}>
+          <Button variant="quiet" onClick={() => set({ view: {} })}>
+            Forget my Roster filters
+          </Button>
+        </div>
+      )}
+    </Card>
+  );
+}
+
+function ListsCard({ prefs, tone }: { prefs: Prefs; tone: 'dark' | 'light' }) {
+  const hidden = hiddenKinds(prefs.hiddenEventKinds);
+  const colours = prefs.eventKindColours ?? {};
+  const setColour = (kind: string, id: string | null) => updatePrefs((p) => ({ ...p, eventKindColours: compact({ ...(p.eventKindColours ?? {}), [kind]: id ?? undefined }) as Record<string, string> }));
+  const changed = hidden.length > 0 || Object.keys(colours).length > 0 || Boolean(prefs.bannerView);
+  return (
+    <Card id="lists" title="Events, banners and calendar" changed={changed}>
+      <Row label="Banners">
+        <Segmented
+          label="Banners"
+          value={prefs.bannerView ?? 'cards'}
+          onChange={(v) => updatePrefs((p) => (v === 'cards' ? without(p, ['bannerView']) : { ...p, bannerView: v }))}
+          options={[
+            { id: 'cards', label: 'Big cards' },
+            { id: 'list', label: 'Compact list' },
+          ]}
+        />
+      </Row>
+      <span className={a.small}>Kinds of event you see (Events and Calendar), and a colour for each</span>
+      {EVENT_KINDS.map((kind) => (
+        <div key={kind} className={a.kindRow}>
+          <Switch
+            label={KIND_LABEL[kind]}
+            checked={!hidden.includes(kind)}
+            onChange={(on) => updatePrefs((p) => ({ ...p, hiddenEventKinds: on ? hidden.filter((k) => k !== kind) : [...hidden, kind] }))}
+          />
+          <div className={a.accentRow} role="radiogroup" aria-label={`${KIND_LABEL[kind]} colour`}>
+            <button type="button" role="radio" aria-checked={!colours[kind]} className={a.accentChip} style={{ '--chip': 'var(--ink-4)' } as CSSProperties} onClick={() => setColour(kind, null)}>
+              <span className={a.accentDot} aria-hidden="true" />
+              Default
+            </button>
+            {ACCENTS.filter((id) => id !== 'theme').map((id) => (
+              <button
+                key={id}
+                type="button"
+                role="radio"
+                aria-checked={colours[kind] === id}
+                aria-label={`${KIND_LABEL[kind]}: ${ACCENT_LABEL[id]}`}
+                className={a.swatch}
+                style={{ '--chip': ACCENT_VALUE[id as Exclude<typeof id, 'theme'>][tone] } as CSSProperties}
+                onClick={() => setColour(kind, id)}
+              />
+            ))}
+          </div>
+        </div>
+      ))}
+      <p className={a.small}>Hidden kinds still count toward what you can earn in Pulls; they just don’t show here. Countdown style is under Time and format.</p>
     </Card>
   );
 }

@@ -42,3 +42,22 @@ describe('Customise → Time and format (T52b)', () => {
     expect(cleanFormat({ clock: '36h', date: 'mdy', numbers: 7 })).toEqual({ date: 'mdy' });
   });
 });
+
+describe('countdown style (T52c)', () => {
+  afterEach(() => setDisplayFormat({}));
+  it('time left by default; the date or both when chosen', async () => {
+    const { render } = await import('@testing-library/react');
+    const { Timer } = await import('../ui/Timer');
+    const to = Date.now() + 3 * 86_400_000 + 3_600_000;
+    const { rerender, container } = render(<Timer to={to} prefix="ends in" />);
+    const text = () => container.querySelector('time')?.textContent ?? '';
+    expect(text()).toMatch(/^ends in 3d/);
+    setDisplayFormat({ countdown: 'date' });
+    rerender(<Timer to={to + 1} prefix="ends in" />);
+    expect(text()).toMatch(/^ends [A-Z][a-z]{2}/);
+    expect(text()).not.toMatch(/ in /);
+    setDisplayFormat({ countdown: 'both' });
+    rerender(<Timer to={to + 2} prefix="in" />);
+    expect(text()).toMatch(/^in 3d \d\dh · /);
+  });
+});

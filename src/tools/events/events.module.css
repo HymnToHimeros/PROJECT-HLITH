@@ -496,3 +496,14 @@
   outline: 2px solid var(--glacier);
   outline-offset: 2px;
 }
+/* Your own colour for this kind (Customise, T52c): a small dot before the word. */
+.kind[data-coloured]::before {
+  content: '';
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  margin-right: 5px;
+  border-radius: 50%;
+  background: var(--kind-colour);
+  vertical-align: 1px;
+}

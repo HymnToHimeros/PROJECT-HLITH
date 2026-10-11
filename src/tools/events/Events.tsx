@@ -13,9 +13,11 @@ import k from '../pulls/kit.module.css';
 import { countsBefore, cycles, eventsBudget, groupEvents, groupOf, progressOf, type Cycle } from './events';
 import e from './events.module.css';
 import type { EventsData } from './useEventsData';
+import { hiddenKinds, KIND_LABEL, kindColour } from './kindPrefs';
+import { usePrefs } from '../../core/data/prefs';
 
 type State = EventProgress['state'];
-const KIND: Record<GameEvent['kind'], string> = { event: 'Event', login: 'Login', web: 'Web', endgame: 'Endgame', bonus: 'Bonus' };
+const KIND = KIND_LABEL;
 /** Above this many days a login event shows a bar instead of one button per day. */
 const MAX_PIPS = 14;
 /** "Ending soon": running and ending within this time. */
@@ -71,11 +73,14 @@ export function Events({ game, data, serverId, now, onChooseServer, actions, lev
   const rows = new Map(b.rows.map((r) => [r.id, r]));
   const groups = groupEvents(list, now);
   const name = (id: string) => game.currencies.find((c) => c.id === id)?.name ?? id;
+  // Customise → Events, banners and calendar: kinds you chose not to see are left out everywhere here.
+  const hidden = hiddenKinds(usePrefs().hiddenEventKinds);
   const keep = (ev: GameEvent) =>
-    filter === 'all' ||
+    !hidden.includes(ev.kind) &&
+    (filter === 'all' ||
     (filter === 'soon' && groupOf(ev, now) === 'live' && Date.parse(ev.end) - now < SOON) ||
     (filter === 'event' && (ev.kind === 'event' || ev.kind === 'web')) ||
-    ev.kind === filter;
+    ev.kind === filter);
 
   // A row moves to another group when its state changes, so focus goes to Undo on the line that says what happened.
   useEffect(() => {
@@ -134,7 +139,7 @@ export function Events({ game, data, serverId, now, onChooseServer, actions, lev
   }
   // The game record's endgame cycles only when the list has no endgame events of its own (else they'd show twice).
   const listHasEndgame = list.some((ev) => ev.kind === 'endgame');
-  const cycleList = !listHasEndgame && (filter === 'all' || filter === 'endgame') ? cycles(game, now) : [];
+  const cycleList = !listHasEndgame && !hidden.includes('endgame') && (filter === 'all' || filter === 'endgame') ? cycles(game, now) : [];
   for (const c of cycleList) {
     const node = <CycleItem key={c.row.id} game={game} cycle={c} example={data.cycleExamples.get(c.row.id)} user={data.user} currency={name} onChange={change} />;
     const cur = c.current;
@@ -341,7 +346,7 @@ function EventItem({ game, ev, now, until, user, example, row, currency, onChoos
       <div className={e.main}>
         <div className={e.titleLine}>
           <span className={e.title}>{ev.title}</span>
-          <span className={e.kind}>{KIND[ev.kind]}</span>
+          <KindChip kind={ev.kind} />
           {example && <ExampleTag />}
           {ev.leak && <UnverifiedTag source={ev.leak.source} />}
         </div>
@@ -591,4 +596,16 @@ function asPulls(game: GameContract, currency: string, amount: number): number |
   if (c?.perPull && !c.paid) return Math.floor(amount / c.perPull + 1e-9);
   if (c?.pullItemFor?.length) return Math.floor(amount);
   return null;
+}
+
+/** The event's kind, in your colour for that kind if you picked one (Customise). */
+function KindChip({ kind }: { kind: GameEvent['kind'] }) {
+  const prefs = usePrefs();
+  const tone = document.documentElement.dataset.tone === 'light' ? 'light' : 'dark';
+  const colour = kindColour(kind, tone, prefs.eventKindColours);
+  return (
+    <span className={e.kind} style={colour ? ({ color: colour, '--kind-colour': colour } as CSSProperties) : undefined} data-coloured={colour ? '' : undefined}>
+      {KIND[kind]}
+    </span>
+  );
 }

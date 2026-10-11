@@ -597,3 +597,24 @@
   gap: var(--s-3);
   align-items: end;
 }
+.kindRow {
+  display: grid;
+  gap: var(--s-1);
+  padding-bottom: var(--s-2);
+  border-bottom: 1px solid var(--line-subtle);
+}
+.swatch {
+  width: var(--tap-min);
+  height: var(--tap-min);
+  border: 2px solid transparent;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--chip) 0 11px, transparent 12px);
+  cursor: pointer;
+}
+.swatch[aria-checked='true'] {
+  border-color: var(--chip);
+}
+.swatch:focus-visible {
+  outline: 2px solid var(--glacier);
+  outline-offset: 2px;
+}

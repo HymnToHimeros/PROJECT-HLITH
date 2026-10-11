@@ -10,6 +10,8 @@ import { foldRows, gameTimeline, nextChange, packRows, type GameTimeline, type L
 import c from './calendar.module.css';
 import { formatDay } from '../../core/time/reset';
 import { firstDayOfWeek } from '../../core/time/displayFormat';
+import { hiddenKinds } from '../events/kindPrefs';
+import { usePrefs } from '../../core/data/prefs';
 
 const DAY = 86_400_000;
 /** Design: one week back, five ahead. */
@@ -68,9 +70,10 @@ export function Calendar({ games, servers, lists, now, openAccount, openServer, 
   const pct = (t: number) => Math.min(100, Math.max(0, ((t - from) / (to - from)) * 100));
 
   const showExamples = useExamplesShown();
+  const hidden = hiddenKinds(usePrefs().hiddenEventKinds);
   const timelines = games.map((game) => {
     const l = lists[game.id] ?? EMPTY_LISTS;
-    return { game, timeline: gameTimeline({ game, serverId: servers[game.id], characters: l.characters, banners: l.banners, events: l.events, versions: l.versions, now, from, to, examples: showExamples, exampleIds: l.exampleIds }) };
+    return { game, timeline: gameTimeline({ game, serverId: servers[game.id], characters: l.characters, banners: l.banners, events: l.events, versions: l.versions, now, from, to, examples: showExamples, exampleIds: l.exampleIds, hiddenKinds: hidden }) };
   });
   const laneExample = (lane: Lane) => timelines.some(({ timeline }) => timeline.example[lane]);
   // Your plans; with none yet, one EXAMPLE plan shows the look.

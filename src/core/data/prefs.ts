@@ -59,6 +59,14 @@ export interface Prefs {
   defaultScope?: string;
   /** Customise → Layout: the tab a module opens on, per module. Missing = its first tab. */
   startTabs?: Partial<Record<ModuleId, string>>;
+  /** Customise → Events, banners and calendar (T52c): event kinds you don't want to see. Missing = all. */
+  hiddenEventKinds?: string[];
+  /** …and your colour per event kind (an accent id from theme/look.ts). Missing = the default. */
+  eventKindColours?: Record<string, string>;
+  /** …and Banners as cards (default) or a compact list. */
+  bannerView?: 'cards' | 'list';
+  /** Customise → Roster (T52c): tiles and the Characters view you last used. */
+  roster?: { tileSize?: 'small' | 'normal' | 'large'; hideOnTile?: string[]; view?: { sort?: string; show?: string; element?: string; rarity?: string; tag?: string } };
   /** Account → Layout → Start screen (T52): the module HLITH opens on. Missing = the last one you had open. */
   startModule?: ModuleId;
 }

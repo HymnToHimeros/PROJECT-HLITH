@@ -1,4 +1,5 @@
 import { fireEvent, render, screen, within } from '@testing-library/react';
+import { reloadPrefs } from '../../core/data/prefs';
 import { beforeEach, describe, expect, it } from 'vitest';
 import type { Character, GameContract } from '../../core/contract';
 import { gameData, resetUserData } from '../../core/data/userData';
@@ -51,6 +52,7 @@ const names = (list: HTMLElement) =>
 describe('Roster characters: order and leaks', () => {
   beforeEach(() => {
     localStorage.clear();
+    reloadPrefs();
     resetUserData();
     resetHideLeaks();
     resetShowLeaked();
