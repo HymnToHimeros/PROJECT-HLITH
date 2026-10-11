@@ -28,6 +28,10 @@ verify_jwt = true
 [functions.backup]
 verify_jwt = false
 
+# Finishes account deletions after the 30-day grace period (T11); the scheduler calls it with the service key.
+[functions.purge-accounts]
+verify_jwt = false
+
 # Private bucket for the nightly backups (never public).
 [storage.buckets.backups]
 public = false

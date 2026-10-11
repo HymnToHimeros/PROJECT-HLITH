@@ -1,6 +1,7 @@
 // Supabase Edge Function: nightly backup (R24).
 // Copies every table into the private "backups" storage bucket as JSON, one
-// folder per night. Never changes or deletes any row; older backups are kept.
+// folder per night. Never changes or deletes any row. Nights older than 30 days are removed by
+// the account-purge job (purge-accounts), so a deleted account leaves every copy too.
 // Started by a nightly schedule that sends the project's service key (see docs/SETUP.md);
 // anyone else gets 401.
 import { createClient } from 'npm:@supabase/supabase-js@2';
