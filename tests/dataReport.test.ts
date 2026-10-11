@@ -68,4 +68,10 @@ describe('what an automatic refresh changed', () => {
   it('says nothing when nothing changed', () => {
     expect(report('hsr', empty, empty, { now: NOW })).toEqual({ lines: [], findings: [], kitChanged: [] });
   });
+
+  it('names picture changes in the summary only', () => {
+    const r = report('zzz', { ...empty, characters: [{ id: '1641', name: 'Phoenix', art: 'a.png' }] }, { ...empty, characters: [{ id: '1641', name: 'Phoenix', art: 'b.webp' }] }, { now: NOW });
+    expect(r.lines).toEqual(['ZZZ: Phoenix: pictures updated']);
+    expect(r.findings).toEqual([]);
+  });
 });
