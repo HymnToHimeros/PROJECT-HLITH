@@ -4,6 +4,9 @@
   display: grid;
   grid-template-columns: var(--sidebar) minmax(0, 1fr);
   background: var(--bg-app);
+  /* Installed app (T45): keep clear of a notch or rounded corners in landscape. 0 in a normal tab. */
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
   /* The background art (ThemeArt) sits just above this background, under everything else, right of the sidebar. */
   isolation: isolate;
   --art-left: var(--sidebar);
@@ -25,7 +28,7 @@
   display: flex;
   flex-direction: column;
   gap: 14px;
-  padding: 18px var(--s-3) var(--s-3);
+  padding: calc(18px + env(safe-area-inset-top)) var(--s-3) var(--s-3);
   background: var(--bg-shell);
   border-right: 1px solid var(--bg-track);
 }
@@ -380,6 +383,8 @@
   min-width: 0;
   display: flex;
   flex-direction: column;
+  /* Installed on a tablet, the status bar sits over the page (0 in a browser tab). */
+  padding-top: env(safe-area-inset-top);
 }
 .header {
   display: flex;
@@ -470,6 +475,9 @@
   .sidebar {
     display: none;
   }
+  .main {
+    padding-top: 0; /* the top bar already starts below the status bar */
+  }
   .topBar {
     position: sticky;
     top: 0;
@@ -477,8 +485,9 @@
     display: flex;
     align-items: center;
     gap: var(--s-2);
-    height: 56px;
-    padding: 0 6px 0 14px;
+    /* Installed on a phone, the status bar sits over the page: the bar starts below it. */
+    height: calc(56px + env(safe-area-inset-top));
+    padding: env(safe-area-inset-top) 6px 0 14px;
     background: var(--bg-shell);
     border-bottom: 1px solid var(--bg-track);
   }

@@ -160,10 +160,10 @@ describe('Account page: settings sections', () => {
     // This test copy has no server, so HoYoLAB and notifications can't be done here: they can be skipped.
     expect(list.getByText(/Connect HoYoLAB/)).toHaveTextContent('(not possible here)');
     expect(list.getByText(/Set up notifications/)).toHaveTextContent('(not possible here)');
-    expect(list.getByText('1/7')).toBeInTheDocument();
+    expect(list.getByText('1/8')).toBeInTheDocument();
     fireEvent.click(list.getByRole('button', { name: 'Skip: Connect HoYoLAB' }));
     expect(getPrefs().skippedSetup).toEqual(['hoyolab']);
-    expect(list.getByText('2/7 · 1 skipped')).toBeInTheDocument();
+    expect(list.getByText('2/8 · 1 skipped')).toBeInTheDocument();
     expect(list.getByText(/Connect HoYoLAB/)).toHaveTextContent('(skipped)');
     fireEvent.click(list.getByRole('button', { name: 'Undo skip: Connect HoYoLAB' }));
     expect(getPrefs().skippedSetup).toEqual([]);

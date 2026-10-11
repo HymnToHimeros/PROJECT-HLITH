@@ -2,6 +2,7 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { fileURLToPath } from 'node:url';
+import { appShell } from './appShell.ts';
 
 // Tool settings live in config/; the app itself is the project root.
 const here = fileURLToPath(new URL('.', import.meta.url));
@@ -9,7 +10,8 @@ const here = fileURLToPath(new URL('.', import.meta.url));
 export default defineConfig({
   root: fileURLToPath(new URL('..', import.meta.url)),
   envDir: here,
-  plugins: [react()],
+  // appShell: the service worker that lets the installed app open offline (T45).
+  plugins: [react(), appShell()],
   test: {
     environment: 'jsdom',
     include: ['src/**/*.test.{ts,tsx}', 'tests/**/*.test.ts'],
