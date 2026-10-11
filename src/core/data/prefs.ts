@@ -47,6 +47,10 @@ export interface Prefs {
   skippedSetup?: string[];
   /** Account → Theme → Animations. Missing = follow the device (reduced when it asks for less motion). */
   motion?: 'on' | 'reduced' | 'off';
+  /** Account → Theme → Look (T52): accent, text size, spacing, corners (theme/look.ts). Missing = the theme as designed. */
+  look?: { accent?: string; textSize?: string; spacing?: string; corners?: string };
+  /** Account → Layout → Start screen (T52): the module HLITH opens on. Missing = the last one you had open. */
+  startModule?: ModuleId;
 }
 
 export interface NotifyPrefs {

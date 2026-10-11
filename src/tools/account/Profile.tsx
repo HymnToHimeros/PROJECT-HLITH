@@ -22,18 +22,26 @@ import {
 } from './profile';
 import { METHOD_LABEL, showcaseCards, type Fix, type ShowcaseCard } from './showcase';
 import { storeFor, useProfile } from './useProfile';
+import { BadgeList } from './BadgeList';
+import { CardEditor } from './CardEditor';
+import { badgeStates, type BadgeState } from './badges';
+import { buildCard } from './cardData';
+import { ProfileCard } from './ProfileCard';
+import { useCheckinDays } from './useCheckinDays';
 import { ImageAdjust } from './ImageAdjust';
 import type { ImageKind } from './imageCrop';
 
 interface Props {
   games: GameContract[];
   account: PanelAccount | null;
+  /** From the server only (public.is_owner()): the owner badge and the sky frame. */
+  isOwner?: boolean;
   open: (module: ModuleId, tab?: string) => void;
   goSection: (section: string) => void;
 }
 
 /** Built-in character and backlog lists for the games shown (missing while loading). */
-function useLists(games: GameContract[]) {
+export function useLists(games: GameContract[]) {
   const [lists, setLists] = useState<{ characters: Record<GameId, Character[]>; backlog: Record<GameId, BacklogItem[]> }>({ characters: {}, backlog: {} });
   useEffect(() => {
     let alive = true;
@@ -72,7 +80,24 @@ export function defaultBanner(games: GameContract[]): string {
  * characters and which cards show. Every number comes from your own data; a card
  * with nothing behind it says "No data yet" and links to where to add it.
  */
-export function ProfileSection({ games, account, open, goSection }: Props) {
+/** Every badge for this profile, from your own data (badges.ts). */
+function useBadges(games: GameContract[], profile: Profile, isOwner: boolean, userId: string | undefined): BadgeState[] {
+  const all = useAllUserData();
+  const checkinDays = useCheckinDays(userId);
+  return useMemo(
+    () =>
+      badgeStates({
+        games,
+        data: Object.fromEntries(games.map((g) => [g.id, all.games[g.id] ? gameData(g.id) : undefined])),
+        isOwner,
+        checkinDays,
+        profile: { hasPicture: Boolean(profile.avatar || profile.avatarChar), hasTitle: Boolean(profile.title) },
+      }),
+    [all, games, isOwner, checkinDays, profile.avatar, profile.avatarChar, profile.title],
+  );
+}
+
+export function ProfileSection({ games, account, isOwner = false, open, goSection }: Props) {
   const store = useMemo(() => storeFor(account?.id), [account?.id]);
   const state = useProfile(store);
   const [editing, setEditing] = useState(false);
@@ -80,6 +105,7 @@ export function ProfileSection({ games, account, open, goSection }: Props) {
   const all = useAllUserData();
   const lists = useLists(games);
   const { profile } = state;
+  const badges = useBadges(games, profile, isOwner, account?.id);
 
   const cards = useMemo(() => {
     void all; // re-read when your data changes
@@ -108,6 +134,8 @@ export function ProfileSection({ games, account, open, goSection }: Props) {
         imageUrl={state.imageUrl}
         mode={state.mode}
         fallbackName={name}
+        badges={badges}
+        isOwner={isOwner}
         error={state.error}
         onCancel={() => setEditing(false)}
         onSave={async (next) => {
@@ -117,37 +145,36 @@ export function ProfileSection({ games, account, open, goSection }: Props) {
       />
     );
 
-  const banner = state.imageUrl(profile.banner);
-  const avatar = state.imageUrl(profile.avatar);
   const shown = CARD_IDS.filter((id) => !profile.hiddenCards.includes(id));
+  const card = buildCard({
+    profile,
+    games,
+    data: Object.fromEntries(games.map((g) => [g.id, gameData(g.id)])),
+    characters: lists.characters,
+    badges,
+    imageUrl: state.imageUrl,
+    fallbackName: name ?? 'Your profile',
+    bannerFallback: defaultBanner(games),
+  });
 
   return (
     <div className={p.stack}>
       <section className={p.hero} aria-label="Your profile">
-        {/* A soft, blurred copy of the banner glows out around the card, so the banner flows out instead of ending on an edge. */}
-        <div className={p.bannerGlow} style={{ background: defaultBanner(games) }} aria-hidden="true" data-banner-glow>
-          {banner && <img src={banner} alt="" className={p.bannerImg} />}
-        </div>
-        <div className={p.heroCard}>
-          <div className={`${p.banner} ${p.bannerSoft}`} style={{ background: defaultBanner(games) }}>
-            {banner && <img src={banner} alt="" className={p.bannerImg} />}
-          </div>
-          <div className={p.heroBody}>
-            <Avatar src={avatar} letter={name ?? account?.email ?? ''} />
-            <div className={p.identity}>
-              <h2 className={p.name}>{name ?? 'Your profile'}</h2>
-              <span className={p.meta}>
-                {account ? `Signed in with ${METHOD_LABEL[account.provider ?? ''] ?? account.provider ?? 'your account'}` : 'This device only'} · {where}
-              </span>
-            </div>
-            <div className={p.heroActions}>
-              <Button variant="primary" onClick={() => setEditing(true)}>
-                Edit profile
-              </Button>
-            </div>
-          </div>
-          {profile.bio ? <p className={p.bio}>{profile.bio}</p> : <p className={p.bioEmpty}>No bio yet. Edit profile to add a few words about you.</p>}
-        </div>
+        <ProfileCard
+          {...card}
+          note={
+            <>
+              {account ? `Signed in with ${METHOD_LABEL[account.provider ?? ''] ?? account.provider ?? 'your account'}` : 'This device only'} · {where}
+              {profile.privacy.card && state.mode === 'account' ? ' · Shown with teams you share' : ''}
+            </>
+          }
+          actions={
+            <Button variant="primary" onClick={() => setEditing(true)}>
+              Customise profile
+            </Button>
+          }
+        />
+        {profile.bio ? <p className={p.bio}>{profile.bio}</p> : <p className={p.bioEmpty}>No bio yet. Customise profile to add a few words about you.</p>}
       </section>
 
       {state.error && (
@@ -172,12 +199,15 @@ export function ProfileSection({ games, account, open, goSection }: Props) {
         {shown.map((id) => (
           <ShowcaseTile key={id} card={cards[id]} onFix={doFix} />
         ))}
-        {shown.length === 0 && <p className={p.muted}>Every showcase card is switched off. Edit profile to show some again.</p>}
+        {shown.length === 0 && <p className={p.muted}>Every showcase card is switched off. Customise profile to show some again.</p>}
       </div>
+
+      <BadgeList badges={badges} ownerTitle={profile.ownerTitle} onGo={(go) => ('section' in go ? (go.section === 'profile' ? setEditing(true) : goSection(go.section)) : open(go.module, go.tab))} />
 
       <HowTo
         steps={[
-          'Press “Edit profile” to add a picture, a banner, your name and a short bio. After choosing a picture you can drag and zoom it to choose exactly what shows.',
+          'Press “Customise profile” to add a picture (your own or one of your characters), a banner, a frame, your name’s colour, a title and a short bio. After choosing a picture you can drag and zoom it to choose exactly what shows.',
+          'Pick up to 4 favourite characters or teams for your card, and the badge it shows. Badges come only from your own data: “Not yet” says how to earn one.',
           'Pin up to 6 favourite characters per game. Only characters you marked as owned in Roster can be pinned.',
           'Switch showcase cards on or off. A card shows only what HLITH can prove from your own data: imported pulls, your roster, your backlog counts.',
           state.mode === 'account'
@@ -289,7 +319,7 @@ export function ShowcaseTile({ card, onFix }: { card: ShowcaseCard; onFix: (f: F
                     ))}
                   </div>
                 ) : (
-                  <span className={p.muted}>No favourites pinned. Edit profile to pin up to {PIN_MAX}.</span>
+                  <span className={p.muted}>No favourites pinned. Customise profile to pin up to {PIN_MAX}.</span>
                 )}
               </div>
             ))
@@ -389,13 +419,15 @@ interface EditorProps {
   imageUrl: (v: string | null) => string | null;
   mode: 'device' | 'account';
   fallbackName: string | null;
+  badges: BadgeState[];
+  isOwner: boolean;
   error: string;
   onCancel: () => void;
   onSave: (p: Profile) => Promise<void>;
   open: (module: ModuleId, tab?: string) => void;
 }
 
-function ProfileEditor({ games, profile, imageUrl, mode, fallbackName, error, onCancel, onSave, open }: EditorProps) {
+function ProfileEditor({ games, profile, imageUrl, mode, fallbackName, badges, isOwner, error, onCancel, onSave, open }: EditorProps) {
   const [draft, setDraft] = useState<Profile>(profile);
   const [busy, setBusy] = useState(false);
   const [imageError, setImageError] = useState('');
@@ -434,6 +466,17 @@ function ProfileEditor({ games, profile, imageUrl, mode, fallbackName, error, on
   const show = (v: string | null) => (v?.startsWith('data:') ? v : imageUrl(v));
   const banner = show(draft.banner);
   const avatar = show(draft.avatar);
+  // The live preview: exactly the card others see, from the draft.
+  const preview = buildCard({
+    profile: draft,
+    games,
+    data: Object.fromEntries(games.map((g) => [g.id, gameData(g.id)])),
+    characters: lists.characters,
+    badges: badges.map((b) => (b.def.id === 'self-portrait' ? { ...b, earned: Boolean((draft.avatar || draft.avatarChar) && draft.title) } : b)),
+    imageUrl: show,
+    fallbackName: draft.displayName ?? fallbackName ?? 'Your profile',
+    bannerFallback: defaultBanner(games),
+  });
 
   return (
     <form
@@ -445,6 +488,11 @@ function ProfileEditor({ games, profile, imageUrl, mode, fallbackName, error, on
         void onSave(draft).finally(() => setBusy(false));
       }}
     >
+      <section className={p.previewWrap} aria-label="Preview">
+        <span className={p.fieldLabel}>Preview · how your card looks</span>
+        <ProfileCard {...preview} compact />
+      </section>
+
       <section className={p.editCard} aria-label="Pictures">
         <h3 className={p.cardTitle}>Pictures</h3>
         <div className={p.bannerEdit} style={{ background: defaultBanner(games) }}>
@@ -518,6 +566,8 @@ function ProfileEditor({ games, profile, imageUrl, mode, fallbackName, error, on
           <textarea className={p.textarea} value={draft.bio ?? ''} maxLength={BIO_MAX} rows={3} onChange={(e) => setDraft((d) => ({ ...d, bio: e.target.value }))} />
         </label>
       </section>
+
+      <CardEditor draft={draft} setDraft={setDraft} games={games} characters={lists.characters} badges={badges} isOwner={isOwner} mode={mode} open={open} />
 
       <section className={p.editCard} aria-label="Pinned characters">
         <h3 className={p.cardTitle}>Pinned characters</h3>

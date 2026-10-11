@@ -12,10 +12,14 @@
  * Never wiped: unreadable saved text is kept under a backup key, not thrown away.
  */
 import type { GameId } from '../../core/contract';
+import { isBadgeId, OWNER_TITLES, type BadgeId, type OwnerTitle } from './badges';
 
 export const BIO_MAX = 200;
 export const NAME_MAX = 40;
 export const PIN_MAX = 6;
+export const TITLE_MAX = 60;
+/** Showcase on the profile card: up to 4 favourite characters or teams. */
+export const FEATURED_MAX = 4;
 /** Largest picture you can pick, before it's shrunk. */
 export const IMAGE_MAX_BYTES = 2 * 1024 * 1024;
 export const IMAGE_TYPES = ['image/png', 'image/jpeg', 'image/webp', 'image/gif'];
@@ -33,6 +37,39 @@ export const CARD_LABEL: Record<CardId, string> = {
   backlog: 'Backlog progress',
 };
 
+/** Rings around the profile picture. 'sky' is the owner's own and only ever shows for the owner. */
+export const FRAMES = ['none', 'frost', 'vent', 'gold', 'runes', 'sky'] as const;
+export type FrameId = (typeof FRAMES)[number];
+export const FRAME_LABEL: Record<FrameId, string> = { none: 'No frame', frost: 'Frost ring', vent: 'Game colour', gold: 'Gold', runes: 'Runes', sky: 'Sky and ravens' };
+
+/** The colour your name shows in. 'accent' follows the accent colour (Account → Theme). */
+export const NAME_COLORS = ['ink', 'accent', 'vent', 'gold'] as const;
+export type NameColor = (typeof NAME_COLORS)[number];
+export const NAME_COLOR_LABEL: Record<NameColor, string> = { ink: 'Plain', accent: 'Accent colour', vent: 'Game colour', gold: 'Gold' };
+
+/** A character from a game's built-in list. */
+export interface CharRef {
+  game: GameId;
+  id: string;
+}
+export type FeaturedItem = { kind: 'character'; game: GameId; id: string } | { kind: 'team'; game: GameId; id: string };
+
+/** What a card someone else opens may show. Nothing shows to others unless `card` is on. */
+export interface Privacy {
+  /** Show my card to others (with a team I share). */
+  card: boolean;
+  stats: boolean;
+  badges: boolean;
+  showcase: boolean;
+}
+export const DEFAULT_PRIVACY: Privacy = { card: false, stats: true, badges: true, showcase: true };
+export const PRIVACY_LABEL: Record<keyof Privacy, string> = {
+  card: 'Show my profile card with teams I share',
+  stats: 'Include my pull numbers',
+  badges: 'Include my badge',
+  showcase: 'Include my showcase',
+};
+
 export interface Profile {
   displayName: string | null;
   bio: string | null;
@@ -44,11 +81,41 @@ export interface Profile {
   pinned: Record<GameId, string[]>;
   /** Cards you switched off. Missing = shown. */
   hiddenCards: CardId[];
+  /** A short line under your name. */
+  title: string | null;
+  frame: FrameId;
+  nameColor: NameColor;
+  /** The badge shown on your card; null = the highest one you hold. */
+  pinnedBadge: BadgeId | null;
+  /** The owner's choice of name for the owner badge (shown only for the owner). */
+  ownerTitle: OwnerTitle | null;
+  /** A character as your picture / banner instead of an uploaded one. Wins over the upload while set. */
+  avatarChar: CharRef | null;
+  bannerChar: CharRef | null;
+  featured: FeaturedItem[];
+  privacy: Privacy;
   /** When it last changed (epoch ms). */
   updatedAt: number;
 }
 
-export const EMPTY_PROFILE: Profile = { displayName: null, bio: null, avatar: null, banner: null, pinned: {}, hiddenCards: [], updatedAt: 0 };
+export const EMPTY_PROFILE: Profile = {
+  displayName: null,
+  bio: null,
+  avatar: null,
+  banner: null,
+  pinned: {},
+  hiddenCards: [],
+  title: null,
+  frame: 'none',
+  nameColor: 'ink',
+  pinnedBadge: null,
+  ownerTitle: null,
+  avatarChar: null,
+  bannerChar: null,
+  featured: [],
+  privacy: DEFAULT_PRIVACY,
+  updatedAt: 0,
+};
 
 const text = (v: unknown, max: number): string | null => {
   if (typeof v !== 'string') return null;
@@ -69,6 +136,34 @@ const bioText = (v: unknown): string | null => {
 
 const image = (v: unknown): string | null => (typeof v === 'string' && v.length > 0 ? v : null);
 
+const ID = /^[\w-]{1,40}$/;
+const GAME = /^[a-z0-9-]{1,32}$/;
+const charRef = (v: unknown): CharRef | null => {
+  const r = v && typeof v === 'object' ? (v as Record<string, unknown>) : null;
+  return r && typeof r.game === 'string' && GAME.test(r.game) && typeof r.id === 'string' && ID.test(r.id) ? { game: r.game, id: r.id } : null;
+};
+const oneOf = <T extends string>(list: readonly T[], v: unknown, fallback: T): T => ((list as readonly unknown[]).includes(v) ? (v as T) : fallback);
+
+function cleanFeatured(v: unknown): FeaturedItem[] {
+  if (!Array.isArray(v)) return [];
+  const out: FeaturedItem[] = [];
+  for (const raw of v) {
+    const ref = charRef(raw);
+    const kind = (raw as { kind?: unknown } | null)?.kind;
+    if (!ref || (kind !== 'character' && kind !== 'team')) continue;
+    if (out.some((x) => x.kind === kind && x.game === ref.game && x.id === ref.id)) continue;
+    out.push({ kind, ...ref });
+    if (out.length >= FEATURED_MAX) break;
+  }
+  return out;
+}
+
+function cleanPrivacy(v: unknown): Privacy {
+  const r = v && typeof v === 'object' ? (v as Record<string, unknown>) : {};
+  const flag = (k: keyof Privacy) => (typeof r[k] === 'boolean' ? (r[k] as boolean) : DEFAULT_PRIVACY[k]);
+  return { card: flag('card'), stats: flag('stats'), badges: flag('badges'), showcase: flag('showcase') };
+}
+
 /** Any stored or incoming value → a clean profile. Unknown fields are dropped, lengths and pin counts kept to the limits. */
 export function cleanProfile(raw: unknown): Profile {
   const r = raw && typeof raw === 'object' ? (raw as Record<string, unknown>) : {};
@@ -87,8 +182,25 @@ export function cleanProfile(raw: unknown): Profile {
     banner: image(r.banner),
     pinned,
     hiddenCards: [...new Set(hidden)],
+    title: text(r.title, TITLE_MAX),
+    frame: oneOf(FRAMES, r.frame, 'none'),
+    nameColor: oneOf(NAME_COLORS, r.nameColor, 'ink'),
+    pinnedBadge: isBadgeId(r.pinnedBadge) ? r.pinnedBadge : null,
+    ownerTitle: oneOf<OwnerTitle | ''>([...OWNER_TITLES, ''], r.ownerTitle, '') || null,
+    avatarChar: charRef(r.avatarChar),
+    bannerChar: charRef(r.bannerChar),
+    featured: cleanFeatured(r.featured),
+    privacy: cleanPrivacy(r.privacy),
     updatedAt: typeof r.updatedAt === 'number' && Number.isFinite(r.updatedAt) ? r.updatedAt : 0,
   };
+}
+
+/** Add or take off one showcase item (max FEATURED_MAX). Returns the same profile when it's full. */
+export function toggleFeatured(p: Profile, item: FeaturedItem): Profile {
+  const same = (x: FeaturedItem) => x.kind === item.kind && x.game === item.game && x.id === item.id;
+  if (p.featured.some(same)) return { ...p, featured: p.featured.filter((x) => !same(x)) };
+  if (p.featured.length >= FEATURED_MAX) return p;
+  return { ...p, featured: [...p.featured, item] };
 }
 
 /** Pin or unpin one character (max PIN_MAX per game). Returns the same profile when the pin is full. */
@@ -145,7 +257,14 @@ export interface ProfileRow {
   bio: string | null;
   avatar_path: string | null;
   banner_path: string | null;
-  showcase: { pinned: Record<GameId, string[]>; hidden_cards: CardId[] } | null;
+  showcase: {
+    pinned: Record<GameId, string[]>;
+    hidden_cards: CardId[];
+    /** T52: the card's look, showcase and privacy (read by public.profile_card() in 0011_profile_card.sql). */
+    look?: { title: string | null; frame: FrameId; name_color: NameColor; pinned_badge: BadgeId | null; owner_title: OwnerTitle | null; avatar_char: CharRef | null; banner_char: CharRef | null };
+    featured?: FeaturedItem[];
+    privacy?: Privacy;
+  } | null;
   updated_at?: string;
 }
 
@@ -158,7 +277,13 @@ export function toRow(p: Profile, userId: string): ProfileRow {
     bio: c.bio,
     avatar_path: c.avatar,
     banner_path: c.banner,
-    showcase: { pinned: c.pinned, hidden_cards: c.hiddenCards },
+    showcase: {
+      pinned: c.pinned,
+      hidden_cards: c.hiddenCards,
+      look: { title: c.title, frame: c.frame, name_color: c.nameColor, pinned_badge: c.pinnedBadge, owner_title: c.ownerTitle, avatar_char: c.avatarChar, banner_char: c.bannerChar },
+      featured: c.featured,
+      privacy: c.privacy,
+    },
     updated_at: new Date(c.updatedAt || Date.now()).toISOString(),
   };
 }
@@ -173,6 +298,15 @@ export function fromRow(row: Partial<ProfileRow> | null | undefined): Profile {
     banner: row.banner_path,
     pinned: row.showcase?.pinned,
     hiddenCards: row.showcase?.hidden_cards,
+    title: row.showcase?.look?.title,
+    frame: row.showcase?.look?.frame,
+    nameColor: row.showcase?.look?.name_color,
+    pinnedBadge: row.showcase?.look?.pinned_badge,
+    ownerTitle: row.showcase?.look?.owner_title,
+    avatarChar: row.showcase?.look?.avatar_char,
+    bannerChar: row.showcase?.look?.banner_char,
+    featured: row.showcase?.featured,
+    privacy: row.showcase?.privacy,
     updatedAt: Number.isFinite(at) ? at : 0,
   });
 }
@@ -181,7 +315,20 @@ export function fromRow(row: Partial<ProfileRow> | null | undefined): Profile {
 export const storagePath = (userId: string, kind: 'avatar' | 'banner', type = 'image/jpeg') => `${userId}/${kind}.${type === 'image/png' ? 'png' : type === 'image/webp' ? 'webp' : 'jpg'}`;
 
 /** Has the person filled in anything at all? */
-export const isBlank = (p: Profile) => !p.displayName && !p.bio && !p.avatar && !p.banner && Object.keys(p.pinned).length === 0 && p.hiddenCards.length === 0;
+export const isBlank = (p: Profile) =>
+  !p.displayName &&
+  !p.bio &&
+  !p.avatar &&
+  !p.banner &&
+  Object.keys(p.pinned).length === 0 &&
+  p.hiddenCards.length === 0 &&
+  !p.title &&
+  p.frame === 'none' &&
+  p.nameColor === 'ink' &&
+  !p.pinnedBadge &&
+  !p.avatarChar &&
+  !p.bannerChar &&
+  p.featured.length === 0;
 
 // ── Pictures ────────────────────────────────────────────────────────
 /** null when the file is fine, else why not, in plain words. */
