@@ -55,6 +55,9 @@ const tabInPath = (m: ModuleId, t: string | undefined) => (t && t !== tabsOf(m)?
  * Drawn to docs/design/HLITH App.dc.html: PC sidebar 248 px; phone top bar,
  * bottom bar with the first four modules + More, and a floating ASK button.
  */
+/** The start screen (Account → Layout) is for the first screen of a visit only. */
+let startShown = false;
+
 export function Shell({ games: registered, account = null, isOwner = false, ownerChecked = true }: Props) {
   const prefs = usePrefs();
   const sync = useSyncStatus();
@@ -88,8 +91,8 @@ export function Shell({ games: registered, account = null, isOwner = false, owne
   // Hidden modules stay reachable: a Guide or checklist button (or an old link) opens them, with a Restore note.
   const hiddenHere = hiddenIn(games, scope, layout);
   // Account → Layout → Start screen: only for the first screen of a visit opened without a module in the address.
-  const start = useRef(!acct && !route.module ? prefs.startModule : undefined);
-  const remembered = (start.current && visible.includes(start.current) ? start.current : undefined) ?? prefs.lastModule[scope];
+  const start = !startShown && !acct && !route.module ? prefs.startModule : undefined;
+  const remembered = (start && visible.includes(start) ? start : undefined) ?? prefs.lastModule[scope];
   const active: ModuleId | undefined = acct
     ? undefined
     : route.module && (visible.includes(route.module) || hiddenHere.includes(route.module))
@@ -98,8 +101,8 @@ export function Shell({ games: registered, account = null, isOwner = false, owne
         ? remembered
         : visible[0];
   useEffect(() => {
-    if (route.module) start.current = undefined;
-  }, [route.module]);
+    if (route.module || acct) startShown = true;
+  }, [route.module, acct]);
   const { bar, more } = phoneBar(visible);
   // The sliding "you are here" markers (T50): sidebar row and bottom-bar glyph.
   const navRef = useGlide<HTMLElement>('[aria-current="page"]', [active, visible.join(','), phone]);

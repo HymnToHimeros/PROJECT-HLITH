@@ -94,8 +94,8 @@ export function applyLook(look: Look, surfaces: string[] = owner.surfaces): void
     ['spacing', l.spacing],
     ['corners', l.corners],
   ] as const) {
-    if (v) root.dataset[attr] = v;
-    else delete root.dataset[attr];
+    if (v) root.setAttribute(`data-${attr}`, v);
+    else root.removeAttribute(`data-${attr}`);
   }
 }
 
