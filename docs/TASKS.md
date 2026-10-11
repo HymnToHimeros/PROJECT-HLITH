@@ -17,7 +17,7 @@ doing it said `LIVE`. Newest jobs at the bottom; live jobs move to Done.
 | T12 | Paste fresh HoYoLAB code logins for HSR and ZZZ (Account → Connected accounts) | owner | working | Owner says HoYoLAB is set up. FRAME checks whether reads/check-ins actually succeed. |
 | T13 | ZZZ 3.3 (21 Oct): event dates, A-rank featured agents, version end date | SCHEDULER | blocked | Nothing published yet; rerun `data:nanoka` + `data:schedule` on 21 Oct. |
 | T14 | HSR 4.7 (starts 11 Nov): versions, banners, events | SCHEDULER | blocked | Waits for the announcement (special program around late Oct). |
-| T15 | HSR leak "Nihilux": confirm official name | SCHEDULER | done | Aeon ★ Aha (HoYoverse character preview, 15 Sep 2026; owner, 11 Oct). Still marked as a leak until release: only the name is official. |
+| T15 | HSR leak "Nihilux": confirm official name | SCHEDULER | blocked | Probably Aeon ★ Aha (already marked as a leak); confirm when announced. |
 | T17 | Kit check / Roster teams don't explain their reasoning ("Why 90%: count 9 of 10" is a number, not a reason). Screenshot `2-recommended-teams.png` | LOGIC-CORE leads, FRAME for the screen | working | #61 LIVE. |
 | T18 | Make my own teams (pick the members myself, get them scored) | FRAME leads, LOGIC-CORE scores | working | #67 LIVE (account suggestions), #69 merged (signature weapons). #59 picker next. |
 | T20 | Several screens are badly designed / crowded (owner: endgame may stay in Events; MANAGER to find which). MANAGER's list: Today, Events, Calendar, Backlog, Banners (see note to FRAME) | FRAME | working | All owner-approved: Calendar, Events, Today live; Backlog #66 OK, merging. |
