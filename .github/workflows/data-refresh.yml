@@ -11,8 +11,8 @@
 #      Anything else waits for MANAGER;
 #   5. reports the run, its findings and the next check time to the owner's inbox
 #      (findings-intake, with the FINDINGS_INTAKE_KEY secret).
-# A PR opened with the built-in token does not start CI, which is why step 2 runs here; before
-# merging it also starts the real CI on its branch (main requires its `check`) and waits for it.
+# Pushes and the PR use the DATA_REFRESH_TOKEN secret, so the PR's own CI runs (main requires
+# its `check`); the Action waits for it before merging. Without that secret the PR waits for MANAGER.
 name: Data refresh
 
 on:
@@ -23,7 +23,6 @@ on:
 permissions:
   contents: write
   pull-requests: write
-  actions: write
 
 concurrency:
   group: data-refresh
@@ -41,6 +40,8 @@ jobs:
       - uses: actions/checkout@v4
         with:
           ref: main
+          # Pushes with DATA_REFRESH_TOKEN start CI on the PR like any person's push would.
+          token: ${{ secrets.DATA_REFRESH_TOKEN || github.token }}
       - uses: actions/setup-node@v4
         with:
           node-version: 22
@@ -117,7 +118,8 @@ jobs:
       - name: Standing PR, merged when data only and green
         if: steps.diff.outputs.changed == 'true'
         env:
-          GH_TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ secrets.DATA_REFRESH_TOKEN || github.token }}
+          HAS_TOKEN: ${{ secrets.DATA_REFRESH_TOKEN != '' }}
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
@@ -140,20 +142,22 @@ jobs:
             gh pr edit "$pr" --body-file "$RUNNER_TEMP/body.md"
           fi
           if [ "${{ steps.diff.outputs.data_only }}" = "true" ] && [ "${{ steps.check.outcome }}" = "success" ]; then
-            # main requires CI's `check`. A PR opened with the built-in token starts no CI, so start
-            # the real CI on this branch and wait for it; merge only when it passes.
-            sha=$(git rev-parse HEAD)
-            gh workflow run ci.yml --ref "$BRANCH"
-            run=""
-            for _ in $(seq 1 30); do
-              run=$(gh run list --workflow ci.yml --branch "$BRANCH" --event workflow_dispatch --json databaseId,headSha --jq ".[] | select(.headSha == \"$sha\") | .databaseId" | head -1)
-              [ -n "$run" ] && break
-              sleep 10
-            done
-            if [ -n "$run" ] && gh run watch "$run" --exit-status >/dev/null; then
-              gh pr merge "$pr" --squash --delete-branch || echo "::warning::PR #$pr could not merge by itself; it waits for MANAGER."
+            # main requires CI's `check`, which runs on the PR because this push and PR come from
+            # DATA_REFRESH_TOKEN (the built-in token starts no CI). Wait for it, then merge.
+            if [ "$HAS_TOKEN" != "true" ]; then
+              echo "::warning::DATA_REFRESH_TOKEN is not set: CI does not start on PR #$pr, so it waits for MANAGER."
             else
-              echo "::warning::CI did not pass for PR #$pr; it waits for MANAGER."
+              # Wait (up to 15 min) until the required `check` shows up on the PR (it starts after the
+              # unit and browser tests), then watch it.
+              for _ in $(seq 1 90); do
+                gh pr checks "$pr" --required 2>/dev/null | grep -qw check && break
+                sleep 10
+              done
+              if gh pr checks "$pr" --required --watch --interval 30 >/dev/null; then
+                gh pr merge "$pr" --squash --delete-branch || echo "::warning::PR #$pr could not merge by itself; it waits for MANAGER."
+              else
+                echo "::warning::CI did not pass for PR #$pr; it waits for MANAGER."
+              fi
             fi
           else
             echo "::warning::PR #$pr waits for MANAGER (data only: ${{ steps.diff.outputs.data_only }}, check: ${{ steps.check.outcome }})."
