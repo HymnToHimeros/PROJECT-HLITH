@@ -14,10 +14,11 @@ import { Guide } from './Guide';
 import { InstallApp } from './InstallApp';
 import pg from './page.module.css';
 import { ProfileSection } from './Profile';
-import { BackupPage, ExamplesPage, GameSettingsPage, SignInPage, StartScreen, SyncPage, syncSub, ThemePage } from './sections';
+import { CustomisePage } from './Customise';
+import { BackupPage, ExamplesPage, GameSettingsPage, SignInPage, SyncPage, syncSub, ThemePage } from './sections';
 import { SetupChecklist } from './SetupChecklist';
 
-export type SectionId = 'profile' | 'sync' | 'backup' | 'notifications' | 'game-settings' | 'examples' | 'connections' | 'guide' | 'layout' | 'theme' | 'owner' | 'sign-in';
+export type SectionId = 'profile' | 'customise' | 'sync' | 'backup' | 'notifications' | 'game-settings' | 'examples' | 'connections' | 'guide' | 'layout' | 'theme' | 'owner' | 'sign-in';
 
 export interface SectionDef {
   id: SectionId;
@@ -28,6 +29,7 @@ export interface SectionDef {
 export function sectionsFor({ isOwner, signedIn }: { isOwner: boolean; signedIn: boolean }): SectionDef[] {
   const list: (SectionDef | false)[] = [
     { id: 'profile', label: 'Profile' },
+    { id: 'customise', label: 'Customise' },
     { id: 'sync', label: 'Sync' },
     { id: 'backup', label: 'Backup' },
     { id: 'notifications', label: 'Notifications' },
@@ -90,6 +92,9 @@ export default function AccountPage(props: PanelProps) {
     case 'profile':
       body = <ProfileSection games={games} account={account} isOwner={props.isOwner === true} open={props.open} goSection={go} />;
       break;
+    case 'customise':
+      body = <CustomisePage games={games} editLayout={props.editLayout} goSection={go} />;
+      break;
     case 'sync':
       body = <SyncPage status={sync} now={now} signedIn={Boolean(account)} />;
       break;
@@ -132,7 +137,7 @@ export default function AccountPage(props: PanelProps) {
               </Button>
             </div>
           </section>
-          <StartScreen />
+          <p className={a.small}>Start screen, default game and the tab each module opens on are in Account → Customise.</p>
           <HowTo steps={['Press “Edit layout”.', 'Drag the ⋮⋮ handle (or use the arrow keys on it) to change the order.', 'Hide a module you never use; “Restore” brings it back. “Reset to default” undoes everything.']} />
         </>
       );

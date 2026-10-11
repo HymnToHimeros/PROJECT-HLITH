@@ -9,6 +9,8 @@
  *    grow together and nothing overlaps.
  *  - spacing: data-spacing="compact|roomy" changes the spacing tokens (--s-3 … --s-7).
  *  - corners: data-corners="sharp|round" changes the card and button radius tokens.
+ *  - font: data-font="system|serif" changes --font-words (numbers keep their own font).
+ *  - cards: data-cards="glass" lets the theme's background art show through the cards.
  * Missing = the theme as designed. No React in the apply functions.
  */
 import { useEffect } from 'react';
@@ -39,11 +41,21 @@ export const CORNERS = ['sharp', 'soft', 'round'] as const;
 export type Corners = (typeof CORNERS)[number];
 export const CORNERS_LABEL: Record<Corners, string> = { sharp: 'Sharp', soft: 'Soft', round: 'Round' };
 
+export const FONTS = ['archivo', 'system', 'serif'] as const;
+export type Font = (typeof FONTS)[number];
+export const FONT_LABEL: Record<Font, string> = { archivo: 'Archivo (HLITH’s own)', system: 'Your device’s font', serif: 'Book serif' };
+
+export const CARD_STYLES = ['solid', 'glass'] as const;
+export type CardStyle = (typeof CARD_STYLES)[number];
+export const CARD_STYLE_LABEL: Record<CardStyle, string> = { solid: 'Solid', glass: 'Glass' };
+
 export interface Look {
   accent?: Accent;
   textSize?: TextSize;
   spacing?: Spacing;
   corners?: Corners;
+  font?: Font;
+  cards?: CardStyle;
 }
 
 const pick = <T extends string>(list: readonly T[], v: unknown): T | undefined => ((list as readonly unknown[]).includes(v) ? (v as T) : undefined);
@@ -56,6 +68,10 @@ export function cleanLook(raw: unknown): Look {
   const textSize = pick(TEXT_SIZES, r.textSize);
   const spacing = pick(SPACINGS, r.spacing);
   const corners = pick(CORNERS, r.corners);
+  const font = pick(FONTS, r.font);
+  const cards = pick(CARD_STYLES, r.cards);
+  if (font && font !== 'archivo') out.font = font;
+  if (cards && cards !== 'solid') out.cards = cards;
   if (accent && accent !== 'theme') out.accent = accent;
   if (textSize && textSize !== 'normal') out.textSize = textSize;
   if (spacing && spacing !== 'normal') out.spacing = spacing;
@@ -93,6 +109,8 @@ export function applyLook(look: Look, surfaces: string[] = owner.surfaces): void
     ['text', l.textSize],
     ['spacing', l.spacing],
     ['corners', l.corners],
+    ['font', l.font],
+    ['cards', l.cards],
   ] as const) {
     if (v) root.setAttribute(`data-${attr}`, v);
     else root.removeAttribute(`data-${attr}`);

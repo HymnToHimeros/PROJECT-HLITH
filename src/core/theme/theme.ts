@@ -10,7 +10,10 @@
  */
 import { useEffect } from 'react';
 import { getPrefs, updatePrefs, usePrefs } from '../data/prefs';
+import type { Scope } from '../registry/layout';
 import { applyLook, lookOf, setOwnerLook } from './look';
+import { scheduledTheme } from './schedule';
+import { useNow } from '../ui/useNow';
 import { isOwnerThemeId, ownerThemeFor, useOwnerThemes, type OwnerTheme, type OwnerThemeId } from './ownerThemes';
 import { isTheme, themeInfo, type Theme } from './themes';
 
@@ -51,17 +54,24 @@ export function applyTheme(theme: unknown): void {
   applyLook(lookOf(getPrefs()));
 }
 
-/** Applies the saved theme whenever it changes (or an owner theme finishes loading). */
-export function useTheme(): Theme {
-  const choice = usePrefs().theme;
+/** The theme for now: your theme, or the schedule's (Customise → Theme schedule) for this game and time. */
+function useChoice(scope: Scope, now: number | undefined): unknown {
+  const prefs = usePrefs();
+  const tick = useNow(60_000);
+  return scheduledTheme(prefs.theme, prefs.themeSchedule, scope, new Date(now ?? tick));
+}
+
+/** Applies the theme whenever it changes (or an owner theme finishes loading). */
+export function useTheme(scope: Scope = 'all', now?: number): Theme {
+  const choice = useChoice(scope, now);
   const owners = useOwnerThemes();
   useEffect(() => applyTheme(choice), [choice, owners]);
   return known(choice);
 }
 
 /** The owner theme in use right now, once loaded; undefined otherwise. */
-export function useOwnerTheme(): OwnerTheme | undefined {
-  return ownerThemeFor(usePrefs().theme, useOwnerThemes());
+export function useOwnerTheme(scope: Scope = 'all', now?: number): OwnerTheme | undefined {
+  return ownerThemeFor(useChoice(scope, now), useOwnerThemes());
 }
 
 /** The saved choice: a built-in theme (unknown = Glacier), or an owner theme's id (shown once it loads). */

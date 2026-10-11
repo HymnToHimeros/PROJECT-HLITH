@@ -15,6 +15,7 @@ import r from './roster.module.css';
 import { artOf, CharArt, dupesLabel, elementOf, entryOf, isUpcoming, rarityColor, roleLabel, toCharacterBuild } from './shared';
 import { Line, TeamRow, teamAccount, useTeamAccount } from './TeamParts';
 import { useBuilds, useKits, type RosterData } from './useRosterData';
+import { formatFullDate } from '../../core/time/reset';
 
 interface Props {
   data: RosterData;
@@ -505,7 +506,7 @@ function BuildCard({ data, character: c }: { data: RosterData; character: Charac
           </dl>
           <div className={r.tapRow}>
             <span className={`${r.muted} ${r.grow}`}>
-              Saved {new Date(saved.updatedAt).toLocaleDateString()} · {saved.source === 'scan' ? 'from a screenshot scan' : saved.source === 'hoyolab' ? 'from HoYoLAB' : 'entered by you'}
+              Saved {formatFullDate(Date.parse(saved.updatedAt))} · {saved.source === 'scan' ? 'from a screenshot scan' : saved.source === 'hoyolab' ? 'from HoYoLAB' : 'entered by you'}
             </span>
             <Button variant="quiet" onClick={() => setCleared(clearBuild(game.id, c.id))}>
               Clear build

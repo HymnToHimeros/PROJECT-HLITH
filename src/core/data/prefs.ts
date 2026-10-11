@@ -48,7 +48,17 @@ export interface Prefs {
   /** Account → Theme → Animations. Missing = follow the device (reduced when it asks for less motion). */
   motion?: 'on' | 'reduced' | 'off';
   /** Account → Theme → Look (T52): accent, text size, spacing, corners (theme/look.ts). Missing = the theme as designed. */
-  look?: { accent?: string; textSize?: string; spacing?: string; corners?: string };
+  look?: { accent?: string; textSize?: string; spacing?: string; corners?: string; font?: string; cards?: string };
+  /** Customise → Look → Game colours (T52b): your own colour per game, from theme/vents.ts. Missing = the game's own. */
+  gameVents?: Record<GameId, string>;
+  /** Customise → Theme schedule (T52b): theme/schedule.ts. Missing = always the theme above. */
+  themeSchedule?: unknown;
+  /** Customise → Time and format (T52b): time/displayFormat.ts. Missing = this device's own way. */
+  format?: { clock?: string | undefined; date?: string | undefined; numbers?: string | undefined; weekStart?: string | undefined };
+  /** Customise → Layout: the game (or All games) HLITH opens on. Missing = All games (or the only game). */
+  defaultScope?: string;
+  /** Customise → Layout: the tab a module opens on, per module. Missing = its first tab. */
+  startTabs?: Partial<Record<ModuleId, string>>;
   /** Account → Layout → Start screen (T52): the module HLITH opens on. Missing = the last one you had open. */
   startModule?: ModuleId;
 }

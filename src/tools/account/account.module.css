@@ -559,3 +559,41 @@
   flex-direction: column;
   gap: var(--s-1);
 }
+
+/* Account → Customise (T52b) */
+.cardHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-2);
+  flex-wrap: wrap;
+}
+.preview {
+  border-color: color-mix(in srgb, var(--glacier) 40%, var(--line-default));
+}
+.previewRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s-2) var(--s-3);
+}
+.previewTitle {
+  font-weight: 700;
+  font-size: 16px;
+  color: var(--ink-1);
+}
+.previewNumber {
+  font-family: var(--font-numbers);
+}
+.previewLink {
+  color: var(--glacier);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  font-size: 13px;
+}
+.scheduleGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: var(--s-3);
+  align-items: end;
+}

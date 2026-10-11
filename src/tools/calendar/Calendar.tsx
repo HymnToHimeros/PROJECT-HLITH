@@ -8,6 +8,8 @@ import { AddOwnButton, examplesFor } from '../today/AddOwn';
 import type { GameLists } from '../today/lists';
 import { foldRows, gameTimeline, nextChange, packRows, type GameTimeline, type Lane, type Span } from './timeline';
 import c from './calendar.module.css';
+import { formatDay } from '../../core/time/reset';
+import { firstDayOfWeek } from '../../core/time/displayFormat';
 
 const DAY = 86_400_000;
 /** Design: one week back, five ahead. */
@@ -88,11 +90,11 @@ export function Calendar({ games, servers, lists, now, openAccount, openServer, 
   const addOwn = (kind: 'events' | 'banners') =>
     games.map((g) => <AddOwnButton key={`${g.id}:${kind}`} game={g} kind={kind} tag={tags} examples={examplesFor(g, lists[g.id] ?? EMPTY_LISTS, kind, now, showExamples)} />);
 
-  // Mondays get a tick, as in the design.
+  // The first day of each week gets a tick (Monday in the design; Customise → Time and format can make it Sunday).
   const ticks: number[] = [];
   for (let d = 0; d <= DAYS_BACK + DAYS_AHEAD; d++) {
     const t = from + d * DAY;
-    if (new Date(t).getDay() === 1) ticks.push(t);
+    if (new Date(t).getDay() === firstDayOfWeek()) ticks.push(t);
   }
 
   // On a phone the timeline scrolls sideways: start with today in view.
@@ -182,7 +184,7 @@ export function Calendar({ games, servers, lists, now, openAccount, openServer, 
             <div className={c.scale} aria-hidden="true">
               {ticks.map((t) => (
                 <span key={t} className={c.scaleMark} style={{ left: `${pct(t)}%` }}>
-                  {new Date(t).toLocaleDateString(undefined, { weekday: 'short', day: 'numeric', month: 'short' })}
+                  {formatDay(t)}
                 </span>
               ))}
               <span className={c.todayMark} style={{ left: `${todayPct}%` }}>

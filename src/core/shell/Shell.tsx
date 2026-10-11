@@ -8,6 +8,8 @@ import { moduleScreen, MODULES, type ModuleScreenProps } from '../registry/modul
 import { useIdentity } from '../registry/identity';
 import { panel, type PanelAccount, type PanelId, type PanelProps } from '../registry/panels';
 import { useLook } from '../theme/look';
+import { withVent } from '../theme/vents';
+import { setDisplayFormat } from '../time/displayFormat';
 import { useMotion } from '../theme/motion';
 import { useGlide } from './useGlide';
 import { useOwnerTheme, useTheme } from '../theme/theme';
@@ -57,6 +59,10 @@ const tabInPath = (m: ModuleId, t: string | undefined) => (t && t !== tabsOf(m)?
  */
 /** The start screen (Account → Layout) is for the first screen of a visit only. */
 let startShown = false;
+/** For tests: a fresh visit. */
+export const resetStartScreen = () => {
+  startShown = false;
+};
 
 export function Shell({ games: registered, account = null, isOwner = false, ownerChecked = true }: Props) {
   const prefs = usePrefs();
@@ -65,8 +71,6 @@ export function Shell({ games: registered, account = null, isOwner = false, owne
   const now = useNow(60_000);
   const phone = useIsPhone();
   const sample = useSampleShown();
-  const theme = useTheme();
-  const ownerTheme = useOwnerTheme();
   useMotion();
   useLook();
   const identity = useIdentity(account);
@@ -78,12 +82,18 @@ export function Shell({ games: registered, account = null, isOwner = false, owne
   // Games in the switcher: the viewer's choice, else all. Never empty.
   const chosen = (prefs.games ?? registered.map((g) => g.id)).filter((id) => registered.some((g) => g.id === id));
   // Each game as you see it: with your main character picked, the other one is hidden everywhere (protagonist.ts).
-  const games = (chosen.length ? chosen.map((id) => registered.find((g) => g.id === id) as GameContract) : registered).map((g) => withProtagonist(g, prefs.protagonists?.[g.id]));
+  // Each game as you see it: with your main character picked, the other one is hidden everywhere (protagonist.ts),
+  // and in your own colour if you picked one (Customise → Look → Game colours).
+  const games = (chosen.length ? chosen.map((id) => registered.find((g) => g.id === id) as GameContract) : registered).map((g) => withVent(withProtagonist(g, prefs.protagonists?.[g.id]), prefs.gameVents));
+  // Customise → Time and format: every formatter reads it while this draws.
+  setDisplayFormat(prefs.format);
   const scopes: Scope[] = games.length > 1 ? ['all', ...games.map((g) => g.id)] : games.map((g) => g.id);
 
   const acct = parseAccountRoute(path);
   const route = acct ? { scope: homeScope, module: null, tab: null } : parseRoute(path);
-  const scope: Scope = route.scope && scopes.includes(route.scope) ? route.scope : (scopes[0] ?? 'all');
+  const scope: Scope = route.scope && scopes.includes(route.scope) ? route.scope : prefs.defaultScope && scopes.includes(prefs.defaultScope) ? prefs.defaultScope : (scopes[0] ?? 'all');
+  const theme = useTheme(scope, now);
+  const ownerTheme = useOwnerTheme(scope, now);
   const game = scope === 'all' ? undefined : games.find((g) => g.id === scope);
   // One layout for every game and All games, so the bars mirror each other; modules a game lacks just drop out.
   const layout: LayoutState = prefs.layouts[SHARED] ?? defaultLayout();
@@ -110,7 +120,10 @@ export function Shell({ games: registered, account = null, isOwner = false, owne
   // The open tab. The address is the truth once it names the module: /hsr/pulls/log is the Bank log, /hsr/pulls the first tab
   // (so the back button works). Without the module in the address, the last tab you picked there.
   const urlTab = route.module === active && route.tab && tabsOf(active)?.some((t) => t.id === route.tab) ? route.tab : null;
-  const activeTab = tabsOf(active) ? ((route.module === active ? urlTab : active ? tabs[active] : null) ?? tabsOf(active)?.[0]?.id) : undefined;
+  // Customise → Layout can name the tab a module opens on.
+  const startTab = active ? prefs.startTabs?.[active] : undefined;
+  const openingTab = startTab && tabsOf(active)?.some((t) => t.id === startTab) ? startTab : tabsOf(active)?.[0]?.id;
+  const activeTab = tabsOf(active) ? ((route.module === active ? urlTab : active ? tabs[active] : null) ?? openingTab) : undefined;
   const setTab = (m: ModuleId, t: string) => {
     setTabs((cur) => ({ ...cur, [m]: t }));
     if (m === active) navigate(routePath(scope, m, tabInPath(m, t)));
