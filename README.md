@@ -150,3 +150,9 @@ Everything is sorted in **[docs/README.md](docs/README.md)**: what it must do
 ([PROGRESS](docs/PROGRESS.md), [ROADMAP](docs/ROADMAP.md)), who builds what
 ([WORKSTREAMS](docs/WORKSTREAMS.md), [RELEASES](docs/RELEASES.md)) and how it runs
 ([SETUP](docs/SETUP.md), [DEPLOY](docs/DEPLOY.md)).
+
+## Licence
+
+© 2026 HymnToHimeros. All rights reserved. See [LICENSE](LICENSE).
+The source is visible here but it is **not open source**: copying, hosting or reusing it
+needs written permission. Takedown templates are in [docs/COPYRIGHT.md](docs/COPYRIGHT.md).

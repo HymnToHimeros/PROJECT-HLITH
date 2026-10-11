@@ -1,0 +1,77 @@
+HLIÐSKJÁLF / PROJECT-HLITH — PROPRIETARY LICENCE (source available, not open source)
+
+Copyright (c) 2026 HymnToHimeros (HLIÐSKJÁLF / PROJECT-HLITH). All rights reserved.
+
+"The Work" means everything in this repository and in the hosted app made by the
+copyright holder: source code, design, layouts, texts, themes, artwork, badge and rune
+artwork, icons, the logo and emblem, scoring and recommendation rules, data files, and
+documentation, in any version.
+
+1. WHAT YOU MAY DO
+
+   a. View the source on GitHub, and fork it within GitHub, only as far as GitHub's
+      Terms of Service require for public repositories. A fork gives you no other right
+      under this licence.
+   b. Use the hosted app at its official address (https://project-hlith.hliskjlf.workers.dev
+      or any address the copyright holder announces) for your own personal,
+      non-commercial use, under its Terms of service.
+
+2. WHAT YOU MAY NOT DO WITHOUT WRITTEN PERMISSION
+
+   Unless the copyright holder has given you permission in writing, you may not, in whole
+   or in part:
+
+   a. copy, modify, merge, publish, distribute, sublicense or sell the Work;
+   b. host, deploy or run a copy or a modified version of the Work, publicly or privately
+      for others;
+   c. create derivative works of the Work;
+   d. reuse any of its code, design, texts, themes, artwork, badge or rune artwork,
+      scoring rules or data files in another project;
+   e. use the Work, or any part of it, to train, fine-tune or evaluate artificial
+      intelligence or machine-learning models, or include it in datasets, or collect it
+      by scraping or other automated means.
+
+3. NAMES AND EMBLEM
+
+   The names HLIÐSKJÁLF, PROJECT-HLITH and HLITH, and the logo and emblem, identify the
+   copyright holder's project. They may not be used for other projects, products or
+   services, or in a way that suggests a connection with or endorsement by this project.
+
+4. THIRD-PARTY PARTS
+
+   a. Third-party software (for example npm dependencies) and fonts remain under their own
+      licences. Nothing in this licence changes or restricts those licences.
+   b. Honkai: Star Rail, Zenless Zone Zero, their names, characters and art belong to
+      HoYoverse (COGNOSPHERE PTE. LTD.). They are not claimed by the copyright holder and
+      are not licensed by this file. This project is a fan project, not affiliated with
+      or endorsed by HoYoverse.
+   c. Community data sources are credited in the project and keep their own terms.
+
+5. CONTRIBUTIONS
+
+   If you send a contribution (for example an issue, a suggestion or a pull request), you
+   grant the copyright holder a perpetual, worldwide, royalty-free, irrevocable right to
+   use, change, publish and relicense it as part of the Work, and you confirm you have
+   the right to grant this. Sending a contribution gives you no rights in the Work.
+
+6. NO WARRANTY
+
+   THE WORK IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+   INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
+   PARTICULAR PURPOSE AND NON-INFRINGEMENT.
+
+7. LIMITATION OF LIABILITY
+
+   AS FAR AS THE LAW ALLOWS, IN NO EVENT SHALL THE COPYRIGHT HOLDER BE LIABLE FOR ANY
+   CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN CONTRACT, TORT OR OTHERWISE, ARISING
+   FROM, OUT OF OR IN CONNECTION WITH THE WORK OR THE USE OF OR OTHER DEALINGS IN THE
+   WORK. Nothing here limits rights you have as a consumer that cannot be limited by law.
+
+8. ENDING
+
+   Any use outside this licence ends your rights under it straight away, without notice.
+   Every right not expressly granted here is reserved by the copyright holder.
+
+9. PERMISSION AND CONTACT
+
+   To ask for permission: hlidskjalf.contact@gmail.com

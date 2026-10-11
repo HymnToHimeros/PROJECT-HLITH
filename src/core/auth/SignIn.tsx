@@ -17,11 +17,14 @@ export function LegalLinks() {
         <a href="/terms">Terms of service</a>
       </nav>
       <p className={s.fan}>HLIÐSKJÁLF is a fan-made tool, not affiliated with HoYoverse. Game names and art belong to HoYoverse.</p>
+      <p className={s.fan}>
+        © 2026 HymnToHimeros. All rights reserved. See <a href="https://github.com/HymnToHimeros/PROJECT-HLITH/blob/main/LICENSE">LICENSE</a>.
+      </p>
     </footer>
   );
 }
 
-/** Remembered on this device once an owner or tester unlocks Google and email sign-in. */
+/** Remembered on this device once an owner or tester unlocks email sign-in. */
 export const TESTER_KEY = 'hlith.signin.tester';
 const readTester = () => {
   try {
@@ -32,11 +35,9 @@ const readTester = () => {
 };
 
 /**
- * Login (DESIGN §4). Discord is open to everyone and comes first. Google (still in Google's
- * "testing" mode, so only listed accounts can use it) and the email link (no mail service set up
- * yet) are shown greyed out with "Not open to the public yet" (owner, T55). "Owner or tester?"
- * unlocks them on this device, so the owner and listed testers are never locked out; Google itself
- * still refuses anyone not on its test list.
+ * Login (DESIGN §4). Discord comes first, then Google; both are open to everyone (owner, T55:
+ * Google's sign-in is published). The email link (no mail service set up yet, T10) is shown
+ * greyed out with "Not open to the public yet". "Owner or tester?" unlocks it on this device.
  */
 export function SignIn({ onProvider, onEmail }: Props) {
   const [email, setEmail] = useState('');
@@ -81,16 +82,17 @@ export function SignIn({ onProvider, onEmail }: Props) {
           Continue with Discord
         </Button>
 
+        <Button className={s.wide} disabled={busy} onClick={() => void run(() => onProvider('google'))}>
+          Continue with Google
+        </Button>
+
         <div className={s.or}>{closed ? 'COMING LATER' : 'OR'}</div>
         <div className={closed ? s.closed : s.open} aria-describedby={closed ? 'signin-closed-note' : undefined}>
           {closed && (
             <p className={s.closedNote} id="signin-closed-note">
-              Not open to the public yet. Sign in with Discord.
+              Email sign-in isn’t open to the public yet. Use Discord or Google.
             </p>
           )}
-          <Button className={s.wide} disabled={busy || closed} onClick={() => void run(() => onProvider('google'))}>
-            Continue with Google
-          </Button>
           {sent ? (
             <p className={s.sent} role="status">
               Check {email} for a sign-in link. It works once and expires soon.
@@ -119,7 +121,7 @@ export function SignIn({ onProvider, onEmail }: Props) {
         </div>
         {closed && (
           <button type="button" className={s.testerLink} onClick={unlock}>
-            Owner or tester? Use Google or email
+            Owner or tester? Use email
           </button>
         )}
         {error && (
