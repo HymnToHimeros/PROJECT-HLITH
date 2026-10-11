@@ -29,6 +29,21 @@ Resume with: "continue from PROGRESS.md". Newest entry on top. Older entries:
 - CI (`.github/workflows/ci.yml`) runs both on every pull request.
 
 ## Done
+- 2026-10-11 · **FRAME: profile card, badges and Look (T52)** (branch `frame/profile-badges`).
+  Account → Profile is now a card like an in-game one: banner, framed picture, name in your
+  colour, title, your badge, up to 4 favourite characters or teams, and your own pull numbers.
+  Badges (all from your own data, locked ones say "Not yet" and how to earn them): Seated on
+  HLIÐSKJÁLF for everyone; the owner's badge (default "Above the High Seat", owner can pick
+  "The Sky over HLIÐSKJÁLF" or "The Watcher Above") comes only from the server's owner list,
+  drawn as a night sky with Odin's eye and the two ravens circling; earned badges are runes
+  (first top result, 100 / 1,000 pulls, hard pity, full team, two games, 30-day check-in run,
+  picture and title, one per module). Customise has a live preview, frames (the sky frame is
+  the owner's alone), name colour, a character as picture or banner, the showcase and
+  privacy switches. Sharing a team can carry your card: migration 0011 adds
+  `profile_card()`, which answers only when you switched it on, takes the owner badge from
+  `owners` and checks badges and numbers from your own rows. Account → Theme → Look: accent
+  colour (each one tested at 4.5:1 on every theme), text size, spacing, card corners;
+  Account → Layout: start screen. Screenshots: `docs/owner-reports/2026-10-11/profile-badges/`.
 - 2026-10-11 · **FRAME: the app moves (T50)** (branch `frame/animations`).
   Screens and cards ease in one after another, buttons and tabs give press feedback, tiles lift
   under the pointer, folded sections ease open, notes slide in (bubbles pop with that ornament),

@@ -554,3 +554,8 @@
   border-radius: 50%;
   background: var(--chip);
 }
+.lookRow {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-1);
+}

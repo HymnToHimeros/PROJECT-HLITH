@@ -126,8 +126,9 @@ export function SharedBy({ by, games, load = serverCard }: { by: string; games: 
   if (current.failed) return <span className={c.muted}>Who shared this couldn’t be loaded (sign in to see the card of whoever shared it).</span>;
   if (!current.row) return null;
   return (
-    <section aria-label="Shared by">
-      <ProfileCard {...cardFromRow(current.row, games, characters)} compact note="Shared this team with you · badges and numbers are checked by HLITH’s server from their own data" />
+    <section aria-label="Shared by" className={c.stack}>
+      <ProfileCard {...cardFromRow(current.row, games, characters)} compact note="Shared this team with you" />
+      <span className={c.muted}>Their badge and numbers are checked by HLITH’s server from their own data.</span>
     </section>
   );
 }

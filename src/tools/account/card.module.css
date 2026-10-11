@@ -11,6 +11,8 @@
   border-radius: var(--r-hero);
   overflow: hidden;
   isolation: isolate;
+  /* The card fits the space it gets (a page, or a narrow share sheet), not the screen. */
+  container-type: inline-size;
 }
 .ownerCard {
   border-color: color-mix(in srgb, var(--rarity-top) 55%, var(--line-default));
@@ -329,7 +331,7 @@
 .compact .name {
   font-size: 18px;
 }
-@media (max-width: 640px) {
+@container (max-width: 640px) {
   .head {
     grid-template-columns: auto 1fr;
     gap: var(--s-3);
@@ -338,6 +340,10 @@
   }
   .frame {
     --size: 84px;
+  }
+  /* Name under the picture, so it never runs up into the banner. */
+  .identity {
+    grid-column: 1 / -1;
   }
   .badge {
     grid-column: 1 / -1;

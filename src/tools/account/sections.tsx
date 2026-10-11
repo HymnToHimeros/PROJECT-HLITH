@@ -525,7 +525,7 @@ function Look() {
             role="radio"
             aria-checked={accent === id}
             className={a.accentChip}
-            style={{ '--chip': id === 'theme' ? 'var(--glacier)' : ACCENT_VALUE[id][tone] } as CSSProperties}
+            style={{ '--chip': id === 'theme' ? 'var(--ink-3)' : ACCENT_VALUE[id][tone] } as CSSProperties}
             onClick={() => setLook({ accent: id })}
           >
             <span className={a.accentDot} aria-hidden="true" />
@@ -533,9 +533,18 @@ function Look() {
           </button>
         ))}
       </div>
-      <Segmented label="Text size" value={look.textSize ?? 'normal'} onChange={(v) => setLook({ textSize: v })} options={TEXT_SIZES.map((id) => ({ id, label: TEXT_SIZE_LABEL[id] }))} />
-      <Segmented label="Spacing" value={look.spacing ?? 'normal'} onChange={(v) => setLook({ spacing: v })} options={SPACINGS.map((id) => ({ id, label: SPACING_LABEL[id] }))} />
-      <Segmented label="Card corners" value={look.corners ?? 'soft'} onChange={(v) => setLook({ corners: v })} options={CORNERS.map((id) => ({ id, label: CORNERS_LABEL[id] }))} />
+      <div className={a.lookRow}>
+        <span className={a.small}>Text size</span>
+        <Segmented label="Text size" value={look.textSize ?? 'normal'} onChange={(v) => setLook({ textSize: v })} options={TEXT_SIZES.map((id) => ({ id, label: TEXT_SIZE_LABEL[id] }))} />
+      </div>
+      <div className={a.lookRow}>
+        <span className={a.small}>Spacing</span>
+        <Segmented label="Spacing" value={look.spacing ?? 'normal'} onChange={(v) => setLook({ spacing: v })} options={SPACINGS.map((id) => ({ id, label: SPACING_LABEL[id] }))} />
+      </div>
+      <div className={a.lookRow}>
+        <span className={a.small}>Card corners</span>
+        <Segmented label="Card corners" value={look.corners ?? 'soft'} onChange={(v) => setLook({ corners: v })} options={CORNERS.map((id) => ({ id, label: CORNERS_LABEL[id] }))} />
+      </div>
       {Object.keys(look).length > 0 && (
         <div className={a.actions}>
           <Button variant="quiet" onClick={() => updatePrefs((p) => ({ ...p, look: {} }))}>

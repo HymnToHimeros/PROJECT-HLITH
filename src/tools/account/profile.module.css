@@ -475,13 +475,6 @@
   flex-direction: column;
   gap: var(--s-2);
 }
-@media (min-width: 1100px) {
-  .previewWrap {
-    position: sticky;
-    top: var(--s-3);
-    z-index: 2;
-  }
-}
 .frameRow {
   display: flex;
   flex-wrap: wrap;

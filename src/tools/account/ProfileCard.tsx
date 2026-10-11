@@ -77,7 +77,7 @@ export function ProfileCard(props: ProfileCardProps) {
           {note && <p className={c.note}>{note}</p>}
         </div>
         <div className={c.badge}>
-          <BadgeMark id={badge} size={compact ? 44 : 56} />
+          <BadgeMark id={badge} size={owner ? (compact ? 60 : 76) : compact ? 44 : 56} />
           <span className={owner ? c.badgeNameOwner : c.badgeName}>{badgeName(badge, ownerTitle)}</span>
           {badgeCount && (
             <span className={c.badgeCount}>
