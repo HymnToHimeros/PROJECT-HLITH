@@ -118,6 +118,18 @@ export const JOBS: readonly JobDef[] = [
     status: 'live',
     maxSeconds: 0,
   },
+  {
+    id: 'research-routine',
+    label: 'Research routine',
+    does: 'Reads the official notices the importers don’t read, checks a second leak source and fills gaps in the lists, then delivers each find to Findings for you to approve or dismiss.',
+    cadence: SELF_ADJUSTING,
+    fallbackCadence: 'mon 08:50',
+    target: { kind: 'external' },
+    logicOwner: 'SCHEDULER workstream (research routine)',
+    // Live once its routine delivers (one-line change then).
+    status: 'frame',
+    maxSeconds: 0,
+  },
 ];
 
 export const FRAME_MESSAGE = 'frame only — logic not built yet';

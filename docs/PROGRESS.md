@@ -14,8 +14,8 @@ Resume with: "continue from PROGRESS.md". Newest entry on top. Older entries:
 
 ## Next
 - SCHEDULER: automatic news checks (T6 + T7), plan approved by MANAGER. Step 1 done
-  (when to check). Next: FRAME lets findings-intake take `failed` and `next_at`
-  (step 2), then the GitHub Action with one standing data PR (step 3), the routine
+  (when to check), step 2 (findings-intake takes `failed` and `next_at`, live) and
+  step 3 (the GitHub Action with one standing data PR) done. Next: the routine
   (step 4), first live test on the ZZZ 3.3 patch, 21 Oct (step 5). Auto-merge of
   data-only PRs and the GitHub secret are the owner's call (MANAGER asks).
 - Live checks with real logins: HoYoLAB link, in-game history link, Assistant
@@ -29,6 +29,19 @@ Resume with: "continue from PROGRESS.md". Newest entry on top. Older entries:
 - CI (`.github/workflows/ci.yml`) runs both on every pull request.
 
 ## Done
+- 2026-10-10 · **FRAME: Research routine job (T7 step 4b)** (branch `frame/research-routine-job`).
+  A 4th routine job, `research-routine` ("Research routine": official notices the
+  importers don't read, a second leak source, gaps in the lists), self-adjusting with
+  fallback `mon 08:50`. findings-intake takes it in `ran`, `failed`, `next_at` and
+  findings. It shows as FRAME in Owner console → Scheduler until its routine
+  delivers; going live is the one-line `status: 'live'` in `jobs.ts`.
+- 2026-10-10 · **FRAME: findings-intake takes failed runs and next times (T6/T7 step 2)** (#97, live).
+  `failed: [{ job, message }]` records a red run with the routine's own words;
+  `next_at: { job: ISO }` sets when each job is expected next (self-adjusting, fallback
+  `mon,wed,fri 06:00`). Leak scan, events scan and game data refresh are LIVE. Deployed
+  (version 67); calls without the key get 401, GET gets 405. Check of a real delivery
+  waits for SCHEDULER's first Action run. The example-data browser test now names the
+  screen and the open requests if a screen never stops loading (30 s each).
 - 2026-10-10 · **SCHEDULER: the research routine's instructions and key moments** (branch
   `scheduler/research-routine`, T6/T7 step 4a). `npm run schedule:due -- --key` gives the
   routine's next key moment (patch day, expected program announcement and pre-download
