@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import type { Character, Material, SavedBuild, TeamPreset } from '../../core/contract';
+import { MIN_PARTS } from '../../core/rules/buildScore';
 import { useExamplesShown } from '../../core/data/prefs';
 import { clearBuild, setBuild, setFarm, setRosterEntry } from '../../core/data/userData';
 import { formatNumber } from '../../core/time/format';
@@ -472,9 +473,11 @@ function BuildCard({ data, character: c }: { data: RosterData; character: Charac
           ) : (
             <p className={r.statNoData}>{saved.level === undefined
                 ? 'No score yet · add the level to score this build'
-                : game.rules.scoreBuild
-                  ? 'No score yet · there’s no recommended build for them to compare with'
-                  : 'No score yet · scoring is being built'}</p>
+                : !game.rules.scoreBuild
+                  ? 'No score yet · scoring is being built'
+                  : score && !score.known && score.fix === 'enter-manually'
+                    ? `No score yet · add sets, main stats or sub stats (a score needs ${MIN_PARTS} checked parts)`
+                    : 'No score yet · there’s no recommended build for them to compare with'}</p>
           )}
           <dl className={r.buildSummary}>
             <div>

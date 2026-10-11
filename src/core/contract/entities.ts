@@ -169,6 +169,10 @@ export interface RecommendedBuild {
   weapons: string[];
   /** Skills to level first, tier by tier. Empty = the source doesn't say. */
   skillsFirst: string[][];
+  /** Read from the game's beta files: the character isn't out yet and the recommendation may change (LOGIC-CORE, T54). */
+  beta?: boolean;
+  /** The game data build a beta recommendation was read from. */
+  version?: string;
   /** Picture and game text for each set and weapon named above, by name (LOGIC-CORE). */
   items?: Record<string, BuildItem>;
 }

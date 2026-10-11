@@ -25,7 +25,8 @@ const pct = (x: number) => Math.round(Math.max(0, Math.min(1, x)) * 100);
 export const MIN_PARTS = 3;
 
 export function scoreBuild(build: CharacterBuild, rec: RecommendedBuild | undefined, facts: BuildScoreFacts): BuildScore {
-  if (!rec) return unknown('enter-manually');
+  // No recommendation to compare with: nothing for you to add (T54: the card says so, not "add more").
+  if (!rec) return unknown();
   const parts: BuildScorePart[] = [];
 
   // 1. Level against the level cap.
@@ -97,6 +98,7 @@ export function scoreBuild(build: CharacterBuild, rec: RecommendedBuild | undefi
   const counted = parts.filter((p): p is BuildScorePart & { value: number } => p.value !== null);
   // A score from one or two parts reads like a verdict on the whole build (FRAME's report: "100/100 · S" from the level
   // alone): below MIN_PARTS checked parts there is no score yet.
+  // Too few parts entered: add more of the build (T54: Kafka saved with only level and weapon read as "no recommended build").
   if (counted.length < MIN_PARTS) return unknown('enter-manually');
   const score = Math.round(counted.reduce((n, p) => n + p.value, 0) / counted.length);
   const missing = parts.length - counted.length;

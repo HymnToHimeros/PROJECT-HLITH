@@ -12,7 +12,7 @@
  * W-Engine in the newest game files, with its picture and, when the game data
  * says so, who it's made for), and src/games/hsr/data/teams.json.
  */
-import { writeFileSync } from 'node:fs';
+import { readFileSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
 const ROOT = resolve(import.meta.dirname, '..');
@@ -60,7 +60,14 @@ interface Build {
   skillsFirst: string[][];
   /** Picture and game text of each set and weapon, by name. */
   items: Record<string, { icon?: string; rarity?: number; effects: { label: string; text: string }[] }>;
+  /** T54: read from the beta files (the character isn't out yet): the recommendation may change. */
+  beta?: boolean;
+  /** The game data build it was read from (beta builds only). */
+  version?: string;
 }
+
+/** T54: who recommends a beta build, in the words the build score shows ("against …"). */
+const betaSource = (v: string) => `the game's own recommendation in beta build ${v} (nanoka.cc), beta, may change`;
 type Item = Build['items'][string];
 
 // ── ZZZ ──────────────────────────────────────────────────────────────
@@ -83,8 +90,10 @@ interface ZzzDetail {
   skill_priority?: { first_priority: number[]; second_priority: number[]; third_priority: number[] }[];
 }
 
-async function zzz(): Promise<Build[]> {
-  const v = (await getJson<{ zzz: { live: string } }>(`${BASE}/manifest.json`)).zzz.live;
+const zzzStat: Record<string, string> = { ...ZZZ_FLAT };
+
+/** `only`: the characters to read (default: every one in that build); `beta`: they aren't out yet (T54). */
+async function zzz(v: string, only?: Set<string>, beta = false): Promise<Build[]> {
   const list = await getJson<Record<string, unknown>>(`${BASE}/zzz/${v}/character.json`);
   const sets = await getJson<Record<string, { icon: string; en: { name: string; desc2: string; desc4: string } }>>(`${BASE}/zzz/${v}/equipment.json`);
   const weapons = await getJson<Record<string, { icon: string; en: string; rank?: number }>>(`${BASE}/zzz/${v}/weapon.json`);
@@ -101,9 +110,10 @@ async function zzz(): Promise<Build[]> {
     return { ...(icon ? { icon } : {}), rarity: d.rarity, effects: t ? [{ label: `${plain(t.name)} (Phase 1)`, text: plain(t.desc) }] : [] };
   };
   const details = new Map<string, ZzzDetail>();
-  for (const id of Object.keys(list)) details.set(id, await getJson<ZzzDetail>(`${BASE}/zzz/${v}/en/character/${id}.json`));
-  // Stat names as the game's own recommendations print them; "%" when the game formats it as a percentage.
-  const stat: Record<string, string> = { ...ZZZ_FLAT };
+  for (const id of Object.keys(list)) if (!only || only.has(id)) details.set(id, await getJson<ZzzDetail>(`${BASE}/zzz/${v}/en/character/${id}.json`));
+  // Stat names as the game's own recommendations print them; "%" when the game formats it as a percentage. Kept across
+  // reads, so the beta pass (two agents) knows the codes the live pass saw (T54).
+  const stat = zzzStat;
   for (const d of details.values())
     for (const p of [d.fairy_recommend?.part4, d.fairy_recommend?.part5, d.fairy_recommend?.part6])
       // HP, ATK and DEF come flat and as a percentage; the game prints both as the bare name, so "%" marks the percentage one.
@@ -127,7 +137,8 @@ async function zzz(): Promise<Build[]> {
     if (own && ownId) items[plain(own.en)] = await weaponItem(ownId);
     out.push({
       characterId: id,
-      source: "the game's own recommendation (nanoka.cc)",
+      source: beta ? betaSource(v) : "the game's own recommendation (nanoka.cc)",
+      ...(beta ? { beta: true, version: v } : {}),
       sets: [
         { pieces: 4, options: [setName(fr.slot4)].filter((x): x is string => !!x) },
         { pieces: 2, options: [setName(fr.slot2), setName(fr.slot_sub)].filter((x): x is string => !!x) },
@@ -182,8 +193,8 @@ interface HsrDetail {
   teams?: { team_id: number; position?: number; member_list: number[]; backup_list1?: number[]; backup_list2?: number[]; backup_list3?: number[] }[];
 }
 
-async function hsr(): Promise<{ builds: Build[]; teams: unknown[] }> {
-  const v = (await getJson<{ hsr: { live: string } }>(`${BASE}/manifest.json`)).hsr.live;
+/** `only`: the characters to read (default: every one in that build); `beta`: they aren't out yet, no teams (T54). */
+async function hsr(v: string, only?: Set<string>, beta = false): Promise<{ builds: Build[]; teams: unknown[] }> {
   const list = await getJson<Record<string, { en: string }>>(`${BASE}/hsr/${v}/character.json`);
   const relicSets = await getJson<Record<string, { en: string; icon: string; set: Record<string, { en: string; ParamList: number[] }> }>>(`${BASE}/hsr/${v}/relicset.json`);
   const cones = await getJson<Record<string, { en: string }>>(`${BASE}/hsr/${v}/lightcone.json`);
@@ -211,6 +222,7 @@ async function hsr(): Promise<{ builds: Build[]; teams: unknown[] }> {
   const builds: Build[] = [];
   const teams: unknown[] = [];
   for (const id of Object.keys(list)) {
+    if (only && !only.has(id)) continue;
     const d = await getJson<HsrDetail>(`${BASE}/hsr/${v}/en/character/${id}.json`);
     const who = `${plain(d.name)} (${id})`;
     const r = d.relics;
@@ -230,7 +242,8 @@ async function hsr(): Promise<{ builds: Build[]; teams: unknown[] }> {
       for (const c of d.lightcones ?? []) items[plain(need(cones, c, 'Light Cone', who).en)] = await coneItem(c);
       builds.push({
         characterId: id,
-        source: "the game's own recommendation (nanoka.cc)",
+        source: beta ? betaSource(v) : "the game's own recommendation (nanoka.cc)",
+        ...(beta ? { beta: true, version: v } : {}),
         sets: [
           { pieces: 4, options: r.set4_id_list.map((s) => plain(need(relicSets, s, 'relic set', who).en)) },
           { pieces: 2, options: r.set2_id_list.map((s) => plain(need(relicSets, s, 'planar set', who).en)) },
@@ -245,7 +258,7 @@ async function hsr(): Promise<{ builds: Build[]; teams: unknown[] }> {
     // Every team the game recommends on this character's page, in the game's own order: the three members, with the
     // page's character placed where the game puts them (`position`). Each place lists the game's pick, then its backups.
     // Who the team is built around is decided from the kits (src/games/hsr/kitcheck/team.ts), not here.
-    for (const t of d.teams ?? []) {
+    for (const t of beta ? [] : (d.teams ?? [])) {
       const places = [0, 1, 2].map((i) => [t.member_list[i], ...((i === 0 ? t.backup_list1 : i === 1 ? t.backup_list2 : t.backup_list3) ?? [])].filter((x): x is number => typeof x === 'number'));
       places.splice(Math.min(t.position ?? 0, places.length), 0, [Number(id)]);
       const slots = places.map((p) => ({ characters: [...new Set(p.map(String))].filter((c) => c in list) })).filter((s) => s.characters.length);
@@ -335,13 +348,22 @@ async function hsrWeapons(): Promise<WeaponOut[]> {
 }
 
 const write = (game: string, file: string, data: unknown) => writeFileSync(resolve(ROOT, `src/games/${game}/data/${file}`), `${JSON.stringify(data, null, 1)}\n`);
-const z = await zzz();
-write('zzz', 'builds.json', z);
-console.log(`zzz: ${z.length} recommended builds`);
-const h = await hsr();
-write('hsr', 'builds.json', h.builds);
+const manifest = await getJson<{ zzz: { live: string; latest: string }; hsr: { live: string; latest: string } }>(`${BASE}/manifest.json`);
+/** T54: characters in our list (upcoming, leaks) that the live files don't have yet: read from the beta files, marked. */
+const notLive = async (game: 'zzz' | 'hsr', live: string) => {
+  const ours = (JSON.parse(readFileSync(resolve(ROOT, `src/games/${game}/data/characters.json`), 'utf8')) as { id: string }[]).map((c) => String(c.id));
+  const inLive = new Set(Object.keys(await getJson<Record<string, unknown>>(`${BASE}/${game}/${live}/character.json`)));
+  return new Set(ours.filter((id) => !inLive.has(id)));
+};
+const z = await zzz(manifest.zzz.live);
+const zBeta = manifest.zzz.latest === manifest.zzz.live ? [] : await zzz(manifest.zzz.latest, await notLive('zzz', manifest.zzz.live), true);
+write('zzz', 'builds.json', [...z, ...zBeta]);
+console.log(`zzz: ${z.length} recommended builds, ${zBeta.length} beta (${zBeta.map((b) => b.characterId).join(', ') || 'none'})`);
+const h = await hsr(manifest.hsr.live);
+const hBeta = manifest.hsr.latest === manifest.hsr.live ? { builds: [] } : await hsr(manifest.hsr.latest, await notLive('hsr', manifest.hsr.live), true);
+write('hsr', 'builds.json', [...h.builds, ...hBeta.builds]);
 write('hsr', 'teams.json', h.teams);
-console.log(`hsr: ${h.builds.length} recommended builds, ${h.teams.length} recommended teams`);
+console.log(`hsr: ${h.builds.length} recommended builds, ${hBeta.builds.length} beta (${hBeta.builds.map((b) => b.characterId).join(', ') || 'none'}), ${h.teams.length} recommended teams`);
 const zw = await zzzWeapons();
 write('zzz', 'weapons.json', zw);
 const hw = await hsrWeapons();
