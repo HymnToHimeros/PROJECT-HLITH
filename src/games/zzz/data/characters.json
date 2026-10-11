@@ -667,7 +667,6 @@
     "role": "attack",
     "art": "https://static.nanoka.cc/assets/zzz/IconRole1631.webp",
     "source": "nanoka.cc",
-    "portrait": "https://static.wikia.nocookie.net/zenless-zone-zero/images/b/b1/Agent_Severian_Lowell_Icon.png/revision/latest?cb=20260912041555",
     "releasedAt": "2026-11-11T04:00:00.000Z"
   },
   {
@@ -678,7 +677,6 @@
     "role": "anomaly",
     "art": "https://static.nanoka.cc/assets/zzz/IconRole1641.webp",
     "source": "nanoka.cc",
-    "portrait": "https://static.wikia.nocookie.net/zenless-zone-zero/images/c/c9/Agent_Phoenix_Reffaella_Icon.png/revision/latest?cb=20260912031643",
     "releasedAt": "2026-10-21T04:00:00.000Z"
   }
 ]
