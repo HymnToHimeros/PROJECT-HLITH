@@ -27,6 +27,18 @@ export function byNewest(a: Character, b: Character): number {
   return a.name.localeCompare(b.name);
 }
 
+/**
+ * Leaked characters first (owner): they are the newest, whatever their source. Among leaks,
+ * newest first: by expected date when one is known, else the game's own id, which counts up
+ * with each new character. 0 when both or neither are leaks.
+ */
+export function leaksFirst(a: Character, b: Character): number {
+  if (Boolean(a.leak) !== Boolean(b.leak)) return a.leak ? -1 : 1;
+  if (!a.leak) return 0;
+  if (a.releasedAt || b.releasedAt) return byNewest(a, b);
+  return b.id.localeCompare(a.id, undefined, { numeric: true }) || a.name.localeCompare(b.name);
+}
+
 /** Released date still ahead: the character is upcoming (shown as unverified until it's out). */
 export const isUpcoming = (c: Character, now = Date.now()) => Boolean(c.releasedAt && Date.parse(c.releasedAt) > now);
 

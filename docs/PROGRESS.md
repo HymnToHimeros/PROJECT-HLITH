@@ -29,6 +29,11 @@ Resume with: "continue from PROGRESS.md". Newest entry on top. Older entries:
 - CI (`.github/workflows/ci.yml`) runs both on every pull request.
 
 ## Done
+- 2026-10-11 · **FRAME: leaks first in Roster → Characters** (branch `frame/roster-leaks-first`, owner).
+  With "Show leaked" on, every leaked character (any source) comes first, above all released
+  ones, in every sort (Newest, Name, Rarity, Best fit); among leaks, newest first (expected
+  date if known, else the game's id, which counts up). Nihilux is now first in HSR.
+  Screenshots: `docs/owner-reports/2026-10-11/roster-leaks-first/`.
 - 2026-10-10 · **SCHEDULER: the research routine's instructions and key moments** (branch
   `scheduler/research-routine`, T6/T7 step 4a). `npm run schedule:due -- --key` gives the
   routine's next key moment (patch day, expected program announcement and pre-download
