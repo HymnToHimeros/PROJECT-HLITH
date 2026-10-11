@@ -13,3 +13,6 @@ playwright-report/
 
 # Logs from local runs
 *.log
+
+# Local Cloudflare dev files (wrangler dev)
+.wrangler/
