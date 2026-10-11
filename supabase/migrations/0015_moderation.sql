@@ -10,8 +10,10 @@
 --     with the account when the account is deleted.
 --   * is_banned() / is_silenced() / my_standing(): about the caller.
 --   * A banned account can't read or change anything: restrictive policies on every table
---     with people's data, so even a session started before the ban is refused. (The
---     owner-only moderate server function also bans the sign-in itself.)
+--     with people's data, so even a session started before the ban is refused. Server
+--     functions refuse it too (requireUser), except Export my data: a banned or removed
+--     account can still sign in, see why, and download its own data (read-only).
+--     Supabase Auth's own ban is not used on purpose: it would stop that sign-in.
 --   * A silenced account keeps its own HLITH but can't appear in anything others see: its
 --     profile card is not shown with teams it shares, and it can't write to community tables.
 --     Every new community or sharing table must get the same silence policy

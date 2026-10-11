@@ -16,6 +16,18 @@ import { Preview } from './core/ui/Preview';
 
 // An invite link (T60) is taken out of the address and kept on this device until it is used.
 const invitedAtStart = typeof window !== 'undefined' ? captureInvite() : null;
+/** Export my data (R56) as a file. A suspended account can still use it (T60b): its own data, read-only. */
+async function downloadMyData(client: NonNullable<typeof backend>): Promise<void> {
+  const { data, error } = await client.functions.invoke('export-data', { body: {} });
+  if (error) throw new Error('The download didn’t work. Try again in a moment.');
+  const url = URL.createObjectURL(new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' }));
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = `HLITH-account-${new Date().toISOString().slice(0, 10)}.json`;
+  link.click();
+  setTimeout(() => URL.revokeObjectURL(url), 1_000);
+}
+
 // A sign-in refused because the account is suspended comes back with the reason in the address (T60b).
 const refusedAsBanned = typeof window !== 'undefined' && bannedInAddress(window.location.search, window.location.hash);
 
@@ -110,7 +122,7 @@ function Root() {
 
   const client = backend;
   if (client && session === undefined) return null; // checking sign-in; keeps the page from flashing
-  if (client && session && banned) return <Suspended until={standing.bannedUntil} onSignOut={() => void signOut(client)} />;
+  if (client && session && banned) return <Suspended until={standing.bannedUntil} onSignOut={() => void signOut(client)} onDownload={() => downloadMyData(client)} />;
   if (client && session === null && refusedAsBanned) return <Suspended until={null} />;
   if (client && session === null) {
     return <SignIn onProvider={(p) => signInWith(client, p)} onEmail={(email) => sendEmailLink(client, email)} invited={invitedAtStart !== null} />;

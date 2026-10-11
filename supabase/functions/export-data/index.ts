@@ -18,7 +18,8 @@ Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') return new Response('ok', { headers: cors });
   if (req.method !== 'POST') return json({ error: 'POST only' }, 405);
   const url = Deno.env.get('SUPABASE_URL');
-  const user = await requireUser(req.headers.get('Authorization'), { url, key: Deno.env.get('SUPABASE_ANON_KEY') }, (u, init) => fetch(u, init));
+  // A banned or removed account may still download its own data (T60b): read-only, its rows only.
+  const user = await requireUser(req.headers.get('Authorization'), { url, key: Deno.env.get('SUPABASE_ANON_KEY') }, (u, init) => fetch(u, init), { allowBanned: true });
   if (!user.ok) return json({ error: 'Sign in to export your data.' }, 401);
   const serviceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY');
   if (!url || !serviceKey) return json({ error: 'The server is missing its settings.' }, 500);

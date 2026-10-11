@@ -4,8 +4,8 @@ import { AVATAR_BUCKET } from '../account/useProfile';
 
 /*
  * Owner console → Users (T60b): the server calls. owner_users and owner_moderation_log
- * (migration 0015) refuse anyone but the owner and never return email addresses; actions go
- * through the owner-only moderate server function, which also bans the sign-in itself.
+ * (migration 0015) refuse anyone but the owner and never return email addresses; moderate
+ * applies every rule (owner only, never yourself or another owner) and writes the log.
  */
 
 export type Action = 'silence' | 'lift_silence' | 'ban' | 'unban' | 'remove' | 'undo_remove';
@@ -58,15 +58,8 @@ export const serverUsers: UsersApi | null = client
       users: async () => (await rpc<UserRow[] | null>('owner_users')) ?? [],
       log: async () => (await rpc<LogRow[] | null>('owner_moderation_log')) ?? [],
       act: async (req) => {
-        const { data, error } = await client.functions.invoke('moderate', { body: req });
-        const said = data && typeof data === 'object' && 'error' in data ? String((data as { error: unknown }).error) : null;
-        if (error || said) {
-          // The function's own message says what went wrong, when there is one.
-          let msg = said;
-          const ctx = (error as { context?: { json?: () => Promise<unknown> } } | null)?.context;
-          if (!msg && ctx?.json) msg = await ctx.json().then((b) => (b && typeof b === 'object' && 'error' in b ? String((b as { error: unknown }).error) : null), () => null);
-          throw new Error(msg ?? error?.message ?? 'That didn’t work.');
-        }
+        const { error } = await client.rpc('moderate', { p_user: req.user_id, p_action: req.action, p_hours: req.hours, p_reason: req.reason });
+        if (error) throw new Error(error.message);
       },
       avatarUrl: (path) => (path ? client.storage.from(AVATAR_BUCKET).getPublicUrl(path).data.publicUrl : null),
     }

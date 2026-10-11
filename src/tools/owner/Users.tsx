@@ -34,7 +34,7 @@ const ACTION_TEXT: Record<Action, { title: (n: string) => string; body: string; 
   lift_silence: { title: (n) => `Lift the silence on ${n}?`, body: 'They can share and show up again straight away.', button: 'Lift silence' },
   ban: {
     title: (n) => `Ban ${n}?`,
-    body: 'They can’t use HLITH at all, and see a calm “suspended” screen with your contact address. Their data is kept.',
+    body: 'They can’t use HLITH at all, and see a calm “suspended” screen with your contact address. Their data is kept, and they can still download it.',
     button: 'Ban',
     durations: [
       { hours: 24, label: '24 hours' },

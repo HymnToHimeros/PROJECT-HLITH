@@ -194,7 +194,7 @@ export const TERMS: LegalPage = {
 
     { h: '6. Moderation' },
     {
-      p: `To keep HLIÐSKJÁLF safe for everyone, the owner may, for accounts that break these rules or harm others: **silence** an account for a time (it keeps using its own HLIÐSKJÁLF, but can’t share or show up in anything others see), **suspend** it for a time or for good (it can’t use HLIÐSKJÁLF; its data is kept), or **remove** it (suspended now and deleted after 30 days, the same as deleting it yourself; this can be undone until then). Questions or disagreements: ${CONTACT}.`,
+      p: `To keep HLIÐSKJÁLF safe for everyone, the owner may, for accounts that break these rules or harm others: **silence** an account for a time (it keeps using its own HLIÐSKJÁLF, but can’t share or show up in anything others see), **suspend** it for a time or for good (it can’t use HLIÐSKJÁLF, but its data is kept and it can still download it), or **remove** it (suspended now and deleted after 30 days, the same as deleting it yourself; this can be undone until then). Questions or disagreements: ${CONTACT}.`,
     },
 
     { h: '7. Your content' },

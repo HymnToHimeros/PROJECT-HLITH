@@ -18,6 +18,15 @@ describe('a suspended account (T60b)', () => {
     expect(onSignOut).toHaveBeenCalled();
   });
 
+  it('can still download its own data (the privacy page promises export any time)', async () => {
+    const onDownload = vi.fn(async () => undefined);
+    render(<Suspended until={Infinity} onDownload={onDownload} onSignOut={() => {}} />);
+    expect(screen.getByText(/you can still download it/)).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'Download my data' }));
+    expect(await screen.findByRole('status')).toHaveTextContent('Your data is downloading.');
+    expect(onDownload).toHaveBeenCalled();
+  });
+
   it('a permanent ban reads “until further notice”; a refused sign-in says only that it is suspended', () => {
     const { unmount } = render(<Suspended until={Infinity} />);
     expect(screen.getByText('This account is suspended until further notice.')).toBeInTheDocument();

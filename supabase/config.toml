@@ -57,10 +57,6 @@ verify_jwt = true
 [functions.delete-account]
 verify_jwt = true
 
-# Owner console → Users (T60b): owner only, checked in the database.
-[functions.moderate]
-verify_jwt = true
-
 # Evening message (R51): signed-in users only.
 [functions.evening-message]
 verify_jwt = true
