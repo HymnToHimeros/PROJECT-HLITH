@@ -31,6 +31,7 @@ doing it said `LIVE`. Newest jobs at the bottom; live jobs move to Done.
 | T41 | Carries who sustain themselves (Aventurine • Waveflair) free the sustain slot; "Best found from your characters" card when a card is under 90% | LOGIC-CORE (+ FRAME OK on Teams.tsx) | live | #93: "Best found from your characters" cards (Waveflair, Silver Wolf LV.999, 7 ZZZ); Castorice counts as her own healer. |
 | T42 | Character page "Builds their teams want": refresh on switches/team lists/leaks; use the members the card shows | LOGIC-CORE | live | #95 (with FRAME's #94: all Roster team results refresh on switches, lists, builds). |
 | T43 | Leak kit sheets go "stale" (not scored, says so) when the beta kit text changes; data updates not blocked | LOGIC-CORE | live | #98: stale leak sheets aren't scored ("beta kit changed"); data updates not blocked. |
+| T44 | Roster: leaked characters (any source) always at the top, newest first; Aeon Aha is at the bottom now | FRAME | sent | Owner 2026-10-11. |
 
 ## Done
 | # | Job | Who | Live on |
