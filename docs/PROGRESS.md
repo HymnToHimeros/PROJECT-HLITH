@@ -29,6 +29,12 @@ Resume with: "continue from PROGRESS.md". Newest entry on top. Older entries:
 - CI (`.github/workflows/ci.yml`) runs both on every pull request.
 
 ## Done
+- 2026-10-11 · **ERROR-FIX: banner pictures fit their frames** (branch `error-fix/banner-art-fit`, owner's T49).
+  Banner cards cropped every picture at one fixed spot (40 % down, zoomed 1.6×), so tall ZZZ
+  agent art showed legs and weapons showed a slice. Now `BannerArt` crops character art from
+  the picture's own shape (face about a third down the frame; `artFit.ts`, tested) and shows
+  W-Engines / Light Cones whole over a blurred copy of themselves. Big and small cards, both
+  games, phone and PC. Before/after: `docs/owner-reports/2026-10-11/banner-art/`.
 - 2026-10-11 · **FRAME: HLITH installs as an app (T45)** (branch `frame/installable-app`).
   Manifest (HLIÐSKJÁLF / HLITH, standalone, dark tokens), icons from the emblem
   (`scripts/app-icons.ts` → `public/icons/`, plain + maskable + Apple), iPhone tags, and the

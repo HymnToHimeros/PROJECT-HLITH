@@ -275,7 +275,7 @@ describe('Banners screen', () => {
     setRosterEntry('aa', 'c1', { owned: true, wanted: false, dupes: 0 });
     render(<BannersScreen games={[withWeapons]} scope="aa" servers={{}} openTab={() => {}} open={() => {}} openAccount={() => {}} />);
     const card = (await screen.findAllByRole('article'))[0] as HTMLElement;
-    const srcs = [...card.querySelectorAll('img')].map((i) => i.getAttribute('src'));
+    const srcs = [...card.querySelectorAll('img:not([aria-hidden="true"])')].map((i) => i.getAttribute('src'));
     // The banner picture is the lead weapon's; the other weapons have their own under Details.
     expect(srcs).toEqual(['https://example.test/w1.webp', 'https://example.test/w2.webp']);
     expect(within(card).queryByText('NO ART YET')).toBeNull();
