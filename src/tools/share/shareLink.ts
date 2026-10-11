@@ -2,7 +2,9 @@
  * Share a team (R54) without a server: the team travels inside the link, after
  * the "#". Browsers never send the part after "#" to any server (URL standard),
  * so a shared team isn't stored or seen anywhere but in the link itself.
- * The link holds only the game id, the team name and the character ids.
+ * The link holds only the game id, the team name and the character ids, plus, only when
+ * you choose "Show my profile card with it", your account id (T52): whoever opens it then
+ * asks the server for your card, which it gives only if your privacy switch allows it.
  */
 export const FRAGMENT_KEY = 'team';
 const MAX_MEMBERS = 8;
@@ -12,13 +14,17 @@ export interface SharedTeam {
   game: string;
   name: string;
   members: string[];
+  /** The sharer's account id, when they chose to show their profile card with it. */
+  by?: string;
 }
+
+const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
 const toBase64Url = (bytes: Uint8Array) => btoa(String.fromCharCode(...bytes)).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
 const fromBase64Url = (s: string) => Uint8Array.from(atob(s.replace(/-/g, '+').replace(/_/g, '/')), (ch) => ch.charCodeAt(0));
 
 export function encodeTeam(team: SharedTeam): string {
-  const payload = { v: 1, g: team.game, n: team.name.slice(0, MAX_NAME), m: team.members.slice(0, MAX_MEMBERS) };
+  const payload = { v: 1, g: team.game, n: team.name.slice(0, MAX_NAME), m: team.members.slice(0, MAX_MEMBERS), ...(team.by && UUID.test(team.by) ? { b: team.by } : {}) };
   return toBase64Url(new TextEncoder().encode(JSON.stringify(payload)));
 }
 
@@ -33,12 +39,13 @@ export function decodeTeam(input: string): { ok: true; team: SharedTeam } | { ok
     if (code.length > 4000 || !/^[A-Za-z0-9_-]+$/.test(code)) return { ok: false, error: 'broken' };
     const raw: unknown = JSON.parse(new TextDecoder('utf-8', { fatal: true }).decode(fromBase64Url(code)));
     if (!raw || typeof raw !== 'object') return { ok: false, error: 'broken' };
-    const o = raw as { v?: unknown; g?: unknown; n?: unknown; m?: unknown };
+    const o = raw as { v?: unknown; g?: unknown; n?: unknown; m?: unknown; b?: unknown };
     if (o.v !== 1 || typeof o.g !== 'string' || !/^[a-z0-9-]{1,32}$/.test(o.g)) return { ok: false, error: 'broken' };
     const members = Array.isArray(o.m) ? o.m.filter((x): x is string => typeof x === 'string' && /^[\w-]{1,40}$/.test(x)).slice(0, MAX_MEMBERS) : [];
     if (members.length === 0) return { ok: false, error: 'empty' };
     const name = typeof o.n === 'string' && o.n.trim() ? o.n.trim().slice(0, MAX_NAME) : 'Shared team';
-    return { ok: true, team: { game: o.g, name, members: [...new Set(members)] } };
+    const by = typeof o.b === 'string' && UUID.test(o.b) ? { by: o.b.toLowerCase() } : {};
+    return { ok: true, team: { game: o.g, name, members: [...new Set(members)], ...by } };
   } catch {
     return { ok: false, error: 'broken' };
   }
