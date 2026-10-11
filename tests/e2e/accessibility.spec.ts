@@ -24,7 +24,7 @@ for (const scope of ['all', 'hsr', 'zzz']) {
   }
 }
 
-// Every theme: Today, Account → Profile and Account → Theme, with the theme's background art showing.
+// Every theme: Today, ZZZ Banners (game colours with text on them), Account → Profile and Account → Theme, with the theme's background art showing.
 const THEMES = [
   'dark',
   'light',
@@ -51,7 +51,7 @@ for (const theme of THEMES) {
       const p = JSON.parse(localStorage.getItem('hlith.prefs') ?? '{}') as Record<string, unknown>;
       localStorage.setItem('hlith.prefs', JSON.stringify({ version: 1, updatedAt: 0, games: null, layouts: {}, servers: {}, lastModule: {}, ...p, theme: t }));
     }, theme);
-    for (const path of ['/hsr/today', '/account', '/account/theme']) {
+    for (const path of ['/hsr/today', '/zzz/banners', '/account', '/account/theme']) {
       await page.goto(path);
       await expect(page.locator('html')).toHaveAttribute('data-theme', theme);
       await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
@@ -89,7 +89,7 @@ test('no serious accessibility problems · account', async ({ page }) => {
     await scan(path);
   }
   await page.goto('/account');
-  await page.getByRole('button', { name: 'Edit profile' }).click();
+  await page.getByRole('button', { name: 'Customise profile' }).click();
   await expect(page.getByRole('form', { name: 'Edit profile' })).toBeVisible();
   await scan('/account (edit profile)');
   // The Adjust picture sheet, with a picked file.

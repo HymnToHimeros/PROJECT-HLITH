@@ -3,7 +3,8 @@ import { beforeEach, describe, expect, it } from 'vitest';
 import { gameData, resetUserData, saveTeam } from '../../core/data/userData';
 import { fakeGame } from '../account-links/fakeGame';
 import { decodeTeam, encodeTeam, shareUrl, teamAsText } from './shareLink';
-import { SharedTeamRoute } from './ShareTeam';
+import { SharedTeamRoute, SharedTeamView } from './ShareTeam';
+import type { CardRow } from './SharedBy';
 
 const team = { game: 'aa', name: 'Fire Party · ÐÁ 🔥', members: ['1003', '1002', '1001'] };
 
@@ -24,6 +25,11 @@ describe('share link', () => {
       .replace(/\+/g, '-')
       .replace(/\//g, '_');
     expect(decodeTeam(messy)).toEqual({ ok: true, team: { game: 'aa', name: 'Shared team', members: ['1001'] } });
+  });
+  it('carries the sharer’s account id only when it is one, never anything else about them (T52)', () => {
+    const by = '11111111-1111-4111-8111-111111111111';
+    expect(decodeTeam(encodeTeam({ ...team, by }))).toEqual({ ok: true, team: { ...team, by } });
+    expect(decodeTeam(encodeTeam({ ...team, by: 'not-an-id' }))).toEqual({ ok: true, team });
   });
   it('writes the team as plain text', () => {
     expect(teamAsText('Game A', team, (id) => `N${id}`)).toBe('Fire Party · ÐÁ 🔥 · Game A\n1. N1003\n2. N1002\n3. N1001');
@@ -67,5 +73,51 @@ describe('opening a shared link', () => {
     window.history.replaceState(null, '', `/aa/roster#team=${encodeTeam({ ...team, game: 'zz' })}`);
     render(<SharedTeamRoute games={[fakeGame()]} />);
     expect(screen.getByRole('alert')).toHaveTextContent('game HLITH doesn’t have');
+  });
+});
+
+describe('shared by: the sharer’s profile card (T52)', () => {
+  const row = (over: Partial<CardRow> = {}): CardRow => ({
+    display_name: 'Mira',
+    avatar_path: null,
+    banner_path: null,
+    title: 'Seer of worlds',
+    frame: 'sky',
+    name_color: 'gold',
+    avatar_char: null,
+    banner_char: null,
+    owner: false,
+    owner_title: null,
+    badges: ['seated', 'first-light'],
+    pinned_badge: 'first-light',
+    stats: [{ game: 'aa', total: 120, tops: 2 }],
+    featured: [],
+    ...over,
+  });
+  const shared = { ...team, by: '11111111-1111-4111-8111-111111111111' };
+
+  it('shows the card the server returned: checked badge, numbers, and never the owner’s sky frame for others', async () => {
+    render(<SharedTeamView game={fakeGame()} team={shared} load={async () => row()} />);
+    const card = await screen.findByRole('article', { name: 'Profile card: Mira' });
+    expect(card).toHaveTextContent('First Light');
+    expect(card).toHaveTextContent('120 pulls');
+    expect(card.querySelector('[data-frame="sky"]')).toBeNull();
+  });
+
+  it('the owner’s card carries the owner badge with the name they chose', async () => {
+    render(<SharedTeamView game={fakeGame()} team={shared} load={async () => row({ owner: true, owner_title: 'The Watcher Above', badges: ['owner', 'seated'], pinned_badge: null })} />);
+    const card = await screen.findByRole('article', { name: 'Profile card: Mira' });
+    expect(card).toHaveTextContent('The Watcher Above');
+    expect(card.querySelector('[data-frame="sky"]')).not.toBeNull();
+  });
+
+  it('a private card (server says null) or no sharer shows nothing extra', async () => {
+    const { unmount } = render(<SharedTeamView game={fakeGame()} team={shared} load={async () => null} />);
+    expect(await screen.findByText('Fire Queen')).toBeInTheDocument();
+    expect(screen.queryByRole('region', { name: 'Shared by' })).toBeNull();
+    unmount();
+    render(<SharedTeamView game={fakeGame()} team={team} load={async () => row()} />);
+    expect(await screen.findByText('Fire Queen')).toBeInTheDocument();
+    expect(screen.queryByRole('article')).toBeNull();
   });
 });
