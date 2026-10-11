@@ -141,6 +141,9 @@ export const zzz: GameContract = {
     // 1 Stable Channel · 2 Exclusive Channel · 3 W-Engine Channel · 5 Bangboo Channel.
     gachaTypes: { '1': 'standard', '2': 'exclusive', '3': 'w-engine', '5': 'bangboo' },
     rarity: { '4': 'top', '3': 'mid', '2': 'low' },
+    // Stable Channel (standard) S-rank: Grace, Rina, Koleda, Nekomata, Soldier 11, Lycaon and their
+    // six W-Engines (icy-veins.com/zenless-zone-zero/stable-channel; oneesports.gg S-rank W-Engine list).
+    standardTop: ['1181', '1211', '1101', '1021', '1041', '1141', '14118', '14121', '14110', '14102', '14104', '14114'],
   },
   historyImporters: [
     { id: 'uigf-v4', kind: 'file', label: 'UIGF v4 export file' },

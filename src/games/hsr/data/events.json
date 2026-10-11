@@ -340,7 +340,7 @@
     "title": "Planar Fissure",
     "kind": "bonus",
     "start": "2026-10-11T20:00:00.000Z",
-    "end": "2026-10-24T19:59:59.000Z",
+    "end": "2026-10-24T19:59:00.000Z",
     "reward": 0,
     "currency": "stellar-jade",
     "serverTime": {

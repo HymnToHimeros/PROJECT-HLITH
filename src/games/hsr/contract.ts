@@ -177,6 +177,9 @@ export const hsr: GameContract = {
     // Collaboration warps (21, 22) are skipped until their pity rules are confirmed.
     gachaTypes: { '1': 'standard', '2': 'departure', '11': 'character', '12': 'light-cone' },
     rarity: { '5': 'top', '4': 'mid', '3': 'low' },
+    // Stellar Warp (standard) 5★: Himeko, Welt, Bronya, Gepard, Clara, Yanqing, Bailu and their
+    // seven light cones (game8.co/games/Honkai-Star-Rail/archives/408765, prydwen.gg gacha guide).
+    standardTop: ['1003', '1004', '1101', '1104', '1107', '1209', '1211', '23000', '23002', '23003', '23004', '23005', '23012', '23013'],
   },
   historyImporters: [
     { id: 'srgf', kind: 'file', label: 'SRGF export file' },
