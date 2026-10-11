@@ -205,6 +205,16 @@ async function wikiArt(game: 'hsr' | 'zzz', list: Out[]): Promise<void> {
   }
 }
 
+/**
+ * Unreleased characters whose name HoYoverse has already revealed: shown under that name
+ * (no leak code name), still marked as a leak until release, since only the name is official.
+ */
+const REVEALED: Record<string, Record<string, string>> = {
+  // Aha, the Aeon of Elation, playable in 4.7: HoYoverse character preview, 15 Sep 2026
+  // (https://www.siliconera.com/the-aeon-aha-will-be-playable-in-honkai-star-rail-4-7/); confirmed by the owner, 11 Oct 2026.
+  hsr: { '1511': 'HoYoverse character preview, 15 Sep 2026' },
+};
+
 const manifest = await getJson<Record<string, Manifest>>(`${STATIC}/manifest.json`);
 for (const [game, read] of [
   ['hsr', hsr],
@@ -221,6 +231,11 @@ for (const [game, read] of [
       if (!fresh.has(c.id)) continue;
       c.leak = { source: `nanoka.cc, game files of build ${m.latest} (live is ${m.live})` };
       delete c.releasedAt;
+      const revealed = REVEALED[game]?.[c.id];
+      if (revealed) {
+        c.leak = { source: `name: ${revealed}; kit and details: nanoka.cc, game files of build ${m.latest} (live is ${m.live})` };
+        continue;
+      }
       // Leakers use the game files' code name ("nihilux"), the files' display name can differ
       // ("Aeon ★ Aha"): show both so the character is found under either. The id never changes.
       const code = raw[c.id]?.icon;
