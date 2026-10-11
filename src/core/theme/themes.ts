@@ -20,6 +20,9 @@ export const THEME_IDS = [
   'velvet-twilight',
   'amber-mirage',
   'midnight-sakura',
+  'emerald-salon',
+  'indigo-hour',
+  'rose-lace',
 ] as const;
 export type Theme = (typeof THEME_IDS)[number];
 
@@ -46,9 +49,12 @@ export const THEMES: readonly ThemeInfo[] = [
   { id: 'jade-whisper', name: 'Jade Whisper', mood: 'Fresh, calm, refined: dark jade, bamboo and a carved jade disc in the mist.', tone: 'dark', app: '#0f1c18' },
   { id: 'velvet-twilight', name: 'Velvet Twilight', mood: 'Luxurious, moody, royal: violet velvet drapes, a crescent moon and a crown.', tone: 'dark', app: '#110c22' },
   { id: 'midnight-sakura', name: 'Midnight Sakura', mood: 'Mysterious, soft, enchanting: cherry blossoms falling in a blue-black night.', tone: 'dark', app: '#0b0e1a' },
+  { id: 'emerald-salon', name: 'Emerald Salon', mood: 'Grand and warm: emerald velvet drapes, gold frames and a checker floor at night.', tone: 'dark', app: '#06120e' },
+  { id: 'indigo-hour', name: 'Indigo Hour', mood: 'Late and quiet: an indigo room, one golden shaft of light and slow steam.', tone: 'dark', app: '#0b0a24' },
   { id: 'ascendant', name: 'Ascendant', mood: 'Marble statues and wings in morning light, edged with gold.', tone: 'light', app: '#efebe3' },
   { id: 'ethereal-dune', name: 'Ethereal Dune', mood: 'Soft, earthy, elegant: pale sand, wind-drawn dunes and a low sun.', tone: 'light', app: '#f4efe6' },
   { id: 'amber-mirage', name: 'Amber Mirage', mood: 'Warm, exotic, timeless: honey light, a shimmering sun and star-tiled arches.', tone: 'light', app: '#fbf0de' },
+  { id: 'rose-lace', name: 'Rose Lace', mood: 'Sweet and soft: blush paper, wine-red ink, lace edges and little hearts.', tone: 'light', app: '#fbf1f2' },
   { id: 'light', name: 'Light', mood: 'Plain and bright: cool paper and dark ink, with faint ice rings.', tone: 'light', app: '#f3f6f8' },
 ];
 

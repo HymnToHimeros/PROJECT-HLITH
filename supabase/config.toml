@@ -39,6 +39,13 @@ public = true
 file_size_limit = "2MiB"
 allowed_mime_types = ["image/png", "image/jpeg", "image/webp", "image/gif"]
 
+# Owner-only themes (T47): private, owners only (storage policies in 0010_owner_themes.sql).
+# Holds the owner themes' manifest, drawn scenes and the owner's own pictures; never public.
+[storage.buckets.owner-themes]
+public = false
+file_size_limit = "10MiB"
+allowed_mime_types = ["image/png", "image/jpeg", "image/webp", "image/gif", "image/svg+xml", "application/json"]
+
 # Export my data (R56) and Delete my account (R57): signed-in users only (checked in the function).
 [functions.export-data]
 verify_jwt = true

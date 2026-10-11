@@ -7,6 +7,7 @@
 import { useSyncExternalStore } from 'react';
 import type { GameId, ModuleId } from '../contract';
 import type { LayoutState, Scope } from '../registry/layout';
+import type { OwnerThemeId } from '../theme/ownerThemes';
 import type { Theme } from '../theme/themes';
 
 export type { Theme } from '../theme/themes';
@@ -22,8 +23,8 @@ export interface Prefs {
   /** Your main character per game (`GameContract.protagonist` option id), e.g. HSR: 'caelus'. Missing = not picked. */
   protagonists?: Record<GameId, string>;
   lastModule: Record<Scope, ModuleId>;
-  /** Account → Theme (one of THEME_IDS in theme/themes.ts). Missing or unknown = dark (Glacier). */
-  theme?: Theme;
+  /** Account → Theme (one of THEME_IDS in theme/themes.ts, or `owner:<id>` for an owner-only theme). Missing or unknown = dark (Glacier). */
+  theme?: Theme | OwnerThemeId;
   /** When you last downloaded a backup (epoch ms). Missing = never. */
   lastBackupAt?: number;
   /** Remind me to download a backup every two weeks. Missing = on. */

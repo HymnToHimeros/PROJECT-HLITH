@@ -633,6 +633,86 @@ function Sun({ x, y, r, rays = 24 }: { x: number; y: number; r: number; rays?: n
   );
 }
 
+/** A black-and-white checker floor going back to a vanishing line (the tiles as outlines). */
+function Checker({ x, y, w, rows, cols, depth }: { x: number; y: number; w: number; rows: number; cols: number; depth: number }) {
+  // Row k sits at y + depth·(k/rows)^1.6, narrowing towards the back.
+  const rowY = (k: number) => y + depth * (k / rows) ** 1.6;
+  const half = (k: number) => (w / 2) * (0.45 + 0.55 * (k / rows));
+  const lines: string[] = [];
+  for (let k = 0; k <= rows; k++) lines.push(`M${f(x - half(k))} ${f(rowY(k))}H${f(x + half(k))}`);
+  for (let c = 0; c <= cols; c++) {
+    const t = c / cols - 0.5;
+    lines.push(`M${f(x + t * 2 * half(0))} ${f(rowY(0))}L${f(x + t * 2 * half(rows))} ${f(rowY(rows))}`);
+  }
+  const fills: string[] = [];
+  for (let k = 0; k < rows; k++)
+    for (let c = (k % 2); c < cols; c += 2) {
+      const t0 = c / cols - 0.5;
+      const t1 = (c + 1) / cols - 0.5;
+      fills.push(
+        `M${f(x + t0 * 2 * half(k))} ${f(rowY(k))}L${f(x + t1 * 2 * half(k))} ${f(rowY(k))}L${f(x + t1 * 2 * half(k + 1))} ${f(rowY(k + 1))}L${f(x + t0 * 2 * half(k + 1))} ${f(rowY(k + 1))}Z`,
+      );
+    }
+  return (
+    <g>
+      <path d={fills.join('')} fill="currentColor" stroke="none" opacity={0.35} />
+      <path d={lines.join('')} fill="none" strokeWidth={0.8} />
+    </g>
+  );
+}
+
+/** An ornate picture frame: double border with scrolls at the corners. */
+function OrnateFrame({ x, y, w, h }: { x: number; y: number; w: number; h: number }) {
+  const corner = (cx: number, cy: number, sx: number, sy: number) =>
+    `M${f(cx)} ${f(cy + sy * 34)}C${f(cx)} ${f(cy + sy * 10)} ${f(cx + sx * 10)} ${f(cy)} ${f(cx + sx * 34)} ${f(cy)}` +
+    `M${f(cx + sx * 8)} ${f(cy + sy * 20)}c${f(sx * 8)} ${f(-sy * 2)} ${f(sx * 12)} ${f(-sy * 6)} ${f(sx * 12)} ${f(-sy * 12)}`;
+  return (
+    <g fill="none">
+      <rect x={x} y={y} width={w} height={h} rx={6} strokeWidth={1.8} />
+      <rect x={x + 12} y={y + 12} width={w - 24} height={h - 24} rx={3} strokeWidth={0.8} />
+      <path d={corner(x - 10, y - 10, 1, 1) + corner(x + w + 10, y - 10, -1, 1) + corner(x - 10, y + h + 10, 1, -1) + corner(x + w + 10, y + h + 10, -1, -1)} strokeWidth={1.4} />
+      <circle cx={x + w / 2} cy={y} r={7} fill="currentColor" />
+      <circle cx={x + w / 2} cy={y + h} r={5} fill="currentColor" />
+    </g>
+  );
+}
+
+/** One warm shaft of light from a high window, falling to the right. */
+function LightShaft({ x, y, w, len, id }: { x: number; y: number; w: number; len: number; id: string }) {
+  return (
+    <g>
+      <defs>
+        <linearGradient id={id} x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stopColor="var(--art-ink)" stopOpacity={0.9} />
+          <stop offset="1" stopColor="var(--art-ink)" stopOpacity={0} />
+        </linearGradient>
+      </defs>
+      <path d={`M${x} ${y}h${w}l${f(len * 0.62)} ${len}h${f(-w * 2.2)}Z`} fill={`url(#${id})`} stroke="none" />
+      <rect x={x} y={y - w * 0.9} width={w} height={w * 0.9} fill="none" />
+      <path d={`M${f(x + w / 2)} ${f(y - w * 0.9)}V${y}M${x} ${f(y - w * 0.45)}h${w}`} />
+    </g>
+  );
+}
+
+/** A small heart outline (or filled). */
+const heart = (x: number, y: number, r: number) =>
+  `M${f(x)} ${f(y + r * 0.9)}L${f(x - r)} ${f(y - r * 0.05)}A${f(r * 0.52)} ${f(r * 0.52)} 0 0 1 ${f(x)} ${f(y - r * 0.55)}A${f(r * 0.52)} ${f(r * 0.52)} 0 0 1 ${f(x + r)} ${f(y - r * 0.05)}Z`;
+
+/** A lace edge: scallops with a dot in each, along a line. */
+function Lace({ x, y, w, n, r }: { x: number; y: number; w: number; n: number; r: number }) {
+  const step = w / n;
+  const scallops = Array.from({ length: n }, (_, i) => `M${f(x + i * step)} ${y}a${f(step / 2)} ${f(r)} 0 0 0 ${f(step)} 0`).join('');
+  return (
+    <g fill="none">
+      <path d={`M${x} ${y}h${w}`} strokeWidth={1.2} />
+      <path d={scallops} />
+      {Array.from({ length: n }, (_, i) => (
+        <circle key={i} cx={f(x + i * step + step / 2)} cy={f(y + r * 0.55)} r={1.8} fill="currentColor" />
+      ))}
+    </g>
+  );
+}
+
 // ── Compositions ────────────────────────────────────────────────────
 
 const FIELD = { w: 1600, h: 1000 };
@@ -1054,6 +1134,71 @@ function EtherealDune() {
   );
 }
 
+function EmeraldSalon() {
+  return (
+    <>
+      <Field seed={141} n={20}>
+        <Glow x={1240} y={260} r={620} id="ag-e" strength={0.9} />
+        <Drapes w={1600} n={4} drop={170} />
+        <Checker x={800} y={760} w={1500} rows={7} cols={14} depth={260} />
+      </Field>
+      <Crest>
+        <OrnateFrame x={260} y={150} w={360} h={440} />
+        <Filigree x={440} y={370} s={1.1} />
+      </Crest>
+      <Base>
+        <path d="M120 120V560M150 120V560" strokeWidth={1.4} />
+        <path d="M100 130C150 220 160 360 110 560M170 130C120 230 120 380 180 560" fill="none" strokeWidth={0.8} />
+        <circle cx={135} cy={110} r={14} fill="none" />
+      </Base>
+    </>
+  );
+}
+
+function IndigoHour() {
+  return (
+    <>
+      <Field seed={151} n={50}>
+        <LightShaft x={980} y={120} w={150} len={760} id="ag-ih" />
+        <Glow x={1180} y={620} r={460} id="ag-ig" strength={0.8} />
+        <g className={a.drift}>
+          <Wisp x={200} y={780} len={420} rise={90} curl={30} />
+          <Wisp x={1050} y={860} len={380} rise={70} curl={24} flip />
+        </g>
+      </Field>
+      <Crest>
+        <Crescent x={460} y={330} r={130} rot={210} />
+        <path d={glint(620, 220, 20) + glint(300, 520, 12)} fill="currentColor" className={a.twinkleSlow} />
+      </Crest>
+      <Base>
+        <Wisp x={40} y={420} len={360} rise={80} curl={26} />
+        <Wisp x={80} y={500} len={300} rise={60} curl={20} />
+      </Base>
+    </>
+  );
+}
+
+function RoseLace() {
+  return (
+    <>
+      <Field seed={161} n={18}>
+        <Glow x={1220} y={240} r={600} id="ag-r" strength={0.9} />
+        <Lace x={-20} y={40} w={1640} n={40} r={22} />
+        <path d={[heart(1180, 420, 18), heart(1320, 300, 12), heart(240, 700, 14), heart(1460, 620, 10)].join('')} fill="currentColor" className={a.twinkleSlow} />
+      </Field>
+      <Crest>
+        <OrnateFrame x={300} y={190} w={300} h={380} />
+        <path d={heart(450, 380, 60)} fill="none" strokeWidth={1.6} />
+        <path d={heart(450, 380, 40)} fill="none" strokeWidth={0.8} />
+      </Crest>
+      <Base>
+        <Lace x={40} y={460} w={520} n={13} r={18} />
+        <path d={heart(200, 300, 30) + heart(320, 230, 18)} fill="none" strokeWidth={1.2} />
+      </Base>
+    </>
+  );
+}
+
 const ART: Record<Theme, () => ReactNode> = {
   dark: Glacier,
   light: Light,
@@ -1069,6 +1214,9 @@ const ART: Record<Theme, () => ReactNode> = {
   'velvet-twilight': VelvetTwilight,
   'amber-mirage': AmberMirage,
   'midnight-sakura': MidnightSakura,
+  'emerald-salon': EmeraldSalon,
+  'indigo-hour': IndigoHour,
+  'rose-lace': RoseLace,
 };
 
 /** One small emblem per theme, for the theme picker. Uses the colours of whatever theme box it sits in. */
@@ -1169,6 +1317,24 @@ export function ThemeMotif({ theme, className }: { theme: Theme; className?: str
         <circle cx={220} cy={180} r={110} fill="none" strokeWidth={1.6} />
         <Blossom x={150} y={250} r={60} rot={10} />
         <Blossom x={290} y={130} r={36} rot={40} />
+      </>
+    ),
+    'emerald-salon': (
+      <>
+        <OrnateFrame x={110} y={70} w={180} h={220} />
+        <Checker x={200} y={300} w={360} rows={3} cols={6} depth={80} />
+      </>
+    ),
+    'indigo-hour': (
+      <>
+        <LightShaft x={150} y={80} w={70} len={260} id="am-ih" />
+        <Crescent x={300} y={110} r={50} rot={210} />
+      </>
+    ),
+    'rose-lace': (
+      <>
+        <path d={heart(200, 200, 110)} fill="none" strokeWidth={2.4} />
+        <Lace x={40} y={340} w={320} n={8} r={16} />
       </>
     ),
   };

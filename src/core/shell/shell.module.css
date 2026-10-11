@@ -773,3 +773,17 @@
 .switchInput:disabled + .switchTrack {
   opacity: 0.6;
 }
+
+/* Owner-theme ornaments (T47), switched on by the theme (<html data-ornaments="hearts …">).
+   Hearts: the active module is marked with a small heart instead of a bar. */
+:global([data-ornaments~='hearts']) .navItem[aria-current='page']::before {
+  left: -2px;
+  top: 50%;
+  bottom: auto;
+  width: 10px;
+  height: 9px;
+  border-radius: 0;
+  transform: translateY(-50%);
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 9'%3E%3Cpath d='M5 9 .7 4.6A2.6 2.6 0 0 1 5 1.3a2.6 2.6 0 0 1 4.3 3.3Z'/%3E%3C/svg%3E") center / contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 9'%3E%3Cpath d='M5 9 .7 4.6A2.6 2.6 0 0 1 5 1.3a2.6 2.6 0 0 1 4.3 3.3Z'/%3E%3C/svg%3E") center / contain no-repeat;
+}

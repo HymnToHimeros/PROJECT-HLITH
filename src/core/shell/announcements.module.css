@@ -65,3 +65,22 @@
   outline: 2px solid var(--vent);
   outline-offset: 2px;
 }
+
+/* Owner-theme ornament "bubbles" (T47): notes become speech bubbles with a little tail. */
+:global([data-ornaments~='bubbles']) .strip {
+  position: relative;
+  border-radius: 18px;
+  border-left-width: 1px;
+}
+:global([data-ornaments~='bubbles']) .strip::after {
+  content: '';
+  position: absolute;
+  left: 28px;
+  bottom: -8px;
+  width: 14px;
+  height: 14px;
+  background: var(--bg-card);
+  border-right: 1px solid var(--line-strong);
+  border-bottom: 1px solid var(--line-strong);
+  transform: skewX(-30deg) rotate(45deg);
+}

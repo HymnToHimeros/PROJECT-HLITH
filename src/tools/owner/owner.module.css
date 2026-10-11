@@ -554,3 +554,54 @@
   font: 600 28px/1 var(--font-numbers);
   color: var(--ink-1);
 }
+
+/* Owner themes (OwnerThemesAdmin.tsx, T47). */
+.ownerThemeRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s-3);
+  padding: var(--s-2) 0;
+  border-top: 1px solid var(--line-subtle);
+}
+.ownerThemeThumb {
+  width: 72px;
+  height: 48px;
+  flex: none;
+  border-radius: 8px;
+  border: 1px solid var(--line-mid);
+  background: var(--bg-inset) center / cover no-repeat;
+}
+.ownerThemeText {
+  flex: 1 1 160px;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.fileButton {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  align-self: flex-start;
+  min-height: var(--tap-min);
+  padding: 0 16px;
+  border-radius: var(--r-button);
+  border: 1px solid var(--line-strong);
+  background: var(--bg-raised);
+  color: var(--ink-1);
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+}
+.fileButton:focus-within {
+  outline: 2px solid var(--vent);
+  outline-offset: 2px;
+}
+.fileInput {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  overflow: hidden;
+}

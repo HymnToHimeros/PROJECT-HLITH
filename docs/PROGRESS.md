@@ -29,6 +29,14 @@ Resume with: "continue from PROGRESS.md". Newest entry on top. Older entries:
 - CI (`.github/workflows/ci.yml`) runs both on every pull request.
 
 ## Done
+- 2026-10-11 · **FRAME: 3 new themes and owner-only themes (T47)** (branch `frame/owner-themes`).
+  Public: Emerald Salon, Indigo Hour (dark) and Rose Lace (light), same tests as every theme.
+  Owner-only: themes kept in a private storage bucket (`owner-themes`, 0010, owners only),
+  downloaded at run time only after the server says owner; other accounts never ask for them
+  and the picker doesn't list them. Colours are checked (hex only, ink.5 4.5:1); background is
+  the owner's own picture or a drawn scene; ornaments (hearts, bubbles, gold frame). Owner
+  console → Owner themes uploads a theme pack and a picture per theme. Nothing owner-only is
+  in the repo. Screenshots of the public themes: `docs/owner-reports/2026-10-11/new-themes/`.
 - 2026-10-11 · **ERROR-FIX: findings inbox said "Not allowed." to everyone** (branch `error-fix/findings-intake-401`).
   Cause (found with FRAME): the Vault secret `findings_intake_key` was 11 characters; keys under
   32 are refused, so even the right key failed. The owner replaces it (Vault, GitHub secret,
