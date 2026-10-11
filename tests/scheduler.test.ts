@@ -267,9 +267,9 @@ describe('the job list', () => {
     for (const id of EXTERNAL_JOB_IDS) expect(runnerOf(must(by[id]))).toBe('External routine');
   });
 
-  it('the research routine is a self-adjusting routine job, a frame until its routine delivers', () => {
+  it('the research routine is a self-adjusting routine job, live (its routine delivers)', () => {
     const job = must(JOBS.find((j) => j.id === 'research-routine'));
-    expect(job).toMatchObject({ label: 'Research routine', cadence: SELF_ADJUSTING, fallbackCadence: 'mon 08:50', target: { kind: 'external' }, status: 'frame' });
+    expect(job).toMatchObject({ label: 'Research routine', cadence: SELF_ADJUSTING, fallbackCadence: 'mon 08:50', target: { kind: 'external' }, status: 'live' });
     expect(describeCadence(effectiveCadence(job, undefined).cadence)).toBe('Mon at 08:50 UTC');
     expect(runnable(job)).toBe(false);
   });
