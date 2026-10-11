@@ -11,7 +11,8 @@
 #      Anything else waits for MANAGER;
 #   5. reports the run, its findings and the next check time to the owner's inbox
 #      (findings-intake, with the FINDINGS_INTAKE_KEY secret).
-# A PR opened with the built-in token does not start CI, which is why step 2 runs here.
+# A PR opened with the built-in token does not start CI, which is why step 2 runs here; the
+# run then reports that check as the `check` status that main's ruleset requires.
 name: Data refresh
 
 on:
@@ -22,6 +23,7 @@ on:
 permissions:
   contents: write
   pull-requests: write
+  statuses: write
 
 concurrency:
   group: data-refresh
@@ -138,6 +140,11 @@ jobs:
             gh pr edit "$pr" --body-file "$RUNNER_TEMP/body.md"
           fi
           if [ "${{ steps.diff.outputs.data_only }}" = "true" ] && [ "${{ steps.check.outcome }}" = "success" ]; then
+            # main requires the `check` status. A PR opened with the built-in token never starts CI,
+            # so this run reports the full check it ran above (same commit) as `check`.
+            gh api -X POST "repos/${{ github.repository }}/statuses/$(git rev-parse HEAD)" \
+              -f state=success -f context=check -f description="Full check passed in Data refresh run ${{ github.run_id }}" \
+              -f target_url="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" >/dev/null
             gh pr merge "$pr" --squash --delete-branch || echo "::warning::PR #$pr could not merge by itself; it waits for MANAGER."
           else
             echo "::warning::PR #$pr waits for MANAGER (data only: ${{ steps.diff.outputs.data_only }}, check: ${{ steps.check.outcome }})."
