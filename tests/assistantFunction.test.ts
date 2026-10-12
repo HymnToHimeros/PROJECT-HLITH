@@ -41,7 +41,7 @@ describe('assistant server function', () => {
     expect(JSON.stringify(buildParams(rest))).not.toContain(KEY);
   });
 
-  it('builds the request: adaptive thinking, auto tool choice, caching, the user data, strict action tools', () => {
+  it('builds the request: adaptive thinking, auto tool choice, caching, the user data, action tools (strict except the backlog ones, T72)', () => {
     const p = buildParams(ok(body()));
     expect(p.thinking).toEqual({ type: 'adaptive' });
     expect(p.tool_choice).toEqual({ type: 'auto' });
@@ -51,7 +51,7 @@ describe('assistant server function', () => {
     expect(p.fallbacks).toBe('default');
     expect(p.betas).toEqual(['server-side-fallback-2026-07-01']);
     for (const t of ACTION_TOOLS) {
-      expect(t.strict).toBe(true);
+      expect(t.strict).toBe(t.name.endsWith('_backlog_item') ? undefined : true);
       expect(t.input_schema.additionalProperties).toBe(false);
       expect(t.input_schema.required).toEqual(Object.keys(t.input_schema.properties as object));
     }
