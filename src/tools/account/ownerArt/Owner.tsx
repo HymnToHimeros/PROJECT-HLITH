@@ -27,10 +27,10 @@ export function OwnerFrameArt(props: { n: number; variant?: number; src: string 
   );
 }
 
-export function OwnerNameArt({ n, text }: { n: number; text: string }) {
+export function OwnerNameArt({ n, variant = 0, text }: { n: number; variant?: number; text: string }) {
   return (
     <Suspense fallback={text}>
-      <LazyName n={n} text={text} />
+      <LazyName n={n} variant={variant} text={text} />
     </Suspense>
   );
 }
