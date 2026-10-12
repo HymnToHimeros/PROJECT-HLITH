@@ -46,8 +46,8 @@ Per game, in `src/games/<game>/data/`, using the types in
   what permanent and long-cycle content can still pay out on their account.
   Built-in items only for the important shared things (main story first);
   never try to make it complete.
-- **Honest data:** every entry must come from a named source (nanoka.cc, used
-  with its owner's permission; official game sites and announcements). A value
+- **Honest data:** every entry must come from a named source (community data
+  sites such as nanoka.cc; official game sites and announcements). A value
   the source doesn't give stays `null` or is left out, never guessed. Dates in
   ISO format with the right server time zone.
 - **Leaks never go into these lists as fact.** A leak is either marked with

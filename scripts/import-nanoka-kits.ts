@@ -1,6 +1,6 @@
 /**
- * Fills ZZZ kit text and profiles from nanoka.cc's public data files (used with
- * the site owner's permission). Run: npm run data:kits
+ * Fills ZZZ kit text and profiles from nanoka.cc's public data files (a
+ * community data site). Run: npm run data:kits
  *
  * Kit text is added group by group (GROUPS below), never all characters at once:
  * each group is read and checked by hand before the next (docs/logic/zzz-method.md,

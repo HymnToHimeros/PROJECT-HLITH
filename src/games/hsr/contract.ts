@@ -206,7 +206,7 @@ export const hsr: GameContract = {
   },
   accountLinks: [{ provider: 'hoyolab', supports: ['stamina', 'checkin', 'roster', 'endgame'], config: { gameBiz: 'hkrpg_global' } }],
   scan: { screen: 'character', fields: ['level', 'eidolon', 'light-cone', 'relics', 'traces'] },
-  // Level-up costs from nanoka.cc; team scoring waits for the owner's OK on docs/logic/hsr-theory.md.
+  // Level-up costs from nanoka.cc. Team scoring waits until docs/logic/hsr-theory.md is signed off.
   rules: {
     // Build score: the saved build against the game's own recommendation (docs/logic/build-score.md).
     scoreBuild: (b) =>
@@ -222,7 +222,7 @@ export const hsr: GameContract = {
     materialsNote: "From the game data (nanoka.cc): ascension, every skill and every Trace to max. Character EXP 1 → 80 (5,797,920, from the game's own EXP table) is counted as Traveler's Guides (20,000 EXP each).",
   },
   sources: [
-    { what: 'Character list (names, rarity, path, element, release date)', source: 'nanoka.cc data files, game data 4.6.51, used with permission', entered: '2026-10-09', verified: false },
+    { what: 'Character list (names, rarity, path, element, release date)', source: 'nanoka.cc data files (community data site), game data 4.6.51', entered: '2026-10-09', verified: false },
     { what: 'Pull rates, hard pity, 50/50 and 75/25', source: 'official rates shown on the in-game Warp details page', entered: '2026-10-09', verified: false },
     { what: 'Rising odds before hard pity', source: COMMUNITY, entered: '2026-10-09', verified: false },
     { what: 'Stamina cap and regeneration', source: 'V1 design (docs/DESIGN.md); verify in game', entered: '2026-10-09', verified: false },

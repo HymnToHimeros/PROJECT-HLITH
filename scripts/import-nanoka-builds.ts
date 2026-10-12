@@ -1,6 +1,6 @@
 /**
  * The game's own recommended builds (and HSR's recommended teams), from
- * nanoka.cc's public data files (used with the site owner's permission).
+ * nanoka.cc's public data files (a community data site).
  * Run: npm run data:builds
  *
  * Source: the recommendation the game itself shows for each character

@@ -1,7 +1,7 @@
 /**
  * Fills what each character needs to level up (Farm, the character page's
- * "Materials to max") from nanoka.cc's public data files (used with the site
- * owner's permission). Run: npm run data:costs
+ * "Materials to max") from nanoka.cc's public data files (a community
+ * data site). Run: npm run data:costs
  *
  * Mechanical game data, not kit reading, so every character is done at once:
  * - ascension / promotion costs per level cap,
