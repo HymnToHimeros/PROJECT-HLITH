@@ -37,4 +37,19 @@ describe('your owner look: grouped picker (T64)', () => {
     fireEvent.click(screen.getAllByRole('button', { name: 'Wear full set' })[3] as HTMLElement);
     expect(onChange).toHaveBeenCalledWith({ badge: 4, frame: 16, name: 16, frameVariant: 3, nameVariant: 0 });
   });
+
+  it('every set opens five frames and five name styles (T64 variants)', () => {
+    const onChange = vi.fn();
+    render(<OwnerLookEditor value={DEFAULT_OWNER_STYLE} onChange={onChange} name="Odin" />);
+    for (const set of ['Draupnir', 'Geri & Freki', 'Gungnir', 'Sól & Máni', 'Nine Realms', 'Urnes Serpent', 'Valhalla', 'Gjallarhorn']) {
+      for (const [group, kind] of [['Owner frame', 'owner frame'], ['Owner name style', 'owner name style']] as const) {
+        fireEvent.click(within(screen.getByRole('group', { name: group })).getByRole('button', { name: new RegExp(set) }));
+        expect(within(screen.getByRole('radiogroup', { name: `${set} ${kind}` })).getAllByRole('radio'), `${set} ${kind}`).toHaveLength(5);
+        fireEvent.click(screen.getAllByRole('button', { name: 'Done' })[0] as HTMLElement);
+      }
+    }
+    fireEvent.click(within(screen.getByRole('group', { name: 'Owner name style' })).getByRole('button', { name: /Valhalla/ }));
+    fireEvent.click(within(screen.getByRole('radiogroup', { name: 'Valhalla owner name style' })).getAllByRole('radio')[2] as HTMLElement);
+    expect(onChange).toHaveBeenCalledWith(expect.objectContaining({ name: 19, nameVariant: 2 }));
+  });
 });

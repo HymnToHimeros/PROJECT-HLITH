@@ -2,6 +2,8 @@ import { useId, type CSSProperties } from 'react';
 import { OWNER_BADGE_ART, OWNER_FRAME_ART, OWNER_FRAME_VARIANTS } from './art';
 import './svgMotion.css';
 import './names.css';
+import './nameVariants.css';
+import { OWNER_NAME_VARIANTS } from './nameVariants';
 
 /**
  * The owner's badges, frames and name styles (T64), drawn from art.ts. This file and the
@@ -88,8 +90,27 @@ function Letters({ text, rune = false }: { text: string; rune?: boolean }) {
   );
 }
 
-/** A name in owner name style n (1–20). The plain name stays readable for screen readers. */
-export function OwnerName({ n, text }: { n: number; text: string }) {
+const esc = (s: string) => s.replace(/[&<>"']/g, (c) => `&#${c.charCodeAt(0)};`);
+/** A variant's fixed markup with the name put in, always escaped (never markup from a person). */
+export function fillVariant(tpl: string, text: string): string {
+  const letters = [...text].map((ch, i) => `<span class="oa-l" style="--i:${i}">${ch === ' ' ? '&nbsp;' : esc(ch)}</span>`).join('');
+  return tpl.replaceAll('@@L@@', letters).replaceAll('@@W@@', esc(text));
+}
+
+/**
+ * A name in owner name style n (1–20); for a set's style (13–20) variant 1–4 is B–E from the
+ * variant sheets. The plain name stays readable for screen readers.
+ */
+export function OwnerName({ n, variant = 0, text }: { n: number; variant?: number; text: string }) {
+  const v = variant > 0 ? OWNER_NAME_VARIANTS[n]?.[variant - 1] : undefined;
+  if (v)
+    return (
+      <span className="oa-art oa-name oa-nv">
+        <span className="oa-sr">{text}</span>
+        {/* Fixed markup from nameVariants.ts; the name inside is escaped by fillVariant. */}
+        <span aria-hidden="true" dangerouslySetInnerHTML={{ __html: fillVariant(v.tpl, text) }} />
+      </span>
+    );
   const cls = `oa-art oa-name oa-n${n} ${CLIPPED.has(n) ? 'oa-clip' : ''}`;
   const deco = (inner: React.ReactNode) => (
     <span className="oa-deco" aria-hidden="true">

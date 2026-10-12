@@ -135,7 +135,7 @@ export function ProfileCard(props: ProfileCardProps) {
         )}
         <div className={c.identity}>
           <h2 className={c.name} data-color={look?.name || rw.name ? undefined : nameColor} title={!look?.name && rw.name ? `${rw.name.name} · ${rw.name.tag}` : undefined}>
-            {look?.name ? <OwnerNameArt n={look.name} text={name} /> : rw.name ? <RewardName art={rw.name.art} text={name} /> : name}
+            {look?.name ? <OwnerNameArt n={look.name} variant={look.nameVariant} text={name} /> : rw.name ? <RewardName art={rw.name.art} text={name} /> : name}
           </h2>
           {handle && <p className={c.handle}>@{handle}</p>}
           {title && (
