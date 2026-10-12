@@ -6,7 +6,7 @@ import { BADGE_BY_ID, OWNER_TITLES, type BadgeState } from './badges';
 import { BadgeMark } from './BadgeMark';
 import { Switch } from './parts';
 import p from './profile.module.css';
-import { FEATURED_MAX, FRAME_LABEL, FRAMES, NAME_COLOR_LABEL, NAME_COLORS, PRIVACY_LABEL, TITLE_MAX, toggleFeatured, type CharRef, type Privacy, type Profile } from './profile';
+import { FEATURED_MAX, FRAME_LABEL, FRAMES, NAME_COLOR_LABEL, NAME_COLORS, PRIVACY_LABEL, SHELF_MAX, TITLE_MAX, toggleFeatured, type CharRef, type Privacy, type Profile } from './profile';
 import { Framed } from './ProfileCard';
 
 // The owner's own section, with its drawings, loads only for the owner (T64).
@@ -111,6 +111,36 @@ export function CardEditor({ draft, setDraft, games, characters, badges, isOwner
           {earned.length <= (isOwner ? 2 : 1) && <span className={p.muted}>Earn more badges to choose from: they’re listed under Badges on your profile.</span>}
         </div>
 
+        <div className={p.field}>
+          <span className={p.fieldLabel}>
+            Badge shelf{' '}
+            <span className={p.count}>
+              {draft.pinnedShelf.length} / {SHELF_MAX}
+            </span>
+          </span>
+          <div className={p.chips} role="group" aria-label="Badge shelf">
+            {earned
+              .filter((b) => b.def.id !== 'owner')
+              .map((b) => {
+                const on = draft.pinnedShelf.includes(b.def.id);
+                return (
+                  <button
+                    key={b.def.id}
+                    type="button"
+                    className={p.pinChip}
+                    aria-pressed={on}
+                    disabled={!on && draft.pinnedShelf.length >= SHELF_MAX}
+                    onClick={() => set({ pinnedShelf: on ? draft.pinnedShelf.filter((x) => x !== b.def.id) : [...draft.pinnedShelf, b.def.id] })}
+                  >
+                    <BadgeMark id={b.def.id} size={26} />
+                    {b.def.name}
+                  </button>
+                );
+              })}
+          </div>
+          <span className={p.muted}>Up to {SHELF_MAX} favourites next to your main badge. A badge you no longer hold leaves the shelf by itself.</span>
+        </div>
+
         {isOwner && (
           <div className={p.field}>
             <span className={p.fieldLabel}>Your owner badge’s name</span>
@@ -200,6 +230,26 @@ export function CardEditor({ draft, setDraft, games, characters, badges, isOwner
             </div>
           );
         })}
+        {games.some((g) => gameData(g.id).teams.length > 0) && (
+          <label className={p.field}>
+            <span className={p.fieldLabel}>Best team</span>
+            <select className={p.input} value={refKey(draft.bestTeam)} onChange={(e) => set({ bestTeam: parseRef(e.target.value) })}>
+              <option value="">No best team</option>
+              {games.map((g) =>
+                gameData(g.id).teams.length > 0 ? (
+                  <optgroup key={g.id} label={g.name}>
+                    {gameData(g.id).teams.map((t) => (
+                      <option key={t.id} value={`${g.id}:${t.id}`}>
+                        {t.name}
+                      </option>
+                    ))}
+                  </optgroup>
+                ) : null,
+              )}
+            </select>
+          </label>
+        )}
+        <p className={p.muted}>Your luckiest pull shows by itself once you import pull history: the top result that came after the fewest pulls, proven from that history.</p>
         {!anyOwned && games.every((g) => gameData(g.id).teams.length === 0) && (
           <div className={p.missing}>
             <span className={p.noData}>Nothing to show yet</span>
@@ -219,7 +269,7 @@ export function CardEditor({ draft, setDraft, games, characters, badges, isOwner
         {mode === 'account' ? (
           <>
             <Switch label={PRIVACY_LABEL.card} checked={draft.privacy.card} onChange={(on) => setPrivacy('card', on)} />
-            {(['badges', 'showcase', 'stats'] as const).map((k) => (
+            {(['badges', 'showcase', 'luck', 'stats'] as const).map((k) => (
               <Switch key={k} label={PRIVACY_LABEL[k]} checked={draft.privacy[k]} disabled={!draft.privacy.card} onChange={(on) => setPrivacy(k, on)} />
             ))}
           </>

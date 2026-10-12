@@ -21,6 +21,8 @@ export const PIN_MAX = 6;
 export const TITLE_MAX = 60;
 /** Showcase on the profile card: up to 4 favourite characters or teams. */
 export const FEATURED_MAX = 4;
+/** Badge shelf on the card: up to 3 favourite badges (T64 B2). */
+export const SHELF_MAX = 3;
 /** Largest picture you can pick, before it's shrunk. */
 export const IMAGE_MAX_BYTES = 2 * 1024 * 1024;
 export const IMAGE_TYPES = ['image/png', 'image/jpeg', 'image/webp', 'image/gif'];
@@ -62,13 +64,16 @@ export interface Privacy {
   stats: boolean;
   badges: boolean;
   showcase: boolean;
+  /** T64 B2: the luckiest pull. */
+  luck: boolean;
 }
-export const DEFAULT_PRIVACY: Privacy = { card: false, stats: true, badges: true, showcase: true };
+export const DEFAULT_PRIVACY: Privacy = { card: false, stats: true, badges: true, showcase: true, luck: true };
 export const PRIVACY_LABEL: Record<keyof Privacy, string> = {
   card: 'Show my profile card with teams I share',
   stats: 'Include my pull numbers',
   badges: 'Include my badge',
-  showcase: 'Include my showcase',
+  showcase: 'Include my showcase and best team',
+  luck: 'Include my luckiest pull',
 };
 
 export interface Profile {
@@ -88,6 +93,10 @@ export interface Profile {
   nameColor: NameColor;
   /** The badge shown on your card; null = the highest one you hold. */
   pinnedBadge: BadgeId | null;
+  /** T64 B2: up to 3 favourite badges on a shelf (only earned ones show). */
+  pinnedShelf: BadgeId[];
+  /** T64 B2: one saved team shown as your best team. */
+  bestTeam: CharRef | null;
   /** The owner's choice of name for the owner badge (shown only for the owner). */
   ownerTitle: OwnerTitle | null;
   /** T64: the owner's badge, frame and name style (only ever used for the owner). */
@@ -112,6 +121,8 @@ export const EMPTY_PROFILE: Profile = {
   frame: 'none',
   nameColor: 'ink',
   pinnedBadge: null,
+  pinnedShelf: [],
+  bestTeam: null,
   ownerTitle: null,
   ownerStyle: DEFAULT_OWNER_STYLE,
   avatarChar: null,
@@ -165,7 +176,7 @@ function cleanFeatured(v: unknown): FeaturedItem[] {
 function cleanPrivacy(v: unknown): Privacy {
   const r = v && typeof v === 'object' ? (v as Record<string, unknown>) : {};
   const flag = (k: keyof Privacy) => (typeof r[k] === 'boolean' ? (r[k] as boolean) : DEFAULT_PRIVACY[k]);
-  return { card: flag('card'), stats: flag('stats'), badges: flag('badges'), showcase: flag('showcase') };
+  return { card: flag('card'), stats: flag('stats'), badges: flag('badges'), showcase: flag('showcase'), luck: flag('luck') };
 }
 
 /** Any stored or incoming value → a clean profile. Unknown fields are dropped, lengths and pin counts kept to the limits. */
@@ -190,6 +201,8 @@ export function cleanProfile(raw: unknown): Profile {
     frame: oneOf(FRAMES, r.frame, 'none'),
     nameColor: oneOf(NAME_COLORS, r.nameColor, 'ink'),
     pinnedBadge: isBadgeId(r.pinnedBadge) ? r.pinnedBadge : null,
+    pinnedShelf: Array.isArray(r.pinnedShelf) ? [...new Set(r.pinnedShelf.filter(isBadgeId))].slice(0, SHELF_MAX) : [],
+    bestTeam: charRef(r.bestTeam),
     ownerTitle: oneOf<OwnerTitle | ''>([...OWNER_TITLES, ''], r.ownerTitle, '') || null,
     ownerStyle: cleanOwnerStyle(r.ownerStyle),
     avatarChar: charRef(r.avatarChar),
@@ -266,7 +279,7 @@ export interface ProfileRow {
     pinned: Record<GameId, string[]>;
     hidden_cards: CardId[];
     /** T52: the card's look, showcase and privacy (read by public.profile_card() in 0011_profile_card.sql). */
-    look?: { title: string | null; frame: FrameId; name_color: NameColor; pinned_badge: BadgeId | null; owner_title: OwnerTitle | null; owner_style?: OwnerStyle; avatar_char: CharRef | null; banner_char: CharRef | null };
+    look?: { title: string | null; frame: FrameId; name_color: NameColor; pinned_badge: BadgeId | null; owner_title: OwnerTitle | null; owner_style?: OwnerStyle; pinned_shelf?: BadgeId[]; best_team?: CharRef | null; avatar_char: CharRef | null; banner_char: CharRef | null };
     featured?: FeaturedItem[];
     privacy?: Privacy;
   } | null;
@@ -285,7 +298,7 @@ export function toRow(p: Profile, userId: string): ProfileRow {
     showcase: {
       pinned: c.pinned,
       hidden_cards: c.hiddenCards,
-      look: { title: c.title, frame: c.frame, name_color: c.nameColor, pinned_badge: c.pinnedBadge, owner_title: c.ownerTitle, owner_style: c.ownerStyle, avatar_char: c.avatarChar, banner_char: c.bannerChar },
+      look: { title: c.title, frame: c.frame, name_color: c.nameColor, pinned_badge: c.pinnedBadge, owner_title: c.ownerTitle, owner_style: c.ownerStyle, pinned_shelf: c.pinnedShelf, best_team: c.bestTeam, avatar_char: c.avatarChar, banner_char: c.bannerChar },
       featured: c.featured,
       privacy: c.privacy,
     },
@@ -309,6 +322,8 @@ export function fromRow(row: Partial<ProfileRow> | null | undefined): Profile {
     pinnedBadge: row.showcase?.look?.pinned_badge,
     ownerTitle: row.showcase?.look?.owner_title,
     ownerStyle: row.showcase?.look?.owner_style,
+    pinnedShelf: row.showcase?.look?.pinned_shelf,
+    bestTeam: row.showcase?.look?.best_team,
     avatarChar: row.showcase?.look?.avatar_char,
     bannerChar: row.showcase?.look?.banner_char,
     featured: row.showcase?.featured,
@@ -332,6 +347,8 @@ export const isBlank = (p: Profile) =>
   p.frame === 'none' &&
   p.nameColor === 'ink' &&
   !p.pinnedBadge &&
+  p.pinnedShelf.length === 0 &&
+  !p.bestTeam &&
   isDefaultOwnerStyle(p.ownerStyle) &&
   !p.avatarChar &&
   !p.bannerChar &&

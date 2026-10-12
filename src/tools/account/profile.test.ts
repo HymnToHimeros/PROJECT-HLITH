@@ -82,9 +82,9 @@ describe('account rows (public.profiles)', () => {
       showcase: {
         pinned: { aa: ['c1'] },
         hidden_cards: ['pulls'],
-        look: { title: null, frame: 'none', name_color: 'ink', pinned_badge: null, owner_title: null, owner_style: { badge: 0, frame: null, name: null }, avatar_char: null, banner_char: null },
+        look: { title: null, frame: 'none', name_color: 'ink', pinned_badge: null, owner_title: null, owner_style: { badge: 0, frame: null, name: null }, pinned_shelf: [], best_team: null, avatar_char: null, banner_char: null },
         featured: [],
-        privacy: { card: false, stats: true, badges: true, showcase: true },
+        privacy: { card: false, stats: true, badges: true, showcase: true, luck: true },
       },
       updated_at: '2026-10-01T00:00:00.000Z',
     });
@@ -99,7 +99,9 @@ describe('account rows (public.profiles)', () => {
       ownerStyle: { badge: 3, frame: 15, name: 15 },
       avatarChar: { game: 'aa', id: 'c1' },
       featured: [{ kind: 'team' as const, game: 'aa', id: 't1' }],
-      privacy: { card: true, stats: false, badges: true, showcase: true },
+      privacy: { card: true, stats: false, badges: true, showcase: true, luck: false },
+      pinnedShelf: ['hall' as const, 'smith' as const],
+      bestTeam: { game: 'aa', id: 't1' },
     };
     expect(fromRow(toRow(t52, 'u1'))).toEqual(t52);
     expect(fromRow(null)).toEqual(EMPTY_PROFILE);

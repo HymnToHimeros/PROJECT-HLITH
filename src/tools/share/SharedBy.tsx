@@ -28,7 +28,11 @@ export interface CardRow {
   owner_style?: unknown;
   badges: string[] | null;
   pinned_badge: string | null;
-  stats: { game: string; total: number; tops: number }[] | null;
+  stats: { game: string; total: number; tops: number; average_pity?: number | null; won?: number; lost?: number }[] | null;
+  /** T64 B2 (0018): badge shelf, best team, luckiest pull; missing on older servers or when not allowed. */
+  shelf?: string[] | null;
+  best_team?: { game: string; id: string; name: string; members: string[] } | null;
+  luckiest?: { game: string; item_id: string; name: string; pulls: number; time: string } | null;
   featured: ({ kind: 'character'; game: string; id: string } | { kind: 'team'; game: string; id: string; name: string; members: string[] })[];
 }
 
@@ -70,8 +74,22 @@ export function cardFromRow(row: CardRow, games: GameContract[], characters: Rec
   });
   const stats = (row.stats ?? []).flatMap((s) => {
     const g = games.find((x) => x.id === s.game);
-    return g && s.total > 0 ? [{ gameShort: g.short, vent: g.vent, total: s.total, tops: s.tops, topLabel: g.terms.rarity.top }] : [];
+    if (!g || !(s.total > 0)) return [];
+    const extra = 'average_pity' in s ? { averagePity: typeof s.average_pity === 'number' ? s.average_pity : null, won: Number(s.won) || 0, lost: Number(s.lost) || 0 } : {};
+    return [{ gameShort: g.short, vent: g.vent, total: s.total, tops: s.tops, topLabel: g.terms.rarity.top, ...extra }];
   });
+  const teamItem = (t: NonNullable<CardRow['best_team']>): Extract<CardFeatured, { kind: 'team' }> | null => {
+    const game = games.find((g) => g.id === t.game);
+    const list = characters[t.game];
+    if (!game || !list) return null;
+    const members = (Array.isArray(t.members) ? t.members : []).flatMap((id) => {
+      const ch = list.find((x) => x.id === id);
+      return ch ? [cardCharacter(game, ch)] : [];
+    });
+    return { kind: 'team', key: `best:${t.game}:${t.id}`, gameShort: game.short, vent: game.vent, name: String(t.name || 'Team').slice(0, 60), members };
+  };
+  const luckGame = row.luckiest ? games.find((g) => g.id === row.luckiest?.game) : undefined;
+  const luckChar = row.luckiest && luckGame ? characters[luckGame.id]?.find((x) => x.id === row.luckiest?.item_id) : undefined;
   const total = BADGES.filter((b) => b.id !== 'owner' || row.owner).length;
   return {
     name: row.display_name?.trim() || row.username || 'A HLITH user',
@@ -87,6 +105,19 @@ export function cardFromRow(row: CardRow, games: GameContract[], characters: Rec
     ownerTitle: row.owner && (OWNER_TITLES as readonly string[]).includes(row.owner_title ?? '') ? (row.owner_title as OwnerTitle) : null,
     ownerStyle: row.owner ? cleanOwnerStyle(row.owner_style) : null,
     featured,
+    shelf: (row.shelf ?? []).filter(isBadgeId).filter((id) => held.includes(id)),
+    bestTeam: row.best_team ? teamItem(row.best_team) : null,
+    luckiest:
+      row.luckiest && luckGame && Number.isInteger(row.luckiest.pulls) && row.luckiest.pulls > 0
+        ? {
+            ...(luckChar ? cardCharacter(luckGame, luckChar) : { name: String(row.luckiest.name).slice(0, 60), rarity: 'top' as const, elementColor: 'var(--line-empty)' }),
+            gameShort: luckGame.short,
+            vent: luckGame.vent,
+            topLabel: luckGame.terms.rarity.top,
+            pulls: row.luckiest.pulls,
+            time: String(row.luckiest.time),
+          }
+        : null,
     stats: stats.length ? stats : null,
     badgeCount: row.badges ? { earned: held.length, total } : undefined,
   };

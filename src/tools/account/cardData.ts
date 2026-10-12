@@ -8,7 +8,8 @@ import type { Character, GameContract, GameId } from '../../core/contract';
 import type { GameUserData } from '../../core/data/userData';
 import type { BadgeState } from './badges';
 import { shownBadge } from './badges';
-import type { CardCharacter, CardFeatured, CardStats, ProfileCardProps } from './ProfileCard';
+import { gameNumbers, luckiestPull } from './cardExtras';
+import type { CardCharacter, CardFeatured, CardLuckiest, CardStats, ProfileCardProps } from './ProfileCard';
 import type { CharRef, Profile } from './profile';
 
 export interface CardInput {
@@ -53,11 +54,26 @@ export function featuredItems(profile: Profile, games: GameContract[], data: Car
 }
 
 export function pullStats(games: GameContract[], data: CardInput['data']): CardStats[] {
-  return games.flatMap((g) => {
-    const pulls = data[g.id]?.pulls ?? [];
-    if (pulls.length === 0) return [];
-    return [{ gameShort: g.short, vent: g.vent, total: pulls.length, tops: pulls.filter((p) => p.rarity === 'top').length, topLabel: g.terms.rarity.top }];
+  return gameNumbers(games, data).flatMap((n) => {
+    const g = games.find((x) => x.id === n.game);
+    return g ? [{ gameShort: g.short, vent: g.vent, total: n.total, tops: n.tops, topLabel: g.terms.rarity.top, averagePity: n.averagePity, won: n.won, lost: n.lost }] : [];
   });
+}
+
+/** The saved team chosen as best team, if it still exists. */
+export function bestTeamItem(profile: Profile, games: GameContract[], data: CardInput['data'], characters: CardInput['characters']): Extract<CardFeatured, { kind: 'team' }> | null {
+  if (!profile.bestTeam) return null;
+  const [item] = featuredItems({ ...profile, featured: [{ kind: 'team', ...profile.bestTeam }] }, games, data, characters);
+  return item?.kind === 'team' ? item : null;
+}
+
+export function luckiestItem(games: GameContract[], data: CardInput['data'], characters: CardInput['characters']): CardLuckiest | null {
+  const l = luckiestPull(games, data);
+  const game = l && games.find((g) => g.id === l.game);
+  if (!l || !game) return null;
+  const ch = characters[l.game]?.find((c) => c.id === l.itemId);
+  const look = ch ? cardCharacter(game, ch) : { name: l.name, rarity: 'top' as const, elementColor: 'var(--line-empty)' };
+  return { ...look, name: ch?.name ?? l.name, gameShort: game.short, vent: game.vent, topLabel: game.terms.rarity.top, pulls: l.pulls, time: l.time };
 }
 
 export function buildCard(input: CardInput): ProfileCardProps {
@@ -81,6 +97,10 @@ export function buildCard(input: CardInput): ProfileCardProps {
     // The owner's look is the owner's alone.
     ownerStyle: isOwner ? profile.ownerStyle : null,
     featured: featuredItems(profile, games, data, characters),
+    // Only badges you hold go on the shelf.
+    shelf: profile.pinnedShelf.filter((id) => badges.some((b) => b.def.id === id && b.earned)),
+    bestTeam: bestTeamItem(profile, games, data, characters),
+    luckiest: luckiestItem(games, data, characters),
     stats: stats.length ? stats : null,
     badgeCount: { earned: badges.filter((b) => b.earned).length, total: badges.length },
   };
