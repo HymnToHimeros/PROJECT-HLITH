@@ -1,5 +1,7 @@
 import { act, fireEvent, render, screen, waitFor, within } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import type { SupabaseClient } from '@supabase/supabase-js';
+import { supabaseOwnerThemes } from '../../core/data/ownerThemesSource';
 import { clearOwnerThemes, loadOwnerThemes } from '../../core/theme/ownerThemes';
 import { ThemePage } from '../account/sections';
 import { getPrefs, updatePrefs } from '../../core/data/prefs';
@@ -214,5 +216,64 @@ describe('owner-only themes in the app (T47)', () => {
     expect(out.manifest.themes[1]).toBe(changed);
     expect(out.manifest.themes[2]).toMatchObject({ id: 'one', origin: 'set' });
     expect(out.manifest.other).toBe(1);
+  });
+});
+
+describe('Remove shows straight away, even when the browser cached the list (T75)', () => {
+  /** A storage client like a browser: a normal GET is answered from its cache once fetched; `no-store` always asks the server. */
+  function cachingClient(initial: Record<string, string>) {
+    const stored = new Map<string, Blob>(Object.entries(initial).map(([k, v]) => [k, new Blob([v])]));
+    const cache = new Map<string, Blob>();
+    const bucket = {
+      download: vi.fn(async (path: string, _opts?: { cacheNonce?: string }, params?: { cache?: string }) => {
+        const fresh = params?.cache === 'no-store';
+        if (!fresh && cache.has(path)) return { data: cache.get(path), error: null };
+        const file = stored.get(path);
+        if (!file) return { data: null, error: { statusCode: '404', message: 'Object not found' } };
+        if (!fresh) cache.set(path, file);
+        return { data: file, error: null };
+      }),
+      upload: vi.fn(async (path: string, file: Blob) => {
+        stored.set(path, file);
+        return { error: null };
+      }),
+    };
+    return { client: { storage: { from: () => bucket } } as unknown as SupabaseClient, bucket };
+  }
+
+  beforeEach(() => {
+    vi.spyOn(URL, 'createObjectURL').mockImplementation(() => 'blob:x');
+    vi.spyOn(URL, 'revokeObjectURL').mockImplementation(() => undefined);
+  });
+  afterEach(() => {
+    clearOwnerThemes();
+    vi.restoreAllMocks();
+  });
+
+  it('after Remove, the console list and Account → Theme lose it without a reload; Undo brings it back', async () => {
+    const { client, bucket } = cachingClient({ 'manifest.json': JSON.stringify({ themes: [theme] }) });
+    const store = supabaseOwnerThemes(client);
+    await act(() => loadOwnerThemes(store));
+    render(
+      <>
+        <ThemePage />
+        <OwnerThemesAdmin store={store} />
+      </>,
+    );
+    expect(within(screen.getByRole('group', { name: 'Your own themes' })).getByRole('radio', { name: /Night/ })).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'Remove Night' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Yes, remove Night' }));
+    await screen.findByText(/Night is off the list/);
+    await waitFor(() => expect(screen.queryByRole('radio', { name: /Night/ })).toBeNull());
+    expect(screen.queryByRole('button', { name: 'Remove Night' })).toBeNull();
+
+    fireEvent.click(await screen.findByRole('button', { name: 'Undo: put Night back' }));
+    await screen.findByText(/Night is back on the list/);
+    await waitFor(() => expect(screen.getByRole('radio', { name: /Night/ })).toBeInTheDocument());
+
+    // Every read of the list asked the server, each with its own nonce.
+    const reads = bucket.download.mock.calls.filter(([p]) => p === 'manifest.json');
+    expect(reads.every(([, o, p]) => p?.cache === 'no-store' && typeof o?.cacheNonce === 'string')).toBe(true);
+    expect(new Set(reads.map(([, o]) => o?.cacheNonce)).size).toBe(reads.length);
   });
 });
