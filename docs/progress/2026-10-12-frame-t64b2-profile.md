@@ -18,3 +18,12 @@
 - Privacy: the profile-card line lists the new parts (clarification of an opt-in feature, no
   version bump, agreed with MANAGER).
 - Screenshots: docs/owner-reports/2026-10-12/t64b2-profile-card/.
+
+## Grouped owner-look picker screenshots
+- grouped-picker-collapsed-{pc,phone}: one tile per set plus "Classic"; a tile with variants
+  says which one you wear and how many there are.
+- grouped-picker-sol-mani-open-{pc,phone} and grouped-picker-classic-open-{pc,phone}: tapping a
+  tile opens its choices, as a row under the tiles on PC and a sheet from the bottom on a phone.
+- Fix found while shooting: the phone sheet was trapped inside the page (a moving parent box
+  kept it off screen). It now opens at the page's end, so it always rises from the bottom. The
+  phone switch is the app's own (below 820 px).

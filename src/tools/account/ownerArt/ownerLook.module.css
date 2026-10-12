@@ -184,7 +184,7 @@
 .choicesWide {
   composes: names;
 }
-@media (max-width: 640px) {
+@media (max-width: 819px) {
   /* On a phone the variants rise as a sheet from the bottom. */
   .backdrop {
     display: block;
