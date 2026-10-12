@@ -10,7 +10,30 @@ type Raw = Record<string, unknown>;
 
 const PICTURE_TYPES = ['image/png', 'image/jpeg', 'image/webp', 'image/gif'];
 const extOf = (f: File) => ({ 'image/png': 'png', 'image/jpeg': 'jpg', 'image/webp': 'webp', 'image/gif': 'gif' })[f.type] ?? 'bin';
-const ORNAMENT_LABEL: Record<Ornament, string> = { hearts: 'Hearts', bubbles: 'Speech-bubble notes', 'gold-frame': 'Gold frame', lace: 'Lace' };
+const ORNAMENT_LABEL: Record<Ornament, string> = {
+  hearts: 'Hearts',
+  bubbles: 'Speech-bubble notes',
+  'gold-frame': 'Gold frame',
+  lace: 'Lace',
+  'orbit-light': 'Two lights crossing',
+  'corona-ring': 'Ringed eclipse',
+  'phase-band': 'Moon phases along the top',
+  'ember-rise': 'Rising embers',
+  'frost-trail': 'Frost and a trail of prints',
+  'storm-streaks': 'Rain and lightning',
+  'aurora-veil': 'Aurora curtains',
+  'knot-band': 'Knotwork bands',
+  'shield-row': 'Shield row with torchlight',
+  'sound-rings': 'Spreading rings',
+  starfield: 'Starfield texture',
+  grain: 'Grain texture',
+  'hex-mesh': 'Hex mesh texture',
+  'rune-rows': 'Rune rows texture',
+  'accent-diamond': 'Diamond marker',
+  'accent-crescent': 'Crescent marker',
+  'accent-ring': 'Ring marker',
+  'accent-rune': 'Rune marker',
+};
 
 /** The manifest as stored (kept as-is, so fields this page doesn't know survive an edit). */
 async function rawManifest(store: Store): Promise<{ themes: Raw[] } & Raw> {
@@ -37,7 +60,42 @@ function idFor(name: string, taken: string[]): string {
  * off the list. Nothing here is in the app's public code; a later "generate a picture" button
  * would save into the same picture slot.
  */
-export function OwnerThemesAdmin({ store = backend ? supabaseOwnerThemes(backend) : null }: { store?: Store | null }) {
+/** Theme drafts made for the owner (0020, owners only), waiting to be added to the private store. */
+async function serverDrafts(): Promise<Raw[]> {
+  if (!backend) return [];
+  const { data, error } = await backend.rpc('owner_theme_drafts');
+  if (error) throw new Error(error.message);
+  return Array.isArray(data) ? (data as Raw[]) : [];
+}
+
+/**
+ * Adds the drafts to the manifest: new ids only. A theme already in the store (the owner's own,
+ * or a draft added before and maybe changed since) is never removed or overwritten.
+ */
+export function mergeDrafts(m: { themes: Raw[] } & Raw, drafts: Raw[]): { manifest: { themes: Raw[] } & Raw; added: string[]; kept: number; problems: string[] } {
+  const ids = new Set(m.themes.map((t) => String(t.id)));
+  const added: string[] = [];
+  const problems: string[] = [];
+  let kept = 0;
+  const themes = [...m.themes];
+  for (const d of drafts) {
+    if (ids.has(String(d.id))) {
+      kept++;
+      continue;
+    }
+    const checked = readOwnerTheme(d);
+    if ('problems' in checked) {
+      problems.push(...checked.problems);
+      continue;
+    }
+    themes.push(d);
+    ids.add(checked.theme.id);
+    added.push(checked.theme.name);
+  }
+  return { manifest: { ...m, themes }, added, kept, problems };
+}
+
+export function OwnerThemesAdmin({ store = backend ? supabaseOwnerThemes(backend) : null, drafts = serverDrafts }: { store?: Store | null; drafts?: () => Promise<Raw[]> }) {
   const state = useOwnerThemes();
   const [busy, setBusy] = useState(false);
   const [note, setNote] = useState<string | null>(null);
@@ -92,6 +150,19 @@ export function OwnerThemesAdmin({ store = backend ? supabaseOwnerThemes(backend
     });
   };
 
+  const addDrafts = () =>
+    run(async () => {
+      const list = await drafts();
+      if (list.length === 0) return 'There are no new themes waiting.';
+      const m = await rawManifest(store);
+      const out = mergeDrafts(m, list);
+      if (out.added.length) await saveManifest(store, out.manifest);
+      const parts = [out.added.length ? `Added ${out.added.length}: ${out.added.join(', ')}. Pick one in Account → Theme → Only for you.` : 'Nothing new to add.'];
+      if (out.kept) parts.push(`${out.kept} ${out.kept === 1 ? 'was' : 'were'} already there and stayed as they are.`);
+      if (out.problems.length) parts.push(`Left out: ${out.problems.join(' ')}`);
+      return parts.join(' ');
+    });
+
   const setPicture = (id: string, file: File | null) =>
     run(async () => {
       let path: string | undefined;
@@ -129,6 +200,12 @@ export function OwnerThemesAdmin({ store = backend ? supabaseOwnerThemes(backend
           Themes only you can see and pick (Account → Theme → Only for you). They’re kept in a private store that only owner accounts can read; other accounts never
           download them.
         </p>
+        <div className={o.jobActions}>
+          <Button variant="primary" disabled={busy} onClick={() => void addDrafts()}>
+            Add the set themes
+          </Button>
+        </div>
+        <p className={o.note}>Adds the themes made for your sets to this list. Themes already here, your own included, are never changed or removed.</p>
         {state.status === 'loading' && <p className={o.note}>Loading…</p>}
         {state.status === 'error' && <p className={o.note}>Couldn’t load them: {state.message}</p>}
         {state.status === 'ready' && state.problems.length > 0 && (
