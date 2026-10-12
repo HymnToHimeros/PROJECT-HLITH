@@ -34,6 +34,12 @@ describe('Seele Telegram leaks (public web view)', () => {
     expect(posts.map((p) => p.games)).toEqual([['hsr'], ['zzz'], ['gi'], ['zzz']]);
     expect(gamesOf('崩坏：星穹铁道 4.7')).toEqual(['hsr']);
     expect(gamesOf('崩坏3 8.5')).toEqual(['hi3']);
+    // Seele's own tags.
+    expect(gamesOf('「HSR 4.7」\nV2 tmr')).toEqual(['hsr']);
+    expect(gamesOf('[ZZZ - 2.6 REL] Severian Lowell Render')).toEqual(['zzz']);
+    expect(gamesOf('「HI3rd 9.2」 About Vita DLC')).toEqual(['hi3']);
+    expect(gamesOf('「GI 7.2」 banners')).toEqual(['gi']);
+    expect(gamesOf('Hmmm. Ruan Mei, Polka, THerta.')).toEqual(['other']);
     expect(gamesOf('Wuthering Waves 3.8')).toEqual(['other']);
     expect(wanted(posts, Date.parse('2026-10-10T12:00:00Z')).map((p) => p.id)).toEqual([102, 104]);
     expect(wanted(posts, 0, ['hsr', 'zzz', 'gi']).map((p) => p.id)).toEqual([101, 102, 103, 104]);

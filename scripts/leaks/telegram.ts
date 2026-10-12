@@ -8,7 +8,7 @@
 
 /** The one place for the channel. `channel` is the name in t.me/<channel>. */
 export const SEELE = {
-  channel: 'SEELE_CHANNEL_NOT_SET',
+  channel: 'Seele_Leaks',
   /**
    * Finding source name. An approved leak shows it as its credit next to "UNVERIFIED", so it
    * is the public credit itself ("Source: Seele (Telegram)"); nothing about permission or partners.
@@ -19,7 +19,7 @@ export const SEELE = {
   keep: ['hsr', 'zzz'] as GameTag[],
 };
 
-export const channelSet = (channel = SEELE.channel) => channel !== 'SEELE_CHANNEL_NOT_SET' && channel.trim() !== '';
+export const channelSet = (channel = SEELE.channel) => channel.trim() !== '' && channel !== 'SEELE_CHANNEL_NOT_SET';
 
 export type GameTag = 'hsr' | 'zzz' | 'gi' | 'hi3' | 'other';
 
@@ -58,14 +58,18 @@ export function plainText(html: string): string {
   ).trim();
 }
 
-/** Which games a post is about, from hashtags and names in English and Chinese. */
+/**
+ * Which games a post is about, from tags and names in English and Chinese. Seele tags a post
+ * with its game first: 「HSR 4.7」, 「ZZZ 3.3」, 「HI3rd 9.2」, [ZZZ - 2.6 REL]. Untagged
+ * posts (chat, replies) are "other".
+ */
 export function gamesOf(text: string): GameTag[] {
   const t = text.toLowerCase();
   const out: GameTag[] = [];
-  if (/#hsr\b|honkai\s*:?\s*star\s*rail|\bstar\s*rail\b|#starrail|星穹铁道|崩铁|星铁/.test(t)) out.push('hsr');
+  if (/\bhsr\b|honkai\s*:?\s*star\s*rail|\bstar\s*rail\b|#starrail|星穹铁道|崩铁|星铁/.test(t)) out.push('hsr');
   if (/#zzz\b|\bzzz\b|zenless|绝区零/.test(t)) out.push('zzz');
-  if (/#gi\b|#genshin|genshin|原神/.test(t)) out.push('gi');
-  if (/#hi3\b|honkai\s*impact|崩坏\s*3|崩坏三/.test(t)) out.push('hi3');
+  if (/[「[]\s*gi\b|#gi\b|#genshin|genshin|原神/.test(t)) out.push('gi');
+  if (/\bhi3(rd)?\b|honkai\s*impact|崩坏\s*3|崩坏三/.test(t)) out.push('hi3');
   return out.length ? out : ['other'];
 }
 

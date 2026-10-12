@@ -170,6 +170,9 @@ the delivery, never skipped silently.
    - `known` is not empty (same character as a leak or not-out-yet character we
      already show from nanoka.cc): skip it, unless it adds something our lists lack
      (then deliver as below and say what it adds). Count the skipped ones in the delivery.
+   - Not a leak (chat, replies, news about other leakers, jokes): skip it. Seele
+     tags real leaks with the game first (「HSR 4.7」, 「ZZZ 3.3」, [ZZZ - …]); an
+     image-only post with just the tag is a leak: summarise what the images show.
    - `chinese: true`: translate the text into English yourself (no outside service).
      Keep the original.
    - A post that names a new character, banner or event → kind `leak` with the list
