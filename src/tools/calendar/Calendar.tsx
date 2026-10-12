@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useRef, useState, type CSSProperties, type ReactNode } from 'react';
+import { Fragment, useEffect, useLayoutEffect, useRef, useState, type CSSProperties, type ReactNode } from 'react';
 import type { GameContract, GameId } from '../../core/contract';
 import { useExamplesShown } from '../../core/data/prefs';
 import { setPlanStatus, type UserPlan } from '../../core/data/userData';
@@ -102,7 +102,30 @@ export function Calendar({ games, servers, lists, now, openAccount, openServer, 
 
   // On a phone the timeline scrolls sideways: start with today in view.
   const scroller = useRef<HTMLDivElement>(null);
+  const scale = useRef<HTMLDivElement>(null);
   const todayPct = pct(now);
+  // A week label starts at its line; one that would run past the end of the timeline sits to the
+  // left of its line instead. Measured, so it holds at any width (and again when the width changes).
+  const tickKey = ticks.join(',');
+  useLayoutEffect(() => {
+    const el = scale.current;
+    if (!el) return;
+    const mark = c.scaleMark ?? '';
+    const end = c.scaleMarkEnd ?? '';
+    if (!mark || !end) return;
+    const fit = () => {
+      const right = el.getBoundingClientRect().right;
+      for (const m of el.querySelectorAll<HTMLElement>(`.${mark}`)) {
+        m.classList.remove(end);
+        if (m.getBoundingClientRect().right > right) m.classList.add(end);
+      }
+    };
+    fit();
+    if (typeof ResizeObserver === 'undefined') return;
+    const watch = new ResizeObserver(fit);
+    watch.observe(el);
+    return () => watch.disconnect();
+  }, [tickKey]);
   useEffect(() => {
     const el = scroller.current;
     if (el && el.scrollWidth > el.clientWidth) el.scrollLeft = Math.max(0, (todayPct / 100) * el.scrollWidth - 48);
@@ -184,7 +207,7 @@ export function Calendar({ games, servers, lists, now, openAccount, openServer, 
       <section className={c.timelineCard} aria-label="Timeline">
         <div className={c.scroller} ref={scroller}>
           <div className={c.timeline}>
-            <div className={c.scale} aria-hidden="true">
+            <div className={c.scale} aria-hidden="true" ref={scale}>
               {ticks.map((t) => (
                 <span key={t} className={c.scaleMark} style={{ left: `${pct(t)}%` }}>
                   {formatDay(t)}

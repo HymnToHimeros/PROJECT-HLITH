@@ -203,3 +203,24 @@ for (const scope of ['all', 'hsr', 'zzz']) {
     });
   }
 }
+
+// The Calendar's date scale near the right edge (found 2026-10-12: on 11 Oct the last week label,
+// "Mon, Nov 16", ran 33 px past the page). Pinned dates, so this doesn't depend on today.
+for (const day of ['2026-10-11T12:00:00Z', '2026-10-12T12:00:00Z', '2026-10-14T12:00:00Z', '2026-10-17T12:00:00Z']) {
+  test(`Calendar: no sideways scroll and every date label inside the timeline · ${day.slice(0, 10)}`, async ({ page }) => {
+    await page.clock.setFixedTime(new Date(day));
+    await page.goto('/hsr/calendar');
+    await expect(page.getByRole('region', { name: 'Timeline' })).toBeVisible();
+    await noSidewaysScroll(page);
+    const outside = await page.evaluate(() => {
+      // The timeline's full width (on a phone it scrolls inside its own box, so not just what's in view).
+      const box = document.querySelector('[aria-label="Timeline"] > div > div')?.getBoundingClientRect();
+      if (!box) return ['no timeline'];
+      return [...document.querySelectorAll('[aria-label="Timeline"] [class*="scaleMark"]')]
+        .map((e) => [e.textContent, e.getBoundingClientRect()] as const)
+        .filter(([, r]) => r.left < box.left - 1 || r.right > box.right + 1)
+        .map(([t]) => t);
+    });
+    expect(outside).toEqual([]);
+  });
+}

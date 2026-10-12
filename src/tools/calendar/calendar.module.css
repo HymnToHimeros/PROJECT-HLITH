@@ -120,6 +120,11 @@
   color: var(--ink-4);
   white-space: nowrap;
 }
+.scaleMarkEnd {
+  padding-left: 0;
+  padding-right: 5px;
+  transform: translateX(-100%);
+}
 .lanes {
   position: relative;
   padding-bottom: 4px;
@@ -297,7 +302,8 @@
   }
   /* On a PC the timeline never scrolls sideways, so the date scale and Today mark can stay in view while you scroll down. */
   .scroller {
-    overflow: visible;
+    overflow-x: clip;
+    overflow-y: visible;
   }
   .scale {
     position: sticky;
