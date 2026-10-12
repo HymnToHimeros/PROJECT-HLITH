@@ -5,7 +5,7 @@ import { EmptyState, ExampleNotice, ExampleTag, GameTag, NoData, Timer, Unverifi
 import { cx } from '../../core/ui/cx';
 import { GameHeading, Strip } from '../pulls/shared';
 import b from './banners.module.css';
-import { rerunLabel, rosterFit, splitBanners } from './fit';
+import { phaseOfBanner, rerunLabel, rosterFit, splitBanners } from './fit';
 import { useBannersData, type BannersData } from './useBannersData';
 import { EditListButton } from '../edit-mode/EditMode';
 import { setRosterEntry } from '../../core/data/userData';
@@ -68,7 +68,7 @@ export function GameBanners({ game, now, many, hideLeaks, filter, open, onLane }
   const limitedLive = live.filter((x) => !x.permanent);
   // Next = the next phase (everything opening within two days of the first upcoming start); Later = the rest.
   const firstStart = upcoming.length ? Math.min(...upcoming.map((x) => Date.parse(x.start))) : 0;
-  const phaseOf = (x: Banner): Phase => (Date.parse(x.start) <= now ? 'now' : Date.parse(x.start) <= firstStart + 2 * DAY ? 'next' : 'later');
+  const phaseOf = phaseOfBanner(upcoming, now);
   const laterStarts = upcoming.filter((x) => phaseOf(x) === 'later').map((x) => Date.parse(x.start));
   const lane: Lane = {
     game,

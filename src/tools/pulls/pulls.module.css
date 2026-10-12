@@ -631,3 +631,125 @@
   flex-wrap: wrap;
   gap: 8px;
 }
+
+/* ── Planner sections and banner art (T70) ── */
+.planSection {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-3);
+}
+.planSectionHead {
+  margin: 0;
+  display: flex;
+  align-items: baseline;
+  gap: var(--s-2);
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--ink-1);
+}
+.planCount {
+  font: 600 12px var(--font-numbers);
+  padding: 1px 7px;
+  border-radius: var(--r-pill);
+  background: var(--bg-raised);
+  color: var(--ink-2);
+}
+.planArt {
+  position: relative;
+  margin: calc(-1 * var(--s-4)) calc(-1 * var(--s-4)) 0;
+  aspect-ratio: 16 / 7;
+  min-height: 132px;
+  overflow: hidden;
+  border-radius: var(--r-card) var(--r-card) 0 0;
+  background: radial-gradient(60% 80% at 50% 40%, color-mix(in srgb, var(--el) 30%, transparent), transparent 75%), var(--bg-inset);
+}
+.planArt::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 45%, rgb(0 0 0 / 0.72));
+  pointer-events: none;
+}
+.planArtImg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.planArtEmpty {
+  display: grid;
+  place-items: center;
+}
+.planArtInitials {
+  font: 700 28px var(--font-numbers);
+  color: var(--ink-3);
+}
+.planArtLabel {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 1;
+  font: 600 9px/1 var(--font-numbers);
+  letter-spacing: 0.1em;
+  color: var(--ink-3);
+  padding: 3px 5px;
+  border-radius: var(--r-tag);
+  background: rgb(0 0 0 / 0.55);
+}
+.planArtText {
+  position: absolute;
+  left: var(--s-4);
+  bottom: 10px;
+  right: 120px;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  color: #f2f6f9;
+  text-shadow: 0 1px 3px rgb(0 0 0 / 0.8);
+}
+.planArtName {
+  font-size: 16px;
+  font-weight: 800;
+  overflow-wrap: anywhere;
+}
+.planArtSub {
+  font-size: 12px;
+  color: #d5dee6;
+}
+.planTop {
+  font: 600 12px var(--font-numbers);
+  color: var(--rarity-top);
+}
+.planMid {
+  font: 600 12px var(--font-numbers);
+  color: var(--rarity-mid);
+}
+.planRateUps {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  z-index: 1;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: 4px;
+}
+.planRateUps li {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 2px solid var(--rarity-mid);
+  background: var(--bg-raised);
+  display: grid;
+  place-items: center;
+  font: 700 12px var(--font-numbers);
+  color: var(--ink-2);
+}
+.planRateUps img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}

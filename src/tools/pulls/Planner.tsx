@@ -1,10 +1,13 @@
 import { useState, type CSSProperties } from 'react';
-import type { Banner, BannerType, GameContract } from '../../core/contract';
+import type { Banner, BannerType, Character, GameContract, Weapon } from '../../core/contract';
 import { formatNumber } from '../../core/time/format';
 import { setPityManual } from '../../core/data/userData';
 import { formatDate, formatRange } from '../../core/time/reset';
 import { Button, EmptyState, ExampleTag, GameTag, NoData, Timer, UnverifiedTag } from '../../core/ui';
 import { useAddOwnBanner } from '../banners/AddOwnBanner';
+import { BannerArt } from '../banners/BannerArt';
+import { phaseOfBanner, type Phase } from '../banners/fit';
+import { useBannersData, type BannersData } from '../banners/useBannersData';
 import { cx } from '../../core/ui/cx';
 import { budget, budgetPulls, pullsFor, type BudgetRow } from '../budget/budget';
 import { chance, pityFromHistory, worstCase, type OddsMode } from '../pity/pity';
@@ -45,6 +48,10 @@ export function Planner({ game, data, serverId, now, tagged, openTab }: Props) {
   // Example pulls stand in only where you haven't saved your own pity.
   const examplePity = data.history.example && pityTypes.some((t) => !data.user.pityManual?.[t.id]);
   const { openSheet, sheet } = useAddOwnBanner(game, data.banners.examples);
+  // Characters, weapons and art for each card's picture (the same as the Banners module).
+  const art = useBannersData(game, now);
+  const phaseOf = phaseOfBanner(all, now);
+  const sections = PHASES.map((ph) => ({ ...ph, list: banners.filter((b) => phaseOf(b) === ph.id) }));
 
   return (
     <div className={p.stack}>
@@ -75,21 +82,42 @@ export function Planner({ game, data, serverId, now, tagged, openTab }: Props) {
           action={{ label: 'Add my own banner', onClick: openSheet }}
         />
       ) : (
-        <div className={p.planGrid}>
-          {banners.map((b) => {
-            const type = typeOf(b);
-            return type ? <PlanCard key={b.id} game={game} banner={b} type={type} data={data} serverId={serverId} now={now} tagged={tagged} whatIf={whatIf[type.id]} openTab={openTab} /> : null;
-          })}
-        </div>
+        sections.map((sec) => (
+          <section key={sec.id} className={p.planSection} aria-labelledby={`plan-${game.id}-${sec.id}`}>
+            <h3 className={p.planSectionHead} id={`plan-${game.id}-${sec.id}`}>
+              {sec.label} <span className={p.planCount}>{sec.list.length}</span>
+              <span className={p.muted}>{sec.note}</span>
+            </h3>
+            {sec.list.length === 0 ? (
+              <p className={p.muted}>Nothing yet</p>
+            ) : (
+              <div className={p.planGrid}>
+                {sec.list.map((b) => {
+                  const type = typeOf(b);
+                  return type ? (
+                    <PlanCard key={b.id} game={game} banner={b} type={type} data={data} art={art} serverId={serverId} now={now} tagged={tagged} whatIf={whatIf[type.id]} openTab={openTab} />
+                  ) : null;
+                })}
+              </div>
+            )}
+          </section>
+        ))
       )}
       {sheet}
     </div>
   );
 }
 
+const PHASES: { id: Phase; label: string; note: string }[] = [
+  { id: 'now', label: 'Now', note: 'Running now' },
+  { id: 'next', label: 'Next', note: 'The next phase' },
+  { id: 'later', label: 'Later', note: 'After that, leaks included' },
+];
+
 interface CardProps {
   game: GameContract;
   banner: Banner;
+  art: BannersData;
   type: BannerType;
   data: PullsData;
   serverId: string | undefined;
@@ -122,7 +150,7 @@ export function pityFor(data: Pick<PullsData, 'history' | 'user'>, typeId: strin
   return fromHistory ? { state: fromHistory, source: 'example' } : null;
 }
 
-function PlanCard({ game, banner: b, type, data, serverId, now, tagged, whatIf, openTab }: CardProps) {
+function PlanCard({ game, banner: b, type, data, art, serverId, now, tagged, whatIf, openTab }: CardProps) {
   const start = Date.parse(b.start);
   const end = Date.parse(b.end);
   const upcoming = start > now;
@@ -157,6 +185,7 @@ function PlanCard({ game, banner: b, type, data, serverId, now, tagged, whatIf, 
 
   return (
     <article className={cx(p.planCard, b.leak && p.leakCard)} style={{ '--vent': game.vent } as CSSProperties} aria-label={b.title}>
+      <PlanArt game={game} banner={b} type={type} art={art} />
       <div className={p.kindRow}>
         <span className={p.kind}>{type.label}</span>
         {(data.banners.exampleIds.has(b.id) || exampleNumbers) && <ExampleTag />}
@@ -241,10 +270,11 @@ function LeftOut({ rows }: { rows: BudgetRow[] }) {
   const byReason = new Map<string, string[]>();
   for (const r of rows) if (r.status === 'no-data') byReason.set(r.reason ?? 'no data', [...(byReason.get(r.reason ?? 'no data') ?? []), r.label]);
   if (byReason.size === 0) return null;
+  const count = [...byReason.values()].flat().length;
   return (
     <details className={p.leftOut}>
       <summary>
-        Not counted: {[...byReason.values()].flat().length} rows with no data yet
+        Not counted: {count} {count === 1 ? 'row' : 'rows'} with no data yet
       </summary>
       {[...byReason].map(([reason, labels]) => (
         <span key={reason} className={p.muted}>
@@ -252,6 +282,54 @@ function LeftOut({ rows }: { rows: BudgetRow[] }) {
         </span>
       ))}
     </details>
+  );
+}
+
+/**
+ * What the banner is, like the Banners module shows it: the featured character's art (a weapon
+ * banner: the weapon's picture), its name, and the other rate-ups as small portraits. No art →
+ * "No art yet", never a made-up picture; sample art only on example banners.
+ */
+function PlanArt({ game, banner, type, art }: { game: GameContract; banner: Banner; type: BannerType; art: BannersData }) {
+  const isWeapon = type.target === 'weapon';
+  const weapons = isWeapon ? banner.featured.map((id) => art.weapons.get(id)).filter((w): w is Weapon => Boolean(w)) : [];
+  const chars = isWeapon ? [] : banner.featured.map((id) => art.characters.get(id)).filter((c): c is Character => Boolean(c));
+  const lead = chars[0];
+  const leadWeapon = weapons[0];
+  const isExample = art.banners.exampleIds.has(banner.id);
+  const src = banner.art ?? (isWeapon ? leadWeapon?.icon : lead ? (isExample ? (art.sampleArt.get(lead.id) ?? lead.art) : lead.art) : undefined);
+  const name = isWeapon ? leadWeapon?.name : lead?.name;
+  const rarity = isWeapon ? leadWeapon?.rarity : lead?.rarity;
+  const madeFor = isWeapon && leadWeapon?.madeFor ? art.characters.get(leadWeapon.madeFor) : undefined;
+  const others = isWeapon ? weapons.slice(1) : chars.slice(1);
+  const element = lead ? game.elements.find((e) => e.id === lead.element) : undefined;
+  return (
+    <div className={cx(p.planArt, !src && p.planArtEmpty)} style={{ '--el': element?.color ?? 'var(--line-strong)' } as CSSProperties}>
+      {src ? <BannerArt src={src} weapon={isWeapon} className={p.planArtImg ?? ''} /> : <span className={p.planArtInitials} aria-hidden="true">{(name ?? banner.title).slice(0, 2)}</span>}
+      {(!src || isExample) && <span className={p.planArtLabel}>{src ? 'SAMPLE ART' : 'NO ART YET'}</span>}
+      <div className={p.planArtText}>
+        {name ? (
+          <span className={p.planArtName}>
+            {name} {rarity && rarity !== 'low' && <span className={rarity === 'top' ? p.planTop : p.planMid}>{game.terms.rarity[rarity]}</span>}
+          </span>
+        ) : (
+          <span className={p.planArtName}>{isWeapon ? `${game.terms.weapon} not in HLITH yet` : 'Featured character not in the list yet'}</span>
+        )}
+        {madeFor && <span className={p.planArtSub}>Made for {madeFor.name}</span>}
+      </div>
+      {others.length > 0 && (
+        <ul className={p.planRateUps} aria-label="Also on rate-up">
+          {others.slice(0, 4).map((o) => {
+            const pic = isWeapon ? (o as Weapon).icon : (o as Character).portrait;
+            return (
+              <li key={o.id} title={o.name}>
+                {pic ? <img src={pic} alt={o.name} loading="lazy" /> : <span aria-label={o.name}>{o.name.charAt(0)}</span>}
+              </li>
+            );
+          })}
+        </ul>
+      )}
+    </div>
   );
 }
 

@@ -103,6 +103,17 @@ describe('Pulls screen', () => {
     expect(screen.getAllByText(/Chance by then · official rates/).length).toBeGreaterThan(0);
   });
 
+  it('Planner sorts banners into Now, Next and Later, each card led by who the banner is for (T70)', async () => {
+    await show('planner');
+    for (const name of [/^Now/, /^Next/, /^Later/]) expect(screen.getByRole('heading', { level: 3, name })).toBeInTheDocument();
+    const now = screen.getByRole('region', { name: /^Now/ });
+    // The featured character's name sits on the banner picture, not only the banner title.
+    expect(within(now).getAllByText('Newest Star').length).toBeGreaterThan(0);
+    // A phase with nothing in it says so.
+    const sections = screen.getAllByRole('region').filter((r) => /^(Now|Next|Later)/.test(r.getAttribute('aria-labelledby') ? (document.getElementById(r.getAttribute('aria-labelledby') as string)?.textContent ?? '') : ''));
+    expect(sections).toHaveLength(3);
+  });
+
   it('History shows the example pity and a Luck report card', async () => {
     await show('history');
     expect(screen.getByLabelText('Luck report')).toBeInTheDocument();
