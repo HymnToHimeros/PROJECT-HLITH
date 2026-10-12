@@ -42,5 +42,5 @@ because code, database notes and the chats' rules point at them.
 - [COPYRIGHT](COPYRIGHT.md): what to do if someone copies HLIÐSKJÁLF (takedown templates).
 
 ## Pictures
-- [screenshots/](screenshots/): the pictures used in the main README.
+- [screenshots/](screenshots/): the pictures and short animations used in the main README (older ones in `screenshots/archive/`).
 - [owner-reports/](owner-reports/): screenshots sent to the owner, by date and job. Pictures nothing points at any more are in `owner-reports/archive/`.
