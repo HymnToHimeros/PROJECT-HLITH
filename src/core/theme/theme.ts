@@ -12,6 +12,7 @@ import { useEffect } from 'react';
 import { getPrefs, updatePrefs, usePrefs } from '../data/prefs';
 import type { Scope } from '../registry/layout';
 import { applyLook, lookOf, setOwnerLook } from './look';
+import { applySkin } from './skin';
 import { scheduledTheme } from './schedule';
 import { useNow } from '../ui/useNow';
 import { isOwnerThemeId, ownerThemeFor, useOwnerThemes, type OwnerTheme, type OwnerThemeId } from './ownerThemes';
@@ -34,6 +35,7 @@ export function applyTheme(theme: unknown): void {
   delete root.dataset.accent;
   const owner = ownerThemeFor(theme);
   setOwnerLook(owner ? { surfaces: ['bg-app', 'bg-card', 'bg-shell', 'bg-inset', 'bg-raised'].flatMap((k) => owner.tokens[k] ?? []), glacier: owner.tokens.glacier } : { surfaces: [] });
+  applySkin(owner?.look, root);
   if (owner) {
     root.dataset.theme = 'owner';
     root.dataset.tone = owner.tone;

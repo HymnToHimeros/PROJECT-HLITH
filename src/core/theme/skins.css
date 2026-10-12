@@ -1,0 +1,513 @@
+/* Skins (T74, skin.ts): generic styles a theme can pick for cards, sidebar, header, headings,
+   buttons, chips, progress bars and spacing, plus the motion names its scene drawings use.
+   Everything here waits for data-skin-* on <html>; colours come from the theme's tokens and
+   pictures from its pack (--skin-frame, --skin-corner-*, --skin-side, …). The hooks
+   (hlith-card, hlith-button, …) are added to the app's own classes with `composes`. */
+
+/* ── Scene layers (the theme art layer) ── */
+.sk-layer {
+  position: absolute;
+  pointer-events: none;
+}
+.sk-layer > svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+.sk-layer[data-place='fill'] { inset: 0; }
+.sk-layer[data-place='top'] { left: 0; right: 0; top: 0; height: 60%; }
+.sk-layer[data-place='bottom'] { left: 0; right: 0; bottom: 0; height: 55%; }
+.sk-layer[data-place='left'] { left: 0; top: 0; bottom: 0; width: 46%; }
+.sk-layer[data-place='right'] { right: 0; top: 0; bottom: 0; width: 46%; }
+.sk-layer[data-place='center'] { inset: 8% 12%; }
+.sk-layer[data-place='top-left'] { left: 0; top: 0; width: min(62vw, 880px); height: min(70vh, 720px); }
+.sk-layer[data-place='top-right'] { right: 0; top: 0; width: min(62vw, 880px); height: min(70vh, 720px); }
+.sk-layer[data-place='bottom-left'] { left: 0; bottom: 0; width: min(62vw, 880px); height: min(70vh, 720px); }
+.sk-layer[data-place='bottom-right'] { right: 0; bottom: 0; width: min(62vw, 880px); height: min(70vh, 720px); }
+
+/* ── Scene motion: very slow, transform and opacity only. On: all. Reduced: only light
+   changing (twinkle, breathe, flicker). Off: still. sk-d1…sk-d8 start a copy part-way through;
+   sk-x2 / sk-x05 make one twice as slow or fast; sk-o-* move the turning point. ── */
+[data-art] [class*='sk-'] {
+  transform-box: fill-box;
+  transform-origin: center;
+  --sk-k: 1;
+}
+[data-art] .sk-o-top { transform-origin: 50% 0; }
+[data-art] .sk-o-bottom { transform-origin: 50% 100%; }
+[data-art] .sk-o-left { transform-origin: 0 50%; }
+[data-art] .sk-o-right { transform-origin: 100% 50%; }
+[data-art] .sk-x2 { --sk-k: 2; }
+[data-art] .sk-x3 { --sk-k: 3; }
+[data-art] .sk-x05 { --sk-k: 0.5; }
+:root[data-motion='on'] [data-art] .sk-spin { animation: sk-turn calc(240s * var(--sk-k)) linear infinite; }
+:root[data-motion='on'] [data-art] .sk-spin-mid { animation: sk-turn calc(90s * var(--sk-k)) linear infinite; }
+:root[data-motion='on'] [data-art] .sk-spin-fast { animation: sk-turn calc(30s * var(--sk-k)) linear infinite; }
+:root[data-motion='on'] [data-art] .sk-spin-rev { animation: sk-turn calc(160s * var(--sk-k)) linear infinite reverse; }
+:root[data-motion='on'] [data-art] .sk-sway { animation: sk-sway calc(9s * var(--sk-k)) ease-in-out infinite alternate; }
+:root[data-motion='on'] [data-art] .sk-wing { animation: sk-wing calc(8s * var(--sk-k)) ease-in-out infinite alternate; }
+:root[data-motion='on'] [data-art] .sk-bob { animation: sk-bob calc(7s * var(--sk-k)) ease-in-out infinite alternate; }
+:root[data-motion='on'] [data-art] .sk-float { animation: sk-float calc(13s * var(--sk-k)) ease-in-out infinite alternate; }
+:root[data-motion='on'] [data-art] .sk-drift { animation: sk-drift calc(60s * var(--sk-k)) ease-in-out infinite alternate; }
+:root[data-motion='on'] [data-art] .sk-glide { animation: sk-glide calc(90s * var(--sk-k)) ease-in-out infinite alternate; }
+:root[data-motion='on'] [data-art] .sk-pulse { animation: sk-pulse calc(8s * var(--sk-k)) ease-in-out infinite; }
+:root[data-motion='on'] [data-art] .sk-rise { animation: sk-rise calc(12s * var(--sk-k)) ease-in infinite; }
+:root[data-motion='on'] [data-art] .sk-fall { animation: sk-fall calc(16s * var(--sk-k)) linear infinite; }
+:root[data-motion='on'] [data-art] .sk-drop { animation: sk-drop calc(9s * var(--sk-k)) cubic-bezier(0.5, 0, 1, 1) infinite; }
+:root[data-motion='on'] [data-art] .sk-ripple { animation: sk-ripple calc(6s * var(--sk-k)) ease-out infinite; }
+:root[data-motion='on'] [data-art] .sk-flow { animation: sk-flow calc(14s * var(--sk-k)) linear infinite; }
+:root[data-motion='on'] [data-art] .sk-flash { animation: sk-flash calc(11s * var(--sk-k)) linear infinite; }
+:root[data-motion='on'] [data-art] .sk-twinkle,
+:root[data-motion='reduced'] [data-art] .sk-twinkle { animation: sk-twinkle calc(5s * var(--sk-k)) ease-in-out infinite; }
+:root[data-motion='on'] [data-art] .sk-breathe,
+:root[data-motion='reduced'] [data-art] .sk-breathe { animation: sk-breathe calc(6s * var(--sk-k)) ease-in-out infinite alternate; }
+:root[data-motion='on'] [data-art] .sk-flicker,
+:root[data-motion='reduced'] [data-art] .sk-flicker { animation: sk-flicker calc(3.4s * var(--sk-k)) steps(1, end) infinite; }
+[data-art] .sk-d1 { animation-delay: -1.3s !important; }
+[data-art] .sk-d2 { animation-delay: -2.7s !important; }
+[data-art] .sk-d3 { animation-delay: -4.1s !important; }
+[data-art] .sk-d4 { animation-delay: -5.6s !important; }
+[data-art] .sk-d5 { animation-delay: -7.2s !important; }
+[data-art] .sk-d6 { animation-delay: -8.9s !important; }
+[data-art] .sk-d7 { animation-delay: -10.4s !important; }
+[data-art] .sk-d8 { animation-delay: -12.8s !important; }
+@keyframes sk-turn { to { transform: rotate(360deg); } }
+@keyframes sk-sway { from { transform: rotate(-2deg); } to { transform: rotate(2deg); } }
+@keyframes sk-wing { from { transform: rotate(-5deg) scaleY(0.97); } to { transform: rotate(3deg) scaleY(1.02); } }
+@keyframes sk-bob { to { transform: translateY(-10px); } }
+@keyframes sk-float { from { transform: translate(-8px, 6px); } to { transform: translate(10px, -12px); } }
+@keyframes sk-drift { from { transform: translateX(-60px); } to { transform: translateX(60px); } }
+@keyframes sk-glide { from { transform: translate(-140px, 34px); } to { transform: translate(140px, -24px); } }
+@keyframes sk-pulse { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.06); opacity: 0.78; } }
+@keyframes sk-rise { 0% { transform: translateY(30px); opacity: 0; } 20%, 70% { opacity: 1; } 100% { transform: translateY(-180px); opacity: 0; } }
+@keyframes sk-fall { from { transform: translate(0, -60px); } to { transform: translate(-50px, 320px); } }
+@keyframes sk-drop { 0% { transform: translateY(-10px); opacity: 0; } 15% { opacity: 1; } 85% { opacity: 1; } 100% { transform: translateY(240px); opacity: 0; } }
+@keyframes sk-ripple { from { transform: scale(0.55); opacity: 0.95; } to { transform: scale(1.7); opacity: 0; } }
+@keyframes sk-flow { to { stroke-dashoffset: -600; } }
+@keyframes sk-flash { 0%, 61%, 63.5%, 66%, 100% { opacity: 0; } 62%, 65% { opacity: 1; } 64% { opacity: 0.2; } }
+@keyframes sk-twinkle { 0%, 100% { opacity: 1; } 50% { opacity: 0.25; } }
+@keyframes sk-breathe { from { opacity: 0.5; } to { opacity: 1; } }
+@keyframes sk-flicker { 0% { opacity: 1; } 18% { opacity: 0.82; } 27% { opacity: 0.95; } 46% { opacity: 0.74; } 58% { opacity: 1; } 79% { opacity: 0.86; } }
+
+/* ── Heading font ── */
+:root[data-skin-font='cinzel'] { --skin-font: 'Cinzel', ui-serif, serif; }
+:root[data-skin-font='cinzel-decorative'] { --skin-font: 'Cinzel Decorative', 'Cinzel', ui-serif, serif; }
+:root[data-skin-font='cormorant-sc'] { --skin-font: 'Cormorant SC', ui-serif, serif; }
+:root[data-skin-font='marcellus-sc'] { --skin-font: 'Marcellus SC', ui-serif, serif; }
+:root[data-skin-font='im-fell-english-sc'] { --skin-font: 'IM Fell English SC', ui-serif, serif; }
+:root[data-skin-font='metamorphous'] { --skin-font: 'Metamorphous', ui-serif, serif; }
+:root[data-skin-font='uncial-antiqua'] { --skin-font: 'Uncial Antiqua', ui-serif, serif; }
+:root[data-skin-font='almendra-sc'] { --skin-font: 'Almendra SC', ui-serif, serif; }
+:root[data-skin-font='pirata-one'] { --skin-font: 'Pirata One', ui-serif, serif; }
+:root[data-skin-font='grenze-gotisch'] { --skin-font: 'Grenze Gotisch', ui-serif, serif; }
+:root[data-skin]:not([data-skin-font='default']) :is(.hlith-title, .hlith-card h2) {
+  font-family: var(--skin-font);
+  font-weight: 400;
+  font-stretch: normal;
+  letter-spacing: 0.02em;
+}
+:root[data-skin]:not([data-skin-font='default']) .hlith-title {
+  font-size: 34px;
+  line-height: 1.15;
+  padding-bottom: 2px;
+}
+:root[data-skin]:not([data-skin-font='default']) .hlith-card h2 {
+  font-size: 1.22em;
+}
+
+/* ── Heading treatment: page title and card headings ── */
+:root[data-skin-title='warm'] :is(.hlith-title, .hlith-card h2),
+:root[data-skin-title='cool'] :is(.hlith-title, .hlith-card h2),
+:root[data-skin-title='tri'] :is(.hlith-title, .hlith-card h2),
+:root[data-skin-title='molten'] :is(.hlith-title, .hlith-card h2),
+:root[data-skin-title='storm'] :is(.hlith-title, .hlith-card h2) {
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+:root[data-skin-title='warm'] :is(.hlith-title, .hlith-card h2) { background-image: linear-gradient(180deg, var(--ink-1) 15%, var(--rarity-top) 100%); }
+:root[data-skin-title='cool'] :is(.hlith-title, .hlith-card h2) { background-image: linear-gradient(180deg, var(--ink-1) 10%, var(--glacier) 100%); }
+:root[data-skin-title='tri'] :is(.hlith-title, .hlith-card h2) { background-image: linear-gradient(100deg, var(--rarity-top), var(--glacier) 55%, var(--vent-all)); }
+:root[data-skin-title='molten'] :is(.hlith-title, .hlith-card h2) {
+  background-image: linear-gradient(180deg, var(--vent-all) 0%, var(--rarity-top) 55%, var(--ember-soft) 100%);
+  filter: drop-shadow(0 0 10px color-mix(in srgb, var(--ember) 35%, transparent));
+}
+:root[data-skin-title='storm'] :is(.hlith-title, .hlith-card h2) {
+  background-image: linear-gradient(180deg, var(--ink-1) 30%, var(--glacier));
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  filter: drop-shadow(0 0 8px color-mix(in srgb, var(--glacier) 40%, transparent));
+}
+:root[data-skin-title='engraved'] :is(.hlith-title, .hlith-card h2) {
+  color: var(--ink-2);
+  text-shadow: 0 1px 0 rgb(0 0 0 / 0.9), 0 -1px 0 rgb(255 255 255 / 0.14);
+}
+:root[data-skin-title='glow-warm'] :is(.hlith-title, .hlith-card h2) {
+  color: var(--ink-1);
+  text-shadow: 0 0 14px color-mix(in srgb, var(--rarity-top) 60%, transparent), 0 0 2px color-mix(in srgb, var(--rarity-top) 50%, transparent);
+}
+:root[data-skin-title='glow-cool'] :is(.hlith-title, .hlith-card h2) {
+  color: var(--ink-1);
+  text-shadow: 0 0 14px color-mix(in srgb, var(--glacier) 60%, transparent), 0 0 2px color-mix(in srgb, var(--glacier) 50%, transparent);
+}
+/* The flourish under the page title, and the divider under card headings. */
+:root[data-skin-art~='flourish'] .hlith-title::after {
+  content: '';
+  display: block;
+  width: var(--skin-flourish-size);
+  max-width: 100%;
+  height: 16px;
+  margin-top: 6px;
+  background: var(--skin-flourish) left center / contain no-repeat;
+}
+:root[data-skin-art~='divider'] .hlith-card h2::after {
+  content: '';
+  display: block;
+  width: var(--skin-divider-size);
+  max-width: 100%;
+  height: 12px;
+  margin-top: 6px;
+  background: var(--skin-divider) left center / contain no-repeat;
+}
+
+/* ── Cards ── */
+:root[data-skin] .hlith-card {
+  position: relative;
+  isolation: isolate;
+}
+:root[data-skin-card='soft'] .hlith-card { border-radius: calc(var(--r-card) + 10px); }
+:root[data-skin-card='sharp'] .hlith-card { border-radius: 2px; }
+:root[data-skin-card='arched'] .hlith-card { border-radius: 26px 26px 4px 4px; }
+:root[data-skin-card='notched'] .hlith-card {
+  border-radius: 0;
+  clip-path: polygon(16px 0, calc(100% - 16px) 0, 100% 16px, 100% calc(100% - 16px), calc(100% - 16px) 100%, 16px 100%, 0 calc(100% - 16px), 0 16px);
+}
+:root[data-skin-card='bevel'] .hlith-card {
+  border-radius: 0;
+  clip-path: polygon(22px 0, calc(100% - 22px) 0, 100% 22px, 100% 100%, 0 100%, 0 22px);
+}
+:root[data-skin-card='folded'] .hlith-card {
+  border-radius: 4px;
+  clip-path: polygon(0 0, calc(100% - 22px) 0, 100% 22px, 100% 100%, 0 100%);
+}
+:root[data-skin-card='lozenge'] .hlith-card {
+  border-radius: 0;
+  clip-path: polygon(0 10px, 10px 0, calc(50% - 14px) 0, 50% 7px, calc(50% + 14px) 0, calc(100% - 10px) 0, 100% 10px, 100% calc(100% - 10px), calc(100% - 10px) 100%, calc(50% + 14px) 100%, 50% calc(100% - 7px), calc(50% - 14px) 100%, 10px 100%, 0 calc(100% - 10px));
+}
+/* Surfaces, over the card colour. */
+:root[data-skin-surface='rise'] .hlith-card {
+  background-image: radial-gradient(130% 70% at 50% 0%, color-mix(in srgb, var(--rarity-top) 13%, transparent), transparent 70%);
+}
+:root[data-skin-surface='vignette'] .hlith-card {
+  background-image: radial-gradient(120% 120% at 50% 40%, transparent 45%, rgb(0 0 0 / 0.42));
+}
+:root[data-skin-surface='grain'] .hlith-card {
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 0.9 0 0 0 0 0.75 0 0 0 0.07 0'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)'/%3E%3C/svg%3E"),
+    linear-gradient(180deg, color-mix(in srgb, var(--rarity-top) 6%, transparent), transparent 60%);
+}
+:root[data-skin-surface='glass'] .hlith-card {
+  background-color: color-mix(in srgb, var(--bg-card) 90%, transparent);
+  -webkit-backdrop-filter: blur(10px) saturate(1.2);
+  backdrop-filter: blur(10px) saturate(1.2);
+  background-image: linear-gradient(160deg, rgb(255 255 255 / 0.06), transparent 45%);
+}
+:root[data-skin-surface='sheen'] .hlith-card {
+  background-image: linear-gradient(135deg, color-mix(in srgb, var(--glacier) 9%, transparent), transparent 38%, transparent 62%, color-mix(in srgb, var(--rarity-top) 7%, transparent));
+}
+/* The frame picture (from the pack), painted over the edge without changing the layout. */
+:root[data-skin-art~='frame'] .hlith-card {
+  border-color: transparent;
+  border-image-source: var(--skin-frame);
+  border-image-slice: var(--skin-frame-slice);
+  border-image-width: var(--skin-frame-width);
+  border-image-outset: var(--skin-frame-outset);
+  border-image-repeat: round;
+}
+/* A card inside a card keeps a plain edge: one frame is enough. */
+:root[data-skin-art~='frame'] .hlith-card .hlith-card {
+  border-image: none;
+  border-color: color-mix(in srgb, var(--rarity-top) 22%, var(--line-default));
+}
+:root[data-skin] .hlith-card .hlith-card::before {
+  content: none;
+}
+/* Corner ornaments (four turned copies of one picture). */
+:root[data-skin-art~='corner'] .hlith-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    var(--skin-corner-tl) top left / var(--skin-corner-size) var(--skin-corner-size) no-repeat,
+    var(--skin-corner-tr) top right / var(--skin-corner-size) var(--skin-corner-size) no-repeat,
+    var(--skin-corner-bl) bottom left / var(--skin-corner-size) var(--skin-corner-size) no-repeat,
+    var(--skin-corner-br) bottom right / var(--skin-corner-size) var(--skin-corner-size) no-repeat;
+}
+/* Inner line. */
+:root:is([data-skin-inner='line'], [data-skin-inner='double'], [data-skin-inner='dashed']) .hlith-card::after {
+  content: '';
+  position: absolute;
+  inset: 5px;
+  z-index: -1;
+  pointer-events: none;
+  border-radius: inherit;
+  border: 1px solid color-mix(in srgb, var(--rarity-top) 32%, transparent);
+}
+:root[data-skin-inner='double'] .hlith-card::after {
+  inset: 4px;
+  border: 3px double color-mix(in srgb, var(--rarity-top) 40%, transparent);
+}
+:root[data-skin-inner='dashed'] .hlith-card::after {
+  border: 1px dashed color-mix(in srgb, var(--glacier) 34%, transparent);
+}
+:root[data-skin-inner='glow'] .hlith-card {
+  box-shadow: inset 0 0 28px color-mix(in srgb, var(--glacier) 14%, transparent), 0 0 0 1px color-mix(in srgb, var(--glacier) 18%, transparent);
+}
+:root[data-skin-inner='inset'] .hlith-card {
+  box-shadow: inset 0 2px 10px rgb(0 0 0 / 0.55), inset 0 -1px 0 rgb(255 255 255 / 0.05);
+}
+
+/* ── Sidebar ── */
+:root[data-skin] .hlith-side {
+  isolation: isolate;
+}
+:root[data-skin-side='panel'] .hlith-side {
+  background: linear-gradient(180deg, color-mix(in srgb, var(--rarity-top) 7%, var(--bg-shell)), var(--bg-shell) 30%, var(--bg-app));
+  border-right: 1px solid color-mix(in srgb, var(--rarity-top) 30%, transparent);
+  box-shadow: inset -6px 0 0 -5px color-mix(in srgb, var(--rarity-top) 22%, transparent);
+}
+:root[data-skin-side='rail'] .hlith-side {
+  border-right: 0;
+  box-shadow: inset -1px 0 0 color-mix(in srgb, var(--glacier) 40%, transparent), inset -5px 0 0 -3px color-mix(in srgb, var(--glacier) 18%, transparent);
+}
+:root[data-skin-side='carved'] .hlith-side {
+  background: linear-gradient(90deg, var(--bg-app), var(--bg-shell) 40%, color-mix(in srgb, var(--bg-raised) 80%, var(--bg-shell)));
+  border-right: 2px solid color-mix(in srgb, var(--rarity-top) 22%, var(--bg-app));
+  box-shadow: inset -3px 0 6px rgb(0 0 0 / 0.5);
+}
+:root[data-skin-side='banner'] .hlith-side {
+  background: linear-gradient(180deg, color-mix(in srgb, var(--art-glow) 60%, var(--bg-shell)), var(--bg-shell) 45%);
+  border-right: 1px solid color-mix(in srgb, var(--rarity-top) 40%, transparent);
+}
+:root[data-skin-side='glass'] .hlith-side {
+  background: color-mix(in srgb, var(--bg-shell) 70%, transparent);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  border-right: 1px solid color-mix(in srgb, var(--glacier) 22%, transparent);
+}
+:root[data-skin-art~='side'] .hlith-side::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: var(--skin-side-size);
+  z-index: -1;
+  pointer-events: none;
+  background: var(--skin-side) bottom center / 100% auto no-repeat;
+  /* A watermark behind the menu: dim, fading out towards the menu so names stay easy to read. */
+  opacity: 0.3;
+  -webkit-mask-image: linear-gradient(to top, #000 45%, transparent);
+  mask-image: linear-gradient(to top, #000 45%, transparent);
+}
+/* The page you're on, in the sidebar. */
+:root[data-skin]:not([data-skin-side='plain']) .hlith-nav[aria-current='page'] {
+  background: linear-gradient(90deg, color-mix(in srgb, var(--rarity-top) 16%, transparent), transparent 85%);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--rarity-top) 18%, transparent);
+}
+:root[data-skin-art~='mark'] .hlith-nav[aria-current='page']::before {
+  top: 50%;
+  bottom: auto;
+  left: -4px;
+  width: var(--skin-mark-size);
+  height: var(--skin-mark-size);
+  transform: translateY(-50%);
+  border-radius: 0;
+  background: var(--skin-mark) center / contain no-repeat;
+  -webkit-mask: none;
+  mask: none;
+}
+
+/* ── Header ── */
+:root[data-skin] .hlith-head {
+  position: relative;
+  isolation: isolate;
+  /* The scene shows through softly; the title always sits on calm ground. */
+  background-color: color-mix(in srgb, var(--bg-app) 45%, transparent);
+  -webkit-backdrop-filter: blur(3px);
+  backdrop-filter: blur(3px);
+}
+:root[data-skin-head='band'] .hlith-head {
+  background-image: linear-gradient(90deg, color-mix(in srgb, var(--rarity-top) 14%, transparent), color-mix(in srgb, var(--glacier) 6%, transparent) 60%, transparent);
+  border-bottom: 1px solid color-mix(in srgb, var(--rarity-top) 35%, transparent);
+}
+:root[data-skin-head='ribbon'] .hlith-head {
+  background-image: linear-gradient(180deg, color-mix(in srgb, var(--art-glow) 55%, transparent), transparent);
+  border-bottom: 3px double color-mix(in srgb, var(--rarity-top) 45%, transparent);
+}
+:root[data-skin-head='horizon'] .hlith-head {
+  background-image: radial-gradient(60% 140% at 30% 120%, color-mix(in srgb, var(--rarity-top) 22%, transparent), transparent 70%);
+  border-bottom: 1px solid transparent;
+  border-image: linear-gradient(90deg, transparent, var(--rarity-top) 30%, var(--glacier) 70%, transparent) 1;
+}
+:root[data-skin-head='plaque'] .hlith-head {
+  background-image: none;
+  border-bottom: 0;
+}
+:root[data-skin-head='plaque'] .hlith-title {
+  padding: 6px 14px 8px;
+  border: 1px solid color-mix(in srgb, var(--rarity-top) 40%, transparent);
+  box-shadow: inset 0 0 0 3px var(--bg-app), inset 0 0 0 4px color-mix(in srgb, var(--rarity-top) 25%, transparent);
+  background-color: color-mix(in srgb, var(--bg-card) 80%, transparent);
+}
+:root[data-skin-art~='head'] .hlith-head::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: var(--skin-head) right center / auto 100% no-repeat;
+  opacity: 0.9;
+}
+
+/* ── Buttons ── */
+:root[data-skin-button='pill'] .hlith-button:not(.hlith-quiet) { border-radius: var(--r-pill); }
+:root[data-skin-button='pill'] .hlith-primary {
+  background-image: linear-gradient(180deg, rgb(255 255 255 / 0.22), transparent 55%);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--rarity-top) 50%, transparent), 0 4px 14px -6px color-mix(in srgb, var(--rarity-top) 70%, transparent);
+}
+:root[data-skin-button='plate'] .hlith-button:not(.hlith-quiet) {
+  border-radius: 3px;
+  background-image: linear-gradient(180deg, rgb(255 255 255 / 0.08), transparent 60%);
+  box-shadow: inset 0 0 0 2px var(--bg-card), inset 0 0 0 3px color-mix(in srgb, var(--rarity-top) 35%, transparent);
+}
+:root[data-skin-button='blade'] .hlith-button:not(.hlith-quiet) {
+  border-radius: 0;
+  padding: 0 22px;
+  clip-path: polygon(12px 0, 100% 0, calc(100% - 12px) 100%, 0 100%);
+  letter-spacing: 0.04em;
+}
+:root[data-skin-button='bevel'] .hlith-button:not(.hlith-quiet) {
+  border-radius: 0;
+  padding: 0 24px;
+  clip-path: polygon(12px 0, calc(100% - 12px) 0, 100% 50%, calc(100% - 12px) 100%, 12px 100%, 0 50%);
+  background-image: linear-gradient(180deg, rgb(255 255 255 / 0.12), transparent 50%, rgb(0 0 0 / 0.18));
+}
+:root[data-skin-button='ghost'] .hlith-button:not(.hlith-quiet) {
+  background-color: transparent;
+  border-color: color-mix(in srgb, var(--glacier) 45%, transparent);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 12.5px;
+}
+:root[data-skin-button='ghost'] .hlith-primary {
+  background-color: color-mix(in srgb, var(--glacier) 16%, transparent);
+  border-color: var(--glacier);
+  color: var(--ink-1);
+}
+:root[data-skin-button='shield'] .hlith-button:not(.hlith-quiet) {
+  border-radius: 6px 6px 16px 16px;
+  background-image:
+    radial-gradient(circle at 8px 8px, color-mix(in srgb, var(--rarity-top) 80%, transparent) 1.6px, transparent 2.2px),
+    radial-gradient(circle at calc(100% - 8px) 8px, color-mix(in srgb, var(--rarity-top) 80%, transparent) 1.6px, transparent 2.2px),
+    linear-gradient(180deg, rgb(255 255 255 / 0.1), transparent 60%);
+  border-width: 2px;
+}
+:root[data-skin-button='lozenge'] .hlith-button:not(.hlith-quiet) {
+  border-radius: 0;
+  clip-path: polygon(8px 0, calc(100% - 8px) 0, 100% 8px, 100% calc(100% - 8px), calc(100% - 8px) 100%, 8px 100%, 0 calc(100% - 8px), 0 8px);
+}
+/* Clipped buttons lose their outline; keep a visible focus ring inside. */
+:root:is([data-skin-button='blade'], [data-skin-button='bevel'], [data-skin-button='lozenge']) .hlith-button:focus-visible {
+  box-shadow: inset 0 0 0 2px var(--glacier);
+}
+
+/* ── Chips ── */
+:root[data-skin-chip='pill'] .hlith-chip { border-color: color-mix(in srgb, var(--rarity-top) 40%, transparent); }
+:root[data-skin-chip='tag'] .hlith-chip {
+  border-radius: 3px;
+  clip-path: polygon(10px 0, 100% 0, 100% 100%, 10px 100%, 0 50%);
+  padding-left: 14px;
+}
+:root[data-skin-chip='orb'] .hlith-chip { border-color: color-mix(in srgb, var(--glacier) 40%, transparent); box-shadow: 0 0 14px -6px var(--glacier); }
+:root[data-skin-chip='plate'] .hlith-chip {
+  border-radius: 4px;
+  box-shadow: inset 0 0 0 2px var(--bg-app), inset 0 0 0 3px color-mix(in srgb, var(--rarity-top) 30%, transparent);
+}
+:root[data-skin-chip='rune'] .hlith-chip {
+  border-radius: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  border-style: dashed;
+}
+
+/* ── Progress bars ── */
+:root[data-skin]:not([data-skin-progress='default']) .hlith-fill {
+  background: linear-gradient(90deg, var(--vent), var(--rarity-top));
+}
+:root[data-skin-progress='segmented'] .hlith-track { height: 8px; border-radius: 2px; }
+:root[data-skin-progress='segmented'] :is(.hlith-track, .hlith-fill) {
+  -webkit-mask: repeating-linear-gradient(90deg, #000 0 14px, transparent 14px 17px);
+  mask: repeating-linear-gradient(90deg, #000 0 14px, transparent 14px 17px);
+}
+:root[data-skin-progress='glow'] .hlith-track { height: 7px; }
+:root[data-skin-progress='glow'] .hlith-fill { box-shadow: 0 0 12px 1px color-mix(in srgb, var(--rarity-top) 70%, transparent); border-radius: 4px; }
+:root[data-skin-progress='beads'] .hlith-track { height: 10px; background: radial-gradient(circle, var(--bg-track) 3.5px, transparent 4px) 0 50% / 12px 10px repeat-x; overflow: hidden; }
+:root[data-skin-progress='beads'] .hlith-fill {
+  -webkit-mask: radial-gradient(circle, #000 4px, transparent 4.5px) 0 50% / 12px 10px repeat-x;
+  mask: radial-gradient(circle, #000 4px, transparent 4.5px) 0 50% / 12px 10px repeat-x;
+}
+:root[data-skin-progress='stripes'] .hlith-track { height: 8px; }
+:root[data-skin-progress='stripes'] .hlith-fill {
+  background: repeating-linear-gradient(-45deg, var(--rarity-top) 0 6px, color-mix(in srgb, var(--rarity-top) 60%, var(--vent)) 6px 12px);
+  background-size: 34px 34px;
+}
+:root[data-motion='on'][data-skin-progress='stripes'] .hlith-fill { animation: sk-stripes 2.4s linear infinite; }
+@keyframes sk-stripes { to { background-position: 34px 0; } }
+:root[data-skin-progress='notched'] .hlith-track { height: 9px; border-radius: 0; clip-path: polygon(5px 0, calc(100% - 5px) 0, 100% 50%, calc(100% - 5px) 100%, 5px 100%, 0 50%); }
+:root[data-skin-progress='notched'] .hlith-fill { border-radius: 0; }
+:root[data-skin-progress='rope'] .hlith-track { height: 8px; border-radius: 4px; }
+:root[data-skin-progress='rope'] .hlith-fill {
+  background: repeating-linear-gradient(60deg, var(--rarity-top) 0 5px, color-mix(in srgb, var(--rarity-top) 45%, var(--bg-app)) 5px 8px);
+  border-radius: 4px;
+}
+:root[data-skin-progress='shields'] .hlith-track { height: 12px; background: radial-gradient(circle at 50% 45%, var(--bg-track) 4.5px, transparent 5px) 0 0 / 15px 12px repeat-x; }
+:root[data-skin-progress='shields'] .hlith-fill {
+  background: radial-gradient(circle at 50% 45%, var(--rarity-top) 3px, var(--ember-soft) 4.5px, transparent 5px) 0 0 / 15px 12px repeat-x;
+}
+
+/* ── Tabs (segmented controls) ── */
+:root[data-skin]:not([data-skin-button='default']) .hlith-tabs {
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--rarity-top) 22%, transparent);
+}
+
+/* ── Layout feel ── */
+:root[data-skin-layout='airy'] .hlith-main { --s-3: 14px; --s-4: 20px; --s-5: 26px; --s-6: 30px; --s-7: 36px; }
+:root[data-skin-layout='compact'] .hlith-main { --s-3: 10px; --s-4: 12px; --s-5: 15px; --s-6: 18px; --s-7: 22px; }
+@media (min-width: 1100px) {
+  :root[data-skin-layout='centered'] .hlith-main > * {
+    width: 100%;
+    max-width: 1180px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  :root[data-skin-layout='framed'] .hlith-main {
+    margin: 10px 12px 10px 0;
+    border: 1px solid color-mix(in srgb, var(--rarity-top) 28%, transparent);
+    outline: 1px solid color-mix(in srgb, var(--rarity-top) 14%, transparent);
+    outline-offset: 4px;
+    border-radius: 6px;
+  }
+}
+
+/* Phone: header art stays small in the corner, behind the title. */
+@media (max-width: 819px) {
+  :root[data-skin-art~='head'] .hlith-head::after {
+    background-position: right bottom;
+    background-size: auto 46%;
+    opacity: 0.45;
+  }
+}

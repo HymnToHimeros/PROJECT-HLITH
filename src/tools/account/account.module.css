@@ -448,6 +448,7 @@
   opacity: 0.55;
 }
 .miniCard {
+  composes: hlith-card from global;
   position: relative;
   display: flex;
   flex-direction: column;

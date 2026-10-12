@@ -2,6 +2,8 @@ import { memo } from 'react';
 import type { OwnerTheme } from './ownerThemes';
 import a from './art.module.css';
 import { OrnamentLayers } from './ornaments';
+import { useSkinPack } from './skinPack';
+import './skins.css';
 
 /**
  * An owner theme's background (T47): the owner's own picture filling the art layer behind the
@@ -11,11 +13,16 @@ import { OrnamentLayers } from './ornaments';
  */
 export const OwnerArt = memo(function OwnerArt({ theme }: { theme: OwnerTheme }) {
   const src = theme.pictureUrl;
+  const pack = useSkinPack(theme.look?.pack);
   return (
     <div className={`${a.art} ${a.ownerArt}`} aria-hidden="true" data-art="owner">
       {src && <img className={a.ownerPicture} src={src} alt="" decoding="async" />}
       <OrnamentLayers ids={theme.ornaments} />
-      <span className={a.ownerScrim} />
+      {(src || !pack?.scene.length) && <span className={a.ownerScrim} />}
+      {pack?.scene.map((l, i) => (
+        // Cleaned by svgClean.ts: drawing elements only, no scripts, links or styles.
+        <div key={i} className="sk-layer" data-place={l.place} style={{ opacity: l.opacity }} dangerouslySetInnerHTML={{ __html: l.markup }} />
+      ))}
       {theme.ornaments.includes('gold-frame') && (
         <svg className={a.ownerFrame} viewBox="0 0 100 100" preserveAspectRatio="none">
           <rect x="1.2" y="1.2" width="97.6" height="97.6" rx="1.5" vectorEffect="non-scaling-stroke" strokeWidth="3" />

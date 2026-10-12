@@ -12,6 +12,8 @@
 import { useSyncExternalStore } from 'react';
 import { contrast } from './contrast';
 import { ACCENT_SHAPES, MOTIF_LAYERS, TEXTURE_LAYERS } from './ornamentIds';
+import { readSkin, type Skin } from './skin';
+import { clearPacks, setPackSource } from './skinPack';
 
 /** Saved in prefs.theme for an owner theme: `owner:<id>`. */
 export type OwnerThemeId = `owner:${string}`;
@@ -31,6 +33,8 @@ export interface OwnerThemeEntry {
   /** The owner's own picture for this theme, a file in the bucket. None = colours and ornaments only. */
   picture?: string;
   ornaments: Ornament[];
+  /** How it dresses cards, sidebar, header, headings and controls, and its pack of pictures (skin.ts). */
+  look?: Skin;
 }
 
 export interface OwnerTheme extends OwnerThemeEntry {
@@ -125,8 +129,11 @@ export function readOwnerTheme(raw: unknown): { theme: OwnerThemeEntry } | { pro
   };
   const picture = file(r.picture, 'picture');
   const ornaments = Array.isArray(r.ornaments) ? r.ornaments.filter((o): o is Ornament => (ORNAMENTS as readonly unknown[]).includes(o)) : [];
+  const skin = readSkin(r.look);
+  const pack = skin ? file((r.look as Record<string, unknown>).pack, 'look.pack') : undefined;
+  const look: Skin | undefined = skin ? { ...skin, ...(pack ? { pack } : {}) } : undefined;
   if (problems.length) return { problems };
-  return { theme: { id, name, mood, tone, tokens, ornaments, ...(picture ? { picture } : {}) } };
+  return { theme: { id, name, mood, tone, tokens, ornaments, ...(picture ? { picture } : {}), ...(look ? { look } : {}) } };
 }
 
 /** The whole manifest: `{ "themes": [ … ] }`. Good themes are kept, bad ones listed with why. */
@@ -184,6 +191,8 @@ export function ownerThemeFor(choice: unknown, s: OwnerThemesState = state): Own
 /** Forget everything (signed out, or not an owner): links freed, the picker loses the section. */
 export function clearOwnerThemes(): void {
   generation++;
+  setPackSource(null);
+  clearPacks();
   urls.forEach((u) => URL.revokeObjectURL(u));
   urls = [];
   set({ status: 'none' });
@@ -192,6 +201,8 @@ export function clearOwnerThemes(): void {
 /** Loads the manifest and each theme's files. Call only once the server has said "owner". */
 export async function loadOwnerThemes(source: OwnerThemeSource): Promise<void> {
   const mine = ++generation;
+  clearPacks();
+  setPackSource(source);
   set({ status: 'loading' });
   try {
     const blob = await source.download('manifest.json');

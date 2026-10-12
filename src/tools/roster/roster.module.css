@@ -513,6 +513,7 @@
   align-items: start;
 }
 .card {
+  composes: hlith-card from global;
   background: var(--bg-card);
   border: 1px solid var(--line-default);
   border-radius: var(--r-card);
@@ -1029,6 +1030,7 @@
   gap: var(--s-3);
 }
 .teamCard {
+  composes: hlith-card from global;
   display: flex;
   flex-direction: column;
   gap: var(--s-3);

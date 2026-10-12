@@ -131,6 +131,30 @@ describe('owner-only themes in the app (T47)', () => {
     expect(getPrefs().theme).toBe('dark');
   });
 
+  it('“Add the set themes” with pictures: each pack goes to its own file, set themes added before are brought up to date (your picture kept), yours never touched (T74)', async () => {
+    const tok = { 'bg-app': '#0a0b12', 'bg-card': '#10121c', 'ink-5': '#9aa3b8' };
+    const draft = (id: string) => ({ id, name: `New ${id}`, tone: 'dark', mood: '', tokens: tok, ornaments: [], version: 2, look: { card: 'notched' }, pack: { scene: [] } });
+    const store = fakeStore({
+      'manifest.json': JSON.stringify({
+        themes: [
+          { id: 'mine', name: 'Mine', tone: 'dark', tokens: tok, ornaments: [] },
+          { id: 'old-set', name: 'Old', tone: 'dark', tokens: tok, ornaments: [], origin: 'set', picture: 'pictures/old-set-1.png' },
+        ],
+      }),
+    });
+    await act(() => loadOwnerThemes(store));
+    render(<OwnerThemesAdmin store={store} drafts={async () => [draft('old-set'), draft('fresh'), draft('mine')]} />);
+    fireEvent.click(screen.getByRole('button', { name: 'Add the set themes' }));
+    await screen.findByText(/Brought up to date: New old-set/);
+    const m = await manifest(store);
+    expect(m.themes.map((t: { id: string }) => t.id)).toEqual(['mine', 'old-set', 'fresh']);
+    expect(m.themes[0]).toEqual({ id: 'mine', name: 'Mine', tone: 'dark', tokens: tok, ornaments: [] });
+    expect(m.themes[1]).toMatchObject({ name: 'New old-set', origin: 'set', picture: 'pictures/old-set-1.png', look: { card: 'notched', pack: 'sets/old-set/look-2.json' } });
+    expect(m.themes[1].pack).toBeUndefined();
+    expect(store.files.has('sets/fresh/look-2.json')).toBe(true);
+    expect(store.files.has('sets/mine/look-2.json')).toBe(false);
+  });
+
   it('set-theme helpers: only set ids, and Undo skips an id that came back', async () => {
     const early = new Set([await sha256('early-a')]);
     expect(await setThemeIds([{ id: 'mine' }, { id: 'early-a' }, { id: 'x', origin: 'set' }], early)).toEqual(['early-a', 'x']);
