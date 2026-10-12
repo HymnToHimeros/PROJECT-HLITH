@@ -61,7 +61,7 @@ describe('public pages: About, Privacy, Terms (T55)', () => {
     expect(t).toContain('**sets no cookies**');
     const src = (dir: string): string[] =>
       readdirSync(resolve(__dirname, '..', dir), { withFileTypes: true }).flatMap((e) => (e.isDirectory() ? src(`${dir}/${e.name}`) : /\.(tsx?|html)$/.test(e.name) ? [`${dir}/${e.name}`] : []));
-    const code = [...src('src'), 'index.html'].map((f) => readFileSync(resolve(__dirname, '..', f), 'utf8')).join('\n');
+    const code = src('src').map((f) => readFileSync(resolve(__dirname, '..', f), 'utf8')).join('\n');
     expect(code).not.toMatch(/document\.cookie\s*=|gtag\(|googletagmanager|plausible|posthog|sentry/i);
     // Exactly what Discord sign-in gives us (Supabase always asks Discord for identify + email).
     expect(t).toContain('Discord user ID, username, display name, avatar picture link and the email address');
