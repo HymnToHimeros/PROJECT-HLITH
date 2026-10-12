@@ -124,10 +124,11 @@ Run log, "by routine"), and each finding shows which job delivered it and when.
 The instructions the scheduled chat follows ("HLITH research routine", a Claude
 Code routine in the cloud environment). Changing what it does = a reviewed PR to
 this section; the routine's own prompt only adds the daily start check below.
-The routine wakes one standing cloud session that has this repository attached
-(not a fresh session that clones it: the cloud's safety check blocks running a
-freshly cloned repository's scripts, as it did on 12 Oct 2026). So each run
-starts with `git pull` and keeps its earlier days' history.
+The routine wakes SCHEDULER's own cloud session, which has this repository
+attached. A fresh session that clones the repository is blocked by the cloud's
+safety check from running its scripts (12 Oct 2026), and a Routine can't wake
+another session that was started for it (it opens a new, empty one instead).
+So each run starts with `git pull` in that session.
 
 **When it runs.** The routine starts every day at 10:45 UTC and first asks
 `node scripts/schedule-due.ts --key --now <24 hours ago>`. When `next_key` is
@@ -204,8 +205,8 @@ the delivery, never skipped silently.
    Guard against a second delivery: before sending, check for the file
    `/tmp/hlith-delivered-<today's UTC date>` (`date -u +%F`); if it exists, today's
    run already delivered (for example a re-sent turn), so don't send again. Right
-   after a 200, write that file. (Dated, because the standing session keeps its
-   files from one day to the next.)
+   after a 200, write that file. (Dated, because the session keeps its files from
+   one day to the next.)
 
 **Its PRs.** Branch `scheduler/research-<date>`. `npm run check` green before
 pushing. When the session has no GitHub tools to open the PR, it pushes the branch
