@@ -62,6 +62,7 @@ export const PRIVACY: LegalPage = {
   title: 'Privacy policy',
   description: 'What HLIÐSKJÁLF (PROJECT-HLITH) keeps about you, where, for how long, and your rights.',
   // 12 Oct: a HoYoLAB login remembered in the browser is now encrypted (wording only, no new consent).
+  // 12 Oct: a paragraph on exclusive rewards (T67): which items you hold and how you got them (no version bump, agreed).
   updated: '12 October 2026',
   blocks: [
     { h: 'The short version' },
