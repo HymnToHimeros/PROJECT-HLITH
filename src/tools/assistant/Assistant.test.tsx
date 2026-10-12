@@ -63,6 +63,27 @@ describe('Assistant panel', () => {
     updatePrefs((p) => ({ ...p, hideExamples: false }));
   });
 
+  it('attach files with the paperclip: each shows with its size and Remove; a wrong kind says why (T71)', async () => {
+    saveKey(KEY, 'device');
+    let sent: RequestBody | null = null;
+    render(<Assistant games={[game]} scope="aa" servers={{}} account={null} transport={async (b) => ((sent = b), reply)} />);
+    const input = document.querySelector('input[type="file"]') as HTMLInputElement;
+    expect(input.multiple).toBe(true);
+    await act(async () => {
+      fireEvent.change(input, { target: { files: [new File(['a,b\n1,2'], 'chests.csv', { type: 'text/csv' }), new File(['x'], 'song.mp3', { type: 'audio/mpeg' })] } });
+    });
+    const pending = screen.getByRole('list', { name: 'Files to send' });
+    expect(within(pending).getByText('chests.csv')).toBeInTheDocument();
+    expect(within(pending).getByText('7 B')).toBeInTheDocument();
+    expect(screen.getByRole('alert')).toHaveTextContent('“song.mp3” can’t be sent');
+    await act(async () => {
+      fireEvent.click(screen.getByRole('button', { name: 'Send' }));
+    });
+    expect(JSON.stringify(sent)).toContain('"title":"chests.csv"');
+    expect(within(screen.getByRole('list', { name: 'Files sent' })).getByText('chests.csv')).toBeInTheDocument();
+    forgetKey();
+  });
+
   it('Settings lists the changes in every game, or says None yet', () => {
     const other = { ...game, id: 'bb', short: 'BB', name: 'Game B' } as GameContract;
     render(<Assistant games={[game]} allGames={[game, other]} scope="aa" servers={{}} account={null} />);

@@ -4,7 +4,7 @@
  * screen (PC side panel 420 px, phone sheet, ⌘K / Ctrl+K).
  * Look: docs/design/HLITH App.dc.html (asstOpen, msgs, thinking, suggestions, draft).
  */
-import { useEffect, useRef, useState, type ChangeEvent, type CSSProperties, type FormEvent } from 'react';
+import { useEffect, useRef, useState, type ChangeEvent, type CSSProperties, type DragEvent, type FormEvent } from 'react';
 import type { GameContract, GameId } from '../../core/contract';
 import { backend } from '../../core/data/backend';
 import { ExampleTag, useNow } from '../../core/ui';
@@ -12,7 +12,9 @@ import { EditLists } from '../edit-mode/EditMode';
 import { AssistantSettingsView } from './AssistantSettings';
 import { functionTransport, newChat, send, useChat, type Transport } from './chat';
 import { loadLookup, summarize } from './context';
-import { prepareImage, type PreparedImage } from './image';
+import { prepareImage, isAcceptedImage, type PreparedImage } from './image';
+import { FILE_ACCEPT, FILES_MAX, prepareFile, type PreparedFile } from './files';
+import { HistoryOffer } from './HistoryOffer';
 import { useKey } from './keyStore';
 import { KeySetup } from './KeySetup';
 import { formatUsd, MODELS, type Cost } from './models';
@@ -47,6 +49,8 @@ export function Assistant({ games, scope, servers, account, allGames, transport 
   const [view, setView] = useState<View>('chat');
   const [draft, setDraft] = useState('');
   const [image, setImage] = useState<PreparedImage | null>(null);
+  const [files, setFiles] = useState<PreparedFile[]>([]);
+  const [dragging, setDragging] = useState(false);
   const [attachError, setAttachError] = useState('');
   const fileRef = useRef<HTMLInputElement>(null);
   const endRef = useRef<HTMLDivElement>(null);
@@ -74,11 +78,14 @@ export function Assistant({ games, scope, servers, account, allGames, transport 
   const submit = async (text: string) => {
     if (blocked || chat.thinking || !key || !model) return;
     const img = image;
+    const docs = files;
     setDraft('');
     setImage(null);
+    setFiles([]);
     await send({
       text,
       image: img ?? undefined,
+      files: docs,
       apiKey: key.key,
       model: model.id,
       webSearch: settings.webSearch && model.webSearch,
@@ -91,16 +98,41 @@ export function Assistant({ games, scope, servers, account, allGames, transport 
     });
   };
 
-  const onFile = async (e: ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    e.target.value = '';
-    if (!file) return;
-    try {
-      setImage(await prepareImage(file));
-      setAttachError('');
-    } catch (err) {
-      setAttachError(err instanceof Error ? err.message : 'That file can’t be read.');
+  // A screenshot (one per message) or files to read (T71): .json, .md, .txt, .csv, .pdf.
+  const attach = async (list: File[]) => {
+    const problems: string[] = [];
+    let room = FILES_MAX - files.length;
+    const added: PreparedFile[] = [];
+    for (const file of list) {
+      try {
+        if (isAcceptedImage(file.type)) {
+          setImage(await prepareImage(file));
+          continue;
+        }
+        if (room <= 0) {
+          problems.push(`Up to ${FILES_MAX} files per message: “${file.name}” wasn’t added.`);
+          continue;
+        }
+        added.push(await prepareFile(file));
+        room--;
+      } catch (err) {
+        problems.push(err instanceof Error ? err.message : `“${file.name}” can’t be read.`);
+      }
     }
+    if (added.length) setFiles((cur) => [...cur, ...added].slice(0, FILES_MAX));
+    setAttachError(problems.join(' '));
+  };
+  const onFile = async (e: ChangeEvent<HTMLInputElement>) => {
+    const list = [...(e.target.files ?? [])];
+    e.target.value = '';
+    if (list.length) await attach(list);
+  };
+  const onDrop = (e: DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    setDragging(false);
+    if (blocked) return;
+    const list = [...e.dataTransfer.files];
+    if (list.length) void attach(list);
   };
 
   const onSubmit = (e: FormEvent) => {
@@ -170,6 +202,16 @@ export function Assistant({ games, scope, servers, account, allGames, transport 
                 m.role === 'user' ? (
                   <div key={m.id} className={`${s.bubble} ${s.user}`}>
                     {m.image && <img className={s.shot} src={m.image} alt="Your screenshot" />}
+                    {m.files && m.files.length > 0 && (
+                      <ul className={s.fileChips} aria-label="Files sent">
+                        {m.files.map((f, i) => (
+                          <li key={`${f.name}-${i}`} className={s.fileChip}>
+                            <span className={s.fileKind}>{f.kind === 'pdf' ? 'PDF' : (f.name.split('.').pop() ?? 'TXT').toUpperCase()}</span>
+                            {f.name}
+                          </li>
+                        ))}
+                      </ul>
+                    )}
                     {m.text}
                   </div>
                 ) : m.role === 'assistant' ? (
@@ -208,7 +250,24 @@ export function Assistant({ games, scope, servers, account, allGames, transport 
             <div ref={endRef} />
           </div>
 
-          <div className={s.composer}>
+          <div
+            className={s.composer}
+            data-dragging={dragging || undefined}
+            onDragOver={(e) => {
+              if (blocked || !e.dataTransfer.types.includes('Files')) return;
+              e.preventDefault();
+              setDragging(true);
+            }}
+            onDragLeave={(e) => {
+              if (!e.currentTarget.contains(e.relatedTarget as Node | null)) setDragging(false);
+            }}
+            onDrop={onDrop}
+          >
+            {dragging && (
+              <div className={s.dropHint} aria-hidden="true">
+                Drop a screenshot or a .json, .md, .txt, .csv or .pdf file
+              </div>
+            )}
             {/* Scrolls sideways on narrow screens; focusable so keyboards can scroll it too. */}
             <div className={s.suggestions} role="group" aria-label="Suggested questions" tabIndex={0}>
               {SUGGESTIONS[game ? 'game' : 'all'].map((q) => (
@@ -226,14 +285,29 @@ export function Assistant({ games, scope, servers, account, allGames, transport 
                 </button>
               </div>
             )}
+            {files.length > 0 && (
+              <ul className={s.pendingFiles} aria-label="Files to send">
+                {files.map((f, i) => (
+                  <li key={`${f.name}-${i}`} className={s.pendingFile}>
+                    <span className={s.fileKind}>{f.kind === 'pdf' ? 'PDF' : (f.name.split('.').pop() ?? 'TXT').toUpperCase()}</span>
+                    <span className={s.fileName}>{f.name}</span>
+                    <span className={s.fileSize}>{f.size < 1024 ? `${f.size} B` : f.size < 1024 * 1024 ? `${Math.round(f.size / 1024)} KB` : `${(f.size / 1024 / 1024).toFixed(1)} MB`}</span>
+                    <button type="button" className={s.tool} onClick={() => setFiles((cur) => cur.filter((_, k) => k !== i))} aria-label={`Remove ${f.name}`}>
+                      Remove
+                    </button>
+                    {f.kind === 'text' && /\.json$/i.test(f.name) && <HistoryOffer text={f.data} games={inView} />}
+                  </li>
+                ))}
+              </ul>
+            )}
             {attachError && (
               <p className={s.problem} role="alert">
                 {attachError}
               </p>
             )}
             <form className={s.composeRow} onSubmit={onSubmit}>
-              <input ref={fileRef} className={s.fileInput} type="file" accept="image/png,image/jpeg,image/webp,image/gif" tabIndex={-1} aria-hidden="true" onChange={(e) => void onFile(e)} />
-              <button type="button" className={s.attach} aria-label="Attach a screenshot" title="Attach a screenshot" onClick={() => fileRef.current?.click()} disabled={!!blocked}>
+              <input ref={fileRef} className={s.fileInput} type="file" multiple accept={FILE_ACCEPT} tabIndex={-1} aria-hidden="true" onChange={(e) => void onFile(e)} />
+              <button type="button" className={s.attach} aria-label="Attach a screenshot or file" title="Attach a screenshot, or a .json, .md, .txt, .csv or .pdf file" onClick={() => fileRef.current?.click()} disabled={!!blocked}>
                 ⧉
               </button>
               <input
@@ -244,7 +318,7 @@ export function Assistant({ games, scope, servers, account, allGames, transport 
                 onChange={(e) => setDraft(e.target.value)}
                 disabled={!!blocked}
               />
-              <button type="submit" className={s.send} disabled={!!blocked || chat.thinking || (!draft.trim() && !image)}>
+              <button type="submit" className={s.send} disabled={!!blocked || chat.thinking || (!draft.trim() && !image && files.length === 0)}>
                 Send
               </button>
             </form>

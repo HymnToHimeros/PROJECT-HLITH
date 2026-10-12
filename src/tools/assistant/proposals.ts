@@ -14,18 +14,30 @@ import {
   markAssistantActionUndone,
   recordAssistantAction,
   reverseLedgerEntry,
+  revertOwnItem,
+  saveOwnItem,
   setBacklogDone,
   setEventProgress,
+  setOwnItemHidden,
   setPlanStatus,
   setRosterEntry,
   setTick,
   type AssistantAction,
   type EventProgress,
+  type OwnItemEdit,
   type RosterEntry,
   type UserPlan,
 } from '../../core/data/userData';
 import type { Lookup } from './context';
 import { formatDateTime } from '../../core/time/reset';
+import type { BacklogItem } from '../../core/contract';
+import { categoryLabel } from '../backlog/backlog';
+
+const TITLE_MAX = 80;
+const TOTAL_MAX = 100_000;
+/** Your own item added from a proposal: the tool call id makes it unique ("own-" like Edit mode's). */
+const ownIdFor = (callId: string) => `own-a-${callId.replace(/[^A-Za-z0-9_-]/g, '').slice(-24)}`;
+const categoryId = (v: string) => v.trim().toLowerCase().replace(/\s+/g, '-');
 
 export type ProposalKind = 'bank' | 'event' | 'backlog' | 'roster' | 'today' | 'plan' | 'route';
 
@@ -41,6 +53,8 @@ export interface Proposal {
   detail: string;
   why: string;
   input: Record<string, unknown>;
+  /** A new backlog item's currency (the game's premium one, like Edit mode). */
+  currency?: string;
   /** Route stops, for route cards. */
   stops?: { title: string; minutes: number | null; items: string[] }[];
   /** Why it can't be applied (unknown id, wrong game…); null = fine. */
@@ -109,6 +123,51 @@ export function readProposal(call: { id: string; name: string; input: unknown },
       if (!b) return fail('backlog', 'Backlog progress', `Unknown backlog item "${str(input.item_id)}".`);
       if (done === null || done > b.total) return fail('backlog', b.title, `The count must be between 0 and ${b.total}.`);
       return { ...base, kind: 'backlog', title: `“${b.title}”: ${done}/${b.total} done`, detail: `Now: ${user.backlog[b.id] ?? 0}/${b.total}` };
+    }
+    case 'add_backlog_item': {
+      const title = str(input.title).trim();
+      const category = categoryId(str(input.category));
+      const total = int(input.total);
+      if (!title || title.length > TITLE_MAX) return fail('backlog', title || 'New backlog item', `The name must be 1 to ${TITLE_MAX} characters.`);
+      if (!/^[a-z0-9-]{1,40}$/.test(category)) return fail('backlog', title, 'The category must be a short id like "side-quests".');
+      if (total === null || total < 1 || total > TOTAL_MAX) return fail('backlog', title, `How much there is to do must be a whole number from 1 to ${TOTAL_MAX.toLocaleString()}.`);
+      if (badCount(input.reward)) return fail('backlog', title, 'The reward must be 0 or more (or unknown).');
+      const reward = int(input.reward);
+      const currency = game.currencies.find((c) => c.perPull && !c.paid)?.id ?? game.currencies[0]?.id ?? '';
+      const twin = [...l.backlog.values()].some((b) => b.title.trim().toLowerCase() === title.toLowerCase());
+      return {
+        ...base,
+        kind: 'backlog',
+        currency,
+        title: `Add “${title}” to Backlog`,
+        detail: [categoryLabel(category), total === 1 ? 'a single tick box' : `0/${total.toLocaleString()}`, reward === null ? null : `${reward.toLocaleString()} reward`, str(input.note).trim() || null, twin ? 'You already have an item with this name' : null]
+          .filter(Boolean)
+          .join(' · '),
+      };
+    }
+    case 'edit_backlog_item': {
+      const b = l.backlog.get(str(input.item_id));
+      if (!b) return fail('backlog', 'Change a backlog item', `Unknown backlog item "${str(input.item_id)}".`);
+      const title = input.title === null || input.title === undefined ? null : str(input.title).trim();
+      if (title !== null && (!title || title.length > TITLE_MAX)) return fail('backlog', b.title, `The name must be 1 to ${TITLE_MAX} characters.`);
+      if (badCount(input.total)) return fail('backlog', b.title, 'The total must be 1 or more.');
+      const total = int(input.total);
+      if (total !== null && (total < 1 || total > TOTAL_MAX)) return fail('backlog', b.title, `The total must be from 1 to ${TOTAL_MAX.toLocaleString()}.`);
+      if (total !== null && b.steps?.length) return fail('backlog', b.title, 'This item is a list of steps: change them in Edit mode.');
+      if ((title === null || title === b.title) && (total === null || total === b.total)) return fail('backlog', b.title, 'Nothing would change.');
+      const done = user.backlog[b.id];
+      const clamp = total !== null && done !== undefined && done > total;
+      return {
+        ...base,
+        kind: 'backlog',
+        title: `Change “${b.title}”`,
+        detail: [title !== null && title !== b.title ? `Name: “${b.title}” → “${title}”` : null, total !== null && total !== b.total ? `Total: ${b.total} → ${total}` : null, clamp ? `progress ${done} becomes ${total}` : null].filter(Boolean).join(' · '),
+      };
+    }
+    case 'hide_backlog_item': {
+      const b = l.backlog.get(str(input.item_id));
+      if (!b) return fail('backlog', 'Hide a backlog item', `Unknown backlog item "${str(input.item_id)}".`);
+      return { ...base, kind: 'backlog', title: `Hide “${b.title}” from Backlog`, detail: 'Nothing is deleted: show it again in Edit mode.' };
     }
     case 'set_roster': {
       const c = l.characters.get(str(input.character_id));
@@ -200,6 +259,43 @@ export function applyProposal(p: Proposal, now: Date = new Date()): ApplyResult 
       setBacklogDone(p.game, itemId, after as number);
       break;
     }
+    case 'add_backlog_item': {
+      const fields: Partial<BacklogItem> = {
+        title: str(i.title).trim(),
+        category: categoryId(str(i.category)),
+        total: int(i.total) ?? 1,
+        reward: int(i.reward),
+        currency: p.currency ?? '',
+        steps: [],
+        group: '',
+        unit: '',
+        note: str(i.note).trim(),
+      };
+      const entry: OwnItemEdit<BacklogItem> = { id: ownIdFor(p.id), mine: true, fields, hidden: false, at };
+      saveOwnItem(p.game, 'backlog', entry);
+      after = entry;
+      break;
+    }
+    case 'edit_backlog_item': {
+      const itemId = str(i.item_id);
+      const prev = g.ownItems.backlog[itemId];
+      const change: Partial<BacklogItem> = { ...(i.title !== null && i.title !== undefined ? { title: str(i.title).trim() } : {}), ...(int(i.total) !== null ? { total: int(i.total) as number } : {}) };
+      const entry: OwnItemEdit<BacklogItem> = prev ? { ...prev, fields: { ...prev.fields, ...change }, at } : { id: itemId, mine: false, fields: change, hidden: false, at };
+      const doneBefore = g.backlog[itemId];
+      saveOwnItem(p.game, 'backlog', entry);
+      const total = change.total;
+      if (total !== undefined && doneBefore !== undefined && doneBefore > total) setBacklogDone(p.game, itemId, total);
+      before = { entry: prev ?? null, done: doneBefore ?? null };
+      after = { entry, done: gameData(p.game).backlog[itemId] ?? null };
+      break;
+    }
+    case 'hide_backlog_item': {
+      const itemId = str(i.item_id);
+      before = g.ownItems.backlog[itemId]?.hidden ?? false;
+      setOwnItemHidden(p.game, 'backlog', itemId, true, at);
+      after = true;
+      break;
+    }
     case 'set_roster': {
       const cid = str(i.character_id);
       const prev = g.roster[cid];
@@ -272,6 +368,29 @@ export function undoProposal(game: string, actionId: string, now: Date = new Dat
       const id = str(i.item_id);
       if (!same(g.backlog[id], after)) return { ok: false, error: changedSince };
       setBacklogDone(game, id, (before as number | null) ?? 0);
+      break;
+    }
+    case 'add_backlog_item': {
+      const entry = after as OwnItemEdit<BacklogItem>;
+      if (!same(g.ownItems.backlog[entry.id], entry)) return { ok: false, error: changedSince };
+      // Undo hides it (nothing is ever deleted); Edit mode can show it again.
+      setOwnItemHidden(game, 'backlog', entry.id, true, at);
+      break;
+    }
+    case 'edit_backlog_item': {
+      const id = str(i.item_id);
+      const a = after as { entry: OwnItemEdit<BacklogItem>; done: number | null };
+      const b = before as { entry: OwnItemEdit<BacklogItem> | null; done: number | null };
+      if (!same(g.ownItems.backlog[id], a.entry) || !same(g.backlog[id] ?? null, a.done)) return { ok: false, error: changedSince };
+      if (b.entry) saveOwnItem(game, 'backlog', { ...b.entry, at });
+      else revertOwnItem(game, 'backlog', id, at);
+      if (b.done !== null && b.done !== a.done) setBacklogDone(game, id, b.done);
+      break;
+    }
+    case 'hide_backlog_item': {
+      const id = str(i.item_id);
+      if (g.ownItems.backlog[id]?.hidden !== true) return { ok: false, error: changedSince };
+      setOwnItemHidden(game, 'backlog', id, before === true, at);
       break;
     }
     case 'set_roster': {

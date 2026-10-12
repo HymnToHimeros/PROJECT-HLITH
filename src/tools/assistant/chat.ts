@@ -8,6 +8,7 @@
  * (including the model's thinking blocks), and your decisions on proposals
  * reach the model as tool results in your next message.
  */
+import { documentBlock, type PreparedFile } from './files';
 import type Anthropic from '@anthropic-ai/sdk';
 import { useSyncExternalStore } from 'react';
 import { backend } from '../../core/data/backend';
@@ -62,6 +63,8 @@ export interface ChatItem {
   text: string;
   /** Small preview of an attached screenshot (data URL). */
   image?: string;
+  /** Files sent with the message (T71): names and sizes only; the contents are never kept by HLITH. */
+  files?: { name: string; kind: 'text' | 'pdf'; size: number }[];
   proposals?: string[];
   searches?: string[];
   sources?: { title: string; url: string }[];
@@ -132,6 +135,8 @@ export function replayable(content: Block[]): BlockParam[] {
 export interface SendInput {
   text: string;
   image?: { data: string; mediaType: 'image/jpeg' | 'image/png' | 'image/webp' | 'image/gif'; preview: string } | undefined;
+  /** T71: files to read (.json, .md, .txt, .csv, .pdf). */
+  files?: PreparedFile[] | undefined;
   apiKey: string;
   model: string;
   webSearch: boolean;
@@ -144,8 +149,9 @@ export interface SendInput {
 /** Send a message. Resolves when the reply (or an error) is in the chat. */
 export async function send(input: SendInput): Promise<void> {
   const text = input.text.trim();
-  if ((!text && !input.image) || state.thinking) return;
-  const userItem: ChatItem = { id: nextId(), role: 'user', text, ...(input.image ? { image: input.image.preview } : {}) };
+  const files = input.files ?? [];
+  if ((!text && !input.image && files.length === 0) || state.thinking) return;
+  const userItem: ChatItem = { id: nextId(), role: 'user', text, ...(input.image ? { image: input.image.preview } : {}), ...(files.length ? { files: files.map((f) => ({ name: f.name, kind: f.kind, size: f.size })) } : {}) };
   set({ ...state, items: [...state.items, userItem], thinking: true });
 
   // Tool results first: every proposal from the last reply gets an answer.
@@ -168,7 +174,8 @@ export async function send(input: SendInput): Promise<void> {
     });
   if (changes.length) content.push({ type: 'text', text: `(Note from the app: since your last reply, the user decided on earlier proposals.)\n${changes.join('\n')}` });
   if (input.image) content.push({ type: 'image', source: { type: 'base64', media_type: input.image.mediaType, data: input.image.data } });
-  content.push({ type: 'text', text: text || 'Here is a screenshot.' });
+  for (const f of files) content.push(documentBlock(f));
+  content.push({ type: 'text', text: text || (files.length ? (files.length === 1 ? 'Here is a file.' : 'Here are some files.') : 'Here is a screenshot.') });
 
   const history: MessageParam[] = [...state.history, { role: 'user', content }];
   try {
