@@ -137,13 +137,19 @@ export interface ImportPlan {
   showAgain: string[];
   /** Rows for a game that isn't switched on here. */
   otherGame: number;
+  /** Rows for HLITH's own built-in items (from an Export): progress only, never added again. */
+  builtIn: number;
 }
 
 type OwnBacklog = Record<string, OwnItemEdit<BacklogItem>>;
 
-/** What importing would do, without changing anything. */
-export function planImport(rows: FileRow[], games: Record<string, { own: OwnBacklog; progress: Record<string, number> }>): ImportPlan {
-  const plan: ImportPlan = { add: [], addWithProgress: 0, raise: [], unchanged: 0, showAgain: [], otherGame: 0 };
+/**
+ * What importing would do, without changing anything. `builtIn` is the game's built-in list (with
+ * your changes): a row for a built-in item (its id, as Export writes it) only raises that item's
+ * progress and is never added as your own item, so export → import gives no duplicates.
+ */
+export function planImport(rows: FileRow[], games: Record<string, { own: OwnBacklog; progress: Record<string, number>; builtIn?: readonly BacklogItem[] }>): ImportPlan {
+  const plan: ImportPlan = { add: [], addWithProgress: 0, raise: [], unchanged: 0, showAgain: [], otherGame: 0, builtIn: 0 };
   const seen = new Set<string>();
   for (const r of rows) {
     const g = games[r.game];
@@ -151,9 +157,18 @@ export function planImport(rows: FileRow[], games: Record<string, { own: OwnBack
       plan.otherGame++;
       continue;
     }
-    const id = ownIdFor(r);
+    const builtIn = g.builtIn?.find((i) => i.id === r.id || i.id === `${r.game}.${r.id}`);
+    const id = builtIn ? builtIn.id : ownIdFor(r);
     if (seen.has(`${r.game}:${id}`)) continue; // the same row twice in one file
     seen.add(`${r.game}:${id}`);
+    if (builtIn) {
+      const from = g.progress[id];
+      const to = r.done === null ? null : Math.min(r.done, builtIn.total);
+      if (to !== null && (from === undefined || to > from)) plan.raise.push({ game: r.game, itemId: id, from, to });
+      else plan.unchanged++;
+      plan.builtIn++;
+      continue;
+    }
     const existing = g.own[id];
     if (!existing) {
       plan.add.push(r);

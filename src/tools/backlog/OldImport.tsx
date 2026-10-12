@@ -12,13 +12,33 @@ const premiumOf = (games: GameContract[]) => (id: string) => {
   return g?.currencies.find((c) => c.perPull && !c.paid)?.id ?? g?.currencies[0]?.id ?? '';
 };
 
+/** Built-in lists, for Export (what you see: built-in items with your changes, and your own). */
+function useBuiltIn(games: GameContract[]) {
+  const [lists, setLists] = useState<Record<string, BacklogItem[]> | null>(null);
+  useEffect(() => {
+    let alive = true;
+    void Promise.all(games.map(async (g) => [g.id, await g.data.backlog()] as const)).then((pairs) => alive && setLists(Object.fromEntries(pairs)));
+    return () => {
+      alive = false;
+    };
+  }, [games]);
+  return lists;
+}
+
 /** Your own items and progress per game, read again when your data changes. */
 function useOwn(games: GameContract[]) {
   const all = useAllUserData();
+  const builtIn = useBuiltIn(games);
   return useMemo(() => {
     void all;
-    return Object.fromEntries(games.map((g) => [g.id, { own: gameData(g.id).ownItems.backlog, progress: gameData(g.id).backlog }]));
-  }, [all, games]);
+    if (!builtIn) return null;
+    return Object.fromEntries(
+      games.map((g) => {
+        const user = gameData(g.id);
+        return [g.id, { own: user.ownItems.backlog, progress: user.backlog, builtIn: mergeOwnItems('backlog', builtIn[g.id] ?? [], user.ownItems.backlog).filter((i) => !i.id.startsWith('own-')) }];
+      }),
+    );
+  }, [all, builtIn, games]);
 }
 
 /**
@@ -30,14 +50,15 @@ export function ImportPanel({ text, games, compact = false }: { text: string; ga
   const parsed = useMemo(() => parseBacklogFile(text), [text]);
   const own = useOwn(games);
   const [done, setDone] = useState<{ undo: ImportUndo; added: number; raised: number; undone: boolean } | null>(null);
-  const plan = useMemo(() => (parsed.ok ? planImport(parsed.value.rows, own) : null), [parsed, own]);
+  const plan = useMemo(() => (parsed.ok && own ? planImport(parsed.value.rows, own) : null), [parsed, own]);
 
-  if (!parsed.ok || !plan)
+  if (!parsed.ok)
     return (
       <p className={b.warn} role="alert">
-        {parsed.ok ? 'This file can’t be read.' : parsed.error}
+        {parsed.error}
       </p>
     );
+  if (!plan) return <p className={b.muted}>Reading your backlog…</p>;
   const { asOf, notes, rows } = parsed.value;
   const date = asOf ? `progress from ${formatDate(Date.parse(asOf))} (the file’s date)` : 'the file doesn’t say when its progress is from';
 
@@ -67,7 +88,7 @@ export function ImportPanel({ text, games, compact = false }: { text: string; ga
     );
 
   const nothing = plan.add.length === 0 && plan.raise.length === 0 && plan.showAgain.length === 0;
-  const before = rows.length - plan.add.length - plan.otherGame;
+  const before = rows.length - plan.add.length - plan.otherGame - plan.builtIn;
   return (
     <div className={compact ? b.importCompact : b.importBox} aria-label="Import preview">
       <p className={b.importLead}>
@@ -79,6 +100,11 @@ export function ImportPanel({ text, games, compact = false }: { text: string; ga
           <li>
             {before} {before === 1 ? 'is' : 'are'} already in your backlog from an earlier import
             {plan.raise.length ? `: ${plan.raise.length} get more progress` : ''}. Nothing is added twice or lowered.
+          </li>
+        )}
+        {plan.builtIn > 0 && (
+          <li>
+            {plan.builtIn} {plan.builtIn === 1 ? 'is' : 'are'} HLITH’s own backlog items{plan.raise.some((c) => !c.itemId.startsWith('own-')) ? ': only their progress comes in (raised, never lowered)' : ', already as far along'}.
           </li>
         )}
         {plan.otherGame > 0 && <li>{plan.otherGame} are for a game that isn’t switched on here, so they’re left out.</li>}
@@ -107,19 +133,6 @@ export function ImportPanel({ text, games, compact = false }: { text: string; ga
       </div>
     </div>
   );
-}
-
-/** Built-in lists, for Export (what you see: built-in items with your changes, and your own). */
-function useBuiltIn(games: GameContract[]) {
-  const [lists, setLists] = useState<Record<string, BacklogItem[]> | null>(null);
-  useEffect(() => {
-    let alive = true;
-    void Promise.all(games.map(async (g) => [g.id, await g.data.backlog()] as const)).then((pairs) => alive && setLists(Object.fromEntries(pairs)));
-    return () => {
-      alive = false;
-    };
-  }, [games]);
-  return lists;
 }
 
 const download = (name: string, text: string) => {

@@ -84,13 +84,37 @@ describe('backlog files: import (T73)', () => {
     expect(mergeOwnItems('backlog', [], gameData('aa').ownItems.backlog)).toEqual(items);
   });
 
+  it('export → import into a fresh account: built-in items only get their progress back, no duplicates', () => {
+    const builtIn: BacklogItem[] = [
+      { id: 'aa.main-story', category: 'story', title: 'Main story', total: 5, reward: 300, currency: 'gem', steps: ['a', 'b', 'c', 'd', 'e'] },
+      { id: 'aa.chests', category: 'exploration', title: 'Chests', total: 50, reward: 100, currency: 'gem' },
+    ];
+    setBacklogDone('aa', 'aa.main-story', 3);
+    setBacklogDone('aa', 'aa.chests', 20);
+    applyImport(planImport(rowsOf(file([FULL])), { aa: { ...state().aa, builtIn } }), () => 'gem');
+    const mine = mergeOwnItems('backlog', builtIn, gameData('aa').ownItems.backlog);
+    const exported = exportBacklog([{ id: 'aa', items: mine, progress: gameData('aa').backlog }]);
+    const progressBefore = { ...gameData('aa').backlog };
+    resetUserData();
+    const plan = planImport(rowsOf(exported), { aa: { ...state().aa, builtIn } });
+    expect(plan.builtIn).toBe(2);
+    expect(plan.add.map((r) => r.id)).toEqual([FULL.id]);
+    applyImport(plan, () => 'gem');
+    expect(Object.keys(gameData('aa').ownItems.backlog)).toEqual([ownIdFor(FULL)]);
+    expect(gameData('aa').backlog).toEqual(progressBefore);
+    // …and never lowers a built-in item's progress.
+    setBacklogDone('aa', 'aa.chests', 45);
+    applyImport(planImport(rowsOf(exported), { aa: { ...state().aa, builtIn } }), () => 'gem');
+    expect(gameData('aa').backlog['aa.chests']).toBe(45);
+  });
+
   it('the template is a valid backlog file', () => {
     expect(rowsOf(TEMPLATE).length).toBe(3);
   });
 
   it('the preview says how many items, how many with progress and the file’s date; Apply then Undo', async () => {
     render(<ImportPanel text={file([FULL, quest('hq_a', 1), quest('hq_b')])} games={[game]} />);
-    expect(screen.getByText(/items to add/)).toHaveTextContent(/^3 items to add · 2 with progress · progress from (Oct 2|2 Oct) \(the file’s date\)$/);
+    expect(await screen.findByText(/items to add/)).toHaveTextContent(/^3 items to add · 2 with progress · progress from (Oct 2|2 Oct) \(the file’s date\)$/);
     expect(gameData('aa').ownItems.backlog).toEqual({});
     await act(async () => {
       fireEvent.click(screen.getByRole('button', { name: 'Apply' }));
