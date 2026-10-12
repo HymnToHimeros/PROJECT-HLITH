@@ -97,8 +97,8 @@ export interface BacklogItem {
   unit?: string;
   /** A short note shown under the title (where a number came from, a timer the game shows…). */
   note?: string;
-  /** The item's id in the old app (Gacha Tracker), so its progress can be imported (T73). */
-  oldId?: string;
+  /** How much one − / + changes a counter (default 1), e.g. 100 for points. */
+  step?: number;
 }
 
 export interface Material {

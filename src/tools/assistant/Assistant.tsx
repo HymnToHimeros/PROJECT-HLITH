@@ -15,8 +15,8 @@ import { loadLookup, summarize } from './context';
 import { prepareImage, isAcceptedImage, type PreparedImage } from './image';
 import { FILE_ACCEPT, FILES_MAX, prepareFile, type PreparedFile } from './files';
 import { HistoryOffer } from './HistoryOffer';
-import { OldImportPanel } from '../backlog/OldImport';
-import { looksLikeOldExport } from '../backlog/oldImport';
+import { ImportPanel } from '../backlog/OldImport';
+import { looksLikeBacklogFile } from '../backlog/backlogFile';
 import { useKey } from './keyStore';
 import { KeySetup } from './KeySetup';
 import { formatUsd, MODELS, type Cost } from './models';
@@ -297,7 +297,7 @@ export function Assistant({ games, scope, servers, account, allGames, transport 
                     <button type="button" className={s.tool} onClick={() => setFiles((cur) => cur.filter((_, k) => k !== i))} aria-label={`Remove ${f.name}`}>
                       Remove
                     </button>
-                    {f.kind === 'text' && /\.json$/i.test(f.name) && (looksLikeOldExport(f.data) ? <OldImportPanel text={f.data} games={inView} compact /> : <HistoryOffer text={f.data} games={inView} />)}
+                    {f.kind === 'text' && /\.json$/i.test(f.name) && (looksLikeBacklogFile(f.data) ? <ImportPanel text={f.data} games={inView} compact /> : <HistoryOffer text={f.data} games={inView} />)}
                   </li>
                 ))}
               </ul>

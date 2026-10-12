@@ -694,3 +694,17 @@
   flex-wrap: wrap;
   gap: var(--s-2);
 }
+.importCode {
+  margin: var(--s-2) 0;
+  padding: var(--s-2);
+  border-radius: var(--r-row);
+  background: var(--bg-inset);
+  color: var(--ink-2);
+  font: 12px/1.5 var(--font-numbers);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.importNotes code {
+  font-family: var(--font-numbers);
+  color: var(--ink-2);
+}
