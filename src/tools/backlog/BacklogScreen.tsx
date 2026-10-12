@@ -4,6 +4,7 @@ import type { ModuleScreenProps } from '../../core/registry/modules';
 import { Button, ExampleNotice, HowTo } from '../../core/ui';
 import { GameHeading } from '../pulls/shared';
 import { Backlog } from './Backlog';
+import { OldImportButton } from './OldImport';
 import b from './backlog.module.css';
 import { useBacklogData } from './useBacklogData';
 
@@ -30,6 +31,7 @@ export default function BacklogScreen({ games, scope, open }: ModuleScreenProps)
           </>,
         ]}
       />
+      <OldImportButton games={shown} />
       {shown.map((g) => (
         <GameBacklog key={g.id} game={g} heading={shown.length > 1} openCalculator={() => open('pulls', 'calculator')} />
       ))}
