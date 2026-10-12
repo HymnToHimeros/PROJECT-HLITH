@@ -56,3 +56,17 @@ export function rosterFit(game: GameContract, roster: Record<string, RosterEntry
   const filledIn = Object.values(roster).some((e) => e.owned || e.wanted);
   return filledIn ? { kind: 'new', label: 'New for you' } : { kind: 'unknown' };
 }
+
+export type Phase = 'now' | 'next' | 'later';
+const PHASE_DAY = 86_400_000;
+
+/**
+ * Now / Next / Later, the same everywhere (Banners, Pulls → Planner): Now = open already;
+ * Next = the next phase (everything opening within two days of the first upcoming start);
+ * Later = the rest, leaks included.
+ */
+export function phaseOfBanner(list: readonly Banner[], now: number): (b: Banner) => Phase {
+  const starts = list.map((x) => Date.parse(x.start)).filter((t) => t > now);
+  const first = starts.length ? Math.min(...starts) : 0;
+  return (x) => (Date.parse(x.start) <= now ? 'now' : Date.parse(x.start) <= first + 2 * PHASE_DAY ? 'next' : 'later');
+}
