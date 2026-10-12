@@ -487,3 +487,68 @@
   text-decoration: underline;
   text-underline-offset: 2px;
 }
+
+/* T71: files to read. */
+.composer[data-dragging] {
+  outline: 2px dashed var(--glacier);
+  outline-offset: -6px;
+}
+.dropHint {
+  font-size: 12px;
+  color: var(--glacier);
+  text-align: center;
+}
+.pendingFiles,
+.fileChips {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.fileChips {
+  margin-bottom: 6px;
+}
+.pendingFile {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s-2);
+  font-size: 12px;
+  color: var(--ink-3);
+  padding: 6px 8px;
+  border: 1px solid var(--line-mid);
+  border-radius: var(--r-row);
+}
+.fileChip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+}
+.fileKind {
+  font: 700 10px/1 var(--font-numbers);
+  letter-spacing: 0.08em;
+  padding: 3px 5px;
+  border-radius: 4px;
+  background: var(--bg-track);
+  color: var(--ink-2);
+}
+.fileName {
+  flex: 1 1 120px;
+  min-width: 0;
+  overflow-wrap: anywhere;
+  color: var(--ink-2);
+}
+.fileSize {
+  color: var(--ink-4);
+}
+.offer {
+  flex-basis: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s-2);
+  color: var(--ink-2);
+}

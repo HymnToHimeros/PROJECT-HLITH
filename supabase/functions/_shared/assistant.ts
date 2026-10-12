@@ -80,6 +80,39 @@ export const ACTION_TOOLS: Tool[] = [
     input_schema: obj({ game, item_id: id, done: { type: 'integer', description: 'Steps done, 0 or more.' }, why }),
   },
   {
+    name: 'add_backlog_item',
+    description:
+      'Propose adding one of the user\'s own backlog items (something to do, with a count: chapters, chests, points…). It is added to their own items, like Edit mode. Use a category id from the data summary when one fits (for example "side-quests"), or a short new one.',
+    strict: true,
+    input_schema: obj({
+      game,
+      title: { type: 'string', description: 'Short name, up to 80 characters.' },
+      category: { type: 'string', description: 'Category id, e.g. "story", "side-quests", "exploration"; lower case with dashes.' },
+      total: { type: 'integer', description: 'How much there is to do, 1 or more (1 = a single tick box).' },
+      reward: { type: ['integer', 'null'], description: 'Premium currency for finishing it, 0 or more; null = unknown.' },
+      note: { type: 'string', description: 'One short line, or "".' },
+      why,
+    }),
+  },
+  {
+    name: 'edit_backlog_item',
+    description: 'Propose renaming a backlog item or changing how much there is to do. Use item ids from the data summary.',
+    strict: true,
+    input_schema: obj({
+      game,
+      item_id: id,
+      title: { type: ['string', 'null'], description: 'New name, or null = keep it.' },
+      total: { type: ['integer', 'null'], description: 'New total, 1 or more; null = keep it.' },
+      why,
+    }),
+  },
+  {
+    name: 'hide_backlog_item',
+    description: 'Propose hiding a backlog item from the user\'s list (nothing is deleted; they can show it again in Edit mode). Use item ids from the data summary.',
+    strict: true,
+    input_schema: obj({ game, item_id: id, why }),
+  },
+  {
     name: 'set_roster',
     description: 'Propose marking a character owned or not, wanted or not, and their dupes. Use character ids from the data summary or the game list.',
     strict: true,
@@ -137,13 +170,15 @@ export const STRICT_UNSUPPORTED = ['minimum', 'maximum', 'exclusiveMinimum', 'ex
 export const SYSTEM_PROMPT = `You are the Assistant inside HLITH (PROJECT-HLITH, HLIÐSKJÁLF), a personal hub for gacha games such as Honkai: Star Rail and Zenless Zone Zero.
 
 How to answer:
-- Answer from the user's data summary below and from what they show you (screenshots). If a fact is not there and you cannot check it, say "no data yet" rather than guessing. Never present an estimate as a fact; label it.
+- Answer from the user's data summary below and from what they show you (screenshots and attached files: .json, .md, .txt, .csv or .pdf, each titled with its file name). If a fact is not there and you cannot check it, say "no data yet" rather than guessing. Never present an estimate as a fact; label it.
 - Plain, friendly English. Short answers first; details only when asked. Times in the user's local time.
 - When you use web search, say where the information came from.
 
 Changing the user's data:
-- You can propose changes with your tools (bank log entries, event and backlog progress, roster, Today's tasks, plans and routes). Every tool call becomes a card the user approves or dismisses; nothing changes until they approve. Never say a change is done before the user approves it.
+- You can propose changes with your tools (bank log entries, event and backlog progress, adding, renaming or hiding the user's own backlog items, roster, Today's tasks, plans and routes). Every tool call becomes a card the user approves or dismisses; nothing changes until they approve. Never say a change is done before the user approves it.
 - Use only ids that appear in the data summary. If you do not know the id, ask.
+- When an attached file lists things to do (a checklist, a guide, a spreadsheet), you can propose them as backlog items with add_backlog_item, one card each; keep it to the ones the user asked for.
+- A pull history export (UIGF or SRGF .json) is imported by the app itself: the user sees an Import button under the file. Don't retype its pulls into the chat.
 - Tool results tell you what the user decided.`;
 
 export interface AssistantRequest {
@@ -156,10 +191,22 @@ export interface AssistantRequest {
 
 export type Checked<T> = { ok: true; value: T } | { ok: false; error: string };
 
-const BLOCK_TYPES = new Set(['text', 'image', 'tool_use', 'tool_result', 'thinking', 'redacted_thinking', 'server_tool_use', 'web_search_tool_result']);
+const BLOCK_TYPES = new Set(['text', 'image', 'document', 'tool_use', 'tool_result', 'thinking', 'redacted_thinking', 'server_tool_use', 'web_search_tool_result']);
 const MAX_MESSAGES = 200;
 const MAX_CONTEXT = 24_000;
 const MAX_BODY_CHARS = 20_000_000;
+/** Files per message (T71); the app also keeps text files to 500 KB and PDFs to 4 MB. */
+const MAX_FILES = 5;
+const MAX_TEXT_CHARS = 600_000;
+const MAX_PDF_CHARS = 6_000_000;
+
+/** A file the user attached: plain text, or a base64 PDF. Nothing else (no links to fetch). */
+function okDocument(src: { type?: unknown; media_type?: unknown; data?: unknown } | undefined): boolean {
+  if (!src || typeof src.data !== 'string') return false;
+  if (src.type === 'text') return src.media_type === 'text/plain' && src.data.length <= MAX_TEXT_CHARS;
+  if (src.type === 'base64') return src.media_type === 'application/pdf' && src.data.length <= MAX_PDF_CHARS && /^[A-Za-z0-9+/=]+$/.test(src.data.slice(0, 4096));
+  return false;
+}
 
 /** Check a request body. The key is checked for shape only; Claude decides if it is valid. */
 export function checkRequest(body: unknown, bodyChars: number): Checked<AssistantRequest> {
@@ -180,6 +227,9 @@ export function checkRequest(body: unknown, bodyChars: number): Checked<Assistan
     if (typeof content === 'string') continue;
     if (!Array.isArray(content) || content.some((c) => !c || typeof c !== 'object' || !BLOCK_TYPES.has(String((c as { type?: unknown }).type))))
       return { ok: false, error: 'A message has content the Assistant does not accept.' };
+    const docs = content.filter((c) => (c as { type: string }).type === 'document') as { source?: { type?: unknown; media_type?: unknown; data?: unknown } }[];
+    if (docs.some((d) => !okDocument(d.source))) return { ok: false, error: 'Attach a .json, .md, .txt, .csv or .pdf file.' };
+    if (role === 'user' && docs.length > MAX_FILES) return { ok: false, error: `Attach up to ${MAX_FILES} files per message.` };
   }
   if ((b.messages[b.messages.length - 1] as { role: string }).role !== 'user') return { ok: false, error: 'The last message must be yours.' };
   const context = typeof b.context === 'string' ? b.context.slice(0, MAX_CONTEXT) : '';
