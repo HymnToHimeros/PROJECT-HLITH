@@ -1,0 +1,415 @@
+/* Owner art (T64): how the badges and frames move. Generated with the drawings in art.ts.
+   Animations On: everything moves. Reduced: only soft glows. Off: still. */
+.oa-art .oa-sheen,
+.oa-art .oa-star,
+.oa-art .oa-glint {
+  transform-box:view-box;
+}
+.oa-art .oa-sheen {
+  opacity:0;
+}
+:root[data-motion='on'] .oa-art .oa-sheen {
+  animation:oa-sheen 7s ease-in-out infinite;
+}
+:root[data-motion='on'] .oa-art .oa-star {
+  animation:oa-glint 4.2s ease-in-out infinite;
+}
+:root[data-motion='reduced'] .oa-art .oa-star {
+  animation:oa-glint 4.2s ease-in-out infinite;
+}
+:root[data-motion='on'] .oa-art .oa-glint {
+  animation:oa-glint 3s ease-in-out infinite;
+}
+:root[data-motion='reduced'] .oa-art .oa-glint {
+  animation:oa-glint 3s ease-in-out infinite;
+}
+.oa-art .oa-breathe {
+  transform-box:view-box;
+  transform-origin:32px 32px;
+}
+:root[data-motion='on'] .oa-art .oa-breathe {
+  animation:oa-breathe 6s ease-in-out infinite;
+}
+.oa-art .oa-pulse {
+  transform-box:view-box;
+  transform-origin:32px 32px;
+}
+:root[data-motion='on'] .oa-art .oa-pulse {
+  animation:oa-breathe 3.5s ease-in-out infinite;
+}
+.oa-art .oa-spin40 {
+  transform-box:view-box;
+  transform-origin:32px 32px;
+}
+:root[data-motion='on'] .oa-art .oa-spin40 {
+  animation:oa-spin 26s linear infinite;
+}
+:root[data-motion='on'] .oa-art .oa-spin40 {
+  animation-duration:40s;
+}
+.oa-art .oa-spin22c,
+.oa-art .oa-spin40c,
+.oa-art .oa-spin12c,
+.oa-art .oa-spin8c {
+  transform-box:view-box;
+  transform-origin:60px 60px;
+}
+:root[data-motion='on'] .oa-art .oa-spin22c,
+:root[data-motion='on'] .oa-art .oa-spin40c,
+:root[data-motion='on'] .oa-art .oa-spin12c,
+:root[data-motion='on'] .oa-art .oa-spin8c {
+  animation:oa-spin 22s linear infinite;
+}
+:root[data-motion='on'] .oa-art .oa-spin40c {
+  animation-duration:40s;
+}
+:root[data-motion='on'] .oa-art .oa-spin12c {
+  animation-duration:12s;
+}
+:root[data-motion='on'] .oa-art .oa-spin8c {
+  animation-duration:8s;
+}
+:root[data-motion='on'] .oa-art .oa-drift {
+  animation:oa-drift 9s ease-in-out infinite alternate;
+}
+.oa-art .oa-spin60,
+.oa-art .oa-spin60r {
+  transform-box:view-box;
+  transform-origin:32px 32px;
+}
+:root[data-motion='on'] .oa-art .oa-spin60,
+:root[data-motion='on'] .oa-art .oa-spin60r {
+  animation:oa-spin 60s linear infinite;
+}
+:root[data-motion='on'] .oa-art .oa-spin60r {
+  animation-direction:reverse;
+  animation-duration:50s;
+}
+.oa-art .oa-spin22cr {
+  transform-box:view-box;
+  transform-origin:60px 60px;
+}
+:root[data-motion='on'] .oa-art .oa-spin22cr {
+  animation:oa-spin 22s linear infinite reverse;
+}
+:root[data-motion='on'] .oa-art .oa-flick {
+  animation:oa-flick 1.6s ease-in-out infinite;
+}
+:root[data-motion='reduced'] .oa-art .oa-flick {
+  animation:oa-flick 1.6s ease-in-out infinite;
+}
+:root[data-motion='on'] .oa-art .oa-emberglow {
+  animation:oa-glint 3s ease-in-out infinite;
+}
+:root[data-motion='reduced'] .oa-art .oa-emberglow {
+  animation:oa-glint 3s ease-in-out infinite;
+}
+.oa-art .oa-drip {
+  transform-box:fill-box;
+  transform-origin:center;
+  opacity:0;
+}
+:root[data-motion='on'] .oa-art .oa-drip {
+  animation:oa-drip 3.6s ease-in infinite;
+}
+.oa-art .oa-rise {
+  opacity:0;
+}
+:root[data-motion='on'] .oa-art .oa-rise {
+  animation:oa-rise 3s ease-out infinite;
+}
+:root[data-motion='on'] .oa-art .oa-emberglow {
+  animation:oa-glint 3s ease-in-out infinite;
+}
+:root[data-motion='reduced'] .oa-art .oa-emberglow {
+  animation:oa-glint 3s ease-in-out infinite;
+}
+:root[data-motion='on'] .oa-art .oa-breath {
+  animation:oa-breath2 3.2s ease-in-out infinite;
+}
+.oa-art .oa-zap {
+  opacity:0;
+}
+:root[data-motion='on'] .oa-art .oa-zap {
+  animation:oa-zap 3.6s steps(1) infinite;
+}
+:root[data-motion='reduced'] .oa-art .oa-zap {
+  animation:oa-zap 3.6s steps(1) infinite;
+}
+:root[data-motion='on'] .oa-art .oa-flash {
+  animation:oa-flash 3.6s steps(1) infinite;
+}
+:root[data-motion='reduced'] .oa-art .oa-flash {
+  animation:oa-flash 3.6s steps(1) infinite;
+}
+:root[data-motion='on'] .oa-art .oa-pulse3 {
+  animation:oa-glint 1.8s ease-in-out infinite;
+}
+:root[data-motion='reduced'] .oa-art .oa-pulse3 {
+  animation:oa-glint 1.8s ease-in-out infinite;
+}
+:root[data-motion='on'] .oa-art .oa-eclipse {
+  animation:oa-eclipse 8s ease-in-out infinite;
+}
+.oa-art .oa-ringflash {
+  opacity:0;
+}
+:root[data-motion='on'] .oa-art .oa-ringflash {
+  animation:oa-ringflash 8s ease-in-out infinite;
+}
+:root[data-motion='reduced'] .oa-art .oa-ringflash {
+  animation:oa-ringflash 8s ease-in-out infinite;
+}
+.oa-art .oa-spin60,
+.oa-art .oa-spin60r {
+  transform-box:view-box;
+  transform-origin:32px 32px;
+}
+:root[data-motion='on'] .oa-art .oa-spin60,
+:root[data-motion='on'] .oa-art .oa-spin60r {
+  animation:oa-spin 60s linear infinite;
+}
+:root[data-motion='on'] .oa-art .oa-spin60r {
+  animation-direction:reverse;
+  animation-duration:36s;
+}
+:root[data-motion='on'] .oa-art .oa-runlight {
+  animation:oa-run 5s linear infinite;
+}
+.oa-art .oa-wave {
+  transform-box:view-box;
+  transform-origin:32px 6px;
+}
+:root[data-motion='on'] .oa-art .oa-wave {
+  animation:oa-wave 5s ease-in-out infinite;
+}
+:root[data-motion='on'] .oa-art .oa-hall {
+  animation:oa-hall 2.2s ease-in-out infinite;
+}
+:root[data-motion='reduced'] .oa-art .oa-hall {
+  animation:oa-hall 2.2s ease-in-out infinite;
+}
+.oa-art .oa-flapL,
+.oa-art .oa-flapR {
+  transform-box:view-box;
+}
+:root[data-motion='on'] .oa-art .oa-flapL,
+:root[data-motion='on'] .oa-art .oa-flapR {
+  animation:oa-flap 4s ease-in-out infinite;
+}
+.oa-art .oa-flapL {
+  transform-origin:18px 30px;
+}
+.oa-art .oa-flapR {
+  transform-origin:46px 30px;
+}
+:root[data-motion='on'] .oa-art .oa-flapR {
+  animation-name:oa-flapR;
+}
+.oa-art .oa-wavering {
+  transform-box:view-box;
+  transform-origin:40px 28px;
+  opacity:0;
+}
+:root[data-motion='on'] .oa-art .oa-wavering {
+  animation:oa-ring 2.4s ease-out infinite;
+}
+.oa-art .oa-s5 {
+  opacity:.35;
+}
+:root[data-motion='on'] .oa-art .oa-s5 {
+  animation:oa-s5 3s ease-in-out infinite;
+}
+:root[data-motion='reduced'] .oa-art .oa-s5 {
+  animation:oa-s5 3s ease-in-out infinite;
+}
+:root[data-motion='on'] .oa-art .oa-holo {
+  animation:oa-holo 4.5s ease-in-out infinite;
+}
+:root[data-motion='on'] .oa-art .oa-curtain {
+  animation:oa-curtain 5s ease-in-out infinite alternate;
+}
+:root[data-motion='on'] .oa-art .oa-runlight2 {
+  animation:oa-run2 6s linear infinite;
+}
+.oa-art .oa-wave19 {
+  transform-box:view-box;
+  transform-origin:70px 10px;
+}
+:root[data-motion='on'] .oa-art .oa-wave19 {
+  animation:oa-wave 5s ease-in-out infinite;
+}
+.oa-art .oa-flap20L,
+.oa-art .oa-flap20R {
+  transform-box:view-box;
+}
+:root[data-motion='on'] .oa-art .oa-flap20L,
+:root[data-motion='on'] .oa-art .oa-flap20R {
+  animation:oa-flap 4s ease-in-out infinite;
+}
+.oa-art .oa-flap20L {
+  transform-origin:42px 66px;
+}
+.oa-art .oa-flap20R {
+  transform-origin:98px 66px;
+}
+:root[data-motion='on'] .oa-art .oa-flap20R {
+  animation-name:oa-flapR;
+}
+:root[data-motion='on'] .oa-art .oa-brk {
+  animation:oa-brk 3s ease-in-out infinite;
+}
+.oa-art .oa-wavering20 {
+  transform-box:view-box;
+  transform-origin:78px 118px;
+  opacity:0;
+}
+:root[data-motion='on'] .oa-art .oa-wavering20 {
+  animation:oa-ring 2.4s ease-out infinite;
+}
+.oa-art .oa-hand-sun,
+.oa-art .oa-hand-moon {
+  transform-box:view-box;
+  transform-origin:70px 70px;
+}
+:root[data-motion='on'] .oa-art .oa-hand-sun,
+:root[data-motion='on'] .oa-art .oa-hand-moon {
+  animation:oa-spin 8s linear infinite;
+}
+:root[data-motion='on'] .oa-art .oa-hand-moon {
+  animation-direction:reverse;
+}
+.oa-art .oa-dring6,
+.oa-art .oa-dring6n {
+  opacity:0;
+}
+:root[data-motion='on'] .oa-art .oa-dring6,
+:root[data-motion='on'] .oa-art .oa-dring6n {
+  animation:oa-meet 4s ease-in-out infinite;
+}
+:root[data-motion='reduced'] .oa-art .oa-dring6,
+:root[data-motion='reduced'] .oa-art .oa-dring6n {
+  animation:oa-meet 4s ease-in-out infinite;
+}
+:root[data-motion='on'] .oa-art .oa-cres-l {
+  animation:oa-cresl 6s ease-in-out infinite;
+}
+:root[data-motion='on'] .oa-art .oa-cres-r {
+  animation:oa-cresr 6s ease-in-out infinite;
+}
+:root[data-motion='on'] .oa-art .oa-halo6 {
+  animation:oa-halo6 6s ease-in-out infinite;
+}
+:root[data-motion='reduced'] .oa-art .oa-halo6 {
+  animation:oa-halo6 6s ease-in-out infinite;
+}
+.oa-art .oa-dring6c {
+  opacity:0;
+}
+:root[data-motion='on'] .oa-art .oa-dring6c {
+  animation:oa-halo6 6s ease-in-out infinite;
+}
+:root[data-motion='reduced'] .oa-art .oa-dring6c {
+  animation:oa-halo6 6s ease-in-out infinite;
+}
+.oa-art .oa-cline6 {
+  stroke-dasharray:120;
+}
+:root[data-motion='on'] .oa-art .oa-cline6 {
+  animation:oa-draw6 6s ease-in-out infinite;
+}
+.oa-art .oa-chase {
+  transform-box:view-box;
+  transform-origin:70px 70px;
+}
+:root[data-motion='on'] .oa-art .oa-chase {
+  animation:oa-spin 14s linear infinite;
+}
+.oa-art .oa-dring6w {
+  opacity:0;
+}
+:root[data-motion='on'] .oa-art .oa-dring6w {
+  animation:oa-wolfflash 7s ease-in-out infinite;
+}
+:root[data-motion='reduced'] .oa-art .oa-dring6w {
+  animation:oa-wolfflash 7s ease-in-out infinite;
+}
+.oa-art .oa-armil {
+  transform-box:view-box;
+  transform-origin:70px 70px;
+}
+:root[data-motion='on'] .oa-art .oa-armil {
+  animation:oa-armil 10s ease-in-out infinite alternate;
+}
+.oa-art .oa-meridian {
+  transform-box:view-box;
+  transform-origin:70px 70px;
+}
+:root[data-motion='on'] .oa-art .oa-meridian {
+  animation:oa-merid 8s ease-in-out infinite;
+}
+:root[data-motion='on'] .oa-art .oa-eclipse6 {
+  animation:oa-eclipse6 8s ease-in-out infinite;
+}
+.oa-art .oa-dring6s {
+  opacity:0;
+}
+:root[data-motion='on'] .oa-art .oa-dring6s {
+  animation:oa-ringflash 8s ease-in-out infinite;
+}
+:root[data-motion='reduced'] .oa-art .oa-dring6s {
+  animation:oa-ringflash 8s ease-in-out infinite;
+}
+@keyframes oa-sheen {0%,55%{opacity:0;transform:rotate(25deg) translateX(0)}60%{opacity:1}85%,100%{opacity:0;transform:rotate(25deg) translateX(110px)}}
+@keyframes oa-glint {0%,100%{opacity:1}50%{opacity:.2}}
+@keyframes oa-breathe {50%{transform:scale(1.06)}}
+@keyframes oa-spin {to{transform:rotate(360deg)}}
+@keyframes oa-drift {to{transform:translateX(-14px)}}
+@keyframes oa-flow {from{background-position:100% 0}to{background-position:-150% 0}}
+@keyframes oa-ember {0%,100%{text-shadow:0 0 6px rgba(255,106,31,.35)}50%{text-shadow:0 0 18px rgba(255,106,31,.8)}}
+@keyframes oa-runeline {50%{background-size:60% 2px;filter:drop-shadow(0 0 4px #e8b85c)}}
+@keyframes oa-bob {50%{transform:translateY(-1.6px)}}
+@keyframes oa-flick {50%{opacity:.55}}
+@keyframes oa-nightglow {50%{filter:drop-shadow(0 0 14px rgba(169,139,255,.6))}}
+@keyframes oa-inkedge {50%{-webkit-text-stroke-color:#fff6d8;filter:drop-shadow(0 0 5px rgba(232,184,92,.6))}}
+@keyframes oa-breath {0%,100%{text-shadow:0 0 2px rgba(127,180,214,.3)}50%{text-shadow:0 0 16px rgba(180,225,255,.9),0 0 30px rgba(127,180,214,.5);letter-spacing:.03em}}
+@keyframes oa-drip {0%{opacity:0;transform:translateY(-4px) scale(.3)}15%{opacity:1;transform:translateY(0) scale(1)}85%{opacity:1}100%{opacity:0;transform:translateY(9px) scale(1)}}
+@keyframes oa-rise {0%{opacity:0;transform:translateY(0)}20%{opacity:1}100%{opacity:0;transform:translateY(-22px)}}
+@keyframes oa-breath2 {0%,100%{opacity:.1;transform:translateY(0)}50%{opacity:1;transform:translateY(1.5px)}}
+@keyframes oa-zap {0%{opacity:1}4%{opacity:0}7%{opacity:1}12%,100%{opacity:0}}
+@keyframes oa-flash {0%{opacity:.18}5%{opacity:0}7%{opacity:.12}12%,100%{opacity:0}}
+@keyframes oa-eclipse {0%,100%{transform:translateX(-22px)}40%,60%{transform:translateX(0)}}
+@keyframes oa-ringflash {0%,38%,62%,100%{opacity:0}45%,55%{opacity:1}}
+@keyframes oa-run {from{stroke-dashoffset:200}to{stroke-dashoffset:0}}
+@keyframes oa-wave {50%{transform:skewX(-2deg)}}
+@keyframes oa-hall {50%{opacity:.7}}
+@keyframes oa-flap {50%{transform:rotate(6deg)}}
+@keyframes oa-flapR {50%{transform:rotate(-6deg)}}
+@keyframes oa-ring {0%{opacity:0;transform:scale(.6)}20%{opacity:1}100%{opacity:0;transform:translateX(6px) scale(1.3)}}
+@keyframes oa-s5 {0%,100%{opacity:.35}20%,60%{opacity:1;filter:drop-shadow(0 0 2px #ffd36b)}}
+@keyframes oa-holo {0%{transform:rotate(20deg) translateX(0)}100%{transform:rotate(20deg) translateX(220px)}}
+@keyframes oa-glass {50%{opacity:.35}}
+@keyframes oa-eclipse2 {0%,100%{transform:translateX(-18px)}40%,60%{transform:translateX(0)}}
+@keyframes oa-curtain {0%{transform:translateY(6px) skewX(0)}100%{transform:translateY(-6px) skewX(-6deg);opacity:.25}}
+@keyframes oa-run2 {from{stroke-dashoffset:334}to{stroke-dashoffset:0}}
+@keyframes oa-brk {50%{transform:translate(var(--x),var(--y))}}
+@keyframes oa-plate {from{background-position:120% 0,0 0,0 0}to{background-position:-120% 0,0 0,0 0}}
+@keyframes oa-thunder {0%{text-shadow:0 0 18px #9fe4ff,0 0 4px #fff}5%{text-shadow:none}7%{text-shadow:0 0 14px #9fe4ff}12%,100%{text-shadow:0 0 3px rgba(127,214,255,.4)}}
+@keyframes oa-draw {0%{stroke-dashoffset:240}50%,85%{stroke-dashoffset:0}100%{stroke-dashoffset:-240}}
+@keyframes oa-dec {0%,25%{color:transparent;text-shadow:none}40%,90%{color:#c9ffe9;text-shadow:0 0 12px rgba(70,224,168,.6)}100%{color:transparent;text-shadow:none}}
+@keyframes oa-decr {0%,25%{opacity:1}40%,90%{opacity:0}100%{opacity:1}}
+@keyframes oa-ink {0%{stroke-dashoffset:600;fill-opacity:0}55%{stroke-dashoffset:0;fill-opacity:0}70%,92%{stroke-dashoffset:0;fill-opacity:1}100%{stroke-dashoffset:0;fill-opacity:0}}
+@keyframes oa-bobl {50%{transform:translateY(-3px)}}
+@keyframes oa-ribw {50%{transform:translateY(-2px)}}
+@keyframes oa-frost {0%,100%{color:#8fc8ea;text-shadow:none}50%{color:#fbfeff;text-shadow:0 0 6px #bfe6ff,0 0 16px rgba(127,180,214,.6)}}
+@keyframes oa-fz {0%,100%{opacity:0;transform:scale(.4)}50%{opacity:1;transform:scale(1)}}
+@keyframes oa-cflare {50%{transform:scale(1.08);opacity:.8}}
+@keyframes oa-meet {0%,100%{opacity:1}12%,88%{opacity:0}}
+@keyframes oa-cresl {0%,100%{transform:translateX(-8px)}45%,55%{transform:translateX(0)}}
+@keyframes oa-cresr {0%,100%{transform:translateX(8px)}45%,55%{transform:translateX(0)}}
+@keyframes oa-halo6 {0%,35%,65%,100%{opacity:0}48%,52%{opacity:.7}}
+@keyframes oa-draw6 {0%{stroke-dashoffset:120}40%,90%{stroke-dashoffset:0}100%{stroke-dashoffset:-120}}
+@keyframes oa-wolfflash {0%,40%,60%,100%{opacity:0}50%{opacity:1}}
+@keyframes oa-armil {to{transform:rotate(8deg)}}
+@keyframes oa-merid {0%,100%{transform:scaleX(1)}50%{transform:scaleX(.25)}}
+@keyframes oa-eclipse6 {0%,100%{transform:translateX(-12px)}40%,60%{transform:translateX(0)}}

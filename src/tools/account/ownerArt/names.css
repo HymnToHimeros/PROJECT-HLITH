@@ -1,0 +1,630 @@
+/* Owner name styles 1–20 (T64), from the option sheets. Sizes are in em so they follow the
+   name's own size. Animations On: everything moves. Reduced: only soft glows and colour.
+   Off: still. */
+.oa-name {
+  position: relative;
+  display: inline-block;
+  max-width: 100%;
+}
+.oa-name .oa-deco {
+  pointer-events: none;
+}
+.oa-clip {
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* 1 Gold Shimmer · 2 Aurora · 3 Glacier Frost · 9 Gilded Engraved · 10 Bifröst */
+.oa-n1 {
+  background-image: linear-gradient(100deg, #b07a22 0%, #e8b85c 35%, #fff6d8 50%, #e8b85c 65%, #b07a22 100%);
+  background-size: 250% 100%;
+}
+.oa-n2 {
+  background-image: linear-gradient(90deg, #46e0a8, #7fb4d6, #a98bff, #46e0a8);
+  background-size: 300% 100%;
+}
+.oa-n3 {
+  background-image: linear-gradient(100deg, #7fb4d6 0%, #7fb4d6 40%, #ffffff 50%, #7fb4d6 60%, #7fb4d6 100%);
+  background-size: 250% 100%;
+}
+.oa-n9 {
+  background-image: linear-gradient(100deg, #c48a2c 0%, #f0c66e 40%, #fff6d8 50%, #f0c66e 60%, #c48a2c 100%);
+  background-size: 260% 100%;
+  letter-spacing: 0.04em;
+  font-family: Georgia, serif;
+  filter: drop-shadow(0 1px 0 #3a2608) drop-shadow(0 -1px 0 rgb(255 246 216 / 0.35));
+}
+.oa-n10 {
+  background-image: linear-gradient(90deg, #ff6a6a, #ffb35c, #fbe7a6, #46e0a8, #7fb4d6, #a98bff, #ff6a6a);
+  background-size: 300% 100%;
+}
+
+/* 4 Ember Glow */
+.oa-n4 {
+  color: #ffb38a;
+  text-shadow: 0 0 6px rgb(255 106 31 / 0.35);
+}
+
+/* 5 Starlight · 8 Northern Night: small stars around the name */
+.oa-n5 {
+  color: #fbe7a6;
+}
+.oa-n5 .oa-dot,
+.oa-n8 .oa-dot {
+  position: absolute;
+  width: 0.15em;
+  height: 0.15em;
+  border-radius: 50%;
+  background: #fff6d8;
+  box-shadow: 0 0 0.2em #fbe7a6;
+}
+.oa-n8 {
+  background-image: linear-gradient(180deg, #e4dcff, #a98bff 55%, #6f5bd6);
+  filter: drop-shadow(0 0 0.25em rgb(70 224 168 / 0.35));
+}
+.oa-n8 .oa-dot {
+  width: 0.09em;
+  height: 0.09em;
+  background: #fff;
+}
+
+/* 6 Rune Line */
+.oa-n6 {
+  color: #e6eef3;
+  padding-bottom: 0.2em;
+  background: linear-gradient(90deg, transparent, #e8b85c, transparent) bottom / 100% 2px no-repeat;
+}
+
+/* 7 Runic Glow */
+.oa-n7 {
+  color: #fbe7a6;
+  text-shadow: 0 0 0.3em rgb(232 184 92 / 0.45);
+}
+.oa-n7 .oa-rune {
+  font-weight: 400;
+  color: #e8b85c;
+  margin: 0 0.35em;
+  font-size: 0.65em;
+}
+.oa-n7 .oa-rune + .oa-text + .oa-rune {
+  animation-delay: 0.8s;
+}
+
+/* 11 Raven Ink */
+.oa-n11 {
+  color: #0b0a14;
+  -webkit-text-stroke: 1.2px #e8b85c;
+}
+.oa-n11 svg {
+  width: 1em;
+  height: 0.65em;
+  margin-right: 0.3em;
+  vertical-align: -0.05em;
+}
+
+/* 12 Frost Breath */
+.oa-n12 {
+  color: #f2fbff;
+  text-shadow: 0 0 2px rgb(127 180 214 / 0.3);
+}
+
+/* 13 5★ Draupnir: holo gold, rarity stars underneath, embers lifting */
+.oa-n13 {
+  padding-bottom: 0.55em;
+}
+.oa-n13 .oa-text {
+  background-image: linear-gradient(100deg, #b07a22, #ffd36b 30%, #fff 40%, #9fffd6 46%, #c39bff 52%, #ffd36b 62%, #b07a22);
+  background-size: 260% 100%;
+}
+.oa-n13 .oa-stars {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  text-align: center;
+  font-size: 0.45em;
+  letter-spacing: 0.3em;
+  line-height: 1;
+}
+.oa-n13 .oa-stars b {
+  color: #ffd36b;
+}
+.oa-n13 .oa-ember {
+  position: absolute;
+  bottom: 0.6em;
+  width: 0.1em;
+  height: 0.1em;
+  border-radius: 50%;
+  background: #ff8a3d;
+  opacity: 0;
+}
+
+/* 14 Silver Nameplate */
+.oa-n14 {
+  font-family: Georgia, serif;
+  letter-spacing: 0.06em;
+  padding: 0.18em 0.75em;
+  border-radius: 5px;
+  color: #3a4652;
+  text-shadow:
+    0 1px 0 rgb(255 255 255 / 0.7),
+    0 -1px 0 rgb(0 0 0 / 0.35);
+  background:
+    linear-gradient(100deg, transparent 40%, rgb(255 255 255 / 0.75) 50%, transparent 60%) 120% 0 / 250% 100%,
+    repeating-linear-gradient(0deg, rgb(255 255 255 / 0.06) 0 1px, transparent 1px 3px),
+    linear-gradient(180deg, #e9eef3, #a9b6c2);
+  box-shadow:
+    inset 0 1px 0 #fff,
+    inset 0 -2px 3px rgb(0 0 0 / 0.3),
+    0 2px 6px rgb(0 0 0 / 0.5);
+}
+.oa-n14::before,
+.oa-n14::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 0.18em;
+  height: 0.18em;
+  margin-top: -0.09em;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #fff, #6b7a88);
+}
+.oa-n14::before {
+  left: 0.25em;
+}
+.oa-n14::after {
+  right: 0.25em;
+}
+
+/* 15 Thunder */
+.oa-n15 {
+  color: #dff4ff;
+  text-shadow: 0 0 3px rgb(127 214 255 / 0.4);
+}
+.oa-n15 svg {
+  position: absolute;
+  left: -4%;
+  top: 10%;
+  width: 108%;
+  height: 80%;
+  filter: drop-shadow(0 0 4px #7fd6ff);
+}
+.oa-n15 path {
+  opacity: 0;
+}
+
+/* 16 Moon Constellation */
+.oa-n16 {
+  color: #eef2fa;
+  font-family: Georgia, serif;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  padding-top: 0.6em;
+  text-shadow: 0 0 0.3em rgb(223 230 242 / 0.4);
+}
+.oa-n16 svg {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 0.9em;
+  overflow: visible;
+}
+.oa-n16 .oa-cline {
+  stroke-dasharray: 240;
+}
+
+/* 17 Rune Decode: each letter starts as a rune */
+.oa-n17 {
+  color: #c9ffe9;
+  text-shadow: 0 0 0.35em rgb(70 224 168 / 0.6);
+}
+.oa-n17 .oa-l {
+  position: relative;
+  display: inline-block;
+}
+.oa-n17 .oa-l::before {
+  content: attr(data-r);
+  position: absolute;
+  left: 0;
+  right: 0;
+  text-align: center;
+  color: #46e0a8;
+  text-shadow: 0 0 0.3em rgb(70 224 168 / 0.8);
+  opacity: 0;
+}
+
+/* 18 Ink Serpent: a red-ochre stroke writes the name, then it fills in */
+.oa-n18 {
+  font-family: Georgia, serif;
+  font-style: italic;
+  color: #e9d9c8;
+  -webkit-text-stroke: 1px #c8532e;
+}
+
+/* 19 Hall Ribbon */
+.oa-n19 {
+  padding: 0.1em 1.1em;
+  color: #fbe7a6;
+  text-shadow: 0 1px 0 #3c0a10;
+}
+.oa-n19 .oa-rib {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 100%;
+  height: 1.9em;
+  transform: translateY(-50%);
+  overflow: visible;
+  z-index: -1;
+}
+.oa-n19 .oa-l {
+  display: inline-block;
+  position: relative;
+}
+.oa-n19 .oa-seal {
+  position: absolute;
+  right: -0.55em;
+  top: 50%;
+  width: 1.2em;
+  height: 1.2em;
+  transform: translateY(-10%) rotate(-8deg);
+  filter: drop-shadow(0 2px 2px rgb(0 0 0 / 0.6));
+}
+.oa-n19 .oa-text {
+  position: relative;
+}
+.oa-n19 {
+  isolation: isolate;
+}
+
+/* 20 Frost Call */
+.oa-n20 .oa-l {
+  color: #cfe9f8;
+  text-shadow: 0 0 4px rgb(191 230 255 / 0.5);
+}
+.oa-n20 .oa-cry {
+  position: absolute;
+  font-style: normal;
+  font-size: 0.35em;
+  color: #e6f6ff;
+  opacity: 0;
+}
+
+/* ── Moving (Animations On) ── */
+:root[data-motion='on'] .oa-n1 {
+  animation: oa-flow 5s linear infinite;
+}
+:root[data-motion='on'] .oa-n2 {
+  animation: oa-flow 8s linear infinite;
+}
+:root[data-motion='on'] .oa-n3 {
+  animation: oa-flow 6s linear infinite;
+}
+:root[data-motion='on'] .oa-n9 {
+  animation: oa-flow 7s linear infinite;
+}
+:root[data-motion='on'] .oa-n10 {
+  animation: oa-flow 10s linear infinite;
+}
+:root[data-motion='on'] .oa-n13 .oa-text {
+  animation: oa-flow 4s linear infinite;
+}
+:root[data-motion='on'] .oa-n13 .oa-ember {
+  animation: oa-rise 2.6s ease-out infinite;
+}
+:root[data-motion='on'] .oa-n14 {
+  animation: oa-plate 6s linear infinite;
+}
+:root[data-motion='on'] .oa-n16 .oa-cline {
+  animation: oa-draw 5s ease-in-out infinite;
+}
+:root[data-motion='on'] .oa-n17 .oa-l,
+:root[data-motion='on'] .oa-n17 .oa-l::before {
+  animation-duration: 6s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  animation-delay: calc(var(--i) * 0.18s);
+}
+:root[data-motion='on'] .oa-n17 .oa-l {
+  animation-name: oa-decode;
+}
+:root[data-motion='on'] .oa-n17 .oa-l::before {
+  animation-name: oa-decode-rune;
+}
+:root[data-motion='on'] .oa-n18 {
+  animation: oa-ink 6s ease-in-out infinite;
+}
+:root[data-motion='on'] .oa-n19 .oa-l {
+  animation: oa-bob 2.4s ease-in-out infinite;
+  animation-delay: calc(var(--i) * -0.2s);
+}
+:root[data-motion='on'] .oa-n19 .oa-ribwave {
+  animation: oa-ribbon 2.4s ease-in-out infinite;
+}
+:root[data-motion='on'] .oa-n20 .oa-cry {
+  animation: oa-crystal 3s ease-in-out infinite;
+}
+:root[data-motion='on'] .oa-n12 {
+  animation: oa-breath 4.5s ease-in-out infinite;
+}
+
+/* ── Soft glows and colour (Animations On and Reduced) ── */
+:root:is([data-motion='on'], [data-motion='reduced']) .oa-n4 {
+  animation: oa-ember 3.5s ease-in-out infinite;
+}
+:root:is([data-motion='on'], [data-motion='reduced']) .oa-n5 .oa-dot {
+  animation: oa-twinkle 2.6s ease-in-out infinite;
+}
+:root:is([data-motion='on'], [data-motion='reduced']) .oa-n6 {
+  animation: oa-glowline 4s ease-in-out infinite;
+}
+:root:is([data-motion='on'], [data-motion='reduced']) .oa-n7 .oa-rune {
+  animation: oa-twinkle 2.4s ease-in-out infinite;
+}
+:root:is([data-motion='on'], [data-motion='reduced']) .oa-n8 {
+  animation: oa-nightglow 6s ease-in-out infinite;
+}
+:root:is([data-motion='on'], [data-motion='reduced']) .oa-n8 .oa-dot {
+  animation: oa-twinkle 2s ease-in-out infinite;
+}
+:root:is([data-motion='on'], [data-motion='reduced']) .oa-n11 {
+  animation: oa-inkedge 3.5s ease-in-out infinite;
+}
+:root[data-motion='reduced'] .oa-n12 {
+  animation: oa-breath-soft 4.5s ease-in-out infinite;
+}
+:root:is([data-motion='on'], [data-motion='reduced']) .oa-n13 .oa-stars b {
+  animation: oa-rarity 3s ease-in-out infinite;
+  animation-delay: calc(var(--i) * 0.25s);
+}
+:root:is([data-motion='on'], [data-motion='reduced']) .oa-n15 {
+  animation: oa-thunder 3.6s steps(1) infinite;
+}
+:root:is([data-motion='on'], [data-motion='reduced']) .oa-n15 path {
+  animation: oa-zap 3.6s steps(1) infinite;
+}
+:root:is([data-motion='on'], [data-motion='reduced']) .oa-n16 circle {
+  animation: oa-twinkle 4.2s ease-in-out infinite;
+}
+:root:is([data-motion='on'], [data-motion='reduced']) .oa-n20 .oa-l {
+  animation: oa-frost 5s ease-in-out infinite;
+  animation-delay: calc(var(--i) * 0.15s);
+}
+
+@keyframes oa-flow {
+  from {
+    background-position: 100% 0;
+  }
+  to {
+    background-position: -150% 0;
+  }
+}
+@keyframes oa-ember {
+  0%,
+  100% {
+    text-shadow: 0 0 6px rgb(255 106 31 / 0.35);
+  }
+  50% {
+    text-shadow: 0 0 18px rgb(255 106 31 / 0.8);
+  }
+}
+@keyframes oa-twinkle {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.2;
+  }
+}
+@keyframes oa-glowline {
+  50% {
+    filter: drop-shadow(0 0 4px #e8b85c);
+  }
+}
+@keyframes oa-nightglow {
+  50% {
+    filter: drop-shadow(0 0 0.45em rgb(169 139 255 / 0.6));
+  }
+}
+@keyframes oa-inkedge {
+  50% {
+    -webkit-text-stroke-color: #fff6d8;
+    filter: drop-shadow(0 0 5px rgb(232 184 92 / 0.6));
+  }
+}
+@keyframes oa-breath {
+  0%,
+  100% {
+    text-shadow: 0 0 2px rgb(127 180 214 / 0.3);
+  }
+  50% {
+    text-shadow:
+      0 0 16px rgb(180 225 255 / 0.9),
+      0 0 30px rgb(127 180 214 / 0.5);
+    letter-spacing: 0.03em;
+  }
+}
+@keyframes oa-breath-soft {
+  50% {
+    text-shadow:
+      0 0 16px rgb(180 225 255 / 0.9),
+      0 0 30px rgb(127 180 214 / 0.5);
+  }
+}
+@keyframes oa-rise {
+  0% {
+    opacity: 0;
+    transform: translateY(0);
+  }
+  20% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-1.2em);
+  }
+}
+@keyframes oa-rarity {
+  0%,
+  100% {
+    opacity: 0.35;
+  }
+  20%,
+  60% {
+    opacity: 1;
+    text-shadow: 0 0 4px #ffd36b;
+  }
+}
+@keyframes oa-plate {
+  from {
+    background-position:
+      120% 0,
+      0 0,
+      0 0;
+  }
+  to {
+    background-position:
+      -120% 0,
+      0 0,
+      0 0;
+  }
+}
+@keyframes oa-thunder {
+  0% {
+    text-shadow:
+      0 0 18px #9fe4ff,
+      0 0 4px #fff;
+  }
+  5% {
+    text-shadow: none;
+  }
+  7% {
+    text-shadow: 0 0 14px #9fe4ff;
+  }
+  12%,
+  100% {
+    text-shadow: 0 0 3px rgb(127 214 255 / 0.4);
+  }
+}
+@keyframes oa-zap {
+  0% {
+    opacity: 1;
+  }
+  4% {
+    opacity: 0;
+  }
+  7% {
+    opacity: 1;
+  }
+  12%,
+  100% {
+    opacity: 0;
+  }
+}
+@keyframes oa-draw {
+  0% {
+    stroke-dashoffset: 240;
+  }
+  50%,
+  85% {
+    stroke-dashoffset: 0;
+  }
+  100% {
+    stroke-dashoffset: -240;
+  }
+}
+@keyframes oa-decode {
+  0%,
+  25% {
+    color: transparent;
+    text-shadow: none;
+  }
+  40%,
+  90% {
+    color: #c9ffe9;
+    text-shadow: 0 0 0.35em rgb(70 224 168 / 0.6);
+  }
+  100% {
+    color: transparent;
+    text-shadow: none;
+  }
+}
+@keyframes oa-decode-rune {
+  0%,
+  25% {
+    opacity: 1;
+  }
+  40%,
+  90% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@keyframes oa-ink {
+  0% {
+    clip-path: inset(0 100% 0 0);
+    color: transparent;
+  }
+  55% {
+    clip-path: inset(0 0 0 0);
+    color: transparent;
+  }
+  70%,
+  92% {
+    clip-path: inset(0 0 0 0);
+    color: #e9d9c8;
+  }
+  100% {
+    clip-path: inset(0 0 0 0);
+    color: transparent;
+  }
+}
+@keyframes oa-bob {
+  50% {
+    transform: translateY(-0.1em);
+  }
+}
+@keyframes oa-ribbon {
+  50% {
+    transform: translateY(-2px);
+  }
+}
+@keyframes oa-crystal {
+  0%,
+  100% {
+    opacity: 0;
+    transform: scale(0.4);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+@keyframes oa-frost {
+  0%,
+  100% {
+    color: #8fc8ea;
+    text-shadow: none;
+  }
+  50% {
+    color: #fbfeff;
+    text-shadow:
+      0 0 6px #bfe6ff,
+      0 0 16px rgb(127 180 214 / 0.6);
+  }
+}
+
+/* The plain name for screen readers when the letters are drawn one by one. */
+.oa-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}

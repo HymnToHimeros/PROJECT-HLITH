@@ -4,6 +4,8 @@ import { GameTag } from '../../core/ui';
 import { BADGE_BY_ID, OWNER_TITLES, type BadgeId, type OwnerTitle } from './badges';
 import { BadgeMark, RAVEN } from './BadgeMark';
 import c from './card.module.css';
+import { OwnerBadgeArt, OwnerFrameArt, OwnerNameArt } from './ownerArt/Owner';
+import type { OwnerStyle } from './ownerArt/style';
 import type { FrameId, NameColor } from './profile';
 
 export interface CardCharacter {
@@ -39,6 +41,8 @@ export interface ProfileCardProps {
   vent: string;
   badge: BadgeId;
   ownerTitle?: OwnerTitle | null | undefined;
+  /** T64: the owner's badge, frame and name style. Pass it only for the owner's own card. */
+  ownerStyle?: OwnerStyle | null | undefined;
   featured: CardFeatured[];
   /** null = don't show the stats row (hidden, or no data); [] is never passed. */
   stats: CardStats[] | null;
@@ -62,6 +66,8 @@ export const badgeName = (id: BadgeId, ownerTitle?: OwnerTitle | null) => (id ==
 export function ProfileCard(props: ProfileCardProps) {
   const { name, handle, title, avatarUrl, bannerUrl, bannerFallback, frame, nameColor, vent, badge, ownerTitle, featured, stats, badgeCount, note, actions, compact } = props;
   const owner = badge === 'owner';
+  const look = props.ownerStyle ?? null;
+  const badgeSize = owner ? (compact ? 60 : 76) : compact ? 44 : 56;
   const style = { '--card-vent': vent } as CSSProperties;
   return (
     <article className={`${c.card} ${compact ? c.compact : ''} ${owner ? c.ownerCard : ''}`} style={style} aria-label={`Profile card: ${name}`}>
@@ -70,17 +76,21 @@ export function ProfileCard(props: ProfileCardProps) {
         {owner && <div className={c.skyWash} aria-hidden="true" />}
       </div>
       <div className={c.head}>
-        <Framed frame={frame} src={avatarUrl} letter={name} />
+        {look?.frame ? (
+          <OwnerFrameArt n={look.frame} variant={look.frameVariant} src={avatarUrl} letter={name} size={compact ? 108 : 136} fallback={<Framed frame={frame} src={avatarUrl} letter={name} />} />
+        ) : (
+          <Framed frame={frame} src={avatarUrl} letter={name} />
+        )}
         <div className={c.identity}>
-          <h2 className={c.name} data-color={nameColor}>
-            {name}
+          <h2 className={c.name} data-color={look?.name ? undefined : nameColor}>
+            {look?.name ? <OwnerNameArt n={look.name} text={name} /> : name}
           </h2>
           {handle && <p className={c.handle}>@{handle}</p>}
           {title && <p className={c.title}>{title}</p>}
           {note && <p className={c.note}>{note}</p>}
         </div>
         <div className={c.badge}>
-          <BadgeMark id={badge} size={owner ? (compact ? 60 : 76) : compact ? 44 : 56} />
+          {owner && look && look.badge > 0 ? <OwnerBadgeArt n={look.badge} size={badgeSize} fallback={<BadgeMark id="owner" size={badgeSize} />} /> : <BadgeMark id={badge} size={badgeSize} />}
           <span className={owner ? c.badgeNameOwner : c.badgeName}>{badgeName(badge, ownerTitle)}</span>
           {badgeCount && (
             <span className={c.badgeCount}>

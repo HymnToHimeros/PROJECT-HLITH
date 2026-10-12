@@ -65,6 +65,7 @@ export function buildCard(input: CardInput): ProfileCardProps {
   const avatarChar = characterOf(characters, profile.avatarChar);
   const bannerChar = characterOf(characters, profile.bannerChar);
   const stats = pullStats(games, data);
+  const isOwner = badges.some((b) => b.def.id === 'owner' && b.earned);
   return {
     name: profile.displayName ?? input.fallbackName,
     title: profile.title,
@@ -72,11 +73,13 @@ export function buildCard(input: CardInput): ProfileCardProps {
     bannerUrl: bannerChar?.art ?? bannerChar?.portrait ?? input.imageUrl(profile.banner),
     bannerFallback: input.bannerFallback,
     // The sky frame is the owner's alone.
-    frame: profile.frame === 'sky' && !badges.some((b) => b.def.id === 'owner' && b.earned) ? 'none' : profile.frame,
+    frame: profile.frame === 'sky' && !isOwner ? 'none' : profile.frame,
     nameColor: profile.nameColor,
     vent: games[0]?.vent ?? 'var(--vent-all)',
     badge: shownBadge(badges, profile.pinnedBadge),
     ownerTitle: profile.ownerTitle,
+    // The owner's look is the owner's alone.
+    ownerStyle: isOwner ? profile.ownerStyle : null,
     featured: featuredItems(profile, games, data, characters),
     stats: stats.length ? stats : null,
     badgeCount: { earned: badges.filter((b) => b.earned).length, total: badges.length },
