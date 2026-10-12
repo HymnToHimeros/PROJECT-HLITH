@@ -5,6 +5,7 @@
  * (tests/telegramLeaks.test.ts); the fetching is in scripts/leaks-seele.ts and the
  * research routine (docs/ROUTINES.md) turns posts into findings and translates them.
  */
+import { stripTags } from '../../src/core/text/markup.ts';
 
 /** The one place for the channel. `channel` is the name in t.me/<channel>. */
 export const SEELE = {
@@ -48,14 +49,9 @@ const decode = (s: string) =>
     return ENTITIES[e.toLowerCase()] ?? m;
   });
 
-/** HTML of one message text block → plain text, line breaks kept. */
+/** HTML of one message text block → plain text, line breaks kept (shown as text, never as HTML). */
 export function plainText(html: string): string {
-  return decode(
-    html
-      .replace(/<br\s*\/?>/gi, '\n')
-      .replace(/<[^>]+>/g, '')
-      .replace(/[ \t]+\n/g, '\n'),
-  ).trim();
+  return decode(stripTags(html.replace(/<br\s*\/?>/gi, '\n')).replace(/[ \t]+\n/g, '\n')).trim();
 }
 
 /**
@@ -86,7 +82,10 @@ export function parseChannelPage(html: string, channel: string): Post[] {
   const posts: Post[] = [];
   const blocks = html.split(/<div class="tgme_widget_message_wrap/).slice(1);
   for (const b of blocks) {
-    const id = Number(new RegExp(`data-post="${channel}/(\\d+)"`, 'i').exec(b)?.[1]);
+    // The channel name is compared as a string (never built into a pattern).
+    const post = /data-post="([^"/]+)\/(\d+)"/.exec(b);
+    if (post?.[1]?.toLowerCase() !== channel.toLowerCase()) continue;
+    const id = Number(post[2]);
     const at = /<time datetime="([^"]+)"/.exec(b)?.[1];
     if (!Number.isFinite(id) || !at) continue;
     const textHtml = /<div class="tgme_widget_message_text[^"]*"[^>]*>([\s\S]*?)<\/div>/.exec(b)?.[1] ?? '';
@@ -117,8 +116,9 @@ export function alreadyKnown(post: Post, known: KnownLeak[]): string[] {
     const s = w.toLowerCase().trim();
     if (s.length < 3) return false;
     if (/\p{Script=Han}/u.test(s)) return t.includes(s);
-    const esc = s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-    return new RegExp(`(^|[^\\p{L}\\p{N}])${esc}($|[^\\p{L}\\p{N}])`, 'u').test(t);
+    const word = (c: string | undefined) => c !== undefined && /[\p{L}\p{N}]/u.test(c);
+    for (let i = t.indexOf(s); i >= 0; i = t.indexOf(s, i + 1)) if (!word(t[i - 1]) && !word(t[i + s.length])) return true;
+    return false;
   };
   return known.filter((k) => post.games.includes(k.game as GameTag) && k.words.some(hit)).map((k) => k.what);
 }
