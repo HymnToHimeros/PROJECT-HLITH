@@ -15,6 +15,7 @@
 import { writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { leakedIds, shownName } from './kits/names.ts';
+import { stripTags } from '../src/core/text/markup.ts';
 
 const ROOT = resolve(import.meta.dirname, '..');
 const BASE = 'https://static.nanoka.cc/hsr';
@@ -93,13 +94,11 @@ const slug = (s: string) =>
 
 const num = (x: number) => String(Number(x.toPrecision(10)));
 /** Names can carry markup too (<unbreak>All-Out</unbreak>). */
-const name = (s: string) => shownName(s.replace(/<[^>]+>/g, '').trim());
+const name = (s: string) => shownName(stripTags(s).trim());
 
 /** Game text with its markup turned into plain words and #n[i] numbers filled in. Exported for the tests. */
 export function plainText(raw: string, params: number[], who: string): string {
-  let t = raw
-    .replace(/\\n/g, '\n')
-    .replace(/<\/?(color|unbreak|u|i|b)[^>]*>/g, '')
+  let t = stripTags(raw.replace(/\\n/g, '\n'), ['color', 'unbreak', 'u', 'i', 'b'])
     .replace(/#(\d+)\[(i|f(\d))\](%?)/g, (_m, n: string, kind: string, digits: string | undefined, pct: string) => {
       const v = params[Number(n) - 1];
       if (v === undefined) throw new Error(`${who}: no number #${n} in "${raw.slice(0, 80)}…"`);

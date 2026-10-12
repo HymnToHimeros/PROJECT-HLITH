@@ -3,6 +3,7 @@ import type { Character, GameContract, GameId, Kit, RecommendedBuild, SampleArt,
 import { useExamplesShown } from '../../core/data/prefs';
 import type { GameUserData } from '../../core/data/userData';
 import { examplePresets } from './examples';
+import { stripTags } from '../../core/text/markup';
 
 /** One game's built-in lists, as Roster needs them. */
 export interface RosterLists {
@@ -24,7 +25,7 @@ export interface RosterData extends RosterLists {
 }
 
 // Some names carry the game's text markup (e.g. <unbreak>); show them as plain text.
-const clean = (c: Character): Character => (c.name.includes('<') ? { ...c, name: c.name.replace(/<\/?[a-z]+[^>]*>/gi, '') } : c);
+const clean = (c: Character): Character => (c.name.includes('<') ? { ...c, name: stripTags(c.name) } : c);
 
 /** Built-in lists for every game shown; null while loading. */
 export function useRosterLists(games: GameContract[]): Record<GameId, RosterLists> | null {

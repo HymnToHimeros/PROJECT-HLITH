@@ -11,19 +11,21 @@
  * - "After the Version X update" is the update start plus the stated
  *   maintenance length; "End of Version X" is the version end.
  */
+import { stripTags } from '../../src/core/text/markup.ts';
 
 export const SERVER_OFFSET = 8;
 
 /** Notice HTML → plain text. Time tags become "⟨gl 2026/11/11 03:59:00⟩" so the zone survives. */
 export function noticeText(html: string): string {
   return decode(
-    html
-      // Some notices carry the time tags escaped ("&lt;t class=&quot;t_lc&quot;&gt;").
-      .replace(/&lt;(\/?t\b(?:[^&]|&quot;)*?)&gt;/g, (_m, inner: string) => `<${inner.replace(/&quot;/g, '"')}>`)
-      .replace(/<t\s+class="t_(gl|lc)"[^>]*>(.*?)<\/t>/gs, (_m, kind: string, t: string) => `⟨${kind} ${t.replace(/<[^>]+>/g, '')}⟩`)
-      .replace(/<br\s*\/?>|<\/p>|<\/div>|<\/tr>|<\/h\d>|<\/li>/g, '\n')
-      .replace(/<\/t[dh]>/g, ' | ')
-      .replace(/<[^>]+>/g, ''),
+    stripTags(
+      html
+        // Some notices carry the time tags escaped ("&lt;t class=&quot;t_lc&quot;&gt;").
+        .replace(/&lt;(\/?t\b(?:[^&]|&quot;)*?)&gt;/g, (_m, inner: string) => `<${inner.replace(/&quot;/g, '"')}>`)
+        .replace(/<t\s+class="t_(gl|lc)"[^>]*>(.*?)<\/t>/gs, (_m, kind: string, t: string) => `⟨${kind} ${stripTags(t)}⟩`)
+        .replace(/<br\s*\/?>|<\/p>|<\/div>|<\/tr>|<\/h\d>|<\/li>/g, '\n')
+        .replace(/<\/t[dh]>/g, ' | '),
+    ),
   )
     .replace(/[ \t\u00a0]+/g, ' ')
     .replace(/ *\n */g, '\n')

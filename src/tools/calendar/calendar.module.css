@@ -120,6 +120,11 @@
   color: var(--ink-4);
   white-space: nowrap;
 }
+.scaleMarkEnd {
+  padding-left: 0;
+  padding-right: 5px;
+  transform: translateX(-100%);
+}
 .lanes {
   position: relative;
   padding-bottom: 4px;

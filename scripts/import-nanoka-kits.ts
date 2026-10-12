@@ -16,6 +16,7 @@
 import { writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { leakedIds, shownName } from './kits/names.ts';
+import { stripTags } from '../src/core/text/markup.ts';
 
 const ROOT = resolve(import.meta.dirname, '..');
 const BASE = 'https://static.nanoka.cc/zzz';
@@ -153,8 +154,7 @@ function formula(expr: string, mult: number, decimals: number, who: string): str
 
 /** Game text with its markup turned into plain words. Exported for the tests. */
 export function plainText(raw: string, who: string): string {
-  let t = raw
-    .replace(/<color=[^>]*>|<\/color>/g, '')
+  let t = stripTags(raw, ['color'])
     .replace(/<Term:(\d+)>([^<]*)<\/Term>/g, (_m, id: string, word: string) => word || TERM[id] || NAMED_TERMS.get(id) || need(TERM, id, 'glossary term', who))
     // A tag the file never closes (Severian's beta Entry Skill): the same name.
     .replace(/<Term:(\d+)>/g, (_m, id: string) => TERM[id] || NAMED_TERMS.get(id) || need(TERM, id, 'glossary term', who))

@@ -61,7 +61,8 @@ export const PRIVACY: LegalPage = {
   slug: 'privacy',
   title: 'Privacy policy',
   description: 'What HLIÐSKJÁLF (PROJECT-HLITH) keeps about you, where, for how long, and your rights.',
-  updated: UPDATED,
+  // 12 Oct: a HoYoLAB login remembered in the browser is now encrypted (wording only, no new consent).
+  updated: '12 October 2026',
   blocks: [
     { h: 'The short version' },
     {
@@ -95,7 +96,7 @@ export const PRIVACY: LegalPage = {
     { p: '**Moderation (only if it happens).** If the owner silences, suspends or removes your account, we keep what was done, when, until when, and the owner’s reason, so it can end on time and be looked back on. It’s included when you export your data and removed with your account.' },
     { p: '**Tester role and invites (only if you’re invited).** If you accept an invite link, we keep that you’re a tester, when you joined and which invite you used. For each invite link we keep the owner’s own note, when it was made, used or cancelled, and who used it; the link’s secret itself is not kept, only a fingerprint of it. The owner sees testers’ profile names and when they joined. Deleting your account removes your tester role and the invite records with your account on them.' },
     {
-      p: '**HoYoLAB link (optional).** To show live stamina or do the daily check-in and redeem codes, HLIÐSKJÁLF needs your HoYoLAB login (the login cookie values). You choose how it is kept: used once and not stored; remembered only in your browser; or saved on our server so the daily check-in can run while you’re away. A login saved on the server is kept in an encrypted vault, readable only by our server functions. We also keep your HoYoLAB account number, your game accounts’ UIDs, nicknames, servers and levels, and the results of each check-in and code redemption. “Forget” overwrites the saved login straight away and stops everything automatic; the link’s record and its history stay until you delete your account.',
+      p: '**HoYoLAB link (optional).** To show live stamina or do the daily check-in and redeem codes, HLIÐSKJÁLF needs your HoYoLAB login (the login cookie values). You choose how it is kept: used once and not stored; remembered only in your browser, encrypted with a key your browser keeps for HLIÐSKJÁLF; or saved on our server so the daily check-in can run while you’re away. A login saved on the server is kept in an encrypted vault, readable only by our server functions. We also keep your HoYoLAB account number, your game accounts’ UIDs, nicknames, servers and levels, and the results of each check-in and code redemption. “Forget” overwrites the saved login straight away and stops everything automatic; the link’s record and its history stay until you delete your account.',
     },
     { p: '**Pull history import.** The game’s history link you paste (with its one-time key) is used for that one import and never stored. We keep the pulls themselves (what you got and when), without your game UID.' },
     { p: '**The Assistant (optional).** Your Claude API key is kept in your browser only (or only for the open tab, if you choose), never on our server and never in backup files. When you ask a question, our server passes your message, any picture you add, and a summary of your HLIÐSKJÁLF data to Anthropic using your key, and keeps nothing of it.' },

@@ -25,7 +25,7 @@ import {
   type ServerState,
 } from './accounts';
 import c from './connections.module.css';
-import { askHoyolab, forgetDeviceAccount, fullIn, hoyolabLink, saveDeviceAccount, type HoyoAccount, type HoyoAnswer, type HoyoEndgame, type HoyoLogin, type Part } from './hoyolab';
+import { askHoyolab, forgetDeviceAccount, fullIn, hoyolabLink, rememberWorks, saveDeviceAccount, type HoyoAccount, type HoyoAnswer, type HoyoEndgame, type HoyoLogin, type Part } from './hoyolab';
 import { HoyolabSteps, PasteLogin } from './HoyolabLogin';
 import { useAccounts } from './useAccounts';
 import { useExamplesShown } from '../../core/data/prefs';
@@ -637,7 +637,13 @@ function AddAccount({ games, used, blocker, canCancel, onDone, onCancel }: { gam
         <legend className={c.field}>Where to keep the login</legend>
         {(
           [
-            ['device', 'Remember on this device', 'Kept in this browser only: never synced, never in a backup. Anyone using this browser could use it.'],
+            [
+              'device',
+              'Remember on this device',
+              rememberWorks()
+                ? 'Kept in this browser only, encrypted: never synced, never in a backup. Anyone using this browser could use it.'
+                : 'This browser can’t encrypt saved logins, so it is kept only until you close this page.',
+            ],
             ['server', 'Save on HLITH’s server (encrypted)', 'Needed for automatic check-in and codes. Stored encrypted; no browser can read it back. Forget overwrites it.'],
             ['once', 'Use once', 'Just look now. Nothing is kept after you close this page.'],
           ] as [Keep, string, string][]
