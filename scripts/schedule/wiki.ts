@@ -6,6 +6,7 @@
  * items of each banner. Pure parsing here; fetching is in fetchWiki().
  */
 import { at, SERVER_OFFSET } from './text.ts';
+import { stripComments, unwrapComments } from '../../src/core/text/markup.ts';
 
 export interface WikiPage {
   title: string;
@@ -41,7 +42,7 @@ export function infobox(text: string): Record<string, string> {
       }
     }
   }
-  const body = text.slice(start, end).replace(/<!--[\s\S]*?-->/g, '');
+  const body = stripComments(text.slice(start, end));
   const out: Record<string, string> = {};
   for (const m of body.matchAll(/^\|[ \t]*([a-z0-9_-]+)[ \t]*=[ \t]*(.*)$/gim)) out[(m[1] ?? '').toLowerCase()] = (m[2] ?? '').trim();
   return out;
@@ -101,7 +102,7 @@ export function statedTotal(text: string, item: string): number | undefined {
   if (at < 0) return undefined;
   const rest = text.slice(at).replace(/^[^\n]*\n/, '');
   const next = rest.search(/^==[^=]/m);
-  const section = (next >= 0 ? rest.slice(0, next) : rest).replace(/<!--|-->/g, '');
+  const section = unwrapComments(next >= 0 ? rest.slice(0, next) : rest);
   const field = new RegExp(String.raw`^\|\s*${esc}\s*=\s*([\d,]+)\s*$`, 'm').exec(section)?.[1];
   if (field) return Number(field.replace(/,/g, ''));
   // Several totals for different choices ("If Gilgamesh is chosen…") give the same currency: the first counts.
@@ -118,7 +119,7 @@ export function rewardTotal(text: string, item: string): number | null {
   // An {{Event Rewards}} box outside a Total heading still states the sum: |Polychrome = 300.
   const field = new RegExp(String.raw`^\|\s*${esc}\s*=\s*([\d,]+)\s*$`, 'm').exec(text)?.[1];
   if (field) return Number(field.replace(/,/g, ''));
-  text = text.replace(/<!--|-->/g, '');
+  text = unwrapComments(text);
   let total = 0;
   for (const m of text.matchAll(new RegExp(String.raw`\{\{Card\s*\|\s*${esc}\s*\|\s*([\d,]+)`, 'g'))) total += Number((m[1] ?? '0').replace(/,/g, ''));
   for (const m of text.matchAll(new RegExp(String.raw`(?:^|[|;])\s*${esc}\s*\*\s*([\d,]+)`, 'gm'))) total += Number((m[1] ?? '0').replace(/,/g, ''));

@@ -32,6 +32,7 @@ import { ProfileCard } from './ProfileCard';
 import { useCheckinDays } from './useCheckinDays';
 import { ImageAdjust } from './ImageAdjust';
 import type { ImageKind } from './imageCrop';
+import { stripTags } from '../../core/text/markup';
 
 interface Props {
   games: GameContract[];
@@ -51,7 +52,7 @@ export function useLists(games: GameContract[]) {
       g.data
         .characters()
         .catch(() => [] as Character[])
-        .then((list) => alive && setLists((cur) => ({ ...cur, characters: { ...cur.characters, [g.id]: list.map((c) => (c.name.includes('<') ? { ...c, name: c.name.replace(/<\/?[a-z]+[^>]*>/gi, '') } : c)) } })));
+        .then((list) => alive && setLists((cur) => ({ ...cur, characters: { ...cur.characters, [g.id]: list.map((c) => (c.name.includes('<') ? { ...c, name: stripTags(c.name) } : c)) } })));
       g.data
         .backlog()
         .catch(() => [] as BacklogItem[])

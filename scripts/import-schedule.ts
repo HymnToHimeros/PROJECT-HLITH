@@ -23,6 +23,7 @@ import type { BacklogItem, Banner, GameEvent, Version } from '../src/core/contra
 import { amountOf, at, nameKey, noticeText, serverMark, slug, spanIn, versionFromNotice, type VersionTimes } from './schedule/text.ts';
 import { fetchWiki, infobox, mainBox, poolBox, poolFeatured, rewardTotal, sectionLinks, statedTotal, wikiPrefix, wikiServer, wikiTime, type WikiPage } from './schedule/wiki.ts';
 import type { Signal, SignalLog } from './schedule/rhythm.ts';
+import { stripTags } from '../src/core/text/markup.ts';
 
 const ROOT = resolve(import.meta.dirname, '..');
 const DAY = 86_400_000;
@@ -203,7 +204,7 @@ async function idIndex(g: Game, wikiPages: Map<string, WikiPage>): Promise<{ ind
   const weapons = await json<Record<string, { en: string; icon?: string }>>(`https://static.nanoka.cc/${g.id}/${manifest[g.id]?.latest ?? ''}/${g.weapons}`);
   const weaponArt = new Map<string, string>();
   for (const [id, w] of Object.entries(weapons)) {
-    if (!index.has(nameKey(w.en))) index.set(nameKey(w.en.replace(/<[^>]+>/g, '')), id);
+    if (!index.has(nameKey(w.en))) index.set(nameKey(stripTags(w.en)), id);
     // nanoka's pictures: HSR light cone figures by id, ZZZ W-Engines by icon name.
     const art = g.id === 'hsr' ? `https://static.nanoka.cc/assets/hsr/lightconemaxfigures/${id}.webp` : w.icon ? `https://static.nanoka.cc/assets/zzz/${w.icon}.webp` : undefined;
     if (art) weaponArt.set(id, art);

@@ -18,6 +18,7 @@
 import { writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { fetchWiki, infobox } from './schedule/wiki.ts';
+import { stripTags } from '../src/core/text/markup.ts';
 
 const ROOT = resolve(import.meta.dirname, '..');
 const STATIC = 'https://static.nanoka.cc';
@@ -91,7 +92,7 @@ async function getJson<T = Record<string, Record<string, unknown>>>(url: string)
 }
 
 /** Names can carry game markup like <unbreak>999</unbreak>; keep the text only. */
-const plain = (v: unknown) => String(v).replace(/<[^>]+>/g, '');
+const plain = (v: unknown) => stripTags(String(v));
 
 function hsr(data: Record<string, Record<string, unknown>>): Out[] {
   return Object.entries(data).map(([id, c]) => {

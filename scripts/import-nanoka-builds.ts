@@ -14,6 +14,7 @@
  */
 import { readFileSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
+import { stripTags } from '../src/core/text/markup.ts';
 
 const ROOT = resolve(import.meta.dirname, '..');
 const BASE = 'https://static.nanoka.cc';
@@ -28,7 +29,7 @@ const need = <T>(table: Record<string, T>, code: unknown, what: string, who: str
   if (v === undefined) throw new Error(`Unknown ${what} "${String(code)}" for ${who}. Add it to the table in scripts/import-nanoka-builds.ts.`);
   return v;
 };
-const plain = (s: string) => s.replace(/<[^>]+>/g, '').replace(/\\n/g, '\n').replace(/\u00a0/g, ' ').trim();
+const plain = (s: string) => stripTags(s).replace(/\\n/g, '\n').replace(/\u00a0/g, ' ').trim();
 
 /** nanoka.cc serves each game picture as <file name>.webp. */
 const ASSETS = 'https://static.nanoka.cc/assets';

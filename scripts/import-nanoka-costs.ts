@@ -17,6 +17,7 @@
  */
 import { writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
+import { stripTags } from '../src/core/text/markup.ts';
 
 const ROOT = resolve(import.meta.dirname, '..');
 const BASE = 'https://static.nanoka.cc';
@@ -160,7 +161,7 @@ async function hsr(): Promise<{ costs: Costs; names: Named }> {
       const label = first?.point_name ?? first?.status_add_list?.map((s) => s.name).join(', ') ?? point;
       const steps = Object.fromEntries(Object.entries(levels).flatMap(([lv, p]) => (Object.keys(toItems(p.material_list)).length ? [[lv, toItems(p.material_list)]] : [])));
       // A level-1 entry with a cost means "unlocking it costs this" (Traces): counted from level 0.
-      return { id: point, label: label.replace(/<[^>]+>/g, ''), max: Math.max(0, ...Object.keys(levels).map(Number)), steps };
+      return { id: point, label: stripTags(label), max: Math.max(0, ...Object.keys(levels).map(Number)), steps };
     });
     costs.characters[id] = { promotions, skills: skills.filter((s) => Object.keys(s.steps).length > 0) };
     for (const p of promotions) for (const i of Object.keys(p.items)) used.add(i);

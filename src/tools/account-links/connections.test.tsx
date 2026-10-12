@@ -3,7 +3,7 @@ import { beforeEach, describe, expect, it } from 'vitest';
 import { gameData, resetUserData, setRosterEntry } from '../../core/data/userData';
 import { fakeCharacters, fakeGame } from './fakeGame';
 import { accountsFor, codeLoginRefused, fromDevice, fromServerRows, importSources, lastCheckinLine, latestRedemptions, maskId, mergeAccounts, nextLabel, readCodes, readRedeemLogin, sameAccount, type LinkedAccount, type ServerRow } from './accounts';
-import { deviceAccounts, forgetDeviceAccount, forgetLogin, readLogin, rememberLogin, savedLogin, saveDeviceAccount } from './hoyolab';
+import { deviceAccounts, forgetDeviceAccount, forgetLogin, readLogin, rememberLogin, resetDeviceAccountsForTests, savedLogin, saveDeviceAccount } from './hoyolab';
 import { LinkAccounts } from './LinkAccount';
 import { RosterImport } from './RosterImport';
 import { applyImport, planImport } from './rosterImport';
@@ -25,7 +25,10 @@ describe('reading the pasted login', () => {
 });
 
 describe('remember on this device', () => {
-  beforeEach(() => localStorage.clear());
+  beforeEach(() => {
+    localStorage.clear();
+    resetDeviceAccountsForTests();
+  });
   it('is off unless asked, and Forget deletes it', () => {
     expect(savedLogin('aa')).toBeNull();
     rememberLogin('aa', { ltuid_v2: '1', ltoken_v2: TOKEN }, '700');
@@ -225,7 +228,10 @@ describe('roster import', () => {
 });
 
 describe('Connected accounts', () => {
-  beforeEach(() => localStorage.clear());
+  beforeEach(() => {
+    localStorage.clear();
+    resetDeviceAccountsForTests();
+  });
   it('explains itself, marks itself unverified and shows EXAMPLE accounts until one is added', () => {
     render(<LinkAccounts games={[fakeGame()]} />);
     expect(screen.getByText('How connected accounts work')).toBeInTheDocument();
