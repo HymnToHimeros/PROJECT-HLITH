@@ -1,5 +1,6 @@
 // Layer 4: shared components. No game logic, no game names; colour comes from --vent.
 export { BannerCard } from './BannerCard';
+export { BitmapImage } from './BitmapImage';
 export { BottomSheet } from './BottomSheet';
 export { Button } from './Button';
 export { CalendarBar } from './CalendarBar';

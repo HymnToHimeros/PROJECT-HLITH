@@ -165,7 +165,8 @@ export function goodToKnow(): ReactNode[] {
  */
 export function findHistoryLink(text: string): string | null {
   // Printable ASCII only, without quotes and angle brackets: a link ends at the first other byte.
-  const matches = text.match(/https:\/\/[!#-&(-;=?-~]*getGachaLog\?[!#-&(-;=?-~]*/g);
+  // Spelled out character by character (the same set as the ranges !#-&(-;=?-~), so no range reaches further than meant.
+  const matches = text.match(/https:\/\/[\w!#$%&()*+,\-./:;=?@[\\\]^`{|}~]*getGachaLog\?[\w!#$%&()*+,\-./:;=?@[\\\]^`{|}~]*/g);
   if (!matches) return null;
   for (let i = matches.length - 1; i >= 0; i--) {
     const m = matches[i];

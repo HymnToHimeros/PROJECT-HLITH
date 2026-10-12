@@ -4,8 +4,6 @@ import { ImageAdjust } from './ImageAdjust';
 
 beforeEach(() => {
   vi.stubGlobal('createImageBitmap', vi.fn(async () => ({ width: 2000, height: 1000, close: vi.fn() })));
-  URL.createObjectURL = vi.fn(() => 'blob:picked');
-  URL.revokeObjectURL = vi.fn();
 });
 afterEach(() => vi.unstubAllGlobals());
 
@@ -16,9 +14,17 @@ const setup = (kind: 'avatar' | 'banner' = 'avatar') => {
 };
 
 /** The big picture inside the frame (the first one; the preview has its own copy). */
-const framePicture = () => screen.getByRole('application').querySelector('img') as HTMLImageElement;
+const framePicture = () => screen.getByRole('application').querySelector('canvas') as HTMLCanvasElement;
 
 describe('Adjust picture', () => {
+  it('draws the picture itself: no address is made for the file', async () => {
+    const make = vi.spyOn(URL, 'createObjectURL');
+    setup();
+    await screen.findByRole('application');
+    expect(framePicture()).toBeInstanceOf(HTMLCanvasElement);
+    expect(make).not.toHaveBeenCalled();
+    make.mockRestore();
+  });
   it('opens as a dialog with the frame, zoom controls, Fit, Fill, Reset and a how-to', async () => {
     setup();
     expect(await screen.findByRole('application', { name: /Adjust picture: drag or use the arrow keys/ })).toBeInTheDocument();
