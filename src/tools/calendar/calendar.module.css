@@ -302,7 +302,6 @@
   }
   /* On a PC the timeline never scrolls sideways, so the date scale and Today mark can stay in view while you scroll down. */
   .scroller {
-    /* clip, not hidden: nothing can widen the page, and the sticky date scale still works. */
     overflow-x: clip;
     overflow-y: visible;
   }
