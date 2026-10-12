@@ -45,6 +45,11 @@ const obj = (properties: Record<string, unknown>): Tool['input_schema'] => ({
  * `strict: true` schemas must not use the keywords in STRICT_UNSUPPORTED: Claude answers 400 to
  * the whole request ("For 'integer' type, property 'minimum' is not supported"), so every message
  * fails. Limits go in the description; the app checks them on the card (src/tools/assistant/proposals.ts).
+ *
+ * Keep the number of strict tools at STRICT_TOOLS_MAX or below. Every strict schema is compiled into
+ * one grammar together with web search, and with 10 strict tools Opus and Sonnet answered 400: "The
+ * compiled grammar is too large, which would cause performance issues. Simplify your tool schemas or
+ * reduce the number of strict tools." (T72). New tools go without `strict`; their card checks every value.
  */
 export const ACTION_TOOLS: Tool[] = [
   {
@@ -83,7 +88,7 @@ export const ACTION_TOOLS: Tool[] = [
     name: 'add_backlog_item',
     description:
       'Propose adding one of the user\'s own backlog items (something to do, with a count: chapters, chests, points…). It is added to their own items, like Edit mode. Use a category id from the data summary when one fits (for example "side-quests"), or a short new one.',
-    strict: true,
+    // Not strict (grammar size, see above): the card checks every value.
     input_schema: obj({
       game,
       title: { type: 'string', description: 'Short name, up to 80 characters.' },
@@ -97,7 +102,7 @@ export const ACTION_TOOLS: Tool[] = [
   {
     name: 'edit_backlog_item',
     description: 'Propose renaming a backlog item or changing how much there is to do. Use item ids from the data summary.',
-    strict: true,
+    // Not strict (grammar size, see above): the card checks every value.
     input_schema: obj({
       game,
       item_id: id,
@@ -109,7 +114,7 @@ export const ACTION_TOOLS: Tool[] = [
   {
     name: 'hide_backlog_item',
     description: 'Propose hiding a backlog item from the user\'s list (nothing is deleted; they can show it again in Edit mode). Use item ids from the data summary.',
-    strict: true,
+    // Not strict (grammar size, see above): the card checks every value.
     input_schema: obj({ game, item_id: id, why }),
   },
   {
@@ -162,6 +167,9 @@ export const ACTION_TOOLS: Tool[] = [
 ];
 
 export const ACTION_TOOL_NAMES = ACTION_TOOLS.map((t) => t.name);
+
+/** Strict tools that fit Claude's grammar limit together with web search (7 on e1aa0ad worked; 10 did not). */
+export const STRICT_TOOLS_MAX = 7;
 
 /** JSON Schema keywords kept out of strict tool schemas (tests/assistantTools.test.ts walks every schema for them). */
 export const STRICT_UNSUPPORTED = ['minimum', 'maximum', 'exclusiveMinimum', 'exclusiveMaximum', 'multipleOf', 'minLength', 'maxLength', 'pattern', 'format', 'minItems', 'maxItems', 'uniqueItems', 'minProperties', 'maxProperties'] as const;
@@ -323,6 +331,8 @@ export function errorText(status: number | undefined, detail: ClaudeError = {}):
   const message = detail.message ?? '';
   switch (status) {
     case 400:
+      if (/compiled grammar is too large/i.test(message))
+        return { status: 400, error: `The Assistant’s tools are too big for this model right now. Turn off web search and try again. (code ${errorCode(400, message)})` };
       if (/credit balance/i.test(message)) return { status: 400, error: 'Your Claude account has no credit left. Add credit under Billing in the Claude Console.' };
       if (/^model:|model.*(not (found|supported|available)|does not support)/i.test(message))
         return { status: 400, error: 'That model can’t be used for this request with your key. Choose another model.' };

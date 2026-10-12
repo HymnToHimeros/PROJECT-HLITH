@@ -46,6 +46,20 @@ describe('Assistant proposals: approve and undo through your data', () => {
     expect(call('set_event_state', { event_id: 'nope', state: 'done', login_days_claimed: null }).problem).toMatch(/Unknown event/);
     expect(call('set_backlog_done', { item_id: 'bl1', done: 11 }).problem).toMatch(/between 0 and 10/);
     expect(call('log_bank_balance', { currency: 'gold', kind: 'have', amount: 1, note: '' }).problem).toMatch(/Unknown currency/);
+    // The backlog tools aren't strict (T72), so Claude may send odd values: always a "can't use this" card, never a crash.
+    for (const [tool, input] of [
+      ['add_backlog_item', {}],
+      ['add_backlog_item', { title: 7, category: null, total: '5', reward: -1, note: {} }],
+      ['add_backlog_item', { title: 'Chests', category: 'Side Quests!!', total: 3, reward: null, note: '' }],
+      ['add_backlog_item', { title: 'Chests', category: 'side-quests', total: 2.5, reward: null, note: '' }],
+      ['edit_backlog_item', { item_id: 42, title: null, total: null }],
+      ['edit_backlog_item', { item_id: 'bl1', title: '', total: null }],
+      ['edit_backlog_item', { item_id: 'bl1', title: null, total: -3 }],
+      ['edit_backlog_item', { item_id: 'bl1' }],
+      ['hide_backlog_item', { item_id: ['bl1'] }],
+      ['hide_backlog_item', {}],
+    ] as const)
+      expect(call(tool, input as Record<string, unknown>).problem, `${tool} ${JSON.stringify(input)}`).toEqual(expect.any(String));
     // Strict tool schemas can't carry `minimum`, so negative numbers are refused here, as an error card.
     expect(call('log_bank_balance', { currency: 'gem', kind: 'have', amount: -5, note: '' }).problem).toMatch(/amount/);
     expect(call('set_backlog_done', { item_id: 'bl1', done: -1 }).problem).toMatch(/between 0 and 10/);
