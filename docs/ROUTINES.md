@@ -124,6 +124,10 @@ Run log, "by routine"), and each finding shows which job delivered it and when.
 The instructions the scheduled chat follows ("HLITH research routine", a Claude
 Code routine in the cloud environment). Changing what it does = a reviewed PR to
 this section; the routine's own prompt only adds the daily start check below.
+The routine wakes one standing cloud session that has this repository attached
+(not a fresh session that clones it: the cloud's safety check blocks running a
+freshly cloned repository's scripts, as it did on 12 Oct 2026). So each run
+starts with `git pull` and keeps its earlier days' history.
 
 **When it runs.** The routine starts every day at 10:45 UTC and first asks
 `node scripts/schedule-due.ts --key --now <24 hours ago>`. When `next_key` is
@@ -138,8 +142,8 @@ starts, and the first check of each quiet middle (`keyMoments` in
 
 **Each run, in order.** Every step is done; a step that can't be done is named in
 the delivery, never skipped silently.
-1. `git clone https://github.com/HymnToHimeros/PROJECT-HLITH` (or `git pull` on
-   main), `npm ci`. Note the time.
+1. `git switch main && git pull origin main` in the attached repository, `npm ci`.
+   Note the time.
 2. Official notices, both games, posted since the last run. These official
    sources work from the cloud environment; read them directly (not news sites):
    - official news list:
@@ -198,9 +202,10 @@ the delivery, never skipped silently.
    characters), the findings, and `next_at: { "research-routine": <next key moment
    + 30 min> }` (`node scripts/schedule-due.ts --key`).
    Guard against a second delivery: before sending, check for the file
-   `/tmp/hlith-delivered`; if it exists, this run already delivered (for example
-   a re-sent turn in the same session), so don't send again. Right after a 200,
-   write that file.
+   `/tmp/hlith-delivered-<today's UTC date>` (`date -u +%F`); if it exists, today's
+   run already delivered (for example a re-sent turn), so don't send again. Right
+   after a 200, write that file. (Dated, because the standing session keeps its
+   files from one day to the next.)
 
 **Its PRs.** Branch `scheduler/research-<date>`. `npm run check` green before
 pushing. When the session has no GitHub tools to open the PR, it pushes the branch
