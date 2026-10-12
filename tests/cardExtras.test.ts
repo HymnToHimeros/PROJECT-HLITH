@@ -39,6 +39,8 @@ describe('more on the profile card (0018, T64 B2)', () => {
     // (title and display_name now also pass the slur check, tested below.)
     const changed = ["'stats'", "'title'", "'display_name'"];
     for (const line of before.split('\n').filter((l) => /^ {4}'[a-z_]+', /.test(l) && !changed.some((c) => l.includes(c)))) expect(now).toContain(line);
+    // The owner's look (several lines in 0017) comes through unchanged too.
+    expect(now).toContain(before.match(/ {4}'owner_style', [\s\S]*?\)\) end,/)?.[0] ?? 'missing in 0017');
     expect(now).toContain("if exists (select 1 from public.account_restrictions where user_id = p_user and (silenced_until > now() or banned_until > now())) then");
   });
 });

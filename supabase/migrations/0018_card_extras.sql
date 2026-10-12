@@ -260,7 +260,9 @@ begin
     'owner_style', case when os is not null then jsonb_strip_nulls(jsonb_build_object(
       'badge', case when jsonb_typeof(os -> 'badge') = 'number' then os -> 'badge' end,
       'frame', case when jsonb_typeof(os -> 'frame') = 'number' then os -> 'frame' end,
-      'name', case when jsonb_typeof(os -> 'name') = 'number' then os -> 'name' end)) end,
+      'name', case when jsonb_typeof(os -> 'name') = 'number' then os -> 'name' end,
+      'frameVariant', case when jsonb_typeof(os -> 'frameVariant') = 'number' then os -> 'frameVariant' end,
+      'nameVariant', case when jsonb_typeof(os -> 'nameVariant') = 'number' then os -> 'nameVariant' end)) end,
     'badges', case when (priv -> 'badges') is distinct from 'false'::jsonb then to_jsonb(badges) end,
     'pinned_badge', case when (priv -> 'badges') is distinct from 'false'::jsonb then pinned end,
     'stats', case when (priv -> 'stats') is distinct from 'false'::jsonb then stats end,

@@ -94,3 +94,11 @@
   font-size: 12px;
   color: #a9bbc8;
 }
+.variants {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: var(--s-3);
+  border: 1px dashed var(--line-strong);
+  border-radius: var(--r-card);
+}

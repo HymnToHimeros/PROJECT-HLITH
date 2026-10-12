@@ -226,13 +226,6 @@
 :root[data-motion='on'] .oa-art .oa-holo {
   animation:oa-holo 4.5s ease-in-out infinite;
 }
-.oa-art .oa-spin60e {
-  transform-box:fill-box;
-  transform-origin:center;
-}
-:root[data-motion='on'] .oa-art .oa-spin60e {
-  animation:oa-spin 40s linear infinite;
-}
 :root[data-motion='on'] .oa-art .oa-curtain {
   animation:oa-curtain 5s ease-in-out infinite alternate;
 }
@@ -274,21 +267,98 @@
 :root[data-motion='on'] .oa-art .oa-wavering20 {
   animation:oa-ring 2.4s ease-out infinite;
 }
-.oa-art .oa-coronaflare {
-  transform-box:fill-box;
-  transform-origin:center;
+.oa-art .oa-hand-sun,
+.oa-art .oa-hand-moon {
+  transform-box:view-box;
+  transform-origin:70px 70px;
 }
-:root[data-motion='on'] .oa-art .oa-coronaflare {
-  animation:oa-cflare 4s ease-in-out infinite;
+:root[data-motion='on'] .oa-art .oa-hand-sun,
+:root[data-motion='on'] .oa-art .oa-hand-moon {
+  animation:oa-spin 8s linear infinite;
 }
-.oa-art .oa-dring {
+:root[data-motion='on'] .oa-art .oa-hand-moon {
+  animation-direction:reverse;
+}
+.oa-art .oa-dring6,
+.oa-art .oa-dring6n {
   opacity:0;
 }
-:root[data-motion='on'] .oa-art .oa-dring {
-  animation:oa-ringflash 6s ease-in-out infinite;
+:root[data-motion='on'] .oa-art .oa-dring6,
+:root[data-motion='on'] .oa-art .oa-dring6n {
+  animation:oa-meet 4s ease-in-out infinite;
 }
-:root[data-motion='reduced'] .oa-art .oa-dring {
-  animation:oa-ringflash 6s ease-in-out infinite;
+:root[data-motion='reduced'] .oa-art .oa-dring6,
+:root[data-motion='reduced'] .oa-art .oa-dring6n {
+  animation:oa-meet 4s ease-in-out infinite;
+}
+:root[data-motion='on'] .oa-art .oa-cres-l {
+  animation:oa-cresl 6s ease-in-out infinite;
+}
+:root[data-motion='on'] .oa-art .oa-cres-r {
+  animation:oa-cresr 6s ease-in-out infinite;
+}
+:root[data-motion='on'] .oa-art .oa-halo6 {
+  animation:oa-halo6 6s ease-in-out infinite;
+}
+:root[data-motion='reduced'] .oa-art .oa-halo6 {
+  animation:oa-halo6 6s ease-in-out infinite;
+}
+.oa-art .oa-dring6c {
+  opacity:0;
+}
+:root[data-motion='on'] .oa-art .oa-dring6c {
+  animation:oa-halo6 6s ease-in-out infinite;
+}
+:root[data-motion='reduced'] .oa-art .oa-dring6c {
+  animation:oa-halo6 6s ease-in-out infinite;
+}
+.oa-art .oa-cline6 {
+  stroke-dasharray:120;
+}
+:root[data-motion='on'] .oa-art .oa-cline6 {
+  animation:oa-draw6 6s ease-in-out infinite;
+}
+.oa-art .oa-chase {
+  transform-box:view-box;
+  transform-origin:70px 70px;
+}
+:root[data-motion='on'] .oa-art .oa-chase {
+  animation:oa-spin 14s linear infinite;
+}
+.oa-art .oa-dring6w {
+  opacity:0;
+}
+:root[data-motion='on'] .oa-art .oa-dring6w {
+  animation:oa-wolfflash 7s ease-in-out infinite;
+}
+:root[data-motion='reduced'] .oa-art .oa-dring6w {
+  animation:oa-wolfflash 7s ease-in-out infinite;
+}
+.oa-art .oa-armil {
+  transform-box:view-box;
+  transform-origin:70px 70px;
+}
+:root[data-motion='on'] .oa-art .oa-armil {
+  animation:oa-armil 10s ease-in-out infinite alternate;
+}
+.oa-art .oa-meridian {
+  transform-box:view-box;
+  transform-origin:70px 70px;
+}
+:root[data-motion='on'] .oa-art .oa-meridian {
+  animation:oa-merid 8s ease-in-out infinite;
+}
+:root[data-motion='on'] .oa-art .oa-eclipse6 {
+  animation:oa-eclipse6 8s ease-in-out infinite;
+}
+.oa-art .oa-dring6s {
+  opacity:0;
+}
+:root[data-motion='on'] .oa-art .oa-dring6s {
+  animation:oa-ringflash 8s ease-in-out infinite;
+}
+:root[data-motion='reduced'] .oa-art .oa-dring6s {
+  animation:oa-ringflash 8s ease-in-out infinite;
 }
 @keyframes oa-sheen {0%,55%{opacity:0;transform:rotate(25deg) translateX(0)}60%{opacity:1}85%,100%{opacity:0;transform:rotate(25deg) translateX(110px)}}
 @keyframes oa-glint {0%,100%{opacity:1}50%{opacity:.2}}
@@ -334,3 +404,12 @@
 @keyframes oa-frost {0%,100%{color:#8fc8ea;text-shadow:none}50%{color:#fbfeff;text-shadow:0 0 6px #bfe6ff,0 0 16px rgba(127,180,214,.6)}}
 @keyframes oa-fz {0%,100%{opacity:0;transform:scale(.4)}50%{opacity:1;transform:scale(1)}}
 @keyframes oa-cflare {50%{transform:scale(1.08);opacity:.8}}
+@keyframes oa-meet {0%,100%{opacity:1}12%,88%{opacity:0}}
+@keyframes oa-cresl {0%,100%{transform:translateX(-8px)}45%,55%{transform:translateX(0)}}
+@keyframes oa-cresr {0%,100%{transform:translateX(8px)}45%,55%{transform:translateX(0)}}
+@keyframes oa-halo6 {0%,35%,65%,100%{opacity:0}48%,52%{opacity:.7}}
+@keyframes oa-draw6 {0%{stroke-dashoffset:120}40%,90%{stroke-dashoffset:0}100%{stroke-dashoffset:-120}}
+@keyframes oa-wolfflash {0%,40%,60%,100%{opacity:0}50%{opacity:1}}
+@keyframes oa-armil {to{transform:rotate(8deg)}}
+@keyframes oa-merid {0%,100%{transform:scaleX(1)}50%{transform:scaleX(.25)}}
+@keyframes oa-eclipse6 {0%,100%{transform:translateX(-12px)}40%,60%{transform:translateX(0)}}
