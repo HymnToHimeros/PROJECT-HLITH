@@ -1,7 +1,10 @@
 # Security scanning (CodeQL) on your own machine
 
-GitHub's code scanning runs CodeQL's default query suites on main. To see the same alerts before
-you push, run CodeQL locally. You need about 2 GB of free disk space and network access to github.com
+GitHub's code scanning runs CodeQL's default query suites on main. It also runs on every pull request: the
+**CodeQL** check on the PR fails and lists each new alert (rule, file:line) in code the PR changes,
+so a green CodeQL check means the PR adds none. The Security tab lists everything still open on main.
+
+The steps below run the same scan before you push. You need about 2 GB of free disk space and network access to github.com
 (release downloads).
 
 ## 1. Get CodeQL (once)
