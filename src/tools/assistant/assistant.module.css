@@ -282,6 +282,7 @@
 
 /* ── Settings, key ── */
 .section {
+  composes: hlith-card from global;
   display: flex;
   flex-direction: column;
   gap: var(--s-3);

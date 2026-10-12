@@ -71,30 +71,55 @@ async function serverDrafts(): Promise<Raw[]> {
 }
 
 /**
- * Adds the drafts to the manifest: new ids only. A theme already in the store (the owner's own,
- * or a draft added before and maybe changed since) is never removed or overwritten.
+ * Adds the drafts to the manifest. A draft's pictures (its `pack`) go to their own file in the
+ * private store, named by the draft's version, and the theme points at it. A set theme added
+ * before (`setIds`) is brought up to date, keeping the picture you gave it; a theme of your own
+ * with the same id is never touched.
  */
-export function mergeDrafts(m: { themes: Raw[] } & Raw, drafts: Raw[]): { manifest: { themes: Raw[] } & Raw; added: string[]; kept: number; problems: string[] } {
-  const ids = new Set(m.themes.map((t) => String(t.id)));
+export function mergeDrafts(
+  m: { themes: Raw[] } & Raw,
+  drafts: Raw[],
+  setIds: string[] = [],
+  retired: string[] = [],
+): { manifest: { themes: Raw[] } & Raw; added: string[]; updated: string[]; kept: number; problems: string[]; packs: { path: string; json: string }[] } {
+  drafts = drafts.filter((d) => !retired.includes(String(d.id)));
   const added: string[] = [];
+  const updated: string[] = [];
   const problems: string[] = [];
+  const packs: { path: string; json: string }[] = [];
   let kept = 0;
   const themes = [...m.themes];
   for (const d of drafts) {
-    if (ids.has(String(d.id))) {
-      kept++;
-      continue;
+    const { pack, ...rest } = d;
+    const look = rest.look && typeof rest.look === 'object' ? { ...(rest.look as Raw) } : undefined;
+    if (look) delete look.pack;
+    let entry: Raw = { ...rest, ...(look ? { look } : {}), origin: 'set' };
+    if (pack && typeof pack === 'object') {
+      const json = JSON.stringify(pack);
+      if (json.length > 3_000_000) {
+        problems.push(`${String(d.id)}: its pictures are over 3 MB.`);
+        continue;
+      }
+      const path = `sets/${String(d.id)}/look-${typeof d.version === 'number' ? d.version : 1}.json`;
+      packs.push({ path, json });
+      entry = { ...entry, look: { ...(look ?? {}), pack: path } };
     }
-    const checked = readOwnerTheme(d);
+    const checked = readOwnerTheme(entry);
     if ('problems' in checked) {
       problems.push(...checked.problems);
       continue;
     }
-    themes.push({ ...d, origin: 'set' });
-    ids.add(checked.theme.id);
-    added.push(checked.theme.name);
+    const at = themes.findIndex((t) => t.id === d.id);
+    if (at === -1) {
+      themes.push(entry);
+      added.push(checked.theme.name);
+    } else if (setIds.includes(String(d.id))) {
+      const before = themes[at] as Raw;
+      themes[at] = { ...entry, ...(before.picture ? { picture: before.picture } : {}) };
+      updated.push(checked.theme.name);
+    } else kept++;
   }
-  return { manifest: { ...m, themes }, added, kept, problems };
+  return { manifest: { ...m, themes }, added, updated, kept, problems, packs: packs.filter((p) => themes.some((t) => (t.look as Raw | undefined)?.pack === p.path)) };
 }
 
 /**
@@ -122,6 +147,13 @@ export async function sha256(text: string): Promise<string> {
 export async function setThemeIds(themes: Raw[], early: Set<string> = EARLY_SET_IDS): Promise<string[]> {
   const out: string[] = [];
   for (const t of themes) if (t.origin === 'set' || early.has(await sha256(String(t.id)))) out.push(String(t.id));
+  return out;
+}
+
+/** Draft ids of the first set themes, retired for good: the button never adds them again. */
+export async function retiredIds(drafts: Raw[], early: Set<string> = EARLY_SET_IDS): Promise<string[]> {
+  const out: string[] = [];
+  for (const d of drafts) if (early.has(await sha256(String(d.id)))) out.push(String(d.id));
   return out;
 }
 
@@ -222,13 +254,20 @@ export function OwnerThemesAdmin({
 
   const addDrafts = () =>
     run(async () => {
-      const list = await drafts();
+      const all = await drafts();
+      const retired = await retiredIds(all, early);
+      const list = all.filter((d) => !retired.includes(String(d.id)));
       if (list.length === 0) return 'There are no new themes waiting.';
       const m = await rawManifest(store);
-      const out = mergeDrafts(m, list);
-      if (out.added.length) await saveManifest(store, out.manifest);
-      const parts = [out.added.length ? `Added ${out.added.length}: ${out.added.join(', ')}. Pick one in Account → Theme → Only for you.` : 'Nothing new to add.'];
-      if (out.kept) parts.push(`${out.kept} ${out.kept === 1 ? 'was' : 'were'} already there and stayed as they are.`);
+      const out = mergeDrafts(m, list, await setThemeIds(m.themes, early), retired);
+      for (const p of out.packs) await store.upload(p.path, new Blob([p.json], { type: 'application/json' }), 'application/json');
+      if (out.added.length || out.updated.length) await saveManifest(store, out.manifest);
+      const parts = [
+        out.added.length ? `Added ${out.added.length}: ${out.added.join(', ')}. Pick one in Account → Theme → Only for you.` : '',
+        out.updated.length ? `Brought up to date: ${out.updated.join(', ')}.` : '',
+      ].filter(Boolean);
+      if (!parts.length) parts.push('Nothing new to add.');
+      if (out.kept) parts.push(`${out.kept} of your own ${out.kept === 1 ? 'theme has' : 'themes have'} the same name and stayed as ${out.kept === 1 ? 'it is' : 'they are'}.`);
       if (out.problems.length) parts.push(`Left out: ${out.problems.join(' ')}`);
       return parts.join(' ');
     });
@@ -312,7 +351,7 @@ export function OwnerThemesAdmin({
           </Button>
         </div>
         <p className={o.note}>
-          Add puts the themes made for your sets on this list; Remove takes exactly those off again. Your own themes are never changed or removed by either.
+          Add puts the themes made for your sets on this list (or brings them up to date); Remove takes exactly those off again. Your own themes are never changed or removed by either.
         </p>
         {confirming === 'sets' && (
           <div className={o.confirm} role="group" aria-label="Confirm removing the set themes">

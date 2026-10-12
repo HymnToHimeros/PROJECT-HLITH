@@ -12,6 +12,7 @@
   min-width: 0;
 }
 .card {
+  composes: hlith-card from global;
   background: var(--bg-card);
   border: 1px solid var(--line-default);
   border-radius: var(--r-card);

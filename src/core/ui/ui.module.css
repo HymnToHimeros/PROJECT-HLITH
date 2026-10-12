@@ -2,6 +2,7 @@
 
 /* ── Card shell used by several parts ── */
 .card {
+  composes: hlith-card from global;
   background: var(--bg-card);
   border: 1px solid var(--line-default);
   border-radius: var(--r-card);
@@ -9,6 +10,7 @@
 
 /* ── Button ── */
 .button {
+  composes: hlith-button from global;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -27,6 +29,7 @@
   border-color: var(--line-strong);
 }
 .primary {
+  composes: hlith-primary from global;
   background: var(--vent);
   border-color: var(--vent);
   color: var(--on-vent);
@@ -36,6 +39,7 @@
   filter: brightness(1.06);
 }
 .quiet {
+  composes: hlith-quiet from global;
   background: transparent;
   border-color: transparent;
   color: var(--glacier);
@@ -118,12 +122,14 @@
   font-variant-numeric: tabular-nums;
 }
 .track {
+  composes: hlith-track from global;
   height: 6px;
   border-radius: 3px;
   background: var(--bg-track);
   overflow: hidden;
 }
 .fill {
+  composes: hlith-fill from global;
   height: 100%;
   border-radius: 3px;
   background: var(--vent);
@@ -131,6 +137,7 @@
 
 /* ── Currency chip ── */
 .chip {
+  composes: hlith-chip from global;
   display: inline-flex;
   align-self: flex-start;
   align-items: center;
@@ -706,6 +713,7 @@
 }
 /* Module tabs (design: Roster Characters | Teams, Pulls tabs): card, vent fill. */
 .segmentedVent {
+  composes: hlith-tabs from global;
   align-self: flex-start;
   gap: 4px;
   padding: 4px;
@@ -747,6 +755,7 @@
 }
 
 .howTo {
+  composes: hlith-card from global;
   border: 1px solid var(--line-default);
   border-radius: var(--r-card);
   background: var(--bg-card);

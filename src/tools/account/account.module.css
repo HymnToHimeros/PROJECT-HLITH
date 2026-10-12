@@ -513,6 +513,76 @@
   border-bottom: 1px solid var(--line-default);
 }
 
+/* An owner look's own art in its preview (T74): the scene fills the tile, the mini card wears
+   the look's frame or corners. Scene places are re-fitted to the small tile. */
+.lookScene {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.lookScene :global(.sk-layer)[data-place] {
+  inset: 0;
+  width: auto;
+  height: auto;
+}
+.lookScene :global(.sk-layer)[data-place='top-right'],
+.lookScene :global(.sk-layer)[data-place='bottom-right'],
+.lookScene :global(.sk-layer)[data-place='right'] {
+  left: 30%;
+}
+.lookScene :global(.sk-layer)[data-place='top-left'],
+.lookScene :global(.sk-layer)[data-place='bottom-left'],
+.lookScene :global(.sk-layer)[data-place='left'] {
+  right: 30%;
+}
+.lookScene :global(.sk-layer)[data-place='top'] {
+  bottom: 35%;
+}
+.lookScene :global(.sk-layer)[data-place='bottom'] {
+  top: 40%;
+}
+.miniLook {
+  border-width: 2px;
+  box-shadow: 0 6px 18px rgb(0 0 0 / 0.45);
+}
+
+/* A set of looks (T74): one tile, stacked edges hint at the looks inside; they open in a row. */
+.groupCard {
+  box-shadow: 4px 4px 0 -1px var(--bg-raised), 4px 4px 0 0 var(--line-default), 8px 8px 0 -1px var(--bg-raised), 8px 8px 0 0 var(--line-default);
+  margin: 0 8px 8px 0;
+}
+.groupCard[aria-expanded='true'],
+.groupCard[data-worn='true'] {
+  border-color: var(--vent);
+}
+.groupDots {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  display: flex;
+  gap: 4px;
+}
+.groupDots i {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 1px solid rgb(0 0 0 / 0.4);
+}
+.variantRow {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(200px, 100%), 1fr));
+  gap: var(--s-3);
+  padding: var(--s-3);
+  border: 1px solid var(--line-default);
+  border-radius: var(--r-card);
+  background: var(--bg-inset);
+}
+@media (min-width: 1100px) {
+  .variantRow {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+}
+
 /* Account → Theme → Look (T52): accent colour chips. */
 .accentRow {
   display: flex;
