@@ -123,6 +123,18 @@ export function mergeDrafts(
 }
 
 /**
+ * A set-themes file: a list of drafts, or `{ "themes": [...] }` / `{ "drafts": [...] }`. Every
+ * entry needs an id; the rest is checked like any draft when it is added.
+ */
+export function readDraftsFile(raw: unknown): Raw[] {
+  const list = Array.isArray(raw) ? raw : raw && typeof raw === 'object' ? ((raw as Raw).themes ?? (raw as Raw).drafts) : undefined;
+  if (!Array.isArray(list)) throw new Error('That file has no list of themes in it.');
+  const drafts = list.filter((d): d is Raw => !!d && typeof d === 'object' && !Array.isArray(d) && typeof (d as Raw).id === 'string' && (d as Raw).id !== '');
+  if (drafts.length !== list.length) throw new Error('Some themes in that file have no id; nothing was added.');
+  return drafts;
+}
+
+/**
  * The themes the set-theme button added before it marked them (`origin: 'set'`), known only by
  * the SHA-256 of their ids, so this public code names none of them.
  */
@@ -252,24 +264,37 @@ export function OwnerThemesAdmin({
     });
   };
 
-  const addDrafts = () =>
+  /** Puts drafts on the list (from the server or from a file); the first set themes never come back. */
+  const addFrom = async (all: Raw[]) => {
+    const retired = await retiredIds(all, early);
+    const list = all.filter((d) => !retired.includes(String(d.id)));
+    if (list.length === 0) return 'There are no new themes waiting.';
+    const m = await rawManifest(store);
+    const out = mergeDrafts(m, list, await setThemeIds(m.themes, early), retired);
+    for (const p of out.packs) await store.upload(p.path, new Blob([p.json], { type: 'application/json' }), 'application/json');
+    if (out.added.length || out.updated.length) await saveManifest(store, out.manifest);
+    const parts = [
+      out.added.length ? `Added ${out.added.length}: ${out.added.join(', ')}. Pick one in Account → Theme → Only for you.` : '',
+      out.updated.length ? `Brought up to date: ${out.updated.join(', ')}.` : '',
+    ].filter(Boolean);
+    if (!parts.length) parts.push('Nothing new to add.');
+    if (out.kept) parts.push(`${out.kept} of your own ${out.kept === 1 ? 'theme has' : 'themes have'} the same name and stayed as ${out.kept === 1 ? 'it is' : 'they are'}.`);
+    if (out.problems.length) parts.push(`Left out: ${out.problems.join(' ')}`);
+    return parts.join(' ');
+  };
+
+  const addDrafts = () => run(async () => addFrom(await drafts()));
+
+  const addFile = (file: File) =>
     run(async () => {
-      const all = await drafts();
-      const retired = await retiredIds(all, early);
-      const list = all.filter((d) => !retired.includes(String(d.id)));
-      if (list.length === 0) return 'There are no new themes waiting.';
-      const m = await rawManifest(store);
-      const out = mergeDrafts(m, list, await setThemeIds(m.themes, early), retired);
-      for (const p of out.packs) await store.upload(p.path, new Blob([p.json], { type: 'application/json' }), 'application/json');
-      if (out.added.length || out.updated.length) await saveManifest(store, out.manifest);
-      const parts = [
-        out.added.length ? `Added ${out.added.length}: ${out.added.join(', ')}. Pick one in Account → Theme → Only for you.` : '',
-        out.updated.length ? `Brought up to date: ${out.updated.join(', ')}.` : '',
-      ].filter(Boolean);
-      if (!parts.length) parts.push('Nothing new to add.');
-      if (out.kept) parts.push(`${out.kept} of your own ${out.kept === 1 ? 'theme has' : 'themes have'} the same name and stayed as ${out.kept === 1 ? 'it is' : 'they are'}.`);
-      if (out.problems.length) parts.push(`Left out: ${out.problems.join(' ')}`);
-      return parts.join(' ');
+      if (file.size > 20 * 1024 * 1024) throw new Error('That file is over 20 MB.');
+      let parsed: unknown;
+      try {
+        parsed = JSON.parse(await file.text());
+      } catch {
+        throw new Error('That file isn’t a set-themes file (it isn’t JSON).');
+      }
+      return addFrom(readDraftsFile(parsed));
     });
 
   const setPicture = (id: string, file: File | null) =>
@@ -349,9 +374,23 @@ export function OwnerThemesAdmin({
           <Button variant="secondary" disabled={busy} onClick={() => void removeSets()}>
             Remove the set themes
           </Button>
+          <label className={o.fileButton}>
+            Add from a file
+            <input
+              className={o.fileInput}
+              type="file"
+              accept="application/json,.json"
+              disabled={busy}
+              onChange={(e) => {
+                const f = e.target.files?.[0];
+                e.target.value = '';
+                if (f) void addFile(f);
+              }}
+            />
+          </label>
         </div>
         <p className={o.note}>
-          Add puts the themes made for your sets on this list (or brings them up to date); Remove takes exactly those off again. Your own themes are never changed or removed by either.
+          Add puts the themes made for your sets on this list (or brings them up to date); “Add from a file” does the same from a set-themes file you were sent. Remove takes exactly those off again. Your own themes are never changed or removed by either.
         </p>
         {confirming === 'sets' && (
           <div className={o.confirm} role="group" aria-label="Confirm removing the set themes">
