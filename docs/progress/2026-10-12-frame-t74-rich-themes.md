@@ -13,7 +13,7 @@ Owner: the set themes were "minimalistic … less than the public Themes". Redo:
   card-heading divider and the active-page marker. Loaded only while the theme is worn.
 - Every drawing goes through svgClean.ts first: an allowlist of drawing elements and attributes;
   no scripts, handlers, links, styles, foreign content or animation elements; ids prefixed.
-- "Add the set themes" uploads each draft's pack to the private store and brings set themes
+- "Add the set themes" never adds the first ten set themes again (retired, known by fingerprint), uploads each draft's pack to the private store and brings set themes
   added before up to date (keeping the owner's picture); the owner's own themes stay untouched.
 - The ten themes themselves (art, names, colours) live only in the owner-only drafts, never here.
   Review screenshots and motion clips: a private claude.ai page sent to MANAGER.

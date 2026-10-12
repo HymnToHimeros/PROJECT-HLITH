@@ -80,7 +80,9 @@ export function mergeDrafts(
   m: { themes: Raw[] } & Raw,
   drafts: Raw[],
   setIds: string[] = [],
+  retired: string[] = [],
 ): { manifest: { themes: Raw[] } & Raw; added: string[]; updated: string[]; kept: number; problems: string[]; packs: { path: string; json: string }[] } {
+  drafts = drafts.filter((d) => !retired.includes(String(d.id)));
   const added: string[] = [];
   const updated: string[] = [];
   const problems: string[] = [];
@@ -145,6 +147,13 @@ export async function sha256(text: string): Promise<string> {
 export async function setThemeIds(themes: Raw[], early: Set<string> = EARLY_SET_IDS): Promise<string[]> {
   const out: string[] = [];
   for (const t of themes) if (t.origin === 'set' || early.has(await sha256(String(t.id)))) out.push(String(t.id));
+  return out;
+}
+
+/** Draft ids of the first set themes, retired for good: the button never adds them again. */
+export async function retiredIds(drafts: Raw[], early: Set<string> = EARLY_SET_IDS): Promise<string[]> {
+  const out: string[] = [];
+  for (const d of drafts) if (early.has(await sha256(String(d.id)))) out.push(String(d.id));
   return out;
 }
 
@@ -245,10 +254,12 @@ export function OwnerThemesAdmin({
 
   const addDrafts = () =>
     run(async () => {
-      const list = await drafts();
+      const all = await drafts();
+      const retired = await retiredIds(all, early);
+      const list = all.filter((d) => !retired.includes(String(d.id)));
       if (list.length === 0) return 'There are no new themes waiting.';
       const m = await rawManifest(store);
-      const out = mergeDrafts(m, list, await setThemeIds(m.themes, early));
+      const out = mergeDrafts(m, list, await setThemeIds(m.themes, early), retired);
       for (const p of out.packs) await store.upload(p.path, new Blob([p.json], { type: 'application/json' }), 'application/json');
       if (out.added.length || out.updated.length) await saveManifest(store, out.manifest);
       const parts = [

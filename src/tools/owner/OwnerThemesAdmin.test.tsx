@@ -4,7 +4,7 @@ import { clearOwnerThemes, loadOwnerThemes } from '../../core/theme/ownerThemes'
 import { ThemePage } from '../account/sections';
 import { getPrefs, updatePrefs } from '../../core/data/prefs';
 import { setTheme } from '../../core/theme/theme';
-import { mergeDrafts, OwnerThemesAdmin, setThemeIds, sha256, withoutThemes, withThemesBack } from './OwnerThemesAdmin';
+import { mergeDrafts, OwnerThemesAdmin, retiredIds, setThemeIds, sha256, withoutThemes, withThemesBack } from './OwnerThemesAdmin';
 
 const theme = { id: 'night', name: 'Night', mood: 'A dark room', tone: 'dark', tokens: { 'bg-app': '#120d33', 'bg-card': '#1a1440', 'ink-5': '#9a92c8' }, ornaments: [] };
 
@@ -143,7 +143,7 @@ describe('owner-only themes in the app (T47)', () => {
       }),
     });
     await act(() => loadOwnerThemes(store));
-    render(<OwnerThemesAdmin store={store} drafts={async () => [draft('old-set'), draft('fresh'), draft('mine')]} />);
+    render(<OwnerThemesAdmin store={store} early={new Set([await sha256('retired-one')])} drafts={async () => [draft('old-set'), draft('fresh'), draft('mine'), draft('retired-one')]} />);
     fireEvent.click(screen.getByRole('button', { name: 'Add the set themes' }));
     await screen.findByText(/Brought up to date: New old-set/);
     const m = await manifest(store);
@@ -153,6 +153,19 @@ describe('owner-only themes in the app (T47)', () => {
     expect(m.themes[1].pack).toBeUndefined();
     expect(store.files.has('sets/fresh/look-2.json')).toBe(true);
     expect(store.files.has('sets/mine/look-2.json')).toBe(false);
+    // A retired draft (one of the first set themes) never comes back, even while its row exists.
+    expect(store.files.has('sets/retired-one/look-2.json')).toBe(false);
+  });
+
+  it('only retired drafts waiting: nothing is added', async () => {
+    const store = fakeStore({ 'manifest.json': JSON.stringify({ themes: [] }) });
+    await act(() => loadOwnerThemes(store));
+    const early = new Set([await sha256('a'), await sha256('b')]);
+    expect(await retiredIds([{ id: 'a' }, { id: 'new' }, { id: 'b' }], early)).toEqual(['a', 'b']);
+    render(<OwnerThemesAdmin store={store} early={early} drafts={async () => [{ ...theme, id: 'a' }, { ...theme, id: 'b' }]} />);
+    fireEvent.click(screen.getByRole('button', { name: 'Add the set themes' }));
+    await screen.findByText('There are no new themes waiting.');
+    expect((await manifest(store)).themes).toEqual([]);
   });
 
   it('set-theme helpers: only set ids, and Undo skips an id that came back', async () => {
