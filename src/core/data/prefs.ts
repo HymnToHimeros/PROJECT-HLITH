@@ -25,6 +25,8 @@ export interface Prefs {
   lastModule: Record<Scope, ModuleId>;
   /** Account → Theme (one of THEME_IDS in theme/themes.ts, or `owner:<id>` for an owner-only theme). Missing or unknown = dark (Glacier). */
   theme?: Theme | OwnerThemeId;
+  /** The built-in theme worn before an owner theme was picked, to go back to if that owner theme is removed. */
+  themeBefore?: Theme;
   /** When you last downloaded a backup (epoch ms). Missing = never. */
   lastBackupAt?: number;
   /** Remind me to download a backup every two weeks. Missing = on. */

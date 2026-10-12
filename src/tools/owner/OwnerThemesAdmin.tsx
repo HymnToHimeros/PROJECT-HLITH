@@ -1,7 +1,9 @@
 import { useState, type FormEvent } from 'react';
 import { backend } from '../../core/data/backend';
 import { supabaseOwnerThemes } from '../../core/data/ownerThemesSource';
-import { loadOwnerThemes, ORNAMENTS, OWNER_PRESETS, readOwnerTheme, useOwnerThemes, type Ornament } from '../../core/theme/ownerThemes';
+import { getPrefs } from '../../core/data/prefs';
+import { setTheme } from '../../core/theme/theme';
+import { isOwnerThemeId, loadOwnerThemes, ORNAMENTS, OWNER_PREFIX, OWNER_PRESETS, readOwnerTheme, useOwnerThemes, type Ornament } from '../../core/theme/ownerThemes';
 import { Button, HowTo, NoData } from '../../core/ui';
 import o from './owner.module.css';
 
@@ -88,20 +90,88 @@ export function mergeDrafts(m: { themes: Raw[] } & Raw, drafts: Raw[]): { manife
       problems.push(...checked.problems);
       continue;
     }
-    themes.push(d);
+    themes.push({ ...d, origin: 'set' });
     ids.add(checked.theme.id);
     added.push(checked.theme.name);
   }
   return { manifest: { ...m, themes }, added, kept, problems };
 }
 
-export function OwnerThemesAdmin({ store = backend ? supabaseOwnerThemes(backend) : null, drafts = serverDrafts }: { store?: Store | null; drafts?: () => Promise<Raw[]> }) {
+/**
+ * The themes the set-theme button added before it marked them (`origin: 'set'`), known only by
+ * the SHA-256 of their ids, so this public code names none of them.
+ */
+const EARLY_SET_IDS = new Set([
+  'df3d299865a63ca42b4099787e5902622d445197b5e5f1747324eb2fcdc21e96',
+  '437712f4b27376860d02001687360d68d2390b3028a69cee638fc920dcc38dac',
+  '0ff4b87a0708db0d46788f26e76fcf6343ecc65306239f1936fe721c274130a8',
+  '2741ce3f7f39ecd8ac58a4394289644c3d7d3474db2c8ec36f02c08ed838983b',
+  'fc1f420480f3f16c18254db6b6924b88621815e1a566a09cde2480be3361e418',
+  '1584b339e3ba6e5f156a1317fe1c81746d0cf081292b27b856af7b59033cea62',
+  '5debc7fa6a2c4b8ef17fd0ab68f9c38650aea2db4d30f9f9e852fa14f38ded42',
+  '208f5f4b025d7a144221fa31c687e92ffeea7099fab076b960f0d6c7cff19cdf',
+  'a8adf040d5380e118d2d20dfab9bd77c90e20683bab66777a9ce69bc465ca40e',
+  '1feab6aac41e5809e11d3d7df0a326f3d0ac024ad2f3a2895c5d2199403361e9',
+]);
+export async function sha256(text: string): Promise<string> {
+  const bytes = new Uint8Array(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(text)));
+  return Array.from(bytes, (b) => b.toString(16).padStart(2, '0')).join('');
+}
+
+/** Ids of the themes the set-theme button added (never one the owner made). */
+export async function setThemeIds(themes: Raw[], early: Set<string> = EARLY_SET_IDS): Promise<string[]> {
+  const out: string[] = [];
+  for (const t of themes) if (t.origin === 'set' || early.has(await sha256(String(t.id)))) out.push(String(t.id));
+  return out;
+}
+
+/** Takes the given ids out of the manifest; returns the new manifest and what was taken (with its place), for Undo. */
+export function withoutThemes(m: { themes: Raw[] } & Raw, ids: string[]): { manifest: { themes: Raw[] } & Raw; removed: { at: number; theme: Raw }[] } {
+  const removed: { at: number; theme: Raw }[] = [];
+  const themes = m.themes.filter((t, at) => {
+    if (!ids.includes(String(t.id))) return true;
+    removed.push({ at, theme: t });
+    return false;
+  });
+  return { manifest: { ...m, themes }, removed };
+}
+
+/** Puts removed themes back where they were (skipping any id that is back already). */
+export function withThemesBack(m: { themes: Raw[] } & Raw, removed: { at: number; theme: Raw }[]): { themes: Raw[] } & Raw {
+  const themes = [...m.themes];
+  for (const r of removed) if (!themes.some((t) => t.id === r.theme.id)) themes.splice(Math.min(r.at, themes.length), 0, r.theme);
+  return { ...m, themes };
+}
+
+/** What Remove took this session, so Undo can put it back (survives leaving the page, not a reload). */
+let lastRemoved: { label: string; removed: { at: number; theme: Raw }[] } | null = null;
+
+/** If the theme being worn is going away, go back to the built-in theme worn before it (or Glacier). */
+function stopWearing(ids: string[]): void {
+  const worn = getPrefs().theme;
+  if (!isOwnerThemeId(worn) || !ids.includes(worn.slice(OWNER_PREFIX.length))) return;
+  setTheme(getPrefs().themeBefore ?? 'dark');
+}
+
+export function OwnerThemesAdmin({
+  store = backend ? supabaseOwnerThemes(backend) : null,
+  drafts = serverDrafts,
+  early = EARLY_SET_IDS,
+}: {
+  store?: Store | null;
+  drafts?: () => Promise<Raw[]>;
+  /** Test hook: the fingerprints of the early set-theme ids. */
+  early?: Set<string>;
+}) {
   const state = useOwnerThemes();
   const [busy, setBusy] = useState(false);
   const [note, setNote] = useState<string | null>(null);
   const [name, setName] = useState('');
   const [preset, setPreset] = useState(OWNER_PRESETS[0]?.id ?? '');
   const [ornaments, setOrnaments] = useState<Ornament[]>(['hearts', 'bubbles']);
+  /** The theme id (or 'sets') waiting for "Yes, remove". */
+  const [confirming, setConfirming] = useState<string | null>(null);
+  const [undo, setUndo] = useState(lastRemoved);
   if (!store)
     return (
       <p className={o.note}>
@@ -186,11 +256,44 @@ export function OwnerThemesAdmin({ store = backend ? supabaseOwnerThemes(backend
       return 'Saved.';
     });
 
-  const remove = (id: string, label: string) =>
+  const removeIds = (ids: string[], label: string) =>
     run(async () => {
-      await edit(id, () => null);
-      return `${label} is off the list. Its picture stays in the private store.`;
+      setConfirming(null);
+      const m = await rawManifest(store);
+      const out = withoutThemes(m, ids);
+      if (out.removed.length === 0) return 'Nothing to remove.';
+      await saveManifest(store, out.manifest);
+      stopWearing(ids);
+      lastRemoved = { label, removed: out.removed };
+      setUndo(lastRemoved);
+      return `${label} ${out.removed.length === 1 ? 'is' : 'are'} off the list. Pictures stay in the private store.`;
     });
+
+  const removeSets = () =>
+    run(async () => {
+      const ids = await setThemeIds((await rawManifest(store)).themes, early);
+      if (ids.length === 0) {
+        setConfirming(null);
+        return 'None of the set themes are on the list.';
+      }
+      setConfirming('sets');
+      return `This takes out ${ids.length} set ${ids.length === 1 ? 'theme' : 'themes'}. Your own themes stay.`;
+    });
+
+  const undoRemove = () =>
+    run(async () => {
+      const last = lastRemoved;
+      if (!last) return 'Nothing to undo.';
+      await saveManifest(store, withThemesBack(await rawManifest(store), last.removed));
+      lastRemoved = null;
+      setUndo(null);
+      return `${last.label} ${last.removed.length === 1 ? 'is' : 'are'} back on the list.`;
+    });
+
+  const confirmSets = () =>
+    void rawManifest(store)
+      .then((m) => setThemeIds(m.themes, early))
+      .then((ids) => removeIds(ids, ids.length === 1 ? 'The set theme' : `The ${ids.length} set themes`));
 
   return (
     <div className={o.stack}>
@@ -204,8 +307,23 @@ export function OwnerThemesAdmin({ store = backend ? supabaseOwnerThemes(backend
           <Button variant="primary" disabled={busy} onClick={() => void addDrafts()}>
             Add the set themes
           </Button>
+          <Button variant="secondary" disabled={busy} onClick={() => void removeSets()}>
+            Remove the set themes
+          </Button>
         </div>
-        <p className={o.note}>Adds the themes made for your sets to this list. Themes already here, your own included, are never changed or removed.</p>
+        <p className={o.note}>
+          Add puts the themes made for your sets on this list; Remove takes exactly those off again. Your own themes are never changed or removed by either.
+        </p>
+        {confirming === 'sets' && (
+          <div className={o.confirm} role="group" aria-label="Confirm removing the set themes">
+            <Button variant="primary" disabled={busy} onClick={confirmSets}>
+              Yes, remove the set themes
+            </Button>
+            <Button variant="quiet" disabled={busy} onClick={() => setConfirming(null)}>
+              Keep them
+            </Button>
+          </div>
+        )}
         {state.status === 'loading' && <p className={o.note}>Loading…</p>}
         {state.status === 'error' && <p className={o.note}>Couldn’t load them: {state.message}</p>}
         {state.status === 'ready' && state.problems.length > 0 && (
@@ -244,15 +362,33 @@ export function OwnerThemesAdmin({ store = backend ? supabaseOwnerThemes(backend
                   Take the picture off
                 </Button>
               )}
-              <Button variant="quiet" disabled={busy} onClick={() => void remove(t.id, t.name)}>
-                Remove {t.name}
-              </Button>
+              {confirming === t.id ? (
+                <span className={o.confirm} role="group" aria-label={`Confirm removing ${t.name}`}>
+                  <Button variant="primary" disabled={busy} onClick={() => void removeIds([t.id], t.name)}>
+                    Yes, remove {t.name}
+                  </Button>
+                  <Button variant="quiet" disabled={busy} onClick={() => setConfirming(null)}>
+                    Keep it
+                  </Button>
+                </span>
+              ) : (
+                <Button variant="secondary" disabled={busy} onClick={() => setConfirming(t.id)}>
+                  Remove {t.name}
+                </Button>
+              )}
             </div>
           ))}
         {note && (
           <p className={o.note} role="status">
             {note}
           </p>
+        )}
+        {undo && (
+          <div className={o.jobActions}>
+            <Button variant="secondary" disabled={busy} onClick={() => void undoRemove()}>
+              Undo: put {undo.label} back
+            </Button>
+          </div>
         )}
       </section>
 

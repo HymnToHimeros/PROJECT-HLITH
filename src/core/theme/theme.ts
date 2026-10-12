@@ -81,6 +81,6 @@ export const savedTheme = (): Theme | OwnerThemeId => {
 };
 
 export function setTheme(theme: Theme | OwnerThemeId): void {
-  updatePrefs((p) => ({ ...p, theme }));
+  updatePrefs((p) => ({ ...p, theme, ...(isOwnerThemeId(theme) && !isOwnerThemeId(p.theme) ? { themeBefore: known(p.theme) } : {}) }));
   applyTheme(theme);
 }
