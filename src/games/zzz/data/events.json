@@ -494,6 +494,20 @@
     }
   },
   {
+    "id": "data-bounty-combat-simulation-2026-10-14",
+    "title": "Data Bounty: Combat Simulation",
+    "kind": "bonus",
+    "start": "2026-10-13T20:00:00.000Z",
+    "end": "2026-10-18T19:59:00.000Z",
+    "reward": 0,
+    "currency": "polychrome",
+    "serverTime": {
+      "base": 8,
+      "start": true,
+      "end": true
+    }
+  },
+  {
     "id": "all-new-program-2026-10-21",
     "title": "All-New Program",
     "kind": "login",
