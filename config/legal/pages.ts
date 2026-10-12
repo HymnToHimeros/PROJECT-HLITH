@@ -62,7 +62,8 @@ export function renderPage(page: LegalPage): string {
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="referrer" content="same-origin" />
 <meta name="description" content="${esc(page.description)}" />
-<link rel="icon" href="/icons/favicon.svg" type="image/svg+xml" />
+<link rel="icon" href="/icons/hagalaz-favicon.svg" type="image/svg+xml" />
+<link rel="icon" href="/icons/hagalaz-favicon-32.png" type="image/png" sizes="32x32" />
 <title>${esc(page.slug === 'about' ? 'HLIÐSKJÁLF · PROJECT-HLITH' : `${page.title} · HLIÐSKJÁLF`)}</title>
 <style>${STYLE.trim()}</style>
 </head>

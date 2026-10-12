@@ -6,7 +6,7 @@ import { expect, test } from '@playwright/test';
 test('the manifest and icons are served and complete', async ({ page, request }) => {
   await page.goto('/');
   const href = await page.locator('link[rel="manifest"]').getAttribute('href');
-  expect(href).toBe('/manifest.webmanifest');
+  expect(href).toBe('/hlith.webmanifest');
   const manifest = await (await request.get(href as string)).json();
   expect(manifest).toMatchObject({ name: 'HLIÐSKJÁLF', short_name: 'HLITH', start_url: '/', scope: '/', display: 'standalone' });
   const purposes = (manifest.icons as { src: string; sizes: string; purpose: string }[]).map((i) => `${i.sizes} ${i.purpose}`);
