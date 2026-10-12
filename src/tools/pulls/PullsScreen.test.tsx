@@ -103,15 +103,17 @@ describe('Pulls screen', () => {
     expect(screen.getAllByText(/Chance by then · official rates/).length).toBeGreaterThan(0);
   });
 
-  it('Planner sorts banners into Now, Next and Later, each card led by who the banner is for (T70)', async () => {
+  it('Planner lays banners out like Banners: Now, Next and Later columns, each card led by who the banner is for (T70)', async () => {
     await show('planner');
-    for (const name of [/^Now/, /^Next/, /^Later/]) expect(screen.getByRole('heading', { level: 3, name })).toBeInTheDocument();
-    const now = screen.getByRole('region', { name: /^Now/ });
+    const cols = ['Now', 'Next', 'Later'].map((name) => screen.getByRole('group', { name }));
+    expect(cols).toHaveLength(3);
     // The featured character's name sits on the banner picture, not only the banner title.
-    expect(within(now).getAllByText('Newest Star').length).toBeGreaterThan(0);
-    // A phase with nothing in it says so.
-    const sections = screen.getAllByRole('region').filter((r) => /^(Now|Next|Later)/.test(r.getAttribute('aria-labelledby') ? (document.getElementById(r.getAttribute('aria-labelledby') as string)?.textContent ?? '') : ''));
-    expect(sections).toHaveLength(3);
+    expect(within(cols[0] as HTMLElement).getAllByText('Newest Star').length).toBeGreaterThan(0);
+    // The same column notes as Banners.
+    expect(within(cols[0] as HTMLElement).getByText(/^Live · .* until the first one ends$/)).toBeInTheDocument();
+    expect(within(cols[2] as HTMLElement).getAllByText(/ · opens in |^Nothing further listed$/).length).toBeGreaterThan(0);
+    // On a phone the columns become tabs.
+    expect(screen.getByRole('tablist', { name: /phases/ })).toBeInTheDocument();
   });
 
   it('History shows the example pity and a Luck report card', async () => {

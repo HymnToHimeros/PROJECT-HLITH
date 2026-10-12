@@ -3,10 +3,11 @@ import type { Banner, BannerType, Character, GameContract, Weapon } from '../../
 import { formatNumber } from '../../core/time/format';
 import { setPityManual } from '../../core/data/userData';
 import { formatDate, formatRange } from '../../core/time/reset';
-import { Button, EmptyState, ExampleTag, GameTag, NoData, Timer, UnverifiedTag } from '../../core/ui';
+import { Button, EmptyState, ExampleTag, NoData, Timer, UnverifiedTag } from '../../core/ui';
 import { useAddOwnBanner } from '../banners/AddOwnBanner';
+import { PhaseBoard } from '../banners/PhaseBoard';
 import { BannerArt } from '../banners/BannerArt';
-import { phaseOfBanner, type Phase } from '../banners/fit';
+import { phaseOfBanner } from '../banners/fit';
 import { useBannersData, type BannersData } from '../banners/useBannersData';
 import { cx } from '../../core/ui/cx';
 import { budget, budgetPulls, pullsFor, type BudgetRow } from '../budget/budget';
@@ -20,7 +21,7 @@ interface Props {
   data: PullsData;
   serverId: string | undefined;
   now: number;
-  /** Game tag on each card (All games only). */
+  /** All games: the board shows the game's name beside its columns, like Banners. */
   tagged: boolean;
   openTab: (tab: string) => void;
 }
@@ -51,7 +52,6 @@ export function Planner({ game, data, serverId, now, tagged, openTab }: Props) {
   // Characters, weapons and art for each card's picture (the same as the Banners module).
   const art = useBannersData(game, now);
   const phaseOf = phaseOfBanner(all, now);
-  const sections = PHASES.map((ph) => ({ ...ph, list: banners.filter((b) => phaseOf(b) === ph.id) }));
 
   return (
     <div className={p.stack}>
@@ -82,37 +82,27 @@ export function Planner({ game, data, serverId, now, tagged, openTab }: Props) {
           action={{ label: 'Add my own banner', onClick: openSheet }}
         />
       ) : (
-        sections.map((sec) => (
-          <section key={sec.id} className={p.planSection} aria-labelledby={`plan-${game.id}-${sec.id}`}>
-            <h3 className={p.planSectionHead} id={`plan-${game.id}-${sec.id}`}>
-              {sec.label} <span className={p.planCount}>{sec.list.length}</span>
-              <span className={p.muted}>{sec.note}</span>
-            </h3>
-            {sec.list.length === 0 ? (
-              <p className={p.muted}>Nothing yet</p>
-            ) : (
-              <div className={p.planGrid}>
-                {sec.list.map((b) => {
-                  const type = typeOf(b);
-                  return type ? (
-                    <PlanCard key={b.id} game={game} banner={b} type={type} data={data} art={art} serverId={serverId} now={now} tagged={tagged} whatIf={whatIf[type.id]} openTab={openTab} />
-                  ) : null;
-                })}
-              </div>
-            )}
-          </section>
-        ))
+        <PhaseBoard
+          game={game}
+          now={now}
+          many={tagged}
+          column={(id) => {
+            const list = banners.filter((b) => phaseOf(b) === id);
+            return {
+              first: list[0],
+              count: list.length,
+              children: list.map((b) => {
+                const type = typeOf(b);
+                return type ? <PlanCard key={b.id} game={game} banner={b} type={type} data={data} art={art} serverId={serverId} now={now} whatIf={whatIf[type.id]} openTab={openTab} /> : null;
+              }),
+            };
+          }}
+        />
       )}
       {sheet}
     </div>
   );
 }
-
-const PHASES: { id: Phase; label: string; note: string }[] = [
-  { id: 'now', label: 'Now', note: 'Running now' },
-  { id: 'next', label: 'Next', note: 'The next phase' },
-  { id: 'later', label: 'Later', note: 'After that, leaks included' },
-];
 
 interface CardProps {
   game: GameContract;
@@ -122,7 +112,6 @@ interface CardProps {
   data: PullsData;
   serverId: string | undefined;
   now: number;
-  tagged: boolean;
   whatIf: WhatIf[string] | undefined;
   openTab: (tab: string) => void;
 }
@@ -150,7 +139,7 @@ export function pityFor(data: Pick<PullsData, 'history' | 'user'>, typeId: strin
   return fromHistory ? { state: fromHistory, source: 'example' } : null;
 }
 
-function PlanCard({ game, banner: b, type, data, art, serverId, now, tagged, whatIf, openTab }: CardProps) {
+function PlanCard({ game, banner: b, type, data, art, serverId, now, whatIf, openTab }: CardProps) {
   const start = Date.parse(b.start);
   const end = Date.parse(b.end);
   const upcoming = start > now;
@@ -190,7 +179,6 @@ function PlanCard({ game, banner: b, type, data, art, serverId, now, tagged, wha
         <span className={p.kind}>{type.label}</span>
         {(data.banners.exampleIds.has(b.id) || exampleNumbers) && <ExampleTag />}
         {b.leak && <UnverifiedTag source={b.leak.source} />}
-        {tagged && <GameTag label={game.short} vent={game.vent} />}
       </div>
       <div className={p.titleBlock}>
         <h3 className={p.bigTitle}>{b.title}</h3>
