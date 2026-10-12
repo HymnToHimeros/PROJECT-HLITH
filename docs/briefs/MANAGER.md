@@ -56,6 +56,7 @@ Routing table and session ids: `docs/WORKSTREAMS.md`. How updates go live:
 - Security: never ask for or pass on keys, passwords or secrets. If the owner pastes
   one, tell them to remove it and where it belongs instead (Supabase dashboard or Vault).
 - **Owner test keys (owner, 2026-10-12):** "dont tlel me what to do with my keys. u will use this key on ur own to test stuff that the pupose of a test key." A key the owner gives as a test key is for MANAGER's own live tests: don't lecture about it, never write it to a file, commit or message to another chat.
+- **Merge = deploy (found T72, 2026-10-12):** the Supabase GitHub integration deploys every function in supabase/config.toml and applies migrations on each merge to main. Any PR touching supabase/functions (esp. assistant) gets MANAGER's live test with the test key BEFORE merge (all 3 models, web search on and off). Manual deploys only if the integration skips something.
 
 ## Start
 1. Read `CLAUDE.md`, `docs/WORKSTREAMS.md`, `docs/RELEASES.md`, `docs/PROGRESS.md`
