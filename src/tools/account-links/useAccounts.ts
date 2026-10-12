@@ -3,6 +3,7 @@ import type { GameContract } from '../../core/contract';
 import { useSession } from '../../core/auth/session';
 import { backend } from '../../core/data/backend';
 import { loadDevice, loadServer, mergeAccounts, type LinkedAccount, type ServerState } from './accounts';
+import { loadDeviceAccounts, onDeviceAccounts } from './hoyolab';
 
 /** Why the HoYoLAB link can't be used right now, or null when it can. */
 export function linkBlocker(signedIn: boolean): string | null {
@@ -22,6 +23,14 @@ export function useAccounts(games: GameContract[]) {
   const gameKey = games.map((g) => g.id).join(',');
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const stableGames = useMemo(() => games, [gameKey]);
+
+  // Logins remembered on this device are encrypted: open them once, then follow every change.
+  useEffect(() => {
+    const update = () => setDevice(loadDevice());
+    const stop = onDeviceAccounts(update);
+    void loadDeviceAccounts().then(update);
+    return stop;
+  }, []);
 
   useEffect(() => {
     if (!backend || !signedIn) return;

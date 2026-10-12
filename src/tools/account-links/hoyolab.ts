@@ -5,7 +5,7 @@
  *
  * Three ways to keep a login, chosen by the player:
  * - Use once (default): the values live only in the form until the request is sent.
- * - Remember on this device: kept in this browser under hlith.secret.hoyolab.accounts,
+ * - Remember on this device: kept in this browser, encrypted, under hlith.secret.hoyolab.sealed;
  *   never synced, never part of a backup (backups skip every hlith.secret.* key).
  * - Save on HLITH's server: encrypted in Supabase Vault, needed for the automatic
  *   check-in and codes (accounts.ts, migration 0003).
@@ -13,6 +13,7 @@
  */
 import type { SupabaseClient } from '@supabase/supabase-js';
 import type { AccountLink, GameContract } from '../../core/contract';
+import { isSealed, seal, unseal, vaultAvailable } from '../../core/data/deviceVault';
 
 export interface HoyoLogin {
   ltuid_v2: string;
@@ -45,11 +46,21 @@ export function readLogin(text: string): { ok: true; login: HoyoLogin } | { ok: 
 
 // ── Remember on this device (opt-in) ─────────────────────────────
 // One list of logins kept in this browser, each with a label and the games it was
-// used for. Older copies of HLITH kept one login per game under KEY_V1; those are
-// still read (shown as accounts) and only removed by Forget, never silently.
+// used for. The list is encrypted (core/data/deviceVault: AES-GCM with a key the
+// browser keeps and no script can read out) and stored under SEALED.
+//
+// Older copies of HLITH kept logins in plain text: one per game under KEY_V1, then a
+// list under KEY. loadDeviceAccounts() moves those into the encrypted list and removes
+// the plain copy only after the encrypted one is written, so nobody loses a link.
+// Without WebCrypto/IndexedDB nothing new is written in plain text: a remembered login
+// then lasts until the page closes (rememberWorks() tells the form), and any older plain
+// copy stays readable until Forget.
 
 const KEY_V1 = 'hlith.secret.hoyolab';
 const KEY = 'hlith.secret.hoyolab.accounts';
+const SEALED = 'hlith.secret.hoyolab.sealed';
+/** An encrypted list this browser can no longer open (its key was cleared): set aside, never deleted. */
+const UNREADABLE = 'hlith.secret.hoyolab.sealed.unreadable';
 
 interface SavedV1 {
   login: HoyoLogin;
@@ -64,6 +75,7 @@ export interface DeviceAccount {
   games: { gameId: string; uid?: string }[];
   savedAt: string;
 }
+type Change = (list: DeviceAccount[]) => DeviceAccount[];
 
 function readJson<T>(key: string, fallback: T): T {
   try {
@@ -73,17 +85,16 @@ function readJson<T>(key: string, fallback: T): T {
     return fallback;
   }
 }
-function writeJson(key: string, value: unknown, empty: boolean): void {
+function remove(key: string): void {
   try {
-    if (empty) localStorage.removeItem(key);
-    else localStorage.setItem(key, JSON.stringify(value));
+    localStorage.removeItem(key);
   } catch {
-    /* storage blocked: stays "use once" */
+    /* storage blocked: nothing was kept there */
   }
 }
 
-/** Every login remembered on this device: the list, plus older per-game copies grouped by login. */
-export function deviceAccounts(): DeviceAccount[] {
+/** Logins an older HLITH kept in plain text: the list, plus per-game copies grouped by login. */
+function plainAccounts(): DeviceAccount[] {
   const list = readJson<DeviceAccount[]>(KEY, []).filter((a) => a && a.login && Array.isArray(a.games));
   const legacy = readJson<Record<string, SavedV1>>(KEY_V1, {});
   const byLogin = new Map<string, DeviceAccount>();
@@ -101,33 +112,129 @@ export function deviceAccounts(): DeviceAccount[] {
   return [...list, ...byLogin.values()];
 }
 
-/** Add or update a remembered login. Same login (ltuid_v2) = same account. */
-export function saveDeviceAccount(input: { label: string; login: HoyoLogin; games: { gameId: string; uid?: string }[] }): DeviceAccount {
-  const list = readJson<DeviceAccount[]>(KEY, []);
-  const i = list.findIndex((a) => a.login.ltuid_v2 === input.login.ltuid_v2);
-  const before = list[i];
+/** Drop the plain-text copies of one login (or all of them), e.g. on Forget. */
+function dropPlain(ltuid?: string): void {
+  if (ltuid === undefined) {
+    remove(KEY);
+    remove(KEY_V1);
+    return;
+  }
+  const list = readJson<DeviceAccount[]>(KEY, []).filter((a) => a?.login?.ltuid_v2 !== ltuid);
+  const legacy = Object.fromEntries(Object.entries(readJson<Record<string, SavedV1>>(KEY_V1, {})).filter(([, v]) => v?.login?.ltuid_v2 !== ltuid));
+  try {
+    if (list.length) localStorage.setItem(KEY, JSON.stringify(list));
+    else localStorage.removeItem(KEY);
+    if (Object.keys(legacy).length) localStorage.setItem(KEY_V1, JSON.stringify(legacy));
+    else localStorage.removeItem(KEY_V1);
+  } catch {
+    /* storage blocked */
+  }
+}
+
+let cache: DeviceAccount[] | null = null;
+let loading: Promise<DeviceAccount[]> | null = null;
+/** Changes made before the encrypted list was opened, replayed on top of it. */
+let early: Change[] = [];
+let writes: Promise<void> = Promise.resolve();
+const listeners = new Set<() => void>();
+const notify = () => listeners.forEach((f) => f());
+
+/** Call `f` whenever the remembered logins change. Returns the unsubscribe. */
+export function onDeviceAccounts(f: () => void): () => void {
+  listeners.add(f);
+  return () => listeners.delete(f);
+}
+
+/** Can "Remember on this device" keep a login past this page (encrypted)? */
+export const rememberWorks = (): boolean => vaultAvailable();
+
+/** Write the encrypted list (in order; later writes wait for earlier ones). Never plain text. */
+function persist(): Promise<void> {
+  writes = writes.then(async () => {
+    if (!cache || !vaultAvailable()) return;
+    try {
+      if (cache.length === 0) remove(SEALED);
+      else localStorage.setItem(SEALED, JSON.stringify(await seal(cache)));
+      dropPlain();
+    } catch {
+      /* storage or crypto failed: the old copy stays as it was */
+    }
+  });
+  return writes;
+}
+
+/**
+ * Open the encrypted list (once) and move any plain-text copy into it. Safe to call often.
+ * The plain copy is removed only after the encrypted list holding it was written.
+ */
+export function loadDeviceAccounts(): Promise<DeviceAccount[]> {
+  loading ??= (async () => {
+    const plain = plainAccounts();
+    let opened: DeviceAccount[] = [];
+    if (vaultAvailable()) {
+      const raw = readJson<unknown>(SEALED, null);
+      if (isSealed(raw)) {
+        try {
+          const list = await unseal<DeviceAccount[]>(raw);
+          opened = Array.isArray(list) ? list.filter((a) => a && a.login && Array.isArray(a.games)) : [];
+        } catch {
+          try {
+            localStorage.setItem(UNREADABLE, JSON.stringify(raw));
+          } catch {
+            /* keep it where it is */
+          }
+        }
+      }
+    }
+    const merged = [...opened, ...plain.filter((p) => !opened.some((o) => o.login.ltuid_v2 === p.login.ltuid_v2))];
+    cache = early.reduce((list, change) => change(list), merged);
+    early = [];
+    notify();
+    if (vaultAvailable() && (plain.length > 0 || cache !== merged)) await persist();
+    return cache;
+  })();
+  return loading;
+}
+
+/** Every login remembered on this device (until loadDeviceAccounts() finishes: the plain-text ones and changes since). */
+export function deviceAccounts(): DeviceAccount[] {
+  return cache ?? early.reduce((list, f) => f(list), plainAccounts());
+}
+
+function change(f: Change): void {
+  if (cache) cache = f(cache);
+  else early.push(f);
+  notify();
+  void loadDeviceAccounts().then(persist);
+}
+
+const addTo = (input: { label: string; login: HoyoLogin; games: { gameId: string; uid?: string }[] }, id: string, savedAt: string) => (list: DeviceAccount[]): DeviceAccount[] => {
+  const before = list.find((a) => a.login.ltuid_v2 === input.login.ltuid_v2);
   const games = [...(before?.games ?? [])];
   for (const g of input.games) {
     const at = games.findIndex((x) => x.gameId === g.gameId);
     if (at >= 0) games[at] = { ...games[at], ...g };
     else games.push(g);
   }
-  const next: DeviceAccount = { id: before?.id ?? `d:${Date.now().toString(36)}${Math.random().toString(36).slice(2, 6)}`, label: input.label || before?.label || 'Main', login: input.login, games, savedAt: new Date().toISOString() };
-  if (before) list[i] = next;
-  else list.push(next);
-  writeJson(KEY, list, false);
-  return next;
+  const next: DeviceAccount = { id: before?.id ?? id, label: input.label || before?.label || 'Main', login: input.login, games, savedAt };
+  return before ? list.map((a) => (a === before ? next : a)) : [...list, next];
+};
+
+/** Add or update a remembered login. Same login (ltuid_v2) = same account. */
+export function saveDeviceAccount(input: { label: string; login: HoyoLogin; games: { gameId: string; uid?: string }[] }): DeviceAccount {
+  const add = addTo(input, `d:${Date.now().toString(36)}${Math.random().toString(36).slice(2, 6)}`, new Date().toISOString());
+  const shown = add(deviceAccounts()).find((a) => a.login.ltuid_v2 === input.login.ltuid_v2);
+  change(add);
+  return deviceAccounts().find((a) => a.login.ltuid_v2 === input.login.ltuid_v2) ?? (shown as DeviceAccount);
 }
 
-/** Delete a remembered login from this browser (both the list and any older copy). */
+/** Delete a remembered login from this browser: the encrypted list and any older plain copy. */
 export function forgetDeviceAccount(id: string): void {
-  const all = deviceAccounts();
-  const target = all.find((a) => a.id === id);
+  const target = deviceAccounts().find((a) => a.id === id);
   if (!target) return;
-  const list = readJson<DeviceAccount[]>(KEY, []).filter((a) => a.id !== id && a.login.ltuid_v2 !== target.login.ltuid_v2);
-  writeJson(KEY, list, list.length === 0);
-  const legacy = Object.fromEntries(Object.entries(readJson<Record<string, SavedV1>>(KEY_V1, {})).filter(([, v]) => v?.login?.ltuid_v2 !== target.login.ltuid_v2));
-  writeJson(KEY_V1, legacy, Object.keys(legacy).length === 0);
+  const ltuid = target.login.ltuid_v2;
+  dropPlain(ltuid);
+  change((list) => list.filter((a) => a.id !== id && a.login.ltuid_v2 !== ltuid));
 }
 
 /** The first login remembered on this device that was used for this game (Setup checklist, older callers). */
@@ -146,6 +253,20 @@ export function rememberLogin(gameId: string, login: HoyoLogin, uid?: string): v
 /** Forget every remembered login used for this game. */
 export function forgetLogin(gameId: string): void {
   for (const a of deviceAccounts()) if (a.games.some((g) => g.gameId === gameId)) forgetDeviceAccount(a.id);
+}
+
+/** Wait until every change so far is written (tests, and before leaving a page). */
+export async function deviceAccountsSaved(): Promise<void> {
+  await loadDeviceAccounts();
+  await writes;
+}
+
+/** Tests only: forget what this page has in memory, as on a fresh page load. */
+export function resetDeviceAccountsForTests(): void {
+  cache = null;
+  loading = null;
+  early = [];
+  writes = Promise.resolve();
 }
 
 // ── Talking to the server function ───────────────────────────────
