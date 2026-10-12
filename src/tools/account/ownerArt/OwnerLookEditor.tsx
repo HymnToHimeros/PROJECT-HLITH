@@ -1,6 +1,6 @@
 import { BadgeMark } from '../BadgeMark';
 import p from '../profile.module.css';
-import { OWNER_BADGE_ART, OWNER_FRAME_ART, OWNER_NAME_INFO } from './art';
+import { OWNER_BADGE_ART, OWNER_FRAME_ART, OWNER_FRAME_VARIANTS, OWNER_NAME_INFO } from './art';
 import { OwnerBadge, OwnerFrame, OwnerName } from './OwnerArt';
 import o from './ownerLook.module.css';
 import { OWNER_SETS, wearSet, wornSet, type OwnerStyle } from './style';
@@ -68,16 +68,33 @@ export default function OwnerLookEditor({ value, onChange, name }: { value: Owne
             <span>My normal frame</span>
           </button>
           {OWNER_FRAME_ART.map((f, i) => (
-            <button key={f.name} type="button" role="radio" aria-checked={value.frame === i + 1} className={p.frameChoice} title={f.line} onClick={() => onChange({ ...value, frame: i + 1 })}>
+            <button key={f.name} type="button" role="radio" aria-checked={value.frame === i + 1} className={p.frameChoice} title={f.line} onClick={() => onChange({ ...value, frame: i + 1, frameVariant: 0 })}>
               <span className={o.frameCell}>
                 <OwnerFrame n={i + 1} src={null} letter={sample} size={64} />
               </span>
               <span>
-                {i + 1} · {f.name}
+                {i + 1} · {OWNER_FRAME_VARIANTS[i + 1] ? `${f.name} +${(OWNER_FRAME_VARIANTS[i + 1]?.length ?? 1) - 1}` : f.name}
               </span>
             </button>
           ))}
         </div>
+        {value.frame !== null && OWNER_FRAME_VARIANTS[value.frame] && (
+          <div className={o.variants}>
+            <span className={p.fieldLabel}>Frame {value.frame} variants</span>
+            <div className={p.frameRow} role="radiogroup" aria-label={`Frame ${value.frame} variants`}>
+              {OWNER_FRAME_VARIANTS[value.frame]?.map((v, k) => (
+                <button key={v.name} type="button" role="radio" aria-checked={value.frameVariant === k} className={p.frameChoice} title={v.line} onClick={() => onChange({ ...value, frameVariant: k })}>
+                  <span className={o.frameCell}>
+                    <OwnerFrame n={value.frame as number} variant={k} src={null} letter={sample} size={64} />
+                  </span>
+                  <span>
+                    {String.fromCharCode(65 + k)} · {v.name}
+                  </span>
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
 
       <div className={p.field}>

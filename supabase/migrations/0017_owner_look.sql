@@ -3,9 +3,11 @@
 --
 -- The owner picked owner-only badges, picture frames and name styles (option sheets in
 -- docs/owner-reports/2026-10-11/). The app keeps the choice with the card's look
--- (profiles.showcase -> look -> owner_style: badge 0–8, frame 1–20, name 1–20).
---   * profile_card() now also returns owner_style, for the owner only: nobody else can claim
---     the owner's look, whatever their own row says. Everything else is as in 0016.
+-- (profiles.showcase -> look -> owner_style: badge 0–8, frame 1–20, name 1–20, and which of
+-- a set's variants: frameVariant / nameVariant 0–4).
+--   * profile_card() now also returns owner_style on the owner's card (and only the owner's:
+--     nobody else can claim the owner's look, whatever their own row says). Everyone who can
+--     open the owner's card sees it. Everything else is as in 0016.
 
 create or replace function public.profile_card(p_user uuid) returns jsonb
 language plpgsql stable security definer set search_path = public as $$
@@ -146,7 +148,9 @@ begin
     'owner_style', case when os is not null then jsonb_strip_nulls(jsonb_build_object(
       'badge', case when jsonb_typeof(os -> 'badge') = 'number' then os -> 'badge' end,
       'frame', case when jsonb_typeof(os -> 'frame') = 'number' then os -> 'frame' end,
-      'name', case when jsonb_typeof(os -> 'name') = 'number' then os -> 'name' end)) end,
+      'name', case when jsonb_typeof(os -> 'name') = 'number' then os -> 'name' end,
+      'frameVariant', case when jsonb_typeof(os -> 'frameVariant') = 'number' then os -> 'frameVariant' end,
+      'nameVariant', case when jsonb_typeof(os -> 'nameVariant') = 'number' then os -> 'nameVariant' end)) end,
     'badges', case when (priv -> 'badges') is distinct from 'false'::jsonb then to_jsonb(badges) end,
     'pinned_badge', case when (priv -> 'badges') is distinct from 'false'::jsonb then pinned end,
     'stats', case when (priv -> 'stats') is distinct from 'false'::jsonb then stats end,

@@ -82,7 +82,7 @@ describe('account rows (public.profiles)', () => {
       showcase: {
         pinned: { aa: ['c1'] },
         hidden_cards: ['pulls'],
-        look: { title: null, frame: 'none', name_color: 'ink', pinned_badge: null, owner_title: null, owner_style: { badge: 0, frame: null, name: null }, avatar_char: null, banner_char: null },
+        look: { title: null, frame: 'none', name_color: 'ink', pinned_badge: null, owner_title: null, owner_style: { badge: 0, frame: null, name: null, frameVariant: 0, nameVariant: 0 }, avatar_char: null, banner_char: null },
         featured: [],
         privacy: { card: false, stats: true, badges: true, showcase: true },
       },
@@ -96,7 +96,7 @@ describe('account rows (public.profiles)', () => {
       frame: 'runes' as const,
       nameColor: 'gold' as const,
       pinnedBadge: 'hall' as const,
-      ownerStyle: { badge: 3, frame: 15, name: 15 },
+      ownerStyle: { badge: 3, frame: 16, name: 15, frameVariant: 4, nameVariant: 0 },
       avatarChar: { game: 'aa', id: 'c1' },
       featured: [{ kind: 'team' as const, game: 'aa', id: 't1' }],
       privacy: { card: true, stats: false, badges: true, showcase: true },

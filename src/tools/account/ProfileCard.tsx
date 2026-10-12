@@ -77,7 +77,7 @@ export function ProfileCard(props: ProfileCardProps) {
       </div>
       <div className={c.head}>
         {look?.frame ? (
-          <OwnerFrameArt n={look.frame} src={avatarUrl} letter={name} size={compact ? 108 : 136} fallback={<Framed frame={frame} src={avatarUrl} letter={name} />} />
+          <OwnerFrameArt n={look.frame} variant={look.frameVariant} src={avatarUrl} letter={name} size={compact ? 108 : 136} fallback={<Framed frame={frame} src={avatarUrl} letter={name} />} />
         ) : (
           <Framed frame={frame} src={avatarUrl} letter={name} />
         )}

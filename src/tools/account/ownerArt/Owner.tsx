@@ -18,7 +18,7 @@ export function OwnerBadgeArt(props: { n: number; size: number; title?: string |
   );
 }
 
-export function OwnerFrameArt(props: { n: number; src: string | null; letter: string; size: number; fallback: React.ReactNode }) {
+export function OwnerFrameArt(props: { n: number; variant?: number; src: string | null; letter: string; size: number; fallback: React.ReactNode }) {
   const { fallback, ...rest } = props;
   return (
     <Suspense fallback={fallback}>

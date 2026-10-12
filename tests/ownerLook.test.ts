@@ -33,6 +33,6 @@ describe('the owner’s look on the profile card (0017, T64)', () => {
     const now = body(sql, 'profile_card');
     expect(now).toMatch(/owner := exists \(select 1 from public\.owners where user_id = p_user\);/);
     expect(now).toMatch(/os := case when owner and /);
-    for (const k of ['badge', 'frame', 'name']) expect(now).toContain(`'${k}', case when jsonb_typeof(os -> '${k}') = 'number' then os -> '${k}' end`);
+    for (const k of ['badge', 'frame', 'name', 'frameVariant', 'nameVariant']) expect(now).toContain(`'${k}', case when jsonb_typeof(os -> '${k}') = 'number' then os -> '${k}' end`);
   });
 });

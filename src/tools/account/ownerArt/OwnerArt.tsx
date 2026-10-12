@@ -1,5 +1,5 @@
 import { useId, type CSSProperties } from 'react';
-import { OWNER_BADGE_ART, OWNER_FRAME_ART } from './art';
+import { OWNER_BADGE_ART, OWNER_FRAME_ART, OWNER_FRAME_VARIANTS } from './art';
 import './svgMotion.css';
 import './names.css';
 
@@ -36,9 +36,9 @@ export function OwnerBadge({ n, size, title }: { n: number; size: number; title?
 }
 
 /** The picture in an owner frame. The whole drawing fits in `size` px; the picture sits inside it. */
-export function OwnerFrame({ n, src, letter, size }: { n: number; src: string | null; letter: string; size: number }) {
+export function OwnerFrame({ n, variant = 0, src, letter, size }: { n: number; variant?: number; src: string | null; letter: string; size: number }) {
   const suffix = useSuffix();
-  const art = OWNER_FRAME_ART[n - 1];
+  const art = OWNER_FRAME_VARIANTS[n]?.[variant] ?? OWNER_FRAME_ART[n - 1];
   if (!art) return null;
   const [x, y, w, h] = art.fit;
   const clip = `pic-${suffix}`;
