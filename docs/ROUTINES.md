@@ -24,7 +24,7 @@ from this page.
 | `leaks-scan` | New leaks, e.g. the new-item lists in the nanoka.cc data. |
 | `events-scan` | New events, banners and versions. |
 | `game-data-refresh` | After a patch: new characters, items and kits. |
-| `research-routine` | The research routine: official notices the importers don't read, a second leak source (Hakushin), gaps in the lists. |
+| `research-routine` | The research routine: official notices the importers don't read, more leak sources (DimbreathBot, Seele on Telegram), gaps in the lists. |
 
 The list lives in `supabase/functions/_shared/jobs.ts` (jobs with
 `target: { kind: 'external' }`). A new routine job = one entry there.
@@ -127,8 +127,11 @@ this section; the routine's own prompt only adds the daily start check below.
 
 **When it runs.** The routine starts every day at 10:45 UTC and first asks
 `node scripts/schedule-due.ts --key --now <24 hours ago>`. When `next_key` is
-empty or still in the future, no key moment fell in the last 24 hours: it stops
-at once (no delivery, no notification). Key moments: patch day after maintenance,
+empty or still in the future, no key moment fell in the last 24 hours. It then asks
+`node scripts/leaks-seele.ts --check`: when that prints `seele_new=0` (no new HSR/ZZZ
+post on the Seele Telegram channel in the last 24 hours that our lists don't show yet),
+it stops at once (no delivery, no notification). Otherwise it runs, and on such a
+leak-only day it may keep steps 2, 4 and 5 short (say so in the delivery). Key moments: patch day after maintenance,
 the expected special-program announcement and pre-download notice, new banner
 starts, and the first check of each quiet middle (`keyMoments` in
 `scripts/schedule/rhythm.ts`).
@@ -158,6 +161,29 @@ the delivery, never skipped silently.
    finding with the source named and the payload fields from "Payload that goes
    straight into the lists". Never into the lists directly. If a source can't be
    reached, say which one in the delivery.
+
+   **Seele (Telegram), both games** (T78). `npm run leaks:seele -- --out /tmp/seele.json`
+   reads the channel's public web view (`https://t.me/s/<channel>`, no login, bot or
+   key; channel name in `SEELE` in `scripts/leaks/telegram.ts`) and lists the HSR and
+   ZZZ posts of the last 48 hours. Posts about other games are only counted
+   (`ignored`); to switch a game on, add it to `SEELE.keep`. For each post:
+   - `known` is not empty (same character as a leak or not-out-yet character we
+     already show from nanoka.cc): skip it, unless it adds something our lists lack
+     (then deliver as below and say what it adds). Count the skipped ones in the delivery.
+   - `chinese: true`: translate the text into English yourself (no outside service).
+     Keep the original.
+   - A post that names a new character, banner or event → kind `leak` with the list
+     fields filled as far as the post states them (never guessed) and `"list"`.
+   - Anything else (kit numbers, previews, build notes) → kind `info`, title
+     `Leak (Seele): <short English summary>`, with `"leak": true` in the payload.
+   - Both: `source: { "name": "Seele (Telegram)", "url": <post url> }` (the public
+     credit; never words like permission or partner), the title ends with
+     `(post <id>)` so the inbox drops repeats, and the payload has
+     `"post": { "url", "at", "text": <original>, "translation": <English, only when
+     translated>, "images": [<links as given; never copied>] }`. The inbox shows the
+     English first, marked "Translated, may be inexact", with "Show original".
+   - The channel can't be read, or the channel name is still not set → say so in
+     the delivery.
 4. Gaps: run `npm run data:schedule` and read its notes ("left out: no start
    yet", rewards unknown). Fill only what a source proves (official notice, wiki,
    game8), as a small data PR.
