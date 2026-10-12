@@ -1,6 +1,6 @@
 import { fireEvent, render, screen, waitFor, within } from '@testing-library/react';
 import type { GameContract } from '../../core/contract';
-import { beforeEach, describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { gameData, resetUserData, setBuild, setRosterEntry } from '../../core/data/userData';
 import { fakeGame } from '../account-links/fakeGame';
 import { checkValues, fieldsFor } from './scan';
@@ -28,6 +28,19 @@ describe('scan fields', () => {
 
 describe('Scan', () => {
   beforeEach(() => resetUserData());
+
+  it('shows the picked screenshot drawn from the file itself, with no address made for it', async () => {
+    vi.stubGlobal('createImageBitmap', vi.fn(async () => ({ width: 1920, height: 1080, close: vi.fn() })));
+    const make = vi.spyOn(URL, 'createObjectURL');
+    render(<Scan game={game} />);
+    fireEvent.change(screen.getByLabelText('Choose a screenshot'), { target: { files: [new File(['x'], 'shot.png', { type: 'image/png' })] } });
+    const shot = await screen.findByRole('img', { name: 'Your screenshot' });
+    expect(shot).toBeInstanceOf(HTMLCanvasElement);
+    expect(shot).toHaveAttribute('width', '1920');
+    expect(make).not.toHaveBeenCalled();
+    make.mockRestore();
+    vi.unstubAllGlobals();
+  });
 
   it('saves what you typed: owned + dupes; newly owned leaves the wanted list', async () => {
     setRosterEntry('aa', '1003', { owned: false, wanted: true, dupes: 0 });

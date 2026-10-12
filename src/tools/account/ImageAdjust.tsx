@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState, type CSSProperties, type KeyboardEvent, type PointerEvent } from 'react';
-import { BottomSheet, Button, HowTo } from '../../core/ui';
+import { BitmapImage, BottomSheet, Button, HowTo } from '../../core/ui';
 import {
   applyKey,
   BANNER_RATIO,
@@ -47,15 +47,14 @@ const AVATAR_FRAME_MAX = 280;
 
 interface Loaded {
   bitmap: ImageBitmap;
-  url: string;
   size: Size;
 }
 
-/** Shows `url` placed exactly as `view` says, inside a box `width` CSS pixels wide (the box sets the shape). */
-function Placed({ url, img, out, view, width, className }: { url: string; img: Size; out: Size; view: View; width: number; className: string | undefined }) {
+/** Shows the picture placed exactly as `view` says, inside a box `width` CSS pixels wide (the box sets the shape). */
+function Placed({ bitmap, img, out, view, width, className }: { bitmap: ImageBitmap; img: Size; out: Size; view: View; width: number; className: string | undefined }) {
   const k = width / out.w;
   const p = placement(img, out, view);
-  return <img src={url} alt="" draggable={false} className={className} style={{ left: p.x * k, top: p.y * k, width: p.w * k, height: p.h * k }} />;
+  return <BitmapImage bitmap={bitmap} className={className} style={{ left: p.x * k, top: p.y * k, width: p.w * k, height: p.h * k }} />;
 }
 
 /**
@@ -81,7 +80,7 @@ export function ImageAdjust({ kind, source, background, bannerBackground, other,
     createImageBitmap(source).then(
       (bitmap) => {
         if (!alive) return bitmap.close();
-        made = { bitmap, url: URL.createObjectURL(source), size: { w: bitmap.width, h: bitmap.height } };
+        made = { bitmap, size: { w: bitmap.width, h: bitmap.height } };
         setLoaded(made);
         setView(initialView(made.size, out));
       },
@@ -89,10 +88,7 @@ export function ImageAdjust({ kind, source, background, bannerBackground, other,
     );
     return () => {
       alive = false;
-      if (made) {
-        made.bitmap.close();
-        URL.revokeObjectURL(made.url);
-      }
+      made?.bitmap.close();
     };
   }, [source, out]);
 
@@ -197,13 +193,13 @@ export function ImageAdjust({ kind, source, background, bannerBackground, other,
   const pAvatar = 56;
   const previewBanner =
     kind === 'banner' && loaded && view ? (
-      <Placed url={loaded.url} img={loaded.size} out={out} view={view} width={pInner} className={a.img} />
+      <Placed bitmap={loaded.bitmap} img={loaded.size} out={out} view={view} width={pInner} className={a.img} />
     ) : other ? (
       <img src={other} alt="" className={a.cover} />
     ) : null;
   const previewAvatar =
     kind === 'avatar' && loaded && view ? (
-      <Placed url={loaded.url} img={loaded.size} out={out} view={view} width={pAvatar - 6} className={a.img} />
+      <Placed bitmap={loaded.bitmap} img={loaded.size} out={out} view={view} width={pAvatar - 6} className={a.img} />
     ) : other ? (
       <img src={other} alt="" className={a.cover} />
     ) : (
@@ -234,7 +230,7 @@ export function ImageAdjust({ kind, source, background, bannerBackground, other,
               aria-describedby={`adjust-status-${kind}`}
               onKeyDown={onKeyDown}
             >
-              <Placed url={loaded.url} img={loaded.size} out={out} view={view} width={frameW} className={a.img} />
+              <Placed bitmap={loaded.bitmap} img={loaded.size} out={out} view={view} width={frameW} className={a.img} />
             </div>
           ) : (
             !error && <span className={a.loading}>Loading the {what}…</span>

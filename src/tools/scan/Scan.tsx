@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useId, useState, type ClipboardEvent, type DragEvent, type FormEvent } from 'react';
 import type { GameContract } from '../../core/contract';
 import { useGameData } from '../../core/data/userData';
-import { BottomSheet, Button, ExampleTag, HowTo, Segmented } from '../../core/ui';
+import { BitmapImage, BottomSheet, Button, ExampleTag, HowTo, Segmented } from '../../core/ui';
 import c from '../account-links/connections.module.css';
 import { useCharacters } from '../account-links/RosterImport';
 import { checkValues, fieldsFor, saveScan, type ScanReader, type ScanValues } from './scan';
@@ -58,9 +58,8 @@ export function Scan({ game, reader, characterId }: { game: GameContract; reader
   const characters = useCharacters(game);
   const roster = useGameData(game.id).roster;
   const fields = fieldsFor(game);
-  const [shot, setShot] = useState<{ image: Blob; url: string } | null>(null);
+  const [shot, setShot] = useState<{ image: Blob; bitmap: ImageBitmap } | null>(null);
   const image = shot?.image ?? null;
-  const url = shot?.url ?? null;
   const [dragging, setDragging] = useState(false);
   const [who, setWho] = useState(characterId ?? '');
   const [values, setValues] = useState<ScanValues>({});
@@ -68,15 +67,18 @@ export function Scan({ game, reader, characterId }: { game: GameContract; reader
   const [status, setStatus] = useState<{ kind: 'ok' | 'error' | 'busy'; text: string } | null>(null);
   const term = game.terms.character.toLowerCase();
 
-  // The picture stays in this browser; its preview address is released when it changes or the sheet closes.
-  useEffect(() => (shot ? () => URL.revokeObjectURL(shot.url) : undefined), [shot]);
+  // The picture stays in this browser; its decoded preview is freed when it changes or the sheet closes.
+  useEffect(() => (shot ? () => shot.bitmap.close() : undefined), [shot]);
 
   const take = (file: File | Blob | null | undefined) => {
     if (!file) return;
     if (!file.type.startsWith('image/')) return setStatus({ kind: 'error', text: 'That isn’t a picture. Pick a screenshot (PNG or JPG).' });
     setStatus(null);
     setRead(null);
-    setShot({ image: file, url: URL.createObjectURL(file) });
+    createImageBitmap(file).then(
+      (bitmap) => setShot({ image: file, bitmap }),
+      () => setStatus({ kind: 'error', text: 'That picture couldn’t be read. Pick a screenshot (PNG or JPG).' }),
+    );
   };
   const onDrop = (e: DragEvent) => {
     e.preventDefault();
@@ -145,7 +147,7 @@ export function Scan({ game, reader, characterId }: { game: GameContract; reader
         onDragLeave={() => setDragging(false)}
         onDrop={onDrop}
       >
-        {url ? <img className={c.shot} src={url} alt={`Your screenshot${chosen ? ` of ${chosen.name}` : ''}`} /> : <span>Drop a screenshot here, or paste one.</span>}
+        {shot ? <BitmapImage bitmap={shot.bitmap} className={c.shot} label={`Your screenshot${chosen ? ` of ${chosen.name}` : ''}`} /> : <span>Drop a screenshot here, or paste one.</span>}
         <input
           id={`${id}-file`}
           type="file"
@@ -158,7 +160,7 @@ export function Scan({ game, reader, characterId }: { game: GameContract; reader
             e.target.value = '';
           }}
         />
-        <Button onClick={() => document.getElementById(`${id}-file`)?.click()}>{url ? 'Choose another' : 'Choose a screenshot'}</Button>
+        <Button onClick={() => document.getElementById(`${id}-file`)?.click()}>{shot ? 'Choose another' : 'Choose a screenshot'}</Button>
       </div>
 
       <div className={c.tight}>
@@ -226,7 +228,7 @@ export function Scan({ game, reader, characterId }: { game: GameContract; reader
         )}
       </form>
 
-      {!url && showExamples && (
+      {!shot && showExamples && (
         <div className={`${c.notBuilt}`}>
           <span className={c.row}>
             <ExampleTag /> <span className={c.label}>What a reading looks like</span>

@@ -4,6 +4,10 @@ on:
     branches: [main]
   pull_request:
 
+# Every job only reads the code: no job gets write access (least privilege).
+permissions:
+  contents: read
+
 # A newer push to the same pull request stops the older, now useless run.
 concurrency:
   group: ci-${{ github.event.pull_request.number || github.sha }}
