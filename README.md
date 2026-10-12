@@ -1,11 +1,13 @@
 <div align="center">
 
+<img src="public/icons/hagalaz.svg" alt="" width="88">
+
 # HLIÐSKJÁLF
 
 **One seat, every world.**<br>
 A command centre for your gacha games: what to do tonight, how many pulls you'll have, and who fits your teams.
 
-[![Open the app](https://img.shields.io/badge/Open_HLITH-live-cfe3ef?style=for-the-badge&labelColor=08090b)](https://project-hlith.hliskjlf.workers.dev)
+[**Open the app**](https://project-hlith.hliskjlf.workers.dev) · [Privacy](https://project-hlith.hliskjlf.workers.dev/privacy) · [Terms](https://project-hlith.hliskjlf.workers.dev/terms) · [License](LICENSE) · [Contact](mailto:hlidskjalf.contact@gmail.com)
 
 ![React 19](https://img.shields.io/badge/React_19-20232a?logo=react&logoColor=61dafb)
 ![TypeScript](https://img.shields.io/badge/TypeScript_strict-3178c6?logo=typescript&logoColor=white)
@@ -14,7 +16,7 @@ A command centre for your gacha games: what to do tonight, how many pulls you'll
 ![Cloudflare Workers](https://img.shields.io/badge/Cloudflare_Workers-f38020?logo=cloudflare&logoColor=white)
 ![Tested with Vitest and Playwright](https://img.shields.io/badge/tested-Vitest_·_Playwright-6e9f18)
 
-Honkai: Star Rail · Zenless Zone Zero · any other game as a plug-in
+Honkai: Star Rail · Zenless Zone Zero · more games as plug-ins
 
 <img src="docs/screenshots/banners.png" alt="The Banners board: one timeline for every game, live banners as big cards, what's next and later" width="920">
 
@@ -22,24 +24,18 @@ Honkai: Star Rail · Zenless Zone Zero · any other game as a plug-in
 
 ---
 
-Odin sat on Hliðskjálf and saw all nine worlds at once. **PROJECT-HLITH** does the same for
-your gacha accounts: every banner, event, reset, saved pull and character you own, in one
-place, on your phone and your PC.
-
-No more five tabs, three wikis and a spreadsheet. Open it and it tells you **what to do
-tonight**, **how many pulls you'll have** when the banner you want arrives, and **what's still
-left to earn**.
+**PROJECT-HLITH** puts every banner, event, reset, saved pull and character you own in one
+place, on your phone and your PC. Open it and it tells you **what to do tonight**, **how many
+pulls you'll have** when the banner you want arrives, and **what's still left to earn**. It
+never guesses: what it can't prove says **No data yet**.
 
 ## Highlights
 
-| | |
-|---|---|
-| 🌅 **Today** | Your evening in order: dailies and weeklies on *your server's* reset, events about to end, live stamina from HoYoLAB, live banners and your wishlist. HoYoLAB ticks what it can prove. |
-| 🎴 **Banners** | One timeline for every game with a TODAY line; live, next and later banners as big cards with countdowns, how each fits your account, and leaks clearly marked (or hidden). |
-| 🧑‍🤝‍🧑 **Roster & Teams** | Owned, wanted, copies and saved builds. Every kit is read, so a team's synergy % explains itself in plain words, with who fits, what to pull, and team lists you can edit. |
-| 🎟️ **Pulls** | Planner (chance to win, worst case), Calculator (every source until the version ends), Bank log, and History import with pity and a Luck report. |
-| 🗓️ **Calendar · Events · Backlog** | Everything on one timeline, what's left in each event, and permanent content that still pays out, all counted toward your pulls. |
-| ✨ **Assistant** | Ask in plain words. It proposes plans and changes; you approve or undo each one. |
+- **One evening plan** for every game, on your own server's reset.
+- **Pulls you can trust:** every source counted until the version ends, with your chance to win.
+- **Teams that explain themselves:** every kit is read, so a synergy % comes with reasons.
+- **Your data stays yours:** list updates never touch your progress; backups and export any time.
+- **Installs like an app** on phone and PC, and opens offline with what's saved.
 
 <p align="center">
   <img src="docs/screenshots/today.png" alt="Today: resets, open tasks and live banners for both games" width="49%">
@@ -50,9 +46,20 @@ left to earn**.
   <img src="docs/screenshots/calendar.png" alt="Calendar: banners, events and resets on one timeline" width="49%">
 </p>
 
-### Make it yours
+## Features
 
-Fourteen themes, each with its own art, and every screen works on a phone.
+| | |
+|---|---|
+| **Today** | Dailies and weeklies on your server's reset, events about to end, live stamina from HoYoLAB, live banners, tonight's run and your wishlist. |
+| **Banners** | One timeline for every game; live, next and later banners as big cards with countdowns and how each fits your account. Leaks are clearly marked (or hidden). |
+| **Roster & Teams** | Owned, wanted, copies and saved builds; kit check; recommended teams with who fits and what to pull; team lists you can edit and share. |
+| **Pulls** | Planner (Now / Next / Later, chance to win, worst case), Calculator, Bank log, and History from the in-game link or UIGF / SRGF files, with a Luck report. |
+| **Calendar · Events · Farm** | Everything on one timeline (with a calendar feed), what's left in each event, and the materials each character still needs. |
+| **Backlog** | Permanent content that still pays out, counted toward your pulls. Add your own items, and **import or export** your backlog as a file (below). |
+| **Assistant** | Ask in plain words. It proposes plans and changes (including new backlog items); you approve or undo each one. **Attach files** (.json, .md, .txt, .csv, .pdf); an attached pull export or backlog file can be imported straight from the chat. |
+| **Profile & Rewards** | A profile card with picture, banner, showcase, badges and earned titles. **Rewards** are exclusive badges, frames and name styles, given out or claimed with a code. Owner-only looks exist too and are never handed out. |
+| **Make it yours** | Many themes, each with its own art; your own background; edit the layout; every screen works on a phone. |
+| **Account** | Sign in with Google, Discord or an email link; sync between devices; HoYoLAB link (live stamina, daily check-in, character import, endgame records); evening message; backups; download your data or delete your account. |
 
 <p align="center">
   <img src="docs/screenshots/theme-midnight-sakura.png" alt="Midnight Sakura theme" width="32%">
@@ -64,11 +71,27 @@ Fourteen themes, each with its own art, and every screen works on a phone.
   <img src="docs/screenshots/backlog.png" alt="Backlog: the story as a checklist, rewards still on the table" width="66%">
 </p>
 
-**And around it:** sign in with Google, Discord or an email link · sync between devices ·
-HoYoLAB link for live stamina, daily check-in and code redemption · pick your Trailblazer ·
-a profile with picture, banner and showcase · backups you can download · an evening
-message and a calendar feed · every list editable, with your own events, banners and
-backlog items.
+### Backlog file format
+
+Backlog → Import / Export uses one JSON format, `hlith-backlog-export` version 1. Every row
+becomes one of your own items, with its progress; importing the same file again never adds
+duplicates and never lowers progress. The app has a "File format" card and a template to
+download.
+
+```json
+{
+  "format": "hlith-backlog-export",
+  "version": 1,
+  "dataAsOf": "2026-10-12T00:00:00.000Z",
+  "backlog": [
+    { "id": "my_chests", "game": "zzz", "category": "Exploration", "label": "Chests in a new area",
+      "total": 40, "done": 12, "rewardEach": 5, "unit": "chest", "step": 1 }
+  ]
+}
+```
+
+Required per row: `id`, `game`, `label`, `total`. Optional: `category`, `done`, `rewardEach`,
+`rewardUnknown`, `unit`, `step`, `where`, `note`.
 
 ## Three promises
 
@@ -94,65 +117,65 @@ flowchart LR
   routine[Research routine<br>finds leaks & new info] -->|findings to approve| supa
 ```
 
-- **The app** is React + TypeScript, served by Cloudflare. Every merge to `main` goes live
-  within minutes.
+- **The app:** React 19 + TypeScript (strict) + Vite, served by Cloudflare Workers as an
+  installable app with an offline shell. Every merge to `main` goes live within minutes.
 - **Supabase** holds accounts and data (each person sees only their own rows) and runs the
-  server functions: HoYoLAB, history import, backups, the Assistant.
+  server functions: HoYoLAB, history import, backups, rewards, the Assistant.
 - **The scheduler** wakes every 15 minutes for the nightly backup, the HoYoLAB check-in
   and code redemption.
 - **A research routine** looks for new events, banners and leaks and hands them to the
   owner to approve before anything shows up.
-
-### Built by five AI chats
-
-The project is written by five Claude chats that talk to each other directly and agree
-before anything goes live ([how](docs/RELEASES.md)). The owner talks to MANAGER, which
-sends each job where it belongs.
-
-| Workstream | Builds |
-|---|---|
-| **FRAME** | The interface and base: every screen, the shell, sync, accounts. |
-| **SCHEDULER** | The real game data: versions, banners, events, endgame, backlog ([brief](docs/briefs/SCHEDULER.md)). |
-| **LOGIC-CORE** | The deep logic: kits, kit check, team scores, builds, materials ([brief](docs/briefs/LOGIC-CORE.md)). |
-| **MANAGER** | The owner's front desk; reviews and merges every change ([brief](docs/briefs/MANAGER.md)). |
-| **ERROR-FIX** | Bug fixes anywhere, when another workstream asks ([brief](docs/briefs/ERROR-FIX.md)). |
-
-## Run it yourself
-
-```bash
-npm install
-npm run dev        # the app on your machine ("this device only" mode, no sign-in needed)
-npm run check      # lint + typecheck + unit tests + build
-npm run e2e        # browser tests at PC and phone sizes
-```
-
-**Add a game:** copy `src/games/_template/`, fill in the contract (names, currencies,
-servers, reset times, banner rules) and register it in `src/games/index.ts`. Every screen
-picks it up.
+- **Five workstreams** build it (FRAME, SCHEDULER, LOGIC-CORE, MANAGER, ERROR-FIX), each with
+  its own files and brief; see [WORKSTREAMS](docs/WORKSTREAMS.md) and [RELEASES](docs/RELEASES.md).
 
 ```
 src/
   core/      the skeleton: shell, game contract, registries, saved data, look
   tools/     the modules: Today, Pulls, Roster, Backlog, … (work for any game)
-  games/     one folder per game: its contract and data
+  games/     one folder per game: its contract, data and rules (+ _template/)
 supabase/    database migrations and server functions
+scripts/     data imports, app icons, roadmap
 tests/       architecture, server and browser tests
 docs/        plan, roadmap, progress, design files, workstream briefs
 ```
 
-Game data from [nanoka.cc](https://nanoka.cc), used with its owner's permission. A fan
-project, not affiliated with HoYoverse; game names and art belong to their owners.
+## Run it locally
+
+Needs Node 22 or newer.
+
+```bash
+npm install
+npm run dev        # the app on your machine; works in "this device only" mode without sign-in
+npm run check      # lint + typecheck + unit tests + build (what CI runs)
+npm run e2e        # browser tests at PC and phone sizes (Playwright)
+npm run build      # production build into dist/
+npm run preview    # serve that build locally
+```
+
+For sign-in and sync, copy `config/.env.example` to `config/.env.local` and fill in your own
+Supabase project URL and publishable key ([SETUP](docs/SETUP.md)).
+
+Data scripts (re-run when a game updates): `npm run data:nanoka`, `data:kits`,
+`data:hsr-kits`, `data:costs`, `data:builds`, `data:schedule`. `npm run roadmap` refreshes the
+self-ticking [ROADMAP](docs/ROADMAP.md).
+
+**Add a game:** copy `src/games/_template/`, fill in the contract (names, currencies,
+servers, reset times, banner rules) and register it in `src/games/index.ts`. Every screen
+picks it up.
+
+## Sources
+
+Game data and Intel (leaks) are gathered from community data sites such as
+[nanoka.cc](https://nanoka.cc), plus official game sites and announcements. A fan project,
+not affiliated with HoYoverse; game names and art belong to their owners.
 
 ## Docs
 
-Everything is sorted in **[docs/README.md](docs/README.md)**: what it must do
-([FEATURES](docs/FEATURES.md), [DESIGN](docs/DESIGN.md)), where it stands
-([PROGRESS](docs/PROGRESS.md), [ROADMAP](docs/ROADMAP.md)), who builds what
-([WORKSTREAMS](docs/WORKSTREAMS.md), [RELEASES](docs/RELEASES.md)) and how it runs
-([SETUP](docs/SETUP.md), [DEPLOY](docs/DEPLOY.md)).
+Every document is listed in **[docs/README.md](docs/README.md)**.
 
-## Licence
+## License
 
 © 2026 HymnToHimeros. All rights reserved. See [LICENSE](LICENSE).
 The source is visible here but it is **not open source**: copying, hosting or reusing it
 needs written permission. Takedown templates are in [docs/COPYRIGHT.md](docs/COPYRIGHT.md).
+Contact: [hlidskjalf.contact@gmail.com](mailto:hlidskjalf.contact@gmail.com).
