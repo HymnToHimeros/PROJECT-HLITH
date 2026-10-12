@@ -8,6 +8,9 @@ import { Switch } from './parts';
 import p from './profile.module.css';
 import { FEATURED_MAX, FRAME_LABEL, FRAMES, NAME_COLOR_LABEL, NAME_COLORS, PRIVACY_LABEL, SHELF_MAX, TITLE_MAX, toggleFeatured, type CharRef, type Privacy, type Profile } from './profile';
 import { Framed } from './ProfileCard';
+import type { HeldReward } from './rewards/model';
+import { RewardsEditor } from './rewards/RewardsEditor';
+import { serverRewards } from './rewards/rewardsData';
 import { EARNED_TITLE } from './titles';
 import { THEMES } from '../../core/theme/themes';
 
@@ -23,6 +26,9 @@ interface Props {
   isOwner: boolean;
   mode: 'device' | 'account';
   open: (module: ModuleId, tab?: string) => void;
+  /** T67: the rewards you hold. */
+  held?: HeldReward[];
+  onClaimed?: () => void;
 }
 
 const refKey = (r: CharRef | null) => (r ? `${r.game}:${r.id}` : '');
@@ -36,7 +42,7 @@ const parseRef = (v: string): CharRef | null => {
  * your picture or banner, the 4-item showcase, and what others may see. Shown inside the profile
  * editor, above the save button, with the live preview at the top of the editor.
  */
-export function CardEditor({ draft, setDraft, games, characters, badges, isOwner, mode, open }: Props) {
+export function CardEditor({ draft, setDraft, games, characters, badges, isOwner, mode, open, held = [], onClaimed = () => {} }: Props) {
   const owned = games.map((g) => ({ game: g, list: (characters[g.id] ?? []).filter((c) => gameData(g.id).roster[c.id]?.owned) }));
   const anyOwned = owned.some((o) => o.list.length > 0);
   const frames = FRAMES.filter((f) => f !== 'sky' || isOwner);
@@ -206,6 +212,8 @@ export function CardEditor({ draft, setDraft, games, characters, badges, isOwner
           <OwnerLookEditor value={draft.ownerStyle} onChange={(ownerStyle) => set({ ownerStyle })} name={draft.displayName ?? ''} />
         </Suspense>
       )}
+
+      <RewardsEditor held={held} worn={draft.rewards} onWear={(rewards) => set({ rewards })} signedIn={mode === 'account'} api={serverRewards} onClaimed={onClaimed} name={draft.displayName ?? ''} />
 
       <section className={p.editCard} aria-label="Character pictures">
         <h3 className={p.cardTitle}>Use a character</h3>

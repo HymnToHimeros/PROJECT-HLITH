@@ -8,6 +8,7 @@ import type { Draft } from './approve';
 import { Findings } from './Findings';
 import { Lists } from './Lists';
 import { Members } from './Members';
+import { Rewards } from './Rewards';
 import { Users } from './Users';
 import o from './owner.module.css';
 import { OwnerThemesAdmin } from './OwnerThemesAdmin';
@@ -62,8 +63,8 @@ const LISTS: { id: keyof Counts; label: string }[] = [
 const pad = (n: number) => String(n).padStart(2, '0');
 const WEEKDAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
-type OwnerTab = 'overview' | 'users' | 'lists' | 'announcements' | 'members' | 'scheduler' | 'findings' | 'themes';
-const OWNER_TABS: readonly string[] = ['overview', 'users', 'lists', 'announcements', 'members', 'scheduler', 'findings', 'themes'];
+type OwnerTab = 'overview' | 'users' | 'lists' | 'announcements' | 'members' | 'rewards' | 'scheduler' | 'findings' | 'themes';
+const OWNER_TABS: readonly string[] = ['overview', 'users', 'lists', 'announcements', 'members', 'rewards', 'scheduler', 'findings', 'themes'];
 
 /** The owner's console: Overview, Lists, Announcements, Scheduler, Findings. The tab can live in the address (props.tab / openTab). */
 export default function OwnerConsole(props: ModuleScreenProps & { selfId?: string | undefined }) {
@@ -96,6 +97,7 @@ export default function OwnerConsole(props: ModuleScreenProps & { selfId?: strin
           { id: 'lists', label: 'Lists' },
           { id: 'announcements', label: 'Announcements' },
           { id: 'members', label: 'Members' },
+          { id: 'rewards', label: 'Rewards' },
           { id: 'scheduler', label: 'Scheduler' },
           { id: 'findings', label: newFindings ? `Findings · ${newFindings}` : 'Findings' },
           { id: 'themes', label: 'Owner themes' },
@@ -106,6 +108,7 @@ export default function OwnerConsole(props: ModuleScreenProps & { selfId?: strin
       {tab === 'lists' && <Lists games={props.games} draft={draft} clearDraft={clearDraft} />}
       {tab === 'announcements' && <Announcements />}
       {tab === 'members' && <Members />}
+      {tab === 'rewards' && <Rewards />}
       {tab === 'scheduler' && <Scheduler data={sched} now={now} />}
       {tab === 'findings' && <Findings data={sched} games={props.games} onDraft={openDraft} />}
       {tab === 'themes' && <OwnerThemesAdmin />}

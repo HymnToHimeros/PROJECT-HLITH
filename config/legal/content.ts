@@ -62,6 +62,7 @@ export const PRIVACY: LegalPage = {
   title: 'Privacy policy',
   description: 'What HLIÐSKJÁLF (PROJECT-HLITH) keeps about you, where, for how long, and your rights.',
   // 12 Oct: a HoYoLAB login remembered in the browser is now encrypted (wording only, no new consent).
+  // 12 Oct: paragraphs on exclusive rewards (T67) and files sent to the Assistant (T71); no version bump, agreed.
   updated: '12 October 2026',
   blocks: [
     { h: 'The short version' },
@@ -95,6 +96,7 @@ export const PRIVACY: LegalPage = {
     { p: '**Background pictures** you upload are kept in private storage that only your account can read.' },
     { p: '**Moderation (only if it happens).** If the owner silences, suspends or removes your account, we keep what was done, when, until when, and the owner’s reason, so it can end on time and be looked back on. It’s included when you export your data and removed with your account.' },
     { p: '**Tester role and invites (only if you’re invited).** If you accept an invite link, we keep that you’re a tester, when you joined and which invite you used. For each invite link we keep the owner’s own note, when it was made, used or cancelled, and who used it; the link’s secret itself is not kept, only a fingerprint of it. The owner sees testers’ profile names and when they joined. Deleting your account removes your tester role and the invite records with your account on them.' },
+    { p: '**Exclusive rewards (only if you get one).** If the owner gives you a reward (a badge, frame or name style) or you claim one with a code, we keep which items you hold, when and how you got each one (given, or claimed with a code), and when one was taken back. The owner sees who holds each item, and the owner’s log keeps each one given, claimed and taken back, with the owner’s reason. A reward you wear shows on your profile card only while you hold it. For each claim code we keep the owner’s note, how many times it may be used and was used, and when it ends; the code itself is not kept, only a fingerprint of it. It’s included when you export your data and removed with your account.' },
     {
       p: '**HoYoLAB link (optional).** To show live stamina or do the daily check-in and redeem codes, HLIÐSKJÁLF needs your HoYoLAB login (the login cookie values). You choose how it is kept: used once and not stored; remembered only in your browser, encrypted with a key your browser keeps for HLIÐSKJÁLF; or saved on our server so the daily check-in can run while you’re away. A login saved on the server is kept in an encrypted vault, readable only by our server functions. We also keep your HoYoLAB account number, your game accounts’ UIDs, nicknames, servers and levels, and the results of each check-in and code redemption. “Forget” overwrites the saved login straight away and stops everything automatic; the link’s record and its history stay until you delete your account.',
     },

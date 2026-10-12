@@ -2,7 +2,7 @@ import { useCallback, useEffect, useId, useMemo, useState, type FormEvent } from
 import { formatDate, formatDateTime } from '../../core/time/reset';
 import { Button, HowTo, NoData } from '../../core/ui';
 import { useNow } from '../../core/ui/useNow';
-import { METHOD_LABEL, serverUsers, statusOf, type Action, type Hours, type LogRow, type Status, type UserRow, type UsersApi } from './usersData';
+import { METHOD_LABEL, serverUsers, statusOf, type Action, type Hours, type LogRow, type RewardAction, type Status, type UserRow, type UsersApi } from './usersData';
 import o from './owner.module.css';
 
 /*
@@ -85,6 +85,18 @@ const LOG_VERB: Record<Action, string> = {
   remove: 'Removed',
   undo_remove: 'Undid removing',
 };
+
+/** T67: how a reward entry reads in the log. */
+const REWARD_LINE: Record<RewardAction, (who: string, item: string) => string> = {
+  reward_item: (_, item) => `Added the reward ${item}`,
+  reward_grant: (who, item) => `Gave ${item} to ${who}`,
+  reward_claim: (who, item) => `${who} claimed ${item}`,
+  reward_revoke: (who, item) => `Revoked ${item} from ${who}`,
+  reward_code: (_, item) => `Made a claim code for ${item}`,
+  reward_code_cancel: (_, item) => `Cancelled a claim code for ${item}`,
+};
+const isReward = (a: LogRow['action']): a is RewardAction => a.startsWith('reward_');
+const logLine = (l: LogRow) => (isReward(l.action) ? REWARD_LINE[l.action](nameOf(l), l.item ?? 'an item') : `${LOG_VERB[l.action]} ${nameOf(l)}`);
 
 export function Users({ api = serverUsers, selfId }: { api?: UsersApi | null; selfId?: string | undefined }) {
   const uid = useId();
@@ -287,10 +299,10 @@ export function Users({ api = serverUsers, selfId }: { api?: UsersApi | null; se
             {log.map((l) => {
               const until = l.until === 'infinity' ? Infinity : l.until ? Date.parse(l.until) : null;
               return (
-                <li key={l.id} className={o.item} aria-label={`${LOG_VERB[l.action]} ${nameOf(l)}`}>
+                <li key={l.id} className={o.item} aria-label={logLine(l)}>
                   <span className={o.itemText}>
                     <span className={o.itemTitle}>
-                      {LOG_VERB[l.action]} {nameOf(l)}
+                      {logLine(l)}
                       {until !== null && l.action !== 'remove' ? ` · ${until === Infinity ? (l.action === 'ban' ? 'permanently' : 'until lifted') : `until ${formatDateTime(until)}`}` : ''}
                       {l.action === 'remove' && until !== null && until !== Infinity ? ` · deleted ${formatDate(until)} unless undone` : ''}
                     </span>

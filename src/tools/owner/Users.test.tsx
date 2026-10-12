@@ -117,4 +117,14 @@ describe('an account’s status', () => {
     expect(statusOf(row({ silenced_until: 'infinity' }), NOW)).toEqual({ kind: 'silenced', until: Infinity });
     expect(statusOf(row({ silenced_until: iso(NOW - 1) }), NOW + 5)).toEqual({ kind: 'active' });
   });
+
+  it('reward entries (T67) read in plain words in the same log', async () => {
+    const log: LogRow[] = [
+      { id: 'l1', user_id: 'mira', name: 'Mira', action: 'reward_grant', reason: 'thanks', until: null, by_name: 'The Owner', created_at: iso(NOW - day), item: 'Lantern' },
+      { id: 'l2', user_id: 'mira', name: 'Mira', action: 'reward_claim', reason: '', until: null, by_name: null, created_at: iso(NOW - 2 * day), item: 'Aurora' },
+    ];
+    render(<Users api={fakeApi([OWNER, MIRA], log)} selfId="me" />);
+    expect(await screen.findByRole('listitem', { name: 'Gave Lantern to Mira' })).toBeInTheDocument();
+    expect(screen.getByRole('listitem', { name: 'Mira claimed Aurora' })).toBeInTheDocument();
+  });
 });

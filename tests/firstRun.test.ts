@@ -35,7 +35,9 @@ describe('first run: accept the Terms and Privacy policy, choose a username (001
     const block = sql.match(/do \$\$[\s\S]*?end \$\$;/)?.[0] ?? '';
     const covered = [...(block.match(/array\[([\s\S]*?)\]/)?.[1] ?? '').matchAll(/'(\w+)'/g)].map((m) => m[1] as string);
     const exempt = ['account_deletion_requests', 'account_identity', 'account_restrictions', 'moderation_actions', 'owners'];
-    expect(userTables(all).filter((t) => !exempt.includes(t) && !covered.includes(t))).toEqual([]);
+    // Tables nobody can write to directly (no insert or update policy; only server functions write) need no gate.
+    const writable = (t: string) => new RegExp(`create policy[^;]*on public\\.${t}\\s+for (insert|update|all)\\b`, 'i').test(all);
+    expect(userTables(all).filter((t) => !exempt.includes(t) && !covered.includes(t) && writable(t))).toEqual([]);
     expect(covered).not.toContain('account_deletion_requests');
     expect(block).toMatch(/as restrictive for insert to authenticated with check \(\(select public\.has_accepted\(\)\)\)/);
     expect(block).toMatch(/as restrictive for update to authenticated using \(\(select public\.has_accepted\(\)\)\) with check/);

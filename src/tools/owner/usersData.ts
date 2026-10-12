@@ -10,10 +10,14 @@ import { AVATAR_BUCKET } from '../account/useProfile';
 
 export type Action = 'silence' | 'lift_silence' | 'ban' | 'unban' | 'remove' | 'undo_remove';
 export type Hours = 24 | 168 | null;
+/** T67: reward entries in the same log (0019). */
+export type RewardAction = 'reward_item' | 'reward_grant' | 'reward_claim' | 'reward_revoke' | 'reward_code' | 'reward_code_cancel';
 
 export interface UserRow {
   user_id: string;
   name: string | null;
+  /** The username (T62), when they chose one. */
+  username?: string | null;
   avatar_path: string | null;
   methods: string[];
   joined_at: string;
@@ -30,8 +34,10 @@ export interface LogRow {
   id: string;
   user_id: string;
   name: string | null;
-  action: Action;
+  action: Action | RewardAction;
   reason: string;
+  /** The reward item's name, for reward entries. */
+  item?: string | null;
   until: string | null;
   by_name: string | null;
   created_at: string;
