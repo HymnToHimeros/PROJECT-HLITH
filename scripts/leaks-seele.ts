@@ -40,7 +40,7 @@ function knownLeaks(): KnownLeak[] {
     }
     return list
       .filter((c) => c.leak || (c.releasedAt && Date.parse(c.releasedAt) > Date.now()))
-      .map((c) => ({ game, words: [...new Set([c.name, c.name.replace(/\s*★\s*/g, ' '), c.id])], what: `${c.name} (${c.leak ? 'leak' : 'not out yet'}, in our lists)` }));
+      .map((c) => ({ game, words: [...new Set([c.name, c.name.replace(/\s*★\s*/g, ' '), c.name.replace(/\s*★\s*/g, '★'), c.id])], what: `${c.name} (${c.leak ? 'leak' : 'not out yet'}, in our lists)` }));
   });
 }
 
