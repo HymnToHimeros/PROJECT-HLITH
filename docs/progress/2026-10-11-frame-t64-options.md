@@ -15,4 +15,5 @@ Sheets only; nothing is built into the app yet.
 - Round 4: `docs/owner-reports/2026-10-11/t64-options-round4/`. Frames 13–20 and name styles 13–20, each a new shape/look and each matched to a round-3 badge (8 full sets: badge N + frame N+12 + name N+12).
 - Owner on round 4: keep all except frame 16 (no window shapes). Final owner items: badges 0–8, frames 1–20 (16 replaced), names 1–20, 8 sets with "Wear full set".
 - Frame 16 replacement options: `docs/owner-reports/2026-10-11/t64-frame16/` (16 A Moon Portrait, 16 B Star Cut, 16 C Sun & Moon Orbit).
+- Owner on frame 16 A/B/C: more options, each its own object built from badge 4 + name 16. Round 2: `docs/owner-reports/2026-10-11/t64-frame16-round2/` (16 A Astronomical Clock, 16 B Two Crescents, 16 C Sköll & Hati, 16 D Armillary Sphere, 16 E Compass Rose).
 - Next: owner picks → T64 Part B (profile customization).
