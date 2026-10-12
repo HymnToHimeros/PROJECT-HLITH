@@ -16,7 +16,10 @@ export function supabaseOwnerThemes(client: SupabaseClient): OwnerThemeSource & 
   const bucket = () => client.storage.from(OWNER_THEMES_BUCKET);
   return {
     async download(path) {
-      const { data, error } = await bucket().download(path);
+      // The list and packs (JSON) change in place: always read the stored copy, never a cached one,
+      // so a Remove or Add shows straight away (T75). Pictures get a new name each time, so they may be cached.
+      const fresh = path.endsWith('.json');
+      const { data, error } = fresh ? await bucket().download(path, { cacheNonce: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}` }, { cache: 'no-store' }) : await bucket().download(path);
       if (error) {
         if (notFound(error)) return null;
         throw new Error(`Couldn’t read ${path}: ${error.message}`);
