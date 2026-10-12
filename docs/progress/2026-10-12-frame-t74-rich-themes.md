@@ -18,3 +18,7 @@ Owner: the set themes were "minimalistic … less than the public Themes". Redo:
 - The ten themes themselves (art, names, colours) live only in the owner-only drafts, never here.
   Review screenshots and motion clips: a private claude.ai page sent to MANAGER.
 - Not merged until the owner says yes.
+- Looks (owner: five per set): a theme may name its `group` and `variant`. Account → Theme shows
+  each group as one tile that opens its looks (a row on PC, a sheet on a phone). 40 looks: 8 sets
+  × 5, each built differently (scene, frame, headings, motion, controls, layout). The manifest
+  now holds up to 80 themes.

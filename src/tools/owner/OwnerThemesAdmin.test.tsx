@@ -38,10 +38,27 @@ describe('owner-only themes in the app (T47)', () => {
   it('Account → Theme: once loaded for an owner, “Only for you” lists them and picking one saves owner:<id>', async () => {
     await act(() => loadOwnerThemes(fakeStore({ 'manifest.json': JSON.stringify({ themes: [theme] }) })));
     render(<ThemePage />);
-    const own = screen.getByRole('radiogroup', { name: 'Your own themes' });
+    const own = screen.getByRole('group', { name: 'Your own themes' });
     fireEvent.click(own.querySelector('[role="radio"]') as HTMLElement);
     expect(screen.getByRole('radio', { name: /Night/ })).toHaveAttribute('aria-checked', 'true');
     expect(document.documentElement.dataset.theme).toBe('owner');
+  });
+
+  it('Account → Theme: looks of one set show as one tile that opens its looks; picking one wears it (T74)', async () => {
+    const look = (id: string, variant: string) => ({ ...theme, id, name: `Set · ${variant}`, group: 'Set', variant });
+    const store = fakeStore({ 'manifest.json': JSON.stringify({ themes: [theme, look('s-a', 'Alpha'), look('s-b', 'Beta'), look('s-c', 'Gamma')] }) });
+    await act(() => loadOwnerThemes(store));
+    render(<ThemePage />);
+    const own = screen.getByRole('group', { name: 'Your own themes' });
+    expect(within(own).getByRole('radio', { name: /Night/ })).toBeInTheDocument();
+    const tile = within(own).getByRole('button', { name: /Set.*3 looks/ });
+    expect(tile).toHaveAttribute('aria-expanded', 'false');
+    expect(screen.queryByRole('radiogroup', { name: 'Set looks' })).toBeNull();
+    fireEvent.click(tile);
+    const row = screen.getByRole('radiogroup', { name: 'Set looks' });
+    fireEvent.click(within(row).getByRole('radio', { name: /Beta/ }));
+    expect(localStorage.getItem('hlith.prefs')).toContain('owner:s-b');
+    expect(within(own).getByRole('button', { name: /wearing Beta/ })).toBeInTheDocument();
   });
 
   it('Owner console: add a theme from a colour set with ornaments; no picture until you give one', async () => {

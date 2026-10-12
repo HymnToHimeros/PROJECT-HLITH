@@ -4,13 +4,14 @@ import { BACKUP_EVERY_DAYS, daysSinceBackup, downloadBackup, parseBackup, restor
 import { updatePrefs, usePrefs } from '../../core/data/prefs';
 import { canSync, syncNow, type SyncStatus } from '../../core/data/sync';
 import { ServerPicker } from '../../core/shell/ServerPicker';
+import { useIsPhone } from '../../core/shell/useIsPhone';
 import { ProtagonistPicker } from '../../core/shell/ProtagonistPicker';
 import { OWNER_PREFIX, useOwnerThemes, type OwnerTheme } from '../../core/theme/ownerThemes';
 import { motionFor, setMotion, type Motion } from '../../core/theme/motion';
 import { setTheme, THEMES, themeInfo } from '../../core/theme/theme';
 import { ThemeMotif } from '../../core/theme/ThemeArt';
 import { formatDate, formatTime } from '../../core/time/reset';
-import { Button, HowTo, Segmented } from '../../core/ui';
+import { BottomSheet, Button, HowTo, Segmented } from '../../core/ui';
 import { callFunction, hasServer, type DeletionRequest } from '../feeds/server';
 import a from './account.module.css';
 import { ago, Card, Switch } from './parts';
@@ -377,7 +378,7 @@ export function ExamplesPage() {
 }
 
 /** An owner theme's card: its own colours and picture, from the private store. */
-function OwnerThemeCard({ t, checked }: { t: OwnerTheme; checked: boolean }) {
+function OwnerThemeCard({ t, checked, label }: { t: OwnerTheme; checked: boolean; label?: string }) {
   const vars = Object.fromEntries(Object.entries(t.tokens).map(([k, v]) => [`--${k}`, v])) as CSSProperties;
   const art = t.pictureUrl;
   return (
@@ -392,7 +393,7 @@ function OwnerThemeCard({ t, checked }: { t: OwnerTheme; checked: boolean }) {
       <span className={a.themeMeta}>
         <span className={a.ring} aria-hidden="true" />
         <span className={a.rowText}>
-          <span className={a.rowTitle}>{t.name}</span>
+          <span className={a.rowTitle}>{label ?? t.name}</span>
           {t.mood && <span className={a.rowSub}>{t.mood}</span>}
         </span>
       </span>
@@ -404,9 +405,68 @@ function OwnerThemeCard({ t, checked }: { t: OwnerTheme; checked: boolean }) {
  * Owner-only themes (T47): shown only after they have loaded from the private store, which
  * happens only for an owner account. For anyone else this section doesn't exist.
  */
+/** Themes in order, those sharing a group gathered into one entry where the group first appears. */
+export function groupOwnerThemes(themes: OwnerTheme[]): ({ kind: 'one'; theme: OwnerTheme } | { kind: 'group'; name: string; themes: OwnerTheme[] })[] {
+  const out: ({ kind: 'one'; theme: OwnerTheme } | { kind: 'group'; name: string; themes: OwnerTheme[] })[] = [];
+  for (const t of themes) {
+    const g = t.group ? out.find((e) => e.kind === 'group' && e.name === t.group) : undefined;
+    if (g && g.kind === 'group') g.themes.push(t);
+    else if (t.group) out.push({ kind: 'group', name: t.group, themes: [t] });
+    else out.push({ kind: 'one', theme: t });
+  }
+  return out;
+}
+
+/** A set of looks as one tile: the first look's preview, the set's name and how many looks it has. */
+function OwnerGroupCard({ name, themes, choice, open, onOpen }: { name: string; themes: OwnerTheme[]; choice: unknown; open: boolean; onOpen: () => void }) {
+  const first = themes[0] as OwnerTheme;
+  const worn = themes.find((t) => choice === `${OWNER_PREFIX}${t.id}`);
+  const vars = Object.fromEntries(Object.entries(first.tokens).map(([k, v]) => [`--${k}`, v])) as CSSProperties;
+  return (
+    <button type="button" className={`${a.themeCard} ${a.groupCard}`} aria-expanded={open} data-worn={worn ? 'true' : undefined} onClick={onOpen}>
+      <span className={a.themePreview} style={vars} aria-hidden="true">
+        <span className={a.miniCard}>
+          <span className={a.miniTitle}>Aa</span>
+          <span className={a.miniLine} />
+          <span className={`${a.miniLine} ${a.miniShort}`} />
+        </span>
+        <span className={a.groupDots}>
+          {themes.map((t) => (
+            <i key={t.id} style={{ background: t.tokens['rarity-top'] ?? t.tokens['bg-card'] ?? 'var(--vent)' }} />
+          ))}
+        </span>
+      </span>
+      <span className={a.themeMeta}>
+        <span className={a.rowText}>
+          <span className={a.rowTitle}>{name}</span>
+          <span className={a.rowSub}>
+            {themes.length} looks{worn ? ` · wearing ${worn.variant ?? worn.name}` : ''}
+          </span>
+        </span>
+      </span>
+    </button>
+  );
+}
+
+/**
+ * Owner-only themes (T47): shown only after they have loaded from the private store, which
+ * happens only for an owner account. For anyone else this section doesn't exist. Looks of one
+ * set show as one tile (T74) that opens its looks: a row under the grid on PC, a sheet on a phone.
+ */
 function OwnerThemes({ choice }: { choice: unknown }) {
   const owner = useOwnerThemes();
+  const phone = useIsPhone();
+  const [open, setOpen] = useState<string | null>(null);
   if (owner.status === 'none') return null;
+  const entries = owner.status === 'ready' ? groupOwnerThemes(owner.themes) : [];
+  const group = entries.find((e) => e.kind === 'group' && e.name === open);
+  const looks = group && group.kind === 'group' && (
+    <div className={a.variantRow} role="radiogroup" aria-label={`${group.name} looks`}>
+      {group.themes.map((t) => (
+        <OwnerThemeCard key={t.id} t={t} label={t.variant ?? t.name} checked={choice === `${OWNER_PREFIX}${t.id}`} />
+      ))}
+    </div>
+  );
   return (
     <section aria-label="Only for you" className={a.ownerThemes}>
       <h3 className={a.cardTitle}>Only for you</h3>
@@ -416,12 +476,22 @@ function OwnerThemes({ choice }: { choice: unknown }) {
         (owner.themes.length === 0 ? (
           <p className={a.small}>No themes of your own yet. Add them in Owner console → Owner themes.</p>
         ) : (
-          <div className={a.themeGrid} role="radiogroup" aria-label="Your own themes">
-            {owner.themes.map((t) => (
-              <OwnerThemeCard key={t.id} t={t} checked={choice === `${OWNER_PREFIX}${t.id}`} />
-            ))}
+          <div className={a.themeGrid} role="group" aria-label="Your own themes">
+            {entries.map((e) =>
+              e.kind === 'one' ? (
+                <OwnerThemeCard key={e.theme.id} t={e.theme} checked={choice === `${OWNER_PREFIX}${e.theme.id}`} />
+              ) : (
+                <OwnerGroupCard key={e.name} name={e.name} themes={e.themes} choice={choice} open={open === e.name} onOpen={() => setOpen(open === e.name ? null : e.name)} />
+              ),
+            )}
           </div>
         ))}
+      {looks && !phone && looks}
+      {group && phone && (
+        <BottomSheet open title={group.kind === 'group' ? group.name : ''} subtitle="Pick a look" onClose={() => setOpen(null)} closeButton>
+          {looks}
+        </BottomSheet>
+      )}
     </section>
   );
 }

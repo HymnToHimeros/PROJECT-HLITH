@@ -35,6 +35,9 @@ export interface OwnerThemeEntry {
   ornaments: Ornament[];
   /** How it dresses cards, sidebar, header, headings and controls, and its pack of pictures (skin.ts). */
   look?: Skin;
+  /** Themes with the same group show as one tile in the picker that opens its looks; `variant` names this look. */
+  group?: string;
+  variant?: string;
 }
 
 export interface OwnerTheme extends OwnerThemeEntry {
@@ -132,8 +135,11 @@ export function readOwnerTheme(raw: unknown): { theme: OwnerThemeEntry } | { pro
   const skin = readSkin(r.look);
   const pack = skin ? file((r.look as Record<string, unknown>).pack, 'look.pack') : undefined;
   const look: Skin | undefined = skin ? { ...skin, ...(pack ? { pack } : {}) } : undefined;
+  const label = (v: unknown) => (typeof v === 'string' && v.trim() ? v.trim().slice(0, 40) : undefined);
+  const group = label(r.group);
+  const variant = label(r.variant);
   if (problems.length) return { problems };
-  return { theme: { id, name, mood, tone, tokens, ornaments, ...(picture ? { picture } : {}), ...(look ? { look } : {}) } };
+  return { theme: { id, name, mood, tone, tokens, ornaments, ...(picture ? { picture } : {}), ...(look ? { look } : {}), ...(group ? { group } : {}), ...(variant ? { variant } : {}) } };
 }
 
 /** The whole manifest: `{ "themes": [ … ] }`. Good themes are kept, bad ones listed with why. */
@@ -142,7 +148,7 @@ export function readOwnerManifest(raw: unknown): { themes: OwnerThemeEntry[]; pr
   if (!list) return { themes: [], problems: ['manifest.json must look like { "themes": [ … ] }.'] };
   const themes: OwnerThemeEntry[] = [];
   const problems: string[] = [];
-  for (const entry of list.slice(0, 24)) {
+  for (const entry of list.slice(0, 80)) {
     const out = readOwnerTheme(entry);
     if ('theme' in out) {
       if (themes.some((t) => t.id === out.theme.id)) problems.push(`${out.theme.id}: listed twice; the first one is used.`);
