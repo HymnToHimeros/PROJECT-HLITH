@@ -103,6 +103,19 @@ describe('Pulls screen', () => {
     expect(screen.getAllByText(/Chance by then · official rates/).length).toBeGreaterThan(0);
   });
 
+  it('Planner lays banners out like Banners: Now, Next and Later columns, each card led by who the banner is for (T70)', async () => {
+    await show('planner');
+    const cols = ['Now', 'Next', 'Later'].map((name) => screen.getByRole('group', { name }));
+    expect(cols).toHaveLength(3);
+    // The featured character's name sits on the banner picture, not only the banner title.
+    expect(within(cols[0] as HTMLElement).getAllByText('Newest Star').length).toBeGreaterThan(0);
+    // The same column notes as Banners.
+    expect(within(cols[0] as HTMLElement).getByText(/^Live · .* until the first one ends$/)).toBeInTheDocument();
+    expect(within(cols[2] as HTMLElement).getAllByText(/ · opens in |^Nothing further listed$/).length).toBeGreaterThan(0);
+    // On a phone the columns become tabs.
+    expect(screen.getByRole('tablist', { name: /phases/ })).toBeInTheDocument();
+  });
+
   it('History shows the example pity and a Luck report card', async () => {
     await show('history');
     expect(screen.getByLabelText('Luck report')).toBeInTheDocument();

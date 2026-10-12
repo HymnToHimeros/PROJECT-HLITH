@@ -5,7 +5,8 @@ import { EmptyState, ExampleNotice, ExampleTag, GameTag, NoData, Timer, Unverifi
 import { cx } from '../../core/ui/cx';
 import { GameHeading, Strip } from '../pulls/shared';
 import b from './banners.module.css';
-import { rerunLabel, rosterFit, splitBanners } from './fit';
+import { phaseOfBanner, rerunLabel, rosterFit, splitBanners, type Phase } from './fit';
+import { PHASES, PhaseBoard } from './PhaseBoard';
 import { useBannersData, type BannersData } from './useBannersData';
 import { EditListButton } from '../edit-mode/EditMode';
 import { setRosterEntry } from '../../core/data/userData';
@@ -38,12 +39,6 @@ interface Props {
 
 const DAY = 86_400_000;
 
-type Phase = 'now' | 'next' | 'later';
-const PHASES: { id: Phase; label: string }[] = [
-  { id: 'now', label: 'Now' },
-  { id: 'next', label: 'Next' },
-  { id: 'later', label: 'Later' },
-];
 
 interface Group {
   lead: Banner;
@@ -60,7 +55,6 @@ interface Group {
 export function GameBanners({ game, now, many, hideLeaks, filter, open, onLane }: Props) {
   const data = useBannersData(game, now);
   const { openSheet, sheet } = useAddOwnBanner(game, data.examples);
-  const [tab, setTab] = useState<Phase>('now');
   // Customise → Events, banners and calendar: big cards (default) or a compact list.
   const compact = usePrefs().bannerView === 'list';
   const { live, upcoming, hiddenLeaks } = splitBanners(data.banners.list, now, hideLeaks);
@@ -68,7 +62,7 @@ export function GameBanners({ game, now, many, hideLeaks, filter, open, onLane }
   const limitedLive = live.filter((x) => !x.permanent);
   // Next = the next phase (everything opening within two days of the first upcoming start); Later = the rest.
   const firstStart = upcoming.length ? Math.min(...upcoming.map((x) => Date.parse(x.start))) : 0;
-  const phaseOf = (x: Banner): Phase => (Date.parse(x.start) <= now ? 'now' : Date.parse(x.start) <= firstStart + 2 * DAY ? 'next' : 'later');
+  const phaseOf = phaseOfBanner(upcoming, now);
   const laterStarts = upcoming.filter((x) => phaseOf(x) === 'later').map((x) => Date.parse(x.start));
   const lane: Lane = {
     game,
@@ -98,7 +92,6 @@ export function GameBanners({ game, now, many, hideLeaks, filter, open, onLane }
   ) as Record<Phase, Group[]>;
   const nothing = live.length === 0 && upcoming.length === 0 && hiddenLeaks === 0;
   const unknownRerun = [...live, ...upcoming].filter((x) => rerunLabel(game, x, data.characters) === null && !isWeapon(x)).length;
-  const counts = Object.fromEntries(PHASES.map(({ id }) => [id, columns[id].length])) as Record<Phase, number>;
   // Owner: every banner looks like the big Now card; the arrow folds one down to a compact tile.
   const tile = (x: Banner, paired = false) =>
     compact ? <CompactBanner key={x.id} game={game} banner={x} data={data} open={open} now={now} paired={paired} /> : <BannerTile key={x.id} game={game} banner={x} data={data} open={open} now={now} paired={paired} />;
@@ -130,51 +123,21 @@ export function GameBanners({ game, now, many, hideLeaks, filter, open, onLane }
           )}
           <div className={cx(b.boardWrap, permanent.length > 0 && b.withRail)}>
             <div className={b.boardMain}>
-              <div className={b.tabs} role="tablist" aria-label={`${game.short} phases`}>
-                {PHASES.map(({ id, label }) => (
-                  <button key={id} type="button" role="tab" aria-selected={tab === id} className={b.tabBtn} onClick={() => setTab(id)}>
-                    {label} <span className={b.tabCount}>{counts[id]}</span>
-                  </button>
-                ))}
-              </div>
-              <div className={cx(b.board, many && b.boardLabelled)}>
-                {many && (
-                  <div className={b.gameLabel} aria-hidden="true">
-                    <span>{game.name}</span>
-                  </div>
-                )}
-                {PHASES.map(({ id, label }) => {
-                  const list = columns[id];
-                  const first = list[0]?.lead;
-                  const note =
-                    id === 'now'
-                      ? list.length
-                        ? first && !first.permanent
-                          ? `Live · ${countdown(Date.parse(first.end) - now)} until the first one ends`
-                          : 'Live now'
-                        : 'Nothing limited is live'
-                      : first
-                        ? `${formatRange(Date.parse(first.start), Date.parse(first.end))} · opens in ${countdown(Date.parse(first.start) - now)}`
-                        : id === 'next'
-                          ? 'Not announced yet'
-                          : 'Nothing further listed';
-                  return (
-                    <div key={id} className={cx(b.column, id === 'now' && b.columnNow)} data-active={tab === id}>
-                      <div className={b.columnHead}>
-                        <span className={b.columnLabel}>{label}</span>
-                        <span className={b.columnNote}>{note}</span>
-                      </div>
-                      {list.map((g) => (
-                        <div key={g.lead.id} className={cx(b.group, g.weapons.length > 0 && b.pair)}>
-                          {tile(g.lead)}
-                          {g.weapons.map((w) => tile(w, true))}
-                        </div>
-                      ))}
-                      {list.length === 0 && <div className={b.emptyCell} aria-hidden="true" />}
+              <PhaseBoard
+                game={game}
+                now={now}
+                many={many}
+                column={(id) => ({
+                  first: columns[id][0]?.lead,
+                  count: columns[id].length,
+                  children: columns[id].map((g) => (
+                    <div key={g.lead.id} className={cx(b.group, g.weapons.length > 0 && b.pair)}>
+                      {tile(g.lead)}
+                      {g.weapons.map((w) => tile(w, true))}
                     </div>
-                  );
+                  )),
                 })}
-              </div>
+              />
               {shown.length === 0 && (
                 <p className={b.muted}>
                   {filter === 'leaks' && hideLeaks
@@ -199,12 +162,6 @@ export function GameBanners({ game, now, many, hideLeaks, filter, open, onLane }
     </section>
   );
 }
-
-const countdown = (ms: number) => {
-  const d = Math.floor(ms / DAY);
-  const h = Math.floor((ms % DAY) / 3_600_000);
-  return d > 0 ? `${d}d ${h}h` : `${h}h`;
-};
 
 /** Character banners in order, each with the weapon banners that run beside it; unpaired weapon banners stand alone. */
 function groupBanners(list: Banner[], isWeapon: (x: Banner) => boolean, data: BannersData, now: number): Group[] {
