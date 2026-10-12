@@ -6,7 +6,7 @@ import { clearOwnerThemes, loadOwnerThemes } from '../../core/theme/ownerThemes'
 import { ThemePage } from '../account/sections';
 import { getPrefs, updatePrefs } from '../../core/data/prefs';
 import { setTheme } from '../../core/theme/theme';
-import { mergeDrafts, OwnerThemesAdmin, retiredIds, setThemeIds, sha256, withoutThemes, withThemesBack } from './OwnerThemesAdmin';
+import { mergeDrafts, OwnerThemesAdmin, readDraftsFile, retiredIds, setThemeIds, sha256, withoutThemes, withThemesBack } from './OwnerThemesAdmin';
 
 const theme = { id: 'night', name: 'Night', mood: 'A dark room', tone: 'dark', tokens: { 'bg-app': '#120d33', 'bg-card': '#1a1440', 'ink-5': '#9a92c8' }, ornaments: [] };
 
@@ -174,6 +174,36 @@ describe('owner-only themes in the app (T47)', () => {
     expect(store.files.has('sets/mine/look-2.json')).toBe(false);
     // A retired draft (one of the first set themes) never comes back, even while its row exists.
     expect(store.files.has('sets/retired-one/look-2.json')).toBe(false);
+  });
+
+  it('“Add from a file”: the same as the button, from a set-themes file; a bad file adds nothing (T74)', async () => {
+    const tok = { 'bg-app': '#0a0b12', 'bg-card': '#10121c', 'ink-5': '#9aa3b8' };
+    const draft = (id: string) => ({ id, name: `File ${id}`, tone: 'dark', mood: '', tokens: tok, ornaments: [], version: 2, look: { card: 'notched' }, pack: { scene: [] } });
+    const store = fakeStore({ 'manifest.json': JSON.stringify({ themes: [{ id: 'mine', name: 'Mine', tone: 'dark', tokens: tok, ornaments: [] }] }) });
+    await act(() => loadOwnerThemes(store));
+    const drafts = vi.fn(async () => []);
+    render(<OwnerThemesAdmin store={store} early={new Set([await sha256('retired-one')])} drafts={drafts} />);
+    const input = screen.getByLabelText('Add from a file') as HTMLInputElement;
+    const file = (text: string) => new File([text], 'set-themes.json', { type: 'application/json' });
+
+    fireEvent.change(input, { target: { files: [file('not json')] } });
+    await screen.findByText('That file isn’t a set-themes file (it isn’t JSON).');
+    fireEvent.change(input, { target: { files: [file(JSON.stringify({ themes: [draft('a'), { name: 'no id' }] }))] } });
+    await screen.findByText('Some themes in that file have no id; nothing was added.');
+    expect((await manifest(store)).themes.map((t: { id: string }) => t.id)).toEqual(['mine']);
+
+    fireEvent.change(input, { target: { files: [file(JSON.stringify({ themes: [draft('a'), draft('mine'), draft('retired-one')] }))] } });
+    await screen.findByText(/Added 1: File a\./);
+    const m = await manifest(store);
+    expect(m.themes.map((t: { id: string }) => t.id)).toEqual(['mine', 'a']);
+    expect(m.themes[0]).toEqual({ id: 'mine', name: 'Mine', tone: 'dark', tokens: tok, ornaments: [] });
+    expect(m.themes[1]).toMatchObject({ origin: 'set', look: { pack: 'sets/a/look-2.json' } });
+    expect(store.files.has('sets/a/look-2.json')).toBe(true);
+    expect(store.files.has('sets/retired-one/look-2.json')).toBe(false);
+    expect(drafts).not.toHaveBeenCalled();
+    expect(readDraftsFile([{ id: 'x' }])).toEqual([{ id: 'x' }]);
+    expect(readDraftsFile({ drafts: [{ id: 'y' }] })).toEqual([{ id: 'y' }]);
+    expect(() => readDraftsFile({ nope: 1 })).toThrow('That file has no list of themes in it.');
   });
 
   it('only retired drafts waiting: nothing is added', async () => {
