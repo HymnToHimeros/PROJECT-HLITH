@@ -13,4 +13,6 @@ Sheets only; nothing is built into the app yet.
 - Round 3 (badges only): `docs/owner-reports/2026-10-11/t64-options-round3/`. Badge 0 (today's) plus 8 new subjects, each with its own shape, colours and style: Draupnir, Geri & Freki, Gungnir, Sól & Máni, Nine Realms, Urnes Serpent, Valhalla's Gate, Gjallarhorn.
 - Owner on round 3: keep ALL badges 0–8 as owner choices; wants new, different frames and name styles.
 - Round 4: `docs/owner-reports/2026-10-11/t64-options-round4/`. Frames 13–20 and name styles 13–20, each a new shape/look and each matched to a round-3 badge (8 full sets: badge N + frame N+12 + name N+12).
+- Owner on round 4: keep all except frame 16 (no window shapes). Final owner items: badges 0–8, frames 1–20 (16 replaced), names 1–20, 8 sets with "Wear full set".
+- Frame 16 replacement options: `docs/owner-reports/2026-10-11/t64-frame16/` (16 A Moon Portrait, 16 B Star Cut, 16 C Sun & Moon Orbit).
 - Next: owner picks → T64 Part B (profile customization).
