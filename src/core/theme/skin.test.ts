@@ -61,6 +61,14 @@ describe('skins (T74)', () => {
     expect(turned(s).br).toContain('translate(40 40) scale(-1 -1)');
   });
 
+  it('a look never narrows or moves the page: no width, max-width or auto margins on the page blocks (T76)', () => {
+    const css = readFileSync(join(__dirname, 'skins.css'), 'utf8').replace(/\/\*[\s\S]*?\*\//g, '');
+    for (const rule of css.matchAll(/([^{}]*\.hlith-main[^{}]*)\{([^{}]*)\}/g)) {
+      const [, selector = '', body = ''] = rule;
+      expect(body, selector.trim()).not.toMatch(/(^|;|\s)(max-)?width\s*:|margin(-left|-right|-inline)?\s*:[^;]*auto/);
+    }
+  });
+
   it('names stay neutral: the skin code never says who it is for', () => {
     for (const f of ['skin.ts', 'skinPack.ts', 'svgClean.ts', 'skins.css']) expect(readFileSync(join(__dirname, f), 'utf8')).not.toMatch(/owner/i);
   });

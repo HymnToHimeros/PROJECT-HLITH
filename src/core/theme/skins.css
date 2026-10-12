@@ -487,13 +487,10 @@
 /* ── Layout feel ── */
 :root[data-skin-layout='airy'] .hlith-main { --s-3: 14px; --s-4: 20px; --s-5: 26px; --s-6: 30px; --s-7: 36px; }
 :root[data-skin-layout='compact'] .hlith-main { --s-3: 10px; --s-4: 12px; --s-5: 15px; --s-6: 18px; --s-7: 22px; }
+/* 'centered' lays out like 'standard' (T76): narrowing every block of the page to 1180px and centring
+   it left a wide empty band beside the sidebar and moved the page header off the content's edge.
+   A look never changes the page's width or position; the value stays valid for themes that use it. */
 @media (min-width: 1100px) {
-  :root[data-skin-layout='centered'] .hlith-main > * {
-    width: 100%;
-    max-width: 1180px;
-    margin-left: auto;
-    margin-right: auto;
-  }
   :root[data-skin-layout='framed'] .hlith-main {
     margin: 10px 12px 10px 0;
     border: 1px solid color-mix(in srgb, var(--rarity-top) 28%, transparent);

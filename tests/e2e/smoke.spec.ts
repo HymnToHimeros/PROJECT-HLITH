@@ -224,3 +224,24 @@ for (const day of ['2026-10-11T12:00:00Z', '2026-10-12T12:00:00Z', '2026-10-14T1
     expect(outside).toEqual([]);
   });
 }
+
+test('wide PC: every look layout keeps the page header and content at the content edge, full width (T76)', async ({ page, isMobile }) => {
+  test.skip(isMobile, 'PC width only');
+  await page.setViewportSize({ width: 1945, height: 1050 });
+  await page.goto('/hsr/today');
+  const main = page.locator('.hlith-main');
+  const head = page.locator('.hlith-head').first();
+  await expect(head).toBeVisible();
+  for (const layout of ['standard', 'airy', 'compact', 'centered', 'framed']) {
+    await page.evaluate((l) => {
+      document.documentElement.dataset.skin = 'test';
+      document.documentElement.dataset.skinLayout = l;
+    }, layout);
+    const m = await main.boundingBox();
+    const h = await head.boundingBox();
+    if (!m || !h) throw new Error('no layout');
+    // The header spans the main area (inside the 1px border 'framed' draws); nothing is pushed right of the sidebar.
+    expect(Math.abs(h.x - m.x), layout).toBeLessThanOrEqual(2);
+    expect(Math.abs(h.width - m.width), layout).toBeLessThanOrEqual(2);
+  }
+});
