@@ -6,8 +6,14 @@
 --   * stats: average pulls per top result and the 50/50 record per game (switch: pull numbers);
 --   * luckiest: the luckiest provable top result from imported history (switch: luckiest pull);
 --   * best_team: one saved team that still exists (switch: showcase);
---   * shelf: up to 3 more badges, only ones the server can see they hold (switch: badges).
+--   * shelf: up to 3 more badges, only ones the server can see they hold (switch: badges);
+--   * earned_title: a title that comes with a badge, only while they hold that badge;
+--   * bio (switch: bio, off unless switched on), fav_game and card_background (a theme's art);
+--   * the typed title and the bio never show with a blocked word (the username list, word by
+--     word: text_blocked()).
 -- pull_numbers() does the counting; only profile_card() uses it (nobody can call it directly).
+-- While an account is silenced, what others see on its profile can't change: the name, bio,
+-- pictures and the card's look and showcase stay as they were (profiles_silence_guard).
 
 -- Pull numbers from one game's imported pulls (same rules as src/tools/account/cardExtras.ts
 -- and the Luck report): average pulls per top result, the 50/50 record (a guaranteed result is
@@ -57,6 +63,32 @@ begin
   return jsonb_build_object('total', jsonb_array_length(p), 'tops', tops, 'avg', case when tops > 0 then round(gap_sum::numeric / tops, 2) end, 'won', won, 'lost', lost, 'luckiest', best);
 end $$;
 revoke execute on function public.pull_numbers(jsonb) from public, anon, authenticated;
+
+-- The username slur list, for free text, word by word (src/core/auth/username.ts textBlocked).
+create or replace function public.text_blocked(p text) returns boolean
+language sql immutable set search_path = public as $$
+  select exists (select 1 from regexp_split_to_table(coalesce(p, ''), '\s+') w where w <> '' and public.username_blocked(w));
+$$;
+revoke execute on function public.text_blocked(text) from public, anon;
+grant execute on function public.text_blocked(text) to authenticated;
+
+-- Silenced: what others see stays as it was. Private parts (pinned characters, hidden cards,
+-- privacy switches) still change.
+create or replace function public.profiles_silence_guard() returns trigger
+language plpgsql security definer set search_path = public as $$
+begin
+  if new.user_id = (select auth.uid()) and public.is_silenced() then
+    new.display_name := old.display_name;
+    new.bio := old.bio;
+    new.avatar_path := old.avatar_path;
+    new.banner_path := old.banner_path;
+    new.showcase := coalesce(new.showcase, '{}'::jsonb) - 'look' - 'featured'
+      || jsonb_strip_nulls(jsonb_build_object('look', old.showcase -> 'look', 'featured', old.showcase -> 'featured'));
+  end if;
+  return new;
+end $$;
+revoke execute on function public.profiles_silence_guard() from public, anon, authenticated;
+create trigger profiles_silence_guard before update on public.profiles for each row execute function public.profiles_silence_guard();
 
 create or replace function public.profile_card(p_user uuid) returns jsonb
 language plpgsql stable security definer set search_path = public as $$
@@ -210,11 +242,15 @@ begin
   os := case when owner and jsonb_typeof(look -> 'owner_style') = 'object' then look -> 'owner_style' end;
 
   return jsonb_build_object(
-    'display_name', left(prof.display_name, 40),
+    'display_name', case when not public.text_blocked(prof.display_name) then left(prof.display_name, 40) end,
     'username', (select username from public.account_identity where user_id = p_user),
     'avatar_path', prof.avatar_path,
     'banner_path', prof.banner_path,
-    'title', left(look ->> 'title', 60),
+    'title', case when not public.text_blocked(look ->> 'title') then left(look ->> 'title', 60) end,
+    'earned_title', case when look ->> 'title_badge' = any (badges) then look ->> 'title_badge' end,
+    'bio', case when (priv -> 'bio') = 'true'::jsonb and not public.text_blocked(prof.bio) then left(prof.bio, 200) end,
+    'fav_game', case when look ->> 'fav_game' ~ '^[a-z0-9-]{1,32}$' then look ->> 'fav_game' end,
+    'card_background', case when look ->> 'card_background' ~ '^[a-z-]{1,32}$' then look ->> 'card_background' end,
     'frame', frame,
     'name_color', look ->> 'name_color',
     'avatar_char', look -> 'avatar_char',

@@ -8,7 +8,9 @@ import type { Character, GameContract, GameId } from '../../core/contract';
 import type { GameUserData } from '../../core/data/userData';
 import type { BadgeState } from './badges';
 import { shownBadge } from './badges';
+import { textBlocked } from '../../core/auth/username';
 import { gameNumbers, luckiestPull } from './cardExtras';
+import { earnedTitle } from './titles';
 import type { CardCharacter, CardFeatured, CardLuckiest, CardStats, ProfileCardProps } from './ProfileCard';
 import type { CharRef, Profile } from './profile';
 
@@ -82,9 +84,18 @@ export function buildCard(input: CardInput): ProfileCardProps {
   const bannerChar = characterOf(characters, profile.bannerChar);
   const stats = pullStats(games, data);
   const isOwner = badges.some((b) => b.def.id === 'owner' && b.earned);
+  const holds = (id: string) => badges.some((b) => b.def.id === id && b.earned);
+  // An earned title only while you hold its badge; a typed one never with a blocked word.
+  const earned = profile.titleBadge && holds(profile.titleBadge) ? earnedTitle(profile.titleBadge) : null;
+  const typed = profile.title && !textBlocked(profile.title) ? profile.title : null;
+  const fav = profile.favGame ? games.find((g) => g.id === profile.favGame) : undefined;
   return {
     name: profile.displayName ?? input.fallbackName,
-    title: profile.title,
+    title: earned ?? typed,
+    titleEarned: earned !== null,
+    bio: profile.privacy.bio && profile.bio && !textBlocked(profile.bio) ? profile.bio : null,
+    favGame: fav ? { short: fav.short, name: fav.name, vent: fav.vent } : null,
+    background: profile.cardBackground,
     avatarUrl: avatarChar?.portrait ?? input.imageUrl(profile.avatar),
     bannerUrl: bannerChar?.art ?? bannerChar?.portrait ?? input.imageUrl(profile.banner),
     bannerFallback: input.bannerFallback,
@@ -98,7 +109,7 @@ export function buildCard(input: CardInput): ProfileCardProps {
     ownerStyle: isOwner ? profile.ownerStyle : null,
     featured: featuredItems(profile, games, data, characters),
     // Only badges you hold go on the shelf.
-    shelf: profile.pinnedShelf.filter((id) => badges.some((b) => b.def.id === id && b.earned)),
+    shelf: profile.pinnedShelf.filter(holds),
     bestTeam: bestTeamItem(profile, games, data, characters),
     luckiest: luckiestItem(games, data, characters),
     stats: stats.length ? stats : null,

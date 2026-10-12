@@ -42,3 +42,19 @@ export const USERNAME_HINT: Record<UsernameStatus, string> = {
   reserved: 'Not allowed: it could pass for HLIÐSKJÁLF or its staff.',
   blocked: 'Not allowed. Pick something friendlier.',
 };
+
+/**
+ * T64: the same slur and swearing list for free text others may see (bio, custom title).
+ * Checked word by word (after the same folding as usernames), so two ordinary words side by
+ * side ("this hit") never make a blocked one. The server checks it the same way
+ * (public.text_blocked, 0018).
+ */
+export function textBlocked(text: string): boolean {
+  return text
+    .split(/\s+/)
+    .filter(Boolean)
+    .some((w) => {
+      const key = usernameKey(w);
+      return BLOCKED.some((b) => key.includes(b));
+    });
+}

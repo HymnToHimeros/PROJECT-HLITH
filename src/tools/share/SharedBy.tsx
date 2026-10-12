@@ -7,6 +7,8 @@ import { defaultBanner } from '../account/Profile';
 import { ProfileCard, type CardFeatured, type ProfileCardProps } from '../account/ProfileCard';
 import { cleanOwnerStyle } from '../account/ownerArt/style';
 import { cleanProfile } from '../account/profile';
+import { earnedTitle } from '../account/titles';
+import { THEMES, type Theme } from '../../core/theme/themes';
 import { AVATAR_BUCKET } from '../account/useProfile';
 import c from '../account-links/connections.module.css';
 
@@ -31,6 +33,10 @@ export interface CardRow {
   stats: { game: string; total: number; tops: number; average_pity?: number | null; won?: number; lost?: number }[] | null;
   /** T64 B2 (0018): badge shelf, best team, luckiest pull; missing on older servers or when not allowed. */
   shelf?: string[] | null;
+  earned_title?: string | null;
+  bio?: string | null;
+  fav_game?: string | null;
+  card_background?: string | null;
   best_team?: { game: string; id: string; name: string; members: string[] } | null;
   luckiest?: { game: string; item_id: string; name: string; pulls: number; time: string } | null;
   featured: ({ kind: 'character'; game: string; id: string } | { kind: 'team'; game: string; id: string; name: string; members: string[] })[];
@@ -94,7 +100,14 @@ export function cardFromRow(row: CardRow, games: GameContract[], characters: Rec
   return {
     name: row.display_name?.trim() || row.username || 'A HLITH user',
     handle: row.username ?? null,
-    title: look.title,
+    title: (row.earned_title && isBadgeId(row.earned_title) && held.includes(row.earned_title) ? earnedTitle(row.earned_title) : null) ?? look.title,
+    titleEarned: Boolean(row.earned_title && isBadgeId(row.earned_title) && held.includes(row.earned_title) && earnedTitle(row.earned_title)),
+    bio: typeof row.bio === 'string' && row.bio.trim() ? row.bio.slice(0, 200) : null,
+    favGame: (() => {
+      const g = games.find((x) => x.id === row.fav_game);
+      return g ? { short: g.short, name: g.name, vent: g.vent } : null;
+    })(),
+    background: THEMES.some((t) => t.id === row.card_background) ? (row.card_background as Theme) : null,
     avatarUrl: avatarChar?.portrait ?? imageUrl(row.avatar_path),
     bannerUrl: bannerChar?.art ?? bannerChar?.portrait ?? imageUrl(row.banner_path),
     bannerFallback: defaultBanner(games),

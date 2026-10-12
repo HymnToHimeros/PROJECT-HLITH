@@ -1,6 +1,8 @@
 import type { CSSProperties, ReactNode } from 'react';
 import { formatNumber } from '../../core/time/format';
 import { formatDate } from '../../core/time/reset';
+import { ThemeMotif } from '../../core/theme/ThemeArt';
+import type { Theme } from '../../core/theme/themes';
 import { GameTag } from '../../core/ui';
 import { BADGE_BY_ID, OWNER_TITLES, type BadgeId, type OwnerTitle } from './badges';
 import { BadgeMark, RAVEN } from './BadgeMark';
@@ -59,6 +61,12 @@ export interface ProfileCardProps {
   /** T64: the owner's badge, frame and name style. Pass it only for the owner's own card. */
   ownerStyle?: OwnerStyle | null | undefined;
   featured: CardFeatured[];
+  /** T64 B2: the title is an earned one (shows a ✔). */
+  titleEarned?: boolean | undefined;
+  /** T64 B2: bio (only when the person allowed it), favourite game, a theme's art behind the card. */
+  bio?: string | null | undefined;
+  favGame?: { short: string; name: string; vent: string } | null | undefined;
+  background?: Theme | null | undefined;
   /** T64 B2: up to 3 more badges on a shelf under the main one. */
   shelf?: BadgeId[] | undefined;
   /** T64 B2: the best team and the luckiest pull, when chosen / known and allowed. */
@@ -94,6 +102,11 @@ export function ProfileCard(props: ProfileCardProps) {
   return (
     <article className={`${c.card} ${compact ? c.compact : ''} ${owner ? c.ownerCard : ''}`} style={style} aria-label={`Profile card: ${name}`}>
       <div className={c.banner} style={{ background: bannerFallback }}>
+        {!bannerUrl && props.background && (
+          <span className={c.bannerArt} data-theme-preview={props.background} aria-hidden="true">
+            <ThemeMotif theme={props.background} className={c.bannerMotif} />
+          </span>
+        )}
         {bannerUrl && <img src={bannerUrl} alt="" className={c.bannerImg} />}
         {owner && <div className={c.skyWash} aria-hidden="true" />}
       </div>
@@ -108,7 +121,22 @@ export function ProfileCard(props: ProfileCardProps) {
             {look?.name ? <OwnerNameArt n={look.name} text={name} /> : name}
           </h2>
           {handle && <p className={c.handle}>@{handle}</p>}
-          {title && <p className={c.title}>{title}</p>}
+          {title && (
+            <p className={c.title}>
+              {title}
+              {props.titleEarned && (
+                <span className={c.earned} title="An earned title: it comes from a badge you hold">
+                  {' '}
+                  ✔
+                </span>
+              )}
+            </p>
+          )}
+          {props.favGame && (
+            <p className={c.fav}>
+              Favourite game <GameTag label={props.favGame.short} vent={props.favGame.vent} />
+            </p>
+          )}
           {note && <p className={c.note}>{note}</p>}
         </div>
         <div className={c.badge}>
@@ -156,6 +184,8 @@ export function ProfileCard(props: ProfileCardProps) {
           ))}
         </ul>
       )}
+
+      {props.bio && <p className={c.bio}>{props.bio}</p>}
 
       {(bestTeam || luckiest) && (
         <div className={c.extras}>

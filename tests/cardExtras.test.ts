@@ -36,7 +36,31 @@ describe('more on the profile card (0018, T64 B2)', () => {
     const before = body(readFileSync(join(DIR, '0017_owner_look.sql'), 'utf8'), 'profile_card');
     const now = body(sql, 'profile_card');
     // Everything 0017 returned is still returned the same way.
-    for (const line of before.split('\n').filter((l) => /^ {4}'[a-z_]+', /.test(l) && !l.includes("'stats'"))) expect(now).toContain(line);
+    // (title and display_name now also pass the slur check, tested below.)
+    const changed = ["'stats'", "'title'", "'display_name'"];
+    for (const line of before.split('\n').filter((l) => /^ {4}'[a-z_]+', /.test(l) && !changed.some((c) => l.includes(c)))) expect(now).toContain(line);
     expect(now).toContain("if exists (select 1 from public.account_restrictions where user_id = p_user and (silenced_until > now() or banned_until > now())) then");
+  });
+});
+
+describe('titles, bio, favourite game and the silenced rule (0018, T64 B2)', () => {
+  const f = body(sql, 'profile_card');
+  it('an earned title shows only while the server sees the badge; blocked words never show', () => {
+    expect(f).toContain("'earned_title', case when look ->> 'title_badge' = any (badges) then look ->> 'title_badge' end,");
+    expect(f).toContain("'title', case when not public.text_blocked(look ->> 'title') then left(look ->> 'title', 60) end,");
+    expect(f).toContain("'display_name', case when not public.text_blocked(prof.display_name) then left(prof.display_name, 40) end,");
+    expect(f).toContain("'bio', case when (priv -> 'bio') = 'true'::jsonb and not public.text_blocked(prof.bio) then left(prof.bio, 200) end,");
+  });
+
+  it('text is checked word by word with the username list', () => {
+    expect(body(sql, 'text_blocked') || sql).toMatch(/regexp_split_to_table\(coalesce\(p, ''\), '\\s\+'\) w where w <> '' and public\.username_blocked\(w\)/);
+  });
+
+  it('while silenced, what others see stays as it was; private parts still change', () => {
+    const g = body(sql, 'profiles_silence_guard');
+    expect(g).toMatch(/if new\.user_id = \(select auth\.uid\(\)\) and public\.is_silenced\(\) then/);
+    for (const col of ['display_name', 'bio', 'avatar_path', 'banner_path']) expect(g).toContain(`new.${col} := old.${col};`);
+    expect(g).toContain("- 'look' - 'featured'");
+    expect(sql).toContain('create trigger profiles_silence_guard before update on public.profiles for each row execute function public.profiles_silence_guard();');
   });
 });

@@ -8,6 +8,8 @@ import { Switch } from './parts';
 import p from './profile.module.css';
 import { FEATURED_MAX, FRAME_LABEL, FRAMES, NAME_COLOR_LABEL, NAME_COLORS, PRIVACY_LABEL, SHELF_MAX, TITLE_MAX, toggleFeatured, type CharRef, type Privacy, type Profile } from './profile';
 import { Framed } from './ProfileCard';
+import { EARNED_TITLE } from './titles';
+import { THEMES } from '../../core/theme/themes';
 
 // The owner's own section, with its drawings, loads only for the owner (T64).
 const OwnerLookEditor = lazy(() => import('./ownerArt/OwnerLookEditor'));
@@ -76,6 +78,49 @@ export function CardEditor({ draft, setDraft, games, characters, badges, isOwner
           </span>
           <input className={p.input} value={draft.title ?? ''} maxLength={TITLE_MAX} placeholder="A line under your name, e.g. “Seer of every world”" onChange={(e) => set({ title: e.target.value })} />
         </label>
+
+        <div className={p.field}>
+          <span className={p.fieldLabel}>Earned title</span>
+          <div className={p.chips} role="radiogroup" aria-label="Earned title">
+            <button type="button" role="radio" aria-checked={draft.titleBadge === null} className={p.pinChip} onClick={() => set({ titleBadge: null })}>
+              My typed title
+            </button>
+            {earned
+              .filter((b) => EARNED_TITLE[b.def.id])
+              .map((b) => (
+                <button key={b.def.id} type="button" role="radio" aria-checked={draft.titleBadge === b.def.id} className={p.pinChip} onClick={() => set({ titleBadge: b.def.id })}>
+                  {EARNED_TITLE[b.def.id]}
+                </button>
+              ))}
+          </div>
+          <span className={p.muted}>Each comes with a badge you hold, and shows with a ✔. If you lose the badge, your typed title shows again.</span>
+        </div>
+
+        <div className={p.twoCol}>
+          <label className={p.field}>
+            <span className={p.fieldLabel}>Favourite game</span>
+            <select className={p.input} value={draft.favGame ?? ''} onChange={(e) => set({ favGame: e.target.value || null })}>
+              <option value="">None</option>
+              {games.map((g) => (
+                <option key={g.id} value={g.id}>
+                  {g.name}
+                </option>
+              ))}
+            </select>
+          </label>
+          <label className={p.field}>
+            <span className={p.fieldLabel}>Card background</span>
+            <select className={p.input} value={draft.cardBackground ?? ''} onChange={(e) => set({ cardBackground: (THEMES.find((t) => t.id === e.target.value)?.id ?? null) })}>
+              <option value="">Game colours</option>
+              {THEMES.map((t) => (
+                <option key={t.id} value={t.id}>
+                  {t.name} theme art
+                </option>
+              ))}
+            </select>
+          </label>
+        </div>
+        <span className={p.muted}>The card background shows behind your card when you have no banner picture.</span>
 
         <div className={p.field}>
           <span className={p.fieldLabel}>Frame</span>
@@ -263,13 +308,13 @@ export function CardEditor({ draft, setDraft, games, characters, badges, isOwner
       <section className={p.editCard} aria-label="Who sees your card">
         <h3 className={p.cardTitle}>Who sees your card</h3>
         <p className={p.muted}>
-          Your profile is yours alone unless you switch this on. Then, when you share a team, whoever opens the link (signed in to HLITH) sees your card with it. Your bio, sign-in methods and
-          backlog never show to others.
+          Your profile is yours alone unless you switch this on. Then, when you share a team, whoever opens the link (signed in to HLITH) sees your card with it. Your sign-in methods and backlog never
+          show to others; your bio only if you switch it on below.
         </p>
         {mode === 'account' ? (
           <>
             <Switch label={PRIVACY_LABEL.card} checked={draft.privacy.card} onChange={(on) => setPrivacy('card', on)} />
-            {(['badges', 'showcase', 'luck', 'stats'] as const).map((k) => (
+            {(['badges', 'showcase', 'luck', 'stats', 'bio'] as const).map((k) => (
               <Switch key={k} label={PRIVACY_LABEL[k]} checked={draft.privacy[k]} disabled={!draft.privacy.card} onChange={(on) => setPrivacy(k, on)} />
             ))}
           </>
