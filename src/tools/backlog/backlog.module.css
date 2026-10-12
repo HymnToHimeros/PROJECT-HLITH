@@ -611,3 +611,100 @@
   justify-content: flex-end;
   gap: var(--s-2);
 }
+
+/* Import from old app (T73). No design yet (Override 5): the backlog's own tokens and parts. */
+.warn {
+  margin: 0;
+  color: var(--ember-soft);
+  font-size: 13px;
+}
+.importHead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-2);
+}
+.importTitle {
+  font-weight: 800;
+  color: var(--ink-1);
+}
+.importPick {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  min-height: 40px;
+  padding: 0 14px;
+  border: 1px solid var(--line-mid);
+  border-radius: var(--r-button);
+  color: var(--ink-1);
+  font-weight: 700;
+  font-size: 13px;
+  cursor: pointer;
+}
+.importPick input {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+.importPick:focus-within {
+  outline: 2px solid var(--glacier);
+  outline-offset: 2px;
+}
+.importBox,
+.importCompact {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-2);
+  padding-top: var(--s-2);
+}
+.importCompact {
+  flex-basis: 100%;
+  padding: var(--s-2);
+  border: 1px solid var(--line-default);
+  border-radius: var(--r-row);
+}
+.importLead {
+  margin: 0;
+  color: var(--ink-1);
+  font-weight: 700;
+}
+.importList {
+  margin: 0;
+  padding-left: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  color: var(--ink-2);
+  font-size: 13px;
+}
+.importCheck {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--ink-1);
+}
+.importNotes {
+  font-size: 12px;
+  color: var(--ink-3);
+}
+.importActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-2);
+}
+.importCode {
+  margin: var(--s-2) 0;
+  padding: var(--s-2);
+  border-radius: var(--r-row);
+  background: var(--bg-inset);
+  color: var(--ink-2);
+  font: 12px/1.5 var(--font-numbers);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.importNotes code {
+  font-family: var(--font-numbers);
+  color: var(--ink-2);
+}

@@ -509,7 +509,9 @@ function Check({ view, ctx }: { view: ItemView; ctx: RowCtx }) {
 function Counter({ view, ctx }: { view: ItemView; ctx: RowCtx }) {
   const { item, done } = view;
   const [draft, setDraft] = useState<string | null>(null);
-  const unit = item.unit ?? '';
+  // "%" sits on the number; a word ("chest", "points") gets a space.
+  const unit = item.unit === '%' ? '%' : item.unit ? ` ${item.unit}` : '';
+  const step = item.step && item.step > 0 ? item.step : 1;
   const save = (n: number) => {
     setBacklogDone(ctx.game.id, item.id, Math.min(item.total, Math.max(0, Math.round(n))));
     setDraft(null);
@@ -528,7 +530,7 @@ function Counter({ view, ctx }: { view: ItemView; ctx: RowCtx }) {
         </span>
         <span className={b.rowEnd}>
           <span className={b.stepper} role="group" aria-label={`Done for ${item.title}`}>
-            <button type="button" className={b.stepBtn} aria-label={`One less done for ${item.title}`} disabled={base <= 0} onClick={() => save(base - 1)}>
+            <button type="button" className={b.stepBtn} aria-label={step > 1 ? `${step} less done for ${item.title}` : `One less done for ${item.title}`} disabled={base <= 0} onClick={() => save(base - step)}>
               −
             </button>
             <input
@@ -552,9 +554,9 @@ function Counter({ view, ctx }: { view: ItemView; ctx: RowCtx }) {
             <span className={b.of}>
               / {formatNumber(item.total)}
               {unit}
-              {item.reward !== null && item.reward > 0 && item.total === item.reward ? ` ${ctx.name(item.currency)}` : ''}
+              {!item.unit && item.reward !== null && item.reward > 0 && item.total === item.reward ? ` ${ctx.name(item.currency)}` : ''}
             </span>
-            <button type="button" className={b.stepBtn} aria-label={`One more done for ${item.title}`} disabled={base >= item.total} onClick={() => save(base + 1)}>
+            <button type="button" className={b.stepBtn} aria-label={step > 1 ? `${step} more done for ${item.title}` : `One more done for ${item.title}`} disabled={base >= item.total} onClick={() => save(base + step)}>
               +
             </button>
           </span>
