@@ -14,6 +14,11 @@ describe('reading the history link out of the game’s cache file', () => {
     expect(findHistoryLink(text)).toBeNull();
   });
 
+  it('a link ends at a quote, space, angle bracket or control byte, and keeps every other printable character', () => {
+    const odd = `${link('k')}&x=!#$%()*+,-./:;=?@[\\]^_\`{|}~`;
+    for (const end of ['"', "'", ' ', '<', '>', '\u007f', '\u0000', '\n', 'é']) expect(findHistoryLink(`1/0/${odd}${end}tail`)).toBe(odd);
+  });
+
   it('returns null when there is no link at all', () => {
     expect(findHistoryLink('nothing here')).toBeNull();
   });

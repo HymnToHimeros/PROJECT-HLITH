@@ -46,6 +46,20 @@ describe('Assistant proposals: approve and undo through your data', () => {
     expect(call('set_event_state', { event_id: 'nope', state: 'done', login_days_claimed: null }).problem).toMatch(/Unknown event/);
     expect(call('set_backlog_done', { item_id: 'bl1', done: 11 }).problem).toMatch(/between 0 and 10/);
     expect(call('log_bank_balance', { currency: 'gold', kind: 'have', amount: 1, note: '' }).problem).toMatch(/Unknown currency/);
+    // The backlog tools aren't strict (T72), so Claude may send odd values: always a "can't use this" card, never a crash.
+    for (const [tool, input] of [
+      ['add_backlog_item', {}],
+      ['add_backlog_item', { title: 7, category: null, total: '5', reward: -1, note: {} }],
+      ['add_backlog_item', { title: 'Chests', category: 'Side Quests!!', total: 3, reward: null, note: '' }],
+      ['add_backlog_item', { title: 'Chests', category: 'side-quests', total: 2.5, reward: null, note: '' }],
+      ['edit_backlog_item', { item_id: 42, title: null, total: null }],
+      ['edit_backlog_item', { item_id: 'bl1', title: '', total: null }],
+      ['edit_backlog_item', { item_id: 'bl1', title: null, total: -3 }],
+      ['edit_backlog_item', { item_id: 'bl1' }],
+      ['hide_backlog_item', { item_id: ['bl1'] }],
+      ['hide_backlog_item', {}],
+    ] as const)
+      expect(call(tool, input as Record<string, unknown>).problem, `${tool} ${JSON.stringify(input)}`).toEqual(expect.any(String));
     // Strict tool schemas can't carry `minimum`, so negative numbers are refused here, as an error card.
     expect(call('log_bank_balance', { currency: 'gem', kind: 'have', amount: -5, note: '' }).problem).toMatch(/amount/);
     expect(call('set_backlog_done', { item_id: 'bl1', done: -1 }).problem).toMatch(/between 0 and 10/);
@@ -125,5 +139,46 @@ describe('Assistant proposals: approve and undo through your data', () => {
     undoProposal('aa', plan.id);
     expect(gameData('aa').plans).toHaveLength(2);
     expect(gameData('aa').plans[0]?.status).toBe('undone');
+  });
+
+  it('adds your own backlog item on Approve, like Edit mode; Undo hides it (nothing deleted)', () => {
+    const p = call('add_backlog_item', { title: 'Treasure hunt', category: 'Side Quests', total: 12, reward: null, note: 'From the 3.2 map' }, 'toolu_01AbC');
+    expect(p.problem).toBeNull();
+    expect(p.title).toBe('Add “Treasure hunt” to Backlog');
+    expect(gameData('aa').ownItems.backlog).toEqual({});
+    expect(applyProposal(p, new Date('2026-10-12T00:00:00Z'))).toEqual({ ok: true });
+    const entry = gameData('aa').ownItems.backlog['own-a-toolu_01AbC'];
+    expect(entry).toMatchObject({ mine: true, hidden: false, fields: { title: 'Treasure hunt', category: 'side-quests', total: 12, reward: null, currency: 'gem', note: 'From the 3.2 map' } });
+    expect(undoProposal('aa', 'toolu_01AbC')).toEqual({ ok: true });
+    expect(gameData('aa').ownItems.backlog['own-a-toolu_01AbC']?.hidden).toBe(true);
+  });
+
+  it('checks a new item on the card: name, category and total (strict schemas have no limits)', () => {
+    expect(call('add_backlog_item', { title: '', category: 'story', total: 3, reward: null, note: '' }).problem).toMatch(/name/);
+    expect(call('add_backlog_item', { title: 'X', category: 'bad/cat!', total: 3, reward: null, note: '' }).problem).toMatch(/category/);
+    expect(call('add_backlog_item', { title: 'X', category: 'story', total: 0, reward: null, note: '' }).problem).toMatch(/from 1/);
+    expect(call('add_backlog_item', { title: 'X', category: 'story', total: 2, reward: -1, note: '' }).problem).toMatch(/reward/);
+    expect(call('add_backlog_item', { title: 'side quests', category: 'story', total: 2, reward: 0, note: '' }).detail).toMatch(/already have an item with this name/);
+  });
+
+  it('renames or re-totals an item, keeps progress within the new total, and Undo puts it all back', () => {
+    setBacklogDone('aa', 'bl1', 8);
+    const p = call('edit_backlog_item', { item_id: 'bl1', title: 'All side quests', total: 6 });
+    expect(p.detail).toBe('Name: “Side quests” → “All side quests” · Total: 10 → 6 · progress 8 becomes 6');
+    expect(applyProposal(p)).toEqual({ ok: true });
+    expect(gameData('aa').ownItems.backlog.bl1).toMatchObject({ mine: false, fields: { title: 'All side quests', total: 6 } });
+    expect(gameData('aa').backlog.bl1).toBe(6);
+    expect(undoProposal('aa', p.id)).toEqual({ ok: true });
+    expect(gameData('aa').ownItems.backlog.bl1?.fields).toEqual({});
+    expect(gameData('aa').backlog.bl1).toBe(8);
+    expect(call('edit_backlog_item', { item_id: 'bl1', title: null, total: null }).problem).toMatch(/Nothing would change/);
+  });
+
+  it('hides an item on Approve and shows it again on Undo', () => {
+    const p = call('hide_backlog_item', { item_id: 'bl1' });
+    expect(applyProposal(p)).toEqual({ ok: true });
+    expect(gameData('aa').ownItems.backlog.bl1?.hidden).toBe(true);
+    expect(undoProposal('aa', p.id)).toEqual({ ok: true });
+    expect(gameData('aa').ownItems.backlog.bl1?.hidden).toBe(false);
   });
 });

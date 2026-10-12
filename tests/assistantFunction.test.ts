@@ -41,7 +41,7 @@ describe('assistant server function', () => {
     expect(JSON.stringify(buildParams(rest))).not.toContain(KEY);
   });
 
-  it('builds the request: adaptive thinking, auto tool choice, caching, the user data, strict action tools', () => {
+  it('builds the request: adaptive thinking, auto tool choice, caching, the user data, action tools (strict except the backlog ones, T72)', () => {
     const p = buildParams(ok(body()));
     expect(p.thinking).toEqual({ type: 'adaptive' });
     expect(p.tool_choice).toEqual({ type: 'auto' });
@@ -51,7 +51,7 @@ describe('assistant server function', () => {
     expect(p.fallbacks).toBe('default');
     expect(p.betas).toEqual(['server-side-fallback-2026-07-01']);
     for (const t of ACTION_TOOLS) {
-      expect(t.strict).toBe(true);
+      expect(t.strict).toBe(t.name.endsWith('_backlog_item') ? undefined : true);
       expect(t.input_schema.additionalProperties).toBe(false);
       expect(t.input_schema.required).toEqual(Object.keys(t.input_schema.properties as object));
     }
@@ -90,5 +90,29 @@ describe('assistant server function', () => {
       expect(e.status).toBeGreaterThanOrEqual(400);
     }
     expect(errorText(401).error).toMatch(/did not accept this API key/);
+  });
+
+  it('accepts attached files as documents (text or a PDF), at most 5 per message, and nothing that points elsewhere (T71)', () => {
+    const doc = (source: Record<string, unknown>) => ({ type: 'document', title: 'notes.md', source });
+    const text = doc({ type: 'text', media_type: 'text/plain', data: '# Todo' });
+    const pdf = doc({ type: 'base64', media_type: 'application/pdf', data: 'JVBERi0xLjc=' });
+    expect(ok(body({ messages: [{ role: 'user', content: [text, pdf, { type: 'text', text: 'Read these' }] }] })).messages).toHaveLength(1);
+    const many = Array.from({ length: 6 }, () => text);
+    expect(checkRequest(body({ messages: [{ role: 'user', content: [...many, { type: 'text', text: 'x' }] }] }), 10)).toEqual({ ok: false, error: 'Attach up to 5 files per message.' });
+    for (const bad of [
+      doc({ type: 'url', url: 'https://example.com/a.pdf' }),
+      doc({ type: 'base64', media_type: 'image/png', data: 'AAAA' }),
+      doc({ type: 'text', media_type: 'text/html', data: '<b>x</b>' }),
+      doc({ type: 'text', media_type: 'text/plain', data: 'x'.repeat(600_001) }),
+    ])
+      expect(checkRequest(body({ messages: [{ role: 'user', content: [bad, { type: 'text', text: 'x' }] }] }), 10)).toMatchObject({ ok: false });
+  });
+
+  it('the Assistant can propose adding, renaming and hiding backlog items, and knows it can read files (T71)', () => {
+    const names = ACTION_TOOLS.map((t) => t.name);
+    for (const n of ['add_backlog_item', 'edit_backlog_item', 'hide_backlog_item']) expect(names).toContain(n);
+    const system = buildParams({ model: 'claude-opus-5-5', messages: [{ role: 'user', content: 'hi' }], context: '', webSearch: false }).system as { text: string }[];
+    expect(system[0]?.text).toMatch(/attached files: \.json, \.md, \.txt, \.csv or \.pdf/);
+    expect(system[0]?.text).toMatch(/add_backlog_item/);
   });
 });

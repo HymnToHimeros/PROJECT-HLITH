@@ -63,6 +63,16 @@ describe('the chat', () => {
     expect(items[1]?.cost?.usd).toBeCloseTo((1000 * 2 + 100 * 10) / 1e6);
   });
 
+  it('attached files go to Claude as documents titled with their names; the chat keeps only names and sizes (T71)', async () => {
+    const f = fake([{ content: [{ type: 'text', text: 'Read it.', citations: null }], stop_reason: 'end_turn', model: 'claude-sonnet-5-5', calls: [{ model: 'claude-sonnet-5-5', usage }] }]);
+    await send({ ...base(f.transport), text: '', files: [{ name: 'todo.md', kind: 'text', data: '- chests', size: 8 }] });
+    const content = f.sent[0]?.messages[0]?.content as { type: string; title?: string; source?: unknown; text?: string }[];
+    expect(content[0]).toEqual({ type: 'document', title: 'todo.md', source: { type: 'text', media_type: 'text/plain', data: '- chests' } });
+    expect(content[1]).toEqual({ type: 'text', text: 'Here is a file.' });
+    expect(getChat().items[0]?.files).toEqual([{ name: 'todo.md', kind: 'text', size: 8 }]);
+    expect(JSON.stringify(getChat().items)).not.toContain('- chests');
+  });
+
   it('proposals wait for you; your decision reaches the model as a tool result; history is append-only', async () => {
     const f = fake([
       {
