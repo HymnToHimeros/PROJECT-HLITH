@@ -120,7 +120,8 @@ export function ProfileSection({ games, account, isOwner = false, open, goSectio
   const gate = useGate();
   // T67: rewards you hold (accounts only), and a claim link you opened.
   const rewards = useMyRewards(state.mode === 'account');
-  const [claim, setClaim] = useState(() => pendingClaim());
+  // Read once: the box stays after claiming, to show what you got (the code itself is forgotten).
+  const [claim] = useState(() => pendingClaim());
 
   const cards = useMemo(() => {
     void all; // re-read when your data changes
@@ -198,15 +199,12 @@ export function ProfileSection({ games, account, isOwner = false, open, goSectio
 
       {claim && (
         <section className={p.editCard} aria-label="Claim a reward">
-          <h3 className={p.cardTitle}>A reward is waiting</h3>
+          <h3 className={p.cardTitle}>Claim a reward</h3>
           {account ? (
             <ClaimBox
               api={serverRewards}
               initial={claim}
-              onClaimed={() => {
-                rewards.reload();
-                setClaim(null);
-              }}
+              onClaimed={rewards.reload}
             />
           ) : (
             <p className={p.muted}>Sign in to claim it: rewards are given to accounts. The code stays on this device until then.</p>
