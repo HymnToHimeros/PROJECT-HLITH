@@ -28,6 +28,7 @@ doing it said `LIVE`. Newest jobs at the bottom; live jobs move to Done.
 | T65 | Owner makes TikTok + Discord server; then add links (About, footer, Community page) | owner | waiting on owner | |
 | T66 | Main red: calendar on PC has sideways scroll (33 px, date-dependent: last week label past the edge); 3 e2e fail | ERROR-FIX | sent | Fix: .scroller overflow-x: clip (PC block, calendar.module.css). FRAME ports the same line into #130. |
 | T67 | Owner panel "Rewards": grant exclusive badges/frames/name styles for events (to users or via claim link/code, expiry, revoke, logged); owner items never grantable; server-enforced ownership (owner, 2026-10-12) | FRAME | sent | After T64 variants. Screenshots before merge. |
+| T68 | CodeQL: 24 High alerts on main: #22 HoYoLAB login stored in clear in localStorage (hoyolab.ts:79); ~23 incomplete HTML sanitization (app + import scripts). Not Copilot Autofix: ERROR-FIX fixes + tests | ERROR-FIX | sent | Migrate stored logins without losing links; one shared sanitize helper. |
 
 ## Done
 | # | Job | Who | Live on |
