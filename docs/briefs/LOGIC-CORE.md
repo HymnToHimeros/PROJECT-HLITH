@@ -7,8 +7,8 @@ together, how good a team or a build is, and what a character needs. You fill
 the slots FRAME left; you do not redesign screens.
 
 ## The one rule above all: honest, explainable logic
-- Every fact comes from a named source (game text, nanoka.cc used with its
-  owner's permission, official pages). A value no source gives is
+- Every fact comes from a named source (game text, community data sites
+  such as nanoka.cc, official pages). A value no source gives is
   "No data yet", never a guess.
 - Every score must be **explainable on screen**: a user who taps a score must
   see *why* in plain words ("+12: Ellen's freeze triggers Lycaon's ice

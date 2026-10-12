@@ -110,7 +110,7 @@ Older progress entries, moved out of `PROGRESS.md` to keep it short. Newest on t
   this device (`src/core/data/userData.ts`) and never removed. Screens load
   only when opened (registered in `src/main.tsx`), so the skeleton stays
   separate from the modules.
-- 2026-10-09 · **Game data from nanoka.cc** (owner's permission). `npm run
+- 2026-10-09 · **Game data from nanoka.cc** (a community data site). `npm run
   data:nanoka` fills `src/games/{hsr,zzz}/data/characters.json` from
   static.nanoka.cc: 99 HSR characters (game data 4.6.51, incl. the new
   **Elation** path) and 62 ZZZ agents (3.3.4, incl. the **Armorer** specialty and

@@ -1,6 +1,6 @@
 /**
- * Fills HSR kit text from nanoka.cc's public data files (used with the site
- * owner's permission). Run: npm run data:hsr-kits
+ * Fills HSR kit text from nanoka.cc's public data files (a community data
+ * site). Run: npm run data:hsr-kits
  *
  * Kit text is added group by group (GROUPS below), never all characters at once.
  * Each kit holds: Basic ATK, Skill, Ultimate, Talent, Technique (and any extra

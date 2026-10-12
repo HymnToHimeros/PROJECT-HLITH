@@ -1,0 +1,19 @@
+{
+  "id": "/",
+  "name": "HLIÐSKJÁLF",
+  "short_name": "HLITH",
+  "description": "PROJECT-HLITH: your command hub for Honkai: Star Rail and Zenless Zone Zero. Pulls, roster, teams, dailies, events and banners.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#08090b",
+  "theme_color": "#08090b",
+  "categories": ["games", "utilities"],
+  "icons": [
+    { "src": "/icons/hagalaz-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/icons/hagalaz-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/icons/hagalaz-maskable-192.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable" },
+    { "src": "/icons/hagalaz-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

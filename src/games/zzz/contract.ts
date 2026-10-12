@@ -183,7 +183,7 @@ export const zzz: GameContract = {
     materialsNote: 'From the game data (nanoka.cc): ascension, every skill and the Core Skill to max. Agent EXP is counted as Senior Investigator Logs (3,000 EXP each).',
   },
   sources: [
-    { what: 'Agent list (names, rank, specialty, attribute)', source: 'nanoka.cc data files, game data 3.3.4, used with permission', entered: '2026-10-09', verified: false },
+    { what: 'Agent list (names, rank, specialty, attribute)', source: 'nanoka.cc data files (community data site), game data 3.3.4', entered: '2026-10-09', verified: false },
     { what: 'Pull rates, hard pity, 50/50 and 75/25', source: 'official rates shown on the in-game Signal Search details page', entered: '2026-10-09', verified: false },
     { what: 'Rising odds before hard pity (Exclusive Channel)', source: COMMUNITY, entered: '2026-10-09', verified: false },
     { what: 'Bangboo Channel rate', source: 'S-Rank 1% base (gamewith.net/zenless-zone-zero/46129), hard pity 80 (zenless-zone-zero.fandom.com/wiki/Bangboo_Channel)', entered: '2026-10-10', verified: false },
