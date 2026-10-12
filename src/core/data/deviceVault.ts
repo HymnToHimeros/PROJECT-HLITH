@@ -59,6 +59,15 @@ function deviceKey(): Promise<CryptoKey> {
   return keyPromise;
 }
 
+/** Can this browser load (or make) its key right now? False when IndexedDB fails to open. */
+export function vaultReady(): Promise<boolean> {
+  if (!vaultAvailable()) return Promise.resolve(false);
+  return deviceKey().then(
+    () => true,
+    () => false,
+  );
+}
+
 export async function seal(value: unknown): Promise<Sealed> {
   const iv = crypto.getRandomValues(new Uint8Array(12));
   const data = await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, await deviceKey(), new TextEncoder().encode(JSON.stringify(value)));

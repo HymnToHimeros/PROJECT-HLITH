@@ -6,23 +6,21 @@
 
 /** Every <tag> removed, or only the named ones (`<color=#fff>…</color>` with ['color']). */
 export function stripTags(text: string, only?: readonly string[]): string {
-  const tag = only?.length
-    ? new RegExp(String.raw`<\/?(?:${only.join("|")})\b[^<>]*>`, "g")
-    : /<[^<>]*>/g;
+  const tag = only?.length ? new RegExp(String.raw`<\/?(?:${only.join('|')})\b[^<>]*>`, 'g') : /<[^<>]*>/g;
   let before: string;
   do {
     before = text;
-    text = text.replace(tag, "");
+    text = text.replace(tag, '');
   } while (text !== before);
   return text;
 }
 
-/** HTML/wiki comments removed with what they hold; a stray "<!--" or "-->" left over is dropped too. */
+/** HTML/wiki comments removed with what they hold (browsers also end one at "--!>"); a stray "<!--" or "-->" left over is dropped too. */
 export function stripComments(text: string): string {
   let before: string;
   do {
     before = text;
-    text = text.replace(/<!--[\s\S]*?-->/g, "");
+    text = text.replace(/<!--[\s\S]*?--!?>/g, '');
   } while (text !== before);
   return unwrapComments(text);
 }
@@ -32,7 +30,7 @@ export function unwrapComments(text: string): string {
   let before: string;
   do {
     before = text;
-    text = text.replace(/<!--|-->/g, "");
+    text = text.replace(/<!--|--!?>/g, '');
   } while (text !== before);
   return text;
 }

@@ -86,15 +86,26 @@ describe('logins remembered on this device are encrypted', () => {
     expect(deviceAccounts()).toEqual([]);
   });
 
-  it('a list this browser can no longer open is set aside, never deleted', async () => {
+  it('a list encrypted with a key this browser no longer has is left as it is until the next save', async () => {
     saveDeviceAccount({ label: 'Main', login: { ltuid_v2: '111', ltoken_v2: TOKEN }, games: [] });
     await deviceAccountsSaved();
     const blob = localStorage.getItem(SEALED);
     reload();
     setVaultKeyForTests(await newKey()); // the browser's key was cleared
     await loadDeviceAccounts();
+    await deviceAccountsSaved();
     expect(deviceAccounts()).toEqual([]);
-    expect(localStorage.getItem('hlith.secret.hoyolab.sealed.unreadable')).toBe(blob);
+    expect(localStorage.getItem(SEALED)).toBe(blob);
+  });
+
+  it('Forget never rewrites a plain copy: it is moved into the encrypted list, then removed whole', async () => {
+    localStorage.setItem('hlith.secret.hoyolab', JSON.stringify({ aa: { login: { ltuid_v2: '1', ltoken_v2: TOKEN }, savedAt: 'x' }, bb: { login: { ltuid_v2: '2', ltoken_v2: TOKEN }, savedAt: 'x' } }));
+    forgetDeviceAccount('v1:1');
+    await deviceAccountsSaved();
+    expect(localStorage.getItem('hlith.secret.hoyolab')).toBeNull();
+    reload();
+    await loadDeviceAccounts();
+    expect(deviceAccounts().map((a) => a.login.ltuid_v2)).toEqual(['2']); // the other login is kept, encrypted
   });
 
   it('without encryption in this browser, nothing is written in plain text', async () => {

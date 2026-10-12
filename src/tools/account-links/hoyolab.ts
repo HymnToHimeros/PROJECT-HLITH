@@ -13,7 +13,7 @@
  */
 import type { SupabaseClient } from '@supabase/supabase-js';
 import type { AccountLink, GameContract } from '../../core/contract';
-import { isSealed, seal, unseal, vaultAvailable } from '../../core/data/deviceVault';
+import { isSealed, seal, unseal, vaultAvailable, vaultReady } from '../../core/data/deviceVault';
 
 export interface HoyoLogin {
   ltuid_v2: string;
@@ -54,13 +54,11 @@ export function readLogin(text: string): { ok: true; login: HoyoLogin } | { ok: 
 // the plain copy only after the encrypted one is written, so nobody loses a link.
 // Without WebCrypto/IndexedDB nothing new is written in plain text: a remembered login
 // then lasts until the page closes (rememberWorks() tells the form), and any older plain
-// copy stays readable until Forget.
+// copy stays readable until Forget. Plain copies are only ever removed, never rewritten.
 
 const KEY_V1 = 'hlith.secret.hoyolab';
 const KEY = 'hlith.secret.hoyolab.accounts';
 const SEALED = 'hlith.secret.hoyolab.sealed';
-/** An encrypted list this browser can no longer open (its key was cleared): set aside, never deleted. */
-const UNREADABLE = 'hlith.secret.hoyolab.sealed.unreadable';
 
 interface SavedV1 {
   login: HoyoLogin;
@@ -112,23 +110,10 @@ function plainAccounts(): DeviceAccount[] {
   return [...list, ...byLogin.values()];
 }
 
-/** Drop the plain-text copies of one login (or all of them), e.g. on Forget. */
-function dropPlain(ltuid?: string): void {
-  if (ltuid === undefined) {
-    remove(KEY);
-    remove(KEY_V1);
-    return;
-  }
-  const list = readJson<DeviceAccount[]>(KEY, []).filter((a) => a?.login?.ltuid_v2 !== ltuid);
-  const legacy = Object.fromEntries(Object.entries(readJson<Record<string, SavedV1>>(KEY_V1, {})).filter(([, v]) => v?.login?.ltuid_v2 !== ltuid));
-  try {
-    if (list.length) localStorage.setItem(KEY, JSON.stringify(list));
-    else localStorage.removeItem(KEY);
-    if (Object.keys(legacy).length) localStorage.setItem(KEY_V1, JSON.stringify(legacy));
-    else localStorage.removeItem(KEY_V1);
-  } catch {
-    /* storage blocked */
-  }
+/** Remove the plain-text copies older versions kept (both formats). Never rewritten, only removed. */
+function dropPlain(): void {
+  remove(KEY);
+  remove(KEY_V1);
 }
 
 let cache: DeviceAccount[] | null = null;
@@ -136,6 +121,8 @@ let loading: Promise<DeviceAccount[]> | null = null;
 /** Changes made before the encrypted list was opened, replayed on top of it. */
 let early: Change[] = [];
 let writes: Promise<void> = Promise.resolve();
+/** The encrypted list is there but this browser's key couldn't be loaded: write nothing over it. */
+let keyMissing = false;
 const listeners = new Set<() => void>();
 const notify = () => listeners.forEach((f) => f());
 
@@ -146,12 +133,12 @@ export function onDeviceAccounts(f: () => void): () => void {
 }
 
 /** Can "Remember on this device" keep a login past this page (encrypted)? */
-export const rememberWorks = (): boolean => vaultAvailable();
+export const rememberWorks = (): boolean => vaultAvailable() && !keyMissing;
 
 /** Write the encrypted list (in order; later writes wait for earlier ones). Never plain text. */
 function persist(): Promise<void> {
   writes = writes.then(async () => {
-    if (!cache || !vaultAvailable()) return;
+    if (!cache || !rememberWorks()) return;
     try {
       if (cache.length === 0) remove(SEALED);
       else localStorage.setItem(SEALED, JSON.stringify(await seal(cache)));
@@ -174,23 +161,22 @@ export function loadDeviceAccounts(): Promise<DeviceAccount[]> {
     if (vaultAvailable()) {
       const raw = readJson<unknown>(SEALED, null);
       if (isSealed(raw)) {
-        try {
-          const list = await unseal<DeviceAccount[]>(raw);
-          opened = Array.isArray(list) ? list.filter((a) => a && a.login && Array.isArray(a.games)) : [];
-        } catch {
+        if (!(await vaultReady())) keyMissing = true; // IndexedDB failed this time: the list may open next time
+        else
           try {
-            localStorage.setItem(UNREADABLE, JSON.stringify(raw));
+            const list = await unseal<DeviceAccount[]>(raw);
+            opened = Array.isArray(list) ? list.filter((a) => a && a.login && Array.isArray(a.games)) : [];
           } catch {
-            /* keep it where it is */
+            // Encrypted with a key this browser no longer has (site data cleared): nobody can ever open it again.
+            // It stays until the next save replaces it.
           }
-        }
       }
     }
     const merged = [...opened, ...plain.filter((p) => !opened.some((o) => o.login.ltuid_v2 === p.login.ltuid_v2))];
     cache = early.reduce((list, change) => change(list), merged);
     early = [];
     notify();
-    if (vaultAvailable() && (plain.length > 0 || cache !== merged)) await persist();
+    if (rememberWorks() && (plain.length > 0 || cache !== merged)) await persist();
     return cache;
   })();
   return loading;
@@ -228,12 +214,16 @@ export function saveDeviceAccount(input: { label: string; login: HoyoLogin; game
   return deviceAccounts().find((a) => a.login.ltuid_v2 === input.login.ltuid_v2) ?? (shown as DeviceAccount);
 }
 
-/** Delete a remembered login from this browser: the encrypted list and any older plain copy. */
+/**
+ * Delete a remembered login from this browser. With encryption, the rest is written to the
+ * encrypted list and the plain copies are removed after. Without it, a plain copy can't be
+ * rewritten safely, so it is removed whole: the other old logins stay usable until the page closes.
+ */
 export function forgetDeviceAccount(id: string): void {
   const target = deviceAccounts().find((a) => a.id === id);
   if (!target) return;
   const ltuid = target.login.ltuid_v2;
-  dropPlain(ltuid);
+  if (!rememberWorks()) dropPlain();
   change((list) => list.filter((a) => a.id !== id && a.login.ltuid_v2 !== ltuid));
 }
 
@@ -267,6 +257,7 @@ export function resetDeviceAccountsForTests(): void {
   loading = null;
   early = [];
   writes = Promise.resolve();
+  keyMissing = false;
 }
 
 // ── Talking to the server function ───────────────────────────────
