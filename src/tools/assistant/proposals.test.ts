@@ -46,6 +46,13 @@ describe('Assistant proposals: approve and undo through your data', () => {
     expect(call('set_event_state', { event_id: 'nope', state: 'done', login_days_claimed: null }).problem).toMatch(/Unknown event/);
     expect(call('set_backlog_done', { item_id: 'bl1', done: 11 }).problem).toMatch(/between 0 and 10/);
     expect(call('log_bank_balance', { currency: 'gold', kind: 'have', amount: 1, note: '' }).problem).toMatch(/Unknown currency/);
+    // Strict tool schemas can't carry `minimum`, so negative numbers are refused here, as an error card.
+    expect(call('log_bank_balance', { currency: 'gem', kind: 'have', amount: -5, note: '' }).problem).toMatch(/amount/);
+    expect(call('set_backlog_done', { item_id: 'bl1', done: -1 }).problem).toMatch(/between 0 and 10/);
+    expect(call('set_event_state', { event_id: 'ev1', state: 'done', login_days_claimed: -2 }).problem).toMatch(/0 or more/);
+    expect(call('set_event_state', { event_id: 'ev1', state: 'done', login_days_claimed: null }).problem).toBeNull();
+    expect(call('set_roster', { character_id: 'c1', owned: true, wanted: false, dupes: -1 }).problem).toMatch(/0 or more/);
+    expect(call('propose_route', { title: 'R', date: '2026-10-09T19:00:00Z', stops: [{ title: 'A', minutes: -10, items: [] }] }).problem).toMatch(/0 or more/);
     expect(readProposal({ id: 'x', name: 'set_backlog_done', input: { game: 'zz', item_id: 'bl1', done: 1 } }, lookup()).problem).toMatch(/no game/);
     const bad = call('set_backlog_done', { item_id: 'nope', done: 1 });
     expect(applyProposal(bad)).toEqual({ ok: false, error: bad.problem });

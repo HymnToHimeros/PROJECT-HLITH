@@ -59,6 +59,8 @@ export const KIND_LABEL: Record<ProposalKind, string> = {
 
 const str = (v: unknown) => (typeof v === 'string' ? v : '');
 const int = (v: unknown) => (typeof v === 'number' && Number.isInteger(v) && v >= 0 ? v : null);
+/** Given but not a whole number of 0 or more (the tool schemas can't enforce it: strict mode has no `minimum`). */
+const badCount = (v: unknown) => v !== null && v !== undefined && int(v) === null;
 const when = (s: string) => {
   const t = Date.parse(s);
   return Number.isFinite(t) ? formatDateTime(t) : null;
@@ -90,6 +92,7 @@ export function readProposal(call: { id: string; name: string; input: unknown },
       const state = str(input.state);
       if (!e) return fail('event', 'Event progress', `Unknown event "${str(input.event_id)}".`);
       if (!['open', 'done', 'skipped'].includes(state)) return fail('event', e.title, 'The state is not valid.');
+      if (badCount(input.login_days_claimed)) return fail('event', e.title, 'The login days must be 0 or more.');
       const days = int(input.login_days_claimed);
       const now = user.events[e.id];
       const label = (p: { state: string; daysClaimed?: number | undefined } | undefined) => `${p?.state ?? 'open'}${e.loginDays ? ` · ${p?.daysClaimed ?? 0}/${e.loginDays} days` : ''}`;
@@ -110,6 +113,7 @@ export function readProposal(call: { id: string; name: string; input: unknown },
     case 'set_roster': {
       const c = l.characters.get(str(input.character_id));
       if (!c) return fail('roster', 'Roster', `Unknown character "${str(input.character_id)}".`);
+      if (badCount(input.dupes)) return fail('roster', c.name, `The ${game.dupes?.name ?? 'dupe'} count must be 0 or more.`);
       const owned = input.owned === true;
       const wanted = input.wanted === true;
       const dupes = int(input.dupes);
@@ -146,6 +150,7 @@ export function readProposal(call: { id: string; name: string; input: unknown },
           })
         : [];
       if (!title || !date || stops.length === 0) return fail('route', title || 'Route', 'The route needs a title, a date and at least one stop.');
+      if (Array.isArray(input.stops) && input.stops.some((s) => badCount((s as Record<string, unknown> | null)?.minutes))) return fail('route', title, 'Minutes must be 0 or more.');
       const minutes = stops.reduce((n, s) => n + (s.minutes ?? 0), 0);
       const steps = stops.reduce((n, s) => n + s.items.length, 0);
       return { ...base, kind: 'route', title, detail: `${date} · ${stops.length} stops · ${steps} steps${minutes ? ` · about ${minutes} min` : ''}`, stops };

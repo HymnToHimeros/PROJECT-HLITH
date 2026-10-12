@@ -41,6 +41,10 @@ const obj = (properties: Record<string, unknown>): Tool['input_schema'] => ({
 /**
  * Actions the Assistant can PROPOSE. None of them changes anything by itself:
  * the app shows each call as a card and applies it only when the user taps Approve.
+ *
+ * `strict: true` schemas must not use the keywords in STRICT_UNSUPPORTED: Claude answers 400 to
+ * the whole request ("For 'integer' type, property 'minimum' is not supported"), so every message
+ * fails. Limits go in the description; the app checks them on the card (src/tools/assistant/proposals.ts).
  */
 export const ACTION_TOOLS: Tool[] = [
   {
@@ -52,7 +56,7 @@ export const ACTION_TOOLS: Tool[] = [
       game,
       currency: id,
       kind: { type: 'string', enum: ['have', 'earned', 'bought', 'spent'] },
-      amount: { type: 'integer', minimum: 0 },
+      amount: { type: 'integer', description: 'A whole number, 0 or more.' },
       note: { type: 'string', description: 'Short note, or "" for none.' },
       why,
     }),
@@ -65,7 +69,7 @@ export const ACTION_TOOLS: Tool[] = [
       game,
       event_id: id,
       state: { type: 'string', enum: ['open', 'done', 'skipped'] },
-      login_days_claimed: { type: ['integer', 'null'], minimum: 0 },
+      login_days_claimed: { type: ['integer', 'null'], description: 'Days claimed, 0 or more; null = leave as it is.' },
       why,
     }),
   },
@@ -73,7 +77,7 @@ export const ACTION_TOOLS: Tool[] = [
     name: 'set_backlog_done',
     description: 'Propose how many steps of a backlog item are done (out of its total). Use item ids from the data summary.',
     strict: true,
-    input_schema: obj({ game, item_id: id, done: { type: 'integer', minimum: 0 }, why }),
+    input_schema: obj({ game, item_id: id, done: { type: 'integer', description: 'Steps done, 0 or more.' }, why }),
   },
   {
     name: 'set_roster',
@@ -84,7 +88,7 @@ export const ACTION_TOOLS: Tool[] = [
       character_id: id,
       owned: { type: 'boolean' },
       wanted: { type: 'boolean' },
-      dupes: { type: ['integer', 'null'], minimum: 0, description: 'null = leave as it is.' },
+      dupes: { type: ['integer', 'null'], description: '0 or more; null = leave as it is.' },
       why,
     }),
   },
@@ -125,6 +129,9 @@ export const ACTION_TOOLS: Tool[] = [
 ];
 
 export const ACTION_TOOL_NAMES = ACTION_TOOLS.map((t) => t.name);
+
+/** JSON Schema keywords kept out of strict tool schemas (tests/assistantTools.test.ts walks every schema for them). */
+export const STRICT_UNSUPPORTED = ['minimum', 'maximum', 'exclusiveMinimum', 'exclusiveMaximum', 'multipleOf', 'minLength', 'maxLength', 'pattern', 'format', 'minItems', 'maxItems', 'uniqueItems', 'minProperties', 'maxProperties'] as const;
 
 /** Stable instructions (cached). The user's data follows as a second block. */
 export const SYSTEM_PROMPT = `You are the Assistant inside HLITH (PROJECT-HLITH, HLIÐSKJÁLF), a personal hub for gacha games such as Honkai: Star Rail and Zenless Zone Zero.
@@ -240,11 +247,38 @@ export async function runTurn(req: AssistantRequest, create: (params: Params, ap
   return { content, stop_reason: last.stop_reason, stop_details: last.stop_details, model: last.model, calls };
 }
 
+/** Claude's own error, as its API sends it: `{ type: 'error', error: { type, message } }`. */
+export interface ClaudeError {
+  type?: string;
+  message?: string;
+}
+
+/** Read the type and message from an API error body (anything else: empty). Never the key or the request. */
+export function claudeError(body: unknown): ClaudeError {
+  const e = body && typeof body === 'object' ? (body as { error?: unknown }).error : undefined;
+  if (!e || typeof e !== 'object') return {};
+  const { type, message } = e as { type?: unknown; message?: unknown };
+  return { ...(typeof type === 'string' ? { type } : {}), ...(typeof message === 'string' ? { message: message.slice(0, 300) } : {}) };
+}
+
+/** A short code for an unknown error, the same for the same message, so a user can quote it and we find it in the logs. */
+export function errorCode(status: number | undefined, message: string | undefined): string {
+  let h = 0x811c9dc5;
+  for (const ch of message ?? '') h = Math.imul(h ^ ch.charCodeAt(0), 0x01000193) >>> 0;
+  return `E${status ?? 0}-${h.toString(16).padStart(8, '0').slice(0, 6)}`;
+}
+
 /** What the user sees when Claude returns an error. Never includes the key. */
-export function errorText(status: number | undefined): { status: number; error: string } {
+export function errorText(status: number | undefined, detail: ClaudeError = {}): { status: number; error: string } {
+  const message = detail.message ?? '';
   switch (status) {
     case 400:
-      return { status: 400, error: 'Claude could not read this request. Try again, or start a new chat.' };
+      if (/credit balance/i.test(message)) return { status: 400, error: 'Your Claude account has no credit left. Add credit under Billing in the Claude Console.' };
+      if (/^model:|model.*(not (found|supported|available)|does not support)/i.test(message))
+        return { status: 400, error: 'That model can’t be used for this request with your key. Choose another model.' };
+      if (/prompt is too long|too many tokens/i.test(message)) return { status: 400, error: 'This chat is too long for the model. Start a new chat.' };
+      if (/image/i.test(message)) return { status: 400, error: 'Claude could not read that picture. Try a PNG or JPEG screenshot.' };
+      return { status: 400, error: `Claude could not read this request. Try again, or start a new chat. If it keeps happening, send us code ${errorCode(400, message)}.` };
     case 401:
       return { status: 401, error: 'Claude did not accept this API key. Check it in the Assistant settings.' };
     case 403:

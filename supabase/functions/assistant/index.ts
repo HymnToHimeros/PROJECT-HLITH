@@ -4,7 +4,7 @@
 // Messages API, and is never stored, logged or returned.
 // Returns the assistant turn plus token usage; the app works out the cost.
 import Anthropic from '@anthropic-ai/sdk';
-import { checkRequest, errorText, runTurn } from '../_shared/assistant.ts';
+import { checkRequest, claudeError, errorCode, errorText, runTurn } from '../_shared/assistant.ts';
 import { requireUser } from '../_shared/requireUser.ts';
 
 const cors = {
@@ -39,9 +39,11 @@ Deno.serve(async (req) => {
     const reply = await runTurn(checked.value, (params, apiKey) => new Anthropic({ apiKey, maxRetries: 1 }).beta.messages.create(params));
     return json(reply);
   } catch (err) {
-    // Only the status is used: error bodies are not passed on or logged.
+    // Claude's error type and message only (they never hold the key or the request), so a 400 has a findable cause.
     const status = err instanceof Anthropic.APIError ? err.status : undefined;
-    const { status: code, error } = errorText(status);
+    const detail = err instanceof Anthropic.APIError ? claudeError(err.error) : {};
+    const { status: code, error } = errorText(status, detail);
+    console.error(JSON.stringify({ at: 'assistant', claudeStatus: status ?? null, type: detail.type ?? null, message: detail.message ?? null, code: errorCode(status, detail.message) }));
     return json({ error }, code);
   }
 });
