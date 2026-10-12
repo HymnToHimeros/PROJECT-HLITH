@@ -9,6 +9,8 @@ import { BadgeMark, RAVEN } from './BadgeMark';
 import c from './card.module.css';
 import { OwnerBadgeArt, OwnerFrameArt, OwnerNameArt } from './ownerArt/Owner';
 import type { OwnerStyle } from './ownerArt/style';
+import type { RewardKind } from './rewards/pool';
+import { RewardBadge, RewardFrame, RewardName } from './rewards/RewardArt';
 import type { FrameId, NameColor } from './profile';
 
 export interface CardCharacter {
@@ -43,6 +45,13 @@ export interface CardLuckiest extends CardCharacter {
   time: string;
 }
 
+/** T67: a reward worn on the card, with its tag ("Exclusive · Launch week · 20 Oct 2026"). */
+export interface CardReward {
+  art: string;
+  name: string;
+  tag: string;
+}
+
 export interface ProfileCardProps {
   name: string;
   /** The username (T62), shown as @name under the name. */
@@ -60,6 +69,8 @@ export interface ProfileCardProps {
   ownerTitle?: OwnerTitle | null | undefined;
   /** T64: the owner's badge, frame and name style. Pass it only for the owner's own card. */
   ownerStyle?: OwnerStyle | null | undefined;
+  /** T67: rewards worn (only ones still held). The owner's own look wins over them. */
+  rewards?: Partial<Record<RewardKind, CardReward>> | undefined;
   featured: CardFeatured[];
   /** T64 B2: the title is an earned one (shows a ✔). */
   titleEarned?: boolean | undefined;
@@ -97,6 +108,8 @@ export function ProfileCard(props: ProfileCardProps) {
   const { bestTeam, luckiest } = props;
   const owner = badge === 'owner';
   const look = props.ownerStyle ?? null;
+  const rw = props.rewards ?? {};
+  const rewardBadge = !owner ? rw.badge : undefined;
   const badgeSize = owner ? (compact ? 60 : 76) : compact ? 44 : 56;
   const style = { '--card-vent': vent } as CSSProperties;
   return (
@@ -113,12 +126,16 @@ export function ProfileCard(props: ProfileCardProps) {
       <div className={c.head}>
         {look?.frame ? (
           <OwnerFrameArt n={look.frame} variant={look.frameVariant} src={avatarUrl} letter={name} size={compact ? 108 : 136} fallback={<Framed frame={frame} src={avatarUrl} letter={name} />} />
+        ) : rw.frame ? (
+          <span className={c.rewardFrame} title={`${rw.frame.name} · ${rw.frame.tag}`}>
+            <RewardFrame art={rw.frame.art} src={avatarUrl} letter={name} size={compact ? 108 : 136} />
+          </span>
         ) : (
           <Framed frame={frame} src={avatarUrl} letter={name} />
         )}
         <div className={c.identity}>
-          <h2 className={c.name} data-color={look?.name ? undefined : nameColor}>
-            {look?.name ? <OwnerNameArt n={look.name} text={name} /> : name}
+          <h2 className={c.name} data-color={look?.name || rw.name ? undefined : nameColor} title={!look?.name && rw.name ? `${rw.name.name} · ${rw.name.tag}` : undefined}>
+            {look?.name ? <OwnerNameArt n={look.name} text={name} /> : rw.name ? <RewardName art={rw.name.art} text={name} /> : name}
           </h2>
           {handle && <p className={c.handle}>@{handle}</p>}
           {title && (
@@ -140,8 +157,15 @@ export function ProfileCard(props: ProfileCardProps) {
           {note && <p className={c.note}>{note}</p>}
         </div>
         <div className={c.badge}>
-          {owner && look && look.badge > 0 ? <OwnerBadgeArt n={look.badge} size={badgeSize} fallback={<BadgeMark id="owner" size={badgeSize} />} /> : <BadgeMark id={badge} size={badgeSize} />}
-          <span className={owner ? c.badgeNameOwner : c.badgeName}>{badgeName(badge, ownerTitle)}</span>
+          {owner && look && look.badge > 0 ? (
+            <OwnerBadgeArt n={look.badge} size={badgeSize} fallback={<BadgeMark id="owner" size={badgeSize} />} />
+          ) : rewardBadge ? (
+            <RewardBadge art={rewardBadge.art} size={badgeSize} title={rewardBadge.name} />
+          ) : (
+            <BadgeMark id={badge} size={badgeSize} />
+          )}
+          <span className={owner ? c.badgeNameOwner : c.badgeName}>{rewardBadge ? rewardBadge.name : badgeName(badge, ownerTitle)}</span>
+          {rewardBadge && <span className={c.rewardTag}>{rewardBadge.tag}</span>}
           {shelf.length > 0 && (
             <ul className={c.shelf} aria-label="Badge shelf">
               {shelf.map((id) => (

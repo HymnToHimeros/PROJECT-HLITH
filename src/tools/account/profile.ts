@@ -11,6 +11,7 @@
  *
  * Never wiped: unreadable saved text is kept under a backup key, not thrown away.
  */
+import { cleanWorn, NO_REWARDS, type WornRewards } from './rewards/model';
 import type { GameId } from '../../core/contract';
 import { THEMES, type Theme } from '../../core/theme/themes';
 import { isBadgeId, OWNER_TITLES, type BadgeId, type OwnerTitle } from './badges';
@@ -111,6 +112,8 @@ export interface Profile {
   ownerTitle: OwnerTitle | null;
   /** T64: the owner's badge, frame and name style (only ever used for the owner). */
   ownerStyle: OwnerStyle;
+  /** T67: the rewards you wear (item ids); the card shows one only while you hold it. */
+  rewards: WornRewards;
   /** A character as your picture / banner instead of an uploaded one. Wins over the upload while set. */
   avatarChar: CharRef | null;
   bannerChar: CharRef | null;
@@ -138,6 +141,7 @@ export const EMPTY_PROFILE: Profile = {
   bestTeam: null,
   ownerTitle: null,
   ownerStyle: DEFAULT_OWNER_STYLE,
+  rewards: NO_REWARDS,
   avatarChar: null,
   bannerChar: null,
   featured: [],
@@ -221,6 +225,7 @@ export function cleanProfile(raw: unknown): Profile {
     cardBackground: THEMES.some((t) => t.id === r.cardBackground) ? (r.cardBackground as Theme) : null,
     ownerTitle: oneOf<OwnerTitle | ''>([...OWNER_TITLES, ''], r.ownerTitle, '') || null,
     ownerStyle: cleanOwnerStyle(r.ownerStyle),
+    rewards: cleanWorn(r.rewards),
     avatarChar: charRef(r.avatarChar),
     bannerChar: charRef(r.bannerChar),
     featured: cleanFeatured(r.featured),
@@ -295,7 +300,7 @@ export interface ProfileRow {
     pinned: Record<GameId, string[]>;
     hidden_cards: CardId[];
     /** T52: the card's look, showcase and privacy (read by public.profile_card() in 0011_profile_card.sql). */
-    look?: { title: string | null; frame: FrameId; name_color: NameColor; pinned_badge: BadgeId | null; owner_title: OwnerTitle | null; owner_style?: OwnerStyle; pinned_shelf?: BadgeId[]; best_team?: CharRef | null; title_badge?: BadgeId | null; fav_game?: GameId | null; card_background?: Theme | null; avatar_char: CharRef | null; banner_char: CharRef | null };
+    look?: { title: string | null; frame: FrameId; name_color: NameColor; pinned_badge: BadgeId | null; owner_title: OwnerTitle | null; owner_style?: OwnerStyle; rewards?: WornRewards; pinned_shelf?: BadgeId[]; best_team?: CharRef | null; title_badge?: BadgeId | null; fav_game?: GameId | null; card_background?: Theme | null; avatar_char: CharRef | null; banner_char: CharRef | null };
     featured?: FeaturedItem[];
     privacy?: Privacy;
   } | null;
@@ -314,7 +319,7 @@ export function toRow(p: Profile, userId: string): ProfileRow {
     showcase: {
       pinned: c.pinned,
       hidden_cards: c.hiddenCards,
-      look: { title: c.title, frame: c.frame, name_color: c.nameColor, pinned_badge: c.pinnedBadge, owner_title: c.ownerTitle, owner_style: c.ownerStyle, pinned_shelf: c.pinnedShelf, best_team: c.bestTeam, title_badge: c.titleBadge, fav_game: c.favGame, card_background: c.cardBackground, avatar_char: c.avatarChar, banner_char: c.bannerChar },
+      look: { title: c.title, frame: c.frame, name_color: c.nameColor, pinned_badge: c.pinnedBadge, owner_title: c.ownerTitle, owner_style: c.ownerStyle, rewards: c.rewards, pinned_shelf: c.pinnedShelf, best_team: c.bestTeam, title_badge: c.titleBadge, fav_game: c.favGame, card_background: c.cardBackground, avatar_char: c.avatarChar, banner_char: c.bannerChar },
       featured: c.featured,
       privacy: c.privacy,
     },
@@ -338,6 +343,7 @@ export function fromRow(row: Partial<ProfileRow> | null | undefined): Profile {
     pinnedBadge: row.showcase?.look?.pinned_badge,
     ownerTitle: row.showcase?.look?.owner_title,
     ownerStyle: row.showcase?.look?.owner_style,
+    rewards: row.showcase?.look?.rewards,
     pinnedShelf: row.showcase?.look?.pinned_shelf,
     bestTeam: row.showcase?.look?.best_team,
     titleBadge: row.showcase?.look?.title_badge,
@@ -372,6 +378,9 @@ export const isBlank = (p: Profile) =>
   !p.favGame &&
   !p.cardBackground &&
   isDefaultOwnerStyle(p.ownerStyle) &&
+  !p.rewards.badge &&
+  !p.rewards.frame &&
+  !p.rewards.name &&
   !p.avatarChar &&
   !p.bannerChar &&
   p.featured.length === 0;
@@ -427,6 +436,7 @@ export function keepPublic(saved: Profile, draft: Profile): Profile {
     bestTeam: saved.bestTeam,
     ownerTitle: saved.ownerTitle,
     ownerStyle: saved.ownerStyle,
+    rewards: saved.rewards,
     avatarChar: saved.avatarChar,
     bannerChar: saved.bannerChar,
     featured: saved.featured,

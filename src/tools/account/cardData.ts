@@ -13,6 +13,9 @@ import { gameNumbers, luckiestPull } from './cardExtras';
 import { earnedTitle } from './titles';
 import type { CardCharacter, CardFeatured, CardLuckiest, CardStats, ProfileCardProps } from './ProfileCard';
 import type { CharRef, Profile } from './profile';
+import { formatDate } from '../../core/time/reset';
+import { rewardTag, wornItems, type RewardItem } from './rewards/model';
+import type { RewardKind } from './rewards/pool';
 
 export interface CardInput {
   profile: Profile;
@@ -24,6 +27,8 @@ export interface CardInput {
   imageUrl: (v: string | null) => string | null;
   fallbackName: string;
   bannerFallback: string;
+  /** T67: the rewards you hold now (from the server); a worn one shows only while held. */
+  held?: readonly RewardItem[] | undefined;
 }
 
 export function characterOf(characters: Record<GameId, Character[] | undefined>, ref: CharRef | null): Character | undefined {
@@ -78,6 +83,13 @@ export function luckiestItem(games: GameContract[], data: CardInput['data'], cha
   return { ...look, name: ch?.name ?? l.name, gameShort: game.short, vent: game.vent, topLabel: game.terms.rarity.top, pulls: l.pulls, time: l.time };
 }
 
+/** Worn rewards as the card shows them, with their tags. */
+export function cardRewards(items: Partial<Record<RewardKind, RewardItem>>): NonNullable<ProfileCardProps['rewards']> {
+  const out: NonNullable<ProfileCardProps['rewards']> = {};
+  for (const [kind, item] of Object.entries(items) as [RewardKind, RewardItem][]) out[kind] = { art: item.art, name: item.name, tag: rewardTag(item, formatDate) };
+  return out;
+}
+
 export function buildCard(input: CardInput): ProfileCardProps {
   const { profile, games, data, characters, badges } = input;
   const avatarChar = characterOf(characters, profile.avatarChar);
@@ -107,6 +119,7 @@ export function buildCard(input: CardInput): ProfileCardProps {
     ownerTitle: profile.ownerTitle,
     // The owner's look is the owner's alone.
     ownerStyle: isOwner ? profile.ownerStyle : null,
+    rewards: cardRewards(wornItems(profile.rewards, input.held ?? [])),
     featured: featuredItems(profile, games, data, characters),
     // Only badges you hold go on the shelf.
     shelf: profile.pinnedShelf.filter(holds),

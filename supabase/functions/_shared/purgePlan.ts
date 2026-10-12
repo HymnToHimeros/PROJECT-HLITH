@@ -26,6 +26,8 @@ export const PURGE_TABLES = [
   'user_settings',
   'profiles',
   'community_members',
+  'reward_grants',
+  'reward_log',
   'moderation_actions',
   'account_restrictions',
   'account_identity',
@@ -41,6 +43,7 @@ export const PURGE_BY_COLUMN = [
   { table: 'community_invites', column: 'used_by' },
   { table: 'community_invites', column: 'created_by' },
   { table: 'moderation_actions', column: 'created_by' },
+  { table: 'reward_log', column: 'created_by' },
 ] as const;
 
 /** Storage buckets where each account has its own folder (<user id>/…). */

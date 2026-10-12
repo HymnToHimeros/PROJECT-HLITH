@@ -11,7 +11,7 @@ so it can't drift from the real code. Never tick a box by hand; add the proof.
 Who builds what: see `docs/WORKSTREAMS.md`.
 
 <!-- roadmap:summary -->
-**70 of 77 done** `██████████████████░░` 91%
+**71 of 78 done** `██████████████████░░` 91%
 
 **Next up:** R67 The HLIÐSKJÁLF Discord inside the Community page (WidgetBot)
 
@@ -24,7 +24,7 @@ Who builds what: see `docs/WORKSTREAMS.md`.
 | Phase 4 · Engines | `██████████` | 4 / 4 |
 | Phase 5 · Modules | `██████████` | 17 / 17 |
 | Phase 6 · Connections and extras | `██████████` | 17 / 17 |
-| Phase 7 · Launch | `██████████` | 6 / 6 |
+| Phase 7 · Launch | `██████████` | 7 / 7 |
 | Phase 8 · Community (planned: the owner wants members first) | `██░░░░░░░░` | 2 / 9 |
 <!-- /roadmap:summary -->
 
@@ -111,6 +111,7 @@ Who builds what: see `docs/WORKSTREAMS.md`.
 - [x] R75 ★ First run: accept the Terms and Privacy policy, choose a username (unique, reserved names refused, change once every 30 days) · proof: `supabase/migrations/0016_first_run.sql`, `src/core/auth/FirstRun.tsx`, `src/tools/account/UsernameCard.tsx`, `tests/firstRun.test.ts`
 - [x] R76 ★ The owner's look: owner badges 0–8, frames 1–20, name styles 1–20, eight full sets with “Wear full set” (owner only, animated) · proof: `src/tools/account/ownerArt/art.ts`, `src/tools/account/ownerArt/OwnerLookEditor.tsx`, `supabase/migrations/0017_owner_look.sql`, `tests/ownerLook.test.ts`
 - [x] R77 ★ Profile customization: pull numbers, luckiest pull, best team, badge shelf, earned titles, favourite game, card background, bio switch, slur check, silenced lock · proof: `src/tools/account/cardExtras.ts`, `src/tools/account/titles.ts`, `supabase/migrations/0018_card_extras.sql`, `tests/cardExtras.test.ts`
+- [x] R78 ★ Exclusive rewards: Owner console → Rewards (catalogue from the reward pool, give by username, claim codes and links, revoke, log), Customise → Exclusive, worn rewards on the card while held · proof: `supabase/migrations/0019_rewards.sql`, `src/tools/owner/Rewards.tsx`, `src/tools/account/rewards/RewardsEditor.tsx`, `tests/rewards.test.ts`
 
 ## Phase 8 · Community (planned: the owner wants members first)
 - [x] R66 ★ Community groundwork: tester role on the server, one-time invite links, Owner console → Members, members-only Community page · proof: `supabase/migrations/0014_community_members.sql`, `src/tools/community/CommunityPage.tsx`, `src/tools/owner/Members.tsx`, `tests/community.test.ts`
