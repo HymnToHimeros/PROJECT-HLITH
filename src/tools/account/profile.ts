@@ -12,6 +12,7 @@
  * Never wiped: unreadable saved text is kept under a backup key, not thrown away.
  */
 import type { GameId } from '../../core/contract';
+import { THEMES, type Theme } from '../../core/theme/themes';
 import { isBadgeId, OWNER_TITLES, type BadgeId, type OwnerTitle } from './badges';
 import { cleanOwnerStyle, DEFAULT_OWNER_STYLE, isDefaultOwnerStyle, type OwnerStyle } from './ownerArt/style';
 
@@ -21,6 +22,8 @@ export const PIN_MAX = 6;
 export const TITLE_MAX = 60;
 /** Showcase on the profile card: up to 4 favourite characters or teams. */
 export const FEATURED_MAX = 4;
+/** Badge shelf on the card: up to 3 favourite badges (T64 B2). */
+export const SHELF_MAX = 3;
 /** Largest picture you can pick, before it's shrunk. */
 export const IMAGE_MAX_BYTES = 2 * 1024 * 1024;
 export const IMAGE_TYPES = ['image/png', 'image/jpeg', 'image/webp', 'image/gif'];
@@ -62,13 +65,19 @@ export interface Privacy {
   stats: boolean;
   badges: boolean;
   showcase: boolean;
+  /** T64 B2: the luckiest pull. */
+  luck: boolean;
+  /** T64 B2: the bio (off unless you switch it on). */
+  bio: boolean;
 }
-export const DEFAULT_PRIVACY: Privacy = { card: false, stats: true, badges: true, showcase: true };
+export const DEFAULT_PRIVACY: Privacy = { card: false, stats: true, badges: true, showcase: true, luck: true, bio: false };
 export const PRIVACY_LABEL: Record<keyof Privacy, string> = {
   card: 'Show my profile card with teams I share',
   stats: 'Include my pull numbers',
   badges: 'Include my badge',
-  showcase: 'Include my showcase',
+  showcase: 'Include my showcase and best team',
+  luck: 'Include my luckiest pull',
+  bio: 'Include my bio',
 };
 
 export interface Profile {
@@ -88,6 +97,16 @@ export interface Profile {
   nameColor: NameColor;
   /** The badge shown on your card; null = the highest one you hold. */
   pinnedBadge: BadgeId | null;
+  /** T64 B2: up to 3 favourite badges on a shelf (only earned ones show). */
+  pinnedShelf: BadgeId[];
+  /** T64 B2: an earned title (the badge behind it); wins over the typed title while you hold it. */
+  titleBadge: BadgeId | null;
+  /** T64 B2: your favourite game, shown on the card. */
+  favGame: GameId | null;
+  /** T64 B2: a public theme's art behind your card (when there is no banner picture). */
+  cardBackground: Theme | null;
+  /** T64 B2: one saved team shown as your best team. */
+  bestTeam: CharRef | null;
   /** The owner's choice of name for the owner badge (shown only for the owner). */
   ownerTitle: OwnerTitle | null;
   /** T64: the owner's badge, frame and name style (only ever used for the owner). */
@@ -112,6 +131,11 @@ export const EMPTY_PROFILE: Profile = {
   frame: 'none',
   nameColor: 'ink',
   pinnedBadge: null,
+  pinnedShelf: [],
+  titleBadge: null,
+  favGame: null,
+  cardBackground: null,
+  bestTeam: null,
   ownerTitle: null,
   ownerStyle: DEFAULT_OWNER_STYLE,
   avatarChar: null,
@@ -165,7 +189,7 @@ function cleanFeatured(v: unknown): FeaturedItem[] {
 function cleanPrivacy(v: unknown): Privacy {
   const r = v && typeof v === 'object' ? (v as Record<string, unknown>) : {};
   const flag = (k: keyof Privacy) => (typeof r[k] === 'boolean' ? (r[k] as boolean) : DEFAULT_PRIVACY[k]);
-  return { card: flag('card'), stats: flag('stats'), badges: flag('badges'), showcase: flag('showcase') };
+  return { card: flag('card'), stats: flag('stats'), badges: flag('badges'), showcase: flag('showcase'), luck: flag('luck'), bio: flag('bio') };
 }
 
 /** Any stored or incoming value → a clean profile. Unknown fields are dropped, lengths and pin counts kept to the limits. */
@@ -190,6 +214,11 @@ export function cleanProfile(raw: unknown): Profile {
     frame: oneOf(FRAMES, r.frame, 'none'),
     nameColor: oneOf(NAME_COLORS, r.nameColor, 'ink'),
     pinnedBadge: isBadgeId(r.pinnedBadge) ? r.pinnedBadge : null,
+    pinnedShelf: Array.isArray(r.pinnedShelf) ? [...new Set(r.pinnedShelf.filter(isBadgeId))].slice(0, SHELF_MAX) : [],
+    bestTeam: charRef(r.bestTeam),
+    titleBadge: isBadgeId(r.titleBadge) ? r.titleBadge : null,
+    favGame: typeof r.favGame === 'string' && GAME.test(r.favGame) ? r.favGame : null,
+    cardBackground: THEMES.some((t) => t.id === r.cardBackground) ? (r.cardBackground as Theme) : null,
     ownerTitle: oneOf<OwnerTitle | ''>([...OWNER_TITLES, ''], r.ownerTitle, '') || null,
     ownerStyle: cleanOwnerStyle(r.ownerStyle),
     avatarChar: charRef(r.avatarChar),
@@ -266,7 +295,7 @@ export interface ProfileRow {
     pinned: Record<GameId, string[]>;
     hidden_cards: CardId[];
     /** T52: the card's look, showcase and privacy (read by public.profile_card() in 0011_profile_card.sql). */
-    look?: { title: string | null; frame: FrameId; name_color: NameColor; pinned_badge: BadgeId | null; owner_title: OwnerTitle | null; owner_style?: OwnerStyle; avatar_char: CharRef | null; banner_char: CharRef | null };
+    look?: { title: string | null; frame: FrameId; name_color: NameColor; pinned_badge: BadgeId | null; owner_title: OwnerTitle | null; owner_style?: OwnerStyle; pinned_shelf?: BadgeId[]; best_team?: CharRef | null; title_badge?: BadgeId | null; fav_game?: GameId | null; card_background?: Theme | null; avatar_char: CharRef | null; banner_char: CharRef | null };
     featured?: FeaturedItem[];
     privacy?: Privacy;
   } | null;
@@ -285,7 +314,7 @@ export function toRow(p: Profile, userId: string): ProfileRow {
     showcase: {
       pinned: c.pinned,
       hidden_cards: c.hiddenCards,
-      look: { title: c.title, frame: c.frame, name_color: c.nameColor, pinned_badge: c.pinnedBadge, owner_title: c.ownerTitle, owner_style: c.ownerStyle, avatar_char: c.avatarChar, banner_char: c.bannerChar },
+      look: { title: c.title, frame: c.frame, name_color: c.nameColor, pinned_badge: c.pinnedBadge, owner_title: c.ownerTitle, owner_style: c.ownerStyle, pinned_shelf: c.pinnedShelf, best_team: c.bestTeam, title_badge: c.titleBadge, fav_game: c.favGame, card_background: c.cardBackground, avatar_char: c.avatarChar, banner_char: c.bannerChar },
       featured: c.featured,
       privacy: c.privacy,
     },
@@ -309,6 +338,11 @@ export function fromRow(row: Partial<ProfileRow> | null | undefined): Profile {
     pinnedBadge: row.showcase?.look?.pinned_badge,
     ownerTitle: row.showcase?.look?.owner_title,
     ownerStyle: row.showcase?.look?.owner_style,
+    pinnedShelf: row.showcase?.look?.pinned_shelf,
+    bestTeam: row.showcase?.look?.best_team,
+    titleBadge: row.showcase?.look?.title_badge,
+    favGame: row.showcase?.look?.fav_game,
+    cardBackground: row.showcase?.look?.card_background,
     avatarChar: row.showcase?.look?.avatar_char,
     bannerChar: row.showcase?.look?.banner_char,
     featured: row.showcase?.featured,
@@ -332,6 +366,11 @@ export const isBlank = (p: Profile) =>
   p.frame === 'none' &&
   p.nameColor === 'ink' &&
   !p.pinnedBadge &&
+  p.pinnedShelf.length === 0 &&
+  !p.bestTeam &&
+  !p.titleBadge &&
+  !p.favGame &&
+  !p.cardBackground &&
   isDefaultOwnerStyle(p.ownerStyle) &&
   !p.avatarChar &&
   !p.bannerChar &&
@@ -362,4 +401,34 @@ export function dataUrlToBlob(url: string): Blob {
   const bytes = new Uint8Array(bin.length);
   for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
   return new Blob([bytes], { type });
+}
+
+// ── Silenced (T64 B2) ───────────────────────────────────────────────
+/**
+ * While an account is silenced, what others can see stays as it was: name, bio, pictures and
+ * everything on the card. Private parts (pinned characters, hidden cards, privacy switches)
+ * still save. The server holds the same line (profiles_silence_guard, 0018).
+ */
+export function keepPublic(saved: Profile, draft: Profile): Profile {
+  return {
+    ...draft,
+    displayName: saved.displayName,
+    bio: saved.bio,
+    avatar: saved.avatar,
+    banner: saved.banner,
+    title: saved.title,
+    frame: saved.frame,
+    nameColor: saved.nameColor,
+    pinnedBadge: saved.pinnedBadge,
+    pinnedShelf: saved.pinnedShelf,
+    titleBadge: saved.titleBadge,
+    favGame: saved.favGame,
+    cardBackground: saved.cardBackground,
+    bestTeam: saved.bestTeam,
+    ownerTitle: saved.ownerTitle,
+    ownerStyle: saved.ownerStyle,
+    avatarChar: saved.avatarChar,
+    bannerChar: saved.bannerChar,
+    featured: saved.featured,
+  };
 }

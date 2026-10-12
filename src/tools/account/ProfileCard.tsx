@@ -1,5 +1,8 @@
 import type { CSSProperties, ReactNode } from 'react';
 import { formatNumber } from '../../core/time/format';
+import { formatDate } from '../../core/time/reset';
+import { ThemeMotif } from '../../core/theme/ThemeArt';
+import type { Theme } from '../../core/theme/themes';
 import { GameTag } from '../../core/ui';
 import { BADGE_BY_ID, OWNER_TITLES, type BadgeId, type OwnerTitle } from './badges';
 import { BadgeMark, RAVEN } from './BadgeMark';
@@ -24,6 +27,20 @@ export interface CardStats {
   total: number;
   tops: number;
   topLabel: string;
+  /** T64 B2: average pulls per top result (null: none yet), and the 50/50 record. */
+  averagePity?: number | null | undefined;
+  won?: number | undefined;
+  lost?: number | undefined;
+}
+
+/** T64 B2: the luckiest top result from imported history. */
+export interface CardLuckiest extends CardCharacter {
+  gameShort: string;
+  vent: string;
+  topLabel: string;
+  /** Which pull it came on. */
+  pulls: number;
+  time: string;
 }
 
 export interface ProfileCardProps {
@@ -44,6 +61,17 @@ export interface ProfileCardProps {
   /** T64: the owner's badge, frame and name style. Pass it only for the owner's own card. */
   ownerStyle?: OwnerStyle | null | undefined;
   featured: CardFeatured[];
+  /** T64 B2: the title is an earned one (shows a ✔). */
+  titleEarned?: boolean | undefined;
+  /** T64 B2: bio (only when the person allowed it), favourite game, a theme's art behind the card. */
+  bio?: string | null | undefined;
+  favGame?: { short: string; name: string; vent: string } | null | undefined;
+  background?: Theme | null | undefined;
+  /** T64 B2: up to 3 more badges on a shelf under the main one. */
+  shelf?: BadgeId[] | undefined;
+  /** T64 B2: the best team and the luckiest pull, when chosen / known and allowed. */
+  bestTeam?: Extract<CardFeatured, { kind: 'team' }> | null | undefined;
+  luckiest?: CardLuckiest | null | undefined;
   /** null = don't show the stats row (hidden, or no data); [] is never passed. */
   stats: CardStats[] | null;
   /** "12 of 16 badges" when known. */
@@ -65,6 +93,8 @@ export const badgeName = (id: BadgeId, ownerTitle?: OwnerTitle | null) => (id ==
  */
 export function ProfileCard(props: ProfileCardProps) {
   const { name, handle, title, avatarUrl, bannerUrl, bannerFallback, frame, nameColor, vent, badge, ownerTitle, featured, stats, badgeCount, note, actions, compact } = props;
+  const shelf = (props.shelf ?? []).filter((id) => id !== badge).slice(0, 3);
+  const { bestTeam, luckiest } = props;
   const owner = badge === 'owner';
   const look = props.ownerStyle ?? null;
   const badgeSize = owner ? (compact ? 60 : 76) : compact ? 44 : 56;
@@ -72,6 +102,11 @@ export function ProfileCard(props: ProfileCardProps) {
   return (
     <article className={`${c.card} ${compact ? c.compact : ''} ${owner ? c.ownerCard : ''}`} style={style} aria-label={`Profile card: ${name}`}>
       <div className={c.banner} style={{ background: bannerFallback }}>
+        {!bannerUrl && props.background && (
+          <span className={c.bannerArt} data-theme-preview={props.background} aria-hidden="true">
+            <ThemeMotif theme={props.background} className={c.bannerMotif} />
+          </span>
+        )}
         {bannerUrl && <img src={bannerUrl} alt="" className={c.bannerImg} />}
         {owner && <div className={c.skyWash} aria-hidden="true" />}
       </div>
@@ -86,12 +121,36 @@ export function ProfileCard(props: ProfileCardProps) {
             {look?.name ? <OwnerNameArt n={look.name} text={name} /> : name}
           </h2>
           {handle && <p className={c.handle}>@{handle}</p>}
-          {title && <p className={c.title}>{title}</p>}
+          {title && (
+            <p className={c.title}>
+              {title}
+              {props.titleEarned && (
+                <span className={c.earned} title="An earned title: it comes from a badge you hold">
+                  {' '}
+                  ✔
+                </span>
+              )}
+            </p>
+          )}
+          {props.favGame && (
+            <p className={c.fav}>
+              Favourite game <GameTag label={props.favGame.short} vent={props.favGame.vent} />
+            </p>
+          )}
           {note && <p className={c.note}>{note}</p>}
         </div>
         <div className={c.badge}>
           {owner && look && look.badge > 0 ? <OwnerBadgeArt n={look.badge} size={badgeSize} fallback={<BadgeMark id="owner" size={badgeSize} />} /> : <BadgeMark id={badge} size={badgeSize} />}
           <span className={owner ? c.badgeNameOwner : c.badgeName}>{badgeName(badge, ownerTitle)}</span>
+          {shelf.length > 0 && (
+            <ul className={c.shelf} aria-label="Badge shelf">
+              {shelf.map((id) => (
+                <li key={id} title={badgeName(id, ownerTitle)}>
+                  <BadgeMark id={id} size={compact ? 22 : 28} title={badgeName(id, ownerTitle)} />
+                </li>
+              ))}
+            </ul>
+          )}
           {badgeCount && (
             <span className={c.badgeCount}>
               {badgeCount.earned} of {badgeCount.total} badges
@@ -126,6 +185,44 @@ export function ProfileCard(props: ProfileCardProps) {
         </ul>
       )}
 
+      {props.bio && <p className={c.bio}>{props.bio}</p>}
+
+      {(bestTeam || luckiest) && (
+        <div className={c.extras}>
+          {bestTeam && (
+            <section className={c.extra} style={{ '--slot-vent': bestTeam.vent } as CSSProperties} aria-label="Best team">
+              <span className={c.extraLabel}>Best team</span>
+              <div className={c.teamRow}>
+                {bestTeam.members.slice(0, 4).map((m, i) => (
+                  <Portrait key={`${m.name}-${i}`} ch={m} />
+                ))}
+              </div>
+              <span className={c.slotName}>
+                {bestTeam.name} <GameTag label={bestTeam.gameShort} vent={bestTeam.vent} />
+              </span>
+            </section>
+          )}
+          {luckiest && (
+            <section className={c.extra} style={{ '--slot-vent': luckiest.vent } as CSSProperties} aria-label="Luckiest pull">
+              <span className={c.extraLabel}>Luckiest pull</span>
+              <div className={c.luckRow}>
+                <Portrait ch={luckiest} big />
+                <span className={c.luckText}>
+                  <span className={c.slotName}>{luckiest.name}</span>
+                  <span>
+                    {luckiest.topLabel} on pull <span className={c.statBig}>{formatNumber(luckiest.pulls)}</span>
+                  </span>
+                  <span className={c.verified} title="Proven from imported pull history">
+                    ✔ From imported history · {formatDate(Date.parse(luckiest.time))}
+                  </span>
+                </span>
+                <GameTag label={luckiest.gameShort} vent={luckiest.vent} />
+              </div>
+            </section>
+          )}
+        </div>
+      )}
+
       {stats && (
         <dl className={c.stats} aria-label="Pull numbers">
           {stats.map((s) => (
@@ -139,13 +236,39 @@ export function ProfileCard(props: ProfileCardProps) {
                   ·
                 </span>
                 <span className={c.statBig}>{formatNumber(s.tops)}</span> {s.topLabel}
-                {s.tops > 0 && (
+                {s.averagePity !== undefined ? (
                   <>
                     <span className={c.statSep} aria-hidden="true">
                       ·
                     </span>
-                    <span className={c.statBig}>{formatNumber(Math.round(s.total / s.tops))}</span> per {s.topLabel}
+                    {s.averagePity === null ? (
+                      <span className={c.noData}>Average: no data yet</span>
+                    ) : (
+                      <>
+                        <span className={c.statBig}>{formatNumber(Math.round(s.averagePity))}</span> average pity
+                      </>
+                    )}
+                    <span className={c.statSep} aria-hidden="true">
+                      ·
+                    </span>
+                    {(s.won ?? 0) + (s.lost ?? 0) > 0 ? (
+                      <>
+                        50/50 won <span className={c.statBig}>{formatNumber(s.won ?? 0)}</span> of {formatNumber((s.won ?? 0) + (s.lost ?? 0))} (
+                        {Math.round(((s.won ?? 0) / ((s.won ?? 0) + (s.lost ?? 0))) * 100)}%)
+                      </>
+                    ) : (
+                      <span className={c.noData}>50/50: no data yet</span>
+                    )}
                   </>
+                ) : (
+                  s.tops > 0 && (
+                    <>
+                      <span className={c.statSep} aria-hidden="true">
+                        ·
+                      </span>
+                      <span className={c.statBig}>{formatNumber(Math.round(s.total / s.tops))}</span> per {s.topLabel}
+                    </>
+                  )
                 )}
               </dd>
             </div>

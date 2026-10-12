@@ -13,6 +13,7 @@ import {
   CARD_LABEL,
   checkImage,
   cleanProfile,
+  keepPublic,
   NAME_MAX,
   PIN_MAX,
   setCardShown,
@@ -24,6 +25,8 @@ import { METHOD_LABEL, showcaseCards, type Fix, type ShowcaseCard } from './show
 import { storeFor, useProfile } from './useProfile';
 import { UsernameCard } from './UsernameCard';
 import { useGate } from '../../core/auth/gate';
+import { useStanding } from '../../core/auth/standing';
+import { textBlocked } from '../../core/auth/username';
 import { BadgeList } from './BadgeList';
 import { CardEditor } from './CardEditor';
 import { badgeStates, type BadgeState } from './badges';
@@ -485,16 +488,26 @@ function ProfileEditor({ games, profile, imageUrl, mode, fallbackName, badges, i
     bannerFallback: defaultBanner(games),
   });
 
+  const { silenced } = useStanding();
+  // The same slur and swearing list as usernames, for what others may see.
+  const blocked = [draft.displayName, draft.bio, draft.title].some((t) => t && textBlocked(t));
+
   return (
     <form
       className={p.stack}
       aria-label="Edit profile"
       onSubmit={(e) => {
         e.preventDefault();
+        if (blocked) return;
         setBusy(true);
-        void onSave(draft).finally(() => setBusy(false));
+        void onSave(silenced ? keepPublic(profile, draft) : draft).finally(() => setBusy(false));
       }}
     >
+      {silenced && (
+        <p className={p.warn} role="note">
+          Your account is silenced, so what others can see (your name, bio, pictures and card) stays as it is until that ends. Pinned characters and your privacy switches still save.
+        </p>
+      )}
       <section className={p.previewWrap} aria-label="Preview">
         <span className={p.fieldLabel}>Preview · how your card looks</span>
         <ProfileCard {...preview} compact />
@@ -572,6 +585,11 @@ function ProfileEditor({ games, profile, imageUrl, mode, fallbackName, badges, i
           </span>
           <textarea className={p.textarea} value={draft.bio ?? ''} maxLength={BIO_MAX} rows={3} onChange={(e) => setDraft((d) => ({ ...d, bio: e.target.value }))} />
         </label>
+        {blocked && (
+          <p className={p.warn} role="alert">
+            Your name, bio or title has a word that isn’t allowed (the same list as usernames). Change it to save.
+          </p>
+        )}
       </section>
 
       <CardEditor draft={draft} setDraft={setDraft} games={games} characters={lists.characters} badges={badges} isOwner={isOwner} mode={mode} open={open} />
@@ -667,7 +685,7 @@ function ProfileEditor({ games, profile, imageUrl, mode, fallbackName, badges, i
         </p>
       )}
       <div className={p.actions}>
-        <Button variant="primary" type="submit" disabled={busy}>
+        <Button variant="primary" type="submit" disabled={busy || blocked}>
           {busy ? 'Saving…' : 'Save profile'}
         </Button>
         <Button onClick={onCancel} disabled={busy}>

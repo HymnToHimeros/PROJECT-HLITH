@@ -127,6 +127,29 @@ describe('shared by: the sharer’s profile card (T52)', () => {
     expect(card.querySelector('.oa-art')).toBeNull();
   });
 
+  it('shows the pull numbers, luckiest pull, best team and badge shelf the server sent (T64 B2)', async () => {
+    render(
+      <SharedTeamView
+        game={fakeGame()}
+        team={shared}
+        load={async () =>
+          row({
+            stats: [{ game: 'aa', total: 120, tops: 2, average_pity: 60, won: 1, lost: 1 }],
+            shelf: ['first-light', 'smith'],
+            luckiest: { game: 'aa', item_id: 'nope', name: 'Lucky One', pulls: 7, time: '2026-03-01T00:00:00Z' },
+          })
+        }
+      />,
+    );
+    const card = await screen.findByRole('article', { name: 'Profile card: Mira' });
+    expect(card).toHaveTextContent('60 average pity');
+    expect(card).toHaveTextContent('50/50 won 1 of 2 (50%)');
+    expect(screen.getByRole('region', { name: 'Luckiest pull' })).toHaveTextContent('Lucky One');
+    expect(screen.getByRole('region', { name: 'Luckiest pull' })).toHaveTextContent('From imported history');
+    // The shelf only shows badges the server says they hold (smith isn't), and not the main badge again.
+    expect(screen.queryByRole('list', { name: 'Badge shelf' })).toBeNull();
+  });
+
   it('a private card (server says null) or no sharer shows nothing extra', async () => {
     const { unmount } = render(<SharedTeamView game={fakeGame()} team={shared} load={async () => null} />);
     expect(await screen.findByText('Fire Queen')).toBeInTheDocument();
