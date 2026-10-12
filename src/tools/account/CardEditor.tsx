@@ -1,4 +1,4 @@
-import type { CSSProperties, Dispatch, SetStateAction } from 'react';
+import { lazy, Suspense, type CSSProperties, type Dispatch, type SetStateAction } from 'react';
 import type { Character, GameContract, GameId, ModuleId } from '../../core/contract';
 import { gameData } from '../../core/data/userData';
 import { Button, GameTag, Segmented } from '../../core/ui';
@@ -8,6 +8,9 @@ import { Switch } from './parts';
 import p from './profile.module.css';
 import { FEATURED_MAX, FRAME_LABEL, FRAMES, NAME_COLOR_LABEL, NAME_COLORS, PRIVACY_LABEL, TITLE_MAX, toggleFeatured, type CharRef, type Privacy, type Profile } from './profile';
 import { Framed } from './ProfileCard';
+
+// The owner's own section, with its drawings, loads only for the owner (T64).
+const OwnerLookEditor = lazy(() => import('./ownerArt/OwnerLookEditor'));
 
 interface Props {
   draft: Profile;
@@ -122,6 +125,12 @@ export function CardEditor({ draft, setDraft, games, characters, badges, isOwner
           </div>
         )}
       </section>
+
+      {isOwner && (
+        <Suspense fallback={<p className={p.muted}>Loading your owner look…</p>}>
+          <OwnerLookEditor value={draft.ownerStyle} onChange={(ownerStyle) => set({ ownerStyle })} name={draft.displayName ?? ''} />
+        </Suspense>
+      )}
 
       <section className={p.editCard} aria-label="Character pictures">
         <h3 className={p.cardTitle}>Use a character</h3>

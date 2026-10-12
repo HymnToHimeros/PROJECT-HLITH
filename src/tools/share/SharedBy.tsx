@@ -5,6 +5,7 @@ import { BADGES, isBadgeId, OWNER_TITLES, type BadgeId, type OwnerTitle } from '
 import { cardCharacter } from '../account/cardData';
 import { defaultBanner } from '../account/Profile';
 import { ProfileCard, type CardFeatured, type ProfileCardProps } from '../account/ProfileCard';
+import { cleanOwnerStyle } from '../account/ownerArt/style';
 import { cleanProfile } from '../account/profile';
 import { AVATAR_BUCKET } from '../account/useProfile';
 import c from '../account-links/connections.module.css';
@@ -23,6 +24,8 @@ export interface CardRow {
   banner_char: unknown;
   owner: boolean;
   owner_title: string | null;
+  /** T64 (0017): the owner's badge, frame and name style; only ever set for the owner. */
+  owner_style?: unknown;
   badges: string[] | null;
   pinned_badge: string | null;
   stats: { game: string; total: number; tops: number }[] | null;
@@ -82,6 +85,7 @@ export function cardFromRow(row: CardRow, games: GameContract[], characters: Rec
     vent: games[0]?.vent ?? 'var(--vent-all)',
     badge,
     ownerTitle: row.owner && (OWNER_TITLES as readonly string[]).includes(row.owner_title ?? '') ? (row.owner_title as OwnerTitle) : null,
+    ownerStyle: row.owner ? cleanOwnerStyle(row.owner_style) : null,
     featured,
     stats: stats.length ? stats : null,
     badgeCount: row.badges ? { earned: held.length, total } : undefined,

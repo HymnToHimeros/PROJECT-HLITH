@@ -3,13 +3,25 @@ import { Button } from '../../core/ui';
 import type { BadgeDef, BadgeState, OwnerTitle } from './badges';
 import { BadgeMark, runeName } from './BadgeMark';
 import b from './badges.module.css';
+import { OwnerBadgeArt } from './ownerArt/Owner';
 import { badgeName } from './ProfileCard';
 
 /**
  * Profile → Badges (T52): every badge, earned or "Not yet". Earned ones show the date when
  * the data has one (the pull, the bank entry); locked ones say how to earn them and link there.
  */
-export function BadgeList({ badges, ownerTitle, onGo }: { badges: BadgeState[]; ownerTitle: OwnerTitle | null; onGo: (go: NonNullable<BadgeDef['go']>) => void }) {
+export function BadgeList({
+  badges,
+  ownerTitle,
+  ownerBadge = 0,
+  onGo,
+}: {
+  badges: BadgeState[];
+  ownerTitle: OwnerTitle | null;
+  /** T64: which owner badge the owner wears (0 = the original). */
+  ownerBadge?: number;
+  onGo: (go: NonNullable<BadgeDef['go']>) => void;
+}) {
   const earned = badges.filter((x) => x.earned).length;
   return (
     <section className={b.wrap} aria-labelledby="badges-title">
@@ -26,7 +38,11 @@ export function BadgeList({ badges, ownerTitle, onGo }: { badges: BadgeState[]; 
           const cls = [b.item, has ? '' : b.itemLocked, def.kind === 'owner' ? b.itemOwner : ''].join(' ');
           return (
             <li key={def.id} className={cls} aria-label={`${name}: ${has ? 'earned' : 'not yet'}`}>
-              <BadgeMark id={def.id} earned={has} size={def.kind === 'owner' ? 72 : 52} />
+              {def.kind === 'owner' && ownerBadge > 0 ? (
+                <OwnerBadgeArt n={ownerBadge} size={72} fallback={<BadgeMark id="owner" size={72} />} />
+              ) : (
+                <BadgeMark id={def.id} earned={has} size={def.kind === 'owner' ? 72 : 52} />
+              )}
               <div className={b.itemText}>
                 <p className={b.itemName}>{name}</p>
                 <p className={b.itemHow}>{def.how}</p>

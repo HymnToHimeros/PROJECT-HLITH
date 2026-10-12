@@ -1,5 +1,5 @@
 import { act, fireEvent, render, screen } from '@testing-library/react';
-import { beforeEach, describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { gameData, resetUserData, saveTeam } from '../../core/data/userData';
 import { fakeGame } from '../account-links/fakeGame';
 import { decodeTeam, encodeTeam, shareUrl, teamAsText } from './shareLink';
@@ -110,6 +110,21 @@ describe('shared by: the sharer’s profile card (T52)', () => {
     const card = await screen.findByRole('article', { name: 'Profile card: Mira' });
     expect(card).toHaveTextContent('The Watcher Above');
     expect(card.querySelector('[data-frame="sky"]')).not.toBeNull();
+  });
+
+  it('the owner’s chosen look (T64) shows on the owner’s card: badge, frame and name style', async () => {
+    render(<SharedTeamView game={fakeGame()} team={shared} load={async () => row({ owner: true, badges: ['owner', 'seated'], pinned_badge: null, owner_style: { badge: 2, frame: 14, name: 14 } })} />);
+    const card = await screen.findByRole('article', { name: 'Profile card: Mira' });
+    await vi.waitFor(() => expect(card.querySelector('.oa-n14')).not.toBeNull());
+    expect(card.querySelector('.oa-frame')).not.toBeNull();
+    expect(card.querySelector('h2')).toHaveTextContent('Mira');
+  });
+
+  it('nobody else can wear the owner’s look, whatever their row says', async () => {
+    render(<SharedTeamView game={fakeGame()} team={shared} load={async () => row({ owner_style: { badge: 2, frame: 14, name: 14 } })} />);
+    const card = await screen.findByRole('article', { name: 'Profile card: Mira' });
+    await new Promise((r) => setTimeout(r, 50));
+    expect(card.querySelector('.oa-art')).toBeNull();
   });
 
   it('a private card (server says null) or no sharer shows nothing extra', async () => {

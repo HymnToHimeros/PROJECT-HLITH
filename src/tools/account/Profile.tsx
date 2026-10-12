@@ -208,7 +208,7 @@ export function ProfileSection({ games, account, isOwner = false, open, goSectio
         {shown.length === 0 && <p className={p.muted}>Every showcase card is switched off. Customise profile to show some again.</p>}
       </div>
 
-      <BadgeList badges={badges} ownerTitle={profile.ownerTitle} onGo={(go) => ('section' in go ? (go.section === 'profile' ? setEditing(true) : goSection(go.section)) : open(go.module, go.tab))} />
+      <BadgeList badges={badges} ownerTitle={profile.ownerTitle} ownerBadge={isOwner ? profile.ownerStyle.badge : 0} onGo={(go) => ('section' in go ? (go.section === 'profile' ? setEditing(true) : goSection(go.section)) : open(go.module, go.tab))} />
 
       <HowTo
         steps={[

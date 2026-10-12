@@ -13,6 +13,7 @@
  */
 import type { GameId } from '../../core/contract';
 import { isBadgeId, OWNER_TITLES, type BadgeId, type OwnerTitle } from './badges';
+import { cleanOwnerStyle, DEFAULT_OWNER_STYLE, isDefaultOwnerStyle, type OwnerStyle } from './ownerArt/style';
 
 export const BIO_MAX = 200;
 export const NAME_MAX = 40;
@@ -89,6 +90,8 @@ export interface Profile {
   pinnedBadge: BadgeId | null;
   /** The owner's choice of name for the owner badge (shown only for the owner). */
   ownerTitle: OwnerTitle | null;
+  /** T64: the owner's badge, frame and name style (only ever used for the owner). */
+  ownerStyle: OwnerStyle;
   /** A character as your picture / banner instead of an uploaded one. Wins over the upload while set. */
   avatarChar: CharRef | null;
   bannerChar: CharRef | null;
@@ -110,6 +113,7 @@ export const EMPTY_PROFILE: Profile = {
   nameColor: 'ink',
   pinnedBadge: null,
   ownerTitle: null,
+  ownerStyle: DEFAULT_OWNER_STYLE,
   avatarChar: null,
   bannerChar: null,
   featured: [],
@@ -187,6 +191,7 @@ export function cleanProfile(raw: unknown): Profile {
     nameColor: oneOf(NAME_COLORS, r.nameColor, 'ink'),
     pinnedBadge: isBadgeId(r.pinnedBadge) ? r.pinnedBadge : null,
     ownerTitle: oneOf<OwnerTitle | ''>([...OWNER_TITLES, ''], r.ownerTitle, '') || null,
+    ownerStyle: cleanOwnerStyle(r.ownerStyle),
     avatarChar: charRef(r.avatarChar),
     bannerChar: charRef(r.bannerChar),
     featured: cleanFeatured(r.featured),
@@ -261,7 +266,7 @@ export interface ProfileRow {
     pinned: Record<GameId, string[]>;
     hidden_cards: CardId[];
     /** T52: the card's look, showcase and privacy (read by public.profile_card() in 0011_profile_card.sql). */
-    look?: { title: string | null; frame: FrameId; name_color: NameColor; pinned_badge: BadgeId | null; owner_title: OwnerTitle | null; avatar_char: CharRef | null; banner_char: CharRef | null };
+    look?: { title: string | null; frame: FrameId; name_color: NameColor; pinned_badge: BadgeId | null; owner_title: OwnerTitle | null; owner_style?: OwnerStyle; avatar_char: CharRef | null; banner_char: CharRef | null };
     featured?: FeaturedItem[];
     privacy?: Privacy;
   } | null;
@@ -280,7 +285,7 @@ export function toRow(p: Profile, userId: string): ProfileRow {
     showcase: {
       pinned: c.pinned,
       hidden_cards: c.hiddenCards,
-      look: { title: c.title, frame: c.frame, name_color: c.nameColor, pinned_badge: c.pinnedBadge, owner_title: c.ownerTitle, avatar_char: c.avatarChar, banner_char: c.bannerChar },
+      look: { title: c.title, frame: c.frame, name_color: c.nameColor, pinned_badge: c.pinnedBadge, owner_title: c.ownerTitle, owner_style: c.ownerStyle, avatar_char: c.avatarChar, banner_char: c.bannerChar },
       featured: c.featured,
       privacy: c.privacy,
     },
@@ -303,6 +308,7 @@ export function fromRow(row: Partial<ProfileRow> | null | undefined): Profile {
     nameColor: row.showcase?.look?.name_color,
     pinnedBadge: row.showcase?.look?.pinned_badge,
     ownerTitle: row.showcase?.look?.owner_title,
+    ownerStyle: row.showcase?.look?.owner_style,
     avatarChar: row.showcase?.look?.avatar_char,
     bannerChar: row.showcase?.look?.banner_char,
     featured: row.showcase?.featured,
@@ -326,6 +332,7 @@ export const isBlank = (p: Profile) =>
   p.frame === 'none' &&
   p.nameColor === 'ink' &&
   !p.pinnedBadge &&
+  isDefaultOwnerStyle(p.ownerStyle) &&
   !p.avatarChar &&
   !p.bannerChar &&
   p.featured.length === 0;
