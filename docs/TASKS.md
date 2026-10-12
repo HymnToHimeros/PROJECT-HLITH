@@ -29,6 +29,7 @@ doing it said `LIVE`. Newest jobs at the bottom; live jobs move to Done.
 | T66 | Main red: calendar on PC has sideways scroll (33 px, date-dependent: last week label past the edge); 3 e2e fail | ERROR-FIX | sent | Fix: .scroller overflow-x: clip (PC block, calendar.module.css). FRAME ports the same line into #130. |
 | T67 | Owner panel "Rewards": grant exclusive badges/frames/name styles for events (to users or via claim link/code, expiry, revoke, logged); owner items never grantable; server-enforced ownership (owner, 2026-10-12) | FRAME | sent | After T64 variants. Screenshots before merge. |
 | T68 | CodeQL: 24 High alerts on main: #22 HoYoLAB login stored in clear in localStorage (hoyolab.ts:79); ~23 incomplete HTML sanitization (app + import scripts). Not Copilot Autofix: ERROR-FIX fixes + tests | ERROR-FIX | sent | Migrate stored logins without losing links; one shared sanitize helper. |
+| T69 | Assistant fails on every message: Anthropic API answers 400 ("Claude could not read this request"); find the real reason (likely low credit or a bad param), log error type/message (never the key), map 400s to clear texts, fix params if ours | ERROR-FIX | sent | Owner pasted a test key in chat 2026-10-12: told to revoke it; not passed on. |
 
 ## Done
 | # | Job | Who | Live on |
