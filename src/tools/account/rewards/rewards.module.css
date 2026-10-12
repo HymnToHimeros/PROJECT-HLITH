@@ -1,0 +1,73 @@
+/* Profile → Customise → Exclusive and the claim box (T67). No design yet (Override 5): the
+   card editor's tokens and parts. */
+.choices {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: var(--s-2);
+}
+.choice {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: var(--s-2);
+  border: 1px solid var(--line-default);
+  border-radius: var(--r-card);
+  background: var(--bg-raised);
+  color: var(--ink-2);
+  cursor: pointer;
+  text-align: center;
+}
+.choice[aria-checked='true'] {
+  border-color: var(--rarity-top);
+  box-shadow: inset 0 0 0 1px var(--rarity-top);
+  color: var(--ink-1);
+}
+.art {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 60px;
+  font-size: 18px;
+}
+.none {
+  color: var(--ink-4);
+}
+.name {
+  font-weight: 700;
+  font-size: 13px;
+}
+.tag {
+  font: 700 10px/1.3 var(--font-numbers);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--rarity-top);
+}
+.when {
+  font-size: 11px;
+  color: var(--ink-4);
+}
+.claim,
+.claimInline {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: var(--s-2);
+}
+.claim > label,
+.claimInline > label {
+  flex: 1 1 220px;
+}
+.claim > p,
+.claimInline > p {
+  flex-basis: 100%;
+  margin: 0;
+}
+.claimInline {
+  padding-top: var(--s-2);
+  border-top: 1px solid var(--line-subtle);
+}
+.ok {
+  color: var(--ok, var(--glacier));
+  font-size: 13px;
+}

@@ -36,6 +36,11 @@ import { useCheckinDays } from './useCheckinDays';
 import { ImageAdjust } from './ImageAdjust';
 import type { ImageKind } from './imageCrop';
 import { stripTags } from '../../core/text/markup';
+import { pendingClaim } from './rewards/claimLink';
+import type { HeldReward } from './rewards/model';
+import { ClaimBox } from './rewards/RewardsEditor';
+import { serverRewards } from './rewards/rewardsData';
+import { useMyRewards } from './rewards/useMyRewards';
 
 interface Props {
   games: GameContract[];
@@ -113,6 +118,9 @@ export function ProfileSection({ games, account, isOwner = false, open, goSectio
   const { profile } = state;
   const badges = useBadges(games, profile, isOwner, account?.id);
   const gate = useGate();
+  // T67: rewards you hold (accounts only), and a claim link you opened.
+  const rewards = useMyRewards(state.mode === 'account');
+  const [claim, setClaim] = useState(() => pendingClaim());
 
   const cards = useMemo(() => {
     void all; // re-read when your data changes
@@ -144,6 +152,8 @@ export function ProfileSection({ games, account, isOwner = false, open, goSectio
         badges={badges}
         isOwner={isOwner}
         error={state.error}
+        held={rewards.held}
+        onClaimed={rewards.reload}
         onCancel={() => setEditing(false)}
         onSave={async (next) => {
           if (await state.save(next)) setEditing(false);
@@ -162,6 +172,7 @@ export function ProfileSection({ games, account, isOwner = false, open, goSectio
     imageUrl: state.imageUrl,
     fallbackName: name ?? 'Your profile',
     bannerFallback: defaultBanner(games),
+    held: rewards.held,
   });
 
   return (
@@ -184,6 +195,24 @@ export function ProfileSection({ games, account, isOwner = false, open, goSectio
         />
         {profile.bio ? <p className={p.bio}>{profile.bio}</p> : <p className={p.bioEmpty}>No bio yet. Customise profile to add a few words about you.</p>}
       </section>
+
+      {claim && (
+        <section className={p.editCard} aria-label="Claim a reward">
+          <h3 className={p.cardTitle}>A reward is waiting</h3>
+          {account ? (
+            <ClaimBox
+              api={serverRewards}
+              initial={claim}
+              onClaimed={() => {
+                rewards.reload();
+                setClaim(null);
+              }}
+            />
+          ) : (
+            <p className={p.muted}>Sign in to claim it: rewards are given to accounts. The code stays on this device until then.</p>
+          )}
+        </section>
+      )}
 
       {account && gate?.username && <UsernameCard gate={gate} />}
 
@@ -432,12 +461,14 @@ interface EditorProps {
   badges: BadgeState[];
   isOwner: boolean;
   error: string;
+  held: HeldReward[];
+  onClaimed: () => void;
   onCancel: () => void;
   onSave: (p: Profile) => Promise<void>;
   open: (module: ModuleId, tab?: string) => void;
 }
 
-function ProfileEditor({ games, profile, imageUrl, mode, fallbackName, badges, isOwner, error, onCancel, onSave, open }: EditorProps) {
+function ProfileEditor({ games, profile, imageUrl, mode, fallbackName, badges, isOwner, error, held, onClaimed, onCancel, onSave, open }: EditorProps) {
   const [draft, setDraft] = useState<Profile>(profile);
   const [busy, setBusy] = useState(false);
   const [imageError, setImageError] = useState('');
@@ -486,6 +517,7 @@ function ProfileEditor({ games, profile, imageUrl, mode, fallbackName, badges, i
     imageUrl: show,
     fallbackName: draft.displayName ?? fallbackName ?? 'Your profile',
     bannerFallback: defaultBanner(games),
+    held,
   });
 
   const { silenced } = useStanding();
@@ -592,7 +624,7 @@ function ProfileEditor({ games, profile, imageUrl, mode, fallbackName, badges, i
         )}
       </section>
 
-      <CardEditor draft={draft} setDraft={setDraft} games={games} characters={lists.characters} badges={badges} isOwner={isOwner} mode={mode} open={open} />
+      <CardEditor draft={draft} setDraft={setDraft} games={games} characters={lists.characters} badges={badges} isOwner={isOwner} mode={mode} open={open} held={held} onClaimed={onClaimed} />
 
       <section className={p.editCard} aria-label="Pinned characters">
         <h3 className={p.cardTitle}>Pinned characters</h3>

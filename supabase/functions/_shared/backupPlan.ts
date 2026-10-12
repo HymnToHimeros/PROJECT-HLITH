@@ -32,6 +32,10 @@ export const BACKUP_TABLES = [
   'account_restrictions',
   'moderation_actions',
   'account_identity',
+  'reward_items',
+  'reward_claims',
+  'reward_grants',
+  'reward_log',
 ] as const;
 
 export const BACKUP_BUCKET = 'backups';

@@ -3,6 +3,7 @@ import { currentProvider, sendEmailLink, signInWith, signOut, useSession } from 
 import { FirstRun } from './core/auth/FirstRun';
 import { serverGate, setGate, type Gate } from './core/auth/gate';
 import { captureInvite, pendingInvite, ROLES_CHANGED } from './core/auth/invite';
+import { CLAIM_PATH, captureClaim, pendingClaim } from './tools/account/rewards/claimLink';
 import { rememberTester, SignIn } from './core/auth/SignIn';
 import { setStanding, standingFrom, useStanding } from './core/auth/standing';
 import { bannedInAddress, Suspended } from './core/auth/Suspended';
@@ -18,6 +19,8 @@ import { Preview } from './core/ui/Preview';
 
 // An invite link (T60) is taken out of the address and kept on this device until it is used.
 const invitedAtStart = typeof window !== 'undefined' ? captureInvite() : null;
+// T67: a claim link opened (kept until claimed, so it survives signing in).
+if (typeof window !== 'undefined') captureClaim();
 /** Export my data (R56) as a file. A suspended account can still use it (T60b): its own data, read-only. */
 async function downloadMyData(client: NonNullable<typeof backend>): Promise<void> {
   const { data, error } = await client.functions.invoke('export-data', { body: {} });
@@ -125,6 +128,8 @@ function Root() {
   // Back from signing in with an invite waiting: open the Community page to accept it.
   useEffect(() => {
     if (userId && pendingInvite() && !isCommunityPath(window.location.pathname)) navigate(COMMUNITY_PATH, true);
+    // Back from signing in with a reward code waiting: open the profile to claim it.
+    else if (userId && pendingClaim() && window.location.pathname !== CLAIM_PATH) navigate(CLAIM_PATH, true);
   }, [userId]);
   // Without an account there is nothing to ask; with one, wait for the server's answer.
   const ownerChecked = !backend || !userId || ownerAnswer?.userId === userId;

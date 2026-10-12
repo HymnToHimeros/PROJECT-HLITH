@@ -2,7 +2,8 @@ import { useEffect, useState } from 'react';
 import type { Character, GameContract, GameId } from '../../core/contract';
 import { backend } from '../../core/data/backend';
 import { BADGES, isBadgeId, OWNER_TITLES, type BadgeId, type OwnerTitle } from '../account/badges';
-import { cardCharacter } from '../account/cardData';
+import { cardCharacter, cardRewards } from '../account/cardData';
+import { serverRewards } from '../account/rewards/model';
 import { defaultBanner } from '../account/Profile';
 import { ProfileCard, type CardFeatured, type ProfileCardProps } from '../account/ProfileCard';
 import { cleanOwnerStyle } from '../account/ownerArt/style';
@@ -28,6 +29,8 @@ export interface CardRow {
   owner_title: string | null;
   /** T64 (0017): the owner's badge, frame and name style; only ever set for the owner. */
   owner_style?: unknown;
+  /** T67: rewards worn, only ones still held (0019). */
+  rewards?: unknown;
   badges: string[] | null;
   pinned_badge: string | null;
   stats: { game: string; total: number; tops: number; average_pity?: number | null; won?: number; lost?: number }[] | null;
@@ -117,6 +120,7 @@ export function cardFromRow(row: CardRow, games: GameContract[], characters: Rec
     badge,
     ownerTitle: row.owner && (OWNER_TITLES as readonly string[]).includes(row.owner_title ?? '') ? (row.owner_title as OwnerTitle) : null,
     ownerStyle: row.owner ? cleanOwnerStyle(row.owner_style) : null,
+    rewards: cardRewards(serverRewards(row.rewards)),
     featured,
     shelf: (row.shelf ?? []).filter(isBadgeId).filter((id) => held.includes(id)),
     bestTeam: row.best_team ? teamItem(row.best_team) : null,

@@ -471,3 +471,17 @@
     font-size: 19px;
   }
 }
+
+/* T67: a reward frame sits where the normal frame does; its tag under a reward badge. */
+.rewardFrame {
+  display: inline-flex;
+  flex: none;
+}
+.rewardTag {
+  font: 700 10px/1.2 var(--font-numbers);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--rarity-top);
+  text-align: center;
+  max-width: 120px;
+}
