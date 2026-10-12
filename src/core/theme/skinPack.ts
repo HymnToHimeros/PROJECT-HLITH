@@ -112,10 +112,9 @@ export function setPackSource(source: PackSource | null): void {
   packSource = source;
 }
 
-/** The worn theme's pack, applied to <html> while it is worn. */
-export function useSkinPack(path: string | undefined): SkinPack | null {
+/** A theme's pack, loaded once (null until it arrives, or when there is none). */
+export function usePack(path: string | undefined): SkinPack | null {
   const [loaded, setLoaded] = useState<{ path: string; pack: SkinPack | null } | null>(null);
-  const pack = path && loaded?.path === path ? loaded.pack : null;
   useEffect(() => {
     if (!path || !packSource) return;
     let live = true;
@@ -124,6 +123,12 @@ export function useSkinPack(path: string | undefined): SkinPack | null {
       live = false;
     };
   }, [path]);
+  return path && loaded?.path === path ? loaded.pack : null;
+}
+
+/** The worn theme's pack, applied to <html> while it is worn. */
+export function useSkinPack(path: string | undefined): SkinPack | null {
+  const pack = usePack(path);
   useEffect(() => {
     if (!pack || typeof document === 'undefined') return;
     const root = document.documentElement;

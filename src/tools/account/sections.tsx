@@ -1,4 +1,4 @@
-import { useEffect, useState, type CSSProperties } from 'react';
+import { useEffect, useState, type CSSProperties, type ReactNode } from 'react';
 import type { GameContract, GameId } from '../../core/contract';
 import { BACKUP_EVERY_DAYS, daysSinceBackup, downloadBackup, parseBackup, restoreBackup, summarize, type Backup } from '../../core/data/backup';
 import { updatePrefs, usePrefs } from '../../core/data/prefs';
@@ -7,6 +7,8 @@ import { ServerPicker } from '../../core/shell/ServerPicker';
 import { useIsPhone } from '../../core/shell/useIsPhone';
 import { ProtagonistPicker } from '../../core/shell/ProtagonistPicker';
 import { OWNER_PREFIX, useOwnerThemes, type OwnerTheme } from '../../core/theme/ownerThemes';
+import { FONT_FAMILY, loadFont } from '../../core/theme/skin';
+import { usePack } from '../../core/theme/skinPack';
 import { motionFor, setMotion, type Motion } from '../../core/theme/motion';
 import { setTheme, THEMES, themeInfo } from '../../core/theme/theme';
 import { ThemeMotif } from '../../core/theme/ThemeArt';
@@ -377,19 +379,51 @@ export function ExamplesPage() {
   );
 }
 
-/** An owner theme's card: its own colours and picture, from the private store. */
-function OwnerThemeCard({ t, checked, label }: { t: OwnerTheme; checked: boolean; label?: string }) {
+/**
+ * An owner theme's preview: its colours, its own picture, and (T74) its own art: the background
+ * scene, a card wearing its frame or corners, and the heading in its font.
+ */
+function OwnerPreview({ t, children }: { t: OwnerTheme; children?: ReactNode }) {
+  const pack = usePack(t.look?.pack);
+  const font = t.look?.font ?? 'default';
+  useEffect(() => void loadFont(font), [font]);
   const vars = Object.fromEntries(Object.entries(t.tokens).map(([k, v]) => [`--${k}`, v])) as CSSProperties;
   const art = t.pictureUrl;
+  const frame = pack?.vars['--skin-frame'];
+  const corners = pack?.vars['--skin-corner-tl'] && ['tl', 'tr', 'bl', 'br'].map((c) => `${pack.vars[`--skin-corner-${c}`]} ${c[0] === 't' ? 'top' : 'bottom'} ${c[1] === 'l' ? 'left' : 'right'} / 14px 14px no-repeat`).join(', ');
+  return (
+    <span className={a.themePreview} style={{ ...vars, ...(art ? { backgroundImage: `url(${art})`, backgroundSize: 'cover', backgroundPosition: 'center 30%' } : {}) }} aria-hidden="true">
+      {pack && pack.scene.length > 0 && (
+        <span className={a.lookScene} data-art="preview">
+          {pack.scene.map((l, i) => (
+            // Cleaned by svgClean.ts: drawing elements only, no scripts, links or styles.
+            <span key={i} className="sk-layer" data-place={l.place} style={{ opacity: l.opacity }} dangerouslySetInnerHTML={{ __html: l.markup }} />
+          ))}
+        </span>
+      )}
+      <span
+        className={`${a.miniCard} ${pack ? a.miniLook : ''}`}
+        style={{
+          ...(frame ? { borderImage: `${frame} ${pack.vars['--skin-frame-slice']} / 8px round` } : {}),
+          ...(corners ? { background: `${corners}, var(--bg-card)` } : {}),
+        }}
+      >
+        <span className={a.miniTitle} style={font !== 'default' ? { fontFamily: FONT_FAMILY[font], fontWeight: 400, color: 'var(--rarity-top)' } : undefined}>
+          Aa
+        </span>
+        <span className={a.miniLine} />
+        <span className={`${a.miniLine} ${a.miniShort}`} />
+      </span>
+      {children}
+    </span>
+  );
+}
+
+/** An owner theme's card: its own colours, picture and art, from the private store. */
+function OwnerThemeCard({ t, checked, label }: { t: OwnerTheme; checked: boolean; label?: string }) {
   return (
     <button type="button" role="radio" aria-checked={checked} className={a.themeCard} onClick={() => setTheme(`${OWNER_PREFIX}${t.id}`)}>
-      <span className={a.themePreview} style={{ ...vars, ...(art ? { backgroundImage: `url(${art})`, backgroundSize: 'cover', backgroundPosition: 'center 30%' } : {}) }} aria-hidden="true">
-        <span className={a.miniCard}>
-          <span className={a.miniTitle}>Aa</span>
-          <span className={a.miniLine} />
-          <span className={`${a.miniLine} ${a.miniShort}`} />
-        </span>
-      </span>
+      <OwnerPreview t={t} />
       <span className={a.themeMeta}>
         <span className={a.ring} aria-hidden="true" />
         <span className={a.rowText}>
@@ -401,10 +435,6 @@ function OwnerThemeCard({ t, checked, label }: { t: OwnerTheme; checked: boolean
   );
 }
 
-/**
- * Owner-only themes (T47): shown only after they have loaded from the private store, which
- * happens only for an owner account. For anyone else this section doesn't exist.
- */
 /** Themes in order, those sharing a group gathered into one entry where the group first appears. */
 export function groupOwnerThemes(themes: OwnerTheme[]): ({ kind: 'one'; theme: OwnerTheme } | { kind: 'group'; name: string; themes: OwnerTheme[] })[] {
   const out: ({ kind: 'one'; theme: OwnerTheme } | { kind: 'group'; name: string; themes: OwnerTheme[] })[] = [];
@@ -419,23 +449,17 @@ export function groupOwnerThemes(themes: OwnerTheme[]): ({ kind: 'one'; theme: O
 
 /** A set of looks as one tile: the first look's preview, the set's name and how many looks it has. */
 function OwnerGroupCard({ name, themes, choice, open, onOpen }: { name: string; themes: OwnerTheme[]; choice: unknown; open: boolean; onOpen: () => void }) {
-  const first = themes[0] as OwnerTheme;
   const worn = themes.find((t) => choice === `${OWNER_PREFIX}${t.id}`);
-  const vars = Object.fromEntries(Object.entries(first.tokens).map(([k, v]) => [`--${k}`, v])) as CSSProperties;
+  const shown = worn ?? (themes[0] as OwnerTheme);
   return (
     <button type="button" className={`${a.themeCard} ${a.groupCard}`} aria-expanded={open} data-worn={worn ? 'true' : undefined} onClick={onOpen}>
-      <span className={a.themePreview} style={vars} aria-hidden="true">
-        <span className={a.miniCard}>
-          <span className={a.miniTitle}>Aa</span>
-          <span className={a.miniLine} />
-          <span className={`${a.miniLine} ${a.miniShort}`} />
-        </span>
+      <OwnerPreview t={shown}>
         <span className={a.groupDots}>
           {themes.map((t) => (
             <i key={t.id} style={{ background: t.tokens['rarity-top'] ?? t.tokens['bg-card'] ?? 'var(--vent)' }} />
           ))}
         </span>
-      </span>
+      </OwnerPreview>
       <span className={a.themeMeta}>
         <span className={a.rowText}>
           <span className={a.rowTitle}>{name}</span>

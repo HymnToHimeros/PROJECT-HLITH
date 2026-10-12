@@ -83,6 +83,21 @@ export function applySkin(skin: Skin | undefined, root: HTMLElement = document.d
   } else delete root.dataset.skin;
 }
 
+/** The CSS family of each heading font (skins.css sets the same through data-skin-font). */
+export const FONT_FAMILY: Record<Skin['font'], string> = {
+  default: 'inherit',
+  cinzel: "'Cinzel', ui-serif, serif",
+  'cinzel-decorative': "'Cinzel Decorative', 'Cinzel', ui-serif, serif",
+  'cormorant-sc': "'Cormorant SC', ui-serif, serif",
+  'marcellus-sc': "'Marcellus SC', ui-serif, serif",
+  'im-fell-english-sc': "'IM Fell English SC', ui-serif, serif",
+  metamorphous: "'Metamorphous', ui-serif, serif",
+  'uncial-antiqua': "'Uncial Antiqua', ui-serif, serif",
+  'almendra-sc': "'Almendra SC', ui-serif, serif",
+  'pirata-one': "'Pirata One', ui-serif, serif",
+  'grenze-gotisch': "'Grenze Gotisch', ui-serif, serif",
+};
+
 /** Heading fonts load only when a worn skin asks for one (each is its own small file). */
 const FONTS: Record<Exclude<Skin['font'], 'default'>, () => Promise<unknown>> = {
   cinzel: () => import('@fontsource/cinzel/600.css'),
