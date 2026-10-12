@@ -2,7 +2,9 @@ import { act, fireEvent, render, screen, waitFor, within } from '@testing-librar
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { clearOwnerThemes, loadOwnerThemes } from '../../core/theme/ownerThemes';
 import { ThemePage } from '../account/sections';
-import { mergeDrafts, OwnerThemesAdmin } from './OwnerThemesAdmin';
+import { getPrefs, updatePrefs } from '../../core/data/prefs';
+import { setTheme } from '../../core/theme/theme';
+import { mergeDrafts, OwnerThemesAdmin, setThemeIds, sha256, withoutThemes, withThemesBack } from './OwnerThemesAdmin';
 
 const theme = { id: 'night', name: 'Night', mood: 'A dark room', tone: 'dark', tokens: { 'bg-app': '#120d33', 'bg-card': '#1a1440', 'ink-5': '#9a92c8' }, ornaments: [] };
 
@@ -80,8 +82,65 @@ describe('owner-only themes in the app (T47)', () => {
     expect(store.upload).not.toHaveBeenCalled();
 
     fireEvent.click(screen.getByRole('button', { name: 'Remove Night' }));
+    // A confirm step first: Keep it changes nothing.
+    fireEvent.click(screen.getByRole('button', { name: 'Keep it' }));
+    expect((await manifest(store)).themes).toHaveLength(1);
+    fireEvent.click(screen.getByRole('button', { name: 'Remove Night' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Yes, remove Night' }));
     await screen.findByText(/Night is off the list/);
     expect((await manifest(store)).themes).toEqual([]);
+    // Undo puts it back as it was.
+    fireEvent.click(await screen.findByRole('button', { name: 'Undo: put Night back' }));
+    await screen.findByText(/Night is back on the list/);
+    expect((await manifest(store)).themes[0]).toMatchObject({ id: 'night', extra: 'kept' });
+  });
+
+  it('“Remove the set themes” takes out only the set themes (marked, or the early ones by id), never yours; a worn one falls back (T74)', async () => {
+    const t = (id: string, extra: Record<string, unknown> = {}) => ({ ...theme, id, name: `Theme ${id}`, ...extra });
+    const store = fakeStore({ 'manifest.json': JSON.stringify({ themes: [t('mine'), t('early-a'), t('fresh', { origin: 'set' }), t('early-b'), t('night-2')] }) });
+    await act(() => loadOwnerThemes(store));
+    setTheme('light');
+    setTheme('owner:early-a');
+    expect(getPrefs().themeBefore).toBe('light');
+    render(<OwnerThemesAdmin store={store} early={new Set([await sha256('early-a'), await sha256('early-b')])} />);
+    fireEvent.click(screen.getByRole('button', { name: 'Remove the set themes' }));
+    await screen.findByText(/This takes out 3 set themes/);
+    fireEvent.click(screen.getByRole('button', { name: 'Yes, remove the set themes' }));
+    await screen.findByText(/The 3 set themes are off the list/);
+    expect((await manifest(store)).themes.map((x: { id: string }) => x.id)).toEqual(['mine', 'night-2']);
+    // The worn set theme is gone: back to the theme worn before it.
+    expect(getPrefs().theme).toBe('light');
+    // Undo puts all three back in their places.
+    fireEvent.click(screen.getByRole('button', { name: 'Undo: put The 3 set themes back' }));
+    await screen.findByText(/The 3 set themes are back on the list/);
+    expect((await manifest(store)).themes.map((x: { id: string }) => x.id)).toEqual(['mine', 'early-a', 'fresh', 'early-b', 'night-2']);
+  });
+
+  it('removing the theme you wear with nothing before it goes back to Glacier', async () => {
+    const store = fakeStore({ 'manifest.json': JSON.stringify({ themes: [theme] }) });
+    await act(() => loadOwnerThemes(store));
+    updatePrefs((p) => {
+      const next = { ...p, theme: 'owner:night' as const };
+      delete next.themeBefore;
+      return next;
+    });
+    render(<OwnerThemesAdmin store={store} />);
+    fireEvent.click(screen.getByRole('button', { name: 'Remove Night' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Yes, remove Night' }));
+    await screen.findByText(/Night is off the list/);
+    expect(getPrefs().theme).toBe('dark');
+  });
+
+  it('set-theme helpers: only set ids, and Undo skips an id that came back', async () => {
+    const early = new Set([await sha256('early-a')]);
+    expect(await setThemeIds([{ id: 'mine' }, { id: 'early-a' }, { id: 'x', origin: 'set' }], early)).toEqual(['early-a', 'x']);
+    // The built-in list holds 10 fingerprints and matches none of a made-up theme's ids.
+    expect(await setThemeIds([{ id: 'mine' }, { id: 'night' }])).toEqual([]);
+    const m = { themes: [{ id: 'a' }, { id: 'b' }, { id: 'c' }] };
+    const out = withoutThemes(m, ['b']);
+    expect(out.manifest.themes.map((x) => x.id)).toEqual(['a', 'c']);
+    expect(withThemesBack({ themes: [{ id: 'a' }, { id: 'b' }, { id: 'c' }] }, out.removed).themes).toHaveLength(3);
+    expect(withThemesBack(out.manifest, out.removed).themes.map((x) => x.id)).toEqual(['a', 'b', 'c']);
   });
 
   it('Owner console: says so without a server', () => {
@@ -99,6 +158,7 @@ describe('owner-only themes in the app (T47)', () => {
     expect(out.problems.length).toBeGreaterThan(0);
     expect(out.manifest.themes.map((t) => t.id)).toEqual(['mine', 'two', 'one']);
     expect(out.manifest.themes[1]).toBe(changed);
+    expect(out.manifest.themes[2]).toMatchObject({ id: 'one', origin: 'set' });
     expect(out.manifest.other).toBe(1);
   });
 });
