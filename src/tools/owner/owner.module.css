@@ -450,6 +450,21 @@
   white-space: pre-wrap;
   overflow-wrap: anywhere;
 }
+.post {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  padding: 8px 10px;
+  border-left: 2px dashed var(--line-mid);
+}
+.postText {
+  margin: 0;
+  color: var(--ink-1);
+  font-size: 14px;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
 .switch:disabled {
   cursor: not-allowed;
   opacity: 0.6;

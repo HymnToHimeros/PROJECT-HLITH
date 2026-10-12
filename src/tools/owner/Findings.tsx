@@ -4,6 +4,7 @@ import type { GameContract } from '../../core/contract';
 import { ExampleNotice, ExampleTag, GameTag, HowTo, NoData, UnverifiedTag } from '../../core/ui';
 import o from './owner.module.css';
 import { planApproval, type Draft } from './approve';
+import { LeakPost, postOf } from './LeakPost';
 import { decideFinding, jobLabel, reopenFinding, type Decision, type FindingView, type SchedulerData } from './schedulerData';
 import { when } from './Scheduler';
 
@@ -150,6 +151,7 @@ export function Findings({ data, games, onDraft }: Props) {
           <ul className={o.log}>
             {shown.map((f) => {
               const vent = games.find((g) => g.id === f.game_id)?.vent;
+              const post = postOf(f.payload);
               return (
                 <li key={f.id} className={o.finding}>
                   <div className={o.jobHead}>
@@ -157,7 +159,7 @@ export function Findings({ data, games, onDraft }: Props) {
                     {f.game_id && (vent ? <GameTag label={gameName(f.game_id)} vent={vent} /> : <span className={o.badge}>{gameName(f.game_id)}</span>)}
                     <span className={o.jobName}>{f.title}</span>
                   </div>
-                  {f.kind === 'leak' ? (
+                  {f.kind === 'leak' || f.payload.leak === true ? (
                     <UnverifiedTag source={f.source_name ?? 'unknown source'} />
                   ) : (
                     <span className={o.recordMeta}>Source: {f.source_name ?? 'not given'}</span>
@@ -170,6 +172,7 @@ export function Findings({ data, games, onDraft }: Props) {
                   <span className={o.recordMeta}>
                     Delivered by {jobLabel(f.job_id)} · {f.delivered_by === 'routine' ? 'routine' : 'scheduler'} · {when(f.delivered_at)} · found {when(f.found_at)}
                   </span>
+                  {post && <LeakPost post={post} />}
                   {Object.keys(f.payload).length > 0 && (
                     <details className={o.payload}>
                       <summary>Details</summary>

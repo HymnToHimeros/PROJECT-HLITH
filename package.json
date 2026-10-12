@@ -24,7 +24,8 @@
     "data:hsr-kits": "node scripts/import-nanoka-hsr-kits.ts",
     "data:costs": "node scripts/import-nanoka-costs.ts",
     "data:builds": "node scripts/import-nanoka-builds.ts",
-    "schedule:due": "node scripts/schedule-due.ts"
+    "schedule:due": "node scripts/schedule-due.ts",
+    "leaks:seele": "node scripts/leaks-seele.ts"
   },
   "dependencies": {
     "@fontsource-variable/archivo": "^5.3.0",
