@@ -2,7 +2,7 @@ import { act, fireEvent, render, screen, waitFor, within } from '@testing-librar
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { clearOwnerThemes, loadOwnerThemes } from '../../core/theme/ownerThemes';
 import { ThemePage } from '../account/sections';
-import { OwnerThemesAdmin } from './OwnerThemesAdmin';
+import { mergeDrafts, OwnerThemesAdmin } from './OwnerThemesAdmin';
 
 const theme = { id: 'night', name: 'Night', mood: 'A dark room', tone: 'dark', tokens: { 'bg-app': '#120d33', 'bg-card': '#1a1440', 'ink-5': '#9a92c8' }, ornaments: [] };
 
@@ -87,5 +87,18 @@ describe('owner-only themes in the app (T47)', () => {
   it('Owner console: says so without a server', () => {
     render(<OwnerThemesAdmin store={null} />);
     expect(screen.getByText(/Owner themes need HLITH’s server/)).toBeInTheDocument();
+  });
+
+  it('“Add the set themes” adds new drafts only; a theme already there is never changed or removed (T74)', () => {
+    const mine = { id: 'mine', name: 'Mine', tone: 'dark', tokens: { 'bg-app': '#0a0b12', 'bg-card': '#10121c', 'ink-5': '#9aa3b8' }, ornaments: [] };
+    const draft = (id: string, name: string) => ({ id, name, tone: 'dark', mood: '', tokens: { 'bg-app': '#0a0b12', 'bg-card': '#10121c', 'ink-5': '#9aa3b8' }, ornaments: ['orbit-light', 'starfield'] });
+    const changed = { ...draft('two', 'Two'), name: 'Two (renamed by the owner)' };
+    const out = mergeDrafts({ themes: [mine, changed], other: 1 }, [draft('one', 'One'), draft('two', 'Two'), { id: 'bad', name: '' }]);
+    expect(out.added).toEqual(['One']);
+    expect(out.kept).toBe(1);
+    expect(out.problems.length).toBeGreaterThan(0);
+    expect(out.manifest.themes.map((t) => t.id)).toEqual(['mine', 'two', 'one']);
+    expect(out.manifest.themes[1]).toBe(changed);
+    expect(out.manifest.other).toBe(1);
   });
 });

@@ -36,6 +36,7 @@ export const BACKUP_TABLES = [
   'reward_claims',
   'reward_grants',
   'reward_log',
+  'owner_theme_drafts',
 ] as const;
 
 export const BACKUP_BUCKET = 'backups';

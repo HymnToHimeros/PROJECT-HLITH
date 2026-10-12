@@ -11,13 +11,14 @@
  */
 import { useSyncExternalStore } from 'react';
 import { contrast } from './contrast';
+import { ACCENT_SHAPES, MOTIF_LAYERS, TEXTURE_LAYERS } from './ornamentIds';
 
 /** Saved in prefs.theme for an owner theme: `owner:<id>`. */
 export type OwnerThemeId = `owner:${string}`;
 export const OWNER_PREFIX = 'owner:';
 export const isOwnerThemeId = (v: unknown): v is OwnerThemeId => typeof v === 'string' && v.startsWith(OWNER_PREFIX);
 
-export const ORNAMENTS = ['hearts', 'bubbles', 'gold-frame', 'lace'] as const;
+export const ORNAMENTS = ['hearts', 'bubbles', 'gold-frame', 'lace', ...MOTIF_LAYERS, ...TEXTURE_LAYERS, ...ACCENT_SHAPES] as const;
 export type Ornament = (typeof ORNAMENTS)[number];
 
 export interface OwnerThemeEntry {

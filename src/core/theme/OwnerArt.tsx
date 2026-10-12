@@ -1,6 +1,7 @@
 import { memo } from 'react';
 import type { OwnerTheme } from './ownerThemes';
 import a from './art.module.css';
+import { OrnamentLayers } from './ornaments';
 
 /**
  * An owner theme's background (T47): the owner's own picture filling the art layer behind the
@@ -13,6 +14,7 @@ export const OwnerArt = memo(function OwnerArt({ theme }: { theme: OwnerTheme })
   return (
     <div className={`${a.art} ${a.ownerArt}`} aria-hidden="true" data-art="owner">
       {src && <img className={a.ownerPicture} src={src} alt="" decoding="async" />}
+      <OrnamentLayers ids={theme.ornaments} />
       <span className={a.ownerScrim} />
       {theme.ornaments.includes('gold-frame') && (
         <svg className={a.ownerFrame} viewBox="0 0 100 100" preserveAspectRatio="none">

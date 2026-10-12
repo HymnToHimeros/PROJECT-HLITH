@@ -880,3 +880,50 @@
 :global(:root[data-motion='reduced']) .nav[data-glide='on']::after {
   animation: none;
 }
+
+/* Owner-theme accent shapes (T74): the active module's marker takes the theme's shape. */
+:global([data-ornaments~='accent-diamond']) .navItem[aria-current='page']::before,
+:global([data-ornaments~='accent-diamond']) .nav[data-glide='on']::after,
+:global([data-ornaments~='accent-crescent']) .navItem[aria-current='page']::before,
+:global([data-ornaments~='accent-crescent']) .nav[data-glide='on']::after,
+:global([data-ornaments~='accent-ring']) .navItem[aria-current='page']::before,
+:global([data-ornaments~='accent-ring']) .nav[data-glide='on']::after,
+:global([data-ornaments~='accent-rune']) .navItem[aria-current='page']::before,
+:global([data-ornaments~='accent-rune']) .nav[data-glide='on']::after {
+  left: -3px;
+  width: 10px;
+  height: 10px;
+  border-radius: 0;
+  -webkit-mask: var(--accent-shape) center / contain no-repeat;
+  mask: var(--accent-shape) center / contain no-repeat;
+}
+:global([data-ornaments~='accent-diamond']) .nav,
+:global([data-ornaments~='accent-diamond']) .navItem {
+  --accent-shape: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Cpath d='M5 0 10 5 5 10 0 5Z'/%3E%3C/svg%3E");
+}
+:global([data-ornaments~='accent-crescent']) .nav,
+:global([data-ornaments~='accent-crescent']) .navItem {
+  --accent-shape: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Cpath d='M6.5 0A5 5 0 1 0 10 8.4 4 4 0 1 1 6.5 0Z'/%3E%3C/svg%3E");
+}
+:global([data-ornaments~='accent-ring']) .nav,
+:global([data-ornaments~='accent-ring']) .navItem {
+  --accent-shape: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Cpath fill-rule='evenodd' d='M5 0a5 5 0 1 1 0 10A5 5 0 0 1 5 0Zm0 2.4a2.6 2.6 0 1 0 0 5.2 2.6 2.6 0 0 0 0-5.2Z'/%3E%3C/svg%3E");
+}
+:global([data-ornaments~='accent-rune']) .nav,
+:global([data-ornaments~='accent-rune']) .navItem {
+  --accent-shape: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Cpath d='M3.6 0h2v4l3-2v2.4l-3 2V10h-2Z'/%3E%3C/svg%3E");
+}
+:global([data-ornaments~='accent-diamond']) .navItem[aria-current='page']::before,
+:global([data-ornaments~='accent-crescent']) .navItem[aria-current='page']::before,
+:global([data-ornaments~='accent-ring']) .navItem[aria-current='page']::before,
+:global([data-ornaments~='accent-rune']) .navItem[aria-current='page']::before {
+  top: 50%;
+  bottom: auto;
+  transform: translateY(-50%);
+}
+:global([data-ornaments~='accent-diamond']) .nav[data-glide='on']::after,
+:global([data-ornaments~='accent-crescent']) .nav[data-glide='on']::after,
+:global([data-ornaments~='accent-ring']) .nav[data-glide='on']::after,
+:global([data-ornaments~='accent-rune']) .nav[data-glide='on']::after {
+  transform: translateY(calc(var(--glide-y) + var(--glide-h) / 2 - 5px));
+}
