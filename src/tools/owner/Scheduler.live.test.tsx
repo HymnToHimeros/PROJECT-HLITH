@@ -33,6 +33,7 @@ vi.mock('../../core/data/backend', () => {
       order: () => q,
       limit: () => q,
       eq: () => q,
+      upsert: async () => ({ error: null }),
       update: (patch: object) => ({
         eq: async (_c: string, id: unknown) => {
           calls.updates.push({ table, patch, id });

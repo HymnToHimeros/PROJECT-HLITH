@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import type { PostPayload } from '../intel/leakNotes';
 import o from './owner.module.css';
 
 /*
@@ -7,32 +8,7 @@ import o from './owner.module.css';
  * inexact"), with "Show original"; images by link only, never copied.
  */
 
-export interface PostPayload {
-  url?: string;
-  at?: string;
-  text: string;
-  translation?: string;
-  images: string[];
-}
-
-/** The `post` part of a finding's payload, or null when it has none. */
-export function postOf(payload: Record<string, unknown>): PostPayload | null {
-  const p = payload.post;
-  if (!p || typeof p !== 'object') return null;
-  const r = p as Record<string, unknown>;
-  if (typeof r.text !== 'string' || !r.text.trim()) return null;
-  const s = (v: unknown) => (typeof v === 'string' && v.trim() ? v : undefined);
-  const translation = s(r.translation);
-  const url = s(r.url);
-  const at = s(r.at);
-  return {
-    text: r.text,
-    images: Array.isArray(r.images) ? r.images.filter((x): x is string => typeof x === 'string' && /^https:\/\//.test(x)) : [],
-    ...(translation ? { translation } : {}),
-    ...(url ? { url } : {}),
-    ...(at ? { at } : {}),
-  };
-}
+export { postOf, type PostPayload } from '../intel/leakNotes';
 
 export function LeakPost({ post }: { post: PostPayload }) {
   const [original, setOriginal] = useState(false);

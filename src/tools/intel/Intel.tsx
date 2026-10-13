@@ -5,12 +5,15 @@ import { formatDate } from '../../core/time/reset';
 import { EmptyState, ExampleNotice, ExampleTag, GameTag, NoData, Timer } from '../../core/ui';
 import type { GameLists } from '../today/lists';
 import { exampleIntel, exampleReliability, intelItems, kindLabel, type IntelItem, type IntelKind, type Reliability } from './intel';
+import type { LeakNote } from './leakNotes';
 import n from './intel.module.css';
 
 interface Props {
   games: GameContract[];
   lists: Record<GameId, GameLists>;
   now: number;
+  /** Leak posts the owner approved (leakNotes.ts), newest first. */
+  notes?: LeakNote[];
 }
 
 interface Row {
@@ -23,7 +26,7 @@ const KINDS: IntelKind[] = ['character', 'weapon', 'area', 'event', 'system'];
 const REL: Record<Reliability, { label: string; pct: number }> = { high: { label: 'High', pct: 90 }, mid: { label: 'Medium', pct: 60 }, low: { label: 'Low', pct: 30 } };
 
 /** Intel (design): type filter, then one dashed row per item: kind, ? UNVERIFIED, title, source, source reliability. */
-export function Intel({ games, lists, now }: Props) {
+export function Intel({ games, lists, now, notes = [] }: Props) {
   const [kind, setKind] = useState<IntelKind | 'all'>('all');
   const several = games.length > 1;
   const showExamples = useExamplesShown();
@@ -62,7 +65,88 @@ export function Intel({ games, lists, now }: Props) {
           </li>
         ))}
       </ul>
+      {notes.length > 0 && <LeakNotes notes={notes} games={games} />}
     </div>
+  );
+}
+
+const NOTE_KIND: Record<string, string> = { leak: 'Leak', event: 'Event', banner: 'Banner', character: 'Character', info: 'News' };
+
+/** News and leaks: every finding the owner approved, any kind or source, newest first; leaks marked unverified. */
+function LeakNotes({ notes, games }: { notes: LeakNote[]; games: GameContract[] }) {
+  const several = games.length > 1;
+  return (
+    <section className={n.stack} aria-labelledby="intel-notes">
+      <h2 className={n.section} id="intel-notes">
+        News and leaks
+      </h2>
+      <ul className={n.list} aria-label="News and leaks">
+        {notes.map((note) => {
+          const game = games.find((g) => g.id === note.gameId);
+          return (
+            <li key={`${note.gameId}:${note.id}`}>
+              <LeakNoteRow note={note} game={game} several={several} />
+            </li>
+          );
+        })}
+      </ul>
+    </section>
+  );
+}
+
+function LeakNoteRow({ note, game, several }: { note: LeakNote; game: GameContract | undefined; several: boolean }) {
+  const [original, setOriginal] = useState(false);
+  const translated = Boolean(note.translation);
+  const shown = translated && !original ? note.translation : note.text;
+  return (
+    <article className={n.row} style={{ '--row-vent': game?.vent } as CSSProperties} aria-label={note.title}>
+      <div className={n.main}>
+        <div className={n.meta}>
+          <span className={n.kind}>{note.leak ? 'Leak' : (NOTE_KIND[note.kind] ?? 'News')}</span>
+          {note.leak && (
+            <span className={n.unverified} title="Not confirmed by the game">
+              ? UNVERIFIED
+            </span>
+          )}
+          {several && game && <GameTag label={game.short} vent={game.vent} />}
+        </div>
+        <h3 className={n.title}>{note.title}</h3>
+        <span className={n.source}>
+          {formatDate(Date.parse(note.at))} · {note.credit}
+          {note.url && (
+            <>
+              {' · '}
+              <a className={n.link} href={note.url} target="_blank" rel="noreferrer noopener">
+                Post
+              </a>
+            </>
+          )}
+        </span>
+        {translated && <span className={n.detail}>{original ? 'Original post' : 'Translated, may be inexact'}</span>}
+        {shown && (
+          <p className={n.postText} lang={translated && original ? 'zh' : undefined}>
+            {shown}
+          </p>
+        )}
+        <div className={n.meta}>
+          {translated && (
+            <button type="button" className={n.segBtn} onClick={() => setOriginal((v) => !v)} aria-pressed={original}>
+              {original ? 'Show translation' : 'Show original'}
+            </button>
+          )}
+          {note.images.length > 0 && (
+            <span className={n.source}>
+              Images:{' '}
+              {note.images.map((src, i) => (
+                <a key={src} className={n.link} href={src} target="_blank" rel="noreferrer noopener" aria-label={`Image ${i + 1} (opens the source)`}>
+                  {i + 1}
+                </a>
+              ))}
+            </span>
+          )}
+        </div>
+      </div>
+    </article>
   );
 }
 

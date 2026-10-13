@@ -13,7 +13,7 @@ import { Users } from './Users';
 import o from './owner.module.css';
 import { OwnerThemesAdmin } from './OwnerThemesAdmin';
 import { Scheduler, when } from './Scheduler';
-import { jobLabel, useSchedulerData } from './schedulerData';
+import { backfillNotes, jobLabel, useSchedulerData } from './schedulerData';
 
 /*
  * Owner console (R58), design: Account → Owner console. Shown only to owners
@@ -76,6 +76,11 @@ export default function OwnerConsole(props: ModuleScreenProps & { selfId?: strin
   };
   const [now] = useState(() => Date.now());
   const sched = useSchedulerData(props.games.map((g) => g.id));
+  // Findings approved before Intel showed them get their notes once the findings have loaded (T77).
+  const liveFindings = sched.mode === 'live' && !sched.loading && !sched.error ? sched.findings : null;
+  useEffect(() => {
+    if (liveFindings) void backfillNotes(liveFindings).catch(() => 0);
+  }, [liveFindings]);
   const newFindings = sched.findings.filter((f) => f.status === 'new').length;
   // An approved finding that needs more fields opens Lists with it in the form.
   const [draft, setDraft] = useState<Draft | null>(null);

@@ -150,3 +150,20 @@ export function planApproval(f: FindingLike, game: GameContract | undefined): Ap
   if (!id) missing.unshift('id');
   return { ok: true, draft: { gameId: f.game_id, list, item: known, missing, findingTitle: f.title, findingId: f.id } };
 }
+
+/**
+ * An info finding about a new event ("ZZZ: new event Data Bounty: Combat Simulation (2026-10-13 → 2026-10-18)",
+ * or a payload with title/start/end): the event it names, or null. Approving it checks the game's
+ * Events list first, then opens the Lists form pre-filled when it isn't there yet.
+ */
+export function eventFromInfo(f: FindingLike): { title: string; start?: string; end?: string } | null {
+  if (f.kind !== 'info' || f.payload.leak === true) return null;
+  const p = f.payload;
+  const title = str(p.title) ?? str(p.event);
+  const dated = (t: string, a: string | undefined, b: string | undefined) => ({ title: t, ...(a ? { start: a } : {}), ...(b ? { end: b } : {}) });
+  if (title && (str(p.start) || str(p.end))) return dated(title, iso(p.start), iso(p.end));
+  const m = /new event\s*:?\s*(.+?)\s*\((\d{4}-\d{2}-\d{2})\s*(?:→|->|–|-|to)\s*(\d{4}-\d{2}-\d{2})\)\s*$/i.exec(f.title);
+  if (!m?.[1]) return null;
+  return dated(m[1].trim(), iso(m[2]), iso(m[3]));
+}
+
