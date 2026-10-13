@@ -13,7 +13,8 @@ import type { GameContract } from '../../core/contract';
 import { backend } from '../../core/data/backend';
 import { LIST_KINDS, type ListKind } from '../../core/data/catalog';
 import { fetchCatalogRows, saveCatalogRow, setCatalogStatus } from '../../core/data/catalogSource';
-import { findingSource, planApproval, type Draft } from './approve';
+import { noteFromFinding } from '../intel/leakNotes';
+import { eventFromInfo, findingSource, planApproval, type Draft } from './approve';
 
 export interface JobRowFull {
   id: string;
@@ -160,6 +161,7 @@ export async function runJobNow(id: string): Promise<void> {
 
 export type ApproveResult =
   | { kind: 'added'; message: string; gameId: string; list: ListKind; id: string }
+  | { kind: 'note'; message: string; gameId: string; id: string }
   | { kind: 'needs-form'; message: string; draft: Draft }
   | { kind: 'none'; message: string };
 
@@ -171,8 +173,28 @@ const LIST_NOUN: Record<ListKind, string> = { events: 'Events', banners: 'Banner
  * the Lists form. The row's source names the finding, so "Move back to new" can retire it.
  */
 export async function onApprove(finding: FindingView, game?: GameContract): Promise<ApproveResult> {
+  const short = game?.short ?? finding.game_id?.toUpperCase() ?? '';
+  // A leak post (info marked as a leak, with the post): a note in that game's Intel (T77).
+  const note = noteFromFinding(finding);
+  if (note) {
+    await saveCatalogRow({ game_id: note.gameId, kind: 'leak', id: note.id, data: note.data, source: findingSource(finding.id) });
+    return { kind: 'note', message: `Added to ${short} · Intel · Leak notes. Everyone sees it after reload (unless they hide leaks). “Move back to new” takes it out again.`, gameId: note.gameId, id: note.id };
+  }
+  // A new event named in an info finding: already listed, or the Lists form opens pre-filled.
+  const event = finding.game_id ? eventFromInfo(finding) : null;
+  if (event && finding.game_id) {
+    const listed = game ? await game.data.events().catch(() => []) : [];
+    const same = listed.find((e) => e.title.trim().toLowerCase() === event.title.toLowerCase());
+    if (same) return { kind: 'none', message: `Approved. “${same.title}” is already in ${short} · Events (${same.start.slice(0, 10)} → ${same.end.slice(0, 10)}), so nothing new was added.` };
+    const asEvent = planApproval({ ...finding, kind: 'event', payload: { ...event } }, game);
+    if (asEvent.ok) return { kind: 'needs-form', message: `Approved. “${event.title}” isn’t in ${short} · Events yet. The form is open in Lists with its name and dates; it still needs: ${asEvent.draft.missing.join(', ')}.`, draft: asEvent.draft };
+  }
   const plan = planApproval(finding, game);
-  if (!plan.ok) return { kind: 'none', message: `Approved. ${plan.reason}` };
+  if (!plan.ok)
+    return {
+      kind: 'none',
+      message: `Approved, but nothing was added anywhere: ${finding.kind === 'info' ? 'it’s an info finding without a leak post or an event’s name and dates, so no list or page takes it' : plan.reason.replace(/\.$/, '').replace(/^It /, 'it ')}.`,
+    };
   const { draft } = plan;
   if (draft.missing.length > 0) {
     return { kind: 'needs-form', message: `Approved. To add it to ${LIST_NOUN[draft.list]} it still needs: ${draft.missing.join(', ')}. The form is open in Lists.`, draft };
@@ -191,6 +213,14 @@ export async function onApprove(finding: FindingView, game?: GameContract): Prom
 
 /** Undoing an approval: the list item that finding added (if any) is retired again. Returns what happened, or null if it added nothing. */
 export async function undoApprove(finding: FindingView, game?: GameContract): Promise<string | null> {
+  const note = noteFromFinding(finding);
+  if (note) {
+    const rows = await fetchCatalogRows(backend, note.gameId, 'leak');
+    const row = rows.find((r) => r.source === findingSource(finding.id) && r.status === 'active');
+    if (!row) return null;
+    await setCatalogStatus(row.game_id, 'leak', row.id, 'retired');
+    return `Took “${String(row.data.title ?? row.id)}” out of ${game?.short ?? row.game_id.toUpperCase()} · Intel · Leak notes again.`;
+  }
   const plan = planApproval(finding, game);
   if (!plan.ok) return null;
   const kind = LIST_KINDS[plan.draft.list];
@@ -222,6 +252,27 @@ export async function reopenFinding(finding: FindingView, game?: GameContract): 
   const { error } = await backend.from('scheduler_findings').update({ status: 'new', decided_by: null, decided_at: null }).eq('id', finding.id);
   if (error) throw new Error(error.message);
   return undone;
+}
+
+/**
+ * Leak posts approved before notes existed (or whose note write failed): add their Intel note now.
+ * Only adds what is missing (one row per finding, by its source); a retired note stays retired.
+ * Returns how many were added.
+ */
+export async function backfillNotes(findings: FindingView[]): Promise<number> {
+  const wanted = findings.filter((f) => f.status === 'approved').flatMap((f) => {
+    const note = noteFromFinding(f);
+    return note ? [{ f, note }] : [];
+  });
+  if (!backend || wanted.length === 0) return 0;
+  const have = new Set((await fetchCatalogRows(backend, undefined, 'leak')).map((r) => r.source));
+  let added = 0;
+  for (const { f, note } of wanted) {
+    if (have.has(findingSource(f.id))) continue;
+    await saveCatalogRow({ game_id: note.gameId, kind: 'leak', id: note.id, data: note.data, source: findingSource(f.id) });
+    added++;
+  }
+  return added;
 }
 
 export const jobLabel = (id: string) => JOBS.find((j) => j.id === id)?.label ?? id;

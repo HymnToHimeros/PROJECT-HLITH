@@ -158,3 +158,22 @@
     width: 100%;
   }
 }
+
+/* Leak notes (T77): approved posts from a leak channel. */
+.section {
+  margin: var(--s-3) 0 0;
+  font-size: 15px;
+  font-weight: 700;
+}
+.postText {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--ink-2);
+  white-space: pre-line;
+  overflow-wrap: anywhere;
+  max-width: 72ch;
+}
+.link {
+  color: var(--glacier);
+}

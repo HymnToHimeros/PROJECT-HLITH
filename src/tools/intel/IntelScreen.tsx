@@ -5,6 +5,7 @@ import { setHideLeaks, useHideLeaks } from '../banners/leakPref';
 import { LeakSwitch } from '../banners/LeakSwitch';
 import { inScope, useGameLists } from '../today/lists';
 import { Intel, IntelHidden } from './Intel';
+import { useLeakNotes } from './leakNotes';
 import n from './intel.module.css';
 
 /** Intel module (design): new content no other module covers. Shares the "Hide leaks" switch with Banners. */
@@ -13,6 +14,7 @@ export default function IntelScreen({ games, scope }: ModuleScreenProps) {
   const hideLeaks = useHideLeaks();
   const shown = useMemo(() => inScope(games, scope), [games, scope]);
   const lists = useGameLists(shown);
+  const notes = useLeakNotes(shown.map((g) => g.id));
   return (
     <div className={n.stack}>
       <div className={n.intro}>
@@ -31,7 +33,7 @@ export default function IntelScreen({ games, scope }: ModuleScreenProps) {
       >
         Leak alerts (a message when a character you want leaks) aren’t built yet.
       </HowTo>
-      {hideLeaks ? <IntelHidden onShow={() => setHideLeaks(false)} /> : lists ? <Intel games={shown} lists={lists} now={now} /> : <p className={n.muted}>Loading…</p>}
+      {hideLeaks ? <IntelHidden onShow={() => setHideLeaks(false)} /> : lists ? <Intel games={shown} lists={lists} now={now} notes={notes} /> : <p className={n.muted}>Loading…</p>}
     </div>
   );
 }
