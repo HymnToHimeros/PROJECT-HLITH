@@ -37,6 +37,14 @@ describe('leak notes', () => {
     expect(notesFor(rows, ['hsr']).map((n) => n.title)).toEqual(['B', 'A']);
     expect(readNote(row('x', 'hsr', { ...ok, url: 'javascript:alert(1)' }))?.url).toBeUndefined();
   });
+  it('the same item approved twice shows once (same game and title, any spacing or case)', () => {
+    const ok = { title: 'Lap Event', at: '2026-10-12T00:00:00Z', text: '', credit: 'C', images: [] };
+    const rows = [row('a', 'zzz', ok), row('b', 'zzz', { ...ok, title: ' lap  event ', at: '2026-10-12T01:00:00Z' }), row('c', 'hsr', ok)];
+    expect(notesFor(rows, ['zzz', 'hsr']).map((n) => `${n.gameId}:${n.id}`)).toEqual(['zzz:b', 'hsr:c']);
+  });
+  it('an event finding becomes a note named after the event, with its dates', () => {
+    expect(noteFromFinding(f({ title: 'ZZZ: new event Data Bounty: Combat Simulation (2026-10-13 → 2026-10-18)', payload: {} }))?.data).toMatchObject({ title: 'Data Bounty: Combat Simulation', text: '2026-10-13 → 2026-10-18', leak: false });
+  });
 });
 
 describe('event info findings', () => {

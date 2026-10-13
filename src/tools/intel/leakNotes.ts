@@ -8,6 +8,7 @@
 import { useEffect, useState } from 'react';
 import type { CatalogRow } from '../../core/data/catalog';
 import { catalogRows } from '../../core/data/catalogSource';
+import { eventFromInfo } from '../owner/approve';
 
 /** A post a job found on a channel, inside its finding (docs/ROUTINES.md step 3). */
 export interface PostPayload {
@@ -107,6 +108,9 @@ const cleanTitle = (title: string) => title.replace(/^leak\s*(\([^)]*\))?\s*:\s*
 export function noteFromFinding(f: FindingForNote): { gameId: string; id: string; data: Omit<LeakNote, 'id' | 'gameId'> } | null {
   if (!f.game_id) return null;
   const post = postOf(f.payload);
+  // "ZZZ: new event X (2026-10-13 → 2026-10-18)": the note is the event's name, with its dates as the line.
+  const event = post ? null : eventFromInfo(f);
+  const eventLine = event ? `${event.start?.slice(0, 10) ?? '?'} → ${event.end?.slice(0, 10) ?? '?'}` : undefined;
   const at = post?.at && Number.isFinite(Date.parse(post.at)) ? post.at : f.found_at;
   const url = link(post?.url) ?? link(f.source_url);
   return {
@@ -115,10 +119,10 @@ export function noteFromFinding(f: FindingForNote): { gameId: string; id: string
     data: {
       kind: f.kind,
       leak: f.kind === 'leak' || f.payload.leak === true,
-      title: cleanTitle(f.title),
+      title: event?.title ?? cleanTitle(f.title),
       at,
       credit: s(f.source_name) ?? 'unknown source',
-      text: post?.text ?? lineOf(f.payload),
+      text: post?.text ?? eventLine ?? lineOf(f.payload),
       images: post?.images ?? [],
       ...(url ? { url } : {}),
       ...(post?.translation ? { translation: post.translation } : {}),
@@ -150,13 +154,23 @@ export function readNote(row: CatalogRow): LeakNote | null {
   };
 }
 
-/** The notes for these games, newest first. */
+/** Two notes say the same thing when they are for the same game with the same title (an item approved twice). */
+export const noteKey = (gameId: string, title: string) => `${gameId}|${title.trim().toLowerCase().replace(/\s+/g, ' ')}`;
+
+/** The notes for these games, newest first; the same item approved twice shows once. */
 export function notesFor(rows: CatalogRow[], gameIds: string[]): LeakNote[] {
+  const seen = new Set<string>();
   return rows
     .filter((r) => gameIds.includes(r.game_id))
     .map(readNote)
     .filter((n): n is LeakNote => n !== null)
-    .sort((a, b) => Date.parse(b.at) - Date.parse(a.at));
+    .sort((a, b) => Date.parse(b.at) - Date.parse(a.at))
+    .filter((n) => {
+      const key = noteKey(n.gameId, n.title);
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
 }
 
 /** Leak notes for these games from the catalog (none without a server or signed out). */

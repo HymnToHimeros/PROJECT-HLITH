@@ -30,6 +30,9 @@ vi.mock('../../core/data/backend', async () => {
       scheduler_findings: [
         finding('s-new', 'Leak (Seele): New planar set', post(37504, '2026-10-13T02:00:00Z', { translation: 'English words' })),
         finding('s-old', 'Leak (Seele): Earlier note', post(37486, '2026-10-12T20:00:00Z'), 'approved'),
+        // The same event approved twice, as two findings: one note.
+        finding('d-1', 'AA: new event Lap Event (2026-10-11 → 2026-10-16)', {}, 'approved'),
+        finding('d-2', 'AA: new event Lap Event (2026-10-11 → 2026-10-16)', {}, 'approved'),
         finding('e-listed', 'AA: new event Big Fest (2026-10-13 → 2026-10-18)', {}),
         finding('e-missing', 'AA: new event Small Fair (2026-10-20 → 2026-10-25)', {}),
         finding('i-plain', 'Something worth knowing', {}),
@@ -81,7 +84,8 @@ describe('approved leak posts and info findings (T77)', () => {
   it('backfills earlier approvals, adds new ones to Intel with a plain message, checks events, and undoes', async () => {
     const view = render(<OwnerConsole games={[game]} {...props} />);
     // The post approved before notes existed gets its note once the findings load.
-    await waitFor(() => expect(notes().map((r) => r.source)).toEqual(['finding:s-old']));
+    await waitFor(() => expect(notes().map((r) => r.source)).toEqual(['finding:s-old', 'finding:d-1']));
+    expect(notes()[1]).toMatchObject({ data: { title: 'Lap Event', text: '2026-10-11 → 2026-10-16', kind: 'info', leak: false } });
     expect(notes()[0]).toMatchObject({ kind: 'leak', status: 'active', data: { title: 'Earlier note', credit: 'Seele (Telegram)', url: 'https://t.me/Seele_Leaks/37486', leak: true } });
 
     fireEvent.click(screen.getByRole('tab', { name: /Findings/ }));
@@ -115,11 +119,11 @@ describe('approved leak posts and info findings (T77)', () => {
     const section = await screen.findByRole('list', { name: 'News and leaks' });
     const cards = within(section).getAllByRole('article');
     // Every approval, newest first (the posts by when they were posted).
-    // (The first four were found at the same time, so they keep the order they were approved in.)
-    expect(cards.map((c) => c.getAttribute('aria-label'))).toEqual(['AA: new event Big Fest (2026-10-13 → 2026-10-18)', 'Something worth knowing', 'New star', 'AA: new event Small Fair (2026-10-20 → 2026-10-25)', 'New planar set', 'Earlier note']);
-    expect(within(cards[0] as HTMLElement).queryByText('? UNVERIFIED')).toBeNull(); // not a leak
-    expect(within(cards[2] as HTMLElement).getByText('Character')).toBeInTheDocument();
-    const first = cards[4] as HTMLElement;
+    // (The first five were found at the same time, so they keep the order they were written in.)
+    expect(cards.map((c) => c.getAttribute('aria-label'))).toEqual(['Lap Event', 'Big Fest', 'Something worth knowing', 'New star', 'Small Fair', 'New planar set', 'Earlier note']);
+    expect(within(cards[1] as HTMLElement).queryByText('? UNVERIFIED')).toBeNull(); // not a leak
+    expect(within(cards[3] as HTMLElement).getByText('Character')).toBeInTheDocument();
+    const first = cards[5] as HTMLElement;
     expect(within(first).getByText('? UNVERIFIED')).toBeInTheDocument();
     expect(within(first).getByText(/Seele \(Telegram\)/)).toBeInTheDocument();
     expect(within(first).getByRole('link', { name: 'Post' })).toHaveAttribute('href', 'https://t.me/Seele_Leaks/37504');
@@ -139,7 +143,7 @@ describe('approved leak posts and info findings (T77)', () => {
     await act(async () => fireEvent.click(await screen.findByRole('button', { name: 'Move back to new: Leak (Seele): New planar set' })));
     expect(screen.getByRole('status')).toHaveTextContent('Took it out of AA · Intel again.');
     expect(notes().find((r) => r.source === 'finding:s-new')).toMatchObject({ status: 'retired' });
-    expect(notes().filter((r) => r.kind === 'leak')).toHaveLength(6); // nothing deleted
+    expect(notes().filter((r) => r.kind === 'leak')).toHaveLength(7); // nothing deleted
     // A list finding: both its Intel note and its list item are retired.
     await act(async () => fireEvent.click(await screen.findByRole('button', { name: 'Move back to new: New star' })));
     expect(screen.getByRole('status')).toHaveTextContent('Took it out of AA · Intel again. Retired “Nova” again');

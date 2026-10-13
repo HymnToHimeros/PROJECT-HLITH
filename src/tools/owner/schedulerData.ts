@@ -13,7 +13,7 @@ import type { GameContract } from '../../core/contract';
 import { backend } from '../../core/data/backend';
 import { LIST_KINDS, type CatalogKind, type ListKind } from '../../core/data/catalog';
 import { fetchCatalogRows, saveCatalogRow, setCatalogStatus } from '../../core/data/catalogSource';
-import { noteFromFinding } from '../intel/leakNotes';
+import { noteFromFinding, noteKey } from '../intel/leakNotes';
 import { eventFromInfo, findingSource, planApproval, type Draft } from './approve';
 
 export interface JobRowFull {
@@ -267,10 +267,16 @@ export async function backfillNotes(findings: FindingView[]): Promise<number> {
     return note ? [{ f, note }] : [];
   });
   if (!backend || wanted.length === 0) return 0;
-  const have = new Set((await fetchCatalogRows(backend, undefined, 'leak')).map((r) => r.source));
+  const rows = await fetchCatalogRows(backend, undefined, 'leak');
+  const have = new Set(rows.map((r) => r.source));
+  // The same item approved twice gets one note (noteKey: same game and title).
+  const titles = new Set(rows.filter((r) => r.status === 'active').map((r) => noteKey(r.game_id, String(r.data.title ?? ''))));
   let added = 0;
   for (const { f, note } of wanted) {
     if (have.has(findingSource(f.id))) continue;
+    const key = noteKey(note.gameId, note.data.title);
+    if (titles.has(key)) continue;
+    titles.add(key);
     await saveCatalogRow({ game_id: note.gameId, kind: 'leak', id: note.id, data: note.data, source: findingSource(f.id) });
     added++;
   }
