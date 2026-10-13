@@ -70,15 +70,17 @@ export function Intel({ games, lists, now, notes = [] }: Props) {
   );
 }
 
-/** Leak notes: posts the owner approved from a leak channel, newest first, always unverified. */
+const NOTE_KIND: Record<string, string> = { leak: 'Leak', event: 'Event', banner: 'Banner', character: 'Character', info: 'News' };
+
+/** News and leaks: every finding the owner approved, any kind or source, newest first; leaks marked unverified. */
 function LeakNotes({ notes, games }: { notes: LeakNote[]; games: GameContract[] }) {
   const several = games.length > 1;
   return (
-    <section className={n.stack} aria-labelledby="leak-notes">
-      <h2 className={n.section} id="leak-notes">
-        Leak notes
+    <section className={n.stack} aria-labelledby="intel-notes">
+      <h2 className={n.section} id="intel-notes">
+        News and leaks
       </h2>
-      <ul className={n.list} aria-label="Leak notes">
+      <ul className={n.list} aria-label="News and leaks">
         {notes.map((note) => {
           const game = games.find((g) => g.id === note.gameId);
           return (
@@ -100,10 +102,12 @@ function LeakNoteRow({ note, game, several }: { note: LeakNote; game: GameContra
     <article className={n.row} style={{ '--row-vent': game?.vent } as CSSProperties} aria-label={note.title}>
       <div className={n.main}>
         <div className={n.meta}>
-          <span className={n.kind}>Leak note</span>
-          <span className={n.unverified} title="Not confirmed by the game">
-            ? UNVERIFIED
-          </span>
+          <span className={n.kind}>{note.leak ? 'Leak' : (NOTE_KIND[note.kind] ?? 'News')}</span>
+          {note.leak && (
+            <span className={n.unverified} title="Not confirmed by the game">
+              ? UNVERIFIED
+            </span>
+          )}
           {several && game && <GameTag label={game.short} vent={game.vent} />}
         </div>
         <h3 className={n.title}>{note.title}</h3>
@@ -119,9 +123,11 @@ function LeakNoteRow({ note, game, several }: { note: LeakNote; game: GameContra
           )}
         </span>
         {translated && <span className={n.detail}>{original ? 'Original post' : 'Translated, may be inexact'}</span>}
-        <p className={n.postText} lang={translated && original ? 'zh' : undefined}>
-          {shown}
-        </p>
+        {shown && (
+          <p className={n.postText} lang={translated && original ? 'zh' : undefined}>
+            {shown}
+          </p>
+        )}
         <div className={n.meta}>
           {translated && (
             <button type="button" className={n.segBtn} onClick={() => setOriginal((v) => !v)} aria-pressed={original}>

@@ -83,7 +83,7 @@ export function Findings({ data, games, onDraft }: Props) {
           <>Jobs put what they find here: new leaks, events, banners, characters and other info. Each one says which job delivered it, whether it came from the routine, and when.</>,
           <>Approve what is right, Dismiss what is not. Nothing is ever removed: dismissed findings stay under “Dismissed”. Changed your mind? “Move back to new” puts it back in the inbox.</>,
           <>Approving a complete event, banner, character or leak adds it to that game’s built-in list for everyone (they see it after reload). If something is missing, the Lists form opens with what the finding gave, so you can finish it.</>,
-          <>A leak post (from a channel like Seele) goes into that game’s Intel under Leak notes. An info finding about a new event is checked against the game’s Events: already there, nothing is added; not there, the Lists form opens with its name and dates. After each Approve the line above the inbox says where it went, or that it went nowhere and why.</>,
+          <>Everything you approve also shows in that game’s Intel, under News and leaks (leaks marked unverified, posts with their link and translation). An info finding about a new event is checked against the game’s Events: already there, nothing more is added; not there, the Lists form opens with its name and dates. After each Approve the line above the inbox says where it went.</>,
           <>A finding the same job delivers again within 30 days is not added twice.</>,
         ]}
       />

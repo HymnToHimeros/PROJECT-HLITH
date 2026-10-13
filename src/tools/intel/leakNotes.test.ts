@@ -21,18 +21,19 @@ describe('leak notes', () => {
     expect(noteFromFinding(f())).toEqual({
       gameId: 'hsr',
       id: 'note-f1',
-      data: { title: 'Something new', at: '2026-10-13T01:00:00Z', credit: 'Seele (Telegram)', url: 'https://t.me/Seele_Leaks/1', text: 'orig', translation: 'eng', images: ['https://x/1.jpg'] },
+      data: { kind: 'info', leak: true, title: 'Something new', at: '2026-10-13T01:00:00Z', credit: 'Seele (Telegram)', url: 'https://t.me/Seele_Leaks/1', text: 'orig', translation: 'eng', images: ['https://x/1.jpg'] },
     });
   });
-  it('only info findings marked as a leak, with a post and a game', () => {
-    expect(noteFromFinding(f({ kind: 'leak' }))).toBeNull(); // goes into a list instead
-    expect(noteFromFinding(f({ payload: { post: { text: 'x' } } }))).toBeNull();
-    expect(noteFromFinding(f({ payload: { leak: true } }))).toBeNull();
+  it('every finding with a game becomes a note, whatever its kind; without a post it gets a short line', () => {
     expect(noteFromFinding(f({ game_id: null }))).toBeNull();
+    const event = noteFromFinding(f({ kind: 'event', title: 'Big Fest', payload: { start: '2026-10-13T20:00:00Z', end: '2026-10-18T19:59:00Z' }, source_url: 'https://hoyolab.example/1' }));
+    expect(event?.data).toMatchObject({ kind: 'event', leak: false, title: 'Big Fest', text: '2026-10-13 → 2026-10-18', url: 'https://hoyolab.example/1', at: '2026-10-13T02:00:00Z', images: [] });
+    expect(noteFromFinding(f({ kind: 'leak', title: 'New star', payload: { rarity: '5', element: 'Fire', featured: ['A', 'B'] } }))?.data).toMatchObject({ leak: true, text: 'Featured: A, B · 5 · Fire' });
+    expect(noteFromFinding(f({ payload: { summary: 'Own words' } }))?.data.text).toBe('Own words');
   });
   it('reads rows back, drops malformed or retired ones, newest first, only the shown games', () => {
     const ok = { title: 'A', at: '2026-10-12T00:00:00Z', text: 't', credit: 'C', images: [] };
-    const rows = [row('a', 'hsr', ok), row('b', 'hsr', { ...ok, title: 'B', at: '2026-10-13T00:00:00Z' }), row('c', 'zzz', ok), row('d', 'hsr', { title: 'no text' }), row('e', 'hsr', ok, 'retired')];
+    const rows = [row('a', 'hsr', ok), row('b', 'hsr', { ...ok, title: 'B', at: '2026-10-13T00:00:00Z' }), row('c', 'zzz', ok), row('d', 'hsr', { title: 'no date' }), row('e', 'hsr', ok, 'retired')];
     expect(notesFor(rows, ['hsr']).map((n) => n.title)).toEqual(['B', 'A']);
     expect(readNote(row('x', 'hsr', { ...ok, url: 'javascript:alert(1)' }))?.url).toBeUndefined();
   });

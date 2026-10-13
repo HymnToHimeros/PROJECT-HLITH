@@ -1,8 +1,9 @@
 /**
- * Leak notes (T77): leak posts the owner approved in Owner console → Findings, shown in
- * that game's Intel. Approving one writes a catalog row of kind `leak` (public.catalog_items:
- * everyone signed in reads it, it survives reloads, and "Move back to new" retires it like any
- * list item). Only the post's words and links are kept; images stay links, never copied.
+ * Intel notes (T77): every finding the owner approves in Owner console → Findings, whatever its
+ * kind or source, shows in that game's Intel (findings that fit a list still go into it too).
+ * Approving one writes a catalog row of kind `leak` (public.catalog_items: everyone signed in
+ * reads it, it survives reloads, and "Move back to new" retires it like any list item). Only words
+ * and links are kept; a post's images stay links, never copied.
  */
 import { useEffect, useState } from 'react';
 import type { CatalogRow } from '../../core/data/catalog';
@@ -44,12 +45,17 @@ export function postOf(payload: Record<string, unknown>): PostPayload | null {
 export interface LeakNote {
   id: string;
   gameId: string;
+  /** The finding's kind: leak, event, banner, character or info. */
+  kind: string;
+  /** From a leak (a leak finding, or one marked as a leak): shown as unverified. */
+  leak: boolean;
   title: string;
   /** When the post was made (ISO), or when it was found. */
   at: string;
   /** Who it came from, e.g. "Seele (Telegram)". */
   credit: string;
   url?: string;
+  /** The post, or a short line from the finding (dates, featured, …); may be empty. */
   text: string;
   /** English, when the post was translated (then `text` is the original). */
   translation?: string;
@@ -67,30 +73,55 @@ export interface FindingForNote {
   found_at: string;
 }
 
+const day = (v: unknown) => {
+  const t = typeof v === 'string' ? Date.parse(v) : NaN;
+  return Number.isFinite(t) ? new Date(t).toISOString().slice(0, 10) : undefined;
+};
+
+/** A short line from a finding without a post: its own summary, or its dates and featured names. */
+function lineOf(p: Record<string, unknown>): string {
+  const own = s(p.summary) ?? s(p.description) ?? s(p.note) ?? s(p.text);
+  if (own) return own;
+  const parts: string[] = [];
+  const from = day(p.start);
+  const to = day(p.end);
+  if (from || to) parts.push(`${from ?? '?'} → ${to ?? '?'}`);
+  if (Array.isArray(p.featured)) {
+    const names = p.featured.filter((x): x is string => typeof x === 'string' && x.trim() !== '');
+    if (names.length) parts.push(`Featured: ${names.join(', ')}`);
+  }
+  for (const k of ['rarity', 'element', 'role', 'path', 'type']) {
+    const v = s(p[k]);
+    if (v) parts.push(v);
+  }
+  return parts.join(' · ');
+}
+
 /** "Leak (Seele): Firefly rerun" → "Firefly rerun". */
 const cleanTitle = (title: string) => title.replace(/^leak\s*(\([^)]*\))?\s*:\s*/i, '').trim() || title.trim();
 
 /**
- * The Intel note an approved leak post becomes: an info finding marked as a leak, with a post.
- * (A `leak` finding with a new character, banner or event goes into that list instead: approve.ts.)
+ * The Intel note an approved finding becomes, whatever its kind: the post when it carries one
+ * (a leak channel), else a short line from its payload. Null only when it names no game.
  */
 export function noteFromFinding(f: FindingForNote): { gameId: string; id: string; data: Omit<LeakNote, 'id' | 'gameId'> } | null {
-  if (!f.game_id || f.kind !== 'info' || f.payload.leak !== true) return null;
+  if (!f.game_id) return null;
   const post = postOf(f.payload);
-  if (!post) return null;
-  const at = post.at && Number.isFinite(Date.parse(post.at)) ? post.at : f.found_at;
-  const url = link(post.url) ?? link(f.source_url);
+  const at = post?.at && Number.isFinite(Date.parse(post.at)) ? post.at : f.found_at;
+  const url = link(post?.url) ?? link(f.source_url);
   return {
     gameId: f.game_id,
     id: `note-${f.id}`.toLowerCase().replace(/[^a-z0-9-]+/g, '-').slice(0, 80),
     data: {
+      kind: f.kind,
+      leak: f.kind === 'leak' || f.payload.leak === true,
       title: cleanTitle(f.title),
       at,
       credit: s(f.source_name) ?? 'unknown source',
-      text: post.text,
-      images: post.images,
+      text: post?.text ?? lineOf(f.payload),
+      images: post?.images ?? [],
       ...(url ? { url } : {}),
-      ...(post.translation ? { translation: post.translation } : {}),
+      ...(post?.translation ? { translation: post.translation } : {}),
     },
   };
 }
@@ -100,18 +131,19 @@ export function readNote(row: CatalogRow): LeakNote | null {
   if (row.kind !== 'leak' || row.status !== 'active') return null;
   const d = row.data;
   const title = s(d.title);
-  const text = s(d.text);
   const at = s(d.at);
-  if (!title || !text || !at || !Number.isFinite(Date.parse(at))) return null;
+  if (!title || !at || !Number.isFinite(Date.parse(at))) return null;
   const url = link(d.url);
   const translation = s(d.translation);
   return {
     id: row.id,
     gameId: row.game_id,
+    kind: s(d.kind) ?? 'leak',
+    leak: d.leak !== false,
     title,
     at,
     credit: s(d.credit) ?? 'unknown source',
-    text,
+    text: s(d.text) ?? '',
     images: Array.isArray(d.images) ? d.images.filter((x): x is string => typeof x === 'string' && /^https:\/\//.test(x)) : [],
     ...(url ? { url } : {}),
     ...(translation ? { translation } : {}),

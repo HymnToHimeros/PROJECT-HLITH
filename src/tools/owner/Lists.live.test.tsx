@@ -85,6 +85,8 @@ function Harness({ start }: { start: string | undefined }) {
 }
 const renderConsole = (tab?: string) => render(<Harness start={tab} />);
 const catalog = () => (db.current as FakeDb).tables.catalog_items as Record<string, unknown>[];
+/** The list rows only (an approval also writes its Intel note, kind `leak`: T77). */
+const listRows = () => catalog().filter((r) => r.kind !== 'leak');
 
 describe('Owner console · Lists', () => {
   it('adds a new event for everyone, and the game’s list loader then includes it', async () => {
@@ -147,7 +149,8 @@ describe('Owner console · Findings → lists', () => {
     renderConsole('findings');
     const approve = await screen.findByRole('button', { name: 'Approve: Login event' });
     await act(async () => fireEvent.click(approve));
-    expect(catalog()).toEqual([
+    expect(catalog().filter((r) => r.kind === 'leak')).toEqual([expect.objectContaining({ source: 'finding:f2', status: 'active' })]); // also in Intel
+    expect(listRows()).toEqual([
       expect.objectContaining({
         kind: 'event',
         id: 'autumn-login-2026-10-12',
@@ -159,7 +162,7 @@ describe('Owner console · Findings → lists', () => {
 
     fireEvent.change(screen.getByLabelText('Status'), { target: { value: 'approved' } });
     await act(async () => fireEvent.click(screen.getByRole('button', { name: 'Move back to new: Login event' })));
-    expect(catalog()[0]).toMatchObject({ status: 'retired' });
+    expect(catalog().map((r) => r.status)).toEqual(['retired', 'retired']); // the Intel note and the list item
     expect(screen.getByRole('status')).toHaveTextContent(/Retired “Autumn login” again/);
   });
 
@@ -167,7 +170,7 @@ describe('Owner console · Findings → lists', () => {
     renderConsole('findings');
     const approve = await screen.findByRole('button', { name: 'Approve: New character Beta' });
     await act(async () => fireEvent.click(approve));
-    expect(catalog()).toEqual([]);
+    expect(listRows()).toEqual([]);
     const form = await screen.findByRole('form', { name: 'Add character' });
     expect(within(form).getByText(/Still needed: rarity, role/)).toBeInTheDocument();
     expect(within(form).getByLabelText('Name')).toHaveValue('Beta');
@@ -175,7 +178,7 @@ describe('Owner console · Findings → lists', () => {
     fireEvent.change(within(form).getByLabelText('Rarity'), { target: { value: 'top' } });
     fireEvent.change(within(form).getByLabelText('Role'), { target: { value: 'attack' } });
     await act(async () => fireEvent.click(within(form).getByRole('button', { name: 'Add character' })));
-    expect(catalog()).toEqual([expect.objectContaining({ kind: 'character', id: 'beta', source: 'finding:f3', data: expect.objectContaining({ name: 'Beta', rarity: 'top', element: 'ice', role: 'attack' }) })]);
+    expect(listRows()).toEqual([expect.objectContaining({ kind: 'character', id: 'beta', source: 'finding:f3', data: expect.objectContaining({ name: 'Beta', rarity: 'top', element: 'ice', role: 'attack' }) })]);
   });
 });
 

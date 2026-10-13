@@ -3,7 +3,7 @@ import { describe, expect, it, vi } from 'vitest';
 import type { GameContract } from '../../core/contract';
 import type { FakeDb } from './fakeBackend.testutil';
 
-// T77: approved leak posts reach Intel (Leak notes); every Approve says where it went.
+// T77: every approved finding reaches Intel (News and leaks); list findings still go into their list; every Approve says where it went.
 const db = vi.hoisted(() => ({ current: null as FakeDb | null }));
 vi.mock('../../core/data/backend', async () => {
   const { fakeBackend, fakeDb } = await import('./fakeBackend.testutil');
@@ -33,6 +33,7 @@ vi.mock('../../core/data/backend', async () => {
         finding('e-listed', 'AA: new event Big Fest (2026-10-13 → 2026-10-18)', {}),
         finding('e-missing', 'AA: new event Small Fair (2026-10-20 → 2026-10-25)', {}),
         finding('i-plain', 'Something worth knowing', {}),
+        { ...finding('c-full', 'New star', { name: 'Nova', rarity: 'top', element: 'fire', role: 'attack' }), kind: 'character', source_name: 'nanoka.cc' },
       ],
       catalog_items: [],
     },
@@ -51,8 +52,8 @@ const game = {
   name: 'Game A',
   vent: '#A99BFF',
   terms: { rarity: { top: 'S', mid: 'A' }, gear: 'G', weapon: 'W', skill: 'S', character: 'Agent', endgame: [] },
-  elements: [],
-  roles: [],
+  elements: [{ id: 'fire', label: 'Fire' }],
+  roles: [{ id: 'attack', label: 'Attack' }],
   currencies: [{ id: 'gem', name: 'Gems', perPull: 160 }],
   bannerTypes: [],
   servers: [],
@@ -81,20 +82,25 @@ describe('approved leak posts and info findings (T77)', () => {
     const view = render(<OwnerConsole games={[game]} {...props} />);
     // The post approved before notes existed gets its note once the findings load.
     await waitFor(() => expect(notes().map((r) => r.source)).toEqual(['finding:s-old']));
-    expect(notes()[0]).toMatchObject({ kind: 'leak', status: 'active', data: { title: 'Earlier note', credit: 'Seele (Telegram)', url: 'https://t.me/Seele_Leaks/37486' } });
+    expect(notes()[0]).toMatchObject({ kind: 'leak', status: 'active', data: { title: 'Earlier note', credit: 'Seele (Telegram)', url: 'https://t.me/Seele_Leaks/37486', leak: true } });
 
     fireEvent.click(screen.getByRole('tab', { name: /Findings/ }));
     await act(async () => fireEvent.click(await screen.findByRole('button', { name: 'Approve: Leak (Seele): New planar set' })));
-    expect(screen.getByRole('status')).toHaveTextContent('Added to AA · Intel · Leak notes.');
+    expect(screen.getByRole('status')).toHaveTextContent('Added to AA · Intel. Everyone sees it after reload');
     expect(notes().find((r) => r.source === 'finding:s-new')?.data).toMatchObject({ title: 'New planar set', text: '原文 37504', translation: 'English words', images: ['https://cdn.example/37504.jpg'] });
 
     // An event already listed: nothing new, and it says so.
     await act(async () => fireEvent.click(screen.getByRole('button', { name: 'Approve: AA: new event Big Fest (2026-10-13 → 2026-10-18)' })));
-    expect(screen.getByRole('status')).toHaveTextContent('“Big Fest” is already in AA · Events (2026-10-13 → 2026-10-18), so nothing new was added.');
+    expect(screen.getByRole('status')).toHaveTextContent('Added to AA · Intel. “Big Fest” is already in AA · Events (2026-10-13 → 2026-10-18), so nothing new went into the list.');
 
-    // A plain info finding: it went nowhere, and why.
+    // Plain info: Intel only.
     await act(async () => fireEvent.click(screen.getByRole('button', { name: 'Approve: Something worth knowing' })));
-    expect(screen.getByRole('status')).toHaveTextContent('Approved, but nothing was added anywhere');
+    expect(screen.getByRole('status')).toHaveTextContent('Added to AA · Intel. Everyone sees it after reload');
+
+    // A complete character: into Characters and into Intel.
+    await act(async () => fireEvent.click(screen.getByRole('button', { name: 'Approve: New star' })));
+    expect(screen.getByRole('status')).toHaveTextContent('Added to AA · Intel. Added “Nova” to AA · Characters.');
+    expect((db.current?.tables.catalog_items ?? []).filter((r) => (r as { source: string }).source === 'finding:c-full').map((r) => (r as { kind: string }).kind).sort()).toEqual(['character', 'leak']);
 
     // A new event not in the list: the Lists form opens with its name and dates.
     await act(async () => fireEvent.click(screen.getByRole('button', { name: 'Approve: AA: new event Small Fair (2026-10-20 → 2026-10-25)' })));
@@ -106,10 +112,14 @@ describe('approved leak posts and info findings (T77)', () => {
     // Intel shows both notes, newest first, unverified, credited, English first with the original one tap away.
     forgetCatalogRows();
     render(<IntelScreen games={[game]} {...props} />);
-    const section = await screen.findByRole('list', { name: 'Leak notes' });
+    const section = await screen.findByRole('list', { name: 'News and leaks' });
     const cards = within(section).getAllByRole('article');
-    expect(cards.map((c) => c.getAttribute('aria-label'))).toEqual(['New planar set', 'Earlier note']);
-    const first = cards[0] as HTMLElement;
+    // Every approval, newest first (the posts by when they were posted).
+    // (The first four were found at the same time, so they keep the order they were approved in.)
+    expect(cards.map((c) => c.getAttribute('aria-label'))).toEqual(['AA: new event Big Fest (2026-10-13 → 2026-10-18)', 'Something worth knowing', 'New star', 'AA: new event Small Fair (2026-10-20 → 2026-10-25)', 'New planar set', 'Earlier note']);
+    expect(within(cards[0] as HTMLElement).queryByText('? UNVERIFIED')).toBeNull(); // not a leak
+    expect(within(cards[2] as HTMLElement).getByText('Character')).toBeInTheDocument();
+    const first = cards[4] as HTMLElement;
     expect(within(first).getByText('? UNVERIFIED')).toBeInTheDocument();
     expect(within(first).getByText(/Seele \(Telegram\)/)).toBeInTheDocument();
     expect(within(first).getByRole('link', { name: 'Post' })).toHaveAttribute('href', 'https://t.me/Seele_Leaks/37504');
@@ -127,8 +137,12 @@ describe('approved leak posts and info findings (T77)', () => {
     fireEvent.click(screen.getByRole('tab', { name: /Findings/ }));
     fireEvent.change(await screen.findByLabelText('Status'), { target: { value: 'approved' } });
     await act(async () => fireEvent.click(await screen.findByRole('button', { name: 'Move back to new: Leak (Seele): New planar set' })));
-    expect(screen.getByRole('status')).toHaveTextContent('Took “New planar set” out of AA · Intel · Leak notes again.');
+    expect(screen.getByRole('status')).toHaveTextContent('Took it out of AA · Intel again.');
     expect(notes().find((r) => r.source === 'finding:s-new')).toMatchObject({ status: 'retired' });
-    expect(notes()).toHaveLength(2); // nothing deleted
+    expect(notes().filter((r) => r.kind === 'leak')).toHaveLength(6); // nothing deleted
+    // A list finding: both its Intel note and its list item are retired.
+    await act(async () => fireEvent.click(await screen.findByRole('button', { name: 'Move back to new: New star' })));
+    expect(screen.getByRole('status')).toHaveTextContent('Took it out of AA · Intel again. Retired “Nova” again');
+    expect(notes().filter((r) => r.source === 'finding:c-full').map((r) => r.status)).toEqual(['retired', 'retired']);
   });
 });

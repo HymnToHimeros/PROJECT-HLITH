@@ -76,7 +76,7 @@ export default function OwnerConsole(props: ModuleScreenProps & { selfId?: strin
   };
   const [now] = useState(() => Date.now());
   const sched = useSchedulerData(props.games.map((g) => g.id));
-  // Leak posts approved before Intel had notes get theirs once the findings have loaded (T77).
+  // Findings approved before Intel showed them get their notes once the findings have loaded (T77).
   const liveFindings = sched.mode === 'live' && !sched.loading && !sched.error ? sched.findings : null;
   useEffect(() => {
     if (liveFindings) void backfillNotes(liveFindings).catch(() => 0);
