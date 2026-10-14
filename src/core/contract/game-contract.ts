@@ -105,7 +105,11 @@ export interface GameContract {
 export interface Currency {
   id: string;
   name: string;
-  /** Premium currency: how many make one pull. */
+  /**
+   * How many make one pull: the premium currency, and a paid currency that
+   * turns into it (counted in pulls the same way). The premium currency is the
+   * one with `perPull` that isn't `paid`.
+   */
   perPull?: number;
   /** A pull item, usable on these banner types. */
   pullItemFor?: string[];

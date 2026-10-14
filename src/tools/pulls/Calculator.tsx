@@ -62,7 +62,7 @@ export function Calculator({ game, data, serverId, now, tagged, openModule, open
   const asPulls = (currency: string, amount: number): number | null => {
     const c = game.currencies.find((x) => x.id === currency);
     if (!c) return null;
-    if (c.perPull && !c.paid) return amount / c.perPull;
+    if (c.perPull) return amount / c.perPull;
     if (main && c.pullItemFor?.includes(main.id)) return amount;
     return null;
   };

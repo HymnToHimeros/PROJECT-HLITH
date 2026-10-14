@@ -237,7 +237,7 @@ export function pullsFor(game: GameContract, balances: Record<string, number>, b
   let items = 0;
   for (const c of game.currencies) {
     const amount = balances[c.id] ?? 0;
-    if (c.perPull && !c.paid) premium += amount / c.perPull;
+    if (c.perPull) premium += amount / c.perPull;
     if (c.pullItemFor?.includes(bannerType)) items += amount;
   }
   return Math.floor(premium + 1e-9) + Math.floor(items);

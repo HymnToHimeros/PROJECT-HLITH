@@ -99,10 +99,10 @@ export function groupLines(lines: LogLine[], currencies: Currency[]): LogGroup[]
   return [...groups.values()];
 }
 
-/** Pulls a currency amount is worth, by the game's own rules (its contract); null when it doesn't make pulls by itself. */
+/** Pulls a currency amount is worth, by the game's own rules (its contract: per pull, or a pass is one pull); null when it has no pull rule. */
 export function pullsWorth(currency: Currency | undefined, amount: number): number | null {
   if (!currency) return null;
-  if (currency.perPull && !currency.paid) return amount / currency.perPull;
+  if (currency.perPull) return amount / currency.perPull;
   if (currency.pullItemFor?.length) return amount;
   return null;
 }
