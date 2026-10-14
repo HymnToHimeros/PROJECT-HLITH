@@ -89,7 +89,7 @@ export const hsr: GameContract = {
     { id: 'stellar-jade', name: 'Stellar Jade', perPull: 160 },
     { id: 'special-pass', name: 'Star Rail Special Pass', pullItemFor: ['character', 'light-cone'] },
     { id: 'pass', name: 'Star Rail Pass', pullItemFor: ['standard', 'departure'] },
-    { id: 'oneiric-shard', name: 'Oneiric Shard', paid: true },
+    { id: 'oneiric-shard', name: 'Oneiric Shard', perPull: 160, paid: true },
   ],
   stamina: [{ id: 'trailblaze-power', name: 'Trailblaze Power', max: 240, minutesPerPoint: 6 }],
   teamSize: 4,
@@ -222,6 +222,7 @@ export const hsr: GameContract = {
     materialsNote: "From the game data (nanoka.cc): ascension, every skill and every Trace to max. Character EXP 1 → 80 (5,797,920, from the game's own EXP table) is counted as Traveler's Guides (20,000 EXP each).",
   },
   sources: [
+    { what: 'Oneiric Shard → Stellar Jade', source: 'in-game shop exchange, 1 Oneiric Shard = 1 Stellar Jade, so 160 make one pull (owner, 2026-10-14)', entered: '2026-10-14', verified: true },
     { what: 'Character list (names, rarity, path, element, release date)', source: 'nanoka.cc data files (community data site), game data 4.6.51', entered: '2026-10-09', verified: false },
     { what: 'Pull rates, hard pity, 50/50 and 75/25', source: 'official rates shown on the in-game Warp details page', entered: '2026-10-09', verified: false },
     { what: 'Rising odds before hard pity', source: COMMUNITY, entered: '2026-10-09', verified: false },

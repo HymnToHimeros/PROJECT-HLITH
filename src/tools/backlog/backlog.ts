@@ -146,7 +146,7 @@ export function pullsOf(game: GameContract, amounts: Record<string, number>): nu
   const main = mainBanner(game);
   if (main) return pullsFor(game, amounts, main.id);
   let premium = 0;
-  for (const c of game.currencies) if (c.perPull && !c.paid) premium += (amounts[c.id] ?? 0) / c.perPull;
+  for (const c of game.currencies) if (c.perPull) premium += (amounts[c.id] ?? 0) / c.perPull;
   return Math.floor(premium + 1e-9);
 }
 

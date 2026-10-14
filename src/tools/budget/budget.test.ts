@@ -195,6 +195,12 @@ describe('rule 11 · pulls', () => {
     expect(pullsFor(g, { gem: 1599, ticket: 3, std: 5, paid: 9999 }, 'limited')).toBe(9 + 3);
     expect(pullsFor(g, { gem: 1600, ticket: 3, std: 5 }, 'standard')).toBe(10 + 5);
   });
+  it('a paid currency with a pull rule counts like the premium one (Oneiric Shard, Monochrome: 160 a pull)', () => {
+    const shard = { ...g, currencies: g.currencies.map((c) => (c.id === 'paid' ? { ...c, perPull: 160 } : c)) };
+    // 1,500 gem + 100 paid = 1,600 = 10 pulls: added up before rounding down.
+    expect(pullsFor(shard, { gem: 1500, paid: 100, ticket: 3 }, 'limited')).toBe(10 + 3);
+    expect(pullsFor(g, { gem: 1500, paid: 100 }, 'limited')).toBe(9); // no rule, not counted
+  });
   it('budget pulls follow the total, and are unknown without a bank', () => {
     expect(budgetPulls(g, budget(base(g)), 'limited')).toMatchObject({ known: true, value: 6 + 2 });
     expect(budgetPulls(g, budget(base(g, { bank: unknown() })), 'limited').known).toBe(false);

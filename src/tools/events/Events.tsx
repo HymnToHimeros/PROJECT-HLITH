@@ -595,7 +595,7 @@ function CycleItem({
 /** Pulls an amount is worth (premium ÷ per pull, or pull items as they are); null for other currencies. */
 function asPulls(game: GameContract, currency: string, amount: number): number | null {
   const c = game.currencies.find((x) => x.id === currency);
-  if (c?.perPull && !c.paid) return Math.floor(amount / c.perPull + 1e-9);
+  if (c?.perPull) return Math.floor(amount / c.perPull + 1e-9);
   if (c?.pullItemFor?.length) return Math.floor(amount);
   return null;
 }

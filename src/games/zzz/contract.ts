@@ -79,7 +79,7 @@ export const zzz: GameContract = {
     { id: 'encrypted-master-tape', name: 'Encrypted Master Tape', pullItemFor: ['exclusive', 'w-engine'] },
     { id: 'master-tape', name: 'Master Tape', pullItemFor: ['standard'] },
     { id: 'boopon', name: 'Boopon', pullItemFor: ['bangboo'] },
-    { id: 'monochrome', name: 'Monochrome', paid: true },
+    { id: 'monochrome', name: 'Monochrome', perPull: 160, paid: true },
   ],
   stamina: [{ id: 'battery-charge', name: 'Battery Charge', max: 240, minutesPerPoint: 6 }],
   teamSize: 3,
@@ -183,6 +183,7 @@ export const zzz: GameContract = {
     materialsNote: 'From the game data (nanoka.cc): ascension, every skill and the Core Skill to max. Agent EXP is counted as Senior Investigator Logs (3,000 EXP each).',
   },
   sources: [
+    { what: 'Monochrome → Polychrome', source: 'in-game exchange, 1 Monochrome = 1 Polychrome, so 160 make one pull (owner, 2026-10-14)', entered: '2026-10-14', verified: true },
     { what: 'Agent list (names, rank, specialty, attribute)', source: 'nanoka.cc data files (community data site), game data 3.3.4', entered: '2026-10-09', verified: false },
     { what: 'Pull rates, hard pity, 50/50 and 75/25', source: 'official rates shown on the in-game Signal Search details page', entered: '2026-10-09', verified: false },
     { what: 'Rising odds before hard pity (Exclusive Channel)', source: COMMUNITY, entered: '2026-10-09', verified: false },

@@ -8,7 +8,8 @@ const currencies: Currency[] = [
   { id: 'jade', name: 'Jade', perPull: 160 },
   { id: 'special', name: 'Special Pass', pullItemFor: ['character'] },
   { id: 'pass', name: 'Pass', pullItemFor: ['standard'] },
-  { id: 'shard', name: 'Shard', paid: true },
+  { id: 'shard', name: 'Shard', perPull: 160, paid: true },
+  { id: 'coin', name: 'Coin' },
 ];
 const C1 = '2026-10-10T12:00:00.000Z';
 const C2 = '2026-10-14T01:47:00.000Z';
@@ -95,8 +96,13 @@ describe('Bank log: balance checks', () => {
     expect(view(ledger).groups[0]?.state).toBe('partly');
   });
 
-  it('a paid currency never makes pulls by itself (the contract gives it no pull rule)', () => {
-    const { totals } = view([e(C1, 'shard', 'have', 0), e(C2, 'shard', 'have', 980)]);
-    expect(totals.earned).toMatchObject({ amounts: { shard: 980 }, pulls: 0 });
+  it('a paid currency that turns into the premium one counts in pulls the same way (160 a pull)', () => {
+    const { totals } = view([e(C1, 'shard', 'have', 0), e(C2, 'shard', 'have', 1600)]);
+    expect(totals.earned).toMatchObject({ amounts: { shard: 1600 }, pulls: 10 });
+  });
+
+  it('a currency with no pull rule never makes pulls', () => {
+    const { totals } = view([e(C1, 'coin', 'have', 0), e(C2, 'coin', 'have', 980)]);
+    expect(totals.earned).toMatchObject({ amounts: { coin: 980 }, pulls: 0 });
   });
 });

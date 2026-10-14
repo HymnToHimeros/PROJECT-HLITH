@@ -188,9 +188,11 @@ function Tiles({
   const main = game.bannerTypes.find((b) => b.target === 'character') ?? game.bannerTypes[0];
   const premium = game.currencies.find((c) => c.perPull && !c.paid);
   const item = main ? game.currencies.find((c) => c.pullItemFor?.includes(main.id)) : undefined;
+  // A paid currency that turns into the premium one counts too (pullsFor); named only when you have some.
+  const paid = bank.known ? game.currencies.filter((c) => c.paid && c.perPull && (bank.value[c.id] ?? 0) > 0) : [];
   const formula =
     bank.known && premium
-      ? `${formatNumber(bank.value[premium.id] ?? 0)} ${premium.name} ÷ ${premium.perPull ?? 160}${item ? ` + ${formatNumber(bank.value[item.id] ?? 0)} ${item.name}` : ''}`
+      ? `${paid.length ? '(' : ''}${formatNumber(bank.value[premium.id] ?? 0)} ${premium.name}${paid.map((c) => ` + ${formatNumber(bank.value[c.id] ?? 0)} ${c.name}`).join('')}${paid.length ? ')' : ''} ÷ ${premium.perPull ?? 160}${item ? ` + ${formatNumber(bank.value[item.id] ?? 0)} ${item.name}` : ''}`
       : undefined;
   return (
     <>

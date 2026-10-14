@@ -16,3 +16,11 @@ Done:
   them each time, so older entries show the new way too.
 - Same logic for every game (src/tools/pulls/bankLog.ts). Tests in
   bankLog.test.ts and PullsScreen.test.tsx.
+
+Follow-up (owner: "they do have a fixed value, it's 160"):
+- Oneiric Shard (HSR) and Monochrome (ZZZ) turn 1:1 into the premium
+  currency, so both contracts now give them 160 a pull. They count in pulls
+  everywhere pulls are added up: Bank log (≈ pulls, tiles), Planner and
+  Calculator (pullsFor), Today's "pulls available" (its formula names them
+  when you have some), Events and Backlog rewards. The premium currency is
+  still the free one (perPull without paid).
