@@ -98,7 +98,7 @@ const name = (s: string) => shownName(stripTags(s).trim());
 
 /** Game text with its markup turned into plain words and #n[i] numbers filled in. Exported for the tests. */
 export function plainText(raw: string, params: number[], who: string): string {
-  let t = stripTags(raw.replace(/\\n/g, '\n'), ['color', 'unbreak', 'u', 'i', 'b'])
+  let t = stripTags(raw.replace(/\\n/g, '\n'), ['color', 'unbreak', 'u', 'i', 'b', 'icon'])
     .replace(/#(\d+)\[(i|f(\d))\](%?)/g, (_m, n: string, kind: string, digits: string | undefined, pct: string) => {
       const v = params[Number(n) - 1];
       if (v === undefined) throw new Error(`${who}: no number #${n} in "${raw.slice(0, 80)}…"`);
