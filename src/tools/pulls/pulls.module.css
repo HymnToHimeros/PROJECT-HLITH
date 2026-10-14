@@ -440,9 +440,46 @@
   padding: 0;
 }
 .ledgerRow {
-  min-height: 54px;
-  border-bottom: 1px solid var(--line-subtle);
   padding: 4px 0;
+}
+/* One entry: what was saved together (every currency of one check), then a line per currency. */
+.ledgerGroup {
+  border-bottom: 1px solid var(--line-subtle);
+  padding: 6px 0 8px;
+}
+.ledgerGroup:last-child {
+  border-bottom: 0;
+}
+.ledgerLine {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(72px, auto);
+  gap: 12px;
+  align-items: baseline;
+  padding: 2px 0 2px 12px;
+}
+.lineName {
+  font-size: 13px;
+  color: var(--ink-3);
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.ledgerDay {
+  margin: 0;
+  padding: 14px 0 4px;
+  border-bottom: 1px solid var(--line-default);
+  font: 600 11px var(--font-numbers);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-5);
+}
+.groupPulls {
+  font: 600 13px var(--font-numbers);
+  text-align: right;
+  color: var(--ink-3);
+}
+.fromCheck {
+  font-size: 12px;
+  color: var(--ink-2);
 }
 .ledgerMain {
   display: flex;
@@ -611,7 +648,8 @@
 
 /* ── Bank log: an undone entry stays listed, struck through ── */
 .undone .entryName,
-.undone .change {
+.undone .change,
+.undone .groupPulls {
   text-decoration: line-through;
   color: var(--ink-3);
 }
