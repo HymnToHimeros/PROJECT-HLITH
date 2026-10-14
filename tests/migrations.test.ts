@@ -2,7 +2,7 @@
 import { readdirSync, readFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
-import { findDestructive, userTables, wallProblems } from './lib/migration-rules';
+import { findDestructive, tmpObjects, userTables, wallProblems } from './lib/migration-rules';
 
 const DIR = resolve(__dirname, '../supabase/migrations');
 
@@ -34,6 +34,28 @@ describe('every user table is walled off and cannot be deleted from', () => {
   it('the checker catches a missing wall and a delete policy', () => {
     const bad = 'create table public.x (\n  user_id uuid\n);\ncreate policy "d" on public.x for delete using (true);';
     expect(wallProblems(bad)).toEqual(['x: row-level security is off', 'x: has a delete policy']);
+  });
+});
+
+describe('no temporary objects ship (T80)', () => {
+  it('no migration creates a function or policy named _tmp…', () => {
+    const files = readdirSync(DIR).filter((f) => f.endsWith('.sql'));
+    expect(files.flatMap((f) => tmpObjects(readFileSync(join(DIR, f), 'utf8')).map((o) => `${f}: ${o}`))).toEqual([]);
+  });
+
+  it('the left-over _tmp SQL runner and anon write policy are dropped', () => {
+    const sql = readFileSync(join(DIR, '0021_drop_tmp_objects.sql'), 'utf8');
+    expect(sql).toMatch(/drop function if exists public\._tmp_exec_sql\(text\);/);
+    expect(sql).toMatch(/drop policy if exists _tmp_anon_upsert on public\.owner_theme_drafts;/);
+  });
+
+  it('the checker catches them, however written, and ignores drops and comments', () => {
+    expect(tmpObjects('create or replace function public._tmp_exec_sql(q text) returns void security definer as $$ begin execute q; end $$;')).toEqual(['function _tmp_exec_sql']);
+    expect(tmpObjects('CREATE FUNCTION "public"."_tmp_x"() returns int as $$ select 1 $$;')).toEqual(['function _tmp_x']);
+    expect(tmpObjects('create policy _tmp_anon_upsert on public.t for all to anon using (true);')).toEqual(['policy _tmp_anon_upsert']);
+    expect(tmpObjects('create policy "_tmp read" on public.t for select using (true);')).toEqual(['policy _tmp']);
+    expect(tmpObjects('drop function if exists public._tmp_exec_sql(text);\n-- create function public._tmp_y()')).toEqual([]);
+    expect(tmpObjects('create function public.tmp_ok() returns int as $$ select 1 $$;')).toEqual([]);
   });
 });
 

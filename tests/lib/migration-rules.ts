@@ -39,3 +39,16 @@ export function wallProblems(sql: string): string[] {
   }
   return out;
 }
+
+/**
+ * Temporary objects (functions or policies named _tmp…) that a migration creates. They are for a
+ * one-off job by hand and must never ship: T80 found a _tmp SQL runner and an anon write policy
+ * left in production. Dropping one is fine.
+ */
+export function tmpObjects(sql: string): string[] {
+  const clean = stripComments(sql);
+  const found: string[] = [];
+  for (const m of clean.matchAll(/\bcreate\s+(?:or\s+replace\s+)?function\s+(?:"?\w+"?\.)?"?(_tmp\w*)"?/gi)) found.push(`function ${m[1]}`);
+  for (const m of clean.matchAll(/\bcreate\s+policy\s+"?(_tmp[^"\s]*)"?/gi)) found.push(`policy ${m[1]}`);
+  return found;
+}
