@@ -583,7 +583,7 @@ export const aeonAha: CharacterSheet = {
     {
       id: 'punchline-wishpower',
       piece: 'skill-talent-work-wonders-with-them',
-      quote: 'Once the team\'s Punchline reach 40 points for the first time, Aeon ★ Aha will immediately gain 1 points of "Wishpower,"',
+      quote: 'Once allies\' Punchline reaches 40 point(s) for the first time, Aeon ★ Aha will immediately gain 1 points of "Wishpower"',
       tag: "Team's Punchline powers Aha",
       gives: [],
       to: 'self',
@@ -593,7 +593,7 @@ export const aeonAha: CharacterSheet = {
     {
       id: 'punchline-crit-dmg',
       piece: 'skill-talent-work-wonders-with-them',
-      quote: "then increase all allies' CRIT DMG by 24% for 3 turn(s).",
+      quote: "and increase all allies' CRIT DMG by 24%, lasting for 3 turn(s).",
       tag: 'Allies: +24% CRIT DMG',
       gives: [{ stat: 'crit-dmg', amount: '+24%' }],
       to: 'allies',
@@ -612,7 +612,7 @@ export const aeonAha: CharacterSheet = {
     {
       id: 'elation-debt',
       piece: 'skill-talent-the-true-story-of-aha',
-      quote: 'When Aeon ★ Aha and teammates deal DMG, additionally deal "Elation Debt" effect equal to 25% of the DMG to the enemy target.',
+      quote: 'When Aeon ★ Aha and teammates deal DMG, additionally deal "Elation Debt" effect equal to 25% of DMG to the enemy target.',
       tag: 'Enemy: "Elation Debt" from all DMG',
       gives: [{ stat: 'extra-dmg', amount: '25% of DMG dealt, stored as "Elation Debt"' }],
       to: 'enemy',

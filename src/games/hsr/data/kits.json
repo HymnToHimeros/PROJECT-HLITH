@@ -13142,7 +13142,7 @@
   {
     "characterId": "1511",
     "source": "nanoka.cc",
-    "version": "4.6.51",
+    "version": "4.6.52",
     "skills": [
       {
         "id": "skill-basic-atk-starfrost-showtime",
@@ -13170,7 +13170,7 @@
         "label": "Talent: Work Wonders with THEM (Lv. 10)",
         "kind": "skill",
         "does": [],
-        "gameText": "The Ultimate can be activated once \"Wishpower\" reaches 8 points. Aeon ★ Aha gains 1 point(s) of \"Wishpower\" after using Basic ATK, Skill, or Elation Skill. Once the team's Punchline reach 40 points for the first time, Aeon ★ Aha will immediately gain 1 points of \"Wishpower,\" then increase all allies' CRIT DMG by 24% for 3 turn(s). This can be triggered again after Aha's turn ends."
+        "gameText": "The Ultimate can be activated once \"Wishpower\" reaches 8 point(s). Aeon ★ Aha gains 1 point(s) of \"Wishpower\" after using Basic ATK, Skill, or Elation Skill. Once allies' Punchline reaches 40 point(s) for the first time, Aeon ★ Aha will immediately gain 1 points of \"Wishpower\" and increase all allies' CRIT DMG by 24%, lasting for 3 turn(s). This can be triggered again after Aha's turn ends."
       },
       {
         "id": "skill-technique-abracadabra",
@@ -13198,7 +13198,7 @@
         "label": "Talent: The True Story of Aha",
         "kind": "skill",
         "does": [],
-        "gameText": "When Aeon ★ Aha and teammates deal DMG, additionally deal \"Elation Debt\" effect equal to 25% of the DMG to the enemy target. During the enemy target's phase transition, they maintain the \"Elation Debt\" value, with a maximum not exceeding 10% of the target's Max HP."
+        "gameText": "When Aeon ★ Aha and teammates deal DMG, additionally deal \"Elation Debt\" effect equal to 25% of DMG to the enemy target. During the enemy target's phase transition, they maintain the \"Elation Debt\" value, with a maximum not exceeding 10% of the target's Max HP."
       },
       {
         "id": "trace-a-prank-on-aeons",
@@ -13239,7 +13239,7 @@
           "dupes": 2
         },
         "does": [],
-        "gameText": "Enhances Elation Path ascension effects:\n#{series_ref_skill_desc:UIText_SeriesSkillDescFormat,151129,2}"
+        "gameText": "Enhances Path of Elation Ascension effects:\n#{series_ref_skill_desc:UIText_SeriesSkillDescFormat,151129,2}"
       },
       {
         "id": "eidolon-3",
@@ -13259,7 +13259,7 @@
           "dupes": 4
         },
         "does": [],
-        "gameText": "Increases the multiplier of the True DMG dealt by Elation Skills by 25% of the original multiplier. When Aeon ★ Aha deals Elation DMG, an additional 100% of the cumulative \"Certified Banger\" stacks possessed by teammates will be taken into the account."
+        "gameText": "The multiplier of the True DMG dealt by Elation Skills increases by 25% of the original multiplier. When Aeon ★ Aha deals Elation DMG, an additional 100% of the cumulative \"Certified Banger\" stacks possessed by teammates will be taken into account."
       },
       {
         "id": "eidolon-5",
@@ -13279,7 +13279,7 @@
           "dupes": 6
         },
         "does": [],
-        "gameText": "Enemy targets always have the \"Elation Debt\" effect that is at least equal to 20% of the target's Max HP. The first time Aeon ★ Aha casts the Ultimate, Aha immediately gains 1 extra turn that adds a fixed 40 Punchline to the count. Each subsequent Ultimate cast advances the Aha's action by 20%."
+        "gameText": "Enemy targets always have the \"Elation Debt\" effect that is at least equal to 20% of the target's Max HP. The first time Aeon ★ Aha casts the Ultimate, Aha immediately gains 1 extra turn that adds a fixed 40 Punchline to the count. Each subsequent Ultimate cast advances Aha's action by 20%."
       }
     ],
     "beta": true
