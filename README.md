@@ -256,8 +256,8 @@ HLIÐSKJÁLF is meant to be the seat you sit in for **every** game you play, not
   | Game | Pull history | Live data | Leaks | Fit |
   |:---|:---|:---|:---|:---|
   | **Genshin Impact** | Same as HSR/ZZZ: the in-game Wish History link + UIGF files | HoYoLAB — same client we already have | nanoka.cc beta build | Best: most of the HoYo code reuses directly |
-  | **Wuthering Waves** | PC only, from a local log file (XOR-obfuscated); no standard import format yet | CN app only; global has no public API — **No data yet** | nanoka.cc | Medium: new publisher, new API shapes |
-  | **Arknights: Endfield** | In-game link or web sign-in; the server keeps only ~90 days of records | SKPort for Sanity timer and check-in (signed requests) | None found | Weakest: least data, newest game |
+  | **Wuthering Waves** | From the in-game Convene history link (read from the PC client); stores beyond the 6-month window | Official launcher character link (Kuro account): Waveplates, daily activity, levels, battle pass. Check-in and Tower records CN only | nanoka.cc | Medium: new publisher, new API shapes |
+  | **Arknights: Endfield** | In-game history link or web sign-in; server keeps ~90 days, HLIÐSKJÁLF keeps them for good | SKPort for Sanity timer and check-in (signed requests) | None found | Weakest: least data, newest game |
 - **Sharper theorycraft.** Deeper kit reading, more team shapes, and scores that learn from
   how teams actually perform.
 - **Community.** Share teams and profiles, a community space, and public looks, badges and
