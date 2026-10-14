@@ -1,11 +1,12 @@
 import { useState, type FormEvent } from 'react';
-import type { GameContract } from '../../core/contract';
+import type { Currency, GameContract } from '../../core/contract';
 import { useExamplesShown } from '../../core/data/prefs';
 import { addLedgerEntry, reverseLedgerEntry, type LedgerEntry } from '../../core/data/userData';
 import { formatNumber } from '../../core/time/format';
-import { formatDateTime } from '../../core/time/reset';
+import { formatDateTime, formatDay, formatTime } from '../../core/time/reset';
 import { Button, EmptyState, ExampleTag } from '../../core/ui';
 import { cx } from '../../core/ui/cx';
+import { flowTotals, groupLines, groupPulls, withBalances, type Flow, type FlowTotal, type LogGroup, type LogLine } from './bankLog';
 import { EmptyTile, Filters, Tile } from './shared';
 import k from './kit.module.css';
 import p from './pulls.module.css';
@@ -18,9 +19,9 @@ const KIND_LABEL: Record<LedgerEntry['kind'], string> = {
   spent: 'Spent',
 };
 const KIND_HINT: Record<LedgerEntry['kind'], string> = {
-  have: 'What the game shows right now. This sets your balance.',
+  have: 'What the game shows right now. This sets your balance: a rise since the balance HLITH expected counts as Earned, a drop as Spent.',
   earned: 'Free currency you got (dailies, events, endgame).',
-  bought: 'Currency you paid real money for.',
+  bought: 'Currency you paid real money for. It adds to your balance now, so the next balance check doesn’t count it as Earned too.',
   spent: 'Currency you used, e.g. on pulls.',
 };
 
@@ -30,8 +31,11 @@ const DAY = 86_400_000;
  * Bank log (design: ENTRY · CHANGE · BALANCE table): an add-only ledger. Your
  * balance = latest balance check + changes since. V1 features: balance check /
  * earned / bought / spent, every currency in one go, a date and a note, and
- * all-time totals. Entries are never edited or removed: Undo adds a correcting
- * entry, and the pair stops counting (the same rule as balances() in userData).
+ * all-time totals. Entries saved together show as one entry under their day;
+ * a balance check shows its change from the expected balance, which counts as
+ * Earned or Spent (bankLog.ts). Entries are never edited or removed: Undo adds
+ * a correcting entry, and the pair stops counting (the same rule as balances()
+ * in userData).
  */
 export function BankLog({ game, data }: { game: GameContract; data: PullsData }) {
   const currencies = game.currencies;
@@ -61,12 +65,16 @@ export function BankLog({ game, data }: { game: GameContract; data: PullsData })
   // Example rows only while examples are shown (Account → Example data).
   const example = real.length === 0 && showExamples;
   const entries = example ? exampleLedger(game) : real;
-  const rows = withBalances(entries).reverse();
-  const undone = undoneIds(real);
-  const counted = real.filter((x) => !undone.has(x.id));
-  const sum = (kindOf: LedgerEntry['kind']) => counted.filter((x) => x.kind === kindOf && x.currency === premium?.id).reduce((a, x) => a + x.amount, 0);
-  const count = (kindOf: LedgerEntry['kind']) => counted.filter((x) => x.kind === kindOf).length;
-  const labelOf = (x: LedgerEntry) => x.note ?? KIND_LABEL[x.kind];
+  const groups = groupLines(withBalances(entries), currencies);
+  const totals = flowTotals(example ? [] : groups, currencies);
+  const anyCounted = !example && groups.some((g) => g.state === 'counted' || g.state === 'partly');
+  const days = byDay(groups);
+  const labelOf = (g: LogGroup) => g.note ?? KIND_LABEL[g.kind];
+  // Undo on a group cancels every currency in it that still counts.
+  const undoGroup = (g: LogGroup) => {
+    const at = new Date().toISOString();
+    for (const l of g.lines) if (l.state === 'counted') reverseLedgerEntry(game.id, l.entry.id, at);
+  };
 
   return (
     <div className={p.stack}>
@@ -111,24 +119,20 @@ export function BankLog({ game, data }: { game: GameContract; data: PullsData })
       </section>
 
       <div className={k.tiles}>
-        {counted.length === 0 ? (
+        {!anyCounted ? (
           <>
             <EmptyTile label="Earned for free" why="add entries" />
             <EmptyTile label="Bought" why="add entries" />
             <EmptyTile label="Spent" why="add entries" />
           </>
         ) : (
-          <>
-            <Tile label="Earned for free" value={formatNumber(sum('earned'))} caption={`${premium?.name ?? ''} · ${count('earned')} entries`} />
-            <Tile label="Bought" value={formatNumber(sum('bought'))} caption={`${premium?.name ?? ''} · ${count('bought')} entries`} />
-            <Tile label="Spent" value={formatNumber(sum('spent'))} caption={`${premium?.name ?? ''} · ${count('spent')} entries`} />
-          </>
+          FLOWS.map((flow) => <FlowTile key={flow} flow={flow} total={totals[flow]} currencies={currencies} premium={premium} />)
         )}
         {/* V1 kept money paid. Entries have no money field yet, so this stays empty rather than guessed. */}
         <EmptyTile label="Money paid" why="money amounts aren't logged yet" />
       </div>
 
-      {rows.length === 0 ? (
+      {groups.length === 0 ? (
         <EmptyState title="No entries yet" body="Your bank log is empty. Type what the game shows above and press Add entry: that becomes your bank." />
       ) : (
         <section className={p.ledger} aria-label="Bank log entries">
@@ -137,39 +141,58 @@ export function BankLog({ game, data }: { game: GameContract; data: PullsData })
             <span className={p.right}>CHANGE</span>
             <span className={p.right}>BALANCE</span>
           </div>
-          <ul className={p.ledgerList}>
-            {rows.map((r) => {
-              const original = r.entry.reverses ? entries.find((x) => x.id === r.entry.reverses) : undefined;
-              const when = formatDateTime(Date.parse(r.entry.at));
-              return (
-                <li key={r.entry.id} className={cx(p.ledgerRow, r.state === 'undone' && p.undone)}>
-                  <div className={p.ledgerMain}>
-                    <span className={p.rowLabel}>
-                      <span className={p.entryName}>{r.state === 'undo' ? `Undo: ${original ? labelOf(original) : KIND_LABEL[r.entry.kind]}` : labelOf(r.entry)}</span> {example && <ExampleTag />}
-                      {r.state === 'undone' && <span className={p.undoneTag}>UNDONE</span>}
-                    </span>
-                    <span className={p.small}>
-                      {when} · {name(r.entry.currency)}
-                      {r.state === 'undo' ? ' · cancels that entry; neither counts' : r.entry.note ? ` · ${KIND_LABEL[r.entry.kind]}` : ''}
-                    </span>
-                    {r.state === 'counted' && !example && (
-                      <button type="button" className={p.linkButton} aria-label={`Undo ${labelOf(r.entry)}, ${when}`} onClick={() => reverseLedgerEntry(game.id, r.entry.id, new Date().toISOString())}>
-                        Undo
-                      </button>
-                    )}
-                  </div>
-                  <span className={cx(p.change, r.state === 'counted' && (r.entry.kind === 'earned' || r.entry.kind === 'bought') && p.plus)}>
-                    <span className={p.srOnly}>{r.state === 'counted' ? 'Change: ' : 'Not counted: '}</span>
-                    {r.state === 'undo' ? '0' : `${r.entry.kind === 'have' ? '=' : r.entry.kind === 'spent' ? '−' : '+'}${formatNumber(r.entry.amount)}`}
-                  </span>
-                  <span className={p.balance}>
-                    <span className={p.srOnly}>Balance: </span>
-                    {r.balance === null ? '—' : formatNumber(r.balance)}
-                  </span>
-                </li>
-              );
-            })}
-          </ul>
+          {days.map((day) => (
+            <div key={day.key} role="group" aria-label={day.label}>
+              <h4 className={p.ledgerDay}>{day.label}</h4>
+              <ul className={p.ledgerList}>
+                {day.groups.map((g) => {
+                  const first = g.lines[0]?.entry;
+                  const original = g.state === 'undo' && first?.reverses ? entries.find((x) => x.id === first.reverses) : undefined;
+                  const label = g.state === 'undo' ? `Undo: ${original?.note ?? KIND_LABEL[g.kind]}` : labelOf(g);
+                  const pulls = g.state === 'undo' ? null : groupPulls(g, currencies);
+                  const says = g.kind === 'have' && g.state !== 'undo' ? fromCheckText(g, name) : null;
+                  return (
+                    <li key={g.key} className={cx(p.ledgerGroup, g.state === 'undone' && p.undone)}>
+                      <div className={p.ledgerRow}>
+                        <div className={p.ledgerMain}>
+                          <span className={p.rowLabel}>
+                            <span className={p.entryName}>{label}</span> {example && <ExampleTag />}
+                            {g.state === 'undone' && <span className={p.undoneTag}>UNDONE</span>}
+                            {g.state === 'partly' && <span className={p.undoneTag}>PARTLY UNDONE</span>}
+                          </span>
+                          <span className={p.small}>
+                            {formatTime(Date.parse(g.at))}
+                            {g.state === 'undo' ? ' · cancels that entry; neither counts' : g.note ? ` · ${KIND_LABEL[g.kind]}` : ''}
+                          </span>
+                          {says && <span className={p.fromCheck}>{says}</span>}
+                          {(g.state === 'counted' || g.state === 'partly') && !example && (
+                            <button type="button" className={p.linkButton} aria-label={`Undo ${labelOf(g)}, ${formatDateTime(Date.parse(g.at))}`} onClick={() => undoGroup(g)}>
+                              Undo
+                            </button>
+                          )}
+                        </div>
+                        <span className={cx(p.groupPulls, pulls !== null && pulls > 0 && g.state !== 'undone' && p.plus)}>{pulls ? `≈ ${signed(pulls, 1)} pulls` : ''}</span>
+                        <span aria-hidden="true" />
+                      </div>
+                      {g.lines.map((l) => (
+                        <div key={l.entry.id} className={cx(p.ledgerLine, l.state === 'undone' && g.state !== 'undone' && p.undone)}>
+                          <span className={p.lineName}>{name(l.entry.currency)}</span>
+                          <span className={cx(p.change, l.state === 'counted' && l.change !== null && l.change > 0 && p.plus)}>
+                            <span className={p.srOnly}>{l.state === 'counted' ? 'Change: ' : 'Not counted: '}</span>
+                            {changeText(l)}
+                          </span>
+                          <span className={p.balance}>
+                            <span className={p.srOnly}>Balance: </span>
+                            {l.balance === null ? '—' : formatNumber(l.balance)}
+                          </span>
+                        </div>
+                      ))}
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          ))}
           {example && <span className={p.muted}>These entries are examples. Your first entry replaces them.</span>}
         </section>
       )}
@@ -177,36 +200,73 @@ export function BankLog({ game, data }: { game: GameContract; data: PullsData })
   );
 }
 
-/** Entries that don't count: every undone entry and every Undo entry (as in balances() in userData). */
-function undoneIds(entries: LedgerEntry[]): Set<string> {
-  const out = new Set<string>();
-  for (const e of entries) {
-    if (!e.reverses) continue;
-    out.add(e.id);
-    out.add(e.reverses);
-  }
-  return out;
+const FLOWS: Flow[] = ['earned', 'bought', 'spent'];
+const FLOW_LABEL: Record<Flow, string> = { earned: 'Earned for free', bought: 'Bought', spent: 'Spent' };
+
+/** One total: the premium currency big; other currencies, pulls and where it comes from below. */
+function FlowTile({ flow, total, currencies, premium }: { flow: Flow; total: FlowTotal; currencies: Currency[]; premium: Currency | undefined }) {
+  const others = currencies.filter((c) => c.id !== premium?.id && total.amounts[c.id]).map((c) => `${formatNumber(total.amounts[c.id] ?? 0)} ${c.name}`);
+  const from = [total.logged || !total.fromChecks ? plural(total.logged, 'entry', 'entries') : '', total.fromChecks ? `${total.logged ? '' : 'from '}${plural(total.fromChecks, 'balance check', 'balance checks')}` : ''].filter(Boolean).join(' + ');
+  return (
+    <Tile
+      label={FLOW_LABEL[flow]}
+      value={formatNumber(total.amounts[premium?.id ?? ''] ?? 0)}
+      caption={
+        <>
+          {premium?.name}
+          {others.length ? ` + ${others.join(', ')}` : ''}
+          <br />
+          {total.pulls ? `≈ ${formatNumber(round1(total.pulls))} pulls · ` : ''}
+          {from}
+        </>
+      }
+    />
+  );
 }
 
-export type RowState = 'counted' | 'undone' | 'undo';
+const round1 = (x: number) => Math.round(x * 10) / 10;
+const plural = (n: number, one: string, many: string) => `${n} ${n === 1 ? one : many}`;
 
-/**
- * Each entry with the balance of its currency right after it (unknown until the
- * first balance check). Undone entries and their Undo entries are listed but
- * skipped, so the balance matches balances() in userData.
- */
-export function withBalances(entries: LedgerEntry[]): { entry: LedgerEntry; balance: number | null; state: RowState }[] {
-  const skip = undoneIds(entries);
-  const sorted = [...entries].sort((a, b) => a.at.localeCompare(b.at) || a.id.localeCompare(b.id));
-  const bal: Record<string, number> = {};
-  return sorted.map((entry) => {
-    const state: RowState = entry.reverses ? 'undo' : skip.has(entry.id) ? 'undone' : 'counted';
-    if (state === 'counted') {
-      if (entry.kind === 'have') bal[entry.currency] = entry.amount;
-      else if (entry.currency in bal) bal[entry.currency] = (bal[entry.currency] ?? 0) + (entry.kind === 'spent' ? -entry.amount : entry.amount);
-    }
-    return { entry, state, balance: entry.currency in bal ? (bal[entry.currency] ?? null) : null };
-  });
+/** "+3,627", "−1,600" (a real minus sign), "±0". */
+function signed(x: number, digits = 0): string {
+  const r = digits ? round1(x) : x;
+  return r > 0 ? `+${formatNumber(r)}` : r < 0 ? `−${formatNumber(-r)}` : '±0';
+}
+
+/** What a currency line's CHANGE cell shows. */
+function changeText(l: LogLine): string {
+  if (l.state === 'undo') return '0';
+  // The first check of a currency has nothing to compare with; an undone check shows what it said.
+  if (l.entry.kind === 'have' && l.change === null) return l.state === 'undone' ? `=${formatNumber(l.entry.amount)}` : '—';
+  return signed(l.change ?? 0);
+}
+
+/** What a balance check found: "From balance check: Earned 3,627 Stellar Jade, 3 Star Rail Pass · Spent 10 Star Rail Special Pass". */
+function fromCheckText(g: LogGroup, name: (id: string) => string): string | null {
+  if (g.state === 'undone') return null;
+  const part = (flow: 'earned' | 'spent') => {
+    const items = g.lines.filter((l) => l.fromCheck === flow).map((l) => `${formatNumber(Math.abs(l.change ?? 0))} ${name(l.entry.currency)}`);
+    return items.length ? `${flow === 'earned' ? 'Earned' : 'Spent'} ${items.join(', ')}` : '';
+  };
+  const parts = [part('earned'), part('spent')].filter(Boolean);
+  if (parts.length) return `From balance check: ${parts.join(' · ')}`;
+  const counted = g.lines.filter((l) => l.state === 'counted');
+  if (counted.length && counted.every((l) => l.change === null)) return 'First balance check: this sets your bank';
+  if (counted.length) return 'From balance check: no change';
+  return null;
+}
+
+/** Groups by the day they happened (viewer's time), newest day and newest entry first. */
+function byDay(groups: LogGroup[]): { key: string; label: string; groups: LogGroup[] }[] {
+  const out: { key: string; label: string; groups: LogGroup[] }[] = [];
+  for (const g of [...groups].reverse()) {
+    const t = Date.parse(g.at);
+    const key = new Date(t).toLocaleDateString('en-CA');
+    const last = out[out.length - 1];
+    if (last?.key === key) last.groups.push(g);
+    else out.push({ key, label: formatDay(t), groups: [g] });
+  }
+  return out;
 }
 
 /**

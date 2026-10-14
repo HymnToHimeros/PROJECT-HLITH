@@ -3,7 +3,8 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import type { Character, GameContract } from '../../core/contract';
 import { reloadPrefs, updatePrefs } from '../../core/data/prefs';
 import { addLedgerEntry, balances, gameData, importPulls, resetUserData, setEventProgress } from '../../core/data/userData';
-import { readForm, withBalances } from './BankLog';
+import { readForm } from './BankLog';
+import { withBalances } from './bankLog';
 import { topsWithPity } from './History';
 import { pityFor } from './Planner';
 import PullsScreen from './PullsScreen';
@@ -229,6 +230,34 @@ describe('Pulls screen', () => {
     expect(within(log).queryByText('6,600')).not.toBeInTheDocument();
     expect(within(log).queryByText('5,800')).not.toBeInTheDocument();
     expect(within(log).queryByRole('button', { name: /^Undo Endgame/ })).not.toBeInTheDocument();
+  });
+
+  it('Bank log: a check saved with every currency is one entry; a rise counts as Earned; Undo cancels the whole entry', async () => {
+    act(() => {
+      for (const [at, gem, ticket] of [
+        ['2026-01-01T10:00:00.000Z', 1654, 12],
+        ['2026-01-05T10:00:00.000Z', 5281, 15],
+      ] as const) {
+        addLedgerEntry('aa', { at, currency: 'gem', kind: 'have', amount: gem });
+        addLedgerEntry('aa', { at, currency: 'ticket', kind: 'have', amount: ticket });
+      }
+    });
+    render(<PullsScreen games={[game]} scope="aa" tab="log" servers={{ aa: 'eu' }} openTab={() => {}} open={() => {}} openAccount={() => {}} />);
+    const log = await screen.findByRole('region', { name: 'Bank log entries' });
+    expect(within(log).getAllByRole('listitem')).toHaveLength(2); // not 4
+    expect(within(log).getByText('+3,627')).toBeInTheDocument();
+    expect(within(log).getByText('≈ +25.7 pulls')).toBeInTheDocument();
+    expect(within(log).getByText('From balance check: Earned 3,627 Gem, 3 Ticket')).toBeInTheDocument();
+    expect(within(log).getByText('First balance check: this sets your bank')).toBeInTheDocument();
+    const earned = screen.getByText('Earned for free').parentElement as HTMLElement;
+    expect(earned).toHaveTextContent('3,627');
+    expect(earned).toHaveTextContent('1 balance check');
+    const undo = within(log).getAllByRole('button', { name: /^Undo Balance check/ })[0] as HTMLElement;
+    act(() => fireEvent.click(undo));
+    expect(gameData('aa').ledger).toHaveLength(4 + 2); // both currencies cancelled, nothing removed
+    expect(balances(gameData('aa').ledger)).toMatchObject({ value: { gem: 1654, ticket: 12 } });
+    expect(within(log).getByText('UNDONE')).toBeInTheDocument();
+    expect(screen.getByText('Earned for free').parentElement).toHaveTextContent('0');
   });
 
   it('Bank log running balance skips undone pairs, like balances()', () => {

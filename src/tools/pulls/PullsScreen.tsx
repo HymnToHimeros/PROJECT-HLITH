@@ -62,7 +62,12 @@ const HOW: Record<string, ReactNode[]> = {
       and Encrypted Master Tapes).
     </>,
     <>Here pick “Balance check”, type those numbers exactly as the game shows them, and press Add entry. That becomes your bank.</>,
-    <>Optional: log what you earn, buy or spend in between with the other kinds, and a note like “10 pulls”. A new balance check always resets the balance to what you typed.</>,
+    <>
+      Next time, add a new balance check. It shows how much each currency changed since the balance HLITH expected, and about how many pulls that is. A rise counts as Earned, a drop as Spent, marked
+      “from balance check”.
+    </>,
+    <>Optional: log what you earn, buy or spend in between with the other kinds, and a note like “10 pulls”. These change your balance right away, so the next balance check only counts what is new.</>,
+    <>Everything saved together shows as one entry, listed under its day.</>,
     <>Made a mistake? Press Undo on that entry. It stays in the log, struck through and marked undone, and stops counting. Or add a new balance check. The Planner and Calculator use the newest balance.</>,
   ],
   history: [
