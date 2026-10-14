@@ -250,9 +250,14 @@ Animated badges, picture frames and name styles:
 
 HLIÐSKJÁLF is meant to be the seat you sit in for **every** game you play, not just two.
 
-- **More games.** Wuthering Waves next, then Genshin Impact, then Arknights: Endfield. Each
-  arrives as its own plug-in with its banners, currencies, resets and kits
-  ([what it would take](docs/research/2026-10-11-new-games.md)).
+- **More games.** Each arrives as its own plug-in with its banners, currencies, resets and kits.
+  Planned, not started ([what it would take](docs/research/2026-10-11-new-games.md)):
+
+  | Game | Pull history | Live data | Leaks | Fit |
+  |:---|:---|:---|:---|:---|
+  | **Genshin Impact** | Same as HSR/ZZZ: the in-game Wish History link + UIGF files | HoYoLAB — same client we already have | nanoka.cc beta build | Best: most of the HoYo code reuses directly |
+  | **Wuthering Waves** | PC only, from a local log file (XOR-obfuscated); no standard import format yet | CN app only; global has no public API — **No data yet** | nanoka.cc | Medium: new publisher, new API shapes |
+  | **Arknights: Endfield** | In-game link or web sign-in; the server keeps only ~90 days of records | SKPort for Sanity timer and check-in (signed requests) | None found | Weakest: least data, newest game |
 - **Sharper theorycraft.** Deeper kit reading, more team shapes, and scores that learn from
   how teams actually perform.
 - **Community.** Share teams and profiles, a community space, and public looks, badges and
