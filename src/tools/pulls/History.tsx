@@ -131,7 +131,7 @@ export function History({ game, data, signedIn, now }: { game: GameContract; dat
   // Games whose pulls don't say their banner (Endfield): featured or not from the banner open at the time (real banners only).
   const rule = mapping?.featuredByBanner;
   const realBanners = useMemo(() => data.banners.list.filter((b) => !data.banners.exampleIds.has(b.id)), [data.banners]);
-  const history = useMemo(() => (rule && !example ? featuredByBanner(data.history.list, realBanners, rule) : data.history.list), [rule, example, data.history.list, realBanners]);
+  const history = useMemo(() => (rule && !example ? featuredByBanner(data.history.list, realBanners, rule, data.characters) : data.history.list), [rule, example, data.history.list, realBanners, data.characters]);
   const allTops = topsWithPity(history, noGuarantee).reverse();
   const tops = showAll ? allTops : allTops.slice(0, 10);
   const noImport = !mapping || (!fileImport && !linkImport);
