@@ -22,6 +22,8 @@ export interface Library {
   /** Kit piece → its label ("Battle Skill: Dolly Rush"), per operator. */
   pieceLabels: Map<string, Map<string, string>>;
   names: Map<string, string>;
+  /** Release dates (characters.json `releasedAt`); an operator without one is out. */
+  releasedAt?: Map<string, string>;
   /** Ids that are one operator, so a team holds at most one of them (the Endministrator: male or female). */
   sameOperator?: string[][];
   /** Not used by Endfield yet (no leaks); kept so shared rules read the same shape. */

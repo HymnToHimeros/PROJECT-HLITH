@@ -1,9 +1,9 @@
 import { describe, expect, it } from 'vitest';
 import type { TeamAccount } from '../../../core/contract';
 import { checkSquad, checkTeam, type Account, type Line } from './check';
-import { KITS, SHEETS, library } from './library';
+import { buildLibrary, KITS, SHEETS, library } from './library';
 import characters from '../data/characters.json';
-import { endfieldTeamRules, readSoFar, recommendedTeams, synergyLabel } from './team';
+import { endfieldTeamRules, readSoFar, recommendedTeams, synergyLabel, verdict } from './team';
 
 const CHEN = 'chr_0005_chen';
 const DA_PAN = 'chr_0018_dapan';
@@ -23,6 +23,13 @@ const LIINO = 'chr_0035_liino';
 const ARCANE = 'chr_0032_lizhiyan';
 const MI_FU = 'chr_0031_mifu';
 const TANGTANG = 'chr_0027_tangtang';
+const ZHUANG = 'chr_0030_zhuangfy';
+const ARCLIGHT = 'chr_0007_ikut';
+const ESTELLA = 'chr_0021_whiten';
+const SNOWSHINE = 'chr_0014_aurora';
+const ALESH = 'chr_0024_deepfin';
+const PURRCHENA = 'chr_0038_purrche';
+const ROSSI = 'chr_0028_wulfa';
 
 const p0: Account = { potential: () => 0 };
 const lib = library();
@@ -92,8 +99,8 @@ describe('Endfield check (Part B)', () => {
     const out = checkSquad([CHEN, DA_PAN, CATCHER], lib, p0);
     expect(out.rated).toBe(true);
     if (out.rated) expect([CHEN, DA_PAN]).toContain(out.best.dd);
-    const unread = checkSquad([CHEN, 'chr_0029_pograni'], lib, p0);
-    expect(unread).toMatchObject({ rated: false, unread: ['chr_0029_pograni'] });
+    const unread = checkSquad([CHEN, 'chr_argent-flow'], lib, p0);
+    expect(unread).toMatchObject({ rated: false, unread: ['chr_argent-flow'] });
   });
 });
 
@@ -152,6 +159,27 @@ describe('Endfield check, group C', () => {
   });
 });
 
+describe('Endfield check, groups D and E', () => {
+  it('Arclight’s forced Electrification powers Zhuang Fangyi’s Battle Skill', () => {
+    const r = checkTeam([ZHUANG, ARCLIGHT], ZHUANG, lib, p0);
+    expect(linesOf(r.lines, ARCLIGHT, 'chain').map((l) => l.why)).toContain('sets up Electrification for Zhuang Fangyi: Stronger on Electrification');
+  });
+  it('a forced Solidification triggers Estella’s combo (Snowshine’s Snow Zone, Alesh’s Battle Skill)', () => {
+    const r = checkTeam([ESTELLA, SNOWSHINE, ALESH], ESTELLA, lib, p0);
+    for (const who of [SNOWSHINE, ALESH]) expect(linesOf(r.lines, who, 'chain').map((l) => l.why)).toContain('sets up Solidification for Estella: Combo on Solidification');
+  });
+  it('Rossi’s combo needs Vulnerable and an Arts Infliction: either can come from a teammate', () => {
+    const r = checkTeam([ROSSI, CHEN, AKEKURI], ROSSI, lib, p0);
+    expect(linesOf(r.lines, CHEN, 'chain').length).toBeGreaterThan(0);
+    expect(linesOf(r.lines, AKEKURI, 'chain').map((l) => l.why)).toContain('sets up Heat Infliction for Rossi: Combo on Vulnerable and an Arts Infliction');
+  });
+  it('decision 11: effects that need luck are shown, never counted', () => {
+    const r = checkTeam([TYPHOEUS, PURRCHENA, ALESH], TYPHOEUS, lib, { potential: () => 5 });
+    expect(linesOf(r.lines, PURRCHENA).find((l) => l.entry === 'ambassador')).toMatchObject({ kind: 'unknown', points: 0 });
+    expect(linesOf(r.lines, ALESH).find((l) => l.entry === 'p3-team-atk')).toMatchObject({ kind: 'unknown', points: 0 });
+  });
+});
+
 describe('Endfield team rules', () => {
   const all: TeamAccount = { owned: () => true, dupes: () => 0 };
   it('scores a team of four and says how it compares', () => {
@@ -164,15 +192,28 @@ describe('Endfield team rules', () => {
     }
   });
   it('while only some kits are read: the counts come from the data, and no grade word (the % stays)', () => {
-    expect(endfieldTeamRules.readSoFar?.()).toEqual({ read: SHEETS.length, total: characters.length });
-    expect(SHEETS.length).toBeLessThan(characters.length);
-    const v = endfieldTeamRules.verdict([CHEN, CATCHER, LIFENG, DA_PAN], all);
+    const fewer = buildLibrary(SHEETS.slice(0, 7));
+    const now = Date.parse('2026-10-15T12:00:00Z');
+    const n = readSoFar(fewer, now);
+    expect(n.read).toBe(7);
+    expect(n.total).toBeGreaterThan(7);
+    const v = verdict([CHEN, CATCHER, LIFENG, DA_PAN], all, fewer, now);
     expect(v).toMatchObject({ rated: true, label: '' });
-    if (v.rated) expect(v.notes).toContain(`Only ${SHEETS.length} of ${characters.length} operators are read so far: this is the best among those, and it will change as more are read.`);
+    if (v.rated) expect(v.notes).toContain(`Only 7 of ${n.total} operators are read so far: this is the best among those, and it will change as more are read.`);
     expect(synergyLabel(100, 4, true)).toBe('');
     expect(synergyLabel(100, 4)).toBe('Excellent');
     expect(synergyLabel(100, 3, true)).toBe('Incomplete');
-    expect(readSoFar({ ...lib, names: new Map([...lib.sheets.keys()].map((id) => [id, id])) })).toEqual({ read: SHEETS.length, total: SHEETS.length });
+  });
+  it('only operators that are out count: before Argent Flow’s release every one is read (no line, the grade word is back); after it, 34 of 35 until her sheet', () => {
+    const argent = (characters as { id: string; releasedAt?: string }[]).find((c) => c.id === 'chr_argent-flow')?.releasedAt ?? '';
+    const before = Date.parse(argent) - 1;
+    const after = Date.parse(argent) + 1;
+    expect(readSoFar(lib, before)).toEqual({ read: SHEETS.length, total: SHEETS.length });
+    expect(readSoFar(lib, after)).toEqual({ read: SHEETS.length, total: SHEETS.length + 1 });
+    const v = verdict([CHEN, CATCHER, LIFENG, DA_PAN], all, lib, before);
+    expect(v.rated && v.label).not.toBe('');
+    if (v.rated) expect(v.notes.join(' ')).not.toMatch(/are read so far/);
+    expect(verdict([CHEN, CATCHER, LIFENG, DA_PAN], all, lib, after)).toMatchObject({ rated: true, label: '' });
   });
   it('recommends a team for every damage dealer read', () => {
     const teams = recommendedTeams();
