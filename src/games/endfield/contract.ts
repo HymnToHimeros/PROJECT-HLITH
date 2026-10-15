@@ -5,10 +5,11 @@
  * List items in data/*.json need stable ids that never change.
  * Add the game to src/games/index.ts. Nothing else in the app changes.
  */
-import type { Banner, Character, GameContract, GameEvent, Version, Weapon } from '../../core/contract';
+import type { Banner, Character, GameContract, GameEvent, Kit, Version, Weapon } from '../../core/contract';
 import banners from './data/banners.json';
 import characters from './data/characters.json';
 import events from './data/events.json';
+import kits from './data/kits.json';
 import versions from './data/versions.json';
 import weapons from './data/weapons.json';
 import { ARSENAL, ARSENAL_SOURCE, ARSENAL_TICKETS_AT_LEAST_PER_PULL, arsenalIssue, basicOperator, beginnerOperator, charteredOperator, HEADHUNTING_SOURCE, rerunOperator } from './gacha';
@@ -144,6 +145,8 @@ export const endfield: GameContract = {
     backlog: async () => [],
     materials: async () => [],
     teams: async () => [],
+    // Kit text from each operator's wiki page (npm run data:endfield-kits), not read yet: the Kit check reads it next (E6b).
+    kits: list<Kit>(kits),
     versions: list<Version>(versions),
     weapons: async () => weapons as Weapon[],
   },
@@ -158,6 +161,7 @@ export const endfield: GameContract = {
     { what: 'Sanity max and regen rate', source: 'endfield.wiki.gg/wiki/Sanity', entered: '2026-10-15', verified: true },
     { what: 'Server time zones (Asia UTC+8, Americas / Europe UTC-5)', source: 'Official notices, footer (web-news.gryphline.com, e.g. "[Sanctuary of Ink] Version Update Notes")', entered: '2026-10-15', verified: true },
     { what: 'Daily reset 04:00, weekly reset Monday 04:00 (server time)', source: 'endfield.wiki.gg/wiki/Endfield_Talos_Wiki/servertime; official notices say "updated at 04:00 server time"', entered: '2026-10-15', verified: true },
+    { what: 'Operator kit text: skills (numbers at level 12), talents, Potentials (data/kits.json, npm run data:endfield-kits)', source: 'endfield.wiki.gg operator pages (CC BY-SA 4.0), revision named on each kit', entered: '2026-10-15', verified: false },
     { what: 'Operators, weapons, banners, events, versions (data/*.json, npm run data:endfield)', source: 'endfield.wiki.gg Cargo tables (CC BY-SA), versions checked against the official update notes', entered: '2026-10-15', verified: true },
   ],
 };
