@@ -84,6 +84,12 @@ jobs:
         continue-on-error: true
         run: npm run data:endfield
 
+      - name: Genshin Impact versions, wishes, events (official notices + genshin-impact.fandom.com)
+        id: genshin
+        if: steps.plan.outputs.go == 'true' && hashFiles('src/games/genshin/contract.ts') != ''
+        continue-on-error: true
+        run: npm run data:genshin-schedule
+
       - name: What changed
         id: diff
         if: steps.plan.outputs.go == 'true'
@@ -117,6 +123,7 @@ jobs:
           [ "${{ steps.kits.outcome }}" = "failure" ] && failed+=(--failed "game-data-refresh: the kit import failed (see the Data refresh run on GitHub)")
           [ "${{ steps.schedule.outcome }}" = "failure" ] && failed+=(--failed "events-scan: the notices/wiki import failed (see the Data refresh run on GitHub)")
           [ "${{ steps.endfield.outcome }}" = "failure" ] && failed+=(--failed "events-scan: the Endfield import (official news + endfield.wiki.gg) failed (see the Data refresh run on GitHub)")
+          [ "${{ steps.genshin.outcome }}" = "failure" ] && failed+=(--failed "events-scan: the Genshin import (official notices + genshin-impact.fandom.com) failed (see the Data refresh run on GitHub)")
           if [ "${{ steps.check.outcome }}" = "failure" ]; then
             failed+=(--failed "game-data-refresh: the refreshed lists did not pass the check; PR on $BRANCH waits for SCHEDULER")
           fi
@@ -187,7 +194,7 @@ jobs:
       - name: Result
         if: steps.plan.outputs.go == 'true'
         run: |
-          for o in "${{ steps.nanoka.outcome }}" "${{ steps.kits.outcome }}" "${{ steps.schedule.outcome }}" "${{ steps.endfield.outcome }}" "${{ steps.check.outcome }}"; do
+          for o in "${{ steps.nanoka.outcome }}" "${{ steps.kits.outcome }}" "${{ steps.schedule.outcome }}" "${{ steps.endfield.outcome }}" "${{ steps.genshin.outcome }}" "${{ steps.check.outcome }}"; do
             [ "$o" = "failure" ] && exit 1
           done
           exit 0

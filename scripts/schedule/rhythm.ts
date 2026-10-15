@@ -59,6 +59,8 @@ export const DEFAULT_OFFSETS: Record<string, Record<Signal, number>> = {
   zzz: { program: -378, preDownload: -42 },
   // Endfield: the "New Version Guide Page" post (1.6) and the "Version Pre-Download & Update Notice" (1.3–1.6).
   endfield: { program: -208, preDownload: -48 },
+  // Genshin: the "Special Program Preview" post (6.5–7.1); pre-download notice like HSR/ZZZ's until one is seen.
+  genshin: { program: -330, preDownload: -40 },
 };
 
 export interface VersionSpan {

@@ -15,10 +15,11 @@
  * instead of being guessed. Ids are the game's own, so they never change and
  * nobody's progress is orphaned.
  */
-import { writeFileSync } from 'node:fs';
+import { mkdirSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { fetchWiki, infobox } from './schedule/wiki.ts';
 import { stripTags } from '../src/core/text/markup.ts';
+import { genshin, genshinWeapons } from './nanoka/genshin.ts';
 
 const ROOT = resolve(import.meta.dirname, '..');
 const STATIC = 'https://static.nanoka.cc';
@@ -67,7 +68,7 @@ const ZZZ_ELEMENT: Record<number, string> = { 200: 'physical', 201: 'fire', 202:
 interface Out {
   id: string;
   name: string;
-  rarity: 'top' | 'mid';
+  rarity: 'top' | 'mid' | 'low';
   element: string;
   role: string;
   releasedAt?: string;
@@ -190,14 +191,16 @@ const REVEALED: Record<string, Record<string, string>> = {
 };
 
 const manifest = await getJson<Record<string, Manifest>>(`${STATIC}/manifest.json`);
-for (const [game, read] of [
-  ['hsr', hsr],
-  ['zzz', zzz],
+// [nanoka's game key, our game id, reader]. Genshin is "gi" on nanoka and "genshin" here.
+for (const [key, game, read] of [
+  ['hsr', 'hsr', hsr],
+  ['zzz', 'zzz', zzz],
+  ['gi', 'genshin', genshin],
 ] as const) {
-  const m = manifest[game];
-  if (!m) throw new Error(`nanoka manifest has no ${game}`);
-  const raw = await getJson(`${STATIC}/${game}/${m.latest}/character.json`);
-  const list = read(raw).sort((a, b) => Number(a.id) - Number(b.id));
+  const m = manifest[key];
+  if (!m) throw new Error(`nanoka manifest has no ${key}`);
+  const raw = await getJson(`${STATIC}/${key}/${m.latest}/character.json`);
+  const list = read(raw).sort((a, b) => a.id.localeCompare(b.id, 'en', { numeric: true }));
   // A build newer than the live game: its new characters are unreleased (leaks).
   if (m.latest !== m.live && !m.latest.startsWith(`${m.live}+`)) {
     const fresh = new Set((m.new?.character ?? []).map(String));
@@ -218,10 +221,18 @@ for (const [game, read] of [
       }
     }
   }
-  await wikiDates(game, list);
+  if (game !== 'genshin') await wikiDates(game, list);
   await checkArt(list);
   // No pictures from the wiki: it refuses them to other sites (a page on HLITH gets 404),
   // so they never show. A character without nanoka art shows "No art yet" until nanoka has it.
+  mkdirSync(resolve(ROOT, `src/games/${game}/data`), { recursive: true });
   writeFileSync(resolve(ROOT, `src/games/${game}/data/characters.json`), `${JSON.stringify(list, null, 2)}\n`);
+  if (game === 'genshin') {
+    const newer = m.latest !== m.live && !m.latest.startsWith(`${m.live}+`);
+    const unreleased = new Set(newer ? ((m.new as { weapon?: number[] } | undefined)?.weapon ?? []).map(String) : []);
+    const weapons = genshinWeapons(await getJson(`${STATIC}/${key}/${m.latest}/weapon.json`), unreleased);
+    writeFileSync(resolve(ROOT, `src/games/${game}/data/weapons.json`), `${JSON.stringify(weapons, null, 2)}\n`);
+    console.log(`${game}: ${weapons.length} weapons`);
+  }
   console.log(`${game}: ${list.length} characters (${list.filter((c) => c.leak).length} leaked, ${list.filter((c) => c.releasedAt).length} with a release date)`);
 }
