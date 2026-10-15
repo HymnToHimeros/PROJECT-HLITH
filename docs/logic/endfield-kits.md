@@ -14,10 +14,13 @@
   - Talents: the highest Elite text. Gear unlocks (Outfitting) are left out.
   - Potentials 1–5, unlocked at their level.
 - Markup becomes plain words; anything the script doesn't know stops it, so nothing is guessed.
-- Nothing is read yet (`does` is empty): the character page says "Not read yet".
+- kits.json stays game text only (`does` is empty there); the tags come from the cheat sheets
+  (src/games/endfield/kitcheck/sheet/), and operators without a sheet say "Not read yet".
 
-## Next
-- E6b: the Endfield Kit check engine, the same method as ZZZ (docs/logic/zzz-method.md): entries
-  with word-for-word quotes, Endfield's stats (Physical / Arts DMG, Susceptibility, Vulnerability,
-  inflictions, Stagger, SP, Ultimate Energy, combo triggers), classes and elements as conditions.
-- E6c+: the sheets, about 8 operators per PR.
+## Progress
+- E6b (done): the Endfield Kit check engine and method (docs/logic/endfield-method.md); group A:
+  Chen Qianyu, Da Pan, Catcher, Antal, Endministrator (both), Lifeng.
+- E6c (done): group B: Laevatain, Akekuri, Wulfgard, Ember, Yvonne, Last Rite, Ardelia, Gilberta.
+  Reactions from two elements' Inflictions are now worked out (method decision 5).
+- Next, about 8 per PR: Pogranichnik, Rossi, Zhuang Fangyi, Mi Fu, Arcane, Camille, Typhoeus, Liino,
+  Si, Tangtang, Perlica, Arclight, Xaihi, Avywenna, Snowshine, Alesh, Estella, Fluorite, Purrchena.
