@@ -81,6 +81,11 @@ export function featuredOf(model: PityModel): { winRate: number; guaranteeAfterL
   return model.kind === 'hard-pity' || model.kind === 'custom' ? model.featured : undefined;
 }
 
+/** The odds of a top result being the featured one, in words: "50/50", or the real share ("25% featured", Endfield's weapons). */
+export function oddsWord(featured: { winRate: number } | undefined): string {
+  return !featured || featured.winRate === 0.5 ? '50/50' : `${Math.round(featured.winRate * 100)}% featured`;
+}
+
 /**
  * Chance of getting at least `copies` featured results within `pulls` pulls,
  * starting from `state`. Exact, by stepping through every reachable state.
@@ -191,8 +196,11 @@ export interface LuckStats {
   fiftyFifty: { won: number; lost: number; unknown: number };
 }
 
-/** Luck from history: average pulls per top result and the 50/50 record. Without a guarantee after a loss, every top result is a 50/50. */
-export function luck(history: PullRecord[], bannerType: string, guaranteeAfterLoss = true): LuckStats {
+/**
+ * Luck from history: average pulls per top result and the 50/50 record. Without a guarantee after a loss, every top result is a 50/50.
+ * `fiftyFifty` false: the banner type has no featured result (a standard banner), so nothing on it is a 50/50 won or lost.
+ */
+export function luck(history: PullRecord[], bannerType: string, guaranteeAfterLoss = true, fiftyFifty = true): LuckStats {
   const pulls = history.filter((p) => p.bannerType === bannerType).sort((a, b) => a.time.localeCompare(b.time) || a.id.localeCompare(b.id));
   const gaps: number[] = [];
   let since = 0;
@@ -203,6 +211,7 @@ export function luck(history: PullRecord[], bannerType: string, guaranteeAfterLo
     if (p.rarity !== 'top') continue;
     gaps.push(since);
     since = 0;
+    if (!fiftyFifty) continue;
     if (guaranteedNext) {
       guaranteedNext = false; // a guaranteed result is not a 50/50
       continue;
@@ -220,6 +229,12 @@ export function luck(history: PullRecord[], bannerType: string, guaranteeAfterLo
     averagePity: gaps.length ? known(gaps.reduce((a, b) => a + b, 0) / gaps.length, 'import', at) : unknown('import-history'),
     fiftyFifty: ff,
   };
+}
+
+/** luck() with the banner type's own rules: its guarantee after a loss, and no 50/50 at all where nothing is featured. */
+export function luckOf(history: PullRecord[], type: { id: string; pity: PityModel }): LuckStats {
+  const featured = featuredOf(type.pity);
+  return luck(history, type.id, featured?.guaranteeAfterLoss ?? true, featured !== undefined);
 }
 
 function findLastIndex<T>(list: T[], test: (x: T) => boolean): number {

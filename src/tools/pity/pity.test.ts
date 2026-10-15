@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import type { PityModel, PullRecord } from '../../core/contract';
-import { carryIn, chance, hardPityOf, luck, pityFromHistory, worstCase } from './pity';
+import { carryIn, chance, hardPityOf, luck, luckOf, oddsWord, pityFromHistory, worstCase } from './pity';
 
 const character: PityModel = {
   kind: 'hard-pity',
@@ -153,6 +153,20 @@ describe('pity and luck from history', () => {
     expect(l.tops).toBe(2);
     expect(l.averagePity).toMatchObject({ known: true, value: 40 });
     expect(l.fiftyFifty).toEqual({ won: 0, lost: 1, unknown: 0 });
+  });
+  it('a banner with nothing featured (a standard banner) has no 50/50: its top results are never won or lost', () => {
+    // HSR's import marks standard-pool results not featured: on the standard banner that is not a lost 50/50.
+    const standard = history.filter((p) => p.bannerType === 'character').map((p) => ({ ...p, bannerType: 'standard' }));
+    const l = luckOf(standard, { id: 'standard', pity: { kind: 'hard-pity', hardPity: 90, baseRate: 0.006 } });
+    expect(l.tops).toBe(2);
+    expect(l.fiftyFifty).toEqual({ won: 0, lost: 0, unknown: 0 });
+    const featured: PityModel = { kind: 'hard-pity', hardPity: 90, baseRate: 0.006, featured: { winRate: 0.5, guaranteeAfterLoss: true } };
+    expect(luckOf(history, { id: 'character', pity: featured }).fiftyFifty).toEqual({ won: 0, lost: 1, unknown: 0 });
+  });
+  it('odds in words: "50/50" only at one in two; otherwise the real share (Endfield weapons: 25% featured)', () => {
+    expect(oddsWord({ winRate: 0.5 })).toBe('50/50');
+    expect(oddsWord({ winRate: 0.25 })).toBe('25% featured');
+    expect(oddsWord({ winRate: 0.75 })).toBe('75% featured');
   });
   it('no guarantee after a loss (Endfield): every top result is a 50/50, and a loss guarantees nothing', () => {
     expect(luck(history, 'character', false).fiftyFifty).toEqual({ won: 1, lost: 1, unknown: 0 });
