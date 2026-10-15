@@ -56,7 +56,10 @@ describe('Endfield lists from the wiki', () => {
     const by = (t: string) => list.find((b) => b.title === t);
     expect(by('Basic Headhunting')).toBeUndefined(); // its pool (Ardelia) is not in this test's operator list
     expect(notes.notes).toContain('banner "Basic Headhunting" left out until its operator is on the wiki');
+    // Typhoeus and Liino are not in this test's operator list, so no alsoAvailable here (never guessed).
     expect(by('Rejuvenation')).toEqual({ id: 'rejuvenation-2026-10-15', type: 'chartered', title: 'Rejuvenation', featured: ['chr_0036_jsspsi'], start: '2026-10-15T04:00:00.000Z', end: '2026-11-05T03:59:59.000Z', serverTime: { base: 8, end: true } });
+    const withPool = banners([{ ...(BANNERS[1] as Row), LimitedOperators: 'Si;Endministrator' }], [], [...ops, { id: 'chr_x', name: 'Endministrator', rarity: 'top', element: 'physical', role: 'guard', source: 'w' }], wpns, undefined, { notes: [] });
+    expect(withPool[0]).toMatchObject({ featured: ['chr_0036_jsspsi'], alsoAvailable: ['chr_x'] });
     expect(by('Seal of Jade Issue')).toMatchObject({ type: 'weapon', featured: ['wpn_claym_0018'], art: 'https://x/j.png' });
     expect(by('Ancestral Spring Flows Anew')).toBeUndefined();
     expect(by('Fest of Brilliance')).toMatchObject({ type: 'joint', featured: ['chr_0036_jsspsi'] });
@@ -98,5 +101,52 @@ describe('Endfield lists from the wiki', () => {
       ['1.4', '2026-09-01T22:00:00.000Z'],
     ]);
     expect(notes.notes).toEqual(['version 1.6 "Sanctuary of Ink" left out: no end yet']);
+  });
+});
+
+describe('Endfield: the official notices win', () => {
+  const NOTES = [
+    '5. [The Hearth Fire Beckons the Starry Flow] Chartered Headhunting',
+    '· Availability: Nov. 5, 2026 at 12:00 (server time) – Before version update and maintenance',
+    '6. [Moongleam Issue] Arsenal Issue Open',
+    '· Availability: Opens Nov. 5, 2026 at 12:00 (server time); ends after 3 [Chartered Headhunting] banners (starting from [The Hearth Fire Beckons the Starry Flow])',
+    '· Issue Details: [Moongleam Issue] Arsenal Issue features the Rate-UP 6★ weapon [Lunar Calling (Sword)].',
+    '6★ weapons [Jade Vessel (Greatsword)], [Lunar Calling (Sword)]',
+  ].join('\n');
+
+  it('reads server-time dates as the Asia instant', async () => {
+    const { serverDate } = await import('../scripts/endfield/map.ts');
+    expect(serverDate('Sept. 24, 2026 at 12:00')).toBe('2026-09-24T04:00:00.000Z');
+    expect(serverDate('Nov. 5, 2026 at 11:59')).toBe('2026-11-05T03:59:00.000Z');
+  });
+
+  it('banner periods: server-time starts, "before version update" ends, no end for "after 3 banners"', async () => {
+    const { officialTimes } = await import('../scripts/endfield/map.ts');
+    const t = officialTimes([
+      { title: '[Sanctuary of Ink] Version Update Notes', text: NOTES },
+      { title: '[Resplendent Spectrum] RE-Factor Headhunting #1 and [Tag Artist Issue] RE-Factor Issue #1 Open', text: '▼// Availability\nSept. 24, 2026 at 12:00 (server time) – Before version update and maintenance' },
+    ]);
+    expect(t.get('the hearth fire beckons the starry flow')).toEqual({ start: { at: '2026-11-05T04:00:00.000Z', server: true }, end: { version: true } });
+    expect(t.get('moongleam issue')).toEqual({ start: { at: '2026-11-05T04:00:00.000Z', server: true } });
+  });
+
+  it('the official period replaces the wiki copy (Argent Flow starts 12:00 on each server, ends with the version)', async () => {
+    const { officialTimes } = await import('../scripts/endfield/map.ts');
+    const notes = { notes: [] as string[] };
+    const ops = operators([{ Operator: 'Argent Flow', Id: '', Rarity: '6', Class: 'Guard', Element: 'Electric', Headhunting: 'chartered' }], [], new Map(), true, { notes: [] });
+    expect(ops[0]?.id).toBe('chr_argent-flow');
+    const wiki: Row = { Banner: 'The Hearth Fire Beckons the Starry Flow', RateUpOperator: 'Argent Flow', LimitedOperators: 'Argent Flow', AsiaStartTime: '2026-11-05 04:00:00', AsiaEndTime: '2026-11-26 03:59:59', AmeuStartTime: '2026-11-05 04:00:00', AmeuEndTime: '2026-11-26 16:59:59' };
+    const list = banners([wiki], [], ops, [], '2026-11-24T22:00:00.000Z', notes, officialTimes([{ title: 'notes', text: NOTES }]));
+    expect(list[0]).toMatchObject({ start: '2026-11-05T04:00:00.000Z', end: '2026-11-24T22:00:00.000Z', serverTime: { base: 8, start: true }, featured: ['chr_argent-flow'] });
+  });
+
+  it('6★ weapons named in the notes, and ids that never change once given', async () => {
+    const { officialWeapons, keepIds } = await import('../scripts/endfield/map.ts');
+    expect(officialWeapons([NOTES])).toEqual([
+      { name: 'Lunar Calling', type: 'sword' },
+      { name: 'Jade Vessel', type: 'great-sword' },
+    ]);
+    // The wiki later gives Argent Flow a game id: she keeps the one she was first listed with.
+    expect(keepIds([{ id: 'chr_0040_argent', name: 'Argent Flow' }], [{ id: 'chr_argent-flow', name: 'Argent Flow' }])).toEqual([{ id: 'chr_argent-flow', name: 'Argent Flow' }]);
   });
 });

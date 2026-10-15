@@ -622,5 +622,12 @@
     "icon": "https://endfield.wiki.gg/images/Farsight_icon.png",
     "type": "sword",
     "source": "endfield.wiki.gg (CC BY-SA)"
+  },
+  {
+    "id": "wpn_lunar-calling",
+    "name": "Lunar Calling",
+    "rarity": "top",
+    "type": "sword",
+    "source": "Official notice (web-news.gryphline.com)"
   }
 ]

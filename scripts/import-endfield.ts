@@ -11,7 +11,8 @@
  */
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
-import { banners, events, operators, rhythmFrom, versions, weapons, type NewsItem, type Notes, type Row } from './endfield/map.ts';
+import { banners, events, keepIds, officialTimes, officialWeapons, operators, rhythmFrom, slug, versions, weapons, type NewsItem, type Notes, type Row, type WeaponItem } from './endfield/map.ts';
+import { stripTags } from '../src/core/text/markup.ts';
 
 const ROOT = resolve(import.meta.dirname, '..');
 const OUT = resolve(ROOT, 'src/games/endfield/data');
@@ -60,12 +61,12 @@ async function imageLinks(files: string[]): Promise<Map<string, string>> {
 }
 
 /** Every post on the official news list (all tabs), newest pages first. */
-async function newsList(): Promise<NewsItem[]> {
-  const items: NewsItem[] = [];
+async function newsList(): Promise<(NewsItem & { cid: string })[]> {
+  const items: (NewsItem & { cid: string })[] = [];
   for (let page = 1; page <= 30; page++) {
     const q = new URLSearchParams({ lang: 'en-us', code: 'arknights_endfield_official', page: String(page), pageSize: '20' });
-    const d = await json<{ data: { list: NewsItem[]; total: number } }>(`${NEWS}?${q}`);
-    items.push(...d.data.list.map((x) => ({ title: x.title, displayTime: x.displayTime })));
+    const d = await json<{ data: { list: (NewsItem & { cid: string })[]; total: number } }>(`${NEWS}?${q}`);
+    items.push(...d.data.list.map((x) => ({ title: x.title, displayTime: x.displayTime, cid: x.cid })));
     if (items.length >= d.data.total || d.data.list.length === 0) break;
   }
   return items;
@@ -81,6 +82,16 @@ const [opRows, wpnRows, banRows, issueRows, evtRows, verRows, news] = await Prom
   cargo('Versions', 'Version,VersionNumber,StartTime,EndTime', 'StartTime'),
   newsList(),
 ]);
+// The full text of the posts that state banner periods and new weapons: update notes and banner posts of the last ~120 days.
+const recent = news.filter((n) => n.displayTime * 1000 > Date.now() - 120 * 86_400_000 && /Update Notes|Headhunting|Issue/i.test(n.title));
+const posts = await Promise.all(
+  recent.map(async (n) => {
+    const d = await json<{ data: { data?: string } }>(`${NEWS}/${n.cid}?lang=en-us&code=arknights_endfield_official`);
+    const text = stripTags((d.data.data ?? '').replace(/<\/(p|div|li|h\d)>|<br\s*\/?>/gi, '\n')).replace(/&nbsp;/g, ' ').replace(/&amp;/g, '&');
+    return { title: n.title, text };
+  }),
+);
+const official = officialTimes(posts);
 const images = await imageLinks([...opRows.flatMap((r) => [r.Icon ?? '', r.Splash ?? '']), ...wpnRows.map((r) => r.Icon ?? '')]);
 
 const vers = versions(verRows, news, out);
@@ -89,9 +100,17 @@ const named = verRows.filter((r) => r.VersionNumber && r.StartTime).map((r) => (
 const learned = rhythmFrom(news, named);
 const now = Date.now();
 const current = vers.find((v) => Date.parse(v.start) <= now && now < Date.parse(v.end)) ?? vers.at(-1);
-const ops = operators(opRows, banRows, images, LOW_TIER, out, vers[0]?.start);
-const wpns = weapons(wpnRows, images, out);
-const bans = banners(banRows, issueRows, ops, wpns, current?.end, out);
+const previous = <T>(name: string): T[] => (existsSync(resolve(OUT, `${name}.json`)) ? (JSON.parse(readFileSync(resolve(OUT, `${name}.json`), 'utf8')) as T[]) : []);
+const ops = keepIds(operators(opRows, banRows, images, LOW_TIER, out, vers[0]?.start), previous('characters'));
+const wikiWeapons = weapons(wpnRows, images, out);
+// 6★ weapons the official notes name before the wiki has a page for them.
+const fromNotes: WeaponItem[] = officialWeapons(posts.map((p) => p.text))
+  .filter((w) => !wikiWeapons.some((x) => x.name.toLowerCase() === w.name.toLowerCase()))
+  .map((w) => ({ id: `wpn_${slug(w.name)}`, name: w.name, rarity: 'top', type: w.type, source: 'Official notice (web-news.gryphline.com)' }));
+for (const w of fromNotes) out.notes.push(`weapon "${w.name}" from the official notes (no wiki page yet)`);
+const wpns = keepIds([...wikiWeapons, ...fromNotes], previous('weapons'));
+const endAt = (iso: string) => vers.find((v) => Date.parse(v.start) <= Date.parse(iso) && Date.parse(iso) < Date.parse(v.end))?.end;
+const bans = banners(banRows, issueRows, ops, wpns, current?.end, out, official, endAt);
 const evts = events(evtRows, out);
 
 const lists = { versions: vers.map(({ id, start, end }) => ({ id, start, end })), characters: ops, weapons: wpns, banners: bans, events: evts };
