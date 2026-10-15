@@ -96,6 +96,16 @@ export const JOBS: readonly JobDef[] = [
     maxSeconds: 0,
   },
   {
+    id: 'skport-daily',
+    label: 'SKPort daily check-in',
+    does: 'Claims the daily attendance reward for every saved SKPort account (Arknights: Endfield) whose owner switched auto check-in on.',
+    cadence: 'daily 16:40',
+    target: { kind: 'function', name: 'skport-daily' },
+    logicOwner: 'FRAME workstream',
+    status: 'live',
+    maxSeconds: 135,
+  },
+  {
     id: 'leaks-scan',
     label: 'Leak scan',
     does: 'Looks for new leaks (for example the new-item lists in the nanoka.cc data) and delivers each one to Findings for you to approve or dismiss.',
