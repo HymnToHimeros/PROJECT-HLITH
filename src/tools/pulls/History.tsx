@@ -133,7 +133,7 @@ export function History({ game, data, signedIn, now }: { game: GameContract; dat
   const ways: { id: Exclude<Way, null>; label: string; sub: string; show: boolean }[] = [
     { id: 'link', label: 'Paste a history link', sub: 'From the in-game history page. Works on PC.', show: linkImport },
     { id: 'cache', label: "Pick the game’s cache file", sub: "The same link, read from the game’s own file. PC, no command needed.", show: linkImport && !!guide?.dataFolder },
-    { id: 'file', label: 'Upload a file', sub: `Export from another tracker (${fileLabel || '.json'}).`, show: fileImport },
+    { id: 'file', label: 'Upload a file', sub: mapping?.uigfKey ? `Export from another tracker (${fileLabel || '.json'}).` : `An HLITH pull history file (.json) you exported earlier.`, show: fileImport },
   ];
 
   return (
