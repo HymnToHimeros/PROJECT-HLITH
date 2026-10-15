@@ -17,7 +17,7 @@ import { resolve } from 'node:path';
 
 const ROOT = resolve(import.meta.dirname, '..');
 const OUT = resolve(ROOT, 'src/games/endfield/data/kits.json');
-const WIKI = 'https://endfield.wiki.gg';
+export const WIKI = 'https://endfield.wiki.gg';
 const dry = process.argv.includes('--dry');
 /** The level whose numbers are written into each skill: the highest (9 + 3 Specializations). */
 const LEVEL = 12;
@@ -37,14 +37,14 @@ interface Kit {
   skills: KitSkill[];
 }
 
-async function json<T>(url: string): Promise<T> {
+export async function json<T>(url: string): Promise<T> {
   const res = await fetch(url, { headers: { 'user-agent': 'PROJECT-HLITH data import (https://github.com/HymnToHimeros/PROJECT-HLITH)' } });
   if (!res.ok) throw new Error(`${url} answered ${res.status}`);
   return (await res.json()) as T;
 }
 
 /** The page's current wikitext and revision id. */
-async function page(title: string): Promise<{ text: string; revid: number }> {
+export async function page(title: string): Promise<{ text: string; revid: number }> {
   const q = new URLSearchParams({ action: 'parse', page: title, prop: 'wikitext|revid', format: 'json', formatversion: '2', redirects: '1' });
   const d = await json<{ parse?: { wikitext: string; revid: number }; error?: { info: string } }>(`${WIKI}/api.php?${q}`);
   if (!d.parse) throw new Error(`wiki page "${title}": ${d.error?.info ?? 'not found'}`);
@@ -52,7 +52,7 @@ async function page(title: string): Promise<{ text: string; revid: number }> {
 }
 
 /** Operator id → its wiki page (the Operators Cargo table's Operator field). */
-async function pagesById(): Promise<Map<string, string>> {
+export async function pagesById(): Promise<Map<string, string>> {
   const q = new URLSearchParams({ action: 'cargoquery', format: 'json', limit: '500', tables: 'Operators', fields: 'Operator,Id' });
   const d = await json<{ cargoquery?: { title: { Operator?: string; Id?: string } }[] }>(`${WIKI}/api.php?${q}`);
   return new Map((d.cargoquery ?? []).flatMap(({ title: r }) => (r.Id && r.Operator ? [[r.Id, r.Operator.trim()]] : [])));
