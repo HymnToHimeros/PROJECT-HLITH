@@ -7,6 +7,11 @@ export type ISODate = string;
 
 export interface Character {
   id: string;
+  /**
+   * The game's own id when it differs from `id` (an operator first listed before the game gave
+   * them one keeps their first id for good). Pull history and roster imports match on either.
+   */
+  gameId?: string;
   name: string;
   rarity: 'top' | 'mid' | 'low';
   element: string; // GameContract.elements[].id

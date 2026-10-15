@@ -16,6 +16,7 @@ import type { CharRef, Profile } from './profile';
 import { formatDate } from '../../core/time/reset';
 import { rewardTag, wornItems, type RewardItem } from './rewards/model';
 import type { RewardKind } from './rewards/pool';
+import { findCharacter } from '../../core/data/gameIds';
 
 export interface CardInput {
   profile: Profile;
@@ -78,7 +79,8 @@ export function luckiestItem(games: GameContract[], data: CardInput['data'], cha
   const l = luckiestPull(games, data);
   const game = l && games.find((g) => g.id === l.game);
   if (!l || !game) return null;
-  const ch = characters[l.game]?.find((c) => c.id === l.itemId);
+  // Pull records hold the game's id: match it as our id or the character's gameId.
+  const ch = findCharacter(characters[l.game], l.itemId);
   const look = ch ? cardCharacter(game, ch) : { name: l.name, rarity: 'top' as const, elementColor: 'var(--line-empty)' };
   return { ...look, name: ch?.name ?? l.name, gameShort: game.short, vent: game.vent, topLabel: game.terms.rarity.top, pulls: l.pulls, time: l.time };
 }

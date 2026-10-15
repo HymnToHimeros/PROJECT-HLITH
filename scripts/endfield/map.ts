@@ -52,6 +52,8 @@ export interface Notes {
 
 export interface Operator {
   id: string;
+  /** The wiki's game id (chr_00xx_…), kept when `id` differs (keepIds). */
+  gameId?: string;
   name: string;
   rarity: Rarity;
   element: string;
@@ -99,6 +101,7 @@ export function operators(rows: Row[], banners: Row[], images: Map<string, strin
     list.push({
       // An upcoming operator has no game id on the wiki yet: one from the name (kept for good by keepIds).
       id: r.Id?.trim() || `chr_${slug(name)}`,
+      ...(r.Id?.trim() ? { gameId: r.Id.trim() } : {}),
       name,
       rarity,
       element: slug(r.Element),
@@ -437,10 +440,12 @@ export function officialWeapons(texts: string[]): { name: string; type: string }
  * Ids never change: an item keeps the id it was first listed with (matched by name), even
  * when the wiki later gives it a game id. New items without a wiki id get one from their name.
  */
-export function keepIds<T extends { id: string; name: string }>(items: T[], previous: { id: string; name: string }[]): T[] {
+export function keepIds<T extends { id: string; name: string; gameId?: string }>(items: T[], previous: { id: string; name: string }[]): T[] {
   const byName = new Map(previous.map((p) => [p.name, p.id]));
   return items.map((x) => {
-    const id = byName.get(x.name);
-    return id && id !== x.id ? { ...x, id } : x;
+    const id = byName.get(x.name) ?? x.id;
+    // The game's own id stays on the item only when it differs from ours (pull history matches on it).
+    const { gameId, ...rest } = x;
+    return { ...rest, id, ...(gameId && gameId !== id ? { gameId } : {}) } as T;
   });
 }
