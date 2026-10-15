@@ -16,6 +16,9 @@ grant update (label, auto_checkin) on public.skport_links to authenticated;
 revoke all on public.skport_checkins from anon, authenticated;
 grant select on public.skport_checkins to authenticated;
 
+-- Index: the scheduler and the user's history page both filter by user_id.
+create index if not exists skport_checkins_user on public.skport_checkins (user_id);
+
 -- ── HoYoLAB ─────────────────────────────────────────────────────────
 
 -- hoyolab_links: authenticated may SELECT specific columns and UPDATE label/auto_checkin/auto_redeem.
