@@ -282,7 +282,7 @@ export function eventKind(r: Row): EventItem['kind'] | undefined {
 }
 
 /** Events with both ends known. Rewards are prose on the wiki and in the notices: null until a source states a number. */
-export function events(rows: Row[], out: Notes): EventItem[] {
+export function events(rows: Row[], out: Notes, rewards: Map<string, number> = new Map()): EventItem[] {
   const list: EventItem[] = [];
   const seen = new Set<string>();
   for (const r of rows) {
@@ -304,7 +304,7 @@ export function events(rows: Row[], out: Notes): EventItem[] {
     if (seen.has(id)) continue;
     seen.add(id);
     const st = serverTime(r);
-    list.push({ id, title, kind, start, end, reward: null, currency: CURRENCY, ...(st ? { serverTime: st } : {}) });
+    list.push({ id, title, kind, start, end, reward: rewards.get(slug(title)) ?? null, currency: CURRENCY, ...(st ? { serverTime: st } : {}) });
   }
   return list.sort((a, b) => a.start.localeCompare(b.start) || a.id.localeCompare(b.id));
 }
@@ -418,6 +418,40 @@ export function officialTimes(posts: { title: string; text: string }[]): Map<str
       if (end) t.end = end;
       if ((t.start || t.end) && !out.has(current.toLowerCase())) out.set(current.toLowerCase(), t);
     }
+  }
+  return out;
+}
+
+/**
+ * Oroberyl each event gives, from the official update notes: every "[Oroberyl]×N" in an event's
+ * block ("3. [All the Inky Hues] Guide Event", "○[Season of Phantasia]"), keyed by the event's slug.
+ * A block can name its limited event inside ("the [Monumental Etching: Forest of Maras] limited-time
+ * event will begin"); that name gets the amount too. The notes say "rewards including", so this is
+ * what Gryphline states, never more. Events the notes give no amount for are left out (reward stays null).
+ */
+export function officialRewards(posts: { title: string; text: string }[]): Map<string, number> {
+  const out = new Map<string, number>();
+  for (const p of posts) {
+    if (!/Update Notes/i.test(p.title)) continue;
+    let names: string[] = [];
+    let total = 0;
+    const flush = () => {
+      if (total > 0) for (const n of names) if (!out.has(slug(n))) out.set(slug(n), total);
+      names = [];
+      total = 0;
+    };
+    for (const raw of p.text.split('\n')) {
+      const line = raw.trim();
+      if (/^■/.test(line)) flush();
+      const head = /^(?:\d+\.|○)\s*[^[]*\[([^\]]+)\]/.exec(line)?.[1];
+      if (head) {
+        flush();
+        names.push(head);
+      }
+      for (const m of line.matchAll(/\[([^\]]+)\]\s*limited-time event/gi)) if (m[1]) names.push(m[1]);
+      for (const m of line.matchAll(/\[Oroberyls?\]\s*[×x]\s*([\d,]+)/gi)) total += Number((m[1] ?? '').replace(/,/g, ''));
+    }
+    flush();
   }
   return out;
 }

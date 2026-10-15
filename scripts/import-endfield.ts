@@ -11,7 +11,7 @@
  */
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
-import { banners, events, keepIds, officialTimes, officialWeapons, operators, rhythmFrom, slug, versions, weapons, type NewsItem, type Notes, type Row, type WeaponItem } from './endfield/map.ts';
+import { banners, events, keepIds, officialRewards, officialTimes, officialWeapons, operators, rhythmFrom, slug, versions, weapons, type NewsItem, type Notes, type Row, type WeaponItem } from './endfield/map.ts';
 import { stripTags } from '../src/core/text/markup.ts';
 
 const ROOT = resolve(import.meta.dirname, '..');
@@ -111,7 +111,8 @@ for (const w of fromNotes) out.notes.push(`weapon "${w.name}" from the official 
 const wpns = keepIds([...wikiWeapons, ...fromNotes], previous('weapons'));
 const endAt = (iso: string) => vers.find((v) => Date.parse(v.start) <= Date.parse(iso) && Date.parse(iso) < Date.parse(v.end))?.end;
 const bans = banners(banRows, issueRows, ops, wpns, current?.end, out, official, endAt);
-const evts = events(evtRows, out);
+// Oroberyl per event as the official update notes state it (the wiki's event tables have no amounts).
+const evts = events(evtRows, out, officialRewards(posts));
 
 const lists = { versions: vers.map(({ id, start, end }) => ({ id, start, end })), characters: ops, weapons: wpns, banners: bans, events: evts };
 console.log(
