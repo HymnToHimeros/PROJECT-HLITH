@@ -5,16 +5,18 @@
  * List items in data/*.json need stable ids that never change.
  * Add the game to src/games/index.ts. Nothing else in the app changes.
  */
-import type { Banner, Character, GameContract, GameEvent, Version, Weapon } from '../../core/contract';
+import type { Banner, Character, GameContract, GameEvent, Material, Version, Weapon } from '../../core/contract';
 import banners from './data/banners.json';
 import characters from './data/characters.json';
+import materials from './data/materials.json';
+import { materialsFor } from './costs';
 import { KITS, SHEETS } from './kitcheck/library';
 import { withTags } from './kitcheck/tags';
 import { endfieldTeamRules, recommendedTeams } from './kitcheck/team';
 import events from './data/events.json';
 import versions from './data/versions.json';
 import weapons from './data/weapons.json';
-import { ARSENAL, ARSENAL_SOURCE, ARSENAL_TICKETS_AT_LEAST_PER_PULL, arsenalIssue, basicOperator, beginnerOperator, charteredOperator, HEADHUNTING_SOURCE, rerunOperator } from './gacha';
+import { ARSENAL, ARSENAL_SOURCE, ARSENAL_TICKETS_AT_LEAST_PER_PULL, arsenalIssue, basicOperator, beginnerOperator, charteredOperator, HEADHUNTING_SOURCE, OPERATOR, rerunOperator } from './gacha';
 
 const list = <T>(rows: unknown) => async () => rows as T[];
 
@@ -157,6 +159,8 @@ export const endfield: GameContract = {
       'weapon-rerun': 'weapon',
     },
     rarity: { '6': 'top', '5': 'mid', '4': 'low' },
+    // A 6★ that isn't the banner's featured one is a lost 50/50, also when it's an earlier limited operator (docs/logic/endfield-gacha.md).
+    featuredByBanner: { types: ['chartered', 'rerun'], guaranteeAt: OPERATOR.guaranteeAt },
   },
 
   data: {
@@ -164,7 +168,7 @@ export const endfield: GameContract = {
     banners: list<Banner>(banners),
     events: list<GameEvent>(events),
     backlog: async () => [],
-    materials: async () => [],
+    materials: list<Material>(materials),
     // Recommended teams: the best team the Kit check finds for each damage dealer read so far (docs/logic/endfield-method.md).
     teams: async () => recommendedTeams(),
     // Kit text from each operator's wiki page (npm run data:endfield-kits), with the Kit check's tags for operators read so far.
@@ -175,6 +179,9 @@ export const endfield: GameContract = {
 
   rules: {
     teams: endfieldTeamRules,
+    materialsFor,
+    materialsNote:
+      'From endfield.wiki.gg: levels 1→90, Promotions I–IV, all four combat skills to 12, and the Ability Matrix (attribute increases, talents, base skills, gear outfitting). Operator EXP is counted as Advanced Combat Records (to level 60) and Advanced Cognitive Carriers (61–90), 10,000 EXP each. Sanity per run isn’t on the wiki, so runs and Sanity say “No data yet”.',
   },
 
   sources: [
@@ -186,6 +193,7 @@ export const endfield: GameContract = {
     { what: 'Server time zones (Asia UTC+8, Americas / Europe UTC-5)', source: 'Official notices, footer (web-news.gryphline.com, e.g. "[Sanctuary of Ink] Version Update Notes")', entered: '2026-10-15', verified: true },
     { what: 'Daily reset 04:00, weekly reset Monday 04:00 (server time)', source: 'endfield.wiki.gg/wiki/Endfield_Talos_Wiki/servertime; official notices say "updated at 04:00 server time"', entered: '2026-10-15', verified: true },
     { what: 'Operator kit text: skills (numbers at level 12), talents, Potentials (data/kits.json, npm run data:endfield-kits)', source: 'endfield.wiki.gg operator pages (CC BY-SA 4.0), revision named on each kit', entered: '2026-10-15', verified: false },
+    { what: 'Operator level-up costs and items (data/costs.json, data/materials.json, npm run data:endfield-costs)', source: 'endfield.wiki.gg Operator page and operator pages (CC BY-SA 4.0), revision named per operator; AbilityMatrixUpgrades and Items tables', entered: '2026-10-15', verified: false },
     { what: 'Operators, weapons, banners, events, versions (data/*.json, npm run data:endfield)', source: 'endfield.wiki.gg Cargo tables (CC BY-SA), versions checked against the official update notes', entered: '2026-10-15', verified: true },
   ],
 };

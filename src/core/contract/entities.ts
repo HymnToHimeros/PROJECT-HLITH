@@ -7,6 +7,11 @@ export type ISODate = string;
 
 export interface Character {
   id: string;
+  /**
+   * The game's own id when it differs from `id` (an operator first listed before the game gave
+   * them one keeps their first id for good). Pull history and roster imports match on either.
+   */
+  gameId?: string;
   name: string;
   rarity: 'top' | 'mid' | 'low';
   element: string; // GameContract.elements[].id
@@ -60,6 +65,12 @@ export interface Banner {
    * announced; screens show "Permanent" instead of a countdown and leave it off timelines and plans.
    */
   permanent?: boolean;
+  /**
+   * Other limited characters the banner can give besides `featured` (e.g. Endfield: the limited 6★s of
+   * the previous two Chartered banners, on a lost 50/50). Character ids, from the game's own banner
+   * list; missing = not stated.
+   */
+  alsoAvailable?: string[];
 }
 
 export interface GameEvent {

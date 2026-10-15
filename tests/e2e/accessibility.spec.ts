@@ -46,8 +46,9 @@ for (const theme of THEMES) {
   test(`no serious accessibility problems · theme ${theme}`, async ({ page }) => {
     test.setTimeout(60_000);
     const problems: string[] = [];
-    await page.goto('/hsr/today');
-    await page.evaluate((t) => {
+    // The theme goes into the settings before any app code runs, on every page load. Written after a page had
+    // loaded, the app's own next save (e.g. the last opened module) could put its in-memory theme back: a flaky "dark".
+    await page.addInitScript((t) => {
       const p = JSON.parse(localStorage.getItem('hlith.prefs') ?? '{}') as Record<string, unknown>;
       localStorage.setItem('hlith.prefs', JSON.stringify({ version: 1, updatedAt: 0, games: null, layouts: {}, servers: {}, lastModule: {}, ...p, theme: t }));
     }, theme);

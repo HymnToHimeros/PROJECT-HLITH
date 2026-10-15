@@ -246,6 +246,12 @@ export interface HistoryMapping {
   rarity: Record<string, 'top' | 'mid' | 'low'>;
   /** Item ids of standard-pool top results: getting one on a featured banner = lost 50/50. */
   standardTop?: string[];
+  /**
+   * When pulls don't say their banner and there's no standard list (Endfield): on these banner types, a top
+   * result is featured if it is in the featured list of the one banner of its type open at the pull's time,
+   * else a lost 50/50 (tools/pulls/featuredByBanner). `guaranteeAt`: the banner's own sure pull, not a 50/50.
+   */
+  featuredByBanner?: { types: string[]; guaranteeAt?: number };
 }
 
 export interface AccountLink {

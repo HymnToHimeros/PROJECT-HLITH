@@ -22,6 +22,8 @@ export interface Library {
   /** Kit piece → its label ("Battle Skill: Dolly Rush"), per operator. */
   pieceLabels: Map<string, Map<string, string>>;
   names: Map<string, string>;
+  /** Release dates (characters.json `releasedAt`); an operator without one is out. */
+  releasedAt?: Map<string, string>;
   /** Ids that are one operator, so a team holds at most one of them (the Endministrator: male or female). */
   sameOperator?: string[][];
   /** Not used by Endfield yet (no leaks); kept so shared rules read the same shape. */
@@ -80,11 +82,17 @@ export const isDamageDealer = (id: string, lib: Library) => !!lib.sheets.get(id)
 const damageOf = (dd: string, lib: Library): Element | undefined => lib.sheets.get(dd)?.damage?.element ?? lib.profiles.get(dd)?.element;
 
 type CondResult = 'met' | 'not-met' | 'unknown';
-const hasNamed = (c: Condition | undefined): boolean => !!c && ('all' in c ? c.all.some(hasNamed) : 'named' in c);
+const hasNamed = (c: Condition | undefined): boolean => !!c && ('all' in c ? c.all.some(hasNamed) : 'named' in c || 'lead' in c);
 
 function evalCondition(c: Condition | undefined, self: string, team: string[], lib: Library, dd?: string): CondResult {
   if (!c) return 'met';
   if ('unknown' in c) return 'unknown';
+  if ('lead' in c) {
+    // Decision 8: Team Position 01 is the damage dealer.
+    const el = dd === undefined ? undefined : damageOf(dd, lib);
+    if (el === undefined) return 'unknown';
+    return c.lead.elements.includes(el) !== !!c.lead.not ? 'met' : 'not-met';
+  }
   if ('named' in c) {
     const q = c.named;
     if (q.as === 'member') return team.some((id) => id !== self && q.ids.includes(id)) ? 'met' : 'not-met';
@@ -131,6 +139,7 @@ const list = (xs: string[]) => (xs.length < 2 ? (xs[0] ?? '') : `${xs.slice(0, -
 export function conditionWords(c: Condition | undefined): string {
   if (!c) return 'always';
   if ('unknown' in c) return c.unknown;
+  if ('lead' in c) return c.lead.words;
   if ('named' in c) return c.named.words;
   if ('all' in c) return c.all.map(conditionWords).join(', and ');
   if ('count' in c) return `${c.count.atLeast} ${[c.count.element && ELEMENT_WORD[c.count.element], c.count.opClass && CLASS_WORD[c.count.opClass]].filter(Boolean).join(' ')} operators in the team`;
@@ -150,6 +159,13 @@ const COVERS: Partial<Record<GameEvent, GameEvent[]>> = {
 /** Arts Susceptibility makes an enemy Susceptible to every Arts element (wiki: Arts Susceptibility). */
 const IMPLIES: Partial<Record<GameEvent, GameEvent[]>> = {
   'arts-susceptibility': ['heat-susceptibility', 'cryo-susceptibility', 'electric-susceptibility', 'nature-susceptibility'],
+};
+/** Decision 5: an element's infliction on an enemy that already has another element's sets up that element's reaction. */
+const REACTION_OF: Partial<Record<GameEvent, GameEvent>> = {
+  'heat-infliction': 'combustion',
+  'cryo-infliction': 'solidification',
+  'electric-infliction': 'electrification',
+  'nature-infliction': 'corrosion',
 };
 /** Does setting up `cause` meet a piece that reacts to `need`? */
 export const meets = (cause: GameEvent, need: GameEvent) => cause === need || !!COVERS[need]?.includes(cause) || !!IMPLIES[cause]?.includes(need);
@@ -244,6 +260,9 @@ export function checkTeam(team: string[], dd: string, lib: Library, account: Acc
   const entries = new Map(order.map((who) => [who, lib.sheets.get(who)?.entries ?? []]));
   for (const who of order) for (const e of entries.get(who) ?? []) statuses.set(key(who, e), statusOf(e, who, order, lib, account, dd));
   const ddReacting = (entries.get(dd) ?? []).filter((x) => x.reacts?.length && statuses.get(key(dd, x))?.status === 'on');
+  // Decision 5: the inflictions the team applies; one element's on top of another's makes the reaction of the second.
+  const inflicted = new Set(order.flatMap((who) => (entries.get(who) ?? []).filter((e) => statuses.get(key(who, e))?.status === 'on').flatMap((e) => (e.causes ?? []).filter((c) => REACTION_OF[c]))));
+  const reactionsOf = (e: Entry): GameEvent[] => (e.causes ?? []).flatMap((c) => (REACTION_OF[c] && [...inflicted].some((x) => x !== c) ? [REACTION_OF[c]] : []));
 
   for (const who of order) {
     for (const e of entries.get(who) ?? []) {
@@ -280,11 +299,14 @@ export function checkTeam(team: string[], dd: string, lib: Library, account: Acc
       }
       // Step 4: chains, a teammate setting up what the damage dealer's kit reacts to.
       if (e.causes?.length) {
-        const hit = ddReacting.find((x) => e.causes?.some((c) => x.reacts?.some((need) => meets(c, need))));
-        const cause = hit && e.causes.find((c) => hit.reacts?.some((need) => meets(c, need)));
+        const reactions = reactionsOf(e);
+        const causes = [...e.causes, ...reactions];
+        const hit = ddReacting.find((x) => causes.some((c) => x.reacts?.some((need) => meets(c, need))));
+        const cause = hit && causes.find((c) => hit.reacts?.some((need) => meets(c, need)));
         if (hit && cause) {
           contributed.add(who);
-          lines.push({ ...base, kind: 'chain', why: `sets up ${eventWord(cause)} for ${name(dd)}: ${hit.tag}`, points: 1, parts: [{ zone: `chain:${dd}:${hit.id}`, size: typ, how: 'typical' }] });
+          const how = reactions.includes(cause) && !e.causes.includes(cause) ? ' (on another element’s Infliction)' : '';
+          lines.push({ ...base, kind: 'chain', why: `sets up ${eventWord(cause)}${how} for ${name(dd)}: ${hit.tag}`, points: 1, parts: [{ zone: `chain:${dd}:${hit.id}`, size: typ, how: 'typical' }] });
         } else if (!e.gives.length) lines.push({ ...base, kind: 'not-counted', why: `${name(dd)}'s kit has nothing switched on that needs ${list(e.causes.map(eventWord))}`, points: 0 });
       }
       if (!e.gives.length) continue;

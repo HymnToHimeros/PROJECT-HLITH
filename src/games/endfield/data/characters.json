@@ -366,5 +366,16 @@
     "art": "https://endfield.wiki.gg/images/Purrchena_Splash_Art.png",
     "portrait": "https://endfield.wiki.gg/images/Purrchena_icon.png",
     "source": "endfield.wiki.gg (CC BY-SA)"
+  },
+  {
+    "id": "chr_argent-flow",
+    "name": "Argent Flow",
+    "rarity": "top",
+    "element": "electric",
+    "role": "guard",
+    "releasedAt": "2026-11-05T04:00:00.000Z",
+    "art": "https://endfield.wiki.gg/images/Argent_Flow_Splash_Art.png",
+    "portrait": "https://endfield.wiki.gg/images/Argent_Flow_icon.png",
+    "source": "endfield.wiki.gg (CC BY-SA)"
   }
 ]

@@ -1,9 +1,9 @@
 import { describe, expect, it } from 'vitest';
 import type { TeamAccount } from '../../../core/contract';
 import { checkSquad, checkTeam, type Account, type Line } from './check';
-import { KITS, SHEETS, library } from './library';
+import { buildLibrary, KITS, SHEETS, library } from './library';
 import characters from '../data/characters.json';
-import { endfieldTeamRules, readSoFar, recommendedTeams, synergyLabel } from './team';
+import { endfieldTeamRules, readSoFar, recommendedTeams, synergyLabel, verdict } from './team';
 
 const CHEN = 'chr_0005_chen';
 const DA_PAN = 'chr_0018_dapan';
@@ -11,6 +11,25 @@ const CATCHER = 'chr_0020_meurs';
 const ANTAL = 'chr_0023_antal';
 const ENDMIN = 'chr_0002_endminm';
 const LIFENG = 'chr_0015_lifeng';
+const LAEVATAIN = 'chr_0016_laevat';
+const AKEKURI = 'chr_0019_karin';
+const WULFGARD = 'chr_0006_wolfgd';
+const ARDELIA = 'chr_0025_ardelia';
+const GILBERTA = 'chr_0013_aglina';
+const LAST_RITE = 'chr_0026_lastrite';
+const SI = 'chr_0036_jsspsi';
+const TYPHOEUS = 'chr_0034_typhoea';
+const LIINO = 'chr_0035_liino';
+const ARCANE = 'chr_0032_lizhiyan';
+const MI_FU = 'chr_0031_mifu';
+const TANGTANG = 'chr_0027_tangtang';
+const ZHUANG = 'chr_0030_zhuangfy';
+const ARCLIGHT = 'chr_0007_ikut';
+const ESTELLA = 'chr_0021_whiten';
+const SNOWSHINE = 'chr_0014_aurora';
+const ALESH = 'chr_0024_deepfin';
+const PURRCHENA = 'chr_0038_purrche';
+const ROSSI = 'chr_0028_wulfa';
 
 const p0: Account = { potential: () => 0 };
 const lib = library();
@@ -80,8 +99,84 @@ describe('Endfield check (Part B)', () => {
     const out = checkSquad([CHEN, DA_PAN, CATCHER], lib, p0);
     expect(out.rated).toBe(true);
     if (out.rated) expect([CHEN, DA_PAN]).toContain(out.best.dd);
-    const unread = checkSquad([CHEN, 'chr_0016_laevat'], lib, p0);
-    expect(unread).toMatchObject({ rated: false, unread: ['chr_0016_laevat'] });
+    const unread = checkSquad([CHEN, 'chr_argent-flow'], lib, p0);
+    expect(unread).toMatchObject({ rated: false, unread: ['chr_argent-flow'] });
+  });
+});
+
+describe('Endfield check, group B (Heat, Cryo, Nature)', () => {
+  it('a forced Combustion or Corrosion triggers Laevatain’s combo; Heat Infliction feeds her Melting Flame', () => {
+    const r = checkTeam([LAEVATAIN, WULFGARD, ARDELIA, AKEKURI], LAEVATAIN, lib, p0);
+    expect(linesOf(r.lines, WULFGARD, 'chain').map((l) => l.why)).toContain('sets up Combustion for Laevatain: Combo on Combustion or Corrosion');
+    expect(linesOf(r.lines, ARDELIA, 'chain').map((l) => l.why)).toContain('sets up Corrosion for Laevatain: Combo on Combustion or Corrosion');
+    expect(linesOf(r.lines, AKEKURI, 'chain').length).toBeGreaterThan(0);
+    // Ardelia's Arts Susceptibility reaches a Heat damage dealer.
+    expect(linesOf(r.lines, ARDELIA, 'buff').map((l) => l.tag)).toContain('Physical and Arts Susceptibility 20%');
+  });
+  it('decision 5: one element’s Infliction on top of another’s sets up the reaction of the second', () => {
+    // Gilberta's Nature Infliction on Laevatain's Heat makes Corrosion.
+    const r = checkTeam([LAEVATAIN, GILBERTA], LAEVATAIN, lib, p0);
+    expect(linesOf(r.lines, GILBERTA, 'chain').map((l) => l.why)).toContain('sets up Corrosion (on another element’s Infliction) for Laevatain: Combo on Combustion or Corrosion');
+    // Only one element in the team: no reaction.
+    const heatOnly = checkTeam([WULFGARD, AKEKURI], WULFGARD, lib, p0);
+    expect(linesOf(heatOnly.lines, AKEKURI, 'chain').map((l) => l.why).join(' ')).not.toMatch(/Combustion|Electrification/);
+  });
+  it('element limits: Antal’s Heat Amp reaches Laevatain; Last Rite’s Cryo Susceptibility doesn’t', () => {
+    const r = checkTeam([LAEVATAIN, ANTAL, LAST_RITE], LAEVATAIN, lib, p0);
+    expect(linesOf(r.lines, ANTAL, 'buff').map((l) => l.tag)).toContain('Electric and Heat Amp 20%');
+    expect(linesOf(r.lines, LAST_RITE).find((l) => l.entry === 'cryo-susceptibility')).toMatchObject({ kind: 'not-counted', points: 0 });
+  });
+});
+
+describe('Endfield check, group C', () => {
+  it('decision 8: Si applies Heat Infliction when a Heat operator leads (Team Position 01 = the damage dealer), else Cryo; the other one is no loss', () => {
+    const heat = checkTeam([LAEVATAIN, SI], LAEVATAIN, lib, p0);
+    expect(linesOf(heat.lines, SI, 'chain').map((l) => l.why)).toContain('sets up Heat Infliction for Laevatain: Melting Flame from Heat Infliction');
+    expect(linesOf(heat.lines, SI).find((l) => l.entry === 'cryo-infliction')).toMatchObject({ kind: 'not-counted', points: 0 });
+    expect(linesOf(heat.lines, SI, 'buff').map((l) => l.tag)).toContain('Cryo and Heat Amp 36%');
+    const cryo = checkTeam([LAST_RITE, SI], LAST_RITE, lib, p0);
+    expect(linesOf(cryo.lines, SI, 'chain').map((l) => l.why)).toContain('sets up Cryo Infliction for Last Rite: Combo at 3 Cryo Infliction stacks');
+    expect(linesOf(cryo.lines, SI).find((l) => l.entry === 'heat-infliction')).toMatchObject({ kind: 'not-counted', points: 0 });
+  });
+  it('Arcane’s mode depends on her build: INT- and WILL-only effects are shown, never counted', () => {
+    const r = checkTeam([TYPHOEUS, ARCANE], TYPHOEUS, lib, p0);
+    for (const id of ['will-infliction', 'int-corrosion', 'will-susceptibility']) expect(linesOf(r.lines, ARCANE).find((l) => l.entry === id)).toMatchObject({ kind: 'unknown', points: 0 });
+    // What both modes do counts: Nature Infliction feeds Typhoeus.
+    expect(linesOf(r.lines, ARCANE, 'chain').map((l) => l.why)).toContain('sets up Nature Infliction for Typhoeus: Signs from Nature Infliction');
+  });
+  it('Liino’s Electric and Nature Amp reaches Typhoeus, not Tangtang; her two stances’ ATK Boost counts once, with no loss', () => {
+    const nature = checkTeam([TYPHOEUS, LIINO], TYPHOEUS, lib, { potential: () => 0 });
+    expect(linesOf(nature.lines, LIINO, 'buff').map((l) => l.tag)).toContain('Electric and Nature Amp (grows with Will)');
+    expect(linesOf(nature.lines, LIINO, 'buff').filter((l) => l.tag === 'Team ATK +10%')).toHaveLength(1);
+    expect(linesOf(nature.lines, LIINO, 'duplicate')).toEqual([]);
+    const cryo = checkTeam([TANGTANG, LIINO], TANGTANG, lib, p0);
+    expect(linesOf(cryo.lines, LIINO).find((l) => l.entry === 'cosmovoice-amp')).toMatchObject({ kind: 'not-counted', points: 0 });
+  });
+  it('Mi Fu: Physical Statuses build her 3 Vulnerable stacks; Lifeng’s Physical Susceptibility powers World Splitter', () => {
+    const r = checkTeam([MI_FU, LIFENG, CHEN], MI_FU, lib, p0);
+    expect(linesOf(r.lines, LIFENG, 'chain').length).toBeGreaterThan(0);
+    expect(linesOf(r.lines, CHEN, 'chain').map((l) => l.why)).toContain('sets up Vulnerable for Mi Fu: World Splitter at 3 Vulnerable stacks');
+  });
+});
+
+describe('Endfield check, groups D and E', () => {
+  it('Arclight’s forced Electrification powers Zhuang Fangyi’s Battle Skill', () => {
+    const r = checkTeam([ZHUANG, ARCLIGHT], ZHUANG, lib, p0);
+    expect(linesOf(r.lines, ARCLIGHT, 'chain').map((l) => l.why)).toContain('sets up Electrification for Zhuang Fangyi: Stronger on Electrification');
+  });
+  it('a forced Solidification triggers Estella’s combo (Snowshine’s Snow Zone, Alesh’s Battle Skill)', () => {
+    const r = checkTeam([ESTELLA, SNOWSHINE, ALESH], ESTELLA, lib, p0);
+    for (const who of [SNOWSHINE, ALESH]) expect(linesOf(r.lines, who, 'chain').map((l) => l.why)).toContain('sets up Solidification for Estella: Combo on Solidification');
+  });
+  it('Rossi’s combo needs Vulnerable and an Arts Infliction: either can come from a teammate', () => {
+    const r = checkTeam([ROSSI, CHEN, AKEKURI], ROSSI, lib, p0);
+    expect(linesOf(r.lines, CHEN, 'chain').length).toBeGreaterThan(0);
+    expect(linesOf(r.lines, AKEKURI, 'chain').map((l) => l.why)).toContain('sets up Heat Infliction for Rossi: Combo on Vulnerable and an Arts Infliction');
+  });
+  it('decision 11: effects that need luck are shown, never counted', () => {
+    const r = checkTeam([TYPHOEUS, PURRCHENA, ALESH], TYPHOEUS, lib, { potential: () => 5 });
+    expect(linesOf(r.lines, PURRCHENA).find((l) => l.entry === 'ambassador')).toMatchObject({ kind: 'unknown', points: 0 });
+    expect(linesOf(r.lines, ALESH).find((l) => l.entry === 'p3-team-atk')).toMatchObject({ kind: 'unknown', points: 0 });
   });
 });
 
@@ -97,15 +192,28 @@ describe('Endfield team rules', () => {
     }
   });
   it('while only some kits are read: the counts come from the data, and no grade word (the % stays)', () => {
-    expect(endfieldTeamRules.readSoFar?.()).toEqual({ read: SHEETS.length, total: characters.length });
-    expect(SHEETS.length).toBeLessThan(characters.length);
-    const v = endfieldTeamRules.verdict([CHEN, CATCHER, LIFENG, DA_PAN], all);
+    const fewer = buildLibrary(SHEETS.slice(0, 7));
+    const now = Date.parse('2026-10-15T12:00:00Z');
+    const n = readSoFar(fewer, now);
+    expect(n.read).toBe(7);
+    expect(n.total).toBeGreaterThan(7);
+    const v = verdict([CHEN, CATCHER, LIFENG, DA_PAN], all, fewer, now);
     expect(v).toMatchObject({ rated: true, label: '' });
-    if (v.rated) expect(v.notes).toContain(`Only ${SHEETS.length} of ${characters.length} operators are read so far: this is the best among those, and it will change as more are read.`);
+    if (v.rated) expect(v.notes).toContain(`Only 7 of ${n.total} operators are read so far: this is the best among those, and it will change as more are read.`);
     expect(synergyLabel(100, 4, true)).toBe('');
     expect(synergyLabel(100, 4)).toBe('Excellent');
     expect(synergyLabel(100, 3, true)).toBe('Incomplete');
-    expect(readSoFar({ ...lib, names: new Map([...lib.sheets.keys()].map((id) => [id, id])) })).toEqual({ read: SHEETS.length, total: SHEETS.length });
+  });
+  it('only operators that are out count: before Argent Flow’s release every one is read (no line, the grade word is back); after it, 34 of 35 until her sheet', () => {
+    const argent = (characters as { id: string; releasedAt?: string }[]).find((c) => c.id === 'chr_argent-flow')?.releasedAt ?? '';
+    const before = Date.parse(argent) - 1;
+    const after = Date.parse(argent) + 1;
+    expect(readSoFar(lib, before)).toEqual({ read: SHEETS.length, total: SHEETS.length });
+    expect(readSoFar(lib, after)).toEqual({ read: SHEETS.length, total: SHEETS.length + 1 });
+    const v = verdict([CHEN, CATCHER, LIFENG, DA_PAN], all, lib, before);
+    expect(v.rated && v.label).not.toBe('');
+    if (v.rated) expect(v.notes.join(' ')).not.toMatch(/are read so far/);
+    expect(verdict([CHEN, CATCHER, LIFENG, DA_PAN], all, lib, after)).toMatchObject({ rated: true, label: '' });
   });
   it('recommends a team for every damage dealer read', () => {
     const teams = recommendedTeams();

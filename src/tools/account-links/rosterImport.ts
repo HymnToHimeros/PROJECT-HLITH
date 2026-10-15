@@ -6,6 +6,7 @@
  * HoYoLAB doesn't list are left alone.
  */
 import type { Character, GameContract } from '../../core/contract';
+import { characterIndex } from '../../core/data/gameIds';
 import { setRosterEntry, type RosterEntry } from '../../core/data/userData';
 import type { HoyoCharacter } from './hoyolab';
 
@@ -25,7 +26,8 @@ export interface ImportRow {
 const norm = (s: string) => s.toLowerCase().replace(/[^\p{L}\p{N}]/gu, '');
 
 export function planImport(game: GameContract, imported: HoyoCharacter[], characters: Character[], roster: Record<string, RosterEntry>): ImportRow[] {
-  const byId = new Map(characters.map((c) => [c.id, c]));
+  // The game's ids: our own id, or the character's gameId when the two differ.
+  const byId = characterIndex(characters);
   const byName = new Map(characters.map((c) => [norm(c.name), c]));
   const max = game.dupes?.max ?? 0;
   const rows: ImportRow[] = [];

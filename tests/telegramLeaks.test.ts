@@ -40,6 +40,10 @@ describe('Seele Telegram leaks (public web view)', () => {
     expect(gamesOf('「HI3rd 9.2」 About Vita DLC')).toEqual(['hi3']);
     expect(gamesOf('「GI 7.2」 banners')).toEqual(['gi']);
     expect(gamesOf('Hmmm. Ruan Mei, Polka, THerta.')).toEqual(['other']);
+    // The leading tag decides: a Honkai Nexus Anima post comparing itself to HSR is not HSR.
+    expect(gamesOf("「HNA 0.75」 After a quick check, the event banner's rates are roughly the same as HSR's.")).toEqual(['other']);
+    expect(gamesOf('[Honkai: Star Rail] v4.6.52 Rev. 16755051 Update')).toEqual(['hsr']);
+    expect(gamesOf('[Zenless Zone Zero] v3.3.12 Update')).toEqual(['zzz']);
     expect(gamesOf('Wuthering Waves 3.8')).toEqual(['other']);
     expect(wanted(posts, Date.parse('2026-10-10T12:00:00Z')).map((p) => p.id)).toEqual([102, 104]);
     expect(wanted(posts, 0, ['hsr', 'zzz', 'gi']).map((p) => p.id)).toEqual([101, 102, 103, 104]);

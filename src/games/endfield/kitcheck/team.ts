@@ -21,8 +21,14 @@ const PAIR_LIMIT = 9;
 
 const toAccount = (a: TeamAccount): Account => ({ potential: (id) => (a.owned(id) ? a.dupes(id) : 0) });
 
-/** Kits read so far, of every operator. */
-export const readSoFar = (lib: Library = library()) => ({ read: lib.sheets.size, total: lib.names.size });
+/** Kits read so far, of every operator that is out at `now` (not out yet: not counted, so the line goes once all released are read). */
+export function readSoFar(lib: Library = library(), now: number = Date.now()): { read: number; total: number } {
+  const out = [...lib.names.keys()].filter((id) => {
+    const at = lib.releasedAt?.get(id);
+    return !at || Date.parse(at) <= now;
+  });
+  return { read: out.filter((id) => lib.sheets.has(id)).length, total: out.length };
+}
 
 /** The grade word; none while only some kits are read (the best among a few is not "Excellent"), the % stays. */
 export function synergyLabel(percent: number, members: number, partial = false): string {
@@ -86,7 +92,7 @@ export function summary(r: SquadResult): string {
   return `${parts.join(', ')}${minus ? `, −${minus} (off, duplicates, weak fits)` : ''}`;
 }
 
-export function verdict(members: string[], a: TeamAccount, lib: Library = library()): TeamVerdict {
+export function verdict(members: string[], a: TeamAccount, lib: Library = library(), now: number = Date.now()): TeamVerdict {
   const name = (id: string) => lib.names.get(id) ?? id;
   const account = toAccount(a);
   // A team's first member is its damage dealer when they can be one; otherwise every damage dealer is tried.
@@ -111,7 +117,7 @@ export function verdict(members: string[], a: TeamAccount, lib: Library = librar
   const every = bestFor(mine.dd, readable(lib, a), lib, account, mine.sustain);
   if (every && every.value > top.value) notes.push(`From every operator, ${every.order.map(name).join(', ')} counts ${countWords(every)}.`);
   if (out.other) notes.push(`With ${name(out.other.dd)} as the damage dealer instead, it counts ${countWords(out.other)}.`);
-  const n = readSoFar(lib);
+  const n = readSoFar(lib, now);
   if (n.read < n.total) notes.push(`Only ${n.read} of ${n.total} operators are read so far: this is the best among those, and it will change as more are read.`);
   notes.push(VALUE_NOTE);
   const typical = typicalNote(mine.lines, name);

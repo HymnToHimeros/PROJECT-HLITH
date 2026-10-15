@@ -8,6 +8,11 @@ project_id = "PROJECT-HLITH"
 [functions.gacha-import]
 verify_jwt = true
 
+# Endfield pull history import (E4): reads history from the in-game link, contacting only
+# Endfield's own history hosts. Signed-in users only (checked in the function).
+[functions.endfield-gacha-import]
+verify_jwt = true
+
 # Reads your own HoYoLAB data (stamina, check-in, characters, endgame) and manages saved
 # HoYoLAB accounts. Signed-in users only (checked in the function).
 [functions.hoyolab]

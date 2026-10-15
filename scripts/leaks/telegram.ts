@@ -61,6 +61,13 @@ export function plainText(html: string): string {
  */
 export function gamesOf(text: string): GameTag[] {
   const t = text.toLowerCase();
+  // A post that opens with a tag (「HSR 4.7」, [ZZZ - …], 「HNA 0.75」) is about that game only, even when
+  // its text compares it to another ("roughly the same as HSR's").
+  const lead = /^\s*[「[]\s*([^」\]]+)[」\]]/.exec(text)?.[1];
+  return gamesIn(lead ? `「${lead.toLowerCase()}」` : t);
+}
+
+function gamesIn(t: string): GameTag[] {
   const out: GameTag[] = [];
   if (/\bhsr\b|honkai\s*:?\s*star\s*rail|\bstar\s*rail\b|#starrail|星穹铁道|崩铁|星铁/.test(t)) out.push('hsr');
   if (/#zzz\b|\bzzz\b|zenless|绝区零/.test(t)) out.push('zzz');
