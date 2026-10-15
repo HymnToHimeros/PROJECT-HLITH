@@ -1,0 +1,24 @@
+# 2026-10-15 SCHEDULER: Endfield data fixes (MANAGER's g–j)
+
+- **g. Income.**
+  - Rows added:
+    - daily 200
+    - Weekly Routine 500 (Monday 04:00)
+    - Monthly Pass 200 a day (paid)
+    - Protocol Pass free tier 600 a season (61-day cycle from 2026-10-15)
+    - Events
+    - Sign-in events
+  - The amounts are the wiki's (revisions named in contract.ts). No official notice states them, so they're marked unverified in sources.
+  - No endgame mode pays Oroberyl every cycle. Echoes of War seasons, Monumental Etching and Contingency Contract pay once each.
+  - Event Oroberyl now comes from the official update notes ("[Oroberyl]×N" per event, `officialRewards` in scripts/endfield/map.ts). Events without a stated amount stay "No data yet".
+- **h. Argent Flow.**
+  - Official in the 1.6 notes (news/9560): a new operator, and her banner opens Nov 5 12:00 (server time). The banner and character data already match this.
+  - The "unverified / game files" label is the Intel and character-page rule (FRAME's code). FRAME has the suggested fix.
+- **i. Endministrator.**
+  - Uses the existing `protagonist` field: male/female from the ids chr_0002_endminm and chr_0003_endminf. No new field.
+  - FRAME has been told.
+- **j. Sanity.**
+  - Was 135 and 6 minutes, which no source supports.
+  - Now 1 per 7 min 12 s; the cap grows with Authority Level from 125 to 360, and the app uses 360 (wiki Sanity rev 58794, Authority_Level rev 40928).
+  - No official notice states these numbers, so the source is marked unverified. A linked SKPort account shows its own cap.
+- Tests: tests/endfieldContract.test.ts and tests/endfieldImport.test.ts (official rewards).
