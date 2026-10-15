@@ -185,6 +185,45 @@ export function costSummary(text: string): Items {
   return out;
 }
 
+const DROP_RATE: Record<string, string> = { '1': 'fixed drop', '2': 'common', '3': 'uncommon', '4': 'rare', '5': 'very rare', '6': 'random' };
+
+/** Wiki links and item templates → their words; anything else left over stops the import. */
+function words(raw: string, who: string): string {
+  const s = raw
+    .replace(/\{\{I\|([^|}]+)(\|[^}]*)?\}\}/g, '$1')
+    .replace(/\[\[(?:[^|\]]*\|)?([^\]]+)\]\]/g, '$1')
+    .replace(/\s+/g, ' ')
+    .trim();
+  if (/\{\{|\}\}|\[\[|<\/?[a-z]/i.test(s)) throw new Error(`${who}: markup left in "${s}"`);
+  return s;
+}
+
+/**
+ * An item page's "Acquisition" section → one line per place: the top-level bullets, and each Protocol Space
+ * drop row as "<stage> (<Sanity> Sanity, <drop rate>)". Sub-bullets (exchange prices) are left out; repeats once.
+ */
+export function acquisition(text: string, who: string): string[] {
+  const at = text.indexOf('==Acquisition==');
+  if (at < 0) return [];
+  const end = text.indexOf('\n==', at + 15);
+  const section = text.slice(at + 15, end < 0 ? undefined : end);
+  const out: string[] = [];
+  for (const line of section.split('\n')) {
+    const drop = /^\{\{Drop cell\|([^|}]+)\|(\d+)\|?(\d*)/.exec(line.trim());
+    if (drop?.[1]) {
+      const rate = drop[3] ? DROP_RATE[drop[3]] : undefined;
+      out.push(`${words(drop[1], who)} (${drop[2]} Sanity${rate ? `, ${rate}` : ''})`);
+      continue;
+    }
+    const bullet = /^\*(?!\*)\s*(.+)$/.exec(line);
+    if (!bullet?.[1]) continue;
+    const s = words(bullet[1], who);
+    // "Protocol Spaces:" only introduces the drop table below it.
+    if (s && !/:\s*$/.test(s)) out.push(s.replace(/\.$/, ''));
+  }
+  return [...new Set(out)];
+}
+
 interface ItemRow {
   Item?: string;
   Id?: string;
@@ -335,10 +374,16 @@ if (import.meta.main ?? process.argv[1]?.endsWith('import-endfield-costs.ts')) {
     summary: Object.fromEntries(Object.entries(summary).map(([n, v]) => [idOf(n) ?? n, v])),
     conflicts,
   };
+  // Where each item comes from: its own wiki page's Acquisition section.
+  const sourcesOf = new Map<string, string[]>();
+  for (const n of names) sourcesOf.set(n, acquisition((await page(n)).text, n));
   const materials = [...names]
     .map((n) => rows.get(n) as ItemRow)
     .sort((a, b) => (a.Item ?? '').localeCompare(b.Item ?? ''))
-    .map((r) => ({ id: r.Id, name: r.Item, kind: (r.Type ?? '').replace(/\[\[|\]\]/g, ''), ...(r.Image ? { icon: `${WIKI}/images/${encodeURIComponent(r.Image.replace(/ /g, '_'))}` } : {}) }));
+    .map((r) => {
+      const sources = sourcesOf.get(r.Item ?? '') ?? [];
+      return { id: r.Id, name: r.Item, kind: (r.Type ?? '').replace(/\[\[|\]\]/g, ''), ...(r.Image ? { icon: `${WIKI}/images/${encodeURIComponent(r.Image.replace(/ /g, '_'))}` } : {}), ...(sources.length ? { sources } : {}) };
+    });
   if (dry) console.log(JSON.stringify({ costs, materials }, null, 2));
   else {
     writeFileSync(OUT_COSTS, `${JSON.stringify(costs, null, 2)}\n`);

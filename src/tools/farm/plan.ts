@@ -15,6 +15,8 @@ export interface NeedRow {
   name: string;
   /** Its picture, when the game data has one. */
   icon?: string;
+  /** Where it comes from (Material.sources), when the game data lists it. */
+  sources?: string[];
   amount: number;
   /** Runs to farm it: unknown when the material's drops per run aren't listed. */
   runs: Known<number>;
@@ -38,7 +40,7 @@ export function farmPlan(game: GameContract, characterIds: string[], materials: 
     const m = materials.find((x) => x.id === material);
     const runs = m?.dropsPerRun ? known(Math.ceil(amount / m.dropsPerRun), 'official') : unknown<number>();
     const stamina = runs.known && m?.staminaPerRun ? known(runs.value * m.staminaPerRun, 'official') : unknown<number>();
-    return { material, name: m?.name ?? material, ...(m?.icon ? { icon: m.icon } : {}), amount, runs, stamina };
+    return { material, name: m?.name ?? material, ...(m?.icon ? { icon: m.icon } : {}), ...(m?.sources?.length ? { sources: m.sources } : {}), amount, runs, stamina };
   });
   // A total is shown only when every farmable row is known: a partial sum would look complete.
   const allKnown = rows.every((r) => r.stamina.known);

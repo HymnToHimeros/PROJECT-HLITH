@@ -13,6 +13,9 @@ Tests: `tests/endfieldCosts.test.ts`.
   levels 2–9 shared, 10–12 per skill), attribute increases, talents, gear outfitting and base skills
   (`Operator talent cost`).
 - **Items table:** id, name, type and picture of every item named.
+- **Each item's page** ("Acquisition"): where it comes from, one line per place (`Material.sources`):
+  top-level bullets, and each Protocol Space drop row as "<stage> (<Sanity> Sanity, <drop rate>)".
+  Exchange prices (sub-bullets) are left out. Farm gets them on each row (`NeedRow.sources`).
 
 ## What "to max" counts
 Level 1→90, Promotions I–IV, all four combat skills to 12, and the Ability Matrix nodes: attribute
@@ -22,7 +25,8 @@ Cost Summary does. Without talents, every operator with base skills matches the 
 exactly (a test checks it).
 
 ## Not on the wiki (shown as "No data yet")
-- Sanity per run and amount per run of each Protocol Space: Farm shows amounts, but runs, Sanity and
+- Amount per run: the item pages give the Sanity of each Protocol Space and its drop rate (fixed,
+  random…) but not how many drop, so Farm shows amounts and where to get them, while runs, Sanity and
   days stay empty.
 - Argent Flow: no wiki page yet; added by re-running the import once it exists.
 
@@ -35,8 +39,6 @@ The import stops on any disagreement between wiki sources that has no ruling in 
   correct it. With this, every operator matches the wiki's Cost Summary exactly.
 
 ## Next
-- Where each item comes from (`Material.sources`, from the item pages and the Protocol Space page):
-  approved by MANAGER, its own PR.
 - Weapon costs: not now (no screen yet; new screens need the owner's design OK). Where the data is:
   - **Weapon page** (endfield.wiki.gg/wiki/Weapon, "Level"): Weapon EXP items Arms Inspector (200),
     Arms INSP Kit (1,000), Arms INSP Set (10,000); weapons used as material give 500 / 1,500 /
