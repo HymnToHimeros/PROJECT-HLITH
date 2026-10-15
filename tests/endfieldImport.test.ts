@@ -54,10 +54,14 @@ describe('Endfield lists from the wiki', () => {
     const issues: Row[] = [{ Issue: 'Seal of Jade', RateUpWeapon: 'Jade Vessel', IsPermanent: '0', AsiaStartTime: '2026-10-15 04:00:00', AsiaEndTime: '2026-12-17 03:59:59', AmeuStartTime: '2026-10-15 04:00:00', AmeuEndTime: '2026-12-17 16:59:59' }];
     const list = banners(BANNERS, issues, ops, wpns, '2026-11-24T22:00:00.000Z', notes);
     const by = (t: string) => list.find((b) => b.title === t);
-    expect(by('Basic Headhunting')).toMatchObject({ type: 'basic', permanent: true, end: '2026-11-24T22:00:00.000Z', featured: [] });
+    expect(by('Basic Headhunting')).toBeUndefined(); // its pool (Ardelia) is not in this test's operator list
+    expect(notes.notes).toContain('banner "Basic Headhunting" left out until its operator is on the wiki');
     expect(by('Rejuvenation')).toEqual({ id: 'rejuvenation-2026-10-15', type: 'chartered', title: 'Rejuvenation', featured: ['chr_0036_jsspsi'], start: '2026-10-15T04:00:00.000Z', end: '2026-11-05T03:59:59.000Z', serverTime: { base: 8, end: true } });
     expect(by('Seal of Jade Issue')).toMatchObject({ type: 'weapon', featured: ['wpn_claym_0018'], art: 'https://x/j.png' });
-    expect(by('Ancestral Spring Flows Anew')?.featured).toEqual([]);
+    expect(by('Ancestral Spring Flows Anew')).toBeUndefined();
+    expect(by('Fest of Brilliance')).toMatchObject({ type: 'joint', featured: ['chr_0036_jsspsi'] });
+    const basic = banners([{ ...(BANNERS[0] as Row), LimitedOperators: 'Si' }], [], ops, wpns, '2026-11-24T22:00:00.000Z', { notes: [] });
+    expect(basic[0]).toMatchObject({ type: 'basic', permanent: true, end: '2026-11-24T22:00:00.000Z', featured: ['chr_0036_jsspsi'] });
     expect(notes.notes).toContain('banner "Ancestral Spring Flows Anew": Tangtang not in the operator list yet (no wiki entry), so not shown as featured');
     expect(notes.notes).toContain('weapon "Tarr 11" left out: 3★ has no rarity tier');
   });
@@ -77,6 +81,8 @@ describe('Endfield lists from the wiki', () => {
     expect(list[1]?.serverTime).toEqual({ base: 8, start: true, end: true });
     expect(notes.notes).toEqual(['event "Protocol Reconnection" left out: no end yet']);
     expect(eventKind({ Type: 'Guide' })).toBe('web');
+    const bad = events([{ Event: 'Northward to Peril', Type: 'Narrative', AsiaStartTime: '2026-07-10 04:00:00', AsiaEndTime: '2026-07-10 04:00:00' }], notes);
+    expect(bad).toEqual([]);
   });
 
   it('versions: from the wiki, checked against the official update notes; the last one needs a stated end', () => {

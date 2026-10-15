@@ -188,10 +188,16 @@ export function banners(opRows: Row[], issueRows: Row[], ops: Operator[], wpns: 
     const title = r.Banner?.trim();
     if (!title) continue;
     const type = bannerType(r);
-    const names = type === 'chartered' ? [r.RateUpOperator] : type === 'rerun' || type === 'joint' ? (r.LimitedOperators ?? '').split(';') : [];
+    // Chartered: its rate-up operator; the others: the operators the banner lists (Basic and New Horizons: their 6★ pool).
+    const names = type === 'chartered' ? [r.RateUpOperator] : (r.LimitedOperators ?? '').split(';');
     const featured = names.map((n) => opId.get((n ?? '').trim())).filter((x): x is string => Boolean(x));
     const missing = names.map((n) => (n ?? '').trim()).filter((n) => n && !opId.has(n));
     if (missing.length) out.notes.push(`banner "${title}": ${missing.join(', ')} not in the operator list yet (no wiki entry), so not shown as featured`);
+    // A character banner leads with a known operator; without one it waits until the wiki has them.
+    if (!featured.length) {
+      out.notes.push(`banner "${title}" left out until its operator is on the wiki`);
+      continue;
+    }
     add(r, title, type, featured);
   }
   for (const r of issueRows) {
@@ -240,6 +246,10 @@ export function events(rows: Row[], out: Notes): EventItem[] {
     const end = utc(r.AsiaEndTime);
     if (!start || !end) {
       out.notes.push(`event "${title}" left out: no ${start ? 'end' : 'start'} yet`);
+      continue;
+    }
+    if (Date.parse(end) <= Date.parse(start)) {
+      out.notes.push(`event "${title}" left out: the wiki's end (${end}) is not after its start (${start})`);
       continue;
     }
     const id = `${slug(title)}-${start.slice(0, 10)}`;
