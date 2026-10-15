@@ -24,6 +24,29 @@
     ]
   },
   {
+    "id": "item_weapon_expcard_high",
+    "name": "Arms INSP Set",
+    "kind": "Progression Materials",
+    "icon": "https://endfield.wiki.gg/images/Arms_INSP_Set.png",
+    "sources": [
+      "Protocol Space: Weapon EXP",
+      "Dijiang Production: MFG Cabin",
+      "Acquisition Center: AIC Trading",
+      "Exploring and Gathering"
+    ]
+  },
+  {
+    "id": "item_plant_spcstone_1_2",
+    "name": "Auronyx",
+    "kind": "Rare Materials",
+    "icon": "https://endfield.wiki.gg/images/Auronyx.png",
+    "sources": [
+      "Rare Mining Sites",
+      "Dijiang Production: Growth Chamber",
+      "Origin Lodespring"
+    ]
+  },
+  {
     "id": "item_plant_crylplant_2_1",
     "name": "Blighted Jadeleaf",
     "kind": "Rare Materials",
@@ -44,6 +67,17 @@
       "Rare Gathering Sites",
       "Dijiang Production: Growth Chamber",
       "Wuling City"
+    ]
+  },
+  {
+    "id": "item_weapon_break_low",
+    "name": "Cast Die",
+    "kind": "Progression Materials",
+    "icon": "https://endfield.wiki.gg/images/Cast_Die.png",
+    "sources": [
+      "Protocol Space: Weapon Tune",
+      "Acquisition Center: AIC Trading",
+      "Exploring and Gathering"
     ]
   },
   {
@@ -130,6 +164,28 @@
     ]
   },
   {
+    "id": "item_weapon_break_high",
+    "name": "Heavy Cast Die",
+    "kind": "Progression Materials",
+    "icon": "https://endfield.wiki.gg/images/Heavy_Cast_Die.png",
+    "sources": [
+      "Protocol Space: Weapon Tune",
+      "Acquisition Center: AIC Trading",
+      "Exploring and Gathering"
+    ]
+  },
+  {
+    "id": "item_plant_spcstone_2_1",
+    "name": "Igneosite",
+    "kind": "Rare Materials",
+    "icon": "https://endfield.wiki.gg/images/Igneosite.png",
+    "sources": [
+      "Rare Mining Sites",
+      "Dijiang Production: Growth Chamber",
+      "Wuling City"
+    ]
+  },
+  {
     "id": "item_expcard_stage1_mid",
     "name": "Intermediate Combat Record",
     "kind": "Progression Materials",
@@ -148,6 +204,17 @@
     "icon": "https://endfield.wiki.gg/images/Kalkodendra.png",
     "sources": [
       "Rare Gathering Sites",
+      "Dijiang Production: Growth Chamber",
+      "The Hub"
+    ]
+  },
+  {
+    "id": "item_plant_spcstone_1_1",
+    "name": "Kalkonyx",
+    "kind": "Rare Materials",
+    "icon": "https://endfield.wiki.gg/images/Kalkonyx.png",
+    "sources": [
+      "Rare Mining Sites",
       "Dijiang Production: Growth Chamber",
       "The Hub"
     ]
@@ -191,6 +258,17 @@
       "Rare Gathering Sites",
       "Dijiang Production: Growth Chamber",
       "The Hub"
+    ]
+  },
+  {
+    "id": "item_plant_spcstone_2_3",
+    "name": "Protocolith",
+    "kind": "Rare Materials",
+    "icon": "https://endfield.wiki.gg/images/Protocolith.png",
+    "sources": [
+      "Rare Mining Sites",
+      "Dijiang Production: Growth Chamber",
+      "North Wuling Exclusion Zone"
     ]
   },
   {
@@ -331,6 +409,17 @@
     ]
   },
   {
+    "id": "item_plant_spcstone_1_3",
+    "name": "Umbronyx",
+    "kind": "Rare Materials",
+    "icon": "https://endfield.wiki.gg/images/Umbronyx.png",
+    "sources": [
+      "Rare Mining Sites",
+      "Dijiang Production: Growth Chamber",
+      "Jingyu Valley"
+    ]
+  },
+  {
     "id": "item_plant_crylplant_1_3",
     "name": "Vitrodendra",
     "kind": "Rare Materials",
@@ -353,6 +442,17 @@
       "Acquisition Center: Bond Quota Exchange",
       "Chance Drop: Certain Protocol Space: Crisis Drills",
       "Chance Drop: Certain Protocol Space: RE-Crisis (Deep Dive)"
+    ]
+  },
+  {
+    "id": "item_plant_spcstone_2_2",
+    "name": "Wulingstone",
+    "kind": "Rare Materials",
+    "icon": "https://endfield.wiki.gg/images/Wulingstone.png",
+    "sources": [
+      "Rare Mining Sites",
+      "Dijiang Production: Growth Chamber",
+      "Wuling City"
     ]
   }
 ]
