@@ -2,7 +2,7 @@
 import { readdirSync, readFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
-import { findDestructive, tmpObjects, userTables, wallProblems } from './lib/migration-rules';
+import { definerFunctions, findDestructive, revokedFromAnon, tmpObjects, userTables, wallProblems } from './lib/migration-rules';
 
 const DIR = resolve(__dirname, '../supabase/migrations');
 
@@ -56,6 +56,26 @@ describe('no temporary objects ship (T80)', () => {
     expect(tmpObjects('create policy "_tmp read" on public.t for select using (true);')).toEqual(['policy _tmp']);
     expect(tmpObjects('drop function if exists public._tmp_exec_sql(text);\n-- create function public._tmp_y()')).toEqual([]);
     expect(tmpObjects('create function public.tmp_ok() returns int as $$ select 1 $$;')).toEqual([]);
+  });
+});
+
+describe('signed-out visitors can call no SECURITY DEFINER function (advisor 0028)', () => {
+  /** Meant for everyone: row-level policies call it, and it only answers true/false for the caller. */
+  const OPEN = ['is_owner'];
+  it('every SECURITY DEFINER function has EXECUTE taken from anon/public, except the open list', () => {
+    const sql = readdirSync(DIR)
+      .filter((f) => f.endsWith('.sql'))
+      .sort()
+      .map((f) => readFileSync(join(DIR, f), 'utf8'))
+      .join('\n');
+    const revoked = revokedFromAnon(sql);
+    expect(definerFunctions(sql).filter((f) => !revoked.has(f) && !OPEN.includes(f))).toEqual([]);
+  });
+  it('the checker reads both', () => {
+    const sql = 'create function public.a() returns int language sql security definer as $$ select 1 $$;\ncreate function public.b() returns int language sql as $$ select 1 $$;\nrevoke execute on function public.a() from public, anon;';
+    expect(definerFunctions(sql)).toEqual(['a']);
+    expect([...revokedFromAnon(sql)]).toEqual(['a']);
+    expect([...revokedFromAnon('revoke execute on function public.c(int) from authenticated;')]).toEqual([]);
   });
 });
 

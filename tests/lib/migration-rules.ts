@@ -52,3 +52,21 @@ export function tmpObjects(sql: string): string[] {
   for (const m of clean.matchAll(/\bcreate\s+policy\s+"?(_tmp[^"\s]*)"?/gi)) found.push(`policy ${m[1]}`);
   return found;
 }
+
+/** SECURITY DEFINER functions (they run with their owner's rights) in the SQL. */
+export function definerFunctions(sql: string): string[] {
+  const clean = stripComments(sql);
+  const out = new Set<string>();
+  for (const m of clean.matchAll(/create\s+(?:or\s+replace\s+)?function\s+public\.(\w+)\s*\([^)]*\)[\s\S]*?\$\$/gi)) if (/security\s+definer/i.test(m[0])) out.add(m[1] ?? '');
+  return [...out];
+}
+
+/** Functions whose EXECUTE is taken away from signed-out visitors (anon, or public which anon is part of). */
+export function revokedFromAnon(sql: string): Set<string> {
+  const clean = stripComments(sql);
+  return new Set(
+    [...clean.matchAll(/revoke\s+(?:execute|all)[^;]*?on\s+function\s+public\.(\w+)\s*\([^)]*\)\s+from\s+([^;]*);/gi)]
+      .filter((m) => /\b(anon|public)\b/i.test(m[2] ?? ''))
+      .map((m) => m[1] ?? ''),
+  );
+}
