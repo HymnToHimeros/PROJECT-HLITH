@@ -69,7 +69,8 @@ function tabAt(text: string): (at: number) => string | undefined {
     const start = m.index + '<tabber>'.length;
     let from = start;
     for (const part of (m[1] ?? '').split('|-|')) {
-      const label = /^\s*([^=\n{}|]+)=/.exec(part)?.[1]?.trim();
+      // The label starts at its first non-blank character, so the two parts of the pattern never compete.
+      const label = /^\s*([^=\s{}|][^=\n{}|]*)=/.exec(part)?.[1]?.trim();
       if (label) tabs.push({ from, label });
       from += part.length + 3;
     }
@@ -160,8 +161,12 @@ export function plain(raw: string, who: string): string {
     .replace(/\[\[[^\]|]*\|([^\]]*)\]\]/g, '$1')
     .replace(/\[\[([^\]]*)\]\]/g, '$1')
     .replace(/<br\s*\/?>/gi, '\n')
-    .replace(/<\/?(b|i|u|small|span)[^>]*>/gi, '')
     .replace(/&nbsp;/g, ' ');
+  // Formatting tags, removed until none is left (one pass can leave a tag made of the pieces around a removed one).
+  for (let prev = ''; prev !== t; ) {
+    prev = t;
+    t = t.replace(/<\/?(?:b|i|u|small|span)\b[^<>]*>/gi, '');
+  }
   if (/[<>]|\{\{|\}\}|\[\[/.test(t)) throw new Error(`${who}: leftover markup in "${t.slice(0, 120)}…"`);
   return t
     .split('\n')
