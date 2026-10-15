@@ -4,12 +4,13 @@ import characters from '../data/characters.json';
 import kitsJson from '../data/kits.json';
 import type { Library, Profile } from './check';
 import { groupA } from './sheet/groupA';
+import { groupB } from './sheet/groupB';
 import type { CharacterSheet, Element, OpClass } from './types';
 
 export const KITS = kitsJson as Kit[];
 
 /** Every operator read so far, group by group. */
-export const SHEETS: CharacterSheet[] = [...groupA];
+export const SHEETS: CharacterSheet[] = [...groupA, ...groupB];
 
 /** Profiles for everyone, read or not: element and class from characters.json. */
 export const PROFILES: Profile[] = (characters as { id: string; element: string; role: string }[]).map((c) => ({ characterId: c.id, element: c.element as Element, opClass: c.role as OpClass }));

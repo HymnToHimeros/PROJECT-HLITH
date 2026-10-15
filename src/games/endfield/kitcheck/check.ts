@@ -151,6 +151,13 @@ const COVERS: Partial<Record<GameEvent, GameEvent[]>> = {
 const IMPLIES: Partial<Record<GameEvent, GameEvent[]>> = {
   'arts-susceptibility': ['heat-susceptibility', 'cryo-susceptibility', 'electric-susceptibility', 'nature-susceptibility'],
 };
+/** Decision 5: an element's infliction on an enemy that already has another element's sets up that element's reaction. */
+const REACTION_OF: Partial<Record<GameEvent, GameEvent>> = {
+  'heat-infliction': 'combustion',
+  'cryo-infliction': 'solidification',
+  'electric-infliction': 'electrification',
+  'nature-infliction': 'corrosion',
+};
 /** Does setting up `cause` meet a piece that reacts to `need`? */
 export const meets = (cause: GameEvent, need: GameEvent) => cause === need || !!COVERS[need]?.includes(cause) || !!IMPLIES[cause]?.includes(need);
 
@@ -244,6 +251,9 @@ export function checkTeam(team: string[], dd: string, lib: Library, account: Acc
   const entries = new Map(order.map((who) => [who, lib.sheets.get(who)?.entries ?? []]));
   for (const who of order) for (const e of entries.get(who) ?? []) statuses.set(key(who, e), statusOf(e, who, order, lib, account, dd));
   const ddReacting = (entries.get(dd) ?? []).filter((x) => x.reacts?.length && statuses.get(key(dd, x))?.status === 'on');
+  // Decision 5: the inflictions the team applies; one element's on top of another's makes the reaction of the second.
+  const inflicted = new Set(order.flatMap((who) => (entries.get(who) ?? []).filter((e) => statuses.get(key(who, e))?.status === 'on').flatMap((e) => (e.causes ?? []).filter((c) => REACTION_OF[c]))));
+  const reactionsOf = (e: Entry): GameEvent[] => (e.causes ?? []).flatMap((c) => (REACTION_OF[c] && [...inflicted].some((x) => x !== c) ? [REACTION_OF[c]] : []));
 
   for (const who of order) {
     for (const e of entries.get(who) ?? []) {
@@ -280,11 +290,14 @@ export function checkTeam(team: string[], dd: string, lib: Library, account: Acc
       }
       // Step 4: chains, a teammate setting up what the damage dealer's kit reacts to.
       if (e.causes?.length) {
-        const hit = ddReacting.find((x) => e.causes?.some((c) => x.reacts?.some((need) => meets(c, need))));
-        const cause = hit && e.causes.find((c) => hit.reacts?.some((need) => meets(c, need)));
+        const reactions = reactionsOf(e);
+        const causes = [...e.causes, ...reactions];
+        const hit = ddReacting.find((x) => causes.some((c) => x.reacts?.some((need) => meets(c, need))));
+        const cause = hit && causes.find((c) => hit.reacts?.some((need) => meets(c, need)));
         if (hit && cause) {
           contributed.add(who);
-          lines.push({ ...base, kind: 'chain', why: `sets up ${eventWord(cause)} for ${name(dd)}: ${hit.tag}`, points: 1, parts: [{ zone: `chain:${dd}:${hit.id}`, size: typ, how: 'typical' }] });
+          const how = reactions.includes(cause) && !e.causes.includes(cause) ? ' (on another element’s Infliction)' : '';
+          lines.push({ ...base, kind: 'chain', why: `sets up ${eventWord(cause)}${how} for ${name(dd)}: ${hit.tag}`, points: 1, parts: [{ zone: `chain:${dd}:${hit.id}`, size: typ, how: 'typical' }] });
         } else if (!e.gives.length) lines.push({ ...base, kind: 'not-counted', why: `${name(dd)}'s kit has nothing switched on that needs ${list(e.causes.map(eventWord))}`, points: 0 });
       }
       if (!e.gives.length) continue;
