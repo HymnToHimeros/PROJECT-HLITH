@@ -1,0 +1,3634 @@
+[
+  {
+    "characterId": "chr_0002_endminm",
+    "source": "endfield.wiki.gg/wiki/Endministrator (CC BY-SA 4.0)",
+    "version": "wiki revision 64967",
+    "skills": [
+      {
+        "id": "basic-attack",
+        "label": "Basic Attack: Destructive Sequence",
+        "kind": "skill",
+        "does": [],
+        "gameText": "BASIC ATTACK:\nAn attack with up to 5 sequences that deals Physical DMG. As the controlled operator, Final Strike also deals 18 Stagger.\nDIVE ATTACK:\nBasic attack performed in mid-air becomes a dive attack that deals Physical DMG to nearby enemies.\nFINISHER:\nBasic attack performed near a Staggered enemy becomes a finisher attack that deals massive Physical DMG and recovers some SP.\nAt level 12: BATK SEQ 1 Multiplier: 51%; BATK SEQ 2 Multiplier: 61%; BATK SEQ 3 Multiplier: 68%; BATK SEQ 4 Multiplier: 78%; BATK SEQ 5 Multiplier: 90%; Finisher ATK Multiplier: 900%; Dive ATK Multiplier: 180%."
+      },
+      {
+        "id": "battle-skill",
+        "label": "Battle Skill: Constructive Sequence",
+        "kind": "skill",
+        "does": [],
+        "gameText": "SKILL DESCRIPTION: A forceful burst of Originium Crystals that attacks enemies within the area of effect. Deals Physical DMG and applies Crush.\nAt level 12: SP Cost: 100; DMG Multiplier: 350%; Stagger: 10."
+      },
+      {
+        "id": "combo-skill",
+        "label": "Combo Skill: Sealing Sequence",
+        "kind": "skill",
+        "does": [],
+        "gameText": "COMBO TRIGGER: When another operator in the team deals DMG with combo skills.\nSKILL DESCRIPTION: Rushes to the enemy's side to deal Physical DMG and attach Originium Crystals that temporarily seal them. Applying Physical Status or Vulnerability to the sealed enemy shatters the Originium Crystals and deals additional Physical DMG.\nAt level 12: Cooldown: 15; DMG Multiplier: 100%; Crystal Shattering DMG Multiplier: 400%; Stagger: 10; Seal Duration (s): 5; Ultimate Energy Gain: 10."
+      },
+      {
+        "id": "ultimate",
+        "label": "Ultimate: Bombardment Sequence",
+        "kind": "skill",
+        "does": [],
+        "gameText": "SKILL DESCRIPTION: Bombards the ground with Originium Crystals, dealing massive Physical DMG to all enemies within a fan-shaped area. If the enemy already has Originium Crystals on them, this skill shatters the Originium Crystals and deals 1 more hit of Physical DMG.\nAt level 12: Ultimate Energy Cost: 80; DMG Multiplier: 800%; Bonus DMG Multiplier: 600%; Stagger: 25."
+      },
+      {
+        "id": "talent-essence-disintegration",
+        "label": "Talent: Essence Disintegration (Elite 2)",
+        "kind": "core",
+        "does": [],
+        "gameText": "When the Originium Crystals attached to the enemy are consumed, the Endministrator gains ATK +30% for 15s. This effect cannot stack."
+      },
+      {
+        "id": "talent-realspace-stasis",
+        "label": "Talent: Realspace Stasis (Elite 3)",
+        "kind": "core",
+        "does": [],
+        "gameText": "Enemies with attached Originium Crystals suffer Physical DMG Taken +20%."
+      },
+      {
+        "id": "talent-skirmisher",
+        "label": "Talent: Skirmisher (Elite 4)",
+        "kind": "core",
+        "does": [],
+        "gameText": "Operator Agility +20."
+      },
+      {
+        "id": "potential-1",
+        "label": "Potential 1: Final Awakening",
+        "kind": "potential",
+        "unlock": {
+          "potential": 1
+        },
+        "does": [],
+        "gameText": "Battle skill Constructive Sequence improved: Consuming Originium Crystals returns 50 SP."
+      },
+      {
+        "id": "potential-2",
+        "label": "Potential 2: Reflection of Authority",
+        "kind": "potential",
+        "unlock": {
+          "potential": 2
+        },
+        "does": [],
+        "gameText": "Talent Essence Disintegration improved: When the Endministrator gains the ATK buff, other allied operators gain half of this ATK buff."
+      },
+      {
+        "id": "potential-3",
+        "label": "Potential 3: The Guide",
+        "kind": "potential",
+        "unlock": {
+          "potential": 3
+        },
+        "does": [],
+        "gameText": "Ultimate Bombardment Sequence improved: After consuming Originium Crystals, the Endministrator gains 15 Ultimate Energy.\nThis effect does not benefit from other bonuses."
+      },
+      {
+        "id": "potential-4",
+        "label": "Potential 4: Commander of Originium",
+        "kind": "potential",
+        "unlock": {
+          "potential": 4
+        },
+        "does": [],
+        "gameText": "Arts Intensity +16. DMG dealt by Ultimate Bombardment Sequence is increased to 1.2 times the original."
+      },
+      {
+        "id": "potential-5",
+        "label": "Potential 5: ???",
+        "kind": "potential",
+        "unlock": {
+          "potential": 5
+        },
+        "does": [],
+        "gameText": "???"
+      }
+    ]
+  },
+  {
+    "characterId": "chr_0003_endminf",
+    "source": "endfield.wiki.gg/wiki/Endministrator (CC BY-SA 4.0)",
+    "version": "wiki revision 64967",
+    "skills": [
+      {
+        "id": "basic-attack",
+        "label": "Basic Attack: Destructive Sequence",
+        "kind": "skill",
+        "does": [],
+        "gameText": "BASIC ATTACK:\nAn attack with up to 5 sequences that deals Physical DMG. As the controlled operator, Final Strike also deals 18 Stagger.\nDIVE ATTACK:\nBasic attack performed in mid-air becomes a dive attack that deals Physical DMG to nearby enemies.\nFINISHER:\nBasic attack performed near a Staggered enemy becomes a finisher attack that deals massive Physical DMG and recovers some SP.\nAt level 12: BATK SEQ 1 Multiplier: 51%; BATK SEQ 2 Multiplier: 61%; BATK SEQ 3 Multiplier: 68%; BATK SEQ 4 Multiplier: 78%; BATK SEQ 5 Multiplier: 90%; Finisher ATK Multiplier: 900%; Dive ATK Multiplier: 180%."
+      },
+      {
+        "id": "battle-skill",
+        "label": "Battle Skill: Constructive Sequence",
+        "kind": "skill",
+        "does": [],
+        "gameText": "SKILL DESCRIPTION: A forceful burst of Originium Crystals that attacks enemies within the area of effect. Deals Physical DMG and applies Crush.\nAt level 12: SP Cost: 100; DMG Multiplier: 350%; Stagger: 10."
+      },
+      {
+        "id": "combo-skill",
+        "label": "Combo Skill: Sealing Sequence",
+        "kind": "skill",
+        "does": [],
+        "gameText": "COMBO TRIGGER: When another operator in the team deals DMG with combo skills.\nSKILL DESCRIPTION: Rushes to the enemy's side to deal Physical DMG and attach Originium Crystals that temporarily seal them. Applying Physical Status or Vulnerability to the sealed enemy shatters the Originium Crystals and deals additional Physical DMG.\nAt level 12: Cooldown: 15; DMG Multiplier: 100%; Crystal Shattering DMG Multiplier: 400%; Stagger: 10; Seal Duration (s): 5; Ultimate Energy Gain: 10."
+      },
+      {
+        "id": "ultimate",
+        "label": "Ultimate: Bombardment Sequence",
+        "kind": "skill",
+        "does": [],
+        "gameText": "SKILL DESCRIPTION: Bombards the ground with Originium Crystals, dealing massive Physical DMG to all enemies within a fan-shaped area. If the enemy already has Originium Crystals on them, this skill shatters the Originium Crystals and deals 1 more hit of Physical DMG.\nAt level 12: Ultimate Energy Cost: 80; DMG Multiplier: 800%; Bonus DMG Multiplier: 600%; Stagger: 25."
+      },
+      {
+        "id": "talent-essence-disintegration",
+        "label": "Talent: Essence Disintegration (Elite 2)",
+        "kind": "core",
+        "does": [],
+        "gameText": "When the Originium Crystals attached to the enemy are consumed, the Endministrator gains ATK +30% for 15s. This effect cannot stack."
+      },
+      {
+        "id": "talent-realspace-stasis",
+        "label": "Talent: Realspace Stasis (Elite 3)",
+        "kind": "core",
+        "does": [],
+        "gameText": "Enemies with attached Originium Crystals suffer Physical DMG Taken +20%."
+      },
+      {
+        "id": "talent-skirmisher",
+        "label": "Talent: Skirmisher (Elite 4)",
+        "kind": "core",
+        "does": [],
+        "gameText": "Operator Agility +20."
+      },
+      {
+        "id": "potential-1",
+        "label": "Potential 1: Final Awakening",
+        "kind": "potential",
+        "unlock": {
+          "potential": 1
+        },
+        "does": [],
+        "gameText": "Battle skill Constructive Sequence improved: Consuming Originium Crystals returns 50 SP."
+      },
+      {
+        "id": "potential-2",
+        "label": "Potential 2: Reflection of Authority",
+        "kind": "potential",
+        "unlock": {
+          "potential": 2
+        },
+        "does": [],
+        "gameText": "Talent Essence Disintegration improved: When the Endministrator gains the ATK buff, other allied operators gain half of this ATK buff."
+      },
+      {
+        "id": "potential-3",
+        "label": "Potential 3: The Guide",
+        "kind": "potential",
+        "unlock": {
+          "potential": 3
+        },
+        "does": [],
+        "gameText": "Ultimate Bombardment Sequence improved: After consuming Originium Crystals, the Endministrator gains 15 Ultimate Energy.\nThis effect does not benefit from other bonuses."
+      },
+      {
+        "id": "potential-4",
+        "label": "Potential 4: Commander of Originium",
+        "kind": "potential",
+        "unlock": {
+          "potential": 4
+        },
+        "does": [],
+        "gameText": "Arts Intensity +16. DMG dealt by Ultimate Bombardment Sequence is increased to 1.2 times the original."
+      },
+      {
+        "id": "potential-5",
+        "label": "Potential 5: ???",
+        "kind": "potential",
+        "unlock": {
+          "potential": 5
+        },
+        "does": [],
+        "gameText": "???"
+      }
+    ]
+  },
+  {
+    "characterId": "chr_0004_pelica",
+    "source": "endfield.wiki.gg/wiki/Perlica (CC BY-SA 4.0)",
+    "version": "wiki revision 64968",
+    "skills": [
+      {
+        "id": "basic-attack",
+        "label": "Basic Attack: Protocol α: Breach",
+        "kind": "skill",
+        "does": [],
+        "gameText": "BASIC ATTACK:\nAn attack with up to 4 sequences that deals Electric DMG. As the controlled operator, Final Strike also deals 15 Stagger.\nDIVE ATTACK:\nBasic attack performed in mid-air becomes a dive attack that deals Electric DMG to nearby enemies.\nFINISHER:\nBasic attack performed near a Staggered enemy becomes a finisher that deals massive Electric DMG and recovers some SP.\nAt level 12: BATK SEQ 1 Multiplier: 57%; BATK SEQ 2 Multiplier: 68%; BATK SEQ 3 Multiplier: 84%; BATK SEQ 4 Multiplier: 127%; Finisher ATK Multiplier: 900%; Dive ATK Multiplier: 180%."
+      },
+      {
+        "id": "battle-skill",
+        "label": "Battle Skill: Protocol ω: Strike",
+        "kind": "skill",
+        "does": [],
+        "gameText": "SKILL DESCRIPTION: Unleashes a bolt of electro-magnetic energy that deals Electric DMG and Electric Infliction to enemies in a small area.\nAt level 12: SP Cost: 100; DMG Multiplier: 400%; Stagger: 10."
+      },
+      {
+        "id": "combo-skill",
+        "label": "Combo Skill: Instant Protocol: Chain",
+        "kind": "skill",
+        "does": [],
+        "gameText": "COMBO TRIGGER: When controlled operator performs a Final Strike on any enemy.\nSKILL DESCRIPTION: Unleashes stored electro-magnetic energy to bombard the target, dealing Electric DMG and forcibly inflicting temporary Electrification.\nAt level 12: Cooldown: 19; DMG Multiplier: 180%; Stagger: 10; Electrify Duration (s): 5; Ultimate Energy Gain: 10."
+      },
+      {
+        "id": "ultimate",
+        "label": "Ultimate: Protocol ε: 70.41K",
+        "kind": "skill",
+        "does": [],
+        "gameText": "SKILL DESCRIPTION: Tele-protocols a massive piece of orbital debris into the battlefield with devastating impact. All enemies in the area of effect suffer massive Electric DMG.\nAt level 12: Ultimate Energy Cost: 80; DMG Multiplier: 1000%; Stagger: 20."
+      },
+      {
+        "id": "talent-obliteration-protocol",
+        "label": "Talent: Obliteration Protocol (Elite 2)",
+        "kind": "core",
+        "does": [],
+        "gameText": "DMG Dealt +30% to Staggered enemies."
+      },
+      {
+        "id": "talent-cycle-protocol",
+        "label": "Talent: Cycle Protocol (Elite 3)",
+        "kind": "core",
+        "does": [],
+        "gameText": "Combo skill Instant Protocol: Chain improved: When hitting a Vulnerable enemy, the hit chains 1 more time."
+      },
+      {
+        "id": "talent-keen-mind",
+        "label": "Talent: Keen Mind (Elite 4)",
+        "kind": "core",
+        "does": [],
+        "gameText": "Operator Intellect +20."
+      },
+      {
+        "id": "potential-1",
+        "label": "Potential 1: Crisis Handling",
+        "kind": "potential",
+        "unlock": {
+          "potential": 1
+        },
+        "does": [],
+        "gameText": "Combo skill Instant Protocol: Chain improved: Electrification duration +75%."
+      },
+      {
+        "id": "potential-2",
+        "label": "Potential 2: Negotiation Tactics",
+        "kind": "potential",
+        "unlock": {
+          "potential": 2
+        },
+        "does": [],
+        "gameText": "Ultimate Protocol ε: 70.41K improved: Ultimate Energy cost -15%."
+      },
+      {
+        "id": "potential-3",
+        "label": "Potential 3: Supervisory Duties",
+        "kind": "potential",
+        "unlock": {
+          "potential": 3
+        },
+        "does": [],
+        "gameText": "After Perlica applies Electrification to the enemy, she gains ATK +20% for 5s. This effect can reach 2 stacks."
+      },
+      {
+        "id": "potential-4",
+        "label": "Potential 4: Constant Guidance",
+        "kind": "potential",
+        "unlock": {
+          "potential": 4
+        },
+        "does": [],
+        "gameText": "Combo skill Instant Protocol: Chain improved: The Arts DMG Taken debuff effects on the enemy applied by the skill's Electrification are increased to 1.33 times the original."
+      },
+      {
+        "id": "potential-5",
+        "label": "Potential 5: Reentry Control",
+        "kind": "potential",
+        "unlock": {
+          "potential": 5
+        },
+        "does": [],
+        "gameText": "Ultimate Protocol ε: 70.41K improved: Critical Rate +30%."
+      }
+    ]
+  },
+  {
+    "characterId": "chr_0005_chen",
+    "source": "endfield.wiki.gg/wiki/Chen_Qianyu (CC BY-SA 4.0)",
+    "version": "wiki revision 64969",
+    "skills": [
+      {
+        "id": "basic-attack",
+        "label": "Basic Attack: Soaring Break",
+        "kind": "skill",
+        "does": [],
+        "gameText": "BASIC ATTACK:\nAn attack with up to 5 sequences that deals Physical DMG. As the controlled operator, Final Strike also deals 16 Stagger.\nDIVE ATTACK:\nBasic attack performed in mid-air becomes a dive attack that deals Physical DMG to nearby enemies.\nFINISHER:\nBasic attack performed near a Staggered enemy becomes a finisher attack that deals massive Physical DMG and recovers some SP.\nAt level 12: BATK SEQ 1 Multiplier: 45%; BATK SEQ 2 Multiplier: 54%; BATK SEQ 3 Multiplier: 60%; BATK SEQ 4 Multiplier: 68%; BATK SEQ 5 Multiplier: 90%; Finisher ATK Multiplier: 900%; Dive ATK Multiplier: 180%."
+      },
+      {
+        "id": "battle-skill",
+        "label": "Battle Skill: Ascending Strike",
+        "kind": "skill",
+        "does": [],
+        "gameText": "SKILL DESCRIPTION: Performs an uppercut slash at the target enemy, dealing Physical DMG and Lift.\nAt level 12: SP Cost: 100; DMG Multiplier: 380%; Stagger: 10; Lift Duration (s): 2.5."
+      },
+      {
+        "id": "combo-skill",
+        "label": "Combo Skill: Soar to the Stars",
+        "kind": "skill",
+        "does": [],
+        "gameText": "COMBO TRIGGER: When an enemy becomes Vulnerable.\nSKILL DESCRIPTION: A slashing dash that passes through the target enemy and deals Physical DMG and Lift to all enemies along the way.\nAt level 12: Cooldown: 15; DMG Multiplier: 270%; Ultimate Energy Gain: 10."
+      },
+      {
+        "id": "ultimate",
+        "label": "Ultimate: Blade Gale",
+        "kind": "skill",
+        "does": [],
+        "gameText": "SKILL DESCRIPTION: A 7-sequence slash attack that deals Physical DMG with each sequence to the target enemy. The final slash sequence deals even more DMG.\nAt level 12: Ultimate Energy Cost: 70; Slash Multiplier: 81%; First Strike Stagger: 15; Final Strike DMG Multiplier: 1023%; Final Strike Stagger: 20."
+      },
+      {
+        "id": "talent-slashing-edge",
+        "label": "Talent: Slashing Edge (Elite 2)",
+        "kind": "core",
+        "does": [],
+        "gameText": "After hitting an enemy with skills, Chen gains ATK +8% for 10s. This effect can reach 5 stacks."
+      },
+      {
+        "id": "talent-momentum-breaker",
+        "label": "Talent: Momentum Breaker (Elite 3)",
+        "kind": "core",
+        "does": [],
+        "gameText": "Interrupting the enemy's charge up deals another 10 Stagger."
+      },
+      {
+        "id": "talent-skirmisher",
+        "label": "Talent: Skirmisher (Elite 4)",
+        "kind": "core",
+        "does": [],
+        "gameText": "Operator Agility +20."
+      },
+      {
+        "id": "potential-1",
+        "label": "Potential 1: \"Shadowless\"",
+        "kind": "potential",
+        "unlock": {
+          "potential": 1
+        },
+        "does": [],
+        "gameText": "DMG Dealt +20% to enemies below 50% HP."
+      },
+      {
+        "id": "potential-2",
+        "label": "Potential 2: Heirloom Martial Arts",
+        "kind": "potential",
+        "unlock": {
+          "potential": 2
+        },
+        "does": [],
+        "gameText": "Agility +15, Physical DMG Dealt +8%."
+      },
+      {
+        "id": "potential-3",
+        "label": "Potential 3: Dual-Wielding Swordmancer",
+        "kind": "potential",
+        "unlock": {
+          "potential": 3
+        },
+        "does": [],
+        "gameText": "Battle skill Ascending Strike, combo skill Soar to the Stars, and ultimate Blade Gale improved: DMG Multiplier is increased to 1.1 times the original."
+      },
+      {
+        "id": "potential-4",
+        "label": "Potential 4: Improvised Chi Xiao",
+        "kind": "potential",
+        "unlock": {
+          "potential": 4
+        },
+        "does": [],
+        "gameText": "Ultimate Blade Gale improved: Ultimate Energy cost -15%."
+      },
+      {
+        "id": "potential-5",
+        "label": "Potential 5: Bonded with the World",
+        "kind": "potential",
+        "unlock": {
+          "potential": 5
+        },
+        "does": [],
+        "gameText": "Combo skill Soar to the Stars improved: Length of cooldown -3s."
+      }
+    ]
+  },
+  {
+    "characterId": "chr_0006_wolfgd",
+    "source": "endfield.wiki.gg/wiki/Wulfgard (CC BY-SA 4.0)",
+    "version": "wiki revision 64970",
+    "skills": [
+      {
+        "id": "basic-attack",
+        "label": "Basic Attack: Rapid Fire Akimbo",
+        "kind": "skill",
+        "does": [],
+        "gameText": "BASIC ATTACK:\nAn attack with up to 4 sequences that deals Heat DMG. As the controlled operator, Final Strike also deals 18 Stagger.\nDIVE ATTACK:\nBasic attack performed in mid-air becomes a dive attack that deals Heat DMG to nearby enemies.\nFINISHER:\nBasic attack performed near a Staggered enemy becomes a finisher that deals massive Heat DMG and recovers some SP.\nAt level 12: BATK SEQ 1 Multiplier: 68%; BATK SEQ 2 Multiplier: 79%; BATK SEQ 3 Multiplier: 125%; BATK SEQ 4 Multiplier: 152%; Finisher ATK Multiplier: 900%; Dive ATK Multiplier: 180%."
+      },
+      {
+        "id": "battle-skill",
+        "label": "Battle Skill: Thermite Tracers",
+        "kind": "skill",
+        "does": [],
+        "gameText": "SKILL DESCRIPTION: Fires multiple shots at the target that deal some Heat DMG. The final shot also applies Heat Infliction. If the target has active Combustion or Electrification, do not apply Heat Infliction but instead consume the Arts Reaction to fire an additional shot that deals massive Heat DMG.\nAt level 12: SP Cost: 100; DMG Multiplier: 230%; Stagger: 5; Additional ATK DMG Multiplier: 850%; Additional ATK Stagger: 5."
+      },
+      {
+        "id": "combo-skill",
+        "label": "Combo Skill: Frag Grenade·β",
+        "kind": "skill",
+        "does": [],
+        "gameText": "COMBO TRIGGER: When an Arts Infliction is applied to an enemy.\nSKILL DESCRIPTION: Throws a frag grenade at the target's location that explodes upon hitting the ground, dealing Heat DMG and Heat Infliction to nearby enemies.\nAt level 12: Cooldown: 19; DMG Multiplier: 135%; Stagger: 10; Ultimate Energy Gain: 10."
+      },
+      {
+        "id": "ultimate",
+        "label": "Ultimate: Wolven Fury",
+        "kind": "skill",
+        "does": [],
+        "gameText": "SKILL DESCRIPTION: Fire a rapid barrage of shots and unleashes the Wolven Fury to attack nearby enemies, dealing 5 hits of Heat DMG and forcibly applying Combustion.\nAt level 12: Ultimate Energy Cost: 90; DMG Multiplier per SEQ: 72%; Stagger: 15."
+      },
+      {
+        "id": "talent-scorching-fangs",
+        "label": "Talent: Scorching Fangs (Elite 2)",
+        "kind": "core",
+        "does": [],
+        "gameText": "Whenever Wulfgard applies Combustion, he gains Scorching Fangs for 10s. This effect cannot stack. Scorching Fangs: While active, Wulfgard gains Heat DMG Dealt +30%."
+      },
+      {
+        "id": "talent-code-of-restraint",
+        "label": "Talent: Code of Restraint (Elite 3)",
+        "kind": "core",
+        "does": [],
+        "gameText": "Whenever the battle skill Thermite Tracers successfully consumes an Arts Reaction, return 10 SP."
+      },
+      {
+        "id": "talent-forged",
+        "label": "Talent: Forged (Elite 4)",
+        "kind": "core",
+        "does": [],
+        "gameText": "Operator Strength +20."
+      },
+      {
+        "id": "potential-1",
+        "label": "Potential 1: Lone Wolf",
+        "kind": "potential",
+        "unlock": {
+          "potential": 1
+        },
+        "does": [],
+        "gameText": "Strength +15, Agility +15."
+      },
+      {
+        "id": "potential-2",
+        "label": "Potential 2: Firearm Mods",
+        "kind": "potential",
+        "unlock": {
+          "potential": 2
+        },
+        "does": [],
+        "gameText": "Talent Code of Restraint improved: Returns 10 additional SP."
+      },
+      {
+        "id": "potential-3",
+        "label": "Potential 3: Hunting Hour",
+        "kind": "potential",
+        "unlock": {
+          "potential": 3
+        },
+        "does": [],
+        "gameText": "While Scorching Fangs is active, triggering the battle skill's additional effects immediately resets the Scorching Fangs duration and grants other teammates Scorching Fangs with 50% of the base effects."
+      },
+      {
+        "id": "potential-4",
+        "label": "Potential 4: Will of the Pack",
+        "kind": "potential",
+        "unlock": {
+          "potential": 4
+        },
+        "does": [],
+        "gameText": "Ultimate Wolven Fury improved: Ultimate Energy cost -15%."
+      },
+      {
+        "id": "potential-5",
+        "label": "Potential 5: Natural Predator",
+        "kind": "potential",
+        "unlock": {
+          "potential": 5
+        },
+        "does": [],
+        "gameText": "Casting the ultimate Wolven Fury immediately resets the cooldown of the combo skill Frag Grenade·β."
+      }
+    ]
+  },
+  {
+    "characterId": "chr_0007_ikut",
+    "source": "endfield.wiki.gg/wiki/Arclight (CC BY-SA 4.0)",
+    "version": "wiki revision 64971",
+    "skills": [
+      {
+        "id": "basic-attack",
+        "label": "Basic Attack: Seek and Hunt",
+        "kind": "skill",
+        "does": [],
+        "gameText": "BASIC ATTACK:\nAn attack with up to 5 sequences that deals Physical DMG. As the controlled operator, Final Strike also deals 16 Stagger.\nDIVE ATTACK:\nBasic attack performed in mid-air becomes a dive attack that deals Physical DMG to nearby enemies.\nFINISHER:\nBasic attack performed near a Staggered enemy becomes a finisher attack that deals massive Physical DMG and recovers some SP.\nAt level 12: BATK SEQ 1 Multiplier: 23%; BATK SEQ 2 Multiplier: 28%; BATK SEQ 3 Multiplier: 59%; BATK SEQ 4 Multiplier: 81%; BATK SEQ 5 Multiplier: 107%; Finisher ATK Multiplier: 900%; Dive ATK Multiplier: 180%."
+      },
+      {
+        "id": "battle-skill",
+        "label": "Battle Skill: Tempestuous Arc",
+        "kind": "skill",
+        "does": [],
+        "gameText": "SKILL DESCRIPTION: Instantly blinks to the enemy's side to deal 2 slashes that deal some Physical DMG. If the enemy has active Electrification, consume the Electrification to unleash an additional attack that deals Electric DMG and recovers some SP.\nAt level 12: SP Cost: 100; SEQ 1 DMG Multiplier: 101%; SEQ 2 DMG Multiplier: 101%; SEQ 2 Stagger: 5; Additional ATK DMG Multiplier: 405%; Additional ATK Stagger: 5; SP Recovery: 40."
+      },
+      {
+        "id": "combo-skill",
+        "label": "Combo Skill: Peal of Thunder",
+        "kind": "skill",
+        "does": [],
+        "gameText": "COMBO TRIGGER: When an enemy suffers Electrification or after an enemy's Electrification is consumed.\nSKILL DESCRIPTION: Blinks to the enemy's side to unleash a flurry of slashes that deals Physical DMG and recovers some SP.\nAt level 12: Cooldown: 3; DMG Multiplier: 350%; SP Recovery: 10; Stagger: 5; Ultimate Energy Gain: 5."
+      },
+      {
+        "id": "ultimate",
+        "label": "Ultimate: Exploding Blitz",
+        "kind": "skill",
+        "does": [],
+        "gameText": "SKILL DESCRIPTION: Performs a short forward dash while wreathed in arcs of electricity to deal Electric DMG and apply Electric Infliction to all enemies in the path. The lingering arcs explode after a short while, dealing another hit of Electric DMG. If the enemy has active Electric Infliction, consume the Electric Infliction and forcibly apply Electrification.\nAt level 12: Ultimate Energy Cost: 90; SEQ 1 DMG Multiplier: 350%; SEQ 1 Stagger: 10; SEQ 2 DMG Multiplier: 550%; SEQ 2 Stagger: 10."
+      },
+      {
+        "id": "talent-wildland-trekker",
+        "label": "Talent: Wildland Trekker (Elite 2)",
+        "kind": "core",
+        "does": [],
+        "gameText": "Battle skill Tempestuous Arc improved: Triggering the additional effect 3 time(s) grants the team Electric DMG Dealt +0.08% for every point of Arclight's Intellect. This effect has a 15s duration and cannot stack."
+      },
+      {
+        "id": "talent-hannabit-wisdom",
+        "label": "Talent: Hannabit Wisdom (Elite 3)",
+        "kind": "core",
+        "does": [],
+        "gameText": "50% chance to ignore an Arts Infliction applied on her."
+      },
+      {
+        "id": "talent-skirmisher",
+        "label": "Talent: Skirmisher (Elite 4)",
+        "kind": "core",
+        "does": [],
+        "gameText": "Operator Agility +20."
+      },
+      {
+        "id": "potential-1",
+        "label": "Potential 1: Child of the Storm",
+        "kind": "potential",
+        "unlock": {
+          "potential": 1
+        },
+        "does": [],
+        "gameText": "Battle skill Tempestuous Arc improved: After triggering additional effects, the skill recovers another 10 SP."
+      },
+      {
+        "id": "potential-2",
+        "label": "Potential 2: Speed Battler",
+        "kind": "potential",
+        "unlock": {
+          "potential": 2
+        },
+        "does": [],
+        "gameText": "Agility +15, Intellect +15."
+      },
+      {
+        "id": "potential-3",
+        "label": "Potential 3: \"Hanna\"",
+        "kind": "potential",
+        "unlock": {
+          "potential": 3
+        },
+        "does": [],
+        "gameText": "Talent Wildland Trekker improved: DMG Boost effect increased to 1.3 times the original."
+      },
+      {
+        "id": "potential-4",
+        "label": "Potential 4: Aldertone's Teachings",
+        "kind": "potential",
+        "unlock": {
+          "potential": 4
+        },
+        "does": [],
+        "gameText": "Ultimate Exploding Blitz improved: Ultimate Energy cost -15%."
+      },
+      {
+        "id": "potential-5",
+        "label": "Potential 5: Servant of the Wildlands",
+        "kind": "potential",
+        "unlock": {
+          "potential": 5
+        },
+        "does": [],
+        "gameText": "Talent Wildland Trekker improved: Trigger requirement is reduced to 2 time(s)."
+      }
+    ]
+  },
+  {
+    "characterId": "chr_0009_azrila",
+    "source": "endfield.wiki.gg/wiki/Ember (CC BY-SA 4.0)",
+    "version": "wiki revision 64972",
+    "skills": [
+      {
+        "id": "basic-attack",
+        "label": "Basic Attack: Sword Art of Assault",
+        "kind": "skill",
+        "does": [],
+        "gameText": "BASIC ATTACK:\nAn attack with up to 4 sequences that deals Physical DMG. As the controlled operator, Final Strike also deals 25 Stagger.\nDIVE ATTACK:\nBasic attack performed in mid-air becomes a dive attack that deals Physical DMG to nearby enemies.\nFINISHER:\nBasic attack performed near a Staggered enemy becomes a finisher that deals massive Physical DMG and recovers some SP.\nAt level 12: BATK SEQ 1 Multiplier: 86%; BATK SEQ 2 Multiplier: 120%; BATK SEQ 3 Multiplier: 149%; BATK SEQ 4 Multiplier: 184%; Finisher ATK Multiplier: 900%; Dive ATK Multiplier: 180%."
+      },
+      {
+        "id": "battle-skill",
+        "label": "Battle Skill: Forward March",
+        "kind": "skill",
+        "does": [],
+        "gameText": "SKILL DESCRIPTION: A leap followed by a heavy slam that deals Heat DMG, Knock Down, and Stagger to all enemies in a fan-shaped area.\nIf Ember takes DMG from enemies during casting, the slam deals more Stagger when it hits.\nAt level 12: SP Cost: 100; DMG Multiplier: 390%; Stagger: 10; Additional Stagger Dealt When Hit: 10."
+      },
+      {
+        "id": "combo-skill",
+        "label": "Combo Skill: Frontline Support",
+        "kind": "skill",
+        "does": [],
+        "gameText": "COMBO TRIGGER: When the controlled operator is attacked.\nSKILL DESCRIPTION: Leaps at the target enemy and unleashes a heavy slam that deals Physical DMG and Knock Down while giving HP treatment to the controlled operator. The attribute of Will increases the amount of HP treatment.\nAt level 12: Cooldown: 18; DMG Multiplier: 230%; Stagger: 10; Base Treatment: 675; Treatment Increase per Will: 1.58; Ultimate Energy Gain: 10."
+      },
+      {
+        "id": "ultimate",
+        "label": "Ultimate: Re-Ignited Oath",
+        "kind": "skill",
+        "does": [],
+        "gameText": "SKILL DESCRIPTION: Slams the ground to deal Heat DMG to nearby enemies, while granting every teammate a Shield based on Ember's Max HP.\nAt level 12: Ultimate Energy Cost: 100; DMG Multiplier: 650%; Stagger: 25; Shield Conversion Ratio (HP): 25%; Shield Duration (s): 10."
+      },
+      {
+        "id": "talent-inflamed-for-the-assault",
+        "label": "Talent: Inflamed for the Assault (Elite 2)",
+        "kind": "core",
+        "does": [],
+        "gameText": "When casting the battle skill Forward March and the combo skill Frontline Support, Ember gains 50% Protection and is less likely to be interrupted."
+      },
+      {
+        "id": "talent-pay-the-ferric-price",
+        "label": "Talent: Pay the Ferric Price (Elite 3)",
+        "kind": "core",
+        "does": [],
+        "gameText": "When Ember receives DMG from the enemy, she gains ATK +9% for 7s. This effect can reach 3 stacks."
+      },
+      {
+        "id": "talent-forged",
+        "label": "Talent: Forged (Elite 4)",
+        "kind": "core",
+        "does": [],
+        "gameText": "Operator Strength +20."
+      },
+      {
+        "id": "potential-1",
+        "label": "Potential 1: Nomadic Fort",
+        "kind": "potential",
+        "unlock": {
+          "potential": 1
+        },
+        "does": [],
+        "gameText": "Talent Inflamed for the Assault improved: Protection effect +20%; hitting an enemy extends the duration by 1.5s."
+      },
+      {
+        "id": "potential-2",
+        "label": "Potential 2: Steel-Hardened Veteran",
+        "kind": "potential",
+        "unlock": {
+          "potential": 2
+        },
+        "does": [],
+        "gameText": "Strength +20, Will +20."
+      },
+      {
+        "id": "potential-3",
+        "label": "Potential 3: Indomitable Front",
+        "kind": "potential",
+        "unlock": {
+          "potential": 3
+        },
+        "does": [],
+        "gameText": "Combo skill Frontline Support improved: Restores the HP of another teammate with the lowest percentage HP at 50% of the base effect."
+      },
+      {
+        "id": "potential-4",
+        "label": "Potential 4: Undying Embers",
+        "kind": "potential",
+        "unlock": {
+          "potential": 4
+        },
+        "does": [],
+        "gameText": "Ultimate Re-Ignited Oath improved: Ultimate Energy cost -15%."
+      },
+      {
+        "id": "potential-5",
+        "label": "Potential 5: The Steel Oath",
+        "kind": "potential",
+        "unlock": {
+          "potential": 5
+        },
+        "does": [],
+        "gameText": "Ultimate Re-Ignited Oath improved: Shield effect is multiplied by 1.2; while this shield is active, the wielder gains ATK +10%."
+      }
+    ]
+  },
+  {
+    "characterId": "chr_0011_seraph",
+    "source": "endfield.wiki.gg/wiki/Xaihi (CC BY-SA 4.0)",
+    "version": "wiki revision 64973",
+    "skills": [
+      {
+        "id": "basic-attack",
+        "label": "Basic Attack: Cooldown",
+        "kind": "skill",
+        "does": [],
+        "gameText": "BASIC ATTACK:\nAn attack with up to 5 sequences that deals Cryo DMG. As the controlled operator, Final Strike also deals 15 Stagger.\nDIVE ATTACK:\nBasic attack performed in mid-air becomes a dive attack that deals Cryo DMG to nearby enemies.\nFINISHER:\nBasic attack performed near a Staggered enemy becomes a finisher that deals massive Cryo DMG and recovers some SP.\nAt level 12: BATK SEQ 1 Multiplier: 34%; BATK SEQ 2 Multiplier: 36%; BATK SEQ 3 Multiplier: 47%; BATK SEQ 4 Multiplier: 74%; BATK SEQ 5 Multiplier: 124%; Finisher ATK Multiplier: 900%; Dive ATK Multiplier: 180%."
+      },
+      {
+        "id": "battle-skill",
+        "label": "Battle Skill: Distributed DoS",
+        "kind": "skill",
+        "does": [],
+        "gameText": "SKILL DESCRIPTION: Summons an Auxiliary Crystal that orbits the controlled operator for a while.\nAfter the controlled operator performs a Final Strike on the enemy, the Auxiliary Crystal will restore the said operator's HP. This effect can trigger 2 times. The attribute of Will increases the amount of HP treatment.\nWhen the controlled operator is already at Max HP when triggering the HP restoration, grant the said operator a temporary Arts Amp as well. This effect cannot stack.\nAt level 12: SP Cost: 100; Base Treatment: 324; Treatment Increase per Will: 0.76; Auxiliary Crystal Duration (s): 20; Arts Amp: 15%; Arts Amp Duration (s): 25."
+      },
+      {
+        "id": "combo-skill",
+        "label": "Combo Skill: Stress Testing",
+        "kind": "skill",
+        "does": [],
+        "gameText": "COMBO TRIGGER: When the Auxiliary Crystal uses up its HP treatments.\nSKILL DESCRIPTION: Quickly charges up the Auxiliary Crystal and launches it at the enemy to deal Cryo DMG and Cryo Infliction.\nAt level 12: Cooldown: 7; DMG Multiplier: 450%; Stagger: 10; Ultimate Energy Gain: 10."
+      },
+      {
+        "id": "ultimate",
+        "label": "Ultimate: Stack Overflow",
+        "kind": "skill",
+        "does": [],
+        "gameText": "SKILL DESCRIPTION: Applies temporary Cryo Amp and Nature Amp to the entire team. The attribute of Intellect (INT) increases the Amp effect.\nAt level 12: Ultimate Energy Cost: 80; Base Cryo Amp: 24%; Base Nature Amp: 24%; Amp Increase per Intellect: 0.03%; MAX Amp from INT: 36%; Duration (s): 12."
+      },
+      {
+        "id": "talent-execute-process",
+        "label": "Talent: Execute Process (Elite 2)",
+        "kind": "core",
+        "does": [],
+        "gameText": "Combo skill Stress Testing improved: Hitting an enemy with Cryo Infliction or Solidification also causes the enemy to suffer Cryo DMG Taken +10% for 5s. This effect cannot stack."
+      },
+      {
+        "id": "talent-freeze-protocol",
+        "label": "Talent: Freeze Protocol (Elite 3)",
+        "kind": "core",
+        "does": [],
+        "gameText": "Ultimate Stack Overflow improved: The ultimate also dispels Cryo Infliction and Solidification from the entire team."
+      },
+      {
+        "id": "talent-stalwart",
+        "label": "Talent: Stalwart (Elite 4)",
+        "kind": "core",
+        "does": [],
+        "gameText": "Operator Will +20."
+      },
+      {
+        "id": "potential-1",
+        "label": "Potential 1: Agile Execution",
+        "kind": "potential",
+        "unlock": {
+          "potential": 1
+        },
+        "does": [],
+        "gameText": "Arts Amp granted by the Auxiliary Crystal is increased by another 5%."
+      },
+      {
+        "id": "potential-2",
+        "label": "Potential 2: Link Aggregation",
+        "kind": "potential",
+        "unlock": {
+          "potential": 2
+        },
+        "does": [],
+        "gameText": "Ultimate Stack Overflow improved: Ultimate Energy cost -10%."
+      },
+      {
+        "id": "potential-3",
+        "label": "Potential 3: Mapping Node",
+        "kind": "potential",
+        "unlock": {
+          "potential": 3
+        },
+        "does": [],
+        "gameText": "Combo skill Stress Testing improved: When hitting the target, the hit chains 1 time to 1 additional target nearby."
+      },
+      {
+        "id": "potential-4",
+        "label": "Potential 4: Grayscale Release",
+        "kind": "potential",
+        "unlock": {
+          "potential": 4
+        },
+        "does": [],
+        "gameText": "Intellect +15, Treatment Efficiency +10%."
+      },
+      {
+        "id": "potential-5",
+        "label": "Potential 5: Controlled Recursion",
+        "kind": "potential",
+        "unlock": {
+          "potential": 5
+        },
+        "does": [],
+        "gameText": "Ultimate Stack Overflow improved: Amp effect is increased to 1.1 times the original."
+      }
+    ]
+  },
+  {
+    "characterId": "chr_0012_avywen",
+    "source": "endfield.wiki.gg/wiki/Avywenna (CC BY-SA 4.0)",
+    "version": "wiki revision 64975",
+    "skills": [
+      {
+        "id": "basic-attack",
+        "label": "Basic Attack: Thunderlance: Blitz",
+        "kind": "skill",
+        "does": [],
+        "gameText": "BASIC ATTACK:\nAn attack with up to 5 sequences that deals Physical DMG. As the controlled operator, Final Strike also deals 17 Stagger.\nDIVE ATTACK:\nBasic attack performed in mid-air becomes a dive attack that deals Physical DMG to nearby enemies.\nFINISHER:\nBasic attack performed near a Staggered enemy becomes a finisher attack that deals massive Physical DMG and recovers some SP.\nAt level 12: BATK SEQ 1 Multiplier: 37%; BATK SEQ 2 Multiplier: 48%; BATK SEQ 3 Multiplier: 46%; BATK SEQ 4 Multiplier: 68%; BATK SEQ 5 Multiplier: 113%; Finisher ATK Multiplier: 900%; Dive ATK Multiplier: 180%."
+      },
+      {
+        "id": "battle-skill",
+        "label": "Battle Skill: Thunderlance: Interdiction",
+        "kind": "skill",
+        "does": [],
+        "gameText": "SKILL DESCRIPTION: Leaps into mid-air to stir up a maelstrom with her lance, dealing some Electric DMG to nearby enemies while pulling back all Thunderlances and Thunderlance EX in the battlefield towards herself.\nThe returning Thunderlances pierce through all enemies along their paths and deal Electric DMG, while returning Thunderlances EX deal more Electric DMG and also apply Electric Infliction.\nAt level 12: SP Cost: 100; DMG Multiplier: 150%; Stagger: 5; Thunderlance DMG Multiplier: 168%; Thunderlance Stagger: 5; Thunderlance EX DMG Multiplier: 432%; Thunderlance EX Stagger: 10."
+      },
+      {
+        "id": "combo-skill",
+        "label": "Combo Skill: Thunderlance: Strike",
+        "kind": "skill",
+        "does": [],
+        "gameText": "COMBO TRIGGER: When controlled operator performs a Final Strike on a target with active Electric Infliction or Electrification.\nSKILL DESCRIPTION: Leaps into mid-air and throws 3 Thunderlances at the target, then deals 1 hit of Electric DMG to enemies in the area of effect.\nAt level 12: Cooldown: 12; DMG Multiplier: 380%; Stagger: 10; Thunderlance Duration (s): 30; Ultimate Energy Gain: 0."
+      },
+      {
+        "id": "ultimate",
+        "label": "Ultimate: Thunderlance: Final Shock",
+        "kind": "skill",
+        "does": [],
+        "gameText": "SKILL DESCRIPTION: Throws a Thunderlance EX at the target area that deals massive Electric DMG to enemies nearby.\nAt level 12: Ultimate Energy Cost: 100; DMG Multiplier: 950%; Stagger: 20; Thunderlance EX Duration (s): 30."
+      },
+      {
+        "id": "talent-expedited-delivery",
+        "label": "Talent: Expedited Delivery (Elite 2)",
+        "kind": "core",
+        "does": [],
+        "gameText": "After a thrown or returning Thunderlance or Thunderlance EX hits the enemy, Avywenna gains 4 Ultimate Energy."
+      },
+      {
+        "id": "talent-tactful-approach",
+        "label": "Talent: Tactful Approach (Elite 3)",
+        "kind": "core",
+        "does": [],
+        "gameText": "Ultimate Thunderlance: Final Shock improved: Also applies 10% Electric Susceptibility for 10s to enemies it hits."
+      },
+      {
+        "id": "talent-stalwart",
+        "label": "Talent: Stalwart (Elite 4)",
+        "kind": "core",
+        "does": [],
+        "gameText": "Operator Will +20."
+      },
+      {
+        "id": "potential-1",
+        "label": "Potential 1: Doubling Down",
+        "kind": "potential",
+        "unlock": {
+          "potential": 1
+        },
+        "does": [],
+        "gameText": "Talent Expedited Delivery improved: Ultimate Energy gain +2."
+      },
+      {
+        "id": "potential-2",
+        "label": "Potential 2: Pole of Menace",
+        "kind": "potential",
+        "unlock": {
+          "potential": 2
+        },
+        "does": [],
+        "gameText": "Thunderlance and Thunderlance EX duration +20s."
+      },
+      {
+        "id": "potential-3",
+        "label": "Potential 3: Hard Negotiator",
+        "kind": "potential",
+        "unlock": {
+          "potential": 3
+        },
+        "does": [],
+        "gameText": "Will +15, Electric DMG Dealt +8%."
+      },
+      {
+        "id": "potential-4",
+        "label": "Potential 4: Very Experienced",
+        "kind": "potential",
+        "unlock": {
+          "potential": 4
+        },
+        "does": [],
+        "gameText": "Ultimate Thunderlance: Final Shock improved: Ultimate Energy cost -15%."
+      },
+      {
+        "id": "potential-5",
+        "label": "Potential 5: Carrot and Sharp Stick",
+        "kind": "potential",
+        "unlock": {
+          "potential": 5
+        },
+        "does": [],
+        "gameText": "When returning Thunderlances or Thunderlances EX hit an Electric Susceptible enemy, the DMG multipliers are increased to 1.15 times the original."
+      }
+    ]
+  },
+  {
+    "characterId": "chr_0013_aglina",
+    "source": "endfield.wiki.gg/wiki/Gilberta (CC BY-SA 4.0)",
+    "version": "wiki revision 64976",
+    "skills": [
+      {
+        "id": "basic-attack",
+        "label": "Basic Attack: Arcane Staff: Beam Cohesion Arts",
+        "kind": "skill",
+        "does": [],
+        "gameText": "BASIC ATTACK:\nAn attack with up to 4 sequences that deals Nature DMG. As the controlled operator, Final Strike also deals 16 Stagger.\nDIVE ATTACK:\nBasic attack performed in mid-air becomes a dive attack that deals Nature DMG to nearby enemies.\nFINISHER:\nBasic attack performed near a Staggered enemy becomes a finisher that deals massive Nature DMG and recovers some SP.\nAt level 12: BATK SEQ 1 Multiplier: 68%; BATK SEQ 2 Multiplier: 81%; BATK SEQ 3 Multiplier: 91%; BATK SEQ 4 Multiplier: 112%; Finisher ATK Multiplier: 900%; Dive ATK Multiplier: 180%."
+      },
+      {
+        "id": "battle-skill",
+        "label": "Battle Skill: Arcane Staff: Gravity Mode",
+        "kind": "skill",
+        "does": [],
+        "gameText": "SKILL DESCRIPTION: Initiates Arts channeling that creates a gravity well. The gravity well pulls in nearby enemies and deals Nature DMG to them. When channeling ends, the gravity well implodes to deal Nature DMG and Nature Infliction to enemies in the area of effect.\nAt level 12: SP Cost: 100; Gravity Pull DMG Multiplier: 219%; Explosion DMG Multiplier: 130%; Explosion Stagger: 10."
+      },
+      {
+        "id": "combo-skill",
+        "label": "Combo Skill: Arcane Staff: Matrix Displacement",
+        "kind": "skill",
+        "does": [],
+        "gameText": "COMBO TRIGGER: When an Arts Reaction is applied to an enemy.\nSKILL DESCRIPTION: A quick casting of the Arts that generates a gravity pull, which then deals Nature DMG and forcibly Lifts the target and nearby enemies.\nAt level 12: Cooldown: 19; DMG Multiplier: 315%; Stagger: 5; Ultimate Energy Gain: 10."
+      },
+      {
+        "id": "ultimate",
+        "label": "Ultimate: Arcane Staff: Gravity Field",
+        "kind": "skill",
+        "does": [],
+        "gameText": "SKILL DESCRIPTION: Creates an Anomalous Gravity Field that instantly deals 1 hit of Nature DMG and applies Nature Infliction to enemies caught in the field. Targets in the Anomalous Gravity Field also suffer from Slow and Arts Susceptibility. The effect of Arts Susceptibility is further increased based on the number of active Vulnerability stacks on the target.\nIf a target in the field is Lifted, the Lifted status will persist until the field wears off.\nAt level 12: Ultimate Energy Cost: 90; DMG Multiplier: 750%; Stagger: 20; Field Duration (s): 5; Slow: 80%; Base Arts Susceptibility: 30%; Arts Susceptibility Boost per Vulnerability: 3%."
+      },
+      {
+        "id": "talent-messenger-s-song",
+        "label": "Talent: Messenger's Song (Elite 2)",
+        "kind": "core",
+        "does": [],
+        "gameText": "When fighting in the battlefield, all allied guards, casters, and supporters gain Ultimate Gain Efficiency +7%."
+      },
+      {
+        "id": "talent-late-reply",
+        "label": "Talent: Late Reply (Elite 3)",
+        "kind": "core",
+        "does": [],
+        "gameText": "Battle skill Arcane Staff: Gravity Mode and combo skill Arcane Staff: Matrix Displacement improved: Hitting at least 2 enemies with either the combo skill or the last sequence of the battle skill restores [108 + Intellect×0.90] HP to the controlled operator.\nIf the controlled operator is already at max HP, then restore the HP of the teammate with lowest percentage HP."
+      },
+      {
+        "id": "talent-stalwart",
+        "label": "Talent: Stalwart (Elite 4)",
+        "kind": "core",
+        "does": [],
+        "gameText": "Operator Will +20."
+      },
+      {
+        "id": "potential-1",
+        "label": "Potential 1: Above the Clouds",
+        "kind": "potential",
+        "unlock": {
+          "potential": 1
+        },
+        "does": [],
+        "gameText": "Battle skill Arcane Staff: Gravity Mode improved: Effect radius +20%."
+      },
+      {
+        "id": "potential-2",
+        "label": "Potential 2: Wind Walker",
+        "kind": "potential",
+        "unlock": {
+          "potential": 2
+        },
+        "does": [],
+        "gameText": "Ultimate Arcane Staff: Gravity Field improved: When an enemy is affected by the Anomalous Gravity Field of the ultimate, double the Arts Susceptibility increase per Vulnerability stack. When finalizing this effect, the target is treated as having 1 additional stack of Vulnerability (total stacks max out at 4)."
+      },
+      {
+        "id": "potential-3",
+        "label": "Potential 3: Quick, Gentle Steps",
+        "kind": "potential",
+        "unlock": {
+          "potential": 3
+        },
+        "does": [],
+        "gameText": "Talent Messenger's Song improved: Ultimate Gain Efficiency +5%."
+      },
+      {
+        "id": "potential-4",
+        "label": "Potential 4: Dances with Clouds",
+        "kind": "potential",
+        "unlock": {
+          "potential": 4
+        },
+        "does": [],
+        "gameText": "Ultimate Arcane Staff: Gravity Field improved: Ultimate Energy cost -15%."
+      },
+      {
+        "id": "potential-5",
+        "label": "Potential 5: Special Mail",
+        "kind": "potential",
+        "unlock": {
+          "potential": 5
+        },
+        "does": [],
+        "gameText": "Combo skill Arcane Staff: Matrix Displacement improved: Length of cooldown -2s; DMG multiplier is increased to 1.3 times the original."
+      }
+    ]
+  },
+  {
+    "characterId": "chr_0014_aurora",
+    "source": "endfield.wiki.gg/wiki/Snowshine (CC BY-SA 4.0)",
+    "version": "wiki revision 64977",
+    "skills": [
+      {
+        "id": "basic-attack",
+        "label": "Basic Attack: Hypothermic Assault",
+        "kind": "skill",
+        "does": [],
+        "gameText": "BASIC ATTACK:\nAn attack with up to 3 sequences that deals Physical DMG. As the controlled operator, Final Strike also deals 23 Stagger.\nDIVE ATTACK:\nBasic attack performed in mid-air becomes a dive attack that deals Physical DMG to nearby enemies.\nFINISHER:\nBasic attack performed near a Staggered enemy becomes a finisher attack that deals massive Physical DMG and recovers some SP.\nAt level 12: BATK SEQ 1 Multiplier: 124%; BATK SEQ 2 Multiplier: 132%; BATK SEQ 3 Multiplier: 225%; Finisher ATK Multiplier: 900%; Dive ATK Multiplier: 180%."
+      },
+      {
+        "id": "battle-skill",
+        "label": "Battle Skill: Saturated Defense",
+        "kind": "skill",
+        "does": [],
+        "gameText": "SKILL DESCRIPTION: Raises a shield that can block attacks, grants Protection to self and nearby operators, and immediately returns some SP.\nWhen attacked while the said shield is raised, perform a retaliation bash that deals Cryo DMG and applies Cryo Infliction on the attacker.\nAt level 12: SP Cost: 100; DMG Multiplier: 450%; Stagger: 20; Protection: 90%; SP Return: 30."
+      },
+      {
+        "id": "combo-skill",
+        "label": "Combo Skill: Polar Rescue",
+        "kind": "skill",
+        "does": [],
+        "gameText": "COMBO TRIGGER: After controlled operator gets attacked and drops below 60% HP.\nSKILL DESCRIPTION: Snowshine throws a Snowfield SAR Assistant at the controlled operator. Upon target contact, the Assistant gives massive instant HP Treatment to nearby operators as well as continuous HP Treatment to operators in the area of effect.\nThe attribute of Will increases the amount of HP treatment.\nAt level 12: Cooldown: 23; Initial Base Treatment: 216; Initial Treatment Increase per Will: 0.5; Base Treatment Over Time: 54; Treatment Over Time Increase per Will: 0.13; Treatment Over Time Interval (s): 0.5; Duration (s): 3; Ultimate Energy Gain: 10."
+      },
+      {
+        "id": "ultimate",
+        "label": "Ultimate: Frigid Snowfield",
+        "kind": "skill",
+        "does": [],
+        "gameText": "SKILL DESCRIPTION: Leaps into mid-air with a jetpack before slamming down with her shield to deal massive Cryo DMG to enemies in the area of effect. Also generates a Snow Zone (lasting several seconds) that deals Cryo DMG over time to enemies. The Snow Zone forcibly applies Solidification to enemies caught within it for a certain duration.\nAt level 12: Ultimate Energy Cost: 80; Explosion DMG Multiplier: 450%; Stagger: 20; DMG Over Time Multiplier: 65%; DMG Over Time Interval (s): 0.5; Duration (s): 5."
+      },
+      {
+        "id": "talent-polar-survival",
+        "label": "Talent: Polar Survival (Elite 2)",
+        "kind": "core",
+        "does": [],
+        "gameText": "Treatment Effect +25% for targets of 55% HP or below."
+      },
+      {
+        "id": "talent-sar-professional",
+        "label": "Talent: SAR Professional (Elite 3)",
+        "kind": "core",
+        "does": [],
+        "gameText": "Battle skill Saturated Defense improved: After successfully retaliating an enemy attack, Snowshine gains another 10 Ultimate Energy."
+      },
+      {
+        "id": "talent-forged",
+        "label": "Talent: Forged (Elite 4)",
+        "kind": "core",
+        "does": [],
+        "gameText": "Operator Strength +20."
+      },
+      {
+        "id": "potential-1",
+        "label": "Potential 1: Cold Shelter",
+        "kind": "potential",
+        "unlock": {
+          "potential": 1
+        },
+        "does": [],
+        "gameText": "Battle skill Saturated Defense improved: During the blocking effect, Arts Inflictions cannot be applied to allied operators with Protection."
+      },
+      {
+        "id": "potential-2",
+        "label": "Potential 2: Storm Region",
+        "kind": "potential",
+        "unlock": {
+          "potential": 2
+        },
+        "does": [],
+        "gameText": "Ultimate Frigid Snowfield improved: Effect radius +20%."
+      },
+      {
+        "id": "potential-3",
+        "label": "Potential 3: Polar Survival Guide",
+        "kind": "potential",
+        "unlock": {
+          "potential": 3
+        },
+        "does": [],
+        "gameText": "Ultimate Frigid Snowfield improved: Duration of the Solidification applied by the skill is increased by 2s."
+      },
+      {
+        "id": "potential-4",
+        "label": "Potential 4: Tundra Aegis",
+        "kind": "potential",
+        "unlock": {
+          "potential": 4
+        },
+        "does": [],
+        "gameText": "DEF +20, Will +20."
+      },
+      {
+        "id": "potential-5",
+        "label": "Potential 5: Cold Disaster Specialist",
+        "kind": "potential",
+        "unlock": {
+          "potential": 5
+        },
+        "does": [],
+        "gameText": "Battle skill Saturated Defense improved: Successfully retaliating an enemy attack returns 10 SP."
+      }
+    ]
+  },
+  {
+    "characterId": "chr_0015_lifeng",
+    "source": "endfield.wiki.gg/wiki/Lifeng (CC BY-SA 4.0)",
+    "version": "wiki revision 64978",
+    "skills": [
+      {
+        "id": "basic-attack",
+        "label": "Basic Attack: Ruination",
+        "kind": "skill",
+        "does": [],
+        "gameText": "BASIC ATTACK:\nAn attack with up to 4 sequences that deals Physical DMG. As the controlled operator, Final Strike also deals 19 Stagger.\nDIVE ATTACK:\nBasic attack performed in mid-air becomes a dive attack that deals Physical DMG to nearby enemies.\nFINISHER:\nBasic attack performed near a Staggered enemy becomes a finisher that deals massive Physical DMG and recovers some SP.\nAt level 12: BATK SEQ 1 Multiplier: 55%; BATK SEQ 2 Multiplier: 65%; BATK SEQ 3 Multiplier: 79%; BATK SEQ 4 Multiplier: 152%; Finisher ATK Multiplier: 900%; Dive ATK Multiplier: 180%."
+      },
+      {
+        "id": "battle-skill",
+        "label": "Battle Skill: Turbid Avatar",
+        "kind": "skill",
+        "does": [],
+        "gameText": "SKILL DESCRIPTION: Swings the polearm multiple times to deal 2 hits of Physical DMG, then slams the ground to deal Physical DMG and Knock Down to all enemies in the area of effect.\nIf the enemy struck by the last hit of this skill has no Vulnerability stacks, apply Physical Susceptibility to the said enemy as well.\nAt level 12: SP Cost: 100; SEQ 1 DMG Multiplier: 86%; SEQ 2 DMG Multiplier: 86%; SEQ 3 DMG Multiplier: 268%; SEQ 3 Stagger: 10; Physical Susceptibility: 12%; Physical Susceptibility Duration (s): 12."
+      },
+      {
+        "id": "combo-skill",
+        "label": "Combo Skill: Aspect of Wrath",
+        "kind": "skill",
+        "does": [],
+        "gameText": "COMBO TRIGGER: When the controlled operator performs a Final Strike on an enemy with Physical Susceptibility or Breach.\nSKILL DESCRIPTION: Unleashes an aspect that performs a spear thrust to deal Physical DMG and grants Link.\nAt level 12: Cooldown: 15; SEQ 1 DMG Multiplier: 105%; SEQ 2 DMG Multiplier: 375%; SEQ 2 Stagger: 10; Combo Duration (s): 20; Ultimate Energy Gain: 10."
+      },
+      {
+        "id": "ultimate",
+        "label": "Ultimate: Heart of the Unmoving",
+        "kind": "skill",
+        "does": [],
+        "gameText": "SKILL DESCRIPTION: Unleashes an aspect that performs an Immovable Vajra Slam. The Slam deals Physical DMG and applies Knock Down to all enemies in a large area of effect (AOE), and pulls enemies towards the center of the AOE. After a while, the Slam unleashes one more hit that deals massive Physical DMG and applies another Knock Down to enemies still within its AOE.\nIf the skill consumes a Link, then it deals an additional hit of massive Physical DMG.\nAt level 12: Ultimate Energy Cost: 90; SEQ 1 DMG Multiplier: 400%; SEQ 1 Stagger: 5; SEQ 2 DMG Multiplier: 400%; SEQ 2 Stagger: 5; Additional ATK DMG Multiplier: 600%; Additional ATK Stagger: 5."
+      },
+      {
+        "id": "talent-illumination",
+        "label": "Talent: Illumination (Elite 2)",
+        "kind": "core",
+        "does": [],
+        "gameText": "Every point of Intellect and Will further grants ATK +0.15%."
+      },
+      {
+        "id": "talent-subduer-of-evil",
+        "label": "Talent: Subduer of Evil (Elite 3)",
+        "kind": "core",
+        "does": [],
+        "gameText": "Applying Knock Down also deals 100% ATK of Physical DMG."
+      },
+      {
+        "id": "talent-skirmisher",
+        "label": "Talent: Skirmisher (Elite 4)",
+        "kind": "core",
+        "does": [],
+        "gameText": "Operator Agility +20."
+      },
+      {
+        "id": "potential-1",
+        "label": "Potential 1: Breaking the Obsession",
+        "kind": "potential",
+        "unlock": {
+          "potential": 1
+        },
+        "does": [],
+        "gameText": "Battle skill Turbid Avatar improved: Physical Susceptibility +5%; also triggers this additional effect to enemies with no more than 2 Vulnerability stacks."
+      },
+      {
+        "id": "potential-2",
+        "label": "Potential 2: Self Refinement",
+        "kind": "potential",
+        "unlock": {
+          "potential": 2
+        },
+        "does": [],
+        "gameText": "All attributes +15."
+      },
+      {
+        "id": "potential-3",
+        "label": "Potential 3: Spiritual Cultivation",
+        "kind": "potential",
+        "unlock": {
+          "potential": 3
+        },
+        "does": [],
+        "gameText": "Talent Illumination improved: Every point in the attributes of Intellect and Will grants Lifeng an additional ATK +0.05%."
+      },
+      {
+        "id": "potential-4",
+        "label": "Potential 4: Brief Instant",
+        "kind": "potential",
+        "unlock": {
+          "potential": 4
+        },
+        "does": [],
+        "gameText": "Ultimate Heart of the Unmoving improved: Ultimate Energy cost -15%."
+      },
+      {
+        "id": "potential-5",
+        "label": "Potential 5: Unremitting",
+        "kind": "potential",
+        "unlock": {
+          "potential": 5
+        },
+        "does": [],
+        "gameText": "Talent Subduer of Evil improved: Every 15s, the next effect triggered deals another 250% ATK of Physical DMG and 5 Stagger."
+      }
+    ]
+  },
+  {
+    "characterId": "chr_0016_laevat",
+    "source": "endfield.wiki.gg/wiki/Laevatain (CC BY-SA 4.0)",
+    "version": "wiki revision 64979",
+    "skills": [
+      {
+        "id": "basic-attack",
+        "label": "Basic Attack: Flaming Cinders",
+        "kind": "skill",
+        "does": [],
+        "gameText": "BASIC ATTACK:\nAn attack with up to 5 sequences that deals Heat DMG. As the controlled operator, Final Strike also deals 18 Stagger.\nDIVE ATTACK:\nBasic attack performed in mid-air becomes a dive attack that deals Heat DMG to nearby enemies.\nFINISHER:\nBasic attack performed near a Staggered enemy becomes a finisher that deals massive Heat DMG and recovers some SP.\nAt level 12: BATK SEQ 1 Multiplier: 36%; BATK SEQ 2 Multiplier: 54%; BATK SEQ 3 Multiplier: 56%; BATK SEQ 4 Multiplier: 88%; BATK SEQ 5 Multiplier: 119%; Finisher ATK Multiplier: 900%; Dive ATK Multiplier: 180%."
+      },
+      {
+        "id": "battle-skill",
+        "label": "Battle Skill: Smouldering Fire",
+        "kind": "skill",
+        "does": [],
+        "gameText": "SKILL DESCRIPTION: Summons a Magma Fragment to continuously attack enemies and deal Heat DMG. Hitting the enemy grants 1 stack of Melting Flame.\nIf Laevatain already has 4 stack(s) of Melting Flame when casting the skill, then consume all the stacks and perform 1 additional attack that deals Heat DMG and forcibly trigger temporary Combustion to all enemies in a large area.\nWhen the additional attack hits the enemy, restore additional Ultimate Energy.\nBattle skill effects are enhanced while Laevatain's ultimate is active.\nAt level 12: SP Cost: 100; Base Explosion DMG Multiplier: 140%; Base Explosion Stagger: 10; DMG Over Time Multiplier per SEQ: 14%; Additional ATK DMG Multiplier: 770%; Additional ATK Stagger: 10; Combustion Duration (s): 5; Additional ATK Ultimate Energy Gain: 100; During Ultimate: BATK SEQ 1 Multiplier: 330%; During Ultimate: BATK SEQ 1 Stagger: 10; During Ultimate: BATK SEQ 2 Multiplier: 370%; During Ultimate: BATK SEQ 2 Stagger: 10; During Ultimate: Additional ATK Multiplier: 900%; During Ultimate: Additional ATK Stagger: 10; During Ultimate: Combustion Duration (s): 5."
+      },
+      {
+        "id": "combo-skill",
+        "label": "Combo Skill: Seethe",
+        "kind": "skill",
+        "does": [],
+        "gameText": "COMBO TRIGGER: When an enemy suffers Combustion or Corrosion.\nSKILL DESCRIPTION: Fire erupts beneath the feet of any enemy with Combustion or Corrosion, dealing Heat DMG to them.\nIf the skill hits the enemy, Laevatain gains 1 stack of Melting Flame and further gains Ultimate Energy per enemy hit.\nAt level 12: Cooldown: 9; DMG Multiplier: 540%; Stagger: 10; Ultimate Energy Gain when Hitting 1 Enemy: 25; Ultimate Energy Gain when Hitting 2 Enemies: 30; Ultimate Energy Gain when Hitting 3 Enemies: 35."
+      },
+      {
+        "id": "ultimate",
+        "label": "Ultimate: Twilight",
+        "kind": "skill",
+        "does": [],
+        "gameText": "SKILL DESCRIPTION: Laevatain summons her Sviga Lævi and becomes the controlled operator.\nFor a certain duration, her basic attacks (BATK) are enhanced and the Sviga Lævi strikes together with Laevatain, with each attack dealing Heat DMG. BATK sequence 3 also applies Heat Infliction.\nCasting the battle skill, Smouldering Fire, or the combo skill, Seethe, does not shorten the duration of the ultimate, Twilight.\nAt level 12: Ultimate Energy Cost: 300; Duration (s): 15; Enhanced BATK SEQ 1 Multiplier: 146%; Enhanced BATK SEQ 2 Multiplier: 182%; Enhanced BATK SEQ 3 Multiplier: 260%; Enhanced BATK SEQ 4 Multiplier: 456%."
+      },
+      {
+        "id": "talent-scorching-heart",
+        "label": "Talent: Scorching Heart (Elite 3)",
+        "kind": "core",
+        "does": [],
+        "gameText": "After the controlled operator's Final Strike or Finisher hits the enemy, Laevatain absorbs Heat Infliction from nearby enemies.\nEvery stack of Heat Infliction absorbed gives Laevatain 1 stack of Melting Flame (max stacks: 4).\nAfter reaching 4 stacks, DMG dealt by Laevatain ignores 20 Heat Resistance of the enemy for 20s.\nLaevatain also absorbs Heat Infliction from enemies defeated nearby."
+      },
+      {
+        "id": "talent-re-ignition",
+        "label": "Talent: Re-Ignition (Elite 3)",
+        "kind": "core",
+        "does": [],
+        "gameText": "When HP drops below 40%, gain 90% Protection and restore 5% Max HP per second for 8s. This effect can only trigger once every 120s."
+      },
+      {
+        "id": "talent-keen-mind",
+        "label": "Talent: Keen Mind (Elite 4)",
+        "kind": "core",
+        "does": [],
+        "gameText": "Operator Intellect +20."
+      },
+      {
+        "id": "potential-1",
+        "label": "Potential 1: Heart of Melting Flame",
+        "kind": "potential",
+        "unlock": {
+          "potential": 1
+        },
+        "does": [],
+        "gameText": "Battle skill Smouldering Fire improved: Additional attack multiplier is increased to 1.2 times the original, and scoring a hit returns 20 SP."
+      },
+      {
+        "id": "potential-2",
+        "label": "Potential 2: Pursuit of Memories",
+        "kind": "potential",
+        "unlock": {
+          "potential": 2
+        },
+        "does": [],
+        "gameText": "Intellect +20, Basic Attack DMG Dealt +15%."
+      },
+      {
+        "id": "potential-3",
+        "label": "Potential 3: Fragments from the Past",
+        "kind": "potential",
+        "unlock": {
+          "potential": 3
+        },
+        "does": [],
+        "gameText": "Battle skill Smouldering Fire improved: Duration of the Combustion applied by the skill is increased by 50%. DMG of the Combustion applied by the skills is increased to 1.5 times the original."
+      },
+      {
+        "id": "potential-4",
+        "label": "Potential 4: Ice Cream Furnace",
+        "kind": "potential",
+        "unlock": {
+          "potential": 4
+        },
+        "does": [],
+        "gameText": "Ultimate Twilight improved: Ultimate Energy cost -15%."
+      },
+      {
+        "id": "potential-5",
+        "label": "Potential 5: Proof of Existence",
+        "kind": "potential",
+        "unlock": {
+          "potential": 5
+        },
+        "does": [],
+        "gameText": "Ultimate Twilight improved: Enhanced basic attack DMG multiplier is increased to 1.2 times the original; during the ultimate, every enemy defeated by Laevatain extends ultimate duration by +1s (max: +7s)."
+      }
+    ]
+  },
+  {
+    "characterId": "chr_0017_yvonne",
+    "source": "endfield.wiki.gg/wiki/Yvonne (CC BY-SA 4.0)",
+    "version": "wiki revision 64980",
+    "skills": [
+      {
+        "id": "basic-attack",
+        "label": "Basic Attack: Exuberant Trigger",
+        "kind": "skill",
+        "does": [],
+        "gameText": "BASIC ATTACK:\nAn attack with up to 5 sequences that deals Cryo DMG. As the controlled operator, Final Strike also deals 17 Stagger.\nDIVE ATTACK:\nBasic attack performed in mid-air becomes a dive attack that deals Cryo DMG to nearby enemies.\nFINISHER:\nBasic attack performed near a Staggered enemy becomes a finisher that deals massive Cryo DMG and recovers some SP.\nAt level 12: BATK SEQ 1 Multiplier: 53%; BATK SEQ 2 Multiplier: 56%; BATK SEQ 3 Multiplier: 71%; BATK SEQ 4 Multiplier: 92%; BATK SEQ 5 Multiplier: 126%; Finisher ATK Multiplier: 900%; Dive ATK Multiplier: 180%."
+      },
+      {
+        "id": "battle-skill",
+        "label": "Battle Skill: Brr-Brr-Bomb β",
+        "kind": "skill",
+        "does": [],
+        "gameText": "SKILL DESCRIPTION: Throws a freezing bomb. The bomb explodes when it hits the enemy to deal Cryo DMG. If hitting an enemy with Cryo Infliction or Nature Infliction, then consume all Arts Infliction stacks, forcibly apply Solidification, and deal Cryo DMG to the target based on the number of stacks consumed.\nAfter the battle skill successfully applies Solidification, Yvonne gains additional Ultimate Energy based on the number of stacks consumed. This Ultimate Energy Gain effect can only trigger 1 time, even if the skill hits multiple enemies.\nAt level 12: SP Cost: 100; Base DMG Multiplier: 250%; DMG Multiplier of Solidification Applied: 150%; Bonus DMG Multiplier per Infliction Stack: 200%; Stagger: 10; Ultimate Energy from Solidification Applied: 10; Additional Ultimate Energy Gain per Infliction Stack: 30."
+      },
+      {
+        "id": "combo-skill",
+        "label": "Combo Skill: Flashfreezer υ37",
+        "kind": "skill",
+        "does": [],
+        "gameText": "COMBO TRIGGER: When the controlled operator performs a Final Strike on an enemy with Solidification.\nSKILL DESCRIPTION: Immediately deploys Frost-e-Bytee next to the enemy. While active, Frost-e-Bytee constantly releases energy to attack nearby enemies, deals Cryo DMG to them, and pulls them towards itself. After Frost-e-Bytee expires, it explodes to forcibly apply Solidification and deal Cryo DMG to nearby enemies.\nAfter the combo skill successfully hits the enemy, Yvonne gains additional Ultimate Energy. This Ultimate Energy Gain effect can only trigger 1 time, even if the skill hits multiple enemies.\nAt level 12: Cooldown: 18; Duration (s): 3; Number of Energy Releases: 4; Energy DMG Multiplier: 100%; Explosion DMG Multiplier: 200%; Explosion Stagger: 10; Ultimate Energy Gain: 10; Additional Ultimate Energy Gain: 10."
+      },
+      {
+        "id": "ultimate",
+        "label": "Ultimate: Cryoblasting Pistolier",
+        "kind": "skill",
+        "does": [],
+        "gameText": "SKILL DESCRIPTION: Immediately deploys the support bot Tink-a-Bella and makes Yvonne the controlled operator.\nTemporarily enhances Yvonne's basic attack (BATK). Each enhanced BATK sequence performed grants a stack of Critical Rate buff. After reaching max stacks, Yvonne also gains a Critical DMG buff. When the skill is about to end, Yvonne's last enhanced BATK becomes an enhanced Final Strike that deals massive Cryo DMG.\nIf the enemy is Solidified, Yvonne performs an additional attack that deals Cryo DMG and then consumes the enemy's Solidification.\nAt level 12: Ultimate Energy Cost: 220; Duration (s): 7; BATK DMG Multiplier: 20%; Enhanced Final Strike DMG Multiplier: 300%; Additional ATK DMG Multiplier: 600%; Enhanced Final Strike Stagger: 20; Max Stacks: 10; Critical Rate Boost per Stack: 3%; Critical DMG Boost at Max Stacks: 60%."
+      },
+      {
+        "id": "talent-barrage-of-technology",
+        "label": "Talent: Barrage of Technology (Elite 2)",
+        "kind": "core",
+        "does": [],
+        "gameText": "Battle skill Brr-Brr-Bomb β improved: After applying Solidification, the next basic attack directly becomes a Final Strike with DMG Dealt +50%."
+      },
+      {
+        "id": "talent-freezing-point",
+        "label": "Talent: Freezing Point (Elite 3)",
+        "kind": "core",
+        "does": [],
+        "gameText": "Against enemies with active Cryo Infliction, gains Critical DMG Dealt +20%. Effect is doubled against enemies with Solidification."
+      },
+      {
+        "id": "talent-keen-mind",
+        "label": "Talent: Keen Mind (Elite 4)",
+        "kind": "core",
+        "does": [],
+        "gameText": "Operator Intellect +20."
+      },
+      {
+        "id": "potential-1",
+        "label": "Potential 1: Flash Freezer",
+        "kind": "potential",
+        "unlock": {
+          "potential": 1
+        },
+        "does": [],
+        "gameText": "Combo skill Flashfreezer υ37 improved: Effect radius +20%; releases energy 2 more times; and gains an additional 15 Ultimate Energy after dealing DMG."
+      },
+      {
+        "id": "potential-2",
+        "label": "Potential 2: Flawless Creation",
+        "kind": "potential",
+        "unlock": {
+          "potential": 2
+        },
+        "does": [],
+        "gameText": "Intellect +20, Critical Rate +7%."
+      },
+      {
+        "id": "potential-3",
+        "label": "Potential 3: Tink-a-Power",
+        "kind": "potential",
+        "unlock": {
+          "potential": 3
+        },
+        "does": [],
+        "gameText": "Talent Freezing Point improved: Against enemies with Cryo Infliction, Critical DMG Dealt +10%; this effect is also doubled against enemies with Solidification."
+      },
+      {
+        "id": "potential-4",
+        "label": "Potential 4: Rebellious Mood",
+        "kind": "potential",
+        "unlock": {
+          "potential": 4
+        },
+        "does": [],
+        "gameText": "Battle skill Brr-Brr-Bomb β improved: If the explosion hits only one enemy, return 10 SP."
+      },
+      {
+        "id": "potential-5",
+        "label": "Potential 5: Expert Mechcrafter",
+        "kind": "potential",
+        "unlock": {
+          "potential": 5
+        },
+        "does": [],
+        "gameText": "Ultimate Cryoblasting Pistolier improved: During the ultimate, ATK +10% and Critical DMG Dealt +30%."
+      }
+    ]
+  },
+  {
+    "characterId": "chr_0018_dapan",
+    "source": "endfield.wiki.gg/wiki/Da_Pan (CC BY-SA 4.0)",
+    "version": "wiki revision 64981",
+    "skills": [
+      {
+        "id": "basic-attack",
+        "label": "Basic Attack: ROLLING CUT!",
+        "kind": "skill",
+        "does": [],
+        "gameText": "BASIC ATTACK:\nAn attack with up to 4 sequences that deals Physical DMG. As the controlled operator, Final Strike also deals 20 Stagger.\nDIVE ATTACK:\nBasic attack performed in mid-air becomes a dive attack that deals Physical DMG to nearby enemies.\nFINISHER:\nBasic attack performed near a Staggered enemy becomes a finisher that deals massive Physical DMG and recovers some SP.\nAt level 12: BATK SEQ 1 Multiplier: 63%; BATK SEQ 2 Multiplier: 75%; BATK SEQ 3 Multiplier: 113%; BATK SEQ 4 Multiplier: 136%; Finisher ATK Multiplier: 900%; Dive ATK Multiplier: 180%."
+      },
+      {
+        "id": "battle-skill",
+        "label": "Battle Skill: FLIP DA WOK!",
+        "kind": "skill",
+        "does": [],
+        "gameText": "SKILL DESCRIPTION: Takes out a wok, quickly charges it up, and performs a powerful wok flip that deals Physical DMG and Lift to the enemy.\nAt level 12: SP Cost: 100; DMG Multiplier: 300%; Stagger: 10; Lift Duration (s): 1.8."
+      },
+      {
+        "id": "combo-skill",
+        "label": "Combo Skill: MORE SPICE!",
+        "kind": "skill",
+        "does": [],
+        "gameText": "COMBO TRIGGER: When an enemy reaches 4 stacks of Vulnerability.\nSKILL DESCRIPTION: Swings the wok at the enemy to deal massive Physical DMG and Crush. This Crush also deals more DMG.\nAt level 12: Cooldown: 19; DMG Multiplier: 650%; Stagger: 15; Crush DMG Bonus: 20%; Ultimate Energy Gain: 10."
+      },
+      {
+        "id": "ultimate",
+        "label": "Ultimate: CHOP 'N DUNK!",
+        "kind": "skill",
+        "does": [],
+        "gameText": "SKILL DESCRIPTION: Da Pan slams the chopping board to forcibly Lift all enemies in the area of effect in front of him. This is followed by a 6-sequence flurry of slashes that deals Physical DMG. The final step is to bash every enemy to the ground to forcibly Knock Down and deal massive Physical DMG to them.\nAt level 12: Ultimate Energy Cost: 90; Aerial Flurry DMG Multiplier: 50%; Ultimate DMG Multiplier: 400%."
+      },
+      {
+        "id": "talent-reduce-and-thicken",
+        "label": "Talent: Reduce and Thicken (Elite 2)",
+        "kind": "core",
+        "does": [],
+        "gameText": "After consuming 1 Vulnerability stack, Da Pan gains Physical DMG Dealt +6% for 10s. This effect can reach 4 stacks."
+      },
+      {
+        "id": "talent-salty-or-mild",
+        "label": "Talent: Salty or Mild (Elite 3)",
+        "kind": "core",
+        "does": [],
+        "gameText": "Ultimate CHOP 'N DUNK! improved: For every enemy hit by the final sequence of the ultimate, gains 1 stack of Prep Ingredients for 20s (max stacks: 2). When Prep Ingredients is active, hitting an enemy with combo skills immediately shortens cooldown by 40% and consumes 1 stack of Prep Ingredients."
+      },
+      {
+        "id": "talent-forged",
+        "label": "Talent: Forged (Elite 4)",
+        "kind": "core",
+        "does": [],
+        "gameText": "Operator Strength +20."
+      },
+      {
+        "id": "potential-1",
+        "label": "Potential 1: Fine Cooking",
+        "kind": "potential",
+        "unlock": {
+          "potential": 1
+        },
+        "does": [],
+        "gameText": "Ultimate CHOP 'N DUNK! improved: If the ultimate defeats at least one enemy, Da Pan deals +30% Physical DMG for 15s. This effect cannot stack."
+      },
+      {
+        "id": "potential-2",
+        "label": "Potential 2: Harmonized Flavors",
+        "kind": "potential",
+        "unlock": {
+          "potential": 2
+        },
+        "does": [],
+        "gameText": "Talent Salty or Mild improved: Prep Ingredients buff duration +10s, max stacks +1."
+      },
+      {
+        "id": "potential-3",
+        "label": "Potential 3: Model Employee",
+        "kind": "potential",
+        "unlock": {
+          "potential": 3
+        },
+        "does": [],
+        "gameText": "Strength +15, Physical DMG Dealt +8%."
+      },
+      {
+        "id": "potential-4",
+        "label": "Potential 4: Special Blend",
+        "kind": "potential",
+        "unlock": {
+          "potential": 4
+        },
+        "does": [],
+        "gameText": "Ultimate CHOP 'N DUNK! improved: Ultimate Energy cost -15%."
+      },
+      {
+        "id": "potential-5",
+        "label": "Potential 5: Fire it Up",
+        "kind": "potential",
+        "unlock": {
+          "potential": 5
+        },
+        "does": [],
+        "gameText": "Battle skill FLIP DA WOK! improved: If the skill hits only one enemy, apply 1 more stack of Vulnerability on the target. This effect can only trigger once every 45s."
+      }
+    ]
+  },
+  {
+    "characterId": "chr_0019_karin",
+    "source": "endfield.wiki.gg/wiki/Akekuri (CC BY-SA 4.0)",
+    "version": "wiki revision 64982",
+    "skills": [
+      {
+        "id": "basic-attack",
+        "label": "Basic Attack: Sword of Aspiration",
+        "kind": "skill",
+        "does": [],
+        "gameText": "BASIC ATTACK:\nAn attack with up to 4 sequences that deals Physical DMG. As the controlled operator, Final Strike also deals 17 Stagger.\nDIVE ATTACK:\nBasic attack performed in mid-air becomes a dive attack that deals Physical DMG to nearby enemies.\nFINISHER:\nBasic attack performed near a Staggered enemy becomes a finisher that deals massive Physical DMG and recovers some SP.\nAt level 12: BATK SEQ 1 Multiplier: 45%; BATK SEQ 2 Multiplier: 62%; BATK SEQ 3 Multiplier: 73%; BATK SEQ 4 Multiplier: 111%; Finisher ATK Multiplier: 900%; Dive ATK Multiplier: 180%."
+      },
+      {
+        "id": "battle-skill",
+        "label": "Battle Skill: Burst of Passion",
+        "kind": "skill",
+        "does": [],
+        "gameText": "SKILL DESCRIPTION: A frontal slash that deals Heat DMG and applies Heat Infliction.\nAt level 12: SP Cost: 100; DMG Multiplier: 320%; Stagger: 10."
+      },
+      {
+        "id": "combo-skill",
+        "label": "Combo Skill: Flash and Dash",
+        "kind": "skill",
+        "does": [],
+        "gameText": "COMBO TRIGGER: When an enemy becomes Staggered or hits a Stagger Node.\nSKILL DESCRIPTION: Performs a returning dash with 2 thrust sequences, with each sequence dealing Physical DMG and recovering some SP.\nAt level 12: Cooldown: 9; DMG Multiplier per SEQ: 180%; Stagger per SEQ: 5; SP Recovery per SEQ: 7.5; Ultimate Energy Gain: 10."
+      },
+      {
+        "id": "ultimate",
+        "label": "Ultimate: SQUAD! ON ME!",
+        "kind": "skill",
+        "does": [],
+        "gameText": "SKILL DESCRIPTION: Enters a channeling state and fires 3 Rallying Flares. Each firing recovers some SP.\nAt level 12: Ultimate Energy Cost: 120; SP Recovery: 80."
+      },
+      {
+        "id": "talent-cheer-of-victory",
+        "label": "Talent: Cheer of Victory (Elite 2)",
+        "kind": "core",
+        "does": [],
+        "gameText": "Combo skill Flash and Dash improved: For every 10 points of Intellect, SP Recovery +1.5% (max: 75%)."
+      },
+      {
+        "id": "talent-staying-in-the-zone",
+        "label": "Talent: Staying in the Zone (Elite 3)",
+        "kind": "core",
+        "does": [],
+        "gameText": "Ultimate SQUAD! ON ME! improved: When ultimate is active, grants a Link buff."
+      },
+      {
+        "id": "talent-skirmisher",
+        "label": "Talent: Skirmisher (Elite 4)",
+        "kind": "core",
+        "does": [],
+        "gameText": "Operator Agility +20."
+      },
+      {
+        "id": "potential-1",
+        "label": "Potential 1: Positive Feedback",
+        "kind": "potential",
+        "unlock": {
+          "potential": 1
+        },
+        "does": [],
+        "gameText": "After recovering SP with skills, Akekuri gains ATK +10% for 10s. This effect can reach 5 stacks."
+      },
+      {
+        "id": "potential-2",
+        "label": "Potential 2: Passionate Idealist",
+        "kind": "potential",
+        "unlock": {
+          "potential": 2
+        },
+        "does": [],
+        "gameText": "Agility +10, Intellect +10."
+      },
+      {
+        "id": "potential-3",
+        "label": "Potential 3: Committed Team Player",
+        "kind": "potential",
+        "unlock": {
+          "potential": 3
+        },
+        "does": [],
+        "gameText": "Ultimate SQUAD! ON ME! improved: While ultimate is active, entire team gains ATK +10%."
+      },
+      {
+        "id": "potential-4",
+        "label": "Potential 4: Super Perfect Status",
+        "kind": "potential",
+        "unlock": {
+          "potential": 4
+        },
+        "does": [],
+        "gameText": "Ultimate SQUAD! ON ME! improved: Ultimate Energy cost -10%."
+      },
+      {
+        "id": "potential-5",
+        "label": "Potential 5: Tempo of Awareness",
+        "kind": "potential",
+        "unlock": {
+          "potential": 5
+        },
+        "does": [],
+        "gameText": "Talent Staying in the Zone improved: Even when the ultimate SQUAD! ON ME! ends, the Link buff persists for 5s."
+      }
+    ]
+  },
+  {
+    "characterId": "chr_0020_meurs",
+    "source": "endfield.wiki.gg/wiki/Catcher (CC BY-SA 4.0)",
+    "version": "wiki revision 64983",
+    "skills": [
+      {
+        "id": "basic-attack",
+        "label": "Basic Attack: Basic Tactics",
+        "kind": "skill",
+        "does": [],
+        "gameText": "BASIC ATTACK:\nAn attack with up to 4 sequences that deals Physical DMG. As the controlled operator, Final Strike also deals 22 Stagger.\nDIVE ATTACK:\nBasic attack performed in mid-air becomes a dive attack that deals Physical DMG to nearby enemies.\nFINISHER:\nBasic attack performed near a Staggered enemy becomes a finisher that deals massive Physical DMG and recovers some SP.\nAt level 12: BATK SEQ 1 Multiplier: 79%; BATK SEQ 2 Multiplier: 87%; BATK SEQ 3 Multiplier: 122%; BATK SEQ 4 Multiplier: 160%; Finisher ATK Multiplier: 900%; Dive ATK Multiplier: 180%."
+      },
+      {
+        "id": "battle-skill",
+        "label": "Battle Skill: Rigid Interdiction",
+        "kind": "skill",
+        "does": [],
+        "gameText": "SKILL DESCRIPTION: Raises a shield that can block attacks, grants Protection to self and nearby operators, and immediately returns some SP.\nWhen attacked while the said shield is raised, perform a retaliation bash that deals Physical DMG and applies 1 stack of Vulnerability to the attacking enemy.\nAt level 12: SP Cost: 100; DMG Multiplier: 400%; Stagger: 20; Protection: 90%; SP Return: 30."
+      },
+      {
+        "id": "combo-skill",
+        "label": "Combo Skill: Timely Suppression",
+        "kind": "skill",
+        "does": [],
+        "gameText": "COMBO TRIGGER: When an enemy starts charging up a skill, or when the controlled operator is attacked and falls below 40% HP.\nSKILL DESCRIPTION: A powerful downward punch that deals Physical DMG to the enemy, while granting shields to self and another teammate (controlled operator prioritized).\nDEF can further increase Shield points.\nAt level 12: Cooldown: 33; SEQ 1 DMG Multiplier: 55%; SEQ 2 DMG Multiplier: 225%; Stagger: 10; Base Shield: 810; Shield Increase per Defense: 5.06; Shield Duration (s): 10; Ultimate Energy Gain: 10."
+      },
+      {
+        "id": "ultimate",
+        "label": "Ultimate: Textbook Assault",
+        "kind": "skill",
+        "does": [],
+        "gameText": "SKILL DESCRIPTION: Swings the greatsword to perform 2 consecutive slashes to deal Physical DMG and apply Weakness, followed by a powerful downward slam that deals massive Physical DMG and applies Knock Down to all enemies within the area of effect.\nAt level 12: Ultimate Energy Cost: 80; SEQ 1 DMG Multiplier: 200%; SEQ 1 Stagger: 5; SEQ 2 DMG Multiplier: 270%; SEQ 2 Stagger: 5; SEQ 3 DMG Multiplier: 400%; SEQ 3 Stagger: 10; Weakness Effect: 30%; Weakness Duration (s): 8."
+      },
+      {
+        "id": "talent-resilient-defense",
+        "label": "Talent: Resilient Defense (Elite 2)",
+        "kind": "core",
+        "does": [],
+        "gameText": "For every 10 Will, DEF +1.2."
+      },
+      {
+        "id": "talent-comprehensive-mindset",
+        "label": "Talent: Comprehensive Mindset (Elite 3)",
+        "kind": "core",
+        "does": [],
+        "gameText": "Ultimate Textbook Assault improved: Final hit creates 3 shockwave(s), each dealing 45% ATK of Physical DMG."
+      },
+      {
+        "id": "talent-forged",
+        "label": "Talent: Forged (Elite 4)",
+        "kind": "core",
+        "does": [],
+        "gameText": "Operator Strength +20."
+      },
+      {
+        "id": "potential-1",
+        "label": "Potential 1: Multi-layered Readiness",
+        "kind": "potential",
+        "unlock": {
+          "potential": 1
+        },
+        "does": [],
+        "gameText": "Battle skill Rigid Interdiction and ultimate Textbook Assault improved: After hitting the enemy, deals another strike that deals [300 + DEF×5.0] of Physical DMG."
+      },
+      {
+        "id": "potential-2",
+        "label": "Potential 2: Bonus Spec Training",
+        "kind": "potential",
+        "unlock": {
+          "potential": 2
+        },
+        "does": [],
+        "gameText": "DEF +20, Will +10."
+      },
+      {
+        "id": "potential-3",
+        "label": "Potential 3: Unwavering Post",
+        "kind": "potential",
+        "unlock": {
+          "potential": 3
+        },
+        "does": [],
+        "gameText": "Combo skill Timely Suppression improved: Shield duration +5s."
+      },
+      {
+        "id": "potential-4",
+        "label": "Potential 4: Compensated Suffering",
+        "kind": "potential",
+        "unlock": {
+          "potential": 4
+        },
+        "does": [],
+        "gameText": "Ultimate Textbook Assault improved: Ultimate Energy cost -10%."
+      },
+      {
+        "id": "potential-5",
+        "label": "Potential 5: Choice Without Regrets",
+        "kind": "potential",
+        "unlock": {
+          "potential": 5
+        },
+        "does": [],
+        "gameText": "Battle skill Rigid Interdiction improved: Hitting an enemy while the shield is active returns 10 SP."
+      }
+    ]
+  },
+  {
+    "characterId": "chr_0021_whiten",
+    "source": "endfield.wiki.gg/wiki/Estella (CC BY-SA 4.0)",
+    "version": "wiki revision 64984",
+    "skills": [
+      {
+        "id": "basic-attack",
+        "label": "Basic Attack: Audio Noise",
+        "kind": "skill",
+        "does": [],
+        "gameText": "BASIC ATTACK:\nAn attack with up to 4 sequences that deals Physical DMG. As the controlled operator, Final Strike also deals 17 Stagger.\nDIVE ATTACK:\nBasic attack performed in mid-air becomes a dive attack that deals Physical DMG to nearby enemies.\nFINISHER:\nBasic attack performed near a Staggered enemy becomes a finisher that deals massive Physical DMG and recovers some SP.\nAt level 12: BATK SEQ 1 Multiplier: 56%; BATK SEQ 2 Multiplier: 68%; BATK SEQ 3 Multiplier: 79%; BATK SEQ 4 Multiplier: 90%; Finisher ATK Multiplier: 900%; Dive ATK Multiplier: 180%."
+      },
+      {
+        "id": "battle-skill",
+        "label": "Battle Skill: Onomatopoeia",
+        "kind": "skill",
+        "does": [],
+        "gameText": "SKILL DESCRIPTION: A lance thrust that fires a stream of freezing sound waves that deal Cryo DMG and apply Cryo Infliction to all enemies along its straight path.\nAt level 12: SP Cost: 100; DMG Multiplier: 350%; Stagger: 10."
+      },
+      {
+        "id": "combo-skill",
+        "label": "Combo Skill: Distortion",
+        "kind": "skill",
+        "does": [],
+        "gameText": "COMBO TRIGGER: When an enemy suffers Solidification.\nSKILL DESCRIPTION: Quickly moves to the enemy's side to deal Physical DMG and forcibly Lift enemies in a small area. If the skill hits a target with Solidification, the skill deals additional DMG and applies Physical Susceptibility.\nAt level 12: Cooldown: 17; DMG Multiplier Against Non-Solidified Enemies: 360%; DMG Multiplier Against Solidified Enemies: 630%; Stagger: 10; Physical Susceptibility Multiplier: 15%; Physical Susceptibility Duration: 6; Ultimate Energy Gain: 10."
+      },
+      {
+        "id": "ultimate",
+        "label": "Ultimate: Tremolo",
+        "kind": "skill",
+        "does": [],
+        "gameText": "SKILL DESCRIPTION: Estella expends all her strength to unleash a powerful slam of the spear shaft, dealing Physical DMG to all enemies in a circular area around self. To enemies with Physical Susceptibility, the skill forcibly applies Lift to them.\nAt level 12: Ultimate Energy Cost: 70; DMG Multiplier: 1100%; Stagger: 20."
+      },
+      {
+        "id": "talent-commiseration",
+        "label": "Talent: Commiseration (Elite 2)",
+        "kind": "core",
+        "does": [],
+        "gameText": "When triggering Shatter, the next battle skill Onomatopoeia cast returns 15 SP. This effect cannot stack."
+      },
+      {
+        "id": "talent-laziness-pays-off-now",
+        "label": "Talent: Laziness Pays Off Now (Elite 3)",
+        "kind": "core",
+        "does": [],
+        "gameText": "Ignores Cryo Infliction and takes -20% Cryo DMG."
+      },
+      {
+        "id": "talent-stalwart",
+        "label": "Talent: Stalwart (Elite 4)",
+        "kind": "core",
+        "does": [],
+        "gameText": "Operator Will +20."
+      },
+      {
+        "id": "potential-1",
+        "label": "Potential 1: Habitual Delay",
+        "kind": "potential",
+        "unlock": {
+          "potential": 1
+        },
+        "does": [],
+        "gameText": "Combo skill Distortion improved: Physical Susceptibility duration +3s."
+      },
+      {
+        "id": "potential-2",
+        "label": "Potential 2: Lowered Expectations",
+        "kind": "potential",
+        "unlock": {
+          "potential": 2
+        },
+        "does": [],
+        "gameText": "Ultimate Tremolo improved: Ultimate Energy cost -10%."
+      },
+      {
+        "id": "potential-3",
+        "label": "Potential 3: Delayed Work",
+        "kind": "potential",
+        "unlock": {
+          "potential": 3
+        },
+        "does": [],
+        "gameText": "Battle skill Onomatopoeia improved: Freezing sound wave range +50% and DMG Dealt +40% to the first enemy hit."
+      },
+      {
+        "id": "potential-4",
+        "label": "Potential 4: Life Over Mission",
+        "kind": "potential",
+        "unlock": {
+          "potential": 4
+        },
+        "does": [],
+        "gameText": "Will +10, Strength +10."
+      },
+      {
+        "id": "potential-5",
+        "label": "Potential 5: Survival is a Win",
+        "kind": "potential",
+        "unlock": {
+          "potential": 5
+        },
+        "does": [],
+        "gameText": "After applying Solidification to an enemy, Estella gains 5 Ultimate Energy. Effect can only trigger once every 1s."
+      }
+    ]
+  },
+  {
+    "characterId": "chr_0022_bounda",
+    "source": "endfield.wiki.gg/wiki/Fluorite (CC BY-SA 4.0)",
+    "version": "wiki revision 64985",
+    "skills": [
+      {
+        "id": "basic-attack",
+        "label": "Basic Attack: Signature Gun Kata",
+        "kind": "skill",
+        "does": [],
+        "gameText": "BASIC ATTACK:\nAn attack with up to 4 sequences that deals Nature DMG. As the controlled operator, Final Strike also deals 15 Stagger.\nDIVE ATTACK:\nBasic attack performed in mid-air becomes a dive attack that deals Nature DMG to nearby enemies.\nFINISHER:\nBasic attack performed near a Staggered enemy becomes a finisher that deals massive Nature DMG and recovers some SP.\nAt level 12: BATK SEQ 1 Multiplier: 56%; BATK SEQ 2 Multiplier: 73%; BATK SEQ 3 Multiplier: 57%; BATK SEQ 4 Multiplier: 135%; Finisher ATK Multiplier: 900%; Dive ATK Multiplier: 180%."
+      },
+      {
+        "id": "battle-skill",
+        "label": "Battle Skill: Tiny Surprise",
+        "kind": "skill",
+        "does": [],
+        "gameText": "SKILL DESCRIPTION: Kicks an Improvised Explosive that sticks to the target, applying Slow and exploding after a short duration. The explosion deals Nature DMG and Nature Infliction to enemies in the area of effect. Defeating the target also sets off the Improvised Explosive immediately.\nOnly 1 Improvised Explosive can be present in the battlefield.\nAt level 12: SP Cost: 100; DMG Multiplier: 420%; Stagger: 10; Slow: 30%."
+      },
+      {
+        "id": "combo-skill",
+        "label": "Combo Skill: Free Giveaway",
+        "kind": "skill",
+        "does": [],
+        "gameText": "COMBO TRIGGER: When an enemy has 2 or more stacks of Cryo Infliction or Nature Infliction.\nSKILL DESCRIPTION: Shoots the target enemy to trigger a special explosion that deals Nature DMG and applies another Arts Infliction of the element already on the enemy.\nAt level 12: Cooldown: 38; DMG Multiplier: 380%; Stagger: 10; Ultimate Energy Gain: 10."
+      },
+      {
+        "id": "ultimate",
+        "label": "Ultimate: Apex Prankster",
+        "kind": "skill",
+        "does": [],
+        "gameText": "SKILL DESCRIPTION: Fluorite quickly moves in an arc and rapidly fires at the target within the arc to deal 4 sequences of Nature DMG. If an Improvised Explosive has been stuck to the target, the skill detonates it immediately and increases the DMG and size of the explosion.\nIf the final DMG sequence hits a target with at least 2 stacks of Cryo Infliction or Nature Infliction, then apply the same Arts Infliction again.\nAt level 12: Ultimate Energy Cost: 100; SEQ 1 DMG Multiplier: 250%; SEQ 2 DMG Multiplier: 250%; SEQ 3 DMG Multiplier: 250%; SEQ 4 DMG Multiplier: 250%; Battle Skill AOE Boost: 30%; Battle Skill DMG Boost: 30%; Stagger: 20."
+      },
+      {
+        "id": "talent-love-the-stab-and-twist",
+        "label": "Talent: Love the Stab and Twist (Elite 2)",
+        "kind": "core",
+        "does": [],
+        "gameText": "Fluorite gains DMG Dealt +20% against Slowed targets."
+      },
+      {
+        "id": "talent-unpredictable",
+        "label": "Talent: Unpredictable (Elite 3)",
+        "kind": "core",
+        "does": [],
+        "gameText": "Grants 20% chance of Arts DMG immunity and grants Fluorite ATK +20% for 10s. This effect cannot stack."
+      },
+      {
+        "id": "talent-skirmisher",
+        "label": "Talent: Skirmisher (Elite 4)",
+        "kind": "core",
+        "does": [],
+        "gameText": "Operator Agility +20."
+      },
+      {
+        "id": "potential-1",
+        "label": "Potential 1: Ten-Finger Smith",
+        "kind": "potential",
+        "unlock": {
+          "potential": 1
+        },
+        "does": [],
+        "gameText": "Agility +10, Intellect +10."
+      },
+      {
+        "id": "potential-2",
+        "label": "Potential 2: Mind Reading Technique",
+        "kind": "potential",
+        "unlock": {
+          "potential": 2
+        },
+        "does": [],
+        "gameText": "Talent Unpredictable improved: Chance to ignore Arts DMG +10%."
+      },
+      {
+        "id": "potential-3",
+        "label": "Potential 3: Triple Surprise",
+        "kind": "potential",
+        "unlock": {
+          "potential": 3
+        },
+        "does": [],
+        "gameText": "Battle skill Tiny Surprise improved: After Improvised Explosive explodes, the slow effect is applied to all enemies hit and lasts 6s."
+      },
+      {
+        "id": "potential-4",
+        "label": "Potential 4: Prank Master",
+        "kind": "potential",
+        "unlock": {
+          "potential": 4
+        },
+        "does": [],
+        "gameText": "Ultimate Apex Prankster improved: Ultimate Energy cost -10%."
+      },
+      {
+        "id": "potential-5",
+        "label": "Potential 5: Craver of Chaos",
+        "kind": "potential",
+        "unlock": {
+          "potential": 5
+        },
+        "does": [],
+        "gameText": "Combo skill Free Giveaway improved: Whenever Cryo Infliction or Nature Infliction is applied to the enemy, cooldown is shortened by 1s. Effect can only trigger once every 1s."
+      }
+    ]
+  },
+  {
+    "characterId": "chr_0023_antal",
+    "source": "endfield.wiki.gg/wiki/Antal (CC BY-SA 4.0)",
+    "version": "wiki revision 64986",
+    "skills": [
+      {
+        "id": "basic-attack",
+        "label": "Basic Attack: Exchange Current",
+        "kind": "skill",
+        "does": [],
+        "gameText": "BASIC ATTACK:\nAn attack with up to 4 sequences that deals Electric DMG. As the controlled operator, Final Strike also deals 15 Stagger.\nDIVE ATTACK:\nBasic attack performed in mid-air becomes a dive attack that deals Electric DMG to nearby enemies.\nFINISHER:\nBasic attack performed near a Staggered enemy becomes a finisher that deals massive Electric DMG and recovers some SP.\nAt level 12: BATK SEQ 1 Multiplier: 52%; BATK SEQ 2 Multiplier: 63%; BATK SEQ 3 Multiplier: 77%; BATK SEQ 4 Multiplier: 115%; Finisher ATK Multiplier: 900%; Dive ATK Multiplier: 180%."
+      },
+      {
+        "id": "battle-skill",
+        "label": "Battle Skill: Specified Research Subject",
+        "kind": "skill",
+        "does": [],
+        "gameText": "SKILL DESCRIPTION: Applies Focus with a long duration on the enemy and deals Electric DMG. An enemy with an active Focus also suffers Electric Susceptibility and Heat Susceptibility. Focus can only be applied to 1 enemy at any given time.\nAt level 12: SP Cost: 100; DMG Multiplier: 200%; Duration (s): 60; Electric Susceptibility: 10%; Heat Susceptibility: 10%."
+      },
+      {
+        "id": "combo-skill",
+        "label": "Combo Skill: EMP Test Site",
+        "kind": "skill",
+        "does": [],
+        "gameText": "COMBO TRIGGER: When an enemy with active Focus suffers a Physical Status or Arts Infliction.\nSKILL DESCRIPTION: Triggers 1 energy explosion on the enemy that deals Electric DMG and applies another stack of the same Physical Status or Arts Infliction.\nAt level 12: Cooldown: 24; DMG Multiplier: 340%; Stagger: 10; Ultimate Energy Gain: 10."
+      },
+      {
+        "id": "ultimate",
+        "label": "Ultimate: Overclocked Moment",
+        "kind": "skill",
+        "does": [],
+        "gameText": "SKILL DESCRIPTION: Applies temporary Electric Amp and Heat Amp to the entire team.\nAt level 12: Ultimate Energy Cost: 100; Electric Amp: 20%; Heat Amp: 20%; Duration (s): 12."
+      },
+      {
+        "id": "talent-improviser",
+        "label": "Talent: Improviser (Elite 2)",
+        "kind": "core",
+        "does": [],
+        "gameText": "After an Amped teammate's skill deals DMG, Antal restores the said teammate's HP by [108 + Strength×0.9]. This HP restoring effect triggers 1 time every 30s for each operator."
+      },
+      {
+        "id": "talent-subconscious-act",
+        "label": "Talent: Subconscious Act (Elite 3)",
+        "kind": "core",
+        "does": [],
+        "gameText": "Gains 30% chance of Physical DMG immunity and restores HP of self by [45 + Strength×0.38]."
+      },
+      {
+        "id": "talent-keen-mind",
+        "label": "Talent: Keen Mind (Elite 4)",
+        "kind": "core",
+        "does": [],
+        "gameText": "Operator Intellect +20."
+      },
+      {
+        "id": "potential-1",
+        "label": "Potential 1: Arts Talent",
+        "kind": "potential",
+        "unlock": {
+          "potential": 1
+        },
+        "does": [],
+        "gameText": "Ultimate Overclocked Moment improved: Electric Amp and Heat Amp effects are increased to 1.1 times the original."
+      },
+      {
+        "id": "potential-2",
+        "label": "Potential 2: Improved Automation",
+        "kind": "potential",
+        "unlock": {
+          "potential": 2
+        },
+        "does": [],
+        "gameText": "Ultimate Overclocked Moment improved: Ultimate Energy cost -10%."
+      },
+      {
+        "id": "potential-3",
+        "label": "Potential 3: Applied Originium Theory",
+        "kind": "potential",
+        "unlock": {
+          "potential": 3
+        },
+        "does": [],
+        "gameText": "When an enemy with an active Focus debuff is defeated, return 15 SP."
+      },
+      {
+        "id": "potential-4",
+        "label": "Potential 4: Granny's Reminder",
+        "kind": "potential",
+        "unlock": {
+          "potential": 4
+        },
+        "does": [],
+        "gameText": "Intellect +10, Max HP +10%."
+      },
+      {
+        "id": "potential-5",
+        "label": "Potential 5: High Specs Tech Tester",
+        "kind": "potential",
+        "unlock": {
+          "potential": 5
+        },
+        "does": [],
+        "gameText": "Applying Focus on the same target for 20s increases Electric Susceptibility and Heat Susceptibility effects by 4%."
+      }
+    ]
+  },
+  {
+    "characterId": "chr_0024_deepfin",
+    "source": "endfield.wiki.gg/wiki/Alesh (CC BY-SA 4.0)",
+    "version": "wiki revision 64987",
+    "skills": [
+      {
+        "id": "basic-attack",
+        "label": "Basic Attack: Basic Rod Casting",
+        "kind": "skill",
+        "does": [],
+        "gameText": "BASIC ATTACK:\nAn attack with up to 5 sequences that deals Physical DMG. As the controlled operator, Final Strike also deals 17 Stagger.\nDIVE ATTACK:\nBasic attack performed in mid-air becomes a dive attack that deals Physical DMG to nearby enemies.\nFINISHER:\nBasic attack performed near a Staggered enemy becomes a finisher attack that deals massive Physical DMG and recovers some SP.\nAt level 12: BATK SEQ 1 Multiplier: 39%; BATK SEQ 2 Multiplier: 23%; BATK SEQ 3 Multiplier: 62%; BATK SEQ 4 Multiplier: 62%; BATK SEQ 5 Multiplier: 124%; Finisher ATK Multiplier: 900%; Dive ATK Multiplier: 180%."
+      },
+      {
+        "id": "battle-skill",
+        "label": "Battle Skill: Unconventional Lure",
+        "kind": "skill",
+        "does": [],
+        "gameText": "SKILL DESCRIPTION: Hooks a block of ice and slams it to deal Physical DMG to the enemy target. When hitting a target with Cryo Infliction, Alesh consumes all of the target's Cryo Infliction stacks, forcibly applies Solidification to the target, and recovers some SP based on the number of stacks consumed. This SP recovery effect can only trigger 1 time, even if the skill hits multiple enemies.\nAt level 12: SP Cost: 100; DMG Multiplier: 450%; SP Recovery by Consuming 1 Infliction Stack: 15; SP Recovery by Consuming 2 Infliction Stacks: 25; SP Recovery by Consuming 3 Infliction Stacks: 35; SP Recovery by Consuming 4 Infliction Stacks: 45; Stagger: 10."
+      },
+      {
+        "id": "combo-skill",
+        "label": "Combo Skill: Auger Angling",
+        "kind": "skill",
+        "does": [],
+        "gameText": "COMBO TRIGGER: When the Arts Reaction or Originium Crystals of a nearby target is consumed.\nSKILL DESCRIPTION: Opens an angling hole beneath the enemy that deals Physical DMG and recovers some SP. The skill has a chance to hook a Rare Fin that greatly increases the DMG dealt and recovers some more SP.\nAt level 12: Cooldown: 8; DMG Multiplier: 300%; Rare Fin Chance: 10%; Enhanced DMG Multiplier: 480%; SP Recovery: 15; Additional SP Recovery: 10; Stagger: 10; Ultimate Energy Gain: 10."
+      },
+      {
+        "id": "ultimate",
+        "label": "Ultimate: One Monster Catch!",
+        "kind": "skill",
+        "does": [],
+        "gameText": "SKILL DESCRIPTION: Alesh hooks a fin of unbelievable size and slams it to deal Cryo DMG and apply Cryo Infliction to enemies in a large area of effect in front of him. He recovers some SP on hit, with additional SP gained for each target defeated.\nAt level 12: Ultimate Energy Cost: 100; Ultimate DMG Multiplier: 980%; Base SP Recovery: 25; Additional SP Recovery per Target Defeated: 15; MAX SP Recovery: 100; Stagger: 20."
+      },
+      {
+        "id": "talent-flash-frozen-for-freshness",
+        "label": "Talent: Flash-frozen for Freshness (Elite 2)",
+        "kind": "core",
+        "does": [],
+        "gameText": "After Solidification or Originium Crystals are applied to a nearby enemy, Alesh gains 4 Ultimate Energy. If the said Solidification is applied by Alesh, he gains an additional 8 Ultimate Energy. This effect can only trigger once every 3s."
+      },
+      {
+        "id": "talent-veteran-angler",
+        "label": "Talent: Veteran Angler (Elite 3)",
+        "kind": "core",
+        "does": [],
+        "gameText": "Combo skill Auger Angling improved: Every 10 Intellect grants Rare Fin catching chance +0.5% (max: +30%)."
+      },
+      {
+        "id": "talent-forged",
+        "label": "Talent: Forged (Elite 4)",
+        "kind": "core",
+        "does": [],
+        "gameText": "Operator Strength +20."
+      },
+      {
+        "id": "potential-1",
+        "label": "Potential 1: Super Salty Comeback",
+        "kind": "potential",
+        "unlock": {
+          "potential": 1
+        },
+        "does": [],
+        "gameText": "Battle skill Unconventional Lure improved: SP Recovery grants an additional 10 SP."
+      },
+      {
+        "id": "potential-2",
+        "label": "Potential 2: Calm and Tranquil",
+        "kind": "potential",
+        "unlock": {
+          "potential": 2
+        },
+        "does": [],
+        "gameText": "Strength +15, Intellect +15."
+      },
+      {
+        "id": "potential-3",
+        "label": "Potential 3: May the Willing Bite",
+        "kind": "potential",
+        "unlock": {
+          "potential": 3
+        },
+        "does": [],
+        "gameText": "Combo skill Auger Angling improved: After catching a Rare Fin, the entire team gains ATK +15% for 10s. This effect cannot stack."
+      },
+      {
+        "id": "potential-4",
+        "label": "Potential 4: Insane Angling Set",
+        "kind": "potential",
+        "unlock": {
+          "potential": 4
+        },
+        "does": [],
+        "gameText": "Ultimate One Monster Catch! improved: Ultimate Energy cost -15%."
+      },
+      {
+        "id": "potential-5",
+        "label": "Potential 5: Mega Lunker Rumors",
+        "kind": "potential",
+        "unlock": {
+          "potential": 5
+        },
+        "does": [],
+        "gameText": "Ultimate One Monster Catch! improved: Hitting a target below 50% HP increases the DMG Multiplier to 1.5 times the original."
+      }
+    ]
+  },
+  {
+    "characterId": "chr_0025_ardelia",
+    "source": "endfield.wiki.gg/wiki/Ardelia (CC BY-SA 4.0)",
+    "version": "wiki revision 64988",
+    "skills": [
+      {
+        "id": "basic-attack",
+        "label": "Basic Attack: Rocky Whispers",
+        "kind": "skill",
+        "does": [],
+        "gameText": "BASIC ATTACK:\nAn attack with up to 4 sequences that deals Nature DMG. As the controlled operator, Final Strike also deals 18 Stagger.\nDIVE ATTACK:\nBasic attack performed in mid-air becomes a dive attack that deals Nature DMG to nearby enemies.\nFINISHER:\nBasic attack performed near a Staggered enemy becomes a finisher that deals massive Nature DMG and recovers some SP.\nAt level 12: BATK SEQ 1 Multiplier: 68%; BATK SEQ 2 Multiplier: 90%; BATK SEQ 3 Multiplier: 118%; BATK SEQ 4 Multiplier: 124%; Finisher ATK Multiplier: 900%; Dive ATK Multiplier: 180%."
+      },
+      {
+        "id": "battle-skill",
+        "label": "Battle Skill: Dolly Rush",
+        "kind": "skill",
+        "does": [],
+        "gameText": "SKILL DESCRIPTION: Hops on Mr. Dolly and rams the target to deal Nature DMG. If the target has Corrosion, then consume the Corrosion and apply Physical Susceptibility and Arts Susceptibility to the target.\nAt level 12: SP Cost: 100; DMG Multiplier: 320%; Stagger: 10; Susceptibility: 20%; Susceptibility Duration (s): 30."
+      },
+      {
+        "id": "combo-skill",
+        "label": "Combo Skill: Eruption Column",
+        "kind": "skill",
+        "does": [],
+        "gameText": "COMBO TRIGGER: When the controlled operator performs a Final Strike on an enemy with no stacks of Vulnerability or Arts Infliction.\nSKILL DESCRIPTION: Launches a homing Volcanic Cloud at a target enemy that deals Nature DMG when close enough to the target. The Volcanic Cloud explodes after a short delay, dealing half of the Nature DMG and forcibly applying temporary Corrosion to nearby enemies.\nAt level 12: Cooldown: 17; DMG Multiplier: 100%; Explosion DMG Multiplier: 250%; Stagger: 10; Corrode Duration (s): 7; Ultimate Energy Gain: 10."
+      },
+      {
+        "id": "ultimate",
+        "label": "Ultimate: Wooly Party",
+        "kind": "skill",
+        "does": [],
+        "gameText": "SKILL DESCRIPTION: Ardelia enters a mobile channeling state and summons the aid of Mr. Dolly. Multiple copies of Mr. Dolly are thrown in random directions. Each copy deals Nature DMG when hitting the enemy. Each enemy can only take 1 damaging hit every 0.3s.\nAt level 12: Ultimate Energy Cost: 90; DMG Multiplier: 165%; Stagger: 3; Duration (s): 3."
+      },
+      {
+        "id": "talent-friendly-presence",
+        "label": "Talent: Friendly Presence (Elite 2)",
+        "kind": "core",
+        "does": [],
+        "gameText": "The battle skill Dolly Rush creates 3 Shadows of Mr. Dolly after hitting the enemy. The copies of Mr. Dolly scattered by the ultimate Wooly Party also have a 10% chance to create Shadows of Mr. Dolly when they fall to the ground. When the controlled operator touches a Shadow of Mr. Dolly, Ardelia restores the said operator's HP by [90 + Will×0.75].\nIf the controlled operator is already at max HP, then restore the HP of the teammate with lowest percentage HP.\nShadows of Mr. Dolly last for 10s and up to 10 can exist in the battlefield."
+      },
+      {
+        "id": "talent-mountainpeak-surfer",
+        "label": "Talent: Mountainpeak Surfer (Elite 2)",
+        "kind": "core",
+        "does": [],
+        "gameText": "Battle skill Dolly Rush improved: Triggering the additional effect while an enemy with Corrosion is nearby immediately casts the battle skill again.\nThis effect can only trigger once per active battle skill casting."
+      },
+      {
+        "id": "talent-keen-mind",
+        "label": "Talent: Keen Mind (Elite 4)",
+        "kind": "core",
+        "does": [],
+        "gameText": "Operator Intellect +20."
+      },
+      {
+        "id": "potential-1",
+        "label": "Potential 1: Dolly Paradise",
+        "kind": "potential",
+        "unlock": {
+          "potential": 1
+        },
+        "does": [],
+        "gameText": "Battle skill Dolly Rush improved: Consuming Corrosion now applies Physical Susceptibility and Arts Susceptibility with effects +8%."
+      },
+      {
+        "id": "potential-2",
+        "label": "Potential 2: Game Rewards",
+        "kind": "potential",
+        "unlock": {
+          "potential": 2
+        },
+        "does": [],
+        "gameText": "Talent Friendly Presence improved: When the controlled operator touches the Shadow of Mr. Dolly, Ardelia also treats another allied operator with the lowest percentage HP with half of the treatment effects."
+      },
+      {
+        "id": "potential-3",
+        "label": "Potential 3: Explosive Eruption",
+        "kind": "potential",
+        "unlock": {
+          "potential": 3
+        },
+        "does": [],
+        "gameText": "Ultimate Wooly Party improved: Duration +1s; chance to create Shadow of Mr. Dolly is increased to 1.2 times the original."
+      },
+      {
+        "id": "potential-4",
+        "label": "Potential 4: Rock Blossom",
+        "kind": "potential",
+        "unlock": {
+          "potential": 4
+        },
+        "does": [],
+        "gameText": "Ultimate Wooly Party improved: Ultimate Energy cost -15%."
+      },
+      {
+        "id": "potential-5",
+        "label": "Potential 5: Volcanic Steam",
+        "kind": "potential",
+        "unlock": {
+          "potential": 5
+        },
+        "does": [],
+        "gameText": "Combo skill Eruption Column improved: Length of cooldown -2s; DMG multiplier is increased to 1.2 times the original; duration of Corrosion applied +4s."
+      }
+    ]
+  },
+  {
+    "characterId": "chr_0026_lastrite",
+    "source": "endfield.wiki.gg/wiki/Last_Rite (CC BY-SA 4.0)",
+    "version": "wiki revision 64989",
+    "skills": [
+      {
+        "id": "basic-attack",
+        "label": "Basic Attack: Dance of Rime",
+        "kind": "skill",
+        "does": [],
+        "gameText": "BASIC ATTACK:\nAn attack with up to 4 sequences that deals Cryo DMG. As the controlled operator, Final Strike also deals 25 Stagger.\nDIVE ATTACK:\nBasic attack performed in mid-air becomes a dive attack that deals Cryo DMG to nearby enemies.\nFINISHER:\nBasic attack performed near a Staggered enemy becomes a finisher that deals massive Cryo DMG and recovers some SP.\nAt level 12: BATK SEQ 1 Multiplier: 68%; BATK SEQ 2 Multiplier: 124%; BATK SEQ 3 Multiplier: 153%; BATK SEQ 4 Multiplier: 203%; Finisher ATK Multiplier: 900%; Dive ATK Multiplier: 180%."
+      },
+      {
+        "id": "battle-skill",
+        "label": "Battle Skill: Esoteric Legacy of Seš'qa",
+        "kind": "skill",
+        "does": [],
+        "gameText": "SKILL DESCRIPTION: Performs a Hypothermic Perfusion on the controlled operator's weapon and returns some SP.\nThe next Final Strike performed by the currently controlled operator within a certain duration creates Last Rite's Mirages that unleash an additional attack at the target. This attack deals Cryo DMG and applies Cryo Infliction.\nWhen the controlled operator is Last Rite herself, casting this battle skill does not reset her basic attack sequence.\nAt level 12: SP Cost: 100; Mirage Additional ATK DMG Multiplier: 320%; SP Return: 30; Duration (s): 15; Ultimate Energy Gain: 16."
+      },
+      {
+        "id": "combo-skill",
+        "label": "Combo Skill: Winter's Devourer",
+        "kind": "skill",
+        "does": [],
+        "gameText": "COMBO TRIGGER: When an enemy has 3 or more Cryo Infliction stacks.\nSKILL DESCRIPTION: Encases the target enemy in icicles and shatters them to consume all Cryo Infliction stacks of the said enemy. The number of Cryo Infliction stacks consumed determines the amount of Cryo DMG dealt to the said enemy and Ultimate Energy gained by Last Rite.\nAt level 12: Cooldown: 8; Ice Shard DMG Multiplier: 160%; Slash Base DMG Multiplier: 160%; Slash Stagger: 15; Bonus DMG Multiplier per Infliction Stack: 240%; Base Ultimate Energy Gain: 40; Additional Ultimate Energy Gain per Infliction Stack: 15."
+      },
+      {
+        "id": "ultimate",
+        "label": "Ultimate: Vigil Services",
+        "kind": "skill",
+        "does": [],
+        "gameText": "SKILL DESCRIPTION: Last Rite encases herself in frost armor, creates an ice scythe to perform 3 slashes, and gains immunity to all damages while this state is active.\nEach slash deals massive Cryo DMG.\nLast Rite can only gain Ultimate Energy from her own battle skills and combo skills.\nAt level 12: Ultimate Energy Cost: 240; SEQ 1 DMG Multiplier: 400%; SEQ 1 Stagger: 5; SEQ 2 DMG Multiplier: 400%; SEQ 2 Stagger: 5; SEQ 3 DMG Multiplier: 800%; SEQ 3 Stagger: 10."
+      },
+      {
+        "id": "talent-hypothermia",
+        "label": "Talent: Hypothermia (Elite 2)",
+        "kind": "core",
+        "does": [],
+        "gameText": "After Last Rite consumes any Arts Infliction, she applies Cryo Susceptibility to the target with the effect of [Number of Arts Infliction stacks consumed × 4%] for 15s. This effect cannot stack."
+      },
+      {
+        "id": "talent-cryogenic-embrittlement",
+        "label": "Talent: Cryogenic Embrittlement (Elite 3)",
+        "kind": "core",
+        "does": [],
+        "gameText": "Ultimate Vigil Services improved: When the ultimate deals DMG to an enemy with Cryo Susceptibility, the effect of that Cryo Susceptibility is 1.5 times the original."
+      },
+      {
+        "id": "talent-forged",
+        "label": "Talent: Forged (Elite 4)",
+        "kind": "core",
+        "does": [],
+        "gameText": "Operator Strength +20."
+      },
+      {
+        "id": "potential-1",
+        "label": "Potential 1: Undertaker's Gift",
+        "kind": "potential",
+        "unlock": {
+          "potential": 1
+        },
+        "does": [],
+        "gameText": "When the controlled operator with Hypothermic Perfusion performs a Final Strike that hits the enemy, it deals another 20% DMG and 5 Stagger."
+      },
+      {
+        "id": "potential-2",
+        "label": "Potential 2: Absolute Zero Armament",
+        "kind": "potential",
+        "unlock": {
+          "potential": 2
+        },
+        "does": [],
+        "gameText": "Strength +20, Cryo DMG Dealt +10%."
+      },
+      {
+        "id": "potential-3",
+        "label": "Potential 3: Overlord of Winter",
+        "kind": "potential",
+        "unlock": {
+          "potential": 3
+        },
+        "does": [],
+        "gameText": "Combo skill Winter's Devourer and ultimate Vigil Services improved: DMG multiplier increased to 1.15 times the original."
+      },
+      {
+        "id": "potential-4",
+        "label": "Potential 4: Sincere Wake",
+        "kind": "potential",
+        "unlock": {
+          "potential": 4
+        },
+        "does": [],
+        "gameText": "Ultimate Vigil Services improved: Ultimate Energy cost -15%."
+      },
+      {
+        "id": "potential-5",
+        "label": "Potential 5: Winter is Returning",
+        "kind": "potential",
+        "unlock": {
+          "potential": 5
+        },
+        "does": [],
+        "gameText": "Battle skill Esoteric Legacy of Seš'qa improved: Amount of SP returned is increased by another 5; Mirage Additional ATK Multiplier is increased to 1.2 times the original."
+      }
+    ]
+  },
+  {
+    "characterId": "chr_0027_tangtang",
+    "source": "endfield.wiki.gg/wiki/Tangtang (CC BY-SA 4.0)",
+    "version": "wiki revision 64990",
+    "skills": [
+      {
+        "id": "basic-attack",
+        "label": "Basic Attack: I'LL BLOW YOUR MIND!",
+        "kind": "skill",
+        "does": [],
+        "gameText": "BASIC ATTACK:\nAn attack with up to 5 sequences that deals Cryo DMG. As the controlled operator, Final Strike also deals 18 Stagger.\nDIVE ATTACK:\nBasic attack performed in mid-air becomes a dive attack that deals Cryo DMG to nearby enemies.\nFINISHER:\nBasic attack performed near a Staggered enemy becomes a finisher that deals massive Cryo DMG and recovers some SP.\nAt level 12: BATK SEQ 1 Multiplier: 51%; BATK SEQ 2 Multiplier: 56%; BATK SEQ 3 Multiplier: 79%; BATK SEQ 4 Multiplier: 82%; BATK SEQ 5 Multiplier: 113%; Finisher ATK Multiplier: 900%; Dive ATK Multiplier: 180%."
+      },
+      {
+        "id": "battle-skill",
+        "label": "Battle Skill: IMA WAVERIDAAH!",
+        "kind": "skill",
+        "does": [],
+        "gameText": "SKILL DESCRIPTION: Tangtang jumps out from the water and fires a point-blank shot that deals Cryo DMG to the enemy and creates a Waterspout.\nCasting the battle skill also consumes all nearby Whirlpools to create additional Waterspouts and return some SP based on the number of Waterspouts created.\nWaterspout: Applies 1 stack of Cryo Infliction on enemies within range and deals Cryo DMG over time. If the battle skill creates multiple Waterspouts, they also apply Arts Susceptibility to enemies (but not another stack of Cryo Infliction).\nDMG dealt by the Waterspout is treated as Battle Skill DMG.\nAt level 12: SP Cost: 100; Shooting DMG Multiplier: 180%; Shot Stagger: 10; DMG Multiplier (1 Waterspout): 300%; Waterspout Duration (s): 3; SP Return per Whirlpool: 20; Arts Susceptibility (2 Waterspouts): 5%; Arts Susceptibility (3 Waterspouts): 10%; Arts Susceptibility Duration (s): 15."
+      },
+      {
+        "id": "combo-skill",
+        "label": "Combo Skill: RIVER, TO ME!",
+        "kind": "skill",
+        "does": [],
+        "gameText": "COMBO TRIGGER: When applying Cryo Infliction or dealing Arts Burst DMG to an enemy.\nSKILL DESCRIPTION: Tangtang unleashes a powerful jet stream that penetrates all enemies in its path, deals Cryo DMG to them, and creates a Whirlpool.\nUp to 2 Whirlpools can exist in the battlefield at any time.\nAt level 12: Cooldown: 12; DMG Multiplier: 240%; Stagger: 10; Whirlpool Duration (s): 30; Ultimate Energy Gain: 10."
+      },
+      {
+        "id": "ultimate",
+        "label": "Ultimate: DA CHIEF SEES YOU!",
+        "kind": "skill",
+        "does": [],
+        "gameText": "SKILL DESCRIPTION: Tangtang opens her eyepatch and unleashes an OLDEN STARE from her eye that applies temporary Immobilization and deals Cryo DMG over time to enemies within its area of effect (AOE).\nWhen the OLDEN STARE stops evolving, a rogue wave comes crashing down to deal massive Cryo DMG to enemies in its AOE.\nIf the controlled operator performs a dive attack in the OLDEN STARE pattern, its evolution ends and the rogue wave is summoned immediately to deal even more Cryo DMG.\nAt level 12: Ultimate Energy Cost: 90; DMG Over Time Total Multiplier: 320%; OLDEN STARE Duration (s): 4; Rogue Wave DMG Multiplier: 400%; Early Rogue Wave DMG Multiplier: 700%; Rogue Wave Stagger: 15; Early Rogue Wave Stagger: 20."
+      },
+      {
+        "id": "talent-fam-of-honor",
+        "label": "Talent: Fam of Honor (Elite 2)",
+        "kind": "core",
+        "does": [],
+        "gameText": "When within a 5-meter radius of a Whirlpool, allied operators gain 20% Haste while enemies suffer 40% Slow. These effects persist for 3s after leaving the area of effect."
+      },
+      {
+        "id": "talent-riot-bringer",
+        "label": "Talent: Riot Bringer (Elite 3)",
+        "kind": "core",
+        "does": [],
+        "gameText": "During OLDEN STARE, performing a dive attack with the controlled operator ends its evolution early and creates a Waterspout. All nearby Whirlpools are also consumed and converted into additional Waterspouts.\nWaterspouts created this way have the same effects as those created by the battle skill IMA WAVERIDAAH! and gain DMG Dealt +60%."
+      },
+      {
+        "id": "talent-skirmisher",
+        "label": "Talent: Skirmisher (Elite 4)",
+        "kind": "core",
+        "does": [],
+        "gameText": "Operator Agility +20."
+      },
+      {
+        "id": "potential-1",
+        "label": "Potential 1: Reserve Hoard",
+        "kind": "potential",
+        "unlock": {
+          "potential": 1
+        },
+        "does": [],
+        "gameText": "Combo skill RIVER, TO ME! improved: DMG Multiplier is increased to 1.2 times of the original. Length of cooldown -2s.\nBattle skill IMA WAVERIDAAH! improved: For every Whirlpool consumed and converted into a Waterspout, return 5 additional SP."
+      },
+      {
+        "id": "potential-2",
+        "label": "Potential 2: River's Daughter",
+        "kind": "potential",
+        "unlock": {
+          "potential": 2
+        },
+        "does": [],
+        "gameText": "Agility +20, Cryo DMG Dealt +10%"
+      },
+      {
+        "id": "potential-3",
+        "label": "Potential 3: Chiefly Vibe",
+        "kind": "potential",
+        "unlock": {
+          "potential": 3
+        },
+        "does": [],
+        "gameText": "Battle skill IMA WAVERIDAAH! improved: DMG Multiplier is increased to 1.1 times the original. When forming multiple Waterspouts, the resulting Arts Susceptibility effect is increased by +5%."
+      },
+      {
+        "id": "potential-4",
+        "label": "Potential 4: Qingbo Meditation",
+        "kind": "potential",
+        "unlock": {
+          "potential": 4
+        },
+        "does": [],
+        "gameText": "Ultimate DA CHIEF SEES YOU! improved: Ultimate Energy cost -15%."
+      },
+      {
+        "id": "potential-5",
+        "label": "Potential 5: Chief's All-Eldritch Gaze",
+        "kind": "potential",
+        "unlock": {
+          "potential": 5
+        },
+        "does": [],
+        "gameText": "Ultimate DA CHIEF SEES YOU! improved: DMG Multiplier is increased to 1.15 times the original.\nTalent Riot Bringer improved: DMG effects of any Waterspout created by the ultimate DA CHIEF SEES YOU! are increased by +80%."
+      }
+    ]
+  },
+  {
+    "characterId": "chr_0028_wulfa",
+    "source": "endfield.wiki.gg/wiki/Rossi (CC BY-SA 4.0)",
+    "version": "wiki revision 64991",
+    "skills": [
+      {
+        "id": "basic-attack",
+        "label": "Basic Attack: Seething Wolfblood",
+        "kind": "skill",
+        "does": [],
+        "gameText": "BASIC ATTACK:\nAn attack with up to 5 sequences that deals Physical DMG. As the controlled operator, Final Strike also deals 18 Stagger.\nDIVE ATTACK:\nBasic attack performed in mid-air becomes a dive attack that deals Physical DMG to nearby enemies.\nFINISHER:\nBasic attack performed near a Staggered enemy becomes a finisher attack that deals massive Physical DMG and recovers some SP.\nAt level 12: BATK SEQ 1 Multiplier: 61%; BATK SEQ 2 Multiplier: 71%; BATK SEQ 3 Multiplier: 77%; BATK SEQ 4 Multiplier: 91%; BATK SEQ 5 Multiplier: 113%; Finisher ATK Multiplier: 900%; Dive ATK Multiplier: 180%."
+      },
+      {
+        "id": "battle-skill",
+        "label": "Battle Skill: Crimson Shadow",
+        "kind": "skill",
+        "does": [],
+        "gameText": "SKILL DESCRIPTION: Charges to the target to deal Physical DMG and apply Lift.\nIf the target already has Vulnerability stack(s), the skill also unleashes a Wolven Ambrage that charges at the target to deal Heat DMG.\nAt level 12: SP Cost: 100; SEQ 1 DMG Multiplier: 192%; SEQ 1 Stagger: 5; SEQ 2 DMG Multiplier: 288%; SEQ 2 Stagger: 15."
+      },
+      {
+        "id": "combo-skill",
+        "label": "Combo Skill: Moment of Blazing Shadow",
+        "kind": "skill",
+        "does": [],
+        "gameText": "COMBO TRIGGER: When an enemy has both Vulnerability and Arts Infliction stacks.\nSKILL DESCRIPTION: Rossi's combo skill has 2 consecutive sequences. COMBO SEQUENCE 1 deals Physical DMG to the target.\nCOMBO SEQUENCE 2 consumes all Arts Infliction stacks from the target, deals Physical DMG based on the number of Arts Infliction stacks consumed, applies 1 instance of Lift, and buffs Rossi's Critical Rate and Critical DMG Dealt at the same time.\nIf COMBO SEQUENCE 2 is cast with perfect timing, it applies 1 more stack of Vulnerability.\nAt level 12: Cooldown: 14; SEQ 1 DMG Multiplier: 150%; SEQ 1 Ultimate Energy Gain: 10; SEQ 2 DMG Multiplier: 300%; Bonus DMG Multiplier per Infliction Stack: 180%; SEQ 2 Stagger: 5; Critical Rate: 25%; Critical DMG Boost: 50%; Buff Duration (s): 15; SEQ 2 Ultimate Energy Gain: 10."
+      },
+      {
+        "id": "ultimate",
+        "label": "Ultimate: \"Razorclaw\" Ambuscade",
+        "kind": "skill",
+        "does": [],
+        "gameText": "SKILL DESCRIPTION: Rossi flutters her cape and unleashes a flurry of stabs that quickly deals multiple sequences of Heat DMG to the target. She then performs a two-sequence slash attack with her dagger that deals massive Heat DMG and applies Heat Infliction.\nWhen this skill successfully scores a critical hit, it deals higher Critical DMG.\nAt level 12: Ultimate Energy Cost: 110; Stab Attack Total DMG Multiplier: 600%; SEQ 1 Slash DMG Multiplier: 250%; SEQ 2 Slash DMG Multiplier: 750%; Stagger: 25; Critical DMG Boost: 60%."
+      },
+      {
+        "id": "talent-nicks-and-scratches",
+        "label": "Talent: Nicks and Scratches (Elite 2)",
+        "kind": "core",
+        "does": [],
+        "gameText": "Battle skill improved: After Wolven Ambrage deals DMG, Rossi applies Razor Clawmark to the target for 25s. This effect cannot stack.\nFor the duration of Razor Clawmark, the target takes 30% ATK (Rossi's) of Physical DMG per second and suffers Physical DMG Taken and Heat DMG Taken +12%."
+      },
+      {
+        "id": "talent-seething-blood",
+        "label": "Talent: Seething Blood (Elite 3)",
+        "kind": "core",
+        "does": [],
+        "gameText": "When Rossi's skill deals Critical DMG to a Razor Clawmarked enemy, trigger another hit that deals 24% ATK (Rossi's) of Heat DMG and restores [Intellect × 0.08] HP to Rossi. If the target is also Combusted, then the aforementioned DMG and HP Restoration effects are increased to 1.5 times."
+      },
+      {
+        "id": "talent-skirmisher",
+        "label": "Talent: Skirmisher (Elite 4)",
+        "kind": "core",
+        "does": [],
+        "gameText": "Operator Agility +20."
+      },
+      {
+        "id": "potential-1",
+        "label": "Potential 1: Origin of Admiration",
+        "kind": "potential",
+        "unlock": {
+          "potential": 1
+        },
+        "does": [],
+        "gameText": "Battle skill Crimson Shadow and combo skill Moment of Blazing Shadow improved: The DMG Multipliers of these skills are increased to 1.15 times of the original.\nWolven Ambrage of the battle skill also returns 10 SP after hitting the enemy."
+      },
+      {
+        "id": "potential-2",
+        "label": "Potential 2: Gap to Perfection",
+        "kind": "potential",
+        "unlock": {
+          "potential": 2
+        },
+        "does": [],
+        "gameText": "Agility +20, Critical Rate +7%."
+      },
+      {
+        "id": "potential-3",
+        "label": "Potential 3: Tangible Duties",
+        "kind": "potential",
+        "unlock": {
+          "potential": 3
+        },
+        "does": [],
+        "gameText": "Talent Seething Blood improved: When triggered, it grants Base DMG Multiplier +8% and restores HP +[Intellect × 0.04]."
+      },
+      {
+        "id": "potential-4",
+        "label": "Potential 4: Innocent Wish",
+        "kind": "potential",
+        "unlock": {
+          "potential": 4
+        },
+        "does": [],
+        "gameText": "Ultimate \"Razorclaw\" Ambuscade improved: Ultimate Energy cost -15%."
+      },
+      {
+        "id": "potential-5",
+        "label": "Potential 5: Legendary Destination",
+        "kind": "potential",
+        "unlock": {
+          "potential": 5
+        },
+        "does": [],
+        "gameText": "Ultimate \"Razorclaw\" Ambuscade improved: DMG Multiplier is increased to 1.1 times of the original; Critical DMG Dealt is increased by +30%."
+      }
+    ]
+  },
+  {
+    "characterId": "chr_0029_pograni",
+    "source": "endfield.wiki.gg/wiki/Pogranichnik (CC BY-SA 4.0)",
+    "version": "wiki revision 64992",
+    "skills": [
+      {
+        "id": "basic-attack",
+        "label": "Basic Attack: All-Out Offensive",
+        "kind": "skill",
+        "does": [],
+        "gameText": "BASIC ATTACK:\nAn attack with up to 5 sequences that deals Physical DMG. As the controlled operator, Final Strike also deals 18 Stagger.\nDIVE ATTACK:\nBasic attack performed in mid-air becomes a dive attack that deals Physical DMG to nearby enemies.\nFINISHER:\nBasic attack performed near a Staggered enemy becomes a finisher attack that deals massive Physical DMG and recovers some SP.\nAt level 12: BATK SEQ 1 Multiplier: 52%; BATK SEQ 2 Multiplier: 63%; BATK SEQ 3 Multiplier: 74%; BATK SEQ 4 Multiplier: 86%; BATK SEQ 5 Multiplier: 97%; Finisher ATK Multiplier: 900%; Dive ATK Multiplier: 180%."
+      },
+      {
+        "id": "battle-skill",
+        "label": "Battle Skill: The Pulverizing Front",
+        "kind": "skill",
+        "does": [],
+        "gameText": "SKILL DESCRIPTION: Pogranichnik performs a 2-sequence slash attack at enemies in front of him, dealing Physical DMG, applying Breach, and recovering SP based on the number of Vulnerability stacks consumed. The SP recovery effect can only trigger 1 time, even if the skill hits multiple targets.\nAt level 12: SP Cost: 100; SEQ 1 DMG Multiplier: 192%; SEQ 1 Stagger: 5; SEQ 2 DMG Multiplier: 238%; SEQ 2 Stagger: 5; SP Recovery by Consuming 1 Vulnerability Stack: 5; SP Recovery by Consuming 2 Vulnerability Stacks: 15; SP Recovery by Consuming 3 Vulnerability Stacks: 25; SP Recovery by Consuming 4 Vulnerability Stacks: 35."
+      },
+      {
+        "id": "combo-skill",
+        "label": "Combo Skill: Full Moon Slash",
+        "kind": "skill",
+        "does": [],
+        "gameText": "COMBO TRIGGER: When Crush or Breach consumes the enemy's Vulnerability stack(s).\nSKILL DESCRIPTION: Performs a number of slash sequences (up to 3) based on the max number of Vulnerability stacks consumed from one enemy, dealing Physical DMG and recovering some SP. Each slash deals more DMG and gives better SP recovery.\nConsuming 4 stacks of Vulnerability enhances the 3rd slash sequence.\nAt level 12: Cooldown: 17; SEQ 1 DMG Multiplier: 95%; SEQ 1 Stagger: 3; SEQ 1 SP Recovery: 5; SEQ 2 DMG Multiplier: 122%; SEQ 2 Stagger: 3; SEQ 2 SP Recovery: 7; SEQ 3 DMG Multiplier: 149%; SEQ 3 Stagger: 4; SEQ 3 SP Recovery: 13; Enhanced SEQ 3 DMG Multiplier: 297%; Enhanced SEQ 3 Stagger: 9; Enhanced SEQ 3 SP Recovery: 23; Ultimate Energy Gain: 10."
+      },
+      {
+        "id": "ultimate",
+        "label": "Ultimate: Shieldguard Banner, Forward",
+        "kind": "skill",
+        "does": [],
+        "gameText": "SKILL DESCRIPTION: Summons 4 Shieldguards to advance and push all enemies along the way towards the target, dealing Physical DMG while generating 5 points of Steel Oath. After an enemy suffers a Physical Status or takes DMG from Pogranichnik's combo skill, Pogranichnik consumes 1 point of Steel Oath and summons 1 Shieldguard to harass the said enemy, dealing Physical DMG and recovering some SP. When the last Steel Oath point is consumed, all 4 Shieldguards will initiate a Decisive Assault that deals massive Physical DMG to the target while recovering plenty of SP.\nAt level 12: Ultimate Energy Cost: 90; Steel Oath Duration: 30; Advance DMG Multiplier: 300%; Advance Stagger: 10; Harass DMG Multiplier: 100%; Harass SP Recovery: 10; Decisive Assault DMG Multiplier: 450%; Decisive Assault Stagger: 15; Decisive Assault SP Recovery: 40."
+      },
+      {
+        "id": "talent-the-living-banner",
+        "label": "Talent: The Living Banner (Elite 2)",
+        "kind": "core",
+        "does": [],
+        "gameText": "During battle, recovering 80 SP with his own skills grants Fervent Morale for 20s.\nFervent Morale effects: ATK +8% and Arts Intensity +8.\nThis effect can reach 3 stacks. Duration of each stack is counted separately."
+      },
+      {
+        "id": "talent-tactical-instruction",
+        "label": "Talent: Tactical Instruction (Elite 3)",
+        "kind": "core",
+        "does": [],
+        "gameText": "Ultimate Shieldguard Banner, Forward improved: Any operator triggering the ultimate's subsequent effects also gains Fervent Morale for 10s.\nRequires activation of talent: The Living Banner."
+      },
+      {
+        "id": "talent-stalwart",
+        "label": "Talent: Stalwart (Elite 4)",
+        "kind": "core",
+        "does": [],
+        "gameText": "Operator Will +20."
+      },
+      {
+        "id": "potential-1",
+        "label": "Potential 1: Frontline Sweep",
+        "kind": "potential",
+        "unlock": {
+          "potential": 1
+        },
+        "does": [],
+        "gameText": "Battle skill The Pulverizing Front improved: When hitting at least 2 enemies, 15 SP is returned."
+      },
+      {
+        "id": "potential-2",
+        "label": "Potential 2: \"Advance\"",
+        "kind": "potential",
+        "unlock": {
+          "potential": 2
+        },
+        "does": [],
+        "gameText": "Will +20, Physical DMG Dealt +10%."
+      },
+      {
+        "id": "potential-3",
+        "label": "Potential 3: When the Banner Flutters",
+        "kind": "potential",
+        "unlock": {
+          "potential": 3
+        },
+        "does": [],
+        "gameText": "Talent The Living Banner improved: Amount of SP recovery needed to gain Fervent Morale is reduced to 60. Max Fervent Morale stacks on self +2."
+      },
+      {
+        "id": "potential-4",
+        "label": "Potential 4: Shield of Talos-II",
+        "kind": "potential",
+        "unlock": {
+          "potential": 4
+        },
+        "does": [],
+        "gameText": "Ultimate Shieldguard Banner, Forward improved: Ultimate Energy cost -15%."
+      },
+      {
+        "id": "potential-5",
+        "label": "Potential 5: Newly Forged Blade",
+        "kind": "potential",
+        "unlock": {
+          "potential": 5
+        },
+        "does": [],
+        "gameText": "Combo skill Full Moon Slash improved: Length of cooldown -2s; SP recovery is increased to 1.2 times the original."
+      }
+    ]
+  },
+  {
+    "characterId": "chr_0030_zhuangfy",
+    "source": "endfield.wiki.gg/wiki/Zhuang_Fangyi (CC BY-SA 4.0)",
+    "version": "wiki revision 64993",
+    "skills": [
+      {
+        "id": "basic-attack",
+        "label": "Basic Attack: Jolting Arts",
+        "kind": "skill",
+        "does": [],
+        "gameText": "BASIC ATTACK:\nAn attack with up to 5 sequences that deals Electric DMG. As the controlled operator, Final Strike also deals 18 Stagger.\nDIVE ATTACK:\nBasic attack performed in mid-air becomes a dive attack that deals Electric DMG to nearby enemies.\nFINISHER:\nBasic attack performed near a Staggered enemy becomes a finisher that deals massive Electric DMG and recovers some SP.\nAt level 12: BATK SEQ 1 Multiplier: 36%; BATK SEQ 2 Multiplier: 54%; BATK SEQ 3 Multiplier: 72%; BATK SEQ 4 Multiplier: 101%; BATK SEQ 5 Multiplier: 108%; Finisher ATK Multiplier: 900%; Dive ATK Multiplier: 180%."
+      },
+      {
+        "id": "battle-skill",
+        "label": "Battle Skill: Mantra of Sundering",
+        "kind": "skill",
+        "does": [],
+        "gameText": "SKILL DESCRIPTION: Consumes the target's Electrification to increase the DMG multiplier of this battle skill and create [Status Level of Electrification consumed +1] Sunderblades. If the battlefield has fewer than 3 Sunderblades, Mantra of Sundering can still create 1 Sunderblade, even if it does not consume any target's Electrification.\nZhuang Fangyi then channels all Sunderblades nearby to successively unleash Thunder Strikes on the target, dealing Electric DMG and giving bonus Ultimate Energy, with the final Thunder Strike dealing 6 times the DMG.\nA single battle skill casting can only create a max of 3 Sunderblades.\nAt level 12: SP Cost: 100; Thunder Strike DMG Multiplier: 45%; Total Stagger: 15; Bonus DMG Multiplier per Status Level of Electrification Consumed: 9%; Bonus Ultimate Energy per Thunder Strike: 6; Sunderblade Limit: 9; Sunderblade Duration (s): 36; During Ultimate: Thunder Strike DMG Multiplier: 81%; During Ultimate: Bonus DMG Multiplier per Status Level of Electrification Consumed: 18%."
+      },
+      {
+        "id": "combo-skill",
+        "label": "Combo Skill: Breath of Transformation",
+        "kind": "skill",
+        "does": [],
+        "gameText": "COMBO TRIGGER: When the controlled operator's Final Strike or Finisher hits an enemy with Electric Infliction.\nSKILL DESCRIPTION: Zhuang Fangyi creates a Xiranblitz Array that attacks the enemy and deals Electric DMG. If the Array hits an enemy that has Electric Infliction stack(s), then it will consume the said Electric Infliction stack(s), forcibly apply Electrification, and give Ultimate Energy based on the number of stacks consumed.\nIf Electrification is forcibly applied to an enemy that already has Electrification, then apply Status Level +1 to the enemy's Electrification.\nAt level 12: Cooldown: 17; DMG Multiplier: 360%; Stagger: 10; Ultimate Energy Gain: 10; Additional Ultimate Energy per Infliction Stack: 10; During Ultimate: DMG Multiplier: 540%."
+      },
+      {
+        "id": "ultimate",
+        "label": "Ultimate: Smiting Tempest",
+        "kind": "skill",
+        "does": [],
+        "gameText": "SKILL DESCRIPTION: Transforms into the Empyrean of Truth that grants these enhancements:\nZhuang Fangyi's basic attacks are enhanced and her actions are harder to interrupt;\nBattle skill Mantra of Sundering gains a higher DMG multiplier and an increased effect range, and the final Thunder Strike also applies Electric Infliction to the target hit.\nCombo skill Breath of Transformation gains a higher DMG multiplier, cooldown becomes 4 times faster, and effects are applied to enemies within a small area.\nThe first casting of the battle skill Mantra of Sundering does not consume SP nor Electrification, and if a target is available, the battle skill is guaranteed to create 3 Sunderblades even if the target has no Electrification.\nAt level 12: Ultimate Energy Cost: 240; Duration (s): 25; During Ultimate: BATK SEQ 1 Multiplier: 150%; During Ultimate: BATK SEQ 2 Multiplier: 210%; During Ultimate: BATK SEQ 3 Multiplier: 300%."
+      },
+      {
+        "id": "talent-force-of-nature",
+        "label": "Talent: Force of Nature (Elite 2)",
+        "kind": "core",
+        "does": [],
+        "gameText": "Battle skill Mantra of Sundering improved: Casting the battle skill grants Zhuang Fangyi 18% Electric Amp for 5s.\nScoring hits with the battle skill's Thunder Strike increases this effect by +2%.\nEvery casting of the battle skill Mantra of Sundering again resets this Electric Amp effect."
+      },
+      {
+        "id": "talent-ordained-by-heaven",
+        "label": "Talent: Ordained by Heaven (Elite 3)",
+        "kind": "core",
+        "does": [],
+        "gameText": "Gains a 9% chance of immunity against DMG taken, with each Sunderblade nearby increasing this chance by +1%.\nAfter DMG Immunity is triggered, Zhuang Fangyi is also restored for 18% Max HP. The HP restoration effect can only trigger once every 99s."
+      },
+      {
+        "id": "talent-stalwart",
+        "label": "Talent: Stalwart (Elite 4)",
+        "kind": "core",
+        "does": [],
+        "gameText": "Operator Will +20."
+      },
+      {
+        "id": "potential-1",
+        "label": "Potential 1: Four Symbols of Harmony",
+        "kind": "potential",
+        "unlock": {
+          "potential": 1
+        },
+        "does": [],
+        "gameText": "Battle skill Mantra of Sundering improved: DMG multiplier is increased to 1.15 times the original. After entering battle, Zhuang Fangyi's first battle skill casting also creates 1 more Sunderblade.\nThe additional Sunderblade created by this skill can exceed the Sunderblade creation limit from a single casting of the battle skill."
+      },
+      {
+        "id": "potential-2",
+        "label": "Potential 2: Acuity of Fine Details",
+        "kind": "potential",
+        "unlock": {
+          "potential": 2
+        },
+        "does": [],
+        "gameText": "Will +20, Battle Skill DMG Dealt +15%."
+      },
+      {
+        "id": "potential-3",
+        "label": "Potential 3: Sense and Response",
+        "kind": "potential",
+        "unlock": {
+          "potential": 3
+        },
+        "does": [],
+        "gameText": "Battle skill Mantra of Sundering improved: After consuming Electrification, the battle skill returns 10 SP. Sunderblade duration +10s."
+      },
+      {
+        "id": "potential-4",
+        "label": "Potential 4: Absolute Composure",
+        "kind": "potential",
+        "unlock": {
+          "potential": 4
+        },
+        "does": [],
+        "gameText": "Ultimate Smiting Tempest improved: Ultimate Energy cost -15%."
+      },
+      {
+        "id": "potential-5",
+        "label": "Potential 5: Storm of Transformation",
+        "kind": "potential",
+        "unlock": {
+          "potential": 5
+        },
+        "does": [],
+        "gameText": "During the Empyrean of Truth transformation, DMG Dealt by Zhuang Fangyi ignores 15 of the enemy's Electric Resistance."
+      }
+    ]
+  },
+  {
+    "characterId": "chr_0031_mifu",
+    "source": "endfield.wiki.gg/wiki/Mi_Fu (CC BY-SA 4.0)",
+    "version": "wiki revision 64994",
+    "skills": [
+      {
+        "id": "basic-attack",
+        "label": "Basic Attack: Fistmancer of Blades",
+        "kind": "skill",
+        "does": [],
+        "gameText": "BASIC ATTACK:\nAn attack with up to 4 sequences that deals Physical DMG. As the controlled operator, Final Strike also deals 25 Stagger.\nDIVE ATTACK:\nBasic attack performed in mid-air becomes a dive attack that deals Physical DMG to nearby enemies.\nFINISHER:\nBasic attack performed near a Staggered enemy becomes a finisher that deals massive Physical DMG and recovers some SP.\nAt level 12: BATK SEQ 1 Multiplier: 76%; BATK SEQ 2 Multiplier: 86%; BATK SEQ 3 Multiplier: 136%; BATK SEQ 4 Multiplier: 172%; Dive ATK Multiplier: 180%; Finisher ATK Multiplier: 900%."
+      },
+      {
+        "id": "battle-skill",
+        "label": "Battle Skill: Qingbo Triplex",
+        "kind": "skill",
+        "does": [],
+        "gameText": "SKILL DESCRIPTION: Keep casting Mi Fu's battle skill to unleash 3 different moves. The first battle skill cast is Cloudtrapper.\nMOVE 1 - Cloudtrapper: Costs 100 SP and returns50 SP after casting; Mi Fu fires a grappling chain from her gauntlets that deals Physical DMG to the target and nearby enemies, then attempts to pull the target and nearby enemies towards her. After casting MOVE 1, the next battle skill will be temporarily replaced with Trail and Mangle.\nMOVE 2 - Trail and Mangle: Costs 50 SP; Mi Fu unleashes a flurry of punches that deals Physical DMG with the final punch applying Crush. If this Crush consumes at least 3 Vulnerability stacks from a single target, then the next battle skill will be temporarily replaced with World Splitter.\nMOVE 3 - World Splitter: Costs 50 SP; Mi Fu deals massive Physical DMG to a specified area; this DMG is not treated as Battle Skill DMG, but as Crush DMG.\nAt level 12: SP Cost: 100; Cloudtrapper DMG Multiplier: 150%; Trail and Mangle DMG Multiplier: 200%; Trail and Mangle Stagger: 5; World Splitter DMG Multiplier: 600%; World Splitter Stagger: 10."
+      },
+      {
+        "id": "combo-skill",
+        "label": "Combo Skill: Fists of No Regrets",
+        "kind": "skill",
+        "does": [],
+        "gameText": "COMBO TRIGGER: When an enemy has 3 or more Vulnerability stacks.\nSKILL DESCRIPTION: Mi Fu unleashes a devastating uppercut at the enemy, dealing Physical DMG and applying temporary Physical Susceptibility. After casting this skill, the next battle skill is temporarily replaced with Trail and Mangle.\nAt level 12: Cooldown: 19; DMG Multiplier: 250%; Stagger: 10; Physical Susceptibility: 5%; Physical Susceptibility Duration (s): 16; Ultimate Energy Gain: 10."
+      },
+      {
+        "id": "ultimate",
+        "label": "Ultimate: Pile of No Mercy",
+        "kind": "skill",
+        "does": [],
+        "gameText": "SKILL DESCRIPTION: After a short power up, Mi Fu dashes forward to forcibly Lift a target into mid-air, then slams the said target to deal Physical DMG. After casting this skill, the next battle skill is temporarily replaced with Trail and Mangle.\nAt level 12: Ultimate Energy Cost: 80; DMG Multiplier: 700%; Stagger: 20."
+      },
+      {
+        "id": "talent-stern-crackdown",
+        "label": "Talent: Stern Crackdown (Elite 2)",
+        "kind": "core",
+        "does": [],
+        "gameText": "Battle skill move World Splitter improved: When hitting a target with Physical Susceptibility or Staggered, DMG Multiplier is increased to 1.2 times the original."
+      },
+      {
+        "id": "talent-vigilant-fury",
+        "label": "Talent: Vigilant Fury (Elite 3)",
+        "kind": "core",
+        "does": [],
+        "gameText": "Combo skill improved: Casting the combo creates a shield with 30% Max HP and a duration of 10s. While the shield is active, Mi Fu becomes harder to interrupt.\nThis effect can only trigger once every 60s."
+      },
+      {
+        "id": "talent-forged",
+        "label": "Talent: Forged (Elite 4)",
+        "kind": "core",
+        "does": [],
+        "gameText": "Operator Strength +20."
+      },
+      {
+        "id": "potential-1",
+        "label": "Potential 1: Restless Watch",
+        "kind": "potential",
+        "unlock": {
+          "potential": 1
+        },
+        "does": [],
+        "gameText": "Combo skill Fists of No Regrets improved: Length of cooldown -2s. Physical Susceptibility effect applied by the skill is further increased by +5% and has +4s duration."
+      },
+      {
+        "id": "potential-2",
+        "label": "Potential 2: Kinesthesia of Harmony",
+        "kind": "potential",
+        "unlock": {
+          "potential": 2
+        },
+        "does": [],
+        "gameText": "Strength +20, Arts Intensity +16."
+      },
+      {
+        "id": "potential-3",
+        "label": "Potential 3: Complete Warmup",
+        "kind": "potential",
+        "unlock": {
+          "potential": 3
+        },
+        "does": [],
+        "gameText": "Talent Vigilant Fury improved: Shield duration +5s. Shield trigger cooldown -15s. Each time the shield is triggered, Mi Fu gains ATK +6% for 20s."
+      },
+      {
+        "id": "potential-4",
+        "label": "Potential 4: Qi Thrice-Refined",
+        "kind": "potential",
+        "unlock": {
+          "potential": 4
+        },
+        "does": [],
+        "gameText": "Ultimate Pile of No Mercy improved: Ultimate Energy cost -15%."
+      },
+      {
+        "id": "potential-5",
+        "label": "Potential 5: Pugilist of the Stockade",
+        "kind": "potential",
+        "unlock": {
+          "potential": 5
+        },
+        "does": [],
+        "gameText": "Battle skill improved: DMG Multipliers of the moves Cloudtrapper, Trail and Mangle, and World Splitter are increased to 1.1 times the original. Ultimate Pile of No Mercy improved: Stagger Dealt +5.\nThe Battle Skill DMG Multiplier buff can stack with the talent Stern Crackdown."
+      }
+    ]
+  },
+  {
+    "characterId": "chr_0032_lizhiyan",
+    "source": "endfield.wiki.gg/wiki/Arcane (CC BY-SA 4.0)",
+    "version": "wiki revision 64995",
+    "skills": [
+      {
+        "id": "basic-attack-array-arcana-int",
+        "label": "Basic Attack: Artillery Interdiction (Array Arcana: INT)",
+        "kind": "skill",
+        "does": [],
+        "gameText": "BASIC ATTACK:\nAn attack with up to 5 sequences that deals Nature DMG. As the controlled operator, Final Strike also deals 17 Stagger.\nDIVE ATTACK:\nBasic attack performed in mid-air becomes a dive attack that deals Nature DMG to nearby enemies.\nFINISHER:\nBasic attack performed near a Staggered enemy becomes a finisher that deals massive Nature DMG and recovers some SP.\nAt level 12: BATK SEQ 1 Multiplier: 42%; BATK SEQ 2 Multiplier: 48%; BATK SEQ 3 Multiplier: 75%; BATK SEQ 4 Multiplier: 80%; BATK SEQ 5 Multiplier: 106%; Finisher ATK Multiplier: 900%; Dive ATK Multiplier: 180%."
+      },
+      {
+        "id": "battle-skill-array-arcana-int",
+        "label": "Battle Skill: Jadecrushing Grid (Array Arcana: INT)",
+        "kind": "skill",
+        "does": [],
+        "gameText": "SKILL DESCRIPTION: Creates a Jadecrushing Grid that deals Nature DMG and applies Nature Infliction to enemies within the area of effect.\nIntellect (N) ≥ Will (N), Array Arcana: INT is ACTIVE.\nArray Arcana: INT:\n- Deals more DMG.\nAt level 12: SP Cost: 100; DMG Multiplier: 500%; Stagger: 10."
+      },
+      {
+        "id": "combo-skill-array-arcana-int",
+        "label": "Combo Skill: Yinglung Stance IV (Array Arcana: INT)",
+        "kind": "skill",
+        "does": [],
+        "gameText": "Intellect (N) ≥ Will (N), Array Arcana: INT is ACTIVE.\nCOMBO TRIGGER: When Nature Infliction or at least 2 stacks of non-Nature Arts Infliction are applied on an enemy.\nSKILL DESCRIPTION: Arcane charges at the target and sets up 4 Tactical Doubles that apply Nature Susceptibility and Cryo Susceptibility and deal Nature DMG to the target and nearby enemies, and also apply Imprisonment on the said target. When Imprisonment ends, the Tactical Doubles will attack the said target to deal Explosion DMG.\nImprisonment: A debuff that slows all actions.\nArray Arcana: INT:\n- Hitting an enemy under Imprisonment with Arcane's battle skill returns some SP, ends the Imprisonment early, deals Explosion DMG, applies another instance of Nature Susceptibility and Cryo Susceptibility, and deals multiple hits of bonus DMG after a short delay.\n- Combo skill cooldown is shorter.\nAt level 12: Cooldown: 18; Base DMG Multiplier: 80%; Base Stagger: 5; Imprisonment and Susceptibility Duration (s): 4; Susceptibility: 4%; Explosion DMG Multiplier: 120%; Explosion Stagger: 5; Bonus DMG Multiplier: 500%; Bonus Susceptibility Duration (s): 2; SP Return: 30; Ultimate Energy Gain: 10."
+      },
+      {
+        "id": "ultimate-array-arcana-int",
+        "label": "Ultimate: Gloompurge (Array Arcana: INT)",
+        "kind": "skill",
+        "does": [],
+        "gameText": "SKILL DESCRIPTION: Arcane creates a Gloompurger Array that immediately deals Nature DMG to enemies within the area of effect (AOE).\nWhen hitting an enemy within the Gloompurger Array with a Finisher or a Final Strike performed by the controlled operator, the Gloompurger Array unleashes a Cluster Strike that deals Area DMG to the said enemy. This effect triggers up to 2 times.\nAfter triggering Cluster Strike 2 times, the ultimate is switched to Gloompurge Arcana.\nGloompurge Arcana: Deals Nature DMG to enemies within a large AOE.\nIntellect (N) ≥ Will (N), Array Arcana: INT is ACTIVE.\nArray Arcana: INT:\n- When created, the Gloompurger Array also forcibly applies Corrosion to enemies in the AOE.\nAt level 12: Ultimate Energy Cost: 100; Gloompurger Array Creation DMG Multiplier: 180%; Gloompurger Array Creation Stagger: 10; Gloompurger Array Duration (s): 20; Forced Corrosion Duration (s): 15; Cluster Strike Total DMG Multiplier: 360%; Gloompurge Arcana DMG Multiplier: 1440%; Gloompurge Arcana Stagger: 10."
+      },
+      {
+        "id": "basic-attack-array-arcana-will",
+        "label": "Basic Attack: Artillery Interdiction (Array Arcana: WILL)",
+        "kind": "skill",
+        "does": [],
+        "gameText": "BASIC ATTACK:\nAn attack with up to 5 sequences that deals Nature DMG. As the controlled operator, Final Strike also deals 17 Stagger.\nDIVE ATTACK:\nBasic attack performed in mid-air becomes a dive attack that deals Nature DMG to nearby enemies.\nFINISHER:\nBasic attack performed near a Staggered enemy becomes a finisher that deals massive Nature DMG and recovers some SP.\nAt level 12: BATK SEQ 1 Multiplier: 42%; BATK SEQ 2 Multiplier: 48%; BATK SEQ 3 Multiplier: 75%; BATK SEQ 4 Multiplier: 80%; BATK SEQ 5 Multiplier: 106%; Finisher ATK Multiplier: 900%; Dive ATK Multiplier: 180%."
+      },
+      {
+        "id": "battle-skill-array-arcana-will",
+        "label": "Battle Skill: Jadecrushing Grid (Array Arcana: WILL)",
+        "kind": "skill",
+        "does": [],
+        "gameText": "SKILL DESCRIPTION: Creates a Jadecrushing Grid that deals Nature DMG and applies Nature Infliction to enemies within the area of effect.\nWill (N) ＞ Intellect (N), Array Arcana: WILL is ACTIVE.\nArray Arcana: WILL:\n- When dealing DMG, the array also pulls in enemies within the area of effect.\nAt level 12: SP Cost: 100; DMG Multiplier: 300%; Stagger: 10."
+      },
+      {
+        "id": "combo-skill-array-arcana-will",
+        "label": "Combo Skill: Yinglung Stance IV (Array Arcana: WILL)",
+        "kind": "skill",
+        "does": [],
+        "gameText": "Will (N) ＞ Intellect (N), Array Arcana: WILL is ACTIVE.\nCOMBO TRIGGER: When an Arts Infliction is applied on an enemy.\nSKILL DESCRIPTION: Arcane charges at the target and sets up 4 Tactical Doubles that deal Nature DMG and apply another stack of Arts Infliction of the same element, Nature Susceptibility, and Cryo Susceptibility to the target and nearby enemies, and also apply Imprisonment on the said target. When Imprisonment ends, the Tactical Doubles will attack the said target to deal Explosion DMG.\nImprisonment: A debuff that slows all actions.\nArray Arcana: WILL:\n- Applying Imprisonment by casting a combo skill will also slightly pull in enemies near the target.\n- The attribute of Will can further increase the effects of Nature Susceptibility and Cryo Susceptibility applied by the combo skill.\nAt level 12: Cooldown: 18; Base DMG Multiplier: 80%; Base Stagger: 5; Imprisonment and Susceptibility Duration (s): 6; Base Susceptibility: 4%; Max Bonus Susceptibility from Will: 8%; Will for MAX Bonus Susceptibility: 640; Explosion DMG Multiplier: 120%; Explosion Stagger: 5; Ultimate Energy Gain: 10."
+      },
+      {
+        "id": "ultimate-array-arcana-will",
+        "label": "Ultimate: Gloompurge (Array Arcana: WILL)",
+        "kind": "skill",
+        "does": [],
+        "gameText": "SKILL DESCRIPTION: Arcane creates a Gloompurger Array that immediately deals Nature DMG to enemies within the area of effect (AOE).\nWhen hitting an enemy within the Gloompurger Array with a Finisher or a Final Strike performed by the controlled operator, the Gloompurger Array unleashes a Cluster Strike that deals Area DMG to the said enemy. This effect triggers up to 2 times.\nAfter triggering Cluster Strike 2 times, the ultimate is switched to Gloompurge Arcana.\nGloompurge Arcana: Deals Nature DMG to enemies within a large AOE.\nWill (N) ＞ Intellect (N), Array Arcana: WILL is ACTIVE.\nArray Arcana: WILL:\n- When created, the Gloompurger Array also targets enemies with Arts Infliction within its AOE, and applies another Arts Infliction stack of the same element to them.\nAt level 12: Ultimate Energy Cost: 100; Gloompurger Array Creation DMG Multiplier: 180%; Gloompurger Array Creation Stagger: 10; Gloompurger Array Duration (s): 20; Cluster Strike Total DMG Multiplier: 360%; Gloompurge Arcana DMG Multiplier: 360%; Gloompurge Arcana Stagger: 10."
+      },
+      {
+        "id": "talent-tactical-planning",
+        "label": "Talent: Tactical Planning (Elite 2)",
+        "kind": "core",
+        "does": [],
+        "gameText": "When Arcane's Intellect ≥ Will, switch skill type to Array Arcana: INT. If not, then switch to Array Arcana: WILL.\nUltimate Gloompurge improved:\nArray Arcana: INT:\n- During the ultimate, Arcane gains 24% Arts Amp.\nArray Arcana: WILL:\n- When Gloompurger Array (ultimate sequence 1) and Gloompurge Arcana (ultimate sequence 2) deal DMG to the enemy, they also apply [Will × 0.02%] Nature Susceptibility and Cryo Susceptibility (max: 12.8%) for 10s. This effect cannot stack.\nAttribute requirements for the 2 types of Array Arcana only include effects from operator levels, talents, potentials, and attribute bonuses provided by equipped gear and weapons."
+      },
+      {
+        "id": "talent-weapon-honing",
+        "label": "Talent: Weapon Honing (Elite 3)",
+        "kind": "core",
+        "does": [],
+        "gameText": "Corrosion applied by Arcane lasts 10s longer, and Max Resistance Reduction is increased to 1.1 times the original."
+      },
+      {
+        "id": "talent-keen-mind-stalwart",
+        "label": "Talent: Keen Mind/Stalwart (Elite 4)",
+        "kind": "core",
+        "does": [],
+        "gameText": "Operator Intellect and Will +15."
+      },
+      {
+        "id": "potential-1",
+        "label": "Potential 1: Watcher of the Sea",
+        "kind": "potential",
+        "unlock": {
+          "potential": 1
+        },
+        "does": [],
+        "gameText": "Combo skill Yinglung Stance IV improved:\nDMG Multiplier is increased to 1.3 times the original.\nArray Arcana: INT: Hitting an enemy under Imprisonment with Arcane's battle skill returns 10 additional SP.\nArray Arcana: WILL: Effects of Nature Susceptibility and Cryo Susceptibility applied +6%."
+      },
+      {
+        "id": "potential-2",
+        "label": "Potential 2: Heart of Ice Cold Ferrium",
+        "kind": "potential",
+        "unlock": {
+          "potential": 2
+        },
+        "does": [],
+        "gameText": "Intellect and Will +15, Arts Intensity +16."
+      },
+      {
+        "id": "potential-3",
+        "label": "Potential 3: Wielder of Stone",
+        "kind": "potential",
+        "unlock": {
+          "potential": 3
+        },
+        "does": [],
+        "gameText": "Talent Weapon Honing improved:\nCorrosion applied by Arcane lasts 5s longer, and Max Resistance Reduction is increased by 20% of the original."
+      },
+      {
+        "id": "potential-4",
+        "label": "Potential 4: Mind of Refined Steel",
+        "kind": "potential",
+        "unlock": {
+          "potential": 4
+        },
+        "does": [],
+        "gameText": "Ultimate Gloompurge improved: Ultimate Energy cost -15%."
+      },
+      {
+        "id": "potential-5",
+        "label": "Potential 5: Homeward Glance",
+        "kind": "potential",
+        "unlock": {
+          "potential": 5
+        },
+        "does": [],
+        "gameText": "Ultimate Gloompurge improved:\nArray Arcana: INT: During the ultimate, Arcane gains 16% Arts Amp. DMG Multiplier of Gloompurge Arcana (ultimate sequence 2) is increased to 1.3 times the original.\nArray Arcana: WILL: Further increases the effects of Nature Susceptibility and Cryo Susceptibility applied by Gloompurger Array (ultimate sequence 1) and Gloompurge Arcana (ultimate sequence 2) by +7%. After casting Gloompurge Arcana (ultimate sequence 2), if combo skill Yinglung Stance IV is still in its cooldown, immediately shorten the length of the cooldown by 30%."
+      }
+    ]
+  },
+  {
+    "characterId": "chr_0033_camille",
+    "source": "endfield.wiki.gg/wiki/Camille (CC BY-SA 4.0)",
+    "version": "wiki revision 64996",
+    "skills": [
+      {
+        "id": "basic-attack",
+        "label": "Basic Attack: Sanguine Absolution",
+        "kind": "skill",
+        "does": [],
+        "gameText": "BASIC ATTACK:\nAn attack with up to 5 sequences that deals Heat DMG. As the controlled operator, Final Strike also deals 18 Stagger.\nDIVE ATTACK:\nBasic attack performed in mid-air becomes a dive attack that deals Heat DMG to nearby enemies.\nFINISHER:\nBasic attack performed near a Staggered enemy becomes a finisher that deals massive Heat DMG and recovers some SP.\nAt level 12: BATK SEQ 1 Multiplier: 56%; BATK SEQ 2 Multiplier: 45%; BATK SEQ 3 Multiplier: 68%; BATK SEQ 4 Multiplier: 77%; BATK SEQ 5 Multiplier: 113%; Finisher ATK Multiplier: 900%; Dive ATK Multiplier: 180%."
+      },
+      {
+        "id": "battle-skill",
+        "label": "Battle Skill: Blazing Exorcism",
+        "kind": "skill",
+        "does": [],
+        "gameText": "SKILL DESCRIPTION: Camille summons Firefang Vesperwings that fly towards the enemy to deal Heat DMG and apply Heat Infliction on enemies in a small area of effect. The Firefang Vesperwings then temporarily hover around the target and apply Weakness and Heat Susceptibility to the said target for the duration of the hovering. When the target is defeated, the Firefang Vesperwings fly to another nearby enemy, deal Heat DMG, and apply Heat Infliction, Weakness, and Heat Susceptibility to the new target.\nHitting an enemy with hovering Firefang Vesperwings with Camille's combo skill sets off an explosion after a short delay. This explosion deals additional Heat DMG.\nAt level 12: SP Cost: 100; DMG Multiplier: 200%; Stagger: 10; Firefang Vesperwings Duration (s): 45; Weakness: 7%; Heat Susceptibility: 7%; Explosion DMG Multiplier: 100%."
+      },
+      {
+        "id": "combo-skill",
+        "label": "Combo Skill: Heartstake Thorn",
+        "kind": "skill",
+        "does": [],
+        "gameText": "COMBO TRIGGER: When an enemy's Heat Infliction is consumed or absorbed.\nSKILL DESCRIPTION: Performs a returning dash that deals Heat DMG and recovers some SP.\nAt level 12: Cooldown: 18; DMG Multiplier: 300%; Stagger: 10; SP Recovery: 20; Hunter Pursuit DMG Multiplier: 500%; Hunter Pursuit Stagger: 20; Hunter Pursuit SP Recovery: 40; Ultimate Energy Gain: 10."
+      },
+      {
+        "id": "ultimate",
+        "label": "Ultimate: Sanguine Downpour",
+        "kind": "skill",
+        "does": [],
+        "gameText": "SKILL DESCRIPTION: Camille flies to the sky, rains down a barrage of spears, and follows through with a sweep attack. This deals Heat DMG and applies Heat Infliction to target(s) hit while recovering some SP.\nAfter casting the ultimate, Camille's battle skill is temporarily transformed into Hunter Pursuit.\nHunter Pursuit: Treated as a combo skill and costs no SP. It is a dash attack that deals Heat DMG and recovers some SP.\nAt level 12: Ultimate Energy Cost: 130; DMG Multiplier: 600%; Stagger: 15; SP Recovery: 40; Hunter Pursuit State Duration (s): 15."
+      },
+      {
+        "id": "talent-hunter-of-transgression",
+        "label": "Talent: Hunter of Transgression (Elite 2)",
+        "kind": "core",
+        "does": [],
+        "gameText": "Combo skill Heartstake Thorn improved: When hitting an enemy with hoveringFirefang Vesperwings, Camille restores [60 + Intellect × 0.3] HP to himself and grants a Link buff for 15s. When casting Hunter Pursuit, this effect can be triggered even when hitting a target with no hovering Vesperwings."
+      },
+      {
+        "id": "talent-bloodfount-revival",
+        "label": "Talent: Bloodfount Revival (Elite 3)",
+        "kind": "core",
+        "does": [],
+        "gameText": "Whenever Camille restores HP via a skill, he gains Heat DMG Dealt +4% (max stacks: 5) for 40s while other operators in the team gain 25% of this effect. This effect can reach 5 stacks.\nIf Camille is already at Max HP, each trigger gives 2 stacks of the effect."
+      },
+      {
+        "id": "talent-skirmisher",
+        "label": "Talent: Skirmisher (Elite 4)",
+        "kind": "core",
+        "does": [],
+        "gameText": "Operator Agility +20."
+      },
+      {
+        "id": "potential-1",
+        "label": "Potential 1: Flame-Anointed Lance",
+        "kind": "potential",
+        "unlock": {
+          "potential": 1
+        },
+        "does": [],
+        "gameText": "Battle skill Blazing Exorcism improved: The skill applies Weakness +5% and Heat Susceptibility +5%. Firefang Vesperwings hover duration +15s."
+      },
+      {
+        "id": "potential-2",
+        "label": "Potential 2: Tracker of Witch Scent",
+        "kind": "potential",
+        "unlock": {
+          "potential": 2
+        },
+        "does": [],
+        "gameText": "Agility +20, Intellect +20."
+      },
+      {
+        "id": "potential-3",
+        "label": "Potential 3: Thorned Incapacitor",
+        "kind": "potential",
+        "unlock": {
+          "potential": 3
+        },
+        "does": [],
+        "gameText": "Combo skill Heartstake Thorn improved: Length of cooldown -2s. Heartstake Thorn and Hunter Pursuit improved: DMG Multipliers are increased to 1.3 times the original; SP Recoveries are increased to 1.15 times the original."
+      },
+      {
+        "id": "potential-4",
+        "label": "Potential 4: Agašlehem's Sigil",
+        "kind": "potential",
+        "unlock": {
+          "potential": 4
+        },
+        "does": [],
+        "gameText": "Ultimate Sanguine Downpour improved: Ultimate Energy cost -15%."
+      },
+      {
+        "id": "potential-5",
+        "label": "Potential 5: Sanguine Convention",
+        "kind": "potential",
+        "unlock": {
+          "potential": 5
+        },
+        "does": [],
+        "gameText": "Talent Bloodfount Revival improved: Heat DMG boost per stack +6%."
+      }
+    ]
+  },
+  {
+    "characterId": "chr_0034_typhoea",
+    "source": "endfield.wiki.gg/wiki/Typhoeus (CC BY-SA 4.0)",
+    "version": "wiki revision 64997",
+    "skills": [
+      {
+        "id": "basic-attack",
+        "label": "Basic Attack: Wildlands Huntress",
+        "kind": "skill",
+        "does": [],
+        "gameText": "BASIC ATTACK:\nAn attack with up to 5 sequences that deals Nature DMG. As the controlled operator, Final Strike also deals 17 Stagger.\nDIVE ATTACK:\nBasic attack performed in mid-air becomes a dive attack that deals Nature DMG to nearby enemies.\nFINISHER:\nBasic attack performed near a Staggered enemy becomes a finisher that deals massive Nature DMG and recovers some SP.\nAt level 12: BATK SEQ 1 Multiplier: 46%; BATK SEQ 2 Multiplier: 56%; BATK SEQ 3 Multiplier: 86%; BATK SEQ 4 Multiplier: 95%; BATK SEQ 5 Multiplier: 125%; Finisher ATK Multiplier: 900%; Dive ATK Multiplier: 180%."
+      },
+      {
+        "id": "battle-skill",
+        "label": "Battle Skill: Piercing Arrows of the Woods",
+        "kind": "skill",
+        "does": [],
+        "gameText": "SKILL DESCRIPTION: Typhoeus leaps into the air and enters a short Hovering state, during which she can unleash 5 Aerial Basic Attacks (ABATK). Each ABATK can shoot arrows at up to 2 targets and deal Nature DMG.\nWhenever an ABATK hits an enemy with Nature Infliction, it consumes 1 stack of Nature Infliction, grants Typhoeus 1 Sign, and gives additional Ultimate Energy.\nIf Typhoeus has Hunting Arrow(s), she consumes 1 Hunting Arrow and converts the ABATK into a Power Shot.\nPower Shot: After hitting an enemy, Power Shot forcibly applies 1 instance of Nature Burst; if the Power Shot consumes the target's Nature Infliction, then increase the DMG dealt by this Nature Burst.\nIf Typhoeus is the controlled operator, her 5th ABATK is regarded as a Final Strike and a Power Shot, and does not consume Hunting Arrows.\nAt level 12: SP Cost: 100; Initial Aerial Shot DMG Multiplier: 50%; ABATK DMG: 65%; Aerial Final Strike DMG: 100%; Aerial Final Strike Stagger: 20; Power Shot Nature Burst DMG Multiplier: 1.3; Additional Ultimate Energy: 12."
+      },
+      {
+        "id": "combo-skill",
+        "label": "Combo Skill: Rampant Thorns",
+        "kind": "skill",
+        "does": [],
+        "gameText": "COMBO TRIGGER: When Typhoeus reaches max Signs.\nSKILL DESCRIPTION: Typhoeus converts all her Signs to Hunting Arrows and resets her Aerial Basic Attack (ABATK) attempts.\nTyphoeus focuses her \"Huntress's Gaze\" and launches a barrage at the target that creates a Barrage Array at the target area. Enemies in the Barrage Array take Nature DMG over time, are slowed, and suffer increased Nature Burst DMG Taken.\nEvery 2 Signs convert to 1 Hunting Arrow.\nAt level 12: Cooldown: 19; \"Huntress's Gaze\" Hit DMG: 200%; Stagger: 10; Ultimate Energy Gain: 10; Area DMG Over Time: 100%; Slow: 60%; Nature Burst DMG Boost: 10%."
+      },
+      {
+        "id": "ultimate",
+        "label": "Ultimate: Call of Ice Mountain",
+        "kind": "skill",
+        "does": [],
+        "gameText": "SKILL DESCRIPTION: Typhoeus fires an Imbued Arrow that explodes after hitting the enemy and deals massive Nature DMG to enemies within the area of effect (AOE). She then enters a Hovering state and her Aerial Basic Attack (ABATK) attempts are reset.\nFor her next 5 ABATKs, hitting an enemy triggers a Hail of Arrows that deals Nature DMG at the target's location. Her 5th Hail of Arrows is an empowered Hail of Arrows that deals higher DMG.\nCasting the ultimate gives 2 Hunting Arrows immediately.\nAt level 12: Ultimate Energy Cost: 200; Imbued Arrow Explosion DMG: 300%; Imbued Arrow Stagger: 20; Normal Hail of Arrows DMG: 75%; Empowered Hail of Arrows DMG: 200%."
+      },
+      {
+        "id": "talent-prey-checklist",
+        "label": "Talent: Prey Checklist (Elite 3)",
+        "kind": "core",
+        "does": [],
+        "gameText": "Whenever a Nature Burst is triggered on an enemy, Typhoeus gains 1 Sign. DMG dealt by attacks empowered by consuming Hunting Arrows is increased to 1.6 times the original.\nWhen entering battle, Typhoeus immediately gains 4 Sign(s).\nTyphoeus can have up to 4 Hunting Arrows and 8 Signs.\nIf Nature Burst is simultaneously triggered on multiple enemies, this only counts as one instance of Nature Burst when tallying the Signs gained by Typhoeus."
+      },
+      {
+        "id": "talent-huntress-s-focus",
+        "label": "Talent: Huntress's Focus (Elite 3)",
+        "kind": "core",
+        "does": [],
+        "gameText": "When Hovering, Typhoeus activates a Protective Barrier that reduces her DMG Taken by 30% and makes her harder to interrupt while it is active. The Protective Barrier is shattered when Typhoeus takes DMG, and cannot be activated again for 18s afterwards."
+      },
+      {
+        "id": "talent-skirmisher",
+        "label": "Talent: Skirmisher (Elite 4)",
+        "kind": "core",
+        "does": [],
+        "gameText": "Operator Agility +20."
+      },
+      {
+        "id": "potential-1",
+        "label": "Potential 1: Samifjod Fletching",
+        "kind": "potential",
+        "unlock": {
+          "potential": 1
+        },
+        "does": [],
+        "gameText": "When Hovering, ATK +18% and ABATK DMG Dealt is increased to 1.2 times the original.\nTalent Huntress's Focus improved: Protective Barrier reactivation time -3s."
+      },
+      {
+        "id": "potential-2",
+        "label": "Potential 2: Huntress's Stride",
+        "kind": "potential",
+        "unlock": {
+          "potential": 2
+        },
+        "does": [],
+        "gameText": "Agility +20, Arts Intensity +16."
+      },
+      {
+        "id": "potential-3",
+        "label": "Potential 3: Thorny Trap",
+        "kind": "potential",
+        "unlock": {
+          "potential": 3
+        },
+        "does": [],
+        "gameText": "Combo skill Rampant Thorns improved: Length of cooldown -2s. Enemies in the Barrage Array suffer Nature Burst DMG Taken +6%."
+      },
+      {
+        "id": "potential-4",
+        "label": "Potential 4: No Escape",
+        "kind": "potential",
+        "unlock": {
+          "potential": 4
+        },
+        "does": [],
+        "gameText": "Ultimate Call of Ice Mountain improved: Ultimate Energy cost -15%."
+      },
+      {
+        "id": "potential-5",
+        "label": "Potential 5: Fatal Shot",
+        "kind": "potential",
+        "unlock": {
+          "potential": 5
+        },
+        "does": [],
+        "gameText": "Ultimate Call of Ice Mountain improved: Gains Hunting Arrows +1. Ultimate DMG Dealt is increased to 1.2 times the original, while Nature Burst DMG Multiplier of Power Shot is increased to 1.1 times the original."
+      }
+    ]
+  },
+  {
+    "characterId": "chr_0035_liino",
+    "source": "endfield.wiki.gg/wiki/Liino (CC BY-SA 4.0)",
+    "version": "wiki revision 64998",
+    "skills": [
+      {
+        "id": "basic-attack",
+        "label": "Basic Attack: Starry Heart Throb",
+        "kind": "skill",
+        "does": [],
+        "gameText": "BASIC ATTACK:\nAn attack with up to 5 sequences that deals Electric DMG. As the controlled operator, Final Strike also deals 19 Stagger.\nDIVE ATTACK:\nBasic attack performed in mid-air becomes a dive attack that deals Electric DMG to nearby enemies.\nFINISHER:\nBasic attack performed near a Staggered enemy becomes a finisher that deals massive Electric DMG and recovers some SP.\nAt level 12: BATK SEQ 1 Multiplier: 42%; BATK SEQ 2 Multiplier: 60%; BATK SEQ 3 Multiplier: 60%; BATK SEQ 4 Multiplier: 81%; BATK SEQ 5 Multiplier: 100%; Finisher ATK Multiplier: 900%; Dive ATK Multiplier: 180%."
+      },
+      {
+        "id": "battle-skill",
+        "label": "Battle Skill: Dazzling Focus",
+        "kind": "skill",
+        "does": [],
+        "gameText": "SKILL DESCRIPTION: Liino deals Electric DMG to enemies and then enters her Vocalist Stance. While this stance is active, if there are enemies nearby, Liino will perform an Additional ATK (that deals Electric DMG to enemies) on a regular basis.\nVocalist Stance: While this stance is active, Liino grants the entire team an ATK Boost. After entering battle, Liino will also grant continuous HP Treatment to operators within range.\nDuring Vocalist Stance, her battle skill is replaced with End Stance. Casting this will end her Vocalist Stance early without consuming any SP, after which the battle skill will enter a short cooldown.\nAt level 12: SP Cost: 25; First ATK Multiplier: 240%; Additional ATK DMG Multiplier: 120%; Additional ATK Interval (s): 10; Beat Interval (s): 3; Vocalist Stance Duration (s): 60; ATK Boost: 10%; Base Treatment: 41; Treatment Increase per Agility: 0.09; Stagger: 3."
+      },
+      {
+        "id": "combo-skill",
+        "label": "Combo Skill: Delightful Harmonics",
+        "kind": "skill",
+        "does": [],
+        "gameText": "COMBO TRIGGER: While Vocalist Stance is active, an Arts Reaction is consumed or is applied on an enemy.\nSKILL DESCRIPTION: Liino deals Electric DMG to enemies, grants HP Treatment to the controlled operator, and gains additional Ultimate Energy.\nCasting the combo skill Delightful Harmonics does not interrupt Vocalist Stance.\nAt level 12: Cooldown: 8; DMG Multiplier: 360%; Stagger: 5; Ultimate Energy Gain: 20; Base Treatment: 162; Treatment Increase per Agility: 0.38."
+      },
+      {
+        "id": "ultimate",
+        "label": "Ultimate: Dawnstar Concerto",
+        "kind": "skill",
+        "does": [],
+        "gameText": "SKILL DESCRIPTION: Liino grants HP Treatment to the entire team, enters her Cosmovoice Stance at the same time, unleashes a continuous display of Stage Pyrotechnics that deals Electric DMG, and then triggers an Electrifying Extravaganza that deals Electric DMG and forcibly applies Electrification to enemies in a large area of effect (AOE).\nCosmovoice Stance: This stance replaces Liino's Vocalist Stance. While active, the stance grants the entire team Electric Amp and Nature Amp (effects are further increased by the attribute of Will) as well as an ATK Boost. The beats of Liino's song also deal Electric DMG to enemies in the AOE and grant continuous HP Treatment to allied operators in the AOE. When the stance ends, Liino deals 3 times the DMG from a single beat to enemies in the AOE, and grants 3 times the HP treatment from a single beat to the entire team. This effect does not trigger if the stance is ended early.\nDuring the stance, her battle skill is replaced with End Stance. Casting the battle skill during Cosmovoice Stance ends it early and does not consume any SP.\nAt level 12: Ultimate Energy Cost: 160; Stage Pyrotechnics DMG Multiplier: 320%; Electrifying Extravaganza DMG Multiplier: 640%; ATK Boost: 10%; Amp Increase per Will: 0.04%; MAX Amp from Will: 60%; Base Treatment for 1st Treatment: 729; Treatment Increase per Agility: 1.7; DMG Multiplier per Beat: 60%; Base Treatment per Beat: 81; Treatment Increase per Agility: 0.19; Beat Interval (s): 1.5; Cosmovoice Stance Duration (s): 15; Electrifying Extravaganza Stagger: 20."
+      },
+      {
+        "id": "talent-idol-zone",
+        "label": "Talent: Idol Zone (Elite 2)",
+        "kind": "core",
+        "does": [],
+        "gameText": "During Vocalist Stance or Cosmovoice Stance, operators within the area of effect (AOE) gain Treatment Received Bonus +20% and DMG Taken -20%. These effects persist for 3s after leaving the AOE."
+      },
+      {
+        "id": "talent-starry-boost-of-1st-magnitude",
+        "label": "Talent: Starry Boost of 1st Magnitude (Elite 3)",
+        "kind": "core",
+        "does": [],
+        "gameText": "For 30s after casting Liino's combo skill Delightful Harmonics, casting a battle skill of an Electric or Nature operator returns 10 SP. This effect cannot stack and ends after triggering."
+      },
+      {
+        "id": "talent-stalwart",
+        "label": "Talent: Stalwart (Elite 4)",
+        "kind": "core",
+        "does": [],
+        "gameText": "Operator Will +20."
+      },
+      {
+        "id": "potential-1",
+        "label": "Potential 1: Flawless Stage Work",
+        "kind": "potential",
+        "unlock": {
+          "potential": 1
+        },
+        "does": [],
+        "gameText": "After entering battle without her Vocalist Stance active, the first casting of the battle skill Dazzling Focus returns 25 additional SP.\nEffects of ATK Boost granted by Vocalist Stance and Cosmovoice Stance are increased by +6%."
+      },
+      {
+        "id": "potential-2",
+        "label": "Potential 2: Committed Rehearsals",
+        "kind": "potential",
+        "unlock": {
+          "potential": 2
+        },
+        "does": [],
+        "gameText": "Will +20, Treatment Efficiency +10%."
+      },
+      {
+        "id": "potential-3",
+        "label": "Potential 3: Longing for the Horizon",
+        "kind": "potential",
+        "unlock": {
+          "potential": 3
+        },
+        "does": [],
+        "gameText": "Combo skill Delightful Harmonics improved: Length of cooldown -1s. DMG Multiplier and HP Treatment are increased to 1.4 times the original."
+      },
+      {
+        "id": "potential-4",
+        "label": "Potential 4: Meteoric Rhythm",
+        "kind": "potential",
+        "unlock": {
+          "potential": 4
+        },
+        "does": [],
+        "gameText": "Ultimate Dawnstar Concerto improved: Ultimate Energy cost -15%."
+      },
+      {
+        "id": "potential-5",
+        "label": "Potential 5: Heart-Whipping Q&A",
+        "kind": "potential",
+        "unlock": {
+          "potential": 5
+        },
+        "does": [],
+        "gameText": "Amp effect of Dawnstar Concerto is increased to 1.2 times the original.\nDMG Multipliers of battle skill Dazzling Focus and ultimate Dawnstar Concerto are increased to 1.2 times the original."
+      }
+    ]
+  },
+  {
+    "characterId": "chr_0036_jsspsi",
+    "source": "endfield.wiki.gg/wiki/Si (CC BY-SA 4.0)",
+    "version": "wiki revision 64999",
+    "skills": [
+      {
+        "id": "basic-attack",
+        "label": "Basic Attack: Artistic Urge",
+        "kind": "skill",
+        "does": [],
+        "gameText": "BASIC ATTACK:\nAn attack with up to 5 sequences that deals Cryo DMG. As the controlled operator, Final Strike also deals 18 Stagger.\nDIVE ATTACK:\nBasic attack performed in mid-air becomes a dive attack that deals Cryo DMG to nearby enemies.\nFINISHER:\nBasic attack performed near a Staggered enemy becomes a finisher that deals massive Cryo DMG and recovers some SP.\nAt level 12: BATK SEQ 1 Multiplier: 45%; BATK SEQ 2 Multiplier: 72%; BATK SEQ 3 Multiplier: 66%; BATK SEQ 4 Multiplier: 54%; BATK SEQ 5 Multiplier: 144%; Dive ATK Multiplier: 180%; Finisher ATK Multiplier: 900%."
+      },
+      {
+        "id": "battle-skill",
+        "label": "Battle Skill: Brushwork Realm",
+        "kind": "skill",
+        "does": [],
+        "gameText": "SKILL DESCRIPTION: Si deals Cryo DMG and applies Artful Intent, Immobilization, and Cryo Infliction (or Heat Infliction if a Heat element operator is in Team Position 01) on the target. After a target with Artful Intent takes DMG, part of the DMG taken is recorded. When the duration of Artful Intent ends, it bursts and deals Fixed DMG equal to the DMG recorded. After casting the skill, Si's battle skill is temporarily changed to Initial Stroke.\nInitial Stroke: Costs 15 SP. Si pulls an Inksoul from a target with Artful Intent. All DMG dealt and effects applied to the Inksoul will also be dealt to its host (the said target). The Inksoul lasts as long as the remaining duration of Artful Intent. After casting the skill, Si's battle skill is temporarily changed to Final Stroke.\nFinal Stroke: Costs no SP. Makes the Inksoul disappear early. When disappearing, the Inksoul will move to its host and trigger a burst like the ending burst of Artful Intent.\nWhen dealing DMG or applying effects to both the Inksoul and the host, only 1 instance of the DMG or effect is dealt/applied. If the host is defeated during the Inksoul's duration, it will link to another enemy in combat and apply Artful Intent to it. This does not reset the duration of Artful Intent. If a target with Artful Intent is defeated without having its Inksoul drawn out of it, the defeated target will drop an Inksoul at its location.\nAt level 12: SP Cost: 100; DMG Multiplier: 100%; Immobilization Duration (s): 1; Artful Intent Duration (s): 20; DMG Record Ratio: 13%; Stagger: 5; Artful Intent Burst Stagger: 5."
+      },
+      {
+        "id": "combo-skill",
+        "label": "Combo Skill: Fully Envisioned",
+        "kind": "skill",
+        "does": [],
+        "gameText": "COMBO TRIGGER: When an enemy's Cryo Infliction or Heat Infliction is consumed or absorbed.\nSKILL DESCRIPTION: Si summons an Ink Lung that deals Cryo DMG. This DMG is based on the highest stacks of Arts Infliction consumed or absorbed from a single target.\nAt level 12: Cooldown: 15; DMG Multiplier: 750%; Multiplier Increase per Stack Consumed or Absorbed: 100%; Stagger: 10; Ultimate Energy Gain: 10."
+      },
+      {
+        "id": "ultimate",
+        "label": "Ultimate: No One Spoils the Fun",
+        "kind": "skill",
+        "does": [],
+        "gameText": "SKILL DESCRIPTION: Si summons a Giant Ink Lung from her painting that deals Cryo DMG and grants temporary Cryo Amp and Heat Amp to the entire team.\nAt level 12: Ultimate Energy Cost: 80; DMG Multiplier: 500%; Stagger: 20; Amp: 36%; Amp Duration (s): 12."
+      },
+      {
+        "id": "talent-proxy-s-patronage",
+        "label": "Talent: Proxy's Patronage (Elite 2)",
+        "kind": "core",
+        "does": [],
+        "gameText": "Ultimate skill No One Spoils the Fun improved: After casting, Team Position 01 operator's combo skill cooldown length -20s."
+      },
+      {
+        "id": "talent-unsoiled-brush",
+        "label": "Talent: Unsoiled Brush (Elite 3)",
+        "kind": "core",
+        "does": [],
+        "gameText": "When the Inksoul disappears, allied operators gain 30% Haste for 5s."
+      },
+      {
+        "id": "talent-keen-mind",
+        "label": "Talent: Keen Mind (Elite 4)",
+        "kind": "core",
+        "does": [],
+        "gameText": "Operator Intellect +20."
+      },
+      {
+        "id": "potential-1",
+        "label": "Potential 1: Spring and Autumn as Ink",
+        "kind": "potential",
+        "unlock": {
+          "potential": 1
+        },
+        "does": [],
+        "gameText": "Battle skill Brushwork Realm improved: Duration of Immobilization applied +50%; Artful Intent DMG Record Ratio +7% and burst radius +40%."
+      },
+      {
+        "id": "potential-2",
+        "label": "Potential 2: Three Marks Deep in Wood",
+        "kind": "potential",
+        "unlock": {
+          "potential": 2
+        },
+        "does": [],
+        "gameText": "Combo skill Fully Envisioned improved: When casting, Si gains ATK +[8% + 3%×(Highest stacks of Arts Infliction consumed or absorbed from a single target)] for 10s. This effect cannot stack."
+      },
+      {
+        "id": "potential-3",
+        "label": "Potential 3: Study of Muscles and Bones",
+        "kind": "potential",
+        "unlock": {
+          "potential": 3
+        },
+        "does": [],
+        "gameText": "Ultimate No One Spoils the Fun improved: DMG Dealt is increased to 1.2 times the original; Amp effect is increased to 1.2 times the original."
+      },
+      {
+        "id": "potential-4",
+        "label": "Potential 4: Perfectly Composed in Spirit",
+        "kind": "potential",
+        "unlock": {
+          "potential": 4
+        },
+        "does": [],
+        "gameText": "Ultimate No One Spoils the Fun improved: Ultimate Energy cost -15%."
+      },
+      {
+        "id": "potential-5",
+        "label": "Potential 5: Brush Dab in Eye's White",
+        "kind": "potential",
+        "unlock": {
+          "potential": 5
+        },
+        "does": [],
+        "gameText": "Combo skill Fully Envisioned improved: Length of combo skill cooldown -2s and DMG Dealt is increased to 1.15 times the original. When triggered, treat the combo skill as having consumed or absorbed 1 additional stack of infliction."
+      }
+    ]
+  },
+  {
+    "characterId": "chr_0038_purrche",
+    "source": "endfield.wiki.gg/wiki/Purrchena (CC BY-SA 4.0)",
+    "version": "wiki revision 65002",
+    "skills": [
+      {
+        "id": "basic-attack",
+        "label": "Basic Attack: DESSERT! HAVE SOME!",
+        "kind": "skill",
+        "does": [],
+        "gameText": "BASIC ATTACK:\nAn attack with up to 3 sequences that deals Physical DMG. As the controlled operator, Final Strike also deals 21 Stagger.\nDIVE ATTACK:\nBasic attack performed in mid-air becomes a dive attack that deals Physical DMG to nearby enemies.\nFINISHER:\nBasic attack performed near a Staggered enemy becomes a finisher that deals massive Physical DMG and recovers some SP.\nAt level 12: BATK SEQ 1 Multiplier: 108%; BATK SEQ 2 Multiplier: 116%; BATK SEQ 3 Multiplier: 230%; Finisher ATK Multiplier: 900%; Dive ATK Multiplier: 180%."
+      },
+      {
+        "id": "battle-skill",
+        "label": "Battle Skill: I'M NOT SLEEPING!",
+        "kind": "skill",
+        "does": [],
+        "gameText": "SKILL DESCRIPTION: Purrchena raises up her shield to block an attack and immediately returns some SP. While Purrchena's shield is up, she grants Protection to herself and nearby operators. During the battle skill, the first successful block extends the shield up duration and returns additional SP. After casting, Purrchena's battle skill is temporarily changed to LEAVE MY FRIENDS ALONE!.\nLEAVE MY FRIENDS ALONE!: Purrchena headbutts a target in front of her to deal Nature DMG and apply Nature Infliction.\nProtection granted during shield-raising is reduced after every blocked attack.\nAt level 12: SP Cost: 100; Protection: 90%; Shield Up Duration (s): 3; Shield Up Duration After Successful Block (s): 3; Headbutt DMG Multiplier: 400%; Headbutt Stagger: 20; SP Return: 20; Additional SP Return: 20."
+      },
+      {
+        "id": "combo-skill",
+        "label": "Combo Skill: CAKE OR \"PREZZIE\"",
+        "kind": "skill",
+        "does": [],
+        "gameText": "COMBO TRIGGER: When the controlled operator is attacked.\nSKILL DESCRIPTION: Throws a Giftbox at the controlled operator. The Giftbox opens after a short delay, granting HP Treatment to nearby operators, randomly revealing one of the following items, and triggering the effects of the revealed item:\nBomb: Deals Physical DMG and additional Stagger to enemies in the area of effect (AOE).\nHandicraft: Continuously pulls in nearby enemies and deals Physical DMG.\nYummy Dessert: Grants HP Treatment to the controlled operator.\nThe attribute of Will increases the amount of HP treatment.\nAt level 12: Cooldown: 22; Base Treatment: 486; Treatment Increase per Will: 1.13; Bomb: DMG Multiplier: 300%; Bomb: Stagger: 10; Handicraft: DMG Multiplier: 150%; Yummy Dessert: Base Treatment: 324; Yummy Dessert: Treatment Increase per Will: 0.76; Ultimate Energy Gain: 10."
+      },
+      {
+        "id": "ultimate",
+        "label": "Ultimate: NAUGHTY IS BANNED!",
+        "kind": "skill",
+        "does": [],
+        "gameText": "SKILL DESCRIPTION: Purrchena opens 3 Big Feline's Prezzies. Each Big Feline's Prezzie randomly reveals a Bomb or a piece of Handicraft.\nThere is a chance that the Prezzie reveals Ambassador's Special that applies Arts Susceptibility and deals Physical DMG as well as additional Stagger to enemies.\nAt level 12: Ultimate Energy Cost: 100; Bomb: DMG Multiplier: 300%; Bomb: Stagger: 10; Handicraft: DMG Multiplier: 150%; Ambassador's Special: Base Chance: 20%; Ambassador's Special: DMG Multiplier: 600%; Ambassador's Special: Stagger: 15; Susceptibility Duration (s): 5; Susceptibility: 2.5%."
+      },
+      {
+        "id": "talent-your-sorry-came-late",
+        "label": "Talent: Your sorry came LATE! (Elite 2)",
+        "kind": "core",
+        "does": [],
+        "gameText": "Battle skill I'M NOT SLEEPING! improved: After successfully blocking an enemy attack for the first time, the skill gives 10 additional Ultimate Energy. Chance for Ambassador's Special of the next ultimate NAUGHTY IS BANNED! is increased by 10%. This effect can reach 3 stacks."
+      },
+      {
+        "id": "talent-ambassador-s-duty",
+        "label": "Talent: Ambassador's Duty (Elite 3)",
+        "kind": "core",
+        "does": [],
+        "gameText": "When deployed in battle, all Max HP operators in the team take 50% less DMG from the next hit taken.\nFor each operator, this effect can only trigger once every 90s."
+      },
+      {
+        "id": "talent-forged",
+        "label": "Talent: Forged (Elite 4)",
+        "kind": "core",
+        "does": [],
+        "gameText": "Operator Strength +20."
+      },
+      {
+        "id": "potential-1",
+        "label": "Potential 1: Warm Like the Sun",
+        "kind": "potential",
+        "unlock": {
+          "potential": 1
+        },
+        "does": [],
+        "gameText": "Ultimate NAUGHTY IS BANNED! improved: Base chance for Ambassador's Special is increased to 1.5 times the original."
+      },
+      {
+        "id": "potential-2",
+        "label": "Potential 2: \"Super Energetic\"",
+        "kind": "potential",
+        "unlock": {
+          "potential": 2
+        },
+        "does": [],
+        "gameText": "DEF +20, Will +20."
+      },
+      {
+        "id": "potential-3",
+        "label": "Potential 3: Useful \"Prezzies\"",
+        "kind": "potential",
+        "unlock": {
+          "potential": 3
+        },
+        "does": [],
+        "gameText": "Combo skill CAKE OR \"PREZZIE\" improved:\nBomb: DMG Multiplier increased to 1.2 times the original.\nHandicraft: Effect radius +20%.\nYummy Dessert: HP Treatment increased to 1.2 times the original."
+      },
+      {
+        "id": "potential-4",
+        "label": "Potential 4: After the Feast",
+        "kind": "potential",
+        "unlock": {
+          "potential": 4
+        },
+        "does": [],
+        "gameText": "Ultimate NAUGHTY IS BANNED! improved: Ultimate Energy cost -15%."
+      },
+      {
+        "id": "potential-5",
+        "label": "Potential 5: Hot Like a BBQ Fire",
+        "kind": "potential",
+        "unlock": {
+          "potential": 5
+        },
+        "does": [],
+        "gameText": "Ultimate NAUGHTY IS BANNED! improved:\nAmbassador's Special: DMG Multiplier is increased to 1.2 times the original.\nAmbassador's Special: Arts Susceptibility is increased to 1.2 times the original."
+      }
+    ]
+  }
+]
