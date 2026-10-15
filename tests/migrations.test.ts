@@ -2,7 +2,7 @@
 import { readdirSync, readFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
-import { findDestructive, tmpObjects, userTables, wallProblems } from './lib/migration-rules';
+import { definerFunctions, findDestructive, revokedFromAnon, tmpObjects, userTables, wallProblems } from './lib/migration-rules';
 
 const DIR = resolve(__dirname, '../supabase/migrations');
 
@@ -56,6 +56,48 @@ describe('no temporary objects ship (T80)', () => {
     expect(tmpObjects('create policy "_tmp read" on public.t for select using (true);')).toEqual(['policy _tmp']);
     expect(tmpObjects('drop function if exists public._tmp_exec_sql(text);\n-- create function public._tmp_y()')).toEqual([]);
     expect(tmpObjects('create function public.tmp_ok() returns int as $$ select 1 $$;')).toEqual([]);
+  });
+});
+
+describe('signed-out visitors can call no SECURITY DEFINER function (advisor 0028)', () => {
+  /** Meant for everyone: row-level policies call it, and it only answers true/false for the caller. */
+  const OPEN = ['is_owner'];
+  it('every SECURITY DEFINER function has EXECUTE taken from anon/public, except the open list', () => {
+    const sql = readdirSync(DIR)
+      .filter((f) => f.endsWith('.sql'))
+      .sort()
+      .map((f) => readFileSync(join(DIR, f), 'utf8'))
+      .join('\n');
+    const revoked = revokedFromAnon(sql);
+    expect(definerFunctions(sql).filter((f) => !revoked.has(f) && !OPEN.includes(f))).toEqual([]);
+  });
+  it('each function 0024 takes from anon already refused signed-out callers itself, so nothing anyone uses breaks', () => {
+    const files = readdirSync(DIR).filter((f) => f.endsWith('.sql')).sort();
+    const latest = (name: string) => {
+      let body = '';
+      for (const f of files) {
+        const sql = readFileSync(join(DIR, f), 'utf8');
+        for (const m of sql.matchAll(new RegExp(String.raw`create\s+(?:or\s+replace\s+)?function\s+public\.${name}\s*\([\s\S]*?\$\$([\s\S]*?)\$\$`, 'gi'))) body = m[1] ?? '';
+      }
+      return body;
+    };
+    const ownerOnly = /if\s+not\s+public\.is_owner\(\)\s+then\s+raise\s+exception\s+'owner only'/i;
+    const signedIn = /(auth\.uid\(\)|\bme\b)\s+is\s+null\s+then\s+raise\s+exception\s+'sign in first'/i;
+    const revoked = ['owner_reward_items', 'add_reward_item', 'grant_reward', 'revoke_reward', 'owner_reward_grants', 'create_reward_claim', 'cancel_reward_claim', 'owner_reward_claims', 'claim_reward', 'my_rewards', 'owner_theme_drafts'];
+    const unguarded = revoked.filter((f) => {
+      const body = latest(f);
+      return !body || !(ownerOnly.test(body) || signedIn.test(body));
+    });
+    expect(unguarded).toEqual([]);
+    // create_profile is the sign-up trigger (fires on auth.users), never called by anyone.
+    expect(readFileSync(join(DIR, '0001_init.sql'), 'utf8')).toMatch(/create trigger on_auth_user_created after insert on auth\.users for each row execute function public\.create_profile\(\);/);
+  });
+
+  it('the checker reads both', () => {
+    const sql = 'create function public.a() returns int language sql security definer as $$ select 1 $$;\ncreate function public.b() returns int language sql as $$ select 1 $$;\nrevoke execute on function public.a() from public, anon;';
+    expect(definerFunctions(sql)).toEqual(['a']);
+    expect([...revokedFromAnon(sql)]).toEqual(['a']);
+    expect([...revokedFromAnon('revoke execute on function public.c(int) from authenticated;')]).toEqual([]);
   });
 });
 
