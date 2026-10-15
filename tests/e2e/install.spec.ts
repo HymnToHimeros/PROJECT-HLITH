@@ -51,3 +51,35 @@ test('Account → Guide shows how to install while it isn’t installed', async 
   await expect(card).toBeVisible();
   await expect(card).toContainText(/Add to Home Screen|Install app|Install HLIÐSKJÁLF/);
 });
+
+// After a new release, a tab open from the old one asks for screen files that are gone, and the host
+// answers with the app page (status 200, HTML). The app reloads once to get the new release; if the
+// file is still wrong it shows a Reload card, never a blank page or a reload loop.
+test.describe('a screen file from an older release', () => {
+  test.use({ serviceWorkers: 'block' });
+  const htmlInstead = { status: 200, contentType: 'text/html', body: '<!doctype html><title>HLITH</title>' };
+
+  test('reloads once and the screen opens', async ({ page }) => {
+    let served = 0;
+    await page.route('**/assets/IntelScreen-*.js', (r) => (served++ === 0 ? r.fulfill(htmlInstead) : r.continue()));
+    let loads = 0;
+    page.on('load', () => loads++);
+    await page.goto('/hsr/today');
+    await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
+    await page.goto('/hsr/intel', { waitUntil: 'commit' }).catch(() => undefined);
+    await expect(page.getByRole('list', { name: 'Upcoming' })).toBeVisible({ timeout: 15_000 });
+    expect(served).toBeGreaterThanOrEqual(2);
+    expect(loads).toBeLessThanOrEqual(3);
+  });
+
+  test('still wrong after the reload: a Reload card, no loop', async ({ page }) => {
+    await page.route('**/assets/IntelScreen-*.js', (r) => r.fulfill(htmlInstead));
+    let loads = 0;
+    page.on('load', () => loads++);
+    await page.goto('/hsr/intel');
+    await expect(page.getByRole('alert').filter({ hasText: 'This part of HLITH didn’t load.' })).toBeVisible({ timeout: 15_000 });
+    await expect(page.getByRole('button', { name: 'Reload' })).toBeVisible();
+    await page.waitForTimeout(1_500);
+    expect(loads).toBeLessThanOrEqual(2); // the first load, and one reload
+  });
+});
