@@ -5,8 +5,12 @@
  * List items in data/*.json need stable ids that never change.
  * Add the game to src/games/index.ts. Nothing else in the app changes.
  */
-import type { Character, GameContract } from '../../core/contract';
+import type { Banner, Character, GameContract, GameEvent, Version, Weapon } from '../../core/contract';
+import banners from './data/banners.json';
 import characters from './data/characters.json';
+import events from './data/events.json';
+import versions from './data/versions.json';
+import weapons from './data/weapons.json';
 import { ARSENAL, ARSENAL_SOURCE, ARSENAL_TICKETS_AT_LEAST_PER_PULL, arsenalIssue, basicOperator, beginnerOperator, charteredOperator, HEADHUNTING_SOURCE, rerunOperator } from './gacha';
 
 const list = <T>(rows: unknown) => async () => rows as T[];
@@ -135,12 +139,13 @@ export const endfield: GameContract = {
 
   data: {
     characters: list<Character>(characters),
-    banners: async () => [],
-    events: async () => [],
+    banners: list<Banner>(banners),
+    events: list<GameEvent>(events),
     backlog: async () => [],
     materials: async () => [],
     teams: async () => [],
-    versions: async () => [],
+    versions: list<Version>(versions),
+    weapons: async () => weapons as Weapon[],
   },
 
   rules: {},
@@ -151,5 +156,8 @@ export const endfield: GameContract = {
     { what: 'Joint banner rules', source: 'not confirmed: a placeholder with the standard banner’s 6★ odds and no featured rule', entered: '2026-10-15', verified: false },
     { what: 'Currencies', source: 'endfield.wiki.gg', entered: '2026-10-11', verified: true },
     { what: 'Sanity max and regen rate', source: 'endfield.wiki.gg/wiki/Sanity', entered: '2026-10-15', verified: true },
+    { what: 'Server time zones (Asia UTC+8, Americas / Europe UTC-5)', source: 'Official notices, footer (web-news.gryphline.com, e.g. "[Sanctuary of Ink] Version Update Notes")', entered: '2026-10-15', verified: true },
+    { what: 'Daily reset 04:00, weekly reset Monday 04:00 (server time)', source: 'endfield.wiki.gg/wiki/Endfield_Talos_Wiki/servertime; official notices say "updated at 04:00 server time"', entered: '2026-10-15', verified: true },
+    { what: 'Operators, weapons, banners, events, versions (data/*.json, npm run data:endfield)', source: 'endfield.wiki.gg Cargo tables (CC BY-SA), versions checked against the official update notes', entered: '2026-10-15', verified: true },
   ],
 };
