@@ -28,6 +28,7 @@ export function buildLibrary(sheets: CharacterSheet[] = SHEETS, kitList: Kit[] =
     unlocks: new Map(kitList.map((k) => [k.characterId, new Map(k.skills.flatMap((s) => (s.unlock?.potential ? [[s.id, { potential: s.unlock.potential }] as const] : [])))])),
     pieceLabels: new Map(kitList.map((k) => [k.characterId, new Map(k.skills.map((s) => [s.id, s.label] as const))])),
     names: new Map(characters.map((c) => [c.id, c.name])),
+    releasedAt: new Map((characters as { id: string; releasedAt?: string }[]).flatMap((c) => (c.releasedAt ? [[c.id, c.releasedAt] as const] : []))),
     sameOperator: SAME_OPERATOR,
   };
 }

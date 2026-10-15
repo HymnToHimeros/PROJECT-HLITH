@@ -1,9 +1,9 @@
 import { describe, expect, it } from 'vitest';
 import type { TeamAccount } from '../../../core/contract';
 import { checkSquad, checkTeam, type Account, type Line } from './check';
-import { KITS, SHEETS, library } from './library';
+import { buildLibrary, KITS, SHEETS, library } from './library';
 import characters from '../data/characters.json';
-import { endfieldTeamRules, readSoFar, recommendedTeams, synergyLabel } from './team';
+import { endfieldTeamRules, readSoFar, recommendedTeams, synergyLabel, verdict } from './team';
 
 const CHEN = 'chr_0005_chen';
 const DA_PAN = 'chr_0018_dapan';
@@ -192,15 +192,28 @@ describe('Endfield team rules', () => {
     }
   });
   it('while only some kits are read: the counts come from the data, and no grade word (the % stays)', () => {
-    expect(endfieldTeamRules.readSoFar?.()).toEqual({ read: SHEETS.length, total: characters.length });
-    expect(SHEETS.length).toBeLessThan(characters.length);
-    const v = endfieldTeamRules.verdict([CHEN, CATCHER, LIFENG, DA_PAN], all);
+    const fewer = buildLibrary(SHEETS.slice(0, 7));
+    const now = Date.parse('2026-10-15T12:00:00Z');
+    const n = readSoFar(fewer, now);
+    expect(n.read).toBe(7);
+    expect(n.total).toBeGreaterThan(7);
+    const v = verdict([CHEN, CATCHER, LIFENG, DA_PAN], all, fewer, now);
     expect(v).toMatchObject({ rated: true, label: '' });
-    if (v.rated) expect(v.notes).toContain(`Only ${SHEETS.length} of ${characters.length} operators are read so far: this is the best among those, and it will change as more are read.`);
+    if (v.rated) expect(v.notes).toContain(`Only 7 of ${n.total} operators are read so far: this is the best among those, and it will change as more are read.`);
     expect(synergyLabel(100, 4, true)).toBe('');
     expect(synergyLabel(100, 4)).toBe('Excellent');
     expect(synergyLabel(100, 3, true)).toBe('Incomplete');
-    expect(readSoFar({ ...lib, names: new Map([...lib.sheets.keys()].map((id) => [id, id])) })).toEqual({ read: SHEETS.length, total: SHEETS.length });
+  });
+  it('only operators that are out count: before Argent Flow’s release every one is read (no line, the grade word is back); after it, 34 of 35 until her sheet', () => {
+    const argent = (characters as { id: string; releasedAt?: string }[]).find((c) => c.id === 'chr_argent-flow')?.releasedAt ?? '';
+    const before = Date.parse(argent) - 1;
+    const after = Date.parse(argent) + 1;
+    expect(readSoFar(lib, before)).toEqual({ read: SHEETS.length, total: SHEETS.length });
+    expect(readSoFar(lib, after)).toEqual({ read: SHEETS.length, total: SHEETS.length + 1 });
+    const v = verdict([CHEN, CATCHER, LIFENG, DA_PAN], all, lib, before);
+    expect(v.rated && v.label).not.toBe('');
+    if (v.rated) expect(v.notes.join(' ')).not.toMatch(/are read so far/);
+    expect(verdict([CHEN, CATCHER, LIFENG, DA_PAN], all, lib, after)).toMatchObject({ rated: true, label: '' });
   });
   it('recommends a team for every damage dealer read', () => {
     const teams = recommendedTeams();
