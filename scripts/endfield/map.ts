@@ -38,7 +38,7 @@ export function serverTime(r: Row): { base: number; start?: boolean; end?: boole
 }
 
 export type Rarity = 'top' | 'mid' | 'low';
-/** 6★ top, 5★ mid, and 4★ low only when the game contract has a third tier (`lowTier`). */
+/** 6★ top, 5★ mid, 4★ low (the contract's third tier; `lowTier` false leaves 4★ out). */
 export function rarityOf(stars: string, lowTier: boolean): Rarity | undefined {
   if (stars === '6') return 'top';
   if (stars === '5') return 'mid';

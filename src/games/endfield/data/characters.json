@@ -165,6 +165,56 @@
     "source": "endfield.wiki.gg (CC BY-SA)"
   },
   {
+    "id": "chr_0019_karin",
+    "name": "Akekuri",
+    "rarity": "low",
+    "element": "heat",
+    "role": "vanguard",
+    "art": "https://endfield.wiki.gg/images/Akekuri_Splash_Art.png",
+    "portrait": "https://endfield.wiki.gg/images/Akekuri_icon.png",
+    "source": "endfield.wiki.gg (CC BY-SA)"
+  },
+  {
+    "id": "chr_0020_meurs",
+    "name": "Catcher",
+    "rarity": "low",
+    "element": "physical",
+    "role": "defender",
+    "art": "https://endfield.wiki.gg/images/Catcher_Splash_Art.png",
+    "portrait": "https://endfield.wiki.gg/images/Catcher_icon.png",
+    "source": "endfield.wiki.gg (CC BY-SA)"
+  },
+  {
+    "id": "chr_0021_whiten",
+    "name": "Estella",
+    "rarity": "low",
+    "element": "cryo",
+    "role": "guard",
+    "art": "https://endfield.wiki.gg/images/Estella_Splash_Art.png",
+    "portrait": "https://endfield.wiki.gg/images/Estella_icon.png",
+    "source": "endfield.wiki.gg (CC BY-SA)"
+  },
+  {
+    "id": "chr_0022_bounda",
+    "name": "Fluorite",
+    "rarity": "low",
+    "element": "nature",
+    "role": "caster",
+    "art": "https://endfield.wiki.gg/images/Fluorite_Splash_Art.png",
+    "portrait": "https://endfield.wiki.gg/images/Fluorite_icon.png",
+    "source": "endfield.wiki.gg (CC BY-SA)"
+  },
+  {
+    "id": "chr_0023_antal",
+    "name": "Antal",
+    "rarity": "low",
+    "element": "electric",
+    "role": "supporter",
+    "art": "https://endfield.wiki.gg/images/Antal_Splash_Art.png",
+    "portrait": "https://endfield.wiki.gg/images/Antal_icon.png",
+    "source": "endfield.wiki.gg (CC BY-SA)"
+  },
+  {
     "id": "chr_0024_deepfin",
     "name": "Alesh",
     "rarity": "mid",

@@ -18,8 +18,8 @@ const OUT = resolve(ROOT, 'src/games/endfield/data');
 const WIKI_API = 'https://endfield.wiki.gg/api.php';
 const NEWS = 'https://web-news.gryphline.com/api/bulletin';
 const dry = process.argv.includes('--dry');
-/** Set to true once the Endfield contract has a third character rarity tier (4★ = 'low'). */
-const LOW_TIER = process.argv.includes('--low-tier');
+/** 4★ operators are 'low' (the contract's third tier, terms.rarity.low = '4★'). `--no-low-tier` leaves them out. */
+const LOW_TIER = !process.argv.includes('--no-low-tier');
 
 async function json<T>(url: string): Promise<T> {
   const res = await fetch(url, { headers: { 'user-agent': 'PROJECT-HLITH data import (https://github.com/HymnToHimeros/PROJECT-HLITH)' } });
