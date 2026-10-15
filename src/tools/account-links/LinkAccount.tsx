@@ -858,7 +858,7 @@ function SkportSection({ games, accounts, blocker, refresh }: { games: GameContr
         steps={[
           <>Add a SKPort account: paste its ACCOUNT_TOKEN (the guide in the form shows where to find it). Give it a name like "Main" or "Alt".</>,
           <>HLITH asks SKPort which Endfield account that token has, and reads your sanity (stamina), account level and check-in status.</>,
-          <>Choose where the token is kept: used once, remembered on this device, or saved on HLITH’s server. Only a token saved on the server can check in by itself.</>,
+          <>Choose where the token is kept: used once, remembered on this device, or saved on HLITH’s server.</>,
           <>In each account, press "Check now" for live sanity and check-in, or "Check in now" to claim the daily reward.</>,
         ]}
       >
@@ -866,7 +866,7 @@ function SkportSection({ games, accounts, blocker, refresh }: { games: GameContr
           <strong>Saved on HLITH’s server</strong> means: the token is stored encrypted (Supabase Vault). Nobody can read it back in a browser; only HLITH’s server uses it, to talk to SKPort for you. It is never written to logs.
         </p>
         <p className={c.body}>
-          <strong>To stop it:</strong> switch "Automatic daily check-in" off, or press "Forget" on the account. Forget overwrites the saved token with random text at once. Logging out of SKPort in your browser also ends the token.
+          <strong>To stop it:</strong> press "Forget" on the account. Forget overwrites the saved token with random text at once. Logging out of SKPort in your browser also ends the token.
         </p>
       </HowTo>
       <div className={c.row}>
@@ -990,7 +990,7 @@ function SkportAccountCard({ account, games, blocker, refresh }: { account: Skpo
         <div className={c.notBuilt}>
           <span>
             {onServer
-              ? 'Forget this account? The saved token is overwritten with random text right away and automatic check-in stops. Your game data stays. Your SKPort account itself isn’t touched.'
+              ? 'Forget this account? The saved token is overwritten with random text right away. Your game data stays. Your SKPort account itself isn’t touched.'
               : 'Forget this account? The token is deleted from this browser. Your game data stays. Your SKPort account itself isn’t touched.'}
           </span>
           <div className={c.row}>
@@ -1092,7 +1092,7 @@ function AddSkportAccount({ games, used, blocker, canCancel, onDone, onCancel }:
         <legend className={c.field}>Where to keep the token</legend>
         {([
           ['device', 'Remember on this device', skportRememberWorks() ? 'Kept in this browser only, encrypted: never synced, never in a backup.' : 'This browser can’t encrypt saved tokens, so it is kept only until you close this page.'],
-          ['server', 'Save on HLITH’s server (encrypted)', 'Needed for automatic check-in. Stored encrypted; no browser can read it back. Forget overwrites it.'],
+          ['server', 'Save on HLITH’s server (encrypted)', 'Stored encrypted; no browser can read it back. Forget overwrites it.'],
           ['once', 'Use once', 'Just look now. Nothing is kept after you close this page.'],
         ] as [SkportKeep, string, string][]).map(([k, title, note]) => (
           <label key={k} className={c.toggle}>
