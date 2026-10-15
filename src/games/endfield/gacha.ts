@@ -53,7 +53,7 @@ export const ARSENAL = {
   guaranteeIssues: 4,
   /** Once per banner: the 8th issue has the featured weapon if it hasn't come yet. */
   featuredIssue: 8,
-  /** Featured weapon given at issue 18, then every 16 issues (34, 50…); a selection box at 10, 26… (not counted: not the featured weapon). Unverified reading of the wiki. */
+  /** Featured weapon given at issue 18, then every 16 issues (34, 50…); a selection box at 10, 26… (not counted: not the featured weapon). Official: crate and weapon "in alternating order"; the numbers are the wiki's. */
   bonusFirst: 18,
   bonusEvery: 16,
 } as const;
@@ -142,8 +142,9 @@ export const charteredOperator: PityModel = featuredOperator(
 
 /**
  * RE-Factor Headhunting (rerun): the same, with free 10-pulls after 30, 60 and
- * 90. Not modelled: its 120 guarantee and free pulls happen once per banner
- * name across reruns, so a second run of the same banner may give less.
+ * 90. Officially the 120 guarantee, the free pulls and the 240 tokens count
+ * across all banners of the same name (attempts carry over); this models a
+ * first run of a name, which every rerun is so far (a test guards it).
  */
 export const rerunOperator: PityModel = featuredOperator(
   OPERATOR.rerunUrgentAt,
