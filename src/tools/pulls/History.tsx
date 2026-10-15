@@ -7,7 +7,7 @@ import { Button, EmptyState, ExampleTag, HowTo } from '../../core/ui';
 import { cx } from '../../core/ui/cx';
 import { buildHlithFile } from '../import/hlith';
 import { parseHistoryFile, readAccount, type ImportedAccount } from '../import/uigf';
-import { pityFromHistory } from '../pity/pity';
+import { featuredOf, hardPityOf, pityFromHistory } from '../pity/pity';
 import { cacheFileSteps, fileSteps, findHistoryLink, goodToKnow, guideFor, pasteSteps } from './importGuides';
 import { LuckReport } from './LuckReport';
 import p from './pulls.module.css';
@@ -125,7 +125,9 @@ export function History({ game, data, signedIn, now }: { game: GameContract; dat
 
   const example = data.history.example;
   const types = game.bannerTypes.filter((t) => data.history.list.some((h) => h.bannerType === t.id));
-  const allTops = topsWithPity(data.history.list).reverse();
+  // Banner types where a lost 50/50 makes the next one guaranteed (not Endfield's).
+  const noGuarantee = new Set(game.bannerTypes.filter((t) => featuredOf(t.pity)?.guaranteeAfterLoss === false).map((t) => t.id));
+  const allTops = topsWithPity(data.history.list, noGuarantee).reverse();
   const tops = showAll ? allTops : allTops.slice(0, 10);
   const noImport = !mapping || (!fileImport && !linkImport);
   const ways: { id: Exclude<Way, null>; label: string; sub: string; show: boolean }[] = [
@@ -263,9 +265,10 @@ export function History({ game, data, signedIn, now }: { game: GameContract; dat
       {types.length > 0 && (
         <div className={p.pityGrid}>
           {types.map((t) => {
-            const pity = pityFromHistory(data.history.list, t.id);
-            const hard = t.pity.kind === 'hard-pity' ? t.pity.hardPity : null;
-            const hasFeatured = t.pity.kind === 'hard-pity' && t.pity.featured !== undefined;
+            const featured = featuredOf(t.pity);
+            const pity = pityFromHistory(data.history.list, t.id, featured?.guaranteeAfterLoss ?? true);
+            const hard = hardPityOf(t.pity);
+            const hasFeatured = featured !== undefined;
             return (
               <article key={t.id} className={p.card} aria-label={`${t.label} pity`}>
                 <div className={p.kindRow}>
@@ -346,8 +349,8 @@ function byUid(accounts: ImportedAccount[]): ImportedAccount[] {
 export type TopResult = 'won' | 'lost' | 'guaranteed' | 'unknown';
 const RESULT_LABEL: Record<TopResult, string> = { won: 'won 50/50', lost: 'lost 50/50', guaranteed: 'guaranteed', unknown: '' };
 
-/** Each top result with the pulls it took on its banner type (V1: "every 5★ with the pity it took") and how it went. Oldest first. */
-export function topsWithPity(history: PullRecord[]): { pull: PullRecord; pity: number; result: TopResult }[] {
+/** Each top result with the pulls it took on its banner type (V1: "every 5★ with the pity it took") and how it went. Oldest first. `noGuarantee`: banner types where a loss guarantees nothing. */
+export function topsWithPity(history: PullRecord[], noGuarantee: ReadonlySet<string> = new Set()): { pull: PullRecord; pity: number; result: TopResult }[] {
   const sorted = [...history].sort((a, b) => a.time.localeCompare(b.time) || a.id.localeCompare(b.id));
   const since: Record<string, number> = {};
   const guaranteedNext: Record<string, boolean> = {};
@@ -364,7 +367,7 @@ export function topsWithPity(history: PullRecord[]): { pull: PullRecord; pity: n
     else if (h.featured) result = 'won';
     else {
       result = 'lost';
-      guaranteedNext[h.bannerType] = true;
+      guaranteedNext[h.bannerType] = !noGuarantee.has(h.bannerType);
     }
     out.push({ pull: h, pity: since[h.bannerType] ?? 0, result });
     since[h.bannerType] = 0;

@@ -158,6 +158,15 @@ the delivery, never skipped silently.
    - redeem codes from the program → `info` finding (the HoYoLAB job tries codes);
    - a leaked character's official name → a data PR that adds it to `REVEALED` in
      `scripts/import-nanoka.ts` (with the source), plus an `info` finding.
+   - **Arknights: Endfield** (official news API, no key):
+     `https://web-news.gryphline.com/api/bulletin?lang=en-us&code=arknights_endfield_official&page=1&pageSize=20`
+     (newest posts; one post: `.../api/bulletin/<cid>?lang=en-us&code=arknights_endfield_official`).
+     Times in the posts are server time: Asia UTC+8, Americas / Europe UTC-5 (see each post's footer).
+     A new version's "Version Update Notes", "Version Pre-Download & Update Notice" or "New Version Guide
+     Page", a new Chartered Headhunting / Arsenal Issue / event post that `npm run data:endfield` doesn't
+     show yet (its notes, or a missing id in `src/games/endfield/data/`) → an `info` finding with
+     `game_id: "endfield"` and the post as source. The wiki side: run `npm run data:endfield -- --dry` and
+     read its notes (left out for no date, operators or weapons with no wiki entry yet).
 3. A second leak source next to nanoka.cc. HSR: the DimbreathBot data
    (`https://raw.githubusercontent.com/DimbreathBot/TurnBasedGameData/main/…`,
    e.g. `ExcelOutput/AvatarConfig.json` for characters). ZZZ: none yet, so nanoka.cc
@@ -192,6 +201,10 @@ the delivery, never skipped silently.
      English first, marked "Translated, may be inexact", with "Show original".
    - The channel can't be read, or the channel name is still not set → say so in
      the delivery.
+
+   **Endfield: no leak source.** There is no maintained datamine or leak channel for
+   Endfield, so the routine delivers its official news and wiki changes only (step 2), never
+   a `leak` finding for Endfield. Seele posts tagged for other games stay ignored.
 4. Gaps: run `npm run data:schedule` and read its notes ("left out: no start
    yet", rewards unknown). Fill only what a source proves (official notice, wiki,
    game8), as a small data PR.

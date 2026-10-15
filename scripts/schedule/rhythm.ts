@@ -26,8 +26,25 @@ const DAY = 24 * HOUR;
 export const DAILY_AT_UTC = { h: 10, m: 30 };
 export const BUSY_START_DAYS = 14;
 export const QUIET_EVERY_DAYS = 3;
-/** A version whose end is not stated yet is expected to last this long. */
+/** A version whose end is not stated yet is expected to last this long (when a game has no history yet). */
 export const USUAL_LENGTH_DAYS = 42;
+
+/**
+ * How long this game's versions usually last: the median of its last 3 finished versions, in
+ * days (HSR/ZZZ about 42; Endfield runs 5–7 weeks). Falls back to USUAL_LENGTH_DAYS.
+ */
+export function usualLength(versions: VersionSpan[]): number {
+  const days = [...versions]
+    .sort((a, b) => Date.parse(a.start) - Date.parse(b.start))
+    .slice(0, -1)
+    .slice(-3)
+    .map((v) => (Date.parse(v.end) - Date.parse(v.start)) / DAY)
+    .filter((d) => d > 20 && d < 80)
+    .sort((a, b) => a - b);
+  if (!days.length) return USUAL_LENGTH_DAYS;
+  const mid = Math.floor(days.length / 2);
+  return Math.round(days.length % 2 ? (days[mid] ?? USUAL_LENGTH_DAYS) : ((days[mid - 1] ?? 0) + (days[mid] ?? 0)) / 2);
+}
 const MAINTENANCE_HOURS = 5;
 const LEAD_DAYS = 2;
 
@@ -40,6 +57,8 @@ export type SignalLog = Partial<Record<Signal, Record<string, number>>>;
 export const DEFAULT_OFFSETS: Record<string, Record<Signal, number>> = {
   hsr: { program: -372, preDownload: -39.5 },
   zzz: { program: -378, preDownload: -42 },
+  // Endfield: the "New Version Guide Page" post (1.6) and the "Version Pre-Download & Update Notice" (1.3–1.6).
+  endfield: { program: -208, preDownload: -48 },
 };
 
 export interface VersionSpan {
@@ -96,6 +115,7 @@ export function planChecks(
   from: number,
   days: number,
   starts: string[] = [],
+  usualDays = USUAL_LENGTH_DAYS,
 ): Plan | undefined {
   const sorted = [...versions].sort((a, b) => Date.parse(a.start) - Date.parse(b.start));
   const current = sorted.filter((v) => Date.parse(v.start) <= from).at(-1) ?? sorted[0];
@@ -126,7 +146,7 @@ export function planChecks(
 
     // The next version: its start is this one's end; its own end is not known yet.
     start = end;
-    end = start + USUAL_LENGTH_DAYS * DAY;
+    end = start + usualDays * DAY;
     id = nextId(id);
     stated = false;
   }

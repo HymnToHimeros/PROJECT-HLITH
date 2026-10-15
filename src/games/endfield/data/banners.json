@@ -1,0 +1,571 @@
+[
+  {
+    "id": "basic-headhunting-2026-01-22",
+    "type": "basic",
+    "title": "Basic Headhunting",
+    "featured": [
+      "chr_0025_ardelia",
+      "chr_0029_pograni",
+      "chr_0026_lastrite",
+      "chr_0009_azrila",
+      "chr_0015_lifeng"
+    ],
+    "start": "2026-01-22T03:00:00.000Z",
+    "end": "2026-11-24T22:00:00.000Z",
+    "serverTime": {
+      "base": 8,
+      "start": true
+    },
+    "permanent": true
+  },
+  {
+    "id": "cosmic-voice-issue-2026-01-22",
+    "type": "weapon",
+    "title": "Cosmic Voice Issue",
+    "featured": [
+      "wpn_funnel_0013"
+    ],
+    "start": "2026-01-22T03:00:00.000Z",
+    "end": "2026-11-24T22:00:00.000Z",
+    "art": "https://endfield.wiki.gg/images/Dreams_of_the_Starry_Beach_icon.png",
+    "permanent": true
+  },
+  {
+    "id": "far-expedition-issue-2026-01-22",
+    "type": "weapon",
+    "title": "Far Expedition Issue",
+    "featured": [
+      "wpn_sword_0016"
+    ],
+    "start": "2026-01-22T03:00:00.000Z",
+    "end": "2026-11-24T22:00:00.000Z",
+    "art": "https://endfield.wiki.gg/images/Never_Rest_icon.png",
+    "permanent": true
+  },
+  {
+    "id": "new-horizons-headhunting-2026-01-22",
+    "type": "beginner",
+    "title": "New Horizons Headhunting",
+    "featured": [
+      "chr_0025_ardelia",
+      "chr_0029_pograni",
+      "chr_0026_lastrite",
+      "chr_0009_azrila",
+      "chr_0015_lifeng"
+    ],
+    "start": "2026-01-22T03:00:00.000Z",
+    "end": "2026-11-24T22:00:00.000Z",
+    "serverTime": {
+      "base": 8,
+      "start": true
+    },
+    "permanent": true
+  },
+  {
+    "id": "rising-mount-issue-2026-01-22",
+    "type": "weapon",
+    "title": "Rising Mount Issue",
+    "featured": [
+      "wpn_lance_0012"
+    ],
+    "start": "2026-01-22T03:00:00.000Z",
+    "end": "2026-11-24T22:00:00.000Z",
+    "art": "https://endfield.wiki.gg/images/Mountain_Bearer_icon.png",
+    "permanent": true
+  },
+  {
+    "id": "scars-of-the-forge-2026-01-22",
+    "type": "chartered",
+    "title": "Scars of the Forge",
+    "featured": [
+      "chr_0016_laevat"
+    ],
+    "start": "2026-01-22T03:00:00.000Z",
+    "end": "2026-02-07T03:59:59.000Z",
+    "serverTime": {
+      "base": 8,
+      "end": true
+    }
+  },
+  {
+    "id": "smelting-forge-issue-2026-01-22",
+    "type": "weapon",
+    "title": "Smelting Forge Issue",
+    "featured": [
+      "wpn_sword_0006"
+    ],
+    "start": "2026-01-22T03:00:00.000Z",
+    "end": "2026-03-11T08:59:59.000Z",
+    "serverTime": {
+      "base": 8,
+      "end": true
+    },
+    "art": "https://endfield.wiki.gg/images/Forgeborn_Scathe_icon.png"
+  },
+  {
+    "id": "solid-ice-issue-2026-01-22",
+    "type": "weapon",
+    "title": "Solid Ice Issue",
+    "featured": [
+      "wpn_claym_0013"
+    ],
+    "start": "2026-01-22T03:00:00.000Z",
+    "end": "2026-11-24T22:00:00.000Z",
+    "art": "https://endfield.wiki.gg/images/Khravengger_icon.png",
+    "permanent": true
+  },
+  {
+    "id": "thunderous-peal-issue-2026-01-22",
+    "type": "weapon",
+    "title": "Thunderous Peal Issue",
+    "featured": [
+      "wpn_claym_0007"
+    ],
+    "start": "2026-01-22T03:00:00.000Z",
+    "end": "2026-11-24T22:00:00.000Z",
+    "art": "https://endfield.wiki.gg/images/Thunderberge_icon.png",
+    "permanent": true
+  },
+  {
+    "id": "express-delivery-issue-2026-02-07",
+    "type": "weapon",
+    "title": "Express Delivery Issue",
+    "featured": [
+      "wpn_funnel_0011"
+    ],
+    "start": "2026-02-07T04:00:00.000Z",
+    "end": "2026-03-28T03:59:59.000Z",
+    "serverTime": {
+      "base": 8,
+      "start": true,
+      "end": true
+    },
+    "art": "https://endfield.wiki.gg/images/Delivery_Guaranteed_icon.png"
+  },
+  {
+    "id": "the-floaty-messenger-2026-02-07",
+    "type": "chartered",
+    "title": "The Floaty Messenger",
+    "featured": [
+      "chr_0013_aglina"
+    ],
+    "start": "2026-02-07T04:00:00.000Z",
+    "end": "2026-02-24T03:59:59.000Z",
+    "serverTime": {
+      "base": 8,
+      "start": true,
+      "end": true
+    }
+  },
+  {
+    "id": "graffiti-issue-2026-02-23",
+    "type": "weapon",
+    "title": "Graffiti Issue",
+    "featured": [
+      "wpn_pistol_0010"
+    ],
+    "start": "2026-02-23T20:00:00.000Z",
+    "end": "2026-04-16T09:00:00.000Z",
+    "serverTime": {
+      "base": 8,
+      "start": true,
+      "end": true
+    },
+    "art": "https://endfield.wiki.gg/images/Artzy_Tyrannical_icon.png"
+  },
+  {
+    "id": "hues-of-passion-2026-02-24",
+    "type": "chartered",
+    "title": "Hues of Passion",
+    "featured": [
+      "chr_0017_yvonne"
+    ],
+    "start": "2026-02-24T04:00:00.000Z",
+    "end": "2026-03-11T21:59:59.000Z",
+    "serverTime": {
+      "base": 8,
+      "start": true
+    }
+  },
+  {
+    "id": "budding-anew-issue-2026-03-11",
+    "type": "weapon",
+    "title": "Budding Anew Issue",
+    "featured": [
+      "wpn_pistol_0011"
+    ],
+    "start": "2026-03-11T15:00:00.000Z",
+    "end": "2026-05-22T03:59:59.000Z",
+    "serverTime": {
+      "base": 8,
+      "start": true,
+      "end": true
+    },
+    "art": "https://endfield.wiki.gg/images/Brigand%27s_Calling_icon.png"
+  },
+  {
+    "id": "river-s-daughter-2026-03-12",
+    "type": "chartered",
+    "title": "River's Daughter",
+    "featured": [
+      "chr_0027_tangtang"
+    ],
+    "start": "2026-03-12T04:00:00.000Z",
+    "end": "2026-03-29T03:59:59.000Z",
+    "serverTime": {
+      "base": 8,
+      "end": true
+    }
+  },
+  {
+    "id": "scarlet-pearl-issue-2026-03-29",
+    "type": "weapon",
+    "title": "Scarlet Pearl Issue",
+    "featured": [
+      "wpn_sword_0022"
+    ],
+    "start": "2026-03-29T04:00:00.000Z",
+    "end": "2026-06-26T03:59:59.000Z",
+    "serverTime": {
+      "base": 8,
+      "start": true,
+      "end": true
+    },
+    "art": "https://endfield.wiki.gg/images/Lupine_Scarlet_icon.png"
+  },
+  {
+    "id": "wolf-pearl-2026-03-29",
+    "type": "chartered",
+    "title": "Wolf Pearl",
+    "featured": [
+      "chr_0028_wulfa"
+    ],
+    "start": "2026-03-29T04:00:00.000Z",
+    "end": "2026-04-16T21:59:59.000Z",
+    "serverTime": {
+      "base": 8,
+      "start": true
+    }
+  },
+  {
+    "id": "drifting-raft-issue-2026-04-16",
+    "type": "weapon",
+    "title": "Drifting Raft Issue",
+    "featured": [
+      "wpn_funnel_0015"
+    ],
+    "start": "2026-04-16T13:00:00.000Z",
+    "end": "2026-07-15T21:59:59.000Z",
+    "serverTime": {
+      "base": 8,
+      "start": true
+    },
+    "art": "https://endfield.wiki.gg/images/Lone_Barge_icon.png"
+  },
+  {
+    "id": "thunder-of-renewal-2026-04-17",
+    "type": "chartered",
+    "title": "Thunder of Renewal",
+    "featured": [
+      "chr_0030_zhuangfy"
+    ],
+    "start": "2026-04-17T04:00:00.000Z",
+    "end": "2026-05-22T03:59:59.000Z",
+    "serverTime": {
+      "base": 8,
+      "end": true
+    }
+  },
+  {
+    "id": "fest-of-brilliance-2026-05-14",
+    "type": "joint",
+    "title": "Fest of Brilliance",
+    "featured": [
+      "chr_0016_laevat",
+      "chr_0013_aglina",
+      "chr_0025_ardelia",
+      "chr_0029_pograni"
+    ],
+    "start": "2026-05-14T04:00:00.000Z",
+    "end": "2026-06-04T21:59:59.000Z",
+    "serverTime": {
+      "base": 8,
+      "start": true
+    }
+  },
+  {
+    "id": "smelting-fire-issue-2026-05-14",
+    "type": "weapon",
+    "title": "Smelting Fire Issue",
+    "featured": [
+      "wpn_sword_0006"
+    ],
+    "start": "2026-05-14T04:00:00.000Z",
+    "end": "2026-06-04T21:59:59.000Z",
+    "serverTime": {
+      "base": 8,
+      "start": true
+    },
+    "art": "https://endfield.wiki.gg/images/Forgeborn_Scathe_icon.png"
+  },
+  {
+    "id": "swift-walker-issue-2026-05-14",
+    "type": "weapon",
+    "title": "Swift Walker Issue",
+    "featured": [
+      "wpn_funnel_0011"
+    ],
+    "start": "2026-05-14T04:00:00.000Z",
+    "end": "2026-06-04T21:59:59.000Z",
+    "serverTime": {
+      "base": 8,
+      "start": true
+    },
+    "art": "https://endfield.wiki.gg/images/Delivery_Guaranteed_icon.png"
+  },
+  {
+    "id": "fists-of-no-regrets-2026-06-05",
+    "type": "chartered",
+    "title": "Fists of No Regrets",
+    "featured": [
+      "chr_0031_mifu"
+    ],
+    "start": "2026-06-05T04:00:00.000Z",
+    "end": "2026-06-26T03:59:59.000Z",
+    "serverTime": {
+      "base": 8,
+      "end": true
+    }
+  },
+  {
+    "id": "scarlet-knot-issue-2026-06-05",
+    "type": "weapon",
+    "title": "Scarlet Knot Issue",
+    "featured": [
+      "wpn_claym_0017"
+    ],
+    "start": "2026-06-05T04:00:00.000Z",
+    "end": "2026-08-09T03:59:59.000Z",
+    "serverTime": {
+      "base": 8,
+      "end": true
+    },
+    "art": "https://endfield.wiki.gg/images/Amaranthine_Tassel_icon.png"
+  },
+  {
+    "id": "crimson-hued-issue-2026-06-26",
+    "type": "weapon",
+    "title": "Crimson Hued Issue",
+    "featured": [
+      "wpn_lance_0015"
+    ],
+    "start": "2026-06-26T04:00:00.000Z",
+    "end": "2026-09-01T21:59:59.000Z",
+    "serverTime": {
+      "base": 8,
+      "start": true
+    },
+    "art": "https://endfield.wiki.gg/images/Blessing_of_Lustrous_Carmine_icon.png"
+  },
+  {
+    "id": "expunger-of-sin-2026-06-26",
+    "type": "chartered",
+    "title": "Expunger of Sin",
+    "featured": [
+      "chr_0033_camille"
+    ],
+    "start": "2026-06-26T04:00:00.000Z",
+    "end": "2026-07-15T21:59:59.000Z",
+    "serverTime": {
+      "base": 8,
+      "start": true
+    }
+  },
+  {
+    "id": "military-grade-issue-2026-07-16",
+    "type": "weapon",
+    "title": "Military Grade Issue",
+    "featured": [
+      "wpn_funnel_0016"
+    ],
+    "start": "2026-07-16T04:00:00.000Z",
+    "end": "2026-09-30T03:59:59.000Z",
+    "serverTime": {
+      "base": 8,
+      "end": true
+    },
+    "art": "https://endfield.wiki.gg/images/Type_42_Solemn_Phalanx_icon.png"
+  },
+  {
+    "id": "north-yearns-the-rift-vigile-2026-07-16",
+    "type": "chartered",
+    "title": "North Yearns the Rift Vigile",
+    "featured": [
+      "chr_0032_lizhiyan"
+    ],
+    "start": "2026-07-16T04:00:00.000Z",
+    "end": "2026-08-09T03:59:59.000Z",
+    "serverTime": {
+      "base": 8,
+      "end": true
+    }
+  },
+  {
+    "id": "bedazzled-issue-2026-08-09",
+    "type": "weapon",
+    "title": "Bedazzled Issue",
+    "featured": [
+      "wpn_lance_0014"
+    ],
+    "start": "2026-08-09T04:00:00.000Z",
+    "end": "2026-11-05T03:59:59.000Z",
+    "serverTime": {
+      "base": 8,
+      "start": true,
+      "end": true
+    },
+    "art": "https://endfield.wiki.gg/images/Bedazzling_Night_Debut_icon.png"
+  },
+  {
+    "id": "good-morning-from-your-dawnstar-2026-08-09",
+    "type": "chartered",
+    "title": "Good Morning from Your Dawnstar",
+    "featured": [
+      "chr_0035_liino"
+    ],
+    "start": "2026-08-09T04:00:00.000Z",
+    "end": "2026-09-01T21:59:59.000Z",
+    "serverTime": {
+      "base": 8,
+      "start": true
+    }
+  },
+  {
+    "id": "deep-cold-issue-2026-09-02",
+    "type": "weapon",
+    "title": "Deep Cold Issue",
+    "featured": [
+      "wpn_funnel_0019"
+    ],
+    "start": "2026-09-02T04:00:00.000Z",
+    "end": "2026-11-25T21:59:59.000Z",
+    "serverTime": {
+      "base": 8,
+      "end": true
+    },
+    "art": "https://endfield.wiki.gg/images/Umbra_of_Frigid_Eventide_icon.png"
+  },
+  {
+    "id": "winter-hunt-2026-09-02",
+    "type": "chartered",
+    "title": "Winter Hunt",
+    "featured": [
+      "chr_0034_typhoea"
+    ],
+    "start": "2026-09-02T04:00:00.000Z",
+    "end": "2026-09-30T03:59:59.000Z",
+    "serverTime": {
+      "base": 8,
+      "end": true
+    }
+  },
+  {
+    "id": "resplendent-spectrum-2026-09-24",
+    "type": "rerun",
+    "title": "Resplendent Spectrum",
+    "featured": [
+      "chr_0017_yvonne"
+    ],
+    "start": "2026-09-24T04:00:00.000Z",
+    "end": "2026-10-14T21:59:59.000Z",
+    "serverTime": {
+      "base": 8,
+      "start": true
+    }
+  },
+  {
+    "id": "tag-artist-issue-2026-09-24",
+    "type": "weapon",
+    "title": "Tag Artist Issue",
+    "featured": [
+      "wpn_pistol_0010"
+    ],
+    "start": "2026-09-24T04:00:00.000Z",
+    "end": "2026-10-14T21:59:59.000Z",
+    "serverTime": {
+      "base": 8,
+      "start": true
+    },
+    "art": "https://endfield.wiki.gg/images/Artzy_Tyrannical_icon.png"
+  },
+  {
+    "id": "rejuvenation-2026-10-15",
+    "type": "chartered",
+    "title": "Rejuvenation",
+    "featured": [
+      "chr_0036_jsspsi"
+    ],
+    "start": "2026-10-15T04:00:00.000Z",
+    "end": "2026-11-05T03:59:59.000Z",
+    "serverTime": {
+      "base": 8,
+      "end": true
+    }
+  },
+  {
+    "id": "seal-of-jade-issue-2026-10-15",
+    "type": "weapon",
+    "title": "Seal of Jade Issue",
+    "featured": [
+      "wpn_claym_0018"
+    ],
+    "start": "2026-10-15T04:00:00.000Z",
+    "end": "2026-12-17T03:59:59.000Z",
+    "serverTime": {
+      "base": 8,
+      "end": true
+    },
+    "art": "https://endfield.wiki.gg/images/Jade_Vessel_icon.png"
+  },
+  {
+    "id": "ancestral-spring-flows-anew-2026-10-29",
+    "type": "rerun",
+    "title": "Ancestral Spring Flows Anew",
+    "featured": [
+      "chr_0027_tangtang"
+    ],
+    "start": "2026-10-29T04:00:00.000Z",
+    "end": "2026-11-19T03:59:59.000Z",
+    "serverTime": {
+      "base": 8,
+      "start": true
+    }
+  },
+  {
+    "id": "tender-sprig-issue-2026-10-29",
+    "type": "weapon",
+    "title": "Tender Sprig Issue",
+    "featured": [
+      "wpn_pistol_0011"
+    ],
+    "start": "2026-10-29T04:00:00.000Z",
+    "end": "2026-11-19T21:59:59.000Z",
+    "serverTime": {
+      "base": 8,
+      "start": true
+    },
+    "art": "https://endfield.wiki.gg/images/Brigand%27s_Calling_icon.png"
+  },
+  {
+    "id": "moongleam-issue-2026-11-05",
+    "type": "weapon",
+    "title": "Moongleam Issue",
+    "featured": [],
+    "start": "2026-11-05T04:00:00.000Z",
+    "end": "2027-01-06T21:59:59.000Z",
+    "serverTime": {
+      "base": 8,
+      "end": true
+    }
+  }
+]

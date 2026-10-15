@@ -13,6 +13,7 @@
  */
 import type { GameContract, GameId, ModuleId } from '../../core/contract';
 import type { GameUserData } from '../../core/data/userData';
+import { hardPityOf } from '../pity/pity';
 
 export type BadgeId =
   | 'owner'
@@ -115,7 +116,8 @@ export function longestRun(days: string[]): number {
 function hardPityHit(game: GameContract, d: GameUserData): string | undefined {
   const hits: string[] = [];
   for (const bt of game.bannerTypes) {
-    if (bt.pity.kind !== 'hard-pity') continue;
+    const hard = hardPityOf(bt.pity);
+    if (hard === null) continue;
     const pulls = d.pulls.filter((p) => p.bannerType === bt.id).sort((a, b) => a.time.localeCompare(b.time) || a.id.localeCompare(b.id));
     let since = 0;
     // Before the first top in the history the count may have started earlier (an older, unimported pull), so it can't be proven.
@@ -123,7 +125,7 @@ function hardPityHit(game: GameContract, d: GameUserData): string | undefined {
     for (const p of pulls) {
       since++;
       if (p.rarity !== 'top') continue;
-      if (counting && since === bt.pity.hardPity) hits.push(p.time);
+      if (counting && since === hard) hits.push(p.time);
       counting = true;
       since = 0;
     }

@@ -113,8 +113,20 @@ export interface Currency {
    * one with `perPull` that isn't `paid`.
    */
   perPull?: number;
+  /**
+   * How many make one pull on particular banner types, where that differs from
+   * `perPull` or the currency only buys pulls there (Endfield: 198 Arsenal
+   * Tickets a weapon pull, sold 1980 for 10).
+   */
+  perPullOn?: Record<string, number>;
   /** A pull item, usable on these banner types. */
   pullItemFor?: string[];
+  /**
+   * You also get this currency from pulls on these banner types: at least
+   * `atLeastPerPull` a pull on average, by the game's own rules (Endfield:
+   * Arsenal Tickets from operator pulls). Only the sure part is counted.
+   */
+  fromPulls?: { on: string[]; atLeastPerPull: number; why: string };
   paid?: boolean;
 }
 
@@ -133,13 +145,20 @@ export interface BannerType {
   /** What the top-rarity result is for chance and worst case. */
   target: 'character' | 'weapon' | 'other';
   pity: PityModel;
+  /** Only these currencies buy pulls here (Endfield's weapon banner: Arsenal Tickets and Origeometry). Missing = every currency that makes pulls. */
+  currencies?: string[];
 }
 
 /** Pity engine state, generic across models. */
 export interface PityState {
   pulls: number; // since last top-rarity result
   guaranteed: boolean; // next top-rarity result is the featured one
-  extra?: Record<string, number>; // room for a game's own counters
+  /**
+   * Room for a game's own counters. Two have a shared meaning, filled from
+   * history by the Pulls screens: `banner` = counted pulls on the current
+   * banner so far, `got` = 1 once its featured result came on it.
+   */
+  extra?: Record<string, number>;
 }
 
 /**
@@ -159,12 +178,36 @@ export type PityModel =
   | { kind: 'spark'; sparkAt: number; baseRate: number | null }
   | { kind: 'none'; baseRate: number | null }
   | {
+      /**
+       * A game's own rules, written in its games/ folder (e.g. Endfield's 120
+       * guarantee once per banner). The pity engine steps through `pull` and
+       * never needs to know the game.
+       */
       kind: 'custom';
       describe: string;
-      topRate: (state: PityState) => number;
-      next: (state: PityState, gotTop: boolean, gotFeatured: boolean) => PityState;
-      worstCase: (state: PityState) => number;
+      /** Where the rules come from, shown in the Guide. */
+      source: string;
+      /** Every result of the next step from this state: its chance, the state after it, and the featured copies it gives (0, 1 or more). */
+      pull: (state: PityState) => PullOutcome[];
+      /** Pulls in one step: 1, or 10 when the game only sells pulls in tens (Endfield's weapon issues). */
+      step?: number;
+      /** Most pulls for `copies` featured results from this state; null = no ceiling. */
+      worstCase: (state: PityState, copies: number) => number | null;
+      /** The top-rarity counter's ceiling ("pity 40/80"), when the game has one. */
+      hardPity?: number;
+      /** The featured split, for the Luck report and History (Endfield: 50/50 with no guarantee after a loss). */
+      featured?: { winRate: number; guaranteeAfterLoss: boolean };
+      /** After `after` pulls on one banner, the next banner of this type starts with `pulls` free pulls that count as usual (Endfield's Headhunting Dossier). */
+      carryOver?: { after: number; pulls: number; label: string };
     };
+
+/** One result of a step in a `custom` PityModel. */
+export interface PullOutcome {
+  p: number;
+  next: PityState;
+  /** Featured copies this result gives. */
+  copies: number;
+}
 
 export interface IncomeRow {
   id: string; // stable: 'hsr.daily-training'

@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import type { PityModel, PullRecord } from '../../core/contract';
-import { chance, luck, pityFromHistory, worstCase } from './pity';
+import { carryIn, chance, hardPityOf, luck, pityFromHistory, worstCase } from './pity';
 
 const character: PityModel = {
   kind: 'hard-pity',
@@ -82,13 +82,31 @@ describe('chance (exact, by stepping through states)', () => {
     const custom: PityModel = {
       kind: 'custom',
       describe: 'guaranteed every 10th pull',
-      topRate: (s) => (s.pulls + 1 >= 10 ? 1 : 0),
-      next: (s, top) => ({ pulls: top ? 0 : s.pulls + 1, guaranteed: false }),
-      worstCase: (s) => 10 - s.pulls,
+      source: 'test',
+      pull: (s) => (s.pulls + 1 >= 10 ? [{ p: 1, next: { pulls: 0, guaranteed: false }, copies: 1 }] : [{ p: 1, next: { pulls: s.pulls + 1, guaranteed: false }, copies: 0 }]),
+      worstCase: (s, copies) => 10 - s.pulls + (copies - 1) * 10,
+      hardPity: 10,
     };
     expect(value(chance(custom, fresh, 9, 'official'))).toBe(0);
     expect(value(chance(custom, fresh, 10, 'official'))).toBe(1);
+    // A game's own rule is its published rules, so both modes use it.
+    expect(value(chance(custom, fresh, 10, 'community'))).toBe(1);
     expect(value(worstCase(custom, { pulls: 4, guaranteed: false }, 2))).toBe(16);
+    expect(hardPityOf(custom)).toBe(10);
+  });
+  it('sold in steps of 10: only whole steps count, and one step can give several copies', () => {
+    const tens: PityModel = {
+      kind: 'custom',
+      describe: 'two copies in every step of 10',
+      source: 'test',
+      step: 10,
+      pull: (s) => [{ p: 1, next: s, copies: 2 }],
+      worstCase: (_s, copies) => Math.ceil(copies / 2) * 10,
+    };
+    expect(value(chance(tens, fresh, 19, 'official', 2))).toBe(1);
+    expect(value(chance(tens, fresh, 19, 'official', 3))).toBe(0); // the 9 left over buy nothing
+    expect(value(chance(tens, fresh, 20, 'official', 3))).toBe(1);
+    expect(worstCase({ ...tens, worstCase: () => null }, fresh).known).toBe(false);
   });
 });
 
@@ -135,5 +153,28 @@ describe('pity and luck from history', () => {
     expect(l.tops).toBe(2);
     expect(l.averagePity).toMatchObject({ known: true, value: 40 });
     expect(l.fiftyFifty).toEqual({ won: 0, lost: 1, unknown: 0 });
+  });
+  it('no guarantee after a loss (Endfield): every top result is a 50/50, and a loss guarantees nothing', () => {
+    expect(luck(history, 'character', false).fiftyFifty).toEqual({ won: 1, lost: 1, unknown: 0 });
+    expect(pityFromHistory(history.slice(0, 65), 'character', false).guaranteed).toMatchObject({ known: true, value: false });
+  });
+});
+
+describe('free pulls carried to the next banner (Endfield’s Headhunting Dossier)', () => {
+  const banners = [
+    { type: 'character', start: '2026-01-01T00:00:00Z' },
+    { type: 'character', start: '2026-02-01T00:00:00Z' },
+    { type: 'weapon', start: '2026-01-15T00:00:00Z' },
+  ];
+  const next = banners[1] as (typeof banners)[number];
+  const carry = { after: 60, pulls: 10 };
+  const on = (n: number, day: string) => Array.from({ length: n }, (_, i) => ({ ...pull(i, 'low'), id: `${day}-${i}`, time: `2026-${day}T00:00:00Z` }));
+  it('60 pulls on the last banner → 10 free on the next, until the first pull there uses them', () => {
+    expect(carryIn(on(60, '01-10'), banners, next, carry)).toBe(10);
+    expect(carryIn(on(59, '01-10'), banners, next, carry)).toBe(0);
+    expect(carryIn([...on(60, '01-10'), ...on(1, '02-02')], banners, next, carry)).toBe(0);
+  });
+  it('no earlier banner of that type → nothing carried', () => {
+    expect(carryIn(on(80, '01-10'), banners, banners[0] as (typeof banners)[number], carry)).toBe(0);
   });
 });

@@ -70,7 +70,10 @@ export function report(game: string, before: Lists, after: Lists, { build, now, 
   const kitChanged: string[] = [];
   const G = game.toUpperCase();
   const nanoka = { name: `nanoka.cc${build ? `, build ${build}` : ''}`, url: `https://nanoka.cc/${game}` };
-  const official = { name: 'Official notices + community wiki (scripts/import-schedule.ts)' };
+  const official =
+    game === 'endfield'
+      ? { name: 'Official news (Gryphline) + endfield.wiki.gg, CC BY-SA (scripts/import-endfield.ts)', url: 'https://endfield.wiki.gg' }
+      : { name: 'Official notices + community wiki (scripts/import-schedule.ts)' };
 
   // Versions: new ones and moved ends (the next patch day).
   const oldV = byId(before.versions);
