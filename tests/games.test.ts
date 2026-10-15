@@ -33,8 +33,8 @@ describe('the real game records', () => {
     expect(gameProblems(template)).toEqual([]);
   });
 
-  it('only HSR and ZZZ ship, with unique ids', () => {
-    expect(games.map((g) => g.id)).toEqual(['hsr', 'zzz']);
+  it('HSR, ZZZ and Endfield ship, with unique ids', () => {
+    expect(games.map((g) => g.id)).toEqual(['hsr', 'zzz', 'endfield']);
   });
 });
 
@@ -46,7 +46,7 @@ describe('a new, unlike game needs no core change (PLAN §2b)', () => {
 
   it('registers next to the real games', () => {
     for (const g of [...games, fakeGame]) registerGame(g);
-    expect(listGames().map((g) => g.id)).toEqual(['hsr', 'zzz', 'fake-quest']);
+    expect(listGames().map((g) => g.id)).toEqual(['hsr', 'zzz', 'endfield', 'fake-quest']);
   });
 
   it('shows only its own modules, with the rest marked not available', () => {
@@ -100,9 +100,10 @@ describe('built-in list ids are unique in every game', () => {
 });
 
 describe('history mapping of the real games', () => {
-  it('HSR and ZZZ map every gacha type onto a banner type they have', () => {
-    for (const g of games) {
-      expect(g.historyMapping, g.id).toBeDefined();
+  it('games with history mapping map every gacha type onto a banner type they have', () => {
+    const mapped = games.filter((g) => g.historyMapping);
+    expect(mapped.length).toBeGreaterThan(0);
+    for (const g of mapped) {
       const types = new Set(g.bannerTypes.map((b) => b.id));
       for (const bt of Object.values(g.historyMapping?.gachaTypes ?? {})) expect(types.has(bt), `${g.id}: ${bt}`).toBe(true);
     }
