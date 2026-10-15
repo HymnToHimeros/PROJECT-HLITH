@@ -19,6 +19,7 @@ import { useBuilds, useKits, type RosterData } from './useRosterData';
 import { formatFullDate } from '../../core/time/reset';
 import { MyLabels } from './MyLabels';
 import { feedback } from '../../core/ui/feedback';
+import { hardPityOf, worstCase } from '../pity/pity';
 
 interface Props {
   data: RosterData;
@@ -572,8 +573,10 @@ function BuildCard({ data, character: c }: { data: RosterData; character: Charac
 
 function IfYouPull({ data, character, openPulls }: { data: RosterData; character: Character; openPulls: Props['openPulls'] }) {
   const { game } = data;
-  const banner = game.bannerTypes.find((b) => b.target === 'character' && b.pity.kind === 'hard-pity');
-  const worst = banner && banner.pity.kind === 'hard-pity' ? banner.pity.hardPity * (banner.pity.featured?.guaranteeAfterLoss ? 2 : 1) : null;
+  const banner = game.bannerTypes.find((b) => b.target === 'character' && hardPityOf(b.pity) !== null);
+  // From a fresh start with the 50/50 still to play; null when the game has no ceiling.
+  const sure = banner ? worstCase(banner.pity, { pulls: 0, guaranteed: false, extra: { banner: 0, got: 0 } }) : null;
+  const worst = sure?.known ? sure.value : null;
   return (
     <section className={r.card} aria-labelledby="if-you-pull">
       <h3 className={r.cardTitle} id="if-you-pull">

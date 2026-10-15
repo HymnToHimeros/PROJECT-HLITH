@@ -1,6 +1,6 @@
 import { act, fireEvent, render, screen, within } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import type { Character, GameContract } from '../../core/contract';
+import type { Character, GameContract, PityState } from '../../core/contract';
 import { reloadPrefs, updatePrefs } from '../../core/data/prefs';
 import { addLedgerEntry, balances, gameData, importPulls, resetUserData, setEventProgress } from '../../core/data/userData';
 import { readForm } from './BankLog';
@@ -179,6 +179,36 @@ describe('Pulls screen', () => {
     fireEvent.click(screen.getByRole('button', { name: /Pick the game’s cache file/ }));
     // Without an account the link can't be imported: it says so instead of failing.
     expect(screen.getByText(/Sign in \(Account\) to import from the game’s link/)).toBeInTheDocument();
+  });
+
+  it('Planner: a game’s own pity rule (no guarantee after a loss) gives its ceiling and worst case, and no “guaranteed” choice', async () => {
+    const own = {
+      ...game,
+      bannerTypes: [
+        {
+          ...game.bannerTypes[0],
+          pity: {
+            kind: 'custom',
+            describe: 'test: featured certain at the 120th pull on a banner',
+            source: 'test',
+            hardPity: 80,
+            featured: { winRate: 0.5, guaranteeAfterLoss: false },
+            pull: (s: PityState) => [
+              { p: 0.004, next: { ...s, pulls: 0 }, copies: 1 },
+              { p: 0.996, next: { ...s, pulls: s.pulls + 1 }, copies: 0 },
+            ],
+            worstCase: (s: PityState) => 120 - (s.extra?.banner ?? 0),
+          },
+        },
+      ],
+    } as GameContract;
+    render(<PullsScreen games={[own]} scope="aa" tab="planner" servers={{ aa: 'eu' }} openTab={() => {}} open={() => {}} openAccount={() => {}} />);
+    await screen.findByText(/Example data, not yours/);
+    // A banner not open yet: nothing pulled on it, so the worst case is the full 120.
+    expect(screen.getAllByText('120').length).toBeGreaterThan(0);
+    fireEvent.change(screen.getByPlaceholderText('e.g. 40'), { target: { value: '200' } });
+    expect(screen.getByPlaceholderText('e.g. 40')).toHaveValue(79); // capped below the game's own ceiling
+    expect(screen.queryByText('Guaranteed (lost the last 50/50)')).not.toBeInTheDocument();
   });
 
   it('Planner: typing your own pity shows it as a what-if, never saved', async () => {

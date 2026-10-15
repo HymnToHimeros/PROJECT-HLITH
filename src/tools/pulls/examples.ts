@@ -6,6 +6,7 @@
  */
 import type { Banner, Character, GameContract, PullRecord } from '../../core/contract';
 import { known, type Known } from '../../core/contract/known';
+import { hardPityOf } from '../pity/pity';
 
 const DAY = 86_400_000;
 
@@ -108,7 +109,7 @@ export function exampleHistory(game: GameContract, characters: Character[], now:
     });
   };
   for (const type of game.bannerTypes) {
-    if (type.pity.kind !== 'hard-pity') continue;
+    if (hardPityOf(type.pity) === null) continue;
     if (type.target === 'character') {
       for (let i = 1; i <= 73; i++) add(type.id, i % 10 === 0 ? 'mid' : 'low', i % 10 === 0 ? mids[i % Math.max(mids.length, 1)] : undefined);
       add(type.id, 'top', tops[1], false);
