@@ -7,8 +7,9 @@
  * - Combat skills 2→12, attribute increases, talents, base skills and gear outfitting: each operator's page.
  * - Items: the Items table (id, name, type, picture). Sanity per run and amounts per run aren't on the wiki,
  *   so they stay empty ("No data yet").
- * Nothing is guessed: an item name the Items table doesn't know stops the import; where two wiki sources
- * disagree, the operator's own page is used and the disagreement is listed in `conflicts` for a person to settle.
+ * Nothing is guessed: an item name the Items table doesn't know stops the import, and so does any disagreement
+ * between wiki sources that has no ruling in RULINGS (MANAGER / the owner decide, per case). Ruled ones are
+ * listed in `conflicts` with their ruling.
  */
 import { readFileSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
@@ -18,6 +19,12 @@ const ROOT = resolve(import.meta.dirname, '..');
 const OUT_COSTS = resolve(ROOT, 'src/games/endfield/data/costs.json');
 const OUT_MATERIALS = resolve(ROOT, 'src/games/endfield/data/materials.json');
 const dry = process.argv.includes('--dry');
+
+/**
+ * Rulings on disagreements between wiki sources, given by MANAGER / the owner (never by the import).
+ * Key: the conflict's id as the import names it. `use`: which source wins.
+ */
+export const RULINGS: Record<string, { use: 'operator-pages' | 'operator-page' | 'table' | 'page'; by: string; on: string }> = {};
 
 export type Items = Record<string, number>;
 export interface Track {
@@ -223,7 +230,15 @@ if (import.meta.main ?? process.argv[1]?.endsWith('import-endfield-costs.ts')) {
   const expPer = expItems(general.text);
   const atLevels = promotionLevels(general.text);
   const conflicts: string[] = [];
+  const unruled: string[] = [];
   const notes: string[] = [];
+  /** A disagreement: ruled → listed with its ruling; not ruled → collected, and the import stops at the end. */
+  const conflict = (id: string, text: string) => {
+    const r = RULINGS[id];
+    if (r) conflicts.push(`${text} Ruling (${r.by}, ${r.on}): use the ${r.use.replace('-', ' ')}.`);
+    else unruled.push(`[${id}] ${text}`);
+    return r?.use;
+  };
   const operators: Record<string, OperatorCosts> = {};
   const cache = new Map<string, { text: string; revid: number }>();
   for (const c of characters) {
@@ -244,7 +259,10 @@ if (import.meta.main ?? process.argv[1]?.endsWith('import-endfield-costs.ts')) {
       const t = fromTable[i];
       const own = fromPage[i];
       if (!t && !own) throw new Error(`${c.name}: no cost for Promotion ${i + 1}`);
-      if (t && own && !same(t, own)) conflicts.push(`${c.name}, Promotion ${i + 1}: the AbilityMatrixUpgrades table says ${show(t)}; the page says ${show(own)}. Using the table (it matches the Operator page's Cost Summary).`);
+      if (t && own && !same(t, own)) {
+        const use = conflict(`promotion:${c.id}:${i + 1}`, `${c.name}, Promotion ${i + 1}: the AbilityMatrixUpgrades table says ${show(t)}; the page says ${show(own)}.`);
+        return { atLevel, items: (use === 'page' ? own : t) as Items };
+      }
       return { atLevel, items: (t ?? own) as Items };
     });
     operators[c.id] = {
@@ -255,20 +273,21 @@ if (import.meta.main ?? process.argv[1]?.endsWith('import-endfield-costs.ts')) {
     };
   }
 
-  // The Operator page's own list of node costs, compared with each operator's page (listed, never silently picked).
+  // The Operator page's own list of outfitting costs, compared with each operator's page.
   const outfitting = [...general.text.matchAll(/Outfitting (I{1,3}) \([A-Za-z]+\): \{\{I\|T-Creds\|([\d,]+)/g)].map((m) => Number((m[2] ?? '').replace(/,/g, '')));
-  const seen = new Set<string>();
-  for (const [id, o] of Object.entries(operators)) {
-    const out = o.tracks.find((t) => t.id === 'outfitting');
-    const own = [1, 2, 3].map((r) => out?.steps[String(r)]?.['T-Creds']);
-    const key = own.join('/');
-    if (outfitting.length === 3 && own.some((v, i) => v !== outfitting[i]) && !seen.has(key)) {
-      seen.add(key);
-      const who = Object.entries(operators).filter(([, x]) => x.tracks.find((t) => t.id === 'outfitting')?.steps['1']?.['T-Creds'] === own[0]).length;
-      conflicts.push(`Gear Outfitting I–III: ${who} operator pages say T-Creds ${own.join(' / ')}; the Operator page says ${outfitting.join(' / ')}. Using each operator's page.`);
-    }
-    void id;
+  if (outfitting.length !== 3) throw new Error(`Operator page: ${outfitting.length} Gear Outfitting costs, expected 3`);
+  const outOf = (o: OperatorCosts) => o.tracks.find((t) => t.id === 'outfitting');
+  const differ = Object.values(operators).filter((o) => [1, 2, 3].some((r) => outOf(o)?.steps[String(r)]?.['T-Creds'] !== outfitting[r - 1]));
+  if (differ.length) {
+    const own = [...new Set(differ.map((o) => [1, 2, 3].map((r) => outOf(o)?.steps[String(r)]?.['T-Creds']).join(' / ')))];
+    const use = conflict('outfitting-t-creds', `Gear Outfitting I–III: ${differ.length} operator pages say T-Creds ${own.join(' or ')}; the Operator page says ${outfitting.join(' / ')}.`);
+    if (use === 'operator-page')
+      for (const o of differ) {
+        const t = outOf(o);
+        if (t) [1, 2, 3].forEach((r) => (t.steps[String(r)] = { ...t.steps[String(r)], 'T-Creds': outfitting[r - 1] ?? 0 }));
+      }
   }
+  if (unruled.length) throw new Error(`wiki sources disagree, and nobody has ruled yet (add a ruling to RULINGS):\n  ${unruled.join('\n  ')}`);
 
   // Every item named, from the Items table; an unknown name stops the import.
   const names = new Set<string>(Object.keys(expPer));
