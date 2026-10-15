@@ -25,6 +25,7 @@
     "data:costs": "node scripts/import-nanoka-costs.ts",
     "data:builds": "node scripts/import-nanoka-builds.ts",
     "data:endfield": "node scripts/import-endfield.ts",
+    "data:genshin-schedule": "node scripts/import-genshin-schedule.ts",
     "data:endfield-kits": "node scripts/import-endfield-kits.ts",
     "data:endfield-costs": "node scripts/import-endfield-costs.ts",
     "schedule:due": "node scripts/schedule-due.ts",
