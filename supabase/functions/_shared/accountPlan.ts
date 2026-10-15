@@ -27,13 +27,15 @@ export const USER_TABLES = [
   'account_identity',
   'reward_grants',
   'reward_log',
+  'skport_links',
+  'skport_checkins',
 ] as const;
 
 /**
  * Secrets are never exported: the calendar link token, the phone's push address, and
  * the ids of saved HoYoLAB logins in Vault (the logins themselves never leave Vault).
  */
-const SECRET_COLUMNS: Record<string, string[]> = { reminder_settings: ['feed_token', 'push_subscription'], hoyolab_links: ['login_secret', 'redeem_secret'] };
+const SECRET_COLUMNS: Record<string, string[]> = { reminder_settings: ['feed_token', 'push_subscription'], hoyolab_links: ['login_secret', 'redeem_secret'], skport_links: ['token_secret'] };
 
 export function redact(table: string, rows: Record<string, unknown>[]): Record<string, unknown>[] {
   const secret = SECRET_COLUMNS[table];

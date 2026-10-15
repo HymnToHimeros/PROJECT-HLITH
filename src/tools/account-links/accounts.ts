@@ -13,6 +13,7 @@
 import type { SupabaseClient } from '@supabase/supabase-js';
 import type { GameContract } from '../../core/contract';
 import { deviceAccounts, hoyolabLink, type DeviceAccount, type HoyoLogin } from './hoyolab';
+import { loadSkportServer, skportDeviceAccounts, skportFromDevice, mergeSkportAccounts, type SkportLinkedAccount } from './skport';
 
 export interface CoveredGame {
   gameId: string;
@@ -253,7 +254,7 @@ async function errorText(error: unknown, fallback: string): Promise<string> {
 
 async function action<T>(client: SupabaseClient, body: Record<string, unknown>): Promise<{ ok: true; data: T } | { ok: false; text: string }> {
   const { data, error } = await client.functions.invoke<T>('hoyolab', { body });
-  if (error || data === null) return { ok: false, text: await errorText(error, 'HLITH’s server couldn’t be reached. Try again in a minute.') };
+  if (error || data === null) return { ok: false, text: await errorText(error, 'HLITH\'s server couldn\'t be reached. Try again in a minute.') };
   return { ok: true, data };
 }
 
@@ -263,23 +264,28 @@ export interface ServerState {
   redemptions: RedemptionRow[];
   /** How many codes the public list has per gameBiz (what HLITH will try). */
   publicCodes: Record<string, number>;
+  skportAccounts: SkportLinkedAccount[];
 }
 
 export async function loadServer(client: SupabaseClient, games: GameContract[]): Promise<ServerState | { error: string }> {
-  const [links, checkins, redemptions, codes] = await Promise.all([
+  const [links, checkins, redemptions, codes, skport] = await Promise.all([
     client.from('hoyolab_links').select(SERVER_COLUMNS).order('created_at'),
     client.from('hoyolab_checkins').select('link_id,game_biz,ran_at,started_by,status,message,reward').order('ran_at', { ascending: false }).limit(60),
     client.from('hoyolab_redemptions').select('link_id,game_biz,game_uid,code,ran_at,status,message').order('ran_at', { ascending: false }).limit(200),
     client.from('hoyolab_codes').select('game_biz').gte('last_seen', new Date(Date.now() - 3 * 86_400_000).toISOString()),
+    loadSkportServer(client),
   ]);
-  if (links.error) return { error: 'Your saved accounts couldn’t be loaded. Try again in a minute.' };
+  if (links.error) return { error: 'Your saved accounts couldn\'t be loaded. Try again in a minute.' };
   const publicCodes: Record<string, number> = {};
   for (const c of (codes.data ?? []) as { game_biz: string }[]) publicCodes[c.game_biz] = (publicCodes[c.game_biz] ?? 0) + 1;
+  const serverSkport = Array.isArray(skport) ? skport : [];
+  const deviceSkport = skportFromDevice(skportDeviceAccounts());
   return {
     accounts: fromServerRows((links.data ?? []) as ServerRow[], games),
     checkins: (checkins.data ?? []) as CheckinRow[],
     redemptions: (redemptions.data ?? []) as RedemptionRow[],
     publicCodes,
+    skportAccounts: mergeSkportAccounts(serverSkport, deviceSkport),
   };
 }
 
@@ -292,13 +298,13 @@ export function saveOnServer(client: SupabaseClient, args: { label: string; logi
 
 export async function updateAccount(client: SupabaseClient, id: string, change: Partial<{ label: string; auto_checkin: boolean; auto_redeem: boolean }>): Promise<string | null> {
   const { error } = await client.from('hoyolab_links').update(change).eq('id', id);
-  return error ? 'That change couldn’t be saved. Try again.' : null;
+  return error ? 'That change couldn\'t be saved. Try again.' : null;
 }
 
 /** Overwrites the saved login(s) in Vault and switches everything off. The row and its results stay. */
 export async function forgetOnServer(client: SupabaseClient, id: string): Promise<string | null> {
   const { error } = await client.rpc('hoyolab_link_forget', { p_link: id });
-  return error ? 'Forgetting didn’t go through. Try again; until it does, the login stays saved.' : null;
+  return error ? 'Forgetting didn\'t go through. Try again; until it does, the login stays saved.' : null;
 }
 
 export const setRedeemLogin = (client: SupabaseClient, linkId: string, redeem: RedeemLogin | null) => action<{ ok: true }>(client, { action: 'redeem-login', linkId, redeem });

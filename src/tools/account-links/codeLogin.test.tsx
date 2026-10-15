@@ -16,7 +16,7 @@ const refused: RedemptionRow = {
   status: 'login',
   message: 'HoYoverse didn’t accept the code login. (HoYoverse answer -1071)',
 };
-const server: ServerState = { accounts: [account], checkins: [], redemptions: [refused], publicCodes: {} };
+const server: ServerState = { accounts: [account], checkins: [], redemptions: [refused], publicCodes: {}, skportAccounts: [] };
 vi.mock('./useAccounts', () => ({
   useAccounts: () => ({ signedIn: true, blocker: null, accounts: [account], server, loadError: null, refresh: () => {} }),
   linkBlocker: () => null,

@@ -22,6 +22,10 @@ Deno.serve(async (req) => {
       const { error } = await db.rpc('hoyolab_links_purge', { p_user: userId });
       if (error) throw new Error(`Wiping saved logins failed: ${error.message}`);
     },
+    async wipeSkportTokens(userId) {
+      const { error } = await db.rpc('skport_links_purge', { p_user: userId });
+      if (error) throw new Error(`Wiping SKPort tokens failed: ${error.message}`);
+    },
     async deleteRows(table, userId, column = 'user_id') {
       const { error, count } = await db.from(table).delete({ count: 'exact' }).eq(column, userId);
       if (error) throw new Error(`Removing ${table} failed: ${error.message}`);

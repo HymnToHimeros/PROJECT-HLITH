@@ -138,6 +138,8 @@ export const endfield: GameContract = {
     { id: 'endfield.daily', source: 'daily', label: 'Daily tasks', currency: 'oroberyl', amount: null, schedule: { kind: 'per-reset' } },
   ],
 
+  accountLinks: [{ provider: 'skport', supports: ['stamina', 'checkin'], config: {} }],
+
   historyImporters: [
     { id: 'endfield-link', kind: 'link' as const, label: 'Endfield history link (from HGWebview.log)' },
     { id: 'endfield-file', kind: 'file' as const, label: 'HLITH pull history (.json)' },
