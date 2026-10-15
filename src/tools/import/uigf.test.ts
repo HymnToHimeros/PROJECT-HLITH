@@ -85,7 +85,7 @@ describe('bad files get a plain explanation', () => {
     expect(parseHistoryFile('hello', mapping)).toMatchObject({ ok: false, error: expect.stringMatching(/valid JSON/) });
   });
   it('not a history export', () => {
-    expect(parseHistoryFile('{"a":1}', mapping)).toMatchObject({ ok: false, error: expect.stringMatching(/UIGF or SRGF/) });
+    expect(parseHistoryFile('{"a":1}', mapping)).toMatchObject({ ok: false, error: expect.stringMatching(/UIGF.*SRGF/) });
   });
   it('unsupported version', () => {
     expect(parseHistoryFile('{"info":{"version":"v3.0"}}', mapping)).toMatchObject({ ok: false, error: expect.stringMatching(/v3\.0/) });

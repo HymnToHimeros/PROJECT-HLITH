@@ -4,7 +4,8 @@
  * Reads UIGF v4 (any game section) and SRGF v1 (Star Rail). Game-specific rules
  * come from the game record's historyMapping, so this file names no game.
  */
-import type { HistoryMapping, PullRecord } from '../../core/contract';
+import type { GameId, HistoryMapping, PullRecord } from '../../core/contract';
+import { isHlithFile, parseHlithFile } from './hlith';
 
 export interface ImportedAccount {
   uid: string;
@@ -15,7 +16,7 @@ export interface ImportedAccount {
   invalid: number;
 }
 
-export type ImportResult = { ok: true; format: 'uigf-v4' | 'srgf-v1'; accounts: ImportedAccount[] } | { ok: false; error: string };
+export type ImportResult = { ok: true; format: 'uigf-v4' | 'srgf-v1' | 'hlith-v1'; accounts: ImportedAccount[] } | { ok: false; error: string };
 
 interface RawPull {
   id?: unknown;
@@ -26,14 +27,20 @@ interface RawPull {
   time?: unknown;
 }
 
-export function parseHistoryFile(text: string, mapping: HistoryMapping): ImportResult {
+export function parseHistoryFile(text: string, mapping: HistoryMapping, gameId?: GameId): ImportResult {
   let data: unknown;
   try {
     data = JSON.parse(text);
   } catch {
-    return { ok: false, error: 'This file isn’t valid JSON. Export it again from your history tool.' };
+    return { ok: false, error: "This file isn't valid JSON. Export it again from your history tool." };
   }
-  if (!isObject(data) || !isObject(data.info)) return { ok: false, error: 'This doesn’t look like a UIGF or SRGF export.' };
+  if (isHlithFile(data)) {
+    if (!gameId) return { ok: false, error: 'HLITH pull history files need a game context to import.' };
+    const parsed = parseHlithFile(data, gameId);
+    if (!parsed.ok) return { ok: false, error: parsed.error };
+    return { ok: true, format: 'hlith-v1', accounts: [readAccount('', parsed.list, parsed.timezone, mapping)] };
+  }
+  if (!isObject(data) || !isObject(data.info)) return { ok: false, error: "This doesn't look like a UIGF, SRGF or HLITH export." };
 
   // SRGF v1: { info: { srgf_version, uid, region_time_zone }, list: [...] }
   if (typeof data.info.srgf_version === 'string') {
@@ -49,7 +56,7 @@ export function parseHistoryFile(text: string, mapping: HistoryMapping): ImportR
   const version = String(data.info.version ?? '');
   if (/^v4\./.test(version)) {
     const key = mapping.uigfKey;
-    if (!key) return { ok: false, error: 'This game can’t read UIGF files yet.' };
+    if (!key) return { ok: false, error: "This game can't read UIGF files yet." };
     const section = data[key];
     if (!Array.isArray(section) || section.length === 0) return { ok: false, error: 'This file has no history for this game.' };
     return {

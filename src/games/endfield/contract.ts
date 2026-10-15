@@ -136,7 +136,24 @@ export const endfield: GameContract = {
     { id: 'endfield.daily', source: 'daily', label: 'Daily tasks', currency: 'oroberyl', amount: null, schedule: { kind: 'per-reset' } },
   ],
 
-  historyImporters: [],
+  historyImporters: [
+    { id: 'endfield-link', kind: 'link' as const, label: 'Endfield history link (from HGWebview.log)' },
+    { id: 'endfield-file', kind: 'file' as const, label: 'HLITH pull history (.json)' },
+  ],
+
+  historyMapping: {
+    gachaTypes: {
+      chartered: 'chartered',
+      rerun: 'rerun',
+      joint: 'joint',
+      basic: 'basic',
+      beginner: 'beginner',
+      'weapon-limited': 'weapon',
+      'weapon-constant': 'weapon',
+      'weapon-rerun': 'weapon',
+    },
+    rarity: { '6': 'top', '5': 'mid', '4': 'low' },
+  },
 
   data: {
     characters: list<Character>(characters),

@@ -32,19 +32,23 @@ import k from './kit.module.css';
 export interface ImportGuide {
   /** What the game calls its history page. */
   historyPage: string;
-  /** The game's data folder inside its install folder. */
-  dataFolder: string;
+  /** The game's data folder inside its install folder (HoYo games with web-cache). */
+  dataFolder?: string;
   /** Where the game writes its log (that log names the install folder). */
-  logFile: string;
+  logFile?: string;
   /** The line near the top of that log that contains the install folder. */
-  logLine: string;
+  logLine?: string;
   /** A usual install folder, only when a tracker documents one. */
   usualInstall?: string;
-  trackers: { name: string; url: string }[];
+  trackers?: { name: string; url: string }[];
   /** Export formats this game's files come in. */
-  formats: string;
+  formats?: string;
   /** Apps the UIGF project lists as exporting those formats for this game. */
-  exportApps: string[];
+  exportApps?: string[];
+  /** For games where the link lives in a log file the user reads directly. */
+  linkLogFile?: string;
+  /** Short description of the link source for the paste guide. */
+  linkSource?: string;
 }
 
 const GUIDES: Record<string, ImportGuide> = {
@@ -72,9 +76,20 @@ const GUIDES: Record<string, ImportGuide> = {
     formats: 'UIGF v4 (.json)',
     exportApps: ['ZZZ Signal Search History Exporter', 'ZenlessTools', 'Firefly', 'Snap.Hutao Remastered', 'Hoyo Buddy (Discord bot)', 'PaimonsNotebook (Android)', 'The Latte Helper (Apple)'],
   },
+  // Arknights: Endfield
+  endfield: {
+    historyPage: 'Headhunting Records (the history page in the Headhunting menu)',
+    linkLogFile: '%USERPROFILE%\\AppData\\LocalLow\\Gryphline\\Endfield\\sdklogs\\HGWebview.log',
+    linkSource: 'HGWebview.log',
+    formats: 'HLITH pull history (.json)',
+  },
 };
 
-export const guideFor = (uigfKey: string | undefined): ImportGuide | null => (uigfKey ? (GUIDES[uigfKey] ?? null) : null);
+export const guideFor = (key: string | undefined, fallback?: string): ImportGuide | null => {
+  if (key && GUIDES[key]) return GUIDES[key];
+  if (fallback && GUIDES[fallback]) return GUIDES[fallback];
+  return null;
+};
 
 const ext = (url: string, label: string) => (
   <a className={k.link} href={url} target="_blank" rel="noreferrer noopener">
@@ -86,10 +101,10 @@ const ext = (url: string, label: string) => (
 export function cacheFileSteps(g: ImportGuide): ReactNode[] {
   return [
     <>
-      Start the game on your PC and open <strong>{g.historyPage}</strong>. Let the list load. That puts a fresh history link in the game’s web cache.
+      Start the game on your PC and open <strong>{g.historyPage}</strong>. Let the list load. That puts a fresh history link in the game's web cache.
     </>,
     <>
-      Press <strong>Choose the cache file</strong> below. Go to the game’s install folder, then <code>{g.dataFolder}</code> → <code>webCaches</code> → the folder with the highest version number →{' '}
+      Press <strong>Choose the cache file</strong> below. Go to the game's install folder, then <code>{g.dataFolder}</code> → <code>webCaches</code> → the folder with the highest version number →{' '}
       <code>Cache</code> → <code>Cache_Data</code> and pick the file <code>data_2</code>.
       {g.usualInstall && (
         <>
@@ -99,7 +114,7 @@ export function cacheFileSteps(g: ImportGuide): ReactNode[] {
       )}
     </>,
     <>
-      Don’t know the install folder? Open <code>{g.logFile}</code> in Notepad: the line {g.logLine} near the top shows it. (This is the same place the trackers’ scripts look.)
+      Don't know the install folder? Open <code>{g.logFile}</code> in Notepad: the line {g.logLine} near the top shows it. (This is the same place the trackers' scripts look.)
     </>,
     <>
       HLITH reads the file here in your browser, takes the newest history link out of it and sends only that link to import your pulls. The file itself is not uploaded, and the link is not kept.
@@ -107,24 +122,39 @@ export function cacheFileSteps(g: ImportGuide): ReactNode[] {
   ];
 }
 
-/** Steps for pasting a link you got with a tracker's helper. */
+/** Steps for pasting a link you got with a tracker's helper (HoYo games). */
 export function pasteSteps(g: ImportGuide): ReactNode[] {
+  if (g.linkLogFile) return linkLogSteps(g);
   return [
     <>
       Start the game on your PC and open <strong>{g.historyPage}</strong>.
     </>,
     <>
       Get the link with the helper a tracker provides:{' '}
-      {g.trackers.map((t, i) => (
+      {(g.trackers ?? []).map((t, i) => (
         <span key={t.url}>
           {i > 0 && ' or '}
           {ext(t.url, t.name)}
         </span>
       ))}{' '}
-      (their import page, PC section). It is a one-line PowerShell command. What it does, from reading it: it finds the game folder in the game’s log file, opens the newest web-cache file,
+      (their import page, PC section). It is a one-line PowerShell command. What it does, from reading it: it finds the game folder in the game's log file, opens the newest web-cache file,
       finds the history link, checks it with HoYoverse and copies it to your clipboard. Only run commands from sites you trust; you can open the script in your browser to read it first.
     </>,
     <>Paste the link (or the whole text that contains it) in the box below and press Import from link.</>,
+  ];
+}
+
+/** Steps for pasting a link from a log file (Endfield). */
+function linkLogSteps(g: ImportGuide): ReactNode[] {
+  return [
+    <>
+      Start the game on your PC and open <strong>{g.historyPage}</strong>. Scroll through the list so it loads.
+    </>,
+    <>
+      Open <code>{g.linkLogFile}</code> in Notepad (or any text editor). Search for <code>ef-webview</code>: the last match is the
+      newest history link. Select the whole URL and copy it.
+    </>,
+    <>Paste the link in the box below and press Import from link. The link holds a temporary token that expires after about a day, so use a fresh one each time.</>,
   ];
 }
 
@@ -133,9 +163,9 @@ export function fileSteps(g: ImportGuide | null): ReactNode[] {
   return [
     <>
       In the app that already tracks your pulls, look for <strong>Export</strong> and choose <strong>{g ? g.formats : 'UIGF v4 or SRGF (.json)'}</strong>. Each app puts it in a different
-      place; we haven’t tested every app.
+      place; we haven't tested every app.
     </>,
-    g ? (
+    g?.exportApps ? (
       <>
         Apps the UIGF project lists as exporting this: {g.exportApps.join(', ')}. Full list: {ext('https://uigf.org/en/partnership.html', 'uigf.org')}.
       </>
@@ -147,15 +177,27 @@ export function fileSteps(g: ImportGuide | null): ReactNode[] {
 }
 
 /** Honest notes that apply to every way in. */
-export function goodToKnow(): ReactNode[] {
-  return [
-    <>
-      <strong>Phone or console:</strong> we know of no simple way there; the game doesn’t show the link. Star Rail Station lists guides for iOS and Android (Android help is in its Discord); we
-      haven’t tested them, so we don’t repeat them here. The easy route: import once on a PC (your history belongs to your game account, not the device) or use an export file.
-    </>,
-    <>The game only keeps recent history (trackers say about six months), so import now and then. HLITH keeps everything you imported and only adds new pulls (unless you undo an import right after it).</>,
-    <>History links stop working after a while (trackers say about a day). If one fails, open the history page in the game again and repeat.</>,
-  ];
+export function goodToKnow(g: ImportGuide | null): ReactNode[] {
+  const notes: ReactNode[] = [];
+  if (!g?.linkLogFile) {
+    notes.push(
+      <>
+        <strong>Phone or console:</strong> we know of no simple way there; the game doesn't show the link. Star Rail Station lists guides for iOS and Android (Android help is in its Discord); we
+        haven't tested them, so we don't repeat them here. The easy route: import once on a PC (your history belongs to your game account, not the device) or use an export file.
+      </>,
+    );
+  } else {
+    notes.push(
+      <>
+        <strong>Phone or console:</strong> the history link is only available from the PC log file. Import once on a PC — your history belongs to your game account, not the device.
+      </>,
+    );
+  }
+  notes.push(
+    <>The game only keeps recent history, so import now and then. HLITH keeps everything you imported and only adds new pulls (unless you undo an import right after it).</>,
+    <>History links stop working after a while (usually about a day). If one fails, open the history page in the game again and get a fresh link.</>,
+  );
+  return notes;
 }
 
 /**
