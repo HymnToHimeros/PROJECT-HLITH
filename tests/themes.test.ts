@@ -52,7 +52,7 @@ function over(b: string, a: string, t: number): string {
 }
 
 const SURFACES = ['bg-app', 'bg-card', 'bg-shell', 'bg-inset', 'bg-raised'];
-const TEXT = ['ink-1', 'ink-2', 'ink-3', 'ink-4', 'glacier', 'ok', 'ember-soft', 'rarity-top', 'rarity-mid'];
+const TEXT = ['ink-1', 'ink-2', 'ink-3', 'ink-4', 'glacier', 'ok', 'ember-soft', 'rarity-top', 'rarity-mid', 'rarity-low'];
 const INKS = ['ink-1', 'ink-2', 'ink-3', 'ink-4', 'ink-5'];
 
 describe('themes', () => {

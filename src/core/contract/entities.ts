@@ -8,7 +8,7 @@ export type ISODate = string;
 export interface Character {
   id: string;
   name: string;
-  rarity: 'top' | 'mid';
+  rarity: 'top' | 'mid' | 'low';
   element: string; // GameContract.elements[].id
   role: string; // GameContract.roles[].id
   releasedAt?: ISODate;
