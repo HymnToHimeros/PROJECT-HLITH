@@ -12,7 +12,8 @@
     "isolatedModules": true,
     "skipLibCheck": true,
     "noEmit": true,
-    "allowImportingTsExtensions": true
+    "allowImportingTsExtensions": true,
+    "jsx": "react-jsx"
   },
   "include": ["vite.config.ts", "appShell.ts", "playwright.config.ts", "eslint.config.js", "../tests", "../scripts", "../src/core/theme/contrast.ts", "../src/vite-env.d.ts", "../supabase/functions/_shared"]
 }

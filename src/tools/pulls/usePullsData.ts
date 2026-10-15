@@ -10,6 +10,7 @@ import type { BudgetInput } from '../budget/budget';
 import { eventsForBudget } from '../events/events';
 import { useEventsData } from '../events/useEventsData';
 import { exampleBank, exampleBannerSchedule, exampleHistory, exampleVersionEnd } from './examples';
+import { featuredByBanner } from './featuredByBanner';
 import { mixExamples } from '../edit-mode/examples';
 import { useHideLeaks } from '../banners/leakPref';
 
@@ -76,13 +77,17 @@ export function usePullsData(game: GameContract, now: number): PullsData {
   const mixed = mixExamples('banners', listAtServer(builtInBanners, offset), user.ownItems.banners, exampleList, showExamples);
   // "Hide leaks" (Intel) hides leaked banners here too.
   const shownBanners = hideLeaks ? mixed.list.filter((b) => !b.leak) : mixed.list;
+  // Games whose pulls don't say their banner (Endfield): each top result is marked featured or not from the one banner
+  // of its type open at the time (real banners only), so History, the Luck report and the Planner all read the same.
+  const rule = game.historyMapping?.featuredByBanner;
+  const marked = rule ? featuredByBanner(user.pulls, mixed.list.filter((b) => !mixed.exampleIds.has(b.id)), rule, characters) : user.pulls;
   return {
     user,
     characters,
     banners: { list: shownBanners, example: shownBanners.some((b) => mixed.exampleIds.has(b.id)), exampleIds: mixed.exampleIds, examples: builtInBanners.length || !showExamples ? undefined : exampleList },
     // Your first bank log entry replaces the example bank, even before a balance check.
     bank: realBank.known || user.ledger.length > 0 || !showExamples ? { value: realBank, example: false } : { value: exampleBank(game), example: true },
-    history: user.pulls.length || !showExamples ? { list: user.pulls, example: false } : { list: exampleHistory(game, characters, now), example: true },
+    history: user.pulls.length || !showExamples ? { list: marked, example: false } : { list: exampleHistory(game, characters, now), example: true },
     versionEnd: current ? { at: Date.parse(current.end), example: false } : showExamples ? { at: exampleVersionEnd(now), example: true } : { at: null, example: false },
     budgetExtras,
     notCounted,
