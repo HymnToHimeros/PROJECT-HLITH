@@ -28,17 +28,19 @@ export const endfield: GameContract = {
 
   elements: [
     { id: 'physical', label: 'Physical', color: '#C9CFD6' },
-    { id: 'fire', label: 'Fire', color: '#E8753A' },
-    { id: 'ice', label: 'Ice', color: '#59C4E8' },
+    { id: 'heat', label: 'Heat', color: '#E8753A' },
+    { id: 'cryo', label: 'Cryo', color: '#59C4E8' },
     { id: 'electric', label: 'Electric', color: '#C9A0E8' },
-    { id: 'corrosion', label: 'Corrosion', color: '#8BD44A' },
+    { id: 'nature', label: 'Nature', color: '#8BD44A' },
   ],
 
   roles: [
+    { id: 'caster', label: 'Caster' },
+    { id: 'defender', label: 'Defender' },
+    { id: 'guard', label: 'Guard' },
     { id: 'striker', label: 'Striker' },
-    { id: 'bulwark', label: 'Bulwark' },
-    { id: 'artisan', label: 'Artisan' },
-    { id: 'tactician', label: 'Tactician' },
+    { id: 'supporter', label: 'Supporter' },
+    { id: 'vanguard', label: 'Vanguard' },
   ],
 
   dupes: { prefix: 'P', name: 'Potential', max: 6 },
@@ -46,16 +48,17 @@ export const endfield: GameContract = {
   currencies: [
     { id: 'origeometry', name: 'Origeometry', paid: true },
     { id: 'oroberyl', name: 'Oroberyl', perPull: 500 },
-    { id: 'hh-permit', name: 'HH Permit', pullItemFor: ['special', 'rerun', 'joint', 'standard', 'beginner'] },
-    { id: 'arsenal-ticket', name: 'Arsenal Ticket', pullItemFor: ['weapon-special', 'weapon-constant', 'weapon-rerun'] },
+    { id: 'chartered-hh-permit', name: 'Chartered HH Permit', pullItemFor: ['chartered', 'rerun', 'joint'] },
+    { id: 'basic-hh-permit', name: 'Basic HH Permit', pullItemFor: ['basic', 'beginner'] },
+    { id: 'arsenal-ticket', name: 'Arsenal Ticket', pullItemFor: ['weapon'] },
   ],
 
   stamina: [{ id: 'sanity', name: 'Sanity', max: 135, minutesPerPoint: 6 }],
   teamSize: 4,
 
   servers: [
-    { id: 'global', label: 'Global', utcOffset: -5 },
-    { id: 'cn', label: 'CN', utcOffset: 8 },
+    { id: 'asia', label: 'Asia', utcOffset: 8 },
+    { id: 'americas-europe', label: 'Americas / Europe', utcOffset: -5 },
   ],
   reset: { hour: 4, weekday: 1 },
 
@@ -63,9 +66,9 @@ export const endfield: GameContract = {
 
   bannerTypes: [
     {
-      id: 'special',
-      label: 'Chartered (limited)',
-      pullItem: 'hh-permit',
+      id: 'chartered',
+      label: 'Chartered Headhunting (limited)',
+      pullItem: 'chartered-hh-permit',
       target: 'character',
       pity: {
         kind: 'hard-pity',
@@ -78,7 +81,7 @@ export const endfield: GameContract = {
     {
       id: 'rerun',
       label: 'RE-Factor (rerun)',
-      pullItem: 'hh-permit',
+      pullItem: 'chartered-hh-permit',
       target: 'character',
       pity: {
         kind: 'hard-pity',
@@ -91,7 +94,7 @@ export const endfield: GameContract = {
     {
       id: 'joint',
       label: 'Joint',
-      pullItem: 'hh-permit',
+      pullItem: 'chartered-hh-permit',
       target: 'character',
       pity: {
         kind: 'hard-pity',
@@ -101,9 +104,9 @@ export const endfield: GameContract = {
       },
     },
     {
-      id: 'standard',
+      id: 'basic',
       label: 'Basic (standard)',
-      pullItem: 'hh-permit',
+      pullItem: 'basic-hh-permit',
       target: 'character',
       pity: {
         kind: 'hard-pity',
@@ -115,13 +118,13 @@ export const endfield: GameContract = {
     {
       id: 'beginner',
       label: 'New Horizons (beginner)',
-      pullItem: 'hh-permit',
+      pullItem: 'basic-hh-permit',
       target: 'character',
       pity: { kind: 'hard-pity', hardPity: 40, baseRate: null },
     },
     {
-      id: 'weapon-special',
-      label: 'Arsenal Exchange (weapon)',
+      id: 'weapon',
+      label: 'Arsenal Issue (weapon)',
       pullItem: 'arsenal-ticket',
       target: 'weapon',
       pity: {
@@ -129,20 +132,6 @@ export const endfield: GameContract = {
         hardPity: 40,
         baseRate: 0.04,
       },
-    },
-    {
-      id: 'weapon-constant',
-      label: 'Constant (weapon)',
-      pullItem: 'arsenal-ticket',
-      target: 'weapon',
-      pity: { kind: 'hard-pity', hardPity: 40, baseRate: 0.04 },
-    },
-    {
-      id: 'weapon-rerun',
-      label: 'Weapon Rerun',
-      pullItem: 'arsenal-ticket',
-      target: 'weapon',
-      pity: { kind: 'hard-pity', hardPity: 40, baseRate: 0.04 },
     },
   ],
 
