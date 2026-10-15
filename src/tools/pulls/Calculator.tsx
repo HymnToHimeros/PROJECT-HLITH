@@ -226,6 +226,24 @@ export function Calculator({ game, data, serverId, now, tagged, openModule, open
   }
 
   const known = b?.total.known ? premiumEquivalent(b.total.value) : null;
+  // Banners bought with their own currency (Endfield's weapon issues), with what your main-banner pulls surely add to it.
+  const ownCurrency = main ? game.bannerTypes.filter((t) => t.id !== main.id && game.currencies.some((c) => c.perPullOn?.[t.id] !== undefined)) : [];
+  const sideBanners = (() => {
+    if (!b?.total.known || !total?.known || !main) return [];
+    const have = b.total.value;
+    const mainPulls = total.value;
+    return ownCurrency.map((t) => {
+      const amounts = { ...have };
+      const extra: string[] = [];
+      for (const c of game.currencies) {
+        if (c.perPullOn?.[t.id] === undefined || !c.fromPulls?.on.includes(main.id)) continue;
+        const atLeast = Math.floor(mainPulls * c.fromPulls.atLeastPerPull);
+        amounts[c.id] = (amounts[c.id] ?? 0) + atLeast;
+        extra.push(`at least ${formatNumber(atLeast)} ${c.name} from those ${formatNumber(mainPulls)} pulls (${c.fromPulls.why})`);
+      }
+      return { type: t, pulls: pullsFor(game, amounts, t.id), extra };
+    });
+  })();
 
   return (
     <div className={p.calcGrid} style={{ '--vent': game.vent } as CSSProperties}>
@@ -293,6 +311,19 @@ export function Calculator({ game, data, serverId, now, tagged, openModule, open
             )}
           </div>
         </div>
+        {sideBanners.map(({ type: t, pulls, extra }) => (
+          <div key={t.id} className={p.totalLine} aria-label={`${t.label} budget`}>
+            <div className={p.totalText}>
+              <span className={p.totalLabel}>{t.label}</span>
+              <span className={p.small}>{extra.length ? `Counts ${extra.join('; ')}.` : 'From its own currency.'}</span>
+            </div>
+            <div className={p.totalFigure}>
+              <span className={p.rowValue}>{formatNumber(pulls)}</span>
+              <span className={p.muted}>pulls</span>
+              {ex && <ExampleTag />}
+            </div>
+          </div>
+        ))}
       </section>
       {until !== null && <SpendingCard game={game} free={budget(input(until, false))} paid={budget(input(until, true))} mainId={main?.id} example={ex} paidOn={data.user.paidExtras && game.income.some((r) => r.paid && paidOn(r.id))} />}
     </div>

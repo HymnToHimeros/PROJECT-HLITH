@@ -22,6 +22,7 @@
 import type { GameContract, IncomeRow } from '../../core/contract';
 import { known, unknown, type Known } from '../../core/contract/known';
 import { dailyResetsBetween, serverRule, weeklyResetsBetween, type ServerRule } from '../../core/time/reset';
+import { stepOf } from '../pity/pity';
 
 export type Source = IncomeRow['source'] | 'backlog';
 
@@ -231,16 +232,25 @@ export function budget(input: BudgetInput): Budget {
   };
 }
 
-/** Pulls on a banner type from a set of balances (rule 11). */
+/**
+ * Pulls on a banner type from a set of balances (rule 11): each currency at
+ * its price there, only the currencies the banner takes, and in whole steps
+ * when the game sells pulls in tens.
+ */
 export function pullsFor(game: GameContract, balances: Record<string, number>, bannerType: string): number {
+  const type = game.bannerTypes.find((t) => t.id === bannerType);
   let premium = 0;
   let items = 0;
   for (const c of game.currencies) {
+    if (type?.currencies && !type.currencies.includes(c.id)) continue;
     const amount = balances[c.id] ?? 0;
-    if (c.perPull) premium += amount / c.perPull;
+    const price = c.perPullOn?.[bannerType] ?? c.perPull;
+    if (price) premium += amount / price;
     if (c.pullItemFor?.includes(bannerType)) items += amount;
   }
-  return Math.floor(premium + 1e-9) + Math.floor(items);
+  const pulls = Math.floor(premium + 1e-9) + Math.floor(items);
+  const step = type ? stepOf(type.pity) : 1;
+  return Math.floor(pulls / step) * step;
 }
 
 /** Pulls from a budget's total; unknown when the bank is unknown. */

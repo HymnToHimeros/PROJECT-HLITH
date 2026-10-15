@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import type { PityModel, PullRecord } from '../../core/contract';
-import { chance, hardPityOf, luck, pityFromHistory, worstCase } from './pity';
+import { carryIn, chance, hardPityOf, luck, pityFromHistory, worstCase } from './pity';
 
 const character: PityModel = {
   kind: 'hard-pity',
@@ -157,5 +157,24 @@ describe('pity and luck from history', () => {
   it('no guarantee after a loss (Endfield): every top result is a 50/50, and a loss guarantees nothing', () => {
     expect(luck(history, 'character', false).fiftyFifty).toEqual({ won: 1, lost: 1, unknown: 0 });
     expect(pityFromHistory(history.slice(0, 65), 'character', false).guaranteed).toMatchObject({ known: true, value: false });
+  });
+});
+
+describe('free pulls carried to the next banner (Endfield’s Headhunting Dossier)', () => {
+  const banners = [
+    { type: 'character', start: '2026-01-01T00:00:00Z' },
+    { type: 'character', start: '2026-02-01T00:00:00Z' },
+    { type: 'weapon', start: '2026-01-15T00:00:00Z' },
+  ];
+  const next = banners[1] as (typeof banners)[number];
+  const carry = { after: 60, pulls: 10 };
+  const on = (n: number, day: string) => Array.from({ length: n }, (_, i) => ({ ...pull(i, 'low'), id: `${day}-${i}`, time: `2026-${day}T00:00:00Z` }));
+  it('60 pulls on the last banner → 10 free on the next, until the first pull there uses them', () => {
+    expect(carryIn(on(60, '01-10'), banners, next, carry)).toBe(10);
+    expect(carryIn(on(59, '01-10'), banners, next, carry)).toBe(0);
+    expect(carryIn([...on(60, '01-10'), ...on(1, '02-02')], banners, next, carry)).toBe(0);
+  });
+  it('no earlier banner of that type → nothing carried', () => {
+    expect(carryIn(on(80, '01-10'), banners, banners[0] as (typeof banners)[number], carry)).toBe(0);
   });
 });

@@ -163,6 +163,28 @@ export function bannerProgress(history: PullRecord[], bannerType: string, since:
   return { banner: on.length, got: on.some((p) => p.rarity === 'top' && p.featured === true) ? 1 : 0 };
 }
 
+/**
+ * Free pulls a banner starts with from the one before it of the same type
+ * (Endfield's Headhunting Dossier): `carry.pulls` when history shows at least
+ * `carry.after` pulls on the previous banner and none on this one yet (the
+ * first pull uses them). 0 otherwise.
+ */
+export function carryIn(
+  history: PullRecord[],
+  banners: { type: string; start: string }[],
+  banner: { type: string; start: string },
+  carry: { after: number; pulls: number },
+): number {
+  const start = Date.parse(banner.start);
+  const prev = banners.filter((x) => x.type === banner.type && Date.parse(x.start) < start).sort((a, b) => Date.parse(b.start) - Date.parse(a.start))[0];
+  if (!prev) return 0;
+  const from = Date.parse(prev.start);
+  const of = history.filter((p) => p.bannerType === banner.type);
+  const onPrev = of.filter((p) => Date.parse(p.time) >= from && Date.parse(p.time) < start).length;
+  const onThis = of.filter((p) => Date.parse(p.time) >= start).length;
+  return onPrev >= carry.after && onThis === 0 ? carry.pulls : 0;
+}
+
 export interface LuckStats {
   tops: number;
   averagePity: Known<number>;

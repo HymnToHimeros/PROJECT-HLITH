@@ -211,6 +211,19 @@ describe('Pulls screen', () => {
     expect(screen.queryByText('Guaranteed (lost the last 50/50)')).not.toBeInTheDocument();
   });
 
+  it('Calculator: a banner bought with its own currency gets a line, with what your pulls surely add to it', async () => {
+    const side = {
+      ...game,
+      currencies: [...game.currencies, { id: 'coin', name: 'Coin', perPullOn: { side: 100 }, fromPulls: { on: ['character'], atLeastPerPull: 10, why: 'test: 10 a pull' } }],
+      bannerTypes: [...game.bannerTypes, { id: 'side', label: 'Side banner', pullItem: 'coin', target: 'weapon', pity: { kind: 'hard-pity', hardPity: 40, baseRate: 0.04 }, currencies: ['coin'] }],
+    } as GameContract;
+    render(<PullsScreen games={[side]} scope="aa" tab="calculator" servers={{ aa: 'eu' }} openTab={() => {}} open={() => {}} openAccount={() => {}} />);
+    // Example bank: 8,400 Gem (52 pulls) + 12 Tickets = 64 pulls; at least 640 Coin from them = 6 side pulls. Gem never buys side pulls.
+    const line = await screen.findByLabelText('Side banner budget');
+    expect(line).toHaveTextContent('at least 640 Coin from those 64 pulls (test: 10 a pull)');
+    expect(within(line).getByText('6')).toBeInTheDocument();
+  });
+
   it('Planner: typing your own pity shows it as a what-if, never saved', async () => {
     await show('planner');
     fireEvent.change(screen.getByPlaceholderText('e.g. 40'), { target: { value: '70' } });

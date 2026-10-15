@@ -14,11 +14,21 @@ and [Arsenal Exchange](https://endfield.wiki.gg/wiki/Arsenal_Exchange), which qu
   gives a copy (Potential token). Both counters reset when the banner ends.
 - Urgent Recruitment: after 30 pulls on the banner, a free 10-pull at base rates. It counts toward
   nothing and can't use up the 120 guarantee, but what it gives is yours (counted as copies).
-- Headhunting Dossier: after 60 pulls, the next banner's first 10-pull is free and counts normally
-  (`freePulls()`; the Calculator adds it when wired).
+- Headhunting Dossier: after 60 pulls, the next banner's first 10-pull is free and counts normally.
+  The Planner adds those 10 to a banner's "Have now" and "By end" when history shows 60+ pulls on the
+  banner before it and none on it yet (`carryOver` in the model, `carryIn` in tools/pity).
+- RE-Factor (rerun): the same, with free 10-pulls after 30, 60 and 90.
 - Basic (standard): the same 6★ odds, and a 6★ of your choice at 300 pulls (once).
 - New Horizons (beginner): a 6★ within 40 pulls.
-- Arsenal Tickets per operator: 2000 / 200 / 20 for 6★ / 5★ / 4★.
+- Arsenal Tickets per operator: 2000 / 200 / 20 for 6★ / 5★ / 4★. For sure: at least 38 a pull on
+  average (nine 4★ and one 5★ in every 10). The Calculator counts only that floor, under its own
+  "Arsenal Issue" line: tickets you have and will earn, plus at least 38 for each operator pull.
+
+## Prices (contract currencies)
+- Oroberyl: 500 a pull on operator banners. Permits: 1 each on their banners.
+- Arsenal Tickets: 198 a weapon pull (1980 an issue); weapon pulls only count in whole issues.
+- Origeometry (paid): 75 Oroberyl (6.67 a pull) or 25 Arsenal Tickets (7.92 a weapon pull).
+- The weapon banner takes only Arsenal Tickets and Origeometry (`currencies` on its banner type).
 
 ## Weapons (Arsenal Issue)
 - Sold in issues of 10 for 1980 Arsenal Tickets; the engine counts whole issues only.
@@ -34,4 +44,7 @@ the 8th issue and the 18 + 16k copies for weapons; hard pity and the 300 pick on
 ## Not verified (say so if the game shows otherwise)
 - The weapon copy cycle (18, then every 16) is our reading of "the cycle follows on every 8 issues".
 - Whether the beginner banner has the soft pity (modelled without).
-- RE-Factor (rerun) banners: free pulls at 30/60/90 and the 120 guarantee once per name. Not modelled yet.
+- RE-Factor (rerun): its 120 guarantee and free pulls happen once per banner name across reruns;
+  the model treats each run as new, so a second run of the same banner may give less than shown.
+- Joint banners: rules not confirmed; FRAME's placeholder stays (standard 6★ odds, no featured rule).
+- The beginner banner's own rate isn't published: worst case 40 is shown, chances say "no data".

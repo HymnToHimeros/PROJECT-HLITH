@@ -30,8 +30,9 @@ export const OPERATOR = {
   guaranteeAt: 120,
   /** Every 240th pull on the banner gives a copy (Potential token) of the featured operator. */
   tokenEvery: 240,
-  /** Urgent Recruitment: a free 10-pull after 30 pulls on the banner, at base rates; touches no counter. */
+  /** Urgent Recruitment: a free 10-pull after 30 pulls on the banner, at base rates; touches no counter. RE-Factor (rerun): after 30, 60 and 90. */
   urgentAt: 30,
+  rerunUrgentAt: [30, 60, 90],
   urgentSize: 10,
   /** Headhunting Dossier: after 60 pulls, the next banner's first 10-pull is free (and counts normally). */
   dossierAt: 60,
@@ -60,6 +61,9 @@ export const ARSENAL = {
 /** Arsenal Tickets each operator gives, by rarity (also from events and shop operators). */
 export const ARSENAL_TICKETS = { top: 2000, mid: 200, low: 20 } as const;
 
+/** Arsenal Tickets an operator pull gives for sure, on average: 20 for a 4★, and a 5★ (200) at least every 10 pulls → 380 per 10. */
+export const ARSENAL_TICKETS_AT_LEAST_PER_PULL = (9 * ARSENAL_TICKETS.low + ARSENAL_TICKETS.mid) / 10;
+
 const bannerOf = (s: PityState) => s.extra?.banner ?? 0;
 const gotOf = (s: PityState) => (s.extra?.got ?? 0) > 0;
 
@@ -87,18 +91,20 @@ function withExtra(outcomes: PullOutcome[], extra: number[]): PullOutcome[] {
   return outcomes.flatMap((o) => extra.map((p, k) => ({ p: o.p * p, next: o.next, copies: o.copies + k })));
 }
 
+type CustomPity = Extract<PityModel, { kind: 'custom' }>;
+
 /**
- * Chartered Headhunting (limited operator). 50/50 with no guarantee after a
- * loss, the featured operator at the 120th pull once per banner, a featured
- * copy every 240 pulls, and a free 10-pull after 30 that touches no counter.
+ * A featured-operator banner: 50/50 with no guarantee after a loss, the
+ * featured operator at the 120th pull once per banner, a featured copy every
+ * 240 pulls, and free 10-pulls (after `urgentAt` pulls) that touch no counter.
  */
-export const charteredOperator: PityModel = {
+const featuredOperator = (urgentAt: readonly number[], describe: string, more: Partial<CustomPity> = {}): CustomPity => ({
   kind: 'custom',
-  describe:
-    '6★ 0.8%, rising 5% a pull after 65, certain at 80 (carries over). 50/50 for the featured operator with no guarantee after a loss; the featured operator at the 120th pull once per banner; a copy every 240 pulls; a free 10-pull after 30 that counts toward nothing.',
+  describe,
   source: HEADHUNTING_SOURCE,
   hardPity: OPERATOR.hardPity,
   featured: { winRate: OPERATOR.winRate, guaranteeAfterLoss: false },
+  ...more,
   pull: (s) => {
     const b = bannerOf(s) + 1;
     const got = gotOf(s);
@@ -116,7 +122,7 @@ export const charteredOperator: PityModel = {
       ];
     }
     // Urgent Recruitment: 10 pulls at base rates, featured at 0.8% × 50% each, in a vacuum.
-    return b === OPERATOR.urgentAt ? withExtra(outcomes, binomial(OPERATOR.urgentSize, OPERATOR.baseRate * OPERATOR.winRate)) : outcomes;
+    return urgentAt.includes(b) ? withExtra(outcomes, binomial(OPERATOR.urgentSize, OPERATOR.baseRate * OPERATOR.winRate)) : outcomes;
   },
   worstCase: (s, copies) => {
     // Without luck, featured copies come only from the 120 guarantee and the 240 tokens.
@@ -125,7 +131,24 @@ export const charteredOperator: PityModel = {
     for (let x = 1; x <= copies * OPERATOR.tokenEvery + OPERATOR.guaranteeAt; x++) if (sure(x) >= copies) return x;
     return null;
   },
-};
+});
+
+/** Chartered Headhunting (limited operator), with the Headhunting Dossier for the next banner. */
+export const charteredOperator: PityModel = featuredOperator(
+  [OPERATOR.urgentAt],
+  '6★ 0.8%, rising 5% a pull after 65, certain at 80 (carries over). 50/50 for the featured operator with no guarantee after a loss; the featured operator at the 120th pull once per banner; a copy every 240 pulls; a free 10-pull after 30 that counts toward nothing; after 60 pulls, 10 free pulls on the next banner.',
+  { carryOver: { after: OPERATOR.dossierAt, pulls: OPERATOR.dossierSize, label: 'Headhunting Dossier' } },
+);
+
+/**
+ * RE-Factor Headhunting (rerun): the same, with free 10-pulls after 30, 60 and
+ * 90. Not modelled: its 120 guarantee and free pulls happen once per banner
+ * name across reruns, so a second run of the same banner may give less.
+ */
+export const rerunOperator: PityModel = featuredOperator(
+  OPERATOR.rerunUrgentAt,
+  '6★ 0.8%, rising 5% a pull after 65, certain at 80 (carries over). 50/50 for the featured operator with no guarantee after a loss; the featured operator at the 120th pull (once per banner name); a copy every 240 pulls; free 10-pulls after 30, 60 and 90 that count toward nothing.',
+);
 
 /** Basic Headhunting (standard): any 6★ counts; a 6★ of your choice at 300 pulls, once. */
 export const basicOperator: PityModel = {
@@ -151,8 +174,8 @@ export const basicOperator: PityModel = {
   },
 };
 
-/** New Horizons Headhunting (beginner): a standard 6★ within 40 pulls. */
-export const beginnerOperator: PityModel = { kind: 'hard-pity', hardPity: OPERATOR.beginnerHardPity, baseRate: OPERATOR.baseRate };
+/** New Horizons Headhunting (beginner): a standard 6★ within 40 pulls. Its own rate isn't published, so chances stay "no data". */
+export const beginnerOperator: PityModel = { kind: 'hard-pity', hardPity: OPERATOR.beginnerHardPity, baseRate: null };
 
 /**
  * Arsenal Issue (featured weapon), sold in issues of 10. A 6★ by the 4th

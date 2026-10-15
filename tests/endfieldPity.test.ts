@@ -1,6 +1,8 @@
 import { describe, expect, it } from 'vitest';
 import type { PityModel, PityState } from '../src/core/contract';
-import { arsenalIssue, basicOperator, beginnerOperator, charteredOperator, freePulls, operatorTopRate } from '../src/games/endfield/gacha';
+import { endfield } from '../src/games/endfield/contract';
+import { arsenalIssue, basicOperator, beginnerOperator, charteredOperator, freePulls, operatorTopRate, rerunOperator } from '../src/games/endfield/gacha';
+import { pullsFor } from '../src/tools/budget/budget';
 import { chance, hardPityOf, featuredOf, stepOf, worstCase } from '../src/tools/pity/pity';
 
 const at = (pulls: number, banner = 0, got = 0): PityState => ({ pulls, guaranteed: false, extra: { banner, got } });
@@ -28,8 +30,9 @@ describe('Endfield operators: soft and hard pity', () => {
     expect(value(worstCase(basicOperator, fresh, 4))).toBe(300); // 80, 160, 240, then the pick at 300
     expect(value(worstCase(basicOperator, at(0, 299), 1))).toBe(1);
   });
-  it('the beginner banner: a 6★ within 40', () => {
-    expect(value(chance(beginnerOperator, { pulls: 0, guaranteed: false }, 40, 'official'))).toBeCloseTo(1, 12);
+  it('the beginner banner: a 6★ within 40; its own rate isn’t published, so no chance is guessed', () => {
+    expect(value(worstCase(beginnerOperator, { pulls: 0, guaranteed: false }))).toBe(40);
+    expect(chance(beginnerOperator, { pulls: 0, guaranteed: false }, 40, 'official').known).toBe(false);
   });
 });
 
@@ -119,5 +122,34 @@ describe('Endfield models are complete', () => {
     for (const s of [fresh, at(29, 29), at(64, 64), at(79, 119), at(5, 239), at(30, 70), at(0, 170, 1), at(20, 299)]) {
       expect(steps(model, s).reduce((a, o) => a + o.p, 0)).toBeCloseTo(1, 12);
     }
+  });
+});
+
+describe('Endfield currencies buy pulls by the game’s prices', () => {
+  const pulls = (balances: Record<string, number>, type: string) => pullsFor(endfield, balances, type);
+  it('weapon issues: 1980 Arsenal Tickets for 10, only whole issues', () => {
+    expect(pulls({ 'arsenal-ticket': 1979 }, 'weapon')).toBe(0);
+    expect(pulls({ 'arsenal-ticket': 1980 }, 'weapon')).toBe(10);
+    expect(pulls({ 'arsenal-ticket': 3959 }, 'weapon')).toBe(10);
+  });
+  it('Oroberyl buys operator pulls (500 each), never weapon issues', () => {
+    expect(pulls({ oroberyl: 5000 }, 'chartered')).toBe(10);
+    expect(pulls({ oroberyl: 50000 }, 'weapon')).toBe(0);
+  });
+  it('Origeometry: 75 Oroberyl or 25 Arsenal Tickets each', () => {
+    expect(pulls({ origeometry: 20 }, 'chartered')).toBe(3); // 1500 Oroberyl
+    expect(pulls({ origeometry: 80 }, 'weapon')).toBe(10); // 2000 tickets
+    expect(pulls({ origeometry: 40, 'arsenal-ticket': 980 }, 'weapon')).toBe(10); // 1000 + 980
+  });
+  it('Arsenal Tickets don’t buy operator pulls; permits do, one each', () => {
+    expect(pulls({ 'arsenal-ticket': 5000 }, 'chartered')).toBe(0);
+    expect(pulls({ 'chartered-hh-permit': 7 }, 'chartered')).toBe(7);
+  });
+  it('every operator pull gives at least 38 Arsenal Tickets on average (9 × 20 + 200 per 10)', () => {
+    expect(endfield.currencies.find((c) => c.id === 'arsenal-ticket')?.fromPulls?.atLeastPerPull).toBe(38);
+  });
+  it('every banner type uses the rules from gacha.ts, except Joint (rules not confirmed)', () => {
+    const kinds = Object.fromEntries(endfield.bannerTypes.map((t) => [t.id, t.pity]));
+    expect(kinds).toMatchObject({ chartered: charteredOperator, rerun: rerunOperator, basic: basicOperator, beginner: beginnerOperator, weapon: arsenalIssue });
   });
 });
