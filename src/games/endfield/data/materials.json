@@ -1,0 +1,175 @@
+[
+  {
+    "id": "item_expcard_stage2_high",
+    "name": "Advanced Cognitive Carrier",
+    "kind": "Progression Materials",
+    "icon": "https://endfield.wiki.gg/images/Advanced_Cognitive_Carrier.png"
+  },
+  {
+    "id": "item_expcard_stage1_high",
+    "name": "Advanced Combat Record",
+    "kind": "Progression Materials",
+    "icon": "https://endfield.wiki.gg/images/Advanced_Combat_Record.png"
+  },
+  {
+    "id": "item_plant_crylplant_2_1",
+    "name": "Blighted Jadeleaf",
+    "kind": "Rare Materials",
+    "icon": "https://endfield.wiki.gg/images/Blighted_Jadeleaf.png"
+  },
+  {
+    "id": "item_plant_mushroom_2_1",
+    "name": "Bloodcap",
+    "kind": "Rare Materials",
+    "icon": "https://endfield.wiki.gg/images/Bloodcap.png"
+  },
+  {
+    "id": "item_plant_crylplant_1_2",
+    "name": "Chrysodendra",
+    "kind": "Rare Materials",
+    "icon": "https://endfield.wiki.gg/images/Chrysodendra.png"
+  },
+  {
+    "id": "item_plant_mushroom_2_2",
+    "name": "Cosmagaric",
+    "kind": "Rare Materials",
+    "icon": "https://endfield.wiki.gg/images/Cosmagaric.png"
+  },
+  {
+    "id": "item_plant_crylplant_2_3",
+    "name": "Crimson Spearleaf",
+    "kind": "Rare Materials",
+    "icon": "https://endfield.wiki.gg/images/Crimson_Spearleaf.png"
+  },
+  {
+    "id": "item_char_skill_specialize_2",
+    "name": "D96 Steel Sample 4",
+    "kind": "Progression Materials",
+    "icon": "https://endfield.wiki.gg/images/D96_Steel_Sample_4.png"
+  },
+  {
+    "id": "item_expcard_stage2_low",
+    "name": "Elementary Cognitive Carrier",
+    "kind": "Progression Materials",
+    "icon": "https://endfield.wiki.gg/images/Elementary_Cognitive_Carrier.png"
+  },
+  {
+    "id": "item_expcard_stage1_low",
+    "name": "Elementary Combat Record",
+    "kind": "Progression Materials",
+    "icon": "https://endfield.wiki.gg/images/Elementary_Combat_Record.png"
+  },
+  {
+    "id": "item_plant_crylplant_2_2",
+    "name": "False Aggela",
+    "kind": "Rare Materials",
+    "icon": "https://endfield.wiki.gg/images/False_Aggela.png"
+  },
+  {
+    "id": "item_expcard_stage1_mid",
+    "name": "Intermediate Combat Record",
+    "kind": "Progression Materials",
+    "icon": "https://endfield.wiki.gg/images/Intermediate_Combat_Record.png"
+  },
+  {
+    "id": "item_plant_crylplant_1_1",
+    "name": "Kalkodendra",
+    "kind": "Rare Materials",
+    "icon": "https://endfield.wiki.gg/images/Kalkodendra.png"
+  },
+  {
+    "id": "item_char_skill_crown",
+    "name": "Mark of Perseverance",
+    "kind": "Progression Materials",
+    "icon": "https://endfield.wiki.gg/images/Mark_of_Perseverance.png"
+  },
+  {
+    "id": "item_char_skill_specialize_1",
+    "name": "Metadiastima Photoemission Tube",
+    "kind": "Progression Materials",
+    "icon": "https://endfield.wiki.gg/images/Metadiastima_Photoemission_Tube.png"
+  },
+  {
+    "id": "item_plant_mushroom_1_1",
+    "name": "Pink Bolete",
+    "kind": "Rare Materials",
+    "icon": "https://endfield.wiki.gg/images/Pink_Bolete.png"
+  },
+  {
+    "id": "item_char_break_stage_1_2",
+    "name": "Protodisk",
+    "kind": "Progression Materials",
+    "icon": "https://endfield.wiki.gg/images/Protodisk.png"
+  },
+  {
+    "id": "item_char_skill_level_7_12",
+    "name": "Protohedron",
+    "kind": "Progression Materials",
+    "icon": "https://endfield.wiki.gg/images/Protohedron.png"
+  },
+  {
+    "id": "item_char_skill_level_1_6",
+    "name": "Protoprism",
+    "kind": "Progression Materials",
+    "icon": "https://endfield.wiki.gg/images/Protoprism.png"
+  },
+  {
+    "id": "item_char_break_stage_3_4",
+    "name": "Protoset",
+    "kind": "Progression Materials",
+    "icon": "https://endfield.wiki.gg/images/Protoset.png"
+  },
+  {
+    "id": "item_char_skill_specialize_4",
+    "name": "Quadrant Fitting Fluid",
+    "kind": "Progression Materials",
+    "icon": "https://endfield.wiki.gg/images/Quadrant_Fitting_Fluid.png"
+  },
+  {
+    "id": "item_plant_mushroom_1_2",
+    "name": "Red Bolete",
+    "kind": "Rare Materials",
+    "icon": "https://endfield.wiki.gg/images/Red_Bolete.png"
+  },
+  {
+    "id": "item_plant_mushroom_1_3",
+    "name": "Ruby Bolete",
+    "kind": "Rare Materials",
+    "icon": "https://endfield.wiki.gg/images/Ruby_Bolete.png"
+  },
+  {
+    "id": "item_gold",
+    "name": "T-Creds",
+    "kind": "Currencies",
+    "icon": "https://endfield.wiki.gg/images/T-Creds.png"
+  },
+  {
+    "id": "item_char_skill_specialize_3",
+    "name": "Tachyon Screening Lattice",
+    "kind": "Progression Materials",
+    "icon": "https://endfield.wiki.gg/images/Tachyon_Screening_Lattice.png"
+  },
+  {
+    "id": "item_plant_mushroom_2_3",
+    "name": "Talos Cap",
+    "kind": "Rare Materials",
+    "icon": "https://endfield.wiki.gg/images/Talos_Cap.png"
+  },
+  {
+    "id": "item_char_skill_specialize_5",
+    "name": "Triphasic Nanoflake",
+    "kind": "Progression Materials",
+    "icon": "https://endfield.wiki.gg/images/Triphasic_Nanoflake.png"
+  },
+  {
+    "id": "item_plant_crylplant_1_3",
+    "name": "Vitrodendra",
+    "kind": "Rare Materials",
+    "icon": "https://endfield.wiki.gg/images/Vitrodendra.png"
+  },
+  {
+    "id": "item_char_skill_specialize_6",
+    "name": "Warp Plasma-Coated Slide",
+    "kind": "Progression Materials"
+  }
+]
