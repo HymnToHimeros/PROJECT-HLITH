@@ -1032,6 +1032,10 @@
   padding: 2px 7px;
   font-size: 11.5px;
 }
+.railBanner {
+  font-size: 11.5px;
+  color: var(--ink-3);
+}
 .railText .sub {
   font-size: 11.5px;
 }

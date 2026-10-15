@@ -110,7 +110,7 @@ export function CharacterPage({ data, character: c, several, onBack, openPulls, 
             <span className={r.chipVent} style={{ background: game.vent }}>
               {game.short}
             </span>
-            {c.leak ? <UnverifiedTag source={c.leak.source} /> : isUpcoming(c) && <UnverifiedTag source={c.source ?? 'game files'} />}
+            {c.leak && <UnverifiedTag source={c.leak.source} />}
           </div>
           <h2 className={r.heroName}>
             {c.name}
@@ -221,20 +221,24 @@ export function CharacterPage({ data, character: c, several, onBack, openPulls, 
             <h3 className={r.cardTitle} id={`known-${c.id}`}>
               What’s known
             </h3>
-            <p className={r.cardText}>Not released yet. Everything here is from the game files and can still change before release.</p>
+            {c.leak ? (
+              <p className={r.cardText}>Not released yet. Everything here is from the game files and can still change before release.</p>
+            ) : (
+              <p className={r.cardText}>Not released yet. An official banner has been announced.</p>
+            )}
             <div className={r.lineRow}>
-              <span className={r.lineLabel}>Release date in the files</span>
+              <span className={r.lineLabel}>{c.leak ? ‘Release date in the files’ : ‘Release date’}</span>
               <span className={r.mono}>
                 {c.releasedAt
                   ? new Date(c.releasedAt).toLocaleDateString(undefined, {
-                      year: 'numeric',
-                      month: 'short',
-                      day: 'numeric',
+                      year: ‘numeric’,
+                      month: ‘short’,
+                      day: ‘numeric’,
                     })
-                  : '—'}
+                  : ‘—‘}
               </span>
             </div>
-            <UnverifiedTag source={c.source ?? 'game files'} />
+            {c.leak && <UnverifiedTag source={c.source ?? ‘game files’} />}
           </section>
         )}
       </div>

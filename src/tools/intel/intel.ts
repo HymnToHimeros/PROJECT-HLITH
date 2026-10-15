@@ -44,8 +44,20 @@ export function intelItems(game: GameContract, characters: Character[], banners:
   };
 
   const released = (c: Character) => c.releasedAt !== undefined && Date.parse(c.releasedAt) <= now;
+  // Characters on a confirmed (non-leak) upcoming banner get a different label.
+  const confirmedUpcoming = new Map<string, Banner>();
+  for (const b of banners) {
+    if (b.leak || Date.parse(b.start) <= now) continue;
+    for (const id of b.featured) if (!confirmedUpcoming.has(id)) confirmedUpcoming.set(id, b);
+  }
   for (const c of characters) {
-    if (c.releasedAt && Date.parse(c.releasedAt) > now) add(c, Date.parse(c.releasedAt), 'Release date in the game files', c.source ?? 'game list');
+    if (!c.releasedAt || Date.parse(c.releasedAt) <= now) continue;
+    const banner = confirmedUpcoming.get(c.id);
+    if (banner) {
+      add(c, Date.parse(c.releasedAt), `Official banner (${banner.title}) starts`, 'official banner');
+    } else {
+      add(c, Date.parse(c.releasedAt), 'Release date in the game files', c.source ?? 'game list');
+    }
   }
 
   // Characters already on a confirmed banner that has started aren't news.

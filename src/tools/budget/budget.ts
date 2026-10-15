@@ -52,6 +52,7 @@ export interface BudgetInput {
 export type RowStatus =
   | 'counted'
   | 'already-earned'
+  | 'ended'
   | 'skipped'
   | 'skipped-backlog'
   | 'off-paid'
@@ -171,7 +172,7 @@ export function budget(input: BudgetInput): Budget {
     const base = { id: `event:${e.id}`, label: e.title, source: 'events' as const, currency: e.currency };
     if (e.state === 'done') push({ ...base, occurrences: 0, amount: 0, status: 'already-earned' });
     else if (e.state === 'skipped') push({ ...base, occurrences: 0, amount: 0, status: 'skipped' });
-    else if (e.end <= now) push({ ...base, occurrences: 0, amount: 0, status: 'skipped', reason: 'ended' });
+    else if (e.end <= now) push({ ...base, occurrences: 0, amount: 0, status: 'ended', reason: 'ended' });
     else if (e.reward === null) noData(base, 'reward amount not known yet');
     else push({ ...base, occurrences: 1, amount: e.reward, status: 'counted' });
   }
@@ -185,7 +186,7 @@ export function budget(input: BudgetInput): Budget {
       continue;
     }
     if (l.end <= now) {
-      push({ ...base, occurrences: 0, amount: 0, status: 'skipped', reason: 'ended' });
+      push({ ...base, occurrences: 0, amount: 0, status: 'ended', reason: 'ended' });
       continue;
     }
     if (!rule) {

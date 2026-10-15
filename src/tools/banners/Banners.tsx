@@ -352,6 +352,7 @@ function RailRow({ game, banner, data, open, weapon }: { game: GameContract; ban
         <span className={b.alsoName}>
           {name} {rarity && rarity !== 'low' && <span className={rarity === 'top' ? b.top : b.mid}>{game.terms.rarity[rarity]}</span>}
         </span>
+        <span className={b.railBanner}>{banner.title}</span>
         {c && <FitPill game={game} character={c} data={data} open={open} />}
       </span>
       {!weapon && c && <WantStar game={game} character={c} data={data} />}

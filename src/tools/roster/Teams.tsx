@@ -539,6 +539,8 @@ function ExampleIdeas({
 
 function EndgameRecord({ data, several, head, ready, openAccount }: { data: RosterData; several: boolean; head: (t: string) => ReactNode; ready: TeamPreset | undefined; openAccount?: (() => void) | undefined }) {
   const { game } = data;
+  const hasHoyolab = game.accountLinks?.some((l) => l.provider === 'hoyolab');
+  if (!hasHoyolab) return null;
   return (
     <>
       <section className={r.card} aria-label={`Endgame record${several ? ` · ${game.short}` : ''}`}>
