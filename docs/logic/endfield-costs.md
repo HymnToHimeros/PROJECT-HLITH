@@ -17,6 +17,17 @@ Tests: `tests/endfieldCosts.test.ts`.
   top-level bullets, and each Protocol Space drop row as "<stage> (<Sanity> Sanity, <drop rate>)".
   Exchange prices (sub-bullets) are left out. Farm gets them on each row (`NeedRow.sources`).
 
+## Weapons (`weaponMaterialsFor(weaponId, from, to)` → `{ needs, partial? }`)
+- **Tuning:** stages 1–4 from each weapon's page (`Weapon data` t1…t4), needed at levels 20, 40, 60
+  and 80 (the Weapon page's Tuning table: caps 40, 60, 80, 90). Every weapon's page is checked
+  against that table: stages 1–3 must match it, stage 4 its shared items plus two weapon-specific
+  items (16 and 8). A mismatch stops the import until it has a ruling. Today none differ.
+- **Weapon EXP and T-Creds:** the Weapon page says all weapons cost the same, but gives only totals
+  from level 1 at levels 20, 40, 60, 80 and 90 (no per-level table). So whole stretches between
+  those levels are counted, in Arms INSP Sets (10,000 EXP each), and a range that starts or ends
+  between them names what it leaves out in `partial`. To max from level 1 is exact.
+- Lunar Calling has no wiki page yet; re-running the import adds it.
+
 ## What "to max" counts
 Level 1→90, Promotions I–IV, all four combat skills to 12, and the Ability Matrix nodes: attribute
 increases, both talents, both base skills, gear outfitting. Operator EXP is counted in the 10,000-EXP
@@ -39,19 +50,4 @@ The import stops on any disagreement between wiki sources that has no ruling in 
   correct it. With this, every operator matches the wiki's Cost Summary exactly.
 
 ## Next
-- Weapon costs: not now (no screen yet; new screens need the owner's design OK). Where the data is:
-  - **Weapon page** (endfield.wiki.gg/wiki/Weapon, "Level"): Weapon EXP items Arms Inspector (200),
-    Arms INSP Kit (1,000), Arms INSP Set (10,000); weapons used as material give 500 / 1,500 /
-    10,000 / 30,000 EXP by rarity (3★–6★). Cumulative from level 1: level 20 = 8,890 EXP and 640
-    T-Creds; 40 = 105,540 and 10,400; 60 = 290,540 and 29,010; 80 = 1,203,710 and 123,850;
-    90 = 2,524,080 and 341,390 (a per-level table like the Operator page's is expected there too).
-    Excess EXP above a cap is partly returned in 200-EXP steps.
-  - **Weapon page, "Tuning":** every weapon starts at Tuning Stage 0 with level cap 20; each stage
-    raises the cap.
-  - **Each weapon's page** (`Weapon data`): tuning costs `t1`…`t4`, e.g. Amaranthine Tassel
-    t1 = Cast Die 5, Kalkonyx 3, T-Creds 2,200 … t4 = Heavy Cast Die 30, Quadrant Fitting Fluid 16,
-    Igneosite 8, T-Creds 90,000.
-  - Weapon progression Protocol Spaces: Weapon EXP (Arms Inspector, INSP Kit, INSP Set) and
-    Weapon Tune (Cast Die, Heavy Cast Die).
-  - Shape when it's wanted: `GameRules.weaponMaterialsFor(weaponId, from, to)`, the same as
-    `materialsFor`.
+- Weapon costs: built (`weaponMaterialsFor`, below).

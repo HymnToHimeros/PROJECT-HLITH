@@ -1,0 +1,5 @@
+# 2026-10-15 · ERROR-FIX · screens from an older release no longer leave a blank page (branch errorfix/stale-chunk-reload)
+
+- Found in the live health sweep: the first visit to /all/today got a screen file back as HTML ("Expected a JavaScript module… text/html") and never drew. The host's single-page fallback answers a missing file with the app page, status 200, so any tab still open from the previous release breaks on its next not-yet-loaded screen. Nothing caught it: no error boundary anywhere.
+- Fix: on a failed screen load (Vite's `vite:preloadError`), reload once to get the new release (src/core/shell/staleChunk.ts, at most once a minute so it can't loop). Screens and panels load inside `LazyArea` (src/core/shell/LazyArea.tsx): "Loading…", and if it still fails, a card "This part of HLITH didn't load" with Reload instead of a blank page; another screen tries again.
+- Tests: src/core/shell/staleChunk.test.tsx (reload once, no loop; card; retry on another screen); tests/e2e/install.spec.ts "a screen file from an older release" (one reload recovers; still wrong → card, no loop). Both browser tests fail on the old shell.

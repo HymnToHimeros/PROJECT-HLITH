@@ -182,6 +182,9 @@ function PlanCard({ game, banner: b, type, data, art, serverId, now, whatIf, ope
   const byN = pullsBy.known ? pullsBy.value : null;
   const short = worstN !== null && byN !== null ? worstN - byN : null;
   const hard = hardPityOf(type.pity);
+  // Earlier limited characters a lost 50/50 can also give (Endfield's Chartered banners), by name; ids the list doesn't have stay out.
+  const names = new Map(data.characters.map((c) => [c.id, c.name]));
+  const also = (b.alsoAvailable ?? []).map((id) => names.get(id)).filter((n): n is string => Boolean(n));
 
   return (
     <article className={cx(p.planCard, b.leak && p.leakCard)} style={{ '--vent': game.vent } as CSSProperties} aria-label={b.title}>
@@ -262,6 +265,11 @@ function PlanCard({ game, banner: b, type, data, art, serverId, now, whatIf, ope
           </div>
         )}
       </dl>
+      {also.length > 0 && (
+        <span className={p.muted}>
+          A lost 50/50 can also give {also.join(', ')} (counts as a loss).
+        </span>
+      )}
       <LeftOut rows={byEnd.rows} />
     </article>
   );

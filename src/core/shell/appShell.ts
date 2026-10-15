@@ -1,4 +1,5 @@
 import { useSyncExternalStore } from 'react';
+import { watchStaleChunks } from './staleChunk';
 
 /**
  * The installable app (T45), app side: registers the service worker (/sw.js, written at build time
@@ -118,6 +119,8 @@ export function startAppShell(opts: { register: boolean } = { register: import.m
     set({ installed: true, canPrompt: false });
   });
   window.matchMedia?.('(display-mode: standalone)').addEventListener?.('change', () => set({ installed: standalone() }));
+  // A tab open from the previous release: reload once when a screen's file is gone (staleChunk.ts).
+  watchStaleChunks();
 
   if (!opts.register) return;
   // In the built app the connection is checked for real: at start, when the browser says it

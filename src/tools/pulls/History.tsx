@@ -1,4 +1,4 @@
-import { useMemo, useState, type ChangeEvent, type CSSProperties, type FormEvent } from 'react';
+import { useState, type ChangeEvent, type CSSProperties, type FormEvent } from 'react';
 import type { GameContract, PullRecord } from '../../core/contract';
 import { backend } from '../../core/data/backend';
 import { importPulls, removePulls } from '../../core/data/userData';
@@ -9,7 +9,6 @@ import { buildHlithFile } from '../import/hlith';
 import { parseHistoryFile, readAccount, type ImportedAccount } from '../import/uigf';
 import { featuredOf, hardPityOf, pityFromHistory } from '../pity/pity';
 import { cacheFileSteps, fileSteps, findHistoryLink, goodToKnow, guideFor, pasteSteps } from './importGuides';
-import { featuredByBanner } from './featuredByBanner';
 import { LuckReport } from './LuckReport';
 import p from './pulls.module.css';
 import type { PullsData } from './usePullsData';
@@ -128,10 +127,8 @@ export function History({ game, data, signedIn, now }: { game: GameContract; dat
   const types = game.bannerTypes.filter((t) => data.history.list.some((h) => h.bannerType === t.id));
   // Banner types where a lost 50/50 makes the next one guaranteed (not Endfield's).
   const noGuarantee = new Set(game.bannerTypes.filter((t) => featuredOf(t.pity)?.guaranteeAfterLoss === false).map((t) => t.id));
-  // Games whose pulls don't say their banner (Endfield): featured or not from the banner open at the time (real banners only).
-  const rule = mapping?.featuredByBanner;
-  const realBanners = useMemo(() => data.banners.list.filter((b) => !data.banners.exampleIds.has(b.id)), [data.banners]);
-  const history = useMemo(() => (rule && !example ? featuredByBanner(data.history.list, realBanners, rule, data.characters) : data.history.list), [rule, example, data.history.list, realBanners, data.characters]);
+  // Games whose pulls don't say their banner (Endfield): usePullsData marks each top result from the banner open at the time.
+  const history = data.history.list;
   const allTops = topsWithPity(history, noGuarantee).reverse();
   const tops = showAll ? allTops : allTops.slice(0, 10);
   const noImport = !mapping || (!fileImport && !linkImport);

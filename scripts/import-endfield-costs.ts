@@ -5,6 +5,9 @@
  * - Levels 1→90: EXP and T-Creds per level, and the EXP items, from the Operator page (same for every operator).
  * - Promotions I–IV: the wiki's AbilityMatrixUpgrades table, checked against each page's own `e1`…`e4`.
  * - Combat skills 2→12, attribute increases, talents, base skills and gear outfitting: each operator's page.
+ * - Weapons: tuning stages 1–4 from each weapon's page (`Weapon data` t1…t4), checked against the Weapon page's
+ *   Tuning table; weapon EXP and T-Creds from the Weapon page, which gives them only as totals at levels 20,
+ *   40, 60, 80 and 90 (no per-level table), so a range between those levels is reported as partial.
  * - Items: the Items table (id, name, type, picture). Sanity per run and amounts per run aren't on the wiki,
  *   so they stay empty ("No data yet").
  * Nothing is guessed: an item name the Items table doesn't know stops the import, and so does any disagreement
@@ -224,6 +227,51 @@ export function acquisition(text: string, who: string): string[] {
   return [...new Set(out)];
 }
 
+/** "{{I|Cast Die|5}} {{I|T-Creds|2200}}" → { Cast Die: 5, T-Creds: 2200 }. */
+export function itemTemplates(raw: string): Items {
+  const out: Items = {};
+  for (const m of raw.matchAll(/\{\{I\|([^|}]+)\|([\d,]+)(?:\|[^}]*)?\}\}/g)) if (m[1] && m[2]) out[m[1]] = (out[m[1]] ?? 0) + Number(m[2].replace(/,/g, ''));
+  return out;
+}
+
+/** A weapon page's tuning costs, stages 1–4 (`Weapon data` t1…t4). */
+export function weaponTunings(text: string, who: string): Items[] {
+  const d = templates(text, 'Weapon data')[0];
+  if (!d) throw new Error(`${who}: no Weapon data on the page`);
+  return [1, 2, 3, 4].map((k) => {
+    const items = itemTemplates(d[`t${k}`] ?? '');
+    if (!Object.keys(items).length) throw new Error(`${who}: no tuning cost t${k}`);
+    return items;
+  });
+}
+
+/**
+ * The Weapon page: its Tuning table (the level cap after each stage, and each stage's cost; stage 4 lists only its
+ * shared items, then "16x Rare Progression Material, 8x Minerals" that differ per weapon), the cumulative EXP and
+ * T-Creds at levels 20/40/60/80/90, and what each EXP item gives.
+ */
+export function weaponPage(text: string): { caps: number[]; stages: Items[]; specific: number[]; milestones: { level: number; exp: number; creds: number }[]; expPer: Record<string, number> } {
+  const at = text.indexOf('===Tuning===');
+  if (at < 0) throw new Error('Weapon page: no Tuning section');
+  const table = text.slice(at, text.indexOf('|}', at));
+  const rows = [...table.matchAll(/\|\s*Stage (\d)\s*\n\|\s*(\d+)\s*\n\|\s*([^\n]*)/g)];
+  if (rows.length !== 5) throw new Error(`Weapon page: ${rows.length} tuning rows, expected 5`);
+  const caps = rows.map((r) => Number(r[2]));
+  const stages = rows.slice(1).map((r) => itemTemplates(r[3] ?? ''));
+  const specific = [...(rows[4]?.[3] ?? '').matchAll(/(\d+)x\s+[A-Za-z]/g)].map((m) => Number(m[1]));
+  const milestones = [...text.matchAll(/\* Level (\d+): ([\d,]+) EXP and ([\d,]+) T-Creds/g)].map((m) => ({ level: Number(m[1]), exp: Number((m[2] ?? '').replace(/,/g, '')), creds: Number((m[3] ?? '').replace(/,/g, '')) }));
+  if (milestones.length !== 5) throw new Error(`Weapon page: ${milestones.length} level totals, expected 5`);
+  const expPer: Record<string, number> = {};
+  for (const m of text.matchAll(/\{\{I\|([^|}]+)\|[^}]*\}\}\s*provide\s*([\d,]+)\s*Weapon EXP/g)) if (m[1] && m[2]) expPer[m[1]] = Number(m[2].replace(/,/g, ''));
+  return { caps, stages, specific, milestones, expPer };
+}
+
+/** Does a weapon's stage 4 match the shared part and the count of weapon-specific items (16 and 8)? */
+export function sameStage4(own: Items, shared: Items, specific: number[]): boolean {
+  const rest = Object.entries(own).filter(([n]) => !(n in shared));
+  return Object.entries(shared).every(([n, v]) => own[n] === v) && JSON.stringify(rest.map(([, v]) => v).sort((a, b) => b - a)) === JSON.stringify([...specific].sort((a, b) => b - a));
+}
+
 interface ItemRow {
   Item?: string;
   Id?: string;
@@ -243,6 +291,13 @@ async function itemsNamed(names: string[]): Promise<Map<string, ItemRow>> {
     for (const { title } of d.cargoquery ?? []) if (title.Item) out.set(title.Item, title);
   }
   return out;
+}
+
+/** Weapon id → its wiki page (the Weapons Cargo table). */
+async function weaponPagesById(): Promise<Map<string, string>> {
+  const q = new URLSearchParams({ action: 'cargoquery', format: 'json', limit: '500', tables: 'Weapons', fields: 'Weapon,Id' });
+  const d = await json<{ cargoquery?: { title: { Weapon?: string; Id?: string } }[] }>(`${WIKI}/api.php?${q}`);
+  return new Map((d.cargoquery ?? []).flatMap(({ title: r }) => (r.Id && r.Weapon ? [[r.Id, r.Weapon.trim()]] : [])));
 }
 
 async function promotionTable(): Promise<Map<string, Items[]>> {
@@ -333,11 +388,41 @@ if (import.meta.main ?? process.argv[1]?.endsWith('import-endfield-costs.ts')) {
         if (t) [1, 2, 3].forEach((r) => (t.steps[String(r)] = { ...t.steps[String(r)], 'T-Creds': outfitting[r - 1] ?? 0 }));
       }
   }
+  // Weapons: each weapon page's tuning, checked against the Weapon page's Tuning table.
+  const weaponGeneral = await page('Weapon');
+  const wp = weaponPage(weaponGeneral.text);
+  const weaponList = JSON.parse(readFileSync(resolve(ROOT, 'src/games/endfield/data/weapons.json'), 'utf8')) as { id: string; name: string }[];
+  const weaponPages = await weaponPagesById();
+  const weapons: Record<string, { source: string; version: string; tunings: { atLevel: number; items: Items }[] }> = {};
+  for (const w of weaponList) {
+    const title = weaponPages.get(w.id);
+    if (!title) {
+      notes.push(`${w.name} (${w.id}): no wiki page in the Weapons table, left out`);
+      continue;
+    }
+    const p = await page(title);
+    const own = weaponTunings(p.text, w.name);
+    const tunings = own.map((items, i) => {
+      const shared = wp.stages[i] ?? {};
+      const ok = i < 3 ? same(items, shared) : sameStage4(items, shared, wp.specific);
+      if (!ok) {
+        const use = conflict(`weapon-tuning:${w.id}:${i + 1}`, `${w.name}, Tuning Stage ${i + 1}: the weapon page says ${show(items)}; the Weapon page's Tuning table says ${show(shared)}${i === 3 ? ` plus ${wp.specific.join(' and ')} weapon-specific items` : ''}.`);
+        if (use === 'operator-page') throw new Error(`weapon-tuning:${w.id}:${i + 1}: rule it "page" (the weapon page) or "table"`);
+        return { atLevel: wp.caps[i] ?? 0, items: use === 'table' && i < 3 ? shared : items };
+      }
+      return { atLevel: wp.caps[i] ?? 0, items };
+    });
+    weapons[w.id] = { source: `endfield.wiki.gg/wiki/${title.replace(/ /g, '_')} (CC BY-SA 4.0)`, version: `wiki revision ${p.revid}`, tunings };
+  }
   if (unruled.length) throw new Error(`wiki sources disagree, and nobody has ruled yet (add a ruling to RULINGS):\n  ${unruled.join('\n  ')}`);
 
   // Every item named, from the Items table; an unknown name stops the import.
   const names = new Set<string>(Object.keys(expPer));
   names.add('T-Creds');
+  const weaponExp = Object.entries(wp.expPer).sort((a, b) => b[1] - a[1])[0];
+  if (!weaponExp) throw new Error('Weapon page: Weapon EXP items not found');
+  names.add(weaponExp[0]);
+  for (const w of Object.values(weapons)) for (const t of w.tunings) for (const n of Object.keys(t.items)) names.add(n);
   for (const o of Object.values(operators)) {
     for (const p of o.promotions) for (const n of Object.keys(p.items)) names.add(n);
     for (const t of o.tracks) for (const s of Object.values(t.steps)) for (const n of Object.keys(s)) names.add(n);
@@ -351,6 +436,7 @@ if (import.meta.main ?? process.argv[1]?.endsWith('import-endfield-costs.ts')) {
     for (const p of o.promotions) p.items = byId(p.items);
     for (const t of o.tracks) for (const k of Object.keys(t.steps)) t.steps[k] = byId(t.steps[k] ?? {});
   }
+  for (const w of Object.values(weapons)) for (const t of w.tunings) t.items = byId(t.items);
 
   // EXP: Combat Records up to level 60, Cognitive Carriers above (the Operator page), counted in the 10,000-EXP ones.
   const top = (family: string) => Object.entries(expPer).filter(([n]) => n.includes(family)).sort((a, b) => b[1] - a[1])[0];
@@ -371,6 +457,15 @@ if (import.meta.main ?? process.argv[1]?.endsWith('import-endfield-costs.ts')) {
       ],
     },
     operators,
+    weapons: {
+      source: `endfield.wiki.gg/wiki/Weapon (CC BY-SA 4.0), wiki revision ${weaponGeneral.revid}; each weapon's page`,
+      max: wp.caps[wp.caps.length - 1],
+      milestones: wp.milestones,
+      expItem: idOf(weaponExp[0]),
+      expPer: weaponExp[1],
+      credsItem: idOf('T-Creds'),
+      list: weapons,
+    },
     summary: Object.fromEntries(Object.entries(summary).map(([n, v]) => [idOf(n) ?? n, v])),
     conflicts,
   };

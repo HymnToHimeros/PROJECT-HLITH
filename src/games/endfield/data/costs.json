@@ -14132,6 +14132,3084 @@
       ]
     }
   },
+  "weapons": {
+    "source": "endfield.wiki.gg/wiki/Weapon (CC BY-SA 4.0), wiki revision 63234; each weapon's page",
+    "max": 90,
+    "milestones": [
+      {
+        "level": 20,
+        "exp": 8890,
+        "creds": 640
+      },
+      {
+        "level": 40,
+        "exp": 105540,
+        "creds": 10400
+      },
+      {
+        "level": 60,
+        "exp": 290540,
+        "creds": 29010
+      },
+      {
+        "level": 80,
+        "exp": 1203710,
+        "creds": 123850
+      },
+      {
+        "level": 90,
+        "exp": 2524080,
+        "creds": 341390
+      }
+    ],
+    "expItem": "item_weapon_expcard_high",
+    "expPer": 10000,
+    "credsItem": "item_gold",
+    "list": {
+      "wpn_claym_0003": {
+        "source": "endfield.wiki.gg/wiki/Industry_0.1 (CC BY-SA 4.0)",
+        "version": "wiki revision 61804",
+        "tunings": [
+          {
+            "atLevel": 20,
+            "items": {
+              "item_weapon_break_low": 5,
+              "item_plant_spcstone_1_1": 3,
+              "item_gold": 2200
+            }
+          },
+          {
+            "atLevel": 40,
+            "items": {
+              "item_weapon_break_low": 18,
+              "item_plant_spcstone_1_2": 5,
+              "item_gold": 8500
+            }
+          },
+          {
+            "atLevel": 60,
+            "items": {
+              "item_weapon_break_high": 20,
+              "item_plant_spcstone_1_3": 5,
+              "item_gold": 25000
+            }
+          },
+          {
+            "atLevel": 80,
+            "items": {
+              "item_weapon_break_high": 30,
+              "item_char_skill_specialize_4": 16,
+              "item_plant_spcstone_2_1": 8,
+              "item_gold": 90000
+            }
+          }
+        ]
+      },
+      "wpn_claym_0004": {
+        "source": "endfield.wiki.gg/wiki/Exemplar (CC BY-SA 4.0)",
+        "version": "wiki revision 61806",
+        "tunings": [
+          {
+            "atLevel": 20,
+            "items": {
+              "item_weapon_break_low": 5,
+              "item_plant_spcstone_1_1": 3,
+              "item_gold": 2200
+            }
+          },
+          {
+            "atLevel": 40,
+            "items": {
+              "item_weapon_break_low": 18,
+              "item_plant_spcstone_1_2": 5,
+              "item_gold": 8500
+            }
+          },
+          {
+            "atLevel": 60,
+            "items": {
+              "item_weapon_break_high": 20,
+              "item_plant_spcstone_1_3": 5,
+              "item_gold": 25000
+            }
+          },
+          {
+            "atLevel": 80,
+            "items": {
+              "item_weapon_break_high": 30,
+              "item_char_skill_specialize_5": 16,
+              "item_plant_spcstone_2_1": 8,
+              "item_gold": 90000
+            }
+          }
+        ]
+      },
+      "wpn_claym_0006": {
+        "source": "endfield.wiki.gg/wiki/Former_Finery (CC BY-SA 4.0)",
+        "version": "wiki revision 61809",
+        "tunings": [
+          {
+            "atLevel": 20,
+            "items": {
+              "item_weapon_break_low": 5,
+              "item_plant_spcstone_1_1": 3,
+              "item_gold": 2200
+            }
+          },
+          {
+            "atLevel": 40,
+            "items": {
+              "item_weapon_break_low": 18,
+              "item_plant_spcstone_1_2": 5,
+              "item_gold": 8500
+            }
+          },
+          {
+            "atLevel": 60,
+            "items": {
+              "item_weapon_break_high": 20,
+              "item_plant_spcstone_1_3": 5,
+              "item_gold": 25000
+            }
+          },
+          {
+            "atLevel": 80,
+            "items": {
+              "item_weapon_break_high": 30,
+              "item_char_skill_specialize_1": 16,
+              "item_plant_spcstone_2_2": 8,
+              "item_gold": 90000
+            }
+          }
+        ]
+      },
+      "wpn_claym_0007": {
+        "source": "endfield.wiki.gg/wiki/Thunderberge (CC BY-SA 4.0)",
+        "version": "wiki revision 61811",
+        "tunings": [
+          {
+            "atLevel": 20,
+            "items": {
+              "item_weapon_break_low": 5,
+              "item_plant_spcstone_1_1": 3,
+              "item_gold": 2200
+            }
+          },
+          {
+            "atLevel": 40,
+            "items": {
+              "item_weapon_break_low": 18,
+              "item_plant_spcstone_1_2": 5,
+              "item_gold": 8500
+            }
+          },
+          {
+            "atLevel": 60,
+            "items": {
+              "item_weapon_break_high": 20,
+              "item_plant_spcstone_1_3": 5,
+              "item_gold": 25000
+            }
+          },
+          {
+            "atLevel": 80,
+            "items": {
+              "item_weapon_break_high": 30,
+              "item_char_skill_specialize_2": 16,
+              "item_plant_spcstone_2_1": 8,
+              "item_gold": 90000
+            }
+          }
+        ]
+      },
+      "wpn_claym_0008": {
+        "source": "endfield.wiki.gg/wiki/Sundered_Prince (CC BY-SA 4.0)",
+        "version": "wiki revision 61812",
+        "tunings": [
+          {
+            "atLevel": 20,
+            "items": {
+              "item_weapon_break_low": 5,
+              "item_plant_spcstone_1_1": 3,
+              "item_gold": 2200
+            }
+          },
+          {
+            "atLevel": 40,
+            "items": {
+              "item_weapon_break_low": 18,
+              "item_plant_spcstone_1_2": 5,
+              "item_gold": 8500
+            }
+          },
+          {
+            "atLevel": 60,
+            "items": {
+              "item_weapon_break_high": 20,
+              "item_plant_spcstone_1_3": 5,
+              "item_gold": 25000
+            }
+          },
+          {
+            "atLevel": 80,
+            "items": {
+              "item_weapon_break_high": 30,
+              "item_char_skill_specialize_2": 16,
+              "item_plant_spcstone_2_1": 8,
+              "item_gold": 90000
+            }
+          }
+        ]
+      },
+      "wpn_claym_0009": {
+        "source": "endfield.wiki.gg/wiki/Quencher (CC BY-SA 4.0)",
+        "version": "wiki revision 61813",
+        "tunings": [
+          {
+            "atLevel": 20,
+            "items": {
+              "item_weapon_break_low": 5,
+              "item_plant_spcstone_1_1": 3,
+              "item_gold": 2200
+            }
+          },
+          {
+            "atLevel": 40,
+            "items": {
+              "item_weapon_break_low": 18,
+              "item_plant_spcstone_1_2": 5,
+              "item_gold": 8500
+            }
+          },
+          {
+            "atLevel": 60,
+            "items": {
+              "item_weapon_break_high": 20,
+              "item_plant_spcstone_1_3": 5,
+              "item_gold": 25000
+            }
+          },
+          {
+            "atLevel": 80,
+            "items": {
+              "item_weapon_break_high": 30,
+              "item_char_skill_specialize_5": 16,
+              "item_plant_spcstone_2_2": 8,
+              "item_gold": 90000
+            }
+          }
+        ]
+      },
+      "wpn_claym_0011": {
+        "source": "endfield.wiki.gg/wiki/Seeker_of_Dark_Lung (CC BY-SA 4.0)",
+        "version": "wiki revision 61817",
+        "tunings": [
+          {
+            "atLevel": 20,
+            "items": {
+              "item_weapon_break_low": 5,
+              "item_plant_spcstone_1_1": 3,
+              "item_gold": 2200
+            }
+          },
+          {
+            "atLevel": 40,
+            "items": {
+              "item_weapon_break_low": 18,
+              "item_plant_spcstone_1_2": 5,
+              "item_gold": 8500
+            }
+          },
+          {
+            "atLevel": 60,
+            "items": {
+              "item_weapon_break_high": 20,
+              "item_plant_spcstone_1_3": 5,
+              "item_gold": 25000
+            }
+          },
+          {
+            "atLevel": 80,
+            "items": {
+              "item_weapon_break_high": 30,
+              "item_char_skill_specialize_2": 16,
+              "item_plant_spcstone_2_1": 8,
+              "item_gold": 90000
+            }
+          }
+        ]
+      },
+      "wpn_claym_0012": {
+        "source": "endfield.wiki.gg/wiki/Finishing_Call (CC BY-SA 4.0)",
+        "version": "wiki revision 61818",
+        "tunings": [
+          {
+            "atLevel": 20,
+            "items": {
+              "item_weapon_break_low": 5,
+              "item_plant_spcstone_1_1": 3,
+              "item_gold": 2200
+            }
+          },
+          {
+            "atLevel": 40,
+            "items": {
+              "item_weapon_break_low": 18,
+              "item_plant_spcstone_1_2": 5,
+              "item_gold": 8500
+            }
+          },
+          {
+            "atLevel": 60,
+            "items": {
+              "item_weapon_break_high": 20,
+              "item_plant_spcstone_1_3": 5,
+              "item_gold": 25000
+            }
+          },
+          {
+            "atLevel": 80,
+            "items": {
+              "item_weapon_break_high": 30,
+              "item_char_skill_specialize_4": 16,
+              "item_plant_spcstone_2_1": 8,
+              "item_gold": 90000
+            }
+          }
+        ]
+      },
+      "wpn_claym_0013": {
+        "source": "endfield.wiki.gg/wiki/Khravengger (CC BY-SA 4.0)",
+        "version": "wiki revision 61820",
+        "tunings": [
+          {
+            "atLevel": 20,
+            "items": {
+              "item_weapon_break_low": 5,
+              "item_plant_spcstone_1_1": 3,
+              "item_gold": 2200
+            }
+          },
+          {
+            "atLevel": 40,
+            "items": {
+              "item_weapon_break_low": 18,
+              "item_plant_spcstone_1_2": 5,
+              "item_gold": 8500
+            }
+          },
+          {
+            "atLevel": 60,
+            "items": {
+              "item_weapon_break_high": 20,
+              "item_plant_spcstone_1_3": 5,
+              "item_gold": 25000
+            }
+          },
+          {
+            "atLevel": 80,
+            "items": {
+              "item_weapon_break_high": 30,
+              "item_char_skill_specialize_5": 16,
+              "item_plant_spcstone_2_2": 8,
+              "item_gold": 90000
+            }
+          }
+        ]
+      },
+      "wpn_claym_0014": {
+        "source": "endfield.wiki.gg/wiki/Ancient_Canal (CC BY-SA 4.0)",
+        "version": "wiki revision 61822",
+        "tunings": [
+          {
+            "atLevel": 20,
+            "items": {
+              "item_weapon_break_low": 5,
+              "item_plant_spcstone_1_1": 3,
+              "item_gold": 2200
+            }
+          },
+          {
+            "atLevel": 40,
+            "items": {
+              "item_weapon_break_low": 18,
+              "item_plant_spcstone_1_2": 5,
+              "item_gold": 8500
+            }
+          },
+          {
+            "atLevel": 60,
+            "items": {
+              "item_weapon_break_high": 20,
+              "item_plant_spcstone_1_3": 5,
+              "item_gold": 25000
+            }
+          },
+          {
+            "atLevel": 80,
+            "items": {
+              "item_weapon_break_high": 30,
+              "item_char_skill_specialize_5": 16,
+              "item_plant_spcstone_2_2": 8,
+              "item_gold": 90000
+            }
+          }
+        ]
+      },
+      "wpn_claym_0015": {
+        "source": "endfield.wiki.gg/wiki/OBJ_Heavy_Burden (CC BY-SA 4.0)",
+        "version": "wiki revision 61823",
+        "tunings": [
+          {
+            "atLevel": 20,
+            "items": {
+              "item_weapon_break_low": 5,
+              "item_plant_spcstone_1_1": 3,
+              "item_gold": 2200
+            }
+          },
+          {
+            "atLevel": 40,
+            "items": {
+              "item_weapon_break_low": 18,
+              "item_plant_spcstone_1_2": 5,
+              "item_gold": 8500
+            }
+          },
+          {
+            "atLevel": 60,
+            "items": {
+              "item_weapon_break_high": 20,
+              "item_plant_spcstone_1_3": 5,
+              "item_gold": 25000
+            }
+          },
+          {
+            "atLevel": 80,
+            "items": {
+              "item_weapon_break_high": 30,
+              "item_char_skill_specialize_3": 16,
+              "item_plant_spcstone_2_2": 8,
+              "item_gold": 90000
+            }
+          }
+        ]
+      },
+      "wpn_claym_0016": {
+        "source": "endfield.wiki.gg/wiki/Phantom_Pain (CC BY-SA 4.0)",
+        "version": "wiki revision 61824",
+        "tunings": [
+          {
+            "atLevel": 20,
+            "items": {
+              "item_weapon_break_low": 5,
+              "item_plant_spcstone_1_1": 3,
+              "item_gold": 2200
+            }
+          },
+          {
+            "atLevel": 40,
+            "items": {
+              "item_weapon_break_low": 18,
+              "item_plant_spcstone_1_2": 5,
+              "item_gold": 8500
+            }
+          },
+          {
+            "atLevel": 60,
+            "items": {
+              "item_weapon_break_high": 20,
+              "item_plant_spcstone_1_3": 5,
+              "item_gold": 25000
+            }
+          },
+          {
+            "atLevel": 80,
+            "items": {
+              "item_weapon_break_high": 30,
+              "item_char_skill_specialize_3": 16,
+              "item_plant_spcstone_2_1": 8,
+              "item_gold": 90000
+            }
+          }
+        ]
+      },
+      "wpn_claym_0017": {
+        "source": "endfield.wiki.gg/wiki/Amaranthine_Tassel (CC BY-SA 4.0)",
+        "version": "wiki revision 61826",
+        "tunings": [
+          {
+            "atLevel": 20,
+            "items": {
+              "item_weapon_break_low": 5,
+              "item_plant_spcstone_1_1": 3,
+              "item_gold": 2200
+            }
+          },
+          {
+            "atLevel": 40,
+            "items": {
+              "item_weapon_break_low": 18,
+              "item_plant_spcstone_1_2": 5,
+              "item_gold": 8500
+            }
+          },
+          {
+            "atLevel": 60,
+            "items": {
+              "item_weapon_break_high": 20,
+              "item_plant_spcstone_1_3": 5,
+              "item_gold": 25000
+            }
+          },
+          {
+            "atLevel": 80,
+            "items": {
+              "item_weapon_break_high": 30,
+              "item_char_skill_specialize_4": 16,
+              "item_plant_spcstone_2_1": 8,
+              "item_gold": 90000
+            }
+          }
+        ]
+      },
+      "wpn_claym_0018": {
+        "source": "endfield.wiki.gg/wiki/Jade_Vessel (CC BY-SA 4.0)",
+        "version": "wiki revision 64959",
+        "tunings": [
+          {
+            "atLevel": 20,
+            "items": {
+              "item_weapon_break_low": 5,
+              "item_plant_spcstone_1_1": 3,
+              "item_gold": 2200
+            }
+          },
+          {
+            "atLevel": 40,
+            "items": {
+              "item_weapon_break_low": 18,
+              "item_plant_spcstone_1_2": 5,
+              "item_gold": 8500
+            }
+          },
+          {
+            "atLevel": 60,
+            "items": {
+              "item_weapon_break_high": 20,
+              "item_plant_spcstone_1_3": 5,
+              "item_gold": 25000
+            }
+          },
+          {
+            "atLevel": 80,
+            "items": {
+              "item_weapon_break_high": 30,
+              "item_char_skill_specialize_6": 16,
+              "item_plant_spcstone_2_2": 8,
+              "item_gold": 90000
+            }
+          }
+        ]
+      },
+      "wpn_claym_0019": {
+        "source": "endfield.wiki.gg/wiki/Long_Heritage (CC BY-SA 4.0)",
+        "version": "wiki revision 64960",
+        "tunings": [
+          {
+            "atLevel": 20,
+            "items": {
+              "item_weapon_break_low": 5,
+              "item_plant_spcstone_1_1": 3,
+              "item_gold": 2200
+            }
+          },
+          {
+            "atLevel": 40,
+            "items": {
+              "item_weapon_break_low": 18,
+              "item_plant_spcstone_1_2": 5,
+              "item_gold": 8500
+            }
+          },
+          {
+            "atLevel": 60,
+            "items": {
+              "item_weapon_break_high": 20,
+              "item_plant_spcstone_1_3": 5,
+              "item_gold": 25000
+            }
+          },
+          {
+            "atLevel": 80,
+            "items": {
+              "item_weapon_break_high": 30,
+              "item_char_skill_specialize_6": 16,
+              "item_plant_spcstone_2_3": 8,
+              "item_gold": 90000
+            }
+          }
+        ]
+      },
+      "wpn_funnel_0001": {
+        "source": "endfield.wiki.gg/wiki/Hypernova_Auto (CC BY-SA 4.0)",
+        "version": "wiki revision 61827",
+        "tunings": [
+          {
+            "atLevel": 20,
+            "items": {
+              "item_weapon_break_low": 5,
+              "item_plant_spcstone_1_1": 3,
+              "item_gold": 2200
+            }
+          },
+          {
+            "atLevel": 40,
+            "items": {
+              "item_weapon_break_low": 18,
+              "item_plant_spcstone_1_2": 5,
+              "item_gold": 8500
+            }
+          },
+          {
+            "atLevel": 60,
+            "items": {
+              "item_weapon_break_high": 20,
+              "item_plant_spcstone_1_3": 5,
+              "item_gold": 25000
+            }
+          },
+          {
+            "atLevel": 80,
+            "items": {
+              "item_weapon_break_high": 30,
+              "item_char_skill_specialize_5": 16,
+              "item_plant_spcstone_2_1": 8,
+              "item_gold": 90000
+            }
+          }
+        ]
+      },
+      "wpn_funnel_0003": {
+        "source": "endfield.wiki.gg/wiki/Fluorescent_Roc (CC BY-SA 4.0)",
+        "version": "wiki revision 61829",
+        "tunings": [
+          {
+            "atLevel": 20,
+            "items": {
+              "item_weapon_break_low": 5,
+              "item_plant_spcstone_1_1": 3,
+              "item_gold": 2200
+            }
+          },
+          {
+            "atLevel": 40,
+            "items": {
+              "item_weapon_break_low": 18,
+              "item_plant_spcstone_1_2": 5,
+              "item_gold": 8500
+            }
+          },
+          {
+            "atLevel": 60,
+            "items": {
+              "item_weapon_break_high": 20,
+              "item_plant_spcstone_1_3": 5,
+              "item_gold": 25000
+            }
+          },
+          {
+            "atLevel": 80,
+            "items": {
+              "item_weapon_break_high": 30,
+              "item_char_skill_specialize_1": 16,
+              "item_plant_spcstone_2_2": 8,
+              "item_gold": 90000
+            }
+          }
+        ]
+      },
+      "wpn_funnel_0004": {
+        "source": "endfield.wiki.gg/wiki/Wild_Wanderer (CC BY-SA 4.0)",
+        "version": "wiki revision 61831",
+        "tunings": [
+          {
+            "atLevel": 20,
+            "items": {
+              "item_weapon_break_low": 5,
+              "item_plant_spcstone_1_1": 3,
+              "item_gold": 2200
+            }
+          },
+          {
+            "atLevel": 40,
+            "items": {
+              "item_weapon_break_low": 18,
+              "item_plant_spcstone_1_2": 5,
+              "item_gold": 8500
+            }
+          },
+          {
+            "atLevel": 60,
+            "items": {
+              "item_weapon_break_high": 20,
+              "item_plant_spcstone_1_3": 5,
+              "item_gold": 25000
+            }
+          },
+          {
+            "atLevel": 80,
+            "items": {
+              "item_weapon_break_high": 30,
+              "item_char_skill_specialize_3": 16,
+              "item_plant_spcstone_2_1": 8,
+              "item_gold": 90000
+            }
+          }
+        ]
+      },
+      "wpn_funnel_0005": {
+        "source": "endfield.wiki.gg/wiki/Stanza_of_Memorials (CC BY-SA 4.0)",
+        "version": "wiki revision 61832",
+        "tunings": [
+          {
+            "atLevel": 20,
+            "items": {
+              "item_weapon_break_low": 5,
+              "item_plant_spcstone_1_1": 3,
+              "item_gold": 2200
+            }
+          },
+          {
+            "atLevel": 40,
+            "items": {
+              "item_weapon_break_low": 18,
+              "item_plant_spcstone_1_2": 5,
+              "item_gold": 8500
+            }
+          },
+          {
+            "atLevel": 60,
+            "items": {
+              "item_weapon_break_high": 20,
+              "item_plant_spcstone_1_3": 5,
+              "item_gold": 25000
+            }
+          },
+          {
+            "atLevel": 80,
+            "items": {
+              "item_weapon_break_high": 30,
+              "item_char_skill_specialize_4": 16,
+              "item_plant_spcstone_2_2": 8,
+              "item_gold": 90000
+            }
+          }
+        ]
+      },
+      "wpn_funnel_0006": {
+        "source": "endfield.wiki.gg/wiki/Opus:_Etch_Figure (CC BY-SA 4.0)",
+        "version": "wiki revision 61833",
+        "tunings": [
+          {
+            "atLevel": 20,
+            "items": {
+              "item_weapon_break_low": 5,
+              "item_plant_spcstone_1_1": 3,
+              "item_gold": 2200
+            }
+          },
+          {
+            "atLevel": 40,
+            "items": {
+              "item_weapon_break_low": 18,
+              "item_plant_spcstone_1_2": 5,
+              "item_gold": 8500
+            }
+          },
+          {
+            "atLevel": 60,
+            "items": {
+              "item_weapon_break_high": 20,
+              "item_plant_spcstone_1_3": 5,
+              "item_gold": 25000
+            }
+          },
+          {
+            "atLevel": 80,
+            "items": {
+              "item_weapon_break_high": 30,
+              "item_char_skill_specialize_4": 16,
+              "item_plant_spcstone_2_2": 8,
+              "item_gold": 90000
+            }
+          }
+        ]
+      },
+      "wpn_funnel_0007": {
+        "source": "endfield.wiki.gg/wiki/Monaihe (CC BY-SA 4.0)",
+        "version": "wiki revision 61836",
+        "tunings": [
+          {
+            "atLevel": 20,
+            "items": {
+              "item_weapon_break_low": 5,
+              "item_plant_spcstone_1_1": 3,
+              "item_gold": 2200
+            }
+          },
+          {
+            "atLevel": 40,
+            "items": {
+              "item_weapon_break_low": 18,
+              "item_plant_spcstone_1_2": 5,
+              "item_gold": 8500
+            }
+          },
+          {
+            "atLevel": 60,
+            "items": {
+              "item_weapon_break_high": 20,
+              "item_plant_spcstone_1_3": 5,
+              "item_gold": 25000
+            }
+          },
+          {
+            "atLevel": 80,
+            "items": {
+              "item_weapon_break_high": 30,
+              "item_char_skill_specialize_5": 16,
+              "item_plant_spcstone_2_1": 8,
+              "item_gold": 90000
+            }
+          }
+        ]
+      },
+      "wpn_funnel_0008": {
+        "source": "endfield.wiki.gg/wiki/Detonation_Unit (CC BY-SA 4.0)",
+        "version": "wiki revision 61837",
+        "tunings": [
+          {
+            "atLevel": 20,
+            "items": {
+              "item_weapon_break_low": 5,
+              "item_plant_spcstone_1_1": 3,
+              "item_gold": 2200
+            }
+          },
+          {
+            "atLevel": 40,
+            "items": {
+              "item_weapon_break_low": 18,
+              "item_plant_spcstone_1_2": 5,
+              "item_gold": 8500
+            }
+          },
+          {
+            "atLevel": 60,
+            "items": {
+              "item_weapon_break_high": 20,
+              "item_plant_spcstone_1_3": 5,
+              "item_gold": 25000
+            }
+          },
+          {
+            "atLevel": 80,
+            "items": {
+              "item_weapon_break_high": 30,
+              "item_char_skill_specialize_5": 16,
+              "item_plant_spcstone_2_2": 8,
+              "item_gold": 90000
+            }
+          }
+        ]
+      },
+      "wpn_funnel_0009": {
+        "source": "endfield.wiki.gg/wiki/Oblivion (CC BY-SA 4.0)",
+        "version": "wiki revision 61838",
+        "tunings": [
+          {
+            "atLevel": 20,
+            "items": {
+              "item_weapon_break_low": 5,
+              "item_plant_spcstone_1_1": 3,
+              "item_gold": 2200
+            }
+          },
+          {
+            "atLevel": 40,
+            "items": {
+              "item_weapon_break_low": 18,
+              "item_plant_spcstone_1_2": 5,
+              "item_gold": 8500
+            }
+          },
+          {
+            "atLevel": 60,
+            "items": {
+              "item_weapon_break_high": 20,
+              "item_plant_spcstone_1_3": 5,
+              "item_gold": 25000
+            }
+          },
+          {
+            "atLevel": 80,
+            "items": {
+              "item_weapon_break_high": 30,
+              "item_char_skill_specialize_1": 16,
+              "item_plant_spcstone_2_1": 8,
+              "item_gold": 90000
+            }
+          }
+        ]
+      },
+      "wpn_funnel_0010": {
+        "source": "endfield.wiki.gg/wiki/Chivalric_Virtues (CC BY-SA 4.0)",
+        "version": "wiki revision 61839",
+        "tunings": [
+          {
+            "atLevel": 20,
+            "items": {
+              "item_weapon_break_low": 5,
+              "item_plant_spcstone_1_1": 3,
+              "item_gold": 2200
+            }
+          },
+          {
+            "atLevel": 40,
+            "items": {
+              "item_weapon_break_low": 18,
+              "item_plant_spcstone_1_2": 5,
+              "item_gold": 8500
+            }
+          },
+          {
+            "atLevel": 60,
+            "items": {
+              "item_weapon_break_high": 20,
+              "item_plant_spcstone_1_3": 5,
+              "item_gold": 25000
+            }
+          },
+          {
+            "atLevel": 80,
+            "items": {
+              "item_weapon_break_high": 30,
+              "item_char_skill_specialize_2": 16,
+              "item_plant_spcstone_2_2": 8,
+              "item_gold": 90000
+            }
+          }
+        ]
+      },
+      "wpn_funnel_0011": {
+        "source": "endfield.wiki.gg/wiki/Delivery_Guaranteed (CC BY-SA 4.0)",
+        "version": "wiki revision 61840",
+        "tunings": [
+          {
+            "atLevel": 20,
+            "items": {
+              "item_weapon_break_low": 5,
+              "item_plant_spcstone_1_1": 3,
+              "item_gold": 2200
+            }
+          },
+          {
+            "atLevel": 40,
+            "items": {
+              "item_weapon_break_low": 18,
+              "item_plant_spcstone_1_2": 5,
+              "item_gold": 8500
+            }
+          },
+          {
+            "atLevel": 60,
+            "items": {
+              "item_weapon_break_high": 20,
+              "item_plant_spcstone_1_3": 5,
+              "item_gold": 25000
+            }
+          },
+          {
+            "atLevel": 80,
+            "items": {
+              "item_weapon_break_high": 30,
+              "item_char_skill_specialize_3": 16,
+              "item_plant_spcstone_2_2": 8,
+              "item_gold": 90000
+            }
+          }
+        ]
+      },
+      "wpn_funnel_0012": {
+        "source": "endfield.wiki.gg/wiki/Freedom_to_Proselytize (CC BY-SA 4.0)",
+        "version": "wiki revision 61841",
+        "tunings": [
+          {
+            "atLevel": 20,
+            "items": {
+              "item_weapon_break_low": 5,
+              "item_plant_spcstone_1_1": 3,
+              "item_gold": 2200
+            }
+          },
+          {
+            "atLevel": 40,
+            "items": {
+              "item_weapon_break_low": 18,
+              "item_plant_spcstone_1_2": 5,
+              "item_gold": 8500
+            }
+          },
+          {
+            "atLevel": 60,
+            "items": {
+              "item_weapon_break_high": 20,
+              "item_plant_spcstone_1_3": 5,
+              "item_gold": 25000
+            }
+          },
+          {
+            "atLevel": 80,
+            "items": {
+              "item_weapon_break_high": 30,
+              "item_char_skill_specialize_2": 16,
+              "item_plant_spcstone_2_2": 8,
+              "item_gold": 90000
+            }
+          }
+        ]
+      },
+      "wpn_funnel_0013": {
+        "source": "endfield.wiki.gg/wiki/Dreams_of_the_Starry_Beach (CC BY-SA 4.0)",
+        "version": "wiki revision 61842",
+        "tunings": [
+          {
+            "atLevel": 20,
+            "items": {
+              "item_weapon_break_low": 5,
+              "item_plant_spcstone_1_1": 3,
+              "item_gold": 2200
+            }
+          },
+          {
+            "atLevel": 40,
+            "items": {
+              "item_weapon_break_low": 18,
+              "item_plant_spcstone_1_2": 5,
+              "item_gold": 8500
+            }
+          },
+          {
+            "atLevel": 60,
+            "items": {
+              "item_weapon_break_high": 20,
+              "item_plant_spcstone_1_3": 5,
+              "item_gold": 25000
+            }
+          },
+          {
+            "atLevel": 80,
+            "items": {
+              "item_weapon_break_high": 30,
+              "item_char_skill_specialize_4": 16,
+              "item_plant_spcstone_2_1": 8,
+              "item_gold": 90000
+            }
+          }
+        ]
+      },
+      "wpn_funnel_0014": {
+        "source": "endfield.wiki.gg/wiki/OBJ_Arts_Identifier (CC BY-SA 4.0)",
+        "version": "wiki revision 61843",
+        "tunings": [
+          {
+            "atLevel": 20,
+            "items": {
+              "item_weapon_break_low": 5,
+              "item_plant_spcstone_1_1": 3,
+              "item_gold": 2200
+            }
+          },
+          {
+            "atLevel": 40,
+            "items": {
+              "item_weapon_break_low": 18,
+              "item_plant_spcstone_1_2": 5,
+              "item_gold": 8500
+            }
+          },
+          {
+            "atLevel": 60,
+            "items": {
+              "item_weapon_break_high": 20,
+              "item_plant_spcstone_1_3": 5,
+              "item_gold": 25000
+            }
+          },
+          {
+            "atLevel": 80,
+            "items": {
+              "item_weapon_break_high": 30,
+              "item_char_skill_specialize_1": 16,
+              "item_plant_spcstone_2_1": 8,
+              "item_gold": 90000
+            }
+          }
+        ]
+      },
+      "wpn_funnel_0015": {
+        "source": "endfield.wiki.gg/wiki/Lone_Barge (CC BY-SA 4.0)",
+        "version": "wiki revision 61844",
+        "tunings": [
+          {
+            "atLevel": 20,
+            "items": {
+              "item_weapon_break_low": 5,
+              "item_plant_spcstone_1_1": 3,
+              "item_gold": 2200
+            }
+          },
+          {
+            "atLevel": 40,
+            "items": {
+              "item_weapon_break_low": 18,
+              "item_plant_spcstone_1_2": 5,
+              "item_gold": 8500
+            }
+          },
+          {
+            "atLevel": 60,
+            "items": {
+              "item_weapon_break_high": 20,
+              "item_plant_spcstone_1_3": 5,
+              "item_gold": 25000
+            }
+          },
+          {
+            "atLevel": 80,
+            "items": {
+              "item_weapon_break_high": 30,
+              "item_char_skill_specialize_1": 16,
+              "item_plant_spcstone_2_1": 8,
+              "item_gold": 90000
+            }
+          }
+        ]
+      },
+      "wpn_funnel_0016": {
+        "source": "endfield.wiki.gg/wiki/Type_42:_Solemn_Phalanx (CC BY-SA 4.0)",
+        "version": "wiki revision 61846",
+        "tunings": [
+          {
+            "atLevel": 20,
+            "items": {
+              "item_weapon_break_low": 5,
+              "item_plant_spcstone_1_1": 3,
+              "item_gold": 2200
+            }
+          },
+          {
+            "atLevel": 40,
+            "items": {
+              "item_weapon_break_low": 18,
+              "item_plant_spcstone_1_2": 5,
+              "item_gold": 8500
+            }
+          },
+          {
+            "atLevel": 60,
+            "items": {
+              "item_weapon_break_high": 20,
+              "item_plant_spcstone_1_3": 5,
+              "item_gold": 25000
+            }
+          },
+          {
+            "atLevel": 80,
+            "items": {
+              "item_weapon_break_high": 30,
+              "item_char_skill_specialize_5": 16,
+              "item_plant_spcstone_2_3": 8,
+              "item_gold": 90000
+            }
+          }
+        ]
+      },
+      "wpn_funnel_0017": {
+        "source": "endfield.wiki.gg/wiki/Flickers_in_the_Mist (CC BY-SA 4.0)",
+        "version": "wiki revision 61848",
+        "tunings": [
+          {
+            "atLevel": 20,
+            "items": {
+              "item_weapon_break_low": 5,
+              "item_plant_spcstone_1_1": 3,
+              "item_gold": 2200
+            }
+          },
+          {
+            "atLevel": 40,
+            "items": {
+              "item_weapon_break_low": 18,
+              "item_plant_spcstone_1_2": 5,
+              "item_gold": 8500
+            }
+          },
+          {
+            "atLevel": 60,
+            "items": {
+              "item_weapon_break_high": 20,
+              "item_plant_spcstone_1_3": 5,
+              "item_gold": 25000
+            }
+          },
+          {
+            "atLevel": 80,
+            "items": {
+              "item_weapon_break_high": 30,
+              "item_char_skill_specialize_5": 16,
+              "item_plant_spcstone_2_2": 8,
+              "item_gold": 90000
+            }
+          }
+        ]
+      },
+      "wpn_funnel_0018": {
+        "source": "endfield.wiki.gg/wiki/Junction_Point (CC BY-SA 4.0)",
+        "version": "wiki revision 61849",
+        "tunings": [
+          {
+            "atLevel": 20,
+            "items": {
+              "item_weapon_break_low": 5,
+              "item_plant_spcstone_1_1": 3,
+              "item_gold": 2200
+            }
+          },
+          {
+            "atLevel": 40,
+            "items": {
+              "item_weapon_break_low": 18,
+              "item_plant_spcstone_1_2": 5,
+              "item_gold": 8500
+            }
+          },
+          {
+            "atLevel": 60,
+            "items": {
+              "item_weapon_break_high": 20,
+              "item_plant_spcstone_1_3": 5,
+              "item_gold": 25000
+            }
+          },
+          {
+            "atLevel": 80,
+            "items": {
+              "item_weapon_break_high": 30,
+              "item_char_skill_specialize_2": 16,
+              "item_plant_spcstone_2_1": 8,
+              "item_gold": 90000
+            }
+          }
+        ]
+      },
+      "wpn_funnel_0019": {
+        "source": "endfield.wiki.gg/wiki/Umbra_of_Frigid_Eventide (CC BY-SA 4.0)",
+        "version": "wiki revision 61850",
+        "tunings": [
+          {
+            "atLevel": 20,
+            "items": {
+              "item_weapon_break_low": 5,
+              "item_plant_spcstone_1_1": 3,
+              "item_gold": 2200
+            }
+          },
+          {
+            "atLevel": 40,
+            "items": {
+              "item_weapon_break_low": 18,
+              "item_plant_spcstone_1_2": 5,
+              "item_gold": 8500
+            }
+          },
+          {
+            "atLevel": 60,
+            "items": {
+              "item_weapon_break_high": 20,
+              "item_plant_spcstone_1_3": 5,
+              "item_gold": 25000
+            }
+          },
+          {
+            "atLevel": 80,
+            "items": {
+              "item_weapon_break_high": 30,
+              "item_char_skill_specialize_4": 16,
+              "item_plant_spcstone_2_3": 8,
+              "item_gold": 90000
+            }
+          }
+        ]
+      },
+      "wpn_funnel_0020": {
+        "source": "endfield.wiki.gg/wiki/Suffering's_End (CC BY-SA 4.0)",
+        "version": "wiki revision 61851",
+        "tunings": [
+          {
+            "atLevel": 20,
+            "items": {
+              "item_weapon_break_low": 5,
+              "item_plant_spcstone_1_1": 3,
+              "item_gold": 2200
+            }
+          },
+          {
+            "atLevel": 40,
+            "items": {
+              "item_weapon_break_low": 18,
+              "item_plant_spcstone_1_2": 5,
+              "item_gold": 8500
+            }
+          },
+          {
+            "atLevel": 60,
+            "items": {
+              "item_weapon_break_high": 20,
+              "item_plant_spcstone_1_3": 5,
+              "item_gold": 25000
+            }
+          },
+          {
+            "atLevel": 80,
+            "items": {
+              "item_weapon_break_high": 30,
+              "item_char_skill_specialize_1": 16,
+              "item_plant_spcstone_2_1": 8,
+              "item_gold": 90000
+            }
+          }
+        ]
+      },
+      "wpn_lance_0003": {
+        "source": "endfield.wiki.gg/wiki/Pathfinder's_Beacon (CC BY-SA 4.0)",
+        "version": "wiki revision 61852",
+        "tunings": [
+          {
+            "atLevel": 20,
+            "items": {
+              "item_weapon_break_low": 5,
+              "item_plant_spcstone_1_1": 3,
+              "item_gold": 2200
+            }
+          },
+          {
+            "atLevel": 40,
+            "items": {
+              "item_weapon_break_low": 18,
+              "item_plant_spcstone_1_2": 5,
+              "item_gold": 8500
+            }
+          },
+          {
+            "atLevel": 60,
+            "items": {
+              "item_weapon_break_high": 20,
+              "item_plant_spcstone_1_3": 5,
+              "item_gold": 25000
+            }
+          },
+          {
+            "atLevel": 80,
+            "items": {
+              "item_weapon_break_high": 30,
+              "item_char_skill_specialize_1": 16,
+              "item_plant_spcstone_2_1": 8,
+              "item_gold": 90000
+            }
+          }
+        ]
+      },
+      "wpn_lance_0004": {
+        "source": "endfield.wiki.gg/wiki/Chimeric_Justice (CC BY-SA 4.0)",
+        "version": "wiki revision 61853",
+        "tunings": [
+          {
+            "atLevel": 20,
+            "items": {
+              "item_weapon_break_low": 5,
+              "item_plant_spcstone_1_1": 3,
+              "item_gold": 2200
+            }
+          },
+          {
+            "atLevel": 40,
+            "items": {
+              "item_weapon_break_low": 18,
+              "item_plant_spcstone_1_2": 5,
+              "item_gold": 8500
+            }
+          },
+          {
+            "atLevel": 60,
+            "items": {
+              "item_weapon_break_high": 20,
+              "item_plant_spcstone_1_3": 5,
+              "item_gold": 25000
+            }
+          },
+          {
+            "atLevel": 80,
+            "items": {
+              "item_weapon_break_high": 30,
+              "item_char_skill_specialize_1": 16,
+              "item_plant_spcstone_2_1": 8,
+              "item_gold": 90000
+            }
+          }
+        ]
+      },
+      "wpn_lance_0006": {
+        "source": "endfield.wiki.gg/wiki/Cohesive_Traction (CC BY-SA 4.0)",
+        "version": "wiki revision 61854",
+        "tunings": [
+          {
+            "atLevel": 20,
+            "items": {
+              "item_weapon_break_low": 5,
+              "item_plant_spcstone_1_1": 3,
+              "item_gold": 2200
+            }
+          },
+          {
+            "atLevel": 40,
+            "items": {
+              "item_weapon_break_low": 18,
+              "item_plant_spcstone_1_2": 5,
+              "item_gold": 8500
+            }
+          },
+          {
+            "atLevel": 60,
+            "items": {
+              "item_weapon_break_high": 20,
+              "item_plant_spcstone_1_3": 5,
+              "item_gold": 25000
+            }
+          },
+          {
+            "atLevel": 80,
+            "items": {
+              "item_weapon_break_high": 30,
+              "item_char_skill_specialize_3": 16,
+              "item_plant_spcstone_2_2": 8,
+              "item_gold": 90000
+            }
+          }
+        ]
+      },
+      "wpn_lance_0007": {
+        "source": "endfield.wiki.gg/wiki/Beacon_of_Duty (CC BY-SA 4.0)",
+        "version": "wiki revision 61855",
+        "tunings": [
+          {
+            "atLevel": 20,
+            "items": {
+              "item_weapon_break_low": 5,
+              "item_plant_spcstone_1_1": 3,
+              "item_gold": 2200
+            }
+          },
+          {
+            "atLevel": 40,
+            "items": {
+              "item_weapon_break_low": 18,
+              "item_plant_spcstone_1_2": 5,
+              "item_gold": 8500
+            }
+          },
+          {
+            "atLevel": 60,
+            "items": {
+              "item_weapon_break_high": 20,
+              "item_plant_spcstone_1_3": 5,
+              "item_gold": 25000
+            }
+          },
+          {
+            "atLevel": 80,
+            "items": {
+              "item_weapon_break_high": 30,
+              "item_char_skill_specialize_5": 16,
+              "item_plant_spcstone_2_1": 8,
+              "item_gold": 90000
+            }
+          }
+        ]
+      },
+      "wpn_lance_0008": {
+        "source": "endfield.wiki.gg/wiki/Aggeloslayer (CC BY-SA 4.0)",
+        "version": "wiki revision 61856",
+        "tunings": [
+          {
+            "atLevel": 20,
+            "items": {
+              "item_weapon_break_low": 5,
+              "item_plant_spcstone_1_1": 3,
+              "item_gold": 2200
+            }
+          },
+          {
+            "atLevel": 40,
+            "items": {
+              "item_weapon_break_low": 18,
+              "item_plant_spcstone_1_2": 5,
+              "item_gold": 8500
+            }
+          },
+          {
+            "atLevel": 60,
+            "items": {
+              "item_weapon_break_high": 20,
+              "item_plant_spcstone_1_3": 5,
+              "item_gold": 25000
+            }
+          },
+          {
+            "atLevel": 80,
+            "items": {
+              "item_weapon_break_high": 30,
+              "item_char_skill_specialize_2": 16,
+              "item_plant_spcstone_2_2": 8,
+              "item_gold": 90000
+            }
+          }
+        ]
+      },
+      "wpn_lance_0010": {
+        "source": "endfield.wiki.gg/wiki/Valiant (CC BY-SA 4.0)",
+        "version": "wiki revision 61858",
+        "tunings": [
+          {
+            "atLevel": 20,
+            "items": {
+              "item_weapon_break_low": 5,
+              "item_plant_spcstone_1_1": 3,
+              "item_gold": 2200
+            }
+          },
+          {
+            "atLevel": 40,
+            "items": {
+              "item_weapon_break_low": 18,
+              "item_plant_spcstone_1_2": 5,
+              "item_gold": 8500
+            }
+          },
+          {
+            "atLevel": 60,
+            "items": {
+              "item_weapon_break_high": 20,
+              "item_plant_spcstone_1_3": 5,
+              "item_gold": 25000
+            }
+          },
+          {
+            "atLevel": 80,
+            "items": {
+              "item_weapon_break_high": 30,
+              "item_char_skill_specialize_3": 16,
+              "item_plant_spcstone_2_1": 8,
+              "item_gold": 90000
+            }
+          }
+        ]
+      },
+      "wpn_lance_0011": {
+        "source": "endfield.wiki.gg/wiki/JET (CC BY-SA 4.0)",
+        "version": "wiki revision 61859",
+        "tunings": [
+          {
+            "atLevel": 20,
+            "items": {
+              "item_weapon_break_low": 5,
+              "item_plant_spcstone_1_1": 3,
+              "item_gold": 2200
+            }
+          },
+          {
+            "atLevel": 40,
+            "items": {
+              "item_weapon_break_low": 18,
+              "item_plant_spcstone_1_2": 5,
+              "item_gold": 8500
+            }
+          },
+          {
+            "atLevel": 60,
+            "items": {
+              "item_weapon_break_high": 20,
+              "item_plant_spcstone_1_3": 5,
+              "item_gold": 25000
+            }
+          },
+          {
+            "atLevel": 80,
+            "items": {
+              "item_weapon_break_high": 30,
+              "item_char_skill_specialize_4": 16,
+              "item_plant_spcstone_2_2": 8,
+              "item_gold": 90000
+            }
+          }
+        ]
+      },
+      "wpn_lance_0012": {
+        "source": "endfield.wiki.gg/wiki/Mountain_Bearer (CC BY-SA 4.0)",
+        "version": "wiki revision 61860",
+        "tunings": [
+          {
+            "atLevel": 20,
+            "items": {
+              "item_weapon_break_low": 5,
+              "item_plant_spcstone_1_1": 3,
+              "item_gold": 2200
+            }
+          },
+          {
+            "atLevel": 40,
+            "items": {
+              "item_weapon_break_low": 18,
+              "item_plant_spcstone_1_2": 5,
+              "item_gold": 8500
+            }
+          },
+          {
+            "atLevel": 60,
+            "items": {
+              "item_weapon_break_high": 20,
+              "item_plant_spcstone_1_3": 5,
+              "item_gold": 25000
+            }
+          },
+          {
+            "atLevel": 80,
+            "items": {
+              "item_weapon_break_high": 30,
+              "item_char_skill_specialize_1": 16,
+              "item_plant_spcstone_2_1": 8,
+              "item_gold": 90000
+            }
+          }
+        ]
+      },
+      "wpn_lance_0013": {
+        "source": "endfield.wiki.gg/wiki/OBJ_Razorhorn (CC BY-SA 4.0)",
+        "version": "wiki revision 61861",
+        "tunings": [
+          {
+            "atLevel": 20,
+            "items": {
+              "item_weapon_break_low": 5,
+              "item_plant_spcstone_1_1": 3,
+              "item_gold": 2200
+            }
+          },
+          {
+            "atLevel": 40,
+            "items": {
+              "item_weapon_break_low": 18,
+              "item_plant_spcstone_1_2": 5,
+              "item_gold": 8500
+            }
+          },
+          {
+            "atLevel": 60,
+            "items": {
+              "item_weapon_break_high": 20,
+              "item_plant_spcstone_1_3": 5,
+              "item_gold": 25000
+            }
+          },
+          {
+            "atLevel": 80,
+            "items": {
+              "item_weapon_break_high": 30,
+              "item_char_skill_specialize_4": 16,
+              "item_plant_spcstone_2_1": 8,
+              "item_gold": 90000
+            }
+          }
+        ]
+      },
+      "wpn_lance_0014": {
+        "source": "endfield.wiki.gg/wiki/Bedazzling_Night_Debut (CC BY-SA 4.0)",
+        "version": "wiki revision 61862",
+        "tunings": [
+          {
+            "atLevel": 20,
+            "items": {
+              "item_weapon_break_low": 5,
+              "item_plant_spcstone_1_1": 3,
+              "item_gold": 2200
+            }
+          },
+          {
+            "atLevel": 40,
+            "items": {
+              "item_weapon_break_low": 18,
+              "item_plant_spcstone_1_2": 5,
+              "item_gold": 8500
+            }
+          },
+          {
+            "atLevel": 60,
+            "items": {
+              "item_weapon_break_high": 20,
+              "item_plant_spcstone_1_3": 5,
+              "item_gold": 25000
+            }
+          },
+          {
+            "atLevel": 80,
+            "items": {
+              "item_weapon_break_high": 30,
+              "item_char_skill_specialize_1": 16,
+              "item_plant_spcstone_2_3": 8,
+              "item_gold": 90000
+            }
+          }
+        ]
+      },
+      "wpn_lance_0015": {
+        "source": "endfield.wiki.gg/wiki/Blessing_of_Lustrous_Carmine (CC BY-SA 4.0)",
+        "version": "wiki revision 61863",
+        "tunings": [
+          {
+            "atLevel": 20,
+            "items": {
+              "item_weapon_break_low": 5,
+              "item_plant_spcstone_1_1": 3,
+              "item_gold": 2200
+            }
+          },
+          {
+            "atLevel": 40,
+            "items": {
+              "item_weapon_break_low": 18,
+              "item_plant_spcstone_1_2": 5,
+              "item_gold": 8500
+            }
+          },
+          {
+            "atLevel": 60,
+            "items": {
+              "item_weapon_break_high": 20,
+              "item_plant_spcstone_1_3": 5,
+              "item_gold": 25000
+            }
+          },
+          {
+            "atLevel": 80,
+            "items": {
+              "item_weapon_break_high": 30,
+              "item_char_skill_specialize_2": 16,
+              "item_plant_spcstone_2_2": 8,
+              "item_gold": 90000
+            }
+          }
+        ]
+      },
+      "wpn_lance_0016": {
+        "source": "endfield.wiki.gg/wiki/Golden_Age (CC BY-SA 4.0)",
+        "version": "wiki revision 61864",
+        "tunings": [
+          {
+            "atLevel": 20,
+            "items": {
+              "item_weapon_break_low": 5,
+              "item_plant_spcstone_1_1": 3,
+              "item_gold": 2200
+            }
+          },
+          {
+            "atLevel": 40,
+            "items": {
+              "item_weapon_break_low": 18,
+              "item_plant_spcstone_1_2": 5,
+              "item_gold": 8500
+            }
+          },
+          {
+            "atLevel": 60,
+            "items": {
+              "item_weapon_break_high": 20,
+              "item_plant_spcstone_1_3": 5,
+              "item_gold": 25000
+            }
+          },
+          {
+            "atLevel": 80,
+            "items": {
+              "item_weapon_break_high": 30,
+              "item_char_skill_specialize_4": 16,
+              "item_plant_spcstone_2_2": 8,
+              "item_gold": 90000
+            }
+          }
+        ]
+      },
+      "wpn_pistol_0002": {
+        "source": "endfield.wiki.gg/wiki/Howling_Guard (CC BY-SA 4.0)",
+        "version": "wiki revision 61866",
+        "tunings": [
+          {
+            "atLevel": 20,
+            "items": {
+              "item_weapon_break_low": 5,
+              "item_plant_spcstone_1_1": 3,
+              "item_gold": 2200
+            }
+          },
+          {
+            "atLevel": 40,
+            "items": {
+              "item_weapon_break_low": 18,
+              "item_plant_spcstone_1_2": 5,
+              "item_gold": 8500
+            }
+          },
+          {
+            "atLevel": 60,
+            "items": {
+              "item_weapon_break_high": 20,
+              "item_plant_spcstone_1_3": 5,
+              "item_gold": 25000
+            }
+          },
+          {
+            "atLevel": 80,
+            "items": {
+              "item_weapon_break_high": 30,
+              "item_char_skill_specialize_2": 16,
+              "item_plant_spcstone_2_1": 8,
+              "item_gold": 90000
+            }
+          }
+        ]
+      },
+      "wpn_pistol_0003": {
+        "source": "endfield.wiki.gg/wiki/Long_Road (CC BY-SA 4.0)",
+        "version": "wiki revision 61867",
+        "tunings": [
+          {
+            "atLevel": 20,
+            "items": {
+              "item_weapon_break_low": 5,
+              "item_plant_spcstone_1_1": 3,
+              "item_gold": 2200
+            }
+          },
+          {
+            "atLevel": 40,
+            "items": {
+              "item_weapon_break_low": 18,
+              "item_plant_spcstone_1_2": 5,
+              "item_gold": 8500
+            }
+          },
+          {
+            "atLevel": 60,
+            "items": {
+              "item_weapon_break_high": 20,
+              "item_plant_spcstone_1_3": 5,
+              "item_gold": 25000
+            }
+          },
+          {
+            "atLevel": 80,
+            "items": {
+              "item_weapon_break_high": 30,
+              "item_char_skill_specialize_3": 16,
+              "item_plant_spcstone_2_2": 8,
+              "item_gold": 90000
+            }
+          }
+        ]
+      },
+      "wpn_pistol_0004": {
+        "source": "endfield.wiki.gg/wiki/Rational_Farewell (CC BY-SA 4.0)",
+        "version": "wiki revision 61868",
+        "tunings": [
+          {
+            "atLevel": 20,
+            "items": {
+              "item_weapon_break_low": 5,
+              "item_plant_spcstone_1_1": 3,
+              "item_gold": 2200
+            }
+          },
+          {
+            "atLevel": 40,
+            "items": {
+              "item_weapon_break_low": 18,
+              "item_plant_spcstone_1_2": 5,
+              "item_gold": 8500
+            }
+          },
+          {
+            "atLevel": 60,
+            "items": {
+              "item_weapon_break_high": 20,
+              "item_plant_spcstone_1_3": 5,
+              "item_gold": 25000
+            }
+          },
+          {
+            "atLevel": 80,
+            "items": {
+              "item_weapon_break_high": 30,
+              "item_char_skill_specialize_5": 16,
+              "item_plant_spcstone_2_1": 8,
+              "item_gold": 90000
+            }
+          }
+        ]
+      },
+      "wpn_pistol_0005": {
+        "source": "endfield.wiki.gg/wiki/Navigator (CC BY-SA 4.0)",
+        "version": "wiki revision 61869",
+        "tunings": [
+          {
+            "atLevel": 20,
+            "items": {
+              "item_weapon_break_low": 5,
+              "item_plant_spcstone_1_1": 3,
+              "item_gold": 2200
+            }
+          },
+          {
+            "atLevel": 40,
+            "items": {
+              "item_weapon_break_low": 18,
+              "item_plant_spcstone_1_2": 5,
+              "item_gold": 8500
+            }
+          },
+          {
+            "atLevel": 60,
+            "items": {
+              "item_weapon_break_high": 20,
+              "item_plant_spcstone_1_3": 5,
+              "item_gold": 25000
+            }
+          },
+          {
+            "atLevel": 80,
+            "items": {
+              "item_weapon_break_high": 30,
+              "item_char_skill_specialize_1": 16,
+              "item_plant_spcstone_2_2": 8,
+              "item_gold": 90000
+            }
+          }
+        ]
+      },
+      "wpn_pistol_0006": {
+        "source": "endfield.wiki.gg/wiki/Opus:_The_Living (CC BY-SA 4.0)",
+        "version": "wiki revision 61870",
+        "tunings": [
+          {
+            "atLevel": 20,
+            "items": {
+              "item_weapon_break_low": 5,
+              "item_plant_spcstone_1_1": 3,
+              "item_gold": 2200
+            }
+          },
+          {
+            "atLevel": 40,
+            "items": {
+              "item_weapon_break_low": 18,
+              "item_plant_spcstone_1_2": 5,
+              "item_gold": 8500
+            }
+          },
+          {
+            "atLevel": 60,
+            "items": {
+              "item_weapon_break_high": 20,
+              "item_plant_spcstone_1_3": 5,
+              "item_gold": 25000
+            }
+          },
+          {
+            "atLevel": 80,
+            "items": {
+              "item_weapon_break_high": 30,
+              "item_char_skill_specialize_1": 16,
+              "item_plant_spcstone_2_2": 8,
+              "item_gold": 90000
+            }
+          }
+        ]
+      },
+      "wpn_pistol_0007": {
+        "source": "endfield.wiki.gg/wiki/Home_Longing (CC BY-SA 4.0)",
+        "version": "wiki revision 61871",
+        "tunings": [
+          {
+            "atLevel": 20,
+            "items": {
+              "item_weapon_break_low": 5,
+              "item_plant_spcstone_1_1": 3,
+              "item_gold": 2200
+            }
+          },
+          {
+            "atLevel": 40,
+            "items": {
+              "item_weapon_break_low": 18,
+              "item_plant_spcstone_1_2": 5,
+              "item_gold": 8500
+            }
+          },
+          {
+            "atLevel": 60,
+            "items": {
+              "item_weapon_break_high": 20,
+              "item_plant_spcstone_1_3": 5,
+              "item_gold": 25000
+            }
+          },
+          {
+            "atLevel": 80,
+            "items": {
+              "item_weapon_break_high": 30,
+              "item_char_skill_specialize_3": 16,
+              "item_plant_spcstone_2_1": 8,
+              "item_gold": 90000
+            }
+          }
+        ]
+      },
+      "wpn_pistol_0008": {
+        "source": "endfield.wiki.gg/wiki/Wedge (CC BY-SA 4.0)",
+        "version": "wiki revision 61872",
+        "tunings": [
+          {
+            "atLevel": 20,
+            "items": {
+              "item_weapon_break_low": 5,
+              "item_plant_spcstone_1_1": 3,
+              "item_gold": 2200
+            }
+          },
+          {
+            "atLevel": 40,
+            "items": {
+              "item_weapon_break_low": 18,
+              "item_plant_spcstone_1_2": 5,
+              "item_gold": 8500
+            }
+          },
+          {
+            "atLevel": 60,
+            "items": {
+              "item_weapon_break_high": 20,
+              "item_plant_spcstone_1_3": 5,
+              "item_gold": 25000
+            }
+          },
+          {
+            "atLevel": 80,
+            "items": {
+              "item_weapon_break_high": 30,
+              "item_char_skill_specialize_3": 16,
+              "item_plant_spcstone_2_1": 8,
+              "item_gold": 90000
+            }
+          }
+        ]
+      },
+      "wpn_pistol_0009": {
+        "source": "endfield.wiki.gg/wiki/Clannibal (CC BY-SA 4.0)",
+        "version": "wiki revision 61873",
+        "tunings": [
+          {
+            "atLevel": 20,
+            "items": {
+              "item_weapon_break_low": 5,
+              "item_plant_spcstone_1_1": 3,
+              "item_gold": 2200
+            }
+          },
+          {
+            "atLevel": 40,
+            "items": {
+              "item_weapon_break_low": 18,
+              "item_plant_spcstone_1_2": 5,
+              "item_gold": 8500
+            }
+          },
+          {
+            "atLevel": 60,
+            "items": {
+              "item_weapon_break_high": 20,
+              "item_plant_spcstone_1_3": 5,
+              "item_gold": 25000
+            }
+          },
+          {
+            "atLevel": 80,
+            "items": {
+              "item_weapon_break_high": 30,
+              "item_char_skill_specialize_4": 16,
+              "item_plant_spcstone_2_2": 8,
+              "item_gold": 90000
+            }
+          }
+        ]
+      },
+      "wpn_pistol_0010": {
+        "source": "endfield.wiki.gg/wiki/Artzy_Tyrannical (CC BY-SA 4.0)",
+        "version": "wiki revision 61874",
+        "tunings": [
+          {
+            "atLevel": 20,
+            "items": {
+              "item_weapon_break_low": 5,
+              "item_plant_spcstone_1_1": 3,
+              "item_gold": 2200
+            }
+          },
+          {
+            "atLevel": 40,
+            "items": {
+              "item_weapon_break_low": 18,
+              "item_plant_spcstone_1_2": 5,
+              "item_gold": 8500
+            }
+          },
+          {
+            "atLevel": 60,
+            "items": {
+              "item_weapon_break_high": 20,
+              "item_plant_spcstone_1_3": 5,
+              "item_gold": 25000
+            }
+          },
+          {
+            "atLevel": 80,
+            "items": {
+              "item_weapon_break_high": 30,
+              "item_char_skill_specialize_3": 16,
+              "item_plant_spcstone_2_2": 8,
+              "item_gold": 90000
+            }
+          }
+        ]
+      },
+      "wpn_pistol_0011": {
+        "source": "endfield.wiki.gg/wiki/Brigand's_Calling (CC BY-SA 4.0)",
+        "version": "wiki revision 61875",
+        "tunings": [
+          {
+            "atLevel": 20,
+            "items": {
+              "item_weapon_break_low": 5,
+              "item_plant_spcstone_1_1": 3,
+              "item_gold": 2200
+            }
+          },
+          {
+            "atLevel": 40,
+            "items": {
+              "item_weapon_break_low": 18,
+              "item_plant_spcstone_1_2": 5,
+              "item_gold": 8500
+            }
+          },
+          {
+            "atLevel": 60,
+            "items": {
+              "item_weapon_break_high": 20,
+              "item_plant_spcstone_1_3": 5,
+              "item_gold": 25000
+            }
+          },
+          {
+            "atLevel": 80,
+            "items": {
+              "item_weapon_break_high": 30,
+              "item_char_skill_specialize_4": 16,
+              "item_plant_spcstone_2_1": 8,
+              "item_gold": 90000
+            }
+          }
+        ]
+      },
+      "wpn_pistol_0012": {
+        "source": "endfield.wiki.gg/wiki/OBJ_Velocitous (CC BY-SA 4.0)",
+        "version": "wiki revision 61876",
+        "tunings": [
+          {
+            "atLevel": 20,
+            "items": {
+              "item_weapon_break_low": 5,
+              "item_plant_spcstone_1_1": 3,
+              "item_gold": 2200
+            }
+          },
+          {
+            "atLevel": 40,
+            "items": {
+              "item_weapon_break_low": 18,
+              "item_plant_spcstone_1_2": 5,
+              "item_gold": 8500
+            }
+          },
+          {
+            "atLevel": 60,
+            "items": {
+              "item_weapon_break_high": 20,
+              "item_plant_spcstone_1_3": 5,
+              "item_gold": 25000
+            }
+          },
+          {
+            "atLevel": 80,
+            "items": {
+              "item_weapon_break_high": 30,
+              "item_char_skill_specialize_5": 16,
+              "item_plant_spcstone_2_2": 8,
+              "item_gold": 90000
+            }
+          }
+        ]
+      },
+      "wpn_sword_0005": {
+        "source": "endfield.wiki.gg/wiki/Sundering_Steel (CC BY-SA 4.0)",
+        "version": "wiki revision 61878",
+        "tunings": [
+          {
+            "atLevel": 20,
+            "items": {
+              "item_weapon_break_low": 5,
+              "item_plant_spcstone_1_1": 3,
+              "item_gold": 2200
+            }
+          },
+          {
+            "atLevel": 40,
+            "items": {
+              "item_weapon_break_low": 18,
+              "item_plant_spcstone_1_2": 5,
+              "item_gold": 8500
+            }
+          },
+          {
+            "atLevel": 60,
+            "items": {
+              "item_weapon_break_high": 20,
+              "item_plant_spcstone_1_3": 5,
+              "item_gold": 25000
+            }
+          },
+          {
+            "atLevel": 80,
+            "items": {
+              "item_weapon_break_high": 30,
+              "item_char_skill_specialize_2": 16,
+              "item_plant_spcstone_2_2": 8,
+              "item_gold": 90000
+            }
+          }
+        ]
+      },
+      "wpn_sword_0006": {
+        "source": "endfield.wiki.gg/wiki/Forgeborn_Scathe (CC BY-SA 4.0)",
+        "version": "wiki revision 61879",
+        "tunings": [
+          {
+            "atLevel": 20,
+            "items": {
+              "item_weapon_break_low": 5,
+              "item_plant_spcstone_1_1": 3,
+              "item_gold": 2200
+            }
+          },
+          {
+            "atLevel": 40,
+            "items": {
+              "item_weapon_break_low": 18,
+              "item_plant_spcstone_1_2": 5,
+              "item_gold": 8500
+            }
+          },
+          {
+            "atLevel": 60,
+            "items": {
+              "item_weapon_break_high": 20,
+              "item_plant_spcstone_1_3": 5,
+              "item_gold": 25000
+            }
+          },
+          {
+            "atLevel": 80,
+            "items": {
+              "item_weapon_break_high": 30,
+              "item_char_skill_specialize_2": 16,
+              "item_plant_spcstone_2_2": 8,
+              "item_gold": 90000
+            }
+          }
+        ]
+      },
+      "wpn_sword_0007": {
+        "source": "endfield.wiki.gg/wiki/Fortmaker (CC BY-SA 4.0)",
+        "version": "wiki revision 61880",
+        "tunings": [
+          {
+            "atLevel": 20,
+            "items": {
+              "item_weapon_break_low": 5,
+              "item_plant_spcstone_1_1": 3,
+              "item_gold": 2200
+            }
+          },
+          {
+            "atLevel": 40,
+            "items": {
+              "item_weapon_break_low": 18,
+              "item_plant_spcstone_1_2": 5,
+              "item_gold": 8500
+            }
+          },
+          {
+            "atLevel": 60,
+            "items": {
+              "item_weapon_break_high": 20,
+              "item_plant_spcstone_1_3": 5,
+              "item_gold": 25000
+            }
+          },
+          {
+            "atLevel": 80,
+            "items": {
+              "item_weapon_break_high": 30,
+              "item_char_skill_specialize_3": 16,
+              "item_plant_spcstone_2_1": 8,
+              "item_gold": 90000
+            }
+          }
+        ]
+      },
+      "wpn_sword_0008": {
+        "source": "endfield.wiki.gg/wiki/Prominent_Edge (CC BY-SA 4.0)",
+        "version": "wiki revision 61881",
+        "tunings": [
+          {
+            "atLevel": 20,
+            "items": {
+              "item_weapon_break_low": 5,
+              "item_plant_spcstone_1_1": 3,
+              "item_gold": 2200
+            }
+          },
+          {
+            "atLevel": 40,
+            "items": {
+              "item_weapon_break_low": 18,
+              "item_plant_spcstone_1_2": 5,
+              "item_gold": 8500
+            }
+          },
+          {
+            "atLevel": 60,
+            "items": {
+              "item_weapon_break_high": 20,
+              "item_plant_spcstone_1_3": 5,
+              "item_gold": 25000
+            }
+          },
+          {
+            "atLevel": 80,
+            "items": {
+              "item_weapon_break_high": 30,
+              "item_char_skill_specialize_3": 16,
+              "item_plant_spcstone_2_1": 8,
+              "item_gold": 90000
+            }
+          }
+        ]
+      },
+      "wpn_sword_0009": {
+        "source": "endfield.wiki.gg/wiki/Wave_Tide (CC BY-SA 4.0)",
+        "version": "wiki revision 61882",
+        "tunings": [
+          {
+            "atLevel": 20,
+            "items": {
+              "item_weapon_break_low": 5,
+              "item_plant_spcstone_1_1": 3,
+              "item_gold": 2200
+            }
+          },
+          {
+            "atLevel": 40,
+            "items": {
+              "item_weapon_break_low": 18,
+              "item_plant_spcstone_1_2": 5,
+              "item_gold": 8500
+            }
+          },
+          {
+            "atLevel": 60,
+            "items": {
+              "item_weapon_break_high": 20,
+              "item_plant_spcstone_1_3": 5,
+              "item_gold": 25000
+            }
+          },
+          {
+            "atLevel": 80,
+            "items": {
+              "item_weapon_break_high": 30,
+              "item_char_skill_specialize_4": 16,
+              "item_plant_spcstone_2_2": 8,
+              "item_gold": 90000
+            }
+          }
+        ]
+      },
+      "wpn_sword_0010": {
+        "source": "endfield.wiki.gg/wiki/Umbral_Torch (CC BY-SA 4.0)",
+        "version": "wiki revision 61883",
+        "tunings": [
+          {
+            "atLevel": 20,
+            "items": {
+              "item_weapon_break_low": 5,
+              "item_plant_spcstone_1_1": 3,
+              "item_gold": 2200
+            }
+          },
+          {
+            "atLevel": 40,
+            "items": {
+              "item_weapon_break_low": 18,
+              "item_plant_spcstone_1_2": 5,
+              "item_gold": 8500
+            }
+          },
+          {
+            "atLevel": 60,
+            "items": {
+              "item_weapon_break_high": 20,
+              "item_plant_spcstone_1_3": 5,
+              "item_gold": 25000
+            }
+          },
+          {
+            "atLevel": 80,
+            "items": {
+              "item_weapon_break_high": 30,
+              "item_char_skill_specialize_1": 16,
+              "item_plant_spcstone_2_1": 8,
+              "item_gold": 90000
+            }
+          }
+        ]
+      },
+      "wpn_sword_0011": {
+        "source": "endfield.wiki.gg/wiki/Rapid_Ascent (CC BY-SA 4.0)",
+        "version": "wiki revision 61884",
+        "tunings": [
+          {
+            "atLevel": 20,
+            "items": {
+              "item_weapon_break_low": 5,
+              "item_plant_spcstone_1_1": 3,
+              "item_gold": 2200
+            }
+          },
+          {
+            "atLevel": 40,
+            "items": {
+              "item_weapon_break_low": 18,
+              "item_plant_spcstone_1_2": 5,
+              "item_gold": 8500
+            }
+          },
+          {
+            "atLevel": 60,
+            "items": {
+              "item_weapon_break_high": 20,
+              "item_plant_spcstone_1_3": 5,
+              "item_gold": 25000
+            }
+          },
+          {
+            "atLevel": 80,
+            "items": {
+              "item_weapon_break_high": 30,
+              "item_char_skill_specialize_1": 16,
+              "item_plant_spcstone_2_2": 8,
+              "item_gold": 90000
+            }
+          }
+        ]
+      },
+      "wpn_sword_0012": {
+        "source": "endfield.wiki.gg/wiki/Thermite_Cutter (CC BY-SA 4.0)",
+        "version": "wiki revision 61885",
+        "tunings": [
+          {
+            "atLevel": 20,
+            "items": {
+              "item_weapon_break_low": 5,
+              "item_plant_spcstone_1_1": 3,
+              "item_gold": 2200
+            }
+          },
+          {
+            "atLevel": 40,
+            "items": {
+              "item_weapon_break_low": 18,
+              "item_plant_spcstone_1_2": 5,
+              "item_gold": 8500
+            }
+          },
+          {
+            "atLevel": 60,
+            "items": {
+              "item_weapon_break_high": 20,
+              "item_plant_spcstone_1_3": 5,
+              "item_gold": 25000
+            }
+          },
+          {
+            "atLevel": 80,
+            "items": {
+              "item_weapon_break_high": 30,
+              "item_char_skill_specialize_2": 16,
+              "item_plant_spcstone_2_1": 8,
+              "item_gold": 90000
+            }
+          }
+        ]
+      },
+      "wpn_sword_0013": {
+        "source": "endfield.wiki.gg/wiki/Eminent_Repute (CC BY-SA 4.0)",
+        "version": "wiki revision 61886",
+        "tunings": [
+          {
+            "atLevel": 20,
+            "items": {
+              "item_weapon_break_low": 5,
+              "item_plant_spcstone_1_1": 3,
+              "item_gold": 2200
+            }
+          },
+          {
+            "atLevel": 40,
+            "items": {
+              "item_weapon_break_low": 18,
+              "item_plant_spcstone_1_2": 5,
+              "item_gold": 8500
+            }
+          },
+          {
+            "atLevel": 60,
+            "items": {
+              "item_weapon_break_high": 20,
+              "item_plant_spcstone_1_3": 5,
+              "item_gold": 25000
+            }
+          },
+          {
+            "atLevel": 80,
+            "items": {
+              "item_weapon_break_high": 30,
+              "item_char_skill_specialize_3": 16,
+              "item_plant_spcstone_2_2": 8,
+              "item_gold": 90000
+            }
+          }
+        ]
+      },
+      "wpn_sword_0014": {
+        "source": "endfield.wiki.gg/wiki/White_Night_Nova (CC BY-SA 4.0)",
+        "version": "wiki revision 61887",
+        "tunings": [
+          {
+            "atLevel": 20,
+            "items": {
+              "item_weapon_break_low": 5,
+              "item_plant_spcstone_1_1": 3,
+              "item_gold": 2200
+            }
+          },
+          {
+            "atLevel": 40,
+            "items": {
+              "item_weapon_break_low": 18,
+              "item_plant_spcstone_1_2": 5,
+              "item_gold": 8500
+            }
+          },
+          {
+            "atLevel": 60,
+            "items": {
+              "item_weapon_break_high": 20,
+              "item_plant_spcstone_1_3": 5,
+              "item_gold": 25000
+            }
+          },
+          {
+            "atLevel": 80,
+            "items": {
+              "item_weapon_break_high": 30,
+              "item_char_skill_specialize_4": 16,
+              "item_plant_spcstone_2_1": 8,
+              "item_gold": 90000
+            }
+          }
+        ]
+      },
+      "wpn_sword_0015": {
+        "source": "endfield.wiki.gg/wiki/Aspirant (CC BY-SA 4.0)",
+        "version": "wiki revision 61888",
+        "tunings": [
+          {
+            "atLevel": 20,
+            "items": {
+              "item_weapon_break_low": 5,
+              "item_plant_spcstone_1_1": 3,
+              "item_gold": 2200
+            }
+          },
+          {
+            "atLevel": 40,
+            "items": {
+              "item_weapon_break_low": 18,
+              "item_plant_spcstone_1_2": 5,
+              "item_gold": 8500
+            }
+          },
+          {
+            "atLevel": 60,
+            "items": {
+              "item_weapon_break_high": 20,
+              "item_plant_spcstone_1_3": 5,
+              "item_gold": 25000
+            }
+          },
+          {
+            "atLevel": 80,
+            "items": {
+              "item_weapon_break_high": 30,
+              "item_char_skill_specialize_4": 16,
+              "item_plant_spcstone_2_2": 8,
+              "item_gold": 90000
+            }
+          }
+        ]
+      },
+      "wpn_sword_0016": {
+        "source": "endfield.wiki.gg/wiki/Never_Rest (CC BY-SA 4.0)",
+        "version": "wiki revision 61889",
+        "tunings": [
+          {
+            "atLevel": 20,
+            "items": {
+              "item_weapon_break_low": 5,
+              "item_plant_spcstone_1_1": 3,
+              "item_gold": 2200
+            }
+          },
+          {
+            "atLevel": 40,
+            "items": {
+              "item_weapon_break_low": 18,
+              "item_plant_spcstone_1_2": 5,
+              "item_gold": 8500
+            }
+          },
+          {
+            "atLevel": 60,
+            "items": {
+              "item_weapon_break_high": 20,
+              "item_plant_spcstone_1_3": 5,
+              "item_gold": 25000
+            }
+          },
+          {
+            "atLevel": 80,
+            "items": {
+              "item_weapon_break_high": 30,
+              "item_char_skill_specialize_1": 16,
+              "item_plant_spcstone_2_1": 8,
+              "item_gold": 90000
+            }
+          }
+        ]
+      },
+      "wpn_sword_0017": {
+        "source": "endfield.wiki.gg/wiki/Glorious_Memory (CC BY-SA 4.0)",
+        "version": "wiki revision 61890",
+        "tunings": [
+          {
+            "atLevel": 20,
+            "items": {
+              "item_weapon_break_low": 5,
+              "item_plant_spcstone_1_1": 3,
+              "item_gold": 2200
+            }
+          },
+          {
+            "atLevel": 40,
+            "items": {
+              "item_weapon_break_low": 18,
+              "item_plant_spcstone_1_2": 5,
+              "item_gold": 8500
+            }
+          },
+          {
+            "atLevel": 60,
+            "items": {
+              "item_weapon_break_high": 20,
+              "item_plant_spcstone_1_3": 5,
+              "item_gold": 25000
+            }
+          },
+          {
+            "atLevel": 80,
+            "items": {
+              "item_weapon_break_high": 30,
+              "item_char_skill_specialize_2": 16,
+              "item_plant_spcstone_2_2": 8,
+              "item_gold": 90000
+            }
+          }
+        ]
+      },
+      "wpn_sword_0018": {
+        "source": "endfield.wiki.gg/wiki/Twelve_Questions (CC BY-SA 4.0)",
+        "version": "wiki revision 61891",
+        "tunings": [
+          {
+            "atLevel": 20,
+            "items": {
+              "item_weapon_break_low": 5,
+              "item_plant_spcstone_1_1": 3,
+              "item_gold": 2200
+            }
+          },
+          {
+            "atLevel": 40,
+            "items": {
+              "item_weapon_break_low": 18,
+              "item_plant_spcstone_1_2": 5,
+              "item_gold": 8500
+            }
+          },
+          {
+            "atLevel": 60,
+            "items": {
+              "item_weapon_break_high": 20,
+              "item_plant_spcstone_1_3": 5,
+              "item_gold": 25000
+            }
+          },
+          {
+            "atLevel": 80,
+            "items": {
+              "item_weapon_break_high": 30,
+              "item_char_skill_specialize_1": 16,
+              "item_plant_spcstone_2_2": 8,
+              "item_gold": 90000
+            }
+          }
+        ]
+      },
+      "wpn_sword_0019": {
+        "source": "endfield.wiki.gg/wiki/OBJ_Edge_of_Lightness (CC BY-SA 4.0)",
+        "version": "wiki revision 61892",
+        "tunings": [
+          {
+            "atLevel": 20,
+            "items": {
+              "item_weapon_break_low": 5,
+              "item_plant_spcstone_1_1": 3,
+              "item_gold": 2200
+            }
+          },
+          {
+            "atLevel": 40,
+            "items": {
+              "item_weapon_break_low": 18,
+              "item_plant_spcstone_1_2": 5,
+              "item_gold": 8500
+            }
+          },
+          {
+            "atLevel": 60,
+            "items": {
+              "item_weapon_break_high": 20,
+              "item_plant_spcstone_1_3": 5,
+              "item_gold": 25000
+            }
+          },
+          {
+            "atLevel": 80,
+            "items": {
+              "item_weapon_break_high": 30,
+              "item_char_skill_specialize_2": 16,
+              "item_plant_spcstone_2_1": 8,
+              "item_gold": 90000
+            }
+          }
+        ]
+      },
+      "wpn_sword_0020": {
+        "source": "endfield.wiki.gg/wiki/Finchaser_3.0 (CC BY-SA 4.0)",
+        "version": "wiki revision 61893",
+        "tunings": [
+          {
+            "atLevel": 20,
+            "items": {
+              "item_weapon_break_low": 5,
+              "item_plant_spcstone_1_1": 3,
+              "item_gold": 2200
+            }
+          },
+          {
+            "atLevel": 40,
+            "items": {
+              "item_weapon_break_low": 18,
+              "item_plant_spcstone_1_2": 5,
+              "item_gold": 8500
+            }
+          },
+          {
+            "atLevel": 60,
+            "items": {
+              "item_weapon_break_high": 20,
+              "item_plant_spcstone_1_3": 5,
+              "item_gold": 25000
+            }
+          },
+          {
+            "atLevel": 80,
+            "items": {
+              "item_weapon_break_high": 30,
+              "item_char_skill_specialize_1": 16,
+              "item_plant_spcstone_2_1": 8,
+              "item_gold": 90000
+            }
+          }
+        ]
+      },
+      "wpn_sword_0021": {
+        "source": "endfield.wiki.gg/wiki/Grand_Vision (CC BY-SA 4.0)",
+        "version": "wiki revision 61894",
+        "tunings": [
+          {
+            "atLevel": 20,
+            "items": {
+              "item_weapon_break_low": 5,
+              "item_plant_spcstone_1_1": 3,
+              "item_gold": 2200
+            }
+          },
+          {
+            "atLevel": 40,
+            "items": {
+              "item_weapon_break_low": 18,
+              "item_plant_spcstone_1_2": 5,
+              "item_gold": 8500
+            }
+          },
+          {
+            "atLevel": 60,
+            "items": {
+              "item_weapon_break_high": 20,
+              "item_plant_spcstone_1_3": 5,
+              "item_gold": 25000
+            }
+          },
+          {
+            "atLevel": 80,
+            "items": {
+              "item_weapon_break_high": 30,
+              "item_char_skill_specialize_1": 16,
+              "item_plant_spcstone_2_2": 8,
+              "item_gold": 90000
+            }
+          }
+        ]
+      },
+      "wpn_sword_0022": {
+        "source": "endfield.wiki.gg/wiki/Lupine_Scarlet (CC BY-SA 4.0)",
+        "version": "wiki revision 61895",
+        "tunings": [
+          {
+            "atLevel": 20,
+            "items": {
+              "item_weapon_break_low": 5,
+              "item_plant_spcstone_1_1": 3,
+              "item_gold": 2200
+            }
+          },
+          {
+            "atLevel": 40,
+            "items": {
+              "item_weapon_break_low": 18,
+              "item_plant_spcstone_1_2": 5,
+              "item_gold": 8500
+            }
+          },
+          {
+            "atLevel": 60,
+            "items": {
+              "item_weapon_break_high": 20,
+              "item_plant_spcstone_1_3": 5,
+              "item_gold": 25000
+            }
+          },
+          {
+            "atLevel": 80,
+            "items": {
+              "item_weapon_break_high": 30,
+              "item_char_skill_specialize_5": 16,
+              "item_plant_spcstone_2_1": 8,
+              "item_gold": 90000
+            }
+          }
+        ]
+      },
+      "wpn_sword_0023": {
+        "source": "endfield.wiki.gg/wiki/Dessert_Moment (CC BY-SA 4.0)",
+        "version": "wiki revision 63440",
+        "tunings": [
+          {
+            "atLevel": 20,
+            "items": {
+              "item_weapon_break_low": 5,
+              "item_plant_spcstone_1_1": 3,
+              "item_gold": 2200
+            }
+          },
+          {
+            "atLevel": 40,
+            "items": {
+              "item_weapon_break_low": 18,
+              "item_plant_spcstone_1_2": 5,
+              "item_gold": 8500
+            }
+          },
+          {
+            "atLevel": 60,
+            "items": {
+              "item_weapon_break_high": 20,
+              "item_plant_spcstone_1_3": 5,
+              "item_gold": 25000
+            }
+          },
+          {
+            "atLevel": 80,
+            "items": {
+              "item_weapon_break_high": 30,
+              "item_char_skill_specialize_2": 16,
+              "item_plant_spcstone_2_3": 8,
+              "item_gold": 90000
+            }
+          }
+        ]
+      },
+      "wpn_sword_0024": {
+        "source": "endfield.wiki.gg/wiki/Complexed_Industry (CC BY-SA 4.0)",
+        "version": "wiki revision 64965",
+        "tunings": [
+          {
+            "atLevel": 20,
+            "items": {
+              "item_weapon_break_low": 5,
+              "item_plant_spcstone_1_1": 3,
+              "item_gold": 2200
+            }
+          },
+          {
+            "atLevel": 40,
+            "items": {
+              "item_weapon_break_low": 18,
+              "item_plant_spcstone_1_2": 5,
+              "item_gold": 8500
+            }
+          },
+          {
+            "atLevel": 60,
+            "items": {
+              "item_weapon_break_high": 20,
+              "item_plant_spcstone_1_3": 5,
+              "item_gold": 25000
+            }
+          },
+          {
+            "atLevel": 80,
+            "items": {
+              "item_weapon_break_high": 30,
+              "item_char_skill_specialize_5": 16,
+              "item_plant_spcstone_2_1": 8,
+              "item_gold": 90000
+            }
+          }
+        ]
+      },
+      "wpn_sword_0026": {
+        "source": "endfield.wiki.gg/wiki/Farsight (CC BY-SA 4.0)",
+        "version": "wiki revision 61896",
+        "tunings": [
+          {
+            "atLevel": 20,
+            "items": {
+              "item_weapon_break_low": 5,
+              "item_plant_spcstone_1_1": 3,
+              "item_gold": 2200
+            }
+          },
+          {
+            "atLevel": 40,
+            "items": {
+              "item_weapon_break_low": 18,
+              "item_plant_spcstone_1_2": 5,
+              "item_gold": 8500
+            }
+          },
+          {
+            "atLevel": 60,
+            "items": {
+              "item_weapon_break_high": 20,
+              "item_plant_spcstone_1_3": 5,
+              "item_gold": 25000
+            }
+          },
+          {
+            "atLevel": 80,
+            "items": {
+              "item_weapon_break_high": 30,
+              "item_char_skill_specialize_3": 16,
+              "item_plant_spcstone_2_3": 8,
+              "item_gold": 90000
+            }
+          }
+        ]
+      }
+    }
+  },
   "summary": {
     "item_gold": 1280020,
     "item_expcard_stage1_high": 75,

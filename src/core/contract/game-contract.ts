@@ -290,6 +290,12 @@ export interface GameRules {
   materialsFor?: (characterId: string, from: BuildLevel, to: BuildLevel) => MaterialNeed[];
   /** What the material amounts include or leave out, in plain words (shown with them). */
   materialsNote?: string;
+  /**
+   * What a weapon needs from one level to another (LOGIC-CORE, E7): `needs` by material id (game.data.materials()).
+   * `partial`, in plain words, says what's left out when the source doesn't cover the whole range; show it with the
+   * amounts. A weapon with no data needs nothing listed ("No data yet").
+   */
+  weaponMaterialsFor?: (weaponId: string, from: BuildLevel, to: BuildLevel) => { needs: MaterialNeed[]; partial?: string };
   scoreBuild?: (build: CharacterBuild) => Known<{ score: number; grade: string; parts?: BuildScorePart[]; basis?: string }>;
   /** Team scoring from kits (LOGIC-CORE). Every score explains itself with kit text. */
   teams?: TeamRules;
