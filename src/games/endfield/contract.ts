@@ -157,5 +157,6 @@ export const endfield: GameContract = {
     { what: 'Pity rates and rules', source: 'endfield.wiki.gg/wiki/Headhunting', entered: '2026-10-11', verified: true },
     { what: 'Weapon pool rules', source: 'endfield.wiki.gg/wiki/Arsenal_Exchange', entered: '2026-10-11', verified: true },
     { what: 'Currencies', source: 'endfield.wiki.gg', entered: '2026-10-11', verified: true },
+    { what: 'Sanity max and regen rate', source: 'endfield.wiki.gg/wiki/Sanity', entered: '2026-10-15', verified: true },
   ],
 };
