@@ -210,6 +210,7 @@ export function kitFrom(text: string, who: string): KitSkill[] {
       gameText: numbers.length ? `${desc}\nAt level ${LEVEL}: ${numbers.join('; ')}.` : desc,
     });
   }
+  const talents: { skill: KitSkill; rank: number }[] = [];
   for (const t of templates(text, 'Operator talent')) {
     // Gear unlocks (Outfitting) aren't part of the fight kit.
     if (/gear/i.test(t.icon ?? '')) continue;
@@ -219,14 +220,13 @@ export function kitFrom(text: string, who: string): KitSkill[] {
       .filter((x) => x.desc)
       .at(-1);
     if (!last?.desc) continue;
-    skills.push({
-      id: `talent-${slug(name)}`,
-      label: `Talent: ${name}${last.cond ? ` (${last.cond})` : ''}`,
-      kind: 'core',
-      does: [],
-      gameText: plain(last.desc, `${who} talent ${name}`),
+    talents.push({
+      skill: { id: `talent-${slug(name)}`, label: `Talent: ${name}${last.cond ? ` (${last.cond})` : ''}`, kind: 'core', does: [], gameText: plain(last.desc, `${who} talent ${name}`) },
+      rank: Number(/Elite\s*(\d+)/i.exec(last.cond ?? '')?.[1] ?? 99),
     });
   }
+  // Talents in Elite order (the page lists the attribute talent first, at Elite 4); a stable sort keeps ties in page order.
+  skills.push(...talents.sort((a, b) => a.rank - b.rank).map((t) => t.skill));
   const data = templates(text, 'Operator data')[0] ?? {};
   for (let n = 1; n <= 5; n++) {
     const desc = data[`pot${n}`];

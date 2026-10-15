@@ -12,6 +12,8 @@ describe('Endfield kit import: wiki markup → plain words', () => {
   it('stops on markup it doesn’t know instead of guessing', () => {
     expect(() => plain('Deals {{Mystery|x}} DMG', 'Who')).toThrow(/Who: unknown template \{\{Mystery\}\}/);
     expect(() => plain('Deals <table>x</table>', 'Who')).toThrow(/leftover markup/);
+    // A tag rebuilt from the pieces around a removed one never gets through.
+    expect(() => plain('<<b>iframe>', 'Who')).toThrow(/leftover markup/);
   });
   it('reads nested templates whole', () => {
     const [t] = templates('{{Combat skill\n|name= A {{Color|B|7}}\n|desc= x {{G|C|D}} y\n}}', 'Combat skill');
@@ -44,6 +46,14 @@ Mode: B=
 }}
 </tabber>
 {{Operator talent
+|name = Keen Mind
+|icon = Intellect
+|cond1 = Elite 1
+|desc1 = Operator Intellect +10.
+|cond2 = Elite 4
+|desc2 = Operator Intellect +20.
+}}
+{{Operator talent
 |name = Warm Up
 |cond1 = Elite 1
 |desc1 = Old text.
@@ -64,8 +74,11 @@ Mode: B=
     ]);
     expect(kit[0]?.gameText).toBe('Deals Heat DMG.\nAt level 12: DMG Multiplier: 220%; SP Cost: 100.');
   });
-  it('talents give their highest Elite text; gear unlocks are left out', () => {
-    expect(kit.filter((s) => s.kind === 'core')).toEqual([{ id: 'talent-warm-up', label: 'Talent: Warm Up (Elite 2)', kind: 'core', does: [], gameText: 'Newest text.' }]);
+  it('talents give their highest Elite text, in Elite order; gear unlocks are left out', () => {
+    expect(kit.filter((s) => s.kind === 'core')).toEqual([
+      { id: 'talent-warm-up', label: 'Talent: Warm Up (Elite 2)', kind: 'core', does: [], gameText: 'Newest text.' },
+      { id: 'talent-keen-mind', label: 'Talent: Keen Mind (Elite 4)', kind: 'core', does: [], gameText: 'Operator Intellect +20.' },
+    ]);
   });
   it('Potentials 1–5 unlock at their level', () => {
     expect(kit.filter((s) => s.kind === 'potential').map((s) => [s.id, s.label, s.unlock, s.gameText])).toEqual([
@@ -90,6 +103,8 @@ describe('Endfield kit data (src/games/endfield/data/kits.json)', async () => {
     expect(new Set(ids).size).toBe(ids.length);
     expect(k.skills.filter((s) => s.kind === 'skill').length % 4).toBe(0);
     expect(k.skills.filter((s) => s.kind === 'potential').map((s) => s.unlock?.potential)).toEqual([1, 2, 3, 4, 5]);
+    const ranks = k.skills.filter((s) => s.kind === 'core').map((s) => Number(/Elite (\d+)/.exec(s.label)?.[1]));
+    expect(ranks).toEqual([...ranks].sort((a, b) => a - b));
     for (const s of k.skills) {
       expect(s.gameText.trim()).not.toBe('');
       expect(s.gameText).not.toMatch(/\{\{|\}\}|\[\[|<\/?[a-z]/i);

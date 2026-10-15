@@ -33,13 +33,6 @@
         "gameText": "SKILL DESCRIPTION: Bombards the ground with Originium Crystals, dealing massive Physical DMG to all enemies within a fan-shaped area. If the enemy already has Originium Crystals on them, this skill shatters the Originium Crystals and deals 1 more hit of Physical DMG.\nAt level 12: Ultimate Energy Cost: 80; DMG Multiplier: 800%; Bonus DMG Multiplier: 600%; Stagger: 25."
       },
       {
-        "id": "talent-skirmisher",
-        "label": "Talent: Skirmisher (Elite 4)",
-        "kind": "core",
-        "does": [],
-        "gameText": "Operator Agility +20."
-      },
-      {
         "id": "talent-essence-disintegration",
         "label": "Talent: Essence Disintegration (Elite 2)",
         "kind": "core",
@@ -52,6 +45,13 @@
         "kind": "core",
         "does": [],
         "gameText": "Enemies with attached Originium Crystals suffer Physical DMG Taken +20%."
+      },
+      {
+        "id": "talent-skirmisher",
+        "label": "Talent: Skirmisher (Elite 4)",
+        "kind": "core",
+        "does": [],
+        "gameText": "Operator Agility +20."
       },
       {
         "id": "potential-1",
@@ -139,13 +139,6 @@
         "gameText": "SKILL DESCRIPTION: Bombards the ground with Originium Crystals, dealing massive Physical DMG to all enemies within a fan-shaped area. If the enemy already has Originium Crystals on them, this skill shatters the Originium Crystals and deals 1 more hit of Physical DMG.\nAt level 12: Ultimate Energy Cost: 80; DMG Multiplier: 800%; Bonus DMG Multiplier: 600%; Stagger: 25."
       },
       {
-        "id": "talent-skirmisher",
-        "label": "Talent: Skirmisher (Elite 4)",
-        "kind": "core",
-        "does": [],
-        "gameText": "Operator Agility +20."
-      },
-      {
         "id": "talent-essence-disintegration",
         "label": "Talent: Essence Disintegration (Elite 2)",
         "kind": "core",
@@ -158,6 +151,13 @@
         "kind": "core",
         "does": [],
         "gameText": "Enemies with attached Originium Crystals suffer Physical DMG Taken +20%."
+      },
+      {
+        "id": "talent-skirmisher",
+        "label": "Talent: Skirmisher (Elite 4)",
+        "kind": "core",
+        "does": [],
+        "gameText": "Operator Agility +20."
       },
       {
         "id": "potential-1",
@@ -245,13 +245,6 @@
         "gameText": "SKILL DESCRIPTION: Tele-protocols a massive piece of orbital debris into the battlefield with devastating impact. All enemies in the area of effect suffer massive Electric DMG.\nAt level 12: Ultimate Energy Cost: 80; DMG Multiplier: 1000%; Stagger: 20."
       },
       {
-        "id": "talent-keen-mind",
-        "label": "Talent: Keen Mind (Elite 4)",
-        "kind": "core",
-        "does": [],
-        "gameText": "Operator Intellect +20."
-      },
-      {
         "id": "talent-obliteration-protocol",
         "label": "Talent: Obliteration Protocol (Elite 2)",
         "kind": "core",
@@ -264,6 +257,13 @@
         "kind": "core",
         "does": [],
         "gameText": "Combo skill Instant Protocol: Chain improved: When hitting a Vulnerable enemy, the hit chains 1 more time."
+      },
+      {
+        "id": "talent-keen-mind",
+        "label": "Talent: Keen Mind (Elite 4)",
+        "kind": "core",
+        "does": [],
+        "gameText": "Operator Intellect +20."
       },
       {
         "id": "potential-1",
@@ -351,13 +351,6 @@
         "gameText": "SKILL DESCRIPTION: A 7-sequence slash attack that deals Physical DMG with each sequence to the target enemy. The final slash sequence deals even more DMG.\nAt level 12: Ultimate Energy Cost: 70; Slash Multiplier: 81%; First Strike Stagger: 15; Final Strike DMG Multiplier: 1023%; Final Strike Stagger: 20."
       },
       {
-        "id": "talent-skirmisher",
-        "label": "Talent: Skirmisher (Elite 4)",
-        "kind": "core",
-        "does": [],
-        "gameText": "Operator Agility +20."
-      },
-      {
         "id": "talent-slashing-edge",
         "label": "Talent: Slashing Edge (Elite 2)",
         "kind": "core",
@@ -370,6 +363,13 @@
         "kind": "core",
         "does": [],
         "gameText": "Interrupting the enemy's charge up deals another 10 Stagger."
+      },
+      {
+        "id": "talent-skirmisher",
+        "label": "Talent: Skirmisher (Elite 4)",
+        "kind": "core",
+        "does": [],
+        "gameText": "Operator Agility +20."
       },
       {
         "id": "potential-1",
@@ -457,13 +457,6 @@
         "gameText": "SKILL DESCRIPTION: Fire a rapid barrage of shots and unleashes the Wolven Fury to attack nearby enemies, dealing 5 hits of Heat DMG and forcibly applying Combustion.\nAt level 12: Ultimate Energy Cost: 90; DMG Multiplier per SEQ: 72%; Stagger: 15."
       },
       {
-        "id": "talent-forged",
-        "label": "Talent: Forged (Elite 4)",
-        "kind": "core",
-        "does": [],
-        "gameText": "Operator Strength +20."
-      },
-      {
         "id": "talent-scorching-fangs",
         "label": "Talent: Scorching Fangs (Elite 2)",
         "kind": "core",
@@ -476,6 +469,13 @@
         "kind": "core",
         "does": [],
         "gameText": "Whenever the battle skill Thermite Tracers successfully consumes an Arts Reaction, return 10 SP."
+      },
+      {
+        "id": "talent-forged",
+        "label": "Talent: Forged (Elite 4)",
+        "kind": "core",
+        "does": [],
+        "gameText": "Operator Strength +20."
       },
       {
         "id": "potential-1",
@@ -563,13 +563,6 @@
         "gameText": "SKILL DESCRIPTION: Performs a short forward dash while wreathed in arcs of electricity to deal Electric DMG and apply Electric Infliction to all enemies in the path. The lingering arcs explode after a short while, dealing another hit of Electric DMG. If the enemy has active Electric Infliction, consume the Electric Infliction and forcibly apply Electrification.\nAt level 12: Ultimate Energy Cost: 90; SEQ 1 DMG Multiplier: 350%; SEQ 1 Stagger: 10; SEQ 2 DMG Multiplier: 550%; SEQ 2 Stagger: 10."
       },
       {
-        "id": "talent-skirmisher",
-        "label": "Talent: Skirmisher (Elite 4)",
-        "kind": "core",
-        "does": [],
-        "gameText": "Operator Agility +20."
-      },
-      {
         "id": "talent-wildland-trekker",
         "label": "Talent: Wildland Trekker (Elite 2)",
         "kind": "core",
@@ -582,6 +575,13 @@
         "kind": "core",
         "does": [],
         "gameText": "50% chance to ignore an Arts Infliction applied on her."
+      },
+      {
+        "id": "talent-skirmisher",
+        "label": "Talent: Skirmisher (Elite 4)",
+        "kind": "core",
+        "does": [],
+        "gameText": "Operator Agility +20."
       },
       {
         "id": "potential-1",
@@ -669,13 +669,6 @@
         "gameText": "SKILL DESCRIPTION: Slams the ground to deal Heat DMG to nearby enemies, while granting every teammate a Shield based on Ember's Max HP.\nAt level 12: Ultimate Energy Cost: 100; DMG Multiplier: 650%; Stagger: 25; Shield Conversion Ratio (HP): 25%; Shield Duration (s): 10."
       },
       {
-        "id": "talent-forged",
-        "label": "Talent: Forged (Elite 4)",
-        "kind": "core",
-        "does": [],
-        "gameText": "Operator Strength +20."
-      },
-      {
         "id": "talent-inflamed-for-the-assault",
         "label": "Talent: Inflamed for the Assault (Elite 2)",
         "kind": "core",
@@ -688,6 +681,13 @@
         "kind": "core",
         "does": [],
         "gameText": "When Ember receives DMG from the enemy, she gains ATK +9% for 7s. This effect can reach 3 stacks."
+      },
+      {
+        "id": "talent-forged",
+        "label": "Talent: Forged (Elite 4)",
+        "kind": "core",
+        "does": [],
+        "gameText": "Operator Strength +20."
       },
       {
         "id": "potential-1",
@@ -775,13 +775,6 @@
         "gameText": "SKILL DESCRIPTION: Applies temporary Cryo Amp and Nature Amp to the entire team. The attribute of Intellect (INT) increases the Amp effect.\nAt level 12: Ultimate Energy Cost: 80; Base Cryo Amp: 24%; Base Nature Amp: 24%; Amp Increase per Intellect: 0.03%; MAX Amp from INT: 36%; Duration (s): 12."
       },
       {
-        "id": "talent-stalwart",
-        "label": "Talent: Stalwart (Elite 4)",
-        "kind": "core",
-        "does": [],
-        "gameText": "Operator Will +20."
-      },
-      {
         "id": "talent-execute-process",
         "label": "Talent: Execute Process (Elite 2)",
         "kind": "core",
@@ -794,6 +787,13 @@
         "kind": "core",
         "does": [],
         "gameText": "Ultimate Stack Overflow improved: The ultimate also dispels Cryo Infliction and Solidification from the entire team."
+      },
+      {
+        "id": "talent-stalwart",
+        "label": "Talent: Stalwart (Elite 4)",
+        "kind": "core",
+        "does": [],
+        "gameText": "Operator Will +20."
       },
       {
         "id": "potential-1",
@@ -881,13 +881,6 @@
         "gameText": "SKILL DESCRIPTION: Throws a Thunderlance EX at the target area that deals massive Electric DMG to enemies nearby.\nAt level 12: Ultimate Energy Cost: 100; DMG Multiplier: 950%; Stagger: 20; Thunderlance EX Duration (s): 30."
       },
       {
-        "id": "talent-stalwart",
-        "label": "Talent: Stalwart (Elite 4)",
-        "kind": "core",
-        "does": [],
-        "gameText": "Operator Will +20."
-      },
-      {
         "id": "talent-expedited-delivery",
         "label": "Talent: Expedited Delivery (Elite 2)",
         "kind": "core",
@@ -900,6 +893,13 @@
         "kind": "core",
         "does": [],
         "gameText": "Ultimate Thunderlance: Final Shock improved: Also applies 10% Electric Susceptibility for 10s to enemies it hits."
+      },
+      {
+        "id": "talent-stalwart",
+        "label": "Talent: Stalwart (Elite 4)",
+        "kind": "core",
+        "does": [],
+        "gameText": "Operator Will +20."
       },
       {
         "id": "potential-1",
@@ -987,13 +987,6 @@
         "gameText": "SKILL DESCRIPTION: Creates an Anomalous Gravity Field that instantly deals 1 hit of Nature DMG and applies Nature Infliction to enemies caught in the field. Targets in the Anomalous Gravity Field also suffer from Slow and Arts Susceptibility. The effect of Arts Susceptibility is further increased based on the number of active Vulnerability stacks on the target.\nIf a target in the field is Lifted, the Lifted status will persist until the field wears off.\nAt level 12: Ultimate Energy Cost: 90; DMG Multiplier: 750%; Stagger: 20; Field Duration (s): 5; Slow: 80%; Base Arts Susceptibility: 30%; Arts Susceptibility Boost per Vulnerability: 3%."
       },
       {
-        "id": "talent-stalwart",
-        "label": "Talent: Stalwart (Elite 4)",
-        "kind": "core",
-        "does": [],
-        "gameText": "Operator Will +20."
-      },
-      {
         "id": "talent-messenger-s-song",
         "label": "Talent: Messenger's Song (Elite 2)",
         "kind": "core",
@@ -1006,6 +999,13 @@
         "kind": "core",
         "does": [],
         "gameText": "Battle skill Arcane Staff: Gravity Mode and combo skill Arcane Staff: Matrix Displacement improved: Hitting at least 2 enemies with either the combo skill or the last sequence of the battle skill restores [108 + Intellect×0.90] HP to the controlled operator.\nIf the controlled operator is already at max HP, then restore the HP of the teammate with lowest percentage HP."
+      },
+      {
+        "id": "talent-stalwart",
+        "label": "Talent: Stalwart (Elite 4)",
+        "kind": "core",
+        "does": [],
+        "gameText": "Operator Will +20."
       },
       {
         "id": "potential-1",
@@ -1093,13 +1093,6 @@
         "gameText": "SKILL DESCRIPTION: Leaps into mid-air with a jetpack before slamming down with her shield to deal massive Cryo DMG to enemies in the area of effect. Also generates a Snow Zone (lasting several seconds) that deals Cryo DMG over time to enemies. The Snow Zone forcibly applies Solidification to enemies caught within it for a certain duration.\nAt level 12: Ultimate Energy Cost: 80; Explosion DMG Multiplier: 450%; Stagger: 20; DMG Over Time Multiplier: 65%; DMG Over Time Interval (s): 0.5; Duration (s): 5."
       },
       {
-        "id": "talent-forged",
-        "label": "Talent: Forged (Elite 4)",
-        "kind": "core",
-        "does": [],
-        "gameText": "Operator Strength +20."
-      },
-      {
         "id": "talent-polar-survival",
         "label": "Talent: Polar Survival (Elite 2)",
         "kind": "core",
@@ -1112,6 +1105,13 @@
         "kind": "core",
         "does": [],
         "gameText": "Battle skill Saturated Defense improved: After successfully retaliating an enemy attack, Snowshine gains another 10 Ultimate Energy."
+      },
+      {
+        "id": "talent-forged",
+        "label": "Talent: Forged (Elite 4)",
+        "kind": "core",
+        "does": [],
+        "gameText": "Operator Strength +20."
       },
       {
         "id": "potential-1",
@@ -1199,13 +1199,6 @@
         "gameText": "SKILL DESCRIPTION: Unleashes an aspect that performs an Immovable Vajra Slam. The Slam deals Physical DMG and applies Knock Down to all enemies in a large area of effect (AOE), and pulls enemies towards the center of the AOE. After a while, the Slam unleashes one more hit that deals massive Physical DMG and applies another Knock Down to enemies still within its AOE.\nIf the skill consumes a Link, then it deals an additional hit of massive Physical DMG.\nAt level 12: Ultimate Energy Cost: 90; SEQ 1 DMG Multiplier: 400%; SEQ 1 Stagger: 5; SEQ 2 DMG Multiplier: 400%; SEQ 2 Stagger: 5; Additional ATK DMG Multiplier: 600%; Additional ATK Stagger: 5."
       },
       {
-        "id": "talent-skirmisher",
-        "label": "Talent: Skirmisher (Elite 4)",
-        "kind": "core",
-        "does": [],
-        "gameText": "Operator Agility +20."
-      },
-      {
         "id": "talent-illumination",
         "label": "Talent: Illumination (Elite 2)",
         "kind": "core",
@@ -1218,6 +1211,13 @@
         "kind": "core",
         "does": [],
         "gameText": "Applying Knock Down also deals 100% ATK of Physical DMG."
+      },
+      {
+        "id": "talent-skirmisher",
+        "label": "Talent: Skirmisher (Elite 4)",
+        "kind": "core",
+        "does": [],
+        "gameText": "Operator Agility +20."
       },
       {
         "id": "potential-1",
@@ -1305,13 +1305,6 @@
         "gameText": "SKILL DESCRIPTION: Laevatain summons her Sviga Lævi and becomes the controlled operator.\nFor a certain duration, her basic attacks (BATK) are enhanced and the Sviga Lævi strikes together with Laevatain, with each attack dealing Heat DMG. BATK sequence 3 also applies Heat Infliction.\nCasting the battle skill, Smouldering Fire, or the combo skill, Seethe, does not shorten the duration of the ultimate, Twilight.\nAt level 12: Ultimate Energy Cost: 300; Duration (s): 15; Enhanced BATK SEQ 1 Multiplier: 146%; Enhanced BATK SEQ 2 Multiplier: 182%; Enhanced BATK SEQ 3 Multiplier: 260%; Enhanced BATK SEQ 4 Multiplier: 456%."
       },
       {
-        "id": "talent-keen-mind",
-        "label": "Talent: Keen Mind (Elite 4)",
-        "kind": "core",
-        "does": [],
-        "gameText": "Operator Intellect +20."
-      },
-      {
         "id": "talent-scorching-heart",
         "label": "Talent: Scorching Heart (Elite 3)",
         "kind": "core",
@@ -1324,6 +1317,13 @@
         "kind": "core",
         "does": [],
         "gameText": "When HP drops below 40%, gain 90% Protection and restore 5% Max HP per second for 8s. This effect can only trigger once every 120s."
+      },
+      {
+        "id": "talent-keen-mind",
+        "label": "Talent: Keen Mind (Elite 4)",
+        "kind": "core",
+        "does": [],
+        "gameText": "Operator Intellect +20."
       },
       {
         "id": "potential-1",
@@ -1411,13 +1411,6 @@
         "gameText": "SKILL DESCRIPTION: Immediately deploys the support bot Tink-a-Bella and makes Yvonne the controlled operator.\nTemporarily enhances Yvonne's basic attack (BATK). Each enhanced BATK sequence performed grants a stack of Critical Rate buff. After reaching max stacks, Yvonne also gains a Critical DMG buff. When the skill is about to end, Yvonne's last enhanced BATK becomes an enhanced Final Strike that deals massive Cryo DMG.\nIf the enemy is Solidified, Yvonne performs an additional attack that deals Cryo DMG and then consumes the enemy's Solidification.\nAt level 12: Ultimate Energy Cost: 220; Duration (s): 7; BATK DMG Multiplier: 20%; Enhanced Final Strike DMG Multiplier: 300%; Additional ATK DMG Multiplier: 600%; Enhanced Final Strike Stagger: 20; Max Stacks: 10; Critical Rate Boost per Stack: 3%; Critical DMG Boost at Max Stacks: 60%."
       },
       {
-        "id": "talent-keen-mind",
-        "label": "Talent: Keen Mind (Elite 4)",
-        "kind": "core",
-        "does": [],
-        "gameText": "Operator Intellect +20."
-      },
-      {
         "id": "talent-barrage-of-technology",
         "label": "Talent: Barrage of Technology (Elite 2)",
         "kind": "core",
@@ -1430,6 +1423,13 @@
         "kind": "core",
         "does": [],
         "gameText": "Against enemies with active Cryo Infliction, gains Critical DMG Dealt +20%. Effect is doubled against enemies with Solidification."
+      },
+      {
+        "id": "talent-keen-mind",
+        "label": "Talent: Keen Mind (Elite 4)",
+        "kind": "core",
+        "does": [],
+        "gameText": "Operator Intellect +20."
       },
       {
         "id": "potential-1",
@@ -1517,13 +1517,6 @@
         "gameText": "SKILL DESCRIPTION: Da Pan slams the chopping board to forcibly Lift all enemies in the area of effect in front of him. This is followed by a 6-sequence flurry of slashes that deals Physical DMG. The final step is to bash every enemy to the ground to forcibly Knock Down and deal massive Physical DMG to them.\nAt level 12: Ultimate Energy Cost: 90; Aerial Flurry DMG Multiplier: 50%; Ultimate DMG Multiplier: 400%."
       },
       {
-        "id": "talent-forged",
-        "label": "Talent: Forged (Elite 4)",
-        "kind": "core",
-        "does": [],
-        "gameText": "Operator Strength +20."
-      },
-      {
         "id": "talent-reduce-and-thicken",
         "label": "Talent: Reduce and Thicken (Elite 2)",
         "kind": "core",
@@ -1536,6 +1529,13 @@
         "kind": "core",
         "does": [],
         "gameText": "Ultimate CHOP 'N DUNK! improved: For every enemy hit by the final sequence of the ultimate, gains 1 stack of Prep Ingredients for 20s (max stacks: 2). When Prep Ingredients is active, hitting an enemy with combo skills immediately shortens cooldown by 40% and consumes 1 stack of Prep Ingredients."
+      },
+      {
+        "id": "talent-forged",
+        "label": "Talent: Forged (Elite 4)",
+        "kind": "core",
+        "does": [],
+        "gameText": "Operator Strength +20."
       },
       {
         "id": "potential-1",
@@ -1623,13 +1623,6 @@
         "gameText": "SKILL DESCRIPTION: Enters a channeling state and fires 3 Rallying Flares. Each firing recovers some SP.\nAt level 12: Ultimate Energy Cost: 120; SP Recovery: 80."
       },
       {
-        "id": "talent-skirmisher",
-        "label": "Talent: Skirmisher (Elite 4)",
-        "kind": "core",
-        "does": [],
-        "gameText": "Operator Agility +20."
-      },
-      {
         "id": "talent-cheer-of-victory",
         "label": "Talent: Cheer of Victory (Elite 2)",
         "kind": "core",
@@ -1642,6 +1635,13 @@
         "kind": "core",
         "does": [],
         "gameText": "Ultimate SQUAD! ON ME! improved: When ultimate is active, grants a Link buff."
+      },
+      {
+        "id": "talent-skirmisher",
+        "label": "Talent: Skirmisher (Elite 4)",
+        "kind": "core",
+        "does": [],
+        "gameText": "Operator Agility +20."
       },
       {
         "id": "potential-1",
@@ -1729,13 +1729,6 @@
         "gameText": "SKILL DESCRIPTION: Swings the greatsword to perform 2 consecutive slashes to deal Physical DMG and apply Weakness, followed by a powerful downward slam that deals massive Physical DMG and applies Knock Down to all enemies within the area of effect.\nAt level 12: Ultimate Energy Cost: 80; SEQ 1 DMG Multiplier: 200%; SEQ 1 Stagger: 5; SEQ 2 DMG Multiplier: 270%; SEQ 2 Stagger: 5; SEQ 3 DMG Multiplier: 400%; SEQ 3 Stagger: 10; Weakness Effect: 30%; Weakness Duration (s): 8."
       },
       {
-        "id": "talent-forged",
-        "label": "Talent: Forged (Elite 4)",
-        "kind": "core",
-        "does": [],
-        "gameText": "Operator Strength +20."
-      },
-      {
         "id": "talent-resilient-defense",
         "label": "Talent: Resilient Defense (Elite 2)",
         "kind": "core",
@@ -1748,6 +1741,13 @@
         "kind": "core",
         "does": [],
         "gameText": "Ultimate Textbook Assault improved: Final hit creates 3 shockwave(s), each dealing 45% ATK of Physical DMG."
+      },
+      {
+        "id": "talent-forged",
+        "label": "Talent: Forged (Elite 4)",
+        "kind": "core",
+        "does": [],
+        "gameText": "Operator Strength +20."
       },
       {
         "id": "potential-1",
@@ -1835,13 +1835,6 @@
         "gameText": "SKILL DESCRIPTION: Estella expends all her strength to unleash a powerful slam of the spear shaft, dealing Physical DMG to all enemies in a circular area around self. To enemies with Physical Susceptibility, the skill forcibly applies Lift to them.\nAt level 12: Ultimate Energy Cost: 70; DMG Multiplier: 1100%; Stagger: 20."
       },
       {
-        "id": "talent-stalwart",
-        "label": "Talent: Stalwart (Elite 4)",
-        "kind": "core",
-        "does": [],
-        "gameText": "Operator Will +20."
-      },
-      {
         "id": "talent-commiseration",
         "label": "Talent: Commiseration (Elite 2)",
         "kind": "core",
@@ -1854,6 +1847,13 @@
         "kind": "core",
         "does": [],
         "gameText": "Ignores Cryo Infliction and takes -20% Cryo DMG."
+      },
+      {
+        "id": "talent-stalwart",
+        "label": "Talent: Stalwart (Elite 4)",
+        "kind": "core",
+        "does": [],
+        "gameText": "Operator Will +20."
       },
       {
         "id": "potential-1",
@@ -1941,13 +1941,6 @@
         "gameText": "SKILL DESCRIPTION: Fluorite quickly moves in an arc and rapidly fires at the target within the arc to deal 4 sequences of Nature DMG. If an Improvised Explosive has been stuck to the target, the skill detonates it immediately and increases the DMG and size of the explosion.\nIf the final DMG sequence hits a target with at least 2 stacks of Cryo Infliction or Nature Infliction, then apply the same Arts Infliction again.\nAt level 12: Ultimate Energy Cost: 100; SEQ 1 DMG Multiplier: 250%; SEQ 2 DMG Multiplier: 250%; SEQ 3 DMG Multiplier: 250%; SEQ 4 DMG Multiplier: 250%; Battle Skill AOE Boost: 30%; Battle Skill DMG Boost: 30%; Stagger: 20."
       },
       {
-        "id": "talent-skirmisher",
-        "label": "Talent: Skirmisher (Elite 4)",
-        "kind": "core",
-        "does": [],
-        "gameText": "Operator Agility +20."
-      },
-      {
         "id": "talent-love-the-stab-and-twist",
         "label": "Talent: Love the Stab and Twist (Elite 2)",
         "kind": "core",
@@ -1960,6 +1953,13 @@
         "kind": "core",
         "does": [],
         "gameText": "Grants 20% chance of Arts DMG immunity and grants Fluorite ATK +20% for 10s. This effect cannot stack."
+      },
+      {
+        "id": "talent-skirmisher",
+        "label": "Talent: Skirmisher (Elite 4)",
+        "kind": "core",
+        "does": [],
+        "gameText": "Operator Agility +20."
       },
       {
         "id": "potential-1",
@@ -2047,13 +2047,6 @@
         "gameText": "SKILL DESCRIPTION: Applies temporary Electric Amp and Heat Amp to the entire team.\nAt level 12: Ultimate Energy Cost: 100; Electric Amp: 20%; Heat Amp: 20%; Duration (s): 12."
       },
       {
-        "id": "talent-keen-mind",
-        "label": "Talent: Keen Mind (Elite 4)",
-        "kind": "core",
-        "does": [],
-        "gameText": "Operator Intellect +20."
-      },
-      {
         "id": "talent-improviser",
         "label": "Talent: Improviser (Elite 2)",
         "kind": "core",
@@ -2066,6 +2059,13 @@
         "kind": "core",
         "does": [],
         "gameText": "Gains 30% chance of Physical DMG immunity and restores HP of self by [45 + Strength×0.38]."
+      },
+      {
+        "id": "talent-keen-mind",
+        "label": "Talent: Keen Mind (Elite 4)",
+        "kind": "core",
+        "does": [],
+        "gameText": "Operator Intellect +20."
       },
       {
         "id": "potential-1",
@@ -2153,13 +2153,6 @@
         "gameText": "SKILL DESCRIPTION: Alesh hooks a fin of unbelievable size and slams it to deal Cryo DMG and apply Cryo Infliction to enemies in a large area of effect in front of him. He recovers some SP on hit, with additional SP gained for each target defeated.\nAt level 12: Ultimate Energy Cost: 100; Ultimate DMG Multiplier: 980%; Base SP Recovery: 25; Additional SP Recovery per Target Defeated: 15; MAX SP Recovery: 100; Stagger: 20."
       },
       {
-        "id": "talent-forged",
-        "label": "Talent: Forged (Elite 4)",
-        "kind": "core",
-        "does": [],
-        "gameText": "Operator Strength +20."
-      },
-      {
         "id": "talent-flash-frozen-for-freshness",
         "label": "Talent: Flash-frozen for Freshness (Elite 2)",
         "kind": "core",
@@ -2172,6 +2165,13 @@
         "kind": "core",
         "does": [],
         "gameText": "Combo skill Auger Angling improved: Every 10 Intellect grants Rare Fin catching chance +0.5% (max: +30%)."
+      },
+      {
+        "id": "talent-forged",
+        "label": "Talent: Forged (Elite 4)",
+        "kind": "core",
+        "does": [],
+        "gameText": "Operator Strength +20."
       },
       {
         "id": "potential-1",
@@ -2259,13 +2259,6 @@
         "gameText": "SKILL DESCRIPTION: Ardelia enters a mobile channeling state and summons the aid of Mr. Dolly. Multiple copies of Mr. Dolly are thrown in random directions. Each copy deals Nature DMG when hitting the enemy. Each enemy can only take 1 damaging hit every 0.3s.\nAt level 12: Ultimate Energy Cost: 90; DMG Multiplier: 165%; Stagger: 3; Duration (s): 3."
       },
       {
-        "id": "talent-keen-mind",
-        "label": "Talent: Keen Mind (Elite 4)",
-        "kind": "core",
-        "does": [],
-        "gameText": "Operator Intellect +20."
-      },
-      {
         "id": "talent-friendly-presence",
         "label": "Talent: Friendly Presence (Elite 2)",
         "kind": "core",
@@ -2278,6 +2271,13 @@
         "kind": "core",
         "does": [],
         "gameText": "Battle skill Dolly Rush improved: Triggering the additional effect while an enemy with Corrosion is nearby immediately casts the battle skill again.\nThis effect can only trigger once per active battle skill casting."
+      },
+      {
+        "id": "talent-keen-mind",
+        "label": "Talent: Keen Mind (Elite 4)",
+        "kind": "core",
+        "does": [],
+        "gameText": "Operator Intellect +20."
       },
       {
         "id": "potential-1",
@@ -2365,13 +2365,6 @@
         "gameText": "SKILL DESCRIPTION: Last Rite encases herself in frost armor, creates an ice scythe to perform 3 slashes, and gains immunity to all damages while this state is active.\nEach slash deals massive Cryo DMG.\nLast Rite can only gain Ultimate Energy from her own battle skills and combo skills.\nAt level 12: Ultimate Energy Cost: 240; SEQ 1 DMG Multiplier: 400%; SEQ 1 Stagger: 5; SEQ 2 DMG Multiplier: 400%; SEQ 2 Stagger: 5; SEQ 3 DMG Multiplier: 800%; SEQ 3 Stagger: 10."
       },
       {
-        "id": "talent-forged",
-        "label": "Talent: Forged (Elite 4)",
-        "kind": "core",
-        "does": [],
-        "gameText": "Operator Strength +20."
-      },
-      {
         "id": "talent-hypothermia",
         "label": "Talent: Hypothermia (Elite 2)",
         "kind": "core",
@@ -2384,6 +2377,13 @@
         "kind": "core",
         "does": [],
         "gameText": "Ultimate Vigil Services improved: When the ultimate deals DMG to an enemy with Cryo Susceptibility, the effect of that Cryo Susceptibility is 1.5 times the original."
+      },
+      {
+        "id": "talent-forged",
+        "label": "Talent: Forged (Elite 4)",
+        "kind": "core",
+        "does": [],
+        "gameText": "Operator Strength +20."
       },
       {
         "id": "potential-1",
@@ -2471,13 +2471,6 @@
         "gameText": "SKILL DESCRIPTION: Tangtang opens her eyepatch and unleashes an OLDEN STARE from her eye that applies temporary Immobilization and deals Cryo DMG over time to enemies within its area of effect (AOE).\nWhen the OLDEN STARE stops evolving, a rogue wave comes crashing down to deal massive Cryo DMG to enemies in its AOE.\nIf the controlled operator performs a dive attack in the OLDEN STARE pattern, its evolution ends and the rogue wave is summoned immediately to deal even more Cryo DMG.\nAt level 12: Ultimate Energy Cost: 90; DMG Over Time Total Multiplier: 320%; OLDEN STARE Duration (s): 4; Rogue Wave DMG Multiplier: 400%; Early Rogue Wave DMG Multiplier: 700%; Rogue Wave Stagger: 15; Early Rogue Wave Stagger: 20."
       },
       {
-        "id": "talent-skirmisher",
-        "label": "Talent: Skirmisher (Elite 4)",
-        "kind": "core",
-        "does": [],
-        "gameText": "Operator Agility +20."
-      },
-      {
         "id": "talent-fam-of-honor",
         "label": "Talent: Fam of Honor (Elite 2)",
         "kind": "core",
@@ -2490,6 +2483,13 @@
         "kind": "core",
         "does": [],
         "gameText": "During OLDEN STARE, performing a dive attack with the controlled operator ends its evolution early and creates a Waterspout. All nearby Whirlpools are also consumed and converted into additional Waterspouts.\nWaterspouts created this way have the same effects as those created by the battle skill IMA WAVERIDAAH! and gain DMG Dealt +60%."
+      },
+      {
+        "id": "talent-skirmisher",
+        "label": "Talent: Skirmisher (Elite 4)",
+        "kind": "core",
+        "does": [],
+        "gameText": "Operator Agility +20."
       },
       {
         "id": "potential-1",
@@ -2577,13 +2577,6 @@
         "gameText": "SKILL DESCRIPTION: Rossi flutters her cape and unleashes a flurry of stabs that quickly deals multiple sequences of Heat DMG to the target. She then performs a two-sequence slash attack with her dagger that deals massive Heat DMG and applies Heat Infliction.\nWhen this skill successfully scores a critical hit, it deals higher Critical DMG.\nAt level 12: Ultimate Energy Cost: 110; Stab Attack Total DMG Multiplier: 600%; SEQ 1 Slash DMG Multiplier: 250%; SEQ 2 Slash DMG Multiplier: 750%; Stagger: 25; Critical DMG Boost: 60%."
       },
       {
-        "id": "talent-skirmisher",
-        "label": "Talent: Skirmisher (Elite 4)",
-        "kind": "core",
-        "does": [],
-        "gameText": "Operator Agility +20."
-      },
-      {
         "id": "talent-nicks-and-scratches",
         "label": "Talent: Nicks and Scratches (Elite 2)",
         "kind": "core",
@@ -2596,6 +2589,13 @@
         "kind": "core",
         "does": [],
         "gameText": "When Rossi's skill deals Critical DMG to a Razor Clawmarked enemy, trigger another hit that deals 24% ATK (Rossi's) of Heat DMG and restores [Intellect × 0.08] HP to Rossi. If the target is also Combusted, then the aforementioned DMG and HP Restoration effects are increased to 1.5 times."
+      },
+      {
+        "id": "talent-skirmisher",
+        "label": "Talent: Skirmisher (Elite 4)",
+        "kind": "core",
+        "does": [],
+        "gameText": "Operator Agility +20."
       },
       {
         "id": "potential-1",
@@ -2683,13 +2683,6 @@
         "gameText": "SKILL DESCRIPTION: Summons 4 Shieldguards to advance and push all enemies along the way towards the target, dealing Physical DMG while generating 5 points of Steel Oath. After an enemy suffers a Physical Status or takes DMG from Pogranichnik's combo skill, Pogranichnik consumes 1 point of Steel Oath and summons 1 Shieldguard to harass the said enemy, dealing Physical DMG and recovering some SP. When the last Steel Oath point is consumed, all 4 Shieldguards will initiate a Decisive Assault that deals massive Physical DMG to the target while recovering plenty of SP.\nAt level 12: Ultimate Energy Cost: 90; Steel Oath Duration: 30; Advance DMG Multiplier: 300%; Advance Stagger: 10; Harass DMG Multiplier: 100%; Harass SP Recovery: 10; Decisive Assault DMG Multiplier: 450%; Decisive Assault Stagger: 15; Decisive Assault SP Recovery: 40."
       },
       {
-        "id": "talent-stalwart",
-        "label": "Talent: Stalwart (Elite 4)",
-        "kind": "core",
-        "does": [],
-        "gameText": "Operator Will +20."
-      },
-      {
         "id": "talent-the-living-banner",
         "label": "Talent: The Living Banner (Elite 2)",
         "kind": "core",
@@ -2702,6 +2695,13 @@
         "kind": "core",
         "does": [],
         "gameText": "Ultimate Shieldguard Banner, Forward improved: Any operator triggering the ultimate's subsequent effects also gains Fervent Morale for 10s.\nRequires activation of talent: The Living Banner."
+      },
+      {
+        "id": "talent-stalwart",
+        "label": "Talent: Stalwart (Elite 4)",
+        "kind": "core",
+        "does": [],
+        "gameText": "Operator Will +20."
       },
       {
         "id": "potential-1",
@@ -2789,13 +2789,6 @@
         "gameText": "SKILL DESCRIPTION: Transforms into the Empyrean of Truth that grants these enhancements:\nZhuang Fangyi's basic attacks are enhanced and her actions are harder to interrupt;\nBattle skill Mantra of Sundering gains a higher DMG multiplier and an increased effect range, and the final Thunder Strike also applies Electric Infliction to the target hit.\nCombo skill Breath of Transformation gains a higher DMG multiplier, cooldown becomes 4 times faster, and effects are applied to enemies within a small area.\nThe first casting of the battle skill Mantra of Sundering does not consume SP nor Electrification, and if a target is available, the battle skill is guaranteed to create 3 Sunderblades even if the target has no Electrification.\nAt level 12: Ultimate Energy Cost: 240; Duration (s): 25; During Ultimate: BATK SEQ 1 Multiplier: 150%; During Ultimate: BATK SEQ 2 Multiplier: 210%; During Ultimate: BATK SEQ 3 Multiplier: 300%."
       },
       {
-        "id": "talent-stalwart",
-        "label": "Talent: Stalwart (Elite 4)",
-        "kind": "core",
-        "does": [],
-        "gameText": "Operator Will +20."
-      },
-      {
         "id": "talent-force-of-nature",
         "label": "Talent: Force of Nature (Elite 2)",
         "kind": "core",
@@ -2808,6 +2801,13 @@
         "kind": "core",
         "does": [],
         "gameText": "Gains a 9% chance of immunity against DMG taken, with each Sunderblade nearby increasing this chance by +1%.\nAfter DMG Immunity is triggered, Zhuang Fangyi is also restored for 18% Max HP. The HP restoration effect can only trigger once every 99s."
+      },
+      {
+        "id": "talent-stalwart",
+        "label": "Talent: Stalwart (Elite 4)",
+        "kind": "core",
+        "does": [],
+        "gameText": "Operator Will +20."
       },
       {
         "id": "potential-1",
@@ -2895,13 +2895,6 @@
         "gameText": "SKILL DESCRIPTION: After a short power up, Mi Fu dashes forward to forcibly Lift a target into mid-air, then slams the said target to deal Physical DMG. After casting this skill, the next battle skill is temporarily replaced with Trail and Mangle.\nAt level 12: Ultimate Energy Cost: 80; DMG Multiplier: 700%; Stagger: 20."
       },
       {
-        "id": "talent-forged",
-        "label": "Talent: Forged (Elite 4)",
-        "kind": "core",
-        "does": [],
-        "gameText": "Operator Strength +20."
-      },
-      {
         "id": "talent-stern-crackdown",
         "label": "Talent: Stern Crackdown (Elite 2)",
         "kind": "core",
@@ -2914,6 +2907,13 @@
         "kind": "core",
         "does": [],
         "gameText": "Combo skill improved: Casting the combo creates a shield with 30% Max HP and a duration of 10s. While the shield is active, Mi Fu becomes harder to interrupt.\nThis effect can only trigger once every 60s."
+      },
+      {
+        "id": "talent-forged",
+        "label": "Talent: Forged (Elite 4)",
+        "kind": "core",
+        "does": [],
+        "gameText": "Operator Strength +20."
       },
       {
         "id": "potential-1",
@@ -3029,13 +3029,6 @@
         "gameText": "SKILL DESCRIPTION: Arcane creates a Gloompurger Array that immediately deals Nature DMG to enemies within the area of effect (AOE).\nWhen hitting an enemy within the Gloompurger Array with a Finisher or a Final Strike performed by the controlled operator, the Gloompurger Array unleashes a Cluster Strike that deals Area DMG to the said enemy. This effect triggers up to 2 times.\nAfter triggering Cluster Strike 2 times, the ultimate is switched to Gloompurge Arcana.\nGloompurge Arcana: Deals Nature DMG to enemies within a large AOE.\nWill (N) ＞ Intellect (N), Array Arcana: WILL is ACTIVE.\nArray Arcana: WILL:\n- When created, the Gloompurger Array also targets enemies with Arts Infliction within its AOE, and applies another Arts Infliction stack of the same element to them.\nAt level 12: Ultimate Energy Cost: 100; Gloompurger Array Creation DMG Multiplier: 180%; Gloompurger Array Creation Stagger: 10; Gloompurger Array Duration (s): 20; Cluster Strike Total DMG Multiplier: 360%; Gloompurge Arcana DMG Multiplier: 360%; Gloompurge Arcana Stagger: 10."
       },
       {
-        "id": "talent-keen-mind-stalwart",
-        "label": "Talent: Keen Mind/Stalwart (Elite 4)",
-        "kind": "core",
-        "does": [],
-        "gameText": "Operator Intellect and Will +15."
-      },
-      {
         "id": "talent-tactical-planning",
         "label": "Talent: Tactical Planning (Elite 2)",
         "kind": "core",
@@ -3048,6 +3041,13 @@
         "kind": "core",
         "does": [],
         "gameText": "Corrosion applied by Arcane lasts 10s longer, and Max Resistance Reduction is increased to 1.1 times the original."
+      },
+      {
+        "id": "talent-keen-mind-stalwart",
+        "label": "Talent: Keen Mind/Stalwart (Elite 4)",
+        "kind": "core",
+        "does": [],
+        "gameText": "Operator Intellect and Will +15."
       },
       {
         "id": "potential-1",
@@ -3135,13 +3135,6 @@
         "gameText": "SKILL DESCRIPTION: Camille flies to the sky, rains down a barrage of spears, and follows through with a sweep attack. This deals Heat DMG and applies Heat Infliction to target(s) hit while recovering some SP.\nAfter casting the ultimate, Camille's battle skill is temporarily transformed into Hunter Pursuit.\nHunter Pursuit: Treated as a combo skill and costs no SP. It is a dash attack that deals Heat DMG and recovers some SP.\nAt level 12: Ultimate Energy Cost: 130; DMG Multiplier: 600%; Stagger: 15; SP Recovery: 40; Hunter Pursuit State Duration (s): 15."
       },
       {
-        "id": "talent-skirmisher",
-        "label": "Talent: Skirmisher (Elite 4)",
-        "kind": "core",
-        "does": [],
-        "gameText": "Operator Agility +20."
-      },
-      {
         "id": "talent-hunter-of-transgression",
         "label": "Talent: Hunter of Transgression (Elite 2)",
         "kind": "core",
@@ -3154,6 +3147,13 @@
         "kind": "core",
         "does": [],
         "gameText": "Whenever Camille restores HP via a skill, he gains Heat DMG Dealt +4% (max stacks: 5) for 40s while other operators in the team gain 25% of this effect. This effect can reach 5 stacks.\nIf Camille is already at Max HP, each trigger gives 2 stacks of the effect."
+      },
+      {
+        "id": "talent-skirmisher",
+        "label": "Talent: Skirmisher (Elite 4)",
+        "kind": "core",
+        "does": [],
+        "gameText": "Operator Agility +20."
       },
       {
         "id": "potential-1",
@@ -3241,13 +3241,6 @@
         "gameText": "SKILL DESCRIPTION: Typhoeus fires an Imbued Arrow that explodes after hitting the enemy and deals massive Nature DMG to enemies within the area of effect (AOE). She then enters a Hovering state and her Aerial Basic Attack (ABATK) attempts are reset.\nFor her next 5 ABATKs, hitting an enemy triggers a Hail of Arrows that deals Nature DMG at the target's location. Her 5th Hail of Arrows is an empowered Hail of Arrows that deals higher DMG.\nCasting the ultimate gives 2 Hunting Arrows immediately.\nAt level 12: Ultimate Energy Cost: 200; Imbued Arrow Explosion DMG: 300%; Imbued Arrow Stagger: 20; Normal Hail of Arrows DMG: 75%; Empowered Hail of Arrows DMG: 200%."
       },
       {
-        "id": "talent-skirmisher",
-        "label": "Talent: Skirmisher (Elite 4)",
-        "kind": "core",
-        "does": [],
-        "gameText": "Operator Agility +20."
-      },
-      {
         "id": "talent-prey-checklist",
         "label": "Talent: Prey Checklist (Elite 3)",
         "kind": "core",
@@ -3260,6 +3253,13 @@
         "kind": "core",
         "does": [],
         "gameText": "When Hovering, Typhoeus activates a Protective Barrier that reduces her DMG Taken by 30% and makes her harder to interrupt while it is active. The Protective Barrier is shattered when Typhoeus takes DMG, and cannot be activated again for 18s afterwards."
+      },
+      {
+        "id": "talent-skirmisher",
+        "label": "Talent: Skirmisher (Elite 4)",
+        "kind": "core",
+        "does": [],
+        "gameText": "Operator Agility +20."
       },
       {
         "id": "potential-1",
@@ -3347,13 +3347,6 @@
         "gameText": "SKILL DESCRIPTION: Liino grants HP Treatment to the entire team, enters her Cosmovoice Stance at the same time, unleashes a continuous display of Stage Pyrotechnics that deals Electric DMG, and then triggers an Electrifying Extravaganza that deals Electric DMG and forcibly applies Electrification to enemies in a large area of effect (AOE).\nCosmovoice Stance: This stance replaces Liino's Vocalist Stance. While active, the stance grants the entire team Electric Amp and Nature Amp (effects are further increased by the attribute of Will) as well as an ATK Boost. The beats of Liino's song also deal Electric DMG to enemies in the AOE and grant continuous HP Treatment to allied operators in the AOE. When the stance ends, Liino deals 3 times the DMG from a single beat to enemies in the AOE, and grants 3 times the HP treatment from a single beat to the entire team. This effect does not trigger if the stance is ended early.\nDuring the stance, her battle skill is replaced with End Stance. Casting the battle skill during Cosmovoice Stance ends it early and does not consume any SP.\nAt level 12: Ultimate Energy Cost: 160; Stage Pyrotechnics DMG Multiplier: 320%; Electrifying Extravaganza DMG Multiplier: 640%; ATK Boost: 10%; Amp Increase per Will: 0.04%; MAX Amp from Will: 60%; Base Treatment for 1st Treatment: 729; Treatment Increase per Agility: 1.7; DMG Multiplier per Beat: 60%; Base Treatment per Beat: 81; Treatment Increase per Agility: 0.19; Beat Interval (s): 1.5; Cosmovoice Stance Duration (s): 15; Electrifying Extravaganza Stagger: 20."
       },
       {
-        "id": "talent-stalwart",
-        "label": "Talent: Stalwart (Elite 4)",
-        "kind": "core",
-        "does": [],
-        "gameText": "Operator Will +20."
-      },
-      {
         "id": "talent-idol-zone",
         "label": "Talent: Idol Zone (Elite 2)",
         "kind": "core",
@@ -3366,6 +3359,13 @@
         "kind": "core",
         "does": [],
         "gameText": "For 30s after casting Liino's combo skill Delightful Harmonics, casting a battle skill of an Electric or Nature operator returns 10 SP. This effect cannot stack and ends after triggering."
+      },
+      {
+        "id": "talent-stalwart",
+        "label": "Talent: Stalwart (Elite 4)",
+        "kind": "core",
+        "does": [],
+        "gameText": "Operator Will +20."
       },
       {
         "id": "potential-1",
@@ -3453,13 +3453,6 @@
         "gameText": "SKILL DESCRIPTION: Si summons a Giant Ink Lung from her painting that deals Cryo DMG and grants temporary Cryo Amp and Heat Amp to the entire team.\nAt level 12: Ultimate Energy Cost: 80; DMG Multiplier: 500%; Stagger: 20; Amp: 36%; Amp Duration (s): 12."
       },
       {
-        "id": "talent-keen-mind",
-        "label": "Talent: Keen Mind (Elite 4)",
-        "kind": "core",
-        "does": [],
-        "gameText": "Operator Intellect +20."
-      },
-      {
         "id": "talent-proxy-s-patronage",
         "label": "Talent: Proxy's Patronage (Elite 2)",
         "kind": "core",
@@ -3472,6 +3465,13 @@
         "kind": "core",
         "does": [],
         "gameText": "When the Inksoul disappears, allied operators gain 30% Haste for 5s."
+      },
+      {
+        "id": "talent-keen-mind",
+        "label": "Talent: Keen Mind (Elite 4)",
+        "kind": "core",
+        "does": [],
+        "gameText": "Operator Intellect +20."
       },
       {
         "id": "potential-1",
@@ -3559,13 +3559,6 @@
         "gameText": "SKILL DESCRIPTION: Purrchena opens 3 Big Feline's Prezzies. Each Big Feline's Prezzie randomly reveals a Bomb or a piece of Handicraft.\nThere is a chance that the Prezzie reveals Ambassador's Special that applies Arts Susceptibility and deals Physical DMG as well as additional Stagger to enemies.\nAt level 12: Ultimate Energy Cost: 100; Bomb: DMG Multiplier: 300%; Bomb: Stagger: 10; Handicraft: DMG Multiplier: 150%; Ambassador's Special: Base Chance: 20%; Ambassador's Special: DMG Multiplier: 600%; Ambassador's Special: Stagger: 15; Susceptibility Duration (s): 5; Susceptibility: 2.5%."
       },
       {
-        "id": "talent-forged",
-        "label": "Talent: Forged (Elite 4)",
-        "kind": "core",
-        "does": [],
-        "gameText": "Operator Strength +20."
-      },
-      {
         "id": "talent-your-sorry-came-late",
         "label": "Talent: Your sorry came LATE! (Elite 2)",
         "kind": "core",
@@ -3578,6 +3571,13 @@
         "kind": "core",
         "does": [],
         "gameText": "When deployed in battle, all Max HP operators in the team take 50% less DMG from the next hit taken.\nFor each operator, this effect can only trigger once every 90s."
+      },
+      {
+        "id": "talent-forged",
+        "label": "Talent: Forged (Elite 4)",
+        "kind": "core",
+        "does": [],
+        "gameText": "Operator Strength +20."
       },
       {
         "id": "potential-1",
