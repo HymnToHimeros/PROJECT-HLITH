@@ -2,7 +2,9 @@
 
 Code: `src/games/endfield/gacha.ts`. Tests: `tests/endfieldPity.test.ts`.
 Sources (read 2026-10-15): endfield.wiki.gg [Headhunting](https://endfield.wiki.gg/wiki/Headhunting)
-and [Arsenal Exchange](https://endfield.wiki.gg/wiki/Arsenal_Exchange), which quote the game's rules text.
+and [Arsenal Exchange](https://endfield.wiki.gg/wiki/Arsenal_Exchange), which quote the game's rules text;
+the wiki's banner list (each banner's limited operators); thegamer.com's launch banner guide (Laevatain's
+first banner).
 
 ## Operators
 - 6★ 0.8%, 5★ 8%. A 5★ or better at least every 10 (not used: it doesn't change 6★ odds).
@@ -12,6 +14,20 @@ and [Arsenal Exchange](https://endfield.wiki.gg/wiki/Arsenal_Exchange), which qu
 - Chartered (limited): 50/50 for the featured operator, **no guarantee after a loss**. Once per
   banner, the 120th pull is the featured operator if it hasn't come. Every 240th pull on the banner
   gives a copy (Potential token). Both counters reset when the banner ends.
+- **What a lost 50/50 gives:** a standard 6★ *or* one of the limited operators on that banner's own
+  roster. A Chartered operator is "added to the roster of available 6★s of the next two Chartered
+  Headhunting banners" (Headhunting page), so you can lose the 50/50 to an earlier limited operator.
+  The wiki banner list shows it: Rejuvenation (Si) also has Typhoeus and Liino; The Hearth Fire
+  Beckons the Starry Flow (Argent Flow) also has Si and Typhoeus. At launch, Laevatain's banner had no
+  earlier banners, so its roster held the next two of the patch, Gilberta and Yvonne (thegamer.com
+  guide; the owner pulled on it). The banner data lists them in `alsoAvailable` (SCHEDULER, from the
+  wiki banner list; never hard-coded here). The 50% and the 120 guarantee don't change.
+- **History:** Endfield's history doesn't say which banner a pull came from, and there's no single
+  standard list, so a 6★ on a Chartered or RE-Factor banner is matched to the one banner of that type
+  open at the time (tools/pulls/featuredByBanner): its featured operator = a won 50/50; anything else,
+  an earlier limited operator included, = a lost 50/50 (Typhoeus on Si's banner is a loss). Unknown,
+  never guessed: no banner open, two open at once, or the banner's own 120th pull (a sure pull, not a
+  50/50).
 - Urgent Recruitment: after 30 pulls on the banner, a free 10-pull at base rates. It counts toward
   nothing and can't use up the 120 guarantee, but what it gives is yours (counted as copies).
 - Headhunting Dossier: after 60 pulls, the next banner's first 10-pull is free and counts normally.

@@ -153,3 +153,13 @@ describe('Endfield currencies buy pulls by the game’s prices', () => {
     expect(kinds).toMatchObject({ chartered: charteredOperator, rerun: rerunOperator, basic: basicOperator, beginner: beginnerOperator, weapon: arsenalIssue });
   });
 });
+
+describe('Endfield lost 50/50: any 6★ but the featured one, an earlier limited operator included', () => {
+  it('History matches Chartered and RE-Factor pulls to the banner open at the time; the 120th is a sure pull', () => {
+    expect(endfield.historyMapping?.featuredByBanner).toEqual({ types: ['chartered', 'rerun'], guaranteeAt: 120 });
+    expect(endfield.historyMapping?.standardTop).toBeUndefined();
+  });
+  it('the 50% and the 120 guarantee stay as they are', () => {
+    expect(featuredOf(charteredOperator)).toEqual({ winRate: 0.5, guaranteeAfterLoss: false });
+  });
+});
