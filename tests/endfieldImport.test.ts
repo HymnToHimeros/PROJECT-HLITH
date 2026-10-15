@@ -147,6 +147,8 @@ describe('Endfield: the official notices win', () => {
       { name: 'Jade Vessel', type: 'great-sword' },
     ]);
     // The wiki later gives Argent Flow a game id: she keeps the one she was first listed with.
-    expect(keepIds([{ id: 'chr_0040_argent', name: 'Argent Flow' }], [{ id: 'chr_argent-flow', name: 'Argent Flow' }])).toEqual([{ id: 'chr_argent-flow', name: 'Argent Flow' }]);
+    expect(keepIds([{ id: 'chr_0040_argent', gameId: 'chr_0040_argent', name: 'Argent Flow' }], [{ id: 'chr_argent-flow', name: 'Argent Flow' }])).toEqual([{ id: 'chr_argent-flow', gameId: 'chr_0040_argent', name: 'Argent Flow' }]);
+    // Same id as the game's: no gameId stored.
+    expect(keepIds([{ id: 'chr_0036_jsspsi', gameId: 'chr_0036_jsspsi', name: 'Si' }], [])).toEqual([{ id: 'chr_0036_jsspsi', name: 'Si' }]);
   });
 });

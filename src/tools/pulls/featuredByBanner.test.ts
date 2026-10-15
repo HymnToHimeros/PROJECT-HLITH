@@ -38,4 +38,13 @@ describe('featured or not from the banner open at the time (Endfield)', () => {
     const out = featuredByBanner([pull('2026-10-16', 'w2', 'top', 'weapon'), pull('2026-10-16', 'typhoeus', 'top', 'chartered', { featured: true }), pull('2027-01-05', 'si'), pull('2026-10-16', 'si', 'mid')], [si, weapon, leak], rule);
     expect(out.map((p) => p.featured)).toEqual([undefined, true, undefined, undefined]);
   });
+
+  it('a pull under the game id wins on a banner that features our id (Argent Flow listed before the game gave her one)', () => {
+    const argent = banner('the-hearth-fire', ['chr_argent-flow'], '2026-11-05', '2026-11-24');
+    const chars = [{ id: 'chr_argent-flow', gameId: 'chr_0040_argent' }, { id: 'si' }];
+    const pulls = [pull('2026-11-06', 'chr_0040_argent'), pull('2026-11-07', 'si')];
+    expect(featuredByBanner(pulls, [argent], rule, chars).map((p) => p.featured)).toEqual([true, false]);
+    // Without the character list the game id isn't recognised: a loss (what the fix prevents).
+    expect(featuredByBanner(pulls, [argent], rule).map((p) => p.featured)).toEqual([false, false]);
+  });
 });
