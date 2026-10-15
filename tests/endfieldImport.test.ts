@@ -41,8 +41,8 @@ describe('Endfield lists from the wiki', () => {
     expect(rarityOf('3', true)).toBeUndefined();
   });
 
-  it('banner types follow the game: rate-up = Chartered, Basic, one returning operator = rerun, several = special', () => {
-    expect(BANNERS.map(bannerType)).toEqual(['basic', 'chartered', 'rerun', 'special']);
+  it('banner types follow the game: rate-up = Chartered, Basic, one returning operator = rerun, several = joint', () => {
+    expect(BANNERS.map(bannerType)).toEqual(['basic', 'chartered', 'rerun', 'joint']);
     expect(bannerType({ Banner: 'New Horizons Headhunting' })).toBe('beginner');
   });
 

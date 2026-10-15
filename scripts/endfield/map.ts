@@ -154,7 +154,7 @@ export interface BannerItem {
 /**
  * The banner type. The wiki has no type field, so it follows the rules the game uses:
  * a rate-up operator = Chartered; "New Horizons" = beginner; "Basic" = standard; one
- * returning limited operator = rerun (RE-Factor); several without a rate-up = special.
+ * returning limited operator = rerun (RE-Factor); several without a rate-up = joint (Fest).
  */
 export function bannerType(r: Row): string {
   const title = r.Banner ?? '';
@@ -162,7 +162,7 @@ export function bannerType(r: Row): string {
   if (/^basic/i.test(title)) return 'basic';
   if (r.RateUpOperator?.trim()) return 'chartered';
   const limited = (r.LimitedOperators ?? '').split(';').filter((s) => s.trim());
-  return limited.length === 1 ? 'rerun' : 'special';
+  return limited.length === 1 ? 'rerun' : 'joint';
 }
 
 /**
@@ -188,7 +188,7 @@ export function banners(opRows: Row[], issueRows: Row[], ops: Operator[], wpns: 
     const title = r.Banner?.trim();
     if (!title) continue;
     const type = bannerType(r);
-    const names = type === 'chartered' ? [r.RateUpOperator] : type === 'rerun' || type === 'special' ? (r.LimitedOperators ?? '').split(';') : [];
+    const names = type === 'chartered' ? [r.RateUpOperator] : type === 'rerun' || type === 'joint' ? (r.LimitedOperators ?? '').split(';') : [];
     const featured = names.map((n) => opId.get((n ?? '').trim())).filter((x): x is string => Boolean(x));
     const missing = names.map((n) => (n ?? '').trim()).filter((n) => n && !opId.has(n));
     if (missing.length) out.notes.push(`banner "${title}": ${missing.join(', ')} not in the operator list yet (no wiki entry), so not shown as featured`);
