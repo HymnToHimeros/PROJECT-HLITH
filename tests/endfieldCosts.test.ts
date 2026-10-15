@@ -1,8 +1,10 @@
 import { describe, expect, it } from 'vitest';
-import { cargoString, costList, costSummary, levelTable, promotionLevels, RULINGS, skillTracks, slots } from '../scripts/import-endfield-costs';
+import { acquisition, cargoString, costList, costSummary, levelTable, promotionLevels, RULINGS, skillTracks, slots } from '../scripts/import-endfield-costs';
 import { endfield } from '../src/games/endfield/contract';
 import { materialsFor, MAX_LEVEL, skillsOf } from '../src/games/endfield/costs';
 import costs from '../src/games/endfield/data/costs.json';
+import { farmPlan } from '../src/tools/farm/plan';
+import type { Material } from '../src/core/contract';
 import materials from '../src/games/endfield/data/materials.json';
 
 describe('Endfield costs import: wiki text → costs', () => {
@@ -21,6 +23,29 @@ describe('Endfield costs import: wiki text → costs', () => {
     expect(t[0]?.steps['12']).toEqual({ X: 1, 'T-Creds': 12 });
     expect(t[3]?.steps['10']).toEqual({ Z: 3 });
     expect(() => skillTracks(cells, 'test')).toThrow(/expected 2–12/);
+  });
+  it('where an item comes from: top-level bullets and Protocol Space drop rows, in plain words', () => {
+    const page = [
+      '==Usage==',
+      'x',
+      '==Acquisition==',
+      '*Acquisition Center: AIC Trading',
+      '**AIC Quota Exchange: 5 for {{I|AIC Quota|40|gridview=false}}',
+      '*Dijiang Production: [[Growth Chamber]]',
+      '*Protocol Spaces:',
+      '{{Drop head}}',
+      '{{Drop cell|Hazardous Material Collection Site|20|1}}',
+      '{{Drop cell|Crisis Calamity: Triaggelos|120|6|link=Crisis Calamity: Triaggelos (Deep Dive)}}',
+      '{{Table end}}',
+      '* Redeem codes.',
+      '*Dijiang Production: Growth Chamber',
+      '',
+      '==Navigation==',
+      '*not this',
+    ].join('\n');
+    expect(acquisition(page, 'test')).toEqual(['Acquisition Center: AIC Trading', 'Dijiang Production: Growth Chamber', 'Hazardous Material Collection Site (20 Sanity, fixed drop)', 'Crisis Calamity: Triaggelos (120 Sanity, random)', 'Redeem codes']);
+    expect(acquisition('no section here', 'test')).toEqual([]);
+    expect(() => acquisition('==Acquisition==\n*{{Unknown|x}}', 'test')).toThrow(/markup left/);
   });
   it('names in a Cargo query are escaped: backslashes first, then quotes', () => {
     expect(cargoString("Bob's")).toBe("'Bob\\'s'");
@@ -73,6 +98,17 @@ describe('Endfield costs data (src/games/endfield/data/costs.json)', async () =>
       for (const [item, amount] of Object.entries(summary)) {
         expect(got.get(item), `${id}: ${item}`).toBe(amount);
       }
+    }
+  });
+  it('every item says where it comes from, and Farm passes it on with each row', () => {
+    for (const m of materials as Material[]) expect(m.sources?.length, m.name).toBeGreaterThan(0);
+    const plan = farmPlan(endfield, ['chr_0005_chen'], materials as Material[]);
+    expect(plan.needs.known).toBe(true);
+    if (plan.needs.known) {
+      const disk = plan.needs.value.find((r) => r.name === 'Protodisk');
+      expect(disk?.sources).toContain('Protocol Space: Promotions');
+      // Sanity per run isn't on the wiki: runs and Sanity stay unknown.
+      expect(disk?.runs.known).toBe(false);
     }
   });
   it('from and to: nothing between equal levels; a promotion only to pass its level cap', () => {

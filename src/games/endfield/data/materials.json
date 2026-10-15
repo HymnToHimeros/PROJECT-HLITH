@@ -3,173 +3,356 @@
     "id": "item_expcard_stage2_high",
     "name": "Advanced Cognitive Carrier",
     "kind": "Progression Materials",
-    "icon": "https://endfield.wiki.gg/images/Advanced_Cognitive_Carrier.png"
+    "icon": "https://endfield.wiki.gg/images/Advanced_Cognitive_Carrier.png",
+    "sources": [
+      "Protocol Space: Operator EXP",
+      "Dijiang Production: MFG Cabin",
+      "Acquisition Center: AIC Trading",
+      "Exploring and Gathering"
+    ]
   },
   {
     "id": "item_expcard_stage1_high",
     "name": "Advanced Combat Record",
     "kind": "Progression Materials",
-    "icon": "https://endfield.wiki.gg/images/Advanced_Combat_Record.png"
+    "icon": "https://endfield.wiki.gg/images/Advanced_Combat_Record.png",
+    "sources": [
+      "Protocol Space: Operator EXP",
+      "Dijiang Production: MFG Cabin",
+      "Acquisition Center: AIC Trading",
+      "Exploring and Gathering"
+    ]
   },
   {
     "id": "item_plant_crylplant_2_1",
     "name": "Blighted Jadeleaf",
     "kind": "Rare Materials",
-    "icon": "https://endfield.wiki.gg/images/Blighted_Jadeleaf.png"
+    "icon": "https://endfield.wiki.gg/images/Blighted_Jadeleaf.png",
+    "sources": [
+      "Rare Gathering Sites",
+      "Dijiang Production: Growth Chamber",
+      "Wuling City",
+      "Qingbo Stockade"
+    ]
   },
   {
     "id": "item_plant_mushroom_2_1",
     "name": "Bloodcap",
     "kind": "Rare Materials",
-    "icon": "https://endfield.wiki.gg/images/Bloodcap.png"
+    "icon": "https://endfield.wiki.gg/images/Bloodcap.png",
+    "sources": [
+      "Rare Gathering Sites",
+      "Dijiang Production: Growth Chamber",
+      "Wuling City"
+    ]
   },
   {
     "id": "item_plant_crylplant_1_2",
     "name": "Chrysodendra",
     "kind": "Rare Materials",
-    "icon": "https://endfield.wiki.gg/images/Chrysodendra.png"
+    "icon": "https://endfield.wiki.gg/images/Chrysodendra.png",
+    "sources": [
+      "Rare Gathering Sites",
+      "Dijiang Production: Growth Chamber",
+      "Origin Lodespring"
+    ]
   },
   {
     "id": "item_plant_mushroom_2_2",
     "name": "Cosmagaric",
     "kind": "Rare Materials",
-    "icon": "https://endfield.wiki.gg/images/Cosmagaric.png"
+    "icon": "https://endfield.wiki.gg/images/Cosmagaric.png",
+    "sources": [
+      "Rare Gathering Sites",
+      "Dijiang Production: Growth Chamber",
+      "Wuling City"
+    ]
   },
   {
     "id": "item_plant_crylplant_2_3",
     "name": "Crimson Spearleaf",
     "kind": "Rare Materials",
-    "icon": "https://endfield.wiki.gg/images/Crimson_Spearleaf.png"
+    "icon": "https://endfield.wiki.gg/images/Crimson_Spearleaf.png",
+    "sources": [
+      "Rare Gathering Sites",
+      "Dijiang Production: Growth Chamber",
+      "North Wuling Exclusion Zone"
+    ]
   },
   {
     "id": "item_char_skill_specialize_2",
     "name": "D96 Steel Sample 4",
     "kind": "Progression Materials",
-    "icon": "https://endfield.wiki.gg/images/D96_Steel_Sample_4.png"
+    "icon": "https://endfield.wiki.gg/images/D96_Steel_Sample_4.png",
+    "sources": [
+      "Acquisition Center: AIC Trading",
+      "Hazardous Material Collection Site (20 Sanity, fixed drop)",
+      "Crisis Calamity: Triaggelos (120 Sanity, fixed drop)",
+      "Hazardous Material Management Room (80 Sanity, random)",
+      "Hazardous Material Institute (80 Sanity, random)",
+      "Crisis Calamity: Nefarith (120 Sanity, random)"
+    ]
   },
   {
     "id": "item_expcard_stage2_low",
     "name": "Elementary Cognitive Carrier",
     "kind": "Progression Materials",
-    "icon": "https://endfield.wiki.gg/images/Elementary_Cognitive_Carrier.png"
+    "icon": "https://endfield.wiki.gg/images/Elementary_Cognitive_Carrier.png",
+    "sources": [
+      "Protocol Space: Operator EXP",
+      "Dijiang Production: MFG Cabin",
+      "Acquisition Center: AIC Trading",
+      "Exploring and Gathering"
+    ]
   },
   {
     "id": "item_expcard_stage1_low",
     "name": "Elementary Combat Record",
     "kind": "Progression Materials",
-    "icon": "https://endfield.wiki.gg/images/Elementary_Combat_Record.png"
+    "icon": "https://endfield.wiki.gg/images/Elementary_Combat_Record.png",
+    "sources": [
+      "Protocol Space: Operator EXP",
+      "Dijiang Production: MFG Cabin",
+      "Acquisition Center: AIC Trading",
+      "Exploring and Gathering"
+    ]
   },
   {
     "id": "item_plant_crylplant_2_2",
     "name": "False Aggela",
     "kind": "Rare Materials",
-    "icon": "https://endfield.wiki.gg/images/False_Aggela.png"
+    "icon": "https://endfield.wiki.gg/images/False_Aggela.png",
+    "sources": [
+      "Rare Gathering Sites",
+      "Dijiang Production: Growth Chamber",
+      "Wuling City",
+      "Qingbo Stockade"
+    ]
   },
   {
     "id": "item_expcard_stage1_mid",
     "name": "Intermediate Combat Record",
     "kind": "Progression Materials",
-    "icon": "https://endfield.wiki.gg/images/Intermediate_Combat_Record.png"
+    "icon": "https://endfield.wiki.gg/images/Intermediate_Combat_Record.png",
+    "sources": [
+      "Protocol Space: Operator EXP",
+      "Dijiang Production: MFG Cabin",
+      "Acquisition Center: AIC Trading",
+      "Exploring and Gathering"
+    ]
   },
   {
     "id": "item_plant_crylplant_1_1",
     "name": "Kalkodendra",
     "kind": "Rare Materials",
-    "icon": "https://endfield.wiki.gg/images/Kalkodendra.png"
+    "icon": "https://endfield.wiki.gg/images/Kalkodendra.png",
+    "sources": [
+      "Rare Gathering Sites",
+      "Dijiang Production: Growth Chamber",
+      "The Hub"
+    ]
   },
   {
     "id": "item_char_skill_crown",
     "name": "Mark of Perseverance",
     "kind": "Progression Materials",
-    "icon": "https://endfield.wiki.gg/images/Mark_of_Perseverance.png"
+    "icon": "https://endfield.wiki.gg/images/Mark_of_Perseverance.png",
+    "sources": [
+      "Time limited Event rewards, including Combat Drills, Guide Events, Photo Events, and various other gameplay events",
+      "Permanent gameplay rewards, including Umbral Monument, Delver of the Cryptic, Echoes of War",
+      "Protocol Pass Originium Supply",
+      "Protocol Pass Customized",
+      "Acquisition Center: Bond Quota Exchange",
+      "Redeem codes"
+    ]
   },
   {
     "id": "item_char_skill_specialize_1",
     "name": "Metadiastima Photoemission Tube",
     "kind": "Progression Materials",
-    "icon": "https://endfield.wiki.gg/images/Metadiastima_Photoemission_Tube.png"
+    "icon": "https://endfield.wiki.gg/images/Metadiastima_Photoemission_Tube.png",
+    "sources": [
+      "Acquisition Center: AIC Trading",
+      "Hazardous Material Landfill (20 Sanity, fixed drop)",
+      "Crisis Pandemonium: Rhodagn (120 Sanity, fixed drop)",
+      "Crisis Calamity: Alleikhreos (120 Sanity, fixed drop)",
+      "Hazardous Material Collection Site (80 Sanity, random)",
+      "Hazardous Material Management Room (80 Sanity, random)",
+      "Crisis Calamity: Ruan Yi (120 Sanity, random)",
+      "Crisis Calamity: Nefarith (120 Sanity, random)"
+    ]
   },
   {
     "id": "item_plant_mushroom_1_1",
     "name": "Pink Bolete",
     "kind": "Rare Materials",
-    "icon": "https://endfield.wiki.gg/images/Pink_Bolete.png"
+    "icon": "https://endfield.wiki.gg/images/Pink_Bolete.png",
+    "sources": [
+      "Rare Gathering Sites",
+      "Dijiang Production: Growth Chamber",
+      "The Hub"
+    ]
   },
   {
     "id": "item_char_break_stage_1_2",
     "name": "Protodisk",
     "kind": "Progression Materials",
-    "icon": "https://endfield.wiki.gg/images/Protodisk.png"
+    "icon": "https://endfield.wiki.gg/images/Protodisk.png",
+    "sources": [
+      "Protocol Space: Promotions",
+      "Acquisition Center: AIC Trading",
+      "Exploring and Gathering"
+    ]
   },
   {
     "id": "item_char_skill_level_7_12",
     "name": "Protohedron",
     "kind": "Progression Materials",
-    "icon": "https://endfield.wiki.gg/images/Protohedron.png"
+    "icon": "https://endfield.wiki.gg/images/Protohedron.png",
+    "sources": [
+      "Protocol Space: Skill Up",
+      "Acquisition Center: AIC Trading",
+      "Exploring and Gathering"
+    ]
   },
   {
     "id": "item_char_skill_level_1_6",
     "name": "Protoprism",
     "kind": "Progression Materials",
-    "icon": "https://endfield.wiki.gg/images/Protoprism.png"
+    "icon": "https://endfield.wiki.gg/images/Protoprism.png",
+    "sources": [
+      "Protocol Space: Skill Up",
+      "Acquisition Center: AIC Trading",
+      "Exploring and Gathering"
+    ]
   },
   {
     "id": "item_char_break_stage_3_4",
     "name": "Protoset",
     "kind": "Progression Materials",
-    "icon": "https://endfield.wiki.gg/images/Protoset.png"
+    "icon": "https://endfield.wiki.gg/images/Protoset.png",
+    "sources": [
+      "Protocol Space: Promotions",
+      "Acquisition Center: AIC Trading",
+      "Exploring and Gathering"
+    ]
   },
   {
     "id": "item_char_skill_specialize_4",
     "name": "Quadrant Fitting Fluid",
     "kind": "Progression Materials",
-    "icon": "https://endfield.wiki.gg/images/Quadrant_Fitting_Fluid.png"
+    "icon": "https://endfield.wiki.gg/images/Quadrant_Fitting_Fluid.png",
+    "sources": [
+      "Acquisition Center: AIC Trading",
+      "Hazardous Material Institute (20 Sanity, fixed drop)",
+      "Crisis Calamity: Ruan Yi (120 Sanity, fixed drop)",
+      "Hazardous Material Landfill (80 Sanity, random)",
+      "Hazardous Material Containment Vault (80 Sanity, random)",
+      "Crisis Calamity: Triaggelos (120 Sanity, random)",
+      "Crisis Calamity: Marble Aggelomoirai (120 Sanity, random)",
+      "Crisis Calamity: Alleikhreos (120 Sanity, random)"
+    ]
   },
   {
     "id": "item_plant_mushroom_1_2",
     "name": "Red Bolete",
     "kind": "Rare Materials",
-    "icon": "https://endfield.wiki.gg/images/Red_Bolete.png"
+    "icon": "https://endfield.wiki.gg/images/Red_Bolete.png",
+    "sources": [
+      "Rare Gathering Sites",
+      "Dijiang Production: Growth Chamber",
+      "Origin Lodespring"
+    ]
   },
   {
     "id": "item_plant_mushroom_1_3",
     "name": "Ruby Bolete",
     "kind": "Rare Materials",
-    "icon": "https://endfield.wiki.gg/images/Ruby_Bolete.png"
+    "icon": "https://endfield.wiki.gg/images/Ruby_Bolete.png",
+    "sources": [
+      "Rare Gathering Sites",
+      "Dijiang Production: Growth Chamber",
+      "Jingyu Valley"
+    ]
   },
   {
     "id": "item_gold",
     "name": "T-Creds",
     "kind": "Currencies",
-    "icon": "https://endfield.wiki.gg/images/T-Creds.png"
+    "icon": "https://endfield.wiki.gg/images/T-Creds.png",
+    "sources": [
+      "Protocol Space: T-Creds",
+      "Reward: Daily Missions",
+      "Acquisition Center: AIC Trading",
+      "Exploring and Gathering",
+      "Excess Operational EXP"
+    ]
   },
   {
     "id": "item_char_skill_specialize_3",
     "name": "Tachyon Screening Lattice",
     "kind": "Progression Materials",
-    "icon": "https://endfield.wiki.gg/images/Tachyon_Screening_Lattice.png"
+    "icon": "https://endfield.wiki.gg/images/Tachyon_Screening_Lattice.png",
+    "sources": [
+      "Acquisition Center: AIC Trading",
+      "Hazardous Material Management Room (20 Sanity, fixed drop)",
+      "Crisis Calamity: Marble Aggelomoirai (120 Sanity, fixed drop)",
+      "Hazardous Material Institute (80 Sanity, random)",
+      "Hazardous Material Containment Vault (80 Sanity, random)",
+      "Crisis Pandemonium: Rhodagn (120 Sanity, random)",
+      "Crisis Calamity: Triaggelos (120 Sanity, random)",
+      "Crisis Calamity: Alleikhreos (120 Sanity, random)"
+    ]
   },
   {
     "id": "item_plant_mushroom_2_3",
     "name": "Talos Cap",
     "kind": "Rare Materials",
-    "icon": "https://endfield.wiki.gg/images/Talos_Cap.png"
+    "icon": "https://endfield.wiki.gg/images/Talos_Cap.png",
+    "sources": [
+      "Rare Gathering Sites",
+      "Dijiang Production: Growth Chamber",
+      "Yinglung Pass"
+    ]
   },
   {
     "id": "item_char_skill_specialize_5",
     "name": "Triphasic Nanoflake",
     "kind": "Progression Materials",
-    "icon": "https://endfield.wiki.gg/images/Triphasic_Nanoflake.png"
+    "icon": "https://endfield.wiki.gg/images/Triphasic_Nanoflake.png",
+    "sources": [
+      "Acquisition Center: AIC Trading",
+      "Hazardous Material Containment Vault (20 Sanity, fixed drop)",
+      "Crisis Calamity: Nefarith (120 Sanity, fixed drop)",
+      "Hazardous Material Collection Site (80 Sanity, random)",
+      "Hazardous Material Landfill (80 Sanity, random)",
+      "Crisis Calamity: Marble Aggelomoirai (120 Sanity, random)",
+      "Crisis Calamity: Ruan Yi (120 Sanity, random)"
+    ]
   },
   {
     "id": "item_plant_crylplant_1_3",
     "name": "Vitrodendra",
     "kind": "Rare Materials",
-    "icon": "https://endfield.wiki.gg/images/Vitrodendra.png"
+    "icon": "https://endfield.wiki.gg/images/Vitrodendra.png",
+    "sources": [
+      "Rare Gathering Sites",
+      "Dijiang Production: Growth Chamber",
+      "Jingyu Valley"
+    ]
   },
   {
     "id": "item_char_skill_specialize_6",
     "name": "Warp Plasma-Coated Slide",
-    "kind": "Progression Materials"
+    "kind": "Progression Materials",
+    "sources": [
+      "Advanced Progression Selection Crate",
+      "Protocol Space: Hazardous Material Dissolving Pool",
+      "Crisis Calamity: Si (Deep Dive)",
+      "Acquisition Center: AIC Quota Exchange",
+      "Acquisition Center: Bond Quota Exchange",
+      "Chance Drop: Certain Protocol Space: Crisis Drills",
+      "Chance Drop: Certain Protocol Space: RE-Crisis (Deep Dive)"
+    ]
   }
 ]
