@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
-import { acquisition, cargoString, costList, costSummary, levelTable, promotionLevels, RULINGS, skillTracks, slots } from '../scripts/import-endfield-costs';
+import { acquisition, cargoString, costList, costSummary, levelTable, promotionLevels, RULINGS, sameStage4, skillTracks, slots, weaponPage, weaponTunings } from '../scripts/import-endfield-costs';
 import { endfield } from '../src/games/endfield/contract';
-import { materialsFor, MAX_LEVEL, skillsOf } from '../src/games/endfield/costs';
+import { materialsFor, MAX_LEVEL, skillsOf, weaponMaterialsFor } from '../src/games/endfield/costs';
 import costs from '../src/games/endfield/data/costs.json';
 import { farmPlan } from '../src/tools/farm/plan';
 import type { Material } from '../src/core/contract';
@@ -121,5 +121,68 @@ describe('Endfield costs data (src/games/endfield/data/costs.json)', async () =>
     const to21 = materialsFor(chen, { level: 1, skills: Object.values(all) }, { level: 21, skills: Object.values(all) });
     expect(to21.find((n) => n.material === 'item_char_break_stage_1_2')?.amount).toBe(8);
     expect(materialsFor('chr_argent-flow', { level: 1 }, { level: 90 })).toEqual([]);
+  });
+});
+
+describe('Endfield weapon costs', async () => {
+  const weapons = await endfield.data.weapons?.();
+  const w = (costs as unknown as { weapons: { milestones: { level: number; exp: number; creds: number }[]; list: Record<string, { source: string; version: string; tunings: { atLevel: number; items: Record<string, number> }[] }> } }).weapons;
+  it('reads the Weapon page (tuning table, level totals, EXP items) and each weapon page’s t1…t4', () => {
+    const general = [
+      '===Tuning===',
+      '{| class="wikitable"',
+      '|-\n| Stage 0\n| 20\n| -',
+      '|-\n| Stage 1\n| 40\n| {{I|Cast Die|5}} {{I|T-Creds|2200}}',
+      '|-\n| Stage 2\n| 60\n| {{I|Cast Die|18}} {{I|T-Creds|8500}}',
+      '|-\n| Stage 3\n| 80\n| {{I|Heavy Cast Die|20}} {{I|T-Creds|25000}}',
+      '|-\n| Stage 4\n| 90\n| {{I|Heavy Cast Die|30}} {{I|T-Creds|90000}}<br>and Weapon specific materials:<br>16x Rare Progression Material<br>8x Minerals',
+      '|}',
+      '* Level 20: 8,890 EXP and 640 T-Creds',
+      '* Level 40: 105,540 EXP and 10,400 T-Creds',
+      '* Level 60: 290,540 EXP and 29,010 T-Creds',
+      '* Level 80: 1,203,710 EXP and 123,850 T-Creds',
+      '* Level 90: 2,524,080 EXP and 341,390 T-Creds',
+      '** {{I|Arms INSP Set|gridview=false}} provide 10,000 Weapon EXP',
+    ].join('\n');
+    const p = weaponPage(general);
+    expect(p.caps).toEqual([20, 40, 60, 80, 90]);
+    expect(p.stages[0]).toEqual({ 'Cast Die': 5, 'T-Creds': 2200 });
+    expect(p.specific).toEqual([16, 8]);
+    expect(p.milestones[4]).toEqual({ level: 90, exp: 2524080, creds: 341390 });
+    expect(p.expPer).toEqual({ 'Arms INSP Set': 10000 });
+    const own = weaponTunings('{{Weapon data\n|t1 = {{I|Cast Die|5}}\n|t2 = {{I|Cast Die|18}}\n|t3 = {{I|Heavy Cast Die|20}}\n|t4 = {{I|Heavy Cast Die|30}} {{I|Ore|16}} {{I|Rock|8}} {{I|T-Creds|90000}}\n}}', 'x');
+    expect(sameStage4(own[3] ?? {}, p.stages[3] ?? {}, p.specific)).toBe(true);
+    expect(sameStage4({ 'Heavy Cast Die': 30, 'T-Creds': 90000, Ore: 15, Rock: 8 }, p.stages[3] ?? {}, p.specific)).toBe(false);
+    expect(() => weaponTunings('{{Weapon data\n|t1 = {{I|Cast Die|5}}\n}}', 'x')).toThrow(/no tuning cost t2/);
+  });
+  it('every weapon with a wiki page has its tunings, cited; the rule is in the contract', () => {
+    expect(endfield.rules.weaponMaterialsFor).toBe(weaponMaterialsFor);
+    const listed = Object.keys(w.list);
+    expect(listed.length).toBeGreaterThanOrEqual(78);
+    for (const id of listed) {
+      expect(weapons?.some((x) => x.id === id)).toBe(true);
+      expect(w.list[id]?.source).toMatch(/^endfield\.wiki\.gg\/wiki\/\S+ \(CC BY-SA 4\.0\)$/);
+      expect(w.list[id]?.tunings.map((t) => t.atLevel)).toEqual([20, 40, 60, 80]);
+    }
+  });
+  it('to max from level 1 is exact: four tunings plus the level-90 totals', () => {
+    const id = 'wpn_claym_0017';
+    const out = weaponMaterialsFor(id, { level: 1 }, { level: 90 });
+    expect(out.partial).toBeUndefined();
+    const got = new Map(out.needs.map((n) => [n.material, n.amount]));
+    expect(got.get('item_weapon_expcard_high')).toBe(Math.ceil(2524080 / 10000));
+    const tuningCreds = (w.list[id]?.tunings ?? []).reduce((a, t) => a + (t.items.item_gold ?? 0), 0);
+    expect(got.get('item_gold')).toBe(341390 + tuningCreds);
+    const known = new Set(materials.map((m) => m.id));
+    for (const n of out.needs) expect(known.has(n.material), n.material).toBe(true);
+  });
+  it('a range between the wiki’s level totals counts only whole stretches, and says so; equal levels need nothing', () => {
+    const id = 'wpn_claym_0017';
+    const out = weaponMaterialsFor(id, { level: 30 }, { level: 90 });
+    expect(out.partial).toMatch(/between levels 30 and 90 are counted only for whole stretches/);
+    const got = new Map(out.needs.map((n) => [n.material, n.amount]));
+    expect(got.get('item_weapon_expcard_high')).toBe(Math.ceil((2524080 - 105540) / 10000));
+    expect(weaponMaterialsFor(id, { level: 40 }, { level: 40 })).toEqual({ needs: [] });
+    expect(weaponMaterialsFor('wpn_lunar-calling', { level: 1 }, { level: 90 })).toEqual({ needs: [] });
   });
 });
