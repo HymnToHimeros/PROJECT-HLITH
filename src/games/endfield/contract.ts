@@ -5,11 +5,13 @@
  * List items in data/*.json need stable ids that never change.
  * Add the game to src/games/index.ts. Nothing else in the app changes.
  */
-import type { Banner, Character, GameContract, GameEvent, Kit, Version, Weapon } from '../../core/contract';
+import type { Banner, Character, GameContract, GameEvent, Version, Weapon } from '../../core/contract';
 import banners from './data/banners.json';
 import characters from './data/characters.json';
+import { KITS, SHEETS } from './kitcheck/library';
+import { withTags } from './kitcheck/tags';
+import { endfieldTeamRules, recommendedTeams } from './kitcheck/team';
 import events from './data/events.json';
-import kits from './data/kits.json';
 import versions from './data/versions.json';
 import weapons from './data/weapons.json';
 import { ARSENAL, ARSENAL_SOURCE, ARSENAL_TICKETS_AT_LEAST_PER_PULL, arsenalIssue, basicOperator, beginnerOperator, charteredOperator, HEADHUNTING_SOURCE, rerunOperator } from './gacha';
@@ -144,14 +146,17 @@ export const endfield: GameContract = {
     events: list<GameEvent>(events),
     backlog: async () => [],
     materials: async () => [],
-    teams: async () => [],
-    // Kit text from each operator's wiki page (npm run data:endfield-kits), not read yet: the Kit check reads it next (E6b).
-    kits: list<Kit>(kits),
+    // Recommended teams: the best team the Kit check finds for each damage dealer read so far (docs/logic/endfield-method.md).
+    teams: async () => recommendedTeams(),
+    // Kit text from each operator's wiki page (npm run data:endfield-kits), with the Kit check's tags for operators read so far.
+    kits: async () => withTags(KITS, SHEETS),
     versions: list<Version>(versions),
     weapons: async () => weapons as Weapon[],
   },
 
-  rules: {},
+  rules: {
+    teams: endfieldTeamRules,
+  },
 
   sources: [
     { what: 'Pity rates and rules (gacha.ts, docs/logic/endfield-gacha.md)', source: HEADHUNTING_SOURCE, entered: '2026-10-15', verified: true },

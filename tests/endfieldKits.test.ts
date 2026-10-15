@@ -1,6 +1,8 @@
 import { describe, expect, it } from 'vitest';
 import { kitFrom, plain, templates } from '../scripts/import-endfield-kits';
 import { endfield } from '../src/games/endfield/contract';
+import rawKits from '../src/games/endfield/data/kits.json';
+import { SHEETS } from '../src/games/endfield/kitcheck/library';
 
 describe('Endfield kit import: wiki markup → plain words', () => {
   it('turns the wiki’s templates and tags into plain text', () => {
@@ -98,7 +100,7 @@ describe('Endfield kit data (src/games/endfield/data/kits.json)', async () => {
       expect(k.version).toMatch(/^wiki revision \d+$/);
     }
   });
-  it.each(kits.map((k) => [characters.find((c) => c.id === k.characterId)?.name ?? k.characterId, k] as const))('%s: four combat skills (per tab), Potentials 1–5, plain text, unique ids, nothing read yet', (_name, k) => {
+  it.each(kits.map((k) => [characters.find((c) => c.id === k.characterId)?.name ?? k.characterId, k] as const))('%s: four combat skills (per tab), Potentials 1–5, plain text, unique ids', (_name, k) => {
     const ids = k.skills.map((s) => s.id);
     expect(new Set(ids).size).toBe(ids.length);
     expect(k.skills.filter((s) => s.kind === 'skill').length % 4).toBe(0);
@@ -108,7 +110,11 @@ describe('Endfield kit data (src/games/endfield/data/kits.json)', async () => {
     for (const s of k.skills) {
       expect(s.gameText.trim()).not.toBe('');
       expect(s.gameText).not.toMatch(/\{\{|\}\}|\[\[|<\/?[a-z]/i);
-      expect(s.does).toEqual([]);
     }
+  });
+  it('kits.json holds game text only; tags come from the cheat sheets, and only for operators read', () => {
+    for (const k of rawKits) for (const s of k.skills) expect(s.does).toEqual([]);
+    const read = new Set(SHEETS.map((s) => s.characterId));
+    for (const k of kits) expect(k.skills.some((s) => s.does.length > 0), k.characterId).toBe(read.has(k.characterId));
   });
 });
