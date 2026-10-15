@@ -59,6 +59,35 @@ describe('no temporary objects ship (T80)', () => {
   });
 });
 
+describe('link/result tables have only the grants they need (0023)', () => {
+  const sql = readFileSync(join(DIR, '0023_harden_link_grants.sql'), 'utf8');
+  const tables = ['skport_links', 'skport_checkins', 'hoyolab_links', 'hoyolab_checkins', 'hoyolab_redemptions', 'hoyolab_my_codes', 'hoyolab_codes'];
+
+  it.each(tables)('revokes all from anon and authenticated on %s', (table) => {
+    expect(sql).toContain(`revoke all on public.${table} from anon, authenticated;`);
+  });
+
+  it('re-grants only column select and column update on skport_links', () => {
+    expect(sql).toMatch(/grant select \(id,.*updated_at\) on public\.skport_links to authenticated;/);
+    expect(sql).toMatch(/grant update \(label, auto_checkin\) on public\.skport_links to authenticated;/);
+  });
+
+  it('re-grants only column select and column update on hoyolab_links', () => {
+    expect(sql).toMatch(/grant select \(id,.*updated_at\) on public\.hoyolab_links to authenticated;/);
+    expect(sql).toMatch(/grant update \(label, auto_checkin, auto_redeem\) on public\.hoyolab_links to authenticated;/);
+  });
+
+  it('re-grants only select on server-written result tables', () => {
+    for (const t of ['skport_checkins', 'hoyolab_checkins', 'hoyolab_redemptions']) {
+      expect(sql).toContain(`grant select on public.${t} to authenticated;`);
+    }
+  });
+
+  it('does not grant delete, truncate, trigger or references anywhere', () => {
+    expect(sql.toLowerCase()).not.toMatch(/grant\b[^;]*(delete|truncate|trigger|references)/);
+  });
+});
+
 describe('the migration checker itself', () => {
   it('flags destructive statements', () => {
     expect(findDestructive('DROP TABLE roster;')).toEqual(['DROP TABLE']);
