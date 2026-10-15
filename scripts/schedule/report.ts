@@ -73,9 +73,7 @@ export function report(game: string, before: Lists, after: Lists, { build, now, 
   const official =
     game === 'endfield'
       ? { name: 'Official news (Gryphline) + endfield.wiki.gg, CC BY-SA (scripts/import-endfield.ts)', url: 'https://endfield.wiki.gg' }
-      : game === 'genshin'
-        ? { name: 'Official notices + genshin-impact.fandom.com, CC BY-SA (scripts/import-genshin-schedule.ts)', url: 'https://genshin-impact.fandom.com' }
-        : { name: 'Official notices + community wiki (scripts/import-schedule.ts)' };
+      : { name: 'Official notices + community wiki (scripts/import-schedule.ts)' };
 
   // Versions: new ones and moved ends (the next patch day).
   const oldV = byId(before.versions);

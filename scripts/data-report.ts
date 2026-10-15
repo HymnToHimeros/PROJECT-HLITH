@@ -15,7 +15,7 @@ import { report, type Finding, type Item, type Lists } from './schedule/report.t
 
 const ROOT = resolve(import.meta.dirname, '..');
 /** Every game with lists (Endfield once its data folder exists). */
-const GAMES = ['hsr', 'zzz', 'endfield', 'genshin'].filter((g) => existsSync(resolve(ROOT, `src/games/${g}/data/versions.json`)));
+const GAMES = ['hsr', 'zzz', 'endfield'].filter((g) => existsSync(resolve(ROOT, `src/games/${g}/data/versions.json`)));
 const JOBS = ['leaks-scan', 'events-scan', 'game-data-refresh'] as const;
 const LISTS = ['characters', 'banners', 'events', 'versions', 'kits'] as const;
 
