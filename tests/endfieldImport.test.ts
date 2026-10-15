@@ -56,7 +56,10 @@ describe('Endfield lists from the wiki', () => {
     const by = (t: string) => list.find((b) => b.title === t);
     expect(by('Basic Headhunting')).toBeUndefined(); // its pool (Ardelia) is not in this test's operator list
     expect(notes.notes).toContain('banner "Basic Headhunting" left out until its operator is on the wiki');
+    // Typhoeus and Liino are not in this test's operator list, so no alsoAvailable here (never guessed).
     expect(by('Rejuvenation')).toEqual({ id: 'rejuvenation-2026-10-15', type: 'chartered', title: 'Rejuvenation', featured: ['chr_0036_jsspsi'], start: '2026-10-15T04:00:00.000Z', end: '2026-11-05T03:59:59.000Z', serverTime: { base: 8, end: true } });
+    const withPool = banners([{ ...(BANNERS[1] as Row), LimitedOperators: 'Si;Endministrator' }], [], [...ops, { id: 'chr_x', name: 'Endministrator', rarity: 'top', element: 'physical', role: 'guard', source: 'w' }], wpns, undefined, { notes: [] });
+    expect(withPool[0]).toMatchObject({ featured: ['chr_0036_jsspsi'], alsoAvailable: ['chr_x'] });
     expect(by('Seal of Jade Issue')).toMatchObject({ type: 'weapon', featured: ['wpn_claym_0018'], art: 'https://x/j.png' });
     expect(by('Ancestral Spring Flows Anew')).toBeUndefined();
     expect(by('Fest of Brilliance')).toMatchObject({ type: 'joint', featured: ['chr_0036_jsspsi'] });

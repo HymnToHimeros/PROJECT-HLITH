@@ -150,6 +150,8 @@ export interface BannerItem {
   serverTime?: { base: number; start?: boolean; end?: boolean };
   art?: string;
   permanent?: boolean;
+  /** Chartered: the other limited operators on the banner's list (a lost 50/50 can give them). */
+  alsoAvailable?: string[];
 }
 
 /**
@@ -185,7 +187,7 @@ export function banners(
   const opId = new Map(ops.map((o) => [o.name, o.id]));
   const wpn = new Map(wpns.map((w) => [w.name, w]));
   const list: BannerItem[] = [];
-  const add = (r: Row, title: string, type: string, featured: string[], art?: string, permanentFlag = false) => {
+  const add = (r: Row, title: string, type: string, featured: string[], art?: string, permanentFlag = false, also: string[] = []) => {
     let start = utc(r.AsiaStartTime);
     let end = utc(r.AsiaEndTime);
     let st = serverTime(r);
@@ -204,7 +206,18 @@ export function banners(
     const permanent = permanentFlag || !end;
     const shownEnd = end ?? versionEnd;
     if (!shownEnd) return out.notes.push(`banner "${title}" left out: no end and no current version end`);
-    list.push({ id: `${slug(title)}-${start.slice(0, 10)}`, type, title, featured, start, end: shownEnd, ...(st ? { serverTime: st } : {}), ...(art ? { art } : {}), ...(permanent ? { permanent } : {}) });
+    list.push({
+      id: `${slug(title)}-${start.slice(0, 10)}`,
+      type,
+      title,
+      featured,
+      start,
+      end: shownEnd,
+      ...(st ? { serverTime: st } : {}),
+      ...(art ? { art } : {}),
+      ...(permanent ? { permanent } : {}),
+      ...(also.length ? { alsoAvailable: also } : {}),
+    });
   };
   for (const r of opRows) {
     const title = r.Banner?.trim();
@@ -220,7 +233,17 @@ export function banners(
       out.notes.push(`banner "${title}" left out until its operator is on the wiki`);
       continue;
     }
-    add(r, title, type, featured);
+    // Chartered: the banner list's other limited operators (the previous two Chartered ones), from the wiki, never guessed.
+    const also =
+      type === 'chartered'
+        ? (r.LimitedOperators ?? '')
+            .split(';')
+            .map((n) => n.trim())
+            .filter((n) => n && n !== r.RateUpOperator?.trim())
+            .map((n) => opId.get(n))
+            .filter((x): x is string => Boolean(x))
+        : [];
+    add(r, title, type, featured, undefined, false, also);
   }
   for (const r of issueRows) {
     const title = r.Issue?.trim();
