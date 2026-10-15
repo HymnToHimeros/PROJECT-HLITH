@@ -113,8 +113,20 @@ export interface Currency {
    * one with `perPull` that isn't `paid`.
    */
   perPull?: number;
+  /**
+   * How many make one pull on particular banner types, where that differs from
+   * `perPull` or the currency only buys pulls there (Endfield: 198 Arsenal
+   * Tickets a weapon pull, sold 1980 for 10).
+   */
+  perPullOn?: Record<string, number>;
   /** A pull item, usable on these banner types. */
   pullItemFor?: string[];
+  /**
+   * You also get this currency from pulls on these banner types: at least
+   * `atLeastPerPull` a pull on average, by the game's own rules (Endfield:
+   * Arsenal Tickets from operator pulls). Only the sure part is counted.
+   */
+  fromPulls?: { on: string[]; atLeastPerPull: number; why: string };
   paid?: boolean;
 }
 
@@ -133,6 +145,8 @@ export interface BannerType {
   /** What the top-rarity result is for chance and worst case. */
   target: 'character' | 'weapon' | 'other';
   pity: PityModel;
+  /** Only these currencies buy pulls here (Endfield's weapon banner: Arsenal Tickets and Origeometry). Missing = every currency that makes pulls. */
+  currencies?: string[];
 }
 
 /** Pity engine state, generic across models. */
@@ -183,6 +197,8 @@ export type PityModel =
       hardPity?: number;
       /** The featured split, for the Luck report and History (Endfield: 50/50 with no guarantee after a loss). */
       featured?: { winRate: number; guaranteeAfterLoss: boolean };
+      /** After `after` pulls on one banner, the next banner of this type starts with `pulls` free pulls that count as usual (Endfield's Headhunting Dossier). */
+      carryOver?: { after: number; pulls: number; label: string };
     };
 
 /** One result of a step in a `custom` PityModel. */

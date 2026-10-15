@@ -158,6 +158,10 @@ stays the base; never rename an id that is already in a list.
     `worstCase(state, copies)` (null = no ceiling). `PityState.extra.banner` / `.got` have a shared
     meaning (pulls on the current banner, featured came on it); the Pulls screens fill them from history.
     Tools read pity through `hardPityOf` / `featuredOf` / `stepOf` (tools/pity), never `kind === 'hard-pity'`.
+  - 2026-10-15 · LOGIC-CORE added (E3 part 2): `Currency.perPullOn` (price per pull on given banner types),
+    `Currency.fromPulls` (a currency every pull on given banners surely gives: `atLeastPerPull`, `why`),
+    `BannerType.currencies` (only these buy pulls there), and `carryOver` on a `custom` PityModel (free
+    pulls the next banner starts with). `pullsFor` uses them and rounds to the banner's step.
 - Beta recommended builds (T54): `npm run data:builds` also reads the beta files' recommendation for characters in
   our lists that the live files don't have yet (upcoming agents, leaks), marked `beta` and `version`. When the
   scheduled refresh re-imports leaks' beta kits, run `npm run data:builds` too, so the beta builds stay current.

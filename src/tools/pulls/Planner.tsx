@@ -11,7 +11,7 @@ import { phaseOfBanner } from '../banners/fit';
 import { useBannersData, type BannersData } from '../banners/useBannersData';
 import { cx } from '../../core/ui/cx';
 import { budget, budgetPulls, pullsFor, type BudgetRow } from '../budget/budget';
-import { bannerProgress, chance, featuredOf, hardPityOf, pityFromHistory, worstCase, type OddsMode } from '../pity/pity';
+import { bannerProgress, carryIn, chance, featuredOf, hardPityOf, pityFromHistory, worstCase, type OddsMode } from '../pity/pity';
 import { Filters, percent, Strip } from './shared';
 import p from './pulls.module.css';
 import type { PullsData } from './usePullsData';
@@ -151,7 +151,10 @@ function PlanCard({ game, banner: b, type, data, art, serverId, now, whatIf, ope
   // V1: for a banner that hasn't started, count until it arrives or until it ends.
   const [until, setUntil] = useState<'start' | 'end'>('end');
   const horizon = upcoming && until === 'start' ? start : end;
-  const haveNow = data.bank.value.known ? pullsFor(game, data.bank.value.value, type.id) : null;
+  // Free pulls this banner starts with from the last one (Endfield's Headhunting Dossier), from real history only.
+  const carry = type.pity.kind === 'custom' ? type.pity.carryOver : undefined;
+  const free = carry && !data.history.example ? carryIn(data.history.list, data.banners.list, b, carry) : 0;
+  const haveNow = data.bank.value.known ? pullsFor(game, data.bank.value.value, type.id) + free : null;
   const byEnd = budget({
     game,
     serverId,
@@ -163,7 +166,8 @@ function PlanCard({ game, banner: b, type, data, art, serverId, now, whatIf, ope
     passes: Object.fromEntries(Object.entries(data.user.passes).map(([k, v]) => [k, Date.parse(v)])),
     ...data.budgetExtras(horizon),
   });
-  const pullsBy = budgetPulls(game, byEnd, type.id);
+  const pulled = budgetPulls(game, byEnd, type.id);
+  const pullsBy = pulled.known ? { ...pulled, value: pulled.value + free } : pulled;
   const pick = pityFor(data, type.id, whatIf, featuredOf(type.pity)?.guaranteeAfterLoss ?? true);
   // A game's own rule also reads how far this banner has come (pulls on it so far, from history; none before it opens).
   const progress = type.pity.kind === 'custom' ? (upcoming || data.history.example ? { banner: 0, got: 0 } : bannerProgress(data.history.list, type.id, start)) : undefined;
@@ -224,7 +228,10 @@ function PlanCard({ game, banner: b, type, data, art, serverId, now, whatIf, ope
         ) : (
           <span className={p.short}>{formatNumber(short)} short of worst case</span>
         )}
-        <span className={p.muted}>By end counts everything still to earn (see Calculator)</span>
+        <span className={p.muted}>
+          By end counts everything still to earn (see Calculator)
+          {free > 0 && carry ? `. Includes ${free} free pulls from your ${carry.label} (${carry.after}+ pulls on the last banner).` : ''}
+        </span>
       </div>
       <dl className={p.odds}>
         <div className={p.oddsRow}>
