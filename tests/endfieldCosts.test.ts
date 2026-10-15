@@ -111,6 +111,17 @@ describe('Endfield costs data (src/games/endfield/data/costs.json)', async () =>
       expect(disk?.runs.known).toBe(false);
     }
   });
+  it('Farm: an operator without cost data yet (like Argent Flow before her wiki pages) is left out by name, never summed as if complete', () => {
+    const none = 'chr_no-cost-data';
+    const both = farmPlan(endfield, ['chr_0036_jsspsi', none], materials as Material[]);
+    const si = farmPlan(endfield, ['chr_0036_jsspsi'], materials as Material[]);
+    expect(both.left).toEqual([none]);
+    expect(both.needs).toEqual(si.needs);
+    expect(both.stamina.known).toBe(false);
+    const alone = farmPlan(endfield, [none], materials as Material[]);
+    expect(alone.needs).toMatchObject({ known: true, value: [] });
+    expect(alone.left).toEqual([none]);
+  });
   it('from and to: nothing between equal levels; a promotion only to pass its level cap', () => {
     const chen = 'chr_0005_chen';
     const all = Object.fromEntries(skillsOf(chen).map((t, i) => [i, t.max]));

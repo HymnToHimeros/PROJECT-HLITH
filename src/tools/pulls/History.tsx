@@ -7,7 +7,7 @@ import { Button, EmptyState, ExampleTag, HowTo } from '../../core/ui';
 import { cx } from '../../core/ui/cx';
 import { buildHlithFile } from '../import/hlith';
 import { parseHistoryFile, readAccount, type ImportedAccount } from '../import/uigf';
-import { featuredOf, hardPityOf, pityFromHistory } from '../pity/pity';
+import { featuredOf, hardPityOf, oddsWord, pityFromHistory } from '../pity/pity';
 import { cacheFileSteps, fileSteps, findHistoryLink, goodToKnow, guideFor, pasteSteps } from './importGuides';
 import { LuckReport } from './LuckReport';
 import p from './pulls.module.css';
@@ -127,9 +127,11 @@ export function History({ game, data, signedIn, now }: { game: GameContract; dat
   const types = game.bannerTypes.filter((t) => data.history.list.some((h) => h.bannerType === t.id));
   // Banner types where a lost 50/50 makes the next one guaranteed (not Endfield's).
   const noGuarantee = new Set(game.bannerTypes.filter((t) => featuredOf(t.pity)?.guaranteeAfterLoss === false).map((t) => t.id));
+  // Banner types with nothing featured (a standard banner): no top result there is a 50/50.
+  const noFiftyFifty = new Set(game.bannerTypes.filter((t) => !featuredOf(t.pity)).map((t) => t.id));
   // Games whose pulls don't say their banner (Endfield): usePullsData marks each top result from the banner open at the time.
   const history = data.history.list;
-  const allTops = topsWithPity(history, noGuarantee).reverse();
+  const allTops = topsWithPity(history, noGuarantee, noFiftyFifty).reverse();
   const tops = showAll ? allTops : allTops.slice(0, 10);
   const noImport = !mapping || (!fileImport && !linkImport);
   const ways: { id: Exclude<Way, null>; label: string; sub: string; show: boolean }[] = [
@@ -288,7 +290,7 @@ export function History({ game, data, signedIn, now }: { game: GameContract; dat
                   {hasFeatured && (
                     <div className={p.figure}>
                       <span className={p.figLabel}>Next {game.terms.rarity.top}</span>
-                      <span className={p.figValue}>{pity.guaranteed.known ? (pity.guaranteed.value ? 'Guaranteed' : '50/50') : 'Unknown'}</span>
+                      <span className={p.figValue}>{pity.guaranteed.known ? (pity.guaranteed.value ? 'Guaranteed' : oddsWord(featured)) : 'Unknown'}</span>
                     </div>
                   )}
                 </div>
@@ -352,7 +354,11 @@ export type TopResult = 'won' | 'lost' | 'guaranteed' | 'unknown';
 const RESULT_LABEL: Record<TopResult, string> = { won: 'won 50/50', lost: 'lost 50/50', guaranteed: 'guaranteed', unknown: '' };
 
 /** Each top result with the pulls it took on its banner type (V1: "every 5★ with the pity it took") and how it went. Oldest first. `noGuarantee`: banner types where a loss guarantees nothing. */
-export function topsWithPity(history: PullRecord[], noGuarantee: ReadonlySet<string> = new Set()): { pull: PullRecord; pity: number; result: TopResult }[] {
+export function topsWithPity(
+  history: PullRecord[],
+  noGuarantee: ReadonlySet<string> = new Set(),
+  noFiftyFifty: ReadonlySet<string> = new Set(),
+): { pull: PullRecord; pity: number; result: TopResult }[] {
   const sorted = [...history].sort((a, b) => a.time.localeCompare(b.time) || a.id.localeCompare(b.id));
   const since: Record<string, number> = {};
   const guaranteedNext: Record<string, boolean> = {};
@@ -361,7 +367,8 @@ export function topsWithPity(history: PullRecord[], noGuarantee: ReadonlySet<str
     since[h.bannerType] = (since[h.bannerType] ?? 0) + 1;
     if (h.rarity !== 'top') continue;
     let result: TopResult;
-    if (guaranteedNext[h.bannerType]) {
+    if (noFiftyFifty.has(h.bannerType)) result = 'unknown';
+    else if (guaranteedNext[h.bannerType]) {
       // As in luck(): the result after a lost 50/50 is never a 50/50 itself.
       result = h.featured ? 'guaranteed' : 'unknown';
       guaranteedNext[h.bannerType] = false;

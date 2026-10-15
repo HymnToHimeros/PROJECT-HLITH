@@ -84,6 +84,26 @@ describe('Farm', () => {
     expect(screen.queryByText(/Example data, not yours/)).not.toBeInTheDocument();
   });
 
+  it('a character the game has no amounts for yet is named as not counted, and no stamina total is shown', async () => {
+    const real = {
+      ...game,
+      data: { ...game.data, materials: async () => [{ id: 'm1', name: 'Boss core', kind: 'ascension', dropsPerRun: 2, staminaPerRun: 40 }] },
+      rules: { materialsFor: (id: string) => (id === 'c1' ? [] : [{ material: 'm1', amount: 10 }]) },
+    } as unknown as GameContract;
+    setFarm('aa', ['c1', 'c2']);
+    const view = render(<FarmScreen games={[real]} scope="aa" servers={{}} openTab={() => {}} open={() => {}} openAccount={() => {}} />);
+    const materials = await screen.findByLabelText('Materials');
+    expect(within(materials).getByText('—/10')).toBeInTheDocument();
+    expect(within(materials).getByText(/Not counted: Newest Star/)).toBeInTheDocument();
+    // 200 stamina for Helper alone would look like the whole plan.
+    expect(within(screen.getByLabelText('Stamina plan')).queryByText('200')).not.toBeInTheDocument();
+    // Only the one without amounts: no made-up example rows.
+    act(() => setFarm('aa', ['c1']));
+    expect(await within(screen.getByLabelText('Stamina plan')).findByText('No data yet · no material amounts for Newest Star yet')).toBeInTheDocument();
+    expect(screen.queryByText(/Example data, not yours/)).not.toBeInTheDocument();
+    view.unmount();
+  });
+
   it('without material data: example rows, stamina and days are marked; gear says "No data yet"', async () => {
     show();
     await screen.findByText('NOTHING CHOSEN');

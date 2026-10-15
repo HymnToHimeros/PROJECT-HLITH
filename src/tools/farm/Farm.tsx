@@ -42,6 +42,8 @@ interface Plan {
   amountsKnown: boolean;
   stamina: Known<number>;
   days: Known<number>;
+  /** Names of chosen characters with no material amounts yet: left out of the rows. */
+  left: string[];
 }
 
 function planOf(g: FarmGame, showExamples: boolean): Plan {
@@ -52,7 +54,8 @@ function planOf(g: FarmGame, showExamples: boolean): Plan {
   const rows = real.needs.known ? real.needs.value : example ? exampleNeeds(game, chosen.length) : [];
   // What you have isn't tracked (not even in examples), so the stamina tile is exactly the sum of the rows below.
   const stamina = example ? known(rows.reduce((sum, r) => sum + (r.stamina.known ? r.stamina.value : 0), 0), 'user') : real.stamina;
-  return { g, chosen, rows, example, amountsKnown: real.needs.known, stamina, days: daysToFinish(stamina, game.stamina[0]) };
+  const left = real.left.map((id) => chosen.find((c) => c.id === id)?.name ?? id);
+  return { g, chosen, rows, example, amountsKnown: real.needs.known, stamina, days: daysToFinish(stamina, game.stamina[0]), left };
 }
 
 /** Farm (R40): pick characters → materials (have / need, runs, stamina), stamina total, days to finish, gear to farm. */
@@ -105,14 +108,22 @@ export function Farm({ games, openRoster }: Props) {
               <h3 className={f.cardTitle}>Materials</h3>
               {plans.flatMap((p) => p.rows.map((row) => <MaterialRow key={`${p.g.game.id}:${row.material}`} plan={p} row={row} several={several} />))}
               {plans
-                .filter((p) => p.chosen.length > 0 && p.amountsKnown && p.g.game.rules.materialsNote)
+                .filter((p) => p.rows.length > 0 && p.amountsKnown && p.g.game.rules.materialsNote)
                 .map((p) => (
                   <span key={`note-${p.g.game.id}`} className={f.sub}>
                     {several ? `${p.g.game.short}: ` : ''}
                     {p.g.game.rules.materialsNote}
                   </span>
                 ))}
-              {plans.every((p) => p.rows.length === 0) && (
+              {plans
+                .filter((p) => p.amountsKnown && p.left.length > 0)
+                .map((p) => (
+                  <span key={`left-${p.g.game.id}`} className={f.sub}>
+                    <NoData dash={false} /> {several ? `${p.g.game.short}: ` : ''}
+                    Not counted: {p.left.join(', ')} (their material amounts aren’t in HLITH yet).
+                  </span>
+                ))}
+              {plans.every((p) => p.rows.length === 0) && plans.some((p) => !p.amountsKnown && p.chosen.length > 0) && (
                 <span className={f.sub}>
                   <NoData dash={false} /> Material amounts for {plans.filter((p) => !p.amountsKnown && p.chosen.length > 0).map((p) => p.g.game.name).join(' and ') || 'these games'} aren’t in HLITH yet. That part is on us, not you.
                 </span>
@@ -164,7 +175,7 @@ function Tiles({ plan, several }: { plan: Plan; several: boolean }) {
         {stamina.known ? (
           <span className={f.tileSub}>for every material listed {example && <ExampleTag />}</span>
         ) : (
-          <span className={f.tileNoData}>{plan.amountsKnown ? 'No data yet · some materials have no drop rate' : `No data yet · material amounts for ${g.game.short} aren’t in HLITH yet`}</span>
+          <span className={f.tileNoData}>{plan.amountsKnown ? (plan.rows.length === 0 ? `No data yet · no material amounts for ${plan.left.join(', ')} yet` : 'No data yet · some materials have no drop rate') : `No data yet · material amounts for ${g.game.short} aren’t in HLITH yet`}</span>
         )}
       </div>
       <div className={f.tile}>
