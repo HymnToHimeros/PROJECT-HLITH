@@ -3,7 +3,8 @@
 # Every 2 hours it asks `node scripts/schedule-due.ts` whether now is a check time
 # (counted from patch day: scripts/schedule/rhythm.ts). Most runs stop there.
 # When a check is due (or someone starts it by hand):
-#   1. re-imports leaks and characters, leak kits, and versions/banners/events/endgame;
+#   1. re-imports leaks and characters, leak kits, and versions/banners/events/endgame
+#      (HSR/ZZZ; Arknights Endfield from its official news and endfield.wiki.gg);
 #   2. runs the full check (lint, types, unit tests, build, browser tests) on the result;
 #   3. puts the changes on ONE standing PR (branch scheduler/auto-data) with a plain summary;
 #   4. merges it by itself only when every changed file is a data list
@@ -77,6 +78,12 @@ jobs:
         continue-on-error: true
         run: npm run data:schedule
 
+      - name: Arknights Endfield (official news + endfield.wiki.gg)
+        id: endfield
+        if: steps.plan.outputs.go == 'true' && hashFiles('src/games/endfield/contract.ts') != ''
+        continue-on-error: true
+        run: npm run data:endfield
+
       - name: What changed
         id: diff
         if: steps.plan.outputs.go == 'true'
@@ -109,6 +116,7 @@ jobs:
           [ "${{ steps.nanoka.outcome }}" = "failure" ] && failed+=(--failed "leaks-scan: the nanoka.cc import failed (see the Data refresh run on GitHub)")
           [ "${{ steps.kits.outcome }}" = "failure" ] && failed+=(--failed "game-data-refresh: the kit import failed (see the Data refresh run on GitHub)")
           [ "${{ steps.schedule.outcome }}" = "failure" ] && failed+=(--failed "events-scan: the notices/wiki import failed (see the Data refresh run on GitHub)")
+          [ "${{ steps.endfield.outcome }}" = "failure" ] && failed+=(--failed "events-scan: the Endfield import (official news + endfield.wiki.gg) failed (see the Data refresh run on GitHub)")
           if [ "${{ steps.check.outcome }}" = "failure" ]; then
             failed+=(--failed "game-data-refresh: the refreshed lists did not pass the check; PR on $BRANCH waits for SCHEDULER")
           fi
@@ -179,7 +187,7 @@ jobs:
       - name: Result
         if: steps.plan.outputs.go == 'true'
         run: |
-          for o in "${{ steps.nanoka.outcome }}" "${{ steps.kits.outcome }}" "${{ steps.schedule.outcome }}" "${{ steps.check.outcome }}"; do
+          for o in "${{ steps.nanoka.outcome }}" "${{ steps.kits.outcome }}" "${{ steps.schedule.outcome }}" "${{ steps.endfield.outcome }}" "${{ steps.check.outcome }}"; do
             [ "$o" = "failure" ] && exit 1
           done
           exit 0

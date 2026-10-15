@@ -76,3 +76,18 @@ describe('when to look for news', () => {
     ]);
   });
 });
+
+describe('each game its own version length', () => {
+  it('the median of the last 3 finished versions; a game without history keeps 42 days', async () => {
+    const { usualLength } = await import('../scripts/schedule/rhythm.ts');
+    const v = (id: string, start: string, end: string) => ({ id, start: `${start}T04:00:00.000Z`, end: `${end}T04:00:00.000Z` });
+    // Endfield 1.3–1.6: 41, 48, 43 days; 1.6 is still running and doesn't count.
+    expect(usualLength([v('1.3', '2026-06-05', '2026-07-16'), v('1.4', '2026-07-16', '2026-09-02'), v('1.5', '2026-09-02', '2026-10-15'), v('1.6', '2026-10-15', '2026-11-25')])).toBe(43);
+    expect(usualLength([])).toBe(42);
+  });
+
+  it('Endfield expects its pre-download notice 48 hours before the patch', () => {
+    expect(expectedOffset('endfield', 'preDownload', { preDownload: { '1.4': -48, '1.5': -48, '1.6': -48 } })).toBe(-48);
+    expect(expectedOffset('endfield', 'program', {})).toBe(-208);
+  });
+});

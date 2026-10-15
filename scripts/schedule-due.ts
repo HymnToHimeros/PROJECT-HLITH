@@ -13,12 +13,16 @@
  * Prints `due=true|false` and `next=<ISO>`; in a GitHub Action both also go to $GITHUB_OUTPUT.
  * With --key also `next_key=<ISO>` and the key moments of the next 3 weeks (keyMoments in rhythm.ts).
  */
-import { appendFileSync, readFileSync } from 'node:fs';
+import { appendFileSync, existsSync, readdirSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
-import { dueNow, keyMoments, nextCheck, planChecks, type Plan, type SignalLog, type VersionSpan } from './schedule/rhythm.ts';
+import { dueNow, keyMoments, nextCheck, planChecks, usualLength, type Plan, type SignalLog, type VersionSpan } from './schedule/rhythm.ts';
 
 const ROOT = resolve(import.meta.dirname, '..');
-const GAMES = ['hsr', 'zzz'];
+/** Every game with a versions list (src/games/<game>/data/versions.json). */
+const GAMES = readdirSync(resolve(import.meta.dirname, '../src/games'), { withFileTypes: true })
+  .filter((d) => d.isDirectory() && !d.name.startsWith('_') && existsSync(resolve(import.meta.dirname, `../src/games/${d.name}/data/versions.json`)))
+  .map((d) => d.name)
+  .sort();
 const HOUR = 3_600_000;
 
 const arg = (name: string) => {
@@ -38,7 +42,7 @@ const plans: Plan[] = GAMES.flatMap((game) => {
   const versions = read<VersionSpan[]>(`src/games/${game}/data/versions.json`);
   // Banner starts inside a version are phase 2: new banners and their notices.
   const starts = read<{ start: string }[]>(`src/games/${game}/data/banners.json`).map((x) => x.start);
-  const plan = planChecks(game, versions, rhythm[game] ?? {}, now - windowMs, (planDays ?? 30) + 1, starts);
+  const plan = planChecks(game, versions, rhythm[game] ?? {}, now - windowMs, (planDays ?? 30) + 1, starts, usualLength(versions));
   return plan ? [plan] : [];
 });
 

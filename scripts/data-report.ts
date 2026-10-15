@@ -14,7 +14,8 @@ import { resolve } from 'node:path';
 import { report, type Finding, type Item, type Lists } from './schedule/report.ts';
 
 const ROOT = resolve(import.meta.dirname, '..');
-const GAMES = ['hsr', 'zzz'];
+/** Every game with lists (Endfield once its data folder exists). */
+const GAMES = ['hsr', 'zzz', 'endfield'].filter((g) => existsSync(resolve(ROOT, `src/games/${g}/data/versions.json`)));
 const JOBS = ['leaks-scan', 'events-scan', 'game-data-refresh'] as const;
 const LISTS = ['characters', 'banners', 'events', 'versions', 'kits'] as const;
 
@@ -54,6 +55,8 @@ async function staleSheets(): Promise<Record<string, (id: string) => string | un
   const vite = await createServer({ configFile: false, root: ROOT, logLevel: 'silent', appType: 'custom', server: { middlewareMode: true, hmr: false, ws: false }, optimizeDeps: { noDiscovery: true, include: [] } });
   try {
     for (const game of GAMES) {
+      // A game without kit sheets (Endfield for now) has nothing that can be stale.
+      if (!existsSync(resolve(ROOT, `src/games/${game}/kitcheck/library.ts`))) continue;
       const lib = ((await vite.ssrLoadModule(`/src/games/${game}/kitcheck/library.ts`)) as { buildLibrary: () => { stale?: Map<string, string> } }).buildLibrary();
       // No `stale` means no sheet is stale.
       const stale = lib.stale ?? new Map<string, string>();
