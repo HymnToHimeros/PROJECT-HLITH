@@ -8,69 +8,93 @@
  * official hard pity, so it can be shown without history (assuming pity 0 and a
  * 50/50 still to play).
  */
-import type { PityModel, PityState, PullRecord } from '../../core/contract';
+import type { PityModel, PityState, PullOutcome, PullRecord } from '../../core/contract';
 import { known, unknown, type Known } from '../../core/contract/known';
 
 export type OddsMode = 'official' | 'community';
 
-interface Stepper {
-  topRate(s: PityState): number;
-  featuredRate(s: PityState): number;
-  next(s: PityState, gotTop: boolean, gotFeatured: boolean): PityState;
-}
-
-/** null when the model lacks the numbers this mode needs. */
-function stepper(model: PityModel, mode: OddsMode): Stepper | null {
+/**
+ * Every result of the next step from a state. Null when the model lacks the
+ * numbers this mode needs. A game's own rule (`custom`) brings its own steps,
+ * and its numbers are the game's published rules, so both modes use them.
+ */
+function stepper(model: PityModel, mode: OddsMode): ((s: PityState) => PullOutcome[]) | null {
   switch (model.kind) {
     case 'hard-pity': {
       if (model.baseRate === null) return null;
       if (mode === 'community' && !model.softPity) return null;
       const { hardPity, baseRate, featured, softPity } = model;
-      return {
-        topRate: (s) => {
-          const n = s.pulls + 1;
-          if (n >= hardPity) return 1;
-          if (mode === 'community' && softPity && n >= softPity.from) return Math.min(1, baseRate + softPity.stepPerPull * (n - softPity.from + 1));
-          return baseRate;
-        },
-        featuredRate: (s) => (!featured || s.guaranteed ? 1 : featured.winRate),
-        next: (s, gotTop, gotFeatured) =>
-          gotTop
-            ? { pulls: 0, guaranteed: Boolean(featured && !gotFeatured && featured.guaranteeAfterLoss) }
-            : { pulls: s.pulls + 1, guaranteed: s.guaranteed },
+      const topRate = (s: PityState) => {
+        const n = s.pulls + 1;
+        if (n >= hardPity) return 1;
+        if (mode === 'community' && softPity && n >= softPity.from) return Math.min(1, baseRate + softPity.stepPerPull * (n - softPity.from + 1));
+        return baseRate;
+      };
+      return (s) => {
+        const top = topRate(s);
+        const feat = !featured || s.guaranteed ? 1 : featured.winRate;
+        return [
+          { p: top * feat, next: { pulls: 0, guaranteed: false }, copies: 1 },
+          { p: top * (1 - feat), next: { pulls: 0, guaranteed: Boolean(featured?.guaranteeAfterLoss) }, copies: 0 },
+          { p: 1 - top, next: { pulls: s.pulls + 1, guaranteed: s.guaranteed }, copies: 0 },
+        ];
       };
     }
     case 'spark': {
       if (model.baseRate === null || mode === 'community') return null;
       const { sparkAt, baseRate } = model;
       // baseRate is the featured rate; pulls counts toward the spark exchange.
-      return {
-        topRate: (s) => (s.pulls + 1 >= sparkAt ? 1 : baseRate),
-        featuredRate: () => 1,
-        next: (s) => ({ pulls: s.pulls + 1 >= sparkAt ? 0 : s.pulls + 1, guaranteed: false }),
+      return (s) => {
+        const top = s.pulls + 1 >= sparkAt ? 1 : baseRate;
+        const next = { pulls: s.pulls + 1 >= sparkAt ? 0 : s.pulls + 1, guaranteed: false };
+        return [
+          { p: top, next, copies: 1 },
+          { p: 1 - top, next, copies: 0 },
+        ];
       };
     }
-    case 'none':
+    case 'none': {
       if (model.baseRate === null || mode === 'community') return null;
-      return { topRate: () => model.baseRate as number, featuredRate: () => 1, next: (s) => s };
+      const rate = model.baseRate;
+      return (s) => [
+        { p: rate, next: s, copies: 1 },
+        { p: 1 - rate, next: s, copies: 0 },
+      ];
+    }
     case 'custom':
-      if (mode === 'community') return null;
-      return { topRate: model.topRate, featuredRate: () => 1, next: model.next };
+      return model.pull;
   }
+}
+
+/** Pulls in one step of a banner: 10 when the game only sells them in tens. */
+export const stepOf = (model: PityModel): number => (model.kind === 'custom' ? (model.step ?? 1) : 1);
+
+/** The top-rarity counter's ceiling ("pity 40/80"), or null when the banner has none. */
+export function hardPityOf(model: PityModel): number | null {
+  if (model.kind === 'hard-pity') return model.hardPity;
+  if (model.kind === 'custom') return model.hardPity ?? null;
+  return null;
+}
+
+/** The featured split (50/50 and what a loss does), when the banner has one. */
+export function featuredOf(model: PityModel): { winRate: number; guaranteeAfterLoss: boolean } | undefined {
+  return model.kind === 'hard-pity' || model.kind === 'custom' ? model.featured : undefined;
 }
 
 /**
  * Chance of getting at least `copies` featured results within `pulls` pulls,
  * starting from `state`. Exact, by stepping through every reachable state.
+ * A banner sold in steps of 10 counts only whole steps.
  */
 export function chance(model: PityModel, state: PityState, pulls: number, mode: OddsMode, copies = 1): Known<number> {
   const step = stepper(model, mode);
   if (!step) return unknown();
   if (copies <= 0) return known(1, 'official', new Date(0).toISOString());
+  const steps = Math.floor(pulls / stepOf(model));
   const key = (s: PityState, c: number) => `${s.pulls}|${s.guaranteed ? 1 : 0}|${c}|${JSON.stringify(s.extra ?? {})}`;
   let dist = new Map<string, { s: PityState; c: number; p: number }>([[key(state, 0), { s: state, c: 0, p: 1 }]]);
   let success = 0;
-  for (let i = 0; i < pulls; i++) {
+  for (let i = 0; i < steps; i++) {
     const nextDist = new Map<string, { s: PityState; c: number; p: number }>();
     const add = (s: PityState, c: number, p: number) => {
       if (p <= 0) return;
@@ -83,13 +107,7 @@ export function chance(model: PityModel, state: PityState, pulls: number, mode: 
       if (cur) cur.p += p;
       else nextDist.set(k, { s, c, p });
     };
-    for (const { s, c, p } of dist.values()) {
-      const top = step.topRate(s);
-      const feat = step.featuredRate(s);
-      add(step.next(s, true, true), c + 1, p * top * feat);
-      add(step.next(s, true, false), c, p * top * (1 - feat));
-      add(step.next(s, false, false), c, p * (1 - top));
-    }
+    for (const { s, c, p } of dist.values()) for (const o of step(s)) add(o.next, c + o.copies, p * o.p);
     dist = nextDist;
     if (dist.size === 0) break;
   }
@@ -114,21 +132,35 @@ export function worstCase(model: PityModel, state: PityState, copies = 1): Known
       return known(model.sparkAt - state.pulls + (copies - 1) * model.sparkAt, 'official', new Date(0).toISOString());
     case 'none':
       return unknown();
-    case 'custom':
-      return known(model.worstCase(state) + (copies - 1) * model.worstCase({ pulls: 0, guaranteed: false }), 'official', new Date(0).toISOString());
+    case 'custom': {
+      const w = model.worstCase(state, copies);
+      return w === null ? unknown() : known(w, 'official', new Date(0).toISOString());
+    }
   }
 }
 
-/** Current pity on one banner type from imported history (oldest first or any order). */
-export function pityFromHistory(history: PullRecord[], bannerType: string): { pity: Known<number>; guaranteed: Known<boolean> } {
+/**
+ * Current pity on one banner type from imported history (oldest first or any order).
+ * `guaranteeAfterLoss` false (Endfield): a lost 50/50 never makes the next one guaranteed.
+ */
+export function pityFromHistory(history: PullRecord[], bannerType: string, guaranteeAfterLoss = true): { pity: Known<number>; guaranteed: Known<boolean> } {
   const pulls = history.filter((p) => p.bannerType === bannerType).sort((a, b) => a.time.localeCompare(b.time) || a.id.localeCompare(b.id));
   if (pulls.length === 0) return { pity: unknown('import-history'), guaranteed: unknown('import-history') };
   const lastTop = findLastIndex(pulls, (p) => p.rarity === 'top');
   const at = new Date().toISOString();
   const pity = known(pulls.length - 1 - lastTop, 'import', at);
-  if (lastTop === -1) return { pity, guaranteed: known(false, 'import', at) };
+  if (lastTop === -1 || !guaranteeAfterLoss) return { pity, guaranteed: known(false, 'import', at) };
   const f = pulls[lastTop]?.featured;
   return { pity, guaranteed: f === undefined ? unknown('import-history') : known(!f, 'import', at) };
+}
+
+/**
+ * Counted pulls on the current banner of a type (pulls since it opened) and
+ * whether its featured result came: the `extra` a game's own rule reads.
+ */
+export function bannerProgress(history: PullRecord[], bannerType: string, since: number): { banner: number; got: number } {
+  const on = history.filter((p) => p.bannerType === bannerType && Date.parse(p.time) >= since);
+  return { banner: on.length, got: on.some((p) => p.rarity === 'top' && p.featured === true) ? 1 : 0 };
 }
 
 export interface LuckStats {
@@ -137,8 +169,8 @@ export interface LuckStats {
   fiftyFifty: { won: number; lost: number; unknown: number };
 }
 
-/** Luck from history: average pulls per top result and the 50/50 record. */
-export function luck(history: PullRecord[], bannerType: string): LuckStats {
+/** Luck from history: average pulls per top result and the 50/50 record. Without a guarantee after a loss, every top result is a 50/50. */
+export function luck(history: PullRecord[], bannerType: string, guaranteeAfterLoss = true): LuckStats {
   const pulls = history.filter((p) => p.bannerType === bannerType).sort((a, b) => a.time.localeCompare(b.time) || a.id.localeCompare(b.id));
   const gaps: number[] = [];
   let since = 0;
@@ -157,7 +189,7 @@ export function luck(history: PullRecord[], bannerType: string): LuckStats {
     else if (p.featured) ff.won++;
     else {
       ff.lost++;
-      guaranteedNext = true;
+      guaranteedNext = guaranteeAfterLoss;
     }
   }
   const at = new Date().toISOString();

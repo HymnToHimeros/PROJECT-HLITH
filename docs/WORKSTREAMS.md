@@ -152,6 +152,12 @@ stays the base; never rename an id that is already in a list.
     characters" cards, `source: 'best-found'` (`BEST_FOUND` in `core/rules/bestCards.ts`). LOGIC-CORE changed
     FRAME's `src/tools/roster/Teams.tsx` (with MANAGER's OK): the cards are appended to Recommended teams, tagged
     "Best found" with the existing tag style, with no "Edit team list" and their own source line.
+  - 2026-10-15 · LOGIC-CORE changed the `custom` `PityModel` (E3, Endfield): it now lists every result
+    of the next step (`pull(state)` → `PullOutcome[]`: chance, next state, featured copies), with
+    `source`, optional `step` (10 for pulls sold in tens), `hardPity`, `featured`, and
+    `worstCase(state, copies)` (null = no ceiling). `PityState.extra.banner` / `.got` have a shared
+    meaning (pulls on the current banner, featured came on it); the Pulls screens fill them from history.
+    Tools read pity through `hardPityOf` / `featuredOf` / `stepOf` (tools/pity), never `kind === 'hard-pity'`.
 - Beta recommended builds (T54): `npm run data:builds` also reads the beta files' recommendation for characters in
   our lists that the live files don't have yet (upcoming agents, leaks), marked `beta` and `version`. When the
   scheduled refresh re-imports leaks' beta kits, run `npm run data:builds` too, so the beta builds stay current.

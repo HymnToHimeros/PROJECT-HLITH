@@ -1,7 +1,7 @@
 import type { GameContract, PullRecord } from '../../core/contract';
 import { formatNumber } from '../../core/time/format';
 import { ExampleTag } from '../../core/ui';
-import { luck } from '../pity/pity';
+import { featuredOf, luck } from '../pity/pity';
 import { EmptyTile, Tile } from './shared';
 import k from './kit.module.css';
 import p from './pulls.module.css';
@@ -15,7 +15,7 @@ import p from './pulls.module.css';
 export function LuckReport({ game, history, example }: { game: GameContract; history: PullRecord[]; example: boolean }) {
   const top = game.terms.rarity.top;
   const rows = game.bannerTypes
-    .map((t) => ({ type: t, stats: luck(history, t.id), count: history.filter((h) => h.bannerType === t.id).length }))
+    .map((t) => ({ type: t, stats: luck(history, t.id, featuredOf(t.pity)?.guaranteeAfterLoss ?? true), count: history.filter((h) => h.bannerType === t.id).length }))
     .filter((r) => r.count > 0);
   // Averages over every banner type together.
   const tops = rows.reduce((a, r) => a + r.stats.tops, 0);

@@ -11,7 +11,7 @@ import { phaseOfBanner } from '../banners/fit';
 import { useBannersData, type BannersData } from '../banners/useBannersData';
 import { cx } from '../../core/ui/cx';
 import { budget, budgetPulls, pullsFor, type BudgetRow } from '../budget/budget';
-import { chance, pityFromHistory, worstCase, type OddsMode } from '../pity/pity';
+import { bannerProgress, chance, featuredOf, hardPityOf, pityFromHistory, worstCase, type OddsMode } from '../pity/pity';
 import { Filters, percent, Strip } from './shared';
 import p from './pulls.module.css';
 import type { PullsData } from './usePullsData';
@@ -45,7 +45,7 @@ export function Planner({ game, data, serverId, now, tagged, openTab }: Props) {
   const typeOf = (b: Banner) => game.bannerTypes.find((t) => t.id === b.type);
   const banners = all.filter((b) => target === 'all' || typeOf(b)?.target === target).sort((a, b) => Date.parse(a.start) - Date.parse(b.start) || Date.parse(a.end) - Date.parse(b.end));
   const hasWeapon = all.some((b) => typeOf(b)?.target === 'weapon');
-  const pityTypes = game.bannerTypes.filter((t) => t.pity.kind === 'hard-pity' && all.some((b) => b.type === t.id));
+  const pityTypes = game.bannerTypes.filter((t) => hardPityOf(t.pity) !== null && all.some((b) => b.type === t.id));
   // Example pulls stand in only where you haven't saved your own pity.
   const examplePity = data.history.example && pityTypes.some((t) => !data.user.pityManual?.[t.id]);
   const { openSheet, sheet } = useAddOwnBanner(game, data.banners.examples);
@@ -129,9 +129,14 @@ const SOURCE_LABEL: Record<PitySource, string> = {
  * first, then your imported history when it knows both pity and 50/50 state,
  * then the pity you saved yourself, then example pulls. null = unknown.
  */
-export function pityFor(data: Pick<PullsData, 'history' | 'user'>, typeId: string, whatIf: WhatIf[string] | undefined): { state: { pulls: number; guaranteed: boolean }; source: PitySource } | null {
+export function pityFor(
+  data: Pick<PullsData, 'history' | 'user'>,
+  typeId: string,
+  whatIf: WhatIf[string] | undefined,
+  guaranteeAfterLoss = true,
+): { state: { pulls: number; guaranteed: boolean }; source: PitySource } | null {
   if (whatIf) return { state: whatIf, source: 'what-if' };
-  const { pity, guaranteed } = pityFromHistory(data.history.list, typeId);
+  const { pity, guaranteed } = pityFromHistory(data.history.list, typeId, guaranteeAfterLoss);
   const fromHistory = pity.known && guaranteed.known ? { pulls: pity.value, guaranteed: guaranteed.value } : null;
   if (fromHistory && !data.history.example) return { state: fromHistory, source: 'history' };
   const saved = data.user.pityManual?.[typeId];
@@ -159,8 +164,10 @@ function PlanCard({ game, banner: b, type, data, art, serverId, now, whatIf, ope
     ...data.budgetExtras(horizon),
   });
   const pullsBy = budgetPulls(game, byEnd, type.id);
-  const pick = pityFor(data, type.id, whatIf);
-  const state = pick?.state ?? { pulls: 0, guaranteed: false };
+  const pick = pityFor(data, type.id, whatIf, featuredOf(type.pity)?.guaranteeAfterLoss ?? true);
+  // A game's own rule also reads how far this banner has come (pulls on it so far, from history; none before it opens).
+  const progress = type.pity.kind === 'custom' ? (upcoming || data.history.example ? { banner: 0, got: 0 } : bannerProgress(data.history.list, type.id, start)) : undefined;
+  const state = { ...(pick?.state ?? { pulls: 0, guaranteed: false }), ...(progress ? { extra: progress } : {}) };
   const stateKnown = pick !== null;
   const worst = worstCase(type.pity, state);
   const odds = (mode: OddsMode) => (stateKnown && pullsBy.known ? chance(type.pity, state, pullsBy.value, mode) : null);
@@ -170,7 +177,7 @@ function PlanCard({ game, banner: b, type, data, art, serverId, now, whatIf, ope
   const worstN = worst.known ? worst.value : null;
   const byN = pullsBy.known ? pullsBy.value : null;
   const short = worstN !== null && byN !== null ? worstN - byN : null;
-  const hard = type.pity.kind === 'hard-pity' ? type.pity.hardPity : null;
+  const hard = hardPityOf(type.pity);
 
   return (
     <article className={cx(p.planCard, b.leak && p.leakCard)} style={{ '--vent': game.vent } as CSSProperties} aria-label={b.title}>
@@ -342,12 +349,15 @@ function Figure({ label, value, dim = false }: { label: string; value: number | 
 function TryPity({ game, types, value, onChange, data }: { game: GameContract; types: BannerType[]; value: WhatIf; onChange: (v: WhatIf) => void; data: PullsData }) {
   const [typeId, setTypeId] = useState(types[0]?.id ?? '');
   const type = types.find((t) => t.id === typeId) ?? types[0];
-  if (!type || type.pity.kind !== 'hard-pity') return null;
+  const hard = type ? hardPityOf(type.pity) : null;
+  if (!type || hard === null) return null;
+  const featured = featuredOf(type.pity);
   const cur = value[type.id];
   const saved = data.user.pityManual?.[type.id];
-  const fromHistory = pityFromHistory(data.history.list, type.id);
+  const fromHistory = pityFromHistory(data.history.list, type.id, featured?.guaranteeAfterLoss ?? true);
   const historyWins = !data.history.example && fromHistory.pity.known && fromHistory.guaranteed.known;
-  const hasFeatured = type.pity.featured !== undefined;
+  // Only ask about a guarantee where losing a 50/50 gives one.
+  const hasFeatured = featured?.guaranteeAfterLoss === true;
   const set = (next: { pulls: number; guaranteed: boolean } | null) => {
     const rest = Object.fromEntries(Object.entries(value).filter(([id]) => id !== type.id));
     onChange(next ? { ...rest, [type.id]: next } : rest);
@@ -378,12 +388,12 @@ function TryPity({ game, types, value, onChange, data }: { game: GameContract; t
             type="number"
             inputMode="numeric"
             min={0}
-            max={type.pity.hardPity - 1}
+            max={hard - 1}
             value={cur ? cur.pulls : ''}
             placeholder="e.g. 40"
             onChange={(e) => {
               const n = Number.parseInt(e.target.value, 10);
-              set(Number.isFinite(n) ? { pulls: Math.min(type.pity.kind === 'hard-pity' ? type.pity.hardPity - 1 : n, Math.max(0, n)), guaranteed: cur?.guaranteed ?? false } : null);
+              set(Number.isFinite(n) ? { pulls: Math.min(hard - 1, Math.max(0, n)), guaranteed: cur?.guaranteed ?? false } : null);
             }}
           />
         </label>
@@ -406,7 +416,7 @@ function TryPity({ game, types, value, onChange, data }: { game: GameContract; t
         )}
         <span className={p.muted}>
           {saved
-            ? `Saved for ${type.label}: ${saved.pity}/${type.pity.hardPity} · ${saved.guaranteed ? 'guaranteed' : '50/50'}, on ${formatDate(Date.parse(saved.at))}. Update it after you pull.`
+            ? `Saved for ${type.label}: ${saved.pity}/${hard}${hasFeatured ? ` · ${saved.guaranteed ? 'guaranteed' : '50/50'}` : ''}, on ${formatDate(Date.parse(saved.at))}. Update it after you pull.`
             : 'Typing only tries it out on this screen. Save it to keep it, for example if you play on phone or console and can’t import.'}
           {historyWins ? ' Your imported history knows this banner’s pity, so the cards use that instead.' : ''}
         </span>

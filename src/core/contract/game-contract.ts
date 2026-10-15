@@ -139,7 +139,12 @@ export interface BannerType {
 export interface PityState {
   pulls: number; // since last top-rarity result
   guaranteed: boolean; // next top-rarity result is the featured one
-  extra?: Record<string, number>; // room for a game's own counters
+  /**
+   * Room for a game's own counters. Two have a shared meaning, filled from
+   * history by the Pulls screens: `banner` = counted pulls on the current
+   * banner so far, `got` = 1 once its featured result came on it.
+   */
+  extra?: Record<string, number>;
 }
 
 /**
@@ -159,12 +164,34 @@ export type PityModel =
   | { kind: 'spark'; sparkAt: number; baseRate: number | null }
   | { kind: 'none'; baseRate: number | null }
   | {
+      /**
+       * A game's own rules, written in its games/ folder (e.g. Endfield's 120
+       * guarantee once per banner). The pity engine steps through `pull` and
+       * never needs to know the game.
+       */
       kind: 'custom';
       describe: string;
-      topRate: (state: PityState) => number;
-      next: (state: PityState, gotTop: boolean, gotFeatured: boolean) => PityState;
-      worstCase: (state: PityState) => number;
+      /** Where the rules come from, shown in the Guide. */
+      source: string;
+      /** Every result of the next step from this state: its chance, the state after it, and the featured copies it gives (0, 1 or more). */
+      pull: (state: PityState) => PullOutcome[];
+      /** Pulls in one step: 1, or 10 when the game only sells pulls in tens (Endfield's weapon issues). */
+      step?: number;
+      /** Most pulls for `copies` featured results from this state; null = no ceiling. */
+      worstCase: (state: PityState, copies: number) => number | null;
+      /** The top-rarity counter's ceiling ("pity 40/80"), when the game has one. */
+      hardPity?: number;
+      /** The featured split, for the Luck report and History (Endfield: 50/50 with no guarantee after a loss). */
+      featured?: { winRate: number; guaranteeAfterLoss: boolean };
     };
+
+/** One result of a step in a `custom` PityModel. */
+export interface PullOutcome {
+  p: number;
+  next: PityState;
+  /** Featured copies this result gives. */
+  copies: number;
+}
 
 export interface IncomeRow {
   id: string; // stable: 'hsr.daily-training'

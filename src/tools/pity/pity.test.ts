@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import type { PityModel, PullRecord } from '../../core/contract';
-import { chance, luck, pityFromHistory, worstCase } from './pity';
+import { chance, hardPityOf, luck, pityFromHistory, worstCase } from './pity';
 
 const character: PityModel = {
   kind: 'hard-pity',
@@ -82,13 +82,31 @@ describe('chance (exact, by stepping through states)', () => {
     const custom: PityModel = {
       kind: 'custom',
       describe: 'guaranteed every 10th pull',
-      topRate: (s) => (s.pulls + 1 >= 10 ? 1 : 0),
-      next: (s, top) => ({ pulls: top ? 0 : s.pulls + 1, guaranteed: false }),
-      worstCase: (s) => 10 - s.pulls,
+      source: 'test',
+      pull: (s) => (s.pulls + 1 >= 10 ? [{ p: 1, next: { pulls: 0, guaranteed: false }, copies: 1 }] : [{ p: 1, next: { pulls: s.pulls + 1, guaranteed: false }, copies: 0 }]),
+      worstCase: (s, copies) => 10 - s.pulls + (copies - 1) * 10,
+      hardPity: 10,
     };
     expect(value(chance(custom, fresh, 9, 'official'))).toBe(0);
     expect(value(chance(custom, fresh, 10, 'official'))).toBe(1);
+    // A game's own rule is its published rules, so both modes use it.
+    expect(value(chance(custom, fresh, 10, 'community'))).toBe(1);
     expect(value(worstCase(custom, { pulls: 4, guaranteed: false }, 2))).toBe(16);
+    expect(hardPityOf(custom)).toBe(10);
+  });
+  it('sold in steps of 10: only whole steps count, and one step can give several copies', () => {
+    const tens: PityModel = {
+      kind: 'custom',
+      describe: 'two copies in every step of 10',
+      source: 'test',
+      step: 10,
+      pull: (s) => [{ p: 1, next: s, copies: 2 }],
+      worstCase: (_s, copies) => Math.ceil(copies / 2) * 10,
+    };
+    expect(value(chance(tens, fresh, 19, 'official', 2))).toBe(1);
+    expect(value(chance(tens, fresh, 19, 'official', 3))).toBe(0); // the 9 left over buy nothing
+    expect(value(chance(tens, fresh, 20, 'official', 3))).toBe(1);
+    expect(worstCase({ ...tens, worstCase: () => null }, fresh).known).toBe(false);
   });
 });
 
@@ -135,5 +153,9 @@ describe('pity and luck from history', () => {
     expect(l.tops).toBe(2);
     expect(l.averagePity).toMatchObject({ known: true, value: 40 });
     expect(l.fiftyFifty).toEqual({ won: 0, lost: 1, unknown: 0 });
+  });
+  it('no guarantee after a loss (Endfield): every top result is a 50/50, and a loss guarantees nothing', () => {
+    expect(luck(history, 'character', false).fiftyFifty).toEqual({ won: 1, lost: 1, unknown: 0 });
+    expect(pityFromHistory(history.slice(0, 65), 'character', false).guaranteed).toMatchObject({ known: true, value: false });
   });
 });
