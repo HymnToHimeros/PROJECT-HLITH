@@ -271,7 +271,7 @@ function Picker({ games, several, word }: { games: FarmGame[]; several: boolean;
         </ul>
       )}
       <label className={f.searchLabel}>
-        <span className={f.label}>ADD A {word.toUpperCase()}</span>
+        <span className={f.label}>ADD {/^[aeiou]/i.test(word) ? 'AN' : 'A'} {word.toUpperCase()}</span>
         <input className={f.search} type="search" placeholder={`Search ${all.length} ${word}s`} value={query} onChange={(e) => setQuery(e.target.value)} autoComplete="off" />
       </label>
       {suggestions.length > 0 ? (

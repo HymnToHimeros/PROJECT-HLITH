@@ -33,7 +33,9 @@ describe('first run: accept the Terms and Privacy policy, choose a username (001
 
   it('until both are done, no table with app data can be added to or changed, nor files; deletion requests stay possible', () => {
     const block = sql.match(/do \$\$[\s\S]*?end \$\$;/)?.[0] ?? '';
-    const covered = [...(block.match(/array\[([\s\S]*?)\]/)?.[1] ?? '').matchAll(/'(\w+)'/g)].map((m) => m[1] as string);
+    const inBlock = [...(block.match(/array\[([\s\S]*?)\]/)?.[1] ?? '').matchAll(/'(\w+)'/g)].map((m) => m[1] as string);
+    const later = [...all.matchAll(/create policy "first run: accept first[^"]*" on public\.(\w+) as restrictive/g)].map((m) => m[1] as string);
+    const covered = [...new Set([...inBlock, ...later])];
     const exempt = ['account_deletion_requests', 'account_identity', 'account_restrictions', 'moderation_actions', 'owners'];
     // Tables nobody can write to directly (no insert or update policy; only server functions write) need no gate.
     const writable = (t: string) => new RegExp(`create policy[^;]*on public\\.${t}\\s+for (insert|update|all)\\b`, 'i').test(all);

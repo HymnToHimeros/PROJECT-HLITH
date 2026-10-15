@@ -29,6 +29,7 @@ describe('finishing account deletions (T11)', () => {
     const calls: string[] = [];
     const c: PurgeClient = {
       wipeHoyolabLogins: async () => void calls.push('wipe'),
+      wipeSkportTokens: async () => void calls.push('wipe-skport'),
       deleteRows: async (t, _u, col) => (calls.push(`rows:${t}${col ? `.${col}` : ''}`), 1),
       listFolder: async (b) => (b === 'avatars' ? ['avatar.jpg', 'banner.jpg'] : []),
       removeFiles: async (b, paths) => void calls.push(`files:${b}:${paths.join(',')}`),
@@ -49,6 +50,7 @@ describe('finishing account deletions (T11)', () => {
     const calls: string[] = [];
     const c: PurgeClient = {
       wipeHoyolabLogins: async () => undefined,
+      wipeSkportTokens: async () => undefined,
       deleteRows: async (t) => {
         if (t === 'pulls') throw new Error('boom');
         calls.push(t);

@@ -27,6 +27,19 @@ import {
 import c from './connections.module.css';
 import { askHoyolab, forgetDeviceAccount, fullIn, hoyolabLink, rememberWorks, saveDeviceAccount, type HoyoAccount, type HoyoAnswer, type HoyoEndgame, type HoyoLogin, type Part } from './hoyolab';
 import { HoyolabSteps, PasteLogin } from './HoyolabLogin';
+import {
+  askSkport,
+  forgetSkportDevice,
+  forgetSkportOnServer,
+  saveSkportDevice,
+  saveSkportOnServer,
+  skportLink,
+  skportRememberWorks,
+  updateSkportAccount,
+  type SkportAnswer,
+  type SkportLinkedAccount,
+} from './skport';
+import { PasteSkportToken, SkportSteps } from './SkportLogin';
 import { useAccounts } from './useAccounts';
 import { useExamplesShown } from '../../core/data/prefs';
 
@@ -39,43 +52,50 @@ const CODE_LIST = 'hoyo-codes.seria.moe';
  * Account → Connected accounts (R47 + saved accounts): ONE list of HoYoLAB logins
  * ("Main", "Alt"…), each covering one or more games and UIDs, instead of one block
  * per game. Each account reads live stamina, check-in and endgame per game; saved on
- * HLITH's server it can also check in and redeem codes by itself every day.
+ * HLITH’s server it can also check in and redeem codes by itself every day.
  */
 export function LinkAccounts({ games, allGames }: { games: GameContract[]; /** Every registered game, switched on or not. Missing = games. */ allGames?: GameContract[] }) {
-  const linkable = games.filter((g) => hoyolabLink(g));
+  const hoyoGames = games.filter((g) => hoyolabLink(g));
+  const skportGames = games.filter((g) => skportLink(g));
   // Loaded for every game, so an account can say which switched-off games it still covers.
   const allLinkable = (allGames ?? games).filter((g) => hoyolabLink(g));
   const { accounts, server, blocker, loadError, refresh } = useAccounts(allLinkable);
   const [adding, setAdding] = useState(false);
+  const skportAccounts = server?.skportAccounts ?? [];
 
-  if (linkable.length === 0) {
-    return <EmptyState title="No HoYoLAB link for your games" body="None of the games you track has a HoYoLAB link, so live stamina, check-in and import aren’t available." />;
+  if (hoyoGames.length === 0 && skportGames.length === 0) {
+    return <EmptyState title="No account link for your games" body="None of the games you track has a linked platform, so live stamina, check-in and import aren&apos;t available." />;
   }
+
   const showAdd = adding || accounts.length === 0;
 
   return (
     <div className={c.stack}>
-      <HowTo
-        title="How connected accounts work"
-        steps={[
-          <>Add a HoYoLAB account: paste its login values (the guide in the form shows where to find them). Give it a name like “Main” or “Alt”.</>,
-          <>HLITH looks up which games and UIDs that login has. One login can cover several games; each game keeps its own data.</>,
-          <>Choose where the login is kept: used once, remembered on this device, or saved on HLITH’s server. Only a login saved on the server can check in and redeem codes by itself.</>,
-          <>In each account, press “Check now” next to a game for live stamina, daily activity, check-in and endgame records.</>,
-          <>Turn on “Automatic daily check-in” and, with the extra code login, “Redeem codes automatically”. Results show under each game.</>,
-        ]}
-      >
-        <p className={c.body}>
-          <strong>Saved on HLITH’s server</strong> means: the login values are stored encrypted (Supabase Vault). Nobody can read them back in a browser, not even you; only HLITH’s server uses them, to talk to HoYoLAB for you. They are never written to logs.
-        </p>
-        <p className={c.body}>
-          <strong>To stop it:</strong> switch “Automatic daily check-in” or “Redeem codes automatically” off, or press “Forget” on the account. Forget overwrites the saved login with random text at once, so it can’t be used again. Pressing Log out on hoyolab.com also ends the login for everyone, HLITH included.
-        </p>
-      </HowTo>
-      <div className={c.row}>
-        <UnverifiedTag source={SOURCE} />
-        <span className={c.muted}>HoYoLAB has no official API. This follows what community tools (genshin.py) document and hasn’t been tested with a live account yet, so treat its numbers as unconfirmed.</span>
-      </div>
+      {hoyoGames.length > 0 && (
+        <>
+          <HowTo
+            title="How connected accounts work"
+            steps={[
+              <>Add a HoYoLAB account: paste its login values (the guide in the form shows where to find them). Give it a name like "Main" or "Alt".</>,
+              <>HLITH looks up which games and UIDs that login has. One login can cover several games; each game keeps its own data.</>,
+              <>Choose where the login is kept: used once, remembered on this device, or saved on HLITH’s server. Only a login saved on the server can check in and redeem codes by itself.</>,
+              <>In each account, press "Check now" next to a game for live stamina, daily activity, check-in and endgame records.</>,
+              <>Turn on "Automatic daily check-in" and, with the extra code login, "Redeem codes automatically". Results show under each game.</>,
+            ]}
+          >
+            <p className={c.body}>
+              <strong>Saved on HLITH’s server</strong> means: the login values are stored encrypted (Supabase Vault). Nobody can read them back in a browser, not even you; only HLITH’s server uses them, to talk to HoYoLAB for you. They are never written to logs.
+            </p>
+            <p className={c.body}>
+              <strong>To stop it:</strong> switch "Automatic daily check-in" or "Redeem codes automatically" off, or press "Forget" on the account. Forget overwrites the saved login with random text at once, so it can’t be used again. Pressing Log out on hoyolab.com also ends the login for everyone, HLITH included.
+            </p>
+          </HowTo>
+          <div className={c.row}>
+            <UnverifiedTag source={SOURCE} />
+            <span className={c.muted}>HoYoLAB has no official API. This follows what community tools (genshin.py) document and hasn’t been tested with a live account yet, so treat its numbers as unconfirmed.</span>
+          </div>
+        </>
+      )}
       {blocker && <span className={c.muted}>{blocker}</span>}
       {loadError && (
         <span className={c.error} role="alert">
@@ -83,30 +103,36 @@ export function LinkAccounts({ games, allGames }: { games: GameContract[]; /** E
         </span>
       )}
 
-      <section className={c.tight} aria-label="Your HoYoLAB accounts">
-        <div className={c.cardHead}>
-          <span className={c.label}>Your HoYoLAB accounts · {accounts.length}</span>
-          {!showAdd && <Button onClick={() => setAdding(true)}>Add a HoYoLAB account</Button>}
-        </div>
-        {accounts.length > 0 ? accounts.map((a) => <AccountCard key={a.id} account={a} games={linkable} offGames={allLinkable.filter((g) => !linkable.some((l) => l.id === g.id))} server={server} blocker={blocker} refresh={refresh} />) : <ExampleAccounts games={linkable} />}
-      </section>
+      {hoyoGames.length > 0 && (
+        <>
+          <section className={c.tight} aria-label="Your HoYoLAB accounts">
+            <div className={c.cardHead}>
+              <span className={c.label}>Your HoYoLAB accounts · {accounts.length}</span>
+              {!showAdd && <Button onClick={() => setAdding(true)}>Add a HoYoLAB account</Button>}
+            </div>
+            {accounts.length > 0 ? accounts.map((a) => <AccountCard key={a.id} account={a} games={hoyoGames} offGames={allLinkable.filter((g) => !hoyoGames.some((l) => l.id === g.id))} server={server} blocker={blocker} refresh={refresh} />) : <ExampleAccounts games={hoyoGames} />}
+          </section>
 
-      {showAdd && (
-        <AddAccount
-          games={linkable}
-          used={accounts.map((a) => a.label)}
-          blocker={blocker}
-          canCancel={accounts.length > 0}
-          onDone={() => {
-            setAdding(false);
-            refresh();
-          }}
-          onCancel={() => setAdding(false)}
-        />
+          {showAdd && (
+            <AddAccount
+              games={hoyoGames}
+              used={accounts.map((a) => a.label)}
+              blocker={blocker}
+              canCancel={accounts.length > 0}
+              onDone={() => {
+                setAdding(false);
+                refresh();
+              }}
+              onCancel={() => setAdding(false)}
+            />
+          )}
+
+          <AutoPanel games={hoyoGames} accounts={accounts} server={server} blocker={blocker} refresh={refresh} />
+          <OnItsOwn />
+        </>
       )}
 
-      <AutoPanel games={linkable} accounts={accounts} server={server} blocker={blocker} refresh={refresh} />
-      <OnItsOwn />
+      {skportGames.length > 0 && <SkportSection games={skportGames} accounts={skportAccounts} blocker={blocker} refresh={refresh} />}
     </div>
   );
 }
@@ -520,7 +546,7 @@ function CodeLoginForm({ linkId, hoyolabId, blocker, onDone }: { linkId: string;
     setBusy(false);
     if (!r.ok) return setProblem(r.text);
     setProblem(null);
-    onDone('Code login saved (encrypted). Turn on “Redeem codes automatically” when you’re ready.');
+    onDone('Code login saved (encrypted). Turn on "Redeem codes automatically" when you’re ready.');
   };
   return (
     <div className={c.tight}>
@@ -544,7 +570,7 @@ function CodeLoginForm({ linkId, hoyolabId, blocker, onDone }: { linkId: string;
         ]}
       >
         <p className={c.body}>
-          <strong>Why another login?</strong> Codes are redeemed on hoyoverse.com, not HoYoLAB, and that site checks its own login (cookie_token_v2). The HoYoLAB values can’t redeem codes. Like the first login, it’s stored encrypted, only HLITH’s server can use it, and “Remove code login” or “Forget” overwrites it.
+          <strong>Why another login?</strong> Codes are redeemed on hoyoverse.com, not HoYoLAB, and that site checks its own login (cookie_token_v2). The HoYoLAB values can’t redeem codes. Like the first login, it’s stored encrypted, only HLITH’s server can use it, and "Remove code login" or "Forget" overwrites it.
         </p>
       </HowTo>
       <label className={c.field} htmlFor={`${id}-code-login`}>
@@ -691,7 +717,7 @@ function AutoPanel({ games, accounts, server, blocker, refresh }: { games: GameC
     setBusy(false);
     if (!r.ok) return setMsg({ ok: false, text: r.text });
     setText('');
-    setMsg({ ok: true, text: `Added ${r.data.codes.join(', ')}. HLITH tries them on the next run for every saved account with the code login, or press “Run now”.` });
+    setMsg({ ok: true, text: `Added ${r.data.codes.join(', ')}. HLITH tries them on the next run for every saved account with the code login, or press "Run now".` });
   };
   const run = async () => {
     if (!backend) return;
@@ -709,10 +735,10 @@ function AutoPanel({ games, accounts, server, blocker, refresh }: { games: GameC
       <HowTo
         title="How the automatic jobs work"
         steps={[
-          <>Save an account on HLITH’s server (above), then switch on “Automatic daily check-in”.</>,
+          <>Save an account on HLITH’s server (above), then switch on "Automatic daily check-in".</>,
           <>Once a day, HLITH’s server claims the HoYoLAB check-in for every game on each switched-on account, without you opening the site.</>,
-          <>For codes, add the code login on the account and switch on “Redeem codes automatically”. HLITH tries each new code once per UID, about 6 seconds apart (HoYoverse asks for a pause).</>,
-          <>Each result shows under its game or account: when it ran, and what HoYoLAB answered (the reward, “already used”, “expired”, or the error).</>,
+          <>For codes, add the code login on the account and switch on "Redeem codes automatically". HLITH tries each new code once per UID, about 6 seconds apart (HoYoverse asks for a pause).</>,
+          <>Each result shows under its game or account: when it ran, and what HoYoLAB answered (the reward, "already used", "expired", or the error).</>,
           <>Codes give their rewards through in-game mail: open the game to collect them.</>,
         ]}
       >
@@ -819,6 +845,269 @@ function OnItsOwn() {
   );
 }
 
+// ── SKPort (Endfield) ───────────────────────────────────────────
+
+function SkportSection({ games, accounts, blocker, refresh }: { games: GameContract[]; accounts: SkportLinkedAccount[]; blocker: string | null; refresh: () => void }) {
+  const [adding, setAdding] = useState(false);
+  const showAdd = adding || accounts.length === 0;
+
+  return (
+    <>
+      <HowTo
+        title="How the SKPort link works"
+        steps={[
+          <>Add a SKPort account: paste its ACCOUNT_TOKEN (the guide in the form shows where to find it). Give it a name like "Main" or "Alt".</>,
+          <>HLITH asks SKPort which Endfield account that token has, and reads your sanity (stamina), account level and check-in status.</>,
+          <>Choose where the token is kept: used once, remembered on this device, or saved on HLITH’s server.</>,
+          <>In each account, press "Check now" for live sanity and check-in, or "Check in now" to claim the daily reward.</>,
+        ]}
+      >
+        <p className={c.body}>
+          <strong>Saved on HLITH’s server</strong> means: the token is stored encrypted (Supabase Vault). Nobody can read it back in a browser; only HLITH’s server uses it, to talk to SKPort for you. It is never written to logs.
+        </p>
+        <p className={c.body}>
+          <strong>To stop it:</strong> press "Forget" on the account. Forget overwrites the saved token with random text at once. Logging out of SKPort in your browser also ends the token.
+        </p>
+      </HowTo>
+      <div className={c.row}>
+        <UnverifiedTag source={SOURCE} />
+        <span className={c.muted}>SKPort has no official API. This follows what community tools document and hasn’t been tested with a live account yet, so treat its numbers as unconfirmed.</span>
+      </div>
+
+      <section className={c.tight} aria-label="Your SKPort accounts">
+        <div className={c.cardHead}>
+          <span className={c.label}>Your SKPort accounts · {accounts.length}</span>
+          {!showAdd && <Button onClick={() => setAdding(true)}>Add a SKPort account</Button>}
+        </div>
+        {accounts.length > 0 ? (
+          accounts.map((a) => <SkportAccountCard key={a.id} account={a} games={games} blocker={blocker} refresh={refresh} />)
+        ) : (
+          <span className={c.muted}>No SKPort accounts linked yet. Add one to see live sanity and check-in for Endfield.</span>
+        )}
+      </section>
+
+      {showAdd && <AddSkportAccount games={games} used={accounts.map((a) => a.label)} blocker={blocker} canCancel={accounts.length > 0} onDone={() => { setAdding(false); refresh(); }} onCancel={() => setAdding(false)} />}
+    </>
+  );
+}
+
+function SkportAccountCard({ account, games, blocker, refresh }: { account: SkportLinkedAccount; games: GameContract[]; blocker: string | null; refresh: () => void }) {
+  const [busy, setBusy] = useState(false);
+  const [msg, setMsg] = useState<{ ok: boolean; text: string } | null>(null);
+  const [mode, setMode] = useState<'view' | 'rename' | 'replace' | 'forget'>('view');
+  const [label, setLabel] = useState(account.label);
+  const [answer, setAnswer] = useState<SkportAnswer | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const onServer = account.where === 'server';
+
+  const done = (text: string | null, okText: string) => {
+    setBusy(false);
+    setMsg(text ? { ok: false, text } : { ok: true, text: okText });
+    if (!text) { setMode('view'); refresh(); }
+  };
+
+  const rename = async () => {
+    const next = label.trim().slice(0, 40) || 'Main';
+    if (onServer) {
+      if (!backend) return;
+      setBusy(true);
+      done(await updateSkportAccount(backend, account.id, { label: next }), 'Renamed.');
+    }
+  };
+
+  const replace = async (token: string) => {
+    if (onServer) {
+      if (!backend) return;
+      setBusy(true);
+      const r = await saveSkportOnServer(backend, { label: account.label, accountToken: token, linkId: account.id });
+      done(r.ok ? null : r.text, 'New token saved. HLITH checked it with SKPort first.');
+    } else {
+      const game = games.find((g) => g.id === account.gameId);
+      if (!game || !backend) return;
+      setBusy(true);
+      const res = await askSkport(backend, { accountToken: token, want: ['account'] });
+      setBusy(false);
+      if (!res.ok) return done(res.text, '');
+      await saveSkportDevice({ label: account.label, token, uid: res.answer.account.uid, nickname: res.answer.account.nickname, server: res.answer.account.server });
+      done(null, 'New token remembered on this device.');
+    }
+  };
+
+  const forget = async () => {
+    if (onServer) {
+      if (!backend) return;
+      setBusy(true);
+      done(await forgetSkportOnServer(backend, account.id), 'Forgotten.');
+    } else {
+      await forgetSkportDevice(account.id);
+      done(null, 'Forgotten.');
+    }
+  };
+
+  const check = async (claim: boolean) => {
+    if (!backend) return;
+    setBusy(true);
+    setError(null);
+    const want: ('account' | 'stamina' | 'checkin')[] = ['account', 'stamina', 'checkin'];
+    const args = onServer ? { linkId: account.id, want, claim } : { accountToken: account.token ?? '', want, claim };
+    const res = await askSkport(backend, args);
+    setBusy(false);
+    if (!res.ok) return setError(res.text);
+    setAnswer(res.answer);
+  };
+
+  const game = games.find((g) => g.id === account.gameId);
+
+  return (
+    <section className={c.card} aria-label={`SKPort account ${account.label}`}>
+      <div className={c.cardHead}>
+        <div className={c.tight}>
+          <span className={c.label}>{onServer ? 'Saved on HLITH’s server · encrypted' : 'Remembered on this device only'}</span>
+          <h3 className={c.cardTitle}>{account.label}</h3>
+          <span className={c.muted}>{account.nickname} · UID {account.skportUid} · {account.server}</span>
+        </div>
+        <div className={c.row}>
+          <Button variant="quiet" onClick={() => setMode(mode === 'rename' ? 'view' : 'rename')}>Rename</Button>
+          <Button variant="quiet" onClick={() => setMode(mode === 'replace' ? 'view' : 'replace')}>Replace token</Button>
+          <Button variant="quiet" onClick={() => setMode(mode === 'forget' ? 'view' : 'forget')}>Forget</Button>
+        </div>
+      </div>
+
+      {mode === 'rename' && (
+        <form className={c.row} onSubmit={(e) => { e.preventDefault(); void rename(); }}>
+          <input className={c.input} style={{ maxWidth: 240 }} value={label} maxLength={40} onChange={(e) => setLabel(e.target.value)} aria-label="Account name" />
+          <Button type="submit" variant="primary" disabled={busy || (onServer && blocker !== null)}>Save name</Button>
+        </form>
+      )}
+      {mode === 'replace' && (
+        <div className={c.tight}>
+          <span className={c.muted}>Paste a fresh ACCOUNT_TOKEN for this account (after the old one expired or you logged out). {onServer ? 'The old saved token is overwritten.' : ''}</span>
+          <SkportSteps />
+          <PasteSkportToken submitLabel="Save the new token" busy={busy} disabledReason={blocker} onSubmit={(t) => void replace(t)} />
+        </div>
+      )}
+      {mode === 'forget' && (
+        <div className={c.notBuilt}>
+          <span>
+            {onServer
+              ? 'Forget this account? The saved token is overwritten with random text right away. Your game data stays. Your SKPort account itself isn’t touched.'
+              : 'Forget this account? The token is deleted from this browser. Your game data stays. Your SKPort account itself isn’t touched.'}
+          </span>
+          <div className={c.row}>
+            <Button variant="primary" disabled={busy || (onServer && blocker !== null)} onClick={() => void forget()}>Forget {account.label}</Button>
+            <Button variant="quiet" onClick={() => setMode('view')}>Keep it</Button>
+          </div>
+        </div>
+      )}
+
+      {game && (
+        <div className={c.tight} style={{ width: '100%' }}>
+          <div className={c.cardHead}>
+            <span className={c.listName}>
+              <span className={c.row}><GameTag label={game.short} vent={game.vent} /> {game.name}</span>
+              <span className={c.listSub}>{account.nickname} · UID {account.skportUid} · {account.server}</span>
+            </span>
+            <span className={c.row}>
+              <Button disabled={busy || blocker !== null} onClick={() => void check(false)}>{busy ? 'Asking…' : 'Check now'}</Button>
+              <Button variant="quiet" disabled={busy || blocker !== null} onClick={() => void check(true)}>Check in now</Button>
+            </span>
+          </div>
+          {error && <span className={c.error} role="alert">{error}</span>}
+          {answer && <SkportReadings game={game} answer={answer} />}
+        </div>
+      )}
+
+      {msg && <span className={msg.ok ? c.message : c.error} role={msg.ok ? 'status' : 'alert'}>{msg.text}</span>}
+    </section>
+  );
+}
+
+function SkportReadings({ game, answer }: { game: GameContract; answer: SkportAnswer }) {
+  const pool = game.stamina[0];
+  return (
+    <div className={c.tight}>
+      <div className={c.cardHead}>
+        <span className={c.label}>From SKPort · read {new Date(answer.readAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+        <span className={c.muted}>
+          {answer.account.nickname} · UID {answer.account.uid} · {answer.account.server}
+          {answer.account.level !== null && ` · level ${answer.account.level}`}
+        </span>
+      </div>
+      <div className={c.grid}>
+        <StatTile
+          label={pool?.name ?? 'Sanity'}
+          value={answer.stamina ? known(`${answer.stamina.current}/${answer.stamina.max}`, 'skport', answer.readAt) : unknown<string>('connect-account')}
+          {...(answer.stamina ? { progress: answer.stamina.current / answer.stamina.max, caption: fullIn(answer.stamina.fullInSeconds) } : {})}
+        />
+        <StatTile
+          label="Daily check-in"
+          value={answer.checkin ? known(answer.checkin.checkedInToday ? 'Done' : 'Not yet', 'skport', answer.readAt) : unknown<string>('connect-account')}
+          {...(answer.checkin ? { caption: `${answer.checkin.claimedNow ? 'Claimed just now. ' : ''}${answer.checkin.daysThisMonth !== null ? `${answer.checkin.daysThisMonth} days this month` : ''}` } : {})}
+        />
+      </div>
+    </div>
+  );
+}
+
+type SkportKeep = 'server' | 'device' | 'once';
+
+function AddSkportAccount({ games, used, blocker, canCancel, onDone, onCancel }: { games: GameContract[]; used: string[]; blocker: string | null; canCancel: boolean; onDone: () => void; onCancel: () => void }) {
+  const id = useId();
+  const [label, setLabel] = useState(() => nextLabel(used));
+  const [keep, setKeep] = useState<SkportKeep>('device');
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [onceAnswer, setOnceAnswer] = useState<SkportAnswer | null>(null);
+
+  const add = async (token: string) => {
+    if (!backend) return;
+    setBusy(true);
+    setError(null);
+    if (keep === 'server') {
+      const r = await saveSkportOnServer(backend, { label, accountToken: token });
+      setBusy(false);
+      if (!r.ok) return setError(r.text);
+      return onDone();
+    }
+    const res = await askSkport(backend, { accountToken: token, want: ['account', 'stamina', 'checkin'] });
+    setBusy(false);
+    if (!res.ok) return setError(res.text);
+    if (keep === 'device') {
+      await saveSkportDevice({ label, token, uid: res.answer.account.uid, nickname: res.answer.account.nickname, server: res.answer.account.server });
+      return onDone();
+    }
+    setOnceAnswer(res.answer);
+  };
+
+  return (
+    <section className={c.card} aria-label="Add a SKPort account">
+      <div className={c.cardHead}>
+        <h3 className={c.cardTitle}>Add a SKPort account</h3>
+        {canCancel && <Button variant="quiet" onClick={onCancel}>Cancel</Button>}
+      </div>
+      <SkportSteps open />
+      <label className={c.field} htmlFor={`${id}-label`}>Name for this account</label>
+      <input id={`${id}-label`} className={c.input} value={label} maxLength={40} onChange={(e) => setLabel(e.target.value)} disabled={blocker !== null} />
+      <fieldset className={c.tight} style={{ border: 0, padding: 0, margin: 0 }}>
+        <legend className={c.field}>Where to keep the token</legend>
+        {([
+          ['device', 'Remember on this device', skportRememberWorks() ? 'Kept in this browser only, encrypted: never synced, never in a backup.' : 'This browser can’t encrypt saved tokens, so it is kept only until you close this page.'],
+          ['server', 'Save on HLITH’s server (encrypted)', 'Stored encrypted; no browser can read it back. Forget overwrites it.'],
+          ['once', 'Use once', 'Just look now. Nothing is kept after you close this page.'],
+        ] as [SkportKeep, string, string][]).map(([k, title, note]) => (
+          <label key={k} className={c.toggle}>
+            <input type="radio" name={`${id}-keep`} checked={keep === k} onChange={() => setKeep(k)} disabled={blocker !== null} />
+            <span>{title}<span className={c.toggleNote}>{note}</span></span>
+          </label>
+        ))}
+      </fieldset>
+      <PasteSkportToken submitLabel={keep === 'once' ? 'Look it up' : `Add ${label.trim() || 'account'}`} busy={busy} disabledReason={blocker} onSubmit={(t) => void add(t)} />
+      {error && <span className={c.error} role="alert">{error}</span>}
+      {onceAnswer && games[0] && <SkportReadings game={games[0]} answer={onceAnswer} />}
+    </section>
+  );
+}
+
 // ── Readings ─────────────────────────────────────────────────────
 
 function Readings({ game, answer }: { game: GameContract; answer: HoyoAnswer }) {
@@ -898,7 +1187,7 @@ const figures = (e: Pick<HoyoEndgame, 'stars' | 'score' | 'maxScore' | 'floor' |
 function ExampleAccounts({ games }: { games: GameContract[] }) {
   const shown = useExamplesShown();
   const first = games[0];
-  // The example reward uses the first game's own premium currency, never another game's.
+  // The example reward uses the first game’s own premium currency, never another game’s.
   const reward = first?.currencies.find((cur) => cur.perPull)?.name ?? first?.currencies[0]?.name;
   const examples = [
     { label: 'Main', where: 'Saved on HLITH’s server · encrypted', games: games.slice(0, 2), line: `Last automatic check-in: today 05:02${reward ? ` · got 20 × ${reward}` : ''}` },
@@ -946,7 +1235,7 @@ function ExampleReadings({ game }: { game: GameContract }) {
   const modes = game.terms.endgame.slice(0, 3);
   return (
     <div className={c.tight} aria-label="Example readings">
-      <span className={c.label}>Example “Check now” for {game.short}</span>
+      <span className={c.label}>Example "Check now" for {game.short}</span>
       <div className={c.grid}>
         <StatTile label={pool?.name ?? 'Stamina'} value={known(`${now}/${max}`, 'user')} progress={now / max} caption={fullIn(minutes * 60)} />
         <StatTile label="Daily activity" value={known('300/500', 'user')} progress={0.6} />

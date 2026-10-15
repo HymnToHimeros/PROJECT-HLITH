@@ -37,6 +37,8 @@ export const BACKUP_TABLES = [
   'reward_grants',
   'reward_log',
   'owner_theme_drafts',
+  'skport_links',
+  'skport_checkins',
 ] as const;
 
 export const BACKUP_BUCKET = 'backups';

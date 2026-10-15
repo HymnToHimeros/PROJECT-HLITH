@@ -33,6 +33,11 @@ verify_jwt = true
 [functions.backup]
 verify_jwt = false
 
+# Reads the caller's own SKPort data (stamina, check-in, account level) for Arknights: Endfield.
+# Signed-in users only (checked in the function).
+[functions.skport]
+verify_jwt = true
+
 # Finishes account deletions after the 30-day grace period (T11); the scheduler calls it with the service key.
 [functions.purge-accounts]
 verify_jwt = false

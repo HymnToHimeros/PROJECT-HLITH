@@ -11,6 +11,8 @@ import { USER_TABLES } from './accountPlan.ts';
 
 /** Every table with the account's rows, in the order they're removed. */
 export const PURGE_TABLES = [
+  'skport_checkins',
+  'skport_links',
   'hoyolab_checkins',
   'hoyolab_redemptions',
   'hoyolab_my_codes',
@@ -75,6 +77,7 @@ export const coversExport = () => USER_TABLES.every((t) => (PURGE_TABLES as read
 
 export interface PurgeClient {
   wipeHoyolabLogins(userId: string): Promise<void>;
+  wipeSkportTokens(userId: string): Promise<void>;
   /** Removes the account's rows; `column` defaults to user_id. */
   deleteRows(table: string, userId: string, column?: string): Promise<number>;
   listFolder(bucket: string, userId: string): Promise<string[]>;
@@ -85,6 +88,7 @@ export interface PurgeClient {
 /** Removes one account completely. Stops at the first error (nothing half-done is hidden): the request stays and the next run tries again. */
 export async function purgeAccount(c: PurgeClient, userId: string): Promise<{ rows: number; files: number }> {
   await c.wipeHoyolabLogins(userId);
+  await c.wipeSkportTokens(userId);
   let files = 0;
   for (const bucket of USER_FOLDERS) {
     const names = await c.listFolder(bucket, userId);

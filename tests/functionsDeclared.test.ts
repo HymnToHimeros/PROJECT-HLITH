@@ -15,4 +15,16 @@ describe('server functions are declared for deploy', () => {
     const missing = folders.filter((name) => !config.includes(`[functions.${name}]`));
     expect(missing).toEqual([]);
   });
+
+  it('no [functions.<name>] header appears more than once', () => {
+    const config = readFileSync('supabase/config.toml', 'utf8');
+    const headers = [...config.matchAll(/^\[functions\.([^\]]+)\]/gm)].map((m) => m[1] ?? '');
+    const seen = new Set<string>();
+    const dupes: string[] = [];
+    for (const h of headers) {
+      if (seen.has(h)) dupes.push(h);
+      else seen.add(h);
+    }
+    expect(dupes).toEqual([]);
+  });
 });

@@ -279,6 +279,18 @@ describe('Connected accounts', () => {
   });
   it('says so when no game has a link', () => {
     render(<LinkAccounts games={[fakeGame({ accountLinks: [] })]} />);
-    expect(screen.getByText('No HoYoLAB link for your games')).toBeInTheDocument();
+    expect(screen.getByText('No account link for your games')).toBeInTheDocument();
+  });
+});
+
+describe('SKPort section', () => {
+  it('does not mention automatic check-in anywhere', () => {
+    const skportGame = fakeGame({ id: 'ef', short: 'EF', name: 'Endfield', accountLinks: [{ provider: 'skport' as const, supports: [], config: {} }] });
+    render(<LinkAccounts games={[skportGame]} />);
+    expect(screen.getByText('How the SKPort link works')).toBeInTheDocument();
+    const body = document.body.textContent ?? '';
+    expect(body.toLowerCase()).not.toContain('automatic');
+    expect(body.toLowerCase()).not.toContain('auto check-in');
+    expect(body.toLowerCase()).not.toContain('check in by itself');
   });
 });
