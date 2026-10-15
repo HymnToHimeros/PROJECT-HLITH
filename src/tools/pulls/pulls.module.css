@@ -254,6 +254,19 @@
   font: 13px var(--font-numbers);
   resize: vertical;
 }
+.regionRow {
+  display: flex;
+  gap: var(--s-4);
+  align-items: center;
+}
+.radioLabel {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--ink-2);
+  cursor: pointer;
+}
 .message {
   font-size: 13px;
   color: var(--ink-2);
