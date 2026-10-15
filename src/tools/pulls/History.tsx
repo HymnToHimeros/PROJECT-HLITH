@@ -5,12 +5,15 @@ import { importPulls, removePulls } from '../../core/data/userData';
 import { formatDateTime } from '../../core/time/reset';
 import { Button, EmptyState, ExampleTag, HowTo } from '../../core/ui';
 import { cx } from '../../core/ui/cx';
+import { buildHlithFile } from '../import/hlith';
 import { parseHistoryFile, readAccount, type ImportedAccount } from '../import/uigf';
 import { pityFromHistory } from '../pity/pity';
 import { cacheFileSteps, fileSteps, findHistoryLink, goodToKnow, guideFor, pasteSteps } from './importGuides';
 import { LuckReport } from './LuckReport';
 import p from './pulls.module.css';
 import type { PullsData } from './usePullsData';
+
+const IMPORT_REMINDER_DAYS = 75;
 
 /** After an import, `undoIds` are the pulls it added, so "Undo this import" removes exactly those. */
 type Status = { kind: 'idle' } | { kind: 'busy' } | { kind: 'ok'; text: string; undoIds?: string[] } | { kind: 'error'; text: string };
@@ -22,7 +25,7 @@ type Way = 'link' | 'cache' | 'file' | null;
  * (pasted, or read from the game's cache file) and export files. Below:
  * pity per banner, the Luck report and every top result with the pity it took.
  */
-export function History({ game, data, signedIn }: { game: GameContract; data: PullsData; signedIn: boolean }) {
+export function History({ game, data, signedIn, now }: { game: GameContract; data: PullsData; signedIn: boolean; now: number }) {
   const [status, setStatus] = useState<Status>({ kind: 'idle' });
   const [way, setWay] = useState<Way>(null);
   const [link, setLink] = useState('');
@@ -55,7 +58,7 @@ export function History({ game, data, signedIn }: { game: GameContract; data: Pu
     e.target.value = '';
     if (!file || !mapping) return;
     setStatus({ kind: 'busy' });
-    const result = parseHistoryFile(await file.text(), mapping);
+    const result = parseHistoryFile(await file.text(), mapping, game.id);
     if (!result.ok) return setStatus({ kind: 'error', text: result.error });
     const accounts = byUid(result.accounts);
     // Several game accounts in one file: never merge them into one history, ask which one is yours.
@@ -105,6 +108,21 @@ export function History({ game, data, signedIn }: { game: GameContract; data: Pu
     await importLink(found);
   };
 
+  const exportPulls = () => {
+    if (!mapping || data.history.list.length === 0) return;
+    const file = buildHlithFile(game.id, data.history.list, mapping);
+    const blob = new Blob([JSON.stringify(file, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `hlith-${game.id}-pulls.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
+  const daysSinceImport = data.user.lastPullImportAt ? Math.floor((now - data.user.lastPullImportAt) / 86_400_000) : null;
+  const importReminder = daysSinceImport !== null && daysSinceImport >= IMPORT_REMINDER_DAYS;
+
   const example = data.history.example;
   const types = game.bannerTypes.filter((t) => data.history.list.some((h) => h.bannerType === t.id));
   const allTops = topsWithPity(data.history.list).reverse();
@@ -124,6 +142,15 @@ export function History({ game, data, signedIn }: { game: GameContract; data: Pu
           <h3 className={p.noHistoryTitle}>No pull history yet</h3>
           <p className={p.noHistoryBody}>
             Import your history once. HLITH then knows your pity and 50/50 state, and the Planner and Luck report fill in. Until then the numbers below are examples <ExampleTag />.
+          </p>
+        </section>
+      )}
+
+      {importReminder && (
+        <section className={p.card} aria-label="Import reminder">
+          <span className={p.kind}>Time to import again</span>
+          <p className={p.muted}>
+            Your last import was {daysSinceImport} days ago. The game only keeps recent history, so import now to avoid losing older pulls.
           </p>
         </section>
       )}
@@ -224,6 +251,11 @@ export function History({ game, data, signedIn }: { game: GameContract; data: Pu
             <span className={p.error} role="alert">
               {status.text}
             </span>
+          )}
+          {!example && data.history.list.length > 0 && mapping && (
+            <Button variant="quiet" onClick={exportPulls}>
+              Export as HLITH file ({data.history.list.length} pulls)
+            </Button>
           )}
         </>
       )}

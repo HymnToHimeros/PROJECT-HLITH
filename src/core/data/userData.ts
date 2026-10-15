@@ -74,6 +74,8 @@ export interface GameUserData {
   tags?: Record<string, string[]>;
   /** Your own nickname per character (T52c). Missing = the game's name. */
   nicknames?: Record<string, string>;
+  /** When pulls were last imported (epoch ms). Missing = never. */
+  lastPullImportAt?: number;
 }
 
 export interface TeamList {
@@ -248,7 +250,8 @@ export function importPulls(game: GameId, incoming: PullRecord[]): string[] {
     const seen = new Set(g.pulls.map((p) => p.id));
     const fresh = incoming.filter((p) => !seen.has(p.id));
     added = fresh.map((p) => p.id);
-    return { ...g, pulls: [...g.pulls, ...fresh].sort((a, b) => a.time.localeCompare(b.time) || a.id.length - b.id.length || a.id.localeCompare(b.id)) };
+    if (fresh.length === 0) return g;
+    return { ...g, pulls: [...g.pulls, ...fresh].sort((a, b) => a.time.localeCompare(b.time) || a.id.length - b.id.length || a.id.localeCompare(b.id)), lastPullImportAt: Date.now() };
   });
   return added;
 }

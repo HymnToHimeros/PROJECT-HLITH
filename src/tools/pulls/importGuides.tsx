@@ -81,6 +81,7 @@ const GUIDES: Record<string, ImportGuide> = {
     historyPage: 'Headhunting Records (the history page in the Headhunting menu)',
     linkLogFile: '%USERPROFILE%\\AppData\\LocalLow\\Gryphline\\Endfield\\sdklogs\\HGWebview.log',
     linkSource: 'HGWebview.log',
+    formats: 'HLITH pull history (.json)',
   },
 };
 

@@ -132,7 +132,7 @@ function GamePulls({ game, tab, serverId, now, many, signedIn, openTab, open, op
       {tab === 'planner' && <Planner game={game} data={data} serverId={serverId} now={now} tagged={many} openTab={openTab} />}
       {tab === 'calculator' && <Calculator game={game} data={data} serverId={serverId} now={now} tagged={many} openModule={(m) => open(m)} openTab={openTab} />}
       {tab === 'log' && <BankLog game={game} data={data} />}
-      {tab === 'history' && <History game={game} data={data} signedIn={signedIn} />}
+      {tab === 'history' && <History game={game} data={data} signedIn={signedIn} now={now} />}
     </section>
   );
 }
