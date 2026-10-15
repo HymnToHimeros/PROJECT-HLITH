@@ -22,5 +22,7 @@
   Chen Qianyu, Da Pan, Catcher, Antal, Endministrator (both), Lifeng.
 - E6c (done): group B: Laevatain, Akekuri, Wulfgard, Ember, Yvonne, Last Rite, Ardelia, Gilberta.
   Reactions from two elements' Inflictions are now worked out (method decision 5).
-- Next, about 8 per PR: Pogranichnik, Rossi, Zhuang Fangyi, Mi Fu, Arcane, Camille, Typhoeus, Liino,
-  Si, Tangtang, Perlica, Arclight, Xaihi, Avywenna, Snowshine, Alesh, Estella, Fluorite, Purrchena.
+- E6d (done): group C, what players pull for now (MANAGER's order): Si, Tangtang, Typhoeus, Liino,
+  Arcane, Camille, Mi Fu. Method decisions 8–10 (Team Position 01, Arcane's modes, Weakness).
+- Next, about 8 per PR: Argent Flow (once her kit text is on the wiki), Pogranichnik, Rossi,
+  Zhuang Fangyi, Perlica, Arclight, Xaihi, Avywenna, Snowshine, Alesh, Estella, Fluorite, Purrchena.

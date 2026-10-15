@@ -52,6 +52,11 @@ export type Condition =
   | { count: { element?: Element; opClass?: OpClass; atLeast: number } }
   /** Every one of these. */
   | { all: Condition[] }
+  /**
+   * The operator in Team Position 01 is (or, with `not`, isn't) one of these elements. Position 01 is read as the
+   * damage dealer (decision 8: you put your main damage first). Either/or text, so not met is no loss.
+   */
+  | { lead: { elements: Element[]; not?: boolean; words: string } }
   /** Named operators: 'carry' (the damage dealer is one), 'member' (one is in the team), 'not-carry'. Not met is no loss. */
   | { named: { ids: string[]; as: 'carry' | 'member' | 'not-carry'; words: string } }
   /** Cannot be checked from profiles: never counted as met. */
