@@ -5,8 +5,8 @@ interface Props {
   name: string;
   /** "Nihility · Lightning" — role and element words come from the game record. */
   subtitle: string;
-  rarity: 'top' | 'mid';
-  rarityLabel: string; // '5★' or 'S'
+  rarity: 'top' | 'mid' | 'low';
+  rarityLabel: string; // '5★' / '4★' / '3★' or 'S' / 'A' / 'B'
   elementColor: string;
   owned: boolean;
   /** e.g. "E2" / "M1", built from the game's dupe prefix. Absent when the game has no dupes. */
@@ -16,7 +16,7 @@ interface Props {
 
 /** Dot = element · bottom edge = rarity · badge = dupes. */
 export function CharacterTile({ name, subtitle, rarity, rarityLabel, elementColor, owned, dupes, art }: Props) {
-  const rarityColor = rarity === 'top' ? 'var(--rarity-top)' : 'var(--rarity-mid)';
+  const rarityColor = rarity === 'top' ? 'var(--rarity-top)' : rarity === 'mid' ? 'var(--rarity-mid)' : 'var(--rarity-low)';
   return (
     <div className={cx(s.charTile, !owned && s.notOwned)}>
       <div className={s.charArt}>

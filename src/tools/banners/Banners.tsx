@@ -481,7 +481,7 @@ function BannerTile({ game, banner, data, open, now, paired }: TileProps) {
             <div className={b.leadRow}>
               <span className={b.sub}>
                 {isWeapon ? 'Made for ' : ''}
-                <strong className={b.charName}>{lead.name}</strong> {!isWeapon && <span className={lead.rarity === 'top' ? b.top : b.mid}>{game.terms.rarity[lead.rarity]}</span>}
+                <strong className={b.charName}>{lead.name}</strong> {!isWeapon && lead.rarity !== 'low' && <span className={lead.rarity === 'top' ? b.top : b.mid}>{game.terms.rarity[lead.rarity]}</span>}
               </span>
               <FitPill game={game} character={lead} data={data} open={open} />
             </div>
@@ -531,7 +531,7 @@ function BannerTile({ game, banner, data, open, now, paired }: TileProps) {
           <div className={b.heroLead}>
             <span className={b.sub}>
               {isWeapon ? 'Made for ' : ''}
-              <strong className={b.heroName}>{lead.name}</strong> <span className={lead.rarity === 'top' ? b.top : b.mid}>{game.terms.rarity[lead.rarity]}</span>
+              <strong className={b.heroName}>{lead.name}</strong> {lead.rarity !== 'low' && <span className={lead.rarity === 'top' ? b.top : b.mid}>{game.terms.rarity[lead.rarity]}</span>}
               {!isWeapon && [element?.label, role?.label].filter(Boolean).length > 0 && <span className={b.heroEl}> {[element?.label, role?.label].filter(Boolean).join(' · ')}</span>}
             </span>
             <div className={b.heroActions}>
@@ -569,7 +569,7 @@ function BannerTile({ game, banner, data, open, now, paired }: TileProps) {
                       {c.portrait ? <img src={c.portrait} alt="" loading="lazy" className={b.alsoPic} /> : <span className={b.alsoPic} aria-hidden="true" />}
                       <span className={b.alsoText}>
                         <span className={b.alsoName}>
-                          {c.name} <span className={c.rarity === 'top' ? b.top : b.mid}>{game.terms.rarity[c.rarity]}</span>
+                          {c.name} {c.rarity !== 'low' && <span className={c.rarity === 'top' ? b.top : b.mid}>{game.terms.rarity[c.rarity]}</span>}
                         </span>
                         <FitPill game={game} character={c} data={data} open={open} />
                       </span>

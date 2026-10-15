@@ -17,7 +17,7 @@ export const subtitleOf = (game: GameContract, c: Character) => `${roleLabel(gam
 /** "E2" / "M1" from the game's dupe prefix; undefined when the game has no dupes. */
 export const dupesLabel = (game: GameContract, n: number) => (game.dupes ? `${game.dupes.prefix}${n}` : undefined);
 
-export const rarityColor = (c: Pick<Character, 'rarity'>) => (c.rarity === 'top' ? 'var(--rarity-top)' : 'var(--rarity-mid)');
+export const rarityColor = (c: Pick<Character, 'rarity'>) => c.rarity === 'top' ? 'var(--rarity-top)' : c.rarity === 'mid' ? 'var(--rarity-mid)' : 'var(--rarity-low)';
 
 /** Newest first by release date; characters without a date go after, by name. */
 export function byNewest(a: Character, b: Character): number {

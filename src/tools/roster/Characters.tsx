@@ -90,7 +90,7 @@ export function Characters({ data, several, onOpen }: Props) {
   const rows = leaksShown ? allRows : released;
   const word = several ? 'character' : (data[0]?.game.terms.character.toLowerCase() ?? 'character');
   const elements = [...new Set(data.flatMap((d) => d.game.elements.map((e) => e.label)))];
-  const rarityWord = (k: 'top' | 'mid') => [...new Set(data.map((d) => d.game.terms.rarity[k]))].join(' · ');
+  const rarityWord = (k: 'top' | 'mid' | 'low') => [...new Set(data.map((d) => d.game.terms.rarity[k]).filter(Boolean))].join(' · ');
 
   const list = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -222,6 +222,7 @@ export function Characters({ data, several, onOpen }: Props) {
                 <option value="">Any rarity</option>
                 <option value="top">{rarityWord('top')}</option>
                 <option value="mid">{rarityWord('mid')}</option>
+                {rarityWord('low') && <option value="low">{rarityWord('low')}</option>}
               </select>
             </label>
             {tags.length > 0 && (
@@ -418,7 +419,7 @@ function Tile({ row, several, selecting, picked, hide, onClick }: { row: Row; se
         </span>
         {!hide.has('rarity') && (
           <span className={r.tileRarity} style={{ color: rarityColor(c) }}>
-            {game.terms.rarity[c.rarity]}
+            {game.terms.rarity[c.rarity] ?? c.rarity}
           </span>
         )}
         {/* A leak can't be owned: its chip says LEAK instead (the source and details are on its page). */}

@@ -22,7 +22,7 @@ export const endfield: GameContract = {
   ownerOnly: true,
 
   terms: {
-    rarity: { top: '6★', mid: '5★' },
+    rarity: { top: '6★', mid: '5★', low: '4★' },
     gear: 'Equipment',
     weapon: 'Weapon',
     skill: 'Skills',

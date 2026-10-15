@@ -73,16 +73,18 @@ export function slugId(text: string): string {
     .slice(0, 60);
 }
 
-function rarityOf(v: unknown, game: GameContract | undefined): 'top' | 'mid' | undefined {
+function rarityOf(v: unknown, game: GameContract | undefined): 'top' | 'mid' | 'low' | undefined {
   const s = str(v);
   if (!s) return undefined;
-  if (s === 'top' || s === 'mid') return s;
+  if (s === 'top' || s === 'mid' || s === 'low') return s;
   if (game) {
     if (same(s, game.terms.rarity.top)) return 'top';
     if (same(s, game.terms.rarity.mid)) return 'mid';
+    if (game.terms.rarity.low && same(s, game.terms.rarity.low)) return 'low';
   }
   if (/^5|^s$/i.test(s)) return 'top';
   if (/^4|^a$/i.test(s)) return 'mid';
+  if (/^3|^b$/i.test(s)) return 'low';
   return undefined;
 }
 
