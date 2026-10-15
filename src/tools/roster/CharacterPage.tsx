@@ -14,7 +14,7 @@ import { BuildWants } from './BuildWants';
 import { KitCheck } from './KitCheck';
 import r from './roster.module.css';
 import { artOf, CharArt, dupesLabel, elementOf, entryOf, isUpcoming, rarityColor, roleLabel, toCharacterBuild } from './shared';
-import { Line, TeamRow, teamAccount, useTeamAccount } from './TeamParts';
+import { Line, ReadSoFar, TeamRow, teamAccount, useTeamAccount } from './TeamParts';
 import { useBuilds, useKits, type RosterData } from './useRosterData';
 import { formatFullDate } from '../../core/time/reset';
 import { MyLabels } from './MyLabels';
@@ -640,6 +640,7 @@ function TeamFit({ data, character: c, makePreset }: { data: RosterData; charact
       <h3 className={r.cardTitle} id="team-fit">
         Team fit
       </h3>
+      {!presets.example && <ReadSoFar rules={game.rules.teams} word={game.terms.character.toLowerCase()} />}
       {recommended.length === 0 && mine.length === 0 && <p className={r.cardText}>No team uses this {game.terms.character.toLowerCase()} yet.</p>}
       {recommended.length === 0 && mine.length === 0 && makePreset && (
         <button type="button" className={r.linkButton} onClick={makePreset}>

@@ -21,8 +21,13 @@ const PAIR_LIMIT = 9;
 
 const toAccount = (a: TeamAccount): Account => ({ potential: (id) => (a.owned(id) ? a.dupes(id) : 0) });
 
-export function synergyLabel(percent: number, members: number): string {
+/** Kits read so far, of every operator. */
+export const readSoFar = (lib: Library = library()) => ({ read: lib.sheets.size, total: lib.names.size });
+
+/** The grade word; none while only some kits are read (the best among a few is not "Excellent"), the % stays. */
+export function synergyLabel(percent: number, members: number, partial = false): string {
   if (members < SIZE) return 'Incomplete';
+  if (partial) return '';
   return percent >= 85 ? 'Excellent' : percent >= 65 ? 'Good' : percent >= 45 ? 'Partly' : 'Weak';
 }
 
@@ -106,13 +111,15 @@ export function verdict(members: string[], a: TeamAccount, lib: Library = librar
   const every = bestFor(mine.dd, readable(lib, a), lib, account, mine.sustain);
   if (every && every.value > top.value) notes.push(`From every operator, ${every.order.map(name).join(', ')} counts ${countWords(every)}.`);
   if (out.other) notes.push(`With ${name(out.other.dd)} as the damage dealer instead, it counts ${countWords(out.other)}.`);
+  const n = readSoFar(lib);
+  if (n.read < n.total) notes.push(`Only ${n.read} of ${n.total} operators are read so far: this is the best among those, and it will change as more are read.`);
   notes.push(VALUE_NOTE);
   const typical = typicalNote(mine.lines, name);
   if (typical) notes.push(typical);
   return {
     rated: true,
     percent,
-    label: synergyLabel(percent, members.length),
+    label: synergyLabel(percent, members.length, n.read < n.total),
     count: mine.count,
     best: top.count,
     bestMembers: top.order,
@@ -252,6 +259,7 @@ export const endfieldTeamRules: TeamRules = {
     });
   },
   rated: (id) => library().sheets.has(id),
+  readSoFar: () => readSoFar(),
   verdict: (m, a) => verdict(m, a),
   whoFits: (m, a, o) => whoFits(m, a, library(), o),
   lineUps: (a) => lineUps(a),

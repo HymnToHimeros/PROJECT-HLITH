@@ -2,7 +2,8 @@ import { describe, expect, it } from 'vitest';
 import type { TeamAccount } from '../../../core/contract';
 import { checkSquad, checkTeam, type Account, type Line } from './check';
 import { KITS, SHEETS, library } from './library';
-import { endfieldTeamRules, recommendedTeams } from './team';
+import characters from '../data/characters.json';
+import { endfieldTeamRules, readSoFar, recommendedTeams, synergyLabel } from './team';
 
 const CHEN = 'chr_0005_chen';
 const DA_PAN = 'chr_0018_dapan';
@@ -94,6 +95,17 @@ describe('Endfield team rules', () => {
       expect(v.percent).toBeLessThanOrEqual(100);
       expect(v.reasons.some((r) => r.group === 'counted' && r.proof?.quote)).toBe(true);
     }
+  });
+  it('while only some kits are read: the counts come from the data, and no grade word (the % stays)', () => {
+    expect(endfieldTeamRules.readSoFar?.()).toEqual({ read: SHEETS.length, total: characters.length });
+    expect(SHEETS.length).toBeLessThan(characters.length);
+    const v = endfieldTeamRules.verdict([CHEN, CATCHER, LIFENG, DA_PAN], all);
+    expect(v).toMatchObject({ rated: true, label: '' });
+    if (v.rated) expect(v.notes).toContain(`Only ${SHEETS.length} of ${characters.length} operators are read so far: this is the best among those, and it will change as more are read.`);
+    expect(synergyLabel(100, 4, true)).toBe('');
+    expect(synergyLabel(100, 4)).toBe('Excellent');
+    expect(synergyLabel(100, 3, true)).toBe('Incomplete');
+    expect(readSoFar({ ...lib, names: new Map([...lib.sheets.keys()].map((id) => [id, id])) })).toEqual({ read: SHEETS.length, total: SHEETS.length });
   });
   it('recommends a team for every damage dealer read', () => {
     const teams = recommendedTeams();
