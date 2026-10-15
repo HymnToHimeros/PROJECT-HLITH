@@ -43,6 +43,10 @@ Full pull history import for Arknights: Endfield, the first non-HoYo game.
   reverse mapping, format detection
 - `standardPool.test.ts`: skip games without `standardTop` data
 
+## Open follow-ups
+- Web sign-in flow (account_token → u8_token exchange) is not in this PR.
+  Currently only the HGWebview.log link method is supported.
+
 ## Checks
 - TypeScript: clean
 - ESLint: clean

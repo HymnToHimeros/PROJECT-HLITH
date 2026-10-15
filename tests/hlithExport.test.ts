@@ -29,8 +29,8 @@ describe('HLITH pull history file', () => {
 
     const first = file.list[0];
     expect(first).toBeDefined();
-    expect(first!.gacha_type).toBe('chartered');
-    expect(first!.rank_type).toBe('6');
+    expect(first?.gacha_type).toBe('chartered');
+    expect(first?.rank_type).toBe('6');
 
     const parsed = parseHlithFile(file, 'endfield');
     expect(parsed.ok).toBe(true);
@@ -58,7 +58,7 @@ describe('HLITH pull history file', () => {
     const file = buildHlithFile('endfield', pulls, mapping);
     const weapon = file.list.find((p) => p.name === 'Sword');
     expect(weapon).toBeDefined();
-    expect(weapon!.gacha_type).toBe('weapon-limited');
-    expect(weapon!.rank_type).toBe('4');
+    expect(weapon?.gacha_type).toBe('weapon-limited');
+    expect(weapon?.rank_type).toBe('4');
   });
 });

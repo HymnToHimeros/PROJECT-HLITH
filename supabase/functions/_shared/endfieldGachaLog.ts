@@ -109,6 +109,7 @@ function rarityString(r: number | undefined): string {
   return String(r ?? 0);
 }
 
+// Weapon pool types ('special', 'constant', 'rerun') from bhaoo/endfield-gacha; not yet verified against a live account.
 function poolTypeToGachaType(poolType: string): string {
   if (poolType === 'E_CharacterGachaPoolType_Special') return 'chartered';
   if (poolType === 'E_CharacterGachaPoolType_Rerun') return 'rerun';
