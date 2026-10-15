@@ -24,7 +24,14 @@ const dry = process.argv.includes('--dry');
  * Rulings on disagreements between wiki sources, given by MANAGER / the owner (never by the import).
  * Key: the conflict's id as the import names it. `use`: which source wins.
  */
-export const RULINGS: Record<string, { use: 'operator-pages' | 'operator-page' | 'table' | 'page'; by: string; on: string }> = {};
+export const RULINGS: Record<string, { use: 'operator-pages' | 'operator-page' | 'table' | 'page'; by: string; on: string; note?: string }> = {
+  // The Operator page states 1,800 twice (its Gearing list, and the Cost Summary that only adds up with 1,800);
+  // the 1,600 on the operator pages is one shared template value, so it counts as one source.
+  'outfitting-t-creds': { use: 'operator-page', by: 'MANAGER', on: '2026-10-15', note: 'unverified in game; the owner may correct it. Sources: endfield.wiki.gg/wiki/Operator (Gearing, Cost Summary) and each operator page (Operator talent cost)' },
+};
+
+/** A value for a Cargo `where` clause in single quotes: backslashes first, then quotes. */
+export const cargoString = (s: string) => `'${s.replace(/\\/g, '\\\\').replace(/'/g, "\\'")}'`;
 
 export type Items = Record<string, number>;
 export interface Track {
@@ -190,7 +197,7 @@ async function itemsNamed(names: string[]): Promise<Map<string, ItemRow>> {
   for (let i = 0; i < names.length; i += 40) {
     const list = names
       .slice(i, i + 40)
-      .map((n) => `'${n.replace(/'/g, "\\'")}'`)
+      .map(cargoString)
       .join(',');
     const q = new URLSearchParams({ action: 'cargoquery', format: 'json', limit: '500', tables: 'Items', fields: 'Item,Id,Image,Type', where: `Item IN (${list})` });
     const d = await json<{ cargoquery?: { title: ItemRow }[] }>(`${WIKI}/api.php?${q}`);
@@ -235,7 +242,7 @@ if (import.meta.main ?? process.argv[1]?.endsWith('import-endfield-costs.ts')) {
   /** A disagreement: ruled → listed with its ruling; not ruled → collected, and the import stops at the end. */
   const conflict = (id: string, text: string) => {
     const r = RULINGS[id];
-    if (r) conflicts.push(`${text} Ruling (${r.by}, ${r.on}): use the ${r.use.replace('-', ' ')}.`);
+    if (r) conflicts.push(`${text} Ruling (${r.by}, ${r.on}): use the ${r.use.replace('-', ' ')}${r.note ? ` (${r.note})` : ''}.`);
     else unruled.push(`[${id}] ${text}`);
     return r?.use;
   };

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { costList, costSummary, levelTable, promotionLevels, skillTracks, slots } from '../scripts/import-endfield-costs';
+import { cargoString, costList, costSummary, levelTable, promotionLevels, RULINGS, skillTracks, slots } from '../scripts/import-endfield-costs';
 import { endfield } from '../src/games/endfield/contract';
 import { materialsFor, MAX_LEVEL, skillsOf } from '../src/games/endfield/costs';
 import costs from '../src/games/endfield/data/costs.json';
@@ -21,6 +21,11 @@ describe('Endfield costs import: wiki text → costs', () => {
     expect(t[0]?.steps['12']).toEqual({ X: 1, 'T-Creds': 12 });
     expect(t[3]?.steps['10']).toEqual({ Z: 3 });
     expect(() => skillTracks(cells, 'test')).toThrow(/expected 2–12/);
+  });
+  it('names in a Cargo query are escaped: backslashes first, then quotes', () => {
+    expect(cargoString("Bob's")).toBe("'Bob\\'s'");
+    expect(cargoString('a\\')).toBe("'a\\\\'");
+    expect(cargoString("x\\' OR 1=1 --")).toBe("'x\\\\\\' OR 1=1 --'");
   });
   it('level table, promotion levels and the Cost Summary', () => {
     const rows = Array.from({ length: 89 }, (_, i) => `|-\n| ${i + 2} || ${(i + 2) * 10} || 0 || ${i + 2} || 0`).join('\n');
@@ -55,10 +60,10 @@ describe('Endfield costs data (src/games/endfield/data/costs.json)', async () =>
     for (const id of ids) for (const n of materialsFor(id, { level: 1 }, { level: 90 })) expect(known.has(n.material), n.material).toBe(true);
     for (const m of materials as { icon?: string }[]) if (m.icon !== undefined) expect(m.icon).toMatch(/^https:\/\/endfield\.wiki\.gg\/images\//);
   });
-  it('to max without talents equals the wiki’s own Cost Summary (Operator page), apart from the listed Outfitting conflict', () => {
+  it('to max without talents equals the wiki’s own Cost Summary (Operator page); the Outfitting conflict follows its ruling', () => {
     const summary = data.summary as Record<string, number>;
-    const conflict = data.conflicts.find((c) => c.startsWith('Gear Outfitting'));
-    expect(conflict).toBeDefined();
+    expect(RULINGS['outfitting-t-creds']).toMatchObject({ use: 'operator-page', by: 'MANAGER' });
+    expect(data.conflicts.find((c) => c.startsWith('Gear Outfitting'))).toMatch(/Ruling \(MANAGER, 2026-10-15\): use the operator page \(unverified in game; the owner may correct it/);
     const checked = ids.filter((id) => data.operators[id]?.tracks.some((t) => t.id === 'base-skill-1'));
     expect(checked.length).toBeGreaterThan(30);
     for (const id of checked) {
@@ -66,9 +71,7 @@ describe('Endfield costs data (src/games/endfield/data/costs.json)', async () =>
       const noTalents = tracks.map((t) => (t.id.startsWith('talent') ? 0 : t.max));
       const got = new Map(materialsFor(id, { level: 1 }, { level: 90, skills: noTalents }).map((n) => [n.material, n.amount]));
       for (const [item, amount] of Object.entries(summary)) {
-        // Outfitting I: the operator pages say 1,600 T-Creds, the Operator page 1,800 (listed in conflicts).
-        const expected = item === 'item_gold' ? amount - 200 : amount;
-        expect(got.get(item), `${id}: ${item}`).toBe(expected);
+        expect(got.get(item), `${id}: ${item}`).toBe(amount);
       }
     }
   });

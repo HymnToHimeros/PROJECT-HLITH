@@ -19,7 +19,7 @@ Level 1→90, Promotions I–IV, all four combat skills to 12, and the Ability M
 increases, both talents, both base skills, gear outfitting. Operator EXP is counted in the 10,000-EXP
 items (Advanced Combat Records up to level 60, Advanced Cognitive Carriers above), as the wiki's own
 Cost Summary does. Without talents, every operator with base skills matches the wiki's Cost Summary
-exactly, apart from the conflict below (a test checks it).
+exactly (a test checks it).
 
 ## Not on the wiki (shown as "No data yet")
 - Sanity per run and amount per run of each Protocol Space: Farm shows amounts, but runs, Sanity and
@@ -30,7 +30,9 @@ exactly, apart from the conflict below (a test checks it).
 The import stops on any disagreement between wiki sources that has no ruling in `RULINGS`
 (scripts/import-endfield-costs.ts). Each ruling names the source to use and when it was given.
 - **Gear Outfitting I:** all 34 operator pages say 1,600 T-Creds; the Operator page says 1,800 (and
-  its Cost Summary adds up with 1,800). Ruling: pending with MANAGER.
+  its Cost Summary adds up with 1,800). Ruling (MANAGER, 2026-10-15): 1,800, from the Operator page,
+  which states it twice; the 1,600 is one shared template value. Unverified in game; the owner may
+  correct it. With this, every operator matches the wiki's Cost Summary exactly.
 
 ## Next
 - Where each item comes from (`Material.sources`, from the item pages and the Protocol Space page):
