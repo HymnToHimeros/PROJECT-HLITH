@@ -105,3 +105,5 @@ There is no squad order in Endfield, so no step tries orders (decision 2).
    only one mode does is shown as "depends on her build" and adds nothing.
 10. **Weakness** ("apply Weakness") raises the damage the enemy takes from any damage type, so it counts
    with Increased DMG Taken and reaches every damage dealer (Susceptibility stays per element).
+11. **Luck is shown, never counted.** Effects that need a chance to come up (Alesh's Rare Fin,
+   Purrchena's Ambassador's Special) are listed with "which is a chance" and add nothing.

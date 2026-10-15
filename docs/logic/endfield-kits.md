@@ -24,5 +24,7 @@
   Reactions from two elements' Inflictions are now worked out (method decision 5).
 - E6d (done): group C, what players pull for now (MANAGER's order): Si, Tangtang, Typhoeus, Liino,
   Arcane, Camille, Mi Fu. Method decisions 8–10 (Team Position 01, Arcane's modes, Weakness).
-- Next, about 8 per PR: Argent Flow (once her kit text is on the wiki), Pogranichnik, Rossi,
-  Zhuang Fangyi, Perlica, Arclight, Xaihi, Avywenna, Snowshine, Alesh, Estella, Fluorite, Purrchena.
+- E6e (done): groups D and E, the remaining 12: Pogranichnik, Rossi, Zhuang Fangyi, Perlica,
+  Arclight, Xaihi, Avywenna, Snowshine, Alesh, Estella, Fluorite, Purrchena. Every released operator
+  is read; method decision 11 (luck is shown, never counted).
+- Next: Argent Flow, once her kit text is on the wiki (`npm run data:endfield-kits`, then a sheet).

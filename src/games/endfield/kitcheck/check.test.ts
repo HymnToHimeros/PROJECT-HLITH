@@ -23,6 +23,13 @@ const LIINO = 'chr_0035_liino';
 const ARCANE = 'chr_0032_lizhiyan';
 const MI_FU = 'chr_0031_mifu';
 const TANGTANG = 'chr_0027_tangtang';
+const ZHUANG = 'chr_0030_zhuangfy';
+const ARCLIGHT = 'chr_0007_ikut';
+const ESTELLA = 'chr_0021_whiten';
+const SNOWSHINE = 'chr_0014_aurora';
+const ALESH = 'chr_0024_deepfin';
+const PURRCHENA = 'chr_0038_purrche';
+const ROSSI = 'chr_0028_wulfa';
 
 const p0: Account = { potential: () => 0 };
 const lib = library();
@@ -92,8 +99,8 @@ describe('Endfield check (Part B)', () => {
     const out = checkSquad([CHEN, DA_PAN, CATCHER], lib, p0);
     expect(out.rated).toBe(true);
     if (out.rated) expect([CHEN, DA_PAN]).toContain(out.best.dd);
-    const unread = checkSquad([CHEN, 'chr_0029_pograni'], lib, p0);
-    expect(unread).toMatchObject({ rated: false, unread: ['chr_0029_pograni'] });
+    const unread = checkSquad([CHEN, 'chr_argent-flow'], lib, p0);
+    expect(unread).toMatchObject({ rated: false, unread: ['chr_argent-flow'] });
   });
 });
 
@@ -149,6 +156,27 @@ describe('Endfield check, group C', () => {
     const r = checkTeam([MI_FU, LIFENG, CHEN], MI_FU, lib, p0);
     expect(linesOf(r.lines, LIFENG, 'chain').length).toBeGreaterThan(0);
     expect(linesOf(r.lines, CHEN, 'chain').map((l) => l.why)).toContain('sets up Vulnerable for Mi Fu: World Splitter at 3 Vulnerable stacks');
+  });
+});
+
+describe('Endfield check, groups D and E', () => {
+  it('Arclight’s forced Electrification powers Zhuang Fangyi’s Battle Skill', () => {
+    const r = checkTeam([ZHUANG, ARCLIGHT], ZHUANG, lib, p0);
+    expect(linesOf(r.lines, ARCLIGHT, 'chain').map((l) => l.why)).toContain('sets up Electrification for Zhuang Fangyi: Stronger on Electrification');
+  });
+  it('a forced Solidification triggers Estella’s combo (Snowshine’s Snow Zone, Alesh’s Battle Skill)', () => {
+    const r = checkTeam([ESTELLA, SNOWSHINE, ALESH], ESTELLA, lib, p0);
+    for (const who of [SNOWSHINE, ALESH]) expect(linesOf(r.lines, who, 'chain').map((l) => l.why)).toContain('sets up Solidification for Estella: Combo on Solidification');
+  });
+  it('Rossi’s combo needs Vulnerable and an Arts Infliction: either can come from a teammate', () => {
+    const r = checkTeam([ROSSI, CHEN, AKEKURI], ROSSI, lib, p0);
+    expect(linesOf(r.lines, CHEN, 'chain').length).toBeGreaterThan(0);
+    expect(linesOf(r.lines, AKEKURI, 'chain').map((l) => l.why)).toContain('sets up Heat Infliction for Rossi: Combo on Vulnerable and an Arts Infliction');
+  });
+  it('decision 11: effects that need luck are shown, never counted', () => {
+    const r = checkTeam([TYPHOEUS, PURRCHENA, ALESH], TYPHOEUS, lib, { potential: () => 5 });
+    expect(linesOf(r.lines, PURRCHENA).find((l) => l.entry === 'ambassador')).toMatchObject({ kind: 'unknown', points: 0 });
+    expect(linesOf(r.lines, ALESH).find((l) => l.entry === 'p3-team-atk')).toMatchObject({ kind: 'unknown', points: 0 });
   });
 });
 
