@@ -31,7 +31,7 @@ export function History({ game, data, signedIn }: { game: GameContract; data: Pu
   const mapping = game.historyMapping;
   const fileImport = game.historyImporters.some((i) => i.kind === 'file');
   const linkImport = game.historyImporters.some((i) => i.kind === 'link');
-  const guide = guideFor(mapping?.uigfKey);
+  const guide = guideFor(mapping?.uigfKey, game.id);
   const fileLabel = game.historyImporters
     .filter((i) => i.kind === 'file')
     .map((i) => i.label)
@@ -72,7 +72,8 @@ export function History({ game, data, signedIn }: { game: GameContract; data: Pu
     if (!backend || !mapping || !pasted.trim()) return;
     setStatus({ kind: 'busy' });
     const knownIds = data.user.pulls.map((x) => x.id);
-    const { data: res, error } = await backend.functions.invoke<{ game: string; uid: string; timezone: number | null; list: unknown[] }>('gacha-import', { body: { link: pasted, knownIds } });
+    const fn = game.id === 'endfield' ? 'endfield-gacha-import' : 'gacha-import';
+    const { data: res, error } = await backend.functions.invoke<{ game: string; uid: string; timezone: number | null; list: unknown[] }>(fn, { body: { link: pasted, knownIds } });
     setLink(''); // the link holds a temporary key: never kept
     if (error || !res) {
       const body: unknown = error && 'context' in error && error.context instanceof Response ? await error.context.json().catch(() => null) : null;
@@ -111,7 +112,7 @@ export function History({ game, data, signedIn }: { game: GameContract; data: Pu
   const noImport = !mapping || (!fileImport && !linkImport);
   const ways: { id: Exclude<Way, null>; label: string; sub: string; show: boolean }[] = [
     { id: 'link', label: 'Paste a history link', sub: 'From the in-game history page. Works on PC.', show: linkImport },
-    { id: 'cache', label: 'Pick the game’s cache file', sub: 'The same link, read from the game’s own file. PC, no command needed.', show: linkImport },
+    { id: 'cache', label: "Pick the game’s cache file", sub: "The same link, read from the game’s own file. PC, no command needed.", show: linkImport && !!guide?.dataFolder },
     { id: 'file', label: 'Upload a file', sub: `Export from another tracker (${fileLabel || '.json'}).`, show: fileImport },
   ];
 
@@ -190,7 +191,7 @@ export function History({ game, data, signedIn }: { game: GameContract; data: Pu
             <input id={`history-file-${game.id}`} className={p.srOnly} type="file" accept=".json,application/json" aria-label={`Export file (${fileLabel})`} onChange={(e) => void onFile(e)} tabIndex={-1} />
           )}
 
-          <HowTo title="Phone, console and good to know" steps={goodToKnow()} />
+          <HowTo title="Phone, console and good to know" steps={goodToKnow(guide)} />
 
           {choose && (
             <section className={p.card} aria-label="Which account to import">
