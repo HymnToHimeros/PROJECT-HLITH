@@ -1,6 +1,6 @@
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
-import { settled } from './settle';
+import { readyToScan } from './settle';
 
 // R59: every module, in every game scope (one test each, so they run side by side), has no serious or critical accessibility
 // problems (labels, contrast, roles, keyboard) at PC and phone sizes.
@@ -12,9 +12,7 @@ for (const scope of ['all', 'hsr', 'zzz']) {
       await page.goto(`/${scope}/${module}`);
       await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
       // Scan the finished screen, not a half-loaded one.
-      await expect(page.getByText('Loading…')).toHaveCount(0);
-      await page.waitForLoadState('networkidle');
-      await settled(page);
+      await readyToScan(page);
       const result = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa']).analyze();
       const problems = result.violations
         .filter((v) => v.impact === 'serious' || v.impact === 'critical')
@@ -56,9 +54,7 @@ for (const theme of THEMES) {
       await page.goto(path);
       await expect(page.locator('html')).toHaveAttribute('data-theme', theme);
       await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
-      await expect(page.getByText('Loading…')).toHaveCount(0);
-      await page.waitForLoadState('networkidle');
-      await settled(page);
+      await readyToScan(page);
       const result = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa']).analyze();
       for (const v of result.violations) {
         if (v.impact === 'serious' || v.impact === 'critical') problems.push(`${theme} ${path}: ${v.id} (${v.nodes.length}) ${v.help} → ${v.nodes[0]?.target.join(' ')}`);
@@ -75,9 +71,7 @@ test('no serious accessibility problems · account', async ({ page }) => {
   test.setTimeout(180_000);
   const problems: string[] = [];
   const scan = async (where: string) => {
-    await expect(page.getByText('Loading…')).toHaveCount(0);
-    await page.waitForLoadState('networkidle');
-    await settled(page);
+    await readyToScan(page);
     const result = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa']).analyze();
     for (const v of result.violations) {
       if (v.impact === 'serious' || v.impact === 'critical') problems.push(`${where}: ${v.id} (${v.nodes.length}) ${v.help} → ${v.nodes[0]?.target.join(' ')}`);
@@ -121,8 +115,7 @@ test('no serious accessibility problems · character page and build form', async
   const form = page.getByRole('form', { name: 'Edit build of Kafka' });
   await expect(form).toBeVisible();
   await form.getByLabel('Kafka’s level (1–80)').fill('80');
-  await page.waitForLoadState('networkidle');
-  await settled(page);
+  await readyToScan(page);
   const result = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa']).analyze();
   const problems = result.violations
     .filter((v) => v.impact === 'serious' || v.impact === 'critical')

@@ -118,6 +118,8 @@ export interface Material {
   kind: string; // 'ascension', 'skill', 'credits', …
   /** Picture of the item (full URL), when the source has one (LOGIC-CORE). */
   icon?: string;
+  /** Where it comes from, in the source's words, one place each ("Protocol Space: Promotions"). Missing = not listed. */
+  sources?: string[];
   /** Stamina per run and expected drops per run, when known. */
   staminaPerRun?: number;
   dropsPerRun?: number;
