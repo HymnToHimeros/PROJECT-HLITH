@@ -11,6 +11,12 @@ const CATCHER = 'chr_0020_meurs';
 const ANTAL = 'chr_0023_antal';
 const ENDMIN = 'chr_0002_endminm';
 const LIFENG = 'chr_0015_lifeng';
+const LAEVATAIN = 'chr_0016_laevat';
+const AKEKURI = 'chr_0019_karin';
+const WULFGARD = 'chr_0006_wolfgd';
+const ARDELIA = 'chr_0025_ardelia';
+const GILBERTA = 'chr_0013_aglina';
+const LAST_RITE = 'chr_0026_lastrite';
 
 const p0: Account = { potential: () => 0 };
 const lib = library();
@@ -80,8 +86,32 @@ describe('Endfield check (Part B)', () => {
     const out = checkSquad([CHEN, DA_PAN, CATCHER], lib, p0);
     expect(out.rated).toBe(true);
     if (out.rated) expect([CHEN, DA_PAN]).toContain(out.best.dd);
-    const unread = checkSquad([CHEN, 'chr_0016_laevat'], lib, p0);
-    expect(unread).toMatchObject({ rated: false, unread: ['chr_0016_laevat'] });
+    const unread = checkSquad([CHEN, 'chr_0029_pograni'], lib, p0);
+    expect(unread).toMatchObject({ rated: false, unread: ['chr_0029_pograni'] });
+  });
+});
+
+describe('Endfield check, group B (Heat, Cryo, Nature)', () => {
+  it('a forced Combustion or Corrosion triggers Laevatain’s combo; Heat Infliction feeds her Melting Flame', () => {
+    const r = checkTeam([LAEVATAIN, WULFGARD, ARDELIA, AKEKURI], LAEVATAIN, lib, p0);
+    expect(linesOf(r.lines, WULFGARD, 'chain').map((l) => l.why)).toContain('sets up Combustion for Laevatain: Combo on Combustion or Corrosion');
+    expect(linesOf(r.lines, ARDELIA, 'chain').map((l) => l.why)).toContain('sets up Corrosion for Laevatain: Combo on Combustion or Corrosion');
+    expect(linesOf(r.lines, AKEKURI, 'chain').length).toBeGreaterThan(0);
+    // Ardelia's Arts Susceptibility reaches a Heat damage dealer.
+    expect(linesOf(r.lines, ARDELIA, 'buff').map((l) => l.tag)).toContain('Physical and Arts Susceptibility 20%');
+  });
+  it('decision 5: one element’s Infliction on top of another’s sets up the reaction of the second', () => {
+    // Gilberta's Nature Infliction on Laevatain's Heat makes Corrosion.
+    const r = checkTeam([LAEVATAIN, GILBERTA], LAEVATAIN, lib, p0);
+    expect(linesOf(r.lines, GILBERTA, 'chain').map((l) => l.why)).toContain('sets up Corrosion (on another element’s Infliction) for Laevatain: Combo on Combustion or Corrosion');
+    // Only one element in the team: no reaction.
+    const heatOnly = checkTeam([WULFGARD, AKEKURI], WULFGARD, lib, p0);
+    expect(linesOf(heatOnly.lines, AKEKURI, 'chain').map((l) => l.why).join(' ')).not.toMatch(/Combustion|Electrification/);
+  });
+  it('element limits: Antal’s Heat Amp reaches Laevatain; Last Rite’s Cryo Susceptibility doesn’t', () => {
+    const r = checkTeam([LAEVATAIN, ANTAL, LAST_RITE], LAEVATAIN, lib, p0);
+    expect(linesOf(r.lines, ANTAL, 'buff').map((l) => l.tag)).toContain('Electric and Heat Amp 20%');
+    expect(linesOf(r.lines, LAST_RITE).find((l) => l.entry === 'cryo-susceptibility')).toMatchObject({ kind: 'not-counted', points: 0 });
   });
 });
 

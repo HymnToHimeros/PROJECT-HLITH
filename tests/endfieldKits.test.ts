@@ -94,7 +94,11 @@ describe('Endfield kit data (src/games/endfield/data/kits.json)', async () => {
   const kits = (await endfield.data.kits?.()) ?? [];
   const characters = await endfield.data.characters();
   it('every listed operator has a kit, cited to its wiki page and revision', () => {
-    expect(kits.map((k) => k.characterId).sort()).toEqual(characters.map((c) => c.id).sort());
+    // An announced operator who is not out yet (releasedAt in the future) may wait for their kit until the wiki publishes it.
+    const released = characters.filter((c) => !c.releasedAt || Date.parse(c.releasedAt) <= Date.now());
+    const withKit = new Set(kits.map((k) => k.characterId));
+    expect(released.map((c) => c.id).filter((id) => !withKit.has(id))).toEqual([]);
+    expect(kits.map((k) => k.characterId).filter((id) => !characters.some((c) => c.id === id))).toEqual([]);
     for (const k of kits) {
       expect(k.source).toMatch(/^endfield\.wiki\.gg\/wiki\/\S+ \(CC BY-SA 4\.0\)$/);
       expect(k.version).toMatch(/^wiki revision \d+$/);

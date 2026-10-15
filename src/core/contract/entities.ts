@@ -60,6 +60,12 @@ export interface Banner {
    * announced; screens show "Permanent" instead of a countdown and leave it off timelines and plans.
    */
   permanent?: boolean;
+  /**
+   * Other limited characters the banner can give besides `featured` (e.g. Endfield: the limited 6★s of
+   * the previous two Chartered banners, on a lost 50/50). Character ids, from the game's own banner
+   * list; missing = not stated.
+   */
+  alsoAvailable?: string[];
 }
 
 export interface GameEvent {

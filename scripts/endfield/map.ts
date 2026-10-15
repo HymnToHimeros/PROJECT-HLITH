@@ -79,7 +79,7 @@ export function operators(rows: Row[], banners: Row[], images: Map<string, strin
   const list: Operator[] = [];
   for (const r of rows) {
     const base = r.Operator?.trim();
-    if (!base || !r.Id) continue;
+    if (!base) continue;
     // One name on several rows (the Endministrator, male and female): told apart by the wiki's own file name.
     const variant = (count.get(base) ?? 0) > 1 ? /\(([^)]+)\)/.exec(r.Icon ?? '')?.[1] : undefined;
     const name = variant ? `${base} (${variant})` : base;
@@ -97,7 +97,8 @@ export function operators(rows: Row[], banners: Row[], images: Map<string, strin
     const art = images.get(r.Splash ?? '');
     const portrait = images.get(r.Icon ?? '');
     list.push({
-      id: r.Id,
+      // An upcoming operator has no game id on the wiki yet: one from the name (kept for good by keepIds).
+      id: r.Id?.trim() || `chr_${slug(name)}`,
       name,
       rarity,
       element: slug(r.Element),
@@ -149,6 +150,8 @@ export interface BannerItem {
   serverTime?: { base: number; start?: boolean; end?: boolean };
   art?: string;
   permanent?: boolean;
+  /** Chartered: the other limited operators on the banner's list (a lost 50/50 can give them). */
+  alsoAvailable?: string[];
 }
 
 /**
@@ -170,19 +173,51 @@ export function bannerType(r: Row): string {
  * (Basic, New Horizons) is permanent; its `end` then only says how long it is announced:
  * the end of the current version.
  */
-export function banners(opRows: Row[], issueRows: Row[], ops: Operator[], wpns: WeaponItem[], versionEnd: string | undefined, out: Notes): BannerItem[] {
+export function banners(
+  opRows: Row[],
+  issueRows: Row[],
+  ops: Operator[],
+  wpns: WeaponItem[],
+  versionEnd: string | undefined,
+  out: Notes,
+  official: Map<string, OfficialTimes> = new Map(),
+  /** The end of the version running at a time (for "before version update and maintenance"). */
+  versionEndAt: (iso: string) => string | undefined = () => versionEnd,
+): BannerItem[] {
   const opId = new Map(ops.map((o) => [o.name, o.id]));
   const wpn = new Map(wpns.map((w) => [w.name, w]));
   const list: BannerItem[] = [];
-  const add = (r: Row, title: string, type: string, featured: string[], art?: string, permanentFlag = false) => {
-    const start = utc(r.AsiaStartTime);
-    const end = utc(r.AsiaEndTime);
+  const add = (r: Row, title: string, type: string, featured: string[], art?: string, permanentFlag = false, also: string[] = []) => {
+    let start = utc(r.AsiaStartTime);
+    let end = utc(r.AsiaEndTime);
+    let st = serverTime(r);
+    // The official notice's own period wins over the wiki's copy.
+    const o = official.get(title.toLowerCase());
+    if (o) {
+      const flags = { start: Boolean(st?.start), end: Boolean(st?.end) };
+      if (o.start && 'at' in o.start) [start, flags.start] = [o.start.at, true];
+      else if (o.start) flags.start = false;
+      if (o.end && 'at' in o.end) [end, flags.end] = [o.end.at, true];
+      else if (o.end && start) [end, flags.end] = [versionEndAt(start) ?? end, false];
+      st = flags.start || flags.end ? { base: ASIA_OFFSET, ...(flags.start ? { start: true } : {}), ...(flags.end ? { end: true } : {}) } : undefined;
+      if (o.end && !('at' in o.end)) out.notes.push(`banner "${title}": ends "before version update" (official); shown with the version's end`);
+    }
     if (!start) return out.notes.push(`banner "${title}" left out: no start yet`);
     const permanent = permanentFlag || !end;
     const shownEnd = end ?? versionEnd;
     if (!shownEnd) return out.notes.push(`banner "${title}" left out: no end and no current version end`);
-    const st = serverTime(r);
-    list.push({ id: `${slug(title)}-${start.slice(0, 10)}`, type, title, featured, start, end: shownEnd, ...(st ? { serverTime: st } : {}), ...(art ? { art } : {}), ...(permanent ? { permanent } : {}) });
+    list.push({
+      id: `${slug(title)}-${start.slice(0, 10)}`,
+      type,
+      title,
+      featured,
+      start,
+      end: shownEnd,
+      ...(st ? { serverTime: st } : {}),
+      ...(art ? { art } : {}),
+      ...(permanent ? { permanent } : {}),
+      ...(also.length ? { alsoAvailable: also } : {}),
+    });
   };
   for (const r of opRows) {
     const title = r.Banner?.trim();
@@ -198,7 +233,17 @@ export function banners(opRows: Row[], issueRows: Row[], ops: Operator[], wpns: 
       out.notes.push(`banner "${title}" left out until its operator is on the wiki`);
       continue;
     }
-    add(r, title, type, featured);
+    // Chartered: the banner list's other limited operators (the previous two Chartered ones), from the wiki, never guessed.
+    const also =
+      type === 'chartered'
+        ? (r.LimitedOperators ?? '')
+            .split(';')
+            .map((n) => n.trim())
+            .filter((n) => n && n !== r.RateUpOperator?.trim())
+            .map((n) => opId.get(n))
+            .filter((x): x is string => Boolean(x))
+        : [];
+    add(r, title, type, featured, undefined, false, also);
   }
   for (const r of issueRows) {
     const title = r.Issue?.trim();
@@ -319,4 +364,83 @@ export function rhythmFrom(news: NewsItem[], list: VersionItem[]): Partial<Recor
     (out[kind] ??= {})[v.id] ??= hours;
   }
   return out;
+}
+
+// ── Official notices: times and new 6★ weapons the wiki doesn't have yet ──────────
+
+const MONTHS: Record<string, number> = { jan: 0, feb: 1, mar: 2, apr: 3, may: 4, jun: 5, jul: 6, aug: 7, sep: 8, sept: 8, oct: 9, nov: 10, dec: 11 };
+
+/** "Nov. 5, 2026 at 12:00" in server time, as the Asia server's instant (UTC+8). */
+export function serverDate(s: string): string | undefined {
+  const m = /([A-Za-z]{3,5})\.?\s+(\d{1,2}),\s*(\d{4})\s+at\s+(\d{1,2}):(\d{2})/.exec(s);
+  const month = m ? MONTHS[(m[1] ?? '').toLowerCase()] : undefined;
+  if (!m || month === undefined) return undefined;
+  return new Date(Date.UTC(Number(m[3]), month, Number(m[2]), Number(m[4]) - ASIA_OFFSET, Number(m[5]))).toISOString();
+}
+
+/** One end of a banner's official period: a server-time instant, or tied to the version update. */
+export type OfficialEnd = { at: string; server: true } | { version: true };
+export interface OfficialTimes {
+  start?: OfficialEnd;
+  end?: OfficialEnd;
+}
+
+function officialEnd(s: string): OfficialEnd | undefined {
+  if (/version update/i.test(s)) return { version: true };
+  const at = serverDate(s);
+  return at ? { at, server: true } : undefined;
+}
+
+/**
+ * Banner periods from official notice text: the "Availability:" line under a "[Title] … Headhunting"
+ * or "[Title] … Issue" heading (or in a post whose own title names it). "After … version update" /
+ * "Before version update and maintenance" tie a side to the patch; dates are server time.
+ * "ends after 3 [Chartered Headhunting] banners" gives no end.
+ */
+export function officialTimes(posts: { title: string; text: string }[]): Map<string, OfficialTimes> {
+  const out = new Map<string, OfficialTimes>();
+  for (const p of posts) {
+    let current = /^\[([^\]]+)\]\s.*(Headhunting|Issue)/i.exec(p.title)?.[1];
+    for (const raw of p.text.split('\n')) {
+      const line = raw.trim();
+      const heading = /^(?:\d+\.\s*)?\[([^\]]+)\][^:]*(Headhunting|Issue)\b/i.exec(line);
+      if (heading?.[1]) current = heading[1];
+      const avail = /Availability:\s*(.+)$/i.exec(line)?.[1];
+      if (!current || !avail) continue;
+      const [a, b] = avail.split(/\s+[–-]\s+|;\s*ends\s+/);
+      const t: OfficialTimes = {};
+      const start = a ? (/^opens?\s+/i.test(a) ? officialEnd(a.replace(/^opens?\s+/i, '')) : officialEnd(a)) : undefined;
+      const end = b && !/after \d+ \[/i.test(b) ? officialEnd(b) : undefined;
+      if (start) t.start = start;
+      if (end) t.end = end;
+      if ((t.start || t.end) && !out.has(current.toLowerCase())) out.set(current.toLowerCase(), t);
+    }
+  }
+  return out;
+}
+
+/** 6★ weapons the official notes name, e.g. "[Lunar Calling (Sword)]": name and type. */
+export function officialWeapons(texts: string[]): { name: string; type: string }[] {
+  const seen = new Map<string, string>();
+  for (const t of texts)
+    for (const line of t.split('\n')) {
+      if (!/6★ weapons?\b/i.test(line)) continue;
+      for (const m of line.matchAll(/\[([^\]()]+?)\s*\((Sword|Greatsword|Great Sword|Polearm|Handcannon|Arts Unit)\)\]/gi)) {
+        const name = (m[1] ?? '').trim();
+        if (name && !seen.has(name)) seen.set(name, slug((m[2] ?? '').replace(/^greatsword$/i, 'great sword')));
+      }
+    }
+  return [...seen].map(([name, type]) => ({ name, type }));
+}
+
+/**
+ * Ids never change: an item keeps the id it was first listed with (matched by name), even
+ * when the wiki later gives it a game id. New items without a wiki id get one from their name.
+ */
+export function keepIds<T extends { id: string; name: string }>(items: T[], previous: { id: string; name: string }[]): T[] {
+  const byName = new Map(previous.map((p) => [p.name, p.id]));
+  return items.map((x) => {
+    const id = byName.get(x.name);
+    return id && id !== x.id ? { ...x, id } : x;
+  });
 }
