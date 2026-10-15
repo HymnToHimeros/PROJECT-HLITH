@@ -41,10 +41,14 @@ const plural = (n: number, word: string) => `${n} ${word}${n === 1 ? '' : 's'}`;
 
 /** A tag without its "Allies:" / "Enemy:" lead-in, which reads badly inside a sentence. */
 const bare = (tag: string) => tag.replace(/^(Allies|Ally|Squad|Teammates|Team|Enemy|Enemies|One ally|Shifu|Bondmate|Self|Own):\s*/i, '');
-/** "Follow-Up ATK for Feixiao: Follow-Up ATK after teammates attack" → their Follow-Up ATK sets off "Follow-Up ATK after teammates attack". */
+/**
+ * "Follow-Up ATK for Feixiao: Follow-Up ATK after teammates attack" → their Follow-Up ATK sets off "Follow-Up ATK after teammates attack".
+ * Endfield's lines already say what they do ("sets up Combustion for Laevatain: Combo on Combustion") → sets up Combustion, which sets off "Combo on Combustion".
+ */
 const chainWords = (why: string) => {
   const m = /^(.*?) for .*?: (.*)$/.exec(why);
-  return m ? `their ${m[1]} sets off “${m[2]}”` : why;
+  if (!m) return why;
+  return /^sets up /.test(m[1] ?? '') ? `${m[1]}, which sets off “${m[2]}”` : `their ${m[1]} sets off “${m[2]}”`;
 };
 
 /** What one member brings to the damage dealer, as a phrase without the name ("gives …; sets off …"), and the points it earns. */
@@ -64,7 +68,8 @@ function given(t: ExplainTeam, who: string, name: (id: string) => string): { phr
     const buffs = counted.filter((l) => l.kind === 'buff');
     const chains = counted.filter((l) => l.kind === 'chain');
     if (buffs.length) parts.push(`gives ${dd} ${list(buffs.map((l) => bare(l.tag)))}`);
-    for (const c of chains) parts.push(chainWords(c.why));
+    // Two skills can set off the same chain (Camille's Battle Skill and Ultimate): said once.
+    for (const c of new Set(chains.map((l) => chainWords(l.why)))) parts.push(c);
     // Switching on the damage dealer's ability is counted once, on the damage dealer's line.
     if (turnedOn.length) parts.push(`switches on ${dd}'s ${list(turnedOn.map((l) => `“${bare(l.tag)}”`))}`);
     // T30 (B): a support's own hits add to the team's damage (kit value), not to the count.

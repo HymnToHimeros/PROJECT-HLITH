@@ -11,7 +11,7 @@ import { phaseOfBanner } from '../banners/fit';
 import { useBannersData, type BannersData } from '../banners/useBannersData';
 import { cx } from '../../core/ui/cx';
 import { budget, budgetPulls, pullsFor, type BudgetRow } from '../budget/budget';
-import { bannerProgress, carryIn, chance, featuredOf, hardPityOf, pityFromHistory, worstCase, type OddsMode } from '../pity/pity';
+import { bannerProgress, carryIn, chance, featuredOf, hardPityOf, oddsWord, pityFromHistory, worstCase, type OddsMode } from '../pity/pity';
 import { Filters, percent, Strip } from './shared';
 import p from './pulls.module.css';
 import type { PullsData } from './usePullsData';
@@ -168,7 +168,8 @@ function PlanCard({ game, banner: b, type, data, art, serverId, now, whatIf, ope
   });
   const pulled = budgetPulls(game, byEnd, type.id);
   const pullsBy = pulled.known ? { ...pulled, value: pulled.value + free } : pulled;
-  const pick = pityFor(data, type.id, whatIf, featuredOf(type.pity)?.guaranteeAfterLoss ?? true);
+  const featured = featuredOf(type.pity);
+  const pick = pityFor(data, type.id, whatIf, featured?.guaranteeAfterLoss ?? true);
   // A game's own rule also reads how far this banner has come (pulls on it so far, from history; none before it opens).
   const progress = type.pity.kind === 'custom' ? (upcoming || data.history.example ? { banner: 0, got: 0 } : bannerProgress(data.history.list, type.id, start)) : undefined;
   const state = { ...(pick?.state ?? { pulls: 0, guaranteed: false }), ...(progress ? { extra: progress } : {}) };
@@ -260,7 +261,8 @@ function PlanCard({ game, banner: b, type, data, art, serverId, now, whatIf, ope
             <dt>{SOURCE_LABEL[pick.source]}</dt>
             <dd className={p.oddsValue}>
               {state.pulls}
-              {hard !== null ? `/${hard}` : ''} · {state.guaranteed ? 'guaranteed' : '50/50'}
+              {hard !== null ? `/${hard}` : ''}
+              {featured ? ` · ${state.guaranteed ? 'guaranteed' : oddsWord(featured)}` : ''}
             </dd>
           </div>
         )}
@@ -416,7 +418,7 @@ function TryPity({ game, types, value, onChange, data }: { game: GameContract; t
           <label className={p.field}>
             Next {game.terms.rarity.top}
             <select className={p.input} value={cur?.guaranteed ? 'g' : 'f'} onChange={(e) => set({ pulls: cur?.pulls ?? 0, guaranteed: e.target.value === 'g' })}>
-              <option value="f">50/50</option>
+              <option value="f">{oddsWord(featured)}</option>
               <option value="g">Guaranteed (lost the last 50/50)</option>
             </select>
           </label>
@@ -431,7 +433,7 @@ function TryPity({ game, types, value, onChange, data }: { game: GameContract; t
         )}
         <span className={p.muted}>
           {saved
-            ? `Saved for ${type.label}: ${saved.pity}/${hard}${hasFeatured ? ` · ${saved.guaranteed ? 'guaranteed' : '50/50'}` : ''}, on ${formatDate(Date.parse(saved.at))}. Update it after you pull.`
+            ? `Saved for ${type.label}: ${saved.pity}/${hard}${hasFeatured ? ` · ${saved.guaranteed ? 'guaranteed' : oddsWord(featured)}` : ''}, on ${formatDate(Date.parse(saved.at))}. Update it after you pull.`
             : 'Typing only tries it out on this screen. Save it to keep it, for example if you play on phone or console and can’t import.'}
           {historyWins ? ' Your imported history knows this banner’s pity, so the cards use that instead.' : ''}
         </span>

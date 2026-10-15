@@ -211,6 +211,20 @@ describe('Roster screen', () => {
     expect(within(page).getByText(/Current pity and 50\/50: no data yet/)).toBeInTheDocument();
   });
 
+  it('"For your teams" is "No data yet" while you own nobody: no team of yours to compare, so never "No gain"', async () => {
+    const rules = { method: 'm', rated: () => true, verdict: () => ({ rated: false, why: '' }), whoFits: () => [], lineUps: () => [], ifYouPull: () => ({ percent: 0, why: ['No gain: no team of yours gets a higher kit value with them.'] }) } as unknown as TeamRules;
+    const game = { ...makeGame(false), rules: { teams: rules } };
+    await show('characters', game);
+    let page = await openPage('Newest Star');
+    expect(within(page).getByText(/For your teams:/)).toHaveTextContent('For your teams: No data yet (mark who you own in Roster)');
+    expect(within(page).queryByText(/No gain/)).toBeNull();
+    cleanup();
+    setRosterEntry('aa', 'c2', { owned: true, wanted: false, dupes: 0 });
+    await show('characters', game);
+    page = await openPage('Newest Star');
+    expect(within(page).getByText('For your teams: No gain')).toBeInTheDocument();
+  });
+
   it('Teams shows preset portraits with who you own, and leaves the fit score as "No data yet"', async () => {
     setRosterEntry('aa', 'c1', { owned: true, wanted: false, dupes: 0 });
     setRosterEntry('aa', 'c3', { owned: false, wanted: true, dupes: 0 });
@@ -593,6 +607,8 @@ describe('Roster screen', () => {
     const base = makeGame(false);
     const game: GameContract = { ...base, data: { ...base.data, characters: async () => [...chars, leak] }, rules: { teams: rules } };
 
+    // The leak buffs Newest Star, whom you own (with nobody owned there is no team of yours to add to).
+    setRosterEntry('aa', 'c1', { owned: true, wanted: false, dupes: 0 });
     // Leaks off (the default): the rules hear showLeaks off.
     await show('characters', game);
     fireEvent.click(screen.getByRole('button', { name: /^Older Star/ }));

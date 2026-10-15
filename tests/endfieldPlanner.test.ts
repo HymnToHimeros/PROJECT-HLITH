@@ -26,9 +26,9 @@ const pulls = (n: number, top?: string): PullRecord[] =>
     };
   });
 
-const card = async () => {
+const card = async (name = /Rejuvenation/) => {
   render(createElement(PullsScreen, { games: [endfield], scope: 'endfield', tab: 'planner', servers: { endfield: 'eu' }, openTab: () => {}, open: () => {}, openAccount: () => {} }));
-  return within(await screen.findByRole('article', { name: /Rejuvenation/ }));
+  return within(await screen.findByRole('article', { name }));
 };
 const worst = (c: ReturnType<typeof within>) => c.getByText('Worst case').parentElement?.textContent;
 
@@ -69,5 +69,10 @@ describe('Endfield Pulls → Planner reads the banner open at each pull', () => 
   it('names the earlier limited operators a lost 50/50 can give', async () => {
     const c = await card();
     expect(c.getByText(/A lost 50\/50 can also give Typhoeus, Liino/)).toBeInTheDocument();
+  });
+
+  it('a weapon banner says its real odds: 25% featured, not 50/50', async () => {
+    const c = await card(/Bedazzled Issue/);
+    expect(c.getByText('Pity from example pulls').nextElementSibling?.textContent).toMatch(/\/40 · 25% featured$/);
   });
 });

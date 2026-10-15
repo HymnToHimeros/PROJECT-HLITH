@@ -723,6 +723,13 @@ function PullValueLine({ data, character: c }: { data: RosterData; character: Ch
         For your teams: <NoData dash={false} /> (kit not read yet)
       </span>
     );
+  // With nobody marked owned there are no teams of yours to compare: unknown, never "No gain".
+  if (!data.characters.some((x) => x.id !== c.id && account.owned(x.id)))
+    return (
+      <span className={r.cardText}>
+        For your teams: <NoData dash={false} /> (mark who you own in Roster)
+      </span>
+    );
   return (
     <details className={r.why}>
       <summary className={r.whySummary}>For your teams: {v.percent ? `${v.percent}%` : 'No gain'}</summary>
@@ -783,6 +790,10 @@ function Materials({
       {/* Material amounts come from game.rules.materialsFor; what you have isn't tracked yet. */}
       {real === null ? (
         <p className={r.muted}>Loading…</p>
+      ) : real.needs.known && real.needs.value.length === 0 ? (
+        <p className={r.cardText}>
+          Material amounts for {c.name}: <NoData dash={false} /> The source doesn’t list them yet.
+        </p>
       ) : real.needs.known ? (
         real.needs.value.map((m) => (
           <div key={m.material} className={r.matRow}>
@@ -817,7 +828,7 @@ function Materials({
           ))}
         </>
       )}
-      {real?.needs.known && game.rules.materialsNote && <span className={r.muted}>{game.rules.materialsNote}</span>}
+      {real?.needs.known && real.needs.value.length > 0 && game.rules.materialsNote && <span className={r.muted}>{game.rules.materialsNote}</span>}
       {openFarm && (
         <button type="button" className={r.linkButton} onClick={openFarm}>
           {farming ? 'Open Farm →' : 'Plan it in Farm →'}
