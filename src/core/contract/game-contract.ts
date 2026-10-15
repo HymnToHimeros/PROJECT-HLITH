@@ -288,6 +288,7 @@ export interface GameDataLoaders {
 /** Game maths. Every member is optional: absent = that feature shows "No data yet". */
 export interface GameRules {
   materialsFor?: (characterId: string, from: BuildLevel, to: BuildLevel) => MaterialNeed[];
+  weaponMaterialsFor?: (weaponId: string, from: BuildLevel, to: BuildLevel) => MaterialNeed[];
   /** What the material amounts include or leave out, in plain words (shown with them). */
   materialsNote?: string;
   /**

@@ -7,12 +7,14 @@ import { useHideLeaks } from '../banners/leakPref';
 import { useShowLeaked } from './leakedPref';
 import { CharacterPage } from './CharacterPage';
 import { Characters } from './Characters';
+import { Weapons } from './Weapons';
+import { WeaponPage } from './WeaponPage';
 import r from './roster.module.css';
 import { WithUserData } from './shared';
 import { Teams, type PresetDraft } from './Teams';
-import { useRosterLists, type RosterData } from './useRosterData';
+import { useRosterLists, useWeapons, type RosterData } from './useRosterData';
 
-type Tab = 'characters' | 'teams';
+type Tab = 'characters' | 'teams' | 'weapons';
 
 // Which game Roster shows in All games, remembered on this device (per viewer).
 const GAME_KEY = 'hlith.roster.game';
@@ -46,8 +48,8 @@ export default function RosterScreen({ games, scope, tab, openTab, open, openAcc
   const showLeaked = useShowLeaked();
   const hideLeaks = useHideLeaks();
   const showLeaks = showLeaked && !hideLeaks;
-  const current: Tab = tab === 'teams' ? 'teams' : 'characters';
-  // The open character belongs to the tab it was opened from; switching tabs goes back to that tab's list.
+  const current: Tab = tab === 'teams' ? 'teams' : tab === 'weapons' ? 'weapons' : 'characters';
+  // The open character/weapon belongs to the tab it was opened from; switching tabs goes back to that tab's list.
   const [page, setPage] = useState<{ tab: Tab; game: string; id: string } | null>(null);
   // "Make a preset with them" on a character page: Teams opens its editor with this, once.
   const [draft, setDraft] = useState<PresetDraft | null>(null);
@@ -78,6 +80,16 @@ export default function RosterScreen({ games, scope, tab, openTab, open, openAcc
         });
         const openPage = (gameId: string, id: string) => setPage({ tab: current, game: gameId, id });
         const pageData = page && page.tab === current ? data.find((d) => d.game.id === page.game) : undefined;
+        if (current === 'weapons' && pageData && page) {
+          return (
+            <WeaponPageWrapper
+              key={`${pageData.game.id}:wp:${page.id}`}
+              data={pageData}
+              weaponId={page.id}
+              onBack={() => setPage(null)}
+            />
+          );
+        }
         const character = page && pageData?.byId.get(page.id);
         if (pageData && character) {
           return (
@@ -103,6 +115,8 @@ export default function RosterScreen({ games, scope, tab, openTab, open, openAcc
             {game && <MainCharacterPrompt game={game} />}
             {current === 'teams' ? (
               <Teams data={data} several={false} onOpen={openPage} openCharacters={() => openTab('characters')} openAccount={openAccount} draft={draft} onDraftUsed={draftUsed} />
+            ) : current === 'weapons' ? (
+              <Weapons data={data} several={false} onOpen={openPage} />
             ) : (
               <Characters data={data} several={false} onOpen={openPage} />
             )}
@@ -125,6 +139,15 @@ function MainCharacterPrompt({ game }: { game: GameContract }) {
       <ProtagonistPicker game={game} />
     </section>
   );
+}
+
+/** Resolves a weapon by ID from the game's weapon list, then renders WeaponPage. */
+function WeaponPageWrapper({ data, weaponId, onBack }: { data: RosterData; weaponId: string; onBack: () => void }) {
+  const weapons = useWeapons(data.game);
+  if (weapons === null) return <p className={r.muted}>Loading…</p>;
+  const weapon = weapons.find((w) => w.id === weaponId);
+  if (!weapon) return <p className={r.muted}>{data.game.terms.weapon} not found.</p>;
+  return <WeaponPage data={data} weapon={weapon} onBack={onBack} />;
 }
 
 /** One game at a time: the game short names, tinted with each game's vent like the shell's switch. */
