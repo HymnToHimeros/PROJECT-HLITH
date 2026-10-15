@@ -163,3 +163,13 @@ describe('Endfield lost 50/50: any 6★ but the featured one, an earlier limited
     expect(featuredOf(charteredOperator)).toEqual({ winRate: 0.5, guaranteeAfterLoss: false });
   });
 });
+
+describe('Endfield reruns: modelled as the first run of their name', () => {
+  it('no two RE-Factor or weapon banners share a name yet (once one repeats, carry its attempts over: docs/logic/endfield-gacha.md)', async () => {
+    const banners = await endfield.data.banners();
+    for (const type of ['rerun', 'weapon']) {
+      const titles = banners.filter((b) => b.type === type).map((b) => b.title);
+      expect(titles.filter((t, i) => titles.indexOf(t) !== i), type).toEqual([]);
+    }
+  });
+});

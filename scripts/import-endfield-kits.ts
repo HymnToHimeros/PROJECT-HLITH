@@ -37,10 +37,20 @@ interface Kit {
   skills: KitSkill[];
 }
 
+const pause = (ms: number) => new Promise((r) => setTimeout(r, ms));
+
+/** A wiki API call: a short pause before each, and when the wiki says "too many requests" (429), waits of 2, 4, 8 and 16s. */
 export async function json<T>(url: string): Promise<T> {
-  const res = await fetch(url, { headers: { 'user-agent': 'PROJECT-HLITH data import (https://github.com/HymnToHimeros/PROJECT-HLITH)' } });
-  if (!res.ok) throw new Error(`${url} answered ${res.status}`);
-  return (await res.json()) as T;
+  for (let attempt = 0; ; attempt++) {
+    await pause(250);
+    const res = await fetch(url, { headers: { 'user-agent': 'PROJECT-HLITH data import (https://github.com/HymnToHimeros/PROJECT-HLITH)' } });
+    if (res.status === 429 && attempt < 4) {
+      await pause(2000 * 2 ** attempt);
+      continue;
+    }
+    if (!res.ok) throw new Error(`${url} answered ${res.status}`);
+    return (await res.json()) as T;
+  }
 }
 
 /** The page's current wikitext and revision id. */

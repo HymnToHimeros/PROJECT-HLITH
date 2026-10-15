@@ -57,10 +57,28 @@ first banner).
 Only the sure things count: the 120 guarantee (if still open) and the 240 copies for operators;
 the 8th issue and the 18 + 16k copies for weapons; hard pity and the 300 pick on the standard banner.
 
-## Not verified (say so if the game shows otherwise)
-- The weapon copy cycle (18, then every 16) is our reading of "the cycle follows on every 8 issues".
-- Whether the beginner banner has the soft pity (modelled without).
-- RE-Factor (rerun): its 120 guarantee and free pulls happen once per banner name across reruns;
-  the model treats each run as new, so a second run of the same banner may give less than shown.
-- Joint banners: rules not confirmed; FRAME's placeholder stays (standard 6★ odds, no featured rule).
-- The beginner banner's own rate isn't published: worst case 40 is shown, chances say "no data".
+## Settled (2026-10-15: official Gryphline bulletins first, then the wiki)
+Official bulletins: endfield.gryphline.com/en-us/news/<cid> (SCHEDULER searched all 128 posts).
+- **Weapon bonus cycle:** officially, every Arsenal Issue gives "the banner's specific [Arms Offering
+  Crate] (Arms OC) or [Rate-UP 6★ Weapon] in alternating order"; the count resets when the banner
+  ends (every Issue post, e.g. cid 2652, 14 Oct 2026). The official posts give no numbers; the wiki
+  (Arsenal Exchange) gives them: a crate at issue 10, the Rate-UP weapon at 18, "the cycle follows
+  on every 8 issues afterwards". Together: crate 10, weapon 18, crate 26, weapon 34… so a featured
+  copy at 18 and then every 16, as modelled. The numbers are the wiki's (not in any official post).
+- **RE-Factor Headhunting (rerun), official** (cid 3839, 23 Sep 2026, Resplendent Spectrum #1):
+  the 120 guarantee "can only trigger 1 time across all [same-name] RE-Factor Headhunting banners.
+  Attempts toward this guarantee will carry over to future [same-name] banners"; the 30/60/90 free
+  10-pulls trigger once across all same-name banners and unused ones carry over; the 240-pull token
+  counts attempts across all same-name banners.
+  - **Modelled for a first run only** (every rerun is #1 of its name today). A guard test fails as
+    soon as two rerun banners share a name, so the per-name carry-over gets modelled before the
+    Planner could show a later run as fresh.
+- **RE-Factor Issue (weapon rerun), official** (same post): attempts carry over to future same-name
+  RE-Factor Issues; the 8th-issue guarantee triggers once across them and carries over; the 4th-issue
+  6★ guarantee holds only for #1. Same guard test (weapon banners sharing a name).
+
+## Not proven (modelled as unknown, never guessed)
+- **New Horizons (beginner):** no official post states its rate, soft pity or 40-pull guarantee; the
+  wiki states the 40. Chances say "No data yet" (`baseRate: null`); only the worst case of 40 is shown.
+- **Joint banners:** rules not confirmed; FRAME's placeholder stays (standard 6★ odds, no featured
+  rule).

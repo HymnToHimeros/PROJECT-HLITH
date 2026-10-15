@@ -1,4 +1,4 @@
-import { createElement, Suspense, useCallback, useEffect, useRef, useState, type CSSProperties, type MouseEvent } from 'react';
+import { createElement, useCallback, useEffect, useRef, useState, type CSSProperties, type MouseEvent } from 'react';
 import type { GameContract, GameId, ModuleId } from '../contract';
 import { withProtagonist } from '../data/protagonist';
 import { updatePrefs, usePrefs } from '../data/prefs';
@@ -12,6 +12,7 @@ import { withVent } from '../theme/vents';
 import { setDisplayFormat } from '../time/displayFormat';
 import { useMotion } from '../theme/motion';
 import { useGlide } from './useGlide';
+import { LazyArea } from './LazyArea';
 import { useOwnerTheme, useTheme } from '../theme/theme';
 import { OwnerArt } from '../theme/OwnerArt';
 import a from '../theme/art.module.css';
@@ -338,11 +339,11 @@ export function Shell({ games: registered, account = null, isOwner = false, owne
             </div>
             <div className={s.content}>
               {panel('community') ? (
-                <Suspense fallback={<p className={s.note}>Loading…</p>}>
+                <LazyArea resetKey="community">
                   <div className="hlith-enter">
                     <PanelSlot id="community" {...panelProps} />
                   </div>
-                </Suspense>
+                </LazyArea>
               ) : (
                 <p className={s.note}>The community page isn’t available here.</p>
               )}
@@ -358,9 +359,9 @@ export function Shell({ games: registered, account = null, isOwner = false, owne
             </div>
             <div className={s.content}>
               {accountPage ? (
-                <Suspense fallback={<p className={s.note}>Loading…</p>}>
+                <LazyArea resetKey="account">
                   <PanelSlot id="account" {...panelProps} />
-                </Suspense>
+                </LazyArea>
               ) : (
                 <>
                   <button type="button" className={s.sheetRow} onClick={() => setSheet('edit')}>
@@ -414,7 +415,7 @@ export function Shell({ games: registered, account = null, isOwner = false, owne
                 />
               )}
               {active && moduleScreen(active) ? (
-                <Suspense fallback={<p className={s.note}>Loading…</p>}>
+                <LazyArea resetKey={`${scope}:${active}`}>
                   {/* Keyed by screen and tab, so each change plays the enter animation once (T50). */}
                   <div key={`${scope}:${active}:${activeTab ?? ''}`} className="hlith-enter">
                   <ModuleSlot
@@ -429,7 +430,7 @@ export function Shell({ games: registered, account = null, isOwner = false, owne
                     openServer={openServer}
                   />
                   </div>
-                </Suspense>
+                </LazyArea>
               ) : (
                 <section className={s.placeholder}>
                   <span className="t-label">BEING BUILT</span>
@@ -542,9 +543,9 @@ export function Shell({ games: registered, account = null, isOwner = false, owne
 
       <BottomSheet open={sheet === 'assistant'} title="Assistant" onClose={close} side>
         {panel('assistant') ? (
-          <Suspense fallback={<p className={s.note}>Loading…</p>}>
+          <LazyArea resetKey="assistant">
             <PanelSlot id="assistant" {...panelProps} />
-          </Suspense>
+          </LazyArea>
         ) : (
           <p className={s.note}>
             The Assistant isn’t built yet. It will use your own Claude key, answer from your data, and show what each message costs.

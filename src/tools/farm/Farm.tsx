@@ -198,6 +198,7 @@ function MaterialRow({ plan, row, several }: { plan: Plan; row: NeedRow; several
       <span className={f.matMeta}>
         {row.runs.known ? `${formatNumber(row.runs.value)} runs` : '— runs'} · {row.stamina.known ? formatNumber(row.stamina.value) : '—'} stamina
       </span>
+      {row.sources && row.sources.length > 0 && <span className={f.matSources}>From: {row.sources.join(', ')}</span>}
       <span className={f.tileNoData}>Have: no data yet</span>
     </div>
   );
