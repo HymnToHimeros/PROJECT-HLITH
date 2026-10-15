@@ -1,5 +1,5 @@
 import { useMemo, type ReactNode } from 'react';
-import type { TeamAccount, TeamReason, TeamVerdict } from '../../core/contract';
+import type { TeamAccount, TeamReason, TeamRules, TeamVerdict } from '../../core/contract';
 import { hiddenBy } from '../../core/data/protagonist';
 import { FIT_WORD } from '../../core/rules/buildFit';
 import { ExampleTag, NoData } from '../../core/ui';
@@ -272,13 +272,24 @@ export function WhyScore({ verdict, data }: { verdict: TeamVerdict | null; data:
   );
 }
 
+/** While a game's team rules have read only some kits: say so, with the counts from the rules (nothing when all are read). */
+export function ReadSoFar({ rules, word, game }: { rules: TeamRules | undefined; word: string; game?: string }) {
+  const n = rules?.readSoFar?.();
+  if (!n || n.read >= n.total) return null;
+  return (
+    <p className={r.muted} role="note">
+      {game ? `${game}: ` : ''}Only {n.read} of {n.total} {word}s are read so far. These teams will change as more are read.
+    </p>
+  );
+}
+
 /** The team score spot (design: big number + "synergy"). Real scores come from the game's team rules; otherwise "No data yet", or an EXAMPLE number on example teams. */
 export function Score({ score, example, big = false, verdict = null }: { score: number | null; example: boolean; big?: boolean; verdict?: TeamVerdict | null }) {
   if (verdict?.rated && !example)
     return (
       <div className={r.score} role="group" aria-label="Fit with your roster">
         <span className={big ? r.scoreNumBig : r.scoreNum}>{verdict.percent}%</span>
-        <span className={r.scoreLabel}>synergy · {verdict.label}</span>
+        <span className={r.scoreLabel}>synergy{verdict.label ? ` · ${verdict.label}` : ''}</span>
       </div>
     );
   return (

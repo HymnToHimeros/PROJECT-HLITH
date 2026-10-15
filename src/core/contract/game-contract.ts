@@ -485,4 +485,9 @@ export interface TeamRules {
    * (`BEST_FOUND`): no game team list to edit.
    */
   bestCards?: (presets: TeamPreset[], account: TeamAccount) => TeamPreset[];
+  /**
+   * How many characters' kits are read so far, of all the game's characters (LOGIC-CORE, E6b). Present while the
+   * read set is partial: teams are the best among those read only, so screens say so. Absent = every kit is read.
+   */
+  readSoFar?: () => { read: number; total: number };
 }

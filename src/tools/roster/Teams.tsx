@@ -8,7 +8,7 @@ import { ShareTeam } from '../share/ShareTeam';
 import { KitCheck } from './KitCheck';
 import r from './roster.module.css';
 import { artOf, byNewest, CharArt, elementOf, entryOf, SectionHead, tagOf } from './shared';
-import { Line, Member, Score, teamAccount, useTeamAccount, useVerdict, WhyScore } from './TeamParts';
+import { Line, Member, ReadSoFar, Score, teamAccount, useTeamAccount, useVerdict, WhyScore } from './TeamParts';
 import { slotsOf, TeamListEditor } from './TeamListEditor';
 import type { RosterData } from './useRosterData';
 import { Switch } from '../pulls/shared';
@@ -187,6 +187,9 @@ export function Teams({ data, several, onOpen, openCharacters, openAccount, draf
             />
           </span>
         </SectionHead>
+        {data.map((d) => (
+          <ReadSoFar key={d.game.id} rules={d.presets.example ? undefined : d.game.rules.teams} word={d.game.terms.character.toLowerCase()} {...(several ? { game: d.game.short } : {})} />
+        ))}
         {allRecommended.length > TEAMS_FIRST && (
           <div className={r.teamFilter}>
             <label className={`${r.field} ${r.searchField}`}>
