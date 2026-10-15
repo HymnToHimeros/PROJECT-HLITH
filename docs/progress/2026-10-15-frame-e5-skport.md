@@ -41,7 +41,24 @@ SKLand for CN.
 ### Config
 - `config.toml`: entries for `skport` and `endfield-gacha-import`
 
+### UI (fb87062)
+- `SkportSection`, `SkportAccountCard`, `AddSkportAccount` in
+  LinkAccount.tsx: full account lifecycle (add / rename / replace / forget),
+  check-now + check-in-now, auto-check-in switch, SkportReadings display
+- `SkportLogin.tsx`: SkportSteps (4-step HowTo) and PasteSkportToken form
+- `LiveStamina` type gains `provider?: 'hoyolab' | 'skport'` on all states
+- `StaminaTile` in Today.tsx shows provider name ("SKPort" / "HoYoLAB")
+  and correct source tag
+- `DataSource` gains `'skport'` in known.ts
+- Empty state: generic "No account link for your games"
+- Tests updated (provider field, empty-state text): 168 files, 2181 pass
+
+## Screenshots (private artifacts)
+- Link screen: https://claude.ai/artifact/Dr6HDYLP7eSTFrUC6gBukM
+- Today stamina: https://claude.ai/artifact/5ZQG7EneM77nsScuPXKutm
+
 ## Status
 
-Server + app wiring committed, tests green, pushed. UI (link screen,
-Today stamina display, screenshots) not yet started.
+Server + app wiring + UI committed and pushed. Tests green, build clean.
+Screenshots delivered as private artifacts (condition #8).
+Awaiting PR creation.
