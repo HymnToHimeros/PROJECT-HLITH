@@ -80,11 +80,17 @@ export const isDamageDealer = (id: string, lib: Library) => !!lib.sheets.get(id)
 const damageOf = (dd: string, lib: Library): Element | undefined => lib.sheets.get(dd)?.damage?.element ?? lib.profiles.get(dd)?.element;
 
 type CondResult = 'met' | 'not-met' | 'unknown';
-const hasNamed = (c: Condition | undefined): boolean => !!c && ('all' in c ? c.all.some(hasNamed) : 'named' in c);
+const hasNamed = (c: Condition | undefined): boolean => !!c && ('all' in c ? c.all.some(hasNamed) : 'named' in c || 'lead' in c);
 
 function evalCondition(c: Condition | undefined, self: string, team: string[], lib: Library, dd?: string): CondResult {
   if (!c) return 'met';
   if ('unknown' in c) return 'unknown';
+  if ('lead' in c) {
+    // Decision 8: Team Position 01 is the damage dealer.
+    const el = dd === undefined ? undefined : damageOf(dd, lib);
+    if (el === undefined) return 'unknown';
+    return c.lead.elements.includes(el) !== !!c.lead.not ? 'met' : 'not-met';
+  }
   if ('named' in c) {
     const q = c.named;
     if (q.as === 'member') return team.some((id) => id !== self && q.ids.includes(id)) ? 'met' : 'not-met';
@@ -131,6 +137,7 @@ const list = (xs: string[]) => (xs.length < 2 ? (xs[0] ?? '') : `${xs.slice(0, -
 export function conditionWords(c: Condition | undefined): string {
   if (!c) return 'always';
   if ('unknown' in c) return c.unknown;
+  if ('lead' in c) return c.lead.words;
   if ('named' in c) return c.named.words;
   if ('all' in c) return c.all.map(conditionWords).join(', and ');
   if ('count' in c) return `${c.count.atLeast} ${[c.count.element && ELEMENT_WORD[c.count.element], c.count.opClass && CLASS_WORD[c.count.opClass]].filter(Boolean).join(' ')} operators in the team`;

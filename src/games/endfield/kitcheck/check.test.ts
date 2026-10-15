@@ -17,6 +17,12 @@ const WULFGARD = 'chr_0006_wolfgd';
 const ARDELIA = 'chr_0025_ardelia';
 const GILBERTA = 'chr_0013_aglina';
 const LAST_RITE = 'chr_0026_lastrite';
+const SI = 'chr_0036_jsspsi';
+const TYPHOEUS = 'chr_0034_typhoea';
+const LIINO = 'chr_0035_liino';
+const ARCANE = 'chr_0032_lizhiyan';
+const MI_FU = 'chr_0031_mifu';
+const TANGTANG = 'chr_0027_tangtang';
 
 const p0: Account = { potential: () => 0 };
 const lib = library();
@@ -112,6 +118,37 @@ describe('Endfield check, group B (Heat, Cryo, Nature)', () => {
     const r = checkTeam([LAEVATAIN, ANTAL, LAST_RITE], LAEVATAIN, lib, p0);
     expect(linesOf(r.lines, ANTAL, 'buff').map((l) => l.tag)).toContain('Electric and Heat Amp 20%');
     expect(linesOf(r.lines, LAST_RITE).find((l) => l.entry === 'cryo-susceptibility')).toMatchObject({ kind: 'not-counted', points: 0 });
+  });
+});
+
+describe('Endfield check, group C', () => {
+  it('decision 8: Si applies Heat Infliction when a Heat operator leads (Team Position 01 = the damage dealer), else Cryo; the other one is no loss', () => {
+    const heat = checkTeam([LAEVATAIN, SI], LAEVATAIN, lib, p0);
+    expect(linesOf(heat.lines, SI, 'chain').map((l) => l.why)).toContain('sets up Heat Infliction for Laevatain: Melting Flame from Heat Infliction');
+    expect(linesOf(heat.lines, SI).find((l) => l.entry === 'cryo-infliction')).toMatchObject({ kind: 'not-counted', points: 0 });
+    expect(linesOf(heat.lines, SI, 'buff').map((l) => l.tag)).toContain('Cryo and Heat Amp 36%');
+    const cryo = checkTeam([LAST_RITE, SI], LAST_RITE, lib, p0);
+    expect(linesOf(cryo.lines, SI, 'chain').map((l) => l.why)).toContain('sets up Cryo Infliction for Last Rite: Combo at 3 Cryo Infliction stacks');
+    expect(linesOf(cryo.lines, SI).find((l) => l.entry === 'heat-infliction')).toMatchObject({ kind: 'not-counted', points: 0 });
+  });
+  it('Arcane’s mode depends on her build: INT- and WILL-only effects are shown, never counted', () => {
+    const r = checkTeam([TYPHOEUS, ARCANE], TYPHOEUS, lib, p0);
+    for (const id of ['will-infliction', 'int-corrosion', 'will-susceptibility']) expect(linesOf(r.lines, ARCANE).find((l) => l.entry === id)).toMatchObject({ kind: 'unknown', points: 0 });
+    // What both modes do counts: Nature Infliction feeds Typhoeus.
+    expect(linesOf(r.lines, ARCANE, 'chain').map((l) => l.why)).toContain('sets up Nature Infliction for Typhoeus: Signs from Nature Infliction');
+  });
+  it('Liino’s Electric and Nature Amp reaches Typhoeus, not Tangtang; her two stances’ ATK Boost counts once, with no loss', () => {
+    const nature = checkTeam([TYPHOEUS, LIINO], TYPHOEUS, lib, { potential: () => 0 });
+    expect(linesOf(nature.lines, LIINO, 'buff').map((l) => l.tag)).toContain('Electric and Nature Amp (grows with Will)');
+    expect(linesOf(nature.lines, LIINO, 'buff').filter((l) => l.tag === 'Team ATK +10%')).toHaveLength(1);
+    expect(linesOf(nature.lines, LIINO, 'duplicate')).toEqual([]);
+    const cryo = checkTeam([TANGTANG, LIINO], TANGTANG, lib, p0);
+    expect(linesOf(cryo.lines, LIINO).find((l) => l.entry === 'cosmovoice-amp')).toMatchObject({ kind: 'not-counted', points: 0 });
+  });
+  it('Mi Fu: Physical Statuses build her 3 Vulnerable stacks; Lifeng’s Physical Susceptibility powers World Splitter', () => {
+    const r = checkTeam([MI_FU, LIFENG, CHEN], MI_FU, lib, p0);
+    expect(linesOf(r.lines, LIFENG, 'chain').length).toBeGreaterThan(0);
+    expect(linesOf(r.lines, CHEN, 'chain').map((l) => l.why)).toContain('sets up Vulnerable for Mi Fu: World Splitter at 3 Vulnerable stacks');
   });
 });
 

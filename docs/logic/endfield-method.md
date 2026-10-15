@@ -96,3 +96,12 @@ There is no squad order in Endfield, so no step tries orders (decision 2).
    something. A teammate who brings only team support (SP, Energy, healing) is not a weak fit; one who
    brings nothing at all is.
 7. **Potentials** unlock at the Potential saved for the operator (the game's dupes); not owned = 0.
+8. **Team Position 01 is the damage dealer.** Some kits name the operator in Team Position 01 (Si:
+   "Heat Infliction if a Heat element operator is in Team Position 01"). As with decision 2, you put your
+   main damage first, so Position 01 is read as the damage dealer. Such either/or text is no loss when
+   it doesn't apply (the other half applies instead).
+9. **Build-dependent modes are shown, never counted.** Arcane's kit switches between Array Arcana: INT
+   and WILL by her Intellect against her Will, which HLITH doesn't know. What both modes do counts; what
+   only one mode does is shown as "depends on her build" and adds nothing.
+10. **Weakness** ("apply Weakness") raises the damage the enemy takes from any damage type, so it counts
+   with Increased DMG Taken and reaches every damage dealer (Susceptibility stays per element).
