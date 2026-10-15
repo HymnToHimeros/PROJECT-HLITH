@@ -48,6 +48,7 @@ const COLOURS: [string, string][] = [
   ['ember.soft', 'var(--ember-soft)'],
   ['rarity.top', 'var(--rarity-top)'],
   ['rarity.mid', 'var(--rarity-mid)'],
+  ['rarity.low', 'var(--rarity-low)'],
 ];
 
 const HOUR = 3_600_000;

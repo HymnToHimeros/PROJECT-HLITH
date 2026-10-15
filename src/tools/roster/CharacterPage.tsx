@@ -99,7 +99,7 @@ export function CharacterPage({ data, character: c, several, onBack, openPulls, 
         <div className={r.heroInfo}>
           <div className={r.chips}>
             <span className={r.chip} style={{ color: rarityColor(c) }}>
-              {game.terms.rarity[c.rarity]}
+              {game.terms.rarity[c.rarity] ?? c.rarity}
             </span>
             <span className={r.chip}>
               <span className={r.chipDot} style={{ background: el?.color ?? 'var(--ink-4)' }} aria-hidden="true" />

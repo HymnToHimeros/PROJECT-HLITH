@@ -47,6 +47,7 @@
   /* Rarity */
   --rarity-top: #e8b85c;
   --rarity-mid: #7fb4d6;
+  --rarity-low: #8a9baa;
 
   /* Background art (ThemeArt.tsx): line colour, glow colour, and how strongly the
      whole layer shows. Tested so text on the page stays readable over the art. */

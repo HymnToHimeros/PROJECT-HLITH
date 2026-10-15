@@ -16,7 +16,7 @@ import type { FrameId, NameColor } from './profile';
 export interface CardCharacter {
   name: string;
   portrait?: string | undefined;
-  rarity: 'top' | 'mid';
+  rarity: 'top' | 'mid' | 'low';
   elementColor: string;
 }
 export type CardFeatured =

@@ -44,7 +44,7 @@ export interface GameContract {
 
   // ── Words the shell and modules use instead of game names ─────
   terms: {
-    rarity: { top: string; mid: string }; // '5★' / '4★' or 'S' / 'A'
+    rarity: { top: string; mid: string; low?: string }; // '5★' / '4★' / '3★' or 'S' / 'A' / 'B'
     gear: string;
     weapon: string;
     skill: string;

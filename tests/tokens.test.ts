@@ -22,7 +22,7 @@ describe('tokens.css contrast', () => {
   });
 
   it('every text colour reaches 4.5:1 on the surfaces it sits on', () => {
-    const text = ['ink-1', 'ink-2', 'ink-3', 'ink-4', 'glacier', 'ok', 'ember-soft', 'rarity-top', 'rarity-mid'];
+    const text = ['ink-1', 'ink-2', 'ink-3', 'ink-4', 'glacier', 'ok', 'ember-soft', 'rarity-top', 'rarity-mid', 'rarity-low'];
     for (const t of text) {
       for (const s of [...surfaces, 'bg-shell', 'bg-inset', 'bg-raised']) {
         expect(contrast(token(t), token(s)), `${t} on ${s}`).toBeGreaterThanOrEqual(4.5);

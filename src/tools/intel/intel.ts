@@ -28,7 +28,7 @@ export interface IntelItem {
 export function characterDetail(game: GameContract, c: Character): string {
   const element = game.elements.find((e) => e.id === c.element)?.label;
   const role = game.roles.find((r) => r.id === c.role)?.label;
-  return [game.terms.rarity[c.rarity], element, role].filter(Boolean).join(' · ');
+  return [game.terms.rarity[c.rarity] ?? c.rarity, element, role].filter(Boolean).join(' · ');
 }
 
 export function intelItems(game: GameContract, characters: Character[], banners: Banner[], now: number): IntelItem[] {

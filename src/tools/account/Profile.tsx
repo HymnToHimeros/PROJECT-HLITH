@@ -439,7 +439,7 @@ function PinTile({ game, c }: { game: GameContract; c: Character }) {
       name={c.name}
       subtitle={[role?.label, el?.label].filter(Boolean).join(' · ')}
       rarity={c.rarity}
-      rarityLabel={game.terms.rarity[c.rarity]}
+      rarityLabel={game.terms.rarity[c.rarity] ?? c.rarity}
       elementColor={el?.color ?? 'var(--line-empty)'}
       owned
       dupes={game.dupes && entry ? `${game.dupes.prefix}${entry.dupes}` : undefined}

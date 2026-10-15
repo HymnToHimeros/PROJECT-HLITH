@@ -263,7 +263,7 @@ export function SharedTeamView({ game, team, games = [game], load }: { game: Gam
                 name={ch?.name ?? `Unknown (${m})`}
                 subtitle={ch ? `${game.roles.find((r) => r.id === ch.role)?.label ?? ch.role} · ${game.elements.find((e) => e.id === ch.element)?.label ?? ch.element}` : 'Not in HLITH’s list'}
                 rarity={ch?.rarity ?? 'mid'}
-                rarityLabel={ch ? game.terms.rarity[ch.rarity] : '?'}
+                rarityLabel={ch ? (game.terms.rarity[ch.rarity] ?? ch.rarity) : '?'}
                 elementColor={game.elements.find((e) => e.id === ch?.element)?.color ?? 'var(--ink-4)'}
                 owned={entry?.owned ?? false}
                 dupes={entry?.owned && game.dupes ? `${game.dupes.prefix}${entry.dupes}` : undefined}
