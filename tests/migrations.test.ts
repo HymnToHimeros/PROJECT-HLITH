@@ -71,6 +71,28 @@ describe('signed-out visitors can call no SECURITY DEFINER function (advisor 002
     const revoked = revokedFromAnon(sql);
     expect(definerFunctions(sql).filter((f) => !revoked.has(f) && !OPEN.includes(f))).toEqual([]);
   });
+  it('each function 0024 takes from anon already refused signed-out callers itself, so nothing anyone uses breaks', () => {
+    const files = readdirSync(DIR).filter((f) => f.endsWith('.sql')).sort();
+    const latest = (name: string) => {
+      let body = '';
+      for (const f of files) {
+        const sql = readFileSync(join(DIR, f), 'utf8');
+        for (const m of sql.matchAll(new RegExp(String.raw`create\s+(?:or\s+replace\s+)?function\s+public\.${name}\s*\([\s\S]*?\$\$([\s\S]*?)\$\$`, 'gi'))) body = m[1] ?? '';
+      }
+      return body;
+    };
+    const ownerOnly = /if\s+not\s+public\.is_owner\(\)\s+then\s+raise\s+exception\s+'owner only'/i;
+    const signedIn = /(auth\.uid\(\)|\bme\b)\s+is\s+null\s+then\s+raise\s+exception\s+'sign in first'/i;
+    const revoked = ['owner_reward_items', 'add_reward_item', 'grant_reward', 'revoke_reward', 'owner_reward_grants', 'create_reward_claim', 'cancel_reward_claim', 'owner_reward_claims', 'claim_reward', 'my_rewards', 'owner_theme_drafts'];
+    const unguarded = revoked.filter((f) => {
+      const body = latest(f);
+      return !body || !(ownerOnly.test(body) || signedIn.test(body));
+    });
+    expect(unguarded).toEqual([]);
+    // create_profile is the sign-up trigger (fires on auth.users), never called by anyone.
+    expect(readFileSync(join(DIR, '0001_init.sql'), 'utf8')).toMatch(/create trigger on_auth_user_created after insert on auth\.users for each row execute function public\.create_profile\(\);/);
+  });
+
   it('the checker reads both', () => {
     const sql = 'create function public.a() returns int language sql security definer as $$ select 1 $$;\ncreate function public.b() returns int language sql as $$ select 1 $$;\nrevoke execute on function public.a() from public, anon;';
     expect(definerFunctions(sql)).toEqual(['a']);
