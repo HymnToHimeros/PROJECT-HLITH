@@ -39,6 +39,8 @@ export interface GameContract {
   /** Must reach 7:1 with #08090B and not be orange or red. Checked on register. */
   vent: Hex;
   icon?: string;
+  /** Visible only to the owner until the game is ready for everyone. */
+  ownerOnly?: boolean;
 
   // ── Words the shell and modules use instead of game names ─────
   terms: {
