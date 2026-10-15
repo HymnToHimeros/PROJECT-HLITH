@@ -956,15 +956,6 @@ function SkportAccountCard({ account, games, blocker, refresh }: { account: Skpo
     setAnswer(res.answer);
   };
 
-  const flipCheckin = async (on: boolean) => {
-    if (!backend) return;
-    setBusy(true);
-    const err = await updateSkportAccount(backend, account.id, { auto_checkin: on });
-    setBusy(false);
-    setMsg(err ? { ok: false, text: err } : { ok: true, text: on ? 'Automatic check-in is on.' : 'Automatic check-in is off.' });
-    refresh();
-  };
-
   const game = games.find((g) => g.id === account.gameId);
 
   return (
@@ -1024,16 +1015,6 @@ function SkportAccountCard({ account, games, blocker, refresh }: { account: Skpo
           {error && <span className={c.error} role="alert">{error}</span>}
           {answer && <SkportReadings game={game} answer={answer} />}
         </div>
-      )}
-
-      {onServer && (
-        <Switch
-          label="Automatic daily check-in"
-          hint="Once a day HLITH claims the SKPort check-in reward, even when you don’t open the site."
-          checked={account.autoCheckin}
-          disabled={busy || blocker !== null}
-          onChange={(on) => void flipCheckin(on)}
-        />
       )}
 
       {msg && <span className={msg.ok ? c.message : c.error} role={msg.ok ? 'status' : 'alert'}>{msg.text}</span>}

@@ -33,10 +33,6 @@ verify_jwt = true
 [functions.backup]
 verify_jwt = false
 
-# Reads pull history from Endfield's gacha record API (HGWebview.log link). Signed-in users only.
-[functions.endfield-gacha-import]
-verify_jwt = true
-
 # Reads the caller's own SKPort data (stamina, check-in, account level) for Arknights: Endfield.
 # Signed-in users only (checked in the function).
 [functions.skport]
