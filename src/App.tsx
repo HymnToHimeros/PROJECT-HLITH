@@ -12,6 +12,8 @@ import { supabaseOwnerThemes } from './core/data/ownerThemesSource';
 import { supabaseGameData, supabaseSettings } from './core/data/supabaseSettings';
 import { markDeviceOnly, markSignedOut, startSync } from './core/data/sync';
 import { listGames } from './core/registry';
+import { setBannerRules } from './core/data/userData';
+import { bannerRulesOf } from './tools/pity/pity';
 import { COMMUNITY_PATH, isCommunityPath, navigate } from './core/shell/route';
 import { Shell } from './core/shell/Shell';
 import { clearOwnerThemes, loadOwnerThemes } from './core/theme/ownerThemes';
@@ -154,6 +156,11 @@ function Root() {
       stop?.();
     };
   }, [session, userId, gateOpen]);
+
+  // Ensure banner rules are stored so the server's pull_numbers reads them.
+  useEffect(() => {
+    for (const g of listGames()) setBannerRules(g.id, bannerRulesOf(g));
+  }, []);
 
   const client = backend;
   if (client && session === undefined) return null; // checking sign-in; keeps the page from flashing

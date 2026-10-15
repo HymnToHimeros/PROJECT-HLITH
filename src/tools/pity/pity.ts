@@ -237,6 +237,21 @@ export function luckOf(history: PullRecord[], type: { id: string; pity: PityMode
   return luck(history, type.id, featured?.guaranteeAfterLoss ?? true, featured !== undefined);
 }
 
+export interface BannerRules {
+  guarantee: boolean;
+  featured: boolean;
+}
+
+/** Per-banner-type rules for the server's pull_numbers: guarantee-after-loss and whether there's a featured split. */
+export function bannerRulesOf(game: { bannerTypes: readonly { id: string; pity: PityModel }[] }): Record<string, BannerRules> {
+  const rules: Record<string, BannerRules> = {};
+  for (const bt of game.bannerTypes) {
+    const f = featuredOf(bt.pity);
+    rules[bt.id] = { guarantee: f?.guaranteeAfterLoss ?? true, featured: f !== undefined };
+  }
+  return rules;
+}
+
 function findLastIndex<T>(list: T[], test: (x: T) => boolean): number {
   for (let i = list.length - 1; i >= 0; i--) if (test(list[i] as T)) return i;
   return -1;

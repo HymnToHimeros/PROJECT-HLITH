@@ -76,6 +76,8 @@ export interface GameUserData {
   nicknames?: Record<string, string>;
   /** When pulls were last imported (epoch ms). Missing = never. */
   lastPullImportAt?: number;
+  /** Per-banner-type rules for the server's pull_numbers (from the game contract). */
+  bannerRules?: Record<string, { guarantee: boolean; featured: boolean }>;
 }
 
 export interface TeamList {
@@ -437,6 +439,13 @@ export function recordAssistantAction(game: GameId, action: AssistantAction): vo
 
 export function markAssistantActionUndone(game: GameId, actionId: string, at: string): void {
   update(game, (g) => ({ ...g, assistantActions: g.assistantActions.map((a) => (a.id === actionId ? { ...a, status: 'undone' as const, undoneAt: at } : a)) }));
+}
+
+/** Store banner-type rules so the server's pull_numbers can read them. Only writes when they differ. */
+export function setBannerRules(game: GameId, rules: Record<string, { guarantee: boolean; featured: boolean }>): void {
+  const cur = gameData(game).bannerRules;
+  if (cur && JSON.stringify(cur) === JSON.stringify(rules)) return;
+  update(game, (g) => ({ ...g, bannerRules: rules }));
 }
 
 export function useGameData(id: GameId): GameUserData {
