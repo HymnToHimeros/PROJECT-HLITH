@@ -375,7 +375,7 @@
       "chr_0033_camille"
     ],
     "start": "2026-06-26T04:00:00.000Z",
-    "end": "2026-07-15T21:59:59.000Z",
+    "end": "2026-07-15T22:00:00.000Z",
     "serverTime": {
       "base": 8,
       "start": true
@@ -404,7 +404,7 @@
       "chr_0032_lizhiyan"
     ],
     "start": "2026-07-16T04:00:00.000Z",
-    "end": "2026-08-09T03:59:59.000Z",
+    "end": "2026-08-09T03:59:00.000Z",
     "serverTime": {
       "base": 8,
       "end": true
@@ -434,7 +434,7 @@
       "chr_0035_liino"
     ],
     "start": "2026-08-09T04:00:00.000Z",
-    "end": "2026-09-01T21:59:59.000Z",
+    "end": "2026-09-01T22:00:00.000Z",
     "serverTime": {
       "base": 8,
       "start": true
@@ -463,7 +463,7 @@
       "chr_0034_typhoea"
     ],
     "start": "2026-09-02T04:00:00.000Z",
-    "end": "2026-09-30T03:59:59.000Z",
+    "end": "2026-09-30T03:59:00.000Z",
     "serverTime": {
       "base": 8,
       "end": true
@@ -477,7 +477,7 @@
       "chr_0017_yvonne"
     ],
     "start": "2026-09-24T04:00:00.000Z",
-    "end": "2026-10-14T21:59:59.000Z",
+    "end": "2026-10-14T22:00:00.000Z",
     "serverTime": {
       "base": 8,
       "start": true
@@ -491,7 +491,7 @@
       "wpn_pistol_0010"
     ],
     "start": "2026-09-24T04:00:00.000Z",
-    "end": "2026-10-14T21:59:59.000Z",
+    "end": "2026-10-14T22:00:00.000Z",
     "serverTime": {
       "base": 8,
       "start": true
@@ -506,7 +506,7 @@
       "chr_0036_jsspsi"
     ],
     "start": "2026-10-15T04:00:00.000Z",
-    "end": "2026-11-05T03:59:59.000Z",
+    "end": "2026-11-05T03:59:00.000Z",
     "serverTime": {
       "base": 8,
       "end": true
@@ -535,10 +535,11 @@
       "chr_0027_tangtang"
     ],
     "start": "2026-10-29T04:00:00.000Z",
-    "end": "2026-11-19T03:59:59.000Z",
+    "end": "2026-11-19T03:59:00.000Z",
     "serverTime": {
       "base": 8,
-      "start": true
+      "start": true,
+      "end": true
     }
   },
   {
@@ -549,10 +550,11 @@
       "wpn_pistol_0011"
     ],
     "start": "2026-10-29T04:00:00.000Z",
-    "end": "2026-11-19T21:59:59.000Z",
+    "end": "2026-11-19T03:59:00.000Z",
     "serverTime": {
       "base": 8,
-      "start": true
+      "start": true,
+      "end": true
     },
     "art": "https://endfield.wiki.gg/images/Brigand%27s_Calling_icon.png"
   },
@@ -560,12 +562,29 @@
     "id": "moongleam-issue-2026-11-05",
     "type": "weapon",
     "title": "Moongleam Issue",
-    "featured": [],
+    "featured": [
+      "wpn_lunar-calling"
+    ],
     "start": "2026-11-05T04:00:00.000Z",
     "end": "2027-01-06T21:59:59.000Z",
     "serverTime": {
       "base": 8,
+      "start": true,
       "end": true
+    }
+  },
+  {
+    "id": "the-hearth-fire-beckons-the-starry-flow-2026-11-05",
+    "type": "chartered",
+    "title": "The Hearth Fire Beckons the Starry Flow",
+    "featured": [
+      "chr_argent-flow"
+    ],
+    "start": "2026-11-05T04:00:00.000Z",
+    "end": "2026-11-24T22:00:00.000Z",
+    "serverTime": {
+      "base": 8,
+      "start": true
     }
   }
 ]
