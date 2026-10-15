@@ -36,7 +36,7 @@ export function LuckReport({ game, history, example }: { game: GameContract; his
         {won + lost === 0 ? (
           // With history but no 50/50 counted: the game doesn't list its standard pool yet, so a
           // featured result can't be told from a lost one (never guessed). Say that, not "needs History".
-          <EmptyTile label="50/50 won" why={tops > 0 && !game.historyMapping?.standardTop?.length ? 'standard pool not listed yet, so wins and losses can’t be told apart' : 'needs History'} />
+          <EmptyTile label="50/50 won" why={tops > 0 ? (game.historyMapping?.featuredByBanner ? 'no 50/50 matched to one banner yet' : !game.historyMapping?.standardTop?.length ? 'standard pool not listed yet, so wins and losses can’t be told apart' : 'needs History') : 'needs History'} />
         ) : (
           <Tile label="50/50 won" value={`${won}/${won + lost}`} caption={`${Math.round((won / (won + lost)) * 100)}% · guaranteed results don't count`} />
         )}

@@ -14,7 +14,7 @@ import { endfieldTeamRules, recommendedTeams } from './kitcheck/team';
 import events from './data/events.json';
 import versions from './data/versions.json';
 import weapons from './data/weapons.json';
-import { ARSENAL, ARSENAL_SOURCE, ARSENAL_TICKETS_AT_LEAST_PER_PULL, arsenalIssue, basicOperator, beginnerOperator, charteredOperator, HEADHUNTING_SOURCE, rerunOperator } from './gacha';
+import { ARSENAL, ARSENAL_SOURCE, ARSENAL_TICKETS_AT_LEAST_PER_PULL, arsenalIssue, basicOperator, beginnerOperator, charteredOperator, HEADHUNTING_SOURCE, OPERATOR, rerunOperator } from './gacha';
 
 const list = <T>(rows: unknown) => async () => rows as T[];
 
@@ -155,6 +155,8 @@ export const endfield: GameContract = {
       'weapon-rerun': 'weapon',
     },
     rarity: { '6': 'top', '5': 'mid', '4': 'low' },
+    // A 6★ that isn't the banner's featured one is a lost 50/50, also when it's an earlier limited operator (docs/logic/endfield-gacha.md).
+    featuredByBanner: { types: ['chartered', 'rerun'], guaranteeAt: OPERATOR.guaranteeAt },
   },
 
   data: {
