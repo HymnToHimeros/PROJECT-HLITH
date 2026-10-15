@@ -172,5 +172,6 @@ function Root() {
     client && session
       ? { email: session.user.email ?? 'your account', provider, id: session.user.id, identities: methods, createdAt: session.user.created_at, onSignOut: () => void signOut(client) }
       : null;
-  return <Shell games={listGames()} account={account} isOwner={isOwner} ownerChecked={ownerChecked} isMember={isMember} />;
+  const visibleGames = isOwner ? listGames() : listGames().filter((g) => !g.ownerOnly);
+  return <Shell games={visibleGames} account={account} isOwner={isOwner} ownerChecked={ownerChecked} isMember={isMember} />;
 }
