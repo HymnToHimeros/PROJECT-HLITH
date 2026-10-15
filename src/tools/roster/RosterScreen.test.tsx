@@ -806,6 +806,33 @@ describe('Roster screen', () => {
     // Ideas come from the rules too: Line-ups and If you pull, no examples.
     expect(screen.getByRole('button', { name: 'Newest Star, Helper: count 4. Make it my team' })).toBeInTheDocument();
     expect(screen.getAllByText('75%').length).toBeGreaterThan(0);
+    // Every kit read (no readSoFar, like ZZZ): no "read so far" line.
+    expect(screen.queryByText(/are read so far/)).toBeNull();
+  });
+
+  it('while only some kits are read: a line with the counts from the rules, in Teams and Team fit, and no grade word', async () => {
+    const base = makeGame(false);
+    const rules = {
+      method: 'Test method',
+      rated: (id: string) => id !== 'c4',
+      readSoFar: () => ({ read: 3, total: 4 }),
+      verdict: () => ({ rated: true, percent: 100, label: '', count: 9, best: 9, bestMembers: ['c1', 'c3', 'c2'], order: ['c1', 'c3', 'c2'], reasons: [], notes: [] }),
+      whoFits: () => [],
+      lineUps: () => [],
+      ifYouPull: () => null,
+    } as TeamRules;
+    const line = 'Only 3 of 4 characters are read so far. These teams will change as more are read.';
+    await show('teams', { ...base, rules: { teams: rules } });
+    const teams = screen.getByRole('region', { name: 'Recommended teams' });
+    expect(within(teams).getByRole('note')).toHaveTextContent(line);
+    const card = within(teams).getByRole('article', { name: 'Fire team' });
+    expect(within(card).getByText('100%')).toBeInTheDocument();
+    expect(within(card).getByText('synergy')).toBeInTheDocument();
+    expect(within(card).queryByText(/synergy ·/)).toBeNull();
+    cleanup();
+    await show('characters', { ...base, rules: { teams: rules } });
+    const page = await openPage('Newest Star');
+    expect(within(within(page).getByRole('region', { name: 'Team fit' })).getByRole('note')).toHaveTextContent(line);
   });
 
   it('the character page shows how to build them, step by step, with pictures and the source', async () => {

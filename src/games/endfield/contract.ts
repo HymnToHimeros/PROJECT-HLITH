@@ -8,6 +8,9 @@
 import type { Banner, Character, GameContract, GameEvent, Version, Weapon } from '../../core/contract';
 import banners from './data/banners.json';
 import characters from './data/characters.json';
+import { KITS, SHEETS } from './kitcheck/library';
+import { withTags } from './kitcheck/tags';
+import { endfieldTeamRules, recommendedTeams } from './kitcheck/team';
 import events from './data/events.json';
 import versions from './data/versions.json';
 import weapons from './data/weapons.json';
@@ -160,12 +163,17 @@ export const endfield: GameContract = {
     events: list<GameEvent>(events),
     backlog: async () => [],
     materials: async () => [],
-    teams: async () => [],
+    // Recommended teams: the best team the Kit check finds for each damage dealer read so far (docs/logic/endfield-method.md).
+    teams: async () => recommendedTeams(),
+    // Kit text from each operator's wiki page (npm run data:endfield-kits), with the Kit check's tags for operators read so far.
+    kits: async () => withTags(KITS, SHEETS),
     versions: list<Version>(versions),
     weapons: async () => weapons as Weapon[],
   },
 
-  rules: {},
+  rules: {
+    teams: endfieldTeamRules,
+  },
 
   sources: [
     { what: 'Pity rates and rules (gacha.ts, docs/logic/endfield-gacha.md)', source: HEADHUNTING_SOURCE, entered: '2026-10-15', verified: true },
@@ -175,6 +183,7 @@ export const endfield: GameContract = {
     { what: 'Sanity max and regen rate', source: 'endfield.wiki.gg/wiki/Sanity', entered: '2026-10-15', verified: true },
     { what: 'Server time zones (Asia UTC+8, Americas / Europe UTC-5)', source: 'Official notices, footer (web-news.gryphline.com, e.g. "[Sanctuary of Ink] Version Update Notes")', entered: '2026-10-15', verified: true },
     { what: 'Daily reset 04:00, weekly reset Monday 04:00 (server time)', source: 'endfield.wiki.gg/wiki/Endfield_Talos_Wiki/servertime; official notices say "updated at 04:00 server time"', entered: '2026-10-15', verified: true },
+    { what: 'Operator kit text: skills (numbers at level 12), talents, Potentials (data/kits.json, npm run data:endfield-kits)', source: 'endfield.wiki.gg operator pages (CC BY-SA 4.0), revision named on each kit', entered: '2026-10-15', verified: false },
     { what: 'Operators, weapons, banners, events, versions (data/*.json, npm run data:endfield)', source: 'endfield.wiki.gg Cargo tables (CC BY-SA), versions checked against the official update notes', entered: '2026-10-15', verified: true },
   ],
 };
