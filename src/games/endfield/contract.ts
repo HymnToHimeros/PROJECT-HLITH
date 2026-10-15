@@ -55,6 +55,20 @@ export const endfield: GameContract = {
 
   dupes: { prefix: 'P', name: 'Potential', max: 6 },
 
+  // The Endministrator is picked once at the start (male or female), one entry each in the game's list
+  // (chr_0002_endminm, chr_0003_endminf); same kit, one form.
+  protagonist: {
+    label: 'Endministrator',
+    options: [
+      { id: 'male', name: 'Male' },
+      { id: 'female', name: 'Female' },
+    ],
+    of: (c) => {
+      const m = /_endmin(m|f)$/.exec(c.id)?.[1];
+      return m ? { option: m === 'm' ? 'male' : 'female', form: 'Endministrator' } : undefined;
+    },
+  },
+
   currencies: [
     // 1 Origeometry = 75 Oroberyl (500 a pull) or 25 Arsenal Tickets (198 a weapon pull).
     { id: 'origeometry', name: 'Origeometry', paid: true, perPull: 500 / 75, perPullOn: { weapon: ARSENAL.issueCost / ARSENAL.issueSize / 25 } },
