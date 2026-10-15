@@ -279,6 +279,6 @@ describe('Connected accounts', () => {
   });
   it('says so when no game has a link', () => {
     render(<LinkAccounts games={[fakeGame({ accountLinks: [] })]} />);
-    expect(screen.getByText('No HoYoLAB link for your games')).toBeInTheDocument();
+    expect(screen.getByText('No account link for your games')).toBeInTheDocument();
   });
 });

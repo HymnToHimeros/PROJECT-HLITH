@@ -2,7 +2,7 @@
  * Honest data: a value is either proven or missing, never guessed.
  * Every number the app shows travels in a Known<T>.
  */
-export type DataSource = 'official' | 'hoyolab' | 'import' | 'scan' | 'user' | 'assistant' | 'leak';
+export type DataSource = 'official' | 'hoyolab' | 'skport' | 'import' | 'scan' | 'user' | 'assistant' | 'leak';
 
 export type FixAction = 'connect-account' | 'import-history' | 'import-build' | 'enter-manually' | 'scan-screenshot' | 'choose-server';
 

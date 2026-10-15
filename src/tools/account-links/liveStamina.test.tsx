@@ -75,7 +75,7 @@ describe('useLiveStamina', () => {
     const readAt = new Date().toISOString();
     invoke.mockResolvedValue({ data: { account: { uid: '700000001' }, readAt, stamina: { current: 100, max: 240, fullInSeconds: 50_400 }, problems: {} }, error: null });
     const { result, unmount } = renderHook(() => useLiveStamina([linked, unlinked]));
-    expect(result.current.stamina.aa).toEqual({ state: 'loading' });
+    expect(result.current.stamina.aa).toEqual({ state: 'loading', provider: 'hoyolab' });
     expect(result.current.stamina.bb).toEqual({ state: 'none' });
     await waitFor(() => expect(result.current.stamina.aa).toMatchObject({ state: 'ok', reading: { current: 100, readAt } }));
     expect(invoke).toHaveBeenCalledWith('hoyolab', { body: { gameBiz: 'hkrpg_global', linkId: 'link-1', uid: '700000001', want: ['stamina'], claim: false } });
@@ -98,7 +98,7 @@ describe('useLiveStamina', () => {
   it('an error is the reason, never a number; retry asks again', async () => {
     invoke.mockResolvedValueOnce({ data: { account: { uid: '700000001' }, readAt: new Date().toISOString(), problems: { stamina: { code: 'private', text: 'Real-Time Notes are switched off on HoYoLAB.' } } }, error: null });
     const { result } = renderHook(() => useLiveStamina([linked]));
-    await waitFor(() => expect(result.current.stamina.aa).toEqual({ state: 'error', text: 'Real-Time Notes are switched off on HoYoLAB.' }));
+    await waitFor(() => expect(result.current.stamina.aa).toEqual({ state: 'error', text: 'Real-Time Notes are switched off on HoYoLAB.', provider: 'hoyolab' }));
     invoke.mockResolvedValueOnce({ data: { account: { uid: '700000001' }, readAt: new Date().toISOString(), stamina: { current: 5, max: 240, fullInSeconds: 84_600 }, problems: {} }, error: null });
     act(() => result.current.retry('aa'));
     await waitFor(() => expect(result.current.stamina.aa).toMatchObject({ state: 'ok', reading: { current: 5 } }));

@@ -36,7 +36,7 @@ export interface TodayProps {
   openServer?: ((game: GameId) => void) | undefined;
   /** Live stamina per game (main pool), read from a linked HoYoLAB account. Absent = no link. */
   stamina?: Record<GameId, LiveStamina> | undefined;
-  /** Read one game's stamina again now. */
+  /** Read one game’s stamina again now. */
   retryStamina?: ((game: GameId) => void) | undefined;
 }
 
@@ -51,8 +51,8 @@ interface GameToday {
 }
 
 /**
- * Today (R42), drawn to the design's Today screen: reset, pulls and stamina tiles;
- * server and currency chips; Open tasks; Live banners; Coming up. Plus Tonight's
+ * Today (R42), drawn to the design’s Today screen: reset, pulls and stamina tiles;
+ * server and currency chips; Open tasks; Live banners; Coming up. Plus Tonight’s
  * run and the Wishlist (Override 5: no design yet, built from the same parts).
  */
 export function Today({ games, servers, lists, user, now, open, openAccount, openServer, stamina, retryStamina }: TodayProps) {
@@ -151,7 +151,7 @@ export function Today({ games, servers, lists, user, now, open, openAccount, ope
           'Tap the Server chip and pick the server you play on. Resets, ticks and tonight’s order all follow it.',
           'Tick a task in Open tasks when you’ve done it. Ticks clear by themselves at your server’s next reset.',
           'Tonight’s run lists what’s left, whatever runs out first at the top.',
-          'Pulls available comes from your Bank log (Pulls → Bank log). Stamina is read from HoYoLAB when an account is linked (Account → Connected accounts); until then it says No data yet.',
+          'Pulls available comes from your Bank log (Pulls → Bank log). Stamina is read from HoYoLAB or SKPort when an account is linked (Account → Connected accounts); until then it says No data yet.',
           'Mark characters as wanted in Roster: the Wishlist shows every banner they appear on.',
         ]}
       />
@@ -200,7 +200,7 @@ function Tiles({
   return (
     <>
       {!server ? (
-        // One clear step instead of two empty reset tiles: resets, ticks and tonight's order all need the server.
+        // One clear step instead of two empty reset tiles: resets, ticks and tonight’s order all need the server.
         <div className={t.setupTile}>
           <span className={t.setupLabel}>{tag && <GameTag {...tag} />} Daily and weekly reset</span>
           <p className={t.setupText}>Pick the server you play on: resets, ticks and tonight’s order all follow it.</p>
@@ -253,7 +253,7 @@ function Tiles({
 
 /**
  * The main stamina pool, live from HoYoLAB: "182/240", "Full in 5 h 47 min",
- * and when it was read. Counted forward between reads only when the game record's
+ * and when it was read. Counted forward between reads only when the game record’s
  * rate agrees with HoYoLAB (liveStamina.ts). An error shows its reason and a retry.
  */
 function StaminaTile({
@@ -274,12 +274,13 @@ function StaminaTile({
   openAccount: () => void;
 }) {
   if (live.state === 'none') return <StatTile label={label} tag={tag} value={unknown('connect-account')} onFix={openAccount} />;
+  const providerName = live.provider === 'skport' ? 'SKPort' : 'HoYoLAB';
   if (live.state === 'loading')
     return (
       <div className={t.liveTile}>
         <StatTile label={label} tag={tag} value={unknown()} />
         <span className={t.liveNote} role="status">
-          Reading from HoYoLAB…
+          Reading from {providerName}…
         </span>
       </div>
     );
@@ -288,20 +289,20 @@ function StaminaTile({
   const p = reading ? (live.state === 'ok' ? projectStamina(reading, pool, now) : projectStamina(reading, undefined, Date.parse(reading.readAt))) : null;
   const full = p ? fullInText(p.fullInSeconds) : null;
   const when = reading ? clock(reading.readAt) : '';
-  const caption = p && reading ? [full, p.projected ? `counted on from HoYoLAB’s read at ${when}` : `as of ${when} (HoYoLAB)`].filter(Boolean).join(' · ') : undefined;
+  const caption = p && reading ? [full, p.projected ? `counted on from ${providerName}’s read at ${when}` : `as of ${when} (${providerName})`].filter(Boolean).join(' · ') : undefined;
   return (
     <div className={t.liveTile}>
       <StatTile
         label={label}
         tag={tag}
-        value={p && reading ? known(`${formatNumber(p.value)}/${formatNumber(p.max)}`, 'hoyolab', reading.readAt) : unknown()}
+        value={p && reading ? known(`${formatNumber(p.value)}/${formatNumber(p.max)}`, live.provider === 'skport' ? 'skport' : 'hoyolab', reading.readAt) : unknown()}
         {...(p ? { progress: p.value / Math.max(1, p.max) } : {})}
         {...(caption ? { caption } : {})}
       />
       {live.state === 'ok' && live.refreshing && <span className={t.liveNote}>Reading again…</span>}
       {live.state === 'error' && (
         <span className={t.liveError} role="alert">
-          {reading ? 'Couldn’t read it again: ' : 'Couldn’t read it: '}
+          {reading ? `Couldn’t read it again: ` : `Couldn’t read it: `}
           {live.text}{' '}
           <button type="button" className={t.liveRetry} onClick={retry}>
             Try again
@@ -360,15 +361,15 @@ function Currencies({ day, tag, openLog }: { day: GameToday; tag: boolean; openL
 }
 
 function OpenTasks({ days, tags, now, hideTicked }: { days: GameToday[]; tags: boolean; now: number; hideTicked: boolean }) {
-  // Without a server the tasks are listed but can't be ticked: we wouldn't know when to clear them.
+  // Without a server the tasks are listed but can’t be ticked: we wouldn’t know when to clear them.
   const rows = days.flatMap((d) => {
     const fallback = d.game.servers[0]?.id;
     const hidden = new Set(getPrefs().hiddenTasks?.[d.game.id] ?? []);
     const list = d.serverId ? d.tasks : fallback ? buildTasks({ game: d.game, serverId: fallback, user: d.user, events: [], farmNames: [], now }).filter((x) => !hidden.has(x.id)) : [];
-    // Event tasks list here too, so a tick made in Tonight's run can be taken back here.
+    // Event tasks list here too, so a tick made in Tonight’s run can be taken back here.
     return list.map((task) => ({ d, task, done: Boolean(d.serverId) && task.done }));
   });
-  // Counted like Tonight's run: only tasks that can be ticked (games with a server).
+  // Counted like Tonight’s run: only tasks that can be ticked (games with a server).
   const tickable = rows.filter((r) => r.d.serverId).length;
   const done = rows.filter((r) => r.done).length;
   const shown = hideTicked ? rows.filter((r) => !r.done) : rows;
@@ -448,7 +449,7 @@ function LiveBanners({ days, tags, now, showExamples }: { days: GameToday[]; tag
   const live = rows.filter(({ b }) => !b.permanent && Date.parse(b.start) <= now && Date.parse(b.end) > now).sort((x, y) => Date.parse(x.b.end) - Date.parse(y.b.end));
   const typeLabel = (g: GameContract, id: string) => g.bannerTypes.find((x) => x.id === id)?.label ?? id;
   // Sample art only ever decorates EXAMPLE banners.
-  // Sample art only on examples; real banners use their own art or the lead character's portrait.
+  // Sample art only on examples; real banners use their own art or the lead character’s portrait.
   const artFor = (d: GameToday, b: Banner, example: boolean) =>
     example ? d.lists.sampleArt?.find((s) => b.featured.includes(s.characterId))?.portrait : (b.art ?? d.lists.characters.find((c) => c.id === b.featured[0])?.portrait);
   return (

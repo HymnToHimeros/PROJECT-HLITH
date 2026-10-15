@@ -32,9 +32,9 @@ export interface StaminaReading {
 export type LiveStamina =
   /** No way to read it: device-only copy, signed out with no device login, or no linked account for this game. */
   | { state: 'none' }
-  | { state: 'loading' }
-  | { state: 'ok'; reading: StaminaReading; refreshing: boolean }
-  | { state: 'error'; text: string; reading?: StaminaReading };
+  | { state: 'loading'; provider?: 'hoyolab' | 'skport' }
+  | { state: 'ok'; reading: StaminaReading; refreshing: boolean; provider?: 'hoyolab' | 'skport' }
+  | { state: 'error'; text: string; reading?: StaminaReading; provider?: 'hoyolab' | 'skport' };
 
 /** Re-read when the last answer is older than this. */
 export const STAMINA_TTL_MS = 5 * 60_000;
@@ -191,31 +191,32 @@ export function useLiveStamina(games: GameContract[], onReading?: OnReading): { 
     }
     if (inFlight.current.has(id)) return;
     inFlight.current.add(id);
-    setState((s) => ({ ...s, [src.game.id]: cached ? { state: 'ok', reading: cached, refreshing: true } : { state: 'loading' } }));
+    const prov = src.provider;
+    setState((s) => ({ ...s, [src.game.id]: cached ? { state: 'ok', reading: cached, refreshing: true, provider: prov } : { state: 'loading', provider: prov } }));
     let next: LiveStamina;
-    if (src.provider === 'skport') {
+    if (prov === 'skport') {
       const sa = src.skportAccount;
       const args = sa?.where === 'server' ? { linkId: sa.id, want: ['stamina' as const] } : { accountToken: sa?.token ?? '', want: ['stamina' as const] };
       const res = await askSkport(backend, args);
       inFlight.current.delete(id);
-      if (!res.ok) next = { state: 'error', text: res.text, ...(cached ? { reading: cached } : {}) };
+      if (!res.ok) next = { state: 'error', text: res.text, provider: prov, ...(cached ? { reading: cached } : {}) };
       else if (res.answer.stamina) {
         const reading: StaminaReading = { ...res.answer.stamina, readAt: res.answer.readAt };
         saveReading(id, reading);
         hear.current?.(src.game, cached, reading, undefined);
-        next = { state: 'ok', reading, refreshing: false };
-      } else next = { state: 'error', text: res.answer.problems.stamina?.text ?? 'SKPort answered without a stamina value.', ...(cached ? { reading: cached } : {}) };
+        next = { state: 'ok', reading, refreshing: false, provider: prov };
+      } else next = { state: 'error', text: res.answer.problems.stamina?.text ?? 'SKPort answered without a stamina value.', provider: prov, ...(cached ? { reading: cached } : {}) };
     } else {
       const base = { uid: src.uid, want: ['stamina' as const] };
       const res = await askHoyolab(backend, src.game, src.account.where === 'server' ? { linkId: src.account.id, ...base } : { login: src.account.login as HoyoLogin, ...base });
       inFlight.current.delete(id);
-      if (!res.ok) next = { state: 'error', text: res.text, ...(cached ? { reading: cached } : {}) };
+      if (!res.ok) next = { state: 'error', text: res.text, provider: prov, ...(cached ? { reading: cached } : {}) };
       else if (res.answer.stamina) {
         const reading: StaminaReading = { ...res.answer.stamina, readAt: res.answer.readAt };
         saveReading(id, reading);
         hear.current?.(src.game, cached, reading, res.answer.dailies);
-        next = { state: 'ok', reading, refreshing: false };
-      } else next = { state: 'error', text: res.answer.problems.stamina?.text ?? 'HoYoLAB answered without a stamina value.', ...(cached ? { reading: cached } : {}) };
+        next = { state: 'ok', reading, refreshing: false, provider: prov };
+      } else next = { state: 'error', text: res.answer.problems.stamina?.text ?? 'HoYoLAB answered without a stamina value.', provider: prov, ...(cached ? { reading: cached } : {}) };
     }
     setState((s) => ({ ...s, [src.game.id]: next }));
   }, []);
@@ -249,7 +250,7 @@ export function useLiveStamina(games: GameContract[], onReading?: OnReading): { 
     // Before the first read finishes, a kept answer is shown with its read time.
     const kept = src ? cachedReading(cacheId(g.id, src.account)) : null;
     const hasStaminaLink = hoyolabLink(g)?.supports.includes('stamina') || skportLink(g)?.supports.includes('stamina');
-    stamina[g.id] = src ? (state[g.id] ?? (kept ? { state: 'ok', reading: kept, refreshing: false } : { state: 'loading' })) : pending && hasStaminaLink ? { state: 'loading' } : { state: 'none' };
+    stamina[g.id] = src ? (state[g.id] ?? (kept ? { state: 'ok', reading: kept, refreshing: false, provider: src.provider } : { state: 'loading', provider: src.provider })) : pending && hasStaminaLink ? { state: 'loading' } : { state: 'none' };
   }
   return { stamina, retry };
 }
