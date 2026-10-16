@@ -22,6 +22,21 @@ const game = { id: 'aa', short: 'AA', name: 'Game A', currencies: [{ id: 'gem', 
 describe('backlog files: import (T73)', () => {
   beforeEach(() => resetUserData());
 
+  it('reads a file an assistant wrote with other names: "quests", no version, "oroberyl", "region", "exportDate"', () => {
+    const text = JSON.stringify({
+      format: 'hlith-backlog-export', game: 'endfield', exportDate: '2026-10-16', notes: 'Read from my quest screen',
+      quests: [{ id: 'endfield-012', game: 'endfield', category: 'Side quests', label: 'Lone Wolf', total: 1, done: 0, oroberyl: 600, rewardUnknown: false, unit: 'quest', region: 'Power Plateau' }],
+    });
+    const p = parseBacklogFile(text);
+    expect(p.ok).toBe(true);
+    if (!p.ok) return;
+    expect(p.value.asOf).toBe('2026-10-16');
+    expect(p.value.notes).toEqual(['Read from my quest screen']);
+    expect(p.value.rows[0]).toMatchObject({ id: 'endfield-012', game: 'endfield', label: 'Lone Wolf', rewardEach: 600, where: 'Power Plateau', rewardUnknown: false });
+    // A version other than 1 still says so.
+    expect(parseBacklogFile(JSON.stringify({ format: 'hlith-backlog-export', version: 2, backlog: [] }))).toMatchObject({ ok: false });
+  });
+
   it('reads the format and its date; anything else says what it must be', () => {
     const p = parseBacklogFile(file([FULL]));
     expect(p.ok && p.value.asOf).toBe('2026-10-02T08:00:00.000Z');
@@ -109,7 +124,8 @@ describe('backlog files: import (T73)', () => {
   });
 
   it('the template is a valid backlog file', () => {
-    expect(rowsOf(TEMPLATE).length).toBe(3);
+    expect(rowsOf(TEMPLATE).length).toBe(4);
+    expect(rowsOf(TEMPLATE).some((r) => r.game === 'endfield')).toBe(true);
   });
 
   it('the preview says how many items, how many with progress and the file’s date; Apply then Undo', async () => {

@@ -197,17 +197,38 @@ export function OldImportButton({ games }: { games: GameContract[] }) {
   );
 }
 
+/** What to ask Claude (desktop app, computer use) so it writes a backlog file from the player's own game screens. */
+export const CLAUDE_REQUEST = `Read my unfinished permanent content in the game window (only open menus: never start, claim, skip or spend anything).
+List every open quest (main, side, character stories) and, per region, exploration counters as done / total (chests, collectibles, puzzles).
+Write one JSON file in exactly this format, one row per entry:
+{ "format": "hlith-backlog-export", "version": 1, "dataAsOf": "<today, ISO date>",
+  "backlog": [
+    { "id": "<short unique id>", "game": "<hsr | zzz | endfield>", "category": "<Main quests | Side quests | Exploration | Challenges>",
+      "label": "<name>", "total": <total>, "done": <done>, "rewardEach": <premium currency per unit, or 0>,
+      "rewardUnknown": <true if the screen shows no amount>, "unit": "<quest | chest | collectible>", "where": "<region>" }
+  ] }
+Copy numbers exactly as the game shows them; never guess a reward.`;
+
 /** The documented format, with an example and a template to download. */
 export function FileFormat() {
   return (
     <details className={b.importNotes}>
       <summary>File format</summary>
       <p className={b.muted}>
-        A JSON file with <code>"format": "hlith-backlog-export"</code>, <code>"version": 1</code> and a <code>"backlog"</code> list. Each row: <code>id</code>, <code>game</code> (hsr, zzz), <code>label</code> and{' '}
+        A JSON file with <code>"format": "hlith-backlog-export"</code>, <code>"version": 1</code> and a <code>"backlog"</code> list. Each row: <code>id</code>, <code>game</code> (hsr, zzz, endfield), <code>label</code> and{' '}
         <code>total</code> (required), and optionally <code>category</code> (a new name makes a new category), <code>done</code>, <code>rewardEach</code> (premium currency per unit),{' '}
         <code>rewardUnknown</code>, <code>unit</code>, <code>step</code> (how much − / + changes it), <code>where</code> and <code>note</code>. <code>dataAsOf</code> says when the progress is from.
-        Export my backlog writes the same format, so a file can go from one account to another.
+        Export my backlog writes the same format, so a file can go from one account to another. HLITH also reads a list called <code>"quests"</code>, a missing{' '}
+        <code>version</code>, <code>region</code> for <code>where</code> and a currency name (e.g. <code>"oroberyl"</code>) for <code>rewardEach</code>.
       </p>
+      <p className={b.muted}>
+        <strong>Make the file from your own game.</strong> In the Claude desktop app with computer use on, open the game in a window and ask Claude to read your open quests and
+        exploration and write this file. Paste this request:
+      </p>
+      <pre className={b.importCode}>{CLAUDE_REQUEST}</pre>
+      <Button variant="quiet" onClick={() => void navigator.clipboard?.writeText(CLAUDE_REQUEST)}>
+        Copy the request
+      </Button>
       <pre className={b.importCode}>{`{ "format": "hlith-backlog-export", "version": 1,
   "backlog": [
     { "id": "my_chests", "game": "zzz", "category": "Exploration",
