@@ -12,6 +12,7 @@
  */
 import { writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
+import { stripTags } from '../src/core/text/markup.ts';
 import { json, WIKI } from './import-endfield-kits.ts';
 
 const ROOT = resolve(import.meta.dirname, '..');
@@ -76,16 +77,15 @@ export interface WeaponSkills {
   version: string;
 }
 
-/** The wiki's markup → plain text: glossary spans keep their words, pictures and colours go. */
+const ENTITIES: Record<string, string> = { '#39': "'", quot: '"', amp: '&', lt: '<', gt: '>' };
+
+/**
+ * The wiki's markup → plain text: glossary spans keep their words, pictures and colours go. Tags are stripped
+ * until none is left (stripTags), then entities are decoded in one pass, so "&amp;lt;" stays "&lt;" text.
+ */
 export function plain(raw: string): string {
-  return raw
-    .replace(/\[\[File:[^\]]*\]\]/g, '')
-    .replace(/<[^>]*>/g, '')
-    .replace(/&#39;/g, "'")
-    .replace(/&quot;/g, '"')
-    .replace(/&amp;/g, '&')
-    .replace(/&lt;/g, '<')
-    .replace(/&gt;/g, '>')
+  return stripTags(raw.replace(/\[\[File:[^\]]*\]\]/g, ''))
+    .replace(/&(#39|quot|amp|lt|gt);/g, (_, e: string) => ENTITIES[e] ?? '')
     .replace(/\s+/g, ' ')
     .trim();
 }

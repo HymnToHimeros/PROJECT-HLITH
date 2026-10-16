@@ -5,7 +5,7 @@
  */
 import { describe, expect, it } from 'vitest';
 import { agreedSet, agreedSkills, buildFor, recommendedWeapons, type CommunityBuilds } from '../scripts/import-endfield-builds';
-import { setEffects, STATS, weaponSkillTable } from '../scripts/import-endfield-gear';
+import { plain, setEffects, STATS, weaponSkillTable } from '../scripts/import-endfield-gear';
 import attributes from '../src/games/endfield/data/operator-attributes.json';
 import gearPieces from '../src/games/endfield/data/gear-pieces.json';
 import weaponSkills from '../src/games/endfield/data/weapon-skills.json';
@@ -127,6 +127,9 @@ describe('Endfield builds.json', () => {
   it('gear sets: the wiki’s names and 3-piece effects in plain text, each with its page revision', () => {
     expect(setEffects('3-piece set effect: Wearer\'s ATK <span style="color:\n#8DA2DF">+8%</span>. [[File:X.png|15px|link=]]Vulnerability')).toEqual([{ label: '3-piece', text: "Wearer's ATK +8%. Vulnerability" }]);
     expect(setEffects('No Set Effects')).toEqual([]);
+    // Markup hidden inside markup can't come back together, and entities are decoded once.
+    expect(plain('<scr<script>ipt>alert(1)</scr</script>ipt>')).toBe('alert(1)');
+    expect(plain('A &amp;lt;b&amp;gt; &amp;amp; C')).toBe('A &lt;b&gt; &amp; C');
     for (const s of gearSets) {
       expect(s.version, s.name).toMatch(/^wiki revision \d+$/);
       expect(JSON.stringify(s.effects), s.name).not.toMatch(/<|\[\[|&#/);
