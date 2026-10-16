@@ -227,18 +227,18 @@ export function CharacterPage({ data, character: c, several, onBack, openPulls, 
               <p className={r.cardText}>Not released yet. An official banner has been announced.</p>
             )}
             <div className={r.lineRow}>
-              <span className={r.lineLabel}>{c.leak ? ‘Release date in the files’ : ‘Release date’}</span>
+              <span className={r.lineLabel}>{c.leak ? 'Release date in the files' : 'Release date'}</span>
               <span className={r.mono}>
                 {c.releasedAt
                   ? new Date(c.releasedAt).toLocaleDateString(undefined, {
-                      year: ‘numeric’,
-                      month: ‘short’,
-                      day: ‘numeric’,
+                      year: 'numeric',
+                      month: 'short',
+                      day: 'numeric',
                     })
-                  : ‘—‘}
+                  : <NoData />}
               </span>
             </div>
-            {c.leak && <UnverifiedTag source={c.source ?? ‘game files’} />}
+            {c.leak && <UnverifiedTag source={c.source ?? 'game files'} />}
           </section>
         )}
       </div>

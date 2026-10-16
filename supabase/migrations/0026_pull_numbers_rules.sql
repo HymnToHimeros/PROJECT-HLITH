@@ -3,11 +3,39 @@
 -- Two fixes:
 --   1. guarantee-after-loss is not always true (Endfield: false)
 --   2. standard banners have no featured split, so nothing on them is a 50/50
--- The rules come from `bannerRules` in the synced game data, written by the
--- client from the game contract. Old data without bannerRules falls back to the
--- previous behaviour (guarantee true, featured true) so nothing regresses.
+-- The rules are built from the game contracts, not from user data.
+-- A test (tests/endfieldPity.test.ts) checks that these match bannerRulesOf(game).
+-- Unknown banner types fall back to the previous behaviour (guarantee true,
+-- featured true) so nothing regresses if a new game adds types before the SQL.
 
-create or replace function public.pull_numbers(p jsonb, rules jsonb default null) returns jsonb
+-- Per-banner-type rules, matching bannerRulesOf() in pity.ts.
+-- guarantee = whether a lost 50/50 guarantees the next one
+-- featured  = whether the banner has a featured split at all
+create or replace function public.banner_type_rules(bt text)
+returns table (guarantee boolean, featured boolean)
+language sql immutable set search_path = public as $$
+  select
+    case
+      -- Endfield: 50/50 banners do NOT guarantee after a loss
+      when bt in ('chartered', 'rerun', 'weapon') then false
+      -- ZZZ and HSR featured banners guarantee after a loss
+      when bt in ('exclusive', 'w-engine', 'character', 'light-cone') then true
+      -- Default for unknown types: previous behaviour
+      else true
+    end as guarantee,
+    case
+      -- Standard/permanent banners have no featured split
+      when bt in ('standard', 'bangboo', 'departure', 'collab-character',
+                  'collab-light-cone', 'joint', 'basic', 'beginner', 'limited') then false
+      -- Featured banners
+      when bt in ('exclusive', 'w-engine', 'character', 'light-cone',
+                  'chartered', 'rerun', 'weapon') then true
+      -- Default for unknown types: previous behaviour
+      else true
+    end as featured;
+$$;
+
+create or replace function public.pull_numbers(p jsonb) returns jsonb
 language plpgsql immutable set search_path = public as $$
 declare
   bt text;
@@ -30,8 +58,8 @@ begin
     since := 0;
     counting := false;
     guaranteed := false;
-    guarantee_after_loss := coalesce((rules -> bt ->> 'guarantee')::boolean, true);
-    has_featured := coalesce((rules -> bt ->> 'featured')::boolean, true);
+    select btr.guarantee, btr.featured into guarantee_after_loss, has_featured
+      from public.banner_type_rules(bt) btr;
     for r in select e from jsonb_array_elements(p) e where e ->> 'bannerType' is not distinct from bt order by e ->> 'time', e ->> 'id' loop
       since := since + 1;
       continue when r ->> 'rarity' is distinct from 'top';
@@ -58,7 +86,12 @@ begin
   return jsonb_build_object('total', jsonb_array_length(p), 'tops', tops, 'avg', case when tops > 0 then round(gap_sum::numeric / tops, 2) end, 'won', won, 'lost', lost, 'luckiest', best);
 end $$;
 
--- profile_card: pass bannerRules to pull_numbers so the server matches the client.
+-- Revoke: only profile_card calls it, nobody directly.
+revoke execute on function public.banner_type_rules(text) from public, anon, authenticated;
+revoke execute on function public.pull_numbers(jsonb) from public, anon, authenticated;
+
+-- profile_card: no changes needed now — pull_numbers reads the rules itself.
+-- Re-create it identically to 0018 (the bannerRules param is gone).
 create or replace function public.profile_card(p_user uuid) returns jsonb
 language plpgsql stable security definer set search_path = public as $$
 declare
@@ -125,7 +158,7 @@ begin
     n := jsonb_array_length(pulls);
     select count(*) into t from jsonb_array_elements(pulls) e where e ->> 'rarity' = 'top';
     if n > 0 then
-      nums := public.pull_numbers(pulls, gd -> 'bannerRules');
+      nums := public.pull_numbers(pulls);
       stats := stats || jsonb_build_array(jsonb_build_object('game', g, 'total', n, 'tops', t, 'average_pity', nums -> 'avg', 'won', nums -> 'won', 'lost', nums -> 'lost'));
       -- The luckiest pull across games: fewest pulls, then earliest.
       if nums -> 'luckiest' <> 'null'::jsonb and (luckiest is null
