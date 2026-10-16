@@ -44,6 +44,13 @@ export interface BacklogFile {
 
 export type Parsed = { ok: true; value: BacklogFile } | { ok: false; error: string };
 
+/** Premium-currency fields an assistant may name after the currency instead of "rewardEach". */
+const CURRENCY_KEYS = ['oroberyl', 'stellarJade', 'polychrome'];
+const currencyAmount = (o: Record<string, unknown>) => {
+  for (const k of CURRENCY_KEYS) if (typeof o[k] === 'number' && Number.isFinite(o[k])) return o[k] as number;
+  return null;
+};
+
 const num = (v: unknown) => (typeof v === 'number' && Number.isFinite(v) ? v : null);
 const str = (v: unknown, max = 200) => (typeof v === 'string' ? v.trim().slice(0, max) : '');
 
@@ -59,10 +66,13 @@ export function parseBacklogFile(text: string): Parsed {
   }
   const d = raw && typeof raw === 'object' ? (raw as Record<string, unknown>) : {};
   if (d.format !== FORMAT) return { ok: false, error: `This isn’t a backlog file (its "format" must be "${FORMAT}").` };
-  if (d.version !== VERSION) return { ok: false, error: `This backlog file is version ${String(d.version)}; HLITH reads version ${VERSION}.` };
-  if (!Array.isArray(d.backlog)) return { ok: false, error: 'This backlog file has no "backlog" list.' };
+  // A missing version is read as version 1 (files written by hand or by an assistant often leave it out).
+  if (d.version !== undefined && d.version !== VERSION) return { ok: false, error: `This backlog file is version ${String(d.version)}; HLITH reads version ${VERSION}.` };
+  // The list is "backlog"; "quests" and "items" are read the same way.
+  const list = [d.backlog, d.quests, d.items].find(Array.isArray) as unknown[] | undefined;
+  if (!list) return { ok: false, error: 'This backlog file has no "backlog" list.' };
   const rows: FileRow[] = [];
-  for (const r of d.backlog) {
+  for (const r of list) {
     if (!r || typeof r !== 'object') continue;
     const o = r as Record<string, unknown>;
     const id = str(o.id, 100);
@@ -79,16 +89,18 @@ export function parseBacklogFile(text: string): Parsed {
       label,
       total: Math.round(total),
       done: done === null || done < 0 ? null : Math.round(done),
-      rewardEach: Math.max(0, num(o.rewardEach) ?? 0),
+      // "rewardEach" is the name; a game's currency name (e.g. "oroberyl") or "reward" is read the same way.
+      rewardEach: Math.max(0, num(o.rewardEach) ?? num(o.reward) ?? currencyAmount(o) ?? 0),
       rewardUnknown: o.rewardUnknown === true,
       unit: str(o.unit, 40),
       step: step !== null && step >= 1 ? Math.round(step) : null,
-      where: str(o.where, 80),
+      where: str(o.where, 80) || str(o.region, 80),
       note: str(o.note, 300),
     });
   }
-  const asOf = typeof d.dataAsOf === 'string' && Number.isFinite(Date.parse(d.dataAsOf)) ? d.dataAsOf : null;
-  const notes = (Array.isArray(d.notes) ? d.notes : typeof d.note === 'string' ? [d.note] : []).filter((n): n is string => typeof n === 'string').map((n) => n.slice(0, 300));
+  const dated = typeof d.dataAsOf === 'string' ? d.dataAsOf : typeof d.exportDate === 'string' ? d.exportDate : null;
+  const asOf = dated !== null && Number.isFinite(Date.parse(dated)) ? dated : null;
+  const notes = (Array.isArray(d.notes) ? d.notes : typeof d.notes === 'string' ? [d.notes] : typeof d.note === 'string' ? [d.note] : []).filter((n): n is string => typeof n === 'string').map((n) => n.slice(0, 300));
   return { ok: true, value: { rows, asOf, notes } };
 }
 
@@ -257,6 +269,7 @@ export const TEMPLATE = JSON.stringify(
     backlog: [
       { id: 'my_quest_1', game: 'hsr', category: 'Side quests', label: 'A quest I still have to do', total: 1, done: 0, rewardEach: 60, unit: 'mission', where: 'Penacony' },
       { id: 'my_chests', game: 'zzz', category: 'Exploration', label: 'Chests in a new area', total: 40, done: 12, rewardEach: 5, unit: 'chest', step: 1 },
+      { id: 'my_side_quest', game: 'endfield', category: 'Side quests', label: 'A side quest I still have to do', total: 1, done: 0, rewardEach: 75, unit: 'quest', where: 'Wuling City' },
       { id: 'my_mode', game: 'hsr', category: 'Modes', label: 'A mode with points', total: 4000, rewardEach: 1, rewardUnknown: false, unit: 'points', step: 100, note: 'From the in-game total' },
     ],
   },
