@@ -113,6 +113,14 @@ describe('Events screen', () => {
     expect(gameData('aa').events['lg']?.daysClaimed).toBe(1);
   });
 
+  it('an event that ended unmarked still says what it gave, never a blank reward', async () => {
+    const now = Date.now();
+    const ended: GameEvent = { id: 'old', title: 'Old event', kind: 'event', start: new Date(now - 9 * DAY).toISOString(), end: new Date(now - DAY).toISOString(), reward: 1200, currency: 'gem' };
+    await show(makeGame([ended]), { aa: 'eu' });
+    fireEvent.click(screen.getByRole('button', { name: 'Show 1 ended' }));
+    expect(within(row('Old event')).getByText(/Ended · 1,200 .*not counted/)).toBeInTheDocument();
+  });
+
   it('Customise: kinds you switched off don’t show; a kind can have your colour (T52c)', async () => {
     const now = Date.now();
     const ev = (id: string, kind: GameEvent['kind']) => ({ id, title: id, kind, start: new Date(now - DAY).toISOString(), end: new Date(now + 5 * DAY).toISOString(), reward: 100, currency: 'gem' });
