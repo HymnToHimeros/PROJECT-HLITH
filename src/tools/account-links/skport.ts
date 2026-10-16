@@ -19,7 +19,15 @@ import { isSealed, seal, unseal, vaultAvailable, vaultReady } from '../../core/d
 
 /** The player's ACCOUNT_TOKEN from their SKPort browser cookies. */
 export function readSkportToken(text: string): { ok: true; token: string } | { ok: false } {
-  const trimmed = text.trim();
+  let trimmed = text.trim();
+  // The browser shows the cookie URL-encoded (%2F for /); the server wants the plain value.
+  if (/%[0-9A-Fa-f]{2}/.test(trimmed)) {
+    try {
+      trimmed = decodeURIComponent(trimmed);
+    } catch {
+      return { ok: false };
+    }
+  }
   if (!trimmed || trimmed.length < 10 || trimmed.length > 2000) return { ok: false };
   if (/[\s;,]/.test(trimmed)) return { ok: false };
   return { ok: true, token: trimmed };

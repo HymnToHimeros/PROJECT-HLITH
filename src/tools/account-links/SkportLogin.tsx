@@ -4,11 +4,11 @@ import c from './connections.module.css';
 import { readSkportToken } from './skport';
 
 /*
- * How a player gets the SKPort ACCOUNT_TOKEN. Sources:
- * - SKPort / Gryphline stores the token as a browser cookie after login.
- * - The cookie_store page (https://zonai.skport.com/web/cookie_store) shows the
- *   current ACCOUNT_TOKEN value, ready to copy.
- * - Alternatively, DevTools → Application → Cookies → zonai.skport.com → ACCOUNT_TOKEN.
+ * How a player gets the SKPort ACCOUNT_TOKEN. Sources (community check-in tools that use this token,
+ * e.g. github.com/torikushiii/endfield-auto): log in on the SKPort Endfield portal,
+ * https://game.skport.com/endfield/sign-in, then DevTools → Application → Cookies → ACCOUNT_TOKEN.
+ * The cookie is httpOnly, so it can't be read from the console, and it's URL-encoded (%2F for /):
+ * readSkportToken decodes it. zonai.skport.com is SKPort's API host, not a page a player can open.
  * Not tested with a live account yet.
  */
 export function SkportSteps({ open = false }: { open?: boolean }) {
@@ -18,13 +18,17 @@ export function SkportSteps({ open = false }: { open?: boolean }) {
       open={open}
       steps={[
         <>
-          On a PC, open <span className={c.mono}>zonai.skport.com</span> and log in with the account you play Endfield on.
+          On a PC, open{' '}
+          <a className={c.mono} href="https://game.skport.com/endfield/sign-in" target="_blank" rel="noreferrer noopener">
+            game.skport.com/endfield/sign-in
+          </a>{' '}
+          and log in with the account you play Endfield on.
         </>,
         <>
-          Go to <span className={c.mono}>zonai.skport.com/web/cookie_store</span>. The page shows your ACCOUNT_TOKEN — copy it.
+          Press <span className={c.mono}>F12</span> → <strong>Application</strong> (Firefox: <strong>Storage</strong>) → <strong>Cookies</strong> → <span className={c.mono}>https://game.skport.com</span>.
         </>,
         <>
-          If that page doesn't work, press <span className={c.mono}>F12</span> → <strong>Application</strong> (Firefox: <strong>Storage</strong>) → <strong>Cookies</strong> → <span className={c.mono}>zonai.skport.com</span> and copy the value of the <span className={c.mono}>ACCOUNT_TOKEN</span> cookie.
+          Find <span className={c.mono}>ACCOUNT_TOKEN</span> and copy its value. If you don't see it there, look under the other skport.com entries in the same list.
         </>,
         <>Paste the token into the box below and press the button. HLITH finds your Endfield account on it.</>,
       ]}
