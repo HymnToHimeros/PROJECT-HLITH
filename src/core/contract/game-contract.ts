@@ -231,7 +231,7 @@ export interface IncomeRow {
 
 export interface HistoryImporter {
   id: string; // 'uigf-v4', 'srgf'
-  kind: 'file' | 'link';
+  kind: 'file' | 'link' | 'token';
   label: string;
   /** file: parsed in the browser · link: sent to the gacha-import server function. */
   parse?: (input: string) => Promise<PullRecord[]>;

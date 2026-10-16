@@ -56,6 +56,7 @@ export const MODULES: Record<ModuleId, ModuleDef> = {
     tabs: [
       { id: 'characters', label: 'Characters' },
       { id: 'teams', label: 'Teams' },
+      { id: 'weapons', label: 'Weapons' },
     ],
   },
   farm: { id: 'farm', label: 'Farm', glyph: 'FM' },

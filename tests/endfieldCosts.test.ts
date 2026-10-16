@@ -3,7 +3,7 @@ import { acquisition, cargoString, costList, costSummary, levelTable, promotionL
 import { endfield } from '../src/games/endfield/contract';
 import { materialsFor, MAX_LEVEL, skillsOf, weaponMaterialsFor } from '../src/games/endfield/costs';
 import costs from '../src/games/endfield/data/costs.json';
-import { farmPlan } from '../src/tools/farm/plan';
+import { farmPlan, weaponFarmPlan } from '../src/tools/farm/plan';
 import type { Material } from '../src/core/contract';
 import materials from '../src/games/endfield/data/materials.json';
 
@@ -198,5 +198,22 @@ describe('Endfield weapon costs', async () => {
     expect(got.get('item_weapon_expcard_high')).toBe(Math.ceil((2524080 - 105540) / 10000));
     expect(weaponMaterialsFor(id, { level: 40 }, { level: 40 })).toEqual({ needs: [] });
     expect(weaponMaterialsFor('wpn_lunar-calling', { level: 1 }, { level: 90 })).toEqual({ needs: [] });
+  });
+  it('weaponFarmPlan surfaces partial and gives no stamina total while partial is set', () => {
+    const note = 'Only levels 1-40 are counted; higher levels not yet on the wiki.';
+    const fake = {
+      ...endfield,
+      rules: {
+        ...endfield.rules,
+        weaponMaterialsFor: () => ({ needs: [{ material: 'item_gold', amount: 100 }], partial: note }),
+      },
+    };
+    const plan = weaponFarmPlan(fake as unknown as typeof endfield, ['wpn_test'], materials as Material[]);
+    expect(plan.partial).toBe(note);
+    expect(plan.stamina.known).toBe(false);
+    expect(plan.needs.known).toBe(true);
+
+    const full = weaponFarmPlan(endfield, ['wpn_claym_0003'], materials as Material[]);
+    expect(full.partial).toBeUndefined();
   });
 });

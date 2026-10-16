@@ -8,7 +8,7 @@ import { cx } from '../../core/ui/cx';
 import { buildHlithFile } from '../import/hlith';
 import { parseHistoryFile, readAccount, type ImportedAccount } from '../import/uigf';
 import { featuredOf, hardPityOf, oddsWord, pityFromHistory } from '../pity/pity';
-import { cacheFileSteps, fileSteps, findHistoryLink, goodToKnow, guideFor, pasteSteps } from './importGuides';
+import { cacheFileSteps, fileSteps, findHistoryLink, goodToKnow, guideFor, pasteSteps, tokenSteps } from './importGuides';
 import { LuckReport } from './LuckReport';
 import p from './pulls.module.css';
 import type { PullsData } from './usePullsData';
@@ -17,7 +17,7 @@ const IMPORT_REMINDER_DAYS = 75;
 
 /** After an import, `undoIds` are the pulls it added, so "Undo this import" removes exactly those. */
 type Status = { kind: 'idle' } | { kind: 'busy' } | { kind: 'ok'; text: string; undoIds?: string[] } | { kind: 'error'; text: string };
-type Way = 'link' | 'cache' | 'file' | null;
+type Way = 'link' | 'cache' | 'token' | 'file' | null;
 
 /**
  * History (design: NO DATA YET card + import choices; Override 3: the Luck
@@ -29,12 +29,15 @@ export function History({ game, data, signedIn, now }: { game: GameContract; dat
   const [status, setStatus] = useState<Status>({ kind: 'idle' });
   const [way, setWay] = useState<Way>(null);
   const [link, setLink] = useState('');
+  const [accountToken, setAccountToken] = useState('');
+  const [tokenRegion, setTokenRegion] = useState<'global' | 'cn'>('global');
   const [choose, setChoose] = useState<ImportedAccount[] | null>(null);
   const [showAll, setShowAll] = useState(false);
   const mapping = game.historyMapping;
   const fileImport = game.historyImporters.some((i) => i.kind === 'file');
   const linkImport = game.historyImporters.some((i) => i.kind === 'link');
   const guide = guideFor(mapping?.uigfKey, game.id);
+  const tokenImport = game.historyImporters.some((i) => i.kind === 'token');
   const fileLabel = game.historyImporters
     .filter((i) => i.kind === 'file')
     .map((i) => i.label)
@@ -88,9 +91,32 @@ export function History({ game, data, signedIn, now }: { game: GameContract; dat
     report(acc.records, acc.skipped, acc.invalid);
   };
 
+  const importToken = async (token: string, region: 'global' | 'cn') => {
+    if (!backend || !mapping || !token.trim()) return;
+    setStatus({ kind: 'busy' });
+    const knownIds = data.user.pulls.map((x) => x.id);
+    const { data: res, error } = await backend.functions.invoke<{ game: string; uid: string; timezone: number | null; list: unknown[] }>('endfield-gacha-import', {
+      body: { accountToken: token, region, knownIds },
+    });
+    setAccountToken('');
+    if (error || !res) {
+      const body: unknown = error && 'context' in error && error.context instanceof Response ? await error.context.json().catch(() => null) : null;
+      const text = body && typeof body === 'object' && 'error' in body && typeof body.error === 'string' ? body.error : 'The import failed. Try again in a minute.';
+      return setStatus({ kind: 'error', text });
+    }
+    if (res.game !== game.id) return setStatus({ kind: 'error', text: `This token is for another game, not ${game.name}.` });
+    const acc = readAccount(res.uid, res.list, res.timezone ?? 8, mapping);
+    report(acc.records, acc.skipped, acc.invalid);
+  };
+
   const onLink = (e: FormEvent) => {
     e.preventDefault();
     void importLink(link);
+  };
+
+  const onToken = (e: FormEvent) => {
+    e.preventDefault();
+    void importToken(accountToken, tokenRegion);
   };
 
   const onCache = async (e: ChangeEvent<HTMLInputElement>) => {
@@ -133,8 +159,9 @@ export function History({ game, data, signedIn, now }: { game: GameContract; dat
   const history = data.history.list;
   const allTops = topsWithPity(history, noGuarantee, noFiftyFifty).reverse();
   const tops = showAll ? allTops : allTops.slice(0, 10);
-  const noImport = !mapping || (!fileImport && !linkImport);
+  const noImport = !mapping || (!fileImport && !linkImport && !tokenImport);
   const ways: { id: Exclude<Way, null>; label: string; sub: string; show: boolean }[] = [
+    { id: 'token', label: 'Sign in on the web', sub: 'Visit the account page in your browser, copy the token. Works on any device.', show: tokenImport },
     { id: 'link', label: 'Paste a history link', sub: 'From the in-game history page. Works on PC.', show: linkImport },
     { id: 'cache', label: "Pick the game’s cache file", sub: "The same link, read from the game’s own file. PC, no command needed.", show: linkImport && !!guide?.dataFolder },
     { id: 'file', label: 'Upload a file', sub: mapping?.uigfKey ? `Export from another tracker (${fileLabel || '.json'}).` : `An HLITH pull history file (.json) you exported earlier.`, show: fileImport },
@@ -175,6 +202,36 @@ export function History({ game, data, signedIn, now }: { game: GameContract; dat
                 </button>
               ))}
           </div>
+
+          {way === 'token' && (
+            <section className={p.card} aria-label="Sign in on the web">
+              {guide ? <HowTo title="How do I get the token?" steps={tokenSteps(guide)} open /> : <p className={p.muted}>A step-by-step guide for this game isn't written yet.</p>}
+              {signedIn ? (
+                <form className={p.stack} onSubmit={onToken}>
+                  <fieldset className={p.stack}>
+                    <legend className={p.srOnly}>Region</legend>
+                    <div className={p.regionRow}>
+                      <label className={p.radioLabel}>
+                        <input type="radio" name="token-region" checked={tokenRegion === 'global'} onChange={() => setTokenRegion('global')} /> Global
+                      </label>
+                      <label className={p.radioLabel}>
+                        <input type="radio" name="token-region" checked={tokenRegion === 'cn'} onChange={() => setTokenRegion('cn')} /> CN (官服)
+                      </label>
+                    </div>
+                  </fieldset>
+                  <label className={p.field}>
+                    Account token (used once, never saved)
+                    <textarea className={p.textarea} value={accountToken} onChange={(e) => setAccountToken(e.target.value)} placeholder="Paste the token from the account page" rows={3} />
+                  </label>
+                  <Button type="submit" variant="primary" disabled={status.kind === 'busy' || !accountToken.trim()}>
+                    Import via web sign-in
+                  </Button>
+                </form>
+              ) : (
+                <p className={p.muted}>Sign in (Account) to import via web sign-in: the token is exchanged by our server, which needs your account to store the pulls. Export files work without signing in.</p>
+              )}
+            </section>
+          )}
 
           {way === 'link' && (
             <section className={p.card} aria-label="Paste a history link">

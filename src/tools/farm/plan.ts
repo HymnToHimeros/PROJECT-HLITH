@@ -56,6 +56,33 @@ export function farmPlan(game: GameContract, characterIds: string[], materials: 
   return { needs: known(rows, 'official'), stamina: allKnown ? known(total, 'official') : unknown(), left };
 }
 
+export interface WeaponFarmPlan extends FarmPlan {
+  partial?: string;
+}
+
+export function weaponFarmPlan(game: GameContract, weaponIds: string[], materials: Material[]): WeaponFarmPlan {
+  const rule = game.rules.weaponMaterialsFor;
+  if (!rule || weaponIds.length === 0) return { needs: unknown(), stamina: unknown(), left: [] };
+  const totals = new Map<string, number>();
+  let partial: string | undefined;
+  for (const id of weaponIds) {
+    const result = rule(id, FROM, FULL);
+    if (result.partial) partial = result.partial;
+    for (const n of result.needs) totals.set(n.material, (totals.get(n.material) ?? 0) + n.amount);
+  }
+  if (totals.size === 0) return { needs: unknown(), stamina: unknown(), left: [] };
+
+  const rows: NeedRow[] = [...totals].map(([material, amount]) => {
+    const m = materials.find((x) => x.id === material);
+    const runs = m?.dropsPerRun ? known(Math.ceil(amount / m.dropsPerRun), 'official') : unknown<number>();
+    const stamina = runs.known && m?.staminaPerRun ? known(runs.value * m.staminaPerRun, 'official') : unknown<number>();
+    return { material, name: m?.name ?? material, ...(m?.icon ? { icon: m.icon } : {}), ...(m?.sources?.length ? { sources: m.sources } : {}), amount, runs, stamina };
+  });
+  const allKnown = !partial && rows.every((r) => r.stamina.known);
+  const total = rows.reduce((sum, r) => sum + (r.stamina.known ? r.stamina.value : 0), 0);
+  return { needs: known(rows, 'official'), stamina: allKnown ? known(total, 'official') : unknown(), left: [], ...(partial ? { partial } : {}) };
+}
+
 /** Points a pool refills per day, from the game record's regeneration rate. */
 export const perDay = (pool: StaminaPool) => Math.floor((24 * 60) / pool.minutesPerPoint);
 

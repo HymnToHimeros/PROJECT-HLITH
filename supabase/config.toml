@@ -38,6 +38,10 @@ verify_jwt = false
 [functions.skport]
 verify_jwt = true
 
+# SKPort daily check-in for Endfield (like hoyolab-daily); the scheduler calls it with the service key.
+[functions.skport-daily]
+verify_jwt = false
+
 # Finishes account deletions after the 30-day grace period (T11); the scheduler calls it with the service key.
 [functions.purge-accounts]
 verify_jwt = false

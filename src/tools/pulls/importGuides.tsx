@@ -49,6 +49,10 @@ export interface ImportGuide {
   linkLogFile?: string;
   /** Short description of the link source for the paste guide. */
   linkSource?: string;
+  /** Web sign-in: URLs to get the account token (per region). */
+  tokenUrl?: { global: string; cn: string };
+  /** Web sign-in: account page URLs (per region). */
+  accountPage?: { global: string; cn: string };
 }
 
 const GUIDES: Record<string, ImportGuide> = {
@@ -82,6 +86,14 @@ const GUIDES: Record<string, ImportGuide> = {
     linkLogFile: '%USERPROFILE%\\AppData\\LocalLow\\Gryphline\\Endfield\\sdklogs\\HGWebview.log',
     linkSource: 'HGWebview.log',
     formats: 'HLITH pull history (.json)',
+    tokenUrl: {
+      global: 'https://web-api.gryphline.com/cookie_store/account_token',
+      cn: 'https://web-api.hypergryph.com/account/info/hg',
+    },
+    accountPage: {
+      global: 'https://user.gryphline.com/',
+      cn: 'https://user.hypergryph.com/',
+    },
   },
 };
 
@@ -158,6 +170,22 @@ function linkLogSteps(g: ImportGuide): ReactNode[] {
   ];
 }
 
+/** Steps for the web sign-in token (Endfield). */
+export function tokenSteps(g: ImportGuide): ReactNode[] {
+  if (!g.tokenUrl || !g.accountPage) return [];
+  return [
+    <>
+      Sign in to your account on the web: {ext(g.accountPage.global, 'Global account page')} or{' '}
+      {ext(g.accountPage.cn, 'CN account page (官服)')}. Pick the one that matches your game region.
+    </>,
+    <>
+      After signing in, visit the token page: {ext(g.tokenUrl.global, 'Global token')} or{' '}
+      {ext(g.tokenUrl.cn, 'CN token (官服)')}. You'll see a JSON response containing your token. Copy the whole page (Ctrl+A, Ctrl+C).
+    </>,
+    <>Select your region below, paste the token (or the whole JSON) and press Import. The token is sent to our server to exchange it for a one-time history key, then discarded.</>,
+  ];
+}
+
 /** Steps for an export file from another app. */
 export function fileSteps(g: ImportGuide | null): ReactNode[] {
   return [
@@ -188,9 +216,16 @@ export function goodToKnow(g: ImportGuide | null): ReactNode[] {
     );
   } else {
     notes.push(
-      <>
-        <strong>Phone or console:</strong> the history link is only available from the PC log file. Import once on a PC — your history belongs to your game account, not the device.
-      </>,
+      g.tokenUrl ? (
+        <>
+          <strong>Phone or console:</strong> the history link is only in the PC log file, but the <em>Sign in on the web</em> method works from any device — just visit the account page in a browser
+          and copy the token.
+        </>
+      ) : (
+        <>
+          <strong>Phone or console:</strong> the history link is only available from the PC log file. Import once on a PC — your history belongs to your game account, not the device.
+        </>
+      ),
     );
   }
   notes.push(
