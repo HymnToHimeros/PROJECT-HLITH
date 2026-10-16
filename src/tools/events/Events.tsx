@@ -287,7 +287,7 @@ function Tiles({
       {days > 0 ? (
         <Tile label="Login days claimed" value={`${claimed}/${days}`} caption={`${logins.length} login event${logins.length === 1 ? '' : 's'} running`} />
       ) : (
-        <Tile label="Login days claimed" value="—" tone="muted" caption="no login event running" />
+        <Tile label="Login days claimed" value="—" tone="muted" caption="No data yet" />
       )}
       {nothingProven && leftOut.length > 0 ? (
         <EmptyTile label="Rewards left" why="rewards of the open events aren’t known" />

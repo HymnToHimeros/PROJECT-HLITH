@@ -344,6 +344,8 @@ function describe(r: BudgetRow, name: (id: string) => string): string {
       return 'switched off';
     case 'not-active':
       return 'not active · no pass end date saved';
+    case 'ended':
+      return 'ended';
     case 'skipped':
       return 'skipped';
     case 'no-data':
@@ -386,6 +388,7 @@ function Group({ label, rows, asPulls, onOpen }: { label: string; rows: BudgetRo
   const counted = rows.filter((r) => r.status === 'counted');
   const noData = rows.filter((r) => r.status === 'no-data');
   const earned = rows.filter((r) => r.status === 'already-earned').length;
+  const ended = rows.filter((r) => r.status === 'ended').length;
   const skipped = rows.filter((r) => r.status === 'skipped').length;
   let pulls = 0;
   let any = false;
@@ -396,7 +399,7 @@ function Group({ label, rows, asPulls, onOpen }: { label: string; rows: BudgetRo
       any = true;
     }
   }
-  const parts = [`${counted.length} still open`, earned ? `${earned} done` : '', skipped ? `${skipped} skipped` : '', noData.length ? `${noData.length} with no data` : ''].filter(Boolean);
+  const parts = [`${counted.length} still open`, earned ? `${earned} done` : '', ended ? `${ended} ended` : '', skipped ? `${skipped} skipped` : '', noData.length ? `${noData.length} with no data` : ''].filter(Boolean);
   return (
     <div className={p.row}>
       <div className={p.rowMain}>
@@ -405,7 +408,7 @@ function Group({ label, rows, asPulls, onOpen }: { label: string; rows: BudgetRo
         <ul className={p.groupList}>
           {rows.map((r) => (
             <li key={r.id}>
-              {r.label} · {r.status === 'counted' ? `+${formatNumber(r.amount)}` : r.status === 'no-data' ? 'no data yet' : r.status === 'already-earned' ? 'done' : 'skipped'}
+              {r.label} · {r.status === 'counted' ? `+${formatNumber(r.amount)}` : r.status === 'no-data' ? 'no data yet' : r.status === 'already-earned' ? 'done' : r.status === 'ended' ? 'ended' : 'skipped'}
             </li>
           ))}
         </ul>

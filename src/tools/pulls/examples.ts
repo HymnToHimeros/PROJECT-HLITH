@@ -41,7 +41,10 @@ export function exampleBanners(game: GameContract, characters: Character[], now:
     });
 }
 
-const newestTops = (characters: Character[]) => characters.filter((c) => c.rarity === 'top').sort((a, b) => (b.releasedAt ?? b.id).localeCompare(a.releasedAt ?? a.id));
+const newestTops = (characters: Character[], now?: number) =>
+  characters
+    .filter((c) => c.rarity === 'top' && (now === undefined || !c.releasedAt || Date.parse(c.releasedAt) <= now))
+    .sort((a, b) => (b.releasedAt ?? b.id).localeCompare(a.releasedAt ?? a.id));
 
 /** Top-rarity characters for example banners: those with sample art first (newest first), then the rest. */
 export function featuredPool(characters: Character[], withArt: string[] = []): Character[] {
@@ -90,7 +93,7 @@ export const exampleVersionEnd = (now: number) => now + 21 * DAY;
  * 50/50 at 74 then a win at 62, then 18 pulls since; elsewhere a few pulls.
  */
 export function exampleHistory(game: GameContract, characters: Character[], now: number): PullRecord[] {
-  const tops = newestTops(characters);
+  const tops = newestTops(characters, now);
   const mids = characters.filter((c) => c.rarity === 'mid');
   const out: PullRecord[] = [];
   let t = now - 60 * DAY;
@@ -117,7 +120,8 @@ export function exampleHistory(game: GameContract, characters: Character[], now:
       add(type.id, 'top', tops[0], true);
       for (let i = 1; i <= 18; i++) add(type.id, i % 10 === 0 ? 'mid' : 'low', i % 10 === 0 ? mids[0] : undefined);
     } else {
-      for (let i = 1; i <= 12; i++) add(type.id, i % 10 === 0 ? 'mid' : 'low', i % 10 === 0 ? mids[0] : undefined);
+      const step = hardPityOf(type.pity) ?? 10;
+      for (let i = 1; i <= step; i++) add(type.id, i % 10 === 0 ? 'mid' : 'low', i % 10 === 0 ? mids[0] : undefined);
     }
   }
   return out;

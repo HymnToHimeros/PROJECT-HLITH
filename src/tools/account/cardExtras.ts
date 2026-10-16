@@ -10,7 +10,7 @@
  */
 import type { GameContract, GameId, PullRecord } from '../../core/contract';
 import type { GameUserData } from '../../core/data/userData';
-import { luck } from '../pity/pity';
+import { luck, luckOf } from '../pity/pity';
 
 export interface LuckiestPull {
   game: GameId;
@@ -67,7 +67,8 @@ export function gameNumbers(games: GameContract[], data: Record<GameId, GameUser
     let won = 0;
     let lost = 0;
     for (const bt of new Set(pulls.map((p) => p.bannerType))) {
-      const l = luck(pulls, bt);
+      const bannerType = g.bannerTypes.find((t) => t.id === bt);
+      const l = bannerType ? luckOf(pulls, bannerType) : luck(pulls, bt);
       if (l.averagePity.known) pitySum += l.averagePity.value * l.tops;
       tops += l.tops;
       won += l.fiftyFifty.won;
