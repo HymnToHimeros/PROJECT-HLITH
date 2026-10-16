@@ -1,0 +1,1117 @@
+[
+ {
+  "characterId": "chr_0002_endminm",
+  "source": "the game's recommended weapons, not ranked: Matching Skills first, then Matching Stats (endfield.wiki.gg/wiki/Endministrator, CC BY-SA 4.0, revision 64967)",
+  "sets": [],
+  "mainStats": {},
+  "subStats": [],
+  "weapons": [
+   "Grand Vision",
+   "Eminent Repute",
+   "Rapid Ascent",
+   "Sundering Steel"
+  ],
+  "skillsFirst": [],
+  "version": "wiki revision 64967",
+  "items": {
+   "Grand Vision": {
+    "icon": "https://endfield.wiki.gg/images/Grand_Vision_icon.png",
+    "effects": []
+   },
+   "Eminent Repute": {
+    "icon": "https://endfield.wiki.gg/images/Eminent_Repute_icon.png",
+    "effects": []
+   },
+   "Rapid Ascent": {
+    "icon": "https://endfield.wiki.gg/images/Rapid_Ascent_icon.png",
+    "effects": []
+   },
+   "Sundering Steel": {
+    "icon": "https://endfield.wiki.gg/images/Sundering_Steel_icon.png",
+    "effects": []
+   }
+  }
+ },
+ {
+  "characterId": "chr_0003_endminf",
+  "source": "the game's recommended weapons, not ranked: Matching Skills first, then Matching Stats (endfield.wiki.gg/wiki/Endministrator, CC BY-SA 4.0, revision 64967)",
+  "sets": [],
+  "mainStats": {},
+  "subStats": [],
+  "weapons": [
+   "Grand Vision",
+   "Eminent Repute",
+   "Rapid Ascent",
+   "Sundering Steel"
+  ],
+  "skillsFirst": [],
+  "version": "wiki revision 64967",
+  "items": {
+   "Grand Vision": {
+    "icon": "https://endfield.wiki.gg/images/Grand_Vision_icon.png",
+    "effects": []
+   },
+   "Eminent Repute": {
+    "icon": "https://endfield.wiki.gg/images/Eminent_Repute_icon.png",
+    "effects": []
+   },
+   "Rapid Ascent": {
+    "icon": "https://endfield.wiki.gg/images/Rapid_Ascent_icon.png",
+    "effects": []
+   },
+   "Sundering Steel": {
+    "icon": "https://endfield.wiki.gg/images/Sundering_Steel_icon.png",
+    "effects": []
+   }
+  }
+ },
+ {
+  "characterId": "chr_0004_pelica",
+  "source": "the game's recommended weapons, not ranked: Matching Skills first, then Matching Stats (endfield.wiki.gg/wiki/Perlica, CC BY-SA 4.0, revision 64968)",
+  "sets": [],
+  "mainStats": {},
+  "subStats": [],
+  "weapons": [
+   "Oblivion",
+   "Detonation Unit",
+   "Wild Wanderer",
+   "Stanza of Memorials"
+  ],
+  "skillsFirst": [],
+  "version": "wiki revision 64968",
+  "items": {
+   "Oblivion": {
+    "icon": "https://endfield.wiki.gg/images/Oblivion_icon.png",
+    "effects": []
+   },
+   "Detonation Unit": {
+    "icon": "https://endfield.wiki.gg/images/Detonation_Unit_icon.png",
+    "effects": []
+   },
+   "Wild Wanderer": {
+    "icon": "https://endfield.wiki.gg/images/Wild_Wanderer_icon.png",
+    "effects": []
+   },
+   "Stanza of Memorials": {
+    "icon": "https://endfield.wiki.gg/images/Stanza_of_Memorials_icon.png",
+    "effects": []
+   }
+  }
+ },
+ {
+  "characterId": "chr_0005_chen",
+  "source": "the game's recommended weapons, not ranked: Matching Skills first, then Matching Stats (endfield.wiki.gg/wiki/Chen_Qianyu, CC BY-SA 4.0, revision 64969)",
+  "sets": [],
+  "mainStats": {},
+  "subStats": [],
+  "weapons": [
+   "Rapid Ascent",
+   "Aspirant",
+   "Grand Vision",
+   "Eminent Repute"
+  ],
+  "skillsFirst": [],
+  "version": "wiki revision 64969",
+  "items": {
+   "Rapid Ascent": {
+    "icon": "https://endfield.wiki.gg/images/Rapid_Ascent_icon.png",
+    "effects": []
+   },
+   "Aspirant": {
+    "icon": "https://endfield.wiki.gg/images/Aspirant_icon.png",
+    "effects": []
+   },
+   "Grand Vision": {
+    "icon": "https://endfield.wiki.gg/images/Grand_Vision_icon.png",
+    "effects": []
+   },
+   "Eminent Repute": {
+    "icon": "https://endfield.wiki.gg/images/Eminent_Repute_icon.png",
+    "effects": []
+   }
+  }
+ },
+ {
+  "characterId": "chr_0006_wolfgd",
+  "source": "the game's recommended weapons, not ranked: Matching Skills first, then Matching Stats (endfield.wiki.gg/wiki/Wulfgard, CC BY-SA 4.0, revision 64970)",
+  "sets": [],
+  "mainStats": {},
+  "subStats": [],
+  "weapons": [
+   "Clannibal",
+   "Wedge",
+   "Rational Farewell",
+   "Long Road"
+  ],
+  "skillsFirst": [],
+  "version": "wiki revision 64970",
+  "items": {
+   "Clannibal": {
+    "icon": "https://endfield.wiki.gg/images/Clannibal_icon.png",
+    "effects": []
+   },
+   "Wedge": {
+    "icon": "https://endfield.wiki.gg/images/Wedge_icon.png",
+    "effects": []
+   },
+   "Rational Farewell": {
+    "icon": "https://endfield.wiki.gg/images/Rational_Farewell_icon.png",
+    "effects": []
+   },
+   "Long Road": {
+    "icon": "https://endfield.wiki.gg/images/Long_Road_icon.png",
+    "effects": []
+   }
+  }
+ },
+ {
+  "characterId": "chr_0007_ikut",
+  "source": "the game's recommended weapons, not ranked: Matching Skills first, then Matching Stats (endfield.wiki.gg/wiki/Arclight, CC BY-SA 4.0, revision 64971)",
+  "sets": [],
+  "mainStats": {},
+  "subStats": [],
+  "weapons": [
+   "White Night Nova",
+   "Thermite Cutter",
+   "Twelve Questions",
+   "OBJ Edge of Lightness"
+  ],
+  "skillsFirst": [],
+  "version": "wiki revision 64971",
+  "items": {
+   "White Night Nova": {
+    "icon": "https://endfield.wiki.gg/images/White_Night_Nova_icon.png",
+    "effects": []
+   },
+   "Thermite Cutter": {
+    "icon": "https://endfield.wiki.gg/images/Thermite_Cutter_icon.png",
+    "effects": []
+   },
+   "Twelve Questions": {
+    "icon": "https://endfield.wiki.gg/images/Twelve_Questions_icon.png",
+    "effects": []
+   },
+   "OBJ Edge of Lightness": {
+    "icon": "https://endfield.wiki.gg/images/OBJ_Edge_of_Lightness_icon.png",
+    "effects": []
+   }
+  }
+ },
+ {
+  "characterId": "chr_0009_azrila",
+  "source": "the game's recommended weapons, not ranked: Matching Skills first, then Matching Stats (endfield.wiki.gg/wiki/Ember, CC BY-SA 4.0, revision 64972)",
+  "sets": [],
+  "mainStats": {},
+  "subStats": [],
+  "weapons": [
+   "Thunderberge",
+   "Sundered Prince",
+   "Finishing Call",
+   "Exemplar",
+   "Ancient Canal"
+  ],
+  "skillsFirst": [],
+  "version": "wiki revision 64972",
+  "items": {
+   "Thunderberge": {
+    "icon": "https://endfield.wiki.gg/images/Thunderberge_icon.png",
+    "effects": []
+   },
+   "Sundered Prince": {
+    "icon": "https://endfield.wiki.gg/images/Sundered_Prince_icon.png",
+    "effects": []
+   },
+   "Finishing Call": {
+    "icon": "https://endfield.wiki.gg/images/Finishing_Call_icon.png",
+    "effects": []
+   },
+   "Exemplar": {
+    "icon": "https://endfield.wiki.gg/images/Exemplar_icon.png",
+    "effects": []
+   },
+   "Ancient Canal": {
+    "icon": "https://endfield.wiki.gg/images/Ancient_Canal_icon.png",
+    "effects": []
+   }
+  }
+ },
+ {
+  "characterId": "chr_0011_seraph",
+  "source": "the game's recommended weapons, not ranked: Matching Skills first, then Matching Stats (endfield.wiki.gg/wiki/Xaihi, CC BY-SA 4.0, revision 64973)",
+  "sets": [],
+  "mainStats": {},
+  "subStats": [],
+  "weapons": [
+   "Chivalric Virtues",
+   "Freedom to Proselytize",
+   "Delivery Guaranteed",
+   "Monaihe"
+  ],
+  "skillsFirst": [],
+  "version": "wiki revision 64973",
+  "items": {
+   "Chivalric Virtues": {
+    "icon": "https://endfield.wiki.gg/images/Chivalric_Virtues_icon.png",
+    "effects": []
+   },
+   "Freedom to Proselytize": {
+    "icon": "https://endfield.wiki.gg/images/Freedom_to_Proselytize_icon.png",
+    "effects": []
+   },
+   "Delivery Guaranteed": {
+    "icon": "https://endfield.wiki.gg/images/Delivery_Guaranteed_icon.png",
+    "effects": []
+   },
+   "Monaihe": {
+    "icon": "https://endfield.wiki.gg/images/Monaihe_icon.png",
+    "effects": []
+   }
+  }
+ },
+ {
+  "characterId": "chr_0012_avywen",
+  "source": "the game's recommended weapons, not ranked: Matching Skills first, then Matching Stats (endfield.wiki.gg/wiki/Avywenna, CC BY-SA 4.0, revision 64975)",
+  "sets": [],
+  "mainStats": {},
+  "subStats": [],
+  "weapons": [
+   "JET",
+   "Cohesive Traction",
+   "Aggeloslayer"
+  ],
+  "skillsFirst": [],
+  "version": "wiki revision 64975",
+  "items": {
+   "JET": {
+    "icon": "https://endfield.wiki.gg/images/JET_icon.png",
+    "effects": []
+   },
+   "Cohesive Traction": {
+    "icon": "https://endfield.wiki.gg/images/Cohesive_Traction_icon.png",
+    "effects": []
+   },
+   "Aggeloslayer": {
+    "icon": "https://endfield.wiki.gg/images/Aggeloslayer_icon.png",
+    "effects": []
+   }
+  }
+ },
+ {
+  "characterId": "chr_0013_aglina",
+  "source": "the game's recommended weapons, not ranked: Matching Skills first, then Matching Stats (endfield.wiki.gg/wiki/Gilberta, CC BY-SA 4.0, revision 64976)",
+  "sets": [],
+  "mainStats": {},
+  "subStats": [],
+  "weapons": [
+   "Delivery Guaranteed",
+   "Opus: Etch Figure",
+   "Chivalric Virtues",
+   "Monaihe"
+  ],
+  "skillsFirst": [],
+  "version": "wiki revision 64976",
+  "items": {
+   "Delivery Guaranteed": {
+    "icon": "https://endfield.wiki.gg/images/Delivery_Guaranteed_icon.png",
+    "effects": []
+   },
+   "Opus: Etch Figure": {
+    "icon": "https://endfield.wiki.gg/images/Opus_Etch_Figure_icon.png",
+    "effects": []
+   },
+   "Chivalric Virtues": {
+    "icon": "https://endfield.wiki.gg/images/Chivalric_Virtues_icon.png",
+    "effects": []
+   },
+   "Monaihe": {
+    "icon": "https://endfield.wiki.gg/images/Monaihe_icon.png",
+    "effects": []
+   }
+  }
+ },
+ {
+  "characterId": "chr_0014_aurora",
+  "source": "the game's recommended weapons, not ranked: Matching Skills first, then Matching Stats (endfield.wiki.gg/wiki/Snowshine, CC BY-SA 4.0, revision 64977)",
+  "sets": [],
+  "mainStats": {},
+  "subStats": [],
+  "weapons": [
+   "Former Finery",
+   "Khravengger",
+   "Sundered Prince",
+   "Exemplar"
+  ],
+  "skillsFirst": [],
+  "version": "wiki revision 64977",
+  "items": {
+   "Former Finery": {
+    "icon": "https://endfield.wiki.gg/images/Former_Finery_icon.png",
+    "effects": []
+   },
+   "Khravengger": {
+    "icon": "https://endfield.wiki.gg/images/Khravengger_icon.png",
+    "effects": []
+   },
+   "Sundered Prince": {
+    "icon": "https://endfield.wiki.gg/images/Sundered_Prince_icon.png",
+    "effects": []
+   },
+   "Exemplar": {
+    "icon": "https://endfield.wiki.gg/images/Exemplar_icon.png",
+    "effects": []
+   }
+  }
+ },
+ {
+  "characterId": "chr_0015_lifeng",
+  "source": "the game's recommended weapons, not ranked: Matching Skills first, then Matching Stats (endfield.wiki.gg/wiki/Lifeng, CC BY-SA 4.0, revision 64978)",
+  "sets": [],
+  "mainStats": {},
+  "subStats": [],
+  "weapons": [
+   "Mountain Bearer",
+   "Chimeric Justice",
+   "Valiant",
+   "Pathfinder's Beacon"
+  ],
+  "skillsFirst": [],
+  "version": "wiki revision 64978",
+  "items": {
+   "Mountain Bearer": {
+    "icon": "https://endfield.wiki.gg/images/Mountain_Bearer_icon.png",
+    "effects": []
+   },
+   "Chimeric Justice": {
+    "icon": "https://endfield.wiki.gg/images/Chimeric_Justice_icon.png",
+    "effects": []
+   },
+   "Valiant": {
+    "icon": "https://endfield.wiki.gg/images/Valiant_icon.png",
+    "effects": []
+   },
+   "Pathfinder's Beacon": {
+    "icon": "https://endfield.wiki.gg/images/Pathfinder%27s_Beacon_icon.png",
+    "effects": []
+   }
+  }
+ },
+ {
+  "characterId": "chr_0016_laevat",
+  "source": "the game's recommended weapons, not ranked: Matching Skills first, then Matching Stats (endfield.wiki.gg/wiki/Laevatain, CC BY-SA 4.0, revision 64979)",
+  "sets": [],
+  "mainStats": {},
+  "subStats": [],
+  "weapons": [
+   "Forgeborn Scathe",
+   "Umbral Torch",
+   "White Night Nova",
+   "Fortmaker"
+  ],
+  "skillsFirst": [],
+  "version": "wiki revision 64979",
+  "items": {
+   "Forgeborn Scathe": {
+    "icon": "https://endfield.wiki.gg/images/Forgeborn_Scathe_icon.png",
+    "effects": []
+   },
+   "Umbral Torch": {
+    "icon": "https://endfield.wiki.gg/images/Umbral_Torch_icon.png",
+    "effects": []
+   },
+   "White Night Nova": {
+    "icon": "https://endfield.wiki.gg/images/White_Night_Nova_icon.png",
+    "effects": []
+   },
+   "Fortmaker": {
+    "icon": "https://endfield.wiki.gg/images/Fortmaker_icon.png",
+    "effects": []
+   }
+  }
+ },
+ {
+  "characterId": "chr_0017_yvonne",
+  "source": "the game's recommended weapons, not ranked: Matching Skills first, then Matching Stats (endfield.wiki.gg/wiki/Yvonne, CC BY-SA 4.0, revision 64980)",
+  "sets": [],
+  "mainStats": {},
+  "subStats": [],
+  "weapons": [
+   "Artzy Tyrannical",
+   "Opus: The Living",
+   "Wedge",
+   "Navigator"
+  ],
+  "skillsFirst": [],
+  "version": "wiki revision 64980",
+  "items": {
+   "Artzy Tyrannical": {
+    "icon": "https://endfield.wiki.gg/images/Artzy_Tyrannical_icon.png",
+    "effects": []
+   },
+   "Opus: The Living": {
+    "icon": "https://endfield.wiki.gg/images/Opus_The_Living_icon.png",
+    "effects": []
+   },
+   "Wedge": {
+    "icon": "https://endfield.wiki.gg/images/Wedge_icon.png",
+    "effects": []
+   },
+   "Navigator": {
+    "icon": "https://endfield.wiki.gg/images/Navigator_icon.png",
+    "effects": []
+   }
+  }
+ },
+ {
+  "characterId": "chr_0018_dapan",
+  "source": "the game's recommended weapons, not ranked: Matching Skills first, then Matching Stats (endfield.wiki.gg/wiki/Da_Pan, CC BY-SA 4.0, revision 64981)",
+  "sets": [],
+  "mainStats": {},
+  "subStats": [],
+  "weapons": [
+   "Exemplar",
+   "Sundered Prince",
+   "OBJ Heavy Burden",
+   "Seeker of Dark Lung"
+  ],
+  "skillsFirst": [],
+  "version": "wiki revision 64981",
+  "items": {
+   "Exemplar": {
+    "icon": "https://endfield.wiki.gg/images/Exemplar_icon.png",
+    "effects": []
+   },
+   "Sundered Prince": {
+    "icon": "https://endfield.wiki.gg/images/Sundered_Prince_icon.png",
+    "effects": []
+   },
+   "OBJ Heavy Burden": {
+    "icon": "https://endfield.wiki.gg/images/OBJ_Heavy_Burden_icon.png",
+    "effects": []
+   },
+   "Seeker of Dark Lung": {
+    "icon": "https://endfield.wiki.gg/images/Seeker_of_Dark_Lung_icon.png",
+    "effects": []
+   }
+  }
+ },
+ {
+  "characterId": "chr_0019_karin",
+  "source": "the game's recommended weapons, not ranked: Matching Skills first, then Matching Stats (endfield.wiki.gg/wiki/Akekuri, CC BY-SA 4.0, revision 64982)",
+  "sets": [],
+  "mainStats": {},
+  "subStats": [],
+  "weapons": [
+   "Thermite Cutter",
+   "OBJ Edge of Lightness",
+   "Eminent Repute",
+   "Grand Vision"
+  ],
+  "skillsFirst": [],
+  "version": "wiki revision 64982",
+  "items": {
+   "Thermite Cutter": {
+    "icon": "https://endfield.wiki.gg/images/Thermite_Cutter_icon.png",
+    "effects": []
+   },
+   "OBJ Edge of Lightness": {
+    "icon": "https://endfield.wiki.gg/images/OBJ_Edge_of_Lightness_icon.png",
+    "effects": []
+   },
+   "Eminent Repute": {
+    "icon": "https://endfield.wiki.gg/images/Eminent_Repute_icon.png",
+    "effects": []
+   },
+   "Grand Vision": {
+    "icon": "https://endfield.wiki.gg/images/Grand_Vision_icon.png",
+    "effects": []
+   }
+  }
+ },
+ {
+  "characterId": "chr_0020_meurs",
+  "source": "the game's recommended weapons, not ranked: Matching Skills first, then Matching Stats (endfield.wiki.gg/wiki/Catcher, CC BY-SA 4.0, revision 64983)",
+  "sets": [],
+  "mainStats": {},
+  "subStats": [],
+  "weapons": [
+   "Former Finery",
+   "OBJ Heavy Burden",
+   "Sundered Prince",
+   "Seeker of Dark Lung"
+  ],
+  "skillsFirst": [],
+  "version": "wiki revision 64983",
+  "items": {
+   "Former Finery": {
+    "icon": "https://endfield.wiki.gg/images/Former_Finery_icon.png",
+    "effects": []
+   },
+   "OBJ Heavy Burden": {
+    "icon": "https://endfield.wiki.gg/images/OBJ_Heavy_Burden_icon.png",
+    "effects": []
+   },
+   "Sundered Prince": {
+    "icon": "https://endfield.wiki.gg/images/Sundered_Prince_icon.png",
+    "effects": []
+   },
+   "Seeker of Dark Lung": {
+    "icon": "https://endfield.wiki.gg/images/Seeker_of_Dark_Lung_icon.png",
+    "effects": []
+   }
+  }
+ },
+ {
+  "characterId": "chr_0021_whiten",
+  "source": "the game's recommended weapons, not ranked: Matching Skills first, then Matching Stats (endfield.wiki.gg/wiki/Estella, CC BY-SA 4.0, revision 64984)",
+  "sets": [],
+  "mainStats": {},
+  "subStats": [],
+  "weapons": [
+   "JET",
+   "OBJ Razorhorn",
+   "Cohesive Traction"
+  ],
+  "skillsFirst": [],
+  "version": "wiki revision 64984",
+  "items": {
+   "JET": {
+    "icon": "https://endfield.wiki.gg/images/JET_icon.png",
+    "effects": []
+   },
+   "OBJ Razorhorn": {
+    "icon": "https://endfield.wiki.gg/images/OBJ_Razorhorn_icon.png",
+    "effects": []
+   },
+   "Cohesive Traction": {
+    "icon": "https://endfield.wiki.gg/images/Cohesive_Traction_icon.png",
+    "effects": []
+   }
+  }
+ },
+ {
+  "characterId": "chr_0022_bounda",
+  "source": "the game's recommended weapons, not ranked: Matching Skills first, then Matching Stats (endfield.wiki.gg/wiki/Fluorite, CC BY-SA 4.0, revision 64985)",
+  "sets": [],
+  "mainStats": {},
+  "subStats": [],
+  "weapons": [
+   "Navigator",
+   "Opus: The Living",
+   "OBJ Velocitous"
+  ],
+  "skillsFirst": [],
+  "version": "wiki revision 64985",
+  "items": {
+   "Navigator": {
+    "icon": "https://endfield.wiki.gg/images/Navigator_icon.png",
+    "effects": []
+   },
+   "Opus: The Living": {
+    "icon": "https://endfield.wiki.gg/images/Opus_The_Living_icon.png",
+    "effects": []
+   },
+   "OBJ Velocitous": {
+    "icon": "https://endfield.wiki.gg/images/OBJ_Velocitous_icon.png",
+    "effects": []
+   }
+  }
+ },
+ {
+  "characterId": "chr_0023_antal",
+  "source": "the game's recommended weapons, not ranked: Matching Skills first, then Matching Stats (endfield.wiki.gg/wiki/Antal, CC BY-SA 4.0, revision 64986)",
+  "sets": [],
+  "mainStats": {},
+  "subStats": [],
+  "weapons": [
+   "Detonation Unit",
+   "OBJ Arts Identifier",
+   "Oblivion",
+   "Stanza of Memorials"
+  ],
+  "skillsFirst": [],
+  "version": "wiki revision 64986",
+  "items": {
+   "Detonation Unit": {
+    "icon": "https://endfield.wiki.gg/images/Detonation_Unit_icon.png",
+    "effects": []
+   },
+   "OBJ Arts Identifier": {
+    "icon": "https://endfield.wiki.gg/images/OBJ_Arts_Identifier_icon.png",
+    "effects": []
+   },
+   "Oblivion": {
+    "icon": "https://endfield.wiki.gg/images/Oblivion_icon.png",
+    "effects": []
+   },
+   "Stanza of Memorials": {
+    "icon": "https://endfield.wiki.gg/images/Stanza_of_Memorials_icon.png",
+    "effects": []
+   }
+  }
+ },
+ {
+  "characterId": "chr_0024_deepfin",
+  "source": "the game's recommended weapons, not ranked: Matching Skills first, then Matching Stats (endfield.wiki.gg/wiki/Alesh, CC BY-SA 4.0, revision 64987)",
+  "sets": [],
+  "mainStats": {},
+  "subStats": [],
+  "weapons": [
+   "Finchaser 3.0",
+   "OBJ Edge of Lightness",
+   "Thermite Cutter",
+   "Umbral Torch"
+  ],
+  "skillsFirst": [],
+  "version": "wiki revision 64987",
+  "items": {
+   "Finchaser 3.0": {
+    "icon": "https://endfield.wiki.gg/images/Finchaser_3.0_icon.png",
+    "effects": []
+   },
+   "OBJ Edge of Lightness": {
+    "icon": "https://endfield.wiki.gg/images/OBJ_Edge_of_Lightness_icon.png",
+    "effects": []
+   },
+   "Thermite Cutter": {
+    "icon": "https://endfield.wiki.gg/images/Thermite_Cutter_icon.png",
+    "effects": []
+   },
+   "Umbral Torch": {
+    "icon": "https://endfield.wiki.gg/images/Umbral_Torch_icon.png",
+    "effects": []
+   }
+  }
+ },
+ {
+  "characterId": "chr_0025_ardelia",
+  "source": "the game's recommended weapons, not ranked: Matching Skills first, then Matching Stats (endfield.wiki.gg/wiki/Ardelia, CC BY-SA 4.0, revision 64988)",
+  "sets": [],
+  "mainStats": {},
+  "subStats": [],
+  "weapons": [
+   "Dreams of the Starry Beach",
+   "Chivalric Virtues",
+   "Opus: Etch Figure",
+   "Stanza of Memorials",
+   "OBJ Arts Identifier"
+  ],
+  "skillsFirst": [],
+  "version": "wiki revision 64988",
+  "items": {
+   "Dreams of the Starry Beach": {
+    "icon": "https://endfield.wiki.gg/images/Dreams_of_the_Starry_Beach_icon.png",
+    "effects": []
+   },
+   "Chivalric Virtues": {
+    "icon": "https://endfield.wiki.gg/images/Chivalric_Virtues_icon.png",
+    "effects": []
+   },
+   "Opus: Etch Figure": {
+    "icon": "https://endfield.wiki.gg/images/Opus_Etch_Figure_icon.png",
+    "effects": []
+   },
+   "Stanza of Memorials": {
+    "icon": "https://endfield.wiki.gg/images/Stanza_of_Memorials_icon.png",
+    "effects": []
+   },
+   "OBJ Arts Identifier": {
+    "icon": "https://endfield.wiki.gg/images/OBJ_Arts_Identifier_icon.png",
+    "effects": []
+   }
+  }
+ },
+ {
+  "characterId": "chr_0026_lastrite",
+  "source": "the game's recommended weapons, not ranked: Matching Skills first, then Matching Stats (endfield.wiki.gg/wiki/Last_Rite, CC BY-SA 4.0, revision 64989)",
+  "sets": [],
+  "mainStats": {},
+  "subStats": [],
+  "weapons": [
+   "Khravengger",
+   "Seeker of Dark Lung",
+   "Sundered Prince"
+  ],
+  "skillsFirst": [],
+  "version": "wiki revision 64989",
+  "items": {
+   "Khravengger": {
+    "icon": "https://endfield.wiki.gg/images/Khravengger_icon.png",
+    "effects": []
+   },
+   "Seeker of Dark Lung": {
+    "icon": "https://endfield.wiki.gg/images/Seeker_of_Dark_Lung_icon.png",
+    "effects": []
+   },
+   "Sundered Prince": {
+    "icon": "https://endfield.wiki.gg/images/Sundered_Prince_icon.png",
+    "effects": []
+   }
+  }
+ },
+ {
+  "characterId": "chr_0027_tangtang",
+  "source": "the game's recommended weapons, not ranked: Matching Skills first, then Matching Stats (endfield.wiki.gg/wiki/Tangtang, CC BY-SA 4.0, revision 64990)",
+  "sets": [],
+  "mainStats": {},
+  "subStats": [],
+  "weapons": [
+   "Brigand's Calling",
+   "Home Longing",
+   "Navigator",
+   "Opus: The Living"
+  ],
+  "skillsFirst": [],
+  "version": "wiki revision 64990",
+  "items": {
+   "Brigand's Calling": {
+    "icon": "https://endfield.wiki.gg/images/Brigand%27s_Calling_icon.png",
+    "effects": []
+   },
+   "Home Longing": {
+    "icon": "https://endfield.wiki.gg/images/Home_Longing_icon.png",
+    "effects": []
+   },
+   "Navigator": {
+    "icon": "https://endfield.wiki.gg/images/Navigator_icon.png",
+    "effects": []
+   },
+   "Opus: The Living": {
+    "icon": "https://endfield.wiki.gg/images/Opus_The_Living_icon.png",
+    "effects": []
+   }
+  }
+ },
+ {
+  "characterId": "chr_0028_wulfa",
+  "source": "the game's recommended weapons, not ranked: Matching Skills first, then Matching Stats (endfield.wiki.gg/wiki/Rossi, CC BY-SA 4.0, revision 64991)",
+  "sets": [],
+  "mainStats": {},
+  "subStats": [],
+  "weapons": [
+   "Lupine Scarlet",
+   "Rapid Ascent",
+   "Glorious Memory",
+   "Sundering Steel"
+  ],
+  "skillsFirst": [],
+  "version": "wiki revision 64991",
+  "items": {
+   "Lupine Scarlet": {
+    "icon": "https://endfield.wiki.gg/images/Lupine_Scarlet_icon.png",
+    "effects": []
+   },
+   "Rapid Ascent": {
+    "icon": "https://endfield.wiki.gg/images/Rapid_Ascent_icon.png",
+    "effects": []
+   },
+   "Glorious Memory": {
+    "icon": "https://endfield.wiki.gg/images/Glorious_Memory_icon.png",
+    "effects": []
+   },
+   "Sundering Steel": {
+    "icon": "https://endfield.wiki.gg/images/Sundering_Steel_icon.png",
+    "effects": []
+   }
+  }
+ },
+ {
+  "characterId": "chr_0029_pograni",
+  "source": "the game's recommended weapons, not ranked: Matching Skills first, then Matching Stats (endfield.wiki.gg/wiki/Pogranichnik, CC BY-SA 4.0, revision 64992)",
+  "sets": [],
+  "mainStats": {},
+  "subStats": [],
+  "weapons": [
+   "Never Rest",
+   "Thermite Cutter",
+   "Sundering Steel"
+  ],
+  "skillsFirst": [],
+  "version": "wiki revision 64992",
+  "items": {
+   "Never Rest": {
+    "icon": "https://endfield.wiki.gg/images/Never_Rest_icon.png",
+    "effects": []
+   },
+   "Thermite Cutter": {
+    "icon": "https://endfield.wiki.gg/images/Thermite_Cutter_icon.png",
+    "effects": []
+   },
+   "Sundering Steel": {
+    "icon": "https://endfield.wiki.gg/images/Sundering_Steel_icon.png",
+    "effects": []
+   }
+  }
+ },
+ {
+  "characterId": "chr_0030_zhuangfy",
+  "source": "the game's recommended weapons, not ranked: Matching Skills first, then Matching Stats (endfield.wiki.gg/wiki/Zhuang_Fangyi, CC BY-SA 4.0, revision 64993)",
+  "sets": [],
+  "mainStats": {},
+  "subStats": [],
+  "weapons": [
+   "Lone Barge",
+   "Flickers in the Mist",
+   "Oblivion",
+   "Monaihe"
+  ],
+  "skillsFirst": [],
+  "version": "wiki revision 64993",
+  "items": {
+   "Lone Barge": {
+    "icon": "https://endfield.wiki.gg/images/Lone_Barge_icon.png",
+    "effects": []
+   },
+   "Flickers in the Mist": {
+    "icon": "https://endfield.wiki.gg/images/Flickers_in_the_Mist_icon.png",
+    "effects": []
+   },
+   "Oblivion": {
+    "icon": "https://endfield.wiki.gg/images/Oblivion_icon.png",
+    "effects": []
+   },
+   "Monaihe": {
+    "icon": "https://endfield.wiki.gg/images/Monaihe_icon.png",
+    "effects": []
+   }
+  }
+ },
+ {
+  "characterId": "chr_0031_mifu",
+  "source": "the game's recommended weapons, not ranked: Matching Skills first, then Matching Stats (endfield.wiki.gg/wiki/Mi_Fu, CC BY-SA 4.0, revision 64994)",
+  "sets": [],
+  "mainStats": {},
+  "subStats": [],
+  "weapons": [
+   "Amaranthine Tassel",
+   "Phantom Pain",
+   "Exemplar",
+   "Ancient Canal",
+   "Sundered Prince"
+  ],
+  "skillsFirst": [],
+  "version": "wiki revision 64994",
+  "items": {
+   "Amaranthine Tassel": {
+    "icon": "https://endfield.wiki.gg/images/Amaranthine_Tassel_icon.png",
+    "effects": []
+   },
+   "Phantom Pain": {
+    "icon": "https://endfield.wiki.gg/images/Phantom_Pain_icon.png",
+    "effects": []
+   },
+   "Exemplar": {
+    "icon": "https://endfield.wiki.gg/images/Exemplar_icon.png",
+    "effects": []
+   },
+   "Ancient Canal": {
+    "icon": "https://endfield.wiki.gg/images/Ancient_Canal_icon.png",
+    "effects": []
+   },
+   "Sundered Prince": {
+    "icon": "https://endfield.wiki.gg/images/Sundered_Prince_icon.png",
+    "effects": []
+   }
+  }
+ },
+ {
+  "characterId": "chr_0032_lizhiyan",
+  "source": "the game's recommended weapons, not ranked: Matching Skills first, then Matching Stats (endfield.wiki.gg/wiki/Arcane, CC BY-SA 4.0, revision 64995)",
+  "sets": [],
+  "mainStats": {},
+  "subStats": [],
+  "weapons": [
+   "Type 42: Solemn Phalanx",
+   "Junction Point",
+   "Detonation Unit",
+   "Oblivion",
+   "Stanza of Memorials"
+  ],
+  "skillsFirst": [],
+  "version": "wiki revision 64995",
+  "items": {
+   "Type 42: Solemn Phalanx": {
+    "icon": "https://endfield.wiki.gg/images/Type_42_Solemn_Phalanx_icon.png",
+    "effects": []
+   },
+   "Junction Point": {
+    "icon": "https://endfield.wiki.gg/images/Junction_Point_icon.png",
+    "effects": []
+   },
+   "Detonation Unit": {
+    "icon": "https://endfield.wiki.gg/images/Detonation_Unit_icon.png",
+    "effects": []
+   },
+   "Oblivion": {
+    "icon": "https://endfield.wiki.gg/images/Oblivion_icon.png",
+    "effects": []
+   },
+   "Stanza of Memorials": {
+    "icon": "https://endfield.wiki.gg/images/Stanza_of_Memorials_icon.png",
+    "effects": []
+   }
+  }
+ },
+ {
+  "characterId": "chr_0033_camille",
+  "source": "the game's recommended weapons, not ranked: Matching Skills first, then Matching Stats (endfield.wiki.gg/wiki/Camille, CC BY-SA 4.0, revision 64996)",
+  "sets": [],
+  "mainStats": {},
+  "subStats": [],
+  "weapons": [
+   "Blessing of Lustrous Carmine",
+   "Beacon of Duty",
+   "JET",
+   "Chimeric Justice"
+  ],
+  "skillsFirst": [],
+  "version": "wiki revision 64996",
+  "items": {
+   "Blessing of Lustrous Carmine": {
+    "icon": "https://endfield.wiki.gg/images/Blessing_of_Lustrous_Carmine_icon.png",
+    "effects": []
+   },
+   "Beacon of Duty": {
+    "icon": "https://endfield.wiki.gg/images/Beacon_of_Duty_icon.png",
+    "effects": []
+   },
+   "JET": {
+    "icon": "https://endfield.wiki.gg/images/JET_icon.png",
+    "effects": []
+   },
+   "Chimeric Justice": {
+    "icon": "https://endfield.wiki.gg/images/Chimeric_Justice_icon.png",
+    "effects": []
+   }
+  }
+ },
+ {
+  "characterId": "chr_0034_typhoea",
+  "source": "the game's recommended weapons, not ranked: Matching Skills first, then Matching Stats (endfield.wiki.gg/wiki/Typhoeus, CC BY-SA 4.0, revision 64997)",
+  "sets": [],
+  "mainStats": {},
+  "subStats": [],
+  "weapons": [
+   "Umbra of Frigid Eventide",
+   "Suffering's End",
+   "Monaihe"
+  ],
+  "skillsFirst": [],
+  "version": "wiki revision 64997",
+  "items": {
+   "Umbra of Frigid Eventide": {
+    "icon": "https://endfield.wiki.gg/images/Umbra_of_Frigid_Eventide_icon.png",
+    "effects": []
+   },
+   "Suffering's End": {
+    "icon": "https://endfield.wiki.gg/images/Suffering%27s_End_icon.png",
+    "effects": []
+   },
+   "Monaihe": {
+    "icon": "https://endfield.wiki.gg/images/Monaihe_icon.png",
+    "effects": []
+   }
+  }
+ },
+ {
+  "characterId": "chr_0035_liino",
+  "source": "the game's recommended weapons, not ranked: Matching Skills first, then Matching Stats (endfield.wiki.gg/wiki/Liino, CC BY-SA 4.0, revision 64998)",
+  "sets": [],
+  "mainStats": {},
+  "subStats": [],
+  "weapons": [
+   "Bedazzling Night Debut",
+   "Golden Age",
+   "JET"
+  ],
+  "skillsFirst": [],
+  "version": "wiki revision 64998",
+  "items": {
+   "Bedazzling Night Debut": {
+    "icon": "https://endfield.wiki.gg/images/Bedazzling_Night_Debut_icon.png",
+    "effects": []
+   },
+   "Golden Age": {
+    "icon": "https://endfield.wiki.gg/images/Golden_Age_icon.png",
+    "effects": []
+   },
+   "JET": {
+    "icon": "https://endfield.wiki.gg/images/JET_icon.png",
+    "effects": []
+   }
+  }
+ },
+ {
+  "characterId": "chr_0036_jsspsi",
+  "source": "the game's recommended weapons, not ranked: Matching Skills first, then Matching Stats (endfield.wiki.gg/wiki/Si, CC BY-SA 4.0, revision 64999)",
+  "sets": [],
+  "mainStats": {},
+  "subStats": [],
+  "weapons": [
+   "Jade Vessel",
+   "Long Heritage",
+   "Khravengger"
+  ],
+  "skillsFirst": [],
+  "version": "wiki revision 64999",
+  "items": {
+   "Jade Vessel": {
+    "icon": "https://endfield.wiki.gg/images/Jade_Vessel_icon.png",
+    "effects": []
+   },
+   "Long Heritage": {
+    "icon": "https://endfield.wiki.gg/images/Long_Heritage_icon.png",
+    "effects": []
+   },
+   "Khravengger": {
+    "icon": "https://endfield.wiki.gg/images/Khravengger_icon.png",
+    "effects": []
+   }
+  }
+ },
+ {
+  "characterId": "chr_0038_purrche",
+  "source": "the game's recommended weapons, not ranked: Matching Skills first, then Matching Stats (endfield.wiki.gg/wiki/Purrchena, CC BY-SA 4.0, revision 65002)",
+  "sets": [],
+  "mainStats": {},
+  "subStats": [],
+  "weapons": [
+   "Dessert Moment",
+   "Farsight",
+   "Rapid Ascent"
+  ],
+  "skillsFirst": [],
+  "version": "wiki revision 65002",
+  "items": {
+   "Dessert Moment": {
+    "icon": "https://endfield.wiki.gg/images/Dessert_Moment_icon.png",
+    "effects": []
+   },
+   "Farsight": {
+    "icon": "https://endfield.wiki.gg/images/Farsight_icon.png",
+    "effects": []
+   },
+   "Rapid Ascent": {
+    "icon": "https://endfield.wiki.gg/images/Rapid_Ascent_icon.png",
+    "effects": []
+   }
+  }
+ },
+ {
+  "characterId": "chr_argent-flow",
+  "source": "the game's recommended weapons, not ranked: Matching Skills first, then Matching Stats (endfield.wiki.gg/wiki/Argent_Flow, CC BY-SA 4.0, revision 64823)",
+  "sets": [],
+  "mainStats": {},
+  "subStats": [],
+  "weapons": [
+   "Lunar Calling"
+  ],
+  "skillsFirst": [],
+  "beta": true,
+  "version": "wiki revision 64823",
+  "items": {
+   "Lunar Calling": {
+    "effects": []
+   }
+  }
+ }
+]
