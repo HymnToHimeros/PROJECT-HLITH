@@ -55,6 +55,20 @@ export const endfield: GameContract = {
 
   dupes: { prefix: 'P', name: 'Potential', max: 6 },
 
+  // The Endministrator is picked once at the start (male or female), one entry each in the game's list
+  // (chr_0002_endminm, chr_0003_endminf); same kit, one form.
+  protagonist: {
+    label: 'Endministrator',
+    options: [
+      { id: 'male', name: 'Male' },
+      { id: 'female', name: 'Female' },
+    ],
+    of: (c) => {
+      const m = /_endmin(m|f)$/.exec(c.id)?.[1];
+      return m ? { option: m === 'm' ? 'male' : 'female', form: 'Endministrator' } : undefined;
+    },
+  },
+
   currencies: [
     // 1 Origeometry = 75 Oroberyl (500 a pull) or 25 Arsenal Tickets (198 a weapon pull).
     { id: 'origeometry', name: 'Origeometry', paid: true, perPull: 500 / 75, perPullOn: { weapon: ARSENAL.issueCost / ARSENAL.issueSize / 25 } },
@@ -73,7 +87,10 @@ export const endfield: GameContract = {
     },
   ],
 
-  stamina: [{ id: 'sanity', name: 'Sanity', max: 135, minutesPerPoint: 6 }],
+  // Sanity (endfield.wiki.gg/wiki/Sanity, rev 58794; Authority Level, rev 40928): 1 point every 7 min 12 s
+  // (200 a day). The cap grows with Authority Level, from 125 at level 1 to 360 at level 60; this is the
+  // level-60 cap. A linked account (SKPort) shows its own current cap. No official notice states either number.
+  stamina: [{ id: 'sanity', name: 'Sanity', max: 360, minutesPerPoint: 7.2 }],
   teamSize: 4,
 
   servers: [
@@ -137,7 +154,21 @@ export const endfield: GameContract = {
   ],
 
   income: [
-    { id: 'endfield.daily', source: 'daily', label: 'Daily tasks', currency: 'oroberyl', amount: null, schedule: { kind: 'per-reset' } },
+    // Operational Manual → Daily: 5 Activity milestones × 40 Oroberyl (endfield.wiki.gg/wiki/Operational_Manual, rev 65251).
+    { id: 'endfield.daily', source: 'daily', label: 'Daily tasks', currency: 'oroberyl', amount: 200, schedule: { kind: 'per-reset' } },
+    // Weekly Routine milestones 100/100/150/150 Oroberyl, reset Monday 04:00 (endfield.wiki.gg/wiki/Weekly_Routine, rev 44436).
+    { id: 'endfield.weekly-routine', source: 'weekly', label: 'Weekly Routine', currency: 'oroberyl', amount: 500, schedule: { kind: 'weekly' } },
+    // Endgame: no mode pays Oroberyl again every cycle. Echoes of War seasons (×300 for the new stages), Monumental
+    // Etching (×1200) and Contingency Contract (×2000 in its shop) pay once each; their dates and the amounts the
+    // official update notes state are in data/events.json, counted through the Events row below.
+    // Protocol Pass free tier: Oroberyl ×600 a season (endfield.wiki.gg/wiki/Protocol_Pass:_Ink_Scroll, rev 65207);
+    // Ink Scroll runs 2026-10-15 12:00 → 2026-12-15 06:00 (UTC+8), about 61 days.
+    { id: 'endfield.protocol-pass', source: 'events', label: 'Protocol Pass (free tier)', currency: 'oroberyl', amount: 600, schedule: { kind: 'cycle', anchor: '2026-10-15T04:00:00.000Z', days: 61 } },
+    // Monthly Pass: Oroberyl ×200 every day for 30 days, $4.99 (endfield.wiki.gg/wiki/Acquisition_Center, rev 65262);
+    // the official notes confirm the daily package (news/4494) but not the price. Its 12 Origeometry on purchase is not counted.
+    { id: 'endfield.monthly-pass', source: 'monthly', label: 'Monthly Pass', currency: 'oroberyl', amount: 200, schedule: { kind: 'pass', perDay: 200 }, paid: true },
+    { id: 'endfield.events', source: 'events', label: 'Events (official amounts)', currency: 'oroberyl', amount: null, schedule: { kind: 'from-events' } },
+    { id: 'endfield.login', source: 'login', label: 'Sign-in events', currency: 'oroberyl', amount: null, schedule: { kind: 'from-login-events' } },
   ],
 
   accountLinks: [{ provider: 'skport', supports: ['stamina', 'checkin'], config: {} }],
@@ -190,7 +221,9 @@ export const endfield: GameContract = {
     { what: 'Weapon issue rules (gacha.ts)', source: ARSENAL_SOURCE, entered: '2026-10-15', verified: true },
     { what: 'Joint banner rules', source: 'not confirmed: a placeholder with the standard banner’s 6★ odds and no featured rule', entered: '2026-10-15', verified: false },
     { what: 'Currencies', source: 'endfield.wiki.gg', entered: '2026-10-11', verified: true },
-    { what: 'Sanity max and regen rate', source: 'endfield.wiki.gg/wiki/Sanity', entered: '2026-10-15', verified: true },
+    { what: 'Sanity: 1 per 7 min 12 s; cap 125 (Authority Level 1) to 360 (level 60), the app uses 360', source: 'endfield.wiki.gg/wiki/Sanity (rev 58794) and Authority_Level (rev 40928); no official notice states them', entered: '2026-10-15', verified: false },
+    { what: 'Income: daily 200, Weekly Routine 500, Monthly Pass 200/day, Protocol Pass free tier 600 a season (Oroberyl)', source: 'endfield.wiki.gg Operational_Manual (rev 65251), Weekly_Routine (rev 44436), Acquisition_Center (rev 65262), Protocol_Pass:_Ink_Scroll (rev 65207); no official notice states the amounts', entered: '2026-10-15', verified: false },
+    { what: 'Event Oroberyl (data/events.json reward)', source: 'Official update notes ("[Oroberyl]×N" per event, web-news.gryphline.com); events without a stated amount stay "No data yet"', entered: '2026-10-15', verified: true },
     { what: 'Server time zones (Asia UTC+8, Americas / Europe UTC-5)', source: 'Official notices, footer (web-news.gryphline.com, e.g. "[Sanctuary of Ink] Version Update Notes")', entered: '2026-10-15', verified: true },
     { what: 'Daily reset 04:00, weekly reset Monday 04:00 (server time)', source: 'endfield.wiki.gg/wiki/Endfield_Talos_Wiki/servertime; official notices say "updated at 04:00 server time"', entered: '2026-10-15', verified: true },
     { what: 'Operator kit text: skills (numbers at level 12), talents, Potentials (data/kits.json, npm run data:endfield-kits)', source: 'endfield.wiki.gg operator pages (CC BY-SA 4.0), revision named on each kit', entered: '2026-10-15', verified: false },

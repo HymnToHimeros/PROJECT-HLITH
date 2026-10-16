@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { bannerType, banners, eventKind, events, operators, rarityOf, serverTime, utc, versions, weapons, type Row } from '../scripts/endfield/map.ts';
+import { bannerType, banners, eventKind, events, officialRewards, operators, rarityOf, serverTime, utc, versions, weapons, type Row } from '../scripts/endfield/map.ts';
 
 // Rows as endfield.wiki.gg's Cargo tables return them (times in UTC).
 const OPS: Row[] = [
@@ -150,5 +150,39 @@ describe('Endfield: the official notices win', () => {
     expect(keepIds([{ id: 'chr_0040_argent', gameId: 'chr_0040_argent', name: 'Argent Flow' }], [{ id: 'chr_argent-flow', name: 'Argent Flow' }])).toEqual([{ id: 'chr_argent-flow', gameId: 'chr_0040_argent', name: 'Argent Flow' }]);
     // Same id as the game's: no gameId stored.
     expect(keepIds([{ id: 'chr_0036_jsspsi', gameId: 'chr_0036_jsspsi', name: 'Si' }], [])).toEqual([{ id: 'chr_0036_jsspsi', name: 'Si' }]);
+  });
+});
+
+describe('Endfield event rewards from the official update notes', () => {
+  const NOTES = [
+    '■ New Events',
+    "3. [All the Inky Hues] Guide Event",
+    '· Event Details: complete specified missions to earn event rewards such as [Oroberyl]×1200 and [Mark of Perseverance].',
+    '8. Argent Flow Narrative Event [Back to the Rustics]',
+    '· Event Details: earn [Oroberyl]×600, [Elementary Cognitive Carrier], and other rewards.',
+    '9. [The Stars Are With Me] Sign-In Event',
+    '■ Event & Gameplay Updates',
+    '1. [Echoes of War] Permanent Challenge Mode Update',
+    '○[Season of Phantasia]',
+    '· Update Notes: Clear all new stages on Normal difficulty to claim rewards including [Oroberyl]×300 and [T-Creds].',
+    '2. [Umbral Monument] Challenge Gameplay Updated',
+    '· Event Details: the [Monumental Etching: Forest of Maras] limited-time event will begin. Claim rewards including [Oroberyl]×1200 and more.',
+    '■ Acquisition Center Update',
+    '· [Protocol Pass: Ink Scroll] is available, with [Oroberyl]×600.',
+  ].join('\n');
+
+  it('the stated Oroberyl per event (heading, name inside the line, or the limited event a block names); none stated = left out', () => {
+    const r = officialRewards([{ title: '[Sanctuary of Ink] Version Update Notes', text: NOTES }]);
+    expect(Object.fromEntries(r)).toEqual({
+      'all-the-inky-hues': 1200,
+      'back-to-the-rustics': 600,
+      'season-of-phantasia': 300,
+      'umbral-monument': 1200,
+      'monumental-etching-forest-of-maras': 1200,
+    });
+  });
+
+  it('only update notes count', () => {
+    expect(officialRewards([{ title: '[Rejuvenation] Chartered Headhunting', text: NOTES }]).size).toBe(0);
   });
 });
