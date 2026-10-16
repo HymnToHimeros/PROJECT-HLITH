@@ -1,0 +1,9452 @@
+[
+ {
+  "name": "Aburrey Auditory Chip",
+  "id": "item_equip_t3_suit_atk01_edc_02",
+  "set": "Aburrey's Legacy",
+  "slot": "Kit",
+  "rarity": 4,
+  "level": 50,
+  "stats": [
+   {
+    "stat": "Strength",
+    "values": [
+     23
+    ]
+   },
+   {
+    "stat": "Will",
+    "values": [
+     15
+    ]
+   },
+   {
+    "stat": "DMG Bonus vs. Staggered",
+    "values": [
+     0.294
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Aburrey_Auditory_Chip (CC BY-SA 4.0)",
+  "version": "wiki revision 53933"
+ },
+ {
+  "name": "Aburrey Auditory Chip T1",
+  "id": "item_equip_t3_suit_atk01_edc_03",
+  "set": "Aburrey's Legacy",
+  "slot": "Kit",
+  "rarity": 4,
+  "level": 50,
+  "stats": [
+   {
+    "stat": "Agility",
+    "values": [
+     23
+    ]
+   },
+   {
+    "stat": "Strength",
+    "values": [
+     15
+    ]
+   },
+   {
+    "stat": "Combo Skill DMG Bonus",
+    "values": [
+     0.294
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Aburrey_Auditory_Chip_T1 (CC BY-SA 4.0)",
+  "version": "wiki revision 55731"
+ },
+ {
+  "name": "Aburrey Flashlight",
+  "id": "item_equip_t3_suit_atk01_edc_04",
+  "set": "Aburrey's Legacy",
+  "slot": "Kit",
+  "rarity": 4,
+  "level": 50,
+  "stats": [
+   {
+    "stat": "Intellect",
+    "values": [
+     23
+    ]
+   },
+   {
+    "stat": "Strength",
+    "values": [
+     15
+    ]
+   },
+   {
+    "stat": "Ultimate Gain Efficiency",
+    "values": [
+     0.175
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Aburrey_Flashlight (CC BY-SA 4.0)",
+  "version": "wiki revision 53935"
+ },
+ {
+  "name": "Aburrey Gauntlets",
+  "id": "item_equip_t3_suit_atk01_hand_01",
+  "set": "Aburrey's Legacy",
+  "slot": "Gloves",
+  "rarity": 4,
+  "level": 50,
+  "stats": [
+   {
+    "stat": "Strength",
+    "values": [
+     46
+    ]
+   },
+   {
+    "stat": "Will",
+    "values": [
+     30
+    ]
+   },
+   {
+    "stat": "DMG Bonus vs. Staggered",
+    "values": [
+     0.245
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Aburrey_Gauntlets (CC BY-SA 4.0)",
+  "version": "wiki revision 53938"
+ },
+ {
+  "name": "Aburrey Heavy Armor",
+  "id": "item_equip_t3_suit_atk01_body_01",
+  "set": "Aburrey's Legacy",
+  "slot": "Armor",
+  "rarity": 4,
+  "level": 50,
+  "stats": [
+   {
+    "stat": "Strength",
+    "values": [
+     61
+    ]
+   },
+   {
+    "stat": "Agility",
+    "values": [
+     41
+    ]
+   },
+   {
+    "stat": "All Skill DMG",
+    "values": [
+     0.098
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Aburrey_Heavy_Armor (CC BY-SA 4.0)",
+  "version": "wiki revision 61704"
+ },
+ {
+  "name": "Aburrey Heavy Armor T1",
+  "id": "item_equip_t3_suit_atk01_body_02",
+  "set": "Aburrey's Legacy",
+  "slot": "Armor",
+  "rarity": 4,
+  "level": 50,
+  "stats": [
+   {
+    "stat": "Agility",
+    "values": [
+     61
+    ]
+   },
+   {
+    "stat": "Strength",
+    "values": [
+     41
+    ]
+   },
+   {
+    "stat": "Combo Skill DMG Bonus",
+    "values": [
+     0.147
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Aburrey_Heavy_Armor_T1 (CC BY-SA 4.0)",
+  "version": "wiki revision 55729"
+ },
+ {
+  "name": "Aburrey Light Armor",
+  "id": "item_equip_t3_suit_atk01_body_03",
+  "set": "Aburrey's Legacy",
+  "slot": "Armor",
+  "rarity": 4,
+  "level": 50,
+  "stats": [
+   {
+    "stat": "Intellect",
+    "values": [
+     61
+    ]
+   },
+   {
+    "stat": "Strength",
+    "values": [
+     41
+    ]
+   },
+   {
+    "stat": "Ultimate Gain Efficiency",
+    "values": [
+     0.088
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Aburrey_Light_Armor (CC BY-SA 4.0)",
+  "version": "wiki revision 53930"
+ },
+ {
+  "name": "Aburrey Light Armor T1",
+  "id": "item_equip_t3_suit_atk01_body_04",
+  "set": "Aburrey's Legacy",
+  "slot": "Armor",
+  "rarity": 4,
+  "level": 50,
+  "stats": [
+   {
+    "stat": "Will",
+    "values": [
+     61
+    ]
+   },
+   {
+    "stat": "Agility",
+    "values": [
+     41
+    ]
+   },
+   {
+    "stat": "Battle Skill DMG Bonus",
+    "values": [
+     0.147
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Aburrey_Light_Armor_T1 (CC BY-SA 4.0)",
+  "version": "wiki revision 55730"
+ },
+ {
+  "name": "Aburrey Sensor Chip",
+  "id": "item_equip_t3_suit_atk01_edc_05",
+  "set": "Aburrey's Legacy",
+  "slot": "Kit",
+  "rarity": 4,
+  "level": 50,
+  "stats": [
+   {
+    "stat": "Will",
+    "values": [
+     23
+    ]
+   },
+   {
+    "stat": "Agility",
+    "values": [
+     15
+    ]
+   },
+   {
+    "stat": "Battle Skill DMG Bonus",
+    "values": [
+     0.294
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Aburrey_Sensor_Chip (CC BY-SA 4.0)",
+  "version": "wiki revision 53936"
+ },
+ {
+  "name": "Aburrey Sensor Chip T1",
+  "id": "item_equip_t3_suit_atk01_edc_06",
+  "set": "Aburrey's Legacy",
+  "slot": "Kit",
+  "rarity": 4,
+  "level": 50,
+  "stats": [
+   {
+    "stat": "Will",
+    "values": [
+     23
+    ]
+   },
+   {
+    "stat": "Intellect",
+    "values": [
+     15
+    ]
+   },
+   {
+    "stat": "Battle Skill DMG Bonus",
+    "values": [
+     0.294
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Aburrey_Sensor_Chip_T1 (CC BY-SA 4.0)",
+  "version": "wiki revision 55732"
+ },
+ {
+  "name": "Aburrey UV Lamp",
+  "id": "item_equip_t3_suit_atk01_edc_01",
+  "set": "Aburrey's Legacy",
+  "slot": "Kit",
+  "rarity": 4,
+  "level": 50,
+  "stats": [
+   {
+    "stat": "Strength",
+    "values": [
+     23
+    ]
+   },
+   {
+    "stat": "Agility",
+    "values": [
+     15
+    ]
+   },
+   {
+    "stat": "All Skill DMG",
+    "values": [
+     0.196
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Aburrey_UV_Lamp (CC BY-SA 4.0)",
+  "version": "wiki revision 61705"
+ },
+ {
+  "name": "Æthertech Analysis Band",
+  "id": "item_equip_t4_suit_poise01_edc_01",
+  "set": "Æthertech",
+  "slot": "Kit",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Strength",
+    "values": [
+     32,
+     35,
+     38,
+     41
+    ]
+   },
+   {
+    "stat": "Will",
+    "values": [
+     21,
+     23,
+     25,
+     27
+    ]
+   },
+   {
+    "stat": "Physical DMG Bonus",
+    "values": [
+     0.23,
+     0.253,
+     0.276,
+     0.299
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Æthertech_Analysis_Band (CC BY-SA 4.0)",
+  "version": "wiki revision 61758"
+ },
+ {
+  "name": "Æthertech Gloves",
+  "id": "item_equip_t4_suit_poise01_hand_01",
+  "set": "Æthertech",
+  "slot": "Gloves",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Agility",
+    "values": [
+     65,
+     71,
+     78,
+     84
+    ]
+   },
+   {
+    "stat": "Strength",
+    "values": [
+     43,
+     47,
+     51,
+     55
+    ]
+   },
+   {
+    "stat": "Arts Intensity",
+    "values": [
+     34.5,
+     38,
+     41.4,
+     44.9
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Æthertech_Gloves (CC BY-SA 4.0)",
+  "version": "wiki revision 61762"
+ },
+ {
+  "name": "Æthertech Light Gloves",
+  "id": "item_equip_t4_suit_poise01_hand_02",
+  "set": "Æthertech",
+  "slot": "Gloves",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Will",
+    "values": [
+     65,
+     71,
+     78,
+     84
+    ]
+   },
+   {
+    "stat": "Agility",
+    "values": [
+     43,
+     47,
+     51,
+     55
+    ]
+   },
+   {
+    "stat": "All Skill DMG",
+    "values": [
+     0.23,
+     0.253,
+     0.276,
+     0.299
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Æthertech_Light_Gloves (CC BY-SA 4.0)",
+  "version": "wiki revision 61763"
+ },
+ {
+  "name": "Æthertech Plating",
+  "id": "item_equip_t4_suit_poise01_body_01",
+  "set": "Æthertech",
+  "slot": "Armor",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Strength",
+    "values": [
+     87,
+     95,
+     104,
+     113
+    ]
+   },
+   {
+    "stat": "Will",
+    "values": [
+     58,
+     63,
+     69,
+     75
+    ]
+   },
+   {
+    "stat": "DMG Bonus vs. Staggered",
+    "values": [
+     0.207,
+     0.228,
+     0.248,
+     0.269
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Æthertech_Plating (CC BY-SA 4.0)",
+  "version": "wiki revision 61757"
+ },
+ {
+  "name": "Æthertech Stabilizer",
+  "id": "item_equip_t4_suit_poise01_edc_02",
+  "set": "Æthertech",
+  "slot": "Kit",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Agility",
+    "values": [
+     32,
+     35,
+     38,
+     41
+    ]
+   },
+   {
+    "stat": "Strength",
+    "values": [
+     21,
+     23,
+     25,
+     27
+    ]
+   },
+   {
+    "stat": "Arts Intensity",
+    "values": [
+     41.4,
+     45.5,
+     49.7,
+     53.8
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Æthertech_Stabilizer (CC BY-SA 4.0)",
+  "version": "wiki revision 61759"
+ },
+ {
+  "name": "Æthertech Stabilizer T1",
+  "id": "item_equip_t4_suit_poise01_edc_03",
+  "set": "Æthertech",
+  "slot": "Kit",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Agility",
+    "values": [
+     32,
+     35,
+     38,
+     41
+    ]
+   },
+   {
+    "stat": "Strength",
+    "values": [
+     21,
+     23,
+     25,
+     27
+    ]
+   },
+   {
+    "stat": "Physical DMG Bonus",
+    "values": [
+     0.23,
+     0.253,
+     0.276,
+     0.299
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Æthertech_Stabilizer_T1 (CC BY-SA 4.0)",
+  "version": "wiki revision 61760"
+ },
+ {
+  "name": "Æthertech Watch",
+  "id": "item_equip_t4_suit_poise01_edc_04",
+  "set": "Æthertech",
+  "slot": "Kit",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Strength",
+    "values": [
+     32,
+     35,
+     38,
+     41
+    ]
+   },
+   {
+    "stat": "Agility",
+    "values": [
+     21,
+     23,
+     25,
+     27
+    ]
+   },
+   {
+    "stat": "Battle Skill DMG Bonus",
+    "values": [
+     0.414,
+     0.455,
+     0.497,
+     0.538
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Æthertech_Watch (CC BY-SA 4.0)",
+  "version": "wiki revision 61761"
+ },
+ {
+  "name": "AIC Alloy Plate",
+  "id": "item_equip_t1_suit_stragi01_edc_02",
+  "set": "AIC Heavy",
+  "slot": "Kit",
+  "rarity": 2,
+  "level": 28,
+  "stats": [
+   {
+    "stat": "Agility",
+    "values": [
+     16
+    ]
+   },
+   {
+    "stat": "Final DMG Reduction",
+    "values": [
+     0.075
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/AIC_Alloy_Plate (CC BY-SA 4.0)",
+  "version": "wiki revision 53886"
+ },
+ {
+  "name": "AIC Ceramic Plate",
+  "id": "item_equip_t1_suit_wisdwill01_edc_02",
+  "set": "AIC Light",
+  "slot": "Kit",
+  "rarity": 2,
+  "level": 28,
+  "stats": [
+   {
+    "stat": "Will",
+    "values": [
+     16
+    ]
+   },
+   {
+    "stat": "Battle Skill DMG Bonus",
+    "values": [
+     0.162
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/AIC_Ceramic_Plate (CC BY-SA 4.0)",
+  "version": "wiki revision 53890"
+ },
+ {
+  "name": "AIC Fieldwork Armor",
+  "id": "item_equip_t4_parts_wuling00_body_01",
+  "set": "AIC Fieldwork",
+  "slot": "Armor",
+  "rarity": 5,
+  "level": 60,
+  "stats": [
+   {
+    "stat": "Main Attribute",
+    "values": [
+     74,
+     81,
+     88,
+     96
+    ]
+   },
+   {
+    "stat": "Secondary Attribute",
+    "values": [
+     49,
+     53,
+     58,
+     63
+    ]
+   },
+   {
+    "stat": "Arts DMG",
+    "values": [
+     0.093,
+     0.102,
+     0.112,
+     0.121
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/AIC_Fieldwork_Armor (CC BY-SA 4.0)",
+  "version": "wiki revision 61706"
+ },
+ {
+  "name": "AIC Fieldwork Assault Armor",
+  "id": "item_equip_t4_parts_wuling00_body_04",
+  "set": "AIC Fieldwork",
+  "slot": "Armor",
+  "rarity": 5,
+  "level": 60,
+  "stats": [
+   {
+    "stat": "Main Attribute",
+    "values": [
+     74,
+     81,
+     88,
+     96
+    ]
+   },
+   {
+    "stat": "Secondary Attribute",
+    "values": [
+     49,
+     53,
+     58,
+     63
+    ]
+   },
+   {
+    "stat": "Arts Intensity",
+    "values": [
+     17.7,
+     19.5,
+     21.2,
+     23
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/AIC_Fieldwork_Assault_Armor (CC BY-SA 4.0)",
+  "version": "wiki revision 61707"
+ },
+ {
+  "name": "AIC Fieldwork Assault Gloves",
+  "id": "item_equip_t4_parts_wuling00_hand_04",
+  "set": "AIC Fieldwork",
+  "slot": "Gloves",
+  "rarity": 5,
+  "level": 60,
+  "stats": [
+   {
+    "stat": "Main Attribute",
+    "values": [
+     55,
+     60,
+     66,
+     71
+    ]
+   },
+   {
+    "stat": "Secondary Attribute",
+    "values": [
+     37,
+     40,
+     44,
+     48
+    ]
+   },
+   {
+    "stat": "Arts Intensity",
+    "values": [
+     29.5,
+     32.5,
+     35.4,
+     38.4
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/AIC_Fieldwork_Assault_Gloves (CC BY-SA 4.0)",
+  "version": "wiki revision 61714"
+ },
+ {
+  "name": "AIC Fieldwork Assault Push Knife",
+  "id": "item_equip_t4_parts_wuling00_edc_04",
+  "set": "AIC Fieldwork",
+  "slot": "Kit",
+  "rarity": 5,
+  "level": 60,
+  "stats": [
+   {
+    "stat": "Main Attribute",
+    "values": [
+     27,
+     29,
+     32,
+     35
+    ]
+   },
+   {
+    "stat": "Secondary Attribute",
+    "values": [
+     18,
+     19,
+     21,
+     23
+    ]
+   },
+   {
+    "stat": "Arts Intensity",
+    "values": [
+     35.4,
+     38.9,
+     42.5,
+     46
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/AIC_Fieldwork_Assault_Push_Knife (CC BY-SA 4.0)",
+  "version": "wiki revision 61710"
+ },
+ {
+  "name": "AIC Fieldwork CQB Armor",
+  "id": "item_equip_t4_parts_wuling00_body_06",
+  "set": "AIC Fieldwork",
+  "slot": "Armor",
+  "rarity": 5,
+  "level": 60,
+  "stats": [
+   {
+    "stat": "Main Attribute",
+    "values": [
+     74,
+     81,
+     88,
+     96
+    ]
+   },
+   {
+    "stat": "Secondary Attribute",
+    "values": [
+     49,
+     53,
+     58,
+     63
+    ]
+   },
+   {
+    "stat": "Physical DMG Bonus",
+    "values": [
+     0.098,
+     0.108,
+     0.118,
+     0.128
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/AIC_Fieldwork_CQB_Armor (CC BY-SA 4.0)",
+  "version": "wiki revision 64921"
+ },
+ {
+  "name": "AIC Fieldwork CQB Gloves",
+  "id": "item_equip_t4_parts_wuling00_hand_06",
+  "set": "AIC Fieldwork",
+  "slot": "Gloves",
+  "rarity": 5,
+  "level": 60,
+  "stats": [
+   {
+    "stat": "Main Attribute",
+    "values": [
+     55,
+     60,
+     66,
+     71
+    ]
+   },
+   {
+    "stat": "Secondary Attribute",
+    "values": [
+     37,
+     40,
+     44,
+     48
+    ]
+   },
+   {
+    "stat": "Physical DMG Bonus",
+    "values": [
+     0.164,
+     0.18,
+     0.197,
+     0.213
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/AIC_Fieldwork_CQB_Gloves (CC BY-SA 4.0)",
+  "version": "wiki revision 64923"
+ },
+ {
+  "name": "AIC Fieldwork CQB Hacksaw",
+  "id": "item_equip_t4_parts_wuling00_edc_06",
+  "set": "AIC Fieldwork",
+  "slot": "Kit",
+  "rarity": 5,
+  "level": 60,
+  "stats": [
+   {
+    "stat": "Main Attribute",
+    "values": [
+     27,
+     29,
+     32,
+     35
+    ]
+   },
+   {
+    "stat": "Secondary Attribute",
+    "values": [
+     18,
+     19,
+     21,
+     23
+    ]
+   },
+   {
+    "stat": "Physical DMG Bonus",
+    "values": [
+     0.197,
+     0.216,
+     0.236,
+     0.256
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/AIC_Fieldwork_CQB_Hacksaw (CC BY-SA 4.0)",
+  "version": "wiki revision 64922"
+ },
+ {
+  "name": "AIC Fieldwork Ember",
+  "id": "item_equip_t4_parts_wuling00_edc_02",
+  "set": "AIC Fieldwork",
+  "slot": "Kit",
+  "rarity": 5,
+  "level": 60,
+  "stats": [
+   {
+    "stat": "Main Attribute",
+    "values": [
+     27,
+     29,
+     32,
+     35
+    ]
+   },
+   {
+    "stat": "Secondary Attribute",
+    "values": [
+     18,
+     19,
+     21,
+     23
+    ]
+   },
+   {
+    "stat": "Ultimate Gain Efficiency",
+    "values": [
+     0.211,
+     0.232,
+     0.253,
+     0.274
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/AIC_Fieldwork_Ember (CC BY-SA 4.0)",
+  "version": "wiki revision 55753"
+ },
+ {
+  "name": "AIC Fieldwork Flashlight",
+  "id": "item_equip_t4_parts_wuling00_edc_03",
+  "set": "AIC Fieldwork",
+  "slot": "Kit",
+  "rarity": 5,
+  "level": 60,
+  "stats": [
+   {
+    "stat": "Secondary Attribute",
+    "values": [
+     27,
+     29,
+     32,
+     35
+    ]
+   },
+   {
+    "stat": "Main Attribute",
+    "values": [
+     18,
+     19,
+     21,
+     23
+    ]
+   },
+   {
+    "stat": "Secondary Attribute",
+    "values": [
+     0.177,
+     0.195,
+     0.212,
+     0.23
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/AIC_Fieldwork_Flashlight (CC BY-SA 4.0)",
+  "version": "wiki revision 55754"
+ },
+ {
+  "name": "AIC Fieldwork Gloves",
+  "id": "item_equip_t4_parts_wuling00_hand_01",
+  "set": "AIC Fieldwork",
+  "slot": "Gloves",
+  "rarity": 5,
+  "level": 60,
+  "stats": [
+   {
+    "stat": "Main Attribute",
+    "values": [
+     55,
+     60,
+     66,
+     71
+    ]
+   },
+   {
+    "stat": "Secondary Attribute",
+    "values": [
+     37,
+     40,
+     44,
+     48
+    ]
+   },
+   {
+    "stat": "Arts DMG",
+    "values": [
+     0.155,
+     0.171,
+     0.186,
+     0.202
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/AIC_Fieldwork_Gloves (CC BY-SA 4.0)",
+  "version": "wiki revision 61712"
+ },
+ {
+  "name": "AIC Fieldwork Hands",
+  "id": "item_equip_t4_parts_wuling00_hand_02",
+  "set": "AIC Fieldwork",
+  "slot": "Gloves",
+  "rarity": 5,
+  "level": 60,
+  "stats": [
+   {
+    "stat": "Main Attribute",
+    "values": [
+     55,
+     60,
+     66,
+     71
+    ]
+   },
+   {
+    "stat": "Secondary Attribute",
+    "values": [
+     37,
+     40,
+     44,
+     48
+    ]
+   },
+   {
+    "stat": "Ultimate Gain Efficiency",
+    "values": [
+     0.176,
+     0.193,
+     0.211,
+     0.228
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/AIC_Fieldwork_Hands (CC BY-SA 4.0)",
+  "version": "wiki revision 55756"
+ },
+ {
+  "name": "AIC Fieldwork Machete",
+  "id": "item_equip_t4_parts_wuling00_edc_01",
+  "set": "AIC Fieldwork",
+  "slot": "Kit",
+  "rarity": 5,
+  "level": 60,
+  "stats": [
+   {
+    "stat": "Main Attribute",
+    "values": [
+     27,
+     29,
+     32,
+     35
+    ]
+   },
+   {
+    "stat": "Secondary Attribute",
+    "values": [
+     18,
+     19,
+     21,
+     23
+    ]
+   },
+   {
+    "stat": "Arts DMG",
+    "values": [
+     0.186,
+     0.205,
+     0.224,
+     0.242
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/AIC_Fieldwork_Machete (CC BY-SA 4.0)",
+  "version": "wiki revision 61709"
+ },
+ {
+  "name": "AIC Fieldwork Medic Armor",
+  "id": "item_equip_t4_parts_wuling00_body_05",
+  "set": "AIC Fieldwork",
+  "slot": "Armor",
+  "rarity": 5,
+  "level": 60,
+  "stats": [
+   {
+    "stat": "Main Attribute",
+    "values": [
+     74,
+     81,
+     88,
+     96
+    ]
+   },
+   {
+    "stat": "Secondary Attribute",
+    "values": [
+     49,
+     53,
+     58,
+     63
+    ]
+   },
+   {
+    "stat": "Treatment Bonus",
+    "values": [
+     0.088,
+     0.097,
+     0.106,
+     0.115
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/AIC_Fieldwork_Medic_Armor (CC BY-SA 4.0)",
+  "version": "wiki revision 61708"
+ },
+ {
+  "name": "AIC Fieldwork Medic Gloves",
+  "id": "item_equip_t4_parts_wuling00_hand_05",
+  "set": "AIC Fieldwork",
+  "slot": "Gloves",
+  "rarity": 5,
+  "level": 60,
+  "stats": [
+   {
+    "stat": "Main Attribute",
+    "values": [
+     55,
+     60,
+     66,
+     71
+    ]
+   },
+   {
+    "stat": "Secondary Attribute",
+    "values": [
+     37,
+     40,
+     44,
+     48
+    ]
+   },
+   {
+    "stat": "Treatment Bonus",
+    "values": [
+     0.148,
+     0.162,
+     0.177,
+     0.192
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/AIC_Fieldwork_Medic_Gloves (CC BY-SA 4.0)",
+  "version": "wiki revision 61715"
+ },
+ {
+  "name": "AIC Fieldwork Plate",
+  "id": "item_equip_t4_parts_wuling00_body_02",
+  "set": "AIC Fieldwork",
+  "slot": "Armor",
+  "rarity": 5,
+  "level": 60,
+  "stats": [
+   {
+    "stat": "Main Attribute",
+    "values": [
+     74,
+     81,
+     88,
+     96
+    ]
+   },
+   {
+    "stat": "Secondary Attribute",
+    "values": [
+     49,
+     53,
+     58,
+     63
+    ]
+   },
+   {
+    "stat": "Ultimate Gain Efficiency",
+    "values": [
+     0.105,
+     0.116,
+     0.126,
+     0.137
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/AIC_Fieldwork_Plate (CC BY-SA 4.0)",
+  "version": "wiki revision 55750"
+ },
+ {
+  "name": "AIC Fieldwork Power Bank",
+  "id": "item_equip_t4_parts_wuling00_edc_05",
+  "set": "AIC Fieldwork",
+  "slot": "Kit",
+  "rarity": 5,
+  "level": 60,
+  "stats": [
+   {
+    "stat": "Main Attribute",
+    "values": [
+     27,
+     29,
+     32,
+     35
+    ]
+   },
+   {
+    "stat": "Secondary Attribute",
+    "values": [
+     18,
+     19,
+     21,
+     23
+    ]
+   },
+   {
+    "stat": "Treatment Bonus",
+    "values": [
+     0.177,
+     0.195,
+     0.212,
+     0.23
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/AIC_Fieldwork_Power_Bank (CC BY-SA 4.0)",
+  "version": "wiki revision 61711"
+ },
+ {
+  "name": "AIC Fieldwork Vest",
+  "id": "item_equip_t4_parts_wuling00_body_03",
+  "set": "AIC Fieldwork",
+  "slot": "Armor",
+  "rarity": 5,
+  "level": 60,
+  "stats": [
+   {
+    "stat": "Secondary Attribute",
+    "values": [
+     74,
+     81,
+     88,
+     96
+    ]
+   },
+   {
+    "stat": "Main Attribute",
+    "values": [
+     49,
+     53,
+     58,
+     63
+    ]
+   },
+   {
+    "stat": "Secondary Attribute",
+    "values": [
+     0.089,
+     0.097,
+     0.106,
+     0.115
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/AIC_Fieldwork_Vest (CC BY-SA 4.0)",
+  "version": "wiki revision 55751"
+ },
+ {
+  "name": "AIC Fieldwork Wraps",
+  "id": "item_equip_t4_parts_wuling00_hand_03",
+  "set": "AIC Fieldwork",
+  "slot": "Gloves",
+  "rarity": 5,
+  "level": 60,
+  "stats": [
+   {
+    "stat": "Secondary Attribute",
+    "values": [
+     55,
+     60,
+     66,
+     71
+    ]
+   },
+   {
+    "stat": "Main Attribute",
+    "values": [
+     37,
+     40,
+     44,
+     48
+    ]
+   },
+   {
+    "stat": "Secondary Attribute",
+    "values": [
+     0.148,
+     0.162,
+     0.177,
+     0.192
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/AIC_Fieldwork_Wraps (CC BY-SA 4.0)",
+  "version": "wiki revision 61713"
+ },
+ {
+  "name": "AIC Gauntlets",
+  "id": "item_equip_t1_suit_stragi01_hand_01",
+  "set": "AIC Heavy",
+  "slot": "Gloves",
+  "rarity": 2,
+  "level": 28,
+  "stats": [
+   {
+    "stat": "Strength",
+    "values": [
+     23
+    ]
+   },
+   {
+    "stat": "Will",
+    "values": [
+     23
+    ]
+   },
+   {
+    "stat": "Final DMG Reduction",
+    "values": [
+     0.063
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/AIC_Gauntlets (CC BY-SA 4.0)",
+  "version": "wiki revision 53887"
+ },
+ {
+  "name": "AIC Heavy Armor",
+  "id": "item_equip_t1_suit_stragi01_body_01",
+  "set": "AIC Heavy",
+  "slot": "Armor",
+  "rarity": 2,
+  "level": 28,
+  "stats": [
+   {
+    "stat": "Strength",
+    "values": [
+     30
+    ]
+   },
+   {
+    "stat": "Agility",
+    "values": [
+     30
+    ]
+   },
+   {
+    "stat": "Final DMG Reduction",
+    "values": [
+     0.039
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/AIC_Heavy_Armor (CC BY-SA 4.0)",
+  "version": "wiki revision 53884"
+ },
+ {
+  "name": "AIC Heavy Plate",
+  "id": "item_equip_t1_suit_stragi01_edc_01",
+  "set": "AIC Heavy",
+  "slot": "Kit",
+  "rarity": 2,
+  "level": 28,
+  "stats": [
+   {
+    "stat": "Strength",
+    "values": [
+     16
+    ]
+   },
+   {
+    "stat": "Final DMG Reduction",
+    "values": [
+     0.075
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/AIC_Heavy_Plate (CC BY-SA 4.0)",
+  "version": "wiki revision 53885"
+ },
+ {
+  "name": "AIC Light Armor",
+  "id": "item_equip_t1_suit_wisdwill01_body_01",
+  "set": "AIC Light",
+  "slot": "Armor",
+  "rarity": 2,
+  "level": 28,
+  "stats": [
+   {
+    "stat": "Intellect",
+    "values": [
+     30
+    ]
+   },
+   {
+    "stat": "Will",
+    "values": [
+     30
+    ]
+   },
+   {
+    "stat": "Battle Skill DMG Bonus",
+    "values": [
+     0.081
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/AIC_Light_Armor (CC BY-SA 4.0)",
+  "version": "wiki revision 53888"
+ },
+ {
+  "name": "AIC Light Plate",
+  "id": "item_equip_t1_suit_wisdwill01_edc_01",
+  "set": "AIC Light",
+  "slot": "Kit",
+  "rarity": 2,
+  "level": 28,
+  "stats": [
+   {
+    "stat": "Intellect",
+    "values": [
+     16
+    ]
+   },
+   {
+    "stat": "Combo Skill DMG Bonus",
+    "values": [
+     0.162
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/AIC_Light_Plate (CC BY-SA 4.0)",
+  "version": "wiki revision 53889"
+ },
+ {
+  "name": "AIC Tactical Gloves",
+  "id": "item_equip_t1_suit_wisdwill01_hand_01",
+  "set": "AIC Light",
+  "slot": "Gloves",
+  "rarity": 2,
+  "level": 28,
+  "stats": [
+   {
+    "stat": "Intellect",
+    "values": [
+     23
+    ]
+   },
+   {
+    "stat": "Agility",
+    "values": [
+     23
+    ]
+   },
+   {
+    "stat": "Combo Skill DMG Bonus",
+    "values": [
+     0.135
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/AIC_Tactical_Gloves (CC BY-SA 4.0)",
+  "version": "wiki revision 53891"
+ },
+ {
+  "name": "Armored MSGR Flashlight",
+  "id": "item_equip_t2_suit_str01_edc_02",
+  "set": "Armored MSGR",
+  "slot": "Kit",
+  "rarity": 3,
+  "level": 36,
+  "stats": [
+   {
+    "stat": "Strength",
+    "values": [
+     21
+    ]
+   },
+   {
+    "stat": "HP",
+    "values": [
+     0.21
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Armored_MSGR_Flashlight (CC BY-SA 4.0)",
+  "version": "wiki revision 53904"
+ },
+ {
+  "name": "Armored MSGR Flashlight T1",
+  "id": "item_equip_t3_suit_str01_edc_02",
+  "set": "Armored MSGR",
+  "slot": "Kit",
+  "rarity": 4,
+  "level": 50,
+  "stats": [
+   {
+    "stat": "Strength",
+    "values": [
+     23
+    ]
+   },
+   {
+    "stat": "Agility",
+    "values": [
+     15
+    ]
+   },
+   {
+    "stat": "Critical Rate",
+    "values": [
+     0.073
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Armored_MSGR_Flashlight_T1 (CC BY-SA 4.0)",
+  "version": "wiki revision 55735"
+ },
+ {
+  "name": "Armored MSGR Gloves",
+  "id": "item_equip_t2_suit_str01_hand_01",
+  "set": "Armored MSGR",
+  "slot": "Gloves",
+  "rarity": 3,
+  "level": 36,
+  "stats": [
+   {
+    "stat": "Strength",
+    "values": [
+     33
+    ]
+   },
+   {
+    "stat": "Will",
+    "values": [
+     22
+    ]
+   },
+   {
+    "stat": "Final DMG Reduction",
+    "values": [
+     0.08
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Armored_MSGR_Gloves (CC BY-SA 4.0)",
+  "version": "wiki revision 53905"
+ },
+ {
+  "name": "Armored MSGR Gloves T1",
+  "id": "item_equip_t3_suit_str01_hand_01",
+  "set": "Armored MSGR",
+  "slot": "Gloves",
+  "rarity": 4,
+  "level": 50,
+  "stats": [
+   {
+    "stat": "Strength",
+    "values": [
+     46
+    ]
+   },
+   {
+    "stat": "Agility",
+    "values": [
+     30
+    ]
+   },
+   {
+    "stat": "Attack",
+    "values": [
+     0.122
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Armored_MSGR_Gloves_T1 (CC BY-SA 4.0)",
+  "version": "wiki revision 55736"
+ },
+ {
+  "name": "Armored MSGR Gloves T2",
+  "id": "item_equip_t3_suit_str01_hand_02",
+  "set": "Armored MSGR",
+  "slot": "Gloves",
+  "rarity": 4,
+  "level": 50,
+  "stats": [
+   {
+    "stat": "Strength",
+    "values": [
+     46
+    ]
+   },
+   {
+    "stat": "Agility",
+    "values": [
+     30
+    ]
+   },
+   {
+    "stat": "Combo Skill DMG Bonus",
+    "values": [
+     0.245
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Armored_MSGR_Gloves_T2 (CC BY-SA 4.0)",
+  "version": "wiki revision 55737"
+ },
+ {
+  "name": "Armored MSGR Gyro",
+  "id": "item_equip_t2_suit_str01_edc_01",
+  "set": "Armored MSGR",
+  "slot": "Kit",
+  "rarity": 3,
+  "level": 36,
+  "stats": [
+   {
+    "stat": "Strength",
+    "values": [
+     21
+    ]
+   },
+   {
+    "stat": "Attack",
+    "values": [
+     0.105
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Armored_MSGR_Gyro (CC BY-SA 4.0)",
+  "version": "wiki revision 53903"
+ },
+ {
+  "name": "Armored MSGR Gyro T1",
+  "id": "item_equip_t3_suit_str01_edc_01",
+  "set": "Armored MSGR",
+  "slot": "Kit",
+  "rarity": 4,
+  "level": 50,
+  "stats": [
+   {
+    "stat": "Strength",
+    "values": [
+     23
+    ]
+   },
+   {
+    "stat": "Will",
+    "values": [
+     15
+    ]
+   },
+   {
+    "stat": "Attack",
+    "values": [
+     0.147
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Armored_MSGR_Gyro_T1 (CC BY-SA 4.0)",
+  "version": "wiki revision 55734"
+ },
+ {
+  "name": "Armored MSGR Jacket",
+  "id": "item_equip_t2_suit_str01_body_01",
+  "set": "Armored MSGR",
+  "slot": "Armor",
+  "rarity": 3,
+  "level": 36,
+  "stats": [
+   {
+    "stat": "Strength",
+    "values": [
+     44
+    ]
+   },
+   {
+    "stat": "Agility",
+    "values": [
+     29
+    ]
+   },
+   {
+    "stat": "HP",
+    "values": [
+     0.105
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Armored_MSGR_Jacket (CC BY-SA 4.0)",
+  "version": "wiki revision 53902"
+ },
+ {
+  "name": "Armored MSGR Jacket T1",
+  "id": "item_equip_t3_suit_str01_body_01",
+  "set": "Armored MSGR",
+  "slot": "Armor",
+  "rarity": 4,
+  "level": 50,
+  "stats": [
+   {
+    "stat": "Strength",
+    "values": [
+     61
+    ]
+   },
+   {
+    "stat": "Will",
+    "values": [
+     41
+    ]
+   },
+   {
+    "stat": "HP",
+    "values": [
+     0.147
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Armored_MSGR_Jacket_T1 (CC BY-SA 4.0)",
+  "version": "wiki revision 55733"
+ },
+ {
+  "name": "Basic Armor",
+  "id": "item_equip_t0_parts_tundra01_body_01",
+  "slot": "Armor",
+  "rarity": 1,
+  "level": 10,
+  "stats": [
+   {
+    "stat": "Strength",
+    "values": [
+     15
+    ]
+   },
+   {
+    "stat": "Agility",
+    "values": [
+     10
+    ]
+   },
+   {
+    "stat": "HP",
+    "values": [
+     46.3
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Basic_Armor (CC BY-SA 4.0)",
+  "version": "wiki revision 53868"
+ },
+ {
+  "name": "Basic Gauntlets",
+  "id": "item_equip_t0_parts_tundra01_hand_01",
+  "slot": "Gloves",
+  "rarity": 1,
+  "level": 10,
+  "stats": [
+   {
+    "stat": "Strength",
+    "values": [
+     11
+    ]
+   },
+   {
+    "stat": "Agility",
+    "values": [
+     7
+    ]
+   },
+   {
+    "stat": "HP",
+    "values": [
+     77.2
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Basic_Gauntlets (CC BY-SA 4.0)",
+  "version": "wiki revision 53870"
+ },
+ {
+  "name": "Basic Gloves",
+  "id": "item_equip_t0_parts_tundra01_hand_02",
+  "slot": "Gloves",
+  "rarity": 1,
+  "level": 10,
+  "stats": [
+   {
+    "stat": "Intellect",
+    "values": [
+     11
+    ]
+   },
+   {
+    "stat": "Will",
+    "values": [
+     7
+    ]
+   },
+   {
+    "stat": "HP",
+    "values": [
+     77.2
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Basic_Gloves (CC BY-SA 4.0)",
+  "version": "wiki revision 53871"
+ },
+ {
+  "name": "Basic PPE",
+  "id": "item_equip_t0_parts_tundra01_body_02",
+  "slot": "Armor",
+  "rarity": 1,
+  "level": 10,
+  "stats": [
+   {
+    "stat": "Intellect",
+    "values": [
+     15
+    ]
+   },
+   {
+    "stat": "Will",
+    "values": [
+     10
+    ]
+   },
+   {
+    "stat": "HP",
+    "values": [
+     46.3
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Basic_PPE (CC BY-SA 4.0)",
+  "version": "wiki revision 53869"
+ },
+ {
+  "name": "Bonekrusha Figurine",
+  "id": "item_equip_t4_suit_attri01_edc_03",
+  "set": "Bonekrusha",
+  "slot": "Kit",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Will",
+    "values": [
+     32,
+     35,
+     38,
+     41
+    ]
+   },
+   {
+    "stat": "Agility",
+    "values": [
+     21,
+     23,
+     25,
+     27
+    ]
+   },
+   {
+    "stat": "Battle Skill DMG Bonus",
+    "values": [
+     0.414,
+     0.455,
+     0.497,
+     0.538
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Bonekrusha_Figurine (CC BY-SA 4.0)",
+  "version": "wiki revision 53998"
+ },
+ {
+  "name": "Bonekrusha Figurine T1",
+  "id": "item_equip_t4_suit_attri01_edc_06",
+  "set": "Bonekrusha",
+  "slot": "Kit",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Will",
+    "values": [
+     32,
+     35,
+     38,
+     41
+    ]
+   },
+   {
+    "stat": "Intellect",
+    "values": [
+     21,
+     23,
+     25,
+     27
+    ]
+   },
+   {
+    "stat": "Combo Skill DMG Bonus",
+    "values": [
+     0.414,
+     0.455,
+     0.497,
+     0.538
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Bonekrusha_Figurine_T1 (CC BY-SA 4.0)",
+  "version": "wiki revision 55788"
+ },
+ {
+  "name": "Bonekrusha Figurine T2",
+  "id": "item_equip_t4_suit_attri01_edc_02",
+  "set": "Bonekrusha",
+  "slot": "Kit",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Will",
+    "values": [
+     32,
+     35,
+     38,
+     41
+    ]
+   },
+   {
+    "stat": "Intellect",
+    "values": [
+     21,
+     23,
+     25,
+     27
+    ]
+   },
+   {
+    "stat": "Battle Skill DMG Bonus",
+    "values": [
+     0.414,
+     0.455,
+     0.497,
+     0.538
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Bonekrusha_Figurine_T2 (CC BY-SA 4.0)",
+  "version": "wiki revision 55786"
+ },
+ {
+  "name": "Bonekrusha Gloves",
+  "id": "item_equip_t4_suit_attri01_hand_03",
+  "set": "Bonekrusha",
+  "slot": "Gloves",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Will",
+    "values": [
+     65,
+     71,
+     78,
+     84
+    ]
+   },
+   {
+    "stat": "Agility",
+    "values": [
+     43,
+     47,
+     51,
+     55
+    ]
+   },
+   {
+    "stat": "Cryo & Electric DMG",
+    "values": [
+     0.192,
+     0.211,
+     0.23,
+     0.249
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Bonekrusha_Gloves (CC BY-SA 4.0)",
+  "version": "wiki revision 61733"
+ },
+ {
+  "name": "Bonekrusha Heavy Armor",
+  "id": "item_equip_t4_suit_attri01_body_01",
+  "set": "Bonekrusha",
+  "slot": "Armor",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Agility",
+    "values": [
+     87,
+     95,
+     104,
+     113
+    ]
+   },
+   {
+    "stat": "Intellect",
+    "values": [
+     58,
+     63,
+     69,
+     75
+    ]
+   },
+   {
+    "stat": "Ultimate Gain Efficiency",
+    "values": [
+     0.123,
+     0.136,
+     0.148,
+     0.16
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Bonekrusha_Heavy_Armor (CC BY-SA 4.0)",
+  "version": "wiki revision 53992"
+ },
+ {
+  "name": "Bonekrusha Heavy Armor T1",
+  "id": "item_equip_t4_suit_attri01_body_02",
+  "set": "Bonekrusha",
+  "slot": "Armor",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Agility",
+    "values": [
+     87,
+     95,
+     104,
+     113
+    ]
+   },
+   {
+    "stat": "Strength",
+    "values": [
+     58,
+     63,
+     69,
+     75
+    ]
+   },
+   {
+    "stat": "Combo Skill DMG Bonus",
+    "values": [
+     0.207,
+     0.228,
+     0.248,
+     0.269
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Bonekrusha_Heavy_Armor_T1 (CC BY-SA 4.0)",
+  "version": "wiki revision 61728"
+ },
+ {
+  "name": "Bonekrusha Heavy Armor T2",
+  "id": "item_equip_t4_suit_attri01_body_05",
+  "set": "Bonekrusha",
+  "slot": "Armor",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Agility",
+    "values": [
+     87,
+     95,
+     104,
+     113
+    ]
+   },
+   {
+    "stat": "Strength",
+    "values": [
+     58,
+     63,
+     69,
+     75
+    ]
+   },
+   {
+    "stat": "Cryo & Electric DMG",
+    "values": [
+     0.115,
+     0.127,
+     0.138,
+     0.149
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Bonekrusha_Heavy_Armor_T2 (CC BY-SA 4.0)",
+  "version": "wiki revision 61729"
+ },
+ {
+  "name": "Bonekrusha Mask",
+  "id": "item_equip_t4_suit_attri01_edc_04",
+  "set": "Bonekrusha",
+  "slot": "Kit",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Agility",
+    "values": [
+     32,
+     35,
+     38,
+     41
+    ]
+   },
+   {
+    "stat": "Strength",
+    "values": [
+     21,
+     23,
+     25,
+     27
+    ]
+   },
+   {
+    "stat": "DMG Bonus vs. Staggered",
+    "values": [
+     0.414,
+     0.455,
+     0.497,
+     0.538
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Bonekrusha_Mask (CC BY-SA 4.0)",
+  "version": "wiki revision 53999"
+ },
+ {
+  "name": "Bonekrusha Mask T1",
+  "id": "item_equip_t4_suit_attri01_edc_05",
+  "set": "Bonekrusha",
+  "slot": "Kit",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Agility",
+    "values": [
+     32,
+     35,
+     38,
+     41
+    ]
+   },
+   {
+    "stat": "Strength",
+    "values": [
+     21,
+     23,
+     25,
+     27
+    ]
+   },
+   {
+    "stat": "Critical Rate",
+    "values": [
+     0.103,
+     0.114,
+     0.124,
+     0.135
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Bonekrusha_Mask_T1 (CC BY-SA 4.0)",
+  "version": "wiki revision 55787"
+ },
+ {
+  "name": "Bonekrusha Mask T2",
+  "id": "item_equip_t4_suit_attri01_edc_07",
+  "set": "Bonekrusha",
+  "slot": "Kit",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Agility",
+    "values": [
+     32,
+     35,
+     38,
+     41
+    ]
+   },
+   {
+    "stat": "Strength",
+    "values": [
+     21,
+     23,
+     25,
+     27
+    ]
+   },
+   {
+    "stat": "Battle Skill DMG Bonus",
+    "values": [
+     0.414,
+     0.455,
+     0.497,
+     0.538
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Bonekrusha_Mask_T2 (CC BY-SA 4.0)",
+  "version": "wiki revision 55789"
+ },
+ {
+  "name": "Bonekrusha Poncho",
+  "id": "item_equip_t4_suit_attri01_body_03",
+  "set": "Bonekrusha",
+  "slot": "Armor",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Will",
+    "values": [
+     87,
+     95,
+     104,
+     113
+    ]
+   },
+   {
+    "stat": "Strength",
+    "values": [
+     58,
+     63,
+     69,
+     75
+    ]
+   },
+   {
+    "stat": "Combo Skill DMG Bonus",
+    "values": [
+     0.207,
+     0.228,
+     0.248,
+     0.269
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Bonekrusha_Poncho (CC BY-SA 4.0)",
+  "version": "wiki revision 53994"
+ },
+ {
+  "name": "Bonekrusha Poncho T1",
+  "id": "item_equip_t4_suit_attri01_body_04",
+  "set": "Bonekrusha",
+  "slot": "Armor",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Will",
+    "values": [
+     87,
+     95,
+     104,
+     113
+    ]
+   },
+   {
+    "stat": "Agility",
+    "values": [
+     58,
+     63,
+     69,
+     75
+    ]
+   },
+   {
+    "stat": "Ultimate Gain Efficiency",
+    "values": [
+     0.123,
+     0.136,
+     0.148,
+     0.16
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Bonekrusha_Poncho_T1 (CC BY-SA 4.0)",
+  "version": "wiki revision 55784"
+ },
+ {
+  "name": "Bonekrusha Wristband",
+  "id": "item_equip_t4_suit_attri01_hand_01",
+  "set": "Bonekrusha",
+  "slot": "Gloves",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Strength",
+    "values": [
+     65,
+     71,
+     78,
+     84
+    ]
+   },
+   {
+    "stat": "Agility",
+    "values": [
+     43,
+     47,
+     51,
+     55
+    ]
+   },
+   {
+    "stat": "Heat & Nature DMG",
+    "values": [
+     0.192,
+     0.211,
+     0.23,
+     0.249
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Bonekrusha_Wristband (CC BY-SA 4.0)",
+  "version": "wiki revision 61730"
+ },
+ {
+  "name": "Bonekrusha Wristband T1",
+  "id": "item_equip_t4_suit_attri01_hand_02",
+  "set": "Bonekrusha",
+  "slot": "Gloves",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Agility",
+    "values": [
+     65,
+     71,
+     78,
+     84
+    ]
+   },
+   {
+    "stat": "Strength",
+    "values": [
+     43,
+     47,
+     51,
+     55
+    ]
+   },
+   {
+    "stat": "Cryo & Electric DMG",
+    "values": [
+     0.192,
+     0.211,
+     0.23,
+     0.249
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Bonekrusha_Wristband_T1 (CC BY-SA 4.0)",
+  "version": "wiki revision 61732"
+ },
+ {
+  "name": "Catastrophe Filter",
+  "id": "item_equip_t3_suit_usp01_edc_03",
+  "set": "Catastrophe",
+  "slot": "Kit",
+  "rarity": 4,
+  "level": 50,
+  "stats": [
+   {
+    "stat": "Will",
+    "values": [
+     23
+    ]
+   },
+   {
+    "stat": "Intellect",
+    "values": [
+     15
+    ]
+   },
+   {
+    "stat": "Arts Intensity",
+    "values": [
+     29.4
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Catastrophe_Filter (CC BY-SA 4.0)",
+  "version": "wiki revision 53948"
+ },
+ {
+  "name": "Catastrophe Gauze Cartridge",
+  "id": "item_equip_t3_suit_usp01_edc_01",
+  "set": "Catastrophe",
+  "slot": "Kit",
+  "rarity": 4,
+  "level": 50,
+  "stats": [
+   {
+    "stat": "Strength",
+    "values": [
+     23
+    ]
+   },
+   {
+    "stat": "Intellect",
+    "values": [
+     15
+    ]
+   },
+   {
+    "stat": "Ultimate DMG Bonus",
+    "values": [
+     0.368
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Catastrophe_Gauze_Cartridge (CC BY-SA 4.0)",
+  "version": "wiki revision 53946"
+ },
+ {
+  "name": "Catastrophe Gauze Cartridge T1",
+  "id": "item_equip_t3_suit_usp01_edc_02",
+  "set": "Catastrophe",
+  "slot": "Kit",
+  "rarity": 4,
+  "level": 50,
+  "stats": [
+   {
+    "stat": "Strength",
+    "values": [
+     23
+    ]
+   },
+   {
+    "stat": "Will",
+    "values": [
+     15
+    ]
+   },
+   {
+    "stat": "Secondary Attribute",
+    "values": [
+     0.147
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Catastrophe_Gauze_Cartridge_T1 (CC BY-SA 4.0)",
+  "version": "wiki revision 55739"
+ },
+ {
+  "name": "Catastrophe Gloves",
+  "id": "item_equip_t3_suit_usp01_hand_01",
+  "set": "Catastrophe",
+  "slot": "Gloves",
+  "rarity": 4,
+  "level": 50,
+  "stats": [
+   {
+    "stat": "Will",
+    "values": [
+     46
+    ]
+   },
+   {
+    "stat": "Intellect",
+    "values": [
+     30
+    ]
+   },
+   {
+    "stat": "Arts Intensity",
+    "values": [
+     24.5
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Catastrophe_Gloves (CC BY-SA 4.0)",
+  "version": "wiki revision 53949"
+ },
+ {
+  "name": "Catastrophe Heavy Armor",
+  "id": "item_equip_t3_suit_usp01_body_01",
+  "set": "Catastrophe",
+  "slot": "Armor",
+  "rarity": 4,
+  "level": 50,
+  "stats": [
+   {
+    "stat": "Strength",
+    "values": [
+     61
+    ]
+   },
+   {
+    "stat": "Intellect",
+    "values": [
+     41
+    ]
+   },
+   {
+    "stat": "Ultimate DMG Bonus",
+    "values": [
+     0.184
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Catastrophe_Heavy_Armor (CC BY-SA 4.0)",
+  "version": "wiki revision 53944"
+ },
+ {
+  "name": "Catastrophe Heavy Armor T1",
+  "id": "item_equip_t3_suit_usp01_body_02",
+  "set": "Catastrophe",
+  "slot": "Armor",
+  "rarity": 4,
+  "level": 50,
+  "stats": [
+   {
+    "stat": "Strength",
+    "values": [
+     61
+    ]
+   },
+   {
+    "stat": "Will",
+    "values": [
+     41
+    ]
+   },
+   {
+    "stat": "Ultimate Gain Efficiency",
+    "values": [
+     0.088
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Catastrophe_Heavy_Armor_T1 (CC BY-SA 4.0)",
+  "version": "wiki revision 55738"
+ },
+ {
+  "name": "Deep Rampart Armor",
+  "id": "item_equip_t4_suit_spellburst_body_01",
+  "set": "Deep Rampart",
+  "slot": "Armor",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Agility",
+    "values": [
+     87,
+     95,
+     104,
+     113
+    ]
+   },
+   {
+    "stat": "Will",
+    "values": [
+     58,
+     63,
+     69,
+     75
+    ]
+   },
+   {
+    "stat": "Arts Intensity",
+    "values": [
+     20.7,
+     22.8,
+     24.8,
+     26.9
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Deep_Rampart_Armor (CC BY-SA 4.0)",
+  "version": "wiki revision 61765"
+ },
+ {
+  "name": "Deep Rampart Comms",
+  "id": "item_equip_t4_suit_spellburst_edc_01",
+  "set": "Deep Rampart",
+  "slot": "Kit",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Agility",
+    "values": [
+     32,
+     35,
+     38,
+     41
+    ]
+   },
+   {
+    "stat": "Will",
+    "values": [
+     21,
+     23,
+     25,
+     27
+    ]
+   },
+   {
+    "stat": "Arts Intensity",
+    "values": [
+     41.4,
+     45.5,
+     49.7,
+     53.8
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Deep_Rampart_Comms (CC BY-SA 4.0)",
+  "version": "wiki revision 61766"
+ },
+ {
+  "name": "Deep Rampart Gauntlets",
+  "id": "item_equip_t4_suit_spellburst_hand_01",
+  "set": "Deep Rampart",
+  "slot": "Gloves",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Agility",
+    "values": [
+     65,
+     71,
+     78,
+     84
+    ]
+   },
+   {
+    "stat": "Will",
+    "values": [
+     43,
+     47,
+     51,
+     55
+    ]
+   },
+   {
+    "stat": "Arts Intensity",
+    "values": [
+     34.5,
+     38,
+     41.4,
+     44.9
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Deep_Rampart_Gauntlets (CC BY-SA 4.0)",
+  "version": "wiki revision 61767"
+ },
+ {
+  "name": "Deepsink Gloves",
+  "id": "item_equip_t4_suit_burst01_hand_02",
+  "set": "Tide Surge",
+  "slot": "Gloves",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Intellect",
+    "values": [
+     65,
+     71,
+     78,
+     84
+    ]
+   },
+   {
+    "stat": "Will",
+    "values": [
+     43,
+     47,
+     51,
+     55
+    ]
+   },
+   {
+    "stat": "All Skill DMG",
+    "values": [
+     0.23,
+     0.253,
+     0.276,
+     0.299
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Deepsink_Gloves (CC BY-SA 4.0)",
+  "version": "wiki revision 61739"
+ },
+ {
+  "name": "Emergency Comm",
+  "id": "item_equip_t1_parts_tundra01_edc_01",
+  "slot": "Kit",
+  "rarity": 2,
+  "level": 20,
+  "stats": [
+   {
+    "stat": "Critical Rate",
+    "values": [
+     0.066
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Emergency_Comm (CC BY-SA 4.0)",
+  "version": "wiki revision 53878"
+ },
+ {
+  "name": "Emergency Compression Core",
+  "id": "item_equip_t1_parts_tundra01_edc_02",
+  "slot": "Kit",
+  "rarity": 2,
+  "level": 20,
+  "stats": [
+   {
+    "stat": "Attack",
+    "values": [
+     0.132
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Emergency_Compression_Core (CC BY-SA 4.0)",
+  "version": "wiki revision 53879"
+ },
+ {
+  "name": "Eternal Xiranite Armor",
+  "id": "item_equip_t4_suit_usp02_body_01",
+  "set": "Eternal Xiranite",
+  "slot": "Armor",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Will",
+    "values": [
+     87,
+     95,
+     104,
+     113
+    ]
+   },
+   {
+    "stat": "Intellect",
+    "values": [
+     58,
+     63,
+     69,
+     75
+    ]
+   },
+   {
+    "stat": "Arts Intensity",
+    "values": [
+     20.7,
+     22.8,
+     24.8,
+     26.9
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Eternal_Xiranite_Armor (CC BY-SA 4.0)",
+  "version": "wiki revision 64934"
+ },
+ {
+  "name": "Eternal Xiranite Auxiliary Arm",
+  "id": "item_equip_t4_suit_usp02_edc_03",
+  "set": "Eternal Xiranite",
+  "slot": "Kit",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Will",
+    "values": [
+     32,
+     35,
+     38,
+     41
+    ]
+   },
+   {
+    "stat": "Intellect",
+    "values": [
+     21,
+     23,
+     25,
+     27
+    ]
+   },
+   {
+    "stat": "Ultimate Gain Efficiency",
+    "values": [
+     0.246,
+     0.271,
+     0.296,
+     0.32
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Eternal_Xiranite_Auxiliary_Arm (CC BY-SA 4.0)",
+  "version": "wiki revision 61773"
+ },
+ {
+  "name": "Eternal Xiranite Bracing Slab",
+  "id": "item_equip_t4_suit_usp02_edc_04",
+  "set": "Eternal Xiranite",
+  "slot": "Kit",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Will",
+    "values": [
+     41,
+     45,
+     49,
+     53
+    ]
+   },
+   {
+    "stat": "Secondary Attribute",
+    "values": [
+     0.207,
+     0.228,
+     0.248,
+     0.269
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Eternal_Xiranite_Bracing_Slab (CC BY-SA 4.0)",
+  "version": "wiki revision 61774"
+ },
+ {
+  "name": "Eternal Xiranite Bracing Slab T1",
+  "id": "item_equip_t4_suit_usp02_edc_05",
+  "set": "Eternal Xiranite",
+  "slot": "Kit",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Will",
+    "values": [
+     32,
+     35,
+     38,
+     41
+    ]
+   },
+   {
+    "stat": "Agility",
+    "values": [
+     21,
+     23,
+     25,
+     27
+    ]
+   },
+   {
+    "stat": "Ultimate Gain Efficiency",
+    "values": [
+     0.246,
+     0.271,
+     0.296,
+     0.32
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Eternal_Xiranite_Bracing_Slab_T1 (CC BY-SA 4.0)",
+  "version": "wiki revision 61775"
+ },
+ {
+  "name": "Eternal Xiranite Channeling Gloves",
+  "id": "item_equip_t4_suit_usp02_hand_05",
+  "set": "Eternal Xiranite",
+  "slot": "Gloves",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Intellect",
+    "values": [
+     65,
+     71,
+     78,
+     84
+    ]
+   },
+   {
+    "stat": "Strength",
+    "values": [
+     43,
+     47,
+     51,
+     55
+    ]
+   },
+   {
+    "stat": "Combo Skill DMG Bonus",
+    "values": [
+     0.345,
+     0.38,
+     0.414,
+     0.449
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Eternal_Xiranite_Channeling_Gloves (CC BY-SA 4.0)",
+  "version": "wiki revision 64939"
+ },
+ {
+  "name": "Eternal Xiranite Gloves",
+  "id": "item_equip_t4_suit_usp02_hand_01",
+  "set": "Eternal Xiranite",
+  "slot": "Gloves",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Intellect",
+    "values": [
+     65,
+     71,
+     78,
+     84
+    ]
+   },
+   {
+    "stat": "Strength",
+    "values": [
+     43,
+     47,
+     51,
+     55
+    ]
+   },
+   {
+    "stat": "Ultimate Gain Efficiency",
+    "values": [
+     0.205,
+     0.226,
+     0.246,
+     0.267
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Eternal_Xiranite_Gloves (CC BY-SA 4.0)",
+  "version": "wiki revision 61777"
+ },
+ {
+  "name": "Eternal Xiranite Gloves T1",
+  "id": "item_equip_t4_suit_usp02_hand_02",
+  "set": "Eternal Xiranite",
+  "slot": "Gloves",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Intellect",
+    "values": [
+     65,
+     71,
+     78,
+     84
+    ]
+   },
+   {
+    "stat": "Will",
+    "values": [
+     43,
+     47,
+     51,
+     55
+    ]
+   },
+   {
+    "stat": "Ultimate Gain Efficiency",
+    "values": [
+     0.205,
+     0.226,
+     0.246,
+     0.267
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Eternal_Xiranite_Gloves_T1 (CC BY-SA 4.0)",
+  "version": "wiki revision 61778"
+ },
+ {
+  "name": "Eternal Xiranite Hands",
+  "id": "item_equip_t4_suit_usp02_hand_04",
+  "set": "Eternal Xiranite",
+  "slot": "Gloves",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Will",
+    "values": [
+     65,
+     71,
+     78,
+     84
+    ]
+   },
+   {
+    "stat": "Agility",
+    "values": [
+     43,
+     47,
+     51,
+     55
+    ]
+   },
+   {
+    "stat": "Ultimate Gain Efficiency",
+    "values": [
+     0.205,
+     0.226,
+     0.246,
+     0.267
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Eternal_Xiranite_Hands (CC BY-SA 4.0)",
+  "version": "wiki revision 61780"
+ },
+ {
+  "name": "Eternal Xiranite Heavy Slab",
+  "id": "item_equip_t4_suit_usp02_edc_06",
+  "set": "Eternal Xiranite",
+  "slot": "Kit",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Strength",
+    "values": [
+     32,
+     35,
+     38,
+     41
+    ]
+   },
+   {
+    "stat": "Will",
+    "values": [
+     21,
+     23,
+     25,
+     27
+    ]
+   },
+   {
+    "stat": "Ultimate Gain Efficiency",
+    "values": [
+     0.246,
+     0.271,
+     0.296,
+     0.32
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Eternal_Xiranite_Heavy_Slab (CC BY-SA 4.0)",
+  "version": "wiki revision 61776"
+ },
+ {
+  "name": "Eternal Xiranite Light Armor",
+  "id": "item_equip_t4_suit_usp02_body_03",
+  "set": "Eternal Xiranite",
+  "slot": "Armor",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Will",
+    "values": [
+     110,
+     121,
+     132,
+     143
+    ]
+   },
+   {
+    "stat": "Ultimate Gain Efficiency",
+    "values": [
+     0.123,
+     0.136,
+     0.148,
+     0.16
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Eternal_Xiranite_Light_Armor (CC BY-SA 4.0)",
+  "version": "wiki revision 61769"
+ },
+ {
+  "name": "Eternal Xiranite Light Armor T1",
+  "id": "item_equip_t4_suit_usp02_body_04",
+  "set": "Eternal Xiranite",
+  "slot": "Armor",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Intellect",
+    "values": [
+     87,
+     95,
+     104,
+     113
+    ]
+   },
+   {
+    "stat": "Will",
+    "values": [
+     58,
+     63,
+     69,
+     75
+    ]
+   },
+   {
+    "stat": "Secondary Attribute",
+    "values": [
+     0.104,
+     0.114,
+     0.124,
+     0.135
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Eternal_Xiranite_Light_Armor_T1 (CC BY-SA 4.0)",
+  "version": "wiki revision 61770"
+ },
+ {
+  "name": "Eternal Xiranite MOD Armor",
+  "id": "item_equip_t4_suit_usp02_body_06",
+  "set": "Eternal Xiranite",
+  "slot": "Armor",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Intellect",
+    "values": [
+     87,
+     95,
+     104,
+     113
+    ]
+   },
+   {
+    "stat": "Strength",
+    "values": [
+     58,
+     63,
+     69,
+     75
+    ]
+   },
+   {
+    "stat": "Combo Skill DMG Bonus",
+    "values": [
+     0.207,
+     0.228,
+     0.248,
+     0.269
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Eternal_Xiranite_MOD_Armor (CC BY-SA 4.0)",
+  "version": "wiki revision 64937"
+ },
+ {
+  "name": "Eternal Xiranite Overalls",
+  "id": "item_equip_t4_suit_usp02_body_05",
+  "set": "Eternal Xiranite",
+  "slot": "Armor",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Intellect",
+    "values": [
+     87,
+     95,
+     104,
+     113
+    ]
+   },
+   {
+    "stat": "Strength",
+    "values": [
+     58,
+     63,
+     69,
+     75
+    ]
+   },
+   {
+    "stat": "Ultimate Gain Efficiency",
+    "values": [
+     0.123,
+     0.136,
+     0.148,
+     0.16
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Eternal_Xiranite_Overalls (CC BY-SA 4.0)",
+  "version": "wiki revision 64935"
+ },
+ {
+  "name": "Eternal Xiranite Power Core",
+  "id": "item_equip_t4_suit_usp02_edc_01",
+  "set": "Eternal Xiranite",
+  "slot": "Kit",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Intellect",
+    "values": [
+     32,
+     35,
+     38,
+     41
+    ]
+   },
+   {
+    "stat": "Strength",
+    "values": [
+     21,
+     23,
+     25,
+     27
+    ]
+   },
+   {
+    "stat": "Ultimate Gain Efficiency",
+    "values": [
+     0.246,
+     0.271,
+     0.296,
+     0.32
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Eternal_Xiranite_Power_Core (CC BY-SA 4.0)",
+  "version": "wiki revision 61771"
+ },
+ {
+  "name": "Eternal Xiranite Power Core T1",
+  "id": "item_equip_t4_suit_usp02_edc_02",
+  "set": "Eternal Xiranite",
+  "slot": "Kit",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Intellect",
+    "values": [
+     32,
+     35,
+     38,
+     41
+    ]
+   },
+   {
+    "stat": "Will",
+    "values": [
+     21,
+     23,
+     25,
+     27
+    ]
+   },
+   {
+    "stat": "Treatment Bonus",
+    "values": [
+     0.207,
+     0.228,
+     0.248,
+     0.269
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Eternal_Xiranite_Power_Core_T1 (CC BY-SA 4.0)",
+  "version": "wiki revision 61772"
+ },
+ {
+  "name": "Eternal Xiranite Rangefinder",
+  "id": "item_equip_t4_suit_usp02_edc_07",
+  "set": "Eternal Xiranite",
+  "slot": "Kit",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Intellect",
+    "values": [
+     32,
+     35,
+     38,
+     41
+    ]
+   },
+   {
+    "stat": "Strength",
+    "values": [
+     21,
+     23,
+     25,
+     27
+    ]
+   },
+   {
+    "stat": "Combo Skill DMG Bonus",
+    "values": [
+     0.414,
+     0.455,
+     0.497,
+     0.538
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Eternal_Xiranite_Rangefinder (CC BY-SA 4.0)",
+  "version": "wiki revision 64938"
+ },
+ {
+  "name": "Eternal Xiranite Wraps",
+  "id": "item_equip_t4_suit_usp02_hand_03",
+  "set": "Eternal Xiranite",
+  "slot": "Gloves",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Will",
+    "values": [
+     65,
+     71,
+     78,
+     84
+    ]
+   },
+   {
+    "stat": "Intellect",
+    "values": [
+     43,
+     47,
+     51,
+     55
+    ]
+   },
+   {
+    "stat": "Ultimate Gain Efficiency",
+    "values": [
+     0.205,
+     0.226,
+     0.246,
+     0.267
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Eternal_Xiranite_Wraps (CC BY-SA 4.0)",
+  "version": "wiki revision 61779"
+ },
+ {
+  "name": "Frontiers Analyzer",
+  "id": "item_equip_t4_suit_atb01_edc_03",
+  "set": "Frontiers",
+  "slot": "Kit",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Strength",
+    "values": [
+     41,
+     45,
+     49,
+     53
+    ]
+   },
+   {
+    "stat": "Ultimate DMG Bonus",
+    "values": [
+     0.517,
+     0.569,
+     0.621,
+     0.673
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Frontiers_Analyzer (CC BY-SA 4.0)",
+  "version": "wiki revision 53974"
+ },
+ {
+  "name": "Frontiers Armor",
+  "id": "item_equip_t4_suit_atb01_body_01",
+  "set": "Frontiers",
+  "slot": "Armor",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Strength",
+    "values": [
+     87,
+     95,
+     104,
+     113
+    ]
+   },
+   {
+    "stat": "Intellect",
+    "values": [
+     58,
+     63,
+     69,
+     75
+    ]
+   },
+   {
+    "stat": "Ultimate DMG Bonus",
+    "values": [
+     0.259,
+     0.285,
+     0.311,
+     0.336
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Frontiers_Armor (CC BY-SA 4.0)",
+  "version": "wiki revision 53967"
+ },
+ {
+  "name": "Frontiers Armor T1",
+  "id": "item_equip_t4_suit_atb01_body_02",
+  "set": "Frontiers",
+  "slot": "Armor",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Strength",
+    "values": [
+     87,
+     95,
+     104,
+     113
+    ]
+   },
+   {
+    "stat": "Agility",
+    "values": [
+     58,
+     63,
+     69,
+     75
+    ]
+   },
+   {
+    "stat": "Battle Skill DMG Bonus",
+    "values": [
+     0.207,
+     0.228,
+     0.248,
+     0.269
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Frontiers_Armor_T1 (CC BY-SA 4.0)",
+  "version": "wiki revision 55768"
+ },
+ {
+  "name": "Frontiers Armor T2",
+  "id": "item_equip_t4_suit_atb01_body_03",
+  "set": "Frontiers",
+  "slot": "Armor",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Agility",
+    "values": [
+     87,
+     95,
+     104,
+     113
+    ]
+   },
+   {
+    "stat": "Intellect",
+    "values": [
+     58,
+     63,
+     69,
+     75
+    ]
+   },
+   {
+    "stat": "Battle Skill DMG Bonus",
+    "values": [
+     0.207,
+     0.228,
+     0.248,
+     0.269
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Frontiers_Armor_T2 (CC BY-SA 4.0)",
+  "version": "wiki revision 55770"
+ },
+ {
+  "name": "Frontiers Armor T3",
+  "id": "item_equip_t4_suit_atb01_body_04",
+  "set": "Frontiers",
+  "slot": "Armor",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Agility",
+    "values": [
+     87,
+     95,
+     104,
+     113
+    ]
+   },
+   {
+    "stat": "Intellect",
+    "values": [
+     58,
+     63,
+     69,
+     75
+    ]
+   },
+   {
+    "stat": "Secondary Attribute",
+    "values": [
+     0.104,
+     0.114,
+     0.124,
+     0.135
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Frontiers_Armor_T3 (CC BY-SA 4.0)",
+  "version": "wiki revision 53970"
+ },
+ {
+  "name": "Frontiers Blight RES Gloves",
+  "id": "item_equip_t4_suit_atb01_hand_01",
+  "set": "Frontiers",
+  "slot": "Gloves",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Agility",
+    "values": [
+     65,
+     71,
+     78,
+     84
+    ]
+   },
+   {
+    "stat": "Intellect",
+    "values": [
+     43,
+     47,
+     51,
+     55
+    ]
+   },
+   {
+    "stat": "Battle Skill DMG Bonus",
+    "values": [
+     0.345,
+     0.38,
+     0.414,
+     0.449
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Frontiers_Blight_RES_Gloves (CC BY-SA 4.0)",
+  "version": "wiki revision 53978"
+ },
+ {
+  "name": "Frontiers Comm",
+  "id": "item_equip_t4_suit_atb01_edc_01",
+  "set": "Frontiers",
+  "slot": "Kit",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Strength",
+    "values": [
+     32,
+     35,
+     38,
+     41
+    ]
+   },
+   {
+    "stat": "Agility",
+    "values": [
+     21,
+     23,
+     25,
+     27
+    ]
+   },
+   {
+    "stat": "Combo Skill DMG Bonus",
+    "values": [
+     0.414,
+     0.455,
+     0.497,
+     0.538
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Frontiers_Comm (CC BY-SA 4.0)",
+  "version": "wiki revision 53972"
+ },
+ {
+  "name": "Frontiers Comm T1",
+  "id": "item_equip_t4_suit_atb01_edc_02",
+  "set": "Frontiers",
+  "slot": "Kit",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Strength",
+    "values": [
+     32,
+     35,
+     38,
+     41
+    ]
+   },
+   {
+    "stat": "Intellect",
+    "values": [
+     21,
+     23,
+     25,
+     27
+    ]
+   },
+   {
+    "stat": "Cryo & Electric DMG",
+    "values": [
+     0.23,
+     0.253,
+     0.276,
+     0.299
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Frontiers_Comm_T1 (CC BY-SA 4.0)",
+  "version": "wiki revision 61723"
+ },
+ {
+  "name": "Frontiers Extra O2 Tube",
+  "id": "item_equip_t4_suit_atb01_edc_04",
+  "set": "Frontiers",
+  "slot": "Kit",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Agility",
+    "values": [
+     32,
+     35,
+     38,
+     41
+    ]
+   },
+   {
+    "stat": "Intellect",
+    "values": [
+     21,
+     23,
+     25,
+     27
+    ]
+   },
+   {
+    "stat": "Secondary Attribute",
+    "values": [
+     0.207,
+     0.228,
+     0.248,
+     0.269
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Frontiers_Extra_O2_Tube (CC BY-SA 4.0)",
+  "version": "wiki revision 53975"
+ },
+ {
+  "name": "Frontiers Extra O2 Tube T1",
+  "id": "item_equip_t4_suit_atb01_edc_06",
+  "set": "Frontiers",
+  "slot": "Kit",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Intellect",
+    "values": [
+     32,
+     35,
+     38,
+     41
+    ]
+   },
+   {
+    "stat": "Agility",
+    "values": [
+     21,
+     23,
+     25,
+     27
+    ]
+   },
+   {
+    "stat": "Secondary Attribute",
+    "values": [
+     0.207,
+     0.228,
+     0.248,
+     0.269
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Frontiers_Extra_O2_Tube_T1 (CC BY-SA 4.0)",
+  "version": "wiki revision 55772"
+ },
+ {
+  "name": "Frontiers Fiber Gloves",
+  "id": "item_equip_t4_suit_atb01_hand_02",
+  "set": "Frontiers",
+  "slot": "Gloves",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Will",
+    "values": [
+     65,
+     71,
+     78,
+     84
+    ]
+   },
+   {
+    "stat": "Strength",
+    "values": [
+     43,
+     47,
+     51,
+     55
+    ]
+   },
+   {
+    "stat": "All Skill DMG",
+    "values": [
+     0.23,
+     0.253,
+     0.276,
+     0.299
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Frontiers_Fiber_Gloves (CC BY-SA 4.0)",
+  "version": "wiki revision 61725"
+ },
+ {
+  "name": "Frontiers Fiber Gloves T1",
+  "id": "item_equip_t4_suit_atb01_hand_03",
+  "set": "Frontiers",
+  "slot": "Gloves",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Intellect",
+    "values": [
+     65,
+     71,
+     78,
+     84
+    ]
+   },
+   {
+    "stat": "Agility",
+    "values": [
+     43,
+     47,
+     51,
+     55
+    ]
+   },
+   {
+    "stat": "Ultimate Gain Efficiency",
+    "values": [
+     0.205,
+     0.226,
+     0.246,
+     0.267
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Frontiers_Fiber_Gloves_T1 (CC BY-SA 4.0)",
+  "version": "wiki revision 55774"
+ },
+ {
+  "name": "Frontiers O2 Tube",
+  "id": "item_equip_t4_suit_atb01_edc_05",
+  "set": "Frontiers",
+  "slot": "Kit",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Will",
+    "values": [
+     41,
+     45,
+     49,
+     53
+    ]
+   },
+   {
+    "stat": "Physical DMG Bonus",
+    "values": [
+     0.23,
+     0.253,
+     0.276,
+     0.299
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Frontiers_O2_Tube (CC BY-SA 4.0)",
+  "version": "wiki revision 53976"
+ },
+ {
+  "name": "Frontiers Protection Suit",
+  "id": "item_equip_t4_suit_atb01_body_05",
+  "set": "Frontiers",
+  "slot": "Armor",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Intellect",
+    "values": [
+     87,
+     95,
+     104,
+     113
+    ]
+   },
+   {
+    "stat": "Agility",
+    "values": [
+     58,
+     63,
+     69,
+     75
+    ]
+   },
+   {
+    "stat": "Ultimate Gain Efficiency",
+    "values": [
+     0.123,
+     0.136,
+     0.148,
+     0.16
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Frontiers_Protection_Suit (CC BY-SA 4.0)",
+  "version": "wiki revision 53971"
+ },
+ {
+  "name": "Grizzled Edge Armor",
+  "id": "item_equip_t4_suit_crush_fracture_body_01",
+  "set": "Grizzled Edge",
+  "slot": "Armor",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Strength",
+    "values": [
+     87,
+     95,
+     104,
+     113
+    ]
+   },
+   {
+    "stat": "Will",
+    "values": [
+     58,
+     63,
+     69,
+     75
+    ]
+   },
+   {
+    "stat": "Physical DMG Bonus",
+    "values": [
+     0.115,
+     0.127,
+     0.138,
+     0.149
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Grizzled_Edge_Armor (CC BY-SA 4.0)",
+  "version": "wiki revision 54818"
+ },
+ {
+  "name": "Grizzled Edge Armor T1",
+  "id": "item_equip_t4_suit_crush_fracture_body_02",
+  "set": "Grizzled Edge",
+  "slot": "Armor",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Agility",
+    "values": [
+     87,
+     95,
+     104,
+     113
+    ]
+   },
+   {
+    "stat": "Strength",
+    "values": [
+     58,
+     63,
+     69,
+     75
+    ]
+   },
+   {
+    "stat": "Arts Intensity",
+    "values": [
+     20.7,
+     22.8,
+     24.8,
+     26.9
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Grizzled_Edge_Armor_T1 (CC BY-SA 4.0)",
+  "version": "wiki revision 55799"
+ },
+ {
+  "name": "Grizzled Edge Gauntlets",
+  "id": "item_equip_t4_suit_crush_fracture_hand_01",
+  "set": "Grizzled Edge",
+  "slot": "Gloves",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Strength",
+    "values": [
+     65,
+     71,
+     78,
+     84
+    ]
+   },
+   {
+    "stat": "Will",
+    "values": [
+     43,
+     47,
+     51,
+     55
+    ]
+   },
+   {
+    "stat": "Arts Intensity",
+    "values": [
+     34.5,
+     38,
+     41.4,
+     44.9
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Grizzled_Edge_Gauntlets (CC BY-SA 4.0)",
+  "version": "wiki revision 54820"
+ },
+ {
+  "name": "Grizzled Edge Gauntlets T1",
+  "id": "item_equip_t4_suit_crush_fracture_hand_02",
+  "set": "Grizzled Edge",
+  "slot": "Gloves",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Agility",
+    "values": [
+     65,
+     71,
+     78,
+     84
+    ]
+   },
+   {
+    "stat": "Strength",
+    "values": [
+     43,
+     47,
+     51,
+     55
+    ]
+   },
+   {
+    "stat": "Arts Intensity",
+    "values": [
+     34.5,
+     38,
+     41.4,
+     44.9
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Grizzled_Edge_Gauntlets_T1 (CC BY-SA 4.0)",
+  "version": "wiki revision 55801"
+ },
+ {
+  "name": "Grizzled Edge Push Knife",
+  "id": "item_equip_t4_suit_crush_fracture_edc_01",
+  "set": "Grizzled Edge",
+  "slot": "Kit",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Strength",
+    "values": [
+     32,
+     35,
+     38,
+     41
+    ]
+   },
+   {
+    "stat": "Will",
+    "values": [
+     21,
+     23,
+     25,
+     27
+    ]
+   },
+   {
+    "stat": "Physical DMG Bonus",
+    "values": [
+     0.23,
+     0.253,
+     0.276,
+     0.299
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Grizzled_Edge_Push_Knife (CC BY-SA 4.0)",
+  "version": "wiki revision 54822"
+ },
+ {
+  "name": "Grizzled Edge Push Knife T1",
+  "id": "item_equip_t4_suit_crush_fracture_edc_02",
+  "set": "Grizzled Edge",
+  "slot": "Kit",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Agility",
+    "values": [
+     32,
+     35,
+     38,
+     41
+    ]
+   },
+   {
+    "stat": "Strength",
+    "values": [
+     21,
+     23,
+     25,
+     27
+    ]
+   },
+   {
+    "stat": "Physical DMG Bonus",
+    "values": [
+     0.23,
+     0.253,
+     0.276,
+     0.299
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Grizzled_Edge_Push_Knife_T1 (CC BY-SA 4.0)",
+  "version": "wiki revision 55800"
+ },
+ {
+  "name": "Hanging River O2 Tube",
+  "id": "item_equip_t4_suit_burst01_edc_01",
+  "set": "Tide Surge",
+  "slot": "Kit",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Strength",
+    "values": [
+     32,
+     35,
+     38,
+     41
+    ]
+   },
+   {
+    "stat": "Will",
+    "values": [
+     21,
+     23,
+     25,
+     27
+    ]
+   },
+   {
+    "stat": "Cryo & Electric DMG",
+    "values": [
+     0.23,
+     0.253,
+     0.276,
+     0.299
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Hanging_River_O2_Tube (CC BY-SA 4.0)",
+  "version": "wiki revision 61736"
+ },
+ {
+  "name": "Hot Work Exo-Rig",
+  "id": "item_equip_t4_suit_fire_natr01_body_02",
+  "set": "Hot Work",
+  "slot": "Armor",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Intellect",
+    "values": [
+     87,
+     95,
+     104,
+     113
+    ]
+   },
+   {
+    "stat": "Will",
+    "values": [
+     58,
+     63,
+     69,
+     75
+    ]
+   },
+   {
+    "stat": "Heat & Nature DMG",
+    "values": [
+     0.115,
+     0.127,
+     0.138,
+     0.149
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Hot_Work_Exo-Rig (CC BY-SA 4.0)",
+  "version": "wiki revision 61751"
+ },
+ {
+  "name": "Hot Work Exoskeleton",
+  "id": "item_equip_t4_suit_fire_natr01_body_01",
+  "set": "Hot Work",
+  "slot": "Armor",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Strength",
+    "values": [
+     87,
+     95,
+     104,
+     113
+    ]
+   },
+   {
+    "stat": "Agility",
+    "values": [
+     58,
+     63,
+     69,
+     75
+    ]
+   },
+   {
+    "stat": "Heat & Nature DMG",
+    "values": [
+     0.115,
+     0.127,
+     0.138,
+     0.149
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Hot_Work_Exoskeleton (CC BY-SA 4.0)",
+  "version": "wiki revision 61750"
+ },
+ {
+  "name": "Hot Work Gauntlets",
+  "id": "item_equip_t4_suit_fire_natr01_hand_02",
+  "set": "Hot Work",
+  "slot": "Gloves",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Intellect",
+    "values": [
+     65,
+     71,
+     78,
+     84
+    ]
+   },
+   {
+    "stat": "Strength",
+    "values": [
+     43,
+     47,
+     51,
+     55
+    ]
+   },
+   {
+    "stat": "Heat & Nature DMG",
+    "values": [
+     0.192,
+     0.211,
+     0.23,
+     0.249
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Hot_Work_Gauntlets (CC BY-SA 4.0)",
+  "version": "wiki revision 61753"
+ },
+ {
+  "name": "Hot Work Gauntlets T1",
+  "id": "item_equip_t4_suit_fire_natr01_hand_03",
+  "set": "Hot Work",
+  "slot": "Gloves",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Will",
+    "values": [
+     65,
+     71,
+     78,
+     84
+    ]
+   },
+   {
+    "stat": "Intellect",
+    "values": [
+     43,
+     47,
+     51,
+     55
+    ]
+   },
+   {
+    "stat": "Heat & Nature DMG",
+    "values": [
+     0.192,
+     0.211,
+     0.23,
+     0.249
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Hot_Work_Gauntlets_T1 (CC BY-SA 4.0)",
+  "version": "wiki revision 61754"
+ },
+ {
+  "name": "Hot Work Gloves",
+  "id": "item_equip_t4_suit_fire_natr01_hand_01",
+  "set": "Hot Work",
+  "slot": "Gloves",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Strength",
+    "values": [
+     65,
+     71,
+     78,
+     84
+    ]
+   },
+   {
+    "stat": "Will",
+    "values": [
+     43,
+     47,
+     51,
+     55
+    ]
+   },
+   {
+    "stat": "Arts Intensity",
+    "values": [
+     34.5,
+     38,
+     41.4,
+     44.9
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Hot_Work_Gloves (CC BY-SA 4.0)",
+  "version": "wiki revision 54049"
+ },
+ {
+  "name": "Hot Work Hands PPE",
+  "id": "item_equip_t4_suit_fire_natr01_hand_04",
+  "set": "Hot Work",
+  "slot": "Gloves",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Intellect",
+    "values": [
+     65,
+     71,
+     78,
+     84
+    ]
+   },
+   {
+    "stat": "Will",
+    "values": [
+     43,
+     47,
+     51,
+     55
+    ]
+   },
+   {
+    "stat": "Heat & Nature DMG",
+    "values": [
+     0.192,
+     0.211,
+     0.23,
+     0.249
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Hot_Work_Hands_PPE (CC BY-SA 4.0)",
+  "version": "wiki revision 61755"
+ },
+ {
+  "name": "Hot Work Insulation Slab",
+  "id": "item_equip_t4_suit_fire_natr01_edc_04",
+  "set": "Hot Work",
+  "slot": "Kit",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Intellect",
+    "values": [
+     32,
+     35,
+     38,
+     41
+    ]
+   },
+   {
+    "stat": "Will",
+    "values": [
+     21,
+     23,
+     25,
+     27
+    ]
+   },
+   {
+    "stat": "All Skill DMG",
+    "values": [
+     0.276,
+     0.304,
+     0.331,
+     0.359
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Hot_Work_Insulation_Slab (CC BY-SA 4.0)",
+  "version": "wiki revision 61752"
+ },
+ {
+  "name": "Hot Work Power Bank",
+  "id": "item_equip_t4_suit_fire_natr01_edc_01",
+  "set": "Hot Work",
+  "slot": "Kit",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Strength",
+    "values": [
+     32,
+     35,
+     38,
+     41
+    ]
+   },
+   {
+    "stat": "Agility",
+    "values": [
+     21,
+     23,
+     25,
+     27
+    ]
+   },
+   {
+    "stat": "Arts Intensity",
+    "values": [
+     41.4,
+     45.5,
+     49.7,
+     53.8
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Hot_Work_Power_Bank (CC BY-SA 4.0)",
+  "version": "wiki revision 54046"
+ },
+ {
+  "name": "Hot Work Power Cartridge",
+  "id": "item_equip_t4_suit_fire_natr01_edc_03",
+  "set": "Hot Work",
+  "slot": "Kit",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Will",
+    "values": [
+     32,
+     35,
+     38,
+     41
+    ]
+   },
+   {
+    "stat": "Intellect",
+    "values": [
+     21,
+     23,
+     25,
+     27
+    ]
+   },
+   {
+    "stat": "Arts Intensity",
+    "values": [
+     41.4,
+     45.5,
+     49.7,
+     53.8
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Hot_Work_Power_Cartridge (CC BY-SA 4.0)",
+  "version": "wiki revision 54048"
+ },
+ {
+  "name": "Hot Work Pyrometer",
+  "id": "item_equip_t4_suit_fire_natr01_edc_02",
+  "set": "Hot Work",
+  "slot": "Kit",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Intellect",
+    "values": [
+     41,
+     45,
+     49,
+     53
+    ]
+   },
+   {
+    "stat": "Battle Skill DMG Bonus",
+    "values": [
+     0.414,
+     0.455,
+     0.497,
+     0.538
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Hot_Work_Pyrometer (CC BY-SA 4.0)",
+  "version": "wiki revision 54047"
+ },
+ {
+  "name": "LYNX Aegis Injector",
+  "id": "item_equip_t4_suit_heal01_edc_04",
+  "set": "LYNX",
+  "slot": "Kit",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Will",
+    "values": [
+     41,
+     45,
+     49,
+     53
+    ]
+   },
+   {
+    "stat": "Treatment Bonus",
+    "values": [
+     0.207,
+     0.228,
+     0.248,
+     0.269
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/LYNX_Aegis_Injector (CC BY-SA 4.0)",
+  "version": "wiki revision 54057"
+ },
+ {
+  "name": "LYNX Connector",
+  "id": "item_equip_t4_suit_heal01_edc_01",
+  "set": "LYNX",
+  "slot": "Kit",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Strength",
+    "values": [
+     32,
+     35,
+     38,
+     41
+    ]
+   },
+   {
+    "stat": "Will",
+    "values": [
+     21,
+     23,
+     25,
+     27
+    ]
+   },
+   {
+    "stat": "Final DMG Reduction",
+    "values": [
+     0.171,
+     0.185,
+     0.199,
+     0.212
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/LYNX_Connector (CC BY-SA 4.0)",
+  "version": "wiki revision 54054"
+ },
+ {
+  "name": "LYNX Connector T1",
+  "id": "item_equip_t4_suit_heal01_edc_05",
+  "set": "LYNX",
+  "slot": "Kit",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Strength",
+    "values": [
+     32,
+     35,
+     38,
+     41
+    ]
+   },
+   {
+    "stat": "Will",
+    "values": [
+     21,
+     23,
+     25,
+     27
+    ]
+   },
+   {
+    "stat": "HP",
+    "values": [
+     0.414,
+     0.455,
+     0.497,
+     0.538
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/LYNX_Connector_T1 (CC BY-SA 4.0)",
+  "version": "wiki revision 55810"
+ },
+ {
+  "name": "LYNX Connector T2",
+  "id": "item_equip_t4_suit_heal01_edc_02",
+  "set": "LYNX",
+  "slot": "Kit",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Strength",
+    "values": [
+     41,
+     45,
+     49,
+     53
+    ]
+   },
+   {
+    "stat": "HP",
+    "values": [
+     0.414,
+     0.455,
+     0.497,
+     0.538
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/LYNX_Connector_T2 (CC BY-SA 4.0)",
+  "version": "wiki revision 55808"
+ },
+ {
+  "name": "LYNX Cuirass",
+  "id": "item_equip_t4_suit_heal01_body_02",
+  "set": "LYNX",
+  "slot": "Armor",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Will",
+    "values": [
+     87,
+     95,
+     104,
+     113
+    ]
+   },
+   {
+    "stat": "Intellect",
+    "values": [
+     58,
+     63,
+     69,
+     75
+    ]
+   },
+   {
+    "stat": "Treatment Bonus",
+    "values": [
+     0.103,
+     0.114,
+     0.124,
+     0.135
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/LYNX_Cuirass (CC BY-SA 4.0)",
+  "version": "wiki revision 54053"
+ },
+ {
+  "name": "LYNX Cuirass T1",
+  "id": "item_equip_t4_suit_heal01_body_03",
+  "set": "LYNX",
+  "slot": "Armor",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Will",
+    "values": [
+     87,
+     95,
+     104,
+     113
+    ]
+   },
+   {
+    "stat": "Agility",
+    "values": [
+     58,
+     63,
+     69,
+     75
+    ]
+   },
+   {
+    "stat": "Ultimate Gain Efficiency",
+    "values": [
+     0.123,
+     0.136,
+     0.148,
+     0.16
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/LYNX_Cuirass_T1 (CC BY-SA 4.0)",
+  "version": "wiki revision 61756"
+ },
+ {
+  "name": "LYNX Gauntlets",
+  "id": "item_equip_t4_suit_heal01_hand_02",
+  "set": "LYNX",
+  "slot": "Gloves",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Will",
+    "values": [
+     65,
+     71,
+     78,
+     84
+    ]
+   },
+   {
+    "stat": "Strength",
+    "values": [
+     43,
+     47,
+     51,
+     55
+    ]
+   },
+   {
+    "stat": "Treatment Bonus",
+    "values": [
+     0.172,
+     0.19,
+     0.207,
+     0.224
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/LYNX_Gauntlets (CC BY-SA 4.0)",
+  "version": "wiki revision 54060"
+ },
+ {
+  "name": "LYNX Gauntlets T1",
+  "id": "item_equip_t4_suit_heal01_hand_03",
+  "set": "LYNX",
+  "slot": "Gloves",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Will",
+    "values": [
+     65,
+     71,
+     78,
+     84
+    ]
+   },
+   {
+    "stat": "Agility",
+    "values": [
+     43,
+     47,
+     51,
+     55
+    ]
+   },
+   {
+    "stat": "Ultimate Gain Efficiency",
+    "values": [
+     0.205,
+     0.226,
+     0.246,
+     0.267
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/LYNX_Gauntlets_T1 (CC BY-SA 4.0)",
+  "version": "wiki revision 55811"
+ },
+ {
+  "name": "LYNX Gloves",
+  "id": "item_equip_t4_suit_heal01_hand_01",
+  "set": "LYNX",
+  "slot": "Gloves",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Strength",
+    "values": [
+     65,
+     71,
+     78,
+     84
+    ]
+   },
+   {
+    "stat": "Will",
+    "values": [
+     43,
+     47,
+     51,
+     55
+    ]
+   },
+   {
+    "stat": "Ultimate Gain Efficiency",
+    "values": [
+     0.205,
+     0.226,
+     0.246,
+     0.267
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/LYNX_Gloves (CC BY-SA 4.0)",
+  "version": "wiki revision 54059"
+ },
+ {
+  "name": "LYNX Heavy Armor",
+  "id": "item_equip_t4_suit_heal01_body_01",
+  "set": "LYNX",
+  "slot": "Armor",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Strength",
+    "values": [
+     87,
+     95,
+     104,
+     113
+    ]
+   },
+   {
+    "stat": "Will",
+    "values": [
+     58,
+     63,
+     69,
+     75
+    ]
+   },
+   {
+    "stat": "Treatment Bonus",
+    "values": [
+     0.103,
+     0.114,
+     0.124,
+     0.135
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/LYNX_Heavy_Armor (CC BY-SA 4.0)",
+  "version": "wiki revision 54052"
+ },
+ {
+  "name": "LYNX Slab",
+  "id": "item_equip_t4_suit_heal01_edc_03",
+  "set": "LYNX",
+  "slot": "Kit",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Will",
+    "values": [
+     32,
+     35,
+     38,
+     41
+    ]
+   },
+   {
+    "stat": "Intellect",
+    "values": [
+     21,
+     23,
+     25,
+     27
+    ]
+   },
+   {
+    "stat": "Main Attribute",
+    "values": [
+     0.207,
+     0.228,
+     0.248,
+     0.269
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/LYNX_Slab (CC BY-SA 4.0)",
+  "version": "wiki revision 54056"
+ },
+ {
+  "name": "MI Security Armband",
+  "id": "item_equip_t4_suit_criti01_edc_01",
+  "set": "MI Security",
+  "slot": "Kit",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Strength",
+    "values": [
+     32,
+     35,
+     38,
+     41
+    ]
+   },
+   {
+    "stat": "Will",
+    "values": [
+     21,
+     23,
+     25,
+     27
+    ]
+   },
+   {
+    "stat": "Cryo & Electric DMG",
+    "values": [
+     0.23,
+     0.253,
+     0.276,
+     0.299
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/MI_Security_Armband (CC BY-SA 4.0)",
+  "version": "wiki revision 61744"
+ },
+ {
+  "name": "MI Security Armor",
+  "id": "item_equip_t4_suit_criti01_body_01",
+  "set": "MI Security",
+  "slot": "Armor",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Agility",
+    "values": [
+     87,
+     95,
+     104,
+     113
+    ]
+   },
+   {
+    "stat": "Strength",
+    "values": [
+     58,
+     63,
+     69,
+     75
+    ]
+   },
+   {
+    "stat": "Arts Intensity",
+    "values": [
+     20.7,
+     22.8,
+     24.8,
+     26.9
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/MI_Security_Armor (CC BY-SA 4.0)",
+  "version": "wiki revision 61742"
+ },
+ {
+  "name": "MI Security Armor T1",
+  "id": "item_equip_t4_suit_criti01_body_06",
+  "set": "MI Security",
+  "slot": "Armor",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Agility",
+    "values": [
+     87,
+     95,
+     104,
+     113
+    ]
+   },
+   {
+    "stat": "Intellect",
+    "values": [
+     58,
+     63,
+     69,
+     75
+    ]
+   },
+   {
+    "stat": "Ultimate Gain Efficiency",
+    "values": [
+     0.123,
+     0.136,
+     0.148,
+     0.16
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/MI_Security_Armor_T1 (CC BY-SA 4.0)",
+  "version": "wiki revision 61743"
+ },
+ {
+  "name": "MI Security Gloves",
+  "id": "item_equip_t4_suit_criti01_hand_01",
+  "set": "MI Security",
+  "slot": "Gloves",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Agility",
+    "values": [
+     65,
+     71,
+     78,
+     84
+    ]
+   },
+   {
+    "stat": "Strength",
+    "values": [
+     43,
+     47,
+     51,
+     55
+    ]
+   },
+   {
+    "stat": "Battle Skill DMG Bonus",
+    "values": [
+     0.345,
+     0.38,
+     0.414,
+     0.449
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/MI_Security_Gloves (CC BY-SA 4.0)",
+  "version": "wiki revision 54030"
+ },
+ {
+  "name": "MI Security Gloves T1",
+  "id": "item_equip_t4_suit_criti01_hand_04",
+  "set": "MI Security",
+  "slot": "Gloves",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Agility",
+    "values": [
+     65,
+     71,
+     78,
+     84
+    ]
+   },
+   {
+    "stat": "Intellect",
+    "values": [
+     43,
+     47,
+     51,
+     55
+    ]
+   },
+   {
+    "stat": "Ultimate DMG Bonus",
+    "values": [
+     0.431,
+     0.474,
+     0.517,
+     0.561
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/MI_Security_Gloves_T1 (CC BY-SA 4.0)",
+  "version": "wiki revision 55798"
+ },
+ {
+  "name": "MI Security Hands PPE",
+  "id": "item_equip_t4_suit_criti01_hand_02",
+  "set": "MI Security",
+  "slot": "Gloves",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Intellect",
+    "values": [
+     65,
+     71,
+     78,
+     84
+    ]
+   },
+   {
+    "stat": "Agility",
+    "values": [
+     43,
+     47,
+     51,
+     55
+    ]
+   },
+   {
+    "stat": "Basic Attack DMG Bonus",
+    "values": [
+     0.23,
+     0.253,
+     0.276,
+     0.299
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/MI_Security_Hands_PPE (CC BY-SA 4.0)",
+  "version": "wiki revision 54031"
+ },
+ {
+  "name": "MI Security Hands PPE T1",
+  "id": "item_equip_t4_suit_criti01_hand_03",
+  "set": "MI Security",
+  "slot": "Gloves",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Intellect",
+    "values": [
+     65,
+     71,
+     78,
+     84
+    ]
+   },
+   {
+    "stat": "Will",
+    "values": [
+     43,
+     47,
+     51,
+     55
+    ]
+   },
+   {
+    "stat": "Critical Rate",
+    "values": [
+     0.086,
+     0.095,
+     0.103,
+     0.112
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/MI_Security_Hands_PPE_T1 (CC BY-SA 4.0)",
+  "version": "wiki revision 55797"
+ },
+ {
+  "name": "MI Security Overalls",
+  "id": "item_equip_t4_suit_criti01_body_02",
+  "set": "MI Security",
+  "slot": "Armor",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Intellect",
+    "values": [
+     87,
+     95,
+     104,
+     113
+    ]
+   },
+   {
+    "stat": "Agility",
+    "values": [
+     58,
+     63,
+     69,
+     75
+    ]
+   },
+   {
+    "stat": "Basic Attack DMG Bonus",
+    "values": [
+     0.138,
+     0.152,
+     0.166,
+     0.179
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/MI_Security_Overalls (CC BY-SA 4.0)",
+  "version": "wiki revision 54019"
+ },
+ {
+  "name": "MI Security Overalls T1",
+  "id": "item_equip_t4_suit_criti01_body_03",
+  "set": "MI Security",
+  "slot": "Armor",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Intellect",
+    "values": [
+     87,
+     95,
+     104,
+     113
+    ]
+   },
+   {
+    "stat": "Will",
+    "values": [
+     58,
+     63,
+     69,
+     75
+    ]
+   },
+   {
+    "stat": "Critical Rate",
+    "values": [
+     0.052,
+     0.057,
+     0.062,
+     0.067
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/MI_Security_Overalls_T1 (CC BY-SA 4.0)",
+  "version": "wiki revision 55792"
+ },
+ {
+  "name": "MI Security Overalls T2",
+  "id": "item_equip_t4_suit_criti01_body_04",
+  "set": "MI Security",
+  "slot": "Armor",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Will",
+    "values": [
+     87,
+     95,
+     104,
+     113
+    ]
+   },
+   {
+    "stat": "Agility",
+    "values": [
+     58,
+     63,
+     69,
+     75
+    ]
+   },
+   {
+    "stat": "Battle Skill DMG Bonus",
+    "values": [
+     0.207,
+     0.228,
+     0.248,
+     0.269
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/MI_Security_Overalls_T2 (CC BY-SA 4.0)",
+  "version": "wiki revision 55793"
+ },
+ {
+  "name": "MI Security Push Knife",
+  "id": "item_equip_t4_suit_criti01_edc_04",
+  "set": "MI Security",
+  "slot": "Kit",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Will",
+    "values": [
+     32,
+     35,
+     38,
+     41
+    ]
+   },
+   {
+    "stat": "Intellect",
+    "values": [
+     21,
+     23,
+     25,
+     27
+    ]
+   },
+   {
+    "stat": "Heat & Nature DMG",
+    "values": [
+     0.23,
+     0.253,
+     0.276,
+     0.299
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/MI_Security_Push_Knife (CC BY-SA 4.0)",
+  "version": "wiki revision 61745"
+ },
+ {
+  "name": "MI Security Push Knife T1",
+  "id": "item_equip_t4_suit_criti01_edc_05",
+  "set": "MI Security",
+  "slot": "Kit",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Will",
+    "values": [
+     32,
+     35,
+     38,
+     41
+    ]
+   },
+   {
+    "stat": "Agility",
+    "values": [
+     21,
+     23,
+     25,
+     27
+    ]
+   },
+   {
+    "stat": "Battle Skill DMG Bonus",
+    "values": [
+     0.414,
+     0.455,
+     0.497,
+     0.538
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/MI_Security_Push_Knife_T1 (CC BY-SA 4.0)",
+  "version": "wiki revision 61746"
+ },
+ {
+  "name": "MI Security Scope",
+  "id": "item_equip_t4_suit_criti01_edc_02",
+  "set": "MI Security",
+  "slot": "Kit",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Agility",
+    "values": [
+     32,
+     35,
+     38,
+     41
+    ]
+   },
+   {
+    "stat": "Strength",
+    "values": [
+     21,
+     23,
+     25,
+     27
+    ]
+   },
+   {
+    "stat": "Battle Skill DMG Bonus",
+    "values": [
+     0.414,
+     0.455,
+     0.497,
+     0.538
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/MI_Security_Scope (CC BY-SA 4.0)",
+  "version": "wiki revision 54024"
+ },
+ {
+  "name": "MI Security Scope T1",
+  "id": "item_equip_t4_suit_criti01_edc_06",
+  "set": "MI Security",
+  "slot": "Kit",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Agility",
+    "values": [
+     32,
+     35,
+     38,
+     41
+    ]
+   },
+   {
+    "stat": "Intellect",
+    "values": [
+     21,
+     23,
+     25,
+     27
+    ]
+   },
+   {
+    "stat": "Critical Rate",
+    "values": [
+     0.103,
+     0.114,
+     0.124,
+     0.135
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/MI_Security_Scope_T1 (CC BY-SA 4.0)",
+  "version": "wiki revision 55796"
+ },
+ {
+  "name": "MI Security Toolkit",
+  "id": "item_equip_t4_suit_criti01_edc_03",
+  "set": "MI Security",
+  "slot": "Kit",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Intellect",
+    "values": [
+     32,
+     35,
+     38,
+     41
+    ]
+   },
+   {
+    "stat": "Agility",
+    "values": [
+     21,
+     23,
+     25,
+     27
+    ]
+   },
+   {
+    "stat": "Critical Rate",
+    "values": [
+     0.103,
+     0.114,
+     0.124,
+     0.135
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/MI_Security_Toolkit (CC BY-SA 4.0)",
+  "version": "wiki revision 54025"
+ },
+ {
+  "name": "Miner Armor",
+  "id": "item_equip_t1_parts_tundra01_body_01",
+  "slot": "Armor",
+  "rarity": 2,
+  "level": 20,
+  "stats": [
+   {
+    "stat": "Strength",
+    "values": [
+     27
+    ]
+   },
+   {
+    "stat": "Agility",
+    "values": [
+     18
+    ]
+   },
+   {
+    "stat": "HP",
+    "values": [
+     125.4
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Miner_Armor (CC BY-SA 4.0)",
+  "version": "wiki revision 53872"
+ },
+ {
+  "name": "Miner Armor T1",
+  "id": "item_equip_t3_parts_tundra01_body_01",
+  "slot": "Armor",
+  "rarity": 4,
+  "level": 50,
+  "stats": [
+   {
+    "stat": "Strength",
+    "values": [
+     65
+    ]
+   },
+   {
+    "stat": "Will",
+    "values": [
+     43
+    ]
+   },
+   {
+    "stat": "Critical Rate",
+    "values": [
+     0.039
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Miner_Armor_T1 (CC BY-SA 4.0)",
+  "version": "wiki revision 55707"
+ },
+ {
+  "name": "Miner Cleansuit",
+  "id": "item_equip_t1_parts_tundra01_body_06",
+  "slot": "Armor",
+  "rarity": 2,
+  "level": 28,
+  "stats": [
+   {
+    "stat": "Will",
+    "values": [
+     37
+    ]
+   },
+   {
+    "stat": "Agility",
+    "values": [
+     25
+    ]
+   },
+   {
+    "stat": "HP",
+    "values": [
+     0.09
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Miner_Cleansuit (CC BY-SA 4.0)",
+  "version": "wiki revision 53877"
+ },
+ {
+  "name": "Miner Comm",
+  "id": "item_equip_t2_parts_tundra01_edc_04",
+  "slot": "Kit",
+  "rarity": 3,
+  "level": 36,
+  "stats": [
+   {
+    "stat": "Will",
+    "values": [
+     22
+    ]
+   },
+   {
+    "stat": "HP",
+    "values": [
+     0.228
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Miner_Comm (CC BY-SA 4.0)",
+  "version": "wiki revision 53895"
+ },
+ {
+  "name": "Miner Comm T1",
+  "id": "item_equip_t3_parts_tundra01_edc_04",
+  "slot": "Kit",
+  "rarity": 4,
+  "level": 50,
+  "stats": [
+   {
+    "stat": "Will",
+    "values": [
+     31
+    ]
+   },
+   {
+    "stat": "Treatment Bonus",
+    "values": [
+     0.156
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Miner_Comm_T1 (CC BY-SA 4.0)",
+  "version": "wiki revision 55719"
+ },
+ {
+  "name": "Miner Compression Core",
+  "id": "item_equip_t2_parts_tundra01_edc_03",
+  "slot": "Kit",
+  "rarity": 3,
+  "level": 36,
+  "stats": [
+   {
+    "stat": "Intellect",
+    "values": [
+     22
+    ]
+   },
+   {
+    "stat": "Critical Rate",
+    "values": [
+     0.057
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Miner_Compression_Core (CC BY-SA 4.0)",
+  "version": "wiki revision 53894"
+ },
+ {
+  "name": "Miner Compression Core T1",
+  "id": "item_equip_t3_parts_tundra01_edc_03",
+  "slot": "Kit",
+  "rarity": 4,
+  "level": 50,
+  "stats": [
+   {
+    "stat": "Intellect",
+    "values": [
+     31
+    ]
+   },
+   {
+    "stat": "Ultimate Gain Efficiency",
+    "values": [
+     0.186
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Miner_Compression_Core_T1 (CC BY-SA 4.0)",
+  "version": "wiki revision 55717"
+ },
+ {
+  "name": "Miner Drive Wheel",
+  "id": "item_equip_t2_parts_tundra01_edc_02",
+  "slot": "Kit",
+  "rarity": 3,
+  "level": 36,
+  "stats": [
+   {
+    "stat": "Agility",
+    "values": [
+     22
+    ]
+   },
+   {
+    "stat": "Critical Rate",
+    "values": [
+     0.057
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Miner_Drive_Wheel (CC BY-SA 4.0)",
+  "version": "wiki revision 61701"
+ },
+ {
+  "name": "Miner Drive Wheel T1",
+  "id": "item_equip_t3_parts_tundra01_edc_02",
+  "slot": "Kit",
+  "rarity": 4,
+  "level": 50,
+  "stats": [
+   {
+    "stat": "Agility",
+    "values": [
+     31
+    ]
+   },
+   {
+    "stat": "Combo Skill DMG Bonus",
+    "values": [
+     0.312
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Miner_Drive_Wheel_T1 (CC BY-SA 4.0)",
+  "version": "wiki revision 55716"
+ },
+ {
+  "name": "Miner Fists",
+  "id": "item_equip_t1_parts_tundra01_hand_04",
+  "slot": "Gloves",
+  "rarity": 2,
+  "level": 28,
+  "stats": [
+   {
+    "stat": "Will",
+    "values": [
+     28
+    ]
+   },
+   {
+    "stat": "Intellect",
+    "values": [
+     18
+    ]
+   },
+   {
+    "stat": "HP",
+    "values": [
+     0.15
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Miner_Fists (CC BY-SA 4.0)",
+  "version": "wiki revision 53883"
+ },
+ {
+  "name": "Miner Fists T1",
+  "id": "item_equip_t3_parts_tundra01_hand_02",
+  "slot": "Gloves",
+  "rarity": 4,
+  "level": 50,
+  "stats": [
+   {
+    "stat": "Will",
+    "values": [
+     49
+    ]
+   },
+   {
+    "stat": "Intellect",
+    "values": [
+     32
+    ]
+   },
+   {
+    "stat": "Ultimate Gain Efficiency",
+    "values": [
+     0.155
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Miner_Fists_T1 (CC BY-SA 4.0)",
+  "version": "wiki revision 55721"
+ },
+ {
+  "name": "Miner Gauntlets",
+  "id": "item_equip_t1_parts_tundra01_hand_01",
+  "slot": "Gloves",
+  "rarity": 2,
+  "level": 20,
+  "stats": [
+   {
+    "stat": "Strength",
+    "values": [
+     20
+    ]
+   },
+   {
+    "stat": "Agility",
+    "values": [
+     13
+    ]
+   },
+   {
+    "stat": "HP",
+    "values": [
+     0.11
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Miner_Gauntlets (CC BY-SA 4.0)",
+  "version": "wiki revision 53880"
+ },
+ {
+  "name": "Miner Gauntlets T1",
+  "id": "item_equip_t2_parts_tundra01_hand_01",
+  "slot": "Gloves",
+  "rarity": 3,
+  "level": 36,
+  "stats": [
+   {
+    "stat": "Strength",
+    "values": [
+     36
+    ]
+   },
+   {
+    "stat": "Intellect",
+    "values": [
+     24
+    ]
+   },
+   {
+    "stat": "Attack",
+    "values": [
+     0.095
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Miner_Gauntlets_T1 (CC BY-SA 4.0)",
+  "version": "wiki revision 55702"
+ },
+ {
+  "name": "Miner Gloves",
+  "id": "item_equip_t1_parts_tundra01_hand_03",
+  "slot": "Gloves",
+  "rarity": 2,
+  "level": 20,
+  "stats": [
+   {
+    "stat": "Intellect",
+    "values": [
+     20
+    ]
+   },
+   {
+    "stat": "Will",
+    "values": [
+     13
+    ]
+   },
+   {
+    "stat": "HP",
+    "values": [
+     0.11
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Miner_Gloves (CC BY-SA 4.0)",
+  "version": "wiki revision 53882"
+ },
+ {
+  "name": "Miner Gloves T1",
+  "id": "item_equip_t2_parts_tundra01_hand_02",
+  "slot": "Gloves",
+  "rarity": 3,
+  "level": 36,
+  "stats": [
+   {
+    "stat": "Intellect",
+    "values": [
+     36
+    ]
+   },
+   {
+    "stat": "Agility",
+    "values": [
+     24
+    ]
+   },
+   {
+    "stat": "HP",
+    "values": [
+     0.19
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Miner_Gloves_T1 (CC BY-SA 4.0)",
+  "version": "wiki revision 55703"
+ },
+ {
+  "name": "Miner Gloves T2",
+  "id": "item_equip_t3_parts_tundra01_hand_01",
+  "slot": "Gloves",
+  "rarity": 4,
+  "level": 50,
+  "stats": [
+   {
+    "stat": "Intellect",
+    "values": [
+     49
+    ]
+   },
+   {
+    "stat": "Agility",
+    "values": [
+     32
+    ]
+   },
+   {
+    "stat": "Attack",
+    "values": [
+     0.13
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Miner_Gloves_T2 (CC BY-SA 4.0)",
+  "version": "wiki revision 55720"
+ },
+ {
+  "name": "Miner Overalls",
+  "id": "item_equip_t1_parts_tundra01_body_02",
+  "slot": "Armor",
+  "rarity": 2,
+  "level": 20,
+  "stats": [
+   {
+    "stat": "Intellect",
+    "values": [
+     27
+    ]
+   },
+   {
+    "stat": "Will",
+    "values": [
+     18
+    ]
+   },
+   {
+    "stat": "HP",
+    "values": [
+     125.4
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Miner_Overalls (CC BY-SA 4.0)",
+  "version": "wiki revision 53873"
+ },
+ {
+  "name": "Miner Overalls T1",
+  "id": "item_equip_t3_parts_tundra01_body_02",
+  "slot": "Armor",
+  "rarity": 4,
+  "level": 50,
+  "stats": [
+   {
+    "stat": "Intellect",
+    "values": [
+     65
+    ]
+   },
+   {
+    "stat": "Agility",
+    "values": [
+     43
+    ]
+   },
+   {
+    "stat": "Attack",
+    "values": [
+     0.078
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Miner_Overalls_T1 (CC BY-SA 4.0)",
+  "version": "wiki revision 55710"
+ },
+ {
+  "name": "Miner Turbine",
+  "id": "item_equip_t2_parts_tundra01_edc_01",
+  "slot": "Kit",
+  "rarity": 3,
+  "level": 36,
+  "stats": [
+   {
+    "stat": "Strength",
+    "values": [
+     22
+    ]
+   },
+   {
+    "stat": "Combo Skill DMG Bonus",
+    "values": [
+     0.228
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Miner_Turbine (CC BY-SA 4.0)",
+  "version": "wiki revision 53892"
+ },
+ {
+  "name": "Miner Turbine T1",
+  "id": "item_equip_t3_parts_tundra01_edc_01",
+  "slot": "Kit",
+  "rarity": 4,
+  "level": 50,
+  "stats": [
+   {
+    "stat": "Strength",
+    "values": [
+     31
+    ]
+   },
+   {
+    "stat": "Final DMG Reduction",
+    "values": [
+     0.135
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Miner_Turbine_T1 (CC BY-SA 4.0)",
+  "version": "wiki revision 55714"
+ },
+ {
+  "name": "Miner Vest",
+  "id": "item_equip_t1_parts_tundra01_body_05",
+  "slot": "Armor",
+  "rarity": 2,
+  "level": 28,
+  "stats": [
+   {
+    "stat": "Agility",
+    "values": [
+     37
+    ]
+   },
+   {
+    "stat": "Intellect",
+    "values": [
+     25
+    ]
+   },
+   {
+    "stat": "HP",
+    "values": [
+     0.09
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Miner_Vest (CC BY-SA 4.0)",
+  "version": "wiki revision 53876"
+ },
+ {
+  "name": "Miner Wrists",
+  "id": "item_equip_t1_parts_tundra01_hand_02",
+  "slot": "Gloves",
+  "rarity": 2,
+  "level": 28,
+  "stats": [
+   {
+    "stat": "Agility",
+    "values": [
+     28
+    ]
+   },
+   {
+    "stat": "Strength",
+    "values": [
+     18
+    ]
+   },
+   {
+    "stat": "HP",
+    "values": [
+     0.15
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Miner_Wrists (CC BY-SA 4.0)",
+  "version": "wiki revision 53881"
+ },
+ {
+  "name": "Mordvolt Insulation Battery",
+  "id": "item_equip_t2_suit_wisd01_edc_03",
+  "set": "Mordvolt Insulation",
+  "slot": "Kit",
+  "rarity": 3,
+  "level": 36,
+  "stats": [
+   {
+    "stat": "Intellect",
+    "values": [
+     21
+    ]
+   },
+   {
+    "stat": "Critical Rate",
+    "values": [
+     0.052
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Mordvolt_Insulation_Battery (CC BY-SA 4.0)",
+  "version": "wiki revision 53913"
+ },
+ {
+  "name": "Mordvolt Insulation Battery T1",
+  "id": "item_equip_t3_suit_wisd01_edc_02",
+  "set": "Mordvolt Insulation",
+  "slot": "Kit",
+  "rarity": 4,
+  "level": 50,
+  "stats": [
+   {
+    "stat": "Intellect",
+    "values": [
+     29
+    ]
+   },
+   {
+    "stat": "Ultimate Gain Efficiency",
+    "values": [
+     0.175
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Mordvolt_Insulation_Battery_T1 (CC BY-SA 4.0)",
+  "version": "wiki revision 55747"
+ },
+ {
+  "name": "Mordvolt Insulation Gloves",
+  "id": "item_equip_t2_suit_wisd01_hand_01",
+  "set": "Mordvolt Insulation",
+  "slot": "Gloves",
+  "rarity": 3,
+  "level": 36,
+  "stats": [
+   {
+    "stat": "Intellect",
+    "values": [
+     33
+    ]
+   },
+   {
+    "stat": "Will",
+    "values": [
+     22
+    ]
+   },
+   {
+    "stat": "Arts DMG",
+    "values": [
+     0.092
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Mordvolt_Insulation_Gloves (CC BY-SA 4.0)",
+  "version": "wiki revision 61703"
+ },
+ {
+  "name": "Mordvolt Insulation Gloves T1",
+  "id": "item_equip_t3_suit_wisd01_hand_01",
+  "set": "Mordvolt Insulation",
+  "slot": "Gloves",
+  "rarity": 4,
+  "level": 50,
+  "stats": [
+   {
+    "stat": "Intellect",
+    "values": [
+     46
+    ]
+   },
+   {
+    "stat": "Strength",
+    "values": [
+     30
+    ]
+   },
+   {
+    "stat": "Attack",
+    "values": [
+     0.122
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Mordvolt_Insulation_Gloves_T1 (CC BY-SA 4.0)",
+  "version": "wiki revision 55748"
+ },
+ {
+  "name": "Mordvolt Insulation Vest",
+  "id": "item_equip_t2_suit_wisd01_body_01",
+  "set": "Mordvolt Insulation",
+  "slot": "Armor",
+  "rarity": 3,
+  "level": 36,
+  "stats": [
+   {
+    "stat": "Intellect",
+    "values": [
+     44
+    ]
+   },
+   {
+    "stat": "Strength",
+    "values": [
+     29
+    ]
+   },
+   {
+    "stat": "Attack",
+    "values": [
+     16.2
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Mordvolt_Insulation_Vest (CC BY-SA 4.0)",
+  "version": "wiki revision 53910"
+ },
+ {
+  "name": "Mordvolt Insulation Vest T1",
+  "id": "item_equip_t3_suit_wisd01_body_01",
+  "set": "Mordvolt Insulation",
+  "slot": "Armor",
+  "rarity": 4,
+  "level": 50,
+  "stats": [
+   {
+    "stat": "Intellect",
+    "values": [
+     61
+    ]
+   },
+   {
+    "stat": "Agility",
+    "values": [
+     41
+    ]
+   },
+   {
+    "stat": "Basic Attack DMG Bonus",
+    "values": [
+     0.098
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Mordvolt_Insulation_Vest_T1 (CC BY-SA 4.0)",
+  "version": "wiki revision 55744"
+ },
+ {
+  "name": "Mordvolt Insulation Vest T2",
+  "id": "item_equip_t3_suit_wisd01_body_02",
+  "set": "Mordvolt Insulation",
+  "slot": "Armor",
+  "rarity": 4,
+  "level": 50,
+  "stats": [
+   {
+    "stat": "Intellect",
+    "values": [
+     61
+    ]
+   },
+   {
+    "stat": "Will",
+    "values": [
+     41
+    ]
+   },
+   {
+    "stat": "HP",
+    "values": [
+     0.147
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Mordvolt_Insulation_Vest_T2 (CC BY-SA 4.0)",
+  "version": "wiki revision 55745"
+ },
+ {
+  "name": "Mordvolt Insulation Wrench",
+  "id": "item_equip_t2_suit_wisd01_edc_01",
+  "set": "Mordvolt Insulation",
+  "slot": "Kit",
+  "rarity": 3,
+  "level": 36,
+  "stats": [
+   {
+    "stat": "Intellect",
+    "values": [
+     21
+    ]
+   },
+   {
+    "stat": "Attack",
+    "values": [
+     0.105
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Mordvolt_Insulation_Wrench (CC BY-SA 4.0)",
+  "version": "wiki revision 53911"
+ },
+ {
+  "name": "Mordvolt Insulation Wrench T1",
+  "id": "item_equip_t2_suit_wisd01_edc_02",
+  "set": "Mordvolt Insulation",
+  "slot": "Kit",
+  "rarity": 3,
+  "level": 36,
+  "stats": [
+   {
+    "stat": "Intellect",
+    "values": [
+     21
+    ]
+   },
+   {
+    "stat": "Cryo & Electric DMG",
+    "values": [
+     0.117
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Mordvolt_Insulation_Wrench_T1 (CC BY-SA 4.0)",
+  "version": "wiki revision 61702"
+ },
+ {
+  "name": "Mordvolt Insulation Wrench T2",
+  "id": "item_equip_t3_suit_wisd01_edc_01",
+  "set": "Mordvolt Insulation",
+  "slot": "Kit",
+  "rarity": 4,
+  "level": 50,
+  "stats": [
+   {
+    "stat": "Intellect",
+    "values": [
+     23
+    ]
+   },
+   {
+    "stat": "Agility",
+    "values": [
+     15
+    ]
+   },
+   {
+    "stat": "Attack",
+    "values": [
+     0.147
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Mordvolt_Insulation_Wrench_T2 (CC BY-SA 4.0)",
+  "version": "wiki revision 55746"
+ },
+ {
+  "name": "Mordvolt Resistant Battery",
+  "id": "item_equip_t2_suit_will01_edc_02",
+  "set": "Mordvolt Resistant",
+  "slot": "Kit",
+  "rarity": 3,
+  "level": 36,
+  "stats": [
+   {
+    "stat": "Will",
+    "values": [
+     21
+    ]
+   },
+   {
+    "stat": "Treatment Bonus",
+    "values": [
+     0.105
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Mordvolt_Resistant_Battery (CC BY-SA 4.0)",
+  "version": "wiki revision 53908"
+ },
+ {
+  "name": "Mordvolt Resistant Battery T1",
+  "id": "item_equip_t3_suit_will01_edc_01",
+  "set": "Mordvolt Resistant",
+  "slot": "Kit",
+  "rarity": 4,
+  "level": 50,
+  "stats": [
+   {
+    "stat": "Will",
+    "values": [
+     23
+    ]
+   },
+   {
+    "stat": "Agility",
+    "values": [
+     15
+    ]
+   },
+   {
+    "stat": "Treatment Bonus",
+    "values": [
+     0.147
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Mordvolt_Resistant_Battery_T1 (CC BY-SA 4.0)",
+  "version": "wiki revision 55741"
+ },
+ {
+  "name": "Mordvolt Resistant Gloves",
+  "id": "item_equip_t2_suit_will01_hand_01",
+  "set": "Mordvolt Resistant",
+  "slot": "Gloves",
+  "rarity": 3,
+  "level": 36,
+  "stats": [
+   {
+    "stat": "Will",
+    "values": [
+     33
+    ]
+   },
+   {
+    "stat": "Intellect",
+    "values": [
+     22
+    ]
+   },
+   {
+    "stat": "Treatment Bonus",
+    "values": [
+     0.088
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Mordvolt_Resistant_Gloves (CC BY-SA 4.0)",
+  "version": "wiki revision 53909"
+ },
+ {
+  "name": "Mordvolt Resistant Gloves T1",
+  "id": "item_equip_t3_suit_will01_hand_01",
+  "set": "Mordvolt Resistant",
+  "slot": "Gloves",
+  "rarity": 4,
+  "level": 50,
+  "stats": [
+   {
+    "stat": "Will",
+    "values": [
+     46
+    ]
+   },
+   {
+    "stat": "Agility",
+    "values": [
+     30
+    ]
+   },
+   {
+    "stat": "Attack",
+    "values": [
+     0.122
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Mordvolt_Resistant_Gloves_T1 (CC BY-SA 4.0)",
+  "version": "wiki revision 55743"
+ },
+ {
+  "name": "Mordvolt Resistant Vest",
+  "id": "item_equip_t2_suit_will01_body_01",
+  "set": "Mordvolt Resistant",
+  "slot": "Armor",
+  "rarity": 3,
+  "level": 36,
+  "stats": [
+   {
+    "stat": "Will",
+    "values": [
+     44
+    ]
+   },
+   {
+    "stat": "Agility",
+    "values": [
+     29
+    ]
+   },
+   {
+    "stat": "HP",
+    "values": [
+     0.105
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Mordvolt_Resistant_Vest (CC BY-SA 4.0)",
+  "version": "wiki revision 53906"
+ },
+ {
+  "name": "Mordvolt Resistant Vest T1",
+  "id": "item_equip_t3_suit_will01_body_01",
+  "set": "Mordvolt Resistant",
+  "slot": "Armor",
+  "rarity": 4,
+  "level": 50,
+  "stats": [
+   {
+    "stat": "Will",
+    "values": [
+     61
+    ]
+   },
+   {
+    "stat": "Intellect",
+    "values": [
+     41
+    ]
+   },
+   {
+    "stat": "HP",
+    "values": [
+     0.147
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Mordvolt_Resistant_Vest_T1 (CC BY-SA 4.0)",
+  "version": "wiki revision 55740"
+ },
+ {
+  "name": "Mordvolt Resistant Wrench",
+  "id": "item_equip_t2_suit_will01_edc_01",
+  "set": "Mordvolt Resistant",
+  "slot": "Kit",
+  "rarity": 3,
+  "level": 36,
+  "stats": [
+   {
+    "stat": "Will",
+    "values": [
+     21
+    ]
+   },
+   {
+    "stat": "Attack",
+    "values": [
+     0.105
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Mordvolt_Resistant_Wrench (CC BY-SA 4.0)",
+  "version": "wiki revision 53907"
+ },
+ {
+  "name": "Mordvolt Resistant Wrench T1",
+  "id": "item_equip_t3_suit_will01_edc_02",
+  "set": "Mordvolt Resistant",
+  "slot": "Kit",
+  "rarity": 4,
+  "level": 50,
+  "stats": [
+   {
+    "stat": "Will",
+    "values": [
+     23
+    ]
+   },
+   {
+    "stat": "Intellect",
+    "values": [
+     15
+    ]
+   },
+   {
+    "stat": "Attack",
+    "values": [
+     0.147
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Mordvolt_Resistant_Wrench_T1 (CC BY-SA 4.0)",
+  "version": "wiki revision 55742"
+ },
+ {
+  "name": "Prototype Heavy Armor",
+  "id": "item_equip_t1_parts_tundra01_body_03",
+  "slot": "Armor",
+  "rarity": 2,
+  "level": 28,
+  "stats": [
+   {
+    "stat": "Strength",
+    "values": [
+     37
+    ]
+   },
+   {
+    "stat": "Intellect",
+    "values": [
+     25
+    ]
+   },
+   {
+    "stat": "Attack",
+    "values": [
+     11.7
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Prototype_Heavy_Armor (CC BY-SA 4.0)",
+  "version": "wiki revision 53874"
+ },
+ {
+  "name": "Prototype Heavy Armor T1",
+  "id": "item_equip_t1_parts_tundra01_body_04",
+  "slot": "Armor",
+  "rarity": 2,
+  "level": 28,
+  "stats": [
+   {
+    "stat": "Agility",
+    "values": [
+     37
+    ]
+   },
+   {
+    "stat": "Will",
+    "values": [
+     25
+    ]
+   },
+   {
+    "stat": "Attack",
+    "values": [
+     11.7
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Prototype_Heavy_Armor_T1 (CC BY-SA 4.0)",
+  "version": "wiki revision 55701"
+ },
+ {
+  "name": "Pulser Labs Armor Slab",
+  "id": "item_equip_t4_suit_pulse_cryst01_edc_04",
+  "set": "Pulser Labs",
+  "slot": "Kit",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Will",
+    "values": [
+     32,
+     35,
+     38,
+     41
+    ]
+   },
+   {
+    "stat": "Strength",
+    "values": [
+     21,
+     23,
+     25,
+     27
+    ]
+   },
+   {
+    "stat": "Ultimate Gain Efficiency",
+    "values": [
+     0.246,
+     0.271,
+     0.296,
+     0.32
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Pulser_Labs_Armor_Slab (CC BY-SA 4.0)",
+  "version": "wiki revision 64932"
+ },
+ {
+  "name": "Pulser Labs Calibrator",
+  "id": "item_equip_t4_suit_pulse_cryst01_edc_02",
+  "set": "Pulser Labs",
+  "slot": "Kit",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Intellect",
+    "values": [
+     41,
+     45,
+     49,
+     53
+    ]
+   },
+   {
+    "stat": "Arts Intensity",
+    "values": [
+     41.4,
+     45.5,
+     49.7,
+     53.8
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Pulser_Labs_Calibrator (CC BY-SA 4.0)",
+  "version": "wiki revision 54081"
+ },
+ {
+  "name": "Pulser Labs Disruptor Suit",
+  "id": "item_equip_t4_suit_pulse_cryst01_body_01",
+  "set": "Pulser Labs",
+  "slot": "Armor",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Intellect",
+    "values": [
+     87,
+     95,
+     104,
+     113
+    ]
+   },
+   {
+    "stat": "Will",
+    "values": [
+     58,
+     63,
+     69,
+     75
+    ]
+   },
+   {
+    "stat": "Arts Intensity",
+    "values": [
+     20.7,
+     22.8,
+     24.8,
+     26.9
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Pulser_Labs_Disruptor_Suit (CC BY-SA 4.0)",
+  "version": "wiki revision 54079"
+ },
+ {
+  "name": "Pulser Labs Gloves",
+  "id": "item_equip_t4_suit_pulse_cryst01_hand_01",
+  "set": "Pulser Labs",
+  "slot": "Gloves",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Will",
+    "values": [
+     65,
+     71,
+     78,
+     84
+    ]
+   },
+   {
+    "stat": "Intellect",
+    "values": [
+     43,
+     47,
+     51,
+     55
+    ]
+   },
+   {
+    "stat": "Cryo & Electric DMG",
+    "values": [
+     0.192,
+     0.211,
+     0.23,
+     0.249
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Pulser_Labs_Gloves (CC BY-SA 4.0)",
+  "version": "wiki revision 61764"
+ },
+ {
+  "name": "Pulser Labs Invasion Core",
+  "id": "item_equip_t4_suit_pulse_cryst01_edc_03",
+  "set": "Pulser Labs",
+  "slot": "Kit",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Will",
+    "values": [
+     41,
+     45,
+     49,
+     53
+    ]
+   },
+   {
+    "stat": "Ultimate DMG Bonus",
+    "values": [
+     0.517,
+     0.569,
+     0.621,
+     0.673
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Pulser_Labs_Invasion_Core (CC BY-SA 4.0)",
+  "version": "wiki revision 54082"
+ },
+ {
+  "name": "Pulser Labs Light Armor",
+  "id": "item_equip_t4_suit_pulse_cryst01_body_02",
+  "set": "Pulser Labs",
+  "slot": "Armor",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Will",
+    "values": [
+     87,
+     95,
+     104,
+     113
+    ]
+   },
+   {
+    "stat": "Strength",
+    "values": [
+     58,
+     63,
+     69,
+     75
+    ]
+   },
+   {
+    "stat": "Cryo & Electric DMG",
+    "values": [
+     0.115,
+     0.127,
+     0.138,
+     0.149
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Pulser_Labs_Light_Armor (CC BY-SA 4.0)",
+  "version": "wiki revision 64931"
+ },
+ {
+  "name": "Pulser Labs Light Gauntlets",
+  "id": "item_equip_t4_suit_pulse_cryst01_hand_02",
+  "set": "Pulser Labs",
+  "slot": "Gloves",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Will",
+    "values": [
+     65,
+     71,
+     78,
+     84
+    ]
+   },
+   {
+    "stat": "Strength",
+    "values": [
+     43,
+     47,
+     51,
+     55
+    ]
+   },
+   {
+    "stat": "Cryo & Electric DMG",
+    "values": [
+     0.192,
+     0.211,
+     0.23,
+     0.249
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Pulser_Labs_Light_Gauntlets (CC BY-SA 4.0)",
+  "version": "wiki revision 64933"
+ },
+ {
+  "name": "Pulser Labs Probe",
+  "id": "item_equip_t4_suit_pulse_cryst01_edc_01",
+  "set": "Pulser Labs",
+  "slot": "Kit",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Intellect",
+    "values": [
+     32,
+     35,
+     38,
+     41
+    ]
+   },
+   {
+    "stat": "Agility",
+    "values": [
+     21,
+     23,
+     25,
+     27
+    ]
+   },
+   {
+    "stat": "Arts Intensity",
+    "values": [
+     41.4,
+     45.5,
+     49.7,
+     53.8
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Pulser_Labs_Probe (CC BY-SA 4.0)",
+  "version": "wiki revision 54080"
+ },
+ {
+  "name": "Qingbo Bamboo Cutter",
+  "id": "item_equip_t4_suit_combo_cd01_edc_02",
+  "set": "Qingbo",
+  "slot": "Kit",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Strength",
+    "values": [
+     32,
+     35,
+     38,
+     41
+    ]
+   },
+   {
+    "stat": "Agility",
+    "values": [
+     21,
+     23,
+     25,
+     27
+    ]
+   },
+   {
+    "stat": "Heat & Nature DMG",
+    "values": [
+     0.23,
+     0.253,
+     0.276,
+     0.299
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Qingbo_Bamboo_Cutter (CC BY-SA 4.0)",
+  "version": "wiki revision 61740"
+ },
+ {
+  "name": "Qingbo Cask",
+  "id": "item_equip_t4_suit_combo_cd01_edc_03",
+  "set": "Qingbo",
+  "slot": "Kit",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Intellect",
+    "values": [
+     32,
+     35,
+     38,
+     41
+    ]
+   },
+   {
+    "stat": "Will",
+    "values": [
+     21,
+     23,
+     25,
+     27
+    ]
+   },
+   {
+    "stat": "Arts Intensity",
+    "values": [
+     41.4,
+     45.5,
+     49.7,
+     53.8
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Qingbo_Cask (CC BY-SA 4.0)",
+  "version": "wiki revision 54014"
+ },
+ {
+  "name": "Qingbo Gauntlets",
+  "id": "item_equip_t4_suit_combo_cd01_hand_01",
+  "set": "Qingbo",
+  "slot": "Gloves",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Agility",
+    "values": [
+     65,
+     71,
+     78,
+     84
+    ]
+   },
+   {
+    "stat": "Strength",
+    "values": [
+     43,
+     47,
+     51,
+     55
+    ]
+   },
+   {
+    "stat": "All Skill DMG",
+    "values": [
+     0.23,
+     0.253,
+     0.276,
+     0.299
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Qingbo_Gauntlets (CC BY-SA 4.0)",
+  "version": "wiki revision 61741"
+ },
+ {
+  "name": "Qingbo Gloves",
+  "id": "item_equip_t4_suit_combo_cd01_hand_02",
+  "set": "Qingbo",
+  "slot": "Gloves",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Intellect",
+    "values": [
+     65,
+     71,
+     78,
+     84
+    ]
+   },
+   {
+    "stat": "Will",
+    "values": [
+     43,
+     47,
+     51,
+     55
+    ]
+   },
+   {
+    "stat": "Ultimate Gain Efficiency",
+    "values": [
+     0.205,
+     0.226,
+     0.246,
+     0.267
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Qingbo_Gloves (CC BY-SA 4.0)",
+  "version": "wiki revision 54017"
+ },
+ {
+  "name": "Qingbo Heavy Armor",
+  "id": "item_equip_t4_suit_combo_cd01_body_01",
+  "set": "Qingbo",
+  "slot": "Armor",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Agility",
+    "values": [
+     87,
+     95,
+     104,
+     113
+    ]
+   },
+   {
+    "stat": "Strength",
+    "values": [
+     58,
+     63,
+     69,
+     75
+    ]
+   },
+   {
+    "stat": "Ultimate Gain Efficiency",
+    "values": [
+     0.123,
+     0.136,
+     0.148,
+     0.16
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Qingbo_Heavy_Armor (CC BY-SA 4.0)",
+  "version": "wiki revision 54010"
+ },
+ {
+  "name": "Qingbo Light Armor",
+  "id": "item_equip_t4_suit_combo_cd01_body_02",
+  "set": "Qingbo",
+  "slot": "Armor",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Intellect",
+    "values": [
+     87,
+     95,
+     104,
+     113
+    ]
+   },
+   {
+    "stat": "Will",
+    "values": [
+     58,
+     63,
+     69,
+     75
+    ]
+   },
+   {
+    "stat": "Arts Intensity",
+    "values": [
+     20.7,
+     22.8,
+     24.8,
+     26.9
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Qingbo_Light_Armor (CC BY-SA 4.0)",
+  "version": "wiki revision 54011"
+ },
+ {
+  "name": "Qingbo Positioning Kit",
+  "id": "item_equip_t4_suit_combo_cd01_edc_01",
+  "set": "Qingbo",
+  "slot": "Kit",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Agility",
+    "values": [
+     32,
+     35,
+     38,
+     41
+    ]
+   },
+   {
+    "stat": "Strength",
+    "values": [
+     21,
+     23,
+     25,
+     27
+    ]
+   },
+   {
+    "stat": "Battle Skill DMG Bonus",
+    "values": [
+     0.414,
+     0.455,
+     0.497,
+     0.538
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Qingbo_Positioning_Kit (CC BY-SA 4.0)",
+  "version": "wiki revision 54012"
+ },
+ {
+  "name": "Qingbo Positioning Kit T1",
+  "id": "item_equip_t4_suit_combo_cd01_edc_04",
+  "set": "Qingbo",
+  "slot": "Kit",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Agility",
+    "values": [
+     32,
+     35,
+     38,
+     41
+    ]
+   },
+   {
+    "stat": "Strength",
+    "values": [
+     21,
+     23,
+     25,
+     27
+    ]
+   },
+   {
+    "stat": "Physical DMG Bonus",
+    "values": [
+     0.23,
+     0.253,
+     0.276,
+     0.299
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Qingbo_Positioning_Kit_T1 (CC BY-SA 4.0)",
+  "version": "wiki revision 55791"
+ },
+ {
+  "name": "Redeemer Armor",
+  "id": "item_equip_t4_parts_wuling01_body_02",
+  "slot": "Armor",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Intellect",
+    "values": [
+     115,
+     126,
+     138,
+     149
+    ]
+   },
+   {
+    "stat": "Ultimate Gain Efficiency",
+    "values": [
+     0.129,
+     0.141,
+     0.154,
+     0.167
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Redeemer_Armor (CC BY-SA 4.0)",
+  "version": "wiki revision 61716"
+ },
+ {
+  "name": "Redeemer Gloves",
+  "id": "item_equip_t4_parts_wuling01_hand_01",
+  "slot": "Gloves",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Agility",
+    "values": [
+     86,
+     94,
+     103,
+     111
+    ]
+   },
+   {
+    "stat": "Ultimate DMG Bonus",
+    "values": [
+     0.45,
+     0.495,
+     0.54,
+     0.585
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Redeemer_Gloves (CC BY-SA 4.0)",
+  "version": "wiki revision 53965"
+ },
+ {
+  "name": "Redeemer Hands",
+  "id": "item_equip_t4_parts_wuling01_hand_02",
+  "slot": "Gloves",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Strength",
+    "values": [
+     86,
+     94,
+     103,
+     111
+    ]
+   },
+   {
+    "stat": "All Skill DMG",
+    "values": [
+     0.24,
+     0.264,
+     0.288,
+     0.312
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Redeemer_Hands (CC BY-SA 4.0)",
+  "version": "wiki revision 61717"
+ },
+ {
+  "name": "Redeemer Plates",
+  "id": "item_equip_t4_parts_wuling01_body_01",
+  "slot": "Armor",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Agility",
+    "values": [
+     115,
+     126,
+     138,
+     149
+    ]
+   },
+   {
+    "stat": "Basic Attack DMG Bonus",
+    "values": [
+     0.144,
+     0.158,
+     0.173,
+     0.187
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Redeemer_Plates (CC BY-SA 4.0)",
+  "version": "wiki revision 53959"
+ },
+ {
+  "name": "Redeemer Seal",
+  "id": "item_equip_t4_parts_wuling01_edc_03",
+  "slot": "Kit",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Intellect",
+    "values": [
+     43,
+     47,
+     51,
+     55
+    ]
+   },
+   {
+    "stat": "Ultimate Gain Efficiency",
+    "values": [
+     0.257,
+     0.283,
+     0.309,
+     0.334
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Redeemer_Seal (CC BY-SA 4.0)",
+  "version": "wiki revision 53963"
+ },
+ {
+  "name": "Redeemer Seal T1",
+  "id": "item_equip_t4_parts_wuling01_edc_04",
+  "slot": "Kit",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Will",
+    "values": [
+     43,
+     47,
+     51,
+     55
+    ]
+   },
+   {
+    "stat": "Critical Rate",
+    "values": [
+     0.108,
+     0.119,
+     0.13,
+     0.14
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Redeemer_Seal_T1 (CC BY-SA 4.0)",
+  "version": "wiki revision 55761"
+ },
+ {
+  "name": "Redeemer Tag",
+  "id": "item_equip_t4_parts_wuling01_edc_01",
+  "slot": "Kit",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Strength",
+    "values": [
+     43,
+     47,
+     51,
+     55
+    ]
+   },
+   {
+    "stat": "Final DMG Reduction",
+    "values": [
+     0.178,
+     0.192,
+     0.206,
+     0.219
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Redeemer_Tag (CC BY-SA 4.0)",
+  "version": "wiki revision 53961"
+ },
+ {
+  "name": "Redeemer Tag T1",
+  "id": "item_equip_t4_parts_wuling01_edc_02",
+  "slot": "Kit",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Agility",
+    "values": [
+     43,
+     47,
+     51,
+     55
+    ]
+   },
+   {
+    "stat": "Combo Skill DMG Bonus",
+    "values": [
+     0.432,
+     0.475,
+     0.518,
+     0.562
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Redeemer_Tag_T1 (CC BY-SA 4.0)",
+  "version": "wiki revision 55759"
+ },
+ {
+  "name": "Rift Trekker Armor Slab",
+  "id": "item_equip_t4_parts_wuling02_edc_01",
+  "slot": "Kit",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Agility",
+    "values": [
+     43,
+     47,
+     51,
+     55
+    ]
+   },
+   {
+    "stat": "Secondary Attribute",
+    "values": [
+     0.216,
+     0.238,
+     0.259,
+     0.281
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Rift_Trekker_Armor_Slab (CC BY-SA 4.0)",
+  "version": "wiki revision 61720"
+ },
+ {
+  "name": "Rift Trekker Gauntlets",
+  "id": "item_equip_t4_parts_wuling02_hand_04",
+  "slot": "Gloves",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Strength",
+    "values": [
+     86,
+     94,
+     103,
+     111
+    ]
+   },
+   {
+    "stat": "Basic Attack DMG Bonus",
+    "values": [
+     0.24,
+     0.264,
+     0.288,
+     0.312
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Rift_Trekker_Gauntlets (CC BY-SA 4.0)",
+  "version": "wiki revision 64928"
+ },
+ {
+  "name": "Rift Trekker Gloves",
+  "id": "item_equip_t4_parts_wuling02_hand_01",
+  "slot": "Gloves",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Intellect",
+    "values": [
+     86,
+     94,
+     103,
+     111
+    ]
+   },
+   {
+    "stat": "Ultimate Gain Efficiency",
+    "values": [
+     0.214,
+     0.236,
+     0.257,
+     0.279
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Rift_Trekker_Gloves (CC BY-SA 4.0)",
+  "version": "wiki revision 61721"
+ },
+ {
+  "name": "Rift Trekker Hands",
+  "id": "item_equip_t4_parts_wuling02_hand_02",
+  "slot": "Gloves",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Will",
+    "values": [
+     86,
+     94,
+     103,
+     111
+    ]
+   },
+   {
+    "stat": "Battle Skill DMG Bonus",
+    "values": [
+     0.36,
+     0.396,
+     0.432,
+     0.468
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Rift_Trekker_Hands (CC BY-SA 4.0)",
+  "version": "wiki revision 61722"
+ },
+ {
+  "name": "Rift Trekker Heavy Armor",
+  "id": "item_equip_t4_parts_wuling02_body_01",
+  "slot": "Armor",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Strength",
+    "values": [
+     115,
+     126,
+     138,
+     149
+    ]
+   },
+   {
+    "stat": "Arts Intensity",
+    "values": [
+     21.6,
+     23.8,
+     25.9,
+     28.1
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Rift_Trekker_Heavy_Armor (CC BY-SA 4.0)",
+  "version": "wiki revision 61718"
+ },
+ {
+  "name": "Rift Trekker Light Armor",
+  "id": "item_equip_t4_parts_wuling02_body_02",
+  "slot": "Armor",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Will",
+    "values": [
+     115,
+     126,
+     138,
+     149
+    ]
+   },
+   {
+    "stat": "Treatment Bonus",
+    "values": [
+     0.108,
+     0.119,
+     0.13,
+     0.14
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Rift_Trekker_Light_Armor (CC BY-SA 4.0)",
+  "version": "wiki revision 61719"
+ },
+ {
+  "name": "Rift Trekker Overalls",
+  "id": "item_equip_t4_parts_wuling02_body_04",
+  "slot": "Armor",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Intellect",
+    "values": [
+     115,
+     126,
+     138,
+     149
+    ]
+   },
+   {
+    "stat": "Heat & Nature DMG",
+    "values": [
+     0.12,
+     0.132,
+     0.144,
+     0.156
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Rift_Trekker_Overalls (CC BY-SA 4.0)",
+  "version": "wiki revision 64925"
+ },
+ {
+  "name": "Rift Trekker Silver Blade",
+  "id": "item_equip_t4_parts_wuling02_edc_02",
+  "slot": "Kit",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Agility",
+    "values": [
+     43,
+     47,
+     51,
+     55
+    ]
+   },
+   {
+    "stat": "Ultimate Gain Efficiency",
+    "values": [
+     0.257,
+     0.283,
+     0.309,
+     0.334
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Rift_Trekker_Silver_Blade (CC BY-SA 4.0)",
+  "version": "wiki revision 64926"
+ },
+ {
+  "name": "Rift Trekker Steel Armor",
+  "id": "item_equip_t4_parts_wuling02_body_03",
+  "slot": "Armor",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Agility",
+    "values": [
+     115,
+     126,
+     138,
+     149
+    ]
+   },
+   {
+    "stat": "Combo Skill DMG Bonus",
+    "values": [
+     0.216,
+     0.238,
+     0.259,
+     0.281
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Rift_Trekker_Steel_Armor (CC BY-SA 4.0)",
+  "version": "wiki revision 64924"
+ },
+ {
+  "name": "Rift Trekker Wraps",
+  "id": "item_equip_t4_parts_wuling02_hand_03",
+  "slot": "Gloves",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Will",
+    "values": [
+     86,
+     94,
+     103,
+     111
+    ]
+   },
+   {
+    "stat": "Cryo & Electric DMG",
+    "values": [
+     0.2,
+     0.22,
+     0.24,
+     0.26
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Rift_Trekker_Wraps (CC BY-SA 4.0)",
+  "version": "wiki revision 64927"
+ },
+ {
+  "name": "Roving MSGR Fists",
+  "id": "item_equip_t2_suit_agi01_hand_01",
+  "set": "Roving MSGR",
+  "slot": "Gloves",
+  "rarity": 3,
+  "level": 36,
+  "stats": [
+   {
+    "stat": "Agility",
+    "values": [
+     33
+    ]
+   },
+   {
+    "stat": "Strength",
+    "values": [
+     22
+    ]
+   },
+   {
+    "stat": "Physical DMG Bonus",
+    "values": [
+     0.097
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Roving_MSGR_Fists (CC BY-SA 4.0)",
+  "version": "wiki revision 53901"
+ },
+ {
+  "name": "Roving MSGR Fists T1",
+  "id": "item_equip_t3_suit_agi01_hand_01",
+  "set": "Roving MSGR",
+  "slot": "Gloves",
+  "rarity": 4,
+  "level": 50,
+  "stats": [
+   {
+    "stat": "Agility",
+    "values": [
+     46
+    ]
+   },
+   {
+    "stat": "Strength",
+    "values": [
+     30
+    ]
+   },
+   {
+    "stat": "Attack",
+    "values": [
+     0.122
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Roving_MSGR_Fists_T1 (CC BY-SA 4.0)",
+  "version": "wiki revision 55728"
+ },
+ {
+  "name": "Roving MSGR Flashlight",
+  "id": "item_equip_t2_suit_agi01_edc_02",
+  "set": "Roving MSGR",
+  "slot": "Kit",
+  "rarity": 3,
+  "level": 36,
+  "stats": [
+   {
+    "stat": "Agility",
+    "values": [
+     21
+    ]
+   },
+   {
+    "stat": "Combo Skill DMG Bonus",
+    "values": [
+     0.21
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Roving_MSGR_Flashlight (CC BY-SA 4.0)",
+  "version": "wiki revision 53900"
+ },
+ {
+  "name": "Roving MSGR Flashlight T1",
+  "id": "item_equip_t3_suit_agi01_edc_01",
+  "set": "Roving MSGR",
+  "slot": "Kit",
+  "rarity": 4,
+  "level": 50,
+  "stats": [
+   {
+    "stat": "Agility",
+    "values": [
+     23
+    ]
+   },
+   {
+    "stat": "Strength",
+    "values": [
+     15
+    ]
+   },
+   {
+    "stat": "Combo Skill DMG Bonus",
+    "values": [
+     0.294
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Roving_MSGR_Flashlight_T1 (CC BY-SA 4.0)",
+  "version": "wiki revision 55724"
+ },
+ {
+  "name": "Roving MSGR Flashlight T2",
+  "id": "item_equip_t3_suit_agi01_edc_02",
+  "set": "Roving MSGR",
+  "slot": "Kit",
+  "rarity": 4,
+  "level": 50,
+  "stats": [
+   {
+    "stat": "Agility",
+    "values": [
+     23
+    ]
+   },
+   {
+    "stat": "Strength",
+    "values": [
+     15
+    ]
+   },
+   {
+    "stat": "Ultimate DMG Bonus",
+    "values": [
+     0.368
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Roving_MSGR_Flashlight_T2 (CC BY-SA 4.0)",
+  "version": "wiki revision 55725"
+ },
+ {
+  "name": "Roving MSGR Gyro",
+  "id": "item_equip_t2_suit_agi01_edc_01",
+  "set": "Roving MSGR",
+  "slot": "Kit",
+  "rarity": 3,
+  "level": 36,
+  "stats": [
+   {
+    "stat": "Agility",
+    "values": [
+     21
+    ]
+   },
+   {
+    "stat": "Attack",
+    "values": [
+     0.105
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Roving_MSGR_Gyro (CC BY-SA 4.0)",
+  "version": "wiki revision 53899"
+ },
+ {
+  "name": "Roving MSGR Gyro T1",
+  "id": "item_equip_t3_suit_agi01_edc_03",
+  "set": "Roving MSGR",
+  "slot": "Kit",
+  "rarity": 4,
+  "level": 50,
+  "stats": [
+   {
+    "stat": "Agility",
+    "values": [
+     23
+    ]
+   },
+   {
+    "stat": "Intellect",
+    "values": [
+     15
+    ]
+   },
+   {
+    "stat": "Attack",
+    "values": [
+     0.147
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Roving_MSGR_Gyro_T1 (CC BY-SA 4.0)",
+  "version": "wiki revision 55726"
+ },
+ {
+  "name": "Roving MSGR Jacket",
+  "id": "item_equip_t2_suit_agi01_body_01",
+  "set": "Roving MSGR",
+  "slot": "Armor",
+  "rarity": 3,
+  "level": 36,
+  "stats": [
+   {
+    "stat": "Agility",
+    "values": [
+     44
+    ]
+   },
+   {
+    "stat": "Intellect",
+    "values": [
+     29
+    ]
+   },
+   {
+    "stat": "Attack",
+    "values": [
+     16.2
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Roving_MSGR_Jacket (CC BY-SA 4.0)",
+  "version": "wiki revision 53898"
+ },
+ {
+  "name": "Roving MSGR Jacket T1",
+  "id": "item_equip_t3_suit_agi01_body_01",
+  "set": "Roving MSGR",
+  "slot": "Armor",
+  "rarity": 4,
+  "level": 50,
+  "stats": [
+   {
+    "stat": "Agility",
+    "values": [
+     61
+    ]
+   },
+   {
+    "stat": "Intellect",
+    "values": [
+     41
+    ]
+   },
+   {
+    "stat": "HP",
+    "values": [
+     0.147
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Roving_MSGR_Jacket_T1 (CC BY-SA 4.0)",
+  "version": "wiki revision 55722"
+ },
+ {
+  "name": "Swordmancer Dagger",
+  "id": "item_equip_t4_suit_phy01_edc_04",
+  "set": "Swordmancer",
+  "slot": "Kit",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Agility",
+    "values": [
+     32,
+     35,
+     38,
+     41
+    ]
+   },
+   {
+    "stat": "Strength",
+    "values": [
+     21,
+     23,
+     25,
+     27
+    ]
+   },
+   {
+    "stat": "Ultimate DMG Bonus",
+    "values": [
+     0.517,
+     0.569,
+     0.621,
+     0.673
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Swordmancer_Dagger (CC BY-SA 4.0)",
+  "version": "wiki revision 54068"
+ },
+ {
+  "name": "Swordmancer Fiber Armor",
+  "id": "item_equip_t4_suit_phy01_body_04",
+  "set": "Swordmancer",
+  "slot": "Armor",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Strength",
+    "values": [
+     87,
+     95,
+     104,
+     113
+    ]
+   },
+   {
+    "stat": "Will",
+    "values": [
+     58,
+     63,
+     69,
+     75
+    ]
+   },
+   {
+    "stat": "Physical DMG Bonus",
+    "values": [
+     0.115,
+     0.127,
+     0.138,
+     0.149
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Swordmancer_Fiber_Armor (CC BY-SA 4.0)",
+  "version": "wiki revision 54064"
+ },
+ {
+  "name": "Swordmancer Flint",
+  "id": "item_equip_t4_suit_phy01_edc_03",
+  "set": "Swordmancer",
+  "slot": "Kit",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Agility",
+    "values": [
+     32,
+     35,
+     38,
+     41
+    ]
+   },
+   {
+    "stat": "Strength",
+    "values": [
+     21,
+     23,
+     25,
+     27
+    ]
+   },
+   {
+    "stat": "Physical DMG Bonus",
+    "values": [
+     0.23,
+     0.253,
+     0.276,
+     0.299
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Swordmancer_Flint (CC BY-SA 4.0)",
+  "version": "wiki revision 54067"
+ },
+ {
+  "name": "Swordmancer Heavy Armor",
+  "id": "item_equip_t4_suit_phy01_body_02",
+  "set": "Swordmancer",
+  "slot": "Armor",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Agility",
+    "values": [
+     87,
+     95,
+     104,
+     113
+    ]
+   },
+   {
+    "stat": "Strength",
+    "values": [
+     58,
+     63,
+     69,
+     75
+    ]
+   },
+   {
+    "stat": "Arts Intensity",
+    "values": [
+     20.7,
+     22.8,
+     24.8,
+     26.9
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Swordmancer_Heavy_Armor (CC BY-SA 4.0)",
+  "version": "wiki revision 54062"
+ },
+ {
+  "name": "Swordmancer Heavy Armor T1",
+  "id": "item_equip_t4_suit_phy01_body_03",
+  "set": "Swordmancer",
+  "slot": "Armor",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Agility",
+    "values": [
+     87,
+     95,
+     104,
+     113
+    ]
+   },
+   {
+    "stat": "Strength",
+    "values": [
+     58,
+     63,
+     69,
+     75
+    ]
+   },
+   {
+    "stat": "Physical DMG Bonus",
+    "values": [
+     0.115,
+     0.127,
+     0.138,
+     0.149
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Swordmancer_Heavy_Armor_T1 (CC BY-SA 4.0)",
+  "version": "wiki revision 55812"
+ },
+ {
+  "name": "Swordmancer Light Armor",
+  "id": "item_equip_t4_suit_phy01_body_01",
+  "set": "Swordmancer",
+  "slot": "Armor",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Strength",
+    "values": [
+     87,
+     95,
+     104,
+     113
+    ]
+   },
+   {
+    "stat": "Will",
+    "values": [
+     58,
+     63,
+     69,
+     75
+    ]
+   },
+   {
+    "stat": "Ultimate Gain Efficiency",
+    "values": [
+     0.123,
+     0.136,
+     0.148,
+     0.16
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Swordmancer_Light_Armor (CC BY-SA 4.0)",
+  "version": "wiki revision 54061"
+ },
+ {
+  "name": "Swordmancer Micro Filter",
+  "id": "item_equip_t4_suit_phy01_edc_02",
+  "set": "Swordmancer",
+  "slot": "Kit",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Strength",
+    "values": [
+     32,
+     35,
+     38,
+     41
+    ]
+   },
+   {
+    "stat": "Will",
+    "values": [
+     21,
+     23,
+     25,
+     27
+    ]
+   },
+   {
+    "stat": "Physical DMG Bonus",
+    "values": [
+     0.23,
+     0.253,
+     0.276,
+     0.299
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Swordmancer_Micro_Filter (CC BY-SA 4.0)",
+  "version": "wiki revision 54066"
+ },
+ {
+  "name": "Swordmancer NAV Beacon",
+  "id": "item_equip_t4_suit_phy01_edc_01",
+  "set": "Swordmancer",
+  "slot": "Kit",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Strength",
+    "values": [
+     41,
+     45,
+     49,
+     53
+    ]
+   },
+   {
+    "stat": "Arts Intensity",
+    "values": [
+     41.4,
+     45.5,
+     49.7,
+     53.8
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Swordmancer_NAV_Beacon (CC BY-SA 4.0)",
+  "version": "wiki revision 54065"
+ },
+ {
+  "name": "Swordmancer TAC Gauntlets",
+  "id": "item_equip_t4_suit_phy01_hand_02",
+  "set": "Swordmancer",
+  "slot": "Gloves",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Agility",
+    "values": [
+     65,
+     71,
+     78,
+     84
+    ]
+   },
+   {
+    "stat": "Strength",
+    "values": [
+     43,
+     47,
+     51,
+     55
+    ]
+   },
+   {
+    "stat": "Ultimate DMG Bonus",
+    "values": [
+     0.431,
+     0.474,
+     0.517,
+     0.561
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Swordmancer_TAC_Gauntlets (CC BY-SA 4.0)",
+  "version": "wiki revision 54070"
+ },
+ {
+  "name": "Swordmancer TAC Gauntlets T1",
+  "id": "item_equip_t4_suit_phy01_hand_03",
+  "set": "Swordmancer",
+  "slot": "Gloves",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Strength",
+    "values": [
+     65,
+     71,
+     78,
+     84
+    ]
+   },
+   {
+    "stat": "Will",
+    "values": [
+     43,
+     47,
+     51,
+     55
+    ]
+   },
+   {
+    "stat": "Arts Intensity",
+    "values": [
+     34.5,
+     38,
+     41.4,
+     44.9
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Swordmancer_TAC_Gauntlets_T1 (CC BY-SA 4.0)",
+  "version": "wiki revision 55813"
+ },
+ {
+  "name": "Swordmancer TAC Gloves",
+  "id": "item_equip_t4_suit_phy01_hand_01",
+  "set": "Swordmancer",
+  "slot": "Gloves",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Strength",
+    "values": [
+     65,
+     71,
+     78,
+     84
+    ]
+   },
+   {
+    "stat": "Will",
+    "values": [
+     43,
+     47,
+     51,
+     55
+    ]
+   },
+   {
+    "stat": "Physical DMG Bonus",
+    "values": [
+     0.192,
+     0.211,
+     0.23,
+     0.249
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Swordmancer_TAC_Gloves (CC BY-SA 4.0)",
+  "version": "wiki revision 54069"
+ },
+ {
+  "name": "Tide Fall Light Armor",
+  "id": "item_equip_t4_suit_burst01_body_01",
+  "set": "Tide Surge",
+  "slot": "Armor",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Intellect",
+    "values": [
+     87,
+     95,
+     104,
+     113
+    ]
+   },
+   {
+    "stat": "Strength",
+    "values": [
+     58,
+     63,
+     69,
+     75
+    ]
+   },
+   {
+    "stat": "Ultimate Gain Efficiency",
+    "values": [
+     0.123,
+     0.136,
+     0.148,
+     0.16
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Tide_Fall_Light_Armor (CC BY-SA 4.0)",
+  "version": "wiki revision 54006"
+ },
+ {
+  "name": "Tide Fall Light Armor T1",
+  "id": "item_equip_t4_suit_burst01_body_02",
+  "set": "Tide Surge",
+  "slot": "Armor",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Intellect",
+    "values": [
+     87,
+     95,
+     104,
+     113
+    ]
+   },
+   {
+    "stat": "Will",
+    "values": [
+     58,
+     63,
+     69,
+     75
+    ]
+   },
+   {
+    "stat": "Ultimate Gain Efficiency",
+    "values": [
+     0.123,
+     0.136,
+     0.148,
+     0.16
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Tide_Fall_Light_Armor_T1 (CC BY-SA 4.0)",
+  "version": "wiki revision 61734"
+ },
+ {
+  "name": "Tide Surge Gauntlets",
+  "id": "item_equip_t4_suit_burst01_hand_01",
+  "set": "Tide Surge",
+  "slot": "Gloves",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Strength",
+    "values": [
+     65,
+     71,
+     78,
+     84
+    ]
+   },
+   {
+    "stat": "Will",
+    "values": [
+     43,
+     47,
+     51,
+     55
+    ]
+   },
+   {
+    "stat": "Cryo & Electric DMG",
+    "values": [
+     0.192,
+     0.211,
+     0.23,
+     0.249
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Tide_Surge_Gauntlets (CC BY-SA 4.0)",
+  "version": "wiki revision 61738"
+ },
+ {
+  "name": "Turbid Cutting Torch",
+  "id": "item_equip_t4_suit_burst01_edc_02",
+  "set": "Tide Surge",
+  "slot": "Kit",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Intellect",
+    "values": [
+     32,
+     35,
+     38,
+     41
+    ]
+   },
+   {
+    "stat": "Strength",
+    "values": [
+     21,
+     23,
+     25,
+     27
+    ]
+   },
+   {
+    "stat": "Basic Attack DMG Bonus",
+    "values": [
+     0.276,
+     0.304,
+     0.331,
+     0.359
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Turbid_Cutting_Torch (CC BY-SA 4.0)",
+  "version": "wiki revision 54008"
+ },
+ {
+  "name": "Turbid Cutting Torch T1",
+  "id": "item_equip_t4_suit_burst01_edc_03",
+  "set": "Tide Surge",
+  "slot": "Kit",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Intellect",
+    "values": [
+     32,
+     35,
+     38,
+     41
+    ]
+   },
+   {
+    "stat": "Will",
+    "values": [
+     21,
+     23,
+     25,
+     27
+    ]
+   },
+   {
+    "stat": "Heat & Nature DMG",
+    "values": [
+     0.23,
+     0.253,
+     0.276,
+     0.299
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Turbid_Cutting_Torch_T1 (CC BY-SA 4.0)",
+  "version": "wiki revision 61737"
+ },
+ {
+  "name": "Type 50 Yinglung Beacon",
+  "id": "item_equip_t4_suit_atk02_edc_06",
+  "set": "Type 50 Yinglung",
+  "slot": "Kit",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Intellect",
+    "values": [
+     32,
+     35,
+     38,
+     41
+    ]
+   },
+   {
+    "stat": "Strength",
+    "values": [
+     21,
+     23,
+     25,
+     27
+    ]
+   },
+   {
+    "stat": "Combo Skill DMG Bonus",
+    "values": [
+     0.414,
+     0.455,
+     0.497,
+     0.538
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Type_50_Yinglung_Beacon (CC BY-SA 4.0)",
+  "version": "wiki revision 64930"
+ },
+ {
+  "name": "Type 50 Yinglung Gloves",
+  "id": "item_equip_t4_suit_atk02_hand_01",
+  "set": "Type 50 Yinglung",
+  "slot": "Gloves",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Agility",
+    "values": [
+     65,
+     71,
+     78,
+     84
+    ]
+   },
+   {
+    "stat": "Intellect",
+    "values": [
+     43,
+     47,
+     51,
+     55
+    ]
+   },
+   {
+    "stat": "Combo Skill DMG Bonus",
+    "values": [
+     0.345,
+     0.38,
+     0.414,
+     0.449
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Type_50_Yinglung_Gloves (CC BY-SA 4.0)",
+  "version": "wiki revision 53990"
+ },
+ {
+  "name": "Type 50 Yinglung Gloves T1",
+  "id": "item_equip_t4_suit_atk02_hand_02",
+  "set": "Type 50 Yinglung",
+  "slot": "Gloves",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Will",
+    "values": [
+     65,
+     71,
+     78,
+     84
+    ]
+   },
+   {
+    "stat": "Agility",
+    "values": [
+     43,
+     47,
+     51,
+     55
+    ]
+   },
+   {
+    "stat": "Combo Skill DMG Bonus",
+    "values": [
+     0.345,
+     0.38,
+     0.414,
+     0.449
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Type_50_Yinglung_Gloves_T1 (CC BY-SA 4.0)",
+  "version": "wiki revision 55781"
+ },
+ {
+  "name": "Type 50 Yinglung Heavy Armor",
+  "id": "item_equip_t4_suit_atk02_body_01",
+  "set": "Type 50 Yinglung",
+  "slot": "Armor",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Strength",
+    "values": [
+     87,
+     95,
+     104,
+     113
+    ]
+   },
+   {
+    "stat": "Will",
+    "values": [
+     58,
+     63,
+     69,
+     75
+    ]
+   },
+   {
+    "stat": "Physical DMG Bonus",
+    "values": [
+     0.115,
+     0.127,
+     0.138,
+     0.149
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Type_50_Yinglung_Heavy_Armor (CC BY-SA 4.0)",
+  "version": "wiki revision 53981"
+ },
+ {
+  "name": "Type 50 Yinglung Heavy Armor T1",
+  "id": "item_equip_t4_suit_atk02_body_02",
+  "set": "Type 50 Yinglung",
+  "slot": "Armor",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Agility",
+    "values": [
+     87,
+     95,
+     104,
+     113
+    ]
+   },
+   {
+    "stat": "Strength",
+    "values": [
+     58,
+     63,
+     69,
+     75
+    ]
+   },
+   {
+    "stat": "Ultimate Gain Efficiency",
+    "values": [
+     0.123,
+     0.136,
+     0.148,
+     0.16
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Type_50_Yinglung_Heavy_Armor_T1 (CC BY-SA 4.0)",
+  "version": "wiki revision 55775"
+ },
+ {
+  "name": "Type 50 Yinglung Heavy Armor T2",
+  "id": "item_equip_t4_suit_atk02_body_03",
+  "set": "Type 50 Yinglung",
+  "slot": "Armor",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Agility",
+    "values": [
+     87,
+     95,
+     104,
+     113
+    ]
+   },
+   {
+    "stat": "Intellect",
+    "values": [
+     58,
+     63,
+     69,
+     75
+    ]
+   },
+   {
+    "stat": "Combo Skill DMG Bonus",
+    "values": [
+     0.207,
+     0.228,
+     0.248,
+     0.269
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Type_50_Yinglung_Heavy_Armor_T2 (CC BY-SA 4.0)",
+  "version": "wiki revision 55776"
+ },
+ {
+  "name": "Type 50 Yinglung Knife",
+  "id": "item_equip_t4_suit_atk02_edc_04",
+  "set": "Type 50 Yinglung",
+  "slot": "Kit",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Will",
+    "values": [
+     32,
+     35,
+     38,
+     41
+    ]
+   },
+   {
+    "stat": "Agility",
+    "values": [
+     21,
+     23,
+     25,
+     27
+    ]
+   },
+   {
+    "stat": "Combo Skill DMG Bonus",
+    "values": [
+     0.414,
+     0.455,
+     0.497,
+     0.538
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Type_50_Yinglung_Knife (CC BY-SA 4.0)",
+  "version": "wiki revision 53988"
+ },
+ {
+  "name": "Type 50 Yinglung Knife T1",
+  "id": "item_equip_t4_suit_atk02_edc_05",
+  "set": "Type 50 Yinglung",
+  "slot": "Kit",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Intellect",
+    "values": [
+     32,
+     35,
+     38,
+     41
+    ]
+   },
+   {
+    "stat": "Strength",
+    "values": [
+     21,
+     23,
+     25,
+     27
+    ]
+   },
+   {
+    "stat": "All Skill DMG",
+    "values": [
+     0.276,
+     0.304,
+     0.331,
+     0.359
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Type_50_Yinglung_Knife_T1 (CC BY-SA 4.0)",
+  "version": "wiki revision 61727"
+ },
+ {
+  "name": "Type 50 Yinglung Light Armor",
+  "id": "item_equip_t4_suit_atk02_body_04",
+  "set": "Type 50 Yinglung",
+  "slot": "Armor",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Will",
+    "values": [
+     87,
+     95,
+     104,
+     113
+    ]
+   },
+   {
+    "stat": "Strength",
+    "values": [
+     58,
+     63,
+     69,
+     75
+    ]
+   },
+   {
+    "stat": "All Skill DMG",
+    "values": [
+     0.138,
+     0.152,
+     0.166,
+     0.179
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Type_50_Yinglung_Light_Armor (CC BY-SA 4.0)",
+  "version": "wiki revision 61726"
+ },
+ {
+  "name": "Type 50 Yinglung Radar",
+  "id": "item_equip_t4_suit_atk02_edc_01",
+  "set": "Type 50 Yinglung",
+  "slot": "Kit",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Strength",
+    "values": [
+     32,
+     35,
+     38,
+     41
+    ]
+   },
+   {
+    "stat": "Will",
+    "values": [
+     21,
+     23,
+     25,
+     27
+    ]
+   },
+   {
+    "stat": "Physical DMG Bonus",
+    "values": [
+     0.23,
+     0.253,
+     0.276,
+     0.299
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Type_50_Yinglung_Radar (CC BY-SA 4.0)",
+  "version": "wiki revision 53985"
+ },
+ {
+  "name": "Type 50 Yinglung Radar T1",
+  "id": "item_equip_t4_suit_atk02_edc_02",
+  "set": "Type 50 Yinglung",
+  "slot": "Kit",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Agility",
+    "values": [
+     32,
+     35,
+     38,
+     41
+    ]
+   },
+   {
+    "stat": "Strength",
+    "values": [
+     21,
+     23,
+     25,
+     27
+    ]
+   },
+   {
+    "stat": "Ultimate DMG Bonus",
+    "values": [
+     0.517,
+     0.569,
+     0.621,
+     0.673
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Type_50_Yinglung_Radar_T1 (CC BY-SA 4.0)",
+  "version": "wiki revision 55777"
+ },
+ {
+  "name": "Type 50 Yinglung Radar T2",
+  "id": "item_equip_t4_suit_atk02_edc_03",
+  "set": "Type 50 Yinglung",
+  "slot": "Kit",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Agility",
+    "values": [
+     32,
+     35,
+     38,
+     41
+    ]
+   },
+   {
+    "stat": "Intellect",
+    "values": [
+     21,
+     23,
+     25,
+     27
+    ]
+   },
+   {
+    "stat": "Combo Skill DMG Bonus",
+    "values": [
+     0.414,
+     0.455,
+     0.497,
+     0.538
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Type_50_Yinglung_Radar_T2 (CC BY-SA 4.0)",
+  "version": "wiki revision 55779"
+ },
+ {
+  "name": "Type 50 Yinglung Soft Armor",
+  "id": "item_equip_t4_suit_atk02_body_05",
+  "set": "Type 50 Yinglung",
+  "slot": "Armor",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Intellect",
+    "values": [
+     87,
+     95,
+     104,
+     113
+    ]
+   },
+   {
+    "stat": "Strength",
+    "values": [
+     58,
+     63,
+     69,
+     75
+    ]
+   },
+   {
+    "stat": "Combo Skill DMG Bonus",
+    "values": [
+     0.207,
+     0.228,
+     0.248,
+     0.269
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Type_50_Yinglung_Soft_Armor (CC BY-SA 4.0)",
+  "version": "wiki revision 64929"
+ },
+ {
+  "name": "Wave Swell Heavy Armor",
+  "id": "item_equip_t4_suit_burst01_body_03",
+  "set": "Tide Surge",
+  "slot": "Armor",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Strength",
+    "values": [
+     87,
+     95,
+     104,
+     113
+    ]
+   },
+   {
+    "stat": "Will",
+    "values": [
+     58,
+     63,
+     69,
+     75
+    ]
+   },
+   {
+    "stat": "Cryo & Electric DMG",
+    "values": [
+     0.115,
+     0.127,
+     0.138,
+     0.149
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Wave_Swell_Heavy_Armor (CC BY-SA 4.0)",
+  "version": "wiki revision 61735"
+ },
+ {
+  "name": "Xiranflow Baton",
+  "id": "item_equip_t4_suit_expend_spell01_edc_02",
+  "set": "Xiranflow",
+  "slot": "Kit",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Will",
+    "values": [
+     32,
+     35,
+     38,
+     41
+    ]
+   },
+   {
+    "stat": "Intellect",
+    "values": [
+     21,
+     23,
+     25,
+     27
+    ]
+   },
+   {
+    "stat": "Battle Skill DMG Bonus",
+    "values": [
+     0.414,
+     0.455,
+     0.497,
+     0.538
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Xiranflow_Baton (CC BY-SA 4.0)",
+  "version": "wiki revision 54042"
+ },
+ {
+  "name": "Xiranflow Gloves",
+  "id": "item_equip_t4_suit_expend_spell01_hand_02",
+  "set": "Xiranflow",
+  "slot": "Gloves",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Will",
+    "values": [
+     65,
+     71,
+     78,
+     84
+    ]
+   },
+   {
+    "stat": "Intellect",
+    "values": [
+     43,
+     47,
+     51,
+     55
+    ]
+   },
+   {
+    "stat": "Cryo & Electric DMG",
+    "values": [
+     0.192,
+     0.211,
+     0.23,
+     0.249
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Xiranflow_Gloves (CC BY-SA 4.0)",
+  "version": "wiki revision 61749"
+ },
+ {
+  "name": "Xiranflow Light Armor",
+  "id": "item_equip_t4_suit_expend_spell01_body_02",
+  "set": "Xiranflow",
+  "slot": "Armor",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Will",
+    "values": [
+     87,
+     95,
+     104,
+     113
+    ]
+   },
+   {
+    "stat": "Intellect",
+    "values": [
+     58,
+     63,
+     69,
+     75
+    ]
+   },
+   {
+    "stat": "Cryo & Electric DMG",
+    "values": [
+     0.115,
+     0.127,
+     0.138,
+     0.149
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Xiranflow_Light_Armor (CC BY-SA 4.0)",
+  "version": "wiki revision 61747"
+ }
+]

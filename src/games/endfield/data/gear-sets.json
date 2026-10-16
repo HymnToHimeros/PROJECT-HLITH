@@ -1,0 +1,332 @@
+[
+ {
+  "name": "Aburrey's Legacy",
+  "level": 50,
+  "effects": [
+   {
+    "label": "3-piece",
+    "text": "Wearer's Skill DMG +24%. When the wearer casts a battle skill, combo skill, or ultimate, the wearer gains ATK +5% for 15s. The buff from each of the three skill types is unique and does not stack with itself."
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Aburrey's_Legacy (CC BY-SA 4.0)",
+  "version": "wiki revision 63148"
+ },
+ {
+  "name": "Æthertech",
+  "level": 70,
+  "effects": [
+   {
+    "label": "3-piece",
+    "text": "Wearer's ATK +8%. After the wearer applies Vulnerability, the wearer gains Physical DMG +8% for 15s. This effect can reach 4 stacks. If the target already has 4 stack(s) of Vulnerability, the wearer gains an additional Physical DMG +16% for 10s. This effect cannot stack."
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Æthertech (CC BY-SA 4.0)",
+  "version": "wiki revision 50953"
+ },
+ {
+  "name": "AIC Fieldwork",
+  "level": 60,
+  "effects": [
+   {
+    "label": "3-piece",
+    "text": "Wearer gain DMG Dealt +20% for all types of DMG, +10% DMG Reduction against all types of DMG, and Ultimate Gain Efficiency +10%."
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/AIC_Fieldwork (CC BY-SA 4.0)",
+  "version": "wiki revision 56509"
+ },
+ {
+  "name": "AIC Heavy",
+  "level": 28,
+  "effects": [
+   {
+    "label": "3-piece",
+    "text": "Wearer's HP +500. After the wearer defeats an enemy, the wearer restores 100 HP. Effect trigger cooldown: 5s."
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/AIC_Heavy (CC BY-SA 4.0)",
+  "version": "wiki revision 44604"
+ },
+ {
+  "name": "AIC Light",
+  "level": 28,
+  "effects": [
+   {
+    "label": "3-piece",
+    "text": "Wearer's HP +500. After the wearer defeats an enemy, the wearer gains ATK +20 for 5s."
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/AIC_Light (CC BY-SA 4.0)",
+  "version": "wiki revision 50948"
+ },
+ {
+  "name": "Armored MSGR",
+  "level": 36,
+  "effects": [
+   {
+    "label": "3-piece",
+    "text": "Wearer's Strength +50. When the wearer's HP is below 50%, the wearer gains 30% DMG Reduction against all types of DMG."
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Armored_MSGR (CC BY-SA 4.0)",
+  "version": "wiki revision 50949"
+ },
+ {
+  "name": "Basic",
+  "level": 10,
+  "effects": [],
+  "source": "endfield.wiki.gg/wiki/Basic (CC BY-SA 4.0)",
+  "version": "wiki revision 53012"
+ },
+ {
+  "name": "Bonekrusha",
+  "level": 70,
+  "effects": [
+   {
+    "label": "3-piece",
+    "text": "Wearer's ATK +15%. When the wearer casts a combo skill, the wearer gains 1 stack of Bonekrushing Smash that grants the wearer's next battle skill DMG Dealt +30%. Bonekrushing Smash can stack 2 time(s)."
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Bonekrusha (CC BY-SA 4.0)",
+  "version": "wiki revision 50954"
+ },
+ {
+  "name": "Catastrophe",
+  "level": 50,
+  "effects": [
+   {
+    "label": "3-piece",
+    "text": "Wearer's Ultimate Gain Efficiency +20%. The wearer casts a battle skill, the action returns 50 SP. This effect only triggers 1 time per battle."
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Catastrophe (CC BY-SA 4.0)",
+  "version": "wiki revision 63149"
+ },
+ {
+  "name": "Deep Rampart",
+  "level": 70,
+  "effects": [
+   {
+    "label": "3-piece",
+    "text": "Wearer's Arts DMG Dealt +16%. When the wearer applies Nature Burst or Cryo Burst, the wearer gains Arts Intensity +16 for 20s. Max stacks for this effect: 3. Duration of each stack is counted separately. Effect only triggers once every 0.1s."
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Deep_Rampart (CC BY-SA 4.0)",
+  "version": "wiki revision 63082"
+ },
+ {
+  "name": "Eternal Xiranite",
+  "level": 70,
+  "effects": [
+   {
+    "label": "3-piece",
+    "text": "Wearer's HP +1000. After the wearer applies Amp, Protected, Susceptibility, or Weakened, other teammates gain DMG Dealt +16% for 15s. This effect cannot stack."
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Eternal_Xiranite (CC BY-SA 4.0)",
+  "version": "wiki revision 46889"
+ },
+ {
+  "name": "Frontiers",
+  "level": 70,
+  "effects": [
+   {
+    "label": "3-piece",
+    "text": "Wearer's Combo Skill Cooldown Reduction +15%. After the wearer's skill recovers SP, the team gains DMG +16% for 15s. This effect cannot stack."
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Frontiers (CC BY-SA 4.0)",
+  "version": "wiki revision 65356"
+ },
+ {
+  "name": "Grizzled Edge",
+  "level": 70,
+  "effects": [
+   {
+    "label": "3-piece",
+    "text": "Wearer's ATK +8%. When the wearer applies Crush or Breach, the wearer gains Physical DMG Dealt +[6% × Max number of Vulnerability stacks consumed from one enemy] for 20s. If the target already has Physical Susceptibility, is Staggered, or has attached Originium Crystals, increase the aforementioned buff to 1.5 times. This buff cannot stack."
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Grizzled_Edge (CC BY-SA 4.0)",
+  "version": "wiki revision 61365"
+ },
+ {
+  "name": "Hot Work",
+  "level": 70,
+  "effects": [
+   {
+    "label": "3-piece",
+    "text": "Wearer's Arts Intensity +30. After the wearer applies Combustion, the wearer gains Heat DMG +50% for 10s. After the wearer applies Corrosion, the wearer gains Nature DMG +50% for 10s. The aforementioned effects cannot stack."
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Hot_Work (CC BY-SA 4.0)",
+  "version": "wiki revision 44670"
+ },
+ {
+  "name": "LYNX",
+  "level": 70,
+  "effects": [
+   {
+    "label": "3-piece",
+    "text": "Wearer's HP Treatment Efficiency +20%. After the wearer gives HP treatment to an allied target, that target also gains 15% DMG Reduction against all types of DMG for 10s. If the said treatment exceeds the target's Max HP, the target gains 30% DMG Reduction against all types of DMG. The aforementioned effects cannot stack."
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/LYNX (CC BY-SA 4.0)",
+  "version": "wiki revision 44666"
+ },
+ {
+  "name": "MI Security",
+  "level": 70,
+  "effects": [
+   {
+    "label": "3-piece",
+    "text": "Wearer's Critical Rate +5%. After the wearer scores a critical hit, the wearer gains ATK +5% for 5s. This effect can reach 5 stacks. At max stacks, grant an additional Critical Rate +5%. This effect cannot stack."
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/MI_Security (CC BY-SA 4.0)",
+  "version": "wiki revision 46276"
+ },
+ {
+  "name": "Miner α",
+  "level": 20,
+  "effects": [],
+  "source": "endfield.wiki.gg/wiki/Miner_α (CC BY-SA 4.0)",
+  "version": "wiki revision 53013"
+ },
+ {
+  "name": "Miner β",
+  "level": 36,
+  "effects": [],
+  "source": "endfield.wiki.gg/wiki/Miner_β (CC BY-SA 4.0)",
+  "version": "wiki revision 53014"
+ },
+ {
+  "name": "Miner γ",
+  "level": 50,
+  "effects": [],
+  "source": "endfield.wiki.gg/wiki/Miner_γ (CC BY-SA 4.0)",
+  "version": "wiki revision 53015"
+ },
+ {
+  "name": "Mordvolt Insulation",
+  "level": 38,
+  "effects": [
+   {
+    "label": "3-piece",
+    "text": "Wearer's Intellect +50. When the wearer's HP is above 80%, Arts DMG +20%."
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Mordvolt_Insulation (CC BY-SA 4.0)",
+  "version": "wiki revision 50951"
+ },
+ {
+  "name": "Mordvolt Resistant",
+  "level": 38,
+  "effects": [
+   {
+    "label": "3-piece",
+    "text": "Wearer's Will +50. When the wearer's HP is below 50%, Treatment Effect +30%."
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Mordvolt_Resistant (CC BY-SA 4.0)",
+  "version": "wiki revision 50952"
+ },
+ {
+  "name": "Pulser Labs",
+  "level": 70,
+  "effects": [
+   {
+    "label": "3-piece",
+    "text": "Wearer's Arts Intensity +30. After the wearer applies Electrification, the wearer gains Electric DMG +50% for 10s. After the wearer applies Solidification, the wearer gains Cryo DMG +50% for 10s. The aforementioned effects cannot stack."
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Pulser_Labs (CC BY-SA 4.0)",
+  "version": "wiki revision 50955"
+ },
+ {
+  "name": "Qingbo",
+  "level": 70,
+  "effects": [
+   {
+    "label": "3-piece",
+    "text": "Wearer's Combo Skill Cooldown Reduction +15%. When the wearer casts a combo skill, the wearer gains Skill DMG Dealt +20% (for every skill) for 15s. This effect can reach 2 stacks. Duration of each stack is counted separately."
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Qingbo (CC BY-SA 4.0)",
+  "version": "wiki revision 50959"
+ },
+ {
+  "name": "Redeemer",
+  "level": 70,
+  "effects": [],
+  "source": "endfield.wiki.gg/wiki/Redeemer (CC BY-SA 4.0)",
+  "version": "wiki revision 53016"
+ },
+ {
+  "name": "Rift Trekker",
+  "level": 70,
+  "effects": [],
+  "source": "endfield.wiki.gg/wiki/Rift_Trekker (CC BY-SA 4.0)",
+  "version": "wiki revision 58033"
+ },
+ {
+  "name": "Roving MSGR",
+  "level": 36,
+  "effects": [
+   {
+    "label": "3-piece",
+    "text": "Wearer's Agility +50. When the wearer's HP is above 80%, Physical DMG +20%."
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Roving_MSGR (CC BY-SA 4.0)",
+  "version": "wiki revision 50950"
+ },
+ {
+  "name": "Swordmancer",
+  "level": 70,
+  "effects": [
+   {
+    "label": "3-piece",
+    "text": "Wearer's Stagger Efficiency Bonus +20%. After the wearer applies a Physical Status, the wearer also performs 1 hit that deals 250% ATK of Physical DMG and [10 Stagger]. Effect trigger cooldown: 15s."
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Swordmancer (CC BY-SA 4.0)",
+  "version": "wiki revision 44620"
+ },
+ {
+  "name": "Tide Surge",
+  "level": 70,
+  "effects": [
+   {
+    "label": "3-piece",
+    "text": "Wearer's Skill DMG Dealt +20%. After the wearer applies 2 or more stacks of Arts Infliction on the enemy, the wearer gains Arts DMG Dealt +35% for 15s. This effect cannot stack."
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Tide_Surge (CC BY-SA 4.0)",
+  "version": "wiki revision 46277"
+ },
+ {
+  "name": "Type 50 Yinglung",
+  "level": 70,
+  "effects": [
+   {
+    "label": "3-piece",
+    "text": "Wearer's ATK +15%. When any operator in the team casts a battle skill, the wearer gains 1 stack of Yinglung's Edge that gives DMG +20% to the wearer's next combo skill. Yinglung's Edge can stack 3 time(s)."
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Type_50_Yinglung (CC BY-SA 4.0)",
+  "version": "wiki revision 46274"
+ },
+ {
+  "name": "Xiranflow",
+  "level": 70,
+  "effects": [
+   {
+    "label": "3-piece",
+    "text": "Wearer's ATK +10%. Whenever the wearer consumes Electrification or Corrosion, the wearer gains a number of buff stacks equal to the Status Level of the Arts Reaction consumed, with each buff stack giving Electric DMG Dealt and Nature DMG Dealt +15% for 25s. The number of buff stacks maxes out at 3 stacks. Duration of each stack is counted separately."
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Xiranflow (CC BY-SA 4.0)",
+  "version": "wiki revision 50957"
+ }
+]

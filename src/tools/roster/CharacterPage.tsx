@@ -260,7 +260,7 @@ export function CharacterPage({ data, character: c, several, onBack, openPulls, 
 }
 
 /** One numbered step of How to build. */
-function BuildStep({ n, title, children }: { n: number; title: string; children: ReactNode }) {
+function BuildStep({ n, title, source, children }: { n: number; title: string; source?: string | undefined; children: ReactNode }) {
   return (
     <section className={r.buildStep}>
       <h4 className={r.buildStepTitle}>
@@ -268,6 +268,7 @@ function BuildStep({ n, title, children }: { n: number; title: string; children:
         {title}
       </h4>
       {children}
+      {source && <span className={r.muted}>Source: {source}.</span>}
     </section>
   );
 }
@@ -301,14 +302,27 @@ function BuildGuide({ data, character: c }: { data: RosterData; character: Chara
       </>
     );
   const sets = b.sets.filter((s) => s.options.length);
-  // Steps are numbered in the order shown; a step the source has nothing for is left out.
-  const present = { sets: sets.length > 0, weapon: true, main: Object.keys(b.mainStats).length > 0, sub: b.subStats.length > 0, skills: b.skillsFirst.length > 0 };
-  const order = (Object.keys(present) as (keyof typeof present)[]).filter((k) => present[k]);
-  const num = (k: keyof typeof present) => order.indexOf(k) + 1;
+  // Every step is shown in this order, numbered; one the source has nothing for says "No data yet" (honest data).
+  // Only a step the game doesn't have is left out (Endfield gear has no main stat to pick).
+  const steps = { sets: true, weapon: true, main: b.hasMainStats !== false, sub: true, skills: true };
+  const order = (Object.keys(steps) as (keyof typeof steps)[]).filter((k) => steps[k]);
+  const num = (k: keyof typeof steps) => order.indexOf(k) + 1;
+  const ranked = b.ranked !== false;
+  // Builds whose steps come from different sources say so under each step; others name one source at the end.
+  const perStep = b.stepSources !== undefined;
+  const empty = (what: string) => (
+    <span className={r.cardText}>
+      <NoData dash={false} /> No recommendation yet for {what}.
+    </span>
+  );
   return (
     <>
-      {sets.length > 0 && (
-        <BuildStep n={num('sets')} title={`${t.gear} sets: ${sets.map((s) => `${s.pieces} pieces`).join(' + ')}`}>
+      {sets.length === 0 ? (
+        <BuildStep n={num('sets')} title={`${t.gear} sets`}>
+          {empty(`${t.gear.toLowerCase()} sets`)}
+        </BuildStep>
+      ) : (
+        <BuildStep n={num('sets')} title={`${t.gear} sets: ${sets.map((s) => `${s.pieces} pieces`).join(' + ')}`} source={b.stepSources?.sets}>
           {sets.map((s) => (
             <div key={s.pieces} className={r.stack}>
               <span className={r.label}>
@@ -342,7 +356,7 @@ function BuildGuide({ data, character: c }: { data: RosterData; character: Chara
           ))}
         </BuildStep>
       )}
-      <BuildStep n={num('weapon')} title={b.weapons.length > 1 ? `${t.weapon}: best first` : t.weapon}>
+      <BuildStep n={num('weapon')} title={b.weapons.length > 1 && ranked ? `${t.weapon}: best first` : t.weapon} source={perStep ? b.source : undefined}>
         {b.weapons.length ? (
           <ul className={r.itemList}>
             {b.weapons.map((w, i) => {
@@ -352,7 +366,7 @@ function BuildGuide({ data, character: c }: { data: RosterData; character: Chara
                   <ItemIcon src={item?.icon} />
                   <div className={r.itemBody}>
                     <span className={r.itemName}>
-                      {b.weapons.length > 1 && <span className={r.mono}>{i + 1}. </span>}
+                      {b.weapons.length > 1 && ranked && <span className={r.mono}>{i + 1}. </span>}
                       {w}
                     </span>
                     {item?.effects.map((e) => (
@@ -371,7 +385,12 @@ function BuildGuide({ data, character: c }: { data: RosterData; character: Chara
           </span>
         )}
       </BuildStep>
-      {Object.keys(b.mainStats).length > 0 && (
+      {steps.main && Object.keys(b.mainStats).length === 0 && (
+        <BuildStep n={num('main')} title="Main stats">
+          {empty('main stats')}
+        </BuildStep>
+      )}
+      {steps.main && Object.keys(b.mainStats).length > 0 && (
         <BuildStep n={num('main')} title="Main stat on each slot">
           <div>
             {Object.entries(b.mainStats).map(([slot, stats]) => (
@@ -384,6 +403,11 @@ function BuildGuide({ data, character: c }: { data: RosterData; character: Chara
           <span className={r.muted}>Slots not listed have a fixed main stat.</span>
         </BuildStep>
       )}
+      {b.subStats.length === 0 && (
+        <BuildStep n={num('sub')} title="Sub stats">
+          {empty('sub stats')}
+        </BuildStep>
+      )}
       {b.subStats.length > 0 && (
         <BuildStep n={num('sub')} title="Sub stats to look for, best first">
           <ol className={r.subList}>
@@ -393,8 +417,13 @@ function BuildGuide({ data, character: c }: { data: RosterData; character: Chara
           </ol>
         </BuildStep>
       )}
-      {b.skillsFirst.length > 0 && (
+      {b.skillsFirst.length === 0 && (
         <BuildStep n={num('skills')} title={`${t.skill}: level first`}>
+          {empty(`which ${t.skill.toLowerCase()} to level first`)}
+        </BuildStep>
+      )}
+      {b.skillsFirst.length > 0 && (
+        <BuildStep n={num('skills')} title={`${t.skill}: level first`} source={b.stepSources?.skills}>
           <ol className={r.subList}>
             {b.skillsFirst.map((tier) => (
               <li key={tier.join()}>{tier.join(' and ')}</li>
@@ -402,7 +431,7 @@ function BuildGuide({ data, character: c }: { data: RosterData; character: Chara
           </ol>
         </BuildStep>
       )}
-      <span className={r.muted}>Source: {b.source}.</span>
+      {!perStep && <span className={r.muted}>Source: {b.source}.</span>}
     </>
   );
 }

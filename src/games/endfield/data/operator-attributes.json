@@ -1,0 +1,206 @@
+{
+ "chr_0002_endminm": {
+  "main": "Agility",
+  "secondary": "Strength",
+  "source": "endfield.wiki.gg/wiki/Endministrator (CC BY-SA 4.0)",
+  "version": "wiki revision 64967"
+ },
+ "chr_0003_endminf": {
+  "main": "Agility",
+  "secondary": "Strength",
+  "source": "endfield.wiki.gg/wiki/Endministrator (CC BY-SA 4.0)",
+  "version": "wiki revision 64967"
+ },
+ "chr_0004_pelica": {
+  "main": "Intellect",
+  "secondary": "Will",
+  "source": "endfield.wiki.gg/wiki/Perlica (CC BY-SA 4.0)",
+  "version": "wiki revision 64968"
+ },
+ "chr_0005_chen": {
+  "main": "Agility",
+  "secondary": "Strength",
+  "source": "endfield.wiki.gg/wiki/Chen_Qianyu (CC BY-SA 4.0)",
+  "version": "wiki revision 64969"
+ },
+ "chr_0006_wolfgd": {
+  "main": "Strength",
+  "secondary": "Agility",
+  "source": "endfield.wiki.gg/wiki/Wulfgard (CC BY-SA 4.0)",
+  "version": "wiki revision 64970"
+ },
+ "chr_0007_ikut": {
+  "main": "Agility",
+  "secondary": "Intellect",
+  "source": "endfield.wiki.gg/wiki/Arclight (CC BY-SA 4.0)",
+  "version": "wiki revision 64971"
+ },
+ "chr_0009_azrila": {
+  "main": "Strength",
+  "secondary": "Will",
+  "source": "endfield.wiki.gg/wiki/Ember (CC BY-SA 4.0)",
+  "version": "wiki revision 64972"
+ },
+ "chr_0011_seraph": {
+  "main": "Will",
+  "secondary": "Intellect",
+  "source": "endfield.wiki.gg/wiki/Xaihi (CC BY-SA 4.0)",
+  "version": "wiki revision 64973"
+ },
+ "chr_0012_avywen": {
+  "main": "Will",
+  "secondary": "Agility",
+  "source": "endfield.wiki.gg/wiki/Avywenna (CC BY-SA 4.0)",
+  "version": "wiki revision 64975"
+ },
+ "chr_0013_aglina": {
+  "main": "Will",
+  "secondary": "Intellect",
+  "source": "endfield.wiki.gg/wiki/Gilberta (CC BY-SA 4.0)",
+  "version": "wiki revision 64976"
+ },
+ "chr_0014_aurora": {
+  "main": "Strength",
+  "secondary": "Will",
+  "source": "endfield.wiki.gg/wiki/Snowshine (CC BY-SA 4.0)",
+  "version": "wiki revision 64977"
+ },
+ "chr_0015_lifeng": {
+  "main": "Agility",
+  "secondary": "Strength",
+  "source": "endfield.wiki.gg/wiki/Lifeng (CC BY-SA 4.0)",
+  "version": "wiki revision 64978"
+ },
+ "chr_0016_laevat": {
+  "main": "Intellect",
+  "secondary": "Strength",
+  "source": "endfield.wiki.gg/wiki/Laevatain (CC BY-SA 4.0)",
+  "version": "wiki revision 64979"
+ },
+ "chr_0017_yvonne": {
+  "main": "Intellect",
+  "secondary": "Agility",
+  "source": "endfield.wiki.gg/wiki/Yvonne (CC BY-SA 4.0)",
+  "version": "wiki revision 64980"
+ },
+ "chr_0018_dapan": {
+  "main": "Strength",
+  "secondary": "Will",
+  "source": "endfield.wiki.gg/wiki/Da_Pan (CC BY-SA 4.0)",
+  "version": "wiki revision 64981"
+ },
+ "chr_0019_karin": {
+  "main": "Agility",
+  "secondary": "Intellect",
+  "source": "endfield.wiki.gg/wiki/Akekuri (CC BY-SA 4.0)",
+  "version": "wiki revision 64982"
+ },
+ "chr_0020_meurs": {
+  "main": "Strength",
+  "secondary": "Will",
+  "source": "endfield.wiki.gg/wiki/Catcher (CC BY-SA 4.0)",
+  "version": "wiki revision 64983"
+ },
+ "chr_0021_whiten": {
+  "main": "Will",
+  "secondary": "Strength",
+  "source": "endfield.wiki.gg/wiki/Estella (CC BY-SA 4.0)",
+  "version": "wiki revision 64984"
+ },
+ "chr_0022_bounda": {
+  "main": "Agility",
+  "secondary": "Intellect",
+  "source": "endfield.wiki.gg/wiki/Fluorite (CC BY-SA 4.0)",
+  "version": "wiki revision 64985"
+ },
+ "chr_0023_antal": {
+  "main": "Intellect",
+  "secondary": "Strength",
+  "source": "endfield.wiki.gg/wiki/Antal (CC BY-SA 4.0)",
+  "version": "wiki revision 64986"
+ },
+ "chr_0024_deepfin": {
+  "main": "Strength",
+  "secondary": "Intellect",
+  "source": "endfield.wiki.gg/wiki/Alesh (CC BY-SA 4.0)",
+  "version": "wiki revision 64987"
+ },
+ "chr_0025_ardelia": {
+  "main": "Intellect",
+  "secondary": "Will",
+  "source": "endfield.wiki.gg/wiki/Ardelia (CC BY-SA 4.0)",
+  "version": "wiki revision 64988"
+ },
+ "chr_0026_lastrite": {
+  "main": "Strength",
+  "secondary": "Will",
+  "source": "endfield.wiki.gg/wiki/Last_Rite (CC BY-SA 4.0)",
+  "version": "wiki revision 64989"
+ },
+ "chr_0027_tangtang": {
+  "main": "Agility",
+  "secondary": "Strength",
+  "source": "endfield.wiki.gg/wiki/Tangtang (CC BY-SA 4.0)",
+  "version": "wiki revision 64990"
+ },
+ "chr_0028_wulfa": {
+  "main": "Agility",
+  "secondary": "Intellect",
+  "source": "endfield.wiki.gg/wiki/Rossi (CC BY-SA 4.0)",
+  "version": "wiki revision 64991"
+ },
+ "chr_0029_pograni": {
+  "main": "Will",
+  "secondary": "Agility",
+  "source": "endfield.wiki.gg/wiki/Pogranichnik (CC BY-SA 4.0)",
+  "version": "wiki revision 64992"
+ },
+ "chr_0030_zhuangfy": {
+  "main": "Will",
+  "secondary": "Intellect",
+  "source": "endfield.wiki.gg/wiki/Zhuang_Fangyi (CC BY-SA 4.0)",
+  "version": "wiki revision 64993"
+ },
+ "chr_0031_mifu": {
+  "main": "Strength",
+  "secondary": "Will",
+  "source": "endfield.wiki.gg/wiki/Mi_Fu (CC BY-SA 4.0)",
+  "version": "wiki revision 64994"
+ },
+ "chr_0032_lizhiyan": {
+  "main": "Intellect",
+  "secondary": "Will",
+  "source": "endfield.wiki.gg/wiki/Arcane (CC BY-SA 4.0)",
+  "version": "wiki revision 64995"
+ },
+ "chr_0033_camille": {
+  "main": "Agility",
+  "secondary": "Intellect",
+  "source": "endfield.wiki.gg/wiki/Camille (CC BY-SA 4.0)",
+  "version": "wiki revision 64996"
+ },
+ "chr_0034_typhoea": {
+  "main": "Agility",
+  "secondary": "Will",
+  "source": "endfield.wiki.gg/wiki/Typhoeus (CC BY-SA 4.0)",
+  "version": "wiki revision 64997"
+ },
+ "chr_0035_liino": {
+  "main": "Will",
+  "secondary": "Agility",
+  "source": "endfield.wiki.gg/wiki/Liino (CC BY-SA 4.0)",
+  "version": "wiki revision 64998"
+ },
+ "chr_0036_jsspsi": {
+  "main": "Intellect",
+  "secondary": "Strength",
+  "source": "endfield.wiki.gg/wiki/Si (CC BY-SA 4.0)",
+  "version": "wiki revision 64999"
+ },
+ "chr_0038_purrche": {
+  "main": "Strength",
+  "secondary": "Will",
+  "source": "endfield.wiki.gg/wiki/Purrchena (CC BY-SA 4.0)",
+  "version": "wiki revision 65002"
+ }
+}

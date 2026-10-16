@@ -5,8 +5,9 @@
  * List items in data/*.json need stable ids that never change.
  * Add the game to src/games/index.ts. Nothing else in the app changes.
  */
-import type { Banner, Character, GameContract, GameEvent, Material, Version, Weapon } from '../../core/contract';
+import type { Banner, Character, GameContract, GameEvent, Material, RecommendedBuild, Version, Weapon } from '../../core/contract';
 import banners from './data/banners.json';
+import builds from './data/builds.json';
 import characters from './data/characters.json';
 import materials from './data/materials.json';
 import { materialsFor, weaponMaterialsFor } from './costs';
@@ -207,6 +208,8 @@ export const endfield: GameContract = {
     kits: async () => withTags(KITS, SHEETS),
     versions: list<Version>(versions),
     weapons: async () => weapons as Weapon[],
+    // The game's recommended weapons per operator, from each wiki page (npm run data:endfield-builds); no gear, stat or skill advice exists.
+    builds: list<RecommendedBuild>(builds),
   },
 
   rules: {

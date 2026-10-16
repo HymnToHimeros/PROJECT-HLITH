@@ -1,0 +1,1410 @@
+{
+ "_about": "Community build guides for Endfield, read by hand on 2026-10-16 (no scraping in the app or the importer). Each entry names its page and that page's own date. npm run data:endfield-builds keeps a pick only where at least two sources agree (docs: scripts/import-endfield-builds.ts). Not used: Prydwen and Icy Veins (no access from here), 17173 (translations of English guides, not independent), vendor blogs.",
+ "read": "2026-10-16",
+ "sources": {
+  "game8": {
+   "name": "Game8",
+   "url": "https://game8.co/games/Arknights-Endfield/archives/576118"
+  },
+  "gamewith": {
+   "name": "GameWith",
+   "url": "https://gamewith.net/akendfield/"
+  },
+  "endfield.gg": {
+   "name": "endfield.gg",
+   "url": "https://endfield.gg/builds/"
+  },
+  "18183": {
+   "name": "18183 (CN)",
+   "url": "https://www.18183.com/"
+  }
+ },
+ "operators": {
+  "chr_0002_endminm": {
+   "sets": [
+    {
+     "source": "game8",
+     "set": "Grizzled Edge",
+     "url": "https://game8.co/games/Arknights-Endfield/archives/576118",
+     "date": "2026-10-15"
+    },
+    {
+     "source": "gamewith",
+     "set": "Swordmancer",
+     "url": "https://gamewith.net/akendfield/72546",
+     "date": "2026-04-28"
+    }
+   ],
+   "skills": [
+    {
+     "source": "gamewith",
+     "tiers": [
+      [
+       "Combo Skill"
+      ],
+      [
+       "Basic Attack",
+       "Battle Skill",
+       "Ultimate"
+      ]
+     ],
+     "url": "https://gamewith.net/akendfield/72546",
+     "date": "2026-04-28"
+    },
+    {
+     "source": "endfield.gg",
+     "tiers": [
+      [
+       "Battle Skill"
+      ],
+      [
+       "Combo Skill"
+      ],
+      [
+       "Ultimate"
+      ],
+      [
+       "Basic Attack"
+      ]
+     ],
+     "url": "https://endfield.gg/endministrator-build-guide/",
+     "date": "2026-01-23"
+    }
+   ]
+  },
+  "chr_0003_endminf": {
+   "sets": [
+    {
+     "source": "game8",
+     "set": "Grizzled Edge",
+     "url": "https://game8.co/games/Arknights-Endfield/archives/576118",
+     "date": "2026-10-15"
+    },
+    {
+     "source": "gamewith",
+     "set": "Swordmancer",
+     "url": "https://gamewith.net/akendfield/72546",
+     "date": "2026-04-28"
+    }
+   ],
+   "skills": [
+    {
+     "source": "gamewith",
+     "tiers": [
+      [
+       "Combo Skill"
+      ],
+      [
+       "Basic Attack",
+       "Battle Skill",
+       "Ultimate"
+      ]
+     ],
+     "url": "https://gamewith.net/akendfield/72546",
+     "date": "2026-04-28"
+    },
+    {
+     "source": "endfield.gg",
+     "tiers": [
+      [
+       "Battle Skill"
+      ],
+      [
+       "Combo Skill"
+      ],
+      [
+       "Ultimate"
+      ],
+      [
+       "Basic Attack"
+      ]
+     ],
+     "url": "https://endfield.gg/endministrator-build-guide/",
+     "date": "2026-01-23"
+    }
+   ]
+  },
+  "chr_0004_pelica": {
+   "sets": [
+    {
+     "source": "game8",
+     "set": "Pulser Labs",
+     "url": "https://game8.co/games/Arknights-Endfield/archives/576118",
+     "date": "2026-10-15"
+    },
+    {
+     "source": "gamewith",
+     "set": "Pulser Labs",
+     "url": "https://gamewith.net/akendfield/72537",
+     "date": "2026-04-28"
+    }
+   ],
+   "skills": [
+    {
+     "source": "gamewith",
+     "tiers": [
+      [
+       "Combo Skill"
+      ],
+      [
+       "Battle Skill"
+      ],
+      [
+       "Basic Attack",
+       "Ultimate"
+      ]
+     ],
+     "url": "https://gamewith.net/akendfield/72537",
+     "date": "2026-04-28"
+    },
+    {
+     "source": "endfield.gg",
+     "tiers": [
+      [
+       "Battle Skill"
+      ],
+      [
+       "Ultimate"
+      ],
+      [
+       "Combo Skill"
+      ],
+      [
+       "Basic Attack"
+      ]
+     ],
+     "url": "https://endfield.gg/perlica-build-guide/",
+     "date": "2026-01-23"
+    }
+   ]
+  },
+  "chr_0005_chen": {
+   "sets": [
+    {
+     "source": "game8",
+     "set": "Qingbo",
+     "url": "https://game8.co/games/Arknights-Endfield/archives/576118",
+     "date": "2026-10-15"
+    },
+    {
+     "source": "gamewith",
+     "set": "Swordmancer",
+     "url": "https://gamewith.net/akendfield/72536",
+     "date": "2026-04-28"
+    }
+   ],
+   "skills": [
+    {
+     "source": "gamewith",
+     "tiers": [
+      [
+       "Combo Skill"
+      ],
+      [
+       "Battle Skill"
+      ],
+      [
+       "Basic Attack",
+       "Ultimate"
+      ]
+     ],
+     "url": "https://gamewith.net/akendfield/72536",
+     "date": "2026-04-28"
+    }
+   ]
+  },
+  "chr_0006_wolfgd": {
+   "sets": [
+    {
+     "source": "game8",
+     "set": "Hot Work",
+     "url": "https://game8.co/games/Arknights-Endfield/archives/576118",
+     "date": "2026-10-15"
+    },
+    {
+     "source": "gamewith",
+     "set": "Hot Work",
+     "url": "https://gamewith.net/akendfield/72534",
+     "date": "2026-04-28"
+    }
+   ],
+   "skills": [
+    {
+     "source": "gamewith",
+     "tiers": [
+      [
+       "Combo Skill"
+      ],
+      [
+       "Battle Skill"
+      ],
+      [
+       "Basic Attack",
+       "Ultimate"
+      ]
+     ],
+     "url": "https://gamewith.net/akendfield/72534",
+     "date": "2026-04-28"
+    },
+    {
+     "source": "endfield.gg",
+     "tiers": [
+      [
+       "Battle Skill"
+      ],
+      [
+       "Combo Skill"
+      ],
+      [
+       "Ultimate"
+      ],
+      [
+       "Basic Attack"
+      ]
+     ],
+     "url": "https://endfield.gg/wulfgard-build-guide/",
+     "date": "2026-01-23"
+    }
+   ]
+  },
+  "chr_0007_ikut": {
+   "sets": [
+    {
+     "source": "game8",
+     "set": "Frontiers",
+     "url": "https://game8.co/games/Arknights-Endfield/archives/576118",
+     "date": "2026-10-15"
+    },
+    {
+     "source": "gamewith",
+     "set": "Frontiers",
+     "url": "https://gamewith.net/akendfield/72530",
+     "date": "2026-04-28"
+    }
+   ],
+   "skills": [
+    {
+     "source": "gamewith",
+     "tiers": [
+      [
+       "Combo Skill"
+      ],
+      [
+       "Battle Skill",
+       "Ultimate"
+      ],
+      [
+       "Basic Attack"
+      ]
+     ],
+     "url": "https://gamewith.net/akendfield/72530",
+     "date": "2026-04-28"
+    }
+   ]
+  },
+  "chr_0009_azrila": {
+   "sets": [
+    {
+     "source": "game8",
+     "set": "Eternal Xiranite",
+     "url": "https://game8.co/games/Arknights-Endfield/archives/576118",
+     "date": "2026-10-15"
+    },
+    {
+     "source": "gamewith",
+     "set": "LYNX",
+     "url": "https://gamewith.net/akendfield/72542",
+     "date": "2026-04-28"
+    }
+   ],
+   "skills": [
+    {
+     "source": "gamewith",
+     "tiers": [
+      [
+       "Combo Skill",
+       "Ultimate"
+      ],
+      [
+       "Battle Skill"
+      ],
+      [
+       "Basic Attack"
+      ]
+     ],
+     "url": "https://gamewith.net/akendfield/72542",
+     "date": "2026-04-28"
+    },
+    {
+     "source": "endfield.gg",
+     "tiers": [
+      [
+       "Combo Skill"
+      ],
+      [
+       "Ultimate"
+      ],
+      [
+       "Battle Skill"
+      ],
+      [
+       "Basic Attack"
+      ]
+     ],
+     "url": "https://endfield.gg/ember-build-guide/",
+     "date": "2026-01-23"
+    }
+   ]
+  },
+  "chr_0011_seraph": {
+   "sets": [
+    {
+     "source": "gamewith",
+     "set": "Eternal Xiranite",
+     "url": "https://gamewith.net/akendfield/72535",
+     "date": "2026-04-28"
+    }
+   ],
+   "skills": [
+    {
+     "source": "gamewith",
+     "tiers": [
+      [
+       "Battle Skill",
+       "Ultimate"
+      ],
+      [
+       "Combo Skill"
+      ],
+      [
+       "Basic Attack"
+      ]
+     ],
+     "url": "https://gamewith.net/akendfield/72535",
+     "date": "2026-04-28"
+    },
+    {
+     "source": "endfield.gg",
+     "tiers": [
+      [
+       "Battle Skill"
+      ],
+      [
+       "Combo Skill"
+      ],
+      [
+       "Ultimate"
+      ],
+      [
+       "Basic Attack"
+      ]
+     ],
+     "url": "https://endfield.gg/xaihi-build-guide/",
+     "date": "2026-01-23"
+    }
+   ]
+  },
+  "chr_0012_avywen": {
+   "sets": [
+    {
+     "source": "game8",
+     "set": "Bonekrusha",
+     "url": "https://game8.co/games/Arknights-Endfield/archives/576118",
+     "date": "2026-10-15"
+    },
+    {
+     "source": "gamewith",
+     "set": "Bonekrusha",
+     "url": "https://gamewith.net/akendfield/72532",
+     "date": "2026-04-28"
+    }
+   ],
+   "skills": [
+    {
+     "source": "gamewith",
+     "tiers": [
+      [
+       "Battle Skill",
+       "Combo Skill"
+      ],
+      [
+       "Ultimate"
+      ],
+      [
+       "Basic Attack"
+      ]
+     ],
+     "url": "https://gamewith.net/akendfield/72532",
+     "date": "2026-04-28"
+    }
+   ]
+  },
+  "chr_0013_aglina": {
+   "sets": [
+    {
+     "source": "game8",
+     "set": "Eternal Xiranite",
+     "url": "https://game8.co/games/Arknights-Endfield/archives/576118",
+     "date": "2026-10-15"
+    },
+    {
+     "source": "gamewith",
+     "set": "Eternal Xiranite",
+     "url": "https://gamewith.net/akendfield/72540",
+     "date": "2026-04-28"
+    }
+   ],
+   "skills": [
+    {
+     "source": "gamewith",
+     "tiers": [
+      [
+       "Ultimate"
+      ],
+      [
+       "Battle Skill",
+       "Combo Skill"
+      ],
+      [
+       "Basic Attack"
+      ]
+     ],
+     "url": "https://gamewith.net/akendfield/72540",
+     "date": "2026-04-28"
+    },
+    {
+     "source": "endfield.gg",
+     "tiers": [
+      [
+       "Ultimate"
+      ],
+      [
+       "Combo Skill"
+      ],
+      [
+       "Battle Skill"
+      ],
+      [
+       "Basic Attack"
+      ]
+     ],
+     "url": "https://endfield.gg/gilberta-build-guide/",
+     "date": "2026-01-23"
+    }
+   ]
+  },
+  "chr_0014_aurora": {
+   "sets": [
+    {
+     "source": "game8",
+     "set": "Eternal Xiranite",
+     "url": "https://game8.co/games/Arknights-Endfield/archives/576118",
+     "date": "2026-10-15"
+    },
+    {
+     "source": "gamewith",
+     "set": "LYNX",
+     "url": "https://gamewith.net/akendfield/72529",
+     "date": "2026-04-29"
+    }
+   ],
+   "skills": [
+    {
+     "source": "gamewith",
+     "tiers": [
+      [
+       "Combo Skill"
+      ],
+      [
+       "Battle Skill",
+       "Ultimate"
+      ],
+      [
+       "Basic Attack"
+      ]
+     ],
+     "url": "https://gamewith.net/akendfield/72529",
+     "date": "2026-04-29"
+    },
+    {
+     "source": "endfield.gg",
+     "tiers": [
+      [
+       "Combo Skill"
+      ],
+      [
+       "Basic Attack"
+      ],
+      [
+       "Ultimate"
+      ],
+      [
+       "Battle Skill"
+      ]
+     ],
+     "url": "https://endfield.gg/snowshine-build-guide/",
+     "date": "2026-01-23"
+    }
+   ]
+  },
+  "chr_0015_lifeng": {
+   "sets": [
+    {
+     "source": "game8",
+     "set": "Swordmancer",
+     "url": "https://game8.co/games/Arknights-Endfield/archives/576118",
+     "date": "2026-10-15"
+    },
+    {
+     "source": "gamewith",
+     "set": "Æthertech",
+     "url": "https://gamewith.net/akendfield/72541",
+     "date": "2026-04-29"
+    }
+   ],
+   "skills": [
+    {
+     "source": "gamewith",
+     "tiers": [
+      [
+       "Battle Skill",
+       "Ultimate"
+      ],
+      [
+       "Basic Attack",
+       "Combo Skill"
+      ]
+     ],
+     "url": "https://gamewith.net/akendfield/72541",
+     "date": "2026-04-29"
+    },
+    {
+     "source": "endfield.gg",
+     "tiers": [
+      [
+       "Battle Skill"
+      ],
+      [
+       "Combo Skill"
+      ],
+      [
+       "Ultimate"
+      ],
+      [
+       "Basic Attack"
+      ]
+     ],
+     "url": "https://endfield.gg/lifeng-build-guide/",
+     "date": "2026-03-26"
+    }
+   ]
+  },
+  "chr_0016_laevat": {
+   "sets": [
+    {
+     "source": "game8",
+     "set": "Hot Work",
+     "url": "https://game8.co/games/Arknights-Endfield/archives/576118",
+     "date": "2026-10-15"
+    },
+    {
+     "source": "gamewith",
+     "set": "Hot Work",
+     "url": "https://gamewith.net/akendfield/72539",
+     "date": "2026-04-28"
+    },
+    {
+     "source": "18183",
+     "set": "Hot Work",
+     "url": "https://www.18183.com/gonglue/202602/tvti5n6a.html",
+     "date": "2026-02-03",
+     "note": "3热工(动火)套 = 3 Hot Work"
+    }
+   ],
+   "skills": [
+    {
+     "source": "gamewith",
+     "tiers": [
+      [
+       "Ultimate"
+      ],
+      [
+       "Basic Attack",
+       "Battle Skill",
+       "Combo Skill"
+      ]
+     ],
+     "url": "https://gamewith.net/akendfield/72539",
+     "date": "2026-04-28"
+    },
+    {
+     "source": "endfield.gg",
+     "tiers": [
+      [
+       "Ultimate"
+      ],
+      [
+       "Battle Skill"
+      ],
+      [
+       "Basic Attack"
+      ],
+      [
+       "Combo Skill"
+      ]
+     ],
+     "url": "https://endfield.gg/laevatain-build-guide/",
+     "date": "2026-01-23"
+    }
+   ]
+  },
+  "chr_0017_yvonne": {
+   "sets": [
+    {
+     "source": "game8",
+     "set": "MI Security",
+     "url": "https://game8.co/games/Arknights-Endfield/archives/576118",
+     "date": "2026-10-15"
+    },
+    {
+     "source": "gamewith",
+     "set": "MI Security",
+     "url": "https://gamewith.net/akendfield/72538",
+     "date": "2026-04-28"
+    }
+   ],
+   "skills": [
+    {
+     "source": "gamewith",
+     "tiers": [
+      [
+       "Ultimate"
+      ],
+      [
+       "Basic Attack",
+       "Battle Skill"
+      ],
+      [
+       "Combo Skill"
+      ]
+     ],
+     "url": "https://gamewith.net/akendfield/72538",
+     "date": "2026-04-28"
+    },
+    {
+     "source": "endfield.gg",
+     "tiers": [
+      [
+       "Ultimate"
+      ],
+      [
+       "Battle Skill"
+      ],
+      [
+       "Combo Skill"
+      ],
+      [
+       "Basic Attack"
+      ]
+     ],
+     "url": "https://endfield.gg/yvonne-build-guide/",
+     "date": "2026-01-23"
+    }
+   ]
+  },
+  "chr_0018_dapan": {
+   "sets": [
+    {
+     "source": "game8",
+     "set": "Grizzled Edge",
+     "url": "https://game8.co/games/Arknights-Endfield/archives/576118",
+     "date": "2026-10-15"
+    },
+    {
+     "source": "gamewith",
+     "set": "Æthertech",
+     "url": "https://gamewith.net/akendfield/72533",
+     "date": "2026-04-28"
+    }
+   ],
+   "skills": [
+    {
+     "source": "gamewith",
+     "tiers": [
+      [
+       "Combo Skill"
+      ],
+      [
+       "Battle Skill",
+       "Ultimate"
+      ],
+      [
+       "Basic Attack"
+      ]
+     ],
+     "url": "https://gamewith.net/akendfield/72533",
+     "date": "2026-04-28"
+    }
+   ]
+  },
+  "chr_0019_karin": {
+   "sets": [
+    {
+     "source": "game8",
+     "set": "Frontiers",
+     "url": "https://game8.co/games/Arknights-Endfield/archives/576118",
+     "date": "2026-10-15"
+    },
+    {
+     "source": "gamewith",
+     "set": "Frontiers",
+     "url": "https://gamewith.net/akendfield/72524",
+     "date": "2026-04-28"
+    }
+   ],
+   "skills": [
+    {
+     "source": "gamewith",
+     "tiers": [
+      [
+       "Combo Skill",
+       "Ultimate"
+      ],
+      [
+       "Battle Skill"
+      ],
+      [
+       "Basic Attack"
+      ]
+     ],
+     "url": "https://gamewith.net/akendfield/72524",
+     "date": "2026-04-28"
+    },
+    {
+     "source": "endfield.gg",
+     "tiers": [
+      [
+       "Combo Skill"
+      ],
+      [
+       "Ultimate"
+      ],
+      [
+       "Battle Skill"
+      ],
+      [
+       "Basic Attack"
+      ]
+     ],
+     "url": "https://endfield.gg/akekuri-build-guide/",
+     "date": "2026-01-23"
+    }
+   ]
+  },
+  "chr_0020_meurs": {
+   "sets": [
+    {
+     "source": "game8",
+     "set": "Æthertech",
+     "url": "https://game8.co/games/Arknights-Endfield/archives/576118",
+     "date": "2026-10-15"
+    },
+    {
+     "source": "gamewith",
+     "set": "Eternal Xiranite",
+     "url": "https://gamewith.net/akendfield/72527",
+     "date": "2026-04-28"
+    }
+   ],
+   "skills": [
+    {
+     "source": "gamewith",
+     "tiers": [
+      [
+       "Combo Skill",
+       "Ultimate"
+      ],
+      [
+       "Battle Skill"
+      ],
+      [
+       "Basic Attack"
+      ]
+     ],
+     "url": "https://gamewith.net/akendfield/72527",
+     "date": "2026-04-28"
+    },
+    {
+     "source": "endfield.gg",
+     "tiers": [
+      [
+       "Battle Skill"
+      ],
+      [
+       "Combo Skill"
+      ],
+      [
+       "Ultimate"
+      ],
+      [
+       "Basic Attack"
+      ]
+     ],
+     "url": "https://endfield.gg/catcher-build-guide/",
+     "date": "2026-01-23"
+    }
+   ]
+  },
+  "chr_0021_whiten": {
+   "sets": [
+    {
+     "source": "game8",
+     "set": "Type 50 Yinglung",
+     "url": "https://game8.co/games/Arknights-Endfield/archives/576118",
+     "date": "2026-10-15"
+    },
+    {
+     "source": "gamewith",
+     "set": "Tide Surge",
+     "url": "https://gamewith.net/akendfield/72528",
+     "date": "2026-04-28"
+    }
+   ],
+   "skills": [
+    {
+     "source": "gamewith",
+     "tiers": [
+      [
+       "Combo Skill"
+      ],
+      [
+       "Battle Skill"
+      ],
+      [
+       "Basic Attack",
+       "Ultimate"
+      ]
+     ],
+     "url": "https://gamewith.net/akendfield/72528",
+     "date": "2026-04-28"
+    },
+    {
+     "source": "endfield.gg",
+     "tiers": [
+      [
+       "Ultimate"
+      ],
+      [
+       "Combo Skill"
+      ],
+      [
+       "Basic Attack"
+      ],
+      [
+       "Battle Skill"
+      ]
+     ],
+     "url": "https://endfield.gg/estella-build-guide/",
+     "date": "2026-01-23"
+    }
+   ]
+  },
+  "chr_0022_bounda": {
+   "sets": [
+    {
+     "source": "game8",
+     "set": "Qingbo",
+     "url": "https://game8.co/games/Arknights-Endfield/archives/576118",
+     "date": "2026-10-15"
+    },
+    {
+     "source": "gamewith",
+     "set": "Frontiers",
+     "url": "https://gamewith.net/akendfield/72525",
+     "date": "2026-04-28"
+    }
+   ],
+   "skills": [
+    {
+     "source": "gamewith",
+     "tiers": [
+      [
+       "Combo Skill"
+      ],
+      [
+       "Ultimate"
+      ],
+      [
+       "Battle Skill"
+      ],
+      [
+       "Basic Attack"
+      ]
+     ],
+     "url": "https://gamewith.net/akendfield/72525",
+     "date": "2026-04-28"
+    },
+    {
+     "source": "endfield.gg",
+     "tiers": [
+      [
+       "Combo Skill"
+      ],
+      [
+       "Battle Skill"
+      ],
+      [
+       "Ultimate"
+      ],
+      [
+       "Basic Attack"
+      ]
+     ],
+     "url": "https://endfield.gg/fluorite-build-guide/",
+     "date": "2026-01-23"
+    }
+   ]
+  },
+  "chr_0023_antal": {
+   "sets": [
+    {
+     "source": "game8",
+     "set": "Eternal Xiranite",
+     "url": "https://game8.co/games/Arknights-Endfield/archives/576118",
+     "date": "2026-10-15"
+    },
+    {
+     "source": "gamewith",
+     "set": "Eternal Xiranite",
+     "url": "https://gamewith.net/akendfield/72526",
+     "date": "2026-04-28"
+    }
+   ],
+   "skills": [
+    {
+     "source": "gamewith",
+     "tiers": [
+      [
+       "Battle Skill",
+       "Ultimate"
+      ],
+      [
+       "Combo Skill"
+      ],
+      [
+       "Basic Attack"
+      ]
+     ],
+     "url": "https://gamewith.net/akendfield/72526",
+     "date": "2026-04-28"
+    },
+    {
+     "source": "endfield.gg",
+     "tiers": [
+      [
+       "Battle Skill"
+      ],
+      [
+       "Ultimate"
+      ],
+      [
+       "Combo Skill"
+      ],
+      [
+       "Basic Attack"
+      ]
+     ],
+     "url": "https://endfield.gg/antal-build-guide/",
+     "date": "2026-01-23"
+    }
+   ]
+  },
+  "chr_0024_deepfin": {
+   "sets": [
+    {
+     "source": "game8",
+     "set": "Frontiers",
+     "url": "https://game8.co/games/Arknights-Endfield/archives/576118",
+     "date": "2026-10-15"
+    },
+    {
+     "source": "gamewith",
+     "set": "Frontiers",
+     "url": "https://gamewith.net/akendfield/72531",
+     "date": "2026-04-28"
+    }
+   ],
+   "skills": [
+    {
+     "source": "gamewith",
+     "tiers": [
+      [
+       "Combo Skill"
+      ],
+      [
+       "Battle Skill",
+       "Ultimate"
+      ],
+      [
+       "Basic Attack"
+      ]
+     ],
+     "url": "https://gamewith.net/akendfield/72531",
+     "date": "2026-04-28"
+    },
+    {
+     "source": "endfield.gg",
+     "tiers": [
+      [
+       "Combo Skill"
+      ],
+      [
+       "Battle Skill"
+      ],
+      [
+       "Ultimate"
+      ],
+      [
+       "Basic Attack"
+      ]
+     ],
+     "url": "https://endfield.gg/alesh-build-guide/",
+     "date": "2026-01-23"
+    }
+   ]
+  },
+  "chr_0025_ardelia": {
+   "sets": [
+    {
+     "source": "game8",
+     "set": "Eternal Xiranite",
+     "url": "https://game8.co/games/Arknights-Endfield/archives/576118",
+     "date": "2026-10-15"
+    },
+    {
+     "source": "gamewith",
+     "set": "Eternal Xiranite",
+     "url": "https://gamewith.net/akendfield/72545",
+     "date": "2026-04-28"
+    }
+   ],
+   "skills": [
+    {
+     "source": "gamewith",
+     "tiers": [
+      [
+       "Battle Skill"
+      ],
+      [
+       "Combo Skill",
+       "Ultimate"
+      ],
+      [
+       "Basic Attack"
+      ]
+     ],
+     "url": "https://gamewith.net/akendfield/72545",
+     "date": "2026-04-28"
+    },
+    {
+     "source": "endfield.gg",
+     "tiers": [
+      [
+       "Battle Skill"
+      ],
+      [
+       "Combo Skill"
+      ],
+      [
+       "Ultimate"
+      ],
+      [
+       "Basic Attack"
+      ]
+     ],
+     "url": "https://endfield.gg/ardelia-build-guide/",
+     "date": "2026-01-23"
+    }
+   ]
+  },
+  "chr_0026_lastrite": {
+   "sets": [
+    {
+     "source": "game8",
+     "set": "Tide Surge",
+     "url": "https://game8.co/games/Arknights-Endfield/archives/576118",
+     "date": "2026-10-15"
+    },
+    {
+     "source": "gamewith",
+     "set": "Tide Surge",
+     "url": "https://gamewith.net/akendfield/72543",
+     "date": "2026-04-28"
+    }
+   ],
+   "skills": [
+    {
+     "source": "gamewith",
+     "tiers": [
+      [
+       "Combo Skill",
+       "Ultimate"
+      ],
+      [
+       "Basic Attack"
+      ],
+      [
+       "Battle Skill"
+      ]
+     ],
+     "url": "https://gamewith.net/akendfield/72543",
+     "date": "2026-04-28"
+    },
+    {
+     "source": "endfield.gg",
+     "tiers": [
+      [
+       "Combo Skill"
+      ],
+      [
+       "Ultimate"
+      ],
+      [
+       "Battle Skill"
+      ],
+      [
+       "Basic Attack"
+      ]
+     ],
+     "url": "https://endfield.gg/last-rite-build-guide/",
+     "date": "2026-01-23"
+    }
+   ]
+  },
+  "chr_0027_tangtang": {
+   "sets": [
+    {
+     "source": "game8",
+     "set": "Bonekrusha",
+     "url": "https://game8.co/games/Arknights-Endfield/archives/576118",
+     "date": "2026-10-15"
+    }
+   ],
+   "skills": [
+    {
+     "source": "endfield.gg",
+     "tiers": [
+      [
+       "Battle Skill"
+      ],
+      [
+       "Ultimate"
+      ],
+      [
+       "Combo Skill"
+      ],
+      [
+       "Basic Attack"
+      ]
+     ],
+     "url": "https://endfield.gg/tangtang-build-guide/",
+     "date": "2026-03-13"
+    }
+   ]
+  },
+  "chr_0028_wulfa": {
+   "sets": [
+    {
+     "source": "game8",
+     "set": "MI Security",
+     "url": "https://game8.co/games/Arknights-Endfield/archives/576118",
+     "date": "2026-10-15"
+    },
+    {
+     "source": "gamewith",
+     "set": "MI Security",
+     "url": "https://gamewith.net/akendfield/73202",
+     "date": "2026-03-29"
+    }
+   ],
+   "skills": [
+    {
+     "source": "gamewith",
+     "tiers": [
+      [
+       "Ultimate"
+      ],
+      [
+       "Battle Skill",
+       "Combo Skill"
+      ],
+      [
+       "Basic Attack"
+      ]
+     ],
+     "url": "https://gamewith.net/akendfield/73202",
+     "date": "2026-03-29"
+    }
+   ]
+  },
+  "chr_0029_pograni": {
+   "sets": [
+    {
+     "source": "game8",
+     "set": "Frontiers",
+     "url": "https://game8.co/games/Arknights-Endfield/archives/576118",
+     "date": "2026-10-15"
+    },
+    {
+     "source": "gamewith",
+     "set": "Type 50 Yinglung",
+     "url": "https://gamewith.net/akendfield/72544",
+     "date": "2026-04-28"
+    }
+   ],
+   "skills": [
+    {
+     "source": "gamewith",
+     "tiers": [
+      [
+       "Battle Skill",
+       "Ultimate"
+      ],
+      [
+       "Combo Skill"
+      ],
+      [
+       "Basic Attack"
+      ]
+     ],
+     "url": "https://gamewith.net/akendfield/72544",
+     "date": "2026-04-28"
+    },
+    {
+     "source": "endfield.gg",
+     "tiers": [
+      [
+       "Combo Skill"
+      ],
+      [
+       "Battle Skill"
+      ],
+      [
+       "Ultimate"
+      ],
+      [
+       "Basic Attack"
+      ]
+     ],
+     "url": "https://endfield.gg/pogranichnik-build-guide/",
+     "date": "2026-01-24"
+    }
+   ]
+  },
+  "chr_0030_zhuangfy": {
+   "sets": [
+    {
+     "source": "game8",
+     "set": "Xiranflow",
+     "url": "https://game8.co/games/Arknights-Endfield/archives/576118",
+     "date": "2026-10-15"
+    },
+    {
+     "source": "gamewith",
+     "set": "Xiranflow",
+     "url": "https://gamewith.net/akendfield/74061",
+     "date": "2026-04-23"
+    }
+   ],
+   "skills": [
+    {
+     "source": "gamewith",
+     "tiers": [
+      [
+       "Battle Skill"
+      ],
+      [
+       "Combo Skill",
+       "Ultimate"
+      ],
+      [
+       "Basic Attack"
+      ]
+     ],
+     "url": "https://gamewith.net/akendfield/74061",
+     "date": "2026-04-23"
+    }
+   ]
+  },
+  "chr_0031_mifu": {
+   "sets": [
+    {
+     "source": "game8",
+     "set": "Grizzled Edge",
+     "url": "https://game8.co/games/Arknights-Endfield/archives/576118",
+     "date": "2026-10-15"
+    }
+   ]
+  },
+  "chr_0032_lizhiyan": {
+   "sets": [
+    {
+     "source": "game8",
+     "set": "Hot Work",
+     "url": "https://game8.co/games/Arknights-Endfield/archives/576118",
+     "date": "2026-10-15"
+    }
+   ]
+  },
+  "chr_0033_camille": {
+   "sets": [
+    {
+     "source": "game8",
+     "set": "Frontiers",
+     "url": "https://game8.co/games/Arknights-Endfield/archives/576118",
+     "date": "2026-10-15"
+    }
+   ]
+  },
+  "chr_0034_typhoea": {
+   "sets": [
+    {
+     "source": "game8",
+     "set": "Deep Rampart",
+     "url": "https://game8.co/games/Arknights-Endfield/archives/576118",
+     "date": "2026-10-15"
+    }
+   ]
+  },
+  "chr_0035_liino": {
+   "sets": [
+    {
+     "source": "game8",
+     "set": "Eternal Xiranite",
+     "url": "https://game8.co/games/Arknights-Endfield/archives/576118",
+     "date": "2026-10-15"
+    }
+   ]
+  },
+  "chr_0036_jsspsi": {
+   "sets": [
+    {
+     "source": "game8",
+     "set": "Type 50 Yinglung",
+     "url": "https://game8.co/games/Arknights-Endfield/archives/576118",
+     "date": "2026-10-15"
+    }
+   ]
+  },
+  "chr_0038_purrche": {
+   "sets": [
+    {
+     "source": "game8",
+     "set": "Eternal Xiranite",
+     "url": "https://game8.co/games/Arknights-Endfield/archives/576118",
+     "date": "2026-10-15"
+    }
+   ]
+  }
+ }
+}

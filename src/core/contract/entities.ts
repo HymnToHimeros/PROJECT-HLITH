@@ -182,6 +182,12 @@ export interface RecommendedBuild {
   subStats: string[];
   /** Weapons, best first. Empty = none recommended. */
   weapons: string[];
+  /** false: the source doesn't rank its weapons (Endfield's are the game's unranked list): no "best first", no numbers. Missing = ranked. */
+  ranked?: boolean;
+  /** false: the game's gear has no main stat to pick (Endfield), so the step isn't shown at all. Missing = it has. */
+  hasMainStats?: boolean;
+  /** Who recommends a step, when it isn't `source` (Endfield: gear sets and skill order from community guides; `source` is the weapons'). */
+  stepSources?: { sets?: string; skills?: string };
   /** Skills to level first, tier by tier. Empty = the source doesn't say. */
   skillsFirst: string[][];
   /** Read from the game's beta files: the character isn't out yet and the recommendation may change (LOGIC-CORE, T54). */

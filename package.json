@@ -27,6 +27,8 @@
     "data:endfield": "node scripts/import-endfield.ts",
     "data:endfield-kits": "node scripts/import-endfield-kits.ts",
     "data:endfield-costs": "node scripts/import-endfield-costs.ts",
+    "data:endfield-gear": "node scripts/import-endfield-gear.ts",
+    "data:endfield-builds": "node scripts/import-endfield-builds.ts",
     "schedule:due": "node scripts/schedule-due.ts",
     "leaks:seele": "node scripts/leaks-seele.ts"
   },
