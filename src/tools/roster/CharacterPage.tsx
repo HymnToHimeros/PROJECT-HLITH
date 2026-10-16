@@ -319,6 +319,9 @@ function BuildGuide({ data, character: c }: { data: RosterData; character: Chara
   const order = (Object.keys(steps) as (keyof typeof steps)[]).filter((k) => steps[k]);
   const num = (k: keyof typeof steps) => order.indexOf(k) + 1;
   const ranked = b.ranked !== false;
+  // An unranked list someone put in order (Endfield: HLITH by kit match) is numbered, but never "best first".
+  const numbered = ranked || !!b.orderedBy;
+  const weaponTitle = b.weapons.length < 2 ? t.weapon : b.orderedBy ? `${t.weapon}: ${b.orderedBy}'s order` : ranked ? `${t.weapon}: best first` : t.weapon;
   // Builds whose steps come from different sources say so under each step; others name one source at the end.
   const perStep = b.stepSources !== undefined;
   const empty = (what: string) => (
@@ -367,7 +370,7 @@ function BuildGuide({ data, character: c }: { data: RosterData; character: Chara
           ))}
         </BuildStep>
       )}
-      <BuildStep n={num('weapon')} title={b.weapons.length > 1 && ranked ? `${t.weapon}: best first` : t.weapon} source={perStep ? b.source : undefined} why={b.stepWhy?.weapons}>
+      <BuildStep n={num('weapon')} title={weaponTitle} source={perStep ? b.source : undefined} why={b.stepWhy?.weapons}>
         {b.weapons.length ? (
           <ul className={r.itemList}>
             {b.weapons.map((w, i) => {
@@ -377,7 +380,7 @@ function BuildGuide({ data, character: c }: { data: RosterData; character: Chara
                   <ItemIcon src={item?.icon} />
                   <div className={r.itemBody}>
                     <span className={r.itemName}>
-                      {b.weapons.length > 1 && ranked && <span className={r.mono}>{i + 1}. </span>}
+                      {b.weapons.length > 1 && numbered && <span className={r.mono}>{i + 1}. </span>}
                       {w}
                     </span>
                     {item?.effects.map((e) => (

@@ -26,8 +26,15 @@ describe('the gear set rules are the game’s own words', () => {
     }
   });
 
-  it('every endgame set with an effect has rules', () => {
-    for (const s of gearSets.filter((x) => x.level >= W.ENDGAME_LEVEL && x.effects.length)) expect(SET_RULES[s.name], s.name).toBeDefined();
+  it('every level-70 set has an entry, so a new set can’t be skipped silently; only a set with no effect has no rules', () => {
+    for (const s of gearSets.filter((x) => x.level >= W.ENDGAME_LEVEL)) {
+      expect(SET_RULES[s.name], s.name).toBeDefined();
+      expect((SET_RULES[s.name]?.length ?? 0) > 0, s.name).toBe(s.effects.length > 0);
+    }
+  });
+
+  it('a pick’s reasons say only level-70 sets are compared', async () => {
+    expect((await of(CAMILLE)).stepWhy?.sets?.join(' ')).toContain('Only level-70 sets are compared');
   });
 });
 
@@ -56,7 +63,9 @@ describe('Camille, Laevatain and Arclight', () => {
     expect(b.stepNotes?.sets).toContain('Frontiers (Game8, 15 Oct 2026)');
     // Weapons: the game's list, ordered by the kit; stats: his main attribute first.
     expect(b.weapons[0]).toBe('Blessing of Lustrous Carmine');
-    expect(b.source).toMatch(/ordered by HLITH's kit match$/);
+    expect(b.source).toMatch(/^The game's recommended weapons \(the game doesn't rank them: Matching Skills, then Matching Stats; endfield\.wiki\.gg\/wiki\/Camille, CC BY-SA 4\.0, rev \d+\), put in order by HLITH's kit match$/);
+    expect(b.ranked).toBe(false);
+    expect(b.orderedBy).toBe('HLITH');
     expect(b.subStats[0]).toBe('Agility');
     expect(b.stepWhy?.subStats?.[0]).toBe('Agility: Agility is their main attribute.');
     expect(b.skillsFirst[0]).toEqual(['Basic Attack', 'Combo Skill']);

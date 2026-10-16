@@ -31,7 +31,10 @@ names something different from what is shown, the card shows it as a note; it is
 No damage calculation: points compare picks for one kit, nothing more.
 
 ## Decisions (judgement calls; the owner can change any of them in `weights.ts`)
-- **B1** Endgame = sets made at level 70 (`ENDGAME_LEVEL`).
+- **B1** Endgame = sets made at level 70 (`ENDGAME_LEVEL`); only those are compared, and the card's "Why" says
+  so. Lower sets (Aburrey's Legacy 50, Catastrophe 50, AIC Fieldwork 60, Mordvolt, MSGR, Miner…) are stepping
+  stones. Level-70 sets with no set effect (Redeemer, Rift Trekker) have no rules; their pieces still count as
+  off-pieces.
 - **B2** A timed buff counts at 70% of its size (`TIMED_UPTIME`).
 - **B3** Who values what: a damage dealer values team buffs at 1× and buffs that reach only the others at
   0.3×; a support values its own damage at 0.3× and team buffs at 1.5×.

@@ -928,6 +928,18 @@ describe('Roster screen', () => {
     expect(within(card).getAllByText(/^Source:/)).toHaveLength(2);
   });
 
+  it('a game list HLITH put in order says “HLITH’s order”, numbered, and never "best first"', async () => {
+    const base = makeGame(false);
+    const builds = [{ characterId: 'c1', source: "The game's recommended weapons (the game doesn't rank them), put in order by HLITH's kit match", ranked: false, orderedBy: 'HLITH', stepSources: {}, sets: [], mainStats: {}, subStats: [], weapons: ['Spark Cone', 'Dim Cone'], skillsFirst: [] }];
+    await show('characters', { ...base, data: { ...base.data, builds: async () => builds } });
+    const card = within(await openPage('Newest Star')).getByRole('region', { name: 'How to build Newest Star' });
+    await within(card).findByText('Spark Cone');
+    expect([...card.querySelectorAll('h4')].map((h) => h.textContent)).toContain("2Cone: HLITH's order");
+    expect(card.textContent).not.toMatch(/best first/i);
+    expect(within(card).getByText('1.')).toBeInTheDocument();
+    expect(within(card).getByText('2.')).toBeInTheDocument();
+  });
+
   it('each step can show why (folded) and a note with a different pick from another source, never hidden', async () => {
     const base = makeGame(false);
     const builds = [

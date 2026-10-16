@@ -54,8 +54,10 @@ export function withHlith(b: RecommendedBuild, p: OperatorProfile | undefined): 
   if (b.weapons.length > 1) {
     const order = orderWeapons(p, b.weapons, WEAPON_SKILLS);
     out.weapons = order.value;
-    out.ranked = true;
-    out.source = `${b.source}; ordered by HLITH's kit match`;
+    out.ranked = false;
+    out.orderedBy = 'HLITH';
+    const page = /\((endfield\.wiki\.gg\/wiki\/[^,]+), CC BY-SA 4\.0, revision (\d+)\)/.exec(b.source);
+    out.source = `The game's recommended weapons (the game doesn't rank them: Matching Skills, then Matching Stats; ${page ? `${page[1]}, CC BY-SA 4.0, rev ${page[2]}` : b.source}), put in order by HLITH's kit match`;
     why.weapons = order.why;
   }
 

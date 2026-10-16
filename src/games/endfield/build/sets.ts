@@ -108,6 +108,10 @@ export const SET_RULES: Record<string, SetRule[]> = {
     { quote: "Wearer's ATK +15%", benefit: { kind: 'atk', amount: 15 } },
     { quote: "gives DMG +20% to the wearer's next combo skill. Yinglung's Edge can stack 3 time(s)", benefit: { kind: 'wearer-dmg', amount: 60, skills: ['combo'] }, timed: true },
   ],
+  // Level-70 sets the wiki lists with "No Set Effects": nothing to switch on, so no set rule. Their pieces still
+  // count as off-pieces (the fourth slot takes the best piece from any set).
+  Redeemer: [],
+  'Rift Trekker': [],
   Xiranflow: [
     { quote: "Wearer's ATK +10%", benefit: { kind: 'atk', amount: 10 } },
     { quote: 'each buff stack giving Electric DMG Dealt and Nature DMG Dealt +15% for 25s. The number of buff stacks maxes out at 3 stacks', benefit: { kind: 'wearer-dmg', amount: 45, elements: ['electric', 'nature'] }, timed: true, needs: 'consumes-electrification-or-corrosion' },

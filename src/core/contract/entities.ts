@@ -184,6 +184,8 @@ export interface RecommendedBuild {
   weapons: string[];
   /** false: the source doesn't rank its weapons (Endfield's are the game's unranked list): no "best first", no numbers. Missing = ranked. */
   ranked?: boolean;
+  /** Who put an unranked weapon list in order (Endfield: "HLITH"): the step says "<who>'s order", numbered, never "best first". */
+  orderedBy?: string;
   /** false: the game's gear has no main stat to pick (Endfield), so the step isn't shown at all. Missing = it has. */
   hasMainStats?: boolean;
   /** Who recommends a step, when it isn't `source` (Endfield: gear sets and skill order from community guides; `source` is the weapons'). */

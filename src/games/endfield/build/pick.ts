@@ -273,7 +273,7 @@ export function pickSet(p: OperatorProfile, sheet: CharacterSheet | undefined, s
     .sort((a, b) => b.points - a.points);
   const [top, second] = candidates;
   if (!top) return null;
-  const why = [...top.effect.why];
+  const why = [...top.effect.why, `Only level-${W.ENDGAME_LEVEL} sets are compared; lower sets (Aburrey’s Legacy, Catastrophe, AIC Fieldwork, Mordvolt…) are stepping stones to them.`];
   if (second) why.push(`Next best: ${second.set} (${Math.round(second.points)} points against ${Math.round(top.points)}).`);
   if (top.chosen.off) {
     const best3 = top.chosen.pieces.filter((x) => x !== top.chosen.off).map((x) => x.name);
