@@ -97,7 +97,7 @@ describe('rule 3 · events', () => {
     expect(b.bySource.events).toBe(400);
     expect(row(b, 'event:b')?.status).toBe('already-earned');
     expect(row(b, 'event:c')?.status).toBe('skipped');
-    expect(row(b, 'event:d')?.status).toBe('skipped');
+    expect(row(b, 'event:d')?.status).toBe('ended');
     expect(b.leftOut).toEqual(['Mystery event']);
   });
 });
