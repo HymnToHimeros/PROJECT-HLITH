@@ -928,6 +928,49 @@ describe('Roster screen', () => {
     expect(within(card).getAllByText(/^Source:/)).toHaveLength(2);
   });
 
+  it('a game list HLITH put in order says “HLITH’s order”, numbered, and never "best first"', async () => {
+    const base = makeGame(false);
+    const builds = [{ characterId: 'c1', source: "The game's recommended weapons (the game doesn't rank them), put in order by HLITH's kit match", ranked: false, orderedBy: 'HLITH', stepSources: {}, sets: [], mainStats: {}, subStats: [], weapons: ['Spark Cone', 'Dim Cone'], skillsFirst: [] }];
+    await show('characters', { ...base, data: { ...base.data, builds: async () => builds } });
+    const card = within(await openPage('Newest Star')).getByRole('region', { name: 'How to build Newest Star' });
+    await within(card).findByText('Spark Cone');
+    expect([...card.querySelectorAll('h4')].map((h) => h.textContent)).toContain("2Cone: HLITH's order");
+    expect(card.textContent).not.toMatch(/best first/i);
+    expect(within(card).getByText('1.')).toBeInTheDocument();
+    expect(within(card).getByText('2.')).toBeInTheDocument();
+  });
+
+  it('each step can show why (folded) and a note with a different pick from another source, never hidden', async () => {
+    const base = makeGame(false);
+    const builds = [
+      {
+        characterId: 'c1',
+        source: 'the game',
+        hasMainStats: false,
+        stepSources: { sets: "HLITH's pick from the kit", subStats: "HLITH's pick from the kit" },
+        stepWhy: { sets: ['“Wearer’s ATK +15%”: ATK raises all their damage'], subStats: ['Agility: Agility is their main attribute.'] },
+        stepNotes: { sets: 'community guides that name a different set: Frontiers (Game8, 15 Oct 2026).' },
+        sets: [
+          { pieces: 3, options: ['Bonekrusha'] },
+          { pieces: 1, options: ['LYNX Slab'] },
+        ],
+        mainStats: {},
+        subStats: ['Agility'],
+        weapons: ['Spark Cone'],
+        skillsFirst: [],
+      },
+    ];
+    await show('characters', { ...base, data: { ...base.data, builds: async () => builds } });
+    const card = within(await openPage('Newest Star')).getByRole('region', { name: 'How to build Newest Star' });
+    await within(card).findByText('Bonekrusha');
+    expect(card.querySelector('h4')?.textContent).toBe('1Relics sets: 3 pieces + 1 piece');
+    expect(within(card).getByText('1 PIECE')).toBeInTheDocument();
+    expect(within(card).getByText('“Wearer’s ATK +15%”: ATK raises all their damage')).toBeInTheDocument();
+    expect(within(card).getByText('Note: community guides that name a different set: Frontiers (Game8, 15 Oct 2026).')).toBeInTheDocument();
+    expect(within(card).getAllByText("Source: HLITH's pick from the kit.")).toHaveLength(2);
+    expect(within(card).getAllByText('Why')).toHaveLength(2);
+  });
+
   it('long team lists stay short: a few first, the rest one tap away, nothing dropped', async () => {
     const many: TeamPreset[] = Array.from({ length: 9 }, (_, i) => ({ id: `t${i}`, name: `Team ${i + 1}`, slots: [{ characters: ['c1'] }, { characters: ['c3'] }], source: 'test' }));
     await show('teams', makeGame(false, many));
