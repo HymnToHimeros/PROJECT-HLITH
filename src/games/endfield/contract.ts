@@ -10,6 +10,7 @@ import banners from './data/banners.json';
 import builds from './data/builds.json';
 import characters from './data/characters.json';
 import materials from './data/materials.json';
+import { endfieldBuilds } from './build';
 import { materialsFor, weaponMaterialsFor } from './costs';
 import { KITS, SHEETS } from './kitcheck/library';
 import { withTags } from './kitcheck/tags';
@@ -209,7 +210,8 @@ export const endfield: GameContract = {
     versions: list<Version>(versions),
     weapons: async () => weapons as Weapon[],
     // The game's recommended weapons per operator, from each wiki page (npm run data:endfield-builds); no gear, stat or skill advice exists.
-    builds: list<RecommendedBuild>(builds),
+    // Filled in by HLITH's own picks from the kit where neither the game nor agreeing guides say (build/index.ts).
+    builds: async () => endfieldBuilds(builds as unknown as RecommendedBuild[]),
   },
 
   rules: {

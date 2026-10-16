@@ -260,7 +260,7 @@ export function CharacterPage({ data, character: c, several, onBack, openPulls, 
 }
 
 /** One numbered step of How to build. */
-function BuildStep({ n, title, source, children }: { n: number; title: string; source?: string | undefined; children: ReactNode }) {
+function BuildStep({ n, title, source, why, note, children }: { n: number; title: string; source?: string | undefined; why?: string[] | undefined; note?: string | undefined; children: ReactNode }) {
   return (
     <section className={r.buildStep}>
       <h4 className={r.buildStepTitle}>
@@ -269,6 +269,17 @@ function BuildStep({ n, title, source, children }: { n: number; title: string; s
       </h4>
       {children}
       {source && <span className={r.muted}>Source: {source}.</span>}
+      {why && why.length > 0 && (
+        <details className={r.why}>
+          <summary className={r.whySummary}>Why</summary>
+          <ul className={r.whyList}>
+            {why.map((w) => (
+              <li key={w}>{w}</li>
+            ))}
+          </ul>
+        </details>
+      )}
+      {note && <span className={r.cardText}>Note: {note}</span>}
     </section>
   );
 }
@@ -318,15 +329,15 @@ function BuildGuide({ data, character: c }: { data: RosterData; character: Chara
   return (
     <>
       {sets.length === 0 ? (
-        <BuildStep n={num('sets')} title={`${t.gear} sets`}>
+        <BuildStep n={num('sets')} title={`${t.gear} sets`} why={b.stepWhy?.sets} note={b.stepNotes?.sets}>
           {empty(`${t.gear.toLowerCase()} sets`)}
         </BuildStep>
       ) : (
-        <BuildStep n={num('sets')} title={`${t.gear} sets: ${sets.map((s) => `${s.pieces} pieces`).join(' + ')}`} source={b.stepSources?.sets}>
+        <BuildStep n={num('sets')} title={`${t.gear} sets: ${sets.map((s) => `${s.pieces} piece${s.pieces === 1 ? '' : 's'}`).join(' + ')}`} source={b.stepSources?.sets} why={b.stepWhy?.sets} note={b.stepNotes?.sets}>
           {sets.map((s) => (
             <div key={s.pieces} className={r.stack}>
               <span className={r.label}>
-                {s.pieces} PIECES
+                {s.pieces} PIECE{s.pieces === 1 ? '' : 'S'}
                 {s.options.length > 1 ? ' · BEST FIRST, ANY ONE' : ''}
               </span>
               <ul className={r.itemList}>
@@ -356,7 +367,7 @@ function BuildGuide({ data, character: c }: { data: RosterData; character: Chara
           ))}
         </BuildStep>
       )}
-      <BuildStep n={num('weapon')} title={b.weapons.length > 1 && ranked ? `${t.weapon}: best first` : t.weapon} source={perStep ? b.source : undefined}>
+      <BuildStep n={num('weapon')} title={b.weapons.length > 1 && ranked ? `${t.weapon}: best first` : t.weapon} source={perStep ? b.source : undefined} why={b.stepWhy?.weapons}>
         {b.weapons.length ? (
           <ul className={r.itemList}>
             {b.weapons.map((w, i) => {
@@ -404,12 +415,12 @@ function BuildGuide({ data, character: c }: { data: RosterData; character: Chara
         </BuildStep>
       )}
       {b.subStats.length === 0 && (
-        <BuildStep n={num('sub')} title="Sub stats">
+        <BuildStep n={num('sub')} title="Sub stats" why={b.stepWhy?.subStats}>
           {empty('sub stats')}
         </BuildStep>
       )}
       {b.subStats.length > 0 && (
-        <BuildStep n={num('sub')} title="Sub stats to look for, best first">
+        <BuildStep n={num('sub')} title="Sub stats to look for, best first" source={b.stepSources?.subStats} why={b.stepWhy?.subStats}>
           <ol className={r.subList}>
             {b.subStats.map((x) => (
               <li key={x}>{x}</li>
@@ -418,12 +429,12 @@ function BuildGuide({ data, character: c }: { data: RosterData; character: Chara
         </BuildStep>
       )}
       {b.skillsFirst.length === 0 && (
-        <BuildStep n={num('skills')} title={`${t.skill}: level first`}>
+        <BuildStep n={num('skills')} title={`${t.skill}: level first`} why={b.stepWhy?.skills} note={b.stepNotes?.skills}>
           {empty(`which ${t.skill.toLowerCase()} to level first`)}
         </BuildStep>
       )}
       {b.skillsFirst.length > 0 && (
-        <BuildStep n={num('skills')} title={`${t.skill}: level first`} source={b.stepSources?.skills}>
+        <BuildStep n={num('skills')} title={`${t.skill}: level first`} source={b.stepSources?.skills} why={b.stepWhy?.skills} note={b.stepNotes?.skills}>
           <ol className={r.subList}>
             {b.skillsFirst.map((tier) => (
               <li key={tier.join()}>{tier.join(' and ')}</li>

@@ -187,7 +187,11 @@ export interface RecommendedBuild {
   /** false: the game's gear has no main stat to pick (Endfield), so the step isn't shown at all. Missing = it has. */
   hasMainStats?: boolean;
   /** Who recommends a step, when it isn't `source` (Endfield: gear sets and skill order from community guides; `source` is the weapons'). */
-  stepSources?: { sets?: string; skills?: string };
+  stepSources?: { sets?: string; subStats?: string; skills?: string };
+  /** Why each step's pick, in plain words, each quoting the kit or gear text it rests on (Endfield: HLITH's own picks). */
+  stepWhy?: { sets?: string[]; weapons?: string[]; subStats?: string[]; skills?: string[] };
+  /** A different pick from another source, shown under the step, never hidden (Endfield: HLITH's kit pick against the community guides'). */
+  stepNotes?: { sets?: string; skills?: string };
   /** Skills to level first, tier by tier. Empty = the source doesn't say. */
   skillsFirst: string[][];
   /** Read from the game's beta files: the character isn't out yet and the recommendation may change (LOGIC-CORE, T54). */

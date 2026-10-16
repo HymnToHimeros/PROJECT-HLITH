@@ -18,3 +18,10 @@ Done:
   no Main stats step (its gear has none to pick). Steps with their own source say so under the step.
 
 Not used: Prydwen and Icy Veins (no access from here), 17173 (translations of English guides), vendor blogs.
+
+PR B: HLITH's own build picks (docs/logic/endfield-builds.md, src/games/endfield/build/):
+- Every released operator now has every build field: gear set and off-piece, stats to look for, skill order and
+  the game's weapons ordered by kit match, each with its source and reasons quoting the kit and gear text.
+- Source order per field: the game > two agreeing community guides > HLITH's pick from the kit. A guide that
+  names something else is shown as a note.
+- Weights are named constants in build/weights.ts with decisions B1–B12, for the owner to correct.
