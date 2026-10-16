@@ -414,6 +414,9 @@ function Reward({
       return <span className={e.muted}>{ev.kind === 'login' ? 'All days claimed' : 'Earned'}</span>;
     case 'skipped':
       return <span className={e.muted}>{row.reason === 'ended' ? 'Ended · not counted' : 'Not counted'}</span>;
+    case 'ended':
+      // An event that ran out before you marked it: say what it gave, so the row is never blank.
+      return <span className={e.muted}>{ev.reward === null ? <>Ended · reward <NoData dash={false} /></> : `Ended · ${amount(ev.reward)}, not counted`}</span>;
     case 'no-data':
       return row.reason === 'choose your server' ? (
         <span>
