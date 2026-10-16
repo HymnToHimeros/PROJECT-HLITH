@@ -108,6 +108,7 @@ function WeaponMaterials({ data, weapon: w }: { data: RosterData; weapon: Weapon
           {game.terms.weapon} material amounts: <NoData dash={false} /> That part is on us, not you.
         </p>
       )}
+      {real?.partial && <span className={r.muted}>{real.partial}</span>}
       {real?.needs.known && game.rules.materialsNote && <span className={r.muted}>{game.rules.materialsNote}</span>}
     </section>
   );

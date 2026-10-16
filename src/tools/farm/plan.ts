@@ -56,11 +56,20 @@ export function farmPlan(game: GameContract, characterIds: string[], materials: 
   return { needs: known(rows, 'official'), stamina: allKnown ? known(total, 'official') : unknown(), left };
 }
 
-export function weaponFarmPlan(game: GameContract, weaponIds: string[], materials: Material[]): FarmPlan {
+export interface WeaponFarmPlan extends FarmPlan {
+  partial?: string;
+}
+
+export function weaponFarmPlan(game: GameContract, weaponIds: string[], materials: Material[]): WeaponFarmPlan {
   const rule = game.rules.weaponMaterialsFor;
   if (!rule || weaponIds.length === 0) return { needs: unknown(), stamina: unknown(), left: [] };
   const totals = new Map<string, number>();
-  for (const id of weaponIds) for (const n of rule(id, FROM, FULL).needs) totals.set(n.material, (totals.get(n.material) ?? 0) + n.amount);
+  let partial: string | undefined;
+  for (const id of weaponIds) {
+    const result = rule(id, FROM, FULL);
+    if (result.partial) partial = result.partial;
+    for (const n of result.needs) totals.set(n.material, (totals.get(n.material) ?? 0) + n.amount);
+  }
   if (totals.size === 0) return { needs: unknown(), stamina: unknown(), left: [] };
 
   const rows: NeedRow[] = [...totals].map(([material, amount]) => {
@@ -69,9 +78,9 @@ export function weaponFarmPlan(game: GameContract, weaponIds: string[], material
     const stamina = runs.known && m?.staminaPerRun ? known(runs.value * m.staminaPerRun, 'official') : unknown<number>();
     return { material, name: m?.name ?? material, ...(m?.icon ? { icon: m.icon } : {}), ...(m?.sources?.length ? { sources: m.sources } : {}), amount, runs, stamina };
   });
-  const allKnown = rows.every((r) => r.stamina.known);
+  const allKnown = !partial && rows.every((r) => r.stamina.known);
   const total = rows.reduce((sum, r) => sum + (r.stamina.known ? r.stamina.value : 0), 0);
-  return { needs: known(rows, 'official'), stamina: allKnown ? known(total, 'official') : unknown(), left: [] };
+  return { needs: known(rows, 'official'), stamina: allKnown ? known(total, 'official') : unknown(), left: [], ...(partial ? { partial } : {}) };
 }
 
 /** Points a pool refills per day, from the game record's regeneration rate. */
