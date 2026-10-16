@@ -1,5 +1,5 @@
 // @vitest-environment node
-import { readFileSync } from 'node:fs';
+import { readFileSync, readdirSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { games } from '../src/games';
@@ -73,12 +73,23 @@ describe('banner_type_rules (0026) matches bannerRulesOf() from the game contrac
     expect(sql).toContain('from public.banner_type_rules(bt) btr');
   });
 
-  it('profile_card calls pull_numbers with one argument (no client-supplied rules)', () => {
-    expect(sql).toContain('nums := public.pull_numbers(pulls);');
+  it('profile_card (0019) calls pull_numbers with one argument', () => {
+    const live = readFileSync(join(DIR, '0019_rewards.sql'), 'utf8');
+    expect(live).toContain('nums := public.pull_numbers(pulls);');
   });
 
   it('both functions are revoked from public access', () => {
     expect(sql).toContain('revoke execute on function public.banner_type_rules(text) from public, anon, authenticated;');
     expect(sql).toContain('revoke execute on function public.pull_numbers(jsonb) from public, anon, authenticated;');
+  });
+
+  it('no migration after 0019 re-creates profile_card without the rewards key', () => {
+    const files = readdirSync(DIR).filter((f) => f > '0019_' && f.endsWith('.sql')).sort();
+    for (const f of files) {
+      const body = readFileSync(join(DIR, f), 'utf8');
+      if (/create\s+or\s+replace\s+function\s+public\.profile_card/i.test(body)) {
+        expect(body, `${f} re-creates profile_card but must include rewards`).toContain("'rewards'");
+      }
+    }
   });
 });
