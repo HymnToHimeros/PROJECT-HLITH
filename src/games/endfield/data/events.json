@@ -674,7 +674,7 @@
     "kind": "web",
     "start": "2026-07-16T04:00:00.000Z",
     "end": "2026-08-09T04:00:00.000Z",
-    "reward": null,
+    "reward": 1200,
     "currency": "oroberyl",
     "serverTime": {
       "base": 8,
@@ -687,7 +687,7 @@
     "kind": "event",
     "start": "2026-07-16T04:00:00.000Z",
     "end": "2026-08-09T03:59:00.000Z",
-    "reward": null,
+    "reward": 600,
     "currency": "oroberyl",
     "serverTime": {
       "base": 8,
@@ -700,7 +700,7 @@
     "kind": "event",
     "start": "2026-07-16T04:00:00.000Z",
     "end": "2026-08-09T04:00:00.000Z",
-    "reward": null,
+    "reward": 3000,
     "currency": "oroberyl",
     "serverTime": {
       "base": 8,
@@ -713,7 +713,7 @@
     "kind": "event",
     "start": "2026-07-30T04:00:00.000Z",
     "end": "2026-08-12T20:00:00.000Z",
-    "reward": null,
+    "reward": 1200,
     "currency": "oroberyl",
     "serverTime": {
       "base": 8,
@@ -741,7 +741,7 @@
     "kind": "event",
     "start": "2026-08-06T04:00:00.000Z",
     "end": "2026-08-19T22:00:00.000Z",
-    "reward": null,
+    "reward": 1200,
     "currency": "oroberyl",
     "serverTime": {
       "base": 8,
@@ -767,7 +767,7 @@
     "kind": "event",
     "start": "2026-08-09T04:00:00.000Z",
     "end": "2026-09-01T22:00:00.000Z",
-    "reward": null,
+    "reward": 600,
     "currency": "oroberyl",
     "serverTime": {
       "base": 8,
@@ -780,7 +780,7 @@
     "kind": "event",
     "start": "2026-08-09T04:00:00.000Z",
     "end": "2026-09-01T22:00:00.000Z",
-    "reward": null,
+    "reward": 200,
     "currency": "oroberyl",
     "serverTime": {
       "base": 8,
@@ -793,7 +793,7 @@
     "kind": "event",
     "start": "2026-08-09T04:00:00.000Z",
     "end": "2026-09-01T22:00:00.000Z",
-    "reward": null,
+    "reward": 1600,
     "currency": "oroberyl",
     "serverTime": {
       "base": 8,
@@ -833,7 +833,7 @@
     "kind": "event",
     "start": "2026-09-02T04:00:00.000Z",
     "end": "2026-10-14T22:00:00.000Z",
-    "reward": null,
+    "reward": 600,
     "currency": "oroberyl"
   },
   {
@@ -855,7 +855,7 @@
     "kind": "event",
     "start": "2026-09-02T04:00:00.000Z",
     "end": "2026-09-24T03:59:00.000Z",
-    "reward": null,
+    "reward": 300,
     "currency": "oroberyl",
     "serverTime": {
       "base": 8,
@@ -868,7 +868,7 @@
     "kind": "web",
     "start": "2026-09-02T04:00:00.000Z",
     "end": "2026-09-30T03:59:00.000Z",
-    "reward": null,
+    "reward": 1200,
     "currency": "oroberyl",
     "serverTime": {
       "base": 8,
@@ -881,7 +881,7 @@
     "kind": "event",
     "start": "2026-09-09T04:00:00.000Z",
     "end": "2026-10-14T22:00:00.000Z",
-    "reward": null,
+    "reward": 1200,
     "currency": "oroberyl",
     "serverTime": {
       "base": 8,
@@ -894,7 +894,7 @@
     "kind": "event",
     "start": "2026-09-16T04:00:00.000Z",
     "end": "2026-09-30T08:00:00.000Z",
-    "reward": null,
+    "reward": 1600,
     "currency": "oroberyl",
     "serverTime": {
       "base": 8,
@@ -922,7 +922,7 @@
     "kind": "web",
     "start": "2026-09-24T04:00:00.000Z",
     "end": "2026-10-14T22:00:00.000Z",
-    "reward": null,
+    "reward": 1200,
     "currency": "oroberyl",
     "serverTime": {
       "base": 8,
@@ -948,7 +948,7 @@
     "kind": "event",
     "start": "2026-09-24T04:00:00.000Z",
     "end": "2026-10-14T22:00:00.000Z",
-    "reward": null,
+    "reward": 300,
     "currency": "oroberyl",
     "serverTime": {
       "base": 8,
@@ -961,7 +961,7 @@
     "kind": "event",
     "start": "2026-10-01T04:00:00.000Z",
     "end": "2026-10-14T22:00:00.000Z",
-    "reward": null,
+    "reward": 300,
     "currency": "oroberyl",
     "serverTime": {
       "base": 8,
@@ -974,7 +974,7 @@
     "kind": "login",
     "start": "2026-10-01T04:00:00.000Z",
     "end": "2026-10-14T22:00:00.000Z",
-    "reward": null,
+    "reward": 1500,
     "currency": "oroberyl",
     "serverTime": {
       "base": 8,
@@ -987,7 +987,7 @@
     "kind": "event",
     "start": "2026-10-01T04:00:00.000Z",
     "end": "2026-10-14T22:00:00.000Z",
-    "reward": null,
+    "reward": 1200,
     "currency": "oroberyl",
     "serverTime": {
       "base": 8,
@@ -1000,7 +1000,7 @@
     "kind": "event",
     "start": "2026-10-05T04:00:00.000Z",
     "end": "2026-10-18T20:00:00.000Z",
-    "reward": null,
+    "reward": 1200,
     "currency": "oroberyl",
     "serverTime": {
       "base": 8,
@@ -1041,7 +1041,7 @@
     "kind": "web",
     "start": "2026-10-15T04:00:00.000Z",
     "end": "2026-11-05T04:00:00.000Z",
-    "reward": null,
+    "reward": 1200,
     "currency": "oroberyl",
     "serverTime": {
       "base": 8,
@@ -1054,7 +1054,7 @@
     "kind": "event",
     "start": "2026-10-15T04:00:00.000Z",
     "end": "2026-11-05T03:59:00.000Z",
-    "reward": null,
+    "reward": 300,
     "currency": "oroberyl",
     "serverTime": {
       "base": 8,
@@ -1082,7 +1082,7 @@
     "kind": "event",
     "start": "2026-10-15T04:00:00.000Z",
     "end": "2026-11-25T20:00:00.000Z",
-    "reward": null,
+    "reward": 1000,
     "currency": "oroberyl",
     "serverTime": {
       "base": 8,
@@ -1095,7 +1095,7 @@
     "kind": "web",
     "start": "2026-10-22T04:00:00.000Z",
     "end": "2026-11-04T20:00:00.000Z",
-    "reward": null,
+    "reward": 1500,
     "currency": "oroberyl",
     "serverTime": {
       "base": 8,
@@ -1109,7 +1109,7 @@
     "kind": "event",
     "start": "2026-10-22T04:00:00.000Z",
     "end": "2026-11-04T22:00:00.000Z",
-    "reward": null,
+    "reward": 1200,
     "currency": "oroberyl",
     "serverTime": {
       "base": 8,
@@ -1123,7 +1123,7 @@
     "kind": "event",
     "start": "2026-10-29T04:00:00.000Z",
     "end": "2026-11-18T20:00:00.000Z",
-    "reward": null,
+    "reward": 1200,
     "currency": "oroberyl",
     "serverTime": {
       "base": 8,
@@ -1137,7 +1137,7 @@
     "kind": "event",
     "start": "2026-10-31T04:00:00.000Z",
     "end": "2026-11-13T20:00:00.000Z",
-    "reward": null,
+    "reward": 300,
     "currency": "oroberyl",
     "serverTime": {
       "base": 8,
@@ -1151,7 +1151,7 @@
     "kind": "event",
     "start": "2026-11-05T04:00:00.000Z",
     "end": "2026-11-25T20:00:00.000Z",
-    "reward": null,
+    "reward": 600,
     "currency": "oroberyl",
     "serverTime": {
       "base": 8,
@@ -1165,7 +1165,7 @@
     "kind": "event",
     "start": "2026-11-05T04:00:00.000Z",
     "end": "2026-11-26T03:59:00.000Z",
-    "reward": null,
+    "reward": 300,
     "currency": "oroberyl",
     "serverTime": {
       "base": 8,

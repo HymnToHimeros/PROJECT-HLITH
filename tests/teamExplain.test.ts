@@ -5,6 +5,8 @@ import { library as hsrLib } from '../src/games/hsr/kitcheck/library';
 import { verdict as hsrVerdict } from '../src/games/hsr/kitcheck/team';
 import { library as zzzLib } from '../src/games/zzz/kitcheck/library';
 import { verdict as zzzVerdict } from '../src/games/zzz/kitcheck/team';
+import { library as efLib } from '../src/games/endfield/kitcheck/library';
+import { verdict as efVerdict } from '../src/games/endfield/kitcheck/team';
 
 const idOf = (lib: { names: Map<string, string> }, n: string) => [...lib.names].find(([, v]) => v === n)?.[0] ?? n;
 const all = { owned: () => true, dupes: () => 0 };
@@ -30,5 +32,17 @@ describe('Team scores in plain words', () => {
     expect(v.explain.members.reduce((n, m) => n + m.points, 0)).toBe(v.count);
     expect(v.explain.missing[0]).toMatch(/^The best team found for Feixiao is .*: kit value ×[\d.]+ against ×[\d.]+ here \(count \d+ against \d+\)/);
     expect(v.explain.missing.some((m) => / would bring: /.test(m))).toBe(true);
+  });
+
+  it('Endfield Laevatain team: a set-up chain reads "sets up X, which sets off Y", once even when two skills do it', () => {
+    const v = efVerdict(['Laevatain', 'Camille', 'Si', 'Gilberta'].map((n) => idOf(efLib(), n)), all, efLib(), Date.parse('2026-10-20T00:00:00Z'));
+    if (!v.rated || !v.explain) throw new Error('not rated');
+    const camille = v.explain.members.find((m) => m.id === idOf(efLib(), 'Camille'))?.text ?? '';
+    const chain = 'sets up Combustion (on another element’s Infliction), which sets off “Combo on Combustion or Corrosion”';
+    expect(camille).toContain(chain);
+    // Her Battle Skill and Ultimate both apply Heat Infliction: two points, one phrase.
+    expect(camille.split(chain)).toHaveLength(2);
+    expect(v.explain.members.map((m) => m.text).join(' ')).not.toContain('their sets up');
+    expect(v.explain.members.reduce((n, m) => n + m.points, 0)).toBe(v.count);
   });
 });

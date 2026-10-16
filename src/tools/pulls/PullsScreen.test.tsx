@@ -385,6 +385,12 @@ describe('Pulls screen', () => {
     expect(out.map((x) => x.pity)).toEqual([1, 2, 1]);
   });
 
+  it('History: on a banner with nothing featured (standard), a top result is never a won or lost 50/50', () => {
+    const p = (id: string, featured: boolean) => ({ id, bannerType: 'standard', itemId: id, name: id, rarity: 'top' as const, time: `2026-01-0${id}T00:00:00.000Z`, featured });
+    const out = topsWithPity([p('1', false), p('2', true)], new Set(), new Set(['standard']));
+    expect(out.map((x) => x.result)).toEqual(['unknown', 'unknown']);
+  });
+
   it('History: “Show all” lists every top result, not just the newest 10', async () => {
     const pulls = Array.from({ length: 12 }, (_, i) => ({ id: `t${i}`, bannerType: 'character', itemId: 'x', name: `Top ${i}`, rarity: 'top' as const, time: new Date(Date.UTC(2026, 0, i + 1)).toISOString() }));
     act(() => {

@@ -26,7 +26,8 @@ export function Weapons({ data, several, onOpen }: Props) {
 
   const rows: Row[] = useMemo(() => {
     if (!weapons || !data[0]) return [];
-    return weapons.map((w) => ({ d: data[0] as RosterData, w, key: `${data[0]!.game.id}:${w.id}` }));
+    const d = data[0];
+    return weapons.map((w) => ({ d: d as RosterData, w, key: `${d.game.id}:${w.id}` }));
   }, [weapons, data]);
 
   const [sort, setSort] = useState<Sort>('name');
@@ -41,8 +42,6 @@ export function Weapons({ data, several, onOpen }: Props) {
 
   if (weapons === null) return <p className={r.muted}>Loading {word}s…</p>;
   if (rows.length === 0) return <EmptyState title={`No ${word} list yet`} body={`This game's ${word} list hasn't been added yet. It appears here as soon as it is.`} />;
-
-  const rarityWord = (k: 'top' | 'mid' | 'low') => game?.terms.rarity[k] ?? k;
 
   return (
     <div className={r.stack}>
@@ -72,7 +71,7 @@ export function Weapons({ data, several, onOpen }: Props) {
         <ul className={r.grid} aria-label={several ? 'Weapons' : `${game?.terms.weapon ?? 'Weapon'}s`}>
           {list.map((x) => (
             <li key={x.key}>
-              <WeaponTile row={x} game={game!} onClick={() => onOpen(x.d.game.id, x.w.id)} />
+              <WeaponTile row={x} game={game as GameContract} onClick={() => onOpen(x.d.game.id, x.w.id)} />
             </li>
           ))}
         </ul>

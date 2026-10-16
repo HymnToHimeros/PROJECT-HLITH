@@ -10,7 +10,8 @@ function fakeDeps(responses: Record<string, { ok: boolean; status: number; body:
       calls.push(url);
       const key = Object.keys(responses).find((k) => url.startsWith(k));
       const r = key ? responses[key] : { ok: false, status: 404, body: {} };
-      return { ok: r!.ok, status: r!.status, json: async () => r!.body };
+      const res = r ?? { ok: false, status: 404, body: {} };
+      return { ok: res.ok, status: res.status, json: async () => res.body };
     },
   };
 }
