@@ -4,7 +4,11 @@
  * and skill order only where two or more community guides agree, and the wiki's gear sets.
  */
 import { describe, expect, it } from 'vitest';
-import { agreedSet, agreedSkills, buildFor, recommendedWeapons, setEffects, type CommunityBuilds } from '../scripts/import-endfield-builds';
+import { agreedSet, agreedSkills, buildFor, recommendedWeapons, type CommunityBuilds } from '../scripts/import-endfield-builds';
+import { setEffects, STATS, weaponSkillTable } from '../scripts/import-endfield-gear';
+import attributes from '../src/games/endfield/data/operator-attributes.json';
+import gearPieces from '../src/games/endfield/data/gear-pieces.json';
+import weaponSkills from '../src/games/endfield/data/weapon-skills.json';
 import type { RecommendedBuild } from '../src/core/contract';
 import buildsJson from '../src/games/endfield/data/builds.json';
 import characters from '../src/games/endfield/data/characters.json';
@@ -126,6 +130,43 @@ describe('Endfield builds.json', () => {
     for (const s of gearSets) {
       expect(s.version, s.name).toMatch(/^wiki revision \d+$/);
       expect(JSON.stringify(s.effects), s.name).not.toMatch(/<|\[\[|&#/);
+    }
+  });
+
+  it('gear pieces: every one in a known set (or none), a slot, and 1–3 fixed stats the STATS list knows, with numbers', () => {
+    expect(gearPieces.length).toBeGreaterThan(200);
+    const stats = new Set<string>(STATS);
+    for (const p of gearPieces) {
+      if (p.set) expect(sets.has(p.set), p.name).toBe(true);
+      expect(['Armor', 'Gloves', 'Kit']).toContain(p.slot);
+      expect(p.stats.length, p.name).toBeGreaterThan(0);
+      for (const x of p.stats) {
+        expect(stats.has(x.stat), `${p.name}: ${x.stat}`).toBe(true);
+        expect(x.values.every((v) => Number.isFinite(v) && v > 0), `${p.name}: ${x.stat}`).toBe(true);
+      }
+      expect(p.version, p.name).toMatch(/^wiki revision \d+$/);
+    }
+    // Every endgame set has pieces for all three slots.
+    for (const s of gearSets.filter((x) => x.level === 70 && x.effects.length)) for (const slot of ['Armor', 'Gloves', 'Kit']) expect(gearPieces.some((p) => p.set === s.name && p.slot === slot), `${s.name} ${slot}`).toBe(true);
+  });
+
+  it('weapon skills: every weapon recommended for a released operator has its three skills in words, at rank 1 and the top rank', () => {
+    const byName = new Map(weaponSkills.map((w) => [w.weapon, w]));
+    // Operators not out yet (beta) may name a weapon the wiki has no skills for yet (Argent Flow's Lunar Calling).
+    for (const w of new Set(builds.filter((b) => !b.beta).flatMap((b) => b.weapons))) {
+      const ws = byName.get(w);
+      expect(ws?.skills.length, w).toBe(3);
+      for (const k of ws?.skills ?? []) expect(k.rank1 && k.max, `${w}: ${k.name}`).toBeTruthy();
+    }
+    const html = '<div>Weapon Skills</div></table><table class="mrfz-wtable"><tr><th>Rank</th><th>A</th></tr><tr><th>1</th><td>ATK <span>+5%</span></td></tr><tr><th>9</th><td>ATK <span>+39%</span></td></tr></table>';
+    expect(weaponSkillTable(html, ['A'])).toEqual([{ name: 'A', rank1: 'ATK +5%', max: 'ATK +39%' }]);
+  });
+
+  it('every released operator has a main attribute from its page', () => {
+    const all = attributes as Record<string, { main: string; secondary?: string; version: string }>;
+    for (const c of characters.filter((x) => !x.releasedAt || Date.parse(x.releasedAt) <= Date.parse('2026-10-16'))) {
+      expect(['Strength', 'Agility', 'Intellect', 'Will']).toContain(all[c.id]?.main);
+      expect(all[c.id]?.version, c.id).toMatch(/^wiki revision \d+$/);
     }
   });
 

@@ -11,27 +11,19 @@
  *   only where at least two sources agree: a gear set named by two or more sources and by more sources than
  *   any other set; a skill order that every source's order fits (the finest tiers they all share) with at
  *   least two tiers. Anything else stays empty and the app shows "No data yet".
- * - Gear sets themselves (names and 3-piece effects): the wiki's GearSets table, each set page's revision.
+ * - Gear sets (names and effects) come from npm run data:endfield-gear (gear-sets.json); run that first.
+ * - Each operator's main and secondary attribute (Operator infobox `main`, `sub`) → operator-attributes.json.
  * - Main stats: Endfield gear has no main stat to pick, so the step isn't shown (`hasMainStats: false`).
  * A weapon or gear set name the lists don't know stops the import. An operator not out yet is marked `beta`.
  */
 import { readFileSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import type { BuildItem, RecommendedBuild } from '../src/core/contract/entities.ts';
-import { json, page, pagesById, templates, WIKI } from './import-endfield-kits.ts';
+import type { GearSet } from './import-endfield-gear.ts';
+import { page, pagesById, templates } from './import-endfield-kits.ts';
 
 const ROOT = resolve(import.meta.dirname, '..');
 const SKILLS = ['Basic Attack', 'Battle Skill', 'Combo Skill', 'Ultimate'] as const;
-
-export interface GearSet {
-  name: string;
-  /** Gear level the set is made at. */
-  level: number;
-  /** Its set effects in the game's words, e.g. { label: '3-piece', text: "Wearer's Arts Intensity +30. …" }. */
-  effects: { label: string; text: string }[];
-  source: string;
-  version: string;
-}
 
 interface Entry {
   source: string;
@@ -57,26 +49,6 @@ export function recommendedWeapons(text: string): { skills: string[]; stats: str
   const skills = names(box.matskill);
   const stats = names(box.matstats);
   return { skills, stats, all: [...new Set([...skills, ...stats])] };
-}
-
-/** The wiki's effect markup → plain text: glossary spans keep their words, pictures and colours go. */
-export function plainEffect(raw: string): string {
-  return raw
-    .replace(/\[\[File:[^\]]*\]\]/g, '')
-    .replace(/<[^>]*>/g, '')
-    .replace(/&#39;/g, "'")
-    .replace(/&quot;/g, '"')
-    .replace(/&amp;/g, '&')
-    .replace(/\s+/g, ' ')
-    .trim();
-}
-
-/** "3-piece set effect: …" → { label: '3-piece', text }; "No Set Effects" → none. */
-export function setEffects(raw: string): GearSet['effects'] {
-  const text = plainEffect(raw);
-  const m = /^(\d+)-piece set effect:\s*(.*)$/i.exec(text);
-  if (m) return [{ label: `${m[1]}-piece`, text: m[2] ?? '' }];
-  return /^no set effects?$/i.test(text) || !text ? [] : [{ label: 'Set', text }];
 }
 
 const day = (iso: string) => new Date(`${iso}T00:00:00Z`).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });
@@ -156,28 +128,6 @@ export function buildFor(
   };
 }
 
-/** Every gear set on the wiki (GearSets table), with each set page's revision. */
-async function gearSets(): Promise<GearSet[]> {
-  const q = new URLSearchParams({ action: 'cargoquery', format: 'json', limit: '500', tables: 'GearSets', fields: '_pageName=page,GearSet=name,Level=level,Effect=effect' });
-  const d = await json<{ cargoquery?: { title: { page: string; name: string; level: string; effect: string } }[] }>(`${WIKI}/api.php?${q}`);
-  const rows = (d.cargoquery ?? []).map((r) => r.title);
-  const revs = new Map<string, number>();
-  for (let i = 0; i < rows.length; i += 40) {
-    const r = new URLSearchParams({ action: 'query', prop: 'revisions', rvprop: 'ids', format: 'json', formatversion: '2', titles: rows.slice(i, i + 40).map((x) => x.page).join('|') });
-    const res = await json<{ query: { pages: { title: string; revisions?: { revid: number }[] }[] } }>(`${WIKI}/api.php?${r}`);
-    for (const p of res.query.pages) if (p.revisions?.[0]) revs.set(p.title, p.revisions[0].revid);
-  }
-  return rows
-    .map((r) => ({
-      name: plainEffect(r.name),
-      level: Number(r.level),
-      effects: setEffects(r.effect),
-      source: `endfield.wiki.gg/wiki/${r.page.replace(/ /g, '_')} (CC BY-SA 4.0)`,
-      version: `wiki revision ${revs.get(r.page) ?? 'unknown'}`,
-    }))
-    .sort((a, b) => a.name.localeCompare(b.name));
-}
-
 if (import.meta.main ?? process.argv[1]?.endsWith('import-endfield-builds.ts')) {
   const dry = process.argv.includes('--dry');
   const read = (p: string) => JSON.parse(readFileSync(resolve(ROOT, p), 'utf8'));
@@ -185,11 +135,12 @@ if (import.meta.main ?? process.argv[1]?.endsWith('import-endfield-builds.ts')) 
   const weaponList = read('src/games/endfield/data/weapons.json') as { name: string; icon?: string }[];
   const data = read('src/games/endfield/data/community-builds.json') as CommunityBuilds;
   const weapons = new Map(weaponList.map((w) => [w.name, w]));
-  const sets = await gearSets();
+  const sets = read('src/games/endfield/data/gear-sets.json') as GearSet[];
   const setMap = new Map(sets.map((s) => [s.name, s]));
   const pages = await pagesById();
   const cache = new Map<string, { text: string; revid: number }>();
   const builds: RecommendedBuild[] = [];
+  const attributes: Record<string, { main: string; secondary?: string | undefined; source: string; version: string }> = {};
   const notes: string[] = [];
   const unknown: string[] = [];
   for (const id of Object.keys(data.operators)) if (!characters.some((c) => c.id === id)) unknown.push(`community-builds.json: operator "${id}"`);
@@ -206,6 +157,9 @@ if (import.meta.main ?? process.argv[1]?.endsWith('import-endfield-builds.ts')) 
     }
     const p = cache.get(title) as { text: string; revid: number };
     const beta = c.releasedAt !== undefined && Date.parse(c.releasedAt) > Date.now();
+    const box = templates(p.text, 'Operator infobox')[0] ?? {};
+    if (box.main?.trim()) attributes[c.id] = { main: box.main.trim(), secondary: box.sub?.trim() || undefined, source: `endfield.wiki.gg/wiki/${title.replace(/ /g, '_')} (CC BY-SA 4.0)`, version: `wiki revision ${p.revid}` };
+    else notes.push(`${c.name}: no main attribute on the page`);
     const r = buildFor(c.id, title, p.revid, p.text, weapons, beta, { data, sets: setMap });
     unknown.push(...r.unknown.map((n) => `${c.name}: ${n}`));
     if (r.build) builds.push(r.build);
@@ -215,11 +169,11 @@ if (import.meta.main ?? process.argv[1]?.endsWith('import-endfield-builds.ts')) 
   builds.sort((a, b) => a.characterId.localeCompare(b.characterId));
   for (const n of notes) console.log(`note: ${n}`);
   const count = (f: (b: RecommendedBuild) => boolean) => builds.filter(f).length;
-  console.log(`${builds.length} of ${characters.length} operators: weapons ${count((b) => b.weapons.length > 0)}, gear set ${count((b) => b.sets.length > 0)}, skill order ${count((b) => b.skillsFirst.length > 0)}; ${sets.length} gear sets.`);
+  console.log(`${builds.length} of ${characters.length} operators: weapons ${count((b) => b.weapons.length > 0)}, gear set ${count((b) => b.sets.length > 0)}, skill order ${count((b) => b.skillsFirst.length > 0)}; attributes for ${Object.keys(attributes).length}.`);
   const out = (x: unknown) => `${JSON.stringify(x, null, 1)}\n`;
   if (dry) console.log(out(builds));
   else {
     writeFileSync(resolve(ROOT, 'src/games/endfield/data/builds.json'), out(builds));
-    writeFileSync(resolve(ROOT, 'src/games/endfield/data/gear-sets.json'), out(sets));
+    writeFileSync(resolve(ROOT, 'src/games/endfield/data/operator-attributes.json'), out(Object.fromEntries(Object.entries(attributes).sort())));
   }
 }
