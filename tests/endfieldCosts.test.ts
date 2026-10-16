@@ -116,7 +116,10 @@ describe('Endfield costs data (src/games/endfield/data/costs.json)', async () =>
     const both = farmPlan(endfield, ['chr_0036_jsspsi', none], materials as Material[]);
     const si = farmPlan(endfield, ['chr_0036_jsspsi'], materials as Material[]);
     expect(both.left).toEqual([none]);
-    expect(both.needs).toEqual(si.needs);
+    // Compare what is needed, not the Known wrappers: each carries its own `at` time, which can differ by a millisecond.
+    const amounts = (p: typeof si) => (p.needs.known ? p.needs.value.map((r) => [r.material, r.amount]) : null);
+    expect(amounts(si)).not.toBeNull();
+    expect(amounts(both)).toEqual(amounts(si));
     expect(both.stamina.known).toBe(false);
     const alone = farmPlan(endfield, [none], materials as Material[]);
     expect(alone.needs).toMatchObject({ known: true, value: [] });
