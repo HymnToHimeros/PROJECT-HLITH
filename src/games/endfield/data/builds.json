@@ -1,7 +1,9 @@
 [
  {
   "characterId": "chr_0002_endminm",
-  "source": "the game's recommended weapons, not ranked: Matching Skills first, then Matching Stats (endfield.wiki.gg/wiki/Endministrator, CC BY-SA 4.0, revision 64967)",
+  "source": "the game's recommendation, not ranked: Matching Skills first, then Matching Stats (endfield.wiki.gg/wiki/Endministrator, CC BY-SA 4.0, revision 64967)",
+  "ranked": false,
+  "hasMainStats": false,
   "sets": [],
   "mainStats": {},
   "subStats": [],
@@ -34,7 +36,9 @@
  },
  {
   "characterId": "chr_0003_endminf",
-  "source": "the game's recommended weapons, not ranked: Matching Skills first, then Matching Stats (endfield.wiki.gg/wiki/Endministrator, CC BY-SA 4.0, revision 64967)",
+  "source": "the game's recommendation, not ranked: Matching Skills first, then Matching Stats (endfield.wiki.gg/wiki/Endministrator, CC BY-SA 4.0, revision 64967)",
+  "ranked": false,
+  "hasMainStats": false,
   "sets": [],
   "mainStats": {},
   "subStats": [],
@@ -67,8 +71,20 @@
  },
  {
   "characterId": "chr_0004_pelica",
-  "source": "the game's recommended weapons, not ranked: Matching Skills first, then Matching Stats (endfield.wiki.gg/wiki/Perlica, CC BY-SA 4.0, revision 64968)",
-  "sets": [],
+  "source": "the game's recommendation, not ranked: Matching Skills first, then Matching Stats (endfield.wiki.gg/wiki/Perlica, CC BY-SA 4.0, revision 64968)",
+  "ranked": false,
+  "hasMainStats": false,
+  "stepSources": {
+   "sets": "Community guides: Game8 (15 Oct 2026), GameWith (28 Apr 2026)"
+  },
+  "sets": [
+   {
+    "pieces": 3,
+    "options": [
+     "Pulser Labs"
+    ]
+   }
+  ],
   "mainStats": {},
   "subStats": [],
   "weapons": [
@@ -95,12 +111,22 @@
    "Stanza of Memorials": {
     "icon": "https://endfield.wiki.gg/images/Stanza_of_Memorials_icon.png",
     "effects": []
+   },
+   "Pulser Labs": {
+    "effects": [
+     {
+      "label": "3-piece",
+      "text": "Wearer's Arts Intensity +30. After the wearer applies Electrification, the wearer gains Electric DMG +50% for 10s. After the wearer applies Solidification, the wearer gains Cryo DMG +50% for 10s. The aforementioned effects cannot stack."
+     }
+    ]
    }
   }
  },
  {
   "characterId": "chr_0005_chen",
-  "source": "the game's recommended weapons, not ranked: Matching Skills first, then Matching Stats (endfield.wiki.gg/wiki/Chen_Qianyu, CC BY-SA 4.0, revision 64969)",
+  "source": "the game's recommendation, not ranked: Matching Skills first, then Matching Stats (endfield.wiki.gg/wiki/Chen_Qianyu, CC BY-SA 4.0, revision 64969)",
+  "ranked": false,
+  "hasMainStats": false,
   "sets": [],
   "mainStats": {},
   "subStats": [],
@@ -133,8 +159,21 @@
  },
  {
   "characterId": "chr_0006_wolfgd",
-  "source": "the game's recommended weapons, not ranked: Matching Skills first, then Matching Stats (endfield.wiki.gg/wiki/Wulfgard, CC BY-SA 4.0, revision 64970)",
-  "sets": [],
+  "source": "the game's recommendation, not ranked: Matching Skills first, then Matching Stats (endfield.wiki.gg/wiki/Wulfgard, CC BY-SA 4.0, revision 64970)",
+  "ranked": false,
+  "hasMainStats": false,
+  "stepSources": {
+   "sets": "Community guides: Game8 (15 Oct 2026), GameWith (28 Apr 2026)",
+   "skills": "Community guides: GameWith (28 Apr 2026), endfield.gg (23 Jan 2026)"
+  },
+  "sets": [
+   {
+    "pieces": 3,
+    "options": [
+     "Hot Work"
+    ]
+   }
+  ],
   "mainStats": {},
   "subStats": [],
   "weapons": [
@@ -143,7 +182,16 @@
    "Rational Farewell",
    "Long Road"
   ],
-  "skillsFirst": [],
+  "skillsFirst": [
+   [
+    "Battle Skill",
+    "Combo Skill"
+   ],
+   [
+    "Basic Attack",
+    "Ultimate"
+   ]
+  ],
   "version": "wiki revision 64970",
   "items": {
    "Clannibal": {
@@ -161,13 +209,33 @@
    "Long Road": {
     "icon": "https://endfield.wiki.gg/images/Long_Road_icon.png",
     "effects": []
+   },
+   "Hot Work": {
+    "effects": [
+     {
+      "label": "3-piece",
+      "text": "Wearer's Arts Intensity +30. After the wearer applies Combustion, the wearer gains Heat DMG +50% for 10s. After the wearer applies Corrosion, the wearer gains Nature DMG +50% for 10s. The aforementioned effects cannot stack."
+     }
+    ]
    }
   }
  },
  {
   "characterId": "chr_0007_ikut",
-  "source": "the game's recommended weapons, not ranked: Matching Skills first, then Matching Stats (endfield.wiki.gg/wiki/Arclight, CC BY-SA 4.0, revision 64971)",
-  "sets": [],
+  "source": "the game's recommendation, not ranked: Matching Skills first, then Matching Stats (endfield.wiki.gg/wiki/Arclight, CC BY-SA 4.0, revision 64971)",
+  "ranked": false,
+  "hasMainStats": false,
+  "stepSources": {
+   "sets": "Community guides: Game8 (15 Oct 2026), GameWith (28 Apr 2026)"
+  },
+  "sets": [
+   {
+    "pieces": 3,
+    "options": [
+     "Frontiers"
+    ]
+   }
+  ],
   "mainStats": {},
   "subStats": [],
   "weapons": [
@@ -194,12 +262,25 @@
    "OBJ Edge of Lightness": {
     "icon": "https://endfield.wiki.gg/images/OBJ_Edge_of_Lightness_icon.png",
     "effects": []
+   },
+   "Frontiers": {
+    "effects": [
+     {
+      "label": "3-piece",
+      "text": "Wearer's Combo Skill Cooldown Reduction +15%. After the wearer's skill recovers SP, the team gains DMG +16% for 15s. This effect cannot stack."
+     }
+    ]
    }
   }
  },
  {
   "characterId": "chr_0009_azrila",
-  "source": "the game's recommended weapons, not ranked: Matching Skills first, then Matching Stats (endfield.wiki.gg/wiki/Ember, CC BY-SA 4.0, revision 64972)",
+  "source": "the game's recommendation, not ranked: Matching Skills first, then Matching Stats (endfield.wiki.gg/wiki/Ember, CC BY-SA 4.0, revision 64972)",
+  "ranked": false,
+  "hasMainStats": false,
+  "stepSources": {
+   "skills": "Community guides: GameWith (28 Apr 2026), endfield.gg (23 Jan 2026)"
+  },
   "sets": [],
   "mainStats": {},
   "subStats": [],
@@ -210,7 +291,18 @@
    "Exemplar",
    "Ancient Canal"
   ],
-  "skillsFirst": [],
+  "skillsFirst": [
+   [
+    "Combo Skill",
+    "Ultimate"
+   ],
+   [
+    "Battle Skill"
+   ],
+   [
+    "Basic Attack"
+   ]
+  ],
   "version": "wiki revision 64972",
   "items": {
    "Thunderberge": {
@@ -237,7 +329,12 @@
  },
  {
   "characterId": "chr_0011_seraph",
-  "source": "the game's recommended weapons, not ranked: Matching Skills first, then Matching Stats (endfield.wiki.gg/wiki/Xaihi, CC BY-SA 4.0, revision 64973)",
+  "source": "the game's recommendation, not ranked: Matching Skills first, then Matching Stats (endfield.wiki.gg/wiki/Xaihi, CC BY-SA 4.0, revision 64973)",
+  "ranked": false,
+  "hasMainStats": false,
+  "stepSources": {
+   "skills": "Community guides: GameWith (28 Apr 2026), endfield.gg (23 Jan 2026)"
+  },
   "sets": [],
   "mainStats": {},
   "subStats": [],
@@ -247,7 +344,16 @@
    "Delivery Guaranteed",
    "Monaihe"
   ],
-  "skillsFirst": [],
+  "skillsFirst": [
+   [
+    "Battle Skill",
+    "Combo Skill",
+    "Ultimate"
+   ],
+   [
+    "Basic Attack"
+   ]
+  ],
   "version": "wiki revision 64973",
   "items": {
    "Chivalric Virtues": {
@@ -270,8 +376,20 @@
  },
  {
   "characterId": "chr_0012_avywen",
-  "source": "the game's recommended weapons, not ranked: Matching Skills first, then Matching Stats (endfield.wiki.gg/wiki/Avywenna, CC BY-SA 4.0, revision 64975)",
-  "sets": [],
+  "source": "the game's recommendation, not ranked: Matching Skills first, then Matching Stats (endfield.wiki.gg/wiki/Avywenna, CC BY-SA 4.0, revision 64975)",
+  "ranked": false,
+  "hasMainStats": false,
+  "stepSources": {
+   "sets": "Community guides: Game8 (15 Oct 2026), GameWith (28 Apr 2026)"
+  },
+  "sets": [
+   {
+    "pieces": 3,
+    "options": [
+     "Bonekrusha"
+    ]
+   }
+  ],
   "mainStats": {},
   "subStats": [],
   "weapons": [
@@ -293,13 +411,34 @@
    "Aggeloslayer": {
     "icon": "https://endfield.wiki.gg/images/Aggeloslayer_icon.png",
     "effects": []
+   },
+   "Bonekrusha": {
+    "effects": [
+     {
+      "label": "3-piece",
+      "text": "Wearer's ATK +15%. When the wearer casts a combo skill, the wearer gains 1 stack of Bonekrushing Smash that grants the wearer's next battle skill DMG Dealt +30%. Bonekrushing Smash can stack 2 time(s)."
+     }
+    ]
    }
   }
  },
  {
   "characterId": "chr_0013_aglina",
-  "source": "the game's recommended weapons, not ranked: Matching Skills first, then Matching Stats (endfield.wiki.gg/wiki/Gilberta, CC BY-SA 4.0, revision 64976)",
-  "sets": [],
+  "source": "the game's recommendation, not ranked: Matching Skills first, then Matching Stats (endfield.wiki.gg/wiki/Gilberta, CC BY-SA 4.0, revision 64976)",
+  "ranked": false,
+  "hasMainStats": false,
+  "stepSources": {
+   "sets": "Community guides: Game8 (15 Oct 2026), GameWith (28 Apr 2026)",
+   "skills": "Community guides: GameWith (28 Apr 2026), endfield.gg (23 Jan 2026)"
+  },
+  "sets": [
+   {
+    "pieces": 3,
+    "options": [
+     "Eternal Xiranite"
+    ]
+   }
+  ],
   "mainStats": {},
   "subStats": [],
   "weapons": [
@@ -308,7 +447,18 @@
    "Chivalric Virtues",
    "Monaihe"
   ],
-  "skillsFirst": [],
+  "skillsFirst": [
+   [
+    "Ultimate"
+   ],
+   [
+    "Battle Skill",
+    "Combo Skill"
+   ],
+   [
+    "Basic Attack"
+   ]
+  ],
   "version": "wiki revision 64976",
   "items": {
    "Delivery Guaranteed": {
@@ -326,12 +476,25 @@
    "Monaihe": {
     "icon": "https://endfield.wiki.gg/images/Monaihe_icon.png",
     "effects": []
+   },
+   "Eternal Xiranite": {
+    "effects": [
+     {
+      "label": "3-piece",
+      "text": "Wearer's HP +1000. After the wearer applies Amp, Protected, Susceptibility, or Weakened, other teammates gain DMG Dealt +16% for 15s. This effect cannot stack."
+     }
+    ]
    }
   }
  },
  {
   "characterId": "chr_0014_aurora",
-  "source": "the game's recommended weapons, not ranked: Matching Skills first, then Matching Stats (endfield.wiki.gg/wiki/Snowshine, CC BY-SA 4.0, revision 64977)",
+  "source": "the game's recommendation, not ranked: Matching Skills first, then Matching Stats (endfield.wiki.gg/wiki/Snowshine, CC BY-SA 4.0, revision 64977)",
+  "ranked": false,
+  "hasMainStats": false,
+  "stepSources": {
+   "skills": "Community guides: GameWith (29 Apr 2026), endfield.gg (23 Jan 2026)"
+  },
   "sets": [],
   "mainStats": {},
   "subStats": [],
@@ -341,7 +504,16 @@
    "Sundered Prince",
    "Exemplar"
   ],
-  "skillsFirst": [],
+  "skillsFirst": [
+   [
+    "Combo Skill"
+   ],
+   [
+    "Basic Attack",
+    "Battle Skill",
+    "Ultimate"
+   ]
+  ],
   "version": "wiki revision 64977",
   "items": {
    "Former Finery": {
@@ -364,7 +536,9 @@
  },
  {
   "characterId": "chr_0015_lifeng",
-  "source": "the game's recommended weapons, not ranked: Matching Skills first, then Matching Stats (endfield.wiki.gg/wiki/Lifeng, CC BY-SA 4.0, revision 64978)",
+  "source": "the game's recommendation, not ranked: Matching Skills first, then Matching Stats (endfield.wiki.gg/wiki/Lifeng, CC BY-SA 4.0, revision 64978)",
+  "ranked": false,
+  "hasMainStats": false,
   "sets": [],
   "mainStats": {},
   "subStats": [],
@@ -397,8 +571,21 @@
  },
  {
   "characterId": "chr_0016_laevat",
-  "source": "the game's recommended weapons, not ranked: Matching Skills first, then Matching Stats (endfield.wiki.gg/wiki/Laevatain, CC BY-SA 4.0, revision 64979)",
-  "sets": [],
+  "source": "the game's recommendation, not ranked: Matching Skills first, then Matching Stats (endfield.wiki.gg/wiki/Laevatain, CC BY-SA 4.0, revision 64979)",
+  "ranked": false,
+  "hasMainStats": false,
+  "stepSources": {
+   "sets": "Community guides: Game8 (15 Oct 2026), GameWith (28 Apr 2026), 18183 (CN) (3 Feb 2026)",
+   "skills": "Community guides: GameWith (28 Apr 2026), endfield.gg (23 Jan 2026)"
+  },
+  "sets": [
+   {
+    "pieces": 3,
+    "options": [
+     "Hot Work"
+    ]
+   }
+  ],
   "mainStats": {},
   "subStats": [],
   "weapons": [
@@ -407,7 +594,16 @@
    "White Night Nova",
    "Fortmaker"
   ],
-  "skillsFirst": [],
+  "skillsFirst": [
+   [
+    "Ultimate"
+   ],
+   [
+    "Basic Attack",
+    "Battle Skill",
+    "Combo Skill"
+   ]
+  ],
   "version": "wiki revision 64979",
   "items": {
    "Forgeborn Scathe": {
@@ -425,13 +621,34 @@
    "Fortmaker": {
     "icon": "https://endfield.wiki.gg/images/Fortmaker_icon.png",
     "effects": []
+   },
+   "Hot Work": {
+    "effects": [
+     {
+      "label": "3-piece",
+      "text": "Wearer's Arts Intensity +30. After the wearer applies Combustion, the wearer gains Heat DMG +50% for 10s. After the wearer applies Corrosion, the wearer gains Nature DMG +50% for 10s. The aforementioned effects cannot stack."
+     }
+    ]
    }
   }
  },
  {
   "characterId": "chr_0017_yvonne",
-  "source": "the game's recommended weapons, not ranked: Matching Skills first, then Matching Stats (endfield.wiki.gg/wiki/Yvonne, CC BY-SA 4.0, revision 64980)",
-  "sets": [],
+  "source": "the game's recommendation, not ranked: Matching Skills first, then Matching Stats (endfield.wiki.gg/wiki/Yvonne, CC BY-SA 4.0, revision 64980)",
+  "ranked": false,
+  "hasMainStats": false,
+  "stepSources": {
+   "sets": "Community guides: Game8 (15 Oct 2026), GameWith (28 Apr 2026)",
+   "skills": "Community guides: GameWith (28 Apr 2026), endfield.gg (23 Jan 2026)"
+  },
+  "sets": [
+   {
+    "pieces": 3,
+    "options": [
+     "MI Security"
+    ]
+   }
+  ],
   "mainStats": {},
   "subStats": [],
   "weapons": [
@@ -440,7 +657,16 @@
    "Wedge",
    "Navigator"
   ],
-  "skillsFirst": [],
+  "skillsFirst": [
+   [
+    "Ultimate"
+   ],
+   [
+    "Basic Attack",
+    "Battle Skill",
+    "Combo Skill"
+   ]
+  ],
   "version": "wiki revision 64980",
   "items": {
    "Artzy Tyrannical": {
@@ -458,12 +684,22 @@
    "Navigator": {
     "icon": "https://endfield.wiki.gg/images/Navigator_icon.png",
     "effects": []
+   },
+   "MI Security": {
+    "effects": [
+     {
+      "label": "3-piece",
+      "text": "Wearer's Critical Rate +5%. After the wearer scores a critical hit, the wearer gains ATK +5% for 5s. This effect can reach 5 stacks. At max stacks, grant an additional Critical Rate +5%. This effect cannot stack."
+     }
+    ]
    }
   }
  },
  {
   "characterId": "chr_0018_dapan",
-  "source": "the game's recommended weapons, not ranked: Matching Skills first, then Matching Stats (endfield.wiki.gg/wiki/Da_Pan, CC BY-SA 4.0, revision 64981)",
+  "source": "the game's recommendation, not ranked: Matching Skills first, then Matching Stats (endfield.wiki.gg/wiki/Da_Pan, CC BY-SA 4.0, revision 64981)",
+  "ranked": false,
+  "hasMainStats": false,
   "sets": [],
   "mainStats": {},
   "subStats": [],
@@ -496,8 +732,21 @@
  },
  {
   "characterId": "chr_0019_karin",
-  "source": "the game's recommended weapons, not ranked: Matching Skills first, then Matching Stats (endfield.wiki.gg/wiki/Akekuri, CC BY-SA 4.0, revision 64982)",
-  "sets": [],
+  "source": "the game's recommendation, not ranked: Matching Skills first, then Matching Stats (endfield.wiki.gg/wiki/Akekuri, CC BY-SA 4.0, revision 64982)",
+  "ranked": false,
+  "hasMainStats": false,
+  "stepSources": {
+   "sets": "Community guides: Game8 (15 Oct 2026), GameWith (28 Apr 2026)",
+   "skills": "Community guides: GameWith (28 Apr 2026), endfield.gg (23 Jan 2026)"
+  },
+  "sets": [
+   {
+    "pieces": 3,
+    "options": [
+     "Frontiers"
+    ]
+   }
+  ],
   "mainStats": {},
   "subStats": [],
   "weapons": [
@@ -506,7 +755,18 @@
    "Eminent Repute",
    "Grand Vision"
   ],
-  "skillsFirst": [],
+  "skillsFirst": [
+   [
+    "Combo Skill",
+    "Ultimate"
+   ],
+   [
+    "Battle Skill"
+   ],
+   [
+    "Basic Attack"
+   ]
+  ],
   "version": "wiki revision 64982",
   "items": {
    "Thermite Cutter": {
@@ -524,12 +784,25 @@
    "Grand Vision": {
     "icon": "https://endfield.wiki.gg/images/Grand_Vision_icon.png",
     "effects": []
+   },
+   "Frontiers": {
+    "effects": [
+     {
+      "label": "3-piece",
+      "text": "Wearer's Combo Skill Cooldown Reduction +15%. After the wearer's skill recovers SP, the team gains DMG +16% for 15s. This effect cannot stack."
+     }
+    ]
    }
   }
  },
  {
   "characterId": "chr_0020_meurs",
-  "source": "the game's recommended weapons, not ranked: Matching Skills first, then Matching Stats (endfield.wiki.gg/wiki/Catcher, CC BY-SA 4.0, revision 64983)",
+  "source": "the game's recommendation, not ranked: Matching Skills first, then Matching Stats (endfield.wiki.gg/wiki/Catcher, CC BY-SA 4.0, revision 64983)",
+  "ranked": false,
+  "hasMainStats": false,
+  "stepSources": {
+   "skills": "Community guides: GameWith (28 Apr 2026), endfield.gg (23 Jan 2026)"
+  },
   "sets": [],
   "mainStats": {},
   "subStats": [],
@@ -539,7 +812,16 @@
    "Sundered Prince",
    "Seeker of Dark Lung"
   ],
-  "skillsFirst": [],
+  "skillsFirst": [
+   [
+    "Battle Skill",
+    "Combo Skill",
+    "Ultimate"
+   ],
+   [
+    "Basic Attack"
+   ]
+  ],
   "version": "wiki revision 64983",
   "items": {
    "Former Finery": {
@@ -562,7 +844,9 @@
  },
  {
   "characterId": "chr_0021_whiten",
-  "source": "the game's recommended weapons, not ranked: Matching Skills first, then Matching Stats (endfield.wiki.gg/wiki/Estella, CC BY-SA 4.0, revision 64984)",
+  "source": "the game's recommendation, not ranked: Matching Skills first, then Matching Stats (endfield.wiki.gg/wiki/Estella, CC BY-SA 4.0, revision 64984)",
+  "ranked": false,
+  "hasMainStats": false,
   "sets": [],
   "mainStats": {},
   "subStats": [],
@@ -590,7 +874,12 @@
  },
  {
   "characterId": "chr_0022_bounda",
-  "source": "the game's recommended weapons, not ranked: Matching Skills first, then Matching Stats (endfield.wiki.gg/wiki/Fluorite, CC BY-SA 4.0, revision 64985)",
+  "source": "the game's recommendation, not ranked: Matching Skills first, then Matching Stats (endfield.wiki.gg/wiki/Fluorite, CC BY-SA 4.0, revision 64985)",
+  "ranked": false,
+  "hasMainStats": false,
+  "stepSources": {
+   "skills": "Community guides: GameWith (28 Apr 2026), endfield.gg (23 Jan 2026)"
+  },
   "sets": [],
   "mainStats": {},
   "subStats": [],
@@ -599,7 +888,18 @@
    "Opus: The Living",
    "OBJ Velocitous"
   ],
-  "skillsFirst": [],
+  "skillsFirst": [
+   [
+    "Combo Skill"
+   ],
+   [
+    "Battle Skill",
+    "Ultimate"
+   ],
+   [
+    "Basic Attack"
+   ]
+  ],
   "version": "wiki revision 64985",
   "items": {
    "Navigator": {
@@ -618,8 +918,21 @@
  },
  {
   "characterId": "chr_0023_antal",
-  "source": "the game's recommended weapons, not ranked: Matching Skills first, then Matching Stats (endfield.wiki.gg/wiki/Antal, CC BY-SA 4.0, revision 64986)",
-  "sets": [],
+  "source": "the game's recommendation, not ranked: Matching Skills first, then Matching Stats (endfield.wiki.gg/wiki/Antal, CC BY-SA 4.0, revision 64986)",
+  "ranked": false,
+  "hasMainStats": false,
+  "stepSources": {
+   "sets": "Community guides: Game8 (15 Oct 2026), GameWith (28 Apr 2026)",
+   "skills": "Community guides: GameWith (28 Apr 2026), endfield.gg (23 Jan 2026)"
+  },
+  "sets": [
+   {
+    "pieces": 3,
+    "options": [
+     "Eternal Xiranite"
+    ]
+   }
+  ],
   "mainStats": {},
   "subStats": [],
   "weapons": [
@@ -628,7 +941,18 @@
    "Oblivion",
    "Stanza of Memorials"
   ],
-  "skillsFirst": [],
+  "skillsFirst": [
+   [
+    "Battle Skill",
+    "Ultimate"
+   ],
+   [
+    "Combo Skill"
+   ],
+   [
+    "Basic Attack"
+   ]
+  ],
   "version": "wiki revision 64986",
   "items": {
    "Detonation Unit": {
@@ -646,13 +970,34 @@
    "Stanza of Memorials": {
     "icon": "https://endfield.wiki.gg/images/Stanza_of_Memorials_icon.png",
     "effects": []
+   },
+   "Eternal Xiranite": {
+    "effects": [
+     {
+      "label": "3-piece",
+      "text": "Wearer's HP +1000. After the wearer applies Amp, Protected, Susceptibility, or Weakened, other teammates gain DMG Dealt +16% for 15s. This effect cannot stack."
+     }
+    ]
    }
   }
  },
  {
   "characterId": "chr_0024_deepfin",
-  "source": "the game's recommended weapons, not ranked: Matching Skills first, then Matching Stats (endfield.wiki.gg/wiki/Alesh, CC BY-SA 4.0, revision 64987)",
-  "sets": [],
+  "source": "the game's recommendation, not ranked: Matching Skills first, then Matching Stats (endfield.wiki.gg/wiki/Alesh, CC BY-SA 4.0, revision 64987)",
+  "ranked": false,
+  "hasMainStats": false,
+  "stepSources": {
+   "sets": "Community guides: Game8 (15 Oct 2026), GameWith (28 Apr 2026)",
+   "skills": "Community guides: GameWith (28 Apr 2026), endfield.gg (23 Jan 2026)"
+  },
+  "sets": [
+   {
+    "pieces": 3,
+    "options": [
+     "Frontiers"
+    ]
+   }
+  ],
   "mainStats": {},
   "subStats": [],
   "weapons": [
@@ -661,7 +1006,18 @@
    "Thermite Cutter",
    "Umbral Torch"
   ],
-  "skillsFirst": [],
+  "skillsFirst": [
+   [
+    "Combo Skill"
+   ],
+   [
+    "Battle Skill",
+    "Ultimate"
+   ],
+   [
+    "Basic Attack"
+   ]
+  ],
   "version": "wiki revision 64987",
   "items": {
    "Finchaser 3.0": {
@@ -679,13 +1035,34 @@
    "Umbral Torch": {
     "icon": "https://endfield.wiki.gg/images/Umbral_Torch_icon.png",
     "effects": []
+   },
+   "Frontiers": {
+    "effects": [
+     {
+      "label": "3-piece",
+      "text": "Wearer's Combo Skill Cooldown Reduction +15%. After the wearer's skill recovers SP, the team gains DMG +16% for 15s. This effect cannot stack."
+     }
+    ]
    }
   }
  },
  {
   "characterId": "chr_0025_ardelia",
-  "source": "the game's recommended weapons, not ranked: Matching Skills first, then Matching Stats (endfield.wiki.gg/wiki/Ardelia, CC BY-SA 4.0, revision 64988)",
-  "sets": [],
+  "source": "the game's recommendation, not ranked: Matching Skills first, then Matching Stats (endfield.wiki.gg/wiki/Ardelia, CC BY-SA 4.0, revision 64988)",
+  "ranked": false,
+  "hasMainStats": false,
+  "stepSources": {
+   "sets": "Community guides: Game8 (15 Oct 2026), GameWith (28 Apr 2026)",
+   "skills": "Community guides: GameWith (28 Apr 2026), endfield.gg (23 Jan 2026)"
+  },
+  "sets": [
+   {
+    "pieces": 3,
+    "options": [
+     "Eternal Xiranite"
+    ]
+   }
+  ],
   "mainStats": {},
   "subStats": [],
   "weapons": [
@@ -695,7 +1072,18 @@
    "Stanza of Memorials",
    "OBJ Arts Identifier"
   ],
-  "skillsFirst": [],
+  "skillsFirst": [
+   [
+    "Battle Skill"
+   ],
+   [
+    "Combo Skill",
+    "Ultimate"
+   ],
+   [
+    "Basic Attack"
+   ]
+  ],
   "version": "wiki revision 64988",
   "items": {
    "Dreams of the Starry Beach": {
@@ -717,13 +1105,34 @@
    "OBJ Arts Identifier": {
     "icon": "https://endfield.wiki.gg/images/OBJ_Arts_Identifier_icon.png",
     "effects": []
+   },
+   "Eternal Xiranite": {
+    "effects": [
+     {
+      "label": "3-piece",
+      "text": "Wearer's HP +1000. After the wearer applies Amp, Protected, Susceptibility, or Weakened, other teammates gain DMG Dealt +16% for 15s. This effect cannot stack."
+     }
+    ]
    }
   }
  },
  {
   "characterId": "chr_0026_lastrite",
-  "source": "the game's recommended weapons, not ranked: Matching Skills first, then Matching Stats (endfield.wiki.gg/wiki/Last_Rite, CC BY-SA 4.0, revision 64989)",
-  "sets": [],
+  "source": "the game's recommendation, not ranked: Matching Skills first, then Matching Stats (endfield.wiki.gg/wiki/Last_Rite, CC BY-SA 4.0, revision 64989)",
+  "ranked": false,
+  "hasMainStats": false,
+  "stepSources": {
+   "sets": "Community guides: Game8 (15 Oct 2026), GameWith (28 Apr 2026)",
+   "skills": "Community guides: GameWith (28 Apr 2026), endfield.gg (23 Jan 2026)"
+  },
+  "sets": [
+   {
+    "pieces": 3,
+    "options": [
+     "Tide Surge"
+    ]
+   }
+  ],
   "mainStats": {},
   "subStats": [],
   "weapons": [
@@ -731,7 +1140,16 @@
    "Seeker of Dark Lung",
    "Sundered Prince"
   ],
-  "skillsFirst": [],
+  "skillsFirst": [
+   [
+    "Combo Skill",
+    "Ultimate"
+   ],
+   [
+    "Basic Attack",
+    "Battle Skill"
+   ]
+  ],
   "version": "wiki revision 64989",
   "items": {
    "Khravengger": {
@@ -745,12 +1163,22 @@
    "Sundered Prince": {
     "icon": "https://endfield.wiki.gg/images/Sundered_Prince_icon.png",
     "effects": []
+   },
+   "Tide Surge": {
+    "effects": [
+     {
+      "label": "3-piece",
+      "text": "Wearer's Skill DMG Dealt +20%. After the wearer applies 2 or more stacks of Arts Infliction on the enemy, the wearer gains Arts DMG Dealt +35% for 15s. This effect cannot stack."
+     }
+    ]
    }
   }
  },
  {
   "characterId": "chr_0027_tangtang",
-  "source": "the game's recommended weapons, not ranked: Matching Skills first, then Matching Stats (endfield.wiki.gg/wiki/Tangtang, CC BY-SA 4.0, revision 64990)",
+  "source": "the game's recommendation, not ranked: Matching Skills first, then Matching Stats (endfield.wiki.gg/wiki/Tangtang, CC BY-SA 4.0, revision 64990)",
+  "ranked": false,
+  "hasMainStats": false,
   "sets": [],
   "mainStats": {},
   "subStats": [],
@@ -783,8 +1211,20 @@
  },
  {
   "characterId": "chr_0028_wulfa",
-  "source": "the game's recommended weapons, not ranked: Matching Skills first, then Matching Stats (endfield.wiki.gg/wiki/Rossi, CC BY-SA 4.0, revision 64991)",
-  "sets": [],
+  "source": "the game's recommendation, not ranked: Matching Skills first, then Matching Stats (endfield.wiki.gg/wiki/Rossi, CC BY-SA 4.0, revision 64991)",
+  "ranked": false,
+  "hasMainStats": false,
+  "stepSources": {
+   "sets": "Community guides: Game8 (15 Oct 2026), GameWith (29 Mar 2026)"
+  },
+  "sets": [
+   {
+    "pieces": 3,
+    "options": [
+     "MI Security"
+    ]
+   }
+  ],
   "mainStats": {},
   "subStats": [],
   "weapons": [
@@ -811,12 +1251,25 @@
    "Sundering Steel": {
     "icon": "https://endfield.wiki.gg/images/Sundering_Steel_icon.png",
     "effects": []
+   },
+   "MI Security": {
+    "effects": [
+     {
+      "label": "3-piece",
+      "text": "Wearer's Critical Rate +5%. After the wearer scores a critical hit, the wearer gains ATK +5% for 5s. This effect can reach 5 stacks. At max stacks, grant an additional Critical Rate +5%. This effect cannot stack."
+     }
+    ]
    }
   }
  },
  {
   "characterId": "chr_0029_pograni",
-  "source": "the game's recommended weapons, not ranked: Matching Skills first, then Matching Stats (endfield.wiki.gg/wiki/Pogranichnik, CC BY-SA 4.0, revision 64992)",
+  "source": "the game's recommendation, not ranked: Matching Skills first, then Matching Stats (endfield.wiki.gg/wiki/Pogranichnik, CC BY-SA 4.0, revision 64992)",
+  "ranked": false,
+  "hasMainStats": false,
+  "stepSources": {
+   "skills": "Community guides: GameWith (28 Apr 2026), endfield.gg (24 Jan 2026)"
+  },
   "sets": [],
   "mainStats": {},
   "subStats": [],
@@ -825,7 +1278,16 @@
    "Thermite Cutter",
    "Sundering Steel"
   ],
-  "skillsFirst": [],
+  "skillsFirst": [
+   [
+    "Battle Skill",
+    "Combo Skill",
+    "Ultimate"
+   ],
+   [
+    "Basic Attack"
+   ]
+  ],
   "version": "wiki revision 64992",
   "items": {
    "Never Rest": {
@@ -844,8 +1306,20 @@
  },
  {
   "characterId": "chr_0030_zhuangfy",
-  "source": "the game's recommended weapons, not ranked: Matching Skills first, then Matching Stats (endfield.wiki.gg/wiki/Zhuang_Fangyi, CC BY-SA 4.0, revision 64993)",
-  "sets": [],
+  "source": "the game's recommendation, not ranked: Matching Skills first, then Matching Stats (endfield.wiki.gg/wiki/Zhuang_Fangyi, CC BY-SA 4.0, revision 64993)",
+  "ranked": false,
+  "hasMainStats": false,
+  "stepSources": {
+   "sets": "Community guides: Game8 (15 Oct 2026), GameWith (23 Apr 2026)"
+  },
+  "sets": [
+   {
+    "pieces": 3,
+    "options": [
+     "Xiranflow"
+    ]
+   }
+  ],
   "mainStats": {},
   "subStats": [],
   "weapons": [
@@ -872,12 +1346,22 @@
    "Monaihe": {
     "icon": "https://endfield.wiki.gg/images/Monaihe_icon.png",
     "effects": []
+   },
+   "Xiranflow": {
+    "effects": [
+     {
+      "label": "3-piece",
+      "text": "Wearer's ATK +10%. Whenever the wearer consumes Electrification or Corrosion, the wearer gains a number of buff stacks equal to the Status Level of the Arts Reaction consumed, with each buff stack giving Electric DMG Dealt and Nature DMG Dealt +15% for 25s. The number of buff stacks maxes out at 3 stacks. Duration of each stack is counted separately."
+     }
+    ]
    }
   }
  },
  {
   "characterId": "chr_0031_mifu",
-  "source": "the game's recommended weapons, not ranked: Matching Skills first, then Matching Stats (endfield.wiki.gg/wiki/Mi_Fu, CC BY-SA 4.0, revision 64994)",
+  "source": "the game's recommendation, not ranked: Matching Skills first, then Matching Stats (endfield.wiki.gg/wiki/Mi_Fu, CC BY-SA 4.0, revision 64994)",
+  "ranked": false,
+  "hasMainStats": false,
   "sets": [],
   "mainStats": {},
   "subStats": [],
@@ -915,7 +1399,9 @@
  },
  {
   "characterId": "chr_0032_lizhiyan",
-  "source": "the game's recommended weapons, not ranked: Matching Skills first, then Matching Stats (endfield.wiki.gg/wiki/Arcane, CC BY-SA 4.0, revision 64995)",
+  "source": "the game's recommendation, not ranked: Matching Skills first, then Matching Stats (endfield.wiki.gg/wiki/Arcane, CC BY-SA 4.0, revision 64995)",
+  "ranked": false,
+  "hasMainStats": false,
   "sets": [],
   "mainStats": {},
   "subStats": [],
@@ -953,7 +1439,9 @@
  },
  {
   "characterId": "chr_0033_camille",
-  "source": "the game's recommended weapons, not ranked: Matching Skills first, then Matching Stats (endfield.wiki.gg/wiki/Camille, CC BY-SA 4.0, revision 64996)",
+  "source": "the game's recommendation, not ranked: Matching Skills first, then Matching Stats (endfield.wiki.gg/wiki/Camille, CC BY-SA 4.0, revision 64996)",
+  "ranked": false,
+  "hasMainStats": false,
   "sets": [],
   "mainStats": {},
   "subStats": [],
@@ -986,7 +1474,9 @@
  },
  {
   "characterId": "chr_0034_typhoea",
-  "source": "the game's recommended weapons, not ranked: Matching Skills first, then Matching Stats (endfield.wiki.gg/wiki/Typhoeus, CC BY-SA 4.0, revision 64997)",
+  "source": "the game's recommendation, not ranked: Matching Skills first, then Matching Stats (endfield.wiki.gg/wiki/Typhoeus, CC BY-SA 4.0, revision 64997)",
+  "ranked": false,
+  "hasMainStats": false,
   "sets": [],
   "mainStats": {},
   "subStats": [],
@@ -1014,7 +1504,9 @@
  },
  {
   "characterId": "chr_0035_liino",
-  "source": "the game's recommended weapons, not ranked: Matching Skills first, then Matching Stats (endfield.wiki.gg/wiki/Liino, CC BY-SA 4.0, revision 64998)",
+  "source": "the game's recommendation, not ranked: Matching Skills first, then Matching Stats (endfield.wiki.gg/wiki/Liino, CC BY-SA 4.0, revision 64998)",
+  "ranked": false,
+  "hasMainStats": false,
   "sets": [],
   "mainStats": {},
   "subStats": [],
@@ -1042,7 +1534,9 @@
  },
  {
   "characterId": "chr_0036_jsspsi",
-  "source": "the game's recommended weapons, not ranked: Matching Skills first, then Matching Stats (endfield.wiki.gg/wiki/Si, CC BY-SA 4.0, revision 64999)",
+  "source": "the game's recommendation, not ranked: Matching Skills first, then Matching Stats (endfield.wiki.gg/wiki/Si, CC BY-SA 4.0, revision 64999)",
+  "ranked": false,
+  "hasMainStats": false,
   "sets": [],
   "mainStats": {},
   "subStats": [],
@@ -1070,7 +1564,9 @@
  },
  {
   "characterId": "chr_0038_purrche",
-  "source": "the game's recommended weapons, not ranked: Matching Skills first, then Matching Stats (endfield.wiki.gg/wiki/Purrchena, CC BY-SA 4.0, revision 65002)",
+  "source": "the game's recommendation, not ranked: Matching Skills first, then Matching Stats (endfield.wiki.gg/wiki/Purrchena, CC BY-SA 4.0, revision 65002)",
+  "ranked": false,
+  "hasMainStats": false,
   "sets": [],
   "mainStats": {},
   "subStats": [],
@@ -1098,7 +1594,9 @@
  },
  {
   "characterId": "chr_argent-flow",
-  "source": "the game's recommended weapons, not ranked: Matching Skills first, then Matching Stats (endfield.wiki.gg/wiki/Argent_Flow, CC BY-SA 4.0, revision 64823)",
+  "source": "the game's recommendation, not ranked: Matching Skills first, then Matching Stats (endfield.wiki.gg/wiki/Argent_Flow, CC BY-SA 4.0, revision 64823)",
+  "ranked": false,
+  "hasMainStats": false,
   "sets": [],
   "mainStats": {},
   "subStats": [],

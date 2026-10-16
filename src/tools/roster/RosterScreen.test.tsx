@@ -886,6 +886,48 @@ describe('Roster screen', () => {
     expect(within(card).getByText("Source: the game's own recommendation.")).toBeInTheDocument();
   });
 
+  it('a step the build has nothing for still shows, as "No data yet", numbered in place (every game)', async () => {
+    const base = makeGame(false);
+    const builds = [{ characterId: 'c1', source: 'the game', sets: [{ pieces: 4, options: ['Ember Set'] }], mainStats: { Body: ['CRIT Rate'] }, subStats: [], weapons: ['Spark Cone', 'Dim Cone'], skillsFirst: [] }];
+    await show('characters', { ...base, data: { ...base.data, builds: async () => builds } });
+    const card = within(await openPage('Newest Star')).getByRole('region', { name: 'How to build Newest Star' });
+    await within(card).findByText('Ember Set');
+    const steps = [...card.querySelectorAll('h4')].map((h) => h.textContent);
+    expect(steps).toEqual(['1Relics sets: 4 pieces', '2Cone: best first', '3Main stat on each slot', '4Sub stats', '5Skills: level first']);
+    expect(within(card).getByText(/No recommendation yet for sub stats/)).toBeInTheDocument();
+    expect(within(card).getByText(/No recommendation yet for which skills to level first/)).toBeInTheDocument();
+    // A ranked list keeps its numbers.
+    expect(within(card).getByText('1.')).toBeInTheDocument();
+  });
+
+  it('an unranked build (Endfield) says no "best first", has no numbers, no main stats step, and names each step’s source', async () => {
+    const base = makeGame(false);
+    const builds = [
+      {
+        characterId: 'c1',
+        source: "the game's recommendation, not ranked",
+        ranked: false,
+        hasMainStats: false,
+        stepSources: { sets: 'Community guides: Game8 (15 Oct 2026), GameWith (28 Apr 2026)' },
+        sets: [{ pieces: 3, options: ['Hot Work'] }],
+        mainStats: {},
+        subStats: [],
+        weapons: ['Spark Cone', 'Dim Cone'],
+        skillsFirst: [],
+      },
+    ];
+    await show('characters', { ...base, data: { ...base.data, builds: async () => builds } });
+    const card = within(await openPage('Newest Star')).getByRole('region', { name: 'How to build Newest Star' });
+    await within(card).findByText('Hot Work');
+    expect([...card.querySelectorAll('h4')].map((h) => h.textContent)).toEqual(['1Relics sets: 3 pieces', '2Cone', '3Sub stats', '4Skills: level first']);
+    expect(card.textContent).not.toMatch(/best first/i);
+    expect(within(card).queryByText('1.')).toBeNull();
+    expect(within(card).getByText('Source: Community guides: Game8 (15 Oct 2026), GameWith (28 Apr 2026).')).toBeInTheDocument();
+    expect(within(card).getByText("Source: the game's recommendation, not ranked.")).toBeInTheDocument();
+    // No "Source" line for the steps with nothing in them, and none repeated at the end.
+    expect(within(card).getAllByText(/^Source:/)).toHaveLength(2);
+  });
+
   it('long team lists stay short: a few first, the rest one tap away, nothing dropped', async () => {
     const many: TeamPreset[] = Array.from({ length: 9 }, (_, i) => ({ id: `t${i}`, name: `Team ${i + 1}`, slots: [{ characters: ['c1'] }, { characters: ['c3'] }], source: 'test' }));
     await show('teams', makeGame(false, many));
