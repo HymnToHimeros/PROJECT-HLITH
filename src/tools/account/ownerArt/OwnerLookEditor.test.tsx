@@ -41,11 +41,22 @@ describe('your owner look: grouped picker (T64)', () => {
   it('every set opens five frames and five name styles (T64 variants)', () => {
     const onChange = vi.fn();
     render(<OwnerLookEditor value={DEFAULT_OWNER_STYLE} onChange={onChange} name="Odin" />);
-    for (const set of ['Draupnir', 'Geri & Freki', 'Gungnir', 'Sól & Máni', 'Nine Realms', 'Urnes Serpent', 'Valhalla', 'Gjallarhorn']) {
-      for (const [group, kind] of [['Owner frame', 'owner frame'], ['Owner name style', 'owner name style']] as const) {
-        fireEvent.click(within(screen.getByRole('group', { name: group })).getByRole('button', { name: new RegExp(set) }));
-        expect(within(screen.getByRole('radiogroup', { name: `${set} ${kind}` })).getAllByRole('radio'), `${set} ${kind}`).toHaveLength(5);
-        fireEvent.click(screen.getAllByRole('button', { name: 'Done' })[0] as HTMLElement);
+    // Role queries over the whole editor are slow (every tile carries art), and 16 rounds of them
+    // passed 5 s on a busy CI runner. So each group's tiles are found once, and each open panel is
+    // reached through the tile's aria-controls and queried on its own.
+    for (const [group, kind] of [['Owner frame', 'owner frame'], ['Owner name style', 'owner name style']] as const) {
+      const tiles = within(screen.getByRole('group', { name: group })).getAllByRole('button');
+      for (const set of ['Draupnir', 'Geri & Freki', 'Gungnir', 'Sól & Máni', 'Nine Realms', 'Urnes Serpent', 'Valhalla', 'Gjallarhorn']) {
+        const tile = tiles.find((t) => t.textContent?.includes(set));
+        expect(tile, `${set} ${kind} tile`).toBeDefined();
+        fireEvent.click(tile as HTMLElement);
+        expect(tile).toHaveAttribute('aria-expanded', 'true');
+        const panel = document.getElementById(tile?.getAttribute('aria-controls') ?? '') as HTMLElement;
+        const variants = within(panel).getByRole('radiogroup');
+        expect(variants).toHaveAttribute('aria-label', `${set} ${kind}`);
+        expect(within(variants).getAllByRole('radio'), `${set} ${kind}`).toHaveLength(5);
+        fireEvent.click(within(panel).getByRole('button', { name: 'Done' }));
+        expect(tile).toHaveAttribute('aria-expanded', 'false');
       }
     }
     fireEvent.click(within(screen.getByRole('group', { name: 'Owner name style' })).getByRole('button', { name: /Valhalla/ }));
