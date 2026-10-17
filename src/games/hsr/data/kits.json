@@ -13142,7 +13142,7 @@
   {
     "characterId": "1511",
     "source": "nanoka.cc",
-    "version": "4.6.52",
+    "version": "4.6.53",
     "skills": [
       {
         "id": "skill-basic-atk-starfrost-showtime",
@@ -13156,42 +13156,42 @@
         "label": "Skill: This Emanator Was Certified by Aha™ (Lv. 10)",
         "kind": "skill",
         "does": [],
-        "gameText": "Causes one designated ally to gain the \"Emanator of Elation\" state, then immediately launches a Follow-up ATK, dealing 50% Quantum Elation DMG to all enemies. \"Emanator of Elation\" state lasts for the entire battle until switching to the next target. The target with the \"Emanator of Elation\" state has their Elation stat increased by 20% and, at the start of their turn, causes Aeon ★ Aha to gain 1 point(s) of \"Wishpower.\""
+        "gameText": "Causes one designated ally character (except this unit) to gain the \"Emanator of Elation\" state, then immediately launches a Follow-up ATK, dealing 50% Quantum Elation DMG to all enemies. The \"Emanator of Elation\" state lasts for the entire battle until switching to the next target. The target with the \"Emanator of Elation\" state has their Elation stat increased by 20% and, at the start of their turn, causes Aeon ★ Aha to gain 1 point(s) of \"Wishpower.\""
       },
       {
         "id": "skill-ultimate-aha-let-there-be-laughter",
         "label": "Ultimate: Aha! Let There Be Laughter (Lv. 10)",
         "kind": "skill",
         "does": [],
-        "gameText": "Aeon ★ Aha gains the \"Faces of Elation\" state, lasting for 3 turn(s). At the start of each Aeon ★ Aha's turn, duration decreases by 1. Deals 200% Quantum Elation DMG to all enemies, then deals 5 instance(s) of DMG. Each instance deals 60% Quantum Elation DMG to one random enemy."
+        "gameText": "Causes Aha's action to advance by 20%. Aeon ★ Aha gains the \"Faces of Elation\" state, lasting for 3 turn(s). At the start of each Aeon ★ Aha's turn, duration decreases by 1. Deals 200% Quantum Elation DMG to all enemies, then deals 5 instance(s) of DMG. Each instance deals 60% Quantum Elation DMG to one random enemy."
       },
       {
         "id": "skill-talent-work-wonders-with-them",
         "label": "Talent: Work Wonders with THEM (Lv. 10)",
         "kind": "skill",
         "does": [],
-        "gameText": "The Ultimate can be activated once \"Wishpower\" reaches 8 point(s). Aeon ★ Aha gains 1 point(s) of \"Wishpower\" after using Basic ATK, Skill, or Elation Skill. Once allies' Punchline reaches 40 point(s) for the first time, Aeon ★ Aha will immediately gain 1 points of \"Wishpower\" and increase all allies' CRIT DMG by 24%, lasting for 3 turn(s). This can be triggered again after Aha's turn ends."
+        "gameText": "The Ultimate can be activated once \"Wishpower\" reaches 8 point(s). Wishpower can overflow until 10 after reaching its max. Aeon ★ Aha gains 1 point(s) of \"Wishpower\" after using Basic ATK, Skill, or Elation Skill. Once allies' Punchline reaches 40 point(s) for the first time, Aeon ★ Aha will immediately gain 1 points of \"Wishpower\" and increase all allies' CRIT DMG by 40%, lasting for 3 turn(s). This can be triggered again after Aha's turn ends."
       },
       {
         "id": "skill-technique-abracadabra",
         "label": "Technique: ABRACADABRA!",
         "kind": "skill",
         "does": [],
-        "gameText": "After using the Technique, creates a special zone around this unit lasting 20 seconds. Enemies within the special zone are inflicted with \"Misjudgment.\" Enemies under \"Misjudgment\" cannot detect our targets. Upon entering combat, Aha immediately gains 1 extra turn that adds a fixed 20 Punchline to the count."
+        "gameText": "After using the Technique, creates a Special Dimension around this unit lasting 20 second(s). Enemies within the Special Dimension are inflicted with \"Misjudgment.\" Enemies inflicted with \"Misjudgment\" cannot detect ally targets. After entering combat, Aha immediately gains 1 extra turn that adds a fixed 20 Punchline to the count. Only 1 dimension effect created by allies can exist at the same time."
       },
       {
         "id": "skill-elation-skill-yes-aha-at-full-moon",
         "label": "Elation Skill: Yes Aha At Full Moon (Lv. 10)",
         "kind": "skill",
         "does": [],
-        "gameText": "Deals 60%Quantum Elation DMG to all enemies, then deals True DMG based on 20% of the total DMG dealt by this Aha Instant, equally distributed among all enemies."
+        "gameText": "Ignores Participant ID and is always used at the end of the Aha Instant. Deals Quantum Elation DMG equal to 60% to all enemies, then deals True DMG equal to 20% of total non-True DMG dealt by ally targets this Aha Instant, equally distributed among all enemies."
       },
       {
         "id": "skill-innate-trace-faces-of-elation-ex-nihilo",
         "label": "Innate Trace: Faces of Elation ★ Ex Nihilo (Lv. 2)",
         "kind": "skill",
         "does": [],
-        "gameText": "While possessing the \"Faces of Elation\" state, Aeon ★ Aha causes allies' Path of Elation to ascend, enhancing Punchline and the \"Certified Banger\" state into Bliss and the \"Party Trick\" state. Bliss  recovers 10% of the consumed Punchline at the end of the \"Aha Instant\" turn. During \"Faces of Elation,\" DMG dealt by Aeon ★ Aha ignores 60% of the enemy target's DEF."
+        "gameText": "While possessing the \"Faces of Elation\" state, Aeon ★ Aha causes allies' Path of Elation to ascend, enhancing Punchline and the \"Certified Banger\" state into Bliss and the \"Party Trick\" state. Bliss recovers 10% of the consumed Punchline at the end of the \"Aha Instant\" turn. During \"Faces of Elation,\" Aeon ★ Aha's CRIT Rate increases by 20%, and the DMG dealt by Aeon ★ Aha ignores 60% of the enemy target's DEF."
       },
       {
         "id": "skill-talent-the-true-story-of-aha",
@@ -13219,7 +13219,7 @@
         "label": "Trace: A Box of Everything",
         "kind": "trace",
         "does": [],
-        "gameText": "When Aeon ★ Aha's SPD is 125/150 or higher, Elation increases by 120%/150%."
+        "gameText": "When Aeon ★ Aha's SPD reaches 125/150 or higher, Elation increases by 120%/150%. When entering combat, advances THEIR own action by 30%."
       },
       {
         "id": "eidolon-1",
@@ -13229,7 +13229,7 @@
           "dupes": 1
         },
         "does": [],
-        "gameText": "When entering combat, immediately gain 4 point(s) of \"Wishpower,\" and merrymakes Elation DMG dealt by all ally targets by 15%."
+        "gameText": "When entering combat, immediately gains 5 point(s) of \"Wishpower.\" When Aeon ★ Aha is present, merrymakes Elation DMG dealt by all ally targets by 15%."
       },
       {
         "id": "eidolon-2",
@@ -13279,7 +13279,7 @@
           "dupes": 6
         },
         "does": [],
-        "gameText": "Enemy targets always have the \"Elation Debt\" effect that is at least equal to 20% of the target's Max HP. The first time Aeon ★ Aha casts the Ultimate, Aha immediately gains 1 extra turn that adds a fixed 40 Punchline to the count. Each subsequent Ultimate cast advances Aha's action by 20%."
+        "gameText": "Enemy targets always have the \"Elation Debt\" effect that is at least equal to 20% of the target's Max HP. The first time Aeon ★ Aha uses THEIR Ultimate, Aha's action advances by 100%, and Aha gains 100 Punchline(s)."
       }
     ],
     "beta": true
