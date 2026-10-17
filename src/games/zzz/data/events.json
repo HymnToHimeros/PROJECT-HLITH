@@ -508,6 +508,20 @@
     }
   },
   {
+    "id": "shiyu-defense-critical-node-2026-10-16",
+    "title": "Shiyu Defense: Critical Node",
+    "kind": "endgame",
+    "start": "2026-10-15T20:00:00.000Z",
+    "end": "2026-10-29T19:59:59.000Z",
+    "reward": 780,
+    "currency": "polychrome",
+    "serverTime": {
+      "base": 8,
+      "start": true,
+      "end": true
+    }
+  },
+  {
     "id": "all-new-program-2026-10-21",
     "title": "All-New Program",
     "kind": "login",
