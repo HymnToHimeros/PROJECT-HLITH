@@ -557,7 +557,7 @@ export const aeonAha: CharacterSheet = {
     quotes: [
       { piece: 'skill-ultimate-aha-let-there-be-laughter', quote: 'Deals 200% Quantum Elation DMG to all enemies, then deals 5 instance(s) of DMG.' },
       { piece: 'skill-skill-this-emanator-was-certified-by-aha', quote: 'then immediately launches a Follow-up ATK, dealing 50% Quantum Elation DMG to all enemies.' },
-      { piece: 'trace-a-box-of-everything', quote: "When Aeon ★ Aha's SPD is 125/150 or higher, Elation increases by 120%/150%." },
+      { piece: 'trace-a-box-of-everything', quote: "When Aeon ★ Aha's SPD reaches 125/150 or higher, Elation increases by 120%/150%." },
     ],
   },
   entries: [
@@ -593,16 +593,16 @@ export const aeonAha: CharacterSheet = {
     {
       id: 'punchline-crit-dmg',
       piece: 'skill-talent-work-wonders-with-them',
-      quote: "and increase all allies' CRIT DMG by 24%, lasting for 3 turn(s).",
-      tag: 'Allies: +24% CRIT DMG',
-      gives: [{ stat: 'crit-dmg', amount: '+24%' }],
+      quote: "and increase all allies' CRIT DMG by 40%, lasting for 3 turn(s).",
+      tag: 'Allies: +40% CRIT DMG',
+      gives: [{ stat: 'crit-dmg', amount: '+40%' }],
       to: 'allies',
       setup: "The team's Punchline reaches 40 (again after each of Aha's turns).",
     },
     {
       id: 'elation-skill',
       piece: 'skill-elation-skill-yes-aha-at-full-moon',
-      quote: 'then deals True DMG based on 20% of the total DMG dealt by this Aha Instant',
+      quote: 'then deals True DMG equal to 20% of total non-True DMG dealt by ally targets this Aha Instant',
       tag: 'Elation Skill in Aha Instant',
       gives: [],
       to: 'enemy',
@@ -651,8 +651,8 @@ export const aeonAha: CharacterSheet = {
     {
       id: 'e6-aha-turn',
       piece: 'eidolon-6',
-      quote: 'The first time Aeon ★ Aha casts the Ultimate, Aha immediately gains 1 extra turn that adds a fixed 40 Punchline to the count.',
-      tag: 'Extra Aha turn (Aha Instant)',
+      quote: "The first time Aeon ★ Aha uses THEIR Ultimate, Aha's action advances by 100%, and Aha gains 100 Punchline(s).",
+      tag: 'First Ultimate: Aha acts at once (Aha Instant)',
       gives: [],
       to: 'allies',
       causes: 'extra-turn',
@@ -670,7 +670,7 @@ export const aeonAha: CharacterSheet = {
   ],
   nothing: {
     'skill-basic-atk-starfrost-showtime': 'Deals Quantum Elation DMG only; nothing for the team.',
-    'skill-ultimate-aha-let-there-be-laughter': 'Enters its own "Faces of Elation" state and deals Quantum Elation DMG; nothing for the team.',
+    'skill-ultimate-aha-let-there-be-laughter': 'Advances Aha\'s own action, enters its own "Faces of Elation" state and deals Quantum Elation DMG; nothing for the team.',
     'skill-technique-abracadabra': TECHNIQUE,
     'skill-innate-trace-faces-of-elation-ex-nihilo': 'Upgrades allies\' Punchline and "Certified Banger" into states the kit gives no numbers for, and ignores DEF for its own DMG; nothing countable for the team.',
     'trace-a-carnival-in-whimsy': 'Gains its own "Wishpower" from teammates\' healing or shields; nothing for the team.',
