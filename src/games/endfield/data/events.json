@@ -167,6 +167,19 @@
     }
   },
   {
+    "id": "sanity-discount-2026-03-02",
+    "title": "Sanity Discount",
+    "kind": "event",
+    "start": "2026-03-02T04:00:00.000Z",
+    "end": "2026-03-11T22:00:00.000Z",
+    "reward": null,
+    "currency": "oroberyl",
+    "serverTime": {
+      "base": 8,
+      "start": true
+    }
+  },
+  {
     "id": "qingbo-rising-2026-03-05",
     "title": "Qingbo Rising",
     "kind": "login",
