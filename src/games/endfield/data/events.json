@@ -1094,13 +1094,9 @@
     "title": "Yuanyuan's Blazing Stoves",
     "kind": "event",
     "start": "2026-10-15T04:00:00.000Z",
-    "end": "2026-11-25T20:00:00.000Z",
+    "end": "2026-11-25T22:00:00.000Z",
     "reward": 1000,
-    "currency": "oroberyl",
-    "serverTime": {
-      "base": 8,
-      "end": true
-    }
+    "currency": "oroberyl"
   },
   {
     "id": "carly-s-verdant-anthology-2026-10-22",
