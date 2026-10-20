@@ -369,7 +369,7 @@
     "kind": "event",
     "start": "2026-10-21T04:00:00.000Z",
     "end": "2026-11-10T19:59:00.000Z",
-    "reward": null,
+    "reward": 500,
     "currency": "stellar-jade",
     "serverTime": {
       "base": 8,
