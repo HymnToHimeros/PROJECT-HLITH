@@ -442,7 +442,7 @@
     "title": "The Final Callback",
     "kind": "event",
     "start": "2026-09-30T04:00:00.000Z",
-    "end": "2026-10-20T06:59:00.000Z",
+    "end": "2026-10-20T06:59:59.000Z",
     "reward": 40,
     "currency": "polychrome",
     "serverTime": {
@@ -526,7 +526,7 @@
     "title": "All-New Program",
     "kind": "login",
     "start": "2026-10-21T03:00:00.000Z",
-    "end": "2026-11-29T19:59:59.000Z",
+    "end": "2026-11-30T19:59:59.000Z",
     "reward": 10,
     "currency": "encrypted-master-tape",
     "serverTime": {
@@ -534,6 +534,33 @@
       "end": true
     },
     "loginDays": 7
+  },
+  {
+    "id": "the-final-callback-2026-10-21",
+    "title": "The Final Callback",
+    "kind": "event",
+    "start": "2026-10-21T03:00:00.000Z",
+    "end": "2026-11-11T03:59:59.000Z",
+    "reward": 40,
+    "currency": "polychrome",
+    "serverTime": {
+      "base": 8,
+      "end": true
+    }
+  },
+  {
+    "id": "spooky-funhouse-tales-2026-10-22",
+    "title": "Spooky Funhouse Tales",
+    "kind": "event",
+    "start": "2026-10-22T02:00:00.000Z",
+    "end": "2026-11-29T19:59:00.000Z",
+    "reward": null,
+    "currency": "polychrome",
+    "serverTime": {
+      "base": 8,
+      "start": true,
+      "end": true
+    }
   },
   {
     "id": "en-nah-into-your-lap-2026-11-11",
