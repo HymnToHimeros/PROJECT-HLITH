@@ -445,13 +445,13 @@
  },
  {
   "id": "13022",
-  "name": "Candlelight Conspiracy",
+  "name": "Candlelit Scheme",
   "rarity": "mid",
   "icon": "https://static.nanoka.cc/assets/zzz/Weapon_A_Common_22.webp",
   "role": "armorer",
   "effect": {
-   "name": "Fright Time",
-   "text": "When the equipper launches an [EX Special Attack], their CRIT Rate increases by 8% for 40s. The equipper deals 15% increased DMG to enemies whose current HP is below 50% of their max HP."
+   "name": "Moment of Fright",
+   "text": "When using an EX Special Attack, the equipper's CRIT Rate is increased by 8% for 40s. The equipper deals 15% more DMG to enemies whose current HP is below 50% of their Max HP."
   },
   "source": "nanoka.cc"
  },
@@ -1259,27 +1259,27 @@
  },
  {
   "id": "14163",
-  "name": "Sin-Ban Cage",
+  "name": "Incarcerating Grip",
   "rarity": "top",
   "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1631.webp",
   "madeFor": "1631",
   "role": "attack",
   "effect": {
-   "name": "Evil Hunt in Hand",
-   "text": "Increases the equipper's CRIT Rate by 24%. When the equipper's [Basic Attack] hits an enemy, increases their own ATK by 10%, and the DMG dealt ignores 16% of the target's Wind RES for 16s."
+   "name": "Evil Caught Within",
+   "text": "The equipper's CRIT Rate increases by 20%. When the equipper's Basic Attack hits an enemy, their ATK increases by 10%, and their DMG ignores 15% of the target's Wind RES for 16s."
   },
   "source": "nanoka.cc"
  },
  {
   "id": "14164",
-  "name": "Nirvana's First Plume",
+  "name": "Plume of Rebirth",
   "rarity": "top",
   "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1641.webp",
   "madeFor": "1641",
   "role": "anomaly",
   "effect": {
-   "name": "Hatch Day",
-   "text": "Increases the equipper's Anomaly Proficiency by 90. When Attribute Anomaly DMG dealt by any squad member to an enemy CRITs, the equipper's Fire DMG increases by 40% for 20s. Repeated triggers reset the duration."
+   "name": "Hatching Day",
+   "text": "The equipper's Anomaly Proficiency increases by 90. When Anomaly DMG dealt by any squad member to an enemy triggers a critical hit, the equipper's Fire DMG increases by 40% for 20s. Repeated triggers reset the duration."
   },
   "source": "nanoka.cc"
  }

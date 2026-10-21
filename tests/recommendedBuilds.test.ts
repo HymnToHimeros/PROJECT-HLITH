@@ -2,7 +2,8 @@
 /**
  * T54 (ERROR-FIX's outsider test: "Kafka has no build score"): every released character in both games has the game's
  * own recommended build (sets, main stats, sub stats; the weapon only where the game names one) and an average build
- * scores against it. Characters not out yet get the beta files' recommendation, marked "beta, may change".
+ * scores against it. Characters not out yet get the beta files' recommendation, marked "beta, may change"; once the
+ * live files carry them (a version's second-half characters ship in its release files), the live one, unmarked.
  */
 import { describe, expect, it } from 'vitest';
 import type { Character, GameContract, RecommendedBuild } from '../src/core/contract';
@@ -40,11 +41,10 @@ describe.each(GAMES)('%s recommended builds', (_name, game, facts, builds, chars
     expect(unscored.map((c) => c.name)).toEqual([]);
   });
 
-  it('a character not out yet has the beta files’ recommendation, marked "beta, may change" with its build', () => {
+  it('a recommendation from the beta files is marked "beta, may change" with its build, and only a character not out yet has one', () => {
     for (const c of chars.filter((x) => !released(x))) {
       const rec = recOf(c.id);
-      if (!rec) continue;
-      expect(rec.beta, c.name).toBe(true);
+      if (!rec?.beta) continue;
       expect(rec.version, c.name).toBeTruthy();
       expect(rec.source, c.name).toContain('beta, may change');
     }
@@ -63,13 +63,13 @@ describe('the build score says why there is no score (T54)', () => {
   it('no recommendation at all: nothing to add', () => {
     expect(rate({ characterId: 'no-such', level: 80, dupes: 0, gear: [] })).toEqual({ known: false });
   });
-  it('Severian, Phoenix (ZZZ) and Aeon ★ Aha (HSR) have a recommendation, marked beta until their release date', () => {
+  it('Severian, Phoenix (ZZZ) and Aeon ★ Aha (HSR) have a recommendation, never marked beta after their release date', () => {
     for (const [builds, list, id] of [[zzzBuilds, zzzChars, '1631'], [zzzBuilds, zzzChars, '1641'], [hsrBuilds, hsrChars, '1511']] as const) {
       const rec = (builds as unknown as RecommendedBuild[]).find((b) => b.characterId === id);
       const c = (list as { id: string; releasedAt?: string }[]).find((x) => x.id === id);
       const out = c?.releasedAt !== undefined && Date.parse(c.releasedAt) <= Date.now();
       expect(rec, id).toBeTruthy();
-      expect(Boolean(rec?.beta), id).toBe(!out);
+      if (out) expect(rec?.beta, id).toBeUndefined();
     }
   });
 });

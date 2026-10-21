@@ -302,7 +302,7 @@ export const WEAPONS_ABUNDANCE_REMEMBRANCE_ELATION: WeaponSheet[] = [
       {
         id: 'aha-crit-dmg',
         piece: 'effect',
-        quote: "When Aeon ★ Aha is on the field, the wearer's CRIT DMG increases by 12%.",
+        quote: "When Aeon ★ Aha is on the field, the wearer's CRIT DMG additionally increases by 12%.",
         tag: 'Own +12% CRIT DMG with Aha',
         on: { unknown: 'Aeon ★ Aha is in the team' },
         gives: [{ stat: 'crit-dmg', amount: '+12%' }],
