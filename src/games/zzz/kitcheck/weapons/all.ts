@@ -714,12 +714,12 @@ export const WEAPONS_ALL: WeaponSheet[] = [
   },
   {
     weaponId: '13022',
-    name: 'Candlelight Conspiracy',
+    name: 'Candlelit Scheme',
     entries: [
       {
         id: 'w-crit-rate',
         piece: 'effect',
-        quote: 'When the equipper launches an [EX Special Attack], their CRIT Rate increases by 8% for 40s.',
+        quote: "When using an EX Special Attack, the equipper's CRIT Rate is increased by 8% for 40s.",
         tag: 'Wearer: +8% CRIT Rate after an EX Special Attack',
         gives: [{ stat: 'crit-rate', amount: '+8%' }],
         to: 'self',
@@ -728,7 +728,7 @@ export const WEAPONS_ALL: WeaponSheet[] = [
       {
         id: 'w-dmg',
         piece: 'effect',
-        quote: 'The equipper deals 15% increased DMG to enemies whose current HP is below 50% of their max HP.',
+        quote: 'The equipper deals 15% more DMG to enemies whose current HP is below 50% of their Max HP.',
         tag: 'Wearer: +15% DMG on a weakened enemy',
         gives: [{ stat: 'dmg', amount: '+15%' }],
         to: 'self',

@@ -665,7 +665,7 @@ export const aeonAha: CharacterSheet = {
       tag: 'Allies: DMG ignores 16% DEF',
       gives: [{ stat: 'def-shred', amount: '16%' }],
       to: 'allies',
-      setup: 'Aha uses its Skill on another ally (at most once every 2 turns); lasts the whole combat.',
+      setup: 'Aha uses its Skill on another ally (at most once a turn); lasts the whole combat.',
     },
   ],
   nothing: {

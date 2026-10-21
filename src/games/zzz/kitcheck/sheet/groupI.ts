@@ -767,9 +767,9 @@ export const severian: CharacterSheet = {
     {
       id: 'weapon-crit-rate',
       piece: 'signature-weapon',
-      quote: "Increases the equipper's CRIT Rate by 24%.",
-      tag: '+24% CRIT Rate (W-Engine)',
-      gives: [{ stat: 'crit-rate', amount: '+24%' }],
+      quote: "The equipper's CRIT Rate increases by 20%.",
+      tag: '+20% CRIT Rate (W-Engine)',
+      gives: [{ stat: 'crit-rate', amount: '+20%' }],
       to: 'self',
       setup: 'Nothing: always on while equipped.',
     },
@@ -777,11 +777,11 @@ export const severian: CharacterSheet = {
       id: 'weapon-basic',
       piece: 'signature-weapon',
       quote:
-        "When the equipper's [Basic Attack] hits an enemy, increases their own ATK by 10%, and the DMG dealt ignores 16% of the target's Wind RES for 16s.",
-      tag: '+10% ATK, ignores 16% Wind RES after a Basic Attack (W-Engine)',
+        "When the equipper's Basic Attack hits an enemy, their ATK increases by 10%, and their DMG ignores 15% of the target's Wind RES for 16s.",
+      tag: '+10% ATK, ignores 15% Wind RES after a Basic Attack (W-Engine)',
       gives: [
         { stat: 'atk', amount: '+10%' },
-        { stat: 'res-ignore', amount: '16% Wind RES' },
+        { stat: 'res-ignore', amount: '15% Wind RES' },
       ],
       to: 'self',
       setup: 'His Basic Attack hits; lasts 16s.',
@@ -951,7 +951,7 @@ export const phoenix: CharacterSheet = {
     {
       id: 'weapon-proficiency',
       piece: 'signature-weapon',
-      quote: "Increases the equipper's Anomaly Proficiency by 90.",
+      quote: "The equipper's Anomaly Proficiency increases by 90.",
       tag: '+90 Anomaly Proficiency (W-Engine)',
       gives: [{ stat: 'anomaly-proficiency', amount: '+90' }],
       to: 'self',
@@ -960,11 +960,11 @@ export const phoenix: CharacterSheet = {
     {
       id: 'weapon-fire-dmg',
       piece: 'signature-weapon',
-      quote: "When Attribute Anomaly DMG dealt by any squad member to an enemy CRITs, the equipper's Fire DMG increases by 40% for 20s.",
+      quote: "When Anomaly DMG dealt by any squad member to an enemy triggers a critical hit, the equipper's Fire DMG increases by 40% for 20s.",
       tag: '+40% Fire DMG after an Anomaly CRIT (W-Engine)',
       gives: [{ stat: 'dmg', amount: '+40% Fire DMG' }],
       to: 'self',
-      setup: "Any squad member's Attribute Anomaly DMG lands a CRIT (Searing Corrosion lets it CRIT); lasts 20s.",
+      setup: "Any squad member's Anomaly DMG lands a CRIT (Searing Corrosion lets it CRIT); lasts 20s.",
     },
   ],
   nothing: {
