@@ -351,18 +351,23 @@ async function hsrWeapons(): Promise<WeaponOut[]> {
 const write = (game: string, file: string, data: unknown) => writeFileSync(resolve(ROOT, `src/games/${game}/data/${file}`), `${JSON.stringify(data, null, 1)}\n`);
 const manifest = await getJson<{ zzz: { live: string; latest: string }; hsr: { live: string; latest: string } }>(`${BASE}/manifest.json`);
 /** T54: characters in our list (upcoming, leaks) that the live files don't have yet: read from the beta files, marked. */
-const notLive = async (game: 'zzz' | 'hsr', live: string) => {
-  const ours = (JSON.parse(readFileSync(resolve(ROOT, `src/games/${game}/data/characters.json`), 'utf8')) as { id: string }[]).map((c) => String(c.id));
+const notLive = async (game: 'zzz' | 'hsr', live: string, out: boolean) => {
+  const ours = JSON.parse(readFileSync(resolve(ROOT, `src/games/${game}/data/characters.json`), 'utf8')) as { id: string; releasedAt?: string }[];
   const inLive = new Set(Object.keys(await getJson<Record<string, unknown>>(`${BASE}/${game}/${live}/character.json`)));
-  return new Set(ours.filter((id) => !inLive.has(id)));
+  // Released by our list (the official date has passed) but nanoka hasn't moved "live" yet (patch day): the newest
+  // files are the live game, so these are read from them without the beta mark.
+  const released = (c: { releasedAt?: string }) => c.releasedAt !== undefined && Date.parse(c.releasedAt) <= Date.now();
+  return new Set(ours.filter((c) => !inLive.has(String(c.id)) && released(c) === out).map((c) => String(c.id)));
 };
 const z = await zzz(manifest.zzz.live);
-const zBeta = manifest.zzz.latest === manifest.zzz.live ? [] : await zzz(manifest.zzz.latest, await notLive('zzz', manifest.zzz.live), true);
-write('zzz', 'builds.json', [...z, ...zBeta]);
-console.log(`zzz: ${z.length} recommended builds, ${zBeta.length} beta (${zBeta.map((b) => b.characterId).join(', ') || 'none'})`);
+const zNew = manifest.zzz.latest === manifest.zzz.live ? [] : await zzz(manifest.zzz.latest, await notLive('zzz', manifest.zzz.live, true));
+const zBeta = manifest.zzz.latest === manifest.zzz.live ? [] : await zzz(manifest.zzz.latest, await notLive('zzz', manifest.zzz.live, false), true);
+write('zzz', 'builds.json', [...z, ...zNew, ...zBeta]);
+console.log(`zzz: ${z.length + zNew.length} recommended builds (${zNew.length} out today, from the newest files), ${zBeta.length} beta (${zBeta.map((b) => b.characterId).join(', ') || 'none'})`);
 const h = await hsr(manifest.hsr.live);
-const hBeta = manifest.hsr.latest === manifest.hsr.live ? { builds: [] } : await hsr(manifest.hsr.latest, await notLive('hsr', manifest.hsr.live), true);
-write('hsr', 'builds.json', [...h.builds, ...hBeta.builds]);
+const hNew = manifest.hsr.latest === manifest.hsr.live ? { builds: [] } : await hsr(manifest.hsr.latest, await notLive('hsr', manifest.hsr.live, true));
+const hBeta = manifest.hsr.latest === manifest.hsr.live ? { builds: [] } : await hsr(manifest.hsr.latest, await notLive('hsr', manifest.hsr.live, false), true);
+write('hsr', 'builds.json', [...h.builds, ...hNew.builds, ...hBeta.builds]);
 write('hsr', 'teams.json', h.teams);
 console.log(`hsr: ${h.builds.length} recommended builds, ${hBeta.builds.length} beta (${hBeta.builds.map((b) => b.characterId).join(', ') || 'none'}), ${h.teams.length} recommended teams`);
 const zw = await zzzWeapons();
