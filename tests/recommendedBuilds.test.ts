@@ -63,8 +63,13 @@ describe('the build score says why there is no score (T54)', () => {
   it('no recommendation at all: nothing to add', () => {
     expect(rate({ characterId: 'no-such', level: 80, dupes: 0, gear: [] })).toEqual({ known: false });
   });
-  it('Severian, Phoenix (ZZZ) and Aeon ★ Aha (HSR) have beta recommendations now', () => {
-    for (const [builds, id] of [[zzzBuilds, '1631'], [zzzBuilds, '1641'], [hsrBuilds, '1511']] as const)
-      expect((builds as unknown as RecommendedBuild[]).find((b) => b.characterId === id)?.beta, id).toBe(true);
+  it('Severian, Phoenix (ZZZ) and Aeon ★ Aha (HSR) have a recommendation, marked beta until their release date', () => {
+    for (const [builds, list, id] of [[zzzBuilds, zzzChars, '1631'], [zzzBuilds, zzzChars, '1641'], [hsrBuilds, hsrChars, '1511']] as const) {
+      const rec = (builds as unknown as RecommendedBuild[]).find((b) => b.characterId === id);
+      const c = (list as { id: string; releasedAt?: string }[]).find((x) => x.id === id);
+      const out = c?.releasedAt !== undefined && Date.parse(c.releasedAt) <= Date.now();
+      expect(rec, id).toBeTruthy();
+      expect(Boolean(rec?.beta), id).toBe(!out);
+    }
   });
 });

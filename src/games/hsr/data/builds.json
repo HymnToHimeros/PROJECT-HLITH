@@ -14164,9 +14164,9 @@
  },
  {
   "characterId": "1511",
-  "source": "the game's own recommendation in beta build 4.6.51 (nanoka.cc), beta, may change",
+  "source": "the game's own recommendation in beta build 4.6.53 (nanoka.cc), beta, may change",
   "beta": true,
-  "version": "4.6.51",
+  "version": "4.6.53",
   "sets": [
    {
     "pieces": 4,
@@ -14286,7 +14286,7 @@
     "effects": [
      {
       "label": "Improv Tour (Superimposition 1)",
-      "text": "Increases the wearer's base Speed by 12. When using a Skill on one other ally, gains 10 Punchline. This effect can trigger at most once every 2 turn(s). Then, causes all allies to ignore 16% of the enemy target's DEF when dealing DMG during this combat. This effect cannot be stacked."
+      "text": "Increases the wearer's base Speed by 12. When using a Skill on one other ally, gains 10 Punchline. This effect can trigger at most once every interval of 1 turn(s). Then, causes all allies to ignore 16% of the enemy target's DEF when dealing DMG during this combat. This effect cannot be stacked."
      }
     ]
    },
