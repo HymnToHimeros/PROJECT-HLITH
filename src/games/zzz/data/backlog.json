@@ -3,7 +3,7 @@
     "id": "zzz.main-story",
     "category": "story",
     "title": "Phaethon's Story (main story)",
-    "total": 27,
+    "total": 28,
     "reward": null,
     "currency": "polychrome",
     "steps": [
@@ -33,7 +33,8 @@
       "Season 2 Chapter Epilogue (B): New: Eridan Sunset (B)",
       "Season 3 Chapter 1: A Sleepwalker's Confession",
       "Season 3 Chapter 2: The Long Goodbye",
-      "Season 3 Chapter 3: Their Secret Histories"
+      "Season 3 Chapter 3: Their Secret Histories",
+      "Season 3 Chapter 4: Journey to the Sky"
     ],
     "note": "Chapters from the Season pages of zenless-zone-zero.fandom.com. Polychrome: no source lists it yet (the wiki episode pages leave rewards empty)."
   }
