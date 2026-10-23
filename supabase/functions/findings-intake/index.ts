@@ -8,8 +8,13 @@
 // time the routine gives (next_at, self-adjusting), else on its fallback cadence.
 import { createClient } from 'npm:@supabase/supabase-js@2';
 import { checkIntakeKey, deliver, INTAKE_LIMITS, intakeKeyFrom, readIntake, type DeliveryDb } from '../_shared/findings.ts';
+import type { GameBiz } from '../_shared/hoyolab.ts';
+import { saveCodeList, type Db } from '../_shared/hoyolabStore.ts';
 import { findJob } from '../_shared/jobs.ts';
+import type { NewFinding } from '../_shared/scheduler.ts';
 import { effectiveCadence, nextSlot } from '../_shared/scheduler.ts';
+
+const GAME_TO_BIZ: Record<string, GameBiz> = { hsr: 'hkrpg_global', zzz: 'nap_global' };
 
 const json = (body: unknown, status = 200) => new Response(JSON.stringify(body), { status, headers: { 'Content-Type': 'application/json' } });
 
@@ -51,8 +56,28 @@ Deno.serve(async (req) => {
       const aa = await db.rpc('findings_auto_approve', { p_finding_ids: addedIds });
       if (!aa.error && typeof aa.data === 'number') autoApproved = aa.data;
     }
-    return json({ ok: true, saved, autoApproved });
+    const codesSaved = await extractCodes(db as unknown as Db, intake.byJob);
+    return json({ ok: true, saved, autoApproved, codesSaved });
   } catch (e) {
     return json({ error: e instanceof Error ? e.message : 'Saving failed.' }, 500);
   }
 });
+
+/** Pull redeem codes out of findings' payloads and save them to hoyolab_codes. */
+async function extractCodes(db: Db, byJob: Map<string, NewFinding[]>): Promise<number> {
+  const nowIso = new Date().toISOString();
+  let total = 0;
+  for (const findings of byJob.values()) {
+    for (const f of findings) {
+      const biz = f.game_id ? GAME_TO_BIZ[f.game_id] : undefined;
+      if (!biz) continue;
+      const raw = (f.payload as Record<string, unknown>)?.codes;
+      if (!Array.isArray(raw) || raw.length === 0) continue;
+      const list = raw
+        .filter((c): c is string => typeof c === 'string' && c.length > 0)
+        .map((code) => ({ code, rewards: null }));
+      if (list.length > 0) total += await saveCodeList(db, biz, list, 'finding', nowIso);
+    }
+  }
+  return total;
+}

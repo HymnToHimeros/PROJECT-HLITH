@@ -262,7 +262,7 @@ describe('the job list', () => {
     const by = Object.fromEntries(JOBS.map((j) => [j.id, j]));
     expect(by.backup).toMatchObject({ status: 'live', target: { kind: 'function', name: 'backup' } });
     expect(by['hoyolab-daily']).toMatchObject({ status: 'live', cadence: 'daily 16:10' });
-    expect(by['codes-refresh']?.target).toEqual({ kind: 'included', in: 'hoyolab-daily' });
+    expect(by['codes-refresh']).toMatchObject({ status: 'live', cadence: 'every 4h', target: { kind: 'function', name: 'codes-refresh' } });
     expect([...EXTERNAL_JOB_IDS].sort()).toEqual(['events-scan', 'game-data-refresh', 'leaks-scan', 'research-routine']);
     for (const id of EXTERNAL_JOB_IDS) expect(runnerOf(must(by[id]))).toBe('External routine');
   });
