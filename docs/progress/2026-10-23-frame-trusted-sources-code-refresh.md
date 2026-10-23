@@ -60,4 +60,24 @@ through without the Lists form. Store rarity as unknown, show "No data yet".
   on OwnerConsole load, adds any auto-approved finding that got an Intel note
   but never made it into the built-in list.
 - **OwnerConsole.tsx**: wired `backfillListItems` into the existing useEffect.
-- Typecheck clean, 203 scheduler tests pass. Committed at `60cb26b`.
+- Typecheck clean, 203 scheduler tests pass.
+
+## Review fixes (MANAGER review of #217)
+
+Branch rebuilt from current main (cherry-pick, no stale merge). All 7 items fixed:
+
+**Items 1–4 (stale merge)**: Rebuilt branch from `origin/main`, cherry-picked only
+the 6 real commits. No stale History.tsx, plan.ts, game-contract.ts or old progress
+files. `git diff origin/main...HEAD --stat` lists only the expected files.
+
+**Item 5 (codes tried sooner)**: `saveCodeList` now returns `{ total, fresh }` by
+querying existing codes before upserting. When `codes-refresh` or `findings-intake`
+adds a genuinely new code, `redeemFreshCodes()` runs a redeem-only pass immediately
+for all links with `auto_redeem` on (same deadline/maxRedemptions limits as daily).
+
+**Item 6 (0027 security)**: `findings_auto_approve` uses `search_path = ''`.
+`scheduler_trusted_sources` gets `revoke all` + explicit `grant select, insert, delete`.
+Tests added for grants and search_path. 260 tests pass.
+
+**Item 7 (auto-approve error)**: `findings-intake` surfaces `autoApproveError` in
+the response when `findings_auto_approve` fails.
