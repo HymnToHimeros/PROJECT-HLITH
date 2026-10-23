@@ -48,3 +48,16 @@ the app would need a new UI step to collect stoken from users — a separate job
 **Honest answer: SKPort does not offer code redemption.** SKPort supports only
 `['stamina', 'checkin']`. There is no code redemption endpoint for Arknights:
 Endfield through SKPort.
+
+## Follow-up — Leak findings with missing rarity
+
+MANAGER instruction: auto-approved Seele leaks with missing rarity should go
+through without the Lists form. Store rarity as unknown, show "No data yet".
+
+- **approve.ts**: leak findings now require only `['name']` (not name + rarity +
+  element + role). Missing fields stay undefined → "No data yet" in the UI.
+- **schedulerData.ts**: new `backfillListItems()` mirrors `backfillNotes()` —
+  on OwnerConsole load, adds any auto-approved finding that got an Intel note
+  but never made it into the built-in list.
+- **OwnerConsole.tsx**: wired `backfillListItems` into the existing useEffect.
+- Typecheck clean, 203 scheduler tests pass. Committed at `60cb26b`.
