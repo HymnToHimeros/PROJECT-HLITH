@@ -71,8 +71,9 @@ async function extractCodes(db: Db, byJob: Map<string, NewFinding[]>): Promise<n
     for (const f of findings) {
       const biz = f.game_id ? GAME_TO_BIZ[f.game_id] : undefined;
       if (!biz) continue;
-      const raw = (f.payload as Record<string, unknown>)?.codes;
-      if (!Array.isArray(raw) || raw.length === 0) continue;
+      const p = f.payload as Record<string, unknown>;
+      const raw = Array.isArray(p?.codes) ? p.codes : typeof p?.code === 'string' && p.code ? [p.code] : [];
+      if (raw.length === 0) continue;
       const list = raw
         .filter((c): c is string => typeof c === 'string' && c.length > 0)
         .map((code) => ({ code, rewards: null }));
