@@ -225,16 +225,20 @@ function TrustedSources() {
   const [loading, setLoading] = useState(true);
   const [newName, setNewName] = useState('');
   const [error, setError] = useState<string | null>(null);
+  const [tick, setTick] = useState(0);
+  const reload = useCallback(() => setTick((t) => t + 1), []);
 
-  const load = useCallback(async () => {
+  useEffect(() => {
     if (!backend) return;
-    const { data, error: err } = await backend.from('scheduler_trusted_sources').select('source_name,added_at').order('added_at', { ascending: true });
-    if (err) setError(err.message);
-    else setSources((data ?? []) as TrustedSource[]);
-    setLoading(false);
-  }, []);
-
-  useEffect(() => { void load(); }, [load]);
+    let alive = true;
+    void backend.from('scheduler_trusted_sources').select('source_name,added_at').order('added_at', { ascending: true }).then(({ data, error: err }) => {
+      if (!alive) return;
+      if (err) setError(err.message);
+      else setSources((data ?? []) as TrustedSource[]);
+      setLoading(false);
+    });
+    return () => { alive = false; };
+  }, [tick]);
 
   const add = async () => {
     const name = newName.trim();
@@ -242,7 +246,7 @@ function TrustedSources() {
     setError(null);
     const { error: err } = await backend.from('scheduler_trusted_sources').insert([{ source_name: name }]);
     if (err) setError(err.message);
-    else { setNewName(''); void load(); }
+    else { setNewName(''); reload(); }
   };
 
   const remove = async (name: string) => {
@@ -250,7 +254,7 @@ function TrustedSources() {
     setError(null);
     const { error: err } = await backend.from('scheduler_trusted_sources').delete().eq('source_name', name);
     if (err) setError(err.message);
-    else void load();
+    else reload();
   };
 
   return (

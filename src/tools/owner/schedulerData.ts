@@ -83,7 +83,7 @@ export function exampleRuns(now: number): RunView[] {
 export function exampleFindings(now: number, gameIds: string[]): FindingView[] {
   const iso = (t: number) => new Date(t).toISOString();
   const g = (i: number) => gameIds[i % Math.max(gameIds.length, 1)] ?? null;
-  const base = { payload: {}, delivered_by: 'routine' as const, decided_at: null };
+  const base = { payload: {}, delivered_by: 'routine' as const, decided_at: null, auto_source: null };
   return [
     { ...base, id: 'ex-f1', job_id: 'leaks-scan', game_id: g(0), kind: 'leak', title: 'Example: a new character in the next version', source_name: 'Example source', source_url: null, found_at: iso(now - 10 * HOUR), delivered_at: iso(now - 9 * HOUR), status: 'new', payload: { note: 'example only' } },
     { ...base, id: 'ex-f2', job_id: 'events-scan', game_id: g(1), kind: 'event', title: 'Example: a login event starting next week', source_name: 'Example source', source_url: null, found_at: iso(now - 30 * HOUR), delivered_at: iso(now - 29 * HOUR), status: 'new' },

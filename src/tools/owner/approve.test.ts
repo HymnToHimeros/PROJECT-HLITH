@@ -45,9 +45,9 @@ describe('approving a finding', () => {
     expect(plan.ok && plan.draft).toMatchObject({ list: 'characters', missing: [], item: { id: 'example', name: 'Example', rarity: 'top', element: 'ice', role: 'harmony', source: 'nanoka.cc' } });
   });
 
-  it('a leak is marked with its source; the docs example (character, element, version) still needs rarity and role', () => {
+  it('a leak is marked with its source; missing rarity/role are accepted (stored as unknown)', () => {
     const plan = planApproval(f('leak', { character: 'Example', element: 'Ice', version: '3.8' }), game);
-    expect(plan.ok && plan.draft).toMatchObject({ list: 'characters', missing: ['rarity', 'role'], item: { name: 'Example', element: 'ice', leak: { source: 'nanoka.cc' } } });
+    expect(plan.ok && plan.draft).toMatchObject({ list: 'characters', missing: [], item: { name: 'Example', element: 'ice', leak: { source: 'nanoka.cc' } } });
   });
 
   it('missing fields are named; an unknown element is not guessed', () => {
