@@ -284,5 +284,30 @@ export async function backfillNotes(findings: FindingView[]): Promise<number> {
   return added;
 }
 
+/**
+ * Auto-approved findings that reached the lists path after the Intel backfill: add their list
+ * item now if planApproval gives a complete draft (no missing fields). Only for findings whose
+ * auto_source is set (they were auto-approved and the owner never clicked Approve manually).
+ * Returns how many items were added.
+ */
+export async function backfillListItems(findings: FindingView[], games: GameContract[]): Promise<number> {
+  const auto = findings.filter((f) => f.status === 'approved' && f.auto_source);
+  if (!backend || auto.length === 0) return 0;
+  let added = 0;
+  for (const f of auto) {
+    const game = games.find((g) => g.id === f.game_id);
+    const plan = planApproval(f, game);
+    if (!plan.ok || plan.draft.missing.length > 0) continue;
+    const source = findingSource(f.id);
+    const kind = LIST_KINDS[plan.draft.list];
+    const existing = await fetchCatalogRows(backend, plan.draft.gameId, kind);
+    if (existing.some((r) => r.source === source)) continue;
+    const { id, ...data } = plan.draft.item as { id: string } & Record<string, unknown>;
+    await saveCatalogRow({ game_id: plan.draft.gameId, kind, id, data, source });
+    added++;
+  }
+  return added;
+}
+
 export const jobLabel = (id: string) => JOBS.find((j) => j.id === id)?.label ?? id;
 export { JOBS, type JobDef };
