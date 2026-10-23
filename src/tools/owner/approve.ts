@@ -140,7 +140,7 @@ export function planApproval(f: FindingLike, game: GameContract | undefined): Ap
     });
     const released = iso(p.releasedAt);
     if (released) item.releasedAt = released;
-    required = ['name', 'rarity', 'element', 'role'];
+    required = f.kind === 'leak' ? ['name'] : ['name', 'rarity', 'element', 'role'];
   }
   if (f.kind === 'leak') item.leak = { source: f.source_name ?? 'unknown source' };
   else if (f.source_name && list === 'characters') item.source = f.source_name;

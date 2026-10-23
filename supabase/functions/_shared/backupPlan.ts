@@ -39,6 +39,7 @@ export const BACKUP_TABLES = [
   'owner_theme_drafts',
   'skport_links',
   'skport_checkins',
+  'scheduler_trusted_sources',
 ] as const;
 
 export const BACKUP_BUCKET = 'backups';

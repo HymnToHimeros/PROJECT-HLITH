@@ -29,9 +29,9 @@ describe('Owner console · Scheduler (this device only)', () => {
     // Without a server nothing can be started or switched.
     expect(within(backup).getByRole('button', { name: 'Run now' })).toBeDisabled();
     expect(within(backup).getByRole('switch', { name: 'Nightly backup on' })).toBeDisabled();
-    // Code refresh lives inside the HoYoLAB job: no button of its own.
+    // Code refresh is its own function now (4h cadence), so it has a Run now button.
     const codes = within(supa).getByRole('article', { name: 'Code list refresh' });
-    expect(within(codes).queryByRole('button', { name: 'Run now' })).toBeNull();
+    expect(within(codes).getByRole('button', { name: 'Run now' })).toBeDisabled();
     const routine = screen.getByRole('region', { name: 'Run by the external routine' });
     const leaks = within(routine).getByRole('article', { name: 'Leak scan' });
     // The routine is delivering: live, and it says itself when it runs each job next.

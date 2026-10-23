@@ -39,7 +39,12 @@ Deno.serve(async (req) => {
   for (const gameBiz of ['hkrpg_global', 'nap_global'] as GameBiz[]) {
     try {
       const res = await fetch(CODE_SOURCE.url(gameBiz), { redirect: 'error', headers: { Accept: 'application/json' } });
-      codes[gameBiz] = res.ok ? await saveCodeList(db, gameBiz, parseCodeList(await res.json()), CODE_SOURCE.name, new Date().toISOString()) : `list answered ${res.status}`;
+      if (res.ok) {
+        const saved = await saveCodeList(db, gameBiz, parseCodeList(await res.json()), CODE_SOURCE.name, new Date().toISOString());
+        codes[gameBiz] = saved.total;
+      } else {
+        codes[gameBiz] = `list answered ${res.status}`;
+      }
     } catch {
       codes[gameBiz] = 'list unreachable';
     }

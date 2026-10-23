@@ -19,7 +19,7 @@ describe('finishing account deletions (T11)', () => {
 
   it('covers every table an export covers, plus every user table the backup copies', () => {
     expect(coversExport()).toBe(true);
-    const userTables = BACKUP_TABLES.filter((t) => !['catalog_items', 'hoyolab_codes', 'scheduler_jobs', 'scheduler_runs', 'scheduler_findings', 'announcements', 'reward_items', 'reward_claims', 'owner_theme_drafts'].includes(t));
+    const userTables = BACKUP_TABLES.filter((t) => !['catalog_items', 'hoyolab_codes', 'scheduler_jobs', 'scheduler_runs', 'scheduler_findings', 'scheduler_trusted_sources', 'announcements', 'reward_items', 'reward_claims', 'owner_theme_drafts'].includes(t));
     const purged = [...PURGE_TABLES, ...PURGE_BY_COLUMN.map((p) => p.table)] as readonly string[];
     expect(userTables.filter((t) => !purged.includes(t))).toEqual([]);
     expect(USER_TABLES.length).toBeGreaterThan(10);

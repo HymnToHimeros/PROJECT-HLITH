@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { FINDING_KINDS } from '../../../supabase/functions/_shared/scheduler.ts';
 import type { GameContract } from '../../core/contract';
+import { backend } from '../../core/data/backend';
 import { ExampleNotice, ExampleTag, GameTag, HowTo, NoData, UnverifiedTag } from '../../core/ui';
 import o from './owner.module.css';
 import { planApproval, type Draft } from './approve';
@@ -192,7 +193,9 @@ export function Findings({ data, games, onDraft }: Props) {
                   ) : (
                     <div className={o.jobActions}>
                       <span className={o.note}>
-                        {f.status === 'approved' ? 'Approved' : 'Dismissed'} {when(f.decided_at)}
+                        {f.auto_source
+                          ? `Approved automatically (trusted source: ${f.auto_source})`
+                          : `${f.status === 'approved' ? 'Approved' : 'Dismissed'} ${when(f.decided_at)}`}
                       </span>
                       <button type="button" className={o.smallBtn} onClick={() => void reopen(f)} aria-label={`Move back to new: ${f.title}`}>
                         Move back to new
@@ -205,6 +208,88 @@ export function Findings({ data, games, onDraft }: Props) {
           </ul>
         )}
       </section>
+
+      {!example && <TrustedSources />}
     </div>
+  );
+}
+
+// ── Trusted Sources management ─────────────────────────────────────
+interface TrustedSource {
+  source_name: string;
+  added_at: string;
+}
+
+function TrustedSources() {
+  const [sources, setSources] = useState<TrustedSource[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [newName, setNewName] = useState('');
+  const [error, setError] = useState<string | null>(null);
+  const [tick, setTick] = useState(0);
+  const reload = useCallback(() => setTick((t) => t + 1), []);
+
+  useEffect(() => {
+    if (!backend) return;
+    let alive = true;
+    void backend.from('scheduler_trusted_sources').select('source_name,added_at').order('added_at', { ascending: true }).then(({ data, error: err }) => {
+      if (!alive) return;
+      if (err) setError(err.message);
+      else setSources((data ?? []) as TrustedSource[]);
+      setLoading(false);
+    });
+    return () => { alive = false; };
+  }, [tick]);
+
+  const add = async () => {
+    const name = newName.trim();
+    if (!name || !backend) return;
+    setError(null);
+    const { error: err } = await backend.from('scheduler_trusted_sources').insert([{ source_name: name }]);
+    if (err) setError(err.message);
+    else { setNewName(''); reload(); }
+  };
+
+  const remove = async (name: string) => {
+    if (!backend) return;
+    setError(null);
+    const { error: err } = await backend.from('scheduler_trusted_sources').delete().eq('source_name', name);
+    if (err) setError(err.message);
+    else reload();
+  };
+
+  return (
+    <details className={o.card}>
+      <summary className={o.cardHead} style={{ cursor: 'pointer' }}>
+        <h3 className={o.cardTitle}>Trusted for leaks</h3>
+        <span className={o.count}>{loading ? '...' : sources.length}</span>
+      </summary>
+      <p className={o.note} style={{ margin: '8px 0' }}>
+        Leaks from a trusted source are approved automatically when they arrive. Other findings still wait for you. Undo still works.
+      </p>
+      {error && <p className={o.alert} role="alert">{error}</p>}
+      {sources.length > 0 && (
+        <ul className={o.log}>
+          {sources.map((s) => (
+            <li key={s.source_name} className={o.finding} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <span style={{ flex: 1 }}>{s.source_name}</span>
+              <span className={o.recordMeta}>since {when(s.added_at)}</span>
+              <button type="button" className={o.smallBtn} onClick={() => void remove(s.source_name)}>Remove</button>
+            </li>
+          ))}
+        </ul>
+      )}
+      <div style={{ display: 'flex', gap: '8px', marginTop: '8px' }}>
+        <input
+          className={o.select}
+          type="text"
+          placeholder="Source name (exact match)"
+          value={newName}
+          onChange={(e) => setNewName(e.target.value)}
+          onKeyDown={(e) => { if (e.key === 'Enter') void add(); }}
+          style={{ flex: 1 }}
+        />
+        <button type="button" className={o.smallBtn} onClick={() => void add()} disabled={!newName.trim()}>Add</button>
+      </div>
+    </details>
   );
 }

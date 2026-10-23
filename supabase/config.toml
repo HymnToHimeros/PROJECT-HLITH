@@ -42,6 +42,10 @@ verify_jwt = true
 [functions.skport-daily]
 verify_jwt = false
 
+# Code list refresh: fetches hoyo-codes every 4 hours so new codes are tried sooner; the scheduler calls it with the service key.
+[functions.codes-refresh]
+verify_jwt = false
+
 # Finishes account deletions after the 30-day grace period (T11); the scheduler calls it with the service key.
 [functions.purge-accounts]
 verify_jwt = false

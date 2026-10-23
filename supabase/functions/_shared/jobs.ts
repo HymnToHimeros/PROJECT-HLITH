@@ -88,12 +88,12 @@ export const JOBS: readonly JobDef[] = [
   {
     id: 'codes-refresh',
     label: 'Code list refresh',
-    does: 'Copies the public list of redeem codes into the database. Already part of the HoYoLAB daily job, so it never runs on its own.',
-    cadence: 'daily 16:10',
-    target: { kind: 'included', in: 'hoyolab-daily' },
+    does: 'Copies the public list of redeem codes into the database every 4 hours so new codes are tried sooner. The daily job also refreshes on its own run.',
+    cadence: 'every 4h',
+    target: { kind: 'function', name: 'codes-refresh' },
     logicOwner: 'FRAME workstream',
     status: 'live',
-    maxSeconds: 0,
+    maxSeconds: 30,
   },
   {
     id: 'skport-daily',
