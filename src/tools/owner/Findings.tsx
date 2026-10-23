@@ -264,7 +264,7 @@ function TrustedSources() {
         <span className={o.count}>{loading ? '...' : sources.length}</span>
       </summary>
       <p className={o.note} style={{ margin: '8px 0' }}>
-        Findings from a trusted source are approved automatically when they arrive. Undo still works.
+        Leaks from a trusted source are approved automatically when they arrive. Other findings still wait for you. Undo still works.
       </p>
       {error && <p className={o.alert} role="alert">{error}</p>}
       {sources.length > 0 && (
