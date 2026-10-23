@@ -666,7 +666,8 @@
     "element": "windbite",
     "role": "attack",
     "art": "https://static.nanoka.cc/assets/zzz/IconRole1631.webp",
-    "source": "nanoka.cc"
+    "source": "nanoka.cc",
+    "releasedAt": "2026-11-11T04:00:00.000Z"
   },
   {
     "id": "1641",
