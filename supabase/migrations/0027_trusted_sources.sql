@@ -16,7 +16,8 @@ alter table public.scheduler_trusted_sources enable row level security;
 create policy "trusted sources: owner reads" on public.scheduler_trusted_sources for select to authenticated using (public.is_owner());
 create policy "trusted sources: owner adds" on public.scheduler_trusted_sources for insert to authenticated with check (public.is_owner());
 create policy "trusted sources: owner removes" on public.scheduler_trusted_sources for delete to authenticated using (public.is_owner());
-revoke update on public.scheduler_trusted_sources from anon, authenticated;
+revoke all on public.scheduler_trusted_sources from anon, authenticated;
+grant select, insert, delete on public.scheduler_trusted_sources to authenticated;
 
 -- ── Auto-source marker on findings ────────────────────────────────────
 -- When a finding is auto-approved at delivery time, auto_source records the trusted source
@@ -42,7 +43,7 @@ update public.scheduler_findings
 -- Returns the number of findings auto-approved. Only the service role calls it.
 create or replace function public.findings_auto_approve(p_finding_ids uuid[])
 returns integer
-language plpgsql security definer set search_path = public as $$
+language plpgsql security definer set search_path = '' as $$
 declare
   approved integer;
 begin

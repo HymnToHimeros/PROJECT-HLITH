@@ -130,6 +130,26 @@ describe('link/result tables have only the grants they need (0023)', () => {
   });
 });
 
+describe('scheduler_trusted_sources has only the grants it needs (0027)', () => {
+  const sql = readFileSync(join(DIR, '0027_trusted_sources.sql'), 'utf8');
+
+  it('revokes all from anon and authenticated', () => {
+    expect(sql).toContain('revoke all on public.scheduler_trusted_sources from anon, authenticated;');
+  });
+
+  it('re-grants only select, insert, delete to authenticated', () => {
+    expect(sql).toContain('grant select, insert, delete on public.scheduler_trusted_sources to authenticated;');
+  });
+
+  it('does not grant update or truncate', () => {
+    expect(sql.toLowerCase()).not.toMatch(/grant\b[^;]*(update|truncate)[^;]*scheduler_trusted_sources/);
+  });
+
+  it('findings_auto_approve uses empty search_path', () => {
+    expect(sql).toMatch(/findings_auto_approve[\s\S]*?set search_path = ''/);
+  });
+});
+
 describe('the migration checker itself', () => {
   it('flags destructive statements', () => {
     expect(findDestructive('DROP TABLE roster;')).toEqual(['DROP TABLE']);

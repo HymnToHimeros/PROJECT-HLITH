@@ -7,7 +7,8 @@
  * package of its own and can be tested with a fake.
  */
 import type { GameBiz } from './hoyolab.ts';
-import { linkGames, type LinkRow, type RedeemStatus, type Store, type Tried } from './hoyolabAuto.ts';
+import { linkGames, runLinks, type LinkRow, type RedeemStatus, type RunDeps, type RunSummary, type Store, type Tried } from './hoyolabAuto.ts';
+import { withoutBanned } from './moderation.ts';
 
 type Answer = { data: unknown; error: { message: string } | null };
 export interface Query extends PromiseLike<Answer> {
@@ -75,13 +76,29 @@ export function dbStore(db: Db): Store {
 }
 
 /** Copy today's public list into hoyolab_codes (adds new codes, refreshes last_seen; never removes any). */
-export async function saveCodeList(db: Db, gameBiz: GameBiz, list: { code: string; rewards: string | null }[], source: string, nowIso: string): Promise<number> {
-  if (!list.length) return 0;
+export async function saveCodeList(db: Db, gameBiz: GameBiz, list: { code: string; rewards: string | null }[], source: string, nowIso: string): Promise<{ total: number; fresh: number }> {
+  if (!list.length) return { total: 0, fresh: 0 };
+  const codes = list.map((c) => c.code);
+  const existing = await db.from('hoyolab_codes').select('code').eq('game_biz', gameBiz).in('code', codes);
+  const known = new Set((Array.isArray(existing.data) ? existing.data : []).map((r: Record<string, unknown>) => String(r.code)));
   const a = await db.from('hoyolab_codes').upsert(
     list.map((c) => ({ game_biz: gameBiz, code: c.code, rewards: c.rewards, source, last_seen: nowIso })),
     { onConflict: 'game_biz,code' },
   );
   if (a.error) throw new Error(`Saving the code list failed: ${a.error.message}`);
-  return list.length;
+  return { total: list.length, fresh: codes.filter((c) => !known.has(c)).length };
+}
+
+/** Run redeem-only for all links with auto_redeem on. Call after saving fresh codes so they get tried right away. */
+export async function redeemFreshCodes(db: Db, deps: RunDeps, deadline: number): Promise<RunSummary | null> {
+  const links = await withoutBanned(db as unknown as { rpc: Db['rpc'] }, await activeLinks(db));
+  const redeemLinks = links.filter((l) => l.auto_redeem);
+  if (redeemLinks.length === 0) return null;
+  return runLinks(redeemLinks, dbStore(db), deps, {
+    startedBy: 'auto',
+    deadline,
+    maxRedemptions: 15,
+    jobs: (l) => ({ checkin: false, redeem: l.auto_redeem }),
+  });
 }
 

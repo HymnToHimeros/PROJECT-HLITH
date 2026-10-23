@@ -6,10 +6,11 @@
 // every delivery is recorded as a run of its job ("Delivered N findings", or an error run with
 // the routine's message for a job it reports as failed), and the job is expected next at the
 // time the routine gives (next_at, self-adjusting), else on its fallback cadence.
+import { createHash } from 'node:crypto';
 import { createClient } from 'npm:@supabase/supabase-js@2';
 import { checkIntakeKey, deliver, INTAKE_LIMITS, intakeKeyFrom, readIntake, type DeliveryDb } from '../_shared/findings.ts';
 import type { GameBiz } from '../_shared/hoyolab.ts';
-import { saveCodeList, type Db } from '../_shared/hoyolabStore.ts';
+import { redeemFreshCodes, saveCodeList, type Db } from '../_shared/hoyolabStore.ts';
 import { findJob } from '../_shared/jobs.ts';
 import type { NewFinding } from '../_shared/scheduler.ts';
 import { effectiveCadence, nextSlot } from '../_shared/scheduler.ts';
@@ -17,6 +18,16 @@ import { effectiveCadence, nextSlot } from '../_shared/scheduler.ts';
 const GAME_TO_BIZ: Record<string, GameBiz> = { hsr: 'hkrpg_global', zzz: 'nap_global' };
 
 const json = (body: unknown, status = 200) => new Response(JSON.stringify(body), { status, headers: { 'Content-Type': 'application/json' } });
+
+const LETTERS = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+const redeemDeps = {
+  fetch: (url: string, init: { method: 'GET' | 'POST'; headers: Record<string, string>; body?: string }) => fetch(url, { ...init, redirect: 'error' }),
+  md5: (s: string) => createHash('md5').update(s).digest('hex'),
+  now: () => Date.now(),
+  random6: () => Array.from(crypto.getRandomValues(new Uint8Array(6)), (b) => LETTERS[b % LETTERS.length]).join(''),
+  uuid: () => crypto.randomUUID(),
+  sleep: (ms: number) => new Promise<void>((r) => setTimeout(r, ms)),
+};
 
 Deno.serve(async (req) => {
   if (req.method !== 'POST') return json({ error: 'POST only' }, 405);
@@ -52,21 +63,31 @@ Deno.serve(async (req) => {
   try {
     const { saved, addedIds } = await deliver(db as unknown as DeliveryDb, intake.byJob, now, nextDue, intake.failed, intake.nextAt);
     let autoApproved = 0;
+    let autoApproveError: string | undefined;
     if (addedIds.length > 0) {
       const aa = await db.rpc('findings_auto_approve', { p_finding_ids: addedIds });
-      if (!aa.error && typeof aa.data === 'number') autoApproved = aa.data;
+      if (aa.error) autoApproveError = aa.error.message;
+      else if (typeof aa.data === 'number') autoApproved = aa.data;
     }
-    const codesSaved = await extractCodes(db as unknown as Db, intake.byJob);
-    return json({ ok: true, saved, autoApproved, codesSaved });
+    const codeResult = await extractCodes(db as unknown as Db, intake.byJob);
+    let codesRedeemed: { redemptions: number; stoppedEarly: boolean } | undefined;
+    if (codeResult.fresh > 0) {
+      try {
+        const summary = await redeemFreshCodes(db as unknown as Db, redeemDeps, Date.now() + 120_000);
+        if (summary) codesRedeemed = { redemptions: summary.redemptions, stoppedEarly: summary.stoppedEarly };
+      } catch { /* redemption failure is non-fatal for the intake */ }
+    }
+    return json({ ok: true, saved, autoApproved, ...(autoApproveError ? { autoApproveError } : {}), codesSaved: codeResult.total, freshCodes: codeResult.fresh, ...(codesRedeemed ? { codesRedeemed } : {}) });
   } catch (e) {
     return json({ error: e instanceof Error ? e.message : 'Saving failed.' }, 500);
   }
 });
 
 /** Pull redeem codes out of findings' payloads and save them to hoyolab_codes. */
-async function extractCodes(db: Db, byJob: Map<string, NewFinding[]>): Promise<number> {
+async function extractCodes(db: Db, byJob: Map<string, NewFinding[]>): Promise<{ total: number; fresh: number }> {
   const nowIso = new Date().toISOString();
   let total = 0;
+  let fresh = 0;
   for (const findings of byJob.values()) {
     for (const f of findings) {
       const biz = f.game_id ? GAME_TO_BIZ[f.game_id] : undefined;
@@ -77,8 +98,12 @@ async function extractCodes(db: Db, byJob: Map<string, NewFinding[]>): Promise<n
       const list = raw
         .filter((c): c is string => typeof c === 'string' && c.length > 0)
         .map((code) => ({ code, rewards: null }));
-      if (list.length > 0) total += await saveCodeList(db, biz, list, 'finding', nowIso);
+      if (list.length > 0) {
+        const saved = await saveCodeList(db, biz, list, 'finding', nowIso);
+        total += saved.total;
+        fresh += saved.fresh;
+      }
     }
   }
-  return total;
+  return { total, fresh };
 }
