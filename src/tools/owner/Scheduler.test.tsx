@@ -50,30 +50,17 @@ describe('Owner console · Scheduler (this device only)', () => {
 });
 
 describe('Owner console · Findings (this device only)', () => {
-  it('lists example findings with who delivered them, filters, and approves / dismisses', async () => {
+  it('shows example findings as a read-only log with filters', () => {
     renderConsole();
     fireEvent.click(screen.getByRole('tab', { name: /Findings/ }));
     expect(screen.getByText(/these findings are examples/)).toBeInTheDocument();
-    const inbox = screen.getByRole('region', { name: /Inbox/ });
-    expect(within(inbox).getByText('2 new')).toBeInTheDocument();
-    expect(within(inbox).getByText(/Delivered by Leak scan · routine/)).toBeInTheDocument();
-    // A leak always shows as unverified with its source.
-    expect(within(inbox).getByText('? UNVERIFIED')).toBeInTheDocument();
+    const log = screen.getByRole('region', { name: /Log/ });
+    expect(within(log).getByText(/Delivered by Leak scan · routine/)).toBeInTheDocument();
+    expect(within(log).getByText(/Auto-approved/)).toBeInTheDocument();
 
-    fireEvent.change(within(inbox).getByLabelText('Kind'), { target: { value: 'event' } });
-    expect(within(inbox).queryByText(/new character in the next version/)).toBeNull();
-    fireEvent.change(within(inbox).getByLabelText('Kind'), { target: { value: 'all' } });
-
-    fireEvent.click(within(inbox).getByRole('button', { name: /Approve: Example: a new character/ }));
-    expect(await within(inbox).findByText('1 new')).toBeInTheDocument();
-    fireEvent.click(within(inbox).getByRole('button', { name: /Dismiss: Example: a login event/ }));
-    expect(await within(inbox).findByText('0 new')).toBeInTheDocument();
-    expect(within(inbox).getByText('Nothing matches these filters.')).toBeInTheDocument();
-    // Nothing is removed: dismissed findings stay under Dismissed.
-    fireEvent.change(within(inbox).getByLabelText('Status'), { target: { value: 'dismissed' } });
-    expect(within(inbox).getByText(/a login event starting next week/)).toBeInTheDocument();
-    // …and can be moved back to the inbox.
-    fireEvent.click(within(inbox).getByRole('button', { name: /Move back to new: Example: a login event/ }));
-    expect(await within(inbox).findByText('1 new')).toBeInTheDocument();
+    fireEvent.change(within(log).getByLabelText('Kind'), { target: { value: 'event' } });
+    expect(within(log).queryByText(/new character in the next version/)).toBeNull();
+    fireEvent.change(within(log).getByLabelText('Kind'), { target: { value: 'all' } });
+    expect(within(log).getByText(/new character in the next version/)).toBeInTheDocument();
   });
 });

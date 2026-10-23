@@ -336,7 +336,7 @@ describe('calling a job’s function', () => {
   it('drops findings it cannot read, never guesses', () => {
     expect(readFindings('x')).toEqual([]);
     expect(readFindings([{ kind: 'leak', title: '  ' }, { kind: 'event', title: 'Ok', source_url: 'javascript:alert(1)' }])).toEqual([
-      { game_id: null, kind: 'event', title: 'Ok', payload: {}, source_name: null, source_url: null },
+      { game_id: null, kind: 'event', title: 'Ok', payload: {}, source_name: null, source_url: null, topic: 'events' },
     ]);
   });
 });

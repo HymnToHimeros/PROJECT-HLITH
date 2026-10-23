@@ -8,7 +8,7 @@
  */
 import { useCallback, useEffect, useState } from 'react';
 import { JOBS, type JobDef } from '../../../supabase/functions/_shared/jobs.ts';
-import type { FindingKind, RunStatus } from '../../../supabase/functions/_shared/scheduler.ts';
+import type { FindingKind, RunStatus, Topic } from '../../../supabase/functions/_shared/scheduler.ts';
 import type { GameContract } from '../../core/contract';
 import { backend } from '../../core/data/backend';
 import { LIST_KINDS, type CatalogKind, type ListKind } from '../../core/data/catalog';
@@ -45,6 +45,7 @@ export interface FindingView {
   job_id: string;
   game_id: string | null;
   kind: FindingKind;
+  topic: Topic | null;
   title: string;
   payload: Record<string, unknown>;
   source_name: string | null;
@@ -85,9 +86,9 @@ export function exampleFindings(now: number, gameIds: string[]): FindingView[] {
   const g = (i: number) => gameIds[i % Math.max(gameIds.length, 1)] ?? null;
   const base = { payload: {}, delivered_by: 'routine' as const, decided_at: null, auto_source: null };
   return [
-    { ...base, id: 'ex-f1', job_id: 'leaks-scan', game_id: g(0), kind: 'leak', title: 'Example: a new character in the next version', source_name: 'Example source', source_url: null, found_at: iso(now - 10 * HOUR), delivered_at: iso(now - 9 * HOUR), status: 'new', payload: { note: 'example only' } },
-    { ...base, id: 'ex-f2', job_id: 'events-scan', game_id: g(1), kind: 'event', title: 'Example: a login event starting next week', source_name: 'Example source', source_url: null, found_at: iso(now - 30 * HOUR), delivered_at: iso(now - 29 * HOUR), status: 'new' },
-    { ...base, id: 'ex-f3', job_id: 'game-data-refresh', game_id: g(0), kind: 'character', title: 'Example: kit data for a released character', source_name: 'Example source', source_url: null, found_at: iso(now - 50 * HOUR), delivered_at: iso(now - 49 * HOUR), status: 'approved', decided_at: iso(now - 40 * HOUR) },
+    { ...base, id: 'ex-f1', job_id: 'leaks-scan', game_id: g(0), kind: 'leak' as const, topic: 'characters' as const, title: 'Example: a new character in the next version', source_name: 'Example source', source_url: null, found_at: iso(now - 10 * HOUR), delivered_at: iso(now - 9 * HOUR), status: 'approved' as const, auto_source: 'auto', decided_at: iso(now - 9 * HOUR), payload: { note: 'example only' } },
+    { ...base, id: 'ex-f2', job_id: 'events-scan', game_id: g(1), kind: 'event' as const, topic: 'events' as const, title: 'Example: a login event starting next week', source_name: 'Example source', source_url: null, found_at: iso(now - 30 * HOUR), delivered_at: iso(now - 29 * HOUR), status: 'approved' as const, auto_source: 'auto', decided_at: iso(now - 29 * HOUR) },
+    { ...base, id: 'ex-f3', job_id: 'game-data-refresh', game_id: g(0), kind: 'character' as const, topic: 'characters' as const, title: 'Example: kit data for a released character', source_name: 'Example source', source_url: null, found_at: iso(now - 50 * HOUR), delivered_at: iso(now - 49 * HOUR), status: 'approved' as const, decided_at: iso(now - 40 * HOUR) },
   ];
 }
 
@@ -107,7 +108,7 @@ export function useSchedulerData(gameIds: string[]): SchedulerData & { reload: (
     void Promise.all([
       client.from('scheduler_jobs').select('id,enabled,cadence,last_run_at,last_status,last_message,next_due_at,lock_until'),
       client.from('scheduler_runs').select('id,job_id,started_at,finished_at,status,message,counts,started_by').order('started_at', { ascending: false }).limit(50),
-      client.from('scheduler_findings').select('id,job_id,game_id,kind,title,payload,source_name,source_url,found_at,delivered_at,delivered_by,status,decided_at,auto_source').order('delivered_at', { ascending: false }).limit(200),
+      client.from('scheduler_findings').select('id,job_id,game_id,kind,topic,title,payload,source_name,source_url,found_at,delivered_at,delivered_by,status,decided_at,auto_source').order('delivered_at', { ascending: false }).limit(200),
     ]).then(([jobs, runs, findings]) => {
       if (!alive) return;
       const error = jobs.error?.message ?? runs.error?.message ?? findings.error?.message ?? null;

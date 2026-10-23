@@ -88,10 +88,6 @@ export default function OwnerConsole(props: ModuleScreenProps & { selfId?: strin
   // An approved finding that needs more fields opens Lists with it in the form.
   const [draft, setDraft] = useState<Draft | null>(null);
   const clearDraft = useCallback(() => setDraft(null), []);
-  const openDraft = (d: Draft) => {
-    setDraft(d);
-    setTab('lists');
-  };
   return (
     <div className={o.stack}>
       <p className={o.scope}>OWNER · ONLY YOU SEE THIS</p>
@@ -118,7 +114,7 @@ export default function OwnerConsole(props: ModuleScreenProps & { selfId?: strin
       {tab === 'members' && <Members />}
       {tab === 'rewards' && <Rewards />}
       {tab === 'scheduler' && <Scheduler data={sched} now={now} />}
-      {tab === 'findings' && <Findings data={sched} games={props.games} onDraft={openDraft} />}
+      {tab === 'findings' && <Findings data={sched} games={props.games} />}
       {tab === 'themes' && <OwnerThemesAdmin />}
     </div>
   );

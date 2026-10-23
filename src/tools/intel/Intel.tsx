@@ -1,8 +1,10 @@
 import { useState, type CSSProperties } from 'react';
+import type { Topic } from '../../../supabase/functions/_shared/scheduler.ts';
 import type { GameContract, GameId } from '../../core/contract';
 import { useExamplesShown } from '../../core/data/prefs';
 import { formatDate } from '../../core/time/reset';
 import { EmptyState, ExampleNotice, ExampleTag, GameTag, NoData, Timer } from '../../core/ui';
+import { Segmented } from '../../core/ui/Segmented';
 import type { GameLists } from '../today/lists';
 import { exampleIntel, exampleReliability, intelItems, kindLabel, type IntelItem, type IntelKind, type Reliability } from './intel';
 import type { LeakNote } from './leakNotes';
@@ -25,9 +27,24 @@ interface Row {
 const KINDS: IntelKind[] = ['character', 'weapon', 'area', 'event', 'system'];
 const REL: Record<Reliability, { label: string; pct: number }> = { high: { label: 'High', pct: 90 }, mid: { label: 'Medium', pct: 60 }, low: { label: 'Low', pct: 30 } };
 
+const TOPIC_LABEL: Record<Topic, string> = {
+  characters: 'Characters',
+  story: 'Story',
+  weapons: 'Weapons & items',
+  events: 'Events & modes',
+  systems: 'Systems',
+  codes: 'Codes',
+  other: 'Other',
+};
+const TOPIC_TABS: { id: 'all' | Topic; label: string }[] = [
+  { id: 'all', label: 'All' },
+  ...(['characters', 'story', 'weapons', 'events', 'systems', 'codes', 'other'] as Topic[]).map((t) => ({ id: t, label: TOPIC_LABEL[t] })),
+];
+
 /** Intel (design): type filter, then one dashed row per item: kind, ? UNVERIFIED, title, source, source reliability. */
 export function Intel({ games, lists, now, notes = [] }: Props) {
   const [kind, setKind] = useState<IntelKind | 'all'>('all');
+  const [topic, setTopic] = useState<'all' | Topic>('all');
   const several = games.length > 1;
   const showExamples = useExamplesShown();
   const examples: GameContract[] = [];
@@ -43,6 +60,9 @@ export function Intel({ games, lists, now, notes = [] }: Props) {
   const shown = rows.filter((r) => kind === 'all' || r.item.kind === kind);
   const one = several ? null : (games[0] ?? null);
 
+  const topicNotes = topic === 'all' ? notes : notes.filter((n) => n.topic === topic);
+  const topicTabs = TOPIC_TABS.filter((t) => t.id === 'all' || notes.some((n) => n.topic === t.id));
+
   return (
     <div className={n.stack}>
       {examples.length > 0 && (
@@ -57,7 +77,7 @@ export function Intel({ games, lists, now, notes = [] }: Props) {
           </button>
         ))}
       </div>
-      {rows.length === 0 && <EmptyState title="Nothing upcoming listed yet" body="New characters, banners and content appear here, marked unverified, once the game’s lists are added. That part is on us, not you." />}
+      {rows.length === 0 && <EmptyState title="Nothing upcoming listed yet" body="New characters, banners and content appear here, marked unverified, once the game's lists are added. That part is on us, not you." />}
       <ul className={n.list} aria-label="Upcoming">
         {shown.map((r) => (
           <li key={`${r.game.id}:${r.item.id}`}>
@@ -65,7 +85,7 @@ export function Intel({ games, lists, now, notes = [] }: Props) {
           </li>
         ))}
       </ul>
-      {notes.length > 0 && <LeakNotes notes={notes} games={games} />}
+      {notes.length > 0 && <LeakNotes notes={topicNotes} games={games} tabs={topicTabs} topic={topic} onTopic={setTopic} />}
     </div>
   );
 }
@@ -73,23 +93,40 @@ export function Intel({ games, lists, now, notes = [] }: Props) {
 const NOTE_KIND: Record<string, string> = { leak: 'Leak', event: 'Event', banner: 'Banner', character: 'Character', info: 'News' };
 
 /** News and leaks: every finding the owner approved, any kind or source, newest first; leaks marked unverified. */
-function LeakNotes({ notes, games }: { notes: LeakNote[]; games: GameContract[] }) {
+function LeakNotes({
+  notes,
+  games,
+  tabs,
+  topic,
+  onTopic,
+}: {
+  notes: LeakNote[];
+  games: GameContract[];
+  tabs: { id: 'all' | Topic; label: string }[];
+  topic: 'all' | Topic;
+  onTopic: (t: 'all' | Topic) => void;
+}) {
   const several = games.length > 1;
   return (
     <section className={n.stack} aria-labelledby="intel-notes">
       <h2 className={n.section} id="intel-notes">
         News and leaks
       </h2>
-      <ul className={n.list} aria-label="News and leaks">
-        {notes.map((note) => {
-          const game = games.find((g) => g.id === note.gameId);
-          return (
-            <li key={`${note.gameId}:${note.id}`}>
-              <LeakNoteRow note={note} game={game} several={several} />
-            </li>
-          );
-        })}
-      </ul>
+      {tabs.length > 2 && <Segmented label="Topic" options={tabs} value={topic} onChange={onTopic} tone="quiet" />}
+      {notes.length === 0 ? (
+        <span className={n.muted}>Nothing in this topic yet.</span>
+      ) : (
+        <ul className={n.list} aria-label="News and leaks">
+          {notes.map((note) => {
+            const game = games.find((g) => g.id === note.gameId);
+            return (
+              <li key={`${note.gameId}:${note.id}`}>
+                <LeakNoteRow note={note} game={game} several={several} />
+              </li>
+            );
+          })}
+        </ul>
+      )}
     </section>
   );
 }
@@ -109,6 +146,7 @@ function LeakNoteRow({ note, game, several }: { note: LeakNote; game: GameContra
             </span>
           )}
           {several && game && <GameTag label={game.short} vent={game.vent} />}
+          <span className={n.kind}>{TOPIC_LABEL[note.topic as Topic] ?? note.topic}</span>
         </div>
         <h3 className={n.title}>{note.title}</h3>
         <span className={n.source}>
@@ -206,5 +244,5 @@ function IntelRow({ row, several }: { row: Row; several: boolean }) {
 
 /** Shown instead of the cards while the viewer hides leaks. */
 export function IntelHidden({ onShow }: { onShow: () => void }) {
-  return <EmptyState title="Leaks are hidden" body="Everything in Intel is unverified, so it stays hidden while “Hide leaks” is on." action={{ label: 'Show leaks', onClick: onShow }} />;
+  return <EmptyState title="Leaks are hidden" body={'Everything in Intel is unverified, so it stays hidden while “Hide leaks” is on.'} action={{ label: 'Show leaks', onClick: onShow }} />;
 }

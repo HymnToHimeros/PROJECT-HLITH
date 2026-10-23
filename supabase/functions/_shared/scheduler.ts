@@ -144,6 +144,17 @@ export const lockFree = (lockUntil: string | null, now: number) => !lockUntil ||
 export const FINDING_KINDS = ['leak', 'event', 'banner', 'character', 'info'] as const;
 export type FindingKind = (typeof FINDING_KINDS)[number];
 
+export const TOPICS = ['characters', 'story', 'weapons', 'events', 'systems', 'codes', 'other'] as const;
+export type Topic = (typeof TOPICS)[number];
+
+const KIND_TO_TOPIC: Record<FindingKind, Topic> = { character: 'characters', event: 'events', banner: 'events', leak: 'other', info: 'other' };
+
+/** The topic a finding belongs to: the one the routine gave, or a fallback from its kind. */
+export function topicOf(topic: string | undefined | null, kind: FindingKind): Topic {
+  if (topic && (TOPICS as readonly string[]).includes(topic)) return topic as Topic;
+  return KIND_TO_TOPIC[kind];
+}
+
 /** What a job hands back for the inbox (scheduler_findings). */
 export interface NewFinding {
   game_id: string | null;
@@ -154,6 +165,8 @@ export interface NewFinding {
   source_url: string | null;
   /** When the job found it (ISO); the database fills in now when missing. */
   found_at?: string;
+  /** Grouping topic for Intel tabs; the routine sends it, else inferred from kind. */
+  topic?: Topic;
 }
 
 /** Same job + game + kind + source + title = the same finding (job is stored beside it). */
@@ -187,13 +200,15 @@ export function readFindings(raw: unknown): NewFinding[] {
     if (!FINDING_KINDS.includes(r.kind as FindingKind)) continue;
     const title = typeof r.title === 'string' ? r.title.trim().slice(0, 300) : '';
     if (!title) continue;
+    const kind = r.kind as FindingKind;
     out.push({
       game_id: typeof r.game_id === 'string' && r.game_id ? r.game_id : null,
-      kind: r.kind as FindingKind,
+      kind,
       title,
       payload: r.payload && typeof r.payload === 'object' && !Array.isArray(r.payload) ? (r.payload as Record<string, unknown>) : {},
       source_name: typeof r.source_name === 'string' && r.source_name ? r.source_name.slice(0, 120) : null,
       source_url: typeof r.source_url === 'string' && /^https?:\/\//i.test(r.source_url) ? r.source_url : null,
+      topic: topicOf(typeof r.topic === 'string' ? r.topic : undefined, kind),
     });
   }
   return out;

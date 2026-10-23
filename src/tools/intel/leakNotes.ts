@@ -6,6 +6,7 @@
  * and links are kept; a post's images stay links, never copied.
  */
 import { useEffect, useState } from 'react';
+import { topicOf, type FindingKind, type Topic } from '../../../supabase/functions/_shared/scheduler.ts';
 import type { CatalogRow } from '../../core/data/catalog';
 import { catalogRows } from '../../core/data/catalogSource';
 import { eventFromInfo } from '../owner/approve';
@@ -48,6 +49,8 @@ export interface LeakNote {
   gameId: string;
   /** The finding's kind: leak, event, banner, character or info. */
   kind: string;
+  /** Intel tab topic: characters, story, weapons, events, systems, codes, other. */
+  topic: string;
   /** From a leak (a leak finding, or one marked as a leak): shown as unverified. */
   leak: boolean;
   title: string;
@@ -67,6 +70,7 @@ export interface FindingForNote {
   id: string;
   game_id: string | null;
   kind: string;
+  topic?: string | null;
   title: string;
   payload: Record<string, unknown>;
   source_name: string | null;
@@ -113,11 +117,15 @@ export function noteFromFinding(f: FindingForNote): { gameId: string; id: string
   const eventLine = event ? `${event.start?.slice(0, 10) ?? '?'} → ${event.end?.slice(0, 10) ?? '?'}` : undefined;
   const at = post?.at && Number.isFinite(Date.parse(post.at)) ? post.at : f.found_at;
   const url = link(post?.url) ?? link(f.source_url);
+  const topic: Topic = f.topic && (['characters', 'story', 'weapons', 'events', 'systems', 'codes', 'other'] as string[]).includes(f.topic)
+    ? (f.topic as Topic)
+    : topicOf(null, f.kind as FindingKind);
   return {
     gameId: f.game_id,
     id: `note-${f.id}`.toLowerCase().replace(/[^a-z0-9-]+/g, '-').slice(0, 80),
     data: {
       kind: f.kind,
+      topic,
       leak: f.kind === 'leak' || f.payload.leak === true,
       title: event?.title ?? cleanTitle(f.title),
       at,
@@ -143,6 +151,7 @@ export function readNote(row: CatalogRow): LeakNote | null {
     id: row.id,
     gameId: row.game_id,
     kind: s(d.kind) ?? 'leak',
+    topic: s(d.topic) ?? 'other',
     leak: d.leak !== false,
     title,
     at,

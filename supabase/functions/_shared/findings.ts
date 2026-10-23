@@ -4,7 +4,7 @@
  * without repeats. Pure apart from the small `Db` shape, so it is tested with a fake.
  */
 import { EXTERNAL_JOB_IDS } from './jobs.ts';
-import { DEDUPE_DAYS, dedupeKey, FINDING_KINDS, freshFindings, type FindingKind, type NewFinding } from './scheduler.ts';
+import { DEDUPE_DAYS, dedupeKey, FINDING_KINDS, freshFindings, topicOf, type FindingKind, type NewFinding } from './scheduler.ts';
 
 /** The header the routine sends its key in. */
 export const INTAKE_HEADER = 'x-intake-key';
@@ -156,7 +156,9 @@ export function readIntake(body: unknown, now: number): Intake {
       else foundAt = new Date(t).toISOString();
     }
     if (problems.length) return;
-    const f: NewFinding = { game_id: gameId, kind: r.kind as FindingKind, title, payload, source_name: sourceName, source_url: sourceUrl || null, ...(foundAt ? { found_at: foundAt } : {}) };
+    const kind = r.kind as FindingKind;
+    const topic = topicOf(typeof r.topic === 'string' ? r.topic : undefined, kind);
+    const f: NewFinding = { game_id: gameId, kind, title, payload, source_name: sourceName, source_url: sourceUrl || null, topic, ...(foundAt ? { found_at: foundAt } : {}) };
     byJob.set(job, [...(byJob.get(job) ?? []), f]);
   });
   return problems.length ? { ok: false, problems } : { ok: true, byJob, failed, nextAt };
@@ -197,6 +199,7 @@ export async function saveFindings(db: FindingsDb, jobId: string, findings: NewF
       payload: f.payload,
       source_name: f.source_name,
       source_url: f.source_url,
+      topic: f.topic ?? null,
       dedupe_key: dedupeKey(f),
       found_at: f.found_at ?? deliveredAt,
       delivered_at: deliveredAt,

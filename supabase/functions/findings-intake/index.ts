@@ -69,6 +69,14 @@ Deno.serve(async (req) => {
       if (aa.error) autoApproveError = aa.error.message;
       else if (typeof aa.data === 'number') autoApproved = aa.data;
     }
+    let decided = 0;
+    let decideError: string | undefined;
+    const decisions = readDecisions(body);
+    if (decisions.length > 0) {
+      const dd = await db.rpc('findings_decide', { p_decisions: decisions });
+      if (dd.error) decideError = dd.error.message;
+      else if (typeof dd.data === 'number') decided = dd.data;
+    }
     const codeResult = await extractCodes(db as unknown as Db, intake.byJob);
     let codesRedeemed: { redemptions: number; stoppedEarly: boolean } | undefined;
     if (codeResult.fresh > 0) {
@@ -77,11 +85,21 @@ Deno.serve(async (req) => {
         if (summary) codesRedeemed = { redemptions: summary.redemptions, stoppedEarly: summary.stoppedEarly };
       } catch { /* redemption failure is non-fatal for the intake */ }
     }
-    return json({ ok: true, saved, autoApproved, ...(autoApproveError ? { autoApproveError } : {}), codesSaved: codeResult.total, freshCodes: codeResult.fresh, ...(codesRedeemed ? { codesRedeemed } : {}) });
+    return json({ ok: true, saved, autoApproved, ...(autoApproveError ? { autoApproveError } : {}), ...(decided ? { decided } : {}), ...(decideError ? { decideError } : {}), codesSaved: codeResult.total, freshCodes: codeResult.fresh, ...(codesRedeemed ? { codesRedeemed } : {}) });
   } catch (e) {
     return json({ error: e instanceof Error ? e.message : 'Saving failed.' }, 500);
   }
 });
+
+/** Read decisions the routine sends to correct earlier findings: [{ id, status, reason? }]. */
+function readDecisions(body: unknown): { id: string; status: string; reason?: string }[] {
+  const b = body && typeof body === 'object' ? (body as Record<string, unknown>) : {};
+  if (!Array.isArray(b.decisions)) return [];
+  return b.decisions
+    .filter((d): d is Record<string, unknown> => d !== null && typeof d === 'object' && !Array.isArray(d))
+    .filter((d) => typeof d.id === 'string' && /^[0-9a-f-]{36}$/.test(d.id) && typeof d.status === 'string' && ['approved', 'dismissed'].includes(d.status))
+    .map((d) => ({ id: d.id as string, status: d.status as string, ...(typeof d.reason === 'string' && d.reason ? { reason: d.reason } : {}) }));
+}
 
 /** Pull redeem codes out of findings' payloads and save them to hoyolab_codes. */
 async function extractCodes(db: Db, byJob: Map<string, NewFinding[]>): Promise<{ total: number; fresh: number }> {
