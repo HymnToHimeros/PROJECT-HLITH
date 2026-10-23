@@ -199,6 +199,19 @@ the delivery, never skipped silently.
      `"post": { "url", "at", "text": <original>, "translation": <English, only when
      translated>, "images": [<links as given; never copied>] }`. The inbox shows the
      English first, marked "Translated, may be inexact", with "Show original".
+   - **Every finding is approved automatically** (owner, 23 Oct 2026: nothing waits
+     for approval), so the routine is the filter: only what is real and useful, never
+     a repeat. Skip status posts ("server is up", maintenance), empty posts, posts
+     that repeat an earlier one (same text, same picture, or a Chinese copy of an
+     English post) and anything already in our lists; count them in the delivery.
+   - Every finding has `payload.topic`, one of `characters` (new characters, kits,
+     renders, buffs), `story` (spoilers, lore, story text), `weapons-items` (weapons,
+     items, outfits, stickers, name cards), `events-modes` (events, game modes,
+     endgame), `systems` (UI, builds and patch sizes, features), `codes` (gift codes)
+     or `other`. Intel shows one tab per topic.
+   - Gift codes → kind `info`, topic `codes`, payload `code` (or `codes: [...]` for
+     several) and `valid_until` as written; findings-intake adds them to the codes
+     the app redeems.
    - The channel can't be read, or the channel name is still not set → say so in
      the delivery.
 
