@@ -35,6 +35,7 @@ update public.scheduler_findings
        decided_at = now(),
        auto_source = 'Seele (Telegram)'
  where source_name = 'Seele (Telegram)'
+   and kind = 'leak'
    and status = 'new';
 
 -- ── Server function: auto-approve after delivery ──────────────────────
@@ -54,6 +55,7 @@ begin
     from public.scheduler_trusted_sources ts
    where f.id = any(p_finding_ids)
      and f.source_name = ts.source_name
+     and f.kind = 'leak'
      and f.status = 'new';
   get diagnostics approved = row_count;
   return approved;

@@ -260,7 +260,7 @@ function TrustedSources() {
   return (
     <details className={o.card}>
       <summary className={o.cardHead} style={{ cursor: 'pointer' }}>
-        <h3 className={o.cardTitle}>Trusted sources</h3>
+        <h3 className={o.cardTitle}>Trusted for leaks</h3>
         <span className={o.count}>{loading ? '...' : sources.length}</span>
       </summary>
       <p className={o.note} style={{ margin: '8px 0' }}>

@@ -81,12 +81,23 @@ export async function saveCodeList(db: Db, gameBiz: GameBiz, list: { code: strin
   const codes = list.map((c) => c.code);
   const existing = await db.from('hoyolab_codes').select('code').eq('game_biz', gameBiz).in('code', codes);
   const known = new Set((Array.isArray(existing.data) ? existing.data : []).map((r: Record<string, unknown>) => String(r.code)));
-  const a = await db.from('hoyolab_codes').upsert(
-    list.map((c) => ({ game_biz: gameBiz, code: c.code, rewards: c.rewards, source, last_seen: nowIso })),
-    { onConflict: 'game_biz,code' },
-  );
-  if (a.error) throw new Error(`Saving the code list failed: ${a.error.message}`);
-  return { total: list.length, fresh: codes.filter((c) => !known.has(c)).length };
+  const freshList = list.filter((c) => !known.has(c.code));
+  const knownList = list.filter((c) => known.has(c.code));
+  if (freshList.length > 0) {
+    const a = await db.from('hoyolab_codes').upsert(
+      freshList.map((c) => ({ game_biz: gameBiz, code: c.code, rewards: c.rewards, source, last_seen: nowIso })),
+      { onConflict: 'game_biz,code' },
+    );
+    if (a.error) throw new Error(`Saving the code list failed: ${a.error.message}`);
+  }
+  if (knownList.length > 0) {
+    const a = await db.from('hoyolab_codes').upsert(
+      knownList.map((c) => ({ game_biz: gameBiz, code: c.code, last_seen: nowIso })),
+      { onConflict: 'game_biz,code' },
+    );
+    if (a.error) throw new Error(`Refreshing known codes failed: ${a.error.message}`);
+  }
+  return { total: list.length, fresh: freshList.length };
 }
 
 /** Run redeem-only for all links with auto_redeem on. Call after saving fresh codes so they get tried right away. */

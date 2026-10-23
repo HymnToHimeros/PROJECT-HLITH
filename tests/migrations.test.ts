@@ -148,6 +148,14 @@ describe('scheduler_trusted_sources has only the grants it needs (0027)', () => 
   it('findings_auto_approve uses empty search_path', () => {
     expect(sql).toMatch(/findings_auto_approve[\s\S]*?set search_path = ''/);
   });
+
+  it('retroactive UPDATE only approves leaks (kind = leak)', () => {
+    expect(sql).toMatch(/update public\.scheduler_findings[\s\S]*?and kind = 'leak'[\s\S]*?and status = 'new'/);
+  });
+
+  it('findings_auto_approve only approves leaks (f.kind = leak)', () => {
+    expect(sql).toMatch(/findings_auto_approve[\s\S]*?f\.kind = 'leak'/);
+  });
 });
 
 describe('the migration checker itself', () => {
