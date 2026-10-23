@@ -45,8 +45,13 @@ Deno.serve(async (req) => {
     return job ? new Date(nextSlot(effectiveCadence(job, undefined).cadence, at)).toISOString() : null;
   };
   try {
-    const saved = await deliver(db as unknown as DeliveryDb, intake.byJob, now, nextDue, intake.failed, intake.nextAt);
-    return json({ ok: true, saved });
+    const { saved, addedIds } = await deliver(db as unknown as DeliveryDb, intake.byJob, now, nextDue, intake.failed, intake.nextAt);
+    let autoApproved = 0;
+    if (addedIds.length > 0) {
+      const aa = await db.rpc('findings_auto_approve', { p_finding_ids: addedIds });
+      if (!aa.error && typeof aa.data === 'number') autoApproved = aa.data;
+    }
+    return json({ ok: true, saved, autoApproved });
   } catch (e) {
     return json({ error: e instanceof Error ? e.message : 'Saving failed.' }, 500);
   }

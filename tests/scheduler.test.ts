@@ -369,26 +369,47 @@ describe('findings intake (the routine’s deliveries)', () => {
   it('the same job + game + kind + source + title within 30 days is skipped', async () => {
     const db = fakeDb();
     const f = must((readIntake({ findings: [good, { ...good, title: 'new 5★  in 3.8' }] }, NOW) as { ok: true; byJob: Map<string, NewFinding[]> }).byJob.get('leaks-scan'));
-    expect(await saveFindings(db, 'leaks-scan', f, 'routine', NOW)).toEqual({ added: 1, known: 1 }); // repeat inside the batch
-    expect(await saveFindings(db, 'leaks-scan', f, 'routine', NOW + 86_400_000)).toEqual({ added: 0, known: 2 });
-    expect(await saveFindings(db, 'events-scan', f, 'routine', NOW)).toEqual({ added: 1, known: 1 }); // other job: new to it (the second is the in-batch repeat)
-    expect(await saveFindings(db, 'leaks-scan', f, 'routine', NOW + 31 * 86_400_000)).toEqual({ added: 1, known: 1 });
+    const r1 = await saveFindings(db, 'leaks-scan', f, 'routine', NOW);
+    expect(r1).toMatchObject({ added: 1, known: 1 }); // repeat inside the batch
+    expect(r1.ids).toHaveLength(1);
+    expect(await saveFindings(db, 'leaks-scan', f, 'routine', NOW + 86_400_000)).toMatchObject({ added: 0, known: 2, ids: [] });
+    const r3 = await saveFindings(db, 'events-scan', f, 'routine', NOW);
+    expect(r3).toMatchObject({ added: 1, known: 1 }); // other job: new to it (the second is the in-batch repeat)
+    expect(r3.ids).toHaveLength(1);
+    expect(await saveFindings(db, 'leaks-scan', f, 'routine', NOW + 31 * 86_400_000)).toMatchObject({ added: 1, known: 1 });
     expect(db.tables.scheduler_findings?.[0]).toMatchObject({ status: 'new', delivered_by: 'routine', dedupe_key: dedupeKey(must(f[0])) });
   });
 
   it('a delivery records a run per job and stamps the job with the delivery time', async () => {
     const db = fakeDb();
     const r = readIntake({ ran: ['events-scan'], findings: [good] }, NOW) as { ok: true; byJob: Map<string, NewFinding[]> };
-    const saved = await deliver(db, r.byJob, NOW, () => '2026-10-12T06:00:00.000Z');
+    const { saved, addedIds } = await deliver(db, r.byJob, NOW, () => '2026-10-12T06:00:00.000Z');
     expect(saved).toEqual([
       { job: 'events-scan', delivered: 0, added: 0, known: 0 },
       { job: 'leaks-scan', delivered: 1, added: 1, known: 0 },
     ]);
+    expect(addedIds).toHaveLength(1);
     expect(db.tables.scheduler_runs?.map((x) => [x.job_id, x.message, x.started_by])).toEqual([
       ['events-scan', 'Delivered 0 findings.', 'routine'],
       ['leaks-scan', 'Delivered 1 finding.', 'routine'],
     ]);
     expect(db.tables.scheduler_jobs?.find((j) => j.id === 'leaks-scan')).toMatchObject({ last_status: 'ok', last_run_at: new Date(NOW).toISOString(), next_due_at: '2026-10-12T06:00:00.000Z' });
+  });
+
+  it('deliver returns addedIds for auto-approve: one per new finding, none for known', async () => {
+    const db = fakeDb();
+    const findings = [
+      { ...good, title: 'first leak' },
+      { ...good, title: 'second leak' },
+    ];
+    const r = readIntake({ findings }, NOW) as { ok: true; byJob: Map<string, NewFinding[]> };
+    const { saved, addedIds } = await deliver(db, r.byJob, NOW, () => null);
+    expect(saved[0]).toMatchObject({ job: 'leaks-scan', added: 2 });
+    expect(addedIds).toHaveLength(2);
+    expect(addedIds.every((id) => typeof id === 'string' && id.length > 0)).toBe(true);
+    const r2 = readIntake({ findings }, NOW + 1000) as { ok: true; byJob: Map<string, NewFinding[]> };
+    const { addedIds: ids2 } = await deliver(db, r2.byJob, NOW + 1000, () => null);
+    expect(ids2).toHaveLength(0);
   });
 
   it('failed runs and next_at: checked all-or-nothing (self-adjusting cadence)', () => {
@@ -426,7 +447,7 @@ describe('findings intake (the routine’s deliveries)', () => {
     const later = new Date(NOW + 2 * 86_400_000).toISOString();
     const r = readIntake({ ran: ['leaks-scan'], failed: [{ job: 'events-scan', message: 'timed out' }], next_at: { 'events-scan': later }, findings: [] }, NOW);
     if (!r.ok) throw new Error(r.problems.join(' '));
-    const saved = await deliver(db, r.byJob, NOW, () => 'fallback', r.failed, r.nextAt);
+    const { saved } = await deliver(db, r.byJob, NOW, () => 'fallback', r.failed, r.nextAt);
     expect(saved).toEqual([
       { job: 'leaks-scan', delivered: 0, added: 0, known: 0 },
       { job: 'events-scan', delivered: 0, added: 0, known: 0, failed: true },
@@ -452,6 +473,9 @@ describe('findings intake (the routine’s deliveries)', () => {
 });
 
 /** A tiny fake of the parts of the Supabase client used by findings.ts. */
+let fakeUuidCounter = 0;
+function fakeUuid() { return `00000000-0000-0000-0000-${String(++fakeUuidCounter).padStart(12, '0')}`; }
+
 function fakeDb() {
   type Row = Record<string, unknown>;
   const tables: Record<string, Row[]> = { scheduler_findings: [], scheduler_runs: [], scheduler_jobs: [] };
@@ -459,13 +483,19 @@ function fakeDb() {
     from(table) {
       const tbl = (tables[table] ??= []);
       const filters: ((r: Row) => boolean)[] = [];
-      const answer = () => ({ data: tbl.filter((r) => filters.every((f) => f(r))), error: null });
+      let justInserted: Row[] | null = null;
+      const answer = () => ({ data: justInserted ?? tbl.filter((r) => filters.every((f) => f(r))), error: null });
       const q = {
         select: () => q,
         eq: (c: string, v: unknown) => (filters.push((r) => r[c] === v), q),
         in: (c: string, v: unknown[]) => (filters.push((r) => v.includes(r[c])), q),
         gte: (c: string, v: string) => (filters.push((r) => String(r[c]) >= v), q),
-        insert: (rows: object[]) => (tbl.push(...(rows as Row[])), q),
+        insert: (rows: object[]) => {
+          const withIds = (rows as Row[]).map((r) => (r.id ? r : { id: fakeUuid(), ...r }));
+          tbl.push(...withIds);
+          justInserted = withIds;
+          return q;
+        },
         upsert: async (rows: object[]) => {
           for (const r of rows as Row[]) if (!tbl.some((x) => x.id === r.id)) tbl.push({ ...r });
           return { data: null, error: null };

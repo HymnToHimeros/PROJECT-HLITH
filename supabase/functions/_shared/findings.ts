@@ -179,8 +179,8 @@ export interface FindingsDb {
  * Adds a job's findings to the inbox as 'new', skipping any the same job delivered in the
  * last DEDUPE_DAYS days (same game, kind, source and title). Never changes or removes a row.
  */
-export async function saveFindings(db: FindingsDb, jobId: string, findings: NewFinding[], deliveredBy: 'scheduler' | 'routine', now: number): Promise<{ added: number; known: number }> {
-  if (!findings.length) return { added: 0, known: 0 };
+export async function saveFindings(db: FindingsDb, jobId: string, findings: NewFinding[], deliveredBy: 'scheduler' | 'routine', now: number): Promise<{ added: number; known: number; ids: string[] }> {
+  if (!findings.length) return { added: 0, known: 0, ids: [] };
   const keys = [...new Set(findings.map(dedupeKey))];
   const since = new Date(now - DEDUPE_DAYS * DAY).toISOString();
   const seen = await db.from('scheduler_findings').select('dedupe_key').eq('job_id', jobId).gte('delivered_at', since).in('dedupe_key', keys);
@@ -203,10 +203,12 @@ export async function saveFindings(db: FindingsDb, jobId: string, findings: NewF
       delivered_by: deliveredBy,
       status: 'new',
     }));
-    const ins = await db.from('scheduler_findings').insert(rows);
+    const ins = await db.from('scheduler_findings').insert(rows).select('id');
     if (ins.error) throw new Error(`Saving findings failed: ${ins.error.message}`);
+    const ids = Array.isArray(ins.data) ? (ins.data as { id: string }[]).map((r) => r.id) : [];
+    return { added: fresh.length, known: findings.length - fresh.length, ids };
   }
-  return { added: fresh.length, known: findings.length - fresh.length };
+  return { added: fresh.length, known: findings.length - fresh.length, ids: [] };
 }
 
 export interface DeliveryQuery extends FindingsQuery {
@@ -230,7 +232,7 @@ export async function deliver(
   nextDue: (jobId: string, at: number) => string | null,
   failed: Map<string, string> = new Map(),
   nextAt: Map<string, string> = new Map(),
-): Promise<{ job: string; delivered: number; added: number; known: number; failed?: true }[]> {
+): Promise<{ saved: { job: string; delivered: number; added: number; known: number; failed?: true }[]; addedIds: string[] }> {
   const jobs = [...new Set([...byJob.keys(), ...failed.keys()])];
   const next = (job: string) => nextAt.get(job) ?? nextDue(job, now);
   const reg = await db.from('scheduler_jobs').upsert(
@@ -240,8 +242,10 @@ export async function deliver(
   if (reg.error) throw new Error(`Registering jobs failed: ${reg.error.message}`);
   const at = new Date(now).toISOString();
   const out: { job: string; delivered: number; added: number; known: number; failed?: true }[] = [];
+  const allIds: string[] = [];
   for (const [job, list] of byJob) {
-    const { added, known } = await saveFindings(db, job, list, 'routine', now);
+    const { added, known, ids } = await saveFindings(db, job, list, 'routine', now);
+    allIds.push(...ids);
     const message = `Delivered ${list.length} finding${list.length === 1 ? '' : 's'}${known ? ` (${known} already known)` : ''}.`;
     const run = await db
       .from('scheduler_runs')
@@ -258,5 +262,5 @@ export async function deliver(
     if (upd.error) throw new Error(`Updating ${job} failed: ${upd.error.message}`);
     out.push({ job, delivered: 0, added: 0, known: 0, failed: true });
   }
-  return out;
+  return { saved: out, addedIds: allIds };
 }

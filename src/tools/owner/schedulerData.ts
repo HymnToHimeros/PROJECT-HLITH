@@ -54,6 +54,7 @@ export interface FindingView {
   delivered_by: 'scheduler' | 'routine';
   status: Decision;
   decided_at: string | null;
+  auto_source: string | null;
 }
 
 export interface SchedulerData {
@@ -106,7 +107,7 @@ export function useSchedulerData(gameIds: string[]): SchedulerData & { reload: (
     void Promise.all([
       client.from('scheduler_jobs').select('id,enabled,cadence,last_run_at,last_status,last_message,next_due_at,lock_until'),
       client.from('scheduler_runs').select('id,job_id,started_at,finished_at,status,message,counts,started_by').order('started_at', { ascending: false }).limit(50),
-      client.from('scheduler_findings').select('id,job_id,game_id,kind,title,payload,source_name,source_url,found_at,delivered_at,delivered_by,status,decided_at').order('delivered_at', { ascending: false }).limit(200),
+      client.from('scheduler_findings').select('id,job_id,game_id,kind,title,payload,source_name,source_url,found_at,delivered_at,delivered_by,status,decided_at,auto_source').order('delivered_at', { ascending: false }).limit(200),
     ]).then(([jobs, runs, findings]) => {
       if (!alive) return;
       const error = jobs.error?.message ?? runs.error?.message ?? findings.error?.message ?? null;
