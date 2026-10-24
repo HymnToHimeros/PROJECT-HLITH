@@ -24,7 +24,6 @@ interface Row {
   example: boolean;
 }
 
-const KINDS: IntelKind[] = ['character', 'weapon', 'area', 'event', 'system'];
 const REL: Record<Reliability, { label: string; pct: number }> = { high: { label: 'High', pct: 90 }, mid: { label: 'Medium', pct: 60 }, low: { label: 'Low', pct: 30 } };
 
 const TOPIC_LABEL: Record<Topic, string> = {
@@ -36,14 +35,13 @@ const TOPIC_LABEL: Record<Topic, string> = {
   codes: 'Codes',
   other: 'Other',
 };
-const TOPIC_TABS: { id: 'all' | Topic; label: string }[] = [
-  { id: 'all', label: 'All' },
-  ...(['characters', 'story', 'weapons-items', 'events-modes', 'systems', 'codes', 'other'] as Topic[]).map((t) => ({ id: t, label: TOPIC_LABEL[t] })),
-];
+const TOPICS: Topic[] = ['characters', 'story', 'weapons-items', 'events-modes', 'systems', 'codes', 'other'];
+const TOPIC_TABS: { id: 'all' | Topic; label: string }[] = [{ id: 'all', label: 'All' }, ...TOPICS.map((t) => ({ id: t, label: TOPIC_LABEL[t] }))];
 
-/** Intel (design): type filter, then one dashed row per item: kind, ? UNVERIFIED, title, source, source reliability. */
+const KIND_TO_TOPIC: Record<IntelKind, Topic> = { character: 'characters', weapon: 'weapons-items', area: 'events-modes', event: 'events-modes', system: 'systems' };
+
+/** Intel (design): one topic tab row filters both upcoming cards and news/leak notes. */
 export function Intel({ games, lists, now, notes = [] }: Props) {
-  const [kind, setKind] = useState<IntelKind | 'all'>('all');
   const [topic, setTopic] = useState<'all' | Topic>('all');
   const several = games.length > 1;
   const showExamples = useExamplesShown();
@@ -56,14 +54,17 @@ export function Intel({ games, lists, now, notes = [] }: Props) {
     return exampleIntel(game, now).map((item) => ({ game, item, example: true }));
   });
   rows.sort((a, b) => (a.item.when ?? Infinity) - (b.item.when ?? Infinity) || a.item.title.localeCompare(b.item.title));
-  const present = KINDS.filter((k) => rows.some((r) => r.item.kind === k));
-  const shown = rows.filter((r) => kind === 'all' || r.item.kind === kind);
-  const one = several ? null : (games[0] ?? null);
 
-  const topicNotes = topic === 'all' ? notes : notes.filter((n) => n.topic === topic);
-  const topicCounts = new Map<string, number>();
-  for (const note of notes) topicCounts.set(note.topic, (topicCounts.get(note.topic) ?? 0) + 1);
-  const topicTabs = TOPIC_TABS.map((t) => ({ ...t, label: t.id === 'all' ? `All (${notes.length})` : `${t.label} (${topicCounts.get(t.id) ?? 0})` }));
+  const topicRows = topic === 'all' ? rows : rows.filter((r) => KIND_TO_TOPIC[r.item.kind] === topic);
+  const topicNotes = topic === 'all' ? notes : notes.filter((nn) => nn.topic === topic);
+
+  const counts = new Map<string, number>();
+  for (const r of rows) { const t = KIND_TO_TOPIC[r.item.kind]; counts.set(t, (counts.get(t) ?? 0) + 1); }
+  for (const nn of notes) counts.set(nn.topic, (counts.get(nn.topic) ?? 0) + 1);
+  const total = rows.length + notes.length;
+  const topicTabs = TOPIC_TABS.map((t) => ({ ...t, label: t.id === 'all' ? `All (${total})` : `${t.label} (${counts.get(t.id) ?? 0})` }));
+
+  const empty = topicRows.length === 0 && topicNotes.length === 0;
 
   return (
     <div className={n.stack}>
@@ -72,66 +73,45 @@ export function Intel({ games, lists, now, notes = [] }: Props) {
           Nothing upcoming is listed for {examples.length === games.length ? (several ? 'these games' : 'this game') : examples.map((g) => g.name).join(' and ')} yet; adding it is on us, not you. The cards marked EXAMPLE only show what Intel will look like.
         </ExampleNotice>
       )}
-      <div className={n.seg} role="group" aria-label="Kind">
-        {(['all', ...present] as const).map((k) => (
-          <button key={k} type="button" className={n.segBtn} aria-pressed={kind === k} onClick={() => setKind(k)}>
-            {k === 'all' ? 'All' : kindLabel(one, k)}
-          </button>
-        ))}
-      </div>
-      {rows.length === 0 && <EmptyState title="Nothing upcoming listed yet" body="New characters, banners and content appear here, marked unverified, once the game's lists are added. That part is on us, not you." />}
-      <ul className={n.list} aria-label="Upcoming">
-        {shown.map((r) => (
-          <li key={`${r.game.id}:${r.item.id}`}>
-            <IntelRow row={r} several={several} />
-          </li>
-        ))}
-      </ul>
-      {notes.length > 0 && <LeakNotes notes={topicNotes} games={games} tabs={topicTabs} topic={topic} onTopic={setTopic} />}
+      <Segmented label="Topic" options={topicTabs} value={topic} onChange={setTopic} tone="quiet" />
+      {empty ? (
+        <span className={n.muted}>No data yet</span>
+      ) : (
+        <>
+          {topicRows.length > 0 && (
+            <section className={n.stack} aria-labelledby="intel-upcoming">
+              <h2 className={n.section} id="intel-upcoming">Upcoming</h2>
+              <ul className={n.list} aria-label="Upcoming">
+                {topicRows.map((r) => (
+                  <li key={`${r.game.id}:${r.item.id}`}>
+                    <IntelRow row={r} several={several} />
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )}
+          {topicNotes.length > 0 && (
+            <section className={n.stack} aria-labelledby="intel-notes">
+              <h2 className={n.section} id="intel-notes">News and leaks</h2>
+              <ul className={n.list} aria-label="News and leaks">
+                {topicNotes.map((note) => {
+                  const game = games.find((g) => g.id === note.gameId);
+                  return (
+                    <li key={`${note.gameId}:${note.id}`}>
+                      <LeakNoteRow note={note} game={game} several={several} />
+                    </li>
+                  );
+                })}
+              </ul>
+            </section>
+          )}
+        </>
+      )}
     </div>
   );
 }
 
 const NOTE_KIND: Record<string, string> = { leak: 'Leak', event: 'Event', banner: 'Banner', character: 'Character', info: 'News' };
-
-/** News and leaks: every finding the owner approved, any kind or source, newest first; leaks marked unverified. */
-function LeakNotes({
-  notes,
-  games,
-  tabs,
-  topic,
-  onTopic,
-}: {
-  notes: LeakNote[];
-  games: GameContract[];
-  tabs: { id: 'all' | Topic; label: string }[];
-  topic: 'all' | Topic;
-  onTopic: (t: 'all' | Topic) => void;
-}) {
-  const several = games.length > 1;
-  return (
-    <section className={n.stack} aria-labelledby="intel-notes">
-      <h2 className={n.section} id="intel-notes">
-        News and leaks
-      </h2>
-      <Segmented label="Topic" options={tabs} value={topic} onChange={onTopic} tone="quiet" />
-      {notes.length === 0 ? (
-        <span className={n.muted}>No data yet</span>
-      ) : (
-        <ul className={n.list} aria-label="News and leaks">
-          {notes.map((note) => {
-            const game = games.find((g) => g.id === note.gameId);
-            return (
-              <li key={`${note.gameId}:${note.id}`}>
-                <LeakNoteRow note={note} game={game} several={several} />
-              </li>
-            );
-          })}
-        </ul>
-      )}
-    </section>
-  );
-}
 
 function LeakNoteRow({ note, game, several }: { note: LeakNote; game: GameContract | undefined; several: boolean }) {
   const [original, setOriginal] = useState(false);
