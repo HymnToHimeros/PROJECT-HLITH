@@ -117,7 +117,7 @@ export function noteFromFinding(f: FindingForNote): { gameId: string; id: string
   const eventLine = event ? `${event.start?.slice(0, 10) ?? '?'} → ${event.end?.slice(0, 10) ?? '?'}` : undefined;
   const at = post?.at && Number.isFinite(Date.parse(post.at)) ? post.at : f.found_at;
   const url = link(post?.url) ?? link(f.source_url);
-  const topic: Topic = f.topic && (['characters', 'story', 'weapons', 'events', 'systems', 'codes', 'other'] as string[]).includes(f.topic)
+  const topic: Topic = f.topic && (['characters', 'story', 'weapons-items', 'events-modes', 'systems', 'codes', 'other'] as string[]).includes(f.topic)
     ? (f.topic as Topic)
     : topicOf(null, f.kind as FindingKind);
   return {

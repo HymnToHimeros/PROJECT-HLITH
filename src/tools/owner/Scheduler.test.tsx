@@ -1,3 +1,4 @@
+// @vitest-environment jsdom
 import { fireEvent, render, screen, within } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 import type { GameContract } from '../../core/contract';
@@ -55,8 +56,8 @@ describe('Owner console · Findings (this device only)', () => {
     fireEvent.click(screen.getByRole('tab', { name: /Findings/ }));
     expect(screen.getByText(/these findings are examples/)).toBeInTheDocument();
     const log = screen.getByRole('region', { name: /Log/ });
-    expect(within(log).getByText(/Delivered by Leak scan · routine/)).toBeInTheDocument();
-    expect(within(log).getByText(/Auto-approved/)).toBeInTheDocument();
+    expect(within(log).getAllByText(/Delivered by Leak scan · routine/).length).toBeGreaterThan(0);
+    expect(within(log).getAllByText(/Auto-approved/).length).toBeGreaterThan(0);
 
     fireEvent.change(within(log).getByLabelText('Kind'), { target: { value: 'event' } });
     expect(within(log).queryByText(/new character in the next version/)).toBeNull();

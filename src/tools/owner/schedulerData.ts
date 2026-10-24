@@ -80,15 +80,20 @@ export function exampleRuns(now: number): RunView[] {
   ];
 }
 
-/** Example findings, relative to now, using the first registered games. */
+/** Example findings, relative to now, using the first registered games. One per topic for screenshots. */
 export function exampleFindings(now: number, gameIds: string[]): FindingView[] {
   const iso = (t: number) => new Date(t).toISOString();
   const g = (i: number) => gameIds[i % Math.max(gameIds.length, 1)] ?? null;
   const base = { payload: {}, delivered_by: 'routine' as const, decided_at: null, auto_source: null };
+  const aa = (h: number) => ({ auto_source: 'auto', decided_at: iso(now - h * HOUR) }) as const;
   return [
-    { ...base, id: 'ex-f1', job_id: 'leaks-scan', game_id: g(0), kind: 'leak' as const, topic: 'characters' as const, title: 'Example: a new character in the next version', source_name: 'Example source', source_url: null, found_at: iso(now - 10 * HOUR), delivered_at: iso(now - 9 * HOUR), status: 'approved' as const, auto_source: 'auto', decided_at: iso(now - 9 * HOUR), payload: { note: 'example only' } },
-    { ...base, id: 'ex-f2', job_id: 'events-scan', game_id: g(1), kind: 'event' as const, topic: 'events' as const, title: 'Example: a login event starting next week', source_name: 'Example source', source_url: null, found_at: iso(now - 30 * HOUR), delivered_at: iso(now - 29 * HOUR), status: 'approved' as const, auto_source: 'auto', decided_at: iso(now - 29 * HOUR) },
-    { ...base, id: 'ex-f3', job_id: 'game-data-refresh', game_id: g(0), kind: 'character' as const, topic: 'characters' as const, title: 'Example: kit data for a released character', source_name: 'Example source', source_url: null, found_at: iso(now - 50 * HOUR), delivered_at: iso(now - 49 * HOUR), status: 'approved' as const, decided_at: iso(now - 40 * HOUR) },
+    { ...base, id: 'ex-f1', job_id: 'leaks-scan', game_id: g(0), kind: 'leak' as const, topic: 'characters' as const, title: 'Example: a new character in the next version', source_name: 'Example source', source_url: null, found_at: iso(now - 10 * HOUR), delivered_at: iso(now - 9 * HOUR), status: 'approved' as const, ...aa(9), payload: { note: 'example only' } },
+    { ...base, id: 'ex-f2', job_id: 'events-scan', game_id: g(1), kind: 'event' as const, topic: 'events-modes' as const, title: 'Example: a login event starting next week', source_name: 'Example source', source_url: null, found_at: iso(now - 30 * HOUR), delivered_at: iso(now - 29 * HOUR), status: 'approved' as const, ...aa(29) },
+    { ...base, id: 'ex-f3', job_id: 'game-data-refresh', game_id: g(0), kind: 'info' as const, topic: 'story' as const, title: 'Example: new story chapter datamined from beta', source_name: 'Example source', source_url: null, found_at: iso(now - 50 * HOUR), delivered_at: iso(now - 49 * HOUR), status: 'approved' as const, ...aa(40) },
+    { ...base, id: 'ex-f4', job_id: 'leaks-scan', game_id: g(0), kind: 'leak' as const, topic: 'weapons-items' as const, title: 'Example: leaked 5-star weapon stats', source_name: 'Example source', source_url: null, found_at: iso(now - 60 * HOUR), delivered_at: iso(now - 59 * HOUR), status: 'approved' as const, ...aa(59) },
+    { ...base, id: 'ex-f5', job_id: 'leaks-scan', game_id: g(1), kind: 'info' as const, topic: 'systems' as const, title: 'Example: new progression system in patch notes', source_name: 'Example source', source_url: null, found_at: iso(now - 70 * HOUR), delivered_at: iso(now - 69 * HOUR), status: 'approved' as const, ...aa(69) },
+    { ...base, id: 'ex-f6', job_id: 'leaks-scan', game_id: g(0), kind: 'info' as const, topic: 'codes' as const, title: 'Example: new redemption code from livestream', source_name: 'Example source', source_url: null, found_at: iso(now - 80 * HOUR), delivered_at: iso(now - 79 * HOUR), status: 'approved' as const, ...aa(79), payload: { codes: ['EXAMPLECODE1'] } },
+    { ...base, id: 'ex-f7', job_id: 'leaks-scan', game_id: g(1), kind: 'info' as const, topic: 'other' as const, title: 'Example: developer interview mentions upcoming collab', source_name: 'Example source', source_url: null, found_at: iso(now - 90 * HOUR), delivered_at: iso(now - 89 * HOUR), status: 'approved' as const, ...aa(89) },
   ];
 }
 

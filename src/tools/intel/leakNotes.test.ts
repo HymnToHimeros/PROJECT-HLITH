@@ -21,7 +21,7 @@ describe('leak notes', () => {
     expect(noteFromFinding(f())).toEqual({
       gameId: 'hsr',
       id: 'note-f1',
-      data: { kind: 'info', leak: true, title: 'Something new', at: '2026-10-13T01:00:00Z', credit: 'Seele (Telegram)', url: 'https://t.me/Seele_Leaks/1', text: 'orig', translation: 'eng', images: ['https://x/1.jpg'] },
+      data: { kind: 'info', topic: 'other', leak: true, title: 'Something new', at: '2026-10-13T01:00:00Z', credit: 'Seele (Telegram)', url: 'https://t.me/Seele_Leaks/1', text: 'orig', translation: 'eng', images: ['https://x/1.jpg'] },
     });
   });
   it('every finding with a game becomes a note, whatever its kind; without a post it gets a short line', () => {

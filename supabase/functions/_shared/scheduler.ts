@@ -144,10 +144,10 @@ export const lockFree = (lockUntil: string | null, now: number) => !lockUntil ||
 export const FINDING_KINDS = ['leak', 'event', 'banner', 'character', 'info'] as const;
 export type FindingKind = (typeof FINDING_KINDS)[number];
 
-export const TOPICS = ['characters', 'story', 'weapons', 'events', 'systems', 'codes', 'other'] as const;
+export const TOPICS = ['characters', 'story', 'weapons-items', 'events-modes', 'systems', 'codes', 'other'] as const;
 export type Topic = (typeof TOPICS)[number];
 
-const KIND_TO_TOPIC: Record<FindingKind, Topic> = { character: 'characters', event: 'events', banner: 'events', leak: 'other', info: 'other' };
+const KIND_TO_TOPIC: Record<FindingKind, Topic> = { character: 'characters', event: 'events-modes', banner: 'events-modes', leak: 'other', info: 'other' };
 
 /** The topic a finding belongs to: the one the routine gave, or a fallback from its kind. */
 export function topicOf(topic: string | undefined | null, kind: FindingKind): Topic {

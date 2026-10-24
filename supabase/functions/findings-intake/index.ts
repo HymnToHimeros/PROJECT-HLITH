@@ -64,10 +64,16 @@ Deno.serve(async (req) => {
     const { saved, addedIds } = await deliver(db as unknown as DeliveryDb, intake.byJob, now, nextDue, intake.failed, intake.nextAt);
     let autoApproved = 0;
     let autoApproveError: string | undefined;
+    let notesCreated = 0;
+    let notesError: string | undefined;
     if (addedIds.length > 0) {
       const aa = await db.rpc('findings_auto_approve', { p_finding_ids: addedIds });
       if (aa.error) autoApproveError = aa.error.message;
       else if (typeof aa.data === 'number') autoApproved = aa.data;
+      // Server-side note creation: Intel notes for every approved finding with a game_id.
+      const nn = await db.rpc('findings_create_notes', { p_finding_ids: addedIds });
+      if (nn.error) notesError = nn.error.message;
+      else if (typeof nn.data === 'number') notesCreated = nn.data;
     }
     let decided = 0;
     let decideError: string | undefined;
@@ -85,20 +91,26 @@ Deno.serve(async (req) => {
         if (summary) codesRedeemed = { redemptions: summary.redemptions, stoppedEarly: summary.stoppedEarly };
       } catch { /* redemption failure is non-fatal for the intake */ }
     }
-    return json({ ok: true, saved, autoApproved, ...(autoApproveError ? { autoApproveError } : {}), ...(decided ? { decided } : {}), ...(decideError ? { decideError } : {}), codesSaved: codeResult.total, freshCodes: codeResult.fresh, ...(codesRedeemed ? { codesRedeemed } : {}) });
+    return json({ ok: true, saved, autoApproved, notesCreated, ...(autoApproveError ? { autoApproveError } : {}), ...(notesError ? { notesError } : {}), ...(decided ? { decided } : {}), ...(decideError ? { decideError } : {}), codesSaved: codeResult.total, freshCodes: codeResult.fresh, ...(codesRedeemed ? { codesRedeemed } : {}) });
   } catch (e) {
     return json({ error: e instanceof Error ? e.message : 'Saving failed.' }, 500);
   }
 });
 
-/** Read decisions the routine sends to correct earlier findings: [{ id, status, reason? }]. */
-function readDecisions(body: unknown): { id: string; status: string; reason?: string }[] {
+/** Read decisions the routine sends to correct earlier findings: [{ id, status, reason?, topic? }]. */
+function readDecisions(body: unknown): { id: string; status: string; reason?: string; topic?: string }[] {
   const b = body && typeof body === 'object' ? (body as Record<string, unknown>) : {};
   if (!Array.isArray(b.decisions)) return [];
+  const validTopics = ['characters', 'story', 'weapons-items', 'events-modes', 'systems', 'codes', 'other'];
   return b.decisions
     .filter((d): d is Record<string, unknown> => d !== null && typeof d === 'object' && !Array.isArray(d))
     .filter((d) => typeof d.id === 'string' && /^[0-9a-f-]{36}$/.test(d.id) && typeof d.status === 'string' && ['approved', 'dismissed'].includes(d.status))
-    .map((d) => ({ id: d.id as string, status: d.status as string, ...(typeof d.reason === 'string' && d.reason ? { reason: d.reason } : {}) }));
+    .map((d) => ({
+      id: d.id as string,
+      status: d.status as string,
+      ...(typeof d.reason === 'string' && d.reason ? { reason: d.reason } : {}),
+      ...(typeof d.topic === 'string' && validTopics.includes(d.topic) ? { topic: d.topic } : {}),
+    }));
 }
 
 /** Pull redeem codes out of findings' payloads and save them to hoyolab_codes. */

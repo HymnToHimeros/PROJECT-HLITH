@@ -30,15 +30,15 @@ const REL: Record<Reliability, { label: string; pct: number }> = { high: { label
 const TOPIC_LABEL: Record<Topic, string> = {
   characters: 'Characters',
   story: 'Story',
-  weapons: 'Weapons & items',
-  events: 'Events & modes',
+  'weapons-items': 'Weapons & items',
+  'events-modes': 'Events & modes',
   systems: 'Systems',
   codes: 'Codes',
   other: 'Other',
 };
 const TOPIC_TABS: { id: 'all' | Topic; label: string }[] = [
   { id: 'all', label: 'All' },
-  ...(['characters', 'story', 'weapons', 'events', 'systems', 'codes', 'other'] as Topic[]).map((t) => ({ id: t, label: TOPIC_LABEL[t] })),
+  ...(['characters', 'story', 'weapons-items', 'events-modes', 'systems', 'codes', 'other'] as Topic[]).map((t) => ({ id: t, label: TOPIC_LABEL[t] })),
 ];
 
 /** Intel (design): type filter, then one dashed row per item: kind, ? UNVERIFIED, title, source, source reliability. */
@@ -61,7 +61,9 @@ export function Intel({ games, lists, now, notes = [] }: Props) {
   const one = several ? null : (games[0] ?? null);
 
   const topicNotes = topic === 'all' ? notes : notes.filter((n) => n.topic === topic);
-  const topicTabs = TOPIC_TABS.filter((t) => t.id === 'all' || notes.some((n) => n.topic === t.id));
+  const topicCounts = new Map<string, number>();
+  for (const note of notes) topicCounts.set(note.topic, (topicCounts.get(note.topic) ?? 0) + 1);
+  const topicTabs = TOPIC_TABS.map((t) => ({ ...t, label: t.id === 'all' ? `All (${notes.length})` : `${t.label} (${topicCounts.get(t.id) ?? 0})` }));
 
   return (
     <div className={n.stack}>
@@ -112,9 +114,9 @@ function LeakNotes({
       <h2 className={n.section} id="intel-notes">
         News and leaks
       </h2>
-      {tabs.length > 2 && <Segmented label="Topic" options={tabs} value={topic} onChange={onTopic} tone="quiet" />}
+      <Segmented label="Topic" options={tabs} value={topic} onChange={onTopic} tone="quiet" />
       {notes.length === 0 ? (
-        <span className={n.muted}>Nothing in this topic yet.</span>
+        <span className={n.muted}>No data yet</span>
       ) : (
         <ul className={n.list} aria-label="News and leaks">
           {notes.map((note) => {
