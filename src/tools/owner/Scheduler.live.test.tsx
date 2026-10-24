@@ -20,8 +20,9 @@ const tables = vi.hoisted(() => ({
       found_at: '2026-10-09T06:00:00Z',
       delivered_at: '2026-10-09T06:05:00Z',
       delivered_by: 'routine',
-      status: 'new',
-      decided_at: null,
+      status: 'approved',
+      decided_at: '2026-10-09T06:05:00Z',
+      auto_source: 'auto',
     },
   ],
   catalog_items: [] as object[],
@@ -101,23 +102,23 @@ describe('Owner console · Scheduler with the server', () => {
     expect(calls.updates).toContainEqual({ table: 'scheduler_jobs', patch: { enabled: false }, id: 'backup' });
   });
 
-  it('Approve saves the decision with who and when; a leak with no details opens the Lists form', async () => {
+  it('Findings is a read-only log: auto-approved findings show their source, no action buttons', async () => {
     renderConsole();
-    fireEvent.click(screen.getByRole('tab', { name: /Findings/ }));
-    const approve = await screen.findByRole('button', { name: 'Approve: Real leak' });
-    await act(async () => fireEvent.click(approve));
-    const saved = calls.updates.find((u) => u.table === 'scheduler_findings');
-    expect(saved).toMatchObject({ id: 'f1', patch: { status: 'approved', decided_by: 'owner-1' } });
-    // Nothing to add yet: the Lists tab opens with the form, for the owner to finish.
-    expect(screen.getByRole('tab', { name: 'Lists' })).toHaveAttribute('aria-selected', 'true');
-    expect(await screen.findByRole('form', { name: 'Add event' })).toBeInTheDocument();
-    expect(screen.getByText(/Still needed: id, title, kind, start, end/)).toBeInTheDocument();
-    fireEvent.click(screen.getByRole('tab', { name: /Findings/ }));
-    expect(screen.getByText('0 new')).toBeInTheDocument();
-    // Changed your mind: back to the inbox, undecided.
-    fireEvent.change(screen.getByLabelText('Status'), { target: { value: 'approved' } });
-    await act(async () => fireEvent.click(screen.getByRole('button', { name: 'Move back to new: Real leak' })));
-    expect(calls.updates).toContainEqual({ table: 'scheduler_findings', patch: { status: 'new', decided_by: null, decided_at: null }, id: 'f1' });
-    expect(screen.getByText('1 new')).toBeInTheDocument();
+    // The tab says just "Findings" (no count) because nothing is new — everything is auto-approved.
+    const tab = screen.getByRole('tab', { name: 'Findings' });
+    fireEvent.click(tab);
+    const log = await screen.findByRole('region', { name: /Log/ });
+    expect(await within(log).findByText('Real leak')).toBeInTheDocument();
+    expect(within(log).getByText('Auto-approved (auto)')).toBeInTheDocument();
+    // Read-only: no Approve or Move-back-to-new buttons anywhere.
+    expect(screen.queryByRole('button', { name: /Approve/ })).toBeNull();
+    expect(screen.queryByRole('button', { name: /Move back to new/ })).toBeNull();
+    // Filters still work on the read-only log.
+    fireEvent.change(within(log).getByLabelText('Kind'), { target: { value: 'event' } });
+    expect(within(log).getByText('Nothing matches these filters.')).toBeInTheDocument();
+    fireEvent.change(within(log).getByLabelText('Kind'), { target: { value: 'all' } });
+    expect(within(log).getByText('Real leak')).toBeInTheDocument();
+    // No writes to scheduler_findings: the owner doesn't decide anything.
+    expect(calls.updates.filter((u) => u.table === 'scheduler_findings')).toEqual([]);
   });
 });

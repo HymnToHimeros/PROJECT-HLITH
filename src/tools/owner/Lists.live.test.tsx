@@ -1,4 +1,4 @@
-import { act, fireEvent, render, screen, within } from '@testing-library/react';
+import { act, fireEvent, render, screen, waitFor, within } from '@testing-library/react';
 import { useState } from 'react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import type { GameContract } from '../../core/contract';
@@ -45,7 +45,7 @@ const seedGame = {
 // As main.tsx registers it: the seed lists with the owner's rows laid over them.
 const game = withCatalog(seedGame, () => catalogRows());
 
-const finding = (id: string, kind: string, title: string, payload: Record<string, unknown>) => ({
+const finding = (id: string, kind: string, title: string, payload: Record<string, unknown>, status = 'new') => ({
   id,
   job_id: 'events-scan',
   game_id: 'aa',
@@ -57,8 +57,9 @@ const finding = (id: string, kind: string, title: string, payload: Record<string
   found_at: '2026-10-09T06:00:00Z',
   delivered_at: '2026-10-09T06:05:00Z',
   delivered_by: 'routine',
-  status: 'new',
-  decided_at: null,
+  status,
+  decided_at: status === 'approved' ? '2026-10-09T06:05:00Z' : null,
+  ...(status === 'approved' ? { auto_source: 'auto' } : {}),
 });
 
 beforeEach(() => {
@@ -89,7 +90,7 @@ const catalog = () => (db.current as FakeDb).tables.catalog_items as Record<stri
 const listRows = () => catalog().filter((r) => r.kind !== 'leak');
 
 describe('Owner console · Lists', () => {
-  it('adds a new event for everyone, and the game’s list loader then includes it', async () => {
+  it("adds a new event for everyone, and the game's list loader then includes it", async () => {
     renderConsole('lists');
     expect(await screen.findByText('No data yet')).toBeInTheDocument();
     fireEvent.click(screen.getByRole('button', { name: 'Add event' }));
@@ -144,13 +145,18 @@ describe('Owner console · Lists', () => {
   });
 });
 
-describe('Owner console · Findings → lists', () => {
-  it('approving a complete finding adds it to the list; moving it back retires it again', async () => {
-    renderConsole('findings');
-    const approve = await screen.findByRole('button', { name: 'Approve: Login event' });
-    await act(async () => fireEvent.click(approve));
-    expect(catalog().filter((r) => r.kind === 'leak')).toEqual([expect.objectContaining({ source: 'finding:f2', status: 'active' })]); // also in Intel
-    expect(listRows()).toEqual([
+describe('Owner console · Auto-approved findings → lists', () => {
+  it('a complete auto-approved finding list item is backfilled on load', async () => {
+    const d = db.current as FakeDb;
+    d.tables.scheduler_findings = [
+      finding('f2', 'event', 'Login event', { title: 'Autumn login', kind: 'login', start: '2026-10-12T04:00:00Z', end: '2026-10-19T04:00:00Z', reward: 1600, loginDays: 7 }, 'approved'),
+      finding('f3', 'character', 'New character Beta', { character: 'Beta', element: 'Ice' }, 'approved'),
+    ];
+    renderConsole();
+    // backfillListItems runs on load for auto-approved findings with complete data.
+    // f2 (event) has all required fields (title, kind, start, end): it gets backfilled.
+    await waitFor(() => expect(listRows().some((r) => r.source === 'finding:f2')).toBe(true));
+    expect(listRows().filter((r) => r.source === 'finding:f2')).toEqual([
       expect.objectContaining({
         kind: 'event',
         id: 'autumn-login-2026-10-12',
@@ -158,27 +164,18 @@ describe('Owner console · Findings → lists', () => {
         data: expect.objectContaining({ title: 'Autumn login', kind: 'login', reward: 1600, loginDays: 7, currency: 'gem' }),
       }),
     ]);
-    expect(screen.getByRole('status')).toHaveTextContent('Added “Autumn login” to AA · Events. Everyone sees it after reload.');
-
-    fireEvent.change(screen.getByLabelText('Status'), { target: { value: 'approved' } });
-    await act(async () => fireEvent.click(screen.getByRole('button', { name: 'Move back to new: Login event' })));
-    expect(catalog().map((r) => r.status)).toEqual(['retired', 'retired']); // the Intel note and the list item
-    expect(screen.getByRole('status')).toHaveTextContent(/Retired “Autumn login” again/);
   });
 
-  it('approving an incomplete finding opens the Lists form, pre-filled, and saving completes it', async () => {
-    renderConsole('findings');
-    const approve = await screen.findByRole('button', { name: 'Approve: New character Beta' });
-    await act(async () => fireEvent.click(approve));
-    expect(listRows()).toEqual([]);
-    const form = await screen.findByRole('form', { name: 'Add character' });
-    expect(within(form).getByText(/Still needed: rarity, role/)).toBeInTheDocument();
-    expect(within(form).getByLabelText('Name')).toHaveValue('Beta');
-    expect(within(form).getByLabelText('Element')).toHaveValue('ice');
-    fireEvent.change(within(form).getByLabelText('Rarity'), { target: { value: 'top' } });
-    fireEvent.change(within(form).getByLabelText('Role'), { target: { value: 'attack' } });
-    await act(async () => fireEvent.click(within(form).getByRole('button', { name: 'Add character' })));
-    expect(listRows()).toEqual([expect.objectContaining({ kind: 'character', id: 'beta', source: 'finding:f3', data: expect.objectContaining({ name: 'Beta', rarity: 'top', element: 'ice', role: 'attack' }) })]);
+  it('an incomplete auto-approved finding is not backfilled into the list', async () => {
+    const d = db.current as FakeDb;
+    d.tables.scheduler_findings = [
+      finding('f2', 'event', 'Login event', { title: 'Autumn login', kind: 'login', start: '2026-10-12T04:00:00Z', end: '2026-10-19T04:00:00Z', reward: 1600, loginDays: 7 }, 'approved'),
+      finding('f3', 'character', 'New character Beta', { character: 'Beta', element: 'Ice' }, 'approved'),
+    ];
+    renderConsole();
+    // f3 (character) is missing rarity and role: backfillListItems skips it.
+    await waitFor(() => expect(catalog().some((r) => r.source === 'finding:f2')).toBe(true));
+    expect(listRows().filter((r) => r.source === 'finding:f3')).toEqual([]);
   });
 });
 
@@ -202,7 +199,7 @@ describe('Owner console · Announcements', () => {
 });
 
 describe('Owner console · Overview numbers', () => {
-  it('shows the server’s counts', async () => {
+  it("shows the server's counts", async () => {
     (db.current as FakeDb).rpc.owner_stats = () => ({
       data: { users: 12, active_7d: 5, hoyolab_links: 3, findings_waiting: 2, jobs: [{ id: 'backup', last_run_at: null, last_status: null }], counted_at: '2026-10-10T00:00:00Z' },
       error: null,

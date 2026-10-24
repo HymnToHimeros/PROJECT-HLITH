@@ -27,7 +27,7 @@ export default function IntelScreen({ games, scope }: ModuleScreenProps) {
         steps={[
           <>Each card is something new that isn’t out yet: a character, an area, an event or a change to the game.</>,
           <>Everything here is <strong>unverified</strong>: it comes from leaks or the game files and can still change. The source is always shown.</>,
-          <>Use the buttons above the list to show only one kind.</>,
+          <>Use the topic tabs to show only one category.</>,
           <>Don’t want spoilers? Turn on <strong>Hide leaks</strong>. It also hides leaks in Today, Events, Calendar, Banners and the Pulls planner.</>,
         ]}
       >

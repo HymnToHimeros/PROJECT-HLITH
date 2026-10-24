@@ -59,8 +59,9 @@ describe('Intel screen', () => {
   it('lists unreleased characters, soonest first, each unverified with its source', async () => {
     show(makeGame(chars, banners));
     await screen.findByText('Soon Star');
-    // Kind filter: only kinds that exist are offered; this game calls characters "Agent".
-    expect(within(screen.getByRole('group', { name: 'Kind' })).getAllByRole('button').map((b) => b.textContent)).toEqual(['All', 'Agent']);
+    // Topic tabs: all 8 tabs (All + 7 topics) always shown with counts.
+    const tabs = screen.getByRole('tablist', { name: 'Topic' });
+    expect(within(tabs).getAllByRole('tab').map((b) => b.textContent)).toEqual(['All (2)', 'Characters (2)', 'Story (0)', 'Weapons & items (0)', 'Events & modes (0)', 'Systems (0)', 'Codes (0)', 'Other (0)']);
     // No reliability list yet: honest "No data yet", not a made-up rating.
     expect(screen.getAllByText('Source reliability')).toHaveLength(2);
     const cards = screen.getAllByRole('article');
@@ -87,9 +88,9 @@ describe('Intel screen', () => {
     expect(await screen.findByText(/Nothing upcoming is listed for this game yet/)).toBeInTheDocument();
     expect(screen.getByText('A new 5★ agent')).toBeInTheDocument();
     expect(screen.getAllByText('EXAMPLE').length).toBeGreaterThan(1);
-    // The kind filter narrows the list.
-    fireEvent.click(within(screen.getByRole('group', { name: 'Kind' })).getByRole('button', { name: 'Area' }));
-    expect(screen.getAllByRole('article').map((c) => c.getAttribute('aria-label'))).toEqual(['A new map area']);
+    // The topic tabs narrow the list: area maps to events-modes.
+    fireEvent.click(within(screen.getByRole('tablist', { name: 'Topic' })).getByRole('tab', { name: /Events & modes/ }));
+    expect(screen.getAllByRole('article').map((c) => c.getAttribute('aria-label'))).toEqual(['A new limited event', 'A new map area']);
   });
 
   it('says plainly where Hide leaks applies and that leak alerts are not built yet', async () => {
