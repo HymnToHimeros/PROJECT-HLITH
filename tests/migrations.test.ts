@@ -158,6 +158,24 @@ describe('scheduler_trusted_sources has only the grants it needs (0027)', () => 
   });
 });
 
+describe('0028 coalesce never mixes text and timestamptz (hotfix)', () => {
+  const sql = readFileSync(join(DIR, '0028_auto_approve_topics.sql'), 'utf8');
+
+  it('every coalesce involving found_at casts it to text', () => {
+    const coalesces = [...sql.matchAll(/coalesce\([^)]*found_at[^)]*\)/gi)];
+    expect(coalesces.length).toBeGreaterThan(0);
+    for (const m of coalesces) {
+      expect(m[0]).toMatch(/found_at::text/);
+    }
+  });
+
+  it('no coalesce mixes a text variable with an uncast timestamptz column', () => {
+    // post_at is text; found_at is timestamptz. They must not appear in the same coalesce without a cast.
+    const bad = [...sql.matchAll(/coalesce\([^)]*\bpost_at\b[^)]*\bfound_at\b(?!::text)[^)]*\)/gi)];
+    expect(bad.map((m) => m[0])).toEqual([]);
+  });
+});
+
 describe('the migration checker itself', () => {
   it('flags destructive statements', () => {
     expect(findDestructive('DROP TABLE roster;')).toEqual(['DROP TABLE']);
