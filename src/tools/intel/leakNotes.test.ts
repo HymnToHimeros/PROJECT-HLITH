@@ -47,6 +47,43 @@ describe('leak notes', () => {
   });
 });
 
+describe('topic re-tagging (fix 2: topic-only update in findings_decide)', () => {
+  it('an explicit topic on the finding overrides the kind default', () => {
+    const note = noteFromFinding(f({ kind: 'info', topic: 'characters', payload: { summary: 'Character leak' } }));
+    expect(note?.data.topic).toBe('characters');
+  });
+  it('without an explicit topic, the kind fallback applies', () => {
+    const note = noteFromFinding(f({ kind: 'info', topic: null, payload: { summary: 'x' } }));
+    expect(note?.data.topic).toBe('other');
+    expect(noteFromFinding(f({ kind: 'character', payload: { name: 'X' } }))?.data.topic).toBe('characters');
+    expect(noteFromFinding(f({ kind: 'event', payload: { start: '2026-10-12' } }))?.data.topic).toBe('events-modes');
+  });
+  it('re-tagging from other → weapons-items changes only the topic', () => {
+    const before = noteFromFinding(f({ topic: 'other', payload: { summary: 'Weapon stats' } }));
+    const after = noteFromFinding(f({ topic: 'weapons-items', payload: { summary: 'Weapon stats' } }));
+    expect(before?.data.topic).toBe('other');
+    expect(after?.data.topic).toBe('weapons-items');
+    expect(before?.data.title).toBe(after?.data.title);
+    expect(before?.data.text).toBe(after?.data.text);
+  });
+});
+
+describe('notes from decision-approved findings (fix 3: findings_decide calls findings_create_notes)', () => {
+  it('a finding approved via decision (not at delivery) still produces a valid note', () => {
+    const note = noteFromFinding(f({ kind: 'leak', title: 'Leak (Seele): Firefly rerun', topic: 'characters', payload: { leak: true, post: { url: 'https://t.me/Seele_Leaks/42', at: '2026-10-14T01:00:00Z', text: 'banner rerun confirmed', images: [] } } }));
+    expect(note).not.toBeNull();
+    expect(note?.data).toMatchObject({ kind: 'leak', topic: 'characters', leak: true, title: 'Firefly rerun', credit: 'Seele (Telegram)', text: 'banner rerun confirmed' });
+  });
+  it('an info finding without a post gets a note with its summary line', () => {
+    const note = noteFromFinding(f({ kind: 'info', topic: 'systems', payload: { summary: 'New stamina system details' } }));
+    expect(note?.data).toMatchObject({ kind: 'info', topic: 'systems', text: 'New stamina system details', leak: false });
+  });
+  it('an event parsed from the title gets the event name, not the raw title', () => {
+    const note = noteFromFinding(f({ kind: 'info', title: 'ZZZ: new event Withering Garden (2026-11-01 → 2026-11-15)', payload: {} }));
+    expect(note?.data).toMatchObject({ title: 'Withering Garden', text: '2026-11-01 → 2026-11-15', leak: false });
+  });
+});
+
 describe('event info findings', () => {
   const info = (title: string, payload: Record<string, unknown> = {}) => ({ id: 'e', game_id: 'zzz', kind: 'info', title, payload, source_name: null });
   it('reads the name and dates from the delivered title', () => {

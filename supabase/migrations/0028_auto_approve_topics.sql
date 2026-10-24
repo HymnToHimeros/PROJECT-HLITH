@@ -41,8 +41,11 @@ declare
   d jsonb;
   fid uuid;
   old_status text;
+  old_topic text;
   new_status text;
   new_topic text;
+  changed boolean;
+  approve_ids uuid[] := '{}';
 begin
   for d in select jsonb_array_elements from jsonb_array_elements(p_decisions)
   loop
@@ -51,32 +54,54 @@ begin
     new_topic := d->>'topic';
     if new_status is null or new_status not in ('approved', 'dismissed') then continue; end if;
 
-    select status into old_status from public.scheduler_findings where id = fid;
-    if not found or old_status = new_status then continue; end if;
+    select status, topic into old_status, old_topic from public.scheduler_findings where id = fid;
+    if not found then continue; end if;
 
-    update public.scheduler_findings
-       set status = new_status,
-           decided_at = now(),
-           auto_source = coalesce(nullif(d->>'reason', ''), 'routine'),
-           topic = coalesce(new_topic, topic)
-     where id = fid;
+    changed := false;
 
-    if new_topic is not null then
+    if old_status <> new_status then
+      update public.scheduler_findings
+         set status = new_status,
+             decided_at = now(),
+             auto_source = coalesce(nullif(d->>'reason', ''), 'routine'),
+             topic = coalesce(new_topic, topic)
+       where id = fid;
+      changed := true;
+
+      if new_topic is not null then
+        update public.catalog_items
+           set data = jsonb_set(data, '{topic}', to_jsonb(new_topic))
+         where source = 'finding:' || fid::text
+           and status = 'active';
+      end if;
+
+      if old_status = 'approved' and new_status = 'dismissed' then
+        update public.catalog_items
+           set status = 'retired'
+         where source = 'finding:' || fid::text
+           and status = 'active';
+      end if;
+
+      if new_status = 'approved' then
+        approve_ids := approve_ids || fid;
+      end if;
+
+    elsif new_topic is not null and new_topic is distinct from old_topic then
+      update public.scheduler_findings set topic = new_topic where id = fid;
       update public.catalog_items
          set data = jsonb_set(data, '{topic}', to_jsonb(new_topic))
        where source = 'finding:' || fid::text
          and status = 'active';
+      changed := true;
     end if;
 
-    if old_status = 'approved' and new_status = 'dismissed' then
-      update public.catalog_items
-         set status = 'retired'
-       where source = 'finding:' || fid::text
-         and status = 'active';
-    end if;
-
-    decided := decided + 1;
+    if changed then decided := decided + 1; end if;
   end loop;
+
+  if array_length(approve_ids, 1) > 0 then
+    perform public.findings_create_notes(approve_ids);
+  end if;
+
   return decided;
 end $$;
 revoke execute on function public.findings_decide(jsonb) from public, anon, authenticated;
@@ -146,41 +171,94 @@ begin
     end if;
 
     -- Build event line if no post and payload has event-like data.
-    evt_line := null;
-    if post_text is null then
+    -- Matches browser eventFromInfo: kind='info', not a leak, title or payload dates.
+    evt_title := null; evt_start := null; evt_end := null; evt_line := null;
+    if post_text is null and f.kind = 'info' and f.payload ->> 'leak' <> 'true' then
       evt_title := nullif(trim(f.payload ->> 'title'), '');
       evt_start := nullif(trim(f.payload ->> 'start'), '');
       evt_end := nullif(trim(f.payload ->> 'end'), '');
+      if evt_title is null or (evt_start is null and evt_end is null) then
+        -- Parse from title: "ZZZ: new event Name (2026-10-13 → 2026-10-18)"
+        declare
+          m text[];
+        begin
+          m := regexp_match(f.title, 'new event\s*:?\s*(.+?)\s*\((\d{4}-\d{2}-\d{2})\s*(?:→|->|–|-|to)\s*(\d{4}-\d{2}-\d{2})\)\s*$', 'i');
+          if m is not null and trim(m[1]) <> '' then
+            evt_title := trim(m[1]);
+            evt_start := m[2] || 'T00:00:00.000Z';
+            evt_end := m[3] || 'T00:00:00.000Z';
+          end if;
+        end;
+      end if;
       if evt_start is not null or evt_end is not null then
         evt_line := coalesce(left(evt_start, 10), '?') || ' → ' || coalesce(left(evt_end, 10), '?');
       end if;
     end if;
 
-    note_data := jsonb_build_object(
-      'kind', f.kind,
-      'topic', topic_val,
-      'leak', case when f.kind = 'leak' or (f.payload ->> 'leak')::boolean is true then true else false end,
-      'title', left(f.title, 300),
-      'at', coalesce(post_at, f.found_at),
-      'credit', coalesce(nullif(trim(f.source_name), ''), 'unknown source'),
-      'text', coalesce(post_text, evt_line),
-      'images', post_images
-    );
-    -- Add optional fields.
-    if post_url is not null and post_url like 'https://%' then
-      note_data := note_data || jsonb_build_object('url', post_url);
-    end if;
-    if post_translation is not null then
-      note_data := note_data || jsonb_build_object('translation', post_translation);
-    end if;
+    -- Clean title: strip "Leak (Source): " prefix (matches browser cleanTitle).
+    -- For events parsed from the title, use the event name instead.
+    declare
+      clean_title text;
+      inserted_count integer;
+    begin
+      if evt_title is not null then
+        clean_title := evt_title;
+      else
+        clean_title := regexp_replace(f.title, '^[Ll]eak\s*(\([^)]*\))?\s*:\s*', '');
+        clean_title := trim(clean_title);
+        if clean_title = '' then clean_title := trim(f.title); end if;
+      end if;
 
-    insert into public.catalog_items (game_id, kind, id, data, source, status)
-    values (f.game_id, 'leak', note_id, note_data, src, 'active')
-    on conflict (game_id, kind, id) do nothing;
+      note_data := jsonb_build_object(
+        'kind', f.kind,
+        'topic', topic_val,
+        'leak', case when f.kind = 'leak' or f.payload ->> 'leak' = 'true' then true else false end,
+        'title', left(clean_title, 300),
+        'at', coalesce(post_at, f.found_at),
+        'credit', coalesce(nullif(trim(f.source_name), ''), 'unknown source'),
+        'text', coalesce(post_text, evt_line),
+        'images', post_images
+      );
+      if post_url is not null and post_url like 'https://%' then
+        note_data := note_data || jsonb_build_object('url', post_url);
+      end if;
+      if post_translation is not null then
+        note_data := note_data || jsonb_build_object('translation', post_translation);
+      end if;
 
-    created := created + 1;
+      insert into public.catalog_items (game_id, kind, id, data, source, status)
+      values (f.game_id, 'leak', note_id, note_data, src, 'active')
+      on conflict (game_id, kind, id) do nothing;
+
+      get diagnostics inserted_count = row_count;
+      created := created + inserted_count;
+    end;
   end loop;
   return created;
 end $$;
 revoke execute on function public.findings_create_notes(uuid[]) from public, anon, authenticated;
 grant execute on function public.findings_create_notes(uuid[]) to service_role;
+
+-- ── Backfill: create notes for approved findings that have none yet ──
+-- Covers the existing auto-approved findings (e.g. the 5 Seele leaks) that were
+-- approved before findings_create_notes existed, and any future migration re-runs.
+do $$
+declare
+  missing uuid[];
+  backfilled integer;
+begin
+  select array_agg(sf.id)
+    into missing
+    from public.scheduler_findings sf
+   where sf.status = 'approved'
+     and sf.game_id is not null
+     and not exists (
+       select 1 from public.catalog_items ci
+        where ci.source = 'finding:' || sf.id::text
+          and ci.kind = 'leak'
+     );
+  if missing is not null and array_length(missing, 1) > 0 then
+    backfilled := public.findings_create_notes(missing);
+    raise notice '0028 backfill: created % notes for approved findings', backfilled;
+  end if;
+end $$;
