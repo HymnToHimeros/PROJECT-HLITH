@@ -214,7 +214,7 @@ begin
         'topic', topic_val,
         'leak', case when f.kind = 'leak' or f.payload ->> 'leak' = 'true' then true else false end,
         'title', left(clean_title, 300),
-        'at', coalesce(post_at, f.found_at),
+        'at', coalesce(post_at, to_char(f.found_at at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS"Z"')),
         'credit', coalesce(nullif(trim(f.source_name), ''), 'unknown source'),
         'text', coalesce(post_text, evt_line),
         'images', post_images
