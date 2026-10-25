@@ -1,7 +1,7 @@
 // @vitest-environment node
 import { readFileSync } from 'node:fs';
 import { describe, expect, it, vi } from 'vitest';
-import { checkIntakeKey, deliver, INTAKE_NOT_READY, intakeKeyFrom, readIntake, saveFindings, type DeliveryDb } from '../supabase/functions/_shared/findings.ts';
+import { checkIntakeKey, deliver, INTAKE_NOT_READY, intakeKeyFrom, isDecisionsOnly, readDecisions, readIntake, saveFindings, type DeliveryDb } from '../supabase/functions/_shared/findings.ts';
 import { EXTERNAL_JOB_IDS, FRAME_MESSAGE, JOBS, runnerOf, SELF_ADJUSTING, type JobDef } from '../supabase/functions/_shared/jobs.ts';
 import {
   callJobFunction,
@@ -547,5 +547,30 @@ describe('findings intake key', () => {
       error: "Couldn't check the key: function findings_intake_key_ready() does not exist",
     });
     expect(await checkIntakeKey(KEY, { ready: ok(true), keyOk: fail('permission denied') })).toEqual({ ok: false, status: 500, error: "Couldn't check the key: permission denied" });
+  });
+});
+
+describe('decisions-only intake', () => {
+  const uuid = '01234567-89ab-cdef-0123-456789abcdef';
+
+  it('isDecisionsOnly returns true when body has decisions but no findings/ran/failed', () => {
+    expect(isDecisionsOnly({ decisions: [{ id: uuid, status: 'approved' }] })).toBe(true);
+    expect(isDecisionsOnly({ decisions: [{ id: uuid, status: 'approved' }], findings: [] })).toBe(false);
+    expect(isDecisionsOnly({ decisions: [{ id: uuid, status: 'approved' }], ran: ['leaks-scan'] })).toBe(false);
+    expect(isDecisionsOnly({ decisions: [{ id: uuid, status: 'approved' }], failed: [] })).toBe(false);
+    expect(isDecisionsOnly({ decisions: [] })).toBe(false);
+    expect(isDecisionsOnly({})).toBe(false);
+    expect(isDecisionsOnly(null)).toBe(false);
+  });
+
+  it('readDecisions parses valid decisions and drops invalid ones', () => {
+    const good = { id: uuid, status: 'approved', reason: 'looks right', topic: 'characters' };
+    expect(readDecisions({ decisions: [good] })).toEqual([good]);
+    expect(readDecisions({ decisions: [{ id: uuid, status: 'dismissed' }] })).toEqual([{ id: uuid, status: 'dismissed' }]);
+    expect(readDecisions({ decisions: [{ id: 'bad', status: 'approved' }] })).toEqual([]);
+    expect(readDecisions({ decisions: [{ id: uuid, status: 'maybe' }] })).toEqual([]);
+    expect(readDecisions({ decisions: [{ id: uuid, status: 'approved', topic: 'bogus' }] })).toEqual([{ id: uuid, status: 'approved' }]);
+    expect(readDecisions({ decisions: 'not an array' })).toEqual([]);
+    expect(readDecisions({})).toEqual([]);
   });
 });
