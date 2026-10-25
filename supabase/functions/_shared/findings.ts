@@ -4,7 +4,7 @@
  * without repeats. Pure apart from the small `Db` shape, so it is tested with a fake.
  */
 import { EXTERNAL_JOB_IDS } from './jobs.ts';
-import { DEDUPE_DAYS, dedupeKey, FINDING_KINDS, freshFindings, topicOf, type FindingKind, type NewFinding } from './scheduler.ts';
+import { DEDUPE_DAYS, dedupeKey, FINDING_KINDS, freshFindings, TOPICS, topicOf, type FindingKind, type NewFinding } from './scheduler.ts';
 
 /** The header the routine sends its key in. */
 export const INTAKE_HEADER = 'x-intake-key';
@@ -266,4 +266,25 @@ export async function deliver(
     out.push({ job, delivered: 0, added: 0, known: 0, failed: true });
   }
   return { saved: out, addedIds: allIds };
+}
+
+/** A body with only decisions and no findings/ran/failed: skip the full intake path. */
+export function isDecisionsOnly(body: unknown): boolean {
+  const b = body && typeof body === 'object' ? (body as Record<string, unknown>) : {};
+  return Array.isArray(b.decisions) && b.decisions.length > 0 && !Array.isArray(b.findings) && !Array.isArray(b.ran) && !Array.isArray(b.failed);
+}
+
+/** Read decisions the routine sends to correct earlier findings: [{ id, status, reason?, topic? }]. */
+export function readDecisions(body: unknown): { id: string; status: string; reason?: string; topic?: string }[] {
+  const b = body && typeof body === 'object' ? (body as Record<string, unknown>) : {};
+  if (!Array.isArray(b.decisions)) return [];
+  return b.decisions
+    .filter((d): d is Record<string, unknown> => d !== null && typeof d === 'object' && !Array.isArray(d))
+    .filter((d) => typeof d.id === 'string' && /^[0-9a-f-]{36}$/.test(d.id) && typeof d.status === 'string' && ['approved', 'dismissed'].includes(d.status))
+    .map((d) => ({
+      id: d.id as string,
+      status: d.status as string,
+      ...(typeof d.reason === 'string' && d.reason ? { reason: d.reason } : {}),
+      ...(typeof d.topic === 'string' && (TOPICS as readonly string[]).includes(d.topic) ? { topic: d.topic } : {}),
+    }));
 }

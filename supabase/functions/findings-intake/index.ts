@@ -8,7 +8,7 @@
 // time the routine gives (next_at, self-adjusting), else on its fallback cadence.
 import { createHash } from 'node:crypto';
 import { createClient } from 'npm:@supabase/supabase-js@2';
-import { checkIntakeKey, deliver, INTAKE_LIMITS, intakeKeyFrom, readIntake, type DeliveryDb } from '../_shared/findings.ts';
+import { checkIntakeKey, deliver, INTAKE_LIMITS, intakeKeyFrom, isDecisionsOnly, readDecisions, readIntake, type DeliveryDb } from '../_shared/findings.ts';
 import type { GameBiz } from '../_shared/hoyolab.ts';
 import { redeemFreshCodes, saveCodeList, type Db } from '../_shared/hoyolabStore.ts';
 import { findJob } from '../_shared/jobs.ts';
@@ -51,6 +51,20 @@ Deno.serve(async (req) => {
     return json({ error: 'Not JSON.' }, 400);
   }
   const now = Date.now();
+
+  // Decisions-only body: no findings, no ran, just decisions to apply.
+  const decisions = readDecisions(body);
+  if (isDecisionsOnly(body)) {
+    if (decisions.length === 0) return json({ error: 'No valid decisions in the body.' }, 400);
+    try {
+      const dd = await db.rpc('findings_decide', { p_decisions: decisions });
+      if (dd.error) return json({ error: dd.error.message }, 500);
+      return json({ ok: true, decided: typeof dd.data === 'number' ? dd.data : 0 });
+    } catch (e) {
+      return json({ error: e instanceof Error ? e.message : 'Deciding failed.' }, 500);
+    }
+  }
+
   const intake = readIntake(body, now);
   if (!intake.ok) return json({ error: 'Nothing saved.', problems: intake.problems }, 400);
 
@@ -77,7 +91,6 @@ Deno.serve(async (req) => {
     }
     let decided = 0;
     let decideError: string | undefined;
-    const decisions = readDecisions(body);
     if (decisions.length > 0) {
       const dd = await db.rpc('findings_decide', { p_decisions: decisions });
       if (dd.error) decideError = dd.error.message;
@@ -97,21 +110,6 @@ Deno.serve(async (req) => {
   }
 });
 
-/** Read decisions the routine sends to correct earlier findings: [{ id, status, reason?, topic? }]. */
-function readDecisions(body: unknown): { id: string; status: string; reason?: string; topic?: string }[] {
-  const b = body && typeof body === 'object' ? (body as Record<string, unknown>) : {};
-  if (!Array.isArray(b.decisions)) return [];
-  const validTopics = ['characters', 'story', 'weapons-items', 'events-modes', 'systems', 'codes', 'other'];
-  return b.decisions
-    .filter((d): d is Record<string, unknown> => d !== null && typeof d === 'object' && !Array.isArray(d))
-    .filter((d) => typeof d.id === 'string' && /^[0-9a-f-]{36}$/.test(d.id) && typeof d.status === 'string' && ['approved', 'dismissed'].includes(d.status))
-    .map((d) => ({
-      id: d.id as string,
-      status: d.status as string,
-      ...(typeof d.reason === 'string' && d.reason ? { reason: d.reason } : {}),
-      ...(typeof d.topic === 'string' && validTopics.includes(d.topic) ? { topic: d.topic } : {}),
-    }));
-}
 
 /** Pull redeem codes out of findings' payloads and save them to hoyolab_codes. */
 async function extractCodes(db: Db, byJob: Map<string, NewFinding[]>): Promise<{ total: number; fresh: number }> {
