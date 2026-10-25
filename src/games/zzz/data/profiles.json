@@ -406,6 +406,13 @@
     "assistType": "defensive"
   },
   {
+    "characterId": "1601",
+    "specialty": "armorer",
+    "attribute": "fire",
+    "faction": "Roscaelifer",
+    "assistType": "defensive"
+  },
+  {
     "characterId": "1611",
     "specialty": "armorer",
     "attribute": "electric",
@@ -431,6 +438,13 @@
     "specialty": "anomaly",
     "attribute": "fire",
     "faction": "Krampus Compliance Authority",
+    "assistType": "defensive"
+  },
+  {
+    "characterId": "1661",
+    "specialty": "defense",
+    "attribute": "ether",
+    "faction": "Unknown Realm",
     "assistType": "defensive"
   }
 ]

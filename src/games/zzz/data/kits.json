@@ -2,7 +2,7 @@
   {
     "characterId": "1011",
     "source": "nanoka.cc",
-    "version": "3.2",
+    "version": "3.3",
     "skills": [
       {
         "id": "skill-basic-attack-turbo-volt",
@@ -167,7 +167,7 @@
   {
     "characterId": "1021",
     "source": "nanoka.cc",
-    "version": "3.2",
+    "version": "3.3",
     "skills": [
       {
         "id": "skill-basic-attack-kitty-slash",
@@ -440,7 +440,7 @@
   {
     "characterId": "1031",
     "source": "nanoka.cc",
-    "version": "3.2",
+    "version": "3.3",
     "skills": [
       {
         "id": "skill-basic-attack-cunning-combo",
@@ -605,7 +605,7 @@
   {
     "characterId": "1041",
     "source": "nanoka.cc",
-    "version": "3.2",
+    "version": "3.3",
     "skills": [
       {
         "id": "skill-basic-attack-warmup-sparks",
@@ -849,7 +849,7 @@
   {
     "characterId": "1051",
     "source": "nanoka.cc",
-    "version": "3.2",
+    "version": "3.3",
     "skills": [
       {
         "id": "skill-basic-attack-crushing-strike",
@@ -1042,7 +1042,7 @@
   {
     "characterId": "1061",
     "source": "nanoka.cc",
-    "version": "3.2",
+    "version": "3.3",
     "skills": [
       {
         "id": "skill-basic-attack-wipeout",
@@ -1200,7 +1200,7 @@
   {
     "characterId": "1071",
     "source": "nanoka.cc",
-    "version": "3.2",
+    "version": "3.3",
     "skills": [
       {
         "id": "skill-basic-attack-rampaging-slash",
@@ -1386,7 +1386,7 @@
   {
     "characterId": "1081",
     "source": "nanoka.cc",
-    "version": "3.2",
+    "version": "3.3",
     "skills": [
       {
         "id": "skill-basic-attack-full-firepower",
@@ -1544,7 +1544,7 @@
   {
     "characterId": "1091",
     "source": "nanoka.cc",
-    "version": "3.2",
+    "version": "3.3",
     "skills": [
       {
         "id": "skill-basic-attack-kazahana",
@@ -1709,7 +1709,7 @@
   {
     "characterId": "1101",
     "source": "nanoka.cc",
-    "version": "3.2",
+    "version": "3.3",
     "skills": [
       {
         "id": "skill-basic-attack-smash-n-bash",
@@ -1994,7 +1994,7 @@
   {
     "characterId": "1111",
     "source": "nanoka.cc",
-    "version": "3.2",
+    "version": "3.3",
     "skills": [
       {
         "id": "skill-basic-attack-enthusiastic-drills",
@@ -2180,7 +2180,7 @@
   {
     "characterId": "1121",
     "source": "nanoka.cc",
-    "version": "3.2",
+    "version": "3.3",
     "skills": [
       {
         "id": "skill-basic-attack-debt-reconciliation",
@@ -2338,7 +2338,7 @@
   {
     "characterId": "1131",
     "source": "nanoka.cc",
-    "version": "3.2",
+    "version": "3.3",
     "skills": [
       {
         "id": "skill-basic-attack-making-rice-cakes",
@@ -2517,7 +2517,7 @@
   {
     "characterId": "1141",
     "source": "nanoka.cc",
-    "version": "3.2",
+    "version": "3.3",
     "skills": [
       {
         "id": "skill-basic-attack-moon-hunter",
@@ -2734,7 +2734,7 @@
   {
     "characterId": "1151",
     "source": "nanoka.cc",
-    "version": "3.2",
+    "version": "3.3",
     "skills": [
       {
         "id": "skill-basic-attack-lady-s-bat",
@@ -2913,7 +2913,7 @@
   {
     "characterId": "1161",
     "source": "nanoka.cc",
-    "version": "3.2",
+    "version": "3.3",
     "skills": [
       {
         "id": "skill-basic-attack-l-form-thundering-fist",
@@ -3071,7 +3071,7 @@
   {
     "characterId": "1171",
     "source": "nanoka.cc",
-    "version": "3.2",
+    "version": "3.3",
     "skills": [
       {
         "id": "skill-basic-attack-direct-flame-blend",
@@ -3315,7 +3315,7 @@
   {
     "characterId": "1181",
     "source": "nanoka.cc",
-    "version": "3.2",
+    "version": "3.3",
     "skills": [
       {
         "id": "skill-basic-attack-high-pressure-spike",
@@ -3594,7 +3594,7 @@
   {
     "characterId": "1191",
     "source": "nanoka.cc",
-    "version": "3.2",
+    "version": "3.3",
     "skills": [
       {
         "id": "skill-basic-attack-saw-teeth-trimming",
@@ -3863,7 +3863,7 @@
   {
     "characterId": "1201",
     "source": "nanoka.cc",
-    "version": "3.2",
+    "version": "3.3",
     "skills": [
       {
         "id": "skill-basic-attack-cloud-piercer",
@@ -4118,7 +4118,7 @@
   {
     "characterId": "1211",
     "source": "nanoka.cc",
-    "version": "3.2",
+    "version": "3.3",
     "skills": [
       {
         "id": "skill-basic-attack-whack-the-dimwit",
@@ -4313,7 +4313,7 @@
   {
     "characterId": "1221",
     "source": "nanoka.cc",
-    "version": "3.2",
+    "version": "3.3",
     "skills": [
       {
         "id": "skill-basic-attack-tsukuyomi-kagura",
@@ -4471,7 +4471,7 @@
   {
     "characterId": "1241",
     "source": "nanoka.cc",
-    "version": "3.2",
+    "version": "3.3",
     "skills": [
       {
         "id": "skill-basic-attack-don-t-move",
@@ -4643,7 +4643,7 @@
   {
     "characterId": "1251",
     "source": "nanoka.cc",
-    "version": "3.2",
+    "version": "3.3",
     "skills": [
       {
         "id": "skill-basic-attack-penultimate",
@@ -4822,7 +4822,7 @@
   {
     "characterId": "1261",
     "source": "nanoka.cc",
-    "version": "3.2",
+    "version": "3.3",
     "skills": [
       {
         "id": "skill-basic-attack-dancing-blades",
@@ -5074,7 +5074,7 @@
   {
     "characterId": "1271",
     "source": "nanoka.cc",
-    "version": "3.2",
+    "version": "3.3",
     "skills": [
       {
         "id": "skill-basic-attack-lightning-strike",
@@ -5239,7 +5239,7 @@
   {
     "characterId": "1281",
     "source": "nanoka.cc",
-    "version": "3.2",
+    "version": "3.3",
     "skills": [
       {
         "id": "skill-basic-attack-load-up-and-roll-out",
@@ -5411,7 +5411,7 @@
   {
     "characterId": "1291",
     "source": "nanoka.cc",
-    "version": "3.2",
+    "version": "3.3",
     "skills": [
       {
         "id": "skill-basic-attack-dark-abyss-quartet",
@@ -5576,7 +5576,7 @@
   {
     "characterId": "1301",
     "source": "nanoka.cc",
-    "version": "3.2",
+    "version": "3.3",
     "skills": [
       {
         "id": "skill-basic-attack-high-pressure-flamethrower",
@@ -5762,7 +5762,7 @@
   {
     "characterId": "1311",
     "source": "nanoka.cc",
-    "version": "3.2",
+    "version": "3.3",
     "skills": [
       {
         "id": "skill-basic-attack-capriccio",
@@ -5948,7 +5948,7 @@
   {
     "characterId": "1321",
     "source": "nanoka.cc",
-    "version": "3.2",
+    "version": "3.3",
     "skills": [
       {
         "id": "skill-basic-attack-razor-wire",
@@ -6141,7 +6141,7 @@
   {
     "characterId": "1331",
     "source": "nanoka.cc",
-    "version": "3.2",
+    "version": "3.3",
     "skills": [
       {
         "id": "skill-basic-attack-feathered-strike",
@@ -6327,7 +6327,7 @@
   {
     "characterId": "1341",
     "source": "nanoka.cc",
-    "version": "3.2",
+    "version": "3.3",
     "skills": [
       {
         "id": "skill-basic-attack-glacial-judgment",
@@ -6499,7 +6499,7 @@
   {
     "characterId": "1351",
     "source": "nanoka.cc",
-    "version": "3.2",
+    "version": "3.3",
     "skills": [
       {
         "id": "skill-basic-attack-swift-strike",
@@ -6671,7 +6671,7 @@
   {
     "characterId": "1361",
     "source": "nanoka.cc",
-    "version": "3.2",
+    "version": "3.3",
     "skills": [
       {
         "id": "skill-basic-attack-cold-bore-shot",
@@ -6850,7 +6850,7 @@
   {
     "characterId": "1371",
     "source": "nanoka.cc",
-    "version": "3.2",
+    "version": "3.3",
     "skills": [
       {
         "id": "skill-basic-attack-cirrus-strike",
@@ -7057,7 +7057,7 @@
   {
     "characterId": "1381",
     "source": "nanoka.cc",
-    "version": "3.2",
+    "version": "3.3",
     "skills": [
       {
         "id": "skill-basic-attack-penetrating-shock",
@@ -7301,7 +7301,7 @@
   {
     "characterId": "1391",
     "source": "nanoka.cc",
-    "version": "3.2",
+    "version": "3.3",
     "skills": [
       {
         "id": "skill-basic-attack-tiger-seven-forms-flaming-claw",
@@ -7480,7 +7480,7 @@
   {
     "characterId": "1401",
     "source": "nanoka.cc",
-    "version": "3.2",
+    "version": "3.3",
     "skills": [
       {
         "id": "skill-basic-attack-celestial-overture",
@@ -7652,7 +7652,7 @@
   {
     "characterId": "1411",
     "source": "nanoka.cc",
-    "version": "3.2",
+    "version": "3.3",
     "skills": [
       {
         "id": "skill-basic-attack-tanuki-claws",
@@ -7866,7 +7866,7 @@
   {
     "characterId": "1421",
     "source": "nanoka.cc",
-    "version": "3.2",
+    "version": "3.3",
     "skills": [
       {
         "id": "skill-basic-attack-unyielding-strikes",
@@ -8031,7 +8031,7 @@
   {
     "characterId": "1431",
     "source": "nanoka.cc",
-    "version": "3.2",
+    "version": "3.3",
     "skills": [
       {
         "id": "skill-basic-attack-swiftedge",
@@ -8301,7 +8301,7 @@
   {
     "characterId": "1441",
     "source": "nanoka.cc",
-    "version": "3.2",
+    "version": "3.3",
     "skills": [
       {
         "id": "skill-basic-attack-blazing-wind-slash",
@@ -8473,7 +8473,7 @@
   {
     "characterId": "1451",
     "source": "nanoka.cc",
-    "version": "3.2",
+    "version": "3.3",
     "skills": [
       {
         "id": "skill-basic-attack-orbital-combo",
@@ -8631,7 +8631,7 @@
   {
     "characterId": "1461",
     "source": "nanoka.cc",
-    "version": "3.2",
+    "version": "3.3",
     "skills": [
       {
         "id": "skill-basic-attack-chrysanthemum-wheel-dance",
@@ -8810,7 +8810,7 @@
   {
     "characterId": "1471",
     "source": "nanoka.cc",
-    "version": "3.2",
+    "version": "3.3",
     "skills": [
       {
         "id": "skill-basic-attack-towering-peaks",
@@ -9059,7 +9059,7 @@
   {
     "characterId": "1481",
     "source": "nanoka.cc",
-    "version": "3.2",
+    "version": "3.3",
     "skills": [
       {
         "id": "skill-basic-attack-happy-to-be-of-service",
@@ -9245,7 +9245,7 @@
   {
     "characterId": "1491",
     "source": "nanoka.cc",
-    "version": "3.2",
+    "version": "3.3",
     "skills": [
       {
         "id": "skill-basic-attack-mischief-meteor-hammer",
@@ -9417,7 +9417,7 @@
   {
     "characterId": "1501",
     "source": "nanoka.cc",
-    "version": "3.2",
+    "version": "3.3",
     "skills": [
       {
         "id": "skill-basic-attack-sweet-melody",
@@ -9596,7 +9596,7 @@
   {
     "characterId": "1511",
     "source": "nanoka.cc",
-    "version": "3.2",
+    "version": "3.3",
     "skills": [
       {
         "id": "skill-basic-attack-shooting-star-step",
@@ -9761,7 +9761,7 @@
   {
     "characterId": "1521",
     "source": "nanoka.cc",
-    "version": "3.2",
+    "version": "3.3",
     "skills": [
       {
         "id": "skill-basic-attack-tongue-flick",
@@ -9933,7 +9933,7 @@
   {
     "characterId": "1531",
     "source": "nanoka.cc",
-    "version": "3.2",
+    "version": "3.3",
     "skills": [
       {
         "id": "skill-basic-attack-knight-s-technique",
@@ -10133,7 +10133,7 @@
   {
     "characterId": "1541",
     "source": "nanoka.cc",
-    "version": "3.2",
+    "version": "3.3",
     "skills": [
       {
         "id": "skill-basic-attack-sweeping-edge",
@@ -10333,7 +10333,7 @@
   {
     "characterId": "1551",
     "source": "nanoka.cc",
-    "version": "3.2",
+    "version": "3.3",
     "skills": [
       {
         "id": "skill-basic-attack-emberglow",
@@ -10526,7 +10526,7 @@
   {
     "characterId": "1561",
     "source": "nanoka.cc",
-    "version": "3.2",
+    "version": "3.3",
     "skills": [
       {
         "id": "skill-basic-attack-dancing-fans",
@@ -10698,7 +10698,7 @@
   {
     "characterId": "1571",
     "source": "nanoka.cc",
-    "version": "3.2",
+    "version": "3.3",
     "skills": [
       {
         "id": "skill-basic-attack-engineering-insurance",
@@ -10877,7 +10877,7 @@
   {
     "characterId": "1581",
     "source": "nanoka.cc",
-    "version": "3.2",
+    "version": "3.3",
     "skills": [
       {
         "id": "skill-basic-attack-leap",
@@ -11070,7 +11070,7 @@
   {
     "characterId": "1591",
     "source": "nanoka.cc",
-    "version": "3.2",
+    "version": "3.3",
     "skills": [
       {
         "id": "skill-basic-attack-frost-tipped-spear",
@@ -11240,9 +11240,301 @@
     ]
   },
   {
+    "characterId": "1601",
+    "source": "nanoka.cc",
+    "version": "3.4.1+19851435",
+    "beta": true,
+    "skills": [
+      {
+        "id": "skill-basic-attack-thornbreaker",
+        "label": "Basic Attack: Thornbreaker",
+        "kind": "skill",
+        "does": [],
+        "gameText": "Press [Basic Attack button] to activate:\nLindverne performs up to 4 consecutive attacks forward, dealing Genesis Flare DMG.\nRepeatedly press or hold during the 4th attack to perform an extended slash against enemies.\nWhen the heavy attack of the 4th attack hits an enemy with [Gash], consume all [Gash] stacks on the target, up to 3 stacks. For each [Gash] stack consumed, trigger [Maim] on the target once, dealing additional AoE Genesis Flare DMG.\nCharacter is invulnerable during the 4th attack.\nDuring the 3rd and 4th attacks, Anti-Interrupt Level is increased and DMG taken is reduced by 40%."
+      },
+      {
+        "id": "skill-basic-attack-bannerbearer",
+        "label": "Basic Attack: Bannerbearer",
+        "kind": "skill",
+        "does": [],
+        "gameText": "Press [Basic Attack button] to activate:\nEldreda performs up to four consecutive attacks forward, dealing Genesis Flare DMG;\nWhen the heavy attack of the fourth hit lands on an enemy with [Gash], it consumes all [Gash] stacks on the target, up to 3 stacks. For each stack of [Gash] consumed, triggers [Maim] on the target once, dealing additional AoE Genesis Flare DMG;\nDuring the third and fourth hits, Anti-Interrupt Level is increased and DMG taken is reduced by 40%."
+      },
+      {
+        "id": "skill-basic-attack-bannerbearer-converging-edge",
+        "label": "Basic Attack: Bannerbearer - Converging Edge",
+        "kind": "skill",
+        "does": [],
+        "gameText": "When [Willpower] is sufficient, hold [Basic Attack button] to activate:\nSwitch to Eldreda and launch an attack, dealing Genesis Flare DMG.\nCharacter is invulnerable while using this skill.\nAfter using this skill, gain [Chain Teeth] and [Flag Order]."
+      },
+      {
+        "id": "skill-dodge-phase-fold",
+        "label": "Dodge: Phase Fold",
+        "kind": "skill",
+        "does": [],
+        "gameText": "Press [Dodge button] to activate:\nLindverne performs a quick dash dodge.\nCharacter is invulnerable while using this skill."
+      },
+      {
+        "id": "skill-dash-attack-void-slash-rush",
+        "label": "Dash Attack: Void Slash Rush",
+        "kind": "skill",
+        "does": [],
+        "gameText": "Press [Basic Attack button] during a dodge to activate:\nLindverne slashes forward, dealing Genesis Flare DMG."
+      },
+      {
+        "id": "skill-dodge-counter-smoldering-fire-reignition",
+        "label": "Dodge Counter: Smoldering Fire Reignition",
+        "kind": "skill",
+        "does": [],
+        "gameText": "When [Perfect Dodge] is triggered, press [Basic Attack button] to activate:\nLindverne unleashes a consecutive attack forward, dealing Genesis Flare DMG.\nAfter using this skill, press [Basic Attack button] to quickly chain into the 3rd hit of [Basic Attack].\nCharacter is invulnerable while using this skill."
+      },
+      {
+        "id": "skill-dodge-spatial-reconstruction",
+        "label": "Dodge: Spatial Reconstruction",
+        "kind": "skill",
+        "does": [],
+        "gameText": "Press [Dodge button] to activate:\nEldreda performs a quick dash dodge.\nCharacter is invulnerable while using this skill."
+      },
+      {
+        "id": "skill-dash-attack-reality-reversal",
+        "label": "Dash Attack: Reality Reversal",
+        "kind": "skill",
+        "does": [],
+        "gameText": "Press [Basic Attack button] during a dodge to activate:\nEldreda thrusts forward, dealing Genesis Flare DMG."
+      },
+      {
+        "id": "skill-dodge-patrol",
+        "label": "Dodge: Patrol",
+        "kind": "skill",
+        "does": [],
+        "gameText": "Hold [Dodge button] while moving the joystick to activate:\nEldreda enters the [Nightglide] state, allowing high-speed movement.\nWhile in the [Nightglide] state, use the joystick to control direction. Release the joystick to stop.\nCharacter is invulnerable at the moment this skill activates."
+      },
+      {
+        "id": "skill-dash-attack-patrol-shadow-realm-raid",
+        "label": "Dash Attack: Patrol - Shadow Realm Raid",
+        "kind": "skill",
+        "does": [],
+        "gameText": "In [Nightglide] state, Press [Basic Attack button] to activate:\nEldreda unleashes a quick Tail Swipe attack, dealing Genesis Flare DMG."
+      },
+      {
+        "id": "skill-dodge-counter-cold-flame-returning-edge",
+        "label": "Dodge Counter: Cold Flame Returning Edge",
+        "kind": "skill",
+        "does": [],
+        "gameText": "Press [Basic Attack button] during a Perfect Dodge to activate:\nEldreda launches consecutive attacks forward, dealing Genesis Flare DMG.\nAfter using this skill, press [Basic Attack button] to follow up with the 4th hit of Basic Attack.\nCharacter is invulnerable while using this skill."
+      },
+      {
+        "id": "skill-special-attack-night-blaze",
+        "label": "Special Attack: Night Blaze",
+        "kind": "skill",
+        "does": [],
+        "gameText": "Press [Special Attack button] to activate:\nSwitch to Lindverne and launch an attack, dealing Genesis Flare DMG."
+      },
+      {
+        "id": "skill-ex-special-attack-night-blaze-dawnrise",
+        "label": "EX Special Attack: Night Blaze - Dawnrise",
+        "kind": "skill",
+        "does": [],
+        "gameText": "When Sharpness is sufficient, press [EX Special Attack button] to activate:\nLindverne and Eldreda launch a Synergy attack, keeping Lindverne on the field and dealing Genesis Flare DMG.\nWhen the heavy attack hits an enemy with [Gash], consumes all [Gash] stacks on the target, up to 3 stacks. For each stack of [Gash] consumed, triggers [Maim] once on the target, dealing additional AoE Genesis Flare DMG.\nCharacter is invulnerable while using this skill."
+      },
+      {
+        "id": "skill-ex-special-attack-night-blaze-dawnborn-modified",
+        "label": "EX Special Attack: Night Blaze - Dawnborn (Modified)",
+        "kind": "skill",
+        "does": [],
+        "gameText": "When Sharpness is sufficient, press [EX Special Attack button] after the final hit of [Basic Attack: Thornbreaker], [Dodge Counter: Smoldering Fire Reignition], [Assist Follow-Up: Undying Passion], [Ultimate: \"By This Wish, All Things Remade\"], or [EX Special Attack: Night Blaze - Dawnborn (Modified)] to activate:\nLindverne and Eldreda launch a coordinated attack, keeping Lindverne on the field and dealing Genesis Flare DMG.\nWhen the heavy attack hits an enemy with [Gash], it consumes all [Gash] stacks on the target, up to a max of 3 stacks. For each stack of [Gash] consumed, triggers [Maim] on the target once, dealing additional AoE Genesis Flare DMG.\nCharacter is invulnerable while using this skill."
+      },
+      {
+        "id": "skill-ex-special-attack-night-blaze-end-of-the-long-dark",
+        "label": "EX Special Attack: Night Blaze - End of the Long Dark",
+        "kind": "skill",
+        "does": [],
+        "gameText": "When [Chain Teeth] is available, press [Special Attack button] to activate:\nConsume [Chain Teeth]. Lindverne and Eldreda unleash a high-tier Synergy attack while Lindverne remains on the field, dealing massive Genesis Flare DMG;\nAfter using this skill, press [Basic Attack button] to quickly chain into the 4th hit of [Basic Attack];\nCharacter is invulnerable while using this skill."
+      },
+      {
+        "id": "skill-special-attack-kindled-lamp",
+        "label": "Special Attack: Kindled Lamp",
+        "kind": "skill",
+        "does": [],
+        "gameText": "Press [Special Attack button] to activate:\nSwitch to Eldreda and launch an attack, dealing Genesis Flare DMG."
+      },
+      {
+        "id": "skill-ex-special-attack-kindled-lamp-gloom-s-end",
+        "label": "EX Special Attack: Kindled Lamp - Gloom's End",
+        "kind": "skill",
+        "does": [],
+        "gameText": "When Sharpness is sufficient, press [EX Special Attack button] to activate:\nEldreda and Lindverne launch a Synergy attack, keeping Eldreda on the field and dealing Genesis Flare DMG.\nWhen the heavy attack hits an enemy with [Gash], it consumes all [Gash] stacks on the target, up to 3 stacks. For each [Gash] stack consumed, triggers [Maim] on the target once, dealing additional AoE Genesis Flare DMG.\nCharacter is invulnerable while using this skill."
+      },
+      {
+        "id": "skill-ex-special-attack-kindled-lamp-gloom-s-end-revised",
+        "label": "EX Special Attack: Kindled Lamp - Gloom's End - Revised",
+        "kind": "skill",
+        "does": [],
+        "gameText": "When Sharpness is sufficient, press [EX Special Attack button] after the final hit of [Bannerbearer], or after using [Dodge Counter: Cold Flame Returning Edge], [Assist Follow-Up: Faith Unwavering], [Ultimate: \"Onward, Together\"], or [EX Special Attack: Night Blaze - Dawnborn (Modified)] to activate:\nEldreda launches a Synergy attack with Lindverne and Dracaene while remaining on the field, dealing Genesis Flare DMG;\nWhen the heavy attack hits an enemy with [Gash], it consumes all [Gash] stacks on the target, up to a maximum of 3. For each [Gash] stack consumed, [Maim] is triggered once on the target, dealing additional AoE Genesis Flare DMG;\nCharacter is invulnerable while using this skill."
+      },
+      {
+        "id": "skill-ex-special-attack-kindled-lamp-torch-of-eternal-day",
+        "label": "EX Special Attack: Kindled Lamp - Torch of Eternal Day",
+        "kind": "skill",
+        "does": [],
+        "gameText": "When holding [Flag Order], press [Special Attack button] to activate:\nConsume [Flag Order] for Eldreda and Lindverne to unleash a high-powered Synergy attack, keeping Eldreda on the field and dealing massive Genesis Flare DMG;\nAfter using this skill, press [Basic Attack button] to chain into the 4th hit of [Basic Attack];\nCharacter is invulnerable while using this skill."
+      },
+      {
+        "id": "skill-chain-attack-building-dreams-for-all",
+        "label": "Chain Attack: Building Dreams for All",
+        "kind": "skill",
+        "does": [],
+        "gameText": "When a Chain Attack is triggered, select the character to activate:\nLindverne and Eldreda team up to unleash a powerful attack, keeping Lindverne on the field and dealing Genesis Flare DMG;\nWhen the heavy attack hits an enemy with [Gash], it consumes all [Gash] stacks on the target, up to 3 stacks. For each [Gash] stack consumed, triggers [Maim] on the target once, dealing additional AoE Genesis Flare DMG;\nCharacter is invulnerable while using this skill;\nWhen Lindverne triggers a Daze Chain Attack window, Lindverne can be selected directly to activate this skill."
+      },
+      {
+        "id": "skill-ultimate-onward-together",
+        "label": "Ultimate: \"Onward, Together\"",
+        "kind": "skill",
+        "does": [],
+        "gameText": "When Decibel Rating is at Maximum, press [Ultimate button] to activate:\nLindverne launches a Coordinated Attack with Eldreda and Dracaene and remains on the field, dealing massive Genesis Flare DMG.\nWhile holding Flag Order, consumes Flag Order and converts it into Wish Core.\nCharacter is invulnerable while using this skill."
+      },
+      {
+        "id": "skill-chain-attack-in-the-name-of-sunbringer",
+        "label": "Chain Attack: In the Name of Sunbringer",
+        "kind": "skill",
+        "does": [],
+        "gameText": "When a Chain Attack is triggered, select the character to activate:\nEldreda and Lindverne team up to unleash a high-powered Synergy attack, keeping Eldreda on the field and dealing Genesis Flare DMG;\nAfter using this skill, press [Basic Attack button] to follow up with the 4th hit of the Basic Attack;\nWhen the heavy attack hits an enemy with Gash, it consumes all Gash stacks on the target, up to 3 stacks. For each Gash stack consumed, triggers Maim once on the target, dealing additional AoE Genesis Flare DMG;\nCharacter is invulnerable while using this skill;\nWhen Eldreda triggers a Daze Chain Attack window, Eldreda can be selected directly to activate this skill."
+      },
+      {
+        "id": "skill-ultimate-by-this-wish-all-things-remade",
+        "label": "Ultimate: \"By This Wish, All Things Remade\"",
+        "kind": "skill",
+        "does": [],
+        "gameText": "When Eldreda has [Wish Core], press [Ultimate button] to activate:\nEldreda warps space in mid-air to attack, dealing Genesis Flare DMG and removing all [Ember Scar] from enemies.\nCharacter is invulnerable while using this skill."
+      },
+      {
+        "id": "skill-quick-assist-dauntless-aid",
+        "label": "Quick Assist: Dauntless Aid",
+        "kind": "skill",
+        "does": [],
+        "gameText": "When the active character is launched, press [Switch button] to activate:\nLindverne unleashes a consecutive attack forward, dealing Genesis Flare DMG.\nAfter using this skill, press [Basic Attack button] to quickly chain into the 3rd hit of [Basic Attack].\nCharacter is invulnerable while using this skill."
+      },
+      {
+        "id": "skill-quick-assist-path-of-the-gleaming-edge",
+        "label": "Quick Assist: Path of the Gleaming Edge",
+        "kind": "skill",
+        "does": [],
+        "gameText": "When the active character is launched, press [Switch button] to activate:\nEldreda unleashes a flurry of consecutive attacks forward, dealing Genesis Flare DMG.\nAfter activating this skill, press [Basic Attack button] to chain into the 4th hit of her [Basic Attack].\nCharacter is invulnerable while using this skill."
+      },
+      {
+        "id": "skill-defensive-assist-oath-of-steadfastness",
+        "label": "Defensive Assist: Oath of Steadfastness",
+        "kind": "skill",
+        "does": [],
+        "gameText": "When the on-field character is about to be attacked, press [Switch button] to activate:\nDracaene parries the enemy's attack, accumulating massive Daze.\nWhen Lindverne or Eldreda is on field, this skill can also be activated by switching in the next character.\nCharacter is invulnerable while using this skill."
+      },
+      {
+        "id": "skill-counter-assist-fortress-of-hope",
+        "label": "Counter Assist: Fortress of Hope",
+        "kind": "skill",
+        "does": [],
+        "gameText": "When the user or the on-field Character is about to be hit by certain enemy Control Skills, press [Switch button] to activate:\nDracaene grapples with the monster. If she wins the struggle, she neutralizes the enemy's Control Skill and deals Genesis Flare DMG;\nCharacter is invulnerable while using this skill."
+      },
+      {
+        "id": "skill-assist-follow-up-lighthouse-towering-in-the-sky",
+        "label": "Assist Follow-Up: Lighthouse, Towering in the Sky",
+        "kind": "skill",
+        "does": [],
+        "gameText": "After activating a [Counter Assist], press [Basic Attack button] to activate:\nDracaene unleashes an attack dealing massive Genesis Flare DMG. When the heavy attack hits an enemy, it directly applies 1 stack of [Gash] to the target.\nCharacter is invulnerable while using this skill."
+      },
+      {
+        "id": "skill-assist-follow-up-undying-passion",
+        "label": "Assist Follow-Up: Undying Passion",
+        "kind": "skill",
+        "does": [],
+        "gameText": "Press [Basic Attack button] after Dracaene performs a [Defensive Assist] to activate:\nLindverne unleashes a swift forward Slash, then triggers an explosion, dealing Genesis Flare DMG;\nAfter activating this skill, press [Basic Attack button] to quickly chain into the 4th hit of the [Basic Attack];\nRepeatedly press or hold during this skill to keep slashing enemies;\nCharacter is invulnerable while using this skill."
+      },
+      {
+        "id": "skill-assist-follow-up-faith-unwavering",
+        "label": "Assist Follow-Up: Faith Unwavering",
+        "kind": "skill",
+        "does": [],
+        "gameText": "Press [Basic Attack button] after Dracaene activates a Defensive Assist to activate:\nEldreda unleashes a swift forward slash, followed by an explosion that deals Genesis Flare DMG.\nAfter using this skill, press [Basic Attack button] to chain into the 4th hit of her Basic Attack.\nCharacter is invulnerable while using this skill."
+      },
+      {
+        "id": "core-passive",
+        "label": "Core Passive: (Core Skill level 7)",
+        "kind": "core",
+        "does": [],
+        "gameText": "All skills used by Sunbringer deal Sharp DMG, with DEF used as the skill DMG Multiplier. Some Sharp DMG builds up Gash. When Gash buildup is full, the enemy enters [Gash]. [Gash] stacks up to 3 times. When certain skills' heavy attacks from Sunbringer hit an enemy in the [Gash] state, 1 stack of [Gash] is consumed to deal AoE DMG once;\nWhen a critical hit is triggered, Sharp DMG does not benefit from CRIT DMG Bonus and uses Laceration DMG Bonus instead. If CRIT Rate exceeds 100% and a critical hit has been triggered, an additional Laceration check is made based on the excess CRIT Rate. If Laceration is triggered, Laceration DMG Bonus is applied one additional time. For every 1% of initial CRIT DMG Sunbringer has, initial CRIT Rate increases by 0.35%;\nSunbringer recovers 60 Sharpness upon entering the battlefield. In Investigation Zone mode, this effect can trigger once every 180s;\nWhen Sunbringer enters combat, Sunbringer gains the [Midnight Sun] effect, increasing CRIT Rate by 40% and ignoring 20% of the target's DEF when dealing DMG. [Midnight Sun] lasts 15s, and its duration does not decrease while Eldreda and Lindverne are off field. Sunbringer regains the [Midnight Sun] effect upon using any [EX Special Attack] or [Basic Attack: Bannerbearer - Converging Edge];\nAfter Dracaene activates [Defensive Assist], the [Assist Follow-Up] launched by Eldreda and Lindverne gains 15% increased Gash Buildup Rate and deals 20% increased DMG;\nWhen any squad Agent triggers [Maim], Sunbringer gains 40 [Willpower] for each stack of [Gash] removed, up to a maximum of 160 [Willpower]. When Sunbringer has at least 120 [Willpower], 120 [Willpower] can be consumed to activate [Basic Attack: Bannerbearer - Converging Edge];\nWhen a teammate triggers [Maim], if Sunbringer has enough [Willpower], [Quick Assist] is triggered. When Sunbringer switches on field via [Quick Assist], 120 [Willpower] is consumed to immediately activate [Basic Attack: Bannerbearer - Converging Edge]. This effect can trigger once every 3s;\nWhen Sunbringer's [Basic Attack: Bannerbearer - Converging Edge], [EX Special Attack: Night Blaze - End of the Long Dark], [EX Special Attack: Kindled Lamp - Torch of Eternal Day], [Ultimate: \"Onward, Together\"], or [Ultimate: \"By This Wish, All Things Remade\"] hits an enemy and deals DMG, the target accumulates [Ember Scar] equal to 75% of the actual DMG dealt by the skill. When the Finishing Move of Eldreda's [EX Special Attack: Kindled Lamp - Torch of Eternal Day] or [Ultimate: \"By This Wish, All Things Remade\"] hits an enemy, all [Ember Scar] is cleared, directly deducting an equal amount of HP.\nWhen an attack hits a normal enemy, if the [Ember Scar] it holds is greater than or equal to its current HP, all of its [Ember Scar] is immediately cleared and the enemy is defeated."
+      },
+      {
+        "id": "additional-ability",
+        "label": "Additional Ability:",
+        "kind": "additional",
+        "does": [],
+        "gameText": "When another character in your squad is a [Stun] character, a [Defense] character, or an [Armorer] character:\nWhen Sunbringer uses any [EX Special Attack] or [Dash Attack: Patrol - Shadow Realm Raid], all [Armorer] Agents in the whole squad enter the [Unanimous Wish] state. While in the [Unanimous Wish] state, Laceration DMG increases by 25% for 45s. Re-entering the [Unanimous Wish] state refreshes the duration."
+      },
+      {
+        "id": "mindscape-1",
+        "label": "Mindscape 1: The Reclusive Void Hunter",
+        "kind": "mindscape",
+        "unlock": {
+          "dupes": 1
+        },
+        "does": [],
+        "gameText": "When Sunbringer enters the battlefield, she immediately gains 120 [Willpower]. This effect can trigger once every 180s in Investigation Zone mode. The first use of [Basic Attack: Bannerbearer - Converging Edge] increases the amount of [Ember Scar] accumulated by enemies to 150% of the original amount. DMG dealt by Sunbringer's skills ignores 15% of the enemy's Fire RES."
+      },
+      {
+        "id": "mindscape-2",
+        "label": "Mindscape 2: The Heir's Banner of Rebellion",
+        "kind": "mindscape",
+        "unlock": {
+          "dupes": 2
+        },
+        "does": [],
+        "gameText": "When Sunbringer hits an enemy with other skills and deals DMG, the target also accumulates [Ember Scar]. The amount of [Ember Scar] accumulated is equal to 12% of the actual DMG dealt by the skill. Sharp DMG dealt by Sunbringer ignores 12% of the enemy's DEF."
+      },
+      {
+        "id": "mindscape-3",
+        "label": "Mindscape 3: No name yet",
+        "kind": "mindscape",
+        "unlock": {
+          "dupes": 3
+        },
+        "does": [],
+        "gameText": "TestKey_PlaceHolder"
+      },
+      {
+        "id": "mindscape-4",
+        "label": "Mindscape 4: No name yet",
+        "kind": "mindscape",
+        "unlock": {
+          "dupes": 4
+        },
+        "does": [],
+        "gameText": "TestKey_PlaceHolder"
+      },
+      {
+        "id": "mindscape-5",
+        "label": "Mindscape 5: No name yet",
+        "kind": "mindscape",
+        "unlock": {
+          "dupes": 5
+        },
+        "does": [],
+        "gameText": "TestKey_PlaceHolder"
+      },
+      {
+        "id": "mindscape-6",
+        "label": "Mindscape 6: No name yet",
+        "kind": "mindscape",
+        "unlock": {
+          "dupes": 6
+        },
+        "does": [],
+        "gameText": "TestKey_PlaceHolder"
+      }
+    ]
+  },
+  {
     "characterId": "1611",
     "source": "nanoka.cc",
-    "version": "3.2",
+    "version": "3.3",
     "skills": [
       {
         "id": "skill-basic-attack-bloodforging-four-forms",
@@ -11456,7 +11748,7 @@
   {
     "characterId": "1621",
     "source": "nanoka.cc",
-    "version": "3.2",
+    "version": "3.3",
     "skills": [
       {
         "id": "skill-basic-attack-do-stay-a-while",
@@ -11635,99 +11927,98 @@
           "dupes": 6
         },
         "does": [],
-        "gameText": "The DMG dealt by attacks ignores 15% of the target's Wind RES.\nWhen Special Attack: Forgive Me for Not Seeing You Off detonates Eyes of the Storm to generate a Giant Windstorm, the primary target is inflicted with Afterecho. A Giant Windstorm is generated at the target's location every 3s, for a total of 2 additional Giant Windstorms. Repeated triggers stack the number of additional Giant Windstorm instances generated and refresh the duration of Afterecho. The DMG dealt by the Giant Windstorm increases to 250% of its original value, and the Daze it inflicts increases by 20%."
+        "gameText": "The DMG dealt by attacks ignores 15% of the target's Wind RES. When Special Attack: Forgive Me for Not Seeing You Off detonates Eyes of the Storm to generate a Giant Windstorm, the primary target is inflicted with Afterecho. A Giant Windstorm is generated at the target's location every 3s, for a total of 2 additional Giant Windstorms. Repeated triggers stack the number of additional Giant Windstorm instances generated and refresh the duration of Afterecho. The DMG multiplier of the Giant Windstorm increases to 250% of its original value, and the Daze it inflicts increases by 20%."
       }
     ]
   },
   {
     "characterId": "1631",
     "source": "nanoka.cc",
-    "version": "3.3.4+19304006",
-    "beta": true,
+    "version": "3.3",
     "skills": [
       {
         "id": "skill-basic-attack-swift-edge",
         "label": "Basic Attack: Swift Edge",
         "kind": "skill",
         "does": [],
-        "gameText": "Press [Basic Attack button] to activate:\nUnleash up to 4 consecutive attacks forward, dealing Wind DMG.\nAfter the 4th attack hits an enemy, accumulate 20 Flowing Breath.\nThe 4th attack has Dodge properties the moment it is unleashed. If an enemy attack is successfully dodged, the DMG Multiplier and Daze Multiplier of this Basic Attack become equal to those of [Basic Attack: Fierce Whirl], and an additional 15 [Flowing Breath] is accumulated.\nSeverian is invulnerable while unleashing the 4th attack.\nWhen Severian uses [Dash Attack], [Dodge Counter], or [Dodge: Freehand] during [Basic Attack], the combo count of [Basic Attack] will not be interrupted."
+        "gameText": "Press [Basic Attack button] to activate:\nLaunches up to 4 attacks forward, dealing Wind DMG.\nWhen the 4th attack hits an enemy, it accumulates 20 Flowing Breath.\nThe 4th attack can dodge enemy attacks upon the moment of activation. Upon successfully dodging an enemy attack, this Basic Attack's DMG Multiplier and Daze Multiplier are increased to those of Basic Attack: Raging Whirlwind, and an additional 15 Flow is accumulated.\nCharacter is invulnerable during the 4th attack.\nWhen Severian uses a Dash Attack, Dodge Counter, or Dodge: Spontaneity during a Basic Attack combo, it does not interrupt the Basic Attack combo count."
       },
       {
-        "id": "skill-basic-attack-blazing-spin",
-        "label": "Basic Attack: Blazing Spin",
+        "id": "skill-basic-attack-raging-whirlwind",
+        "label": "Basic Attack: Raging Whirlwind",
         "kind": "skill",
         "does": [],
-        "gameText": "Automatically activates when hit by an enemy attack the instant any of the first three Basic Attack stages is launched, or when hit by an enemy's non-Control Skill attack while under the [Shimmering Shadow] effect and not Invulnerable:\nDash forward, dealing massive Wind DMG to enemies in the area ahead;\nUpon activating this skill, accumulate 15 points of Flowing Breath, and accumulate an additional 20 points of [Flowing Breath] after hitting an enemy;\nHold [Basic Attack button] while this skill is active to quickly launch [Basic Attack: Azure Wind Shadow Hunt], and the final hit of [Basic Attack: Azure Wind Shadow Hunt] accumulates 20 points of [Flowing Breath] when released;\nCharacter is invulnerable while using this skill."
+        "gameText": "Automatically activates when Severian is attacked at the moment he launches the first three attacks of his Basic Attack, or when he has Shadowflash and is hit by a non-Control Skill enemy attack while not invulnerable:\nDashes forward, dealing massive Wind DMG to enemies in an area ahead.\nUpon activating this skill, accumulates 15 Flowing Breath. Upon hitting an enemy, an additional 20 Flow is accumulated.\nHold [Basic Attack button] while activating this skill to quickly launch Basic Attack: Azure Wind's Shadowhunt. When the final hit of Basic Attack: Azure Wind's Shadowhunt is unleashed, it accumulates 20 Flow.\nCharacter is invulnerable while using this skill."
       },
       {
-        "id": "skill-basic-attack-azure-wind-shadow-hunt",
-        "label": "Basic Attack: Azure Wind Shadow Hunt",
+        "id": "skill-basic-attack-azure-wind-s-shadowhunt",
+        "label": "Basic Attack: Azure Wind's Shadowhunt",
         "kind": "skill",
         "does": [],
-        "gameText": "When Flowing Breath is sufficient, consume 100 [Flowing Breath] and hold [Basic Attack button] to activate:\nDodge backward and gather momentum, then weave nonstop across the field while unleashing continuous Slashes, dealing massive Wind DMG to enemies in the area ahead;\nThe backward dodge counts as a dodge; successfully dodging an enemy attack triggers [Vital View] and accumulates 15 [Flowing Breath];\nCharacter is invulnerable while using this skill."
+        "gameText": "With enough Flowing Breath, hold [Basic Attack button] to consume 100 Flow and activate:\nDodges backward and charges up, then continuously darts around the field while unleashing slashes, dealing massive Wind DMG to enemies in an area in front.\nThe backward dodge can dodge enemy attacks. Successfully dodging an enemy attack triggers Vital View and accumulates 15 Flow.\nCharacter is invulnerable while using this skill."
       },
       {
-        "id": "skill-dodge-drift-break",
-        "label": "Dodge: Drift Break",
+        "id": "skill-dodge-windshift",
+        "label": "Dodge: Windshift",
         "kind": "skill",
         "does": [],
-        "gameText": "Press [Dodge button] to activate:\nA quick dash dodge.\nWhen [Perfect Dodge] is triggered via [Dodge: Drift Break], accumulate 15 points of Flowing Breath. This effect can trigger once every 0.5 sec.\nCharacter is invulnerable while using this skill."
+        "gameText": "Press [Dodge button] to activate:\nA quick dash dodge.\nWhen Dodge: Windshift triggers a Perfect Dodge, it accumulates 15 Flowing Breath. This effect can trigger once every 0.5s.\nCharacter is invulnerable while using this skill."
       },
       {
-        "id": "skill-dash-attack-lynn-strike",
-        "label": "Dash Attack: Lynn Strike",
+        "id": "skill-dash-attack-sheer-assault",
+        "label": "Dash Attack: Sheer Assault",
         "kind": "skill",
         "does": [],
-        "gameText": "Press [Basic Attack button] during a dodge to activate:\nAttack enemies in front, dealing Wind DMG."
+        "gameText": "Press [Basic Attack button] during a dodge to activate:\nLaunches an attack forward, dealing Wind DMG."
       },
       {
-        "id": "skill-dodge-counter-treetop-slay",
-        "label": "Dodge Counter: Treetop Slay",
+        "id": "skill-dodge-counter-fatal-end",
+        "label": "Dodge Counter: Fatal End",
         "kind": "skill",
         "does": [],
-        "gameText": "When [Perfect Dodge] is triggered via [Dodge: Drifting Break], press [Basic Attack button] to activate:\nUnleashes a rapid slash forward, dealing Wind DMG;\nIf the character swaps off-field the moment [Perfect Dodge] is triggered via [Dodge: Drifting Break], this skill activates automatically;\nCharacter is invulnerable while using this skill."
+        "gameText": "When Dodge: Windshift triggers a Perfect Dodge, press [Basic Attack button] to activate:\nLaunches a quick slash forward, dealing Wind DMG.\nIf switched off-field immediately after triggering a Perfect Dodge with Dodge: Windshift, this skill is activated automatically.\nCharacter is invulnerable while using this skill."
       },
       {
-        "id": "skill-dodge-freehand",
-        "label": "Dodge: Freehand",
+        "id": "skill-dodge-spontaneity",
+        "label": "Dodge: Spontaneity",
         "kind": "skill",
         "does": [],
-        "gameText": "After a Back Dash, keep holding [Dodge button] to activate:\nProvoke the enemy."
+        "gameText": "After dodging backward, hold [Dodge button] to activate:\nProvokes the enemy."
       },
       {
-        "id": "skill-special-attack-flash-wind-slash-break",
-        "label": "Special Attack: Flash Wind Slash Break",
+        "id": "skill-special-attack-gale-rend",
+        "label": "Special Attack: Gale Rend",
         "kind": "skill",
         "does": [],
-        "gameText": "Press [Special Attack button] to activate:\nSlashes and thrusts forward, dealing Wind DMG."
+        "gameText": "Press [Special Attack button] to activate:\nUnleashes slashes and stabs forward, dealing Wind DMG."
       },
       {
-        "id": "skill-ex-special-attack-gale-ripper",
-        "label": "EX Special Attack: Gale Ripper",
+        "id": "skill-ex-special-attack-swiftwind-rupture",
+        "label": "EX Special Attack: Swiftwind Rupture",
         "kind": "skill",
         "does": [],
-        "gameText": "With enough Energy, press [EX Special Attack button] to activate:\nUnleash a forward combo of Slash, Claw, and Cannon attacks, dealing massive Wind DMG to enemies and gaining 1 stack of Flickershade;\nHold [EX Special Attack button] to keep consuming Energy before the Cannon attack, continuously unleashing Wind Blades that deal Wind DMG to enemies;\nWhen Energy consumption reaches its maximum, gain 1 extra stack of [Shimmering Shadow];\nCharacter is invulnerable while using this skill."
+        "gameText": "With enough Energy, press [EX Special Attack button] to activate:\nUnleashes a combination of slashes, claw strikes, and cannon fire forward, dealing massive Wind DMG and gaining 1 stack of Flickershade.\nHold [EX Special Attack button] to continuously consume Energy before the cannon attack, and repeatedly launch wind blades that deal Wind DMG to enemies.\nWhen reaching the maximum amount of Energy consumed, gains an additional stack of Shadowflash.\nCharacter is invulnerable while using this skill."
       },
       {
-        "id": "skill-chain-attack-frostblade-harvest",
-        "label": "Chain Attack: Frostblade Harvest",
+        "id": "skill-chain-attack-coldblade-reap",
+        "label": "Chain Attack: Coldblade Reap",
         "kind": "skill",
         "does": [],
-        "gameText": "When a Chain Attack is triggered, select the character to activate:\nUnleashes consecutive attacks forward, dealing massive Wind DMG.\nAfter using this skill, accumulate 35 Flowing Breath.\nCharacter is invulnerable while using this skill."
+        "gameText": "When a Chain Attack is triggered, select the character to activate:\nPerforms a series of attacks forward, dealing massive Wind DMG.\nAfter using this skill, accumulates 35 Flowing Breath.\nCharacter is invulnerable while using this skill."
       },
       {
         "id": "skill-ultimate-annihilating-windstorm",
         "label": "Ultimate: Annihilating Windstorm",
         "kind": "skill",
         "does": [],
-        "gameText": "When Decibel Rating is at Maximum, press [Ultimate button] to activate:\nUnleashes several rapid slashes in a row, dealing massive Wind DMG.\nAfter using this skill, accumulates 100 Flowing Breath.\nCharacter is invulnerable while using this skill."
+        "gameText": "When Decibel Rating is at Maximum, press [Ultimate button] to activate:\nUnleashes multiple rapid slashes in succession, dealing massive Wind DMG.\nAfter using this skill, accumulates 100 Flowing Breath.\nCharacter is invulnerable while using this skill."
       },
       {
-        "id": "skill-quick-assist-frontline-orders",
-        "label": "Quick Assist: Frontline Orders",
+        "id": "skill-quick-assist-field-orders",
+        "label": "Quick Assist: Field Orders",
         "kind": "skill",
         "does": [],
-        "gameText": "When the active character is launched, press [Switch button] to activate:\nDash forward rapidly, hitting enemies ahead with claw strikes and slashes, dealing Wind DMG.\nCharacter is invulnerable while using this skill."
+        "gameText": "When the active character is launched, press [Switch button] to activate:\nDashes forward quickly, unleashing claw strikes and slashes at enemies ahead to deal Wind DMG.\nCharacter is invulnerable while using this skill."
       },
       {
         "id": "skill-defensive-assist-provocation-prohibited",
@@ -11737,56 +12028,56 @@
         "gameText": "When the on-field character is about to be attacked, press [Switch button] to activate:\nParries the enemy's attack, dealing massive Daze.\nCharacter is invulnerable while using this skill."
       },
       {
-        "id": "skill-assist-follow-up-ceasefire-by-force",
-        "label": "Assist Follow-Up: Ceasefire by Force",
+        "id": "skill-assist-follow-up-fight-force-with-force",
+        "label": "Assist Follow-Up: Fight Force with Force",
         "kind": "skill",
         "does": [],
-        "gameText": "Press [Basic Attack button] after a Defensive Assist to activate:\nUnleashes a slash, a claw strike, and a cannon blast on enemies in sequence, dealing Wind DMG.\nCharacter is invulnerable while using this skill."
+        "gameText": "Press [Basic Attack button] after a Defensive Assist to activate:\nUnleashes slashes, claw strikes, and cannon fire against enemies in sequence, dealing Wind DMG.\nCharacter is invulnerable while using this skill."
       },
       {
-        "id": "skill-entry-skill-clear-the-floor",
-        "label": "Entry Skill: Clear the Floor",
+        "id": "skill-entry-skill-clear-out",
+        "label": "Entry Skill: Clear Out",
         "kind": "skill",
         "does": [],
-        "gameText": "When Severian has the Windrider effect and is in-combat, press [Switch button] to switch from off field to on field to activate:\nUnleashes a powerful Slash at enemies in front, dealing Wind DMG;\nUpon activating this skill, it counts as activating [Quick Assist];\nThis skill is not counted as a heavy attack;\nCharacter is invulnerable while using this skill."
+        "gameText": "When Severian has Windrider and is in combat, press [Switch button] to switch him into battle and activate:\nUnleashes a powerful slash against enemies ahead, dealing Wind DMG.\nActivating this skill is considered activating a Quick Assist.\nThis skill is not counted as a heavy attack.\nCharacter is invulnerable while using this skill."
       },
       {
         "id": "core-passive",
-        "label": "Core Passive: Wind Without End (Core Skill level 7)",
+        "label": "Core Passive: Endless Breeze (Core Skill level 7)",
         "kind": "core",
         "does": [],
-        "gameText": "Severian's CRIT DMG increases by 60%, and DMG dealt increases by 20%. When another character in your squad is of the Wind attribute, DMG is increased by an additional 30%;\nWhen Severian unleashes [Basic Attack: Swift Edge] at the moment he is about to be hit by an enemy attack, he dodges that attack. If the attack is dodged during the first three stages of his Basic Attack, [Basic Attack: Fierce Whirl] is automatically unleashed. If it happens during the fourth stage, the DMG Multiplier and Daze Multiplier of this Basic Attack are increased to match those of [Basic Attack: Fierce Whirl];\nWhen Severian enters the battlefield, he gains 2 stacks of Flickershade. This effect can trigger once every 180s in Investigation Zone mode;\nWhen Severian has [Glint Shadow] and is not Invulnerable, if he is hit by an enemy attack that is not a Control Skill and fails to actively dodge or parry it, Severian consumes 1 stack of [Glint Shadow] to automatically dodge the attack and unleash [Basic Attack: Fierce Whirl];\nSuccessfully dodging an enemy attack by unleashing [Basic Attack: Swift Edge], automatically dodging an enemy attack via [Glint Shadow], and dodging an enemy attack directly are all considered a [Perfect Dodge];\n[Glint Shadow] stacks up to 2 times. If [Glint Shadow] is gained at max stacks, Severian gains 1 stack of Windrider and his next [Basic Attack: Swift Edge] is upgraded to [Basic Attack: Fierce Whirl];\nSeverian gains 1 stack of [Windborne] with each Perfect Dodge. While Severian has [Windborne] and is in-combat, press [Switch button] to switch from off field to on field and unleash his [Entry Skill];\nWhen Severian hits an enemy with a set skill or triggers a Perfect Dodge, he gains Flowing Breath. [Flowing Breath] caps at 150 points;\nWhen [Flowing Breath] reaches 100 points, hold [Basic Attack button] to consume 100 [Flowing Breath] and unleash [Basic Attack: Azure Wind Shadow Hunt]."
+        "gameText": "Severian's CRIT DMG increases by 60%, and his DMG increases by 25%. If there is another Wind character in the squad, his DMG increases by an additional 30%.\nWhen Severian uses Basic Attack: Swift Edge just before being hit by an enemy attack, he can dodge the attack. If he dodges it with any of the first three hits of his Basic Attack, he automatically launches Basic Attack: Raging Whirlwind. If he dodges it with the 4th hit, that Basic Attack's DMG Multiplier and Daze Multiplier are increased to match Basic Attack: Raging Whirlwind.\nWhen Severian enters the battlefield, he gains 2 stacks of Flickershade. This effect can trigger once every 180s in Investigation Zone mode.\nWhen Severian has Shadowflash and is not invulnerable, if he is hit by a non-Control Skill enemy attack that he fails to actively dodge or parry, he consumes 1 stack of Shadowflash to automatically dodge the attack and launch Basic Attack: Raging Whirlwind.\nSuccessfully dodging an enemy attack with Basic Attack: Swift Edge, automatically dodging an enemy attack with Shadowflash, or directly dodging an enemy attack all count as a Perfect Dodge.\nShadowflash can stack up to 2 times. If Severian gains Shadowflash while already possessing maximum stacks, he gains 1 stack of Windrider instead, and the next Basic Attack: Swift Edge is enhanced to Basic Attack: Raging Whirlwind.\nEach time Severian performs a Perfect Dodge, he gains 1 stack of Windborne. While Severian has Windborne and is in combat, press [Switch button] to switch him from off-field to on-field and launch an Entry Skill.\nSeverian gains Flowing Breath by hitting enemies with certain skills or triggering a Perfect Dodge. Flow is capped at 150 points.\nWhen Flow reaches 100 points, hold [Basic Attack button] to consume 100 Flow and launch Basic Attack: Azure Wind's Shadowhunt."
       },
       {
         "id": "additional-ability",
-        "label": "Additional Ability: Optimal Deployment",
+        "label": "Additional Ability: Optimal Setup",
         "kind": "additional",
         "does": [],
-        "gameText": "When another character in your squad is [Support], [Stun], or shares the same Faction:\nFor every 1% CRIT Rate Severian has, his ATK increases by 8.5, up to a maximum of 100% CRIT Rate."
+        "gameText": "When another character in your squad is a Support or Stun character, or shares the same faction:\nFor every 1% CRIT Rate Severian has, his ATK increases by 8.5. This effect is capped at 100% CRIT Rate."
       },
       {
         "id": "mindscape-1",
-        "label": "Mindscape 1: No name yet",
+        "label": "Mindscape 1: Double Espresso",
         "kind": "mindscape",
         "unlock": {
           "dupes": 1
         },
         "does": [],
-        "gameText": "The [Flow Breath] accumulated when Severian unleashes [Chain Attack] is increased to 50;\nWhen Severian enters the field via [Entry Skill: Clearing Time], the skill is replaced with [Chain Attack]. This skill's entry type remains unchanged, and it is treated as a non-heavy attack. This effect can trigger once every 60s at most;\nEach time Severian unleashes [Basic Attack: Azure Wind Shadowhunt], he gains 1 stack of [Windborne];\nWhen Severian's attacks hit a target, they ignore 15% of that target's Wind RES."
+        "gameText": "When Severian uses a Chain Attack, the accumulated Flow increases to 50.\nWhen Severian switches in through Entry Skill: Clear Out, the skill is replaced with a Chain Attack. The entry type is not changed, and it is treated as a non-heavy attack. This effect can trigger once every 60s.\nEach time Severian uses Basic Attack: Azure Wind's Shadowhunt, he gains 1 stack of Windborne.\nWhen Severian's attacks hit a target, they ignore 15% of the target's Wind RES."
       },
       {
         "id": "mindscape-2",
-        "label": "Mindscape 2: No name yet",
+        "label": "Mindscape 2: Reins of Reason",
         "kind": "mindscape",
         "unlock": {
           "dupes": 2
         },
         "does": [],
-        "gameText": "When Severian enters the battlefield, restore 150 pt(s) of [Flowing Breath]. In Investigation Zone mode, this effect can trigger once every 180s;\nWhen Severian triggers [Perfect Dodge] or unleashes [Basic Attack: Azure Wind Shadow Hunt], his PEN Ratio increases by 20% for 25s."
+        "gameText": "When Severian enters the battlefield, he recovers 150 Flow. In Investigation Zone mode, this effect can trigger once every 180s.\nWhen Severian triggers a Perfect Dodge or uses Basic Attack: Azure Wind's Shadowhunt, his PEN Ratio increases by 20% for 25s."
       },
       {
         "id": "mindscape-3",
-        "label": "Mindscape 3: No name yet",
+        "label": "Mindscape 3: The Last Light",
         "kind": "mindscape",
         "unlock": {
           "dupes": 3
@@ -11796,17 +12087,17 @@
       },
       {
         "id": "mindscape-4",
-        "label": "Mindscape 4: No name yet",
+        "label": "Mindscape 4: Between Light and Shadow",
         "kind": "mindscape",
         "unlock": {
           "dupes": 4
         },
         "does": [],
-        "gameText": "When Severian enters combat or switches on-field, increase his own ATK by 10% for 30s. Repeated triggers reset the duration.\nWhen Severian uses [Basic Attack: Fierce Whirl] or [Basic Attack: Azure Wind Shadow Hunt], increase his own Decibel Generation Rate by 10% for 15s."
+        "gameText": "When Severian enters combat or switches on-field, his ATK increases by 10% for 30s. Repeated triggers reset the duration.\nWhen Severian uses Basic Attack: Raging Whirlwind or Basic Attack: Azure Wind's Shadowhunt, his Decibel Generation Rate increases by 10% for 15s."
       },
       {
         "id": "mindscape-5",
-        "label": "Mindscape 5: No name yet",
+        "label": "Mindscape 5: A Heart Above 0°C",
         "kind": "mindscape",
         "unlock": {
           "dupes": 5
@@ -11816,171 +12107,364 @@
       },
       {
         "id": "mindscape-6",
-        "label": "Mindscape 6: No name yet",
+        "label": "Mindscape 6: Beneath a Little Star",
         "kind": "mindscape",
         "unlock": {
           "dupes": 6
         },
         "does": [],
-        "gameText": "Severian's [Flowing Breath] limit is increased to 180, and the Flowing Breath restored when entering the battlefield is increased to 180 points;\nThe final hit of [Basic Attack: Azure Wind Shadow Hunt] gains a fixed 350% increase to its additional DMG Multiplier;\nWhen the final hit of [Basic Attack: Azure Wind Shadow Hunt] is unleashed, gain the [Rising Wind] effect: accumulate 5 [Flowing Breath] per second for 5s. Repeated triggers reset the duration."
+        "gameText": "Severian's max Flow increases to 180, and the Flow gained when entering the battlefield increases to 180.\nThe additional DMG Multiplier of the final hit of Basic Attack: Azure Wind's Shadowhunt is increased by a fixed 350%.\nUpon using the final hit of Basic Attack: Azure Wind's Shadowhunt, Severian gains Windrise: Accumulates 5 Flow per second for 5s. Repeated triggers reset the duration."
       }
     ]
   },
   {
     "characterId": "1641",
     "source": "nanoka.cc",
-    "version": "3.3.4+19304006",
-    "beta": true,
+    "version": "3.3",
     "skills": [
       {
-        "id": "skill-basic-attack-lifesever",
-        "label": "Basic Attack: Lifesever",
+        "id": "skill-basic-attack-sever-life",
+        "label": "Basic Attack: Sever Life",
         "kind": "skill",
         "does": [],
-        "gameText": "Press [Basic Attack button] to activate:\nPerform up to 4 consecutive attacks forward, dealing Fire DMG;\nThe 3rd and 4th hits of the [Basic Attack] are considered [Burn Attacks]."
+        "gameText": "Press [Basic Attack button] to activate:\nPerforms up to 4 attacks forward, dealing Fire DMG.\nThe 3rd and 4th Basic Attacks are considered Combustion Attacks."
       },
       {
-        "id": "skill-basic-attack-sinburn",
-        "label": "Basic Attack: Sinburn",
+        "id": "skill-basic-attack-purifying-flame",
+        "label": "Basic Attack: Purifying Flame",
         "kind": "skill",
         "does": [],
-        "gameText": "When [Blazing Flame] is sufficient, consume 90 [Blazing Flame] and hold [Basic Attack button] to activate:\nPhoenix hurls her weapon, dealing massive Fire DMG to enemies in an area ahead;\nwhen the Finishing Move hits an enemy in an Ice Attribute Anomaly state, Ether Anomaly state, Electric Attribute Anomaly state, Fire Attribute Anomaly state, Physical Attribute Anomaly state, or Wind Attribute Anomaly state, it triggers the [Abloom] effect 1 time, dealing Attribute Anomaly DMG of the corresponding attribute with a (225 + 20 × (Basic Attack level − 1))% multiplier;\nwhen this [Abloom] effect triggers a critical hit, its CRIT DMG is additionally increased by 40%;\nCharacter is invulnerable while using this skill."
+        "gameText": "With enough [term 1000047, not named in the game files], consume 90 Pyre and hold [Basic Attack button] to activate:\nPhoenix throws her weapon, dealing massive Fire DMG to enemies in an area ahead.\nWhen the Finishing Move hits an enemy affected by Ice Anomaly, Ether Anomaly, Electric Anomaly, Fire Anomaly, Physical Anomaly, or Wind Anomaly, it triggers 1 instance of Abloom, dealing Anomaly DMG of the corresponding attribute with a (225 + 20 × (Basic Attack level − 1))% multiplier.\nWhen this instance of Abloom triggers a critical hit, its CRIT DMG is increased by an additional 40%.\nCharacter is invulnerable while using this skill."
       },
       {
         "id": "skill-basic-attack-meltdown",
         "label": "Basic Attack: Meltdown",
         "kind": "skill",
         "does": [],
-        "gameText": "When [Special Attack: Flame Raid] is used without triggering Perfect Block, press [Basic Attack button] to activate:\nLunge forward, dealing Fire DMG;\nConsidered a [Burn Attack];\nDuring this skill, press [Basic Attack button] to chain into the third hit of [Basic Attack]."
+        "gameText": "If Special Attack: Fire Sweep does not trigger a Perfect Block, press [Basic Attack button] to activate:\nCharges forward, dealing Fire DMG.\nThis skill is considered a Combustion Attacks.\nDuring this skill, press [Basic Attack button] to follow up with the 3rd hit of a Basic Attack."
       },
       {
-        "id": "skill-dodge-sway",
-        "label": "Dodge: Sway",
+        "id": "skill-dodge-drifting-sway",
+        "label": "Dodge: Drifting Sway",
         "kind": "skill",
         "does": [],
-        "gameText": "Press [Dodge button] to activate:\nA quick dash dodge;\nCharacter is invulnerable while using this skill."
+        "gameText": "Press [Dodge button] to activate:\nA quick dash dodge.\nCharacter is invulnerable while using this skill."
       },
       {
         "id": "skill-dash-attack-lunge",
         "label": "Dash Attack: Lunge",
         "kind": "skill",
         "does": [],
-        "gameText": "Press [Basic Attack button] during a dodge to activate:\nLaunch a dashing slash forward, dealing Fire DMG."
+        "gameText": "Press [Basic Attack button] during a dodge to activate:\nDashes forward and slashes, dealing Fire DMG."
       },
       {
-        "id": "skill-dodge-counter-twin-crossing-of-karmic-fire",
-        "label": "Dodge Counter: Twin Crossing of Karmic Fire",
+        "id": "skill-dodge-counter-twin-passage-of-karmic-fire",
+        "label": "Dodge Counter: Twin Passage of Karmic Fire",
         "kind": "skill",
         "does": [],
-        "gameText": "Press [Basic Attack button] during a Perfect Dodge to activate:\nDash forward and unleash a rapid slash, dealing Fire DMG.\nCharacter is invulnerable while using this skill. Press [Basic Attack button] to chain into the 3rd hit of [Basic Attack]."
+        "gameText": "After triggering a Perfect Dodge, press [Basic Attack button] to activate:\nDashes forward and unleashes a quick slash, dealing Fire DMG.\nCharacter is invulnerable while using this skill. Press [Basic Attack button] to follow up with the 3rd hit of a Basic Attack."
       },
       {
-        "id": "skill-special-attack-fire-snatch",
-        "label": "Special Attack: Fire Snatch",
+        "id": "skill-special-attack-fire-sweep",
+        "label": "Special Attack: Fire Sweep",
         "kind": "skill",
         "does": [],
-        "gameText": "Press [Special Attack button] to activate:\nAfter dashing back, swiftly launch a rising attack forward, dealing Fire DMG;\nDMG taken is reduced by 40% while dashing back;\nWhen hit at the moment the rising attack begins, or when hitting enemies flashing red or yellow, Perfect Block is triggered, granting immunity to that instance of DMG. Press [Basic Attack button] to directly unleash the third phase of [Basic Attack];\nAnti-Interrupt level is increased while using this skill."
+        "gameText": "Press [Special Attack button] to activate:\nAfter retreating back, quickly launches an upward slash forward, dealing Fire DMG.\nDuring the retreat, DMG taken is reduced by 40%.\nIf attacked at the instant the upward slash begins, or if the slash hits an enemy flashing red or yellow, a Perfect Block is triggered, negating that instance of DMG. Press [Basic Attack button] to immediately follow up with the 3rd hit of a Basic Attack.\nAnti-Interrupt level is increased while using this skill."
       },
       {
         "id": "skill-ex-special-attack-blazing-slash",
         "label": "EX Special Attack: Blazing Slash",
         "kind": "skill",
         "does": [],
-        "gameText": "When [Promotion] is active, consume 1 stack of [Promotion] and press [Special Attack button] to activate:\nAfter a backstep, surge forward with a powerful upward Slash, dealing massive Fire DMG;\nHold [Special Attack button] during the backstep to keep charging;\nWhile charging, release [Special Attack button] to unleash a powerful upward Slash, dealing massive Fire DMG;\nWhen chained after [Burning Attack], skips the backstep and goes straight into the upward attack;\nDMG taken is reduced by 40% during the backstep and charge;\nTaking a hit the instant the upward Slash begins, or hitting an enemy flashing red or yellow, triggers Perfect Block;\nCounts as a [Burning Attack];\nCharacter is invulnerable while using this skill. Press [Basic Attack button] to chain into the 3rd hit of [Basic Attack]."
+        "gameText": "While possessing [term 1000049, not named in the game files], press [Special Attack button] to consume 1 point of Ascension and activate:\nAfter retreating, quickly performs a powerful upward slash, dealing massive Fire DMG.\nHold [Special Attack button] while retreating to continue charging.\nWhile charging, release [Special Attack button] to perform a powerful upward slash, dealing massive Fire DMG.\nWhen chained into from a Combustion Attacks, skips the retreat and immediately performs the upward slash.\nDMG taken while retreating and charging is reduced by 40%.\nReceiving an attack just as the upward slash begins or hitting an enemy flashing red or yellow triggers a Perfect Block.\nThis skill counts as a Combustion Attack.\nCharacter is invulnerable while using this skill. Press [Basic Attack button] to follow up with the 3rd hit of a Basic Attack."
       },
       {
-        "id": "skill-ex-special-attack-dazzling-blaze",
-        "label": "EX Special Attack: Dazzling Blaze",
+        "id": "skill-ex-special-attack-dazzling-flare",
+        "label": "EX Special Attack: Dazzling Flare",
         "kind": "skill",
         "does": [],
-        "gameText": "With enough Energy, press [EX Special Attack button] to activate:\nSpin the body rapidly, dealing massive Fire DMG to enemies;\nTaking an attack at the instant the spin begins, or hitting an enemy flashing red or yellow, triggers the Perfect Block effect;\nConsidered a [Burn Attack];\nCharacter is invulnerable while using this skill. Press [Basic Attack button] to chain into the third hit of [Basic Attack]."
+        "gameText": "With enough Energy, press [EX Special Attack button] to activate:\nQuickly spins around, dealing massive Fire DMG to enemies.\nReceiving an attack at the moment the spin begins or hitting an enemy flashing red or yellow triggers a Perfect Block.\nThis skill is considered a Combustion Attacks.\nCharacter is invulnerable while using this skill. Press [Basic Attack button] to follow up with the 3rd hit of a Basic Attack."
       },
       {
-        "id": "skill-ex-special-attack-solar-plunge",
-        "label": "EX Special Attack: Solar Plunge",
+        "id": "skill-ex-special-attack-falling-sun",
+        "label": "EX Special Attack: Falling Sun",
         "kind": "skill",
         "does": [],
-        "gameText": "After [EX Special Attack: Dazzling Flame] is used, with enough Energy, press or hold [EX Special Attack button] to activate:\nLaunch into the air and hurl the weapon, dealing massive Fire DMG to enemies;\nUpon activating this skill, gain 1 stack of [Promotion], up to a maximum of 1 stack of [Promotion];\nPerfect Block is triggered when taking an attack at the instant the launch begins, or when hitting enemies flashing red or yellow;\nConsidered a [Burn Attack];\nCharacter is invulnerable while using this skill. Press [Basic Attack button] to chain into the third hit of [Basic Attack]."
+        "gameText": "After using EX Special Attack: Dazzling Flare, and with enough Energy, press or hold [EX Special Attack button] to activate:\nRises into the air and throws her weapon, dealing massive Fire DMG to enemies.\nGains 1 point of Ascension upon activating this skill. Up to 1 point of Ascension can be held.\nReceiving an attack at the moment she starts rising or hitting an enemy flashing red or yellow triggers a Perfect Block.\nThis skill is considered a Combustion Attacks.\nCharacter is invulnerable while using this skill. Press [Basic Attack button] to follow up with the 3rd hit of a Basic Attack."
       },
       {
-        "id": "skill-chain-attack-last-stand",
-        "label": "Chain Attack: Last Stand",
+        "id": "skill-chain-attack-last-minute-salvation",
+        "label": "Chain Attack: Last-Minute Salvation",
         "kind": "skill",
         "does": [],
-        "gameText": "When a Chain Attack is triggered, select the character to activate:\nUnleashes a multi-hit attack forward, dealing Fire DMG;\nConsidered a [Burning Attack];\nCharacter is invulnerable while using this skill. Press [Basic Attack button] to chain into the third hit of [Basic Attack]."
+        "gameText": "When a Chain Attack is triggered, select the character to activate:\nUnleashes multiple attacks forward, dealing Fire DMG.\nThis skill is considered a Combustion Attacks.\nCharacter is invulnerable while using this skill. Press [Basic Attack button] to follow up with the 3rd hit of a Basic Attack."
       },
       {
-        "id": "skill-ultimate-radiance-from-a-thousand-deaths",
-        "label": "Ultimate: Radiance from a Thousand Deaths",
+        "id": "skill-ultimate-perpetual-resurrection",
+        "label": "Ultimate: Perpetual Resurrection",
         "kind": "skill",
         "does": [],
-        "gameText": "When Decibel Rating is at Maximum, press [Ultimate button] to activate:\nSoars high into the air, then dives at enemies, consuming all of the character's own HP to set off an explosion, dealing massive Fire DMG, entering the [Life Drained] state, and triggering the next character's [Quick Assist];\nConsidered a [Burning Attack];\nThe character cannot initiate attacks while in the [Life Drained] state;\nAfter using this skill, press [Basic Attack button] to activate [Ultimate: Cinderfire Soulchase];\nCharacter is invulnerable while using this skill."
+        "gameText": "When Decibel Rating is at Maximum, press [Ultimate button] to activate:\nFlies into the air, then dives at the enemy, consuming all of Phoenix's HP to trigger an explosion, dealing massive Fire DMG. Phoenix then enters the Wither state and triggers the next character's Quick Assist.\nThis skill is considered a Combustion Attacks.\nActive attacks cannot be performed while in the Wither state.\nAfter using this skill, Soul-Searching Blaze is automatically activated after a short period. Press [Basic Attack button] to quickly activate Soul-Searching Blaze.\nCharacter is invulnerable while using this skill."
       },
       {
-        "id": "skill-ultimate-cinderfire-soulhunt",
-        "label": "Ultimate: Cinderfire Soulhunt",
+        "id": "skill-soul-searching-blaze",
+        "label": "Soul-Searching Blaze",
         "kind": "skill",
         "does": [],
-        "gameText": "When Phoenix is in the [Life Drain] state, the next time she switches in via standard swap, Quick Assist, or Defensive Assist, the following triggers upon entering the field:\nFlames swirl around her, dealing Fire DMG to nearby enemies, exiting the [Life Drain] state, restoring all HP consumed by [Ultimate: Radiance Through Ruin], and additionally restoring HP equal to 10% of her Max HP;\nWhen the Finishing Move hits an enemy afflicted with an Ice Attribute Anomaly, Ether Anomaly, Electric Attribute Anomaly, Fire Attribute Anomaly, Physical Attribute Anomaly, or Wind Attribute Anomaly, it triggers 1 instance of the [Abloom] effect, dealing Attribute Anomaly DMG of the corresponding attribute with a multiplier of (300 + 27 × (Basic Attack level − 1))%;\nWhen this [Abloom] effect triggers a critical hit, its CRIT DMG is further increased by 40%;\nWhen Phoenix enters the field in the [Life Drain] state via [Chain Attack: Snatched from the Brink] or [Ultimate: Radiance Through Ruin], the above HP Recovery and [Abloom] effects are also triggered;\nCharacter is invulnerable while using this skill. Press [Basic Attack button] to chain into the third stage of [Basic Attack]."
+        "gameText": "Triggered when Phoenix is in the Wither state, the next time she enters the field through a normal switch-in, Quick Assist, or Defensive Assist:\nPhoenix covers herself in flames, dealing Fire DMG to nearby enemies, and exits the Wither state. This damage is considered Ultimate DMG. She then recovers all HP consumed by Ultimate: Perpetual Resurrection, plus an additional 10% of her Max HP.\nWhen the Finishing Move hits an enemy affected by Ice Anomaly, Ether Anomaly, Electric Anomaly, Fire Anomaly, Physical Anomaly, or Wind Anomaly, it triggers 1 instance of Abloom, resolving the corresponding Attribute Anomaly at a (300 + 27 × (Chain Attack level − 1))% multiplier.\nWhen this Abloom effect triggers a critical hit, its CRIT DMG is increased by an additional 40%.\nWhen Phoenix enters the field via Chain Attack: Last-Minute Salvation or Ultimate: Perpetual Resurrection while in the Wither state, the HP recovery and Abloom effects described above are also triggered.\nCharacter is invulnerable while using this skill. Press [Basic Attack button] to follow up with the 3rd hit of a Basic Attack."
       },
       {
-        "id": "skill-quick-assist-first-aid",
-        "label": "Quick Assist: First Aid",
+        "id": "skill-quick-assist-emergency-aid",
+        "label": "Quick Assist: Emergency Aid",
         "kind": "skill",
         "does": [],
-        "gameText": "When the active character is launched, press [Switch button] to activate:\nDash forward and unleash a rapid slash, dealing Fire DMG.\nCharacter is invulnerable while using this skill. Press [Basic Attack button] to chain into the third hit of [Basic Attack]."
+        "gameText": "When the active character is launched, press [Switch button] to activate:\nDashes forward and unleashes a quick slash, dealing Fire DMG.\nCharacter is invulnerable while using this skill. Press [Basic Attack button] to follow up with the 3rd hit of a Basic Attack."
       },
       {
-        "id": "skill-defensive-assist-pain-is-the-best-teacher",
-        "label": "Defensive Assist: Pain Is the Best Teacher",
+        "id": "skill-defensive-assist-patient-turned-doctor",
+        "label": "Defensive Assist: Patient Turned Doctor",
         "kind": "skill",
         "does": [],
         "gameText": "When the on-field character is about to be attacked, press [Switch button] to activate:\nParries the enemy's attack, dealing massive Daze.\nCharacter is invulnerable while using this skill."
       },
       {
-        "id": "skill-assist-follow-up-regen-therapy",
-        "label": "Assist Follow-Up: Regen Therapy",
+        "id": "skill-assist-follow-up-regeneration-therapy",
+        "label": "Assist Follow-Up: Regeneration Therapy",
         "kind": "skill",
         "does": [],
-        "gameText": "Press [Basic Attack button] after a Defensive Assist to activate:\nHurl the weapon at enemies, then recall it to unleash a slash, dealing Fire DMG.\nCharacter is invulnerable while using this skill. Press [Basic Attack button] to chain into the third hit of Basic Attack."
+        "gameText": "Press [Basic Attack button] after a Defensive Assist to activate:\nThrows her weapon at the enemy, then recalls it and performs a slash, dealing Fire DMG.\nCharacter is invulnerable while using this skill. Press [Basic Attack button] to follow up with the 3rd hit of a Basic Attack."
       },
       {
         "id": "core-passive",
         "label": "Core Passive: Nirvana (Core Skill level 7)",
         "kind": "core",
         "does": [],
-        "gameText": "Phoenix's Anomaly Proficiency increases by 85 points.\nWhen any squad member deals Attribute Anomaly DMG to an enemy, that enemy enters the [Searing Corrosion] state for 20s. Repeated triggers refresh the duration. When an enemy in the [Searing Corrosion] state takes Attribute Anomaly DMG, it has a chance to trigger a critical hit, with a Base CRIT Rate of 30% and CRIT DMG of 25%. If Phoenix's initial Anomaly Mastery is greater than 155 points, each point of Anomaly Mastery beyond that increases this effect's CRIT Rate by an additional 0.7%.\nWhen Phoenix's initial Anomaly Mastery reaches 255 points, the CRIT Rate of Attribute Anomaly DMG dealt to enemies in the [Searing Corrosion] state reaches its maximum value.\nEvery 8s, enemies in the [Searing Corrosion] state take Fire DMG equal to 50% of Phoenix's ATK. This DMG is considered [EX Special Attack] DMG.\nWhile [Blazing Assault] is active, Phoenix's Anti-Interrupt Level increases, and dealing DMG restores [Pyreflame]. Phoenix can hold up to 120 points of [Pyreflame].\nAfter [Blazing Assault] is activated, press [Special Attack button] to skip the backstep action of [Special Attack: Flame Snatch] and [EX Special Attack: Blaze Cleave] and immediately follow up with an upward strike.\nWhen Phoenix takes fatal damage, she will not be defeated and withdraw from battle, and can trigger the [Rekindled Radiance] effect: the next time she enters the field via a normal swap, Quick Assist, or Defensive Assist, she restores 50% of her Max HP. In Withering Domain mode, this effect can trigger once every 1,200.\nWhen Phoenix triggers a Perfect Block effect, she gains 5 points of [Pyreflame]. This effect can trigger once every 10s.\nWhen Phoenix uses an [EX Special Attack], she enters the [Wax and Wane] state for 20s. When [Blazing Assault] hits an enemy or is applied again, the duration refreshes.\nWhile in the [Wax and Wane] state, after using [EX Special Attack: Dazzling Flare], the next [EX Special Attack: Dazzling Flare] will be replaced by [EX Special Attack: Falling Sun]."
+        "gameText": "Phoenix's Anomaly Proficiency increases by 85.\nWhen any squad member deals Anomaly DMG to an enemy, the enemy enters the Sear state for 20s. Repeated triggers reset the duration. When an enemy in the Sear state takes Anomaly DMG, the DMG has a chance to trigger a critical hit, with a base CRIT Rate of 30% and CRIT DMG of 25%. If Phoenix's initial Anomaly Mastery exceeds 155, each point above this threshold increases this effect's CRIT Rate by an additional 0.7%, reaching its maximum value when Phoenix's initial Anomaly Mastery reaches 255.\nEnemies in the Sear state take Fire DMG equal to 50% of Phoenix's ATK every 8s. This DMG is considered EX Special Attack DMG.\nDuring Combustion Attacks, Anti-Interrupt Level increases, and dealing DMG grants Pyre. Phoenix can have up to 120 Pyre.\nAfter Combustion Attacks, press [Special Attack button] to skip the backward retreat of Special Attack: Fire Sweep and EX Special Attack: Blazing Slash, and immediately follow up with the rising attack.\nWhen Phoenix takes fatal DMG, she will not be defeated and leave the field. Instead, Rebirth is triggered. The next time Phoenix enters the field through a normal switch-in, Quick Assist, or Defensive Assist, she recovers HP equal to 50% of her Max HP. In Investigation Zone Mode, this effect can trigger once every 1,200s.\nWhen Phoenix triggers a Perfect Block, she gains 5 Pyre. This effect can trigger once every 10s.\nWhen Phoenix uses an EX Special Attack, she enters the Wither and Bloom state for 20s. Hitting an enemy with a Combustion Attack or reapplying this state refreshes its duration.\nWhile in the Wither and Bloom state, after using EX Special Attack: Dazzling Flare, the next EX Special Attack: Dazzling Flare is replaced with EX Special Attack: Falling Sun."
       },
       {
         "id": "additional-ability",
         "label": "Additional Ability: Krampus Ace",
         "kind": "additional",
         "does": [],
-        "gameText": "Triggers when another [Anomaly] Character or a Character of the same Faction is in the squad:\nEnemies affected by [Scorch] take 15% increased CRIT DMG from Attribute Anomaly DMG."
+        "gameText": "When another character in your squad is an Anomaly character or shares the same faction:\nAnomaly DMG against enemies in the [term 1000048, not named in the game files] state gains 15% increased CRIT DMG."
       },
       {
         "id": "mindscape-1",
-        "label": "Mindscape 1: No name yet",
+        "label": "Mindscape 1: Lingering Pain and Thrilling Procession",
         "kind": "mindscape",
         "unlock": {
           "dupes": 1
         },
         "does": [],
-        "gameText": "Upon entering the battlefield, Phoenix gains 1 stack of [Ascension]. In Investigation Zone mode, this effect can trigger once every 180s;\nEnemies under [Scorch] take an additional 25% Attribute Anomaly CRIT DMG;\nWhen [Burning Attack] deals DMG, [Pyre Flame] acquisition efficiency increases by 15%."
+        "gameText": "Upon entering the battlefield, Phoenix gains 1 point of Ascension. In Investigation Zone mode, this effect can trigger once every 180s.\nThe CRIT DMG of Anomaly DMG dealt to enemies in the Sear state is increased by an additional 25%.\nWhen a Combustion Attack deals DMG, Pyre generation efficiency increases by 15%."
       },
       {
         "id": "mindscape-2",
-        "label": "Mindscape 2: No name yet",
+        "label": "Mindscape 2: Curiosity Won't Kill the Cat",
         "kind": "mindscape",
         "unlock": {
           "dupes": 2
         },
         "does": [],
-        "gameText": "When Phoenix inflicts [Burn] on an enemy, that effect's duration is increased by 2s;\nPhoenix's DMG dealt to enemies in the [Scorch] state is increased by 25%."
+        "gameText": "When Phoenix applies Burn to an enemy, its duration is increased by 2s.\nPhoenix's DMG against enemies in the Sear state increases by 30%."
       },
       {
         "id": "mindscape-3",
-        "label": "Mindscape 3: No name yet",
+        "label": "Mindscape 3: Scarecrow Complex",
+        "kind": "mindscape",
+        "unlock": {
+          "dupes": 3
+        },
+        "does": [],
+        "gameText": "Basic Attack, Dodge, Assist, Special Attack, and Chain Attack Lv. +2"
+      },
+      {
+        "id": "mindscape-4",
+        "label": "Mindscape 4: Life's End and the Heartless Wonderland",
+        "kind": "mindscape",
+        "unlock": {
+          "dupes": 4
+        },
+        "does": [],
+        "gameText": "When the Finishing Move of Soul-Searching Blaze or Basic Attack: Purifying Flame hits an enemy affected by an Attribute Anomaly, it triggers 1 additional instance of Abloom, resolving the corresponding Attribute Anomaly DMG at a fixed 600% multiplier."
+      },
+      {
+        "id": "mindscape-5",
+        "label": "Mindscape 5: Carnival of Madness",
+        "kind": "mindscape",
+        "unlock": {
+          "dupes": 5
+        },
+        "does": [],
+        "gameText": "Basic Attack, Dodge, Assist, Special Attack, and Chain Attack Lv. +2"
+      },
+      {
+        "id": "mindscape-6",
+        "label": "Mindscape 6: Notes From Confinement",
+        "kind": "mindscape",
+        "unlock": {
+          "dupes": 6
+        },
+        "does": [],
+        "gameText": "Phoenix ignores 15% of the targets' All-Attribute RES.\nWhen Phoenix uses EX Special Attack: Dazzling Flare, she gains 1 point of Ascension.\nAbloom effects triggered by Phoenix ignore 40% of enemy DEF."
+      }
+    ]
+  },
+  {
+    "characterId": "1661",
+    "source": "nanoka.cc",
+    "version": "3.4.1+19851435",
+    "beta": true,
+    "skills": [
+      {
+        "id": "skill-basic-attack-robin-attack",
+        "label": "Basic Attack: Robin Attack",
+        "kind": "skill",
+        "does": [],
+        "gameText": "Press [Basic Attack button] to activate:\nUnleashes up to 3 attacks forward, dealing Ether DMG;"
+      },
+      {
+        "id": "skill-dodge-robin-dodge",
+        "label": "Dodge: Robin Dodge",
+        "kind": "skill",
+        "does": [],
+        "gameText": "Press [Dodge button] to activate:\nA quick dash dodge.\nCharacter is invulnerable while using this skill."
+      },
+      {
+        "id": "skill-dash-attack-robin-dash",
+        "label": "Dash Attack: Robin Dash",
+        "kind": "skill",
+        "does": [],
+        "gameText": "Press [Basic Attack button] during a dodge to activate:\nPerform an attack forward, dealing Ether DMG."
+      },
+      {
+        "id": "skill-dodge-counter-robin-counter",
+        "label": "Dodge Counter: Robin Counter",
+        "kind": "skill",
+        "does": [],
+        "gameText": "Press [Basic Attack button] during a Perfect Dodge to activate:\nSwing the staff to attack enemies in front, dealing Ether DMG.\nCharacter is invulnerable while using this skill."
+      },
+      {
+        "id": "skill-special-attack-robin-exit",
+        "label": "Special Attack: Robin Exit",
+        "kind": "skill",
+        "does": [],
+        "gameText": "Press [Special Attack button] to activate:\nLeaps high into the air and unleashes an Energy Blast around her, dealing massive Ether DMG.\nDuring skill activation, Anti-Interrupt level increases, and DMG taken is reduced by 40%.\nAfter activation, triggers a Quick Assist. After switching out, Robin enters the [Off-Field Guard] state for 60s. Repeated triggers refresh the duration. Also grants all squad members a [Robin Shield] equal to 2% of Robin's initial Max HP, lasting 15s.\nWhile Robin is in the [Off-Field Guard] state, she can only be switched in via [Chain Attack], [Entry Skill], or [Counter Assist]. Switching her in ends the [Off-Field Guard] state.\nWhile [Off-Field Guard] is active, all squad members gain bonus DEF: when Robin's initial Max HP exceeds 16,000, every 1,000 additional HP grants (44 + 3 × Special Attack level) DEF, up to a maximum of (440 + 30 × Special Attack level) DEF. This effect lasts for another 15s after Robin's [Off-Field Guard] state ends."
+      },
+      {
+        "id": "skill-special-attack-aftershock",
+        "label": "Special Attack: Aftershock",
+        "kind": "skill",
+        "does": [],
+        "gameText": "While Robin is in the [Off-Field Guard] state, this skill triggers automatically when another active character in the squad lands any attack on an enemy:\nSwings her staff to attack forward, dealing Ether DMG;\nCharacter is invulnerable while using this skill;\nUpon activation, gains 20 [Entry Points] and grants all squad members a [Robin Shield] equal to 3% of Robin's initial Max HP, lasting 15s;\n[Special Attack: Aftershock] counts as an Aftershock and can be triggered at most once every 8s."
+      },
+      {
+        "id": "skill-ex-special-attack-enhanced-aftershock",
+        "label": "EX Special Attack: Enhanced Aftershock",
+        "kind": "skill",
+        "does": [],
+        "gameText": "When activating [Special Attack: Aftershock], if Energy is at least 40, it is upgraded to [EX Special Attack: Enhanced Aftershock]:\nContinuously consumes a total of 40 Energy to fire a powerful laser forward, dealing massive Ether DMG;\nRobin's heavy attacks deal additional DMG equal to (21.4 + 2.8 × Special Attack level)% of her Max HP;\nCharacter is invulnerable while using this skill;\nUpon activation, gains 20 [Entry Points] and grants all squad members a [Robin Shield] equal to 6% of her initial Max HP, lasting 15s;\n[EX Special Attack: Enhanced Aftershock] counts as an Aftershock."
+      },
+      {
+        "id": "skill-chain-attack-robin-chain-attack",
+        "label": "Chain Attack: Robin Chain Attack",
+        "kind": "skill",
+        "does": [],
+        "gameText": "When a Chain Attack is triggered, select the character to activate:\nFires a powerful laser forward, dealing massive Ether DMG.\nCharacter is invulnerable while using this skill."
+      },
+      {
+        "id": "skill-ultimate-robin-ultimate",
+        "label": "Ultimate: Robin Ultimate",
+        "kind": "skill",
+        "does": [],
+        "gameText": "When Decibel Rating is at Maximum, press [Ultimate button] to activate:\nChannels powerful energy through song to unleash a devastating blast, dealing massive Ether DMG.\nCharacter is invulnerable while using this skill.\nUpon activation, converts 40% of each squad Agent's [Robin Shield] into their own HP."
+      },
+      {
+        "id": "skill-entry-skill-robin-entrance",
+        "label": "Entry Skill: Robin Entrance",
+        "kind": "skill",
+        "does": [],
+        "gameText": "When at 100 or more [Entry Points], switching this character on field or holding [Basic Attack button] consumes 100 [Entry Points] to activate:\nUnleashes an Energy blast at enemies in front, dealing massive Ether DMG.\nActivating this skill counts as activating a [Quick Assist].\nProvides all squad members with a [Robin Shield] equal to 4% of this character's initial Max HP, lasting 20s."
+      },
+      {
+        "id": "skill-quick-assist-robin-assist",
+        "label": "Quick Assist: Robin Assist",
+        "kind": "skill",
+        "does": [],
+        "gameText": "When the active character is launched, press [Switch button] to activate:\nSwing the staff to attack enemies in front, dealing Ether DMG.\nCharacter is invulnerable while using this skill."
+      },
+      {
+        "id": "skill-defensive-assist-robin-defensive-assist",
+        "label": "Defensive Assist: Robin Defensive Assist",
+        "kind": "skill",
+        "does": [],
+        "gameText": "When the on-field character is about to be attacked, press [Switch button] to activate:\nParries the enemy's attack, dealing massive Daze.\nCharacter is invulnerable while using this skill."
+      },
+      {
+        "id": "skill-assist-follow-up-robin-assist-follow-up",
+        "label": "Assist Follow-Up: Robin Assist Follow-Up",
+        "kind": "skill",
+        "does": [],
+        "gameText": "Press [Basic Attack button] after a Defensive Assist to activate:\nSwing the staff to attack enemies in front, dealing Ether DMG.\nCharacter is invulnerable while using this skill."
+      },
+      {
+        "id": "skill-counter-assist-robin-counter",
+        "label": "Counter Assist: Robin Counter",
+        "kind": "skill",
+        "does": [],
+        "gameText": "When you or the on-field character is about to be hit by certain enemies' Control Skills, press [Switch button] to activate:\nEngage in a power clash with the monster. If successful, neutralize the enemy's Control Skill and deal Ether DMG.\nCharacter is invulnerable while using this skill."
+      },
+      {
+        "id": "skill-assist-follow-up-grapple-assault",
+        "label": "Assist Follow-Up: Grapple Assault",
+        "kind": "skill",
+        "does": [],
+        "gameText": "After using a Counter Assist, press [Basic Attack button] to activate [Assist Follow-Up], which automatically triggers:\nDeals massive Ether DMG;\nCharacter is invulnerable while using this skill."
+      },
+      {
+        "id": "skill-assist-follow-up-grappling-synergy-strike",
+        "label": "Assist Follow-Up: Grappling Synergy Strike",
+        "kind": "skill",
+        "does": [],
+        "gameText": "Press [Basic Attack button] after other squad members activate a Counter Assist to activate:\nFire a powerful laser forward, dealing massive Ether DMG.\nCharacter is invulnerable while using this skill."
+      },
+      {
+        "id": "core-passive",
+        "label": "Core Passive: (Core Skill level 7)",
+        "kind": "core",
+        "does": [],
+        "gameText": "When Robin uses certain skills, she grants all squad members a [Robin Shield] equal to a set percentage of her initial Max HP, lasting 15s. When a character gains [Robin Shield] again, the shield value stacks and its duration is extended, up to a maximum of 60s. The shield value cannot exceed 8% of Robin's initial Max HP.\nEach time a squad member gains [Robin Shield], their DMG is increased by 25% for 15s. Repeated triggers refresh the duration.\nUsing [Special Attack: Step Up] triggers a Quick Assist. After switching out, Robin enters the [Off-Field Guard] state for 60s. While in [Off-Field Guard], Robin gains [Entry Points] when her Aftershock is triggered, up to a maximum of 120 points.\nWhen Robin has 100 or more [Entry Points], she can be manually switched in via her [Entry Skill]. Switching in automatically consumes 100 [Entry Points] to activate the [Entry Skill] and ends the [Off-Field Guard] state.\nWhen Robin uses her [Entry Skill], she gains 1 [Buff Enhance Point], up to a maximum of 1.\nUpon entering the [Off-Field Guard] state, if Robin has a [Buff Enhance Point], she consumes 1 [Buff Enhance Point] to further increase the DEF bonus provided by [Off-Field Guard] and its cap by 25%.\nEach time a squad member triggers Maim, Robin recovers 15 Energy."
+      },
+      {
+        "id": "additional-ability",
+        "label": "Additional Ability:",
+        "kind": "additional",
+        "does": [],
+        "gameText": "Triggers when another character in your squad is an [Armorer] or [Stun] Character:\nUpon entering the battlefield, gain 1 [Buff Enhance Point]. In Domain Mode, this effect can trigger once every 180s."
+      },
+      {
+        "id": "mindscape-1",
+        "label": "Mindscape 1: PlaceHolder",
+        "kind": "mindscape",
+        "unlock": {
+          "dupes": 1
+        },
+        "does": [],
+        "gameText": "Each time Robin consumes [Enhance Buff Points], all squad members gain 20% Laceration DMG for 60s. Repeated triggers refresh the duration. When consuming [Enhance Buff Points], Robin gains 1 stack of [Feather Defense]. When the on-field character takes DMG, Robin consumes 1 stack of [Feather Defense] to make them briefly Invulnerable."
+      },
+      {
+        "id": "mindscape-2",
+        "label": "Mindscape 2: PlaceHolder",
+        "kind": "mindscape",
+        "unlock": {
+          "dupes": 2
+        },
+        "does": [],
+        "gameText": "When Robin triggers an [Aftershock], DMG dealt by all squad members ignores 12% of the enemy's RES for 15s. Repeated triggers refresh the duration. Squad members with [Robin Shield] gain increased Anti-Interrupt level."
+      },
+      {
+        "id": "mindscape-3",
+        "label": "Mindscape 3: PlaceHolder",
         "kind": "mindscape",
         "unlock": {
           "dupes": 3
@@ -11996,7 +12480,7 @@
           "dupes": 4
         },
         "does": [],
-        "gameText": "When the Finishing Move of [Ultimate: Myriad Deaths, Light Rekindled], [Ultimate: Cinderfire Soulchase], [Chain Attack: Against All Odds], or [Basic Attack: Sinburn] hits an enemy afflicted with an Anomaly,\ntrigger one additional [Abloom] effect, dealing a fixed 600% multiplier of the corresponding attribute's Attribute Anomaly DMG."
+        "gameText": "TestKey_PlaceHolder"
       },
       {
         "id": "mindscape-5",
@@ -12006,7 +12490,7 @@
           "dupes": 5
         },
         "does": [],
-        "gameText": "Basic Attack, Dodge, Assist, Special Attack, and Chain Attack Lv. +2"
+        "gameText": "TestKey_PlaceHolder"
       },
       {
         "id": "mindscape-6",
@@ -12016,7 +12500,7 @@
           "dupes": 6
         },
         "does": [],
-        "gameText": "Phoenix ignores 15% of the target's All-Attribute RES;\nWhen Phoenix uses [EX Special Attack: Dazzling Blaze], she gains the [Ascension] effect;\nThe [Abloom] effect triggered by Phoenix ignores 40% of the enemy's DEF."
+        "gameText": "TestKey_PlaceHolder"
       }
     ]
   }

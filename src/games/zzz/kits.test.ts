@@ -36,9 +36,10 @@ describe('ZZZ kit text', () => {
     const groupG = ['1031', '1131', '1191', '1241', '1251', '1271', '1321']; // Nicole, Soukaku, Ellen, Zhu Yuan, Qingyi, Seth, Evelyn
     const groupH = ['1071', '1101', '1301', '1361', '1381', '1551', '1591']; // Caesar, Koleda, Orphie & Magus, Trigger, Soldier 0 - Anby, Pyrois, Sigrid
     const groupI = ['1011', '1021', '1041', '1061', '1081', '1121', '1631', '1641']; // Anby, Nekomata, Soldier 11, Corin, Billy, Ben, Severian, Phoenix
-    expect(kits.map((k) => k.characterId).sort()).toEqual([...groupA, ...groupB, ...groupC, ...groupD, ...groupE, ...groupF, ...groupG, ...groupH, ...groupI].sort());
-    // The two not released yet are read from the beta files and say so.
-    expect((kits as { characterId: string; beta?: boolean }[]).filter((k) => k.beta).map((k) => k.characterId)).toEqual(['1631', '1641']);
+    const leaks = ['1601', '1661']; // Sunbringer, Robin: kit text only, no sheet read yet
+    expect(kits.map((k) => k.characterId).sort()).toEqual([...groupA, ...groupB, ...groupC, ...groupD, ...groupE, ...groupF, ...groupG, ...groupH, ...groupI, ...leaks].sort());
+    // The leaks are read from the beta files and say so; Severian (out 11 Nov) is already in the 3.3 release files.
+    expect((kits as { characterId: string; beta?: boolean }[]).filter((k) => k.beta).map((k) => k.characterId).sort()).toEqual(leaks);
   });
 
   it('released agents are read from the live version, not beta text', () => {

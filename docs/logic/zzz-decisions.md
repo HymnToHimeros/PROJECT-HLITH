@@ -158,6 +158,10 @@ team size and order, and the owner's ZZZ method's own counting.
 44. **Phoenix (beta)**: her "Scorch" is read as a state on the enemy and
     counted; her text never says what applies it. Beta text can change: she is
     re-read on release, as the method says.
+    Re-read on release (3.3): the beta's "Scorch" is Sear, which her Core
+    Passive applies when any squad member deals Anomaly DMG. Her Additional
+    Ability names a state the game files leave blank (term 1000048). It is
+    still read as a state on the enemy, and its name isn't guessed.
 
 ## Materials (step 4)
 45. **Costs come from nanoka.cc** (ascension, every skill level, Core Skill,
