@@ -82,10 +82,14 @@ for (const game of GAMES) {
   findings.push(...r.findings);
 }
 
-const failed = all('failed').map((f) => {
+// findings-intake takes each job once per delivery: two failures of the same job (e.g. the kit import and
+// the check) become one entry with both messages.
+const failedBy = new Map<string, string[]>();
+for (const f of all('failed')) {
   const [job = '', ...rest] = f.split(':');
-  return { job: job.trim(), message: rest.join(':').trim().slice(0, 500) };
-});
+  failedBy.set(job.trim(), [...(failedBy.get(job.trim()) ?? []), rest.join(':').trim()]);
+}
+const failed = [...failedBy].map(([job, messages]) => ({ job, message: messages.join('; ').slice(0, 500) }));
 const failedJobs = new Set(failed.map((f) => f.job));
 const next = arg('next');
 const intake = {

@@ -27,7 +27,7 @@ const MANIFEST = 'https://static.nanoka.cc/manifest.json';
  * nanoka.cc's manifest names: beta files can be mid-rewrite (Roxy's 3.3.4 text
  * was blank in places).
  */
-const VERSION = '3.3.4+19304006';
+const VERSION = '3.4.1+19851435';
 
 /** Kit text is imported for these groups only, in this order. Add the next group here once the last one is read. */
 const GROUPS: Record<string, string[]> = {
@@ -64,6 +64,7 @@ const ICON: Record<string, string> = {
   Icon_SpecialReady_Rp: 'EX Special Attack button',
   Icon_SpecialReady_Ep: 'EX Special Attack button',
   Icon_Evade: 'Dodge button',
+  Icon_Dash: 'Dodge button', // Robin (3.4 beta): "Dodge: Robin Dodge — Press <Icon_Dash> to activate: A quick dash dodge"
   Icon_Switch: 'Switch button',
   Icon_UltimateReady: 'Ultimate button',
 };
@@ -152,12 +153,23 @@ function formula(expr: string, mult: number, decimals: number, who: string): str
   throw new Error(`Unrecognised formula "${expr}" for ${who}. Teach formula() in scripts/import-nanoka-kits.ts.`);
 }
 
+/**
+ * A term the files leave blank in every language and that no file names (Phoenix's 3.3 kit: terms
+ * 1000047–1000049): shown as not named instead of guessed, with a warning so it gets a TERM entry
+ * once a source names it.
+ */
+const unnamed = (id: string, who: string) => {
+  console.warn(`  ${who}: glossary term ${id} has no name in the game files; shown as not named`);
+  return `[term ${id}, not named in the game files]`;
+};
+const termName = (id: string, who: string) => TERM[id] || NAMED_TERMS.get(id) || unnamed(id, who);
+
 /** Game text with its markup turned into plain words. Exported for the tests. */
 export function plainText(raw: string, who: string): string {
   let t = stripTags(raw, ['color'])
-    .replace(/<Term:(\d+)>([^<]*)<\/Term>/g, (_m, id: string, word: string) => word || TERM[id] || NAMED_TERMS.get(id) || need(TERM, id, 'glossary term', who))
+    .replace(/<Term:(\d+)>([^<]*)<\/Term>/g, (_m, id: string, word: string) => word || termName(id, who))
     // A tag the file never closes (Severian's beta Entry Skill): the same name.
-    .replace(/<Term:(\d+)>/g, (_m, id: string) => TERM[id] || NAMED_TERMS.get(id) || need(TERM, id, 'glossary term', who))
+    .replace(/<Term:(\d+)>/g, (_m, id: string) => termName(id, who))
     .replace(/<IconMap:([A-Za-z_]+)>/g, (_m, icon: string) => `[${need(ICON, icon, 'button icon', who)}]`)
     .replace(/\{LAYOUT_[A-Z]+#[^}]*\}(?=\{LAYOUT_)/g, '')
     .replace(/\{LAYOUT_FALLBACK#([^}]*)\}/g, '$1')
