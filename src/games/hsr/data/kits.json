@@ -13142,7 +13142,7 @@
   {
     "characterId": "1511",
     "source": "nanoka.cc",
-    "version": "4.6.53",
+    "version": "4.6.54",
     "skills": [
       {
         "id": "skill-basic-atk-starfrost-showtime",
@@ -13177,7 +13177,7 @@
         "label": "Technique: ABRACADABRA!",
         "kind": "skill",
         "does": [],
-        "gameText": "After using the Technique, creates a Special Dimension around this unit lasting 20 second(s). Enemies within the Special Dimension are inflicted with \"Misjudgment.\" Enemies inflicted with \"Misjudgment\" cannot detect ally targets. After entering combat, Aha immediately gains 1 extra turn that adds a fixed 20 Punchline to the count. Only 1 dimension effect created by allies can exist at the same time."
+        "gameText": "After using the Technique, creates a Special Dimension around this unit lasting 20 second(s). Enemies within the Special Dimension are inflicted with \"Misjudgment.\" Enemies inflicted with \"Misjudgment\" cannot detect ally targets. After entering combat, Aha immediately gains 1 extra turn that takes a fixed 20 Punchline into account. Only 1 dimension effect created by allies can exist at the same time."
       },
       {
         "id": "skill-elation-skill-yes-aha-at-full-moon",
