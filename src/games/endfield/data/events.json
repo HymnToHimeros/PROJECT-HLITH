@@ -1094,9 +1094,13 @@
     "title": "Yuanyuan's Blazing Stoves",
     "kind": "event",
     "start": "2026-10-15T04:00:00.000Z",
-    "end": "2026-11-25T22:00:00.000Z",
+    "end": "2026-11-24T22:00:00.000Z",
     "reward": 1000,
-    "currency": "oroberyl"
+    "currency": "oroberyl",
+    "serverTime": {
+      "base": 8,
+      "end": true
+    }
   },
   {
     "id": "carly-s-verdant-anthology-2026-10-22",
@@ -1119,6 +1123,20 @@
     "start": "2026-10-22T04:00:00.000Z",
     "end": "2026-11-04T22:00:00.000Z",
     "reward": 1200,
+    "currency": "oroberyl",
+    "serverTime": {
+      "base": 8,
+      "start": true,
+      "end": true
+    }
+  },
+  {
+    "id": "contingency-readiness-2026-10-28",
+    "title": "Contingency Readiness",
+    "kind": "event",
+    "start": "2026-10-28T20:00:00.000Z",
+    "end": "2026-11-04T20:00:00.000Z",
+    "reward": null,
     "currency": "oroberyl",
     "serverTime": {
       "base": 8,
