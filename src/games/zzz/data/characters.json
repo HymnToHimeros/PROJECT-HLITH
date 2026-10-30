@@ -646,7 +646,7 @@
     "art": "https://static.nanoka.cc/assets/zzz/IconRole1601.webp",
     "source": "nanoka.cc",
     "leak": {
-      "source": "nanoka.cc, game files of build 3.4.1+19851435 (live is 3.3)"
+      "source": "nanoka.cc, game files of build 3.4.1+19997538 (live is 3.3)"
     }
   },
   {
@@ -693,14 +693,14 @@
   },
   {
     "id": "1661",
-    "name": "Robin",
+    "name": "Avatar_Female_Size02_Robin",
     "rarity": "top",
     "element": "ether",
     "role": "defense",
     "art": "https://static.nanoka.cc/assets/zzz/IconRole1661.webp",
     "source": "nanoka.cc",
     "leak": {
-      "source": "nanoka.cc, game files of build 3.4.1+19851435 (live is 3.3)"
+      "source": "nanoka.cc, game files of build 3.4.1+19997538 (live is 3.3)"
     }
   }
 ]

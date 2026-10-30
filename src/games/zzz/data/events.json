@@ -595,6 +595,20 @@
     }
   },
   {
+    "id": "shiyu-defense-critical-node-2026-10-30",
+    "title": "Shiyu Defense: Critical Node",
+    "kind": "endgame",
+    "start": "2026-10-29T20:00:00.000Z",
+    "end": "2026-11-12T19:59:59.000Z",
+    "reward": 780,
+    "currency": "polychrome",
+    "serverTime": {
+      "base": 8,
+      "start": true,
+      "end": true
+    }
+  },
+  {
     "id": "advanced-bounty-area-patrol-2026-11-04",
     "title": "Advanced Bounty: Area Patrol",
     "kind": "bonus",
