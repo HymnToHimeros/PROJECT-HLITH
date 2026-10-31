@@ -40,10 +40,13 @@ Deno.serve(async (req) => {
       } else {
         codes[gameBiz] = `list answered ${res.status}`;
       }
-    } catch {
-      codes[gameBiz] = 'list unreachable';
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : String(e);
+      codes[gameBiz] = msg.includes('codes failed') || msg.includes('known codes') ? `save error: ${msg}` : 'list unreachable';
     }
   }
+
+  const saveErrors = Object.entries(codes).filter(([, v]) => typeof v === 'string' && v.startsWith('save error:'));
 
   let redeemed: { redemptions: number; stoppedEarly: boolean } | undefined;
   if (anyFresh > 0) {
@@ -52,5 +55,5 @@ Deno.serve(async (req) => {
       if (summary) redeemed = { redemptions: summary.redemptions, stoppedEarly: summary.stoppedEarly };
     } catch { /* redemption failure is non-fatal for the code list refresh */ }
   }
-  return json({ ok: true, at: new Date().toISOString(), codes, freshCodes: anyFresh, ...(redeemed ? { redeemed } : {}) });
+  return json({ ok: saveErrors.length === 0, at: new Date().toISOString(), codes, freshCodes: anyFresh, ...(redeemed ? { redeemed } : {}), ...(saveErrors.length > 0 ? { error: saveErrors.map(([g, m]) => `${g}: ${m}`).join('; ') } : {}) });
 });
