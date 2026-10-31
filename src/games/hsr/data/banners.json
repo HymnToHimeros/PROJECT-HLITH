@@ -484,5 +484,120 @@
       "start": true,
       "end": true
     }
+  },
+  {
+    "id": "a-comedy-of-stars-2026-11-11",
+    "type": "character",
+    "title": "A Comedy of Stars",
+    "featured": [
+      "1511",
+      "1009",
+      "1110",
+      "1207"
+    ],
+    "start": "2026-11-11T03:00:00.000Z",
+    "end": "2026-12-22T07:00:00.000Z",
+    "serverTime": {
+      "base": 8,
+      "end": true
+    }
+  },
+  {
+    "id": "brilliant-fixation-2026-11-11",
+    "type": "light-cone",
+    "title": "Brilliant Fixation",
+    "featured": [
+      "23065",
+      "21016",
+      "21020",
+      "21047"
+    ],
+    "start": "2026-11-11T03:00:00.000Z",
+    "end": "2026-12-22T07:00:00.000Z",
+    "serverTime": {
+      "base": 8,
+      "end": true
+    },
+    "art": "https://static.nanoka.cc/assets/hsr/lightconemaxfigures/23065.webp"
+  },
+  {
+    "id": "coalesced-truths-2026-11-11",
+    "type": "character",
+    "title": "Coalesced Truths",
+    "featured": [
+      "23057",
+      "23053",
+      "23054",
+      "21016",
+      "21020",
+      "21047"
+    ],
+    "start": "2026-11-11T03:00:00.000Z",
+    "end": "2026-12-02T03:59:00.000Z",
+    "serverTime": {
+      "base": 8,
+      "end": true
+    },
+    "art": "https://static.nanoka.cc/assets/hsr/lightconemaxfigures/23057.webp"
+  },
+  {
+    "id": "indelible-coterie-2026-11-11",
+    "type": "character",
+    "title": "Indelible Coterie",
+    "featured": [
+      "1506",
+      "1501",
+      "1502",
+      "1009",
+      "1110",
+      "1207"
+    ],
+    "start": "2026-11-11T03:00:00.000Z",
+    "end": "2026-12-02T03:59:00.000Z",
+    "serverTime": {
+      "base": 8,
+      "end": true
+    }
+  },
+  {
+    "id": "coalesced-truths-2026-12-02",
+    "type": "character",
+    "title": "Coalesced Truths",
+    "featured": [
+      "23024",
+      "23015",
+      "23010",
+      "21016",
+      "21020",
+      "21047"
+    ],
+    "start": "2026-12-02T04:00:00.000Z",
+    "end": "2026-12-22T07:00:00.000Z",
+    "serverTime": {
+      "base": 8,
+      "start": true,
+      "end": true
+    },
+    "art": "https://static.nanoka.cc/assets/hsr/lightconemaxfigures/23024.webp"
+  },
+  {
+    "id": "indelible-coterie-2026-12-02",
+    "type": "character",
+    "title": "Indelible Coterie",
+    "featured": [
+      "1308",
+      "1213",
+      "1204",
+      "1009",
+      "1110",
+      "1207"
+    ],
+    "start": "2026-12-02T04:00:00.000Z",
+    "end": "2026-12-22T07:00:00.000Z",
+    "serverTime": {
+      "base": 8,
+      "start": true,
+      "end": true
+    }
   }
 ]

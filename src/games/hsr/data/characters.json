@@ -954,9 +954,7 @@
     "art": "https://static.nanoka.cc/assets/hsr/avatardrawcard/1511.webp",
     "portrait": "https://static.nanoka.cc/assets/hsr/avatarshopicon/1511.webp",
     "source": "nanoka.cc",
-    "leak": {
-      "source": "name: HoYoverse character preview, 15 Sep 2026; kit and details: nanoka.cc, game files of build 4.6.54 (live is 4.6)"
-    }
+    "releasedAt": "2026-11-11T04:00:00.000Z"
   },
   {
     "id": "1512",
