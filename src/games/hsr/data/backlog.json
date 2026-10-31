@@ -3,8 +3,8 @@
     "id": "hsr.main-story",
     "category": "story",
     "title": "Trailblaze Missions (main story)",
-    "total": 26,
-    "reward": 11100,
+    "total": 27,
+    "reward": 11180,
     "currency": "stellar-jade",
     "steps": [
       "Herta Space Station: Today Is Yesterday's Tomorrow",
@@ -32,7 +32,8 @@
       "Planarcadia: The Lethe Below the Living",
       "Planarcadia: In Ravages Does the Whistle Sound",
       "Planarcadia: To Roll the Stars in Astropolis",
-      "Planarcadia: Dance With the Beast Before Moonrise"
+      "Planarcadia: Dance With the Beast Before Moonrise",
+      "Planarcadia: Now, Lay Laughter to All Stars"
     ],
     "note": "Chapters from honkai-star-rail.fandom.com/wiki/Trailblaze_Mission; Stellar Jade is the sum of the 193 missions' rewards on their wiki pages."
   }
