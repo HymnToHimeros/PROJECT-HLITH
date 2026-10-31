@@ -15,6 +15,7 @@ export interface Query extends PromiseLike<Answer> {
   select(columns: string): Query;
   insert(row: object): Query;
   upsert(rows: object[], options?: object): Query;
+  update(patch: object): Query;
   eq(column: string, value: unknown): Query;
   in(column: string, values: unknown[]): Query;
   is(column: string, value: null): Query;
@@ -91,10 +92,8 @@ export async function saveCodeList(db: Db, gameBiz: GameBiz, list: { code: strin
     if (a.error) throw new Error(`Saving the code list failed: ${a.error.message}`);
   }
   if (knownList.length > 0) {
-    const a = await db.from('hoyolab_codes').upsert(
-      knownList.map((c) => ({ game_biz: gameBiz, code: c.code, last_seen: nowIso })),
-      { onConflict: 'game_biz,code' },
-    );
+    const knownCodes = knownList.map((c) => c.code);
+    const a = await db.from('hoyolab_codes').update({ last_seen: nowIso }).eq('game_biz', gameBiz).in('code', knownCodes);
     if (a.error) throw new Error(`Refreshing known codes failed: ${a.error.message}`);
   }
   return { total: list.length, fresh: freshList.length };

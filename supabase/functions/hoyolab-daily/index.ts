@@ -45,10 +45,13 @@ Deno.serve(async (req) => {
       } else {
         codes[gameBiz] = `list answered ${res.status}`;
       }
-    } catch {
-      codes[gameBiz] = 'list unreachable';
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : String(e);
+      codes[gameBiz] = msg.includes('codes failed') || msg.includes('known codes') ? `save error: ${msg}` : 'list unreachable';
     }
   }
+
+  const saveErrors = Object.entries(codes).filter(([, v]) => typeof v === 'string' && v.startsWith('save error:'));
 
   // 2. Saved accounts with a switch on. Free-plan functions stop after 150 s, so new work
   // stops at 120 s; whatever is left is picked up by the next run.
@@ -61,7 +64,7 @@ Deno.serve(async (req) => {
       maxRedemptions: 15,
       jobs: (l) => ({ checkin: l.auto_checkin, redeem: l.auto_redeem }),
     });
-    return json({ ok: true, at: new Date(started).toISOString(), accounts: links.length, codes, ...summary });
+    return json({ ok: saveErrors.length === 0, at: new Date(started).toISOString(), accounts: links.length, codes, ...summary, ...(saveErrors.length > 0 ? { error: saveErrors.map(([g, m]) => `${g}: ${m}`).join('; ') } : {}) });
   } catch (e) {
     return json({ error: e instanceof Error ? e.message : 'Run failed.', codes }, 500);
   }
