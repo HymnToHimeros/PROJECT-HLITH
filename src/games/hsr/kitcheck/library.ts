@@ -110,11 +110,13 @@ const readPieces = (s: CharacterSheet) => new Set([...s.entries.map((e) => e.pie
 
 export function buildLibrary(sheets: CharacterSheet[] = SHEETS, kitList: Kit[] = KITS, teams: TeamPreset[] = gameTeams as TeamPreset[]): Library {
   const leaks = new Map((characters as { id: string; leak?: { source: string } }[]).flatMap((c) => (c.leak ? [[c.id, c.leak.source] as const] : [])));
-  // T43: a leak's sheet whose beta text changed is not used until it is read again.
+  // T43: a sheet read from beta text (a leak, or announced but not out yet) whose text changed is not used until it
+  // is read again.
   const stale = new Map(
     sheets.flatMap((s) => {
-      if (!leaks.has(s.characterId)) return [];
-      const why = staleReason(sheetQuotes(s), readPieces(s), kitList.find((k) => k.characterId === s.characterId)?.skills);
+      const kit = kitList.find((k) => k.characterId === s.characterId);
+      if (!leaks.has(s.characterId) && !kit?.beta) return [];
+      const why = staleReason(sheetQuotes(s), readPieces(s), kit?.skills);
       return why ? [[s.characterId, why] as const] : [];
     }),
   );
