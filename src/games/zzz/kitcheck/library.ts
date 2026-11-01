@@ -63,6 +63,7 @@ export function buildLibrary(sheets: CharacterSheet[] = SHEETS, kitList: Kit[] =
     }),
   );
   sheets = sheets.filter((s) => !stale.has(s.characterId));
+  const beta = new Map(kitList.flatMap((k) => (k.beta && !leaks.has(k.characterId) ? [[k.characterId, k.version ? `beta build ${k.version}` : 'beta build'] as const] : [])));
   return {
     profiles: new Map((profiles as Profile[]).map((p) => [p.characterId, p])),
     sheets: new Map(sheets.map((s) => [s.characterId, s])),
@@ -75,6 +76,7 @@ export function buildLibrary(sheets: CharacterSheet[] = SHEETS, kitList: Kit[] =
     pieceLabels: new Map(kitList.map((k) => [k.characterId, new Map(k.skills.map((s) => [s.id, s.label] as const))])),
     names: new Map(characters.map((c) => [c.id, c.name])),
     leaks,
+    ...(beta.size ? { beta } : {}),
     ...(stale.size ? { stale } : {}),
     weapons: weaponLibrary(sheets),
   };

@@ -16,7 +16,7 @@ import { assumedLine, assumedWords } from '../../../core/rules/averageBuild';
 import { assume } from '../assumed';
 import { explainTeam, memberPhrase } from '../../../core/rules/teamExplain';
 import { countWords, percentOf, timesWords, typicalNote, VALUE_NOTE } from '../../../core/rules/kitValue';
-import { leakLines, usable } from '../../../core/rules/leaks';
+import { betaKitLines, betaLines, leakLines, usable } from '../../../core/rules/leaks';
 
 export const METHOD = 'ZZZ Kit Check method (docs/logic/zzz-method.md)';
 /** Partners kept per damage dealer before trios are tried, once the pool is bigger than this (method: Line-ups step 2). */
@@ -134,8 +134,8 @@ export function verdict(members: string[], a: TeamAccount, lib: Library = librar
   const typical = typicalNote(mine.lines, name);
   if (typical) notes.push(typical);
   const assumedNote = assumedLine(mine.order, a, name);
-  // T39: a leak in the squad says so (ZZZ has no game team lists to lack, so only the leak line).
-  const leakNote = leakLines(mine.order, lib.leaks, name);
+  // T39: a leak in the squad says so, and so does anyone not out yet (ZZZ has no game team lists to lack).
+  const leakNote = betaKitLines(mine.order, lib, name);
   // T34's assumed builds, then T39's leak lines: in the notes and at the end of the plain words.
   const extraNotes = [...(assumedNote ? [assumedNote] : []), ...leakNote];
   notes.push(...extraNotes);
@@ -195,8 +195,8 @@ export function whoFits(members: string[], a: TeamAccount, lib: Library = librar
     const signature = sigId && sigLabel ? { id: sigId, name: sigLabel.replace(/^Signature [^:]+: /, '').replace(/ · .*$/, '') } : undefined;
     const equipped = equippedFact(c, a, lib);
     const { notes, theory } = accountNotes(c, a, { dupePrefix: 'M', ...(hasTrack ? { track: 'Agent Potential', trackLevels: true } : {}), locked, ...(signature ? { signature } : {}), ...(equipped ? { equipped } : {}) });
-    // T39: a leak is never owned, so it only shows as theory, marked unverified.
-    const leak = leakLines([c], lib.leaks, (x) => lib.names.get(x) ?? x);
+    // T39: a leak is never owned, so it only shows as theory, marked unverified; anyone not out yet is marked too.
+    const leak = betaKitLines([c], lib, (x) => lib.names.get(x) ?? x);
     out.push({ id: c, count: r.count, how, withEveryone, percent, fromAccount: [...leak, ...notes], theory });
   }
   return out.sort((x, y) => (y.percent ?? 0) - (x.percent ?? 0) || Number(y.withEveryone) - Number(x.withEveryone) || y.count - x.count);
@@ -279,6 +279,7 @@ export function ifYouPull(id: string, a: TeamAccount, lib: Library = library()):
   if (!why.length) why.push('No gain: no team of yours gets a higher kit value with them.');
   // T39: a leak says so first.
   if (lib.leaks?.has(id)) why.unshift(...leakLines([id], lib.leaks, name));
+  else why.unshift(...betaLines([id], lib.beta, name));
   return { percent, why };
 }
 

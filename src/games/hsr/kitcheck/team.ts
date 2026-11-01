@@ -17,7 +17,7 @@ import { assumedLine, assumedWords } from '../../../core/rules/averageBuild';
 import { assume } from '../assumed';
 import { explainTeam, memberPhrase } from '../../../core/rules/teamExplain';
 import { countWords, percentOf, timesWords, typicalNote, VALUE_NOTE } from '../../../core/rules/kitValue';
-import { leakLines, noListLine, usable } from '../../../core/rules/leaks';
+import { betaKitLines, betaLines, leakLines, noListLine, usable } from '../../../core/rules/leaks';
 
 export const METHOD = 'HSR Kit Check theory v2 (docs/logic/hsr-theory.md)';
 /** Partners kept per damage dealer before teams of four are tried, once the pool is bigger than this. */
@@ -195,8 +195,8 @@ export function verdict(members: string[], a: TeamAccount, lib: Library = librar
   const typical = typicalNote(mine.lines.filter((l) => !l.forDd), name);
   if (typical) notes.push(typical);
   const assumedNote = assumedLine(mine.members, a, name);
-  // T39: a leak in the team says so; a leaked carry has no game team list yet.
-  const leakNote = [...leakLines(mine.members, lib.leaks, name), ...(lib.leaks?.has(mine.dd) && !lib.ownTeams.get(mine.dd)?.length ? [noListLine(name(mine.dd))] : [])];
+  // T39: a leak in the team says so, and so does anyone not out yet (beta kit text); a leaked carry has no game team list yet.
+  const leakNote = [...betaKitLines(mine.members, lib, name), ...(lib.leaks?.has(mine.dd) && !lib.ownTeams.get(mine.dd)?.length ? [noListLine(name(mine.dd))] : [])];
   // T34's assumed builds, then T39's leak lines: in the notes and at the end of the plain words.
   const extraNotes = [...(assumedNote ? [assumedNote] : []), ...leakNote];
   notes.push(...extraNotes);
@@ -291,8 +291,8 @@ export function whoFits(members: string[], a: TeamAccount, lib: Library = librar
     const signature = sigId && sigLabel ? { id: sigId, name: sigLabel.replace(/^Signature [^:]+: /, '').replace(/ · .*$/, '') } : undefined;
     const equipped = equippedFact(c, a, lib);
     const { notes, theory } = accountNotes(c, a, { dupePrefix: 'E', ...(hasTrack ? { track: 'Enhanced kit' } : {}), locked, ...(signature ? { signature } : {}), ...(equipped ? { equipped } : {}) });
-    // T39: a leak is never owned, so it only shows as theory, marked unverified.
-    const leak = leakLines([c], lib.leaks, (x) => lib.names.get(x) ?? x);
+    // T39: a leak is never owned, so it only shows as theory, marked unverified; anyone not out yet is marked too.
+    const leak = betaKitLines([c], lib, (x) => lib.names.get(x) ?? x);
     out.push({ id: c, count: r.count, how, withEveryone, percent, fromAccount: [...leak, ...notes], theory });
   }
   return out.sort((x, y) => (y.percent ?? 0) - (x.percent ?? 0) || Number(y.withEveryone) - Number(x.withEveryone) || y.count - x.count);
@@ -367,6 +367,7 @@ export function ifYouPull(id: string, a: TeamAccount, lib: Library = library()):
   if (!why.length) why.push('No gain: no team of yours gets a higher kit value with them.');
   // T39: a leak says so first; a leaked carry has no game team list yet.
   if (lib.leaks?.has(id)) why.unshift(...leakLines([id], lib.leaks, name), ...(canCarry(id, lib) && !lib.ownTeams.get(id)?.length ? [noListLine(name(id))] : []));
+  else why.unshift(...betaLines([id], lib.beta, name));
   return { percent, why };
 }
 
