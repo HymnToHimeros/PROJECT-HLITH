@@ -1,5 +1,8 @@
 // @vitest-environment node
-/** T43: a leak's beta kit changes between builds; a sheet that no longer matches it is not used until read again. */
+/**
+ * T43: a beta kit (a leak's, or an announced character's before release) changes between builds; a sheet that no
+ * longer matches it is not used until read again.
+ */
 import { describe, expect, it } from 'vitest';
 import type { Kit } from '../src/core/contract';
 import { staleReason } from '../src/core/rules/leaks';
@@ -23,22 +26,26 @@ describe('core: when a sheet is stale', () => {
   });
 });
 
-describe('HSR: Aeon ★ Aha, a leak', () => {
-  it('is a leak with a sheet that matches today’s beta text', () => {
-    expect((characters as { id: string; leak?: unknown }[]).find((c) => c.id === NIHILUX)?.leak).toBeTruthy();
+describe('HSR: Aeon ★ Aha, announced, kit still beta until release', () => {
+  it('is announced (no longer a leak), read from beta text, with a sheet that matches it', () => {
+    const c = (characters as { id: string; leak?: unknown; releasedAt?: string }[]).find((x) => x.id === NIHILUX);
+    expect(c?.leak).toBeUndefined();
+    // Once she's out the kit is read from live text, and this describe block has no beta case left to test with.
+    if (!(KITS as Kit[]).find((k) => k.characterId === NIHILUX)?.beta) return;
     expect(SHEETS.some((s) => s.characterId === NIHILUX)).toBe(true);
     const lib = buildLibrary();
     expect(lib.stale?.has(NIHILUX) ?? false).toBe(false);
     expect(lib.sheets.has(NIHILUX)).toBe(true);
   });
 
+  // These two mark her kit beta themselves, so they keep testing the rule after her release.
   it('when SCHEDULER imports changed beta text, the old sheet is not used and teams say why', () => {
     const sheet = SHEETS.find((s) => s.characterId === NIHILUX);
     const quoted = sheet?.entries[0];
     if (!quoted) throw new Error('no Nihilux entry');
     // The quoted line's numbers change in the new beta build.
     const changed = (KITS as Kit[]).map((k) =>
-      k.characterId === NIHILUX ? { ...k, skills: k.skills.map((s) => (s.id === quoted.piece ? { ...s, gameText: s.gameText.replace(quoted.quote, `${quoted.quote} (changed)`).replace(quoted.quote, 'reworded') } : s)) } : k,
+      k.characterId === NIHILUX ? { ...k, beta: true, skills: k.skills.map((s) => (s.id === quoted.piece ? { ...s, gameText: s.gameText.replace(quoted.quote, `${quoted.quote} (changed)`).replace(quoted.quote, 'reworded') } : s)) } : k,
     );
     const lib = buildLibrary(SHEETS, changed);
     expect(lib.stale?.get(NIHILUX)).toMatch(/beta kit changed since it was read \(1 quoted line changed\)/);
@@ -50,7 +57,7 @@ describe('HSR: Aeon ★ Aha, a leak', () => {
   });
 
   it('a new piece in the beta kit makes it stale too', () => {
-    const changed = (KITS as Kit[]).map((k) => (k.characterId === NIHILUX ? { ...k, skills: [...k.skills, { id: 'skill-new-beta', label: 'New', does: [], gameText: 'A new beta line.' }] } : k));
+    const changed = (KITS as Kit[]).map((k) => (k.characterId === NIHILUX ? { ...k, beta: true, skills: [...k.skills, { id: 'skill-new-beta', label: 'New', does: [], gameText: 'A new beta line.' }] } : k));
     expect(buildLibrary(SHEETS, changed).stale?.get(NIHILUX)).toMatch(/1 new piece/);
   });
 });

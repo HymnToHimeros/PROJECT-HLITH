@@ -15,9 +15,10 @@ describe('HSR cheat sheet', () => {
     expect(new Set(ids).size).toBe(ids.length);
   });
 
-  // Leaks' beta text changes between builds (T43): their sheets are checked below, without failing the build.
-  const isLeak = (id: string) => (characters as { id: string; leak?: unknown }[]).some((c) => c.id === id && c.leak);
-  it.each(SHEETS.filter((s) => !isLeak(s.characterId)).map((s) => [`${s.name} (${s.characterId})`, s] as const))('%s: every quote word for word, every piece read', (_, sheet) => {
+  // Beta text (leaks, and characters announced but not out yet) changes between builds (T43): those sheets are checked
+  // below, without failing the build.
+  const isBeta = (id: string) => (characters as { id: string; leak?: unknown }[]).some((c) => c.id === id && c.leak) || !!(kits as (K & { beta?: boolean })[]).find((k) => k.characterId === id)?.beta;
+  it.each(SHEETS.filter((s) => !isBeta(s.characterId)).map((s) => [`${s.name} (${s.characterId})`, s] as const))('%s: every quote word for word, every piece read', (_, sheet) => {
     const kit = kitOf(sheet.characterId);
     expect(kit, 'kit text exists').toBeTruthy();
     expect(characters.find((c) => c.id === sheet.characterId)).toBeTruthy();
@@ -49,9 +50,9 @@ describe('HSR cheat sheet', () => {
     for (const p of Object.keys(sheet.nothing)) expect(text(p), `"nothing" piece ${p} exists`).toBeTruthy();
   });
 
-  // T43: a leak whose beta text changed since its sheet was read is shown here as skipped, by name, until it is read
-  // again; the app doesn't use the old sheet meanwhile (it reads "not read yet" with why).
-  it.for(SHEETS.filter((s) => isLeak(s.characterId)).map((s) => [`${s.name} (${s.characterId})`, s] as const))('%s (leak): its sheet still matches the beta kit text', ([, sheet], ctx) => {
+  // T43: a beta sheet whose text changed since it was read is shown here as skipped, by name, until it is read again;
+  // the app doesn't use the old sheet meanwhile (it reads "not read yet" with why).
+  it.for(SHEETS.filter((s) => isBeta(s.characterId)).map((s) => [`${s.name} (${s.characterId})`, s] as const))('%s (beta): its sheet still matches the beta kit text', ([, sheet], ctx) => {
     const why = library().stale?.get(sheet.characterId);
     if (why) ctx.skip(`re-read: ${why}`);
     expect(library().sheets.has(sheet.characterId)).toBe(true);

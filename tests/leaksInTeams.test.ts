@@ -12,17 +12,20 @@ const NIHILUX = '1511';
 // A real account: owns the released characters, never a leak (a leak can be wanted, not owned).
 const account = (lib: { leaks?: Map<string, string> }, showLeaks = false): TeamAccount => ({ owned: (id) => !lib.leaks?.has(id), dupes: () => 0, showLeaks });
 
-describe('HSR: Aeon ★ Aha, a leak with beta kit text', () => {
-  const lib = hsrLib();
+// Aeon ★ Aha was HSR's leak until 4.7 was announced; announced, she is no longer one. Her beta kit text makes her a
+// realistic stand-in: made a leak here, as ZZZ's test does with Lucia.
+describe('HSR: a leak with beta kit text (Aeon ★ Aha, made a leak for the test)', () => {
+  const base = hsrLib();
+  const lib = { ...base, leaks: new Map([...(base.leaks ?? []), [NIHILUX, 'test leak']]) };
 
-  it('is listed as a leak, with where it came from', () => {
-    expect(lib.leaks?.get(NIHILUX)).toMatch(/game files/);
+  it('an announced character is not listed as a leak', () => {
+    expect(base.leaks?.has(NIHILUX)).toBe(false);
   });
 
   it('If you pull (pre-pull): says it is a leak first, that there is no game team list yet, then what they would carry', () => {
     const v = hsrPull(NIHILUX, account(lib), lib);
     if (!v) throw new Error('not rated');
-    expect(v.why[0]).toMatch(/^Leak: Aeon ★ Aha: unverified beta kit, may change \(.+\)\.$/);
+    expect(v.why[0]).toBe('Leak: Aeon ★ Aha: unverified beta kit, may change (test leak).');
     expect(v.why[1]).toBe('No game team list yet for Aeon ★ Aha: teammates are the characters whose kits connect with theirs.');
     expect(v.why.some((w) => w.startsWith('As a damage dealer: your best team for them is'))).toBe(true);
     expect(v.percent).toBeGreaterThan(0);
@@ -50,7 +53,7 @@ describe('HSR: Aeon ★ Aha, a leak with beta kit text', () => {
   });
 });
 
-describe('ZZZ mirrors it (no leaks listed today, so one is made up for the test)', () => {
+describe('ZZZ mirrors it (Lucia made a leak for the test, so it doesn’t hang on today’s leak list)', () => {
   const base = zzzLib();
   const id = idOf(base, 'Lucia');
   const lib = { ...base, leaks: new Map([[id, 'test leak']]) };
