@@ -441,6 +441,13 @@
     "assistType": "defensive"
   },
   {
+    "characterId": "1651",
+    "specialty": "anomaly",
+    "attribute": "electric",
+    "faction": "Unknown Realm",
+    "assistType": "defensive"
+  },
+  {
     "characterId": "1661",
     "specialty": "defense",
     "attribute": "ether",
