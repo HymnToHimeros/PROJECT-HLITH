@@ -157,7 +157,8 @@ export function readIntake(body: unknown, now: number): Intake {
     }
     if (problems.length) return;
     const kind = r.kind as FindingKind;
-    const topic = topicOf(typeof r.topic === 'string' ? r.topic : undefined, kind);
+    const rawTopic = typeof r.topic === 'string' ? r.topic : typeof payload.topic === 'string' ? payload.topic : undefined;
+    const topic = topicOf(rawTopic, kind);
     const f: NewFinding = { game_id: gameId, kind, title, payload, source_name: sourceName, source_url: sourceUrl || null, topic, ...(foundAt ? { found_at: foundAt } : {}) };
     byJob.set(job, [...(byJob.get(job) ?? []), f]);
   });
