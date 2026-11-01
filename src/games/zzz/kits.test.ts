@@ -36,7 +36,9 @@ describe('ZZZ kit text', () => {
     const groupG = ['1031', '1131', '1191', '1241', '1251', '1271', '1321']; // Nicole, Soukaku, Ellen, Zhu Yuan, Qingyi, Seth, Evelyn
     const groupH = ['1071', '1101', '1301', '1361', '1381', '1551', '1591']; // Caesar, Koleda, Orphie & Magus, Trigger, Soldier 0 - Anby, Pyrois, Sigrid
     const groupI = ['1011', '1021', '1041', '1061', '1081', '1121', '1631', '1641']; // Anby, Nekomata, Soldier 11, Corin, Billy, Ben, Severian, Phoenix
-    const leaks = ['1601', '1661']; // Sunbringer, Robin: kit text only, no sheet read yet
+    // Leaks (Sunbringer, Kafka, Robin in 3.4): every character the list marks as a leak, kit text only, no sheet read yet.
+    const leaks = (characters as { id: string; leak?: unknown }[]).filter((c) => c.leak).map((c) => c.id).sort();
+    expect(leaks).toEqual(['1601', '1651', '1661']);
     expect(kits.map((k) => k.characterId).sort()).toEqual([...groupA, ...groupB, ...groupC, ...groupD, ...groupE, ...groupF, ...groupG, ...groupH, ...groupI, ...leaks].sort());
     // The leaks are read from the beta files and say so; Severian (out 11 Nov) is already in the 3.3 release files.
     expect((kits as { characterId: string; beta?: boolean }[]).filter((k) => k.beta).map((k) => k.characterId).sort()).toEqual(leaks);
