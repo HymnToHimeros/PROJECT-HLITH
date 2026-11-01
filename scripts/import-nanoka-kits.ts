@@ -23,11 +23,13 @@ const BASE = 'https://static.nanoka.cc/zzz';
 const MANIFEST = 'https://static.nanoka.cc/manifest.json';
 /**
  * The newest data version (profiles, and kit text for characters not released yet,
- * marked beta). Released characters' kit text comes from the live version, which
- * nanoka.cc's manifest names: beta files can be mid-rewrite (Roxy's 3.3.4 text
- * was blank in places).
+ * marked beta): nanoka.cc's newest build (manifest "latest"), read on each run. nanoka removes
+ * older beta builds (3.3.4 and 3.4.1 went 404 within days), so a pinned build stops the import.
+ * Changed beta text is caught by the stale-sheet check (LOGIC-CORE re-reads). Released
+ * characters' kit text comes from the live version: beta files can be mid-rewrite (Roxy's
+ * 3.3.4 text was blank in places).
  */
-const VERSION = '3.4.1+19851435';
+let VERSION = '';
 
 /** Kit text is imported for these groups only, in this order. Add the next group here once the last one is read. */
 const GROUPS: Record<string, string[]> = {
@@ -291,7 +293,8 @@ function kitOf(id: string, d: Detail, version: string, beta: boolean) {
 }
 
 const manifest = await getJson<{ zzz: { latest: string; live: string; new?: { character?: number[] } } }>(MANIFEST);
-if (manifest.zzz.latest !== VERSION) console.warn(`Note: nanoka.cc now has ZZZ ${manifest.zzz.latest}; this script reads ${VERSION}. Update VERSION after checking the new text.`);
+VERSION = manifest.zzz.latest;
+console.log(`zzz: reading build ${VERSION} (live ${manifest.zzz.live})`);
 const live = await getJson<Record<string, unknown>>(`${BASE}/${manifest.zzz.live}/character.json`);
 const all = await getJson<Record<string, unknown>>(`${BASE}/${VERSION}/character.json`);
 

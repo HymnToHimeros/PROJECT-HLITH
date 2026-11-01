@@ -200,7 +200,10 @@ for (const [game, read] of [
   const list = read(raw).sort((a, b) => Number(a.id) - Number(b.id));
   // A build newer than the live game: its new characters are unreleased (leaks).
   if (m.latest !== m.live && !m.latest.startsWith(`${m.live}+`)) {
-    const fresh = new Set((m.new?.character ?? []).map(String));
+    // nanoka's "new" list also names characters the build reworks (ZZZ 3.4: Vivian, Ju Fufu); a character
+    // the live game's files already have is out, never a leak.
+    const live = new Set(Object.keys(await getJson(`${STATIC}/${game}/${m.live}/character.json`)));
+    const fresh = new Set((m.new?.character ?? []).map(String).filter((id) => !live.has(id)));
     for (const c of list) {
       if (!fresh.has(c.id)) continue;
       c.leak = { source: `nanoka.cc, game files of build ${m.latest} (live is ${m.live})` };
