@@ -25,6 +25,8 @@ export interface Library {
   names: Map<string, string>;
   /** Leaked characters (beta kit text) and where the leak came from (T39). */
   leaks?: Map<string, string>;
+  /** Characters announced but not out yet, read from beta kit text (not leaks), and the build read: "beta build 4.6.54". */
+  beta?: Map<string, string>;
   /** Leaks whose sheet no longer matches their beta kit text (T43): not read until read again; why. */
   stale?: Map<string, string>;
   /**
