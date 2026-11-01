@@ -353,6 +353,23 @@ describe('findings intake (the routine’s deliveries)', () => {
     expect(r.byJob.get('leaks-scan')?.[0]).toMatchObject({ kind: 'leak', source_name: 'nanoka.cc', source_url: 'https://nanoka.cc/hsr/new', found_at: '2026-10-09T06:00:00.000Z' });
   });
 
+  it('reads topic from payload.topic when r.topic is absent', () => {
+    const withPayloadTopic = { ...good, payload: { topic: 'events-modes', element: 'Ice' } };
+    delete (withPayloadTopic as Record<string, unknown>).topic;
+    const r = readIntake({ ran: ['leaks-scan'], findings: [withPayloadTopic] }, NOW);
+    expect(r.ok).toBe(true);
+    if (!r.ok) return;
+    expect(r.byJob.get('leaks-scan')?.[0]?.topic).toBe('events-modes');
+  });
+
+  it('prefers r.topic over payload.topic', () => {
+    const withBoth = { ...good, topic: 'story', payload: { topic: 'events-modes' } };
+    const r = readIntake({ ran: ['leaks-scan'], findings: [withBoth] }, NOW);
+    expect(r.ok).toBe(true);
+    if (!r.ok) return;
+    expect(r.byJob.get('leaks-scan')?.[0]?.topic).toBe('story');
+  });
+
   it('refuses the whole batch on any problem, listing each one', () => {
     const r = readIntake({ findings: [good, { ...good, job: 'backup', kind: 'rumour', title: '', source: {}, found_at: '2030-01-01T00:00:00Z' }] }, NOW);
     expect(r.ok).toBe(false);
