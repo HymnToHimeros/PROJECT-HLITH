@@ -1,8 +1,9 @@
 // @vitest-environment node
 /** T39: leaked characters can be used in teams (pre-pull), always marked unverified; hidden leaks join no one else's. */
 import { describe, expect, it } from 'vitest';
-import type { TeamAccount } from '../src/core/contract';
-import { library as hsrLib } from '../src/games/hsr/kitcheck/library';
+import type { Kit, TeamAccount } from '../src/core/contract';
+import { betaKitLines } from '../src/core/rules/leaks';
+import { buildLibrary as buildHsrLibrary, KITS as HSR_KITS, library as hsrLib, SHEETS as HSR_SHEETS } from '../src/games/hsr/kitcheck/library';
 import { ifYouPull as hsrPull, verdict as hsrVerdict, whoFits as hsrFits } from '../src/games/hsr/kitcheck/team';
 import { library as zzzLib } from '../src/games/zzz/kitcheck/library';
 import { ifYouPull as zzzPull, verdict as zzzVerdict } from '../src/games/zzz/kitcheck/team';
@@ -64,6 +65,45 @@ describe('ZZZ mirrors it (Lucia made a leak for the test, so it doesn’t hang o
     const v = zzzVerdict(['Starlight - Billy', 'Dialyn', 'Lucia'].map((n) => idOf(lib, n)), account(lib), lib);
     if (!v.rated || !v.explain) throw new Error('not rated');
     expect(v.explain.missing.at(-1)).toBe('Leak: Lucia: unverified beta kit, may change (test leak).');
+  });
+});
+
+// Honest data: an announced character not out yet is read from beta kit text too, and every place they show says so.
+describe('Announced, not out yet: "beta kit, may change" wherever they show', () => {
+  it('core: one line per character not out yet; a leak says it once, as a leak', () => {
+    const names = (id: string) => ({ a: 'A', b: 'B' })[id] ?? id;
+    expect(betaKitLines(['a', 'b', 'c'], { leaks: new Map([['b', 'game files']]), beta: new Map([['a', 'beta build 1.2'], ['b', 'beta build 1.2']]) }, names)).toEqual([
+      'Leak: B: unverified beta kit, may change (game files).',
+      'Not out yet: A: beta kit, may change (beta build 1.2).',
+    ]);
+  });
+
+  // Aeon ★ Aha's kit is marked beta here, so this keeps testing the rule after her release.
+  const kits = (HSR_KITS as Kit[]).map((k) => (k.characterId === NIHILUX ? { ...k, beta: true, version: '4.6.54' } : k));
+  const lib = buildHsrLibrary(HSR_SHEETS, kits);
+  const line = 'Not out yet: Aeon ★ Aha: beta kit, may change (beta build 4.6.54).';
+
+  it('HSR: she joins teams as usual (not hidden like a leak), and her team, If you pull and teammate list say so', () => {
+    expect(lib.beta?.get(NIHILUX)).toBe('beta build 4.6.54');
+    expect(lib.leaks?.has(NIHILUX)).toBe(false);
+    const fits = hsrFits([NIHILUX], account(lib), lib).slice(0, 3).map((f) => f.id);
+    const v = hsrVerdict([NIHILUX, ...fits], account(lib), lib);
+    if (!v.rated || !v.explain) throw new Error('not rated');
+    expect(v.notes).toContain(line);
+    expect(v.explain.missing).toContain(line);
+    expect(hsrPull(NIHILUX, account(lib), lib)?.why[0]).toBe(line);
+    const shown = hsrFits([fits[0] ?? ''], account(lib), lib, { includeUnowned: true }).find((f) => f.id === NIHILUX);
+    if (shown) expect(shown.fromAccount?.[0]).toBe(line);
+  });
+
+  it('ZZZ mirrors it (Lucia made not-out-yet for the test)', () => {
+    const base = zzzLib();
+    const id = idOf(base, 'Lucia');
+    const zlib = { ...base, beta: new Map([[id, 'beta build test']]) };
+    expect(zzzPull(id, account(zlib), zlib)?.why[0]).toBe('Not out yet: Lucia: beta kit, may change (beta build test).');
+    const v = zzzVerdict(['Starlight - Billy', 'Dialyn', 'Lucia'].map((n) => idOf(zlib, n)), account(zlib), zlib);
+    if (!v.rated || !v.explain) throw new Error('not rated');
+    expect(v.explain.missing.at(-1)).toBe('Not out yet: Lucia: beta kit, may change (beta build test).');
   });
 });
 

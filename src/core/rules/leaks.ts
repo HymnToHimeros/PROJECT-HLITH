@@ -17,6 +17,22 @@ export function leakLines(members: string[], leaks: Map<string, string> | undefi
   return members.filter((id) => leaks?.has(id)).map((id) => `Leak: ${name(id)}: ${LEAK_WORDS} (${leaks?.get(id) ?? 'leak'}).`);
 }
 
+export const BETA_WORDS = 'beta kit, may change';
+
+/**
+ * Honest data: a character announced but not out yet is read from beta kit text too, and says so wherever a leak
+ * would: "Not out yet: X: beta kit, may change (beta build …)." Unlike a leak, they join teams as usual.
+ */
+export function betaLines(members: string[], beta: Map<string, string> | undefined, name: (id: string) => string): string[] {
+  return members.filter((id) => beta?.has(id)).map((id) => `Not out yet: ${name(id)}: ${BETA_WORDS} (${beta?.get(id) ?? 'beta build'}).`);
+}
+
+/** A team's lines about beta kit text: its leaks, then who is announced but not out yet (a leak says it once). */
+export const betaKitLines = (members: string[], lib: { leaks?: Map<string, string>; beta?: Map<string, string> }, name: (id: string) => string) => [
+  ...leakLines(members, lib.leaks, name),
+  ...betaLines(members.filter((id) => !lib.leaks?.has(id)), lib.beta, name),
+];
+
 /** A leaked carry has no game team list yet: their teammates come from the kit lines alone. */
 export const noListLine = (name: string) => `No game team list yet for ${name}: teammates are the characters whose kits connect with theirs.`;
 
