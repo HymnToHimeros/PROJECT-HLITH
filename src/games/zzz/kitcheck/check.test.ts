@@ -15,10 +15,10 @@ const account: Account = { mindscape: (id) => levels[id] ?? 0, potential: () => 
 const lib = library();
 
 describe('Part A: the cheat sheet is proven by the game text', () => {
-  // Leaks' beta text changes between builds (T43, mirrors HSR): a leak's sheet that no longer matches isn't used, and
-  // isn't a failed build; released agents stay strict here.
-  const isLeak = (id: string) => (characters as { id: string; leak?: unknown }[]).some((c) => c.id === id && c.leak);
-  it.each(SHEETS.filter((s) => !isLeak(s.characterId)).map((s) => [s.name, s] as const))('%s: every quote is word for word, every piece is read', (_n, sheet) => {
+  // Beta text (leaks, and agents announced but not out yet) changes between builds (T43, mirrors HSR): such a sheet
+  // that no longer matches isn't used, and isn't a failed build; agents read from live text stay strict here.
+  const isBeta = (id: string) => (characters as { id: string; leak?: unknown }[]).some((c) => c.id === id && c.leak) || !!(kits as { characterId: string; beta?: boolean }[]).find((k) => k.characterId === id)?.beta;
+  it.each(SHEETS.filter((s) => !isBeta(s.characterId)).map((s) => [s.name, s] as const))('%s: every quote is word for word, every piece is read', (_n, sheet) => {
     const kit = kits.find((k) => k.characterId === sheet.characterId);
     expect(kit).toBeDefined();
     const text = new Map(kit?.skills.map((s) => [s.id, s.gameText]));
