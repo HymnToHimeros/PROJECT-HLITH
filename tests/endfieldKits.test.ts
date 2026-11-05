@@ -94,8 +94,10 @@ describe('Endfield kit data (src/games/endfield/data/kits.json)', async () => {
   const kits = (await endfield.data.kits?.()) ?? [];
   const characters = await endfield.data.characters();
   it('every listed operator has a kit, cited to its wiki page and revision', () => {
-    // An announced operator who is not out yet (releasedAt in the future) may wait for their kit until the wiki publishes it.
-    const released = characters.filter((c) => !c.releasedAt || Date.parse(c.releasedAt) <= Date.now());
+    // An operator not out yet, or out for under 14 days, may wait for their kit until endfield.wiki.gg publishes
+    // their page (Argent Flow, out 5 Nov 2026, had none on release day); the app shows "No data yet" meanwhile.
+    const GRACE = 14 * 86_400_000;
+    const released = characters.filter((c) => !c.releasedAt || Date.parse(c.releasedAt) + GRACE <= Date.now());
     const withKit = new Set(kits.map((k) => k.characterId));
     expect(released.map((c) => c.id).filter((id) => !withKit.has(id))).toEqual([]);
     expect(kits.map((k) => k.characterId).filter((id) => !characters.some((c) => c.id === id))).toEqual([]);

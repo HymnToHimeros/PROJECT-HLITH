@@ -82,7 +82,8 @@ jobs:
         id: endfield
         if: steps.plan.outputs.go == 'true' && hashFiles('src/games/endfield/contract.ts') != ''
         continue-on-error: true
-        run: npm run data:endfield
+        # Kit text too: a new operator's kit appears once endfield.wiki.gg publishes their page.
+        run: npm run data:endfield && npm run data:endfield-kits
 
       - name: What changed
         id: diff
