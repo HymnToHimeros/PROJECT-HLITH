@@ -1177,13 +1177,25 @@
     "title": "Back to the Rustics",
     "kind": "event",
     "start": "2026-11-05T04:00:00.000Z",
-    "end": "2026-11-25T20:00:00.000Z",
+    "end": "2026-11-25T22:00:00.000Z",
     "reward": 600,
     "currency": "oroberyl",
     "serverTime": {
       "base": 8,
-      "start": true,
-      "end": true
+      "start": true
+    }
+  },
+  {
+    "id": "contingency-contract-indigo-experimental-operation-2026-11-05",
+    "title": "Contingency Contract: Indigo Experimental Operation",
+    "kind": "endgame",
+    "start": "2026-11-05T04:00:00.000Z",
+    "end": "2026-11-25T22:00:00.000Z",
+    "reward": 2000,
+    "currency": "oroberyl",
+    "serverTime": {
+      "base": 8,
+      "start": true
     }
   },
   {

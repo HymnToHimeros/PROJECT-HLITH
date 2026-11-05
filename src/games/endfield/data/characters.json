@@ -358,16 +358,6 @@
     "source": "endfield.wiki.gg (CC BY-SA)"
   },
   {
-    "id": "chr_0038_purrche",
-    "name": "Purrchena",
-    "rarity": "mid",
-    "element": "physical",
-    "role": "defender",
-    "art": "https://endfield.wiki.gg/images/Purrchena_Splash_Art.png",
-    "portrait": "https://endfield.wiki.gg/images/Purrchena_icon.png",
-    "source": "endfield.wiki.gg (CC BY-SA)"
-  },
-  {
     "id": "chr_argent-flow",
     "name": "Argent Flow",
     "rarity": "top",
@@ -376,6 +366,17 @@
     "releasedAt": "2026-11-05T04:00:00.000Z",
     "art": "https://endfield.wiki.gg/images/Argent_Flow_Splash_Art.png",
     "portrait": "https://endfield.wiki.gg/images/Argent_Flow_icon.png",
+    "source": "endfield.wiki.gg (CC BY-SA)",
+    "gameId": "chr_0037_minghe"
+  },
+  {
+    "id": "chr_0038_purrche",
+    "name": "Purrchena",
+    "rarity": "mid",
+    "element": "physical",
+    "role": "defender",
+    "art": "https://endfield.wiki.gg/images/Purrchena_Splash_Art.png",
+    "portrait": "https://endfield.wiki.gg/images/Purrchena_icon.png",
     "source": "endfield.wiki.gg (CC BY-SA)"
   }
 ]
