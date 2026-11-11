@@ -402,5 +402,174 @@
       "start": true,
       "end": true
     }
+  },
+  {
+    "id": "affinitive-starveil-2026-11-11",
+    "title": "Affinitive Starveil",
+    "kind": "login",
+    "start": "2026-11-11T03:00:00.000Z",
+    "end": "2026-12-22T21:59:00.000Z",
+    "reward": 0,
+    "currency": "stellar-jade"
+  },
+  {
+    "id": "aha-reckons-you-need-this-2026-11-11",
+    "title": "Aha Reckons You Need This",
+    "kind": "login",
+    "start": "2026-11-11T03:00:00.000Z",
+    "end": "2026-12-22T21:59:00.000Z",
+    "reward": 20,
+    "currency": "special-pass",
+    "loginDays": 7
+  },
+  {
+    "id": "claim-your-parcel-2026-11-11",
+    "title": "Claim Your Parcel",
+    "kind": "login",
+    "start": "2026-11-11T03:00:00.000Z",
+    "end": "2026-12-22T21:59:00.000Z",
+    "reward": 0,
+    "currency": "stellar-jade"
+  },
+  {
+    "id": "cosmic-aesthetics-phantasia-showstage-2026-11-11",
+    "title": "Cosmic Aesthetics: Phantasia Showstage",
+    "kind": "event",
+    "start": "2026-11-11T03:00:00.000Z",
+    "end": "2026-12-22T19:59:00.000Z",
+    "reward": 0,
+    "currency": "stellar-jade"
+  },
+  {
+    "id": "dont-go-home-empty-handed-2026-11-11",
+    "title": "Don't Go Home Empty-Handed",
+    "kind": "login",
+    "start": "2026-11-11T03:00:00.000Z",
+    "end": "2026-12-22T21:59:00.000Z",
+    "reward": 0,
+    "currency": "stellar-jade"
+  },
+  {
+    "id": "interastral-peace-gala-road-to-fame-2026-11-11",
+    "title": "Interastral Peace Gala: Road to Fame",
+    "kind": "event",
+    "start": "2026-11-11T03:00:00.000Z",
+    "end": "2026-12-22T19:59:00.000Z",
+    "reward": 500,
+    "currency": "stellar-jade"
+  },
+  {
+    "id": "magic-invitation-2026-11-11",
+    "title": "Magic Invitation",
+    "kind": "login",
+    "start": "2026-11-11T03:00:00.000Z",
+    "end": "2026-12-22T21:59:00.000Z",
+    "reward": 0,
+    "currency": "stellar-jade"
+  },
+  {
+    "id": "myriad-symphony-2026-11-11",
+    "title": "Myriad Symphony",
+    "kind": "event",
+    "start": "2026-11-11T03:00:00.000Z",
+    "end": "2026-12-22T19:59:00.000Z",
+    "reward": 0,
+    "currency": "stellar-jade"
+  },
+  {
+    "id": "relic-recon-2026-11-11",
+    "title": "Relic Recon",
+    "kind": "event",
+    "start": "2026-11-11T03:00:00.000Z",
+    "end": "2026-12-22T19:59:00.000Z",
+    "reward": 0,
+    "currency": "stellar-jade"
+  },
+  {
+    "id": "stellar-companions-2026-11-11",
+    "title": "Stellar Companions",
+    "kind": "login",
+    "start": "2026-11-11T03:00:00.000Z",
+    "end": "2026-12-22T21:59:00.000Z",
+    "reward": 0,
+    "currency": "stellar-jade"
+  },
+  {
+    "id": "the-fluffy-movie-overheated-2026-11-11",
+    "title": "The Fluffy Movie: Overheated",
+    "kind": "event",
+    "start": "2026-11-11T03:00:00.000Z",
+    "end": "2026-12-22T19:59:00.000Z",
+    "reward": 1200,
+    "currency": "stellar-jade"
+  },
+  {
+    "id": "apocalyptic-shadow-navigators-netherveil-2026-11-15",
+    "title": "Apocalyptic Shadow: Navigator's Netherveil",
+    "kind": "endgame",
+    "start": "2026-11-15T20:00:00.000Z",
+    "end": "2026-12-27T19:59:00.000Z",
+    "reward": 800,
+    "currency": "stellar-jade",
+    "serverTime": {
+      "base": 8,
+      "start": true,
+      "end": true
+    }
+  },
+  {
+    "id": "planar-fissure-2026-11-23",
+    "title": "Planar Fissure",
+    "kind": "bonus",
+    "start": "2026-11-22T20:00:00.000Z",
+    "end": "2026-12-06T19:59:59.000Z",
+    "reward": 0,
+    "currency": "stellar-jade",
+    "serverTime": {
+      "base": 8,
+      "start": true,
+      "end": true
+    }
+  },
+  {
+    "id": "pure-fiction-fiction-made-truth-2026-11-29",
+    "title": "Pure Fiction: Fiction Made Truth",
+    "kind": "endgame",
+    "start": "2026-11-29T20:00:00.000Z",
+    "end": "2027-01-10T19:59:00.000Z",
+    "reward": 800,
+    "currency": "stellar-jade",
+    "serverTime": {
+      "base": 8,
+      "start": true,
+      "end": true
+    }
+  },
+  {
+    "id": "realm-of-the-strange-2026-12-11",
+    "title": "Realm of the Strange",
+    "kind": "bonus",
+    "start": "2026-12-10T20:00:00.000Z",
+    "end": "2026-12-22T19:59:59.000Z",
+    "reward": 0,
+    "currency": "stellar-jade",
+    "serverTime": {
+      "base": 8,
+      "start": true
+    }
+  },
+  {
+    "id": "memory-of-chaos-echo-of-darkness-2026-12-13",
+    "title": "Memory of Chaos: Echo of Darkness",
+    "kind": "endgame",
+    "start": "2026-12-13T20:00:00.000Z",
+    "end": "2027-01-24T19:59:00.000Z",
+    "reward": 800,
+    "currency": "stellar-jade",
+    "serverTime": {
+      "base": 8,
+      "start": true,
+      "end": true
+    }
   }
 ]

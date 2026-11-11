@@ -1232,6 +1232,19 @@
   "source": "nanoka.cc"
  },
  {
+  "id": "14160",
+  "name": "Dragonfire Mirage",
+  "rarity": "top",
+  "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1601.webp",
+  "madeFor": "1601",
+  "role": "armorer",
+  "effect": {
+   "name": "Scorching Breath",
+   "text": "CRIT Rate +20%. When the equipper uses an [EX Special Attack], the Character gains the [Enhance] effect for 25s. This effect is also gained immediately when the equipper enters combat, and repeated triggers reset the duration. While [Enhance] is active, the equipper's Fire DMG is increased by 20%, and Fire Sharp DMG is increased by 10%."
+  },
+  "source": "nanoka.cc"
+ },
+ {
   "id": "14161",
   "name": "Crimson Thirst",
   "rarity": "top",
@@ -1280,6 +1293,32 @@
   "effect": {
    "name": "Hatching Day",
    "text": "The equipper's Anomaly Proficiency increases by 90. When Anomaly DMG dealt by any squad member to an enemy triggers a critical hit, the equipper's Fire DMG increases by 40% for 20s. Repeated triggers reset the duration."
+  },
+  "source": "nanoka.cc"
+ },
+ {
+  "id": "14165",
+  "name": "Kafka Test W-Engine",
+  "rarity": "top",
+  "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1651.webp",
+  "madeFor": "1651",
+  "role": "anomaly",
+  "effect": {
+   "name": "Kafka Test W-Engine",
+   "text": "When the equipper's [EX Special Attack] deals Electric DMG, their Anomaly Proficiency increases by 30 for 30s, stacking up to 3 times. The duration of each stack is calculated separately. This effect can trigger once per skill. When at 3 stacks, the equipper's DMG increases by 30%, and [Disorder] DMG increases by 20%."
+  },
+  "source": "nanoka.cc"
+ },
+ {
+  "id": "14166",
+  "name": "Robin's Exclusive W-Engine",
+  "rarity": "top",
+  "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1661.webp",
+  "madeFor": "1661",
+  "role": "defense",
+  "effect": {
+   "name": "Robin Test Engine",
+   "text": "When the equipper applies a shield, the whole squad's Laceration DMG is increased by 16% for 20s. Repeated triggers extend the duration, up to a maximum of 30s. Only one instance of this effect can exist in the same squad. When the equipper launches an Aftershock, the whole squad's DMG is increased by 10% for 20s, stacking up to 2 times. Repeated triggers refresh the duration. Only one instance of this effect can exist in the same squad."
   },
   "source": "nanoka.cc"
  }
