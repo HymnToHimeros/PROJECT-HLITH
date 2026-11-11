@@ -6191,5 +6191,187 @@
     ]
    }
   }
+ },
+ {
+  "characterId": "1651",
+  "source": "the game's own recommendation in beta build 3.4.3+20291004 (nanoka.cc), beta, may change",
+  "beta": true,
+  "version": "3.4.3+20291004",
+  "sets": [
+   {
+    "pieces": 4,
+    "options": [
+     "Freedom Blues"
+    ]
+   },
+   {
+    "pieces": 2,
+    "options": [
+     "Moonlight Lullaby",
+     "Chaos Jazz"
+    ]
+   }
+  ],
+  "mainStats": {
+   "Disc 4": [
+    "Anomaly Proficiency"
+   ],
+   "Disc 5": [
+    "Energy Regen"
+   ],
+   "Disc 6": [
+    "Electric DMG Bonus"
+   ]
+  },
+  "subStats": [
+   "Anomaly Proficiency",
+   "ATK %"
+  ],
+  "weapons": [
+   "Kafka Test W-Engine"
+  ],
+  "skillsFirst": [],
+  "items": {
+   "Freedom Blues": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitFreedomBlues.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "Anomaly Proficiency +30"
+     },
+     {
+      "label": "4-piece",
+      "text": "When an EX Special Attack hits an enemy, reduce the target's Anomaly Buildup RES to the equipper's Attribute by 20% for 8s. This effect does not stack with others of the same attribute."
+     }
+    ]
+   },
+   "Moonlight Lullaby": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitMoonlightLullaby.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "Energy Regen +20%"
+     },
+     {
+      "label": "4-piece",
+      "text": "When the equipper is a Support character and uses an EX Special Attack or Ultimate, the DMG dealt by all squad members increases by 18% for 25s. Repeated triggers reset the duration. Passive effects of the same name do not stack."
+     }
+    ]
+   },
+   "Chaos Jazz": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitChaosJazz.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "Anomaly Proficiency +30"
+     },
+     {
+      "label": "4-piece",
+      "text": "Fire DMG and Electric DMG increases by 15%. While off-field, EX Special Attack and Assist Attack DMG increases by 20%. When switching on-field, this buff continues for 5s, and this continuation effect can trigger once every 7.5s."
+     }
+    ]
+   },
+   "Kafka Test W-Engine": {
+    "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1651.webp",
+    "rarity": 4,
+    "effects": [
+     {
+      "label": "Kafka Test W-Engine (Phase 1)",
+      "text": "When the equipper's [EX Special Attack] deals Electric DMG, their Anomaly Proficiency increases by 30 for 30s, stacking up to 3 times. The duration of each stack is calculated separately. This effect can trigger once per skill. When at 3 stacks, the equipper's DMG increases by 30%, and [Disorder] DMG increases by 20%."
+     }
+    ]
+   }
+  }
+ },
+ {
+  "characterId": "1661",
+  "source": "the game's own recommendation in beta build 3.4.3+20291004 (nanoka.cc), beta, may change",
+  "beta": true,
+  "version": "3.4.3+20291004",
+  "sets": [
+   {
+    "pieces": 4,
+    "options": [
+     "Bunny in Wonderland"
+    ]
+   },
+   {
+    "pieces": 2,
+    "options": [
+     "Yunkui Tales",
+     "Swing Jazz"
+    ]
+   }
+  ],
+  "mainStats": {
+   "Disc 4": [
+    "HP %"
+   ],
+   "Disc 5": [
+    "Energy Regen"
+   ],
+   "Disc 6": [
+    "Ether DMG Bonus"
+   ]
+  },
+  "subStats": [
+   "HP %",
+   "HP"
+  ],
+  "weapons": [
+   "Robin's Exclusive W-Engine"
+  ],
+  "skillsFirst": [],
+  "items": {
+   "Bunny in Wonderland": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitBunnyinWonderland.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "HP +10%"
+     },
+     {
+      "label": "4-piece",
+      "text": "When the equipper is a Defense character: When the equipper launches an EX Special Attack or any squad member triggers a Defensive Assist or Evasive Assist, all squad members' DMG increases by 6%, stacking up to 3 times, lasting 25s. Stacks decay one at a time, and duration refreshes when gained or decayed. Passive effects of the same name do not stack."
+     }
+    ]
+   },
+   "Yunkui Tales": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitYunkuiTales.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "HP +10%"
+     },
+     {
+      "label": "4-piece",
+      "text": "When using EX Special Attack, Chain Attack, or Ultimate, CRIT Rate increases by 4%, stacking up to 3 times and lasting 15s. Repeated triggers reset the duration. When having 3 stacks of this effect, Sheer DMG increases by 10%."
+     }
+    ]
+   },
+   "Swing Jazz": {
+    "icon": "https://static.nanoka.cc/assets/zzz/SuitSwingJazz.webp",
+    "effects": [
+     {
+      "label": "2-piece",
+      "text": "Energy Regen +20%"
+     },
+     {
+      "label": "4-piece",
+      "text": "Launching a Chain Attack or Ultimate increases all squad members' DMG by 15% for 12s. Passive effects of the same name do not stack."
+     }
+    ]
+   },
+   "Robin's Exclusive W-Engine": {
+    "icon": "https://static.nanoka.cc/assets/zzz/Weapon_S_1661.webp",
+    "rarity": 4,
+    "effects": [
+     {
+      "label": "Robin Test Engine (Phase 1)",
+      "text": "When the equipper applies a shield, the whole squad's Laceration DMG is increased by 16% for 20s. Repeated triggers extend the duration, up to a maximum of 30s. Only one instance of this effect can exist in the same squad. When the equipper launches an Aftershock, the whole squad's DMG is increased by 10% for 20s, stacking up to 2 times. Repeated triggers refresh the duration. Only one instance of this effect can exist in the same squad."
+     }
+    ]
+   }
+  }
  }
 ]

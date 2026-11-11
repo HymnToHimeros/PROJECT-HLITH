@@ -241,7 +241,7 @@ export const HSR_FACTS: CharacterFact[] = [
     steps: [125, 150],
     why: 'Elation +120% / +150%.',
     source: kit('Trace: A Box of Everything'),
-    quote: "When Aeon ★ Aha's SPD reaches 125/150 or higher, Elation increases by 120%/150%.",
+    quote: "When Aeon ★ Aha's SPD reaches 125/150 or higher, the Elation stat increases by 120%/150%, respectively.",
   },
   ...['8009', '8010'].map(
     (characterId): CharacterFact => ({

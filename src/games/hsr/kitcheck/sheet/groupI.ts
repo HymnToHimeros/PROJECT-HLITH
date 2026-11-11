@@ -8,6 +8,10 @@
  * - Gaining Punchline or using an Elation Skill is the 'elation-skill' event
  *   (Punchline is the team's shared pool that drives Elation Skills); giving
  *   Aha an extra turn ("Aha Instant") or an ally an extra turn is 'extra-turn'.
+ * - "When the Path of Elation ascends" (each Elation character's "Faces of
+ *   Elation" trace, HSR 4.7): Aeon ★ Aha's own trace makes it ascend while Aha
+ *   holds "Faces of Elation" (after their Ultimate), so those lines need Aha in
+ *   the team.
  */
 import type { CharacterSheet, Path } from '../types';
 
@@ -117,8 +121,19 @@ export const sparxie: CharacterSheet = {
       to: 'allies',
       setup: 'She spends 4 or more Skill Points in one turn.',
     },
+    {
+      id: 'hat-trick-def-ignore',
+      piece: 'skill-innate-trace-faces-of-elation-hat-trick',
+      quote: "and ally targets ignore 20% of the enemy target's DEF when dealing DMG.",
+      tag: 'Allies: DMG ignores 20% DEF (with Aeon ★ Aha)',
+      on: { named: { ids: ['1511'], as: 'member', words: 'Aeon ★ Aha is in the team (their Ultimate makes the Path of Elation ascend)' } },
+      gives: [{ stat: 'def-shred', amount: '20% DEF ignored' }],
+      to: 'allies',
+      setup: 'Aeon ★ Aha\'s Ultimate ("Faces of Elation", 3 of Aha\'s turns).',
+    },
   ],
   nothing: {
+    'skill-innate-trace-faces-of-elation-hat-trick': 'Raises her own Elation Skill and "Straight Fire"; the DEF ignore for allies is counted above.',
     'skill-basic-atk-cat-got-your-flametongue': FIRE,
     'skill-skill-boom-sparxicle-s-poppin': 'Starts her own livestream (Enhanced Basic ATK); nothing for the team.',
     'skill-ultimate-party-s-wildin-and-camera-s-rollin': 'Deals Fire DMG and gains Punchline; her main Punchline source is "Engagement Farming".',
@@ -186,6 +201,16 @@ export const yaoGuang: CharacterSheet = {
       setup: 'She holds "Certified Banger"; an ally attacks.',
     },
     {
+      id: 'mind-reading-great-boon',
+      piece: 'skill-innate-trace-faces-of-elation-mind-reading',
+      quote: 'the DMG multiplier of the "Great Boon" effect increases by an amount equal to 40% of its original value.',
+      tag: '"Great Boon" hits +40% (with Aeon ★ Aha)',
+      on: { named: { ids: ['1511'], as: 'member', words: 'Aeon ★ Aha is in the team (their Ultimate makes the Path of Elation ascend)' } },
+      gives: [{ stat: 'extra-dmg', amount: '"Great Boon" multiplier +40% of its original' }],
+      to: 'allies',
+      setup: 'Aeon ★ Aha\'s Ultimate ("Faces of Elation", 3 of Aha\'s turns).',
+    },
+    {
       id: 'woes-whisper',
       piece: 'skill-elation-skill-let-thy-fortune-burst-in-flames',
       quote: 'Enemy targets under the "Woe\'s Whisper" state take 16.0% increased DMG.',
@@ -249,6 +274,7 @@ export const yaoGuang: CharacterSheet = {
   nothing: {
     'skill-basic-atk-whistlebolt-sings-joy': 'Deals Physical DMG and regenerates her own Energy; nothing for the team.',
     'skill-technique-untethered-glimmer-sails-far': TECHNIQUE,
+    'skill-innate-trace-faces-of-elation-mind-reading': 'Regenerates her own Energy and Bliss; the "Great Boon" increase is counted above.',
     'trace-amaze-in-grace': SELF_HER,
     'trace-felicity-ensemble': 'Lengthens her own "Certified Banger"; nothing for the team.',
     'eidolon-3': LEVELS,
@@ -374,10 +400,29 @@ export const pearl: CharacterSheet = {
       to: 'allies',
       setup: '"Deep Learning" is active (after her Ultimate).',
     },
+    {
+      id: 'lc-vulnerability',
+      piece: 'signature-weapon',
+      quote: 'When the wearer uses Elation Skill on all allies, increases DMG taken by all enemies by 22%, lasting for 3 turn(s).',
+      tag: 'Enemy: DMG taken +22%',
+      gives: [{ stat: 'vulnerability', amount: '+22%' }],
+      to: 'enemy',
+      setup: 'Pearl uses her Elation Skill (3 turns).',
+    },
+    {
+      id: 'lc-heal',
+      piece: 'signature-weapon',
+      quote: "restores HP equal to 10% of the wearer's DEF for all allies.",
+      tag: 'Heals all allies',
+      gives: [{ stat: 'heal', amount: "10% of Pearl's DEF" }],
+      to: 'allies',
+      setup: 'Pearl uses her Elation Skill.',
+    },
   ],
   nothing: {
     'skill-basic-atk-brushstroke-trace-the-severed-stream': ICE,
     'skill-technique-recast-masterwork-in-nacre': TECHNIQUE,
+    'skill-innate-trace-faces-of-elation-leaping-off-the-page': 'Raises her own "Party Trick" limit and keeps some of her own "Certified Banger" and Punchline after her extra turn; not a stat the check measures.',
     'skill-basic-atk-brushstroke-imagenate-the-starry-night': 'Deals Ice DMG and heals all allies like her Skill (counted there).',
     'skill-basic-atk-brushstroke-render-the-great-wave': 'Deals Ice DMG and heals all allies like her Skill (counted there).',
     'trace-panoptic-vision': 'Raises her own Elation and healing; nothing more for the team.',
@@ -467,6 +512,7 @@ export const evanescia: CharacterSheet = {
     'skill-basic-atk-syllabus-pop-quiz': PHYS,
     'skill-ultimate-swordsong-absolution-denied': PHYS,
     'skill-technique-petalfall-floral-reminiscence': TECHNIQUE,
+    'skill-innate-trace-faces-of-elation-pages-to-petals': SELF_HER,
     'skill-elation-skill-scarlet-elation-or-execution': 'Deals Physical Elation DMG and gives her own "Certified Banger"; nothing for the team.',
     'eidolon-1': 'Buffs only herself and adds her own Elation Skill; nothing for the team.',
     'eidolon-2': SELF_HER,
@@ -533,6 +579,7 @@ export const silverWolf999: CharacterSheet = {
     'skill-basic-atk-one-punch': IMAG,
     'skill-talent-i-carry-we-win': 'Builds her own CRIT from "Hidden MMR" and turns her own DMG into Elation DMG; nothing for the team.',
     'skill-technique-this-absolute-meta': TECHNIQUE,
+    'skill-innate-trace-faces-of-elation-holographic-mirage': SELF_HER,
     'skill-basic-atk-bonus-stage-wolf-instant': 'Deals Imaginary DMG and gives her own extra turns; nothing for the team.',
     'skill-elation-skill-pro-gamer-move': 'Gives her own "Hidden MMR"; nothing for the team.',
     'skill-elation-skill-honkai-dmg-demo': 'Deals Imaginary Elation DMG and resets her own "Top Loot Box"; nothing for the team.',
@@ -555,9 +602,9 @@ export const aeonAha: CharacterSheet = {
     uses: ['elation'],
     ignores: [],
     quotes: [
-      { piece: 'skill-ultimate-aha-let-there-be-laughter', quote: 'Deals 200% Quantum Elation DMG to all enemies, then deals 5 instance(s) of DMG.' },
-      { piece: 'skill-skill-this-emanator-was-certified-by-aha', quote: 'then immediately launches a Follow-up ATK, dealing 50% Quantum Elation DMG to all enemies.' },
-      { piece: 'trace-a-box-of-everything', quote: "When Aeon ★ Aha's SPD reaches 125/150 or higher, Elation increases by 120%/150%." },
+      { piece: 'skill-ultimate-aha-let-there-be-laughter', quote: 'Deals 200% Quantum Elation DMG to all enemies. Then, deals 5 instance(s) of DMG' },
+      { piece: 'skill-skill-this-emanator-was-certified-by-aha', quote: 'then immediately launches Follow-up ATK, dealing 50% Quantum Elation DMG to all enemies.' },
+      { piece: 'trace-a-box-of-everything', quote: "When Aeon ★ Aha's SPD reaches 125/150 or higher, the Elation stat increases by 120%/150%, respectively." },
     ],
   },
   entries: [
@@ -573,7 +620,7 @@ export const aeonAha: CharacterSheet = {
     {
       id: 'skill-follow-up',
       piece: 'skill-skill-this-emanator-was-certified-by-aha',
-      quote: 'then immediately launches a Follow-up ATK, dealing 50% Quantum Elation DMG to all enemies.',
+      quote: 'then immediately launches Follow-up ATK, dealing 50% Quantum Elation DMG to all enemies.',
       tag: 'Follow-Up ATK on Skill',
       gives: [],
       to: 'enemy',
@@ -583,7 +630,7 @@ export const aeonAha: CharacterSheet = {
     {
       id: 'punchline-wishpower',
       piece: 'skill-talent-work-wonders-with-them',
-      quote: 'Once allies\' Punchline reaches 40 point(s) for the first time, Aeon ★ Aha will immediately gain 1 points of "Wishpower"',
+      quote: 'After allies\' Punchline reaches 40 for the first time, Aeon ★ Aha will immediately gain 1 "Wishpower"',
       tag: "Team's Punchline powers Aha",
       gives: [],
       to: 'self',
@@ -593,7 +640,7 @@ export const aeonAha: CharacterSheet = {
     {
       id: 'punchline-crit-dmg',
       piece: 'skill-talent-work-wonders-with-them',
-      quote: "and increase all allies' CRIT DMG by 40%, lasting for 3 turn(s).",
+      quote: "and then increase all allies' CRIT DMG by 40%, lasting for 3 turn(s).",
       tag: 'Allies: +40% CRIT DMG',
       gives: [{ stat: 'crit-dmg', amount: '+40%' }],
       to: 'allies',
@@ -602,7 +649,7 @@ export const aeonAha: CharacterSheet = {
     {
       id: 'elation-skill',
       piece: 'skill-elation-skill-yes-aha-at-full-moon',
-      quote: 'then deals True DMG equal to 20% of total non-True DMG dealt by ally targets this Aha Instant',
+      quote: 'deals True DMG based on 20% of total non-True DMG dealt by ally targets during this Aha Instant',
       tag: 'Elation Skill in Aha Instant',
       gives: [],
       to: 'enemy',
@@ -612,9 +659,9 @@ export const aeonAha: CharacterSheet = {
     {
       id: 'elation-debt',
       piece: 'skill-talent-the-true-story-of-aha',
-      quote: 'When Aeon ★ Aha and teammates deal DMG, additionally deal "Elation Debt" effect equal to 25% of DMG to the enemy target.',
+      quote: 'When Aeon ★ Aha or a teammate deals DMG, additionally applies the "Elation Debt" effect onto the enemy target, equal to 25% of their HP loss.',
       tag: 'Enemy: "Elation Debt" from all DMG',
-      gives: [{ stat: 'extra-dmg', amount: '25% of DMG dealt, stored as "Elation Debt"' }],
+      gives: [{ stat: 'extra-dmg', amount: '25% of HP lost, stored as "Elation Debt" (up to 10% of Max HP)' }],
       to: 'enemy',
       setup: 'Aha or a teammate deals DMG.',
       unverified: 'The kit never says what "Elation Debt" does to the enemy.',
@@ -622,7 +669,7 @@ export const aeonAha: CharacterSheet = {
     {
       id: 'prank-sp',
       piece: 'trace-a-prank-on-aeons',
-      quote: 'state and recovers 1 Skill Point(s).',
+      quote: 'state, and recovers 1 Skill Point(s).',
       tag: 'Team: +1 Skill Point',
       gives: [{ stat: 'skill-points', amount: '+1 per Skill' }],
       to: 'allies',
@@ -631,17 +678,17 @@ export const aeonAha: CharacterSheet = {
     {
       id: 'prank-extra-dmg',
       piece: 'trace-a-prank-on-aeons',
-      quote: 'Skill\'s Follow-Up ATK additionally deals 20% Elation DMG of the corresponding Type to the target with "Emanator of Elation" state',
-      tag: 'Emanator ally: extra 20% Elation DMG',
-      gives: [{ stat: 'extra-dmg', amount: '20% Elation DMG of the ally\'s Type' }],
-      to: 'chosen-ally',
-      setup: 'Aha uses its Skill.',
-      unverified: 'Says the DMG is dealt "to the target with Emanator of Elation" (an ally); unclear whose DMG it is and who it hits.',
+      quote: 'Skill\'s Follow-Up ATK additionally deals 20% Elation DMG of the same Type as the target who holds the "Emanator of Elation" state',
+      // The release text settles the beta's open question: Aha's own Follow-Up ATK deals it, in the Emanator ally's Type.
+      tag: 'Its Skill Follow-Up: extra 20% Elation DMG',
+      gives: [{ stat: 'extra-dmg', amount: "20% Elation DMG of the Emanator ally's Type" }],
+      to: 'self',
+      setup: 'Aha uses its Skill while an ally holds "Emanator of Elation".',
     },
     {
       id: 'e1-merrymake',
       piece: 'eidolon-1',
-      quote: 'merrymakes Elation DMG dealt by all ally targets by 15%.',
+      quote: 'When Aeon ★ Aha is present, Elation DMG dealt by all ally targets merrymakes by 15%.',
       tag: 'Allies: Elation DMG merrymake +15%',
       gives: [{ stat: 'dmg', amount: '+15% (merrymake)' }],
       to: 'allies',
@@ -651,7 +698,7 @@ export const aeonAha: CharacterSheet = {
     {
       id: 'e6-aha-turn',
       piece: 'eidolon-6',
-      quote: "The first time Aeon ★ Aha uses THEIR Ultimate, Aha's action advances by 100%, and Aha gains 100 Punchline(s).",
+      quote: "After Aeon ★ Aha uses Ultimate for the first time, Aha's action advances by 100%, and Aha gains 100 Punchline.",
       tag: 'First Ultimate: Aha acts at once (Aha Instant)',
       gives: [],
       to: 'allies',
@@ -661,7 +708,7 @@ export const aeonAha: CharacterSheet = {
     {
       id: 'lc-def-ignore',
       piece: 'signature-weapon',
-      quote: "Then, causes all allies to ignore 16% of the enemy target's DEF when dealing DMG during this combat.",
+      quote: "Then, enables all allies to ignore 16% of the enemy target's DEF when they deal DMG during this battle.",
       tag: 'Allies: DMG ignores 16% DEF',
       gives: [{ stat: 'def-shred', amount: '16%' }],
       to: 'allies',
@@ -672,10 +719,10 @@ export const aeonAha: CharacterSheet = {
     'skill-basic-atk-starfrost-showtime': 'Deals Quantum Elation DMG only; nothing for the team.',
     'skill-ultimate-aha-let-there-be-laughter': 'Advances Aha\'s own action, enters its own "Faces of Elation" state and deals Quantum Elation DMG; nothing for the team.',
     'skill-technique-abracadabra': TECHNIQUE,
-    'skill-innate-trace-faces-of-elation-ex-nihilo': 'Upgrades allies\' Punchline and "Certified Banger" into states the kit gives no numbers for, and ignores DEF for its own DMG; nothing countable for the team.',
+    'skill-innate-trace-faces-of-elation-ex-nihilo': 'Makes allies\' Path of Elation ascend (each Elation character\'s "Faces of Elation" trace says what that does, read there) and buffs only Aha.',
     'trace-a-carnival-in-whimsy': 'Gains its own "Wishpower" from teammates\' healing or shields; nothing for the team.',
     'trace-a-box-of-everything': SELF_IT,
-    'eidolon-2': 'The game text is a placeholder (unreleased kit); nothing can be read yet.',
+    'eidolon-2': 'The game text is an unfilled placeholder in the files; nothing can be read yet.',
     'eidolon-3': LEVELS,
     'eidolon-4': SELF_IT,
     'eidolon-5': LEVELS,
@@ -781,6 +828,27 @@ export const aventurineWaveflair: CharacterSheet = {
       to: 'allies',
       setup: 'A wave starts, or he uses his Elation Skill 3 times.',
     },
+    {
+      id: 'monte-spd',
+      piece: 'skill-innate-trace-faces-of-elation-three-card-monte',
+      quote: 'The SPD of all allies increases by 25%.',
+      tag: 'Allies: +25% SPD (Aeon ★ Aha his only Elation teammate)',
+      on: { all: [{ named: { ids: ['1511'], as: 'member', words: 'Aeon ★ Aha is in the team (their Ultimate makes the Path of Elation ascend)' } }, { count: { paths: ['elation'], atLeast: 1, atMost: 1, others: true } }] },
+      gives: [{ stat: 'spd', amount: '+25%' }],
+      to: 'allies',
+      setup: 'Aeon ★ Aha\'s Ultimate ("Faces of Elation", 3 of Aha\'s turns).',
+    },
+    {
+      id: 'monte-follow-up',
+      piece: 'skill-innate-trace-faces-of-elation-three-card-monte',
+      quote: 'the effect that normally requires Aventurine • Waveflair to be the only Elation character will also become active.',
+      tag: 'Elation Skill counts as Follow-Up ATK (Aeon ★ Aha his only Elation teammate)',
+      on: { all: [{ named: { ids: ['1511'], as: 'member', words: 'Aeon ★ Aha is in the team (their Ultimate makes the Path of Elation ascend)' } }, { count: { paths: ['elation'], atLeast: 1, atMost: 1, others: true } }] },
+      gives: [],
+      to: 'enemy',
+      causes: 'follow-up',
+      setup: 'Aeon ★ Aha\'s Ultimate ("Faces of Elation", 3 of Aha\'s turns).',
+    },
   ],
   nothing: {
     'skill-basic-atk-dead-center-the-torrent-hits': QUANTUM,
@@ -803,6 +871,18 @@ const trailblazerElation = (characterId: string, name: string): CharacterSheet =
   characterId,
   name,
   entries: [
+    // First, so it counts over the one-ally +50% below when Aha is there (same noStack group, the first counts).
+    {
+      id: 'plot-armor-crit-dmg',
+      piece: 'skill-innate-trace-faces-of-elation-plot-armor',
+      quote: "the Ultimate's CRIT DMG boost effect additionally increases by 30% and applies to all allies.",
+      tag: 'Allies: +80% CRIT DMG (with Aeon ★ Aha)',
+      on: { named: { ids: ['1511'], as: 'member', words: 'Aeon ★ Aha is in the team (their Ultimate makes the Path of Elation ascend)' } },
+      gives: [{ stat: 'crit-dmg', amount: '+80% (Ultimate +50%, +30% more)' }],
+      to: 'allies',
+      setup: "Their Ultimate (3 turns) while Aeon ★ Aha holds \"Faces of Elation\".",
+      noStack: 'tb-elation-ult-crit-dmg',
+    },
     {
       id: 'ult-crit-dmg',
       piece: 'skill-ultimate-may-the-trailblaze-fly-you-starward',
@@ -885,6 +965,7 @@ const trailblazerElation = (characterId: string, name: string): CharacterSheet =
     'skill-skill-let-the-storm-rage-on': 'Deals Lightning DMG and gives their own "Certified Banger"; nothing for the team.',
     'skill-talent-that-smile-hits-different': 'Regenerates their own Energy, gains Punchline and adds their own Elation DMG; their main Elation Skill source is the Ultimate.',
     'skill-technique-we-are-so-back': TECHNIQUE,
+    'skill-innate-trace-faces-of-elation-plot-armor': 'Adds their own Elation Skill before Aha\'s and changes how Aha\'s True DMG is counted; the CRIT DMG for all allies is counted above.',
     'skill-elation-skill-i-said-elation-did-i-stutter': 'Deals Lightning Elation DMG only; nothing for the team.',
     'trace-on-cloud-nine': SELF_TB,
     'eidolon-1': 'Adds "Certified Banger" points to their Ultimate; not a stat the check measures.',
