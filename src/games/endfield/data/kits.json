@@ -2122,7 +2122,7 @@
   {
     "characterId": "chr_0024_deepfin",
     "source": "endfield.wiki.gg/wiki/Alesh (CC BY-SA 4.0)",
-    "version": "wiki revision 64987",
+    "version": "wiki revision 66946",
     "skills": [
       {
         "id": "basic-attack",
@@ -2546,7 +2546,7 @@
   {
     "characterId": "chr_0028_wulfa",
     "source": "endfield.wiki.gg/wiki/Rossi (CC BY-SA 4.0)",
-    "version": "wiki revision 64991",
+    "version": "wiki revision 66443",
     "skills": [
       {
         "id": "basic-attack",
@@ -2970,7 +2970,7 @@
   {
     "characterId": "chr_0032_lizhiyan",
     "source": "endfield.wiki.gg/wiki/Arcane (CC BY-SA 4.0)",
-    "version": "wiki revision 64995",
+    "version": "wiki revision 67096",
     "skills": [
       {
         "id": "basic-attack-array-arcana-int",
@@ -2991,7 +2991,7 @@
         "label": "Combo Skill: Yinglung Stance IV (Array Arcana: INT)",
         "kind": "skill",
         "does": [],
-        "gameText": "Intellect (N) ≥ Will (N), Array Arcana: INT is ACTIVE.\nCOMBO TRIGGER: When Nature Infliction or at least 2 stacks of non-Nature Arts Infliction are applied on an enemy.\nSKILL DESCRIPTION: Arcane charges at the target and sets up 4 Tactical Doubles that apply Nature Susceptibility and Cryo Susceptibility and deal Nature DMG to the target and nearby enemies, and also apply Imprisonment on the said target. When Imprisonment ends, the Tactical Doubles will attack the said target to deal Explosion DMG.\nImprisonment: A debuff that slows all actions.\nArray Arcana: INT:\n- Hitting an enemy under Imprisonment with Arcane's battle skill returns some SP, ends the Imprisonment early, deals Explosion DMG, applies another instance of Nature Susceptibility and Cryo Susceptibility, and deals multiple hits of bonus DMG after a short delay.\n- Combo skill cooldown is shorter.\nAt level 12: Cooldown: 18; Base DMG Multiplier: 80%; Base Stagger: 5; Imprisonment and Susceptibility Duration (s): 4; Susceptibility: 4%; Explosion DMG Multiplier: 120%; Explosion Stagger: 5; Bonus DMG Multiplier: 500%; Bonus Susceptibility Duration (s): 2; SP Return: 30; Ultimate Energy Gain: 10."
+        "gameText": "Intellect (N) ≥ Will (N), Array Arcana: INT is ACTIVE.\nCOMBO TRIGGER: When Nature Infliction or at least 2 stacks of non-Nature Arts Infliction are applied on an enemy.\nSKILL DESCRIPTION: Arcane charges at the target and sets up 4 Tactical Doubles that apply Nature Susceptibility and Cryo Susceptibility and deal Nature DMG to the target and nearby enemies, and also apply Imprisonment on the said target. When Imprisonment ends, the Tactical Doubles will attack the said target to deal Explosion DMG.\nImprisonment: A debuff that slows all actions.\nArray Arcana: INT:\n- Hitting an enemy under Imprisonment with Arcane's battle skill returns some SP, ends the Imprisonment early, deals Explosion DMG, applies another instance of Nature Susceptibility and Cryo Susceptibility, and deals multiple hits of bonus DMG after a short delay.\n- Combo skill cooldown is shorter.\nAt level 12: Cooldown: 12; Base DMG Multiplier: 80%; Base Stagger: 5; Imprisonment and Susceptibility Duration (s): 4; Susceptibility: 4%; Explosion DMG Multiplier: 120%; Explosion Stagger: 5; Bonus DMG Multiplier: 500%; Bonus Susceptibility Duration (s): 2; SP Return: 30; Ultimate Energy Gain: 10."
       },
       {
         "id": "ultimate-array-arcana-int",
@@ -3422,7 +3422,7 @@
   {
     "characterId": "chr_0036_jsspsi",
     "source": "endfield.wiki.gg/wiki/Si (CC BY-SA 4.0)",
-    "version": "wiki revision 64999",
+    "version": "wiki revision 67501",
     "skills": [
       {
         "id": "basic-attack",

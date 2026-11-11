@@ -623,6 +623,20 @@
     }
   },
   {
+    "id": "deadly-assault-2026-11-06",
+    "title": "Deadly Assault",
+    "kind": "endgame",
+    "start": "2026-11-05T20:00:00.000Z",
+    "end": "2026-11-19T19:59:59.000Z",
+    "reward": 300,
+    "currency": "polychrome",
+    "serverTime": {
+      "base": 8,
+      "start": true,
+      "end": true
+    }
+  },
+  {
     "id": "en-nah-into-your-lap-2026-11-11",
     "title": "\"En-Nah\" Into Your Lap",
     "kind": "login",

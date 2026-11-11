@@ -2,7 +2,7 @@
   {
     "characterId": "1001",
     "source": "nanoka.cc",
-    "version": "4.6",
+    "version": "4.7",
     "skills": [
       {
         "id": "skill-basic-atk-frigid-cold-arrow",
@@ -125,7 +125,7 @@
   {
     "characterId": "1002",
     "source": "nanoka.cc",
-    "version": "4.6",
+    "version": "4.7",
     "skills": [
       {
         "id": "skill-basic-atk-cloudlancer-art-north-wind",
@@ -248,7 +248,7 @@
   {
     "characterId": "1003",
     "source": "nanoka.cc",
-    "version": "4.6",
+    "version": "4.7",
     "skills": [
       {
         "id": "skill-basic-atk-sawblade-tuning",
@@ -371,7 +371,7 @@
   {
     "characterId": "1004",
     "source": "nanoka.cc",
-    "version": "4.6",
+    "version": "4.7",
     "skills": [
       {
         "id": "skill-basic-atk-gravity-suppression",
@@ -682,7 +682,7 @@
   {
     "characterId": "1005",
     "source": "nanoka.cc",
-    "version": "4.6",
+    "version": "4.7",
     "skills": [
       {
         "id": "skill-basic-atk-midnight-tumult",
@@ -993,7 +993,7 @@
   {
     "characterId": "1006",
     "source": "nanoka.cc",
-    "version": "4.6",
+    "version": "4.7",
     "skills": [
       {
         "id": "skill-basic-atk-system-warning",
@@ -1304,7 +1304,7 @@
   {
     "characterId": "1008",
     "source": "nanoka.cc",
-    "version": "4.6",
+    "version": "4.7",
     "skills": [
       {
         "id": "skill-basic-atk-lightning-rush",
@@ -1427,7 +1427,7 @@
   {
     "characterId": "1009",
     "source": "nanoka.cc",
-    "version": "4.6",
+    "version": "4.7",
     "skills": [
       {
         "id": "skill-basic-atk-spectrum-beam",
@@ -1550,7 +1550,7 @@
   {
     "characterId": "1013",
     "source": "nanoka.cc",
-    "version": "4.6",
+    "version": "4.7",
     "skills": [
       {
         "id": "skill-basic-atk-what-are-you-looking-at",
@@ -1673,7 +1673,7 @@
   {
     "characterId": "1014",
     "source": "nanoka.cc",
-    "version": "4.6",
+    "version": "4.7",
     "skills": [
       {
         "id": "skill-basic-atk-invisible-air-barrier-of-the-wind-king",
@@ -1803,7 +1803,7 @@
   {
     "characterId": "1015",
     "source": "nanoka.cc",
-    "version": "4.6",
+    "version": "4.7",
     "skills": [
       {
         "id": "skill-basic-atk-kanshou-and-bakuya",
@@ -1933,7 +1933,7 @@
   {
     "characterId": "1101",
     "source": "nanoka.cc",
-    "version": "4.6",
+    "version": "4.7",
     "skills": [
       {
         "id": "skill-basic-atk-windrider-bullet",
@@ -2056,7 +2056,7 @@
   {
     "characterId": "1102",
     "source": "nanoka.cc",
-    "version": "4.6",
+    "version": "4.7",
     "skills": [
       {
         "id": "skill-basic-atk-thwack",
@@ -2367,7 +2367,7 @@
   {
     "characterId": "1103",
     "source": "nanoka.cc",
-    "version": "4.6",
+    "version": "4.7",
     "skills": [
       {
         "id": "skill-basic-atk-roaring-thunderclap",
@@ -2490,7 +2490,7 @@
   {
     "characterId": "1104",
     "source": "nanoka.cc",
-    "version": "4.6",
+    "version": "4.7",
     "skills": [
       {
         "id": "skill-basic-atk-fist-of-conviction",
@@ -2613,7 +2613,7 @@
   {
     "characterId": "1105",
     "source": "nanoka.cc",
-    "version": "4.6",
+    "version": "4.7",
     "skills": [
       {
         "id": "skill-basic-atk-behind-the-kindness",
@@ -2736,7 +2736,7 @@
   {
     "characterId": "1106",
     "source": "nanoka.cc",
-    "version": "4.6",
+    "version": "4.7",
     "skills": [
       {
         "id": "skill-basic-atk-frost-shot",
@@ -2859,7 +2859,7 @@
   {
     "characterId": "1107",
     "source": "nanoka.cc",
-    "version": "4.6",
+    "version": "4.7",
     "skills": [
       {
         "id": "skill-basic-atk-i-want-to-help",
@@ -2982,7 +2982,7 @@
   {
     "characterId": "1108",
     "source": "nanoka.cc",
-    "version": "4.6",
+    "version": "4.7",
     "skills": [
       {
         "id": "skill-basic-atk-dazzling-blades",
@@ -3105,7 +3105,7 @@
   {
     "characterId": "1109",
     "source": "nanoka.cc",
-    "version": "4.6",
+    "version": "4.7",
     "skills": [
       {
         "id": "skill-basic-atk-hehe-don-t-get-burned",
@@ -3235,7 +3235,7 @@
   {
     "characterId": "1110",
     "source": "nanoka.cc",
-    "version": "4.6",
+    "version": "4.7",
     "skills": [
       {
         "id": "skill-basic-atk-ice-crampon-technique",
@@ -3358,7 +3358,7 @@
   {
     "characterId": "1111",
     "source": "nanoka.cc",
-    "version": "4.6",
+    "version": "4.7",
     "skills": [
       {
         "id": "skill-basic-atk-direct-punch",
@@ -3488,7 +3488,7 @@
   {
     "characterId": "1112",
     "source": "nanoka.cc",
-    "version": "4.6",
+    "version": "4.7",
     "skills": [
       {
         "id": "skill-basic-atk-deficit",
@@ -3611,7 +3611,7 @@
   {
     "characterId": "1201",
     "source": "nanoka.cc",
-    "version": "4.6",
+    "version": "4.7",
     "skills": [
       {
         "id": "skill-basic-atk-flower-pick",
@@ -3741,7 +3741,7 @@
   {
     "characterId": "1202",
     "source": "nanoka.cc",
-    "version": "4.6",
+    "version": "4.7",
     "skills": [
       {
         "id": "skill-basic-atk-dislodged",
@@ -3864,7 +3864,7 @@
   {
     "characterId": "1203",
     "source": "nanoka.cc",
-    "version": "4.6",
+    "version": "4.7",
     "skills": [
       {
         "id": "skill-basic-atk-thorns-of-the-abyss",
@@ -3987,7 +3987,7 @@
   {
     "characterId": "1204",
     "source": "nanoka.cc",
-    "version": "4.6",
+    "version": "4.7",
     "skills": [
       {
         "id": "skill-basic-atk-glistening-light",
@@ -4110,7 +4110,7 @@
   {
     "characterId": "1205",
     "source": "nanoka.cc",
-    "version": "4.6",
+    "version": "4.7",
     "skills": [
       {
         "id": "skill-basic-atk-shard-sword",
@@ -4441,7 +4441,7 @@
   {
     "characterId": "1206",
     "source": "nanoka.cc",
-    "version": "4.6",
+    "version": "4.7",
     "skills": [
       {
         "id": "skill-basic-atk-cloudfencer-art-starshine",
@@ -4564,7 +4564,7 @@
   {
     "characterId": "1207",
     "source": "nanoka.cc",
-    "version": "4.6",
+    "version": "4.7",
     "skills": [
       {
         "id": "skill-basic-atk-arrowslinger",
@@ -4687,7 +4687,7 @@
   {
     "characterId": "1208",
     "source": "nanoka.cc",
-    "version": "4.6",
+    "version": "4.7",
     "skills": [
       {
         "id": "skill-basic-atk-novaburst",
@@ -4810,7 +4810,7 @@
   {
     "characterId": "1209",
     "source": "nanoka.cc",
-    "version": "4.6",
+    "version": "4.7",
     "skills": [
       {
         "id": "skill-basic-atk-frost-thorn",
@@ -4933,7 +4933,7 @@
   {
     "characterId": "1210",
     "source": "nanoka.cc",
-    "version": "4.6",
+    "version": "4.7",
     "skills": [
       {
         "id": "skill-basic-atk-standing-ovation",
@@ -5056,7 +5056,7 @@
   {
     "characterId": "1211",
     "source": "nanoka.cc",
-    "version": "4.6",
+    "version": "4.7",
     "skills": [
       {
         "id": "skill-basic-atk-diagnostic-kick",
@@ -5179,7 +5179,7 @@
   {
     "characterId": "1212",
     "source": "nanoka.cc",
-    "version": "4.6",
+    "version": "4.7",
     "skills": [
       {
         "id": "skill-basic-atk-lucent-moonglow",
@@ -5510,7 +5510,7 @@
   {
     "characterId": "1213",
     "source": "nanoka.cc",
-    "version": "4.6",
+    "version": "4.7",
     "skills": [
       {
         "id": "skill-basic-atk-beneficent-lotus",
@@ -5661,7 +5661,7 @@
   {
     "characterId": "1214",
     "source": "nanoka.cc",
-    "version": "4.6",
+    "version": "4.7",
     "skills": [
       {
         "id": "skill-basic-atk-mara-sunder-awl",
@@ -5784,7 +5784,7 @@
   {
     "characterId": "1215",
     "source": "nanoka.cc",
-    "version": "4.6",
+    "version": "4.7",
     "skills": [
       {
         "id": "skill-basic-atk-oracle-brush",
@@ -5907,7 +5907,7 @@
   {
     "characterId": "1217",
     "source": "nanoka.cc",
-    "version": "4.6",
+    "version": "4.7",
     "skills": [
       {
         "id": "skill-basic-atk-banner-stormcaller",
@@ -6218,7 +6218,7 @@
   {
     "characterId": "1218",
     "source": "nanoka.cc",
-    "version": "4.6",
+    "version": "4.7",
     "skills": [
       {
         "id": "skill-basic-atk-heart-afire",
@@ -6341,7 +6341,7 @@
   {
     "characterId": "1220",
     "source": "nanoka.cc",
-    "version": "4.6",
+    "version": "4.7",
     "skills": [
       {
         "id": "skill-basic-atk-boltsunder",
@@ -6478,7 +6478,7 @@
   {
     "characterId": "1221",
     "source": "nanoka.cc",
-    "version": "4.6",
+    "version": "4.7",
     "skills": [
       {
         "id": "skill-basic-atk-galespin-summersault",
@@ -6601,7 +6601,7 @@
   {
     "characterId": "1222",
     "source": "nanoka.cc",
-    "version": "4.6",
+    "version": "4.7",
     "skills": [
       {
         "id": "skill-basic-atk-votive-incense",
@@ -6724,7 +6724,7 @@
   {
     "characterId": "1223",
     "source": "nanoka.cc",
-    "version": "4.6",
+    "version": "4.7",
     "skills": [
       {
         "id": "skill-basic-atk-hurlthorn",
@@ -6847,7 +6847,7 @@
   {
     "characterId": "1224",
     "source": "nanoka.cc",
-    "version": "4.6",
+    "version": "4.7",
     "skills": [
       {
         "id": "skill-basic-atk-my-sword-zaps-demons",
@@ -6977,7 +6977,7 @@
   {
     "characterId": "1225",
     "source": "nanoka.cc",
-    "version": "4.6",
+    "version": "4.7",
     "skills": [
       {
         "id": "skill-basic-atk-radiant-streak",
@@ -7107,7 +7107,7 @@
   {
     "characterId": "1301",
     "source": "nanoka.cc",
-    "version": "4.6",
+    "version": "4.7",
     "skills": [
       {
         "id": "skill-basic-atk-corkage-fee",
@@ -7237,7 +7237,7 @@
   {
     "characterId": "1302",
     "source": "nanoka.cc",
-    "version": "4.6",
+    "version": "4.7",
     "skills": [
       {
         "id": "skill-basic-atk-fleeting-fragrance",
@@ -7367,7 +7367,7 @@
   {
     "characterId": "1303",
     "source": "nanoka.cc",
-    "version": "4.6",
+    "version": "4.7",
     "skills": [
       {
         "id": "skill-basic-atk-threading-fragrance",
@@ -7490,7 +7490,7 @@
   {
     "characterId": "1304",
     "source": "nanoka.cc",
-    "version": "4.6",
+    "version": "4.7",
     "skills": [
       {
         "id": "skill-basic-atk-straight-bet",
@@ -7613,7 +7613,7 @@
   {
     "characterId": "1305",
     "source": "nanoka.cc",
-    "version": "4.6",
+    "version": "4.7",
     "skills": [
       {
         "id": "skill-basic-atk-mind-is-might",
@@ -7736,7 +7736,7 @@
   {
     "characterId": "1306",
     "source": "nanoka.cc",
-    "version": "4.6",
+    "version": "4.7",
     "skills": [
       {
         "id": "skill-basic-atk-monodrama",
@@ -8047,7 +8047,7 @@
   {
     "characterId": "1307",
     "source": "nanoka.cc",
-    "version": "4.6",
+    "version": "4.7",
     "skills": [
       {
         "id": "skill-basic-atk-percipience-silent-dawn",
@@ -8358,7 +8358,7 @@
   {
     "characterId": "1308",
     "source": "nanoka.cc",
-    "version": "4.6",
+    "version": "4.7",
     "skills": [
       {
         "id": "skill-basic-atk-trilateral-wiltcross",
@@ -8481,7 +8481,7 @@
   {
     "characterId": "1309",
     "source": "nanoka.cc",
-    "version": "4.6",
+    "version": "4.7",
     "skills": [
       {
         "id": "skill-basic-atk-wingflip-white-noise",
@@ -8604,7 +8604,7 @@
   {
     "characterId": "1310",
     "source": "nanoka.cc",
-    "version": "4.6",
+    "version": "4.7",
     "skills": [
       {
         "id": "skill-basic-atk-order-flare-propulsion",
@@ -8955,7 +8955,7 @@
   {
     "characterId": "1312",
     "source": "nanoka.cc",
-    "version": "4.6",
+    "version": "4.7",
     "skills": [
       {
         "id": "skill-basic-atk-e-excuse-me-please",
@@ -9078,7 +9078,7 @@
   {
     "characterId": "1313",
     "source": "nanoka.cc",
-    "version": "4.6",
+    "version": "4.7",
     "skills": [
       {
         "id": "skill-basic-atk-gleaming-admonition",
@@ -9201,7 +9201,7 @@
   {
     "characterId": "1314",
     "source": "nanoka.cc",
-    "version": "4.6",
+    "version": "4.7",
     "skills": [
       {
         "id": "skill-basic-atk-lash-of-riches",
@@ -9324,7 +9324,7 @@
   {
     "characterId": "1315",
     "source": "nanoka.cc",
-    "version": "4.6",
+    "version": "4.7",
     "skills": [
       {
         "id": "skill-basic-atk-skullcrush-spurs",
@@ -9454,7 +9454,7 @@
   {
     "characterId": "1317",
     "source": "nanoka.cc",
-    "version": "4.6",
+    "version": "4.7",
     "skills": [
       {
         "id": "skill-basic-atk-ninjutsu-rise-above-tumbles",
@@ -9584,7 +9584,7 @@
   {
     "characterId": "1321",
     "source": "nanoka.cc",
-    "version": "4.6",
+    "version": "4.7",
     "skills": [
       {
         "id": "skill-basic-atk-fiddle-fissured-memory",
@@ -9707,7 +9707,7 @@
   {
     "characterId": "1401",
     "source": "nanoka.cc",
-    "version": "4.6",
+    "version": "4.7",
     "skills": [
       {
         "id": "skill-basic-atk-did-you-get-it",
@@ -9837,7 +9837,7 @@
   {
     "characterId": "1402",
     "source": "nanoka.cc",
-    "version": "4.6",
+    "version": "4.7",
     "skills": [
       {
         "id": "skill-basic-atk-thorned-nectar",
@@ -9995,7 +9995,7 @@
   {
     "characterId": "1403",
     "source": "nanoka.cc",
-    "version": "4.6",
+    "version": "4.7",
     "skills": [
       {
         "id": "skill-basic-atk-hundred-rockets",
@@ -10118,7 +10118,7 @@
   {
     "characterId": "1404",
     "source": "nanoka.cc",
-    "version": "4.6",
+    "version": "4.7",
     "skills": [
       {
         "id": "skill-basic-atk-vow-of-voyage",
@@ -10255,7 +10255,7 @@
   {
     "characterId": "1405",
     "source": "nanoka.cc",
-    "version": "4.6",
+    "version": "4.7",
     "skills": [
       {
         "id": "skill-basic-atk-pain-brews-truth",
@@ -10378,7 +10378,7 @@
   {
     "characterId": "1406",
     "source": "nanoka.cc",
-    "version": "4.6",
+    "version": "4.7",
     "skills": [
       {
         "id": "skill-basic-atk-oops-a-missed-catch",
@@ -10501,7 +10501,7 @@
   {
     "characterId": "1407",
     "source": "nanoka.cc",
-    "version": "4.6",
+    "version": "4.7",
     "skills": [
       {
         "id": "skill-basic-atk-lament-nethersea-s-ripple",
@@ -10673,7 +10673,7 @@
   {
     "characterId": "1408",
     "source": "nanoka.cc",
-    "version": "4.6",
+    "version": "4.7",
     "skills": [
       {
         "id": "skill-basic-atk-stride-to-deliverance",
@@ -10824,7 +10824,7 @@
   {
     "characterId": "1409",
     "source": "nanoka.cc",
-    "version": "4.6",
+    "version": "4.7",
     "skills": [
       {
         "id": "skill-basic-atk-when-breeze-kisses-cirrus",
@@ -10975,7 +10975,7 @@
   {
     "characterId": "1410",
     "source": "nanoka.cc",
-    "version": "4.6",
+    "version": "4.7",
     "skills": [
       {
         "id": "skill-basic-atk-aeolian-mode-echoes-in-still-waters",
@@ -11098,7 +11098,7 @@
   {
     "characterId": "1412",
     "source": "nanoka.cc",
-    "version": "4.6",
+    "version": "4.7",
     "skills": [
       {
         "id": "skill-basic-atk-king-s-castling",
@@ -11221,7 +11221,7 @@
   {
     "characterId": "1413",
     "source": "nanoka.cc",
-    "version": "4.6",
+    "version": "4.7",
     "skills": [
       {
         "id": "skill-basic-atk-time-thence-blurs",
@@ -11379,7 +11379,7 @@
   {
     "characterId": "1414",
     "source": "nanoka.cc",
-    "version": "4.6",
+    "version": "4.7",
     "skills": [
       {
         "id": "skill-basic-atk-aegis-vitae",
@@ -11502,7 +11502,7 @@
   {
     "characterId": "1415",
     "source": "nanoka.cc",
-    "version": "4.6",
+    "version": "4.7",
     "skills": [
       {
         "id": "skill-basic-atk-lo-hope-takes-flight",
@@ -11765,7 +11765,7 @@
   {
     "characterId": "1501",
     "source": "nanoka.cc",
-    "version": "4.6",
+    "version": "4.7",
     "skills": [
       {
         "id": "skill-basic-atk-cat-got-your-flametongue",
@@ -11822,6 +11822,13 @@
         "kind": "skill",
         "does": [],
         "gameText": "Deals 50.0% Fire Elation DMG to all enemies and deals 20 additional instance(s) of DMG. Each instance deals 25.0% Fire Elation DMG to one random enemy. Grants 2 \"Thrill\" point(s) to Sparxie, which can be used to offset Sparxie's Skill Point consumption. Consuming \"Thrill\" is considered as consuming Skill Points."
+      },
+      {
+        "id": "skill-innate-trace-faces-of-elation-hat-trick",
+        "label": "Innate Trace: Faces of Elation ★ Hat Trick (Lv. 2)",
+        "kind": "skill",
+        "does": [],
+        "gameText": "When the Path of Elation ascends, Elation Skill's DMG multiplier increases by 120% of its original multiplier, and ally targets ignore 20% of the enemy target's DEF when dealing DMG. For every 10 \"Party Trick\" held, triggering \"Straight Fire\" additionally provides 1 Bliss, up to 12."
       },
       {
         "id": "trace-sweet-punchline-signing",
@@ -11909,7 +11916,7 @@
   {
     "characterId": "1502",
     "source": "nanoka.cc",
-    "version": "4.6",
+    "version": "4.7",
     "skills": [
       {
         "id": "skill-basic-atk-whistlebolt-sings-joy",
@@ -11952,6 +11959,13 @@
         "kind": "skill",
         "does": [],
         "gameText": "Inflicts \"Woe's Whisper\" on all enemies, lasting for 3 turn(s). Enemy targets under the \"Woe's Whisper\" state take 16.0% increased DMG. Deals 100% Physical Elation DMG to all enemies. Then, deals 5 instance(s) of 20% Physical Elation DMG to one random enemy."
+      },
+      {
+        "id": "skill-innate-trace-faces-of-elation-mind-reading",
+        "label": "Innate Trace: Faces of Elation ★ Mind Reading (Lv. 2)",
+        "kind": "skill",
+        "does": [],
+        "gameText": "When the Path of Elation ascends, the DMG multiplier of the \"Great Boon\" effect increases by an amount equal to 40% of its original value. After using Ultimate, Yao Guang regenerates a fixed amount of 30 Energy and gains 10 Bliss."
       },
       {
         "id": "trace-amaze-in-grace",
@@ -12039,7 +12053,7 @@
   {
     "characterId": "1503",
     "source": "nanoka.cc",
-    "version": "4.6",
+    "version": "4.7",
     "skills": [
       {
         "id": "skill-basic-atk-brushstroke-trace-the-severed-stream",
@@ -12096,6 +12110,13 @@
         "kind": "skill",
         "does": [],
         "gameText": "When there are 1/2/3/(4 or more) Elation characters in the team, then after all ally targets use their next attack, enables them to additionally deal Elation DMG of their corresponding Type to the attack target, equal to 10.0%/15.0%/20.0%/40.0% respectively."
+      },
+      {
+        "id": "skill-innate-trace-faces-of-elation-leaping-off-the-page",
+        "label": "Innate Trace: Faces of Elation ★ Leaping Off the Page (Lv. 2)",
+        "kind": "skill",
+        "does": [],
+        "gameText": "When the Path of Elation ascends, the upper limit for Pearl's \"Party Trick\" increases to 75. When the extra turn granted by the Ultimate ends, 20% of the \"Certified Banger\" and 20% of the Punchline gained at the start of the extra turn are retained."
       },
       {
         "id": "trace-panoptic-vision",
@@ -12183,7 +12204,7 @@
   {
     "characterId": "1504",
     "source": "nanoka.cc",
-    "version": "4.6",
+    "version": "4.7",
     "skills": [
       {
         "id": "skill-basic-atk-talons-inculcate-decorum",
@@ -12306,7 +12327,7 @@
   {
     "characterId": "1505",
     "source": "nanoka.cc",
-    "version": "4.6",
+    "version": "4.7",
     "skills": [
       {
         "id": "skill-basic-atk-syllabus-pop-quiz",
@@ -12349,6 +12370,13 @@
         "kind": "skill",
         "does": [],
         "gameText": "Deals 110% Physical Elation DMG to all enemies and additionally gains 5 point(s) of \"Certified Banger\"."
+      },
+      {
+        "id": "skill-innate-trace-faces-of-elation-pages-to-petals",
+        "label": "Innate Trace: Faces of Elation ★ Pages to Petals (Lv. 2)",
+        "kind": "skill",
+        "does": [],
+        "gameText": "When the Path of Elation ascends, overflow Energy can accumulate up to 240. After using Ultimate, clears this accumulation to regenerate an equal amount of Energy. This instance of regeneration will not trigger the Talent's Certified Banger gain effect. The DMG dealt ignores 24% of the enemy target's DEF. For every 480 \"Party Trick\" accumulated, the DMG multiplier of the next Ultimate and the multiplier of the Elation DMG dealt by that Ultimate via the Talent increases by 150% of their respective original values. This effect cannot stack."
       },
       {
         "id": "trace-watch-all-revels",
@@ -12436,7 +12464,7 @@
   {
     "characterId": "1506",
     "source": "nanoka.cc",
-    "version": "4.6",
+    "version": "4.7",
     "skills": [
       {
         "id": "skill-basic-atk-one-punch",
@@ -12493,6 +12521,13 @@
         "kind": "skill",
         "does": [],
         "gameText": "Deals 6 instances of DMG, with each instance dealing 90% Imaginary Elation DMG to one random enemy. Then, resets the fixed chance to trigger \"Top Loot Box\" to its initial value."
+      },
+      {
+        "id": "skill-innate-trace-faces-of-elation-holographic-mirage",
+        "label": "Innate Trace: Faces of Elation ★ Holographic Mirage (Lv. 2)",
+        "kind": "skill",
+        "does": [],
+        "gameText": "When the Path of Elation ascends, \"Hidden MMR\" can overflow up to 999 after reaching its upper limit. Increases CRIT DMG by 40%. For every 1 point of \"Party Trick\" gained, simultaneously grants \"Hidden MMR\" equal to 40% of that amount."
       },
       {
         "id": "trace-false-ending-speedrun",
@@ -12580,7 +12615,7 @@
   {
     "characterId": "1507",
     "source": "nanoka.cc",
-    "version": "4.6",
+    "version": "4.7",
     "skills": [
       {
         "id": "skill-basic-atk-a-broken-blade-still-slays",
@@ -12717,7 +12752,7 @@
   {
     "characterId": "1508",
     "source": "nanoka.cc",
-    "version": "4.6",
+    "version": "4.7",
     "skills": [
       {
         "id": "skill-basic-atk-bajiquan",
@@ -12854,7 +12889,7 @@
   {
     "characterId": "1509",
     "source": "nanoka.cc",
-    "version": "4.6",
+    "version": "4.7",
     "skills": [
       {
         "id": "skill-basic-atk-halfhearted-blow",
@@ -12984,7 +13019,7 @@
   {
     "characterId": "1510",
     "source": "nanoka.cc",
-    "version": "4.6",
+    "version": "4.7",
     "skills": [
       {
         "id": "skill-basic-atk-enkindle-the-first-lodestar",
@@ -13142,7 +13177,7 @@
   {
     "characterId": "1511",
     "source": "nanoka.cc",
-    "version": "4.6.54",
+    "version": "4.7",
     "skills": [
       {
         "id": "skill-basic-atk-starfrost-showtime",
@@ -13156,70 +13191,70 @@
         "label": "Skill: This Emanator Was Certified by Aha™ (Lv. 10)",
         "kind": "skill",
         "does": [],
-        "gameText": "Causes one designated ally character (except this unit) to gain the \"Emanator of Elation\" state, then immediately launches a Follow-up ATK, dealing 50% Quantum Elation DMG to all enemies. The \"Emanator of Elation\" state lasts for the entire battle until switching to the next target. The target with the \"Emanator of Elation\" state has their Elation stat increased by 20% and, at the start of their turn, causes Aeon ★ Aha to gain 1 point(s) of \"Wishpower.\""
+        "gameText": "Enables one designated ally character (excluding this unit) to gain the \"Emanator of Elation\" state, then immediately launches Follow-up ATK, dealing 50% Quantum Elation DMG to all enemies. The \"Emanator of Elation\" state lasts for the entire battle until it switches to the next target. The target with the \"Emanator of Elation\" state has their Elation stat increased by 20% and, at the start of their turn, enables Aeon ★ Aha to gain 1 point(s) of \"Wishpower.\""
       },
       {
         "id": "skill-ultimate-aha-let-there-be-laughter",
         "label": "Ultimate: Aha! Let There Be Laughter (Lv. 10)",
         "kind": "skill",
         "does": [],
-        "gameText": "Causes Aha's action to advance by 20%. Aeon ★ Aha gains the \"Faces of Elation\" state, lasting for 3 turn(s). At the start of each Aeon ★ Aha's turn, duration decreases by 1. Deals 200% Quantum Elation DMG to all enemies, then deals 5 instance(s) of DMG. Each instance deals 60% Quantum Elation DMG to one random enemy."
+        "gameText": "Aha's action advances by 20%. Aeon ★ Aha gains the \"Faces of Elation\" state, lasting for 3 turn(s). This duration decreases by 1 at the start of Aeon ★ Aha's every turn. Deals 200% Quantum Elation DMG to all enemies. Then, deals 5 instance(s) of DMG, with each instance dealing 60% Quantum Elation DMG to one random enemy."
       },
       {
         "id": "skill-talent-work-wonders-with-them",
         "label": "Talent: Work Wonders with THEM (Lv. 10)",
         "kind": "skill",
         "does": [],
-        "gameText": "The Ultimate can be activated once \"Wishpower\" reaches 8 point(s). Wishpower can overflow until 10 after reaching its max. Aeon ★ Aha gains 1 point(s) of \"Wishpower\" after using Basic ATK, Skill, or Elation Skill. Once allies' Punchline reaches 40 point(s) for the first time, Aeon ★ Aha will immediately gain 1 points of \"Wishpower\" and increase all allies' CRIT DMG by 40%, lasting for 3 turn(s). This can be triggered again after Aha's turn ends."
+        "gameText": "Can activate Ultimate after \"Wishpower\" reaches 8. After reaching its upper limit, Wishpower can still overflow up to 10. After using Basic ATK, Skill, or Elation Skill, Aeon ★ Aha gains 1 \"Wishpower.\" After allies' Punchline reaches 40 for the first time, Aeon ★ Aha will immediately gain 1 \"Wishpower\" and then increase all allies' CRIT DMG by 40%, lasting for 3 turn(s). This can trigger again after Aha's turn ends."
       },
       {
         "id": "skill-technique-abracadabra",
         "label": "Technique: ABRACADABRA!",
         "kind": "skill",
         "does": [],
-        "gameText": "After using the Technique, creates a Special Dimension around this unit lasting 20 second(s). Enemies within the Special Dimension are inflicted with \"Misjudgment.\" Enemies inflicted with \"Misjudgment\" cannot detect ally targets. After entering combat, Aha immediately gains 1 extra turn that takes a fixed 20 Punchline into account. Only 1 dimension effect created by allies can exist at the same time."
+        "gameText": "After using Technique, creates a Special Dimension around this unit, lasting for 20 second(s). Enemies within this Special Dimension get inflicted with \"Optical Illusion.\" Once inflicted with \"Optical Illusion,\" they cannot detect ally targets. After entering combat, Aha immediately gains 1 extra turn where a fixed amount of 20 Punchline is taken into account. This turn does not consume Punchline. Only 1 dimension effect created by allies can exist at the same time."
       },
       {
         "id": "skill-elation-skill-yes-aha-at-full-moon",
         "label": "Elation Skill: Yes Aha At Full Moon (Lv. 10)",
         "kind": "skill",
         "does": [],
-        "gameText": "Ignores Participant ID and is always used at the end of the Aha Instant. Deals Quantum Elation DMG equal to 60% to all enemies, then deals True DMG equal to 20% of total non-True DMG dealt by ally targets this Aha Instant, equally distributed among all enemies."
+        "gameText": "Always gets used at the end of Aha Instant regardless of Participant ID. Deals 60% Quantum Elation DMG to all enemies, and deals True DMG based on 20% of total non-True DMG dealt by ally targets during this Aha Instant, distributed evenly among all enemies."
       },
       {
         "id": "skill-innate-trace-faces-of-elation-ex-nihilo",
         "label": "Innate Trace: Faces of Elation ★ Ex Nihilo (Lv. 2)",
         "kind": "skill",
         "does": [],
-        "gameText": "While possessing the \"Faces of Elation\" state, Aeon ★ Aha causes allies' Path of Elation to ascend, enhancing Punchline and the \"Certified Banger\" state into Bliss and the \"Party Trick\" state. Bliss recovers 10% of the consumed Punchline at the end of the \"Aha Instant\" turn. During \"Faces of Elation,\" Aeon ★ Aha's CRIT Rate increases by 20%, and the DMG dealt by Aeon ★ Aha ignores 60% of the enemy target's DEF."
+        "gameText": "While holding the \"Faces of Elation\" state, Aeon ★ Aha enables allies' Path of Elation to ascend, and enhances Punchline and \"Certified Banger\" into Bliss and \"Party Trick,\" respectively. Bliss recovers 10% of its consumed amount when Aha Instant ends. During \"Faces of Elation,\" Aeon ★ Aha's CRIT Rate increases by 20%, and the DMG dealt ignores 60% of the enemy target's DEF."
       },
       {
         "id": "skill-talent-the-true-story-of-aha",
         "label": "Talent: The True Story of Aha",
         "kind": "skill",
         "does": [],
-        "gameText": "When Aeon ★ Aha and teammates deal DMG, additionally deal \"Elation Debt\" effect equal to 25% of DMG to the enemy target. During the enemy target's phase transition, they maintain the \"Elation Debt\" value, with a maximum not exceeding 10% of the target's Max HP."
+        "gameText": "When Aeon ★ Aha or a teammate deals DMG, additionally applies the \"Elation Debt\" effect onto the enemy target, equal to 25% of their HP loss. Elation Debt persists through the enemy target's phase transition, capped at 10% of the target's Max HP."
       },
       {
         "id": "trace-a-prank-on-aeons",
         "label": "Trace: A Prank on Aeons",
         "kind": "trace",
         "does": [],
-        "gameText": "Skill's Follow-Up ATK additionally deals 20% Elation DMG of the corresponding Type to the target with \"Emanator of Elation\" state and recovers 1 Skill Point(s). The Elation DMG additionally dealt in this instance does not count as 1 instance of attack."
+        "gameText": "Skill's Follow-Up ATK additionally deals 20% Elation DMG of the same Type as the target who holds the \"Emanator of Elation\" state, and recovers 1 Skill Point(s). This additionally dealt Elation DMG is not considered as an instance of attack."
       },
       {
         "id": "trace-a-carnival-in-whimsy",
         "label": "Trace: A Carnival in Whimsy",
         "kind": "trace",
         "does": [],
-        "gameText": "When receiving healing or a Shield provided by a teammate, gains 1 point(s) of \"Wishpower.\" This can be triggered up to 1 times. The trigger count resets after using Ultimate."
+        "gameText": "When receiving healing or a Shield provided by a teammate, gains 1 \"Wishpower.\" This can be triggered up to 1 time(s). The trigger count resets after the Ultimate is used."
       },
       {
         "id": "trace-a-box-of-everything",
         "label": "Trace: A Box of Everything",
         "kind": "trace",
         "does": [],
-        "gameText": "When Aeon ★ Aha's SPD reaches 125/150 or higher, Elation increases by 120%/150%. When entering combat, advances THEIR own action by 30%."
+        "gameText": "When Aeon ★ Aha's SPD reaches 125/150 or higher, the Elation stat increases by 120%/150%, respectively. When combat starts, own action advances by 30%."
       },
       {
         "id": "eidolon-1",
@@ -13229,7 +13264,7 @@
           "dupes": 1
         },
         "does": [],
-        "gameText": "When entering combat, immediately gains 5 point(s) of \"Wishpower.\" When Aeon ★ Aha is present, merrymakes Elation DMG dealt by all ally targets by 15%."
+        "gameText": "When entering combat, immediately gains 5 \"Wishpower.\" When Aeon ★ Aha is present, Elation DMG dealt by all ally targets merrymakes by 15%."
       },
       {
         "id": "eidolon-2",
@@ -13239,7 +13274,7 @@
           "dupes": 2
         },
         "does": [],
-        "gameText": "Enhances Path of Elation Ascension effects:\n#{series_ref_skill_desc:UIText_SeriesSkillDescFormat,151129,2}"
+        "gameText": "Enhances the \"Elation\" Path Ascension effects:\n#{series_ref_skill_desc:UIText_SeriesSkillDescFormat,151129,2}"
       },
       {
         "id": "eidolon-3",
@@ -13259,7 +13294,7 @@
           "dupes": 4
         },
         "does": [],
-        "gameText": "The multiplier of the True DMG dealt by Elation Skills increases by 25% of the original multiplier. When Aeon ★ Aha deals Elation DMG, an additional 100% of the cumulative \"Certified Banger\" stacks possessed by teammates will be taken into account."
+        "gameText": "The multiplier of the True DMG dealt by Elation Skill increases by 25% of its original value. When Aeon ★ Aha deals Elation DMG, an additional 100% of the total \"Certified Banger\" held by teammates will be taken into account."
       },
       {
         "id": "eidolon-5",
@@ -13279,15 +13314,14 @@
           "dupes": 6
         },
         "does": [],
-        "gameText": "Enemy targets always have the \"Elation Debt\" effect that is at least equal to 20% of the target's Max HP. The first time Aeon ★ Aha uses THEIR Ultimate, Aha's action advances by 100%, and Aha gains 100 Punchline(s)."
+        "gameText": "Enemy targets always carry an \"Elation Debt\" effect that claims at least 20% of their Max HP. After Aeon ★ Aha uses Ultimate for the first time, Aha's action advances by 100%, and Aha gains 100 Punchline."
       }
-    ],
-    "beta": true
+    ]
   },
   {
     "characterId": "1512",
     "source": "nanoka.cc",
-    "version": "4.6",
+    "version": "4.7",
     "skills": [
       {
         "id": "skill-basic-atk-the-sea-sings-in-my-key",
@@ -13431,14 +13465,14 @@
           "dupes": 6
         },
         "does": [],
-        "gameText": "Increases the Memosprite Skill's DMG multiplier by 100% of its original value. While in the \"Fever\" state, Robin • Summeretto can store her Ultimate up to 2 times. After entering the \"Fever\" state for the first time in this battle or when the the \"Fever\" countdown's turn starts, regenerates a fixed 140 Energy."
+        "gameText": "Increases the Memosprite Skill's DMG multiplier by 100% of its original value. While in the \"Fever\" state, Robin • Summeretto can store her Ultimate up to 2 times. After entering the \"Fever\" state for the first time in this battle or when the \"Fever\" countdown's turn starts, regenerates a fixed 140 Energy."
       }
     ]
   },
   {
     "characterId": "1513",
     "source": "nanoka.cc",
-    "version": "4.6",
+    "version": "4.7",
     "skills": [
       {
         "id": "skill-basic-atk-dead-center-the-torrent-hits",
@@ -13488,6 +13522,13 @@
         "kind": "skill",
         "does": [],
         "gameText": "Deals 60% Quantum Elation DMG to all enemies, and additionally deals 10 instances of DMG, with each instance dealing 18.0% Quantum Elation DMG to one random enemy. Consumes all \"Fervor\" upon use. For every 1 point of \"Fervor\" consumed, additionally deals 1 instance of 21.0% Quantum Elation DMG to one random enemy."
+      },
+      {
+        "id": "skill-innate-trace-faces-of-elation-three-card-monte",
+        "label": "Innate Trace: Faces of Elation ★ Three-Card Monte (Lv. 2)",
+        "kind": "skill",
+        "does": [],
+        "gameText": "When the Path of Elation ascends, if Aeon ★ Aha is the only Elation teammate, then in the Trace \"Revel in Raging Tides,\" the effect that normally requires Aventurine • Waveflair to be the only Elation character will also become active. And this effect is enhanced: The SPD of all allies increases by 25%. After a teammate attacks, Aventurine • Waveflair additionally gains 2 \"Fervor\" and 2 Bliss."
       },
       {
         "id": "trace-party-in-perfect-paradise",
@@ -13575,7 +13616,7 @@
   {
     "characterId": "8001",
     "source": "nanoka.cc",
-    "version": "4.6",
+    "version": "4.7",
     "skills": [
       {
         "id": "skill-basic-atk-farewell-hit",
@@ -13712,7 +13753,7 @@
   {
     "characterId": "8002",
     "source": "nanoka.cc",
-    "version": "4.6",
+    "version": "4.7",
     "skills": [
       {
         "id": "skill-basic-atk-farewell-hit",
@@ -13849,7 +13890,7 @@
   {
     "characterId": "8003",
     "source": "nanoka.cc",
-    "version": "4.6",
+    "version": "4.7",
     "skills": [
       {
         "id": "skill-basic-atk-ice-breaking-light",
@@ -13979,7 +14020,7 @@
   {
     "characterId": "8004",
     "source": "nanoka.cc",
-    "version": "4.6",
+    "version": "4.7",
     "skills": [
       {
         "id": "skill-basic-atk-ice-breaking-light",
@@ -14109,7 +14150,7 @@
   {
     "characterId": "8005",
     "source": "nanoka.cc",
-    "version": "4.6",
+    "version": "4.7",
     "skills": [
       {
         "id": "skill-basic-atk-swing-dance-etiquette",
@@ -14232,7 +14273,7 @@
   {
     "characterId": "8006",
     "source": "nanoka.cc",
-    "version": "4.6",
+    "version": "4.7",
     "skills": [
       {
         "id": "skill-basic-atk-swing-dance-etiquette",
@@ -14355,7 +14396,7 @@
   {
     "characterId": "8007",
     "source": "nanoka.cc",
-    "version": "4.6",
+    "version": "4.7",
     "skills": [
       {
         "id": "skill-basic-atk-leave-it-to-me",
@@ -14520,7 +14561,7 @@
   {
     "characterId": "8008",
     "source": "nanoka.cc",
-    "version": "4.6",
+    "version": "4.7",
     "skills": [
       {
         "id": "skill-basic-atk-leave-it-to-me",
@@ -14685,7 +14726,7 @@
   {
     "characterId": "8009",
     "source": "nanoka.cc",
-    "version": "4.6",
+    "version": "4.7",
     "skills": [
       {
         "id": "skill-basic-atk-make-some-noise",
@@ -14728,6 +14769,13 @@
         "kind": "skill",
         "does": [],
         "gameText": "Deals 8 instances of DMG, with each instance dealing 20% Lightning Elation DMG to one random enemy. At last, deals 60% Lightning Elation DMG, which is split evenly among all enemies."
+      },
+      {
+        "id": "skill-innate-trace-faces-of-elation-plot-armor",
+        "label": "Innate Trace: Faces of Elation ★ Plot Armor (Lv. 2)",
+        "kind": "skill",
+        "does": [],
+        "gameText": "When the Path of Elation ascends, the Ultimate's CRIT DMG boost effect additionally increases by 30% and applies to all allies. Before the Ultimate triggers Aeon ★ Aha's Elation Skill, additionally triggers one instance of the Trailblazer's Elation Skill. And the DMG multiplier of this Elation Skill increases by 300% of its original value, and is calculated based on the highest value of \"Party Trick\" held by ally characters. For the Aeon ★ Aha's Elation Skill triggered afterward, its True DMG is instead calculated as 20% of the DMG dealt by the aforementioned Trailblazer's Elation Skill, and is distributed evenly among all enemies."
       },
       {
         "id": "trace-on-cloud-nine",
@@ -14815,7 +14863,7 @@
   {
     "characterId": "8010",
     "source": "nanoka.cc",
-    "version": "4.6",
+    "version": "4.7",
     "skills": [
       {
         "id": "skill-basic-atk-make-some-noise",
@@ -14858,6 +14906,13 @@
         "kind": "skill",
         "does": [],
         "gameText": "Deals 8 instances of DMG, with each instance dealing 20% Lightning Elation DMG to one random enemy. At last, deals 60% Lightning Elation DMG, which is split evenly among all enemies."
+      },
+      {
+        "id": "skill-innate-trace-faces-of-elation-plot-armor",
+        "label": "Innate Trace: Faces of Elation ★ Plot Armor (Lv. 2)",
+        "kind": "skill",
+        "does": [],
+        "gameText": "When the Path of Elation ascends, the Ultimate's CRIT DMG boost effect additionally increases by 30% and applies to all allies. Before the Ultimate triggers Aeon ★ Aha's Elation Skill, additionally triggers one instance of the Trailblazer's Elation Skill. And the DMG multiplier of this Elation Skill increases by 300% of its original value, and is calculated based on the highest value of \"Party Trick\" held by ally characters. For the Aeon ★ Aha's Elation Skill triggered afterward, its True DMG is instead calculated as 20% of the DMG dealt by the aforementioned Trailblazer's Elation Skill, and is distributed evenly among all enemies."
       },
       {
         "id": "trace-on-cloud-nine",

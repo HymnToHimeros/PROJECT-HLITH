@@ -646,7 +646,7 @@
     "art": "https://static.nanoka.cc/assets/zzz/IconRole1601.webp",
     "source": "nanoka.cc",
     "leak": {
-      "source": "nanoka.cc, game files of build 3.4.2+20052336 (live is 3.3)"
+      "source": "nanoka.cc, game files of build 3.4.3+20291004 (live is 3.3)"
     }
   },
   {
@@ -697,9 +697,10 @@
     "rarity": "top",
     "element": "electric",
     "role": "anomaly",
+    "art": "https://static.nanoka.cc/assets/zzz/IconRole1651.webp",
     "source": "nanoka.cc",
     "leak": {
-      "source": "nanoka.cc, game files of build 3.4.2+20052336 (live is 3.3)"
+      "source": "nanoka.cc, game files of build 3.4.3+20291004 (live is 3.3)"
     }
   },
   {
@@ -711,7 +712,7 @@
     "art": "https://static.nanoka.cc/assets/zzz/IconRole1661.webp",
     "source": "nanoka.cc",
     "leak": {
-      "source": "nanoka.cc, game files of build 3.4.2+20052336 (live is 3.3)"
+      "source": "nanoka.cc, game files of build 3.4.3+20291004 (live is 3.3)"
     }
   }
 ]
