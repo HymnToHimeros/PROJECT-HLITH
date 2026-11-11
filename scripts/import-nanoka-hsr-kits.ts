@@ -65,7 +65,7 @@ interface Rank {
   desc: string;
   param_list: number[];
   /** Placeholders like #{series_ref_skill_desc:…} and the skill texts that fill them (Aeon ★ Aha's Eidolon 2). */
-  description_refs?: { token: string; format: string; entries: { name: string; desc: string; param_list: number[] }[] }[];
+  description_refs?: { token: string; format: string; entries: { skill_id: number; name: string; desc: string; param_list: number[] }[] }[];
 }
 interface Kitset {
   skills: Record<string, Skill>;
@@ -131,8 +131,12 @@ async function getJson<T>(url: string): Promise<T> {
   return (await res.json()) as T;
 }
 
-/** The level a skill's numbers are shown at: its skill-tree max level, else 10, else its highest. */
+/** Skills an Eidolon raises through its #{…} text (the "Faces of Elation" traces: Aeon ★ Aha's Eidolon 2 grants level 2). Filled before the kits are built. */
+const raisedByEidolon = new Set<number>();
+
+/** The level a skill's numbers are shown at: level 1 if an Eidolon raises it, else its skill-tree max level, else 10, else its highest. */
 function levelFor(skill: Skill, trees: Kitset['skill_trees']): number {
+  if (raisedByEidolon.has(skill.id) && skill.level['1']) return 1;
   for (const t of Object.values(trees)) {
     const p = t['1'];
     if (p?.level_up_skill_id.includes(skill.id)) return p.max_level;
@@ -209,12 +213,20 @@ const live = await getJson<Record<string, unknown>>(`${BASE}/${manifest.hsr.live
 const latest = await getJson<Record<string, unknown>>(`${BASE}/${manifest.hsr.latest}/character.json`);
 // Leaks (T39): every new character in the manifest that isn't released yet gets its beta kit text on each run.
 const leaks = leakedIds(manifest.hsr.new, live);
-const kits = [];
+const details: { id: string; version: string; released: boolean; d: Detail }[] = [];
 for (const id of new Set([...Object.values(GROUPS).flat(), ...leaks])) {
   const released = id in live;
   if (!released && !(id in latest)) throw new Error(`Group character ${id} is not in nanoka.cc's HSR lists.`);
   const version = released ? manifest.hsr.live : manifest.hsr.latest;
-  const kit = kitOf(id, await getJson<Detail>(`${BASE}/${version}/en/character/${id}.json`), version);
+  details.push({ id, version, released, d: await getJson<Detail>(`${BASE}/${version}/en/character/${id}.json`) });
+}
+// An Eidolon can raise another character's skill (Aeon ★ Aha's Eidolon 2): that skill shows its base level, as numbers are without Eidolons.
+for (const { d } of details)
+  for (const set of [d, ...Object.values(d.enhanced)])
+    for (const r of Object.values(set.ranks)) for (const ref of r.description_refs ?? []) for (const e of ref.entries) raisedByEidolon.add(e.skill_id);
+const kits = [];
+for (const { id, version, released, d } of details) {
+  const kit = kitOf(id, d, version);
   kits.push(released ? kit : { ...kit, beta: true });
 }
 kits.sort((a, b) => Number(a.characterId) - Number(b.characterId));
