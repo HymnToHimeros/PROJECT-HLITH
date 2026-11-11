@@ -64,6 +64,8 @@ interface Rank {
   name: string;
   desc: string;
   param_list: number[];
+  /** Placeholders like #{series_ref_skill_desc:…} and the skill texts that fill them (Aeon ★ Aha's Eidolon 2). */
+  description_refs?: { token: string; format: string; entries: { name: string; desc: string; param_list: number[] }[] }[];
 }
 interface Kitset {
   skills: Record<string, Skill>;
@@ -106,9 +108,21 @@ export function plainText(raw: string, params: number[], who: string): string {
       return `${kind === 'i' ? num(Math.round(shown * 1e6) / 1e6) : shown.toFixed(Number(digits))}${pct}`;
     });
   t = t.replace(/[ \t]+\n/g, '\n').trim();
-  const left = /<[^>]+>|#\d+\[|\{[A-Z]/.exec(t);
+  const left = /<[^>]+>|#\d+\[|#\{|\{[A-Z]/.exec(t);
   if (left) throw new Error(`Unrecognised markup "${left[0]}" for ${who}. Teach plainText in scripts/import-nanoka-hsr-kits.ts.`);
   return t;
+}
+
+/** An Eidolon's text, with each #{…} placeholder replaced by the skill texts the game puts there ("• name: text" per skill). Exported for the tests. */
+export function rankText(r: Rank, who: string): string {
+  let raw = r.desc;
+  for (const ref of r.description_refs ?? []) {
+    const lines = ref.entries.map((e) =>
+      ref.format.replace('#1', () => name(e.name)).replace('#2', () => plainText(e.desc, e.param_list, `${who} (${name(e.name)})`)),
+    );
+    raw = raw.split(ref.token).join(lines.join('\n'));
+  }
+  return plainText(raw, r.param_list, who);
 }
 
 async function getJson<T>(url: string): Promise<T> {
@@ -171,7 +185,7 @@ function piecesOf(set: Kitset, memo: Detail['memosprite'] | undefined, who: stri
   for (let e = 1; e <= 6; e++) {
     const r = set.ranks[String(e)];
     if (!r) throw new Error(`${who}: Eidolon ${e} is missing.`);
-    add({ id: `eidolon-${e}${suffix}`, label: `Eidolon ${e}: ${name(r.name)}`, kind: 'eidolon', unlock: { dupes: e }, does: [], gameText: plainText(r.desc, r.param_list, who) });
+    add({ id: `eidolon-${e}${suffix}`, label: `Eidolon ${e}: ${name(r.name)}`, kind: 'eidolon', unlock: { dupes: e }, does: [], gameText: rankText(r, who) });
   }
   return out;
 }
