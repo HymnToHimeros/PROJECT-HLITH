@@ -13614,6 +13614,289 @@
     ]
   },
   {
+    "characterId": "1514",
+    "source": "nanoka.cc",
+    "version": "4.7.51",
+    "skills": [
+      {
+        "id": "skill-basic-atk-saw-teeth-trimming",
+        "label": "Basic ATK: Saw Teeth Trimming (Lv. 6)",
+        "kind": "skill",
+        "does": [],
+        "gameText": "Deals Ice DMG equal to 100% of Ellen's ATK to one designated enemy."
+      },
+      {
+        "id": "skill-skill-blizzard-du-jour",
+        "label": "Skill: Blizzard du Jour (Lv. 10)",
+        "kind": "skill",
+        "does": [],
+        "gameText": "Gains 1 point(s) of \"Shark's Gotta Bite.\" Inflicts the \"Bite Mark\" state on one designated enemy target, increasing the Basic ATK DMG taken by 50%. Then, deals Ice DMG equal to 400% of Ellen's ATK to that target, while simultaneously dealing Ice DMG equal to 240% of Ellen's ATK to adjacent targets. At the start of an ally target's turn or when they take action, if there are no enemy targets in the \"Bite Mark\" state, Ellen causes the enemy target with the highest HP to become afflicted with \"Bite Mark.\""
+      },
+      {
+        "id": "skill-ultimate-welcome-to-the-ice-age",
+        "label": "Ultimate: Welcome to the Ice Age (Lv. 10)",
+        "kind": "skill",
+        "does": [],
+        "gameText": "Deals Ice DMG equal to 400% of Ellen's ATK to all enemies. Additionally deals Ice DMG equal to 320% of Ellen's ATK to enemy targets in the \"Bite Mark\" state. After using Ultimate, increases the DMG dealt by Ellen's next use of \"Ice Sea Diving\" by 400%."
+      },
+      {
+        "id": "skill-talent-better-call-bangboo",
+        "label": "Talent: Better Call Bangboo (Lv. 10)",
+        "kind": "skill",
+        "does": [],
+        "gameText": "At the start of the battle, summons \"Sharkboo\" with an initial SPD of 200 points. When \"Sharkboo\" takes action, it launches Follow-Up ATK, dealing Ice DMG equal to 600% of Ellen's ATK to one enemy. \"Sharkboo\" will prioritize attacking targets under the \"Bite Mark\" state.\nEllen has a \"Shark's Gotta Bite\" limit of 6 points. When an ally character uses a Basic ATK, Skill, or Ultimate to attack, Ellen gains 1 point(s) of \"Shark's Gotta Bite.\"\n\"Ice Sea Diving\" is unable to gain \"Shark's Gotta Bite.\""
+      },
+      {
+        "id": "skill-talent-zoned-in-on-zero",
+        "label": "Talent: Zoned In on Zero (Lv. 10)",
+        "kind": "skill",
+        "does": [],
+        "gameText": "When Astra Yao is on the team:\nAfter Ellen uses her Ultimate, she automatically uses \"Ice Sea Diving\" 1 time, then immediately triggers Astra Yao's \"Minuet Pianissimo\" and grants Astra Yao 1 extra turn.\nAfter Astra Yao uses her Ultimate, she automatically uses \"Cadenza Cascade\" 1 time, then immediately triggers Ellen's \"Saw Teeth Trimming,\" granting Ellen 1 point of \"Shark's Gotta Bite,\" and then triggers Ellen's \"Ice Sea Diving\" 1 more time.\nWhen attacks triggered by \"Zoned In on Zero\" select a primary target, both Ellen and Astra Yao prioritize enemy targets in the \"Bite Mark\" state.\nBasic ATKs triggered by \"Zoned In on Zero\" do not recover Skill Points, and \"Ice Sea Diving\" triggered by \"Zoned In on Zero\" does not consume \"Shark's Gotta Bite.\"\nAfter Ellen or Astra Yao uses their Ultimate, dispels the other's Crowd Control debuffs."
+      },
+      {
+        "id": "skill-technique-roaming-hunt",
+        "label": "Technique: Roaming Hunt",
+        "kind": "skill",
+        "does": [],
+        "gameText": "Using the Technique grants the \"Roaming\" state for 20 seconds. While in the \"Roaming\" state, this unit moves forward rapidly, blocking all enemy attacks while moving. Using an attack or stopping while in the \"Roaming\" state ends it prematurely. After actively attacking an enemy and entering combat, this unit gains 3 \"Shark's Gotta Bite\" and regenerates 10 Energy, and deals Ice DMG equal to 50% of Ellen's ATK to all enemies."
+      },
+      {
+        "id": "skill-basic-atk-ice-sea-diving",
+        "label": "Basic ATK: Ice Sea Diving (Lv. 6)",
+        "kind": "skill",
+        "does": [],
+        "gameText": "Consumes all \"Shark's Gotta Bite,\" inflicting \"Bite Mark\" on the primary target and dealing Ice DMG equal to 400% of Ellen's ATK to it. Deals Ice DMG equal to 240% of Ellen's ATK to adjacent targets.\nActivation Condition: Enhanced Basic ATK activates when \"Shark's Gotta Bite\" is 3 or higher. If the \"Shark's Gotta Bite\" consumed exceeds 3, each additional \"Shark's Gotta Bite\" consumed deals 1 instance of Ice DMG equal to 320% of Ellen's ATK to one random enemy, prioritizing the primary target of this \"Ice Sea Diving\" and its adjacent targets.\nThis attack does not recover Skill Points."
+      },
+      {
+        "id": "trace-roaming-mode",
+        "label": "Trace: Roaming Mode",
+        "kind": "trace",
+        "does": [],
+        "gameText": "For each teammate who provides Ellen with at least 1 active buff, Ellen's CRIT DMG increases by 64%, up to 2 teammates are taken into account. When 2 teammates are taken into account, DMG dealt by Ellen additionally increases by 48%."
+      },
+      {
+        "id": "trace-diving-status",
+        "label": "Trace: Diving Status",
+        "kind": "trace",
+        "does": [],
+        "gameText": "At the start of combat, Ellen gains 3 points of \"Shark's Gotta Bite.\" Once \"Shark's Gotta Bite\" reaches its limit, for every 2 points of excess \"Shark's Gotta Bite\" accumulated, it is recorded as 1 point of \"Heat,\" up to a maximum of 2 points. After Ellen consumes 6 points of \"Shark's Gotta Bite\" to use \"Ice Sea Diving,\" she clears all \"Heat,\" with every 1 point of \"Heat\" cleared recovering 1 point of \"Shark's Gotta Bite.\""
+      },
+      {
+        "id": "trace-dining-etiquette",
+        "label": "Trace: Dining Etiquette",
+        "kind": "trace",
+        "does": [],
+        "gameText": "After \"Sharkboo\" attacks a target, Ellen gains 1 point of \"Shark's Gotta Bite.\" This effect can trigger at most once per \"Sharkboo\" action. After Ellen consumes 6 points of \"Shark's Gotta Bite\" to use \"Ice Sea Diving,\" for every 1 point of \"Heat\" cleared, \"Sharkboo's\" action advances by 40%."
+      },
+      {
+        "id": "eidolon-1",
+        "label": "Eidolon 1: Moods Packed and Ready",
+        "kind": "eidolon",
+        "unlock": {
+          "dupes": 1
+        },
+        "does": [],
+        "gameText": "When Ellen consumes 6 \"Shark's Gotta Bite\" to unleash \"Ice Sea Diving,\" all DMG dealt by this \"Ice Sea Diving\" ignores 30% of the target's DEF. After this attack ends, Ellen's action advances by 25% and she recovers 3 \"Shark's Gotta Bite.\""
+      },
+      {
+        "id": "eidolon-2",
+        "label": "Eidolon 2: Pinch a Smile at the Mirror",
+        "kind": "eidolon",
+        "unlock": {
+          "dupes": 2
+        },
+        "does": [],
+        "gameText": "After Ellen uses \"Ice Sea Diving,\" \"Sharkboo's\" action advances by 100%. When using each attack, \"Sharkboo\" regenerates 10 Energy and 1 \"Shark's Gotta Bite\" for Ellen, and increases the CRIT DMG dealt by her next \"Ice Sea Diving\" by 50%. This effect does not stack."
+      },
+      {
+        "id": "eidolon-3",
+        "label": "Eidolon 3: The Morning Melts Sweet",
+        "kind": "eidolon",
+        "unlock": {
+          "dupes": 3
+        },
+        "does": [],
+        "gameText": "Skill Lv. +2, up to a maximum of Lv. 15. Talent Lv. +2, up to a maximum of Lv. 15."
+      },
+      {
+        "id": "eidolon-4",
+        "label": "Eidolon 4: A Heart Served All the Same",
+        "kind": "eidolon",
+        "unlock": {
+          "dupes": 4
+        },
+        "does": [],
+        "gameText": "When Ellen uses \"Ice Sea Diving,\" every point of \"Shark's Gotta Bite\" consumed increases the Ice RES PEN of all DMG dealt by this \"Ice Sea Diving\" by 2%."
+      },
+      {
+        "id": "eidolon-5",
+        "label": "Eidolon 5: The Ocean Swims Her Home",
+        "kind": "eidolon",
+        "unlock": {
+          "dupes": 5
+        },
+        "does": [],
+        "gameText": "Ultimate Lv. +2, up to a maximum of Lv. 15. Basic ATK Lv. +1, up to a maximum of Lv. 10."
+      },
+      {
+        "id": "eidolon-6",
+        "label": "Eidolon 6: Fed, Rested, and Left Alone",
+        "kind": "eidolon",
+        "unlock": {
+          "dupes": 6
+        },
+        "does": [],
+        "gameText": "When Ellen uses \"Ice Sea Diving,\" Ice RES PEN increases by 20%, and the number of instances of DMG dealt to random single enemy targets increases by 3. After Ellen uses her Ultimate, she gains 1 stack(s) of \"Revelry Instant.\" The max limit of \"Revelry Instant\" stacks is 2. While possessing \"Revelry Instant,\" after Ellen's turn or \"Zoned In on Zero\" ends, 1 stack of \"Revelry Instant\" is immediately consumed, and Ellen immediately gains 1 extra turn and regenerates 6 \"Shark's Gotta Bite.\""
+      }
+    ],
+    "beta": true
+  },
+  {
+    "characterId": "1515",
+    "source": "nanoka.cc",
+    "version": "4.7.51",
+    "skills": [
+      {
+        "id": "skill-basic-atk-pirouette-pianissimo",
+        "label": "Basic ATK: Pirouette Pianissimo (Lv. 6)",
+        "kind": "skill",
+        "does": [],
+        "gameText": "Deals Quantum DMG equal to 100% of Astra Yao's ATK to one designated enemy."
+      },
+      {
+        "id": "skill-skill-shine-for-you-in-every-hue",
+        "label": "Skill: Shine for You in Every Hue (Lv. 10)",
+        "kind": "skill",
+        "does": [],
+        "gameText": "Increases the ATK of all ally targets by an amount equal to 24% of Astra Yao's ATK plus 300, and enhances Astra Yao's Basic ATK, lasting for 3 turn(s). At the start of this unit's turn, this duration decreases by 1."
+      },
+      {
+        "id": "skill-ultimate-astral-encore",
+        "label": "Ultimate: Astral Encore (Lv. 10)",
+        "kind": "skill",
+        "does": [],
+        "gameText": "Deals Quantum DMG equal to 320% of Astra Yao's ATK to all enemies and deploys a Zone that lasts for 4 turn(s). At the start of this unit's turn, the Zone's duration decreases by 1. While the Zone is active, DMG taken by all enemies increases by 32%. After an ally character uses a Basic ATK to attack enemies, Astra Yao deals 1 instance of Quantum Additional DMG equal to 40% of her ATK to the target hit by this Basic ATK."
+      },
+      {
+        "id": "skill-talent-play-the-galaxy-s-message",
+        "label": "Talent: Play the Galaxy's Message (Lv. 10)",
+        "kind": "skill",
+        "does": [],
+        "gameText": "When an ally target attacks an enemy, Astra Yao gains 1 \"Syncopation.\" Each \"Syncopation\" increases DMG dealt by all ally characters' Basic ATK by 5.0%, lasting for 3 turn(s). Astra Yao can gain a maximum of 10 \"Syncopation.\""
+      },
+      {
+        "id": "skill-talent-zoned-in-on-zero",
+        "label": "Talent: Zoned In on Zero (Lv. 10)",
+        "kind": "skill",
+        "does": [],
+        "gameText": "When Ellen is in the team:\nAfter Astra Yao uses her Ultimate, she automatically uses \"Cadenza Cascade\" once, then immediately triggers Ellen's \"Saw Teeth Trimming,\" causing Ellen to gain 1 point of \"Shark's Gotta Bite,\" and \"Ice Sea Diving.\"\nAfter Ellen uses her Ultimate, she automatically uses \"Ice Sea Diving\" once, then immediately triggers Astra Yao's \"Minuet Pianissimo\" and grants Astra Yao 1 extra turn.\nWhile \"Zoned In on Zero\" is active, when Ellen and Astra Yao's attacks select a primary target, they both prioritize selecting enemy targets in the \"Bite Mark\" state.\nBasic ATKs triggered by \"Zoned In on Zero\" do not recover Skill Points.\nAfter Ellen or Astra Yao uses their Ultimate, they dispel Crowd Control debuffs from the other.\nWhen Ellen is not in the team: After Astra Yao uses her Ultimate, she additionally regenerates 40 Energy."
+      },
+      {
+        "id": "skill-technique-an-overture-in-reverie",
+        "label": "Technique: An Overture in Reverie",
+        "kind": "skill",
+        "does": [],
+        "gameText": "After using Technique, automatically triggers Skill 1 time at the start of the next battle. This trigger does not consume Skill Points."
+      },
+      {
+        "id": "skill-basic-atk-cadenza-cascade",
+        "label": "Basic ATK: Cadenza Cascade (Lv. 6)",
+        "kind": "skill",
+        "does": [],
+        "gameText": "Deals Quantum DMG equal to 160% of Astra Yao's ATK to all enemies."
+      },
+      {
+        "id": "skill-basic-atk-minuet-pianissimo",
+        "label": "Basic ATK: Minuet Pianissimo (Lv. 6)",
+        "kind": "skill",
+        "does": [],
+        "gameText": "Deals Quantum DMG equal to 180% of Astra Yao's ATK to a designated target, and Quantum DMG equal to 90% of Astra Yao's ATK to adjacent targets."
+      },
+      {
+        "id": "trace-fantasia-scale",
+        "label": "Trace: Fantasia Scale",
+        "kind": "trace",
+        "does": [],
+        "gameText": "Increases CRIT Rate by 50%. When Astra Yao's ATK exceeds 2000, for every 200 ATK above that, increases this unit's CRIT DMG by 20%, up to a max increase of 200%."
+      },
+      {
+        "id": "trace-filigree-aria",
+        "label": "Trace: Filigree Aria",
+        "kind": "trace",
+        "does": [],
+        "gameText": "When using \"Cadenza Cascade,\" additionally regenerates 10 Energy."
+      },
+      {
+        "id": "trace-nevernight-tour",
+        "label": "Trace: Nevernight Tour",
+        "kind": "trace",
+        "does": [],
+        "gameText": "When an ally character uses Basic ATK, Astra Yao additionally gains 1 \"Syncopation.\" While possessing \"Syncopation,\" DMG dealt by all allies increases by 40%."
+      },
+      {
+        "id": "eidolon-1",
+        "label": "Eidolon 1: Her Drumbeat Moves the Stars",
+        "kind": "eidolon",
+        "unlock": {
+          "dupes": 1
+        },
+        "does": [],
+        "gameText": "While the Zone is active, the DMG boost effect of \"Syncopation\" takes effect for all attacks of all ally targets. For each \"Syncopation\" Astra Yao has, DMG dealt by ally targets ignores 1.5% of enemy targets' DEF. The Energy regeneration effect of the Trace \"Filigree Aria\" increases to 20. At the start of each wave, Astra Yao regenerates 30 Energy."
+      },
+      {
+        "id": "eidolon-2",
+        "label": "Eidolon 2: The Sun Sets in Her Eyes",
+        "kind": "eidolon",
+        "unlock": {
+          "dupes": 2
+        },
+        "does": [],
+        "gameText": "The Skill's ATK boost effect additionally increases by an amount equal to 12% of Astra Yao's ATK. The Additional DMG dealt by the Zone increases by 80%."
+      },
+      {
+        "id": "eidolon-3",
+        "label": "Eidolon 3: Shh, the Wind Has Ears",
+        "kind": "eidolon",
+        "unlock": {
+          "dupes": 3
+        },
+        "does": [],
+        "gameText": "Skill Lv. +2, up to a maximum of Lv. 15. Talent Lv. +2, up to a maximum of Lv. 15."
+      },
+      {
+        "id": "eidolon-4",
+        "label": "Eidolon 4: Toasted Alone on Both Sides",
+        "kind": "eidolon",
+        "unlock": {
+          "dupes": 4
+        },
+        "does": [],
+        "gameText": "The DMG multiplier of \"Cadenza Cascade\" increases by 60% of the original multiplier, and the DMG multiplier of the Ultimate increases by 100% of the original multiplier."
+      },
+      {
+        "id": "eidolon-5",
+        "label": "Eidolon 5: The Stylus Scripts Her Soul",
+        "kind": "eidolon",
+        "unlock": {
+          "dupes": 5
+        },
+        "does": [],
+        "gameText": "Ultimate Lv. +2, up to a maximum of Lv. 15. Basic ATK Lv. +1, up to a maximum of Lv. 10."
+      },
+      {
+        "id": "eidolon-6",
+        "label": "Eidolon 6: Until the Footlights Flare",
+        "kind": "eidolon",
+        "unlock": {
+          "dupes": 6
+        },
+        "does": [],
+        "gameText": "While the Zone is active, all ally targets' All-Type RES PEN increases by 20%. After Astra Yao uses her Ultimate, regenerates a fixed 240 Energy. This effect can be triggered again after every 4 Ultimate(s) used. At the start of combat, Astra Yao gains 10 \"Syncopation.\""
+      }
+    ],
+    "beta": true
+  },
+  {
     "characterId": "8001",
     "source": "nanoka.cc",
     "version": "4.7",

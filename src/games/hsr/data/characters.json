@@ -979,6 +979,32 @@
     "releasedAt": "2026-09-12T09:00:00.000Z"
   },
   {
+    "id": "1514",
+    "name": "Ellen",
+    "rarity": "top",
+    "element": "ice",
+    "role": "destruction",
+    "art": "https://static.nanoka.cc/assets/hsr/avatardrawcard/1514.webp",
+    "portrait": "https://static.nanoka.cc/assets/hsr/avatarshopicon/1514.webp",
+    "source": "nanoka.cc",
+    "leak": {
+      "source": "nanoka.cc, game files of build 4.7.51 (live is 4.7)"
+    }
+  },
+  {
+    "id": "1515",
+    "name": "Astra (Astra Yao)",
+    "rarity": "top",
+    "element": "quantum",
+    "role": "harmony",
+    "art": "https://static.nanoka.cc/assets/hsr/avatardrawcard/1515.webp",
+    "portrait": "https://static.nanoka.cc/assets/hsr/avatarshopicon/1515.webp",
+    "source": "nanoka.cc",
+    "leak": {
+      "source": "nanoka.cc, game files of build 4.7.51 (live is 4.7)"
+    }
+  },
+  {
     "id": "8001",
     "name": "Trailblazer · Destruction (Caelus)",
     "rarity": "top",
