@@ -2,6 +2,9 @@
 #
 # Every 2 hours it asks `node scripts/schedule-due.ts` whether now is a check time
 # (counted from patch day: scripts/schedule/rhythm.ts). Most runs stop there.
+# GitHub often runs the timer only every 5-7 hours, so a check counts as due for
+# 8 hours after its time (--window 8h); a second run for the same check just
+# finds nothing new.
 # When a check is due (or someone starts it by hand):
 #   1. re-imports leaks and characters, leak kits, and versions/banners/events/endgame
 #      (HSR/ZZZ; Arknights Endfield from its official news and endfield.wiki.gg);
@@ -50,7 +53,7 @@ jobs:
       - name: Is a check due?
         id: plan
         run: |
-          node scripts/schedule-due.ts
+          node scripts/schedule-due.ts --window 8h
           if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then echo "go=true" >> "$GITHUB_OUTPUT"; else grep -q '^due=true' "$GITHUB_OUTPUT" && echo "go=true" >> "$GITHUB_OUTPUT" || echo "go=false" >> "$GITHUB_OUTPUT"; fi
 
       - if: steps.plan.outputs.go == 'true'
