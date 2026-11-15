@@ -11242,7 +11242,7 @@
   {
     "characterId": "1601",
     "source": "nanoka.cc",
-    "version": "3.4.4+20492413",
+    "version": "3.4.4+20539349",
     "beta": true,
     "skills": [
       {
@@ -11264,14 +11264,14 @@
         "label": "Basic Attack: Bannerbearer - Converging Edge",
         "kind": "skill",
         "does": [],
-        "gameText": "When you have enough Wishfire, hold [Basic Attack button] to activate:\nSwitch to Eldreda and attack, dealing Genesis Flare DMG;\nCharacter is invulnerable while using this skill;\nUpon activating this skill, gain Chain Teeth and Flag Order."
+        "gameText": "When you have enough Wishfire, hold [Basic Attack button] to activate:\nSwitch to Eldreda and attack, dealing Genesis Flare DMG;\nCharacter is invulnerable while using this skill;\nAfter using this skill, gain Chain Teeth and Flag Order."
       },
       {
         "id": "skill-basic-attack-starfling",
         "label": "Basic Attack: Starfling",
         "kind": "skill",
         "does": [],
-        "gameText": "Press [Basic Attack button] to activate:\nDracaene hurls her shield forward to attack, dealing Genesis Flare DMG.\nIf attacked by an enemy within a short time after using this skill, triggers Perfect Block, blocking the DMG from that attack."
+        "gameText": "Press [Basic Attack button] to activate:\nDracaene hurls her shield forward, dealing Genesis Flare DMG.\nFor a short time after using this skill, if attacked by an enemy, she will automatically Block and swiftly hurl her shield."
       },
       {
         "id": "skill-dodge-phase-fold",
@@ -11313,7 +11313,7 @@
         "label": "Dodge: Patrol",
         "kind": "skill",
         "does": [],
-        "gameText": "Hold [Dodge button] while moving joystick to activate:\nEldreda enters the Nightglide state, allowing high-speed movement.\nWhile in the Nightglide state, control direction with joystick; release joystick to stop.\nCharacter is invulnerable at the moment this skill activates."
+        "gameText": "Move the joystick and hold [Dodge button] to activate:\nSwitch to Eldreda and enter the Nightglide state, allowing high-speed movement.\nWhile in the Nightglide state, use the joystick to steer. Release the joystick to stop.\nCharacter is invulnerable at the moment this skill activates."
       },
       {
         "id": "skill-dash-attack-patrol-shadow-realm-raid",
@@ -11330,18 +11330,18 @@
         "gameText": "Press [Basic Attack button] during a Perfect Dodge to activate:\nEldreda launches consecutive attacks forward, dealing Genesis Flare DMG.\nAfter using this skill, press [Basic Attack button] to follow up with the 4th hit of Basic Attack.\nCharacter is invulnerable while using this skill."
       },
       {
-        "id": "skill-transform-into-dracaene",
-        "label": "Transform into Dracaene",
+        "id": "skill-switch-character",
+        "label": "Switch Character",
         "kind": "skill",
         "does": [],
-        "gameText": "With Lindverne on field, hold [Dodge button] while dragging the joystick to activate:\nDracaene switches in on field.\nIf attacked, or upon activating a Special Attack or Ultimate during this time, Dracaene will exit the field."
+        "gameText": "Hold [Dodge button] to activate:\nWhen controlling Eldreda, switch to Lindverne;\nWhen controlling Lindverne, switch to Dracaene;\nWhen controlling Dracaene, switch to Eldreda;\nWhile controlling Dracaene, DMG taken is reduced by 40%. During this time, Dracaene will leave the field upon being attacked or when activating a Special Attack or Ultimate."
       },
       {
         "id": "skill-special-attack-night-blaze",
         "label": "Special Attack: Night Blaze",
         "kind": "skill",
         "does": [],
-        "gameText": "Press [Special Attack button] or hold [Dodge button] to activate:\nSwitch in Lindverne to launch an attack, dealing Genesis Flare DMG."
+        "gameText": "Press [Special Attack button] to activate:\nSwitch to Lindverne and launch an attack, dealing Genesis Flare DMG."
       },
       {
         "id": "skill-ex-special-attack-night-blaze-dawnrise",
@@ -11369,7 +11369,7 @@
         "label": "Special Attack: Kindled Lamp",
         "kind": "skill",
         "does": [],
-        "gameText": "Press [Special Attack button] or hold [Dodge button] to activate:\nSwitch to Eldreda and launch an attack, dealing Genesis Flare DMG."
+        "gameText": "Press [Special Attack button] to activate:\nSwitch to Eldreda and launch an attack, dealing Genesis Flare DMG."
       },
       {
         "id": "skill-ex-special-attack-kindled-lamp-gloom-s-end",
@@ -11501,7 +11501,7 @@
           "dupes": 2
         },
         "does": [],
-        "gameText": "Increases the amount of Ember Scar that enemies accumulate from Maim triggered by the whole squad and from Sunbringer by 30%. When Sunbringer's other skills hit an enemy and deal Sharp DMG, the target also accumulates Ember Scar equal to 22% of the actual DMG dealt.\nWhen Sunbringer uses Basic Attack: Bannerbearer - Converging Edge, she recovers an additional 150 Decibels. When an enemy's death triggers the Wishfire recovery effect of Core Passive: Dream Manifestation = Genesis Reconstruction, Sunbringer recovers an additional 40 Wishfire.\nWhen the heavy attack of Sunbringer's EX Special Attack or Chain Attack hits a Boss-Rank enemy, if the target's Ember Scar already covers all of its remaining HP, the target is instantly executed."
+        "gameText": "The amount of Ember Scar enemies accumulate from Maim triggered by the whole squad and from Sunbringer is increased by 30%. When Sunbringer's other skills hit enemies and deal Sharp DMG, the target also accumulates Ember Scar equal to 22% of the actual DMG dealt.\nAfter using Basic Attack: Bannerbearer - Converging Edge, Sunbringer recovers an additional 150 Decibels. When an enemy's death triggers the Wishfire recovery effect of Core Passive: Dream Manifestation = Genesis Reconstruction, Sunbringer recovers an additional 40 Wishfire.\nWhen the heavy attack of Sunbringer's EX Special Attack or Chain Attack hits a Boss-Rank enemy, if the target's Ember Scar already covers all of its remaining HP, the target is immediately executed."
       },
       {
         "id": "mindscape-3",
@@ -11521,7 +11521,7 @@
           "dupes": 4
         },
         "does": [],
-        "gameText": "Sunbringer's DMG is increased by 15%. After Dracaene activates Assist Follow-Up: Lighthouse, Towering in the Sky, press [Basic Attack button] or [Special Attack button] to immediately follow up with EX Special Attack: Night Blaze - End of the Long Dark without consuming Chain Teeth."
+        "gameText": "DMG dealt by Sunbringer is increased by 15%. After Dracaene activates Assist Follow-Up: Lighthouse, Towering in the Sky, press [Basic Attack button] or [Special Attack button] to immediately follow up with EX Special Attack: Night Blaze - End of the Long Dark without consuming Chain Teeth. This effect can trigger once every 60s."
       },
       {
         "id": "mindscape-5",
@@ -11541,7 +11541,7 @@
           "dupes": 6
         },
         "does": [],
-        "gameText": "When Sunbringer's Ultimate: \"By This Wish, All Things Remade\" triggers Ashfall, the target accumulates additional Ember Scar equal to 80% of the Ember Scar accumulated on the target by that Ultimate: \"By This Wish, All Things Remade\". Sunbringer then swiftly follows up with a special EX Special Attack: Kindled Lamp - Torch of Eternal Day that does not consume Flag Order. DMG dealt by Sunbringer's skills ignores 15% of the target's DEF."
+        "gameText": "When Sunbringer uses Ultimate: \"By This Wish, All Things Remade\" and triggers Ashfall, she will quickly follow up with a special EX Special Attack: Kindled Lamp - Torch of Eternal Day that does not consume Flag Order.\nThis EX Special Attack: Kindled Lamp - Torch of Eternal Day deals no actual DMG, but causes the target to accumulate additional Ember Scar equal to 80% of the Ember Scar accumulated on the target by the previous Ultimate: \"By This Wish, All Things Remade\". It then removes all of the target's Ember Scar, triggering Ashfall once.\nDMG dealt by Sunbringer's skills ignores 15% of the target's DEF."
       }
     ]
   },
@@ -12327,7 +12327,7 @@
   {
     "characterId": "1651",
     "source": "nanoka.cc",
-    "version": "3.4.4+20492413",
+    "version": "3.4.4+20539349",
     "beta": true,
     "skills": [
       {
@@ -12342,7 +12342,7 @@
         "label": "Basic Attack: Disordered Echo",
         "kind": "skill",
         "does": [],
-        "gameText": "When Improvised Overture is at 90 or above, consume 90 [term 1000044, not named in the game files] and hold [Basic Attack button] to activate:\nUnleash an attack on enemies in front, dealing massive Electric DMG.\nWhen the skill's final hit strikes an enemy suffering from Electric Attribute Anomaly, it does not trigger an Attribute Anomaly, and instead extends the Electric Attribute Anomaly duration to 10s.\nWhen the skill's final hit strikes an enemy suffering from an Attribute Anomaly, it triggers a special Disorder effect, Polarity Disorder, dealing DMG to the target equal to 50% of the original Disorder effect. Polarity Disorder does not remove the target's Attribute Anomaly.\nCharacter is invulnerable while using this skill."
+        "gameText": "When Improvised Overture is at 90 or above, hold [Basic Attack button] to consume 90 [term 1000044, not named in the game files] and activate:\nDealing massive Electric DMG to enemies in front.\nWhen the skill's final hit strikes an enemy afflicted with an Electric Attribute Anomaly, it does not trigger an Attribute Anomaly. Instead, it extends the Electric Attribute Anomaly by 3s, up to a maximum of 10s.\nWhen the skill's final hit strikes an enemy afflicted with an Attribute Anomaly, it triggers a special Disorder effect, Polarity Disorder, dealing DMG equal to 20% of the original Disorder effect's DMG, plus additional DMG equal to (1640 + 130 × Basic Attack level)% of Kafka's Anomaly Proficiency. Polarity Disorder does not remove the target's Attribute Anomaly.\nCharacter is invulnerable while using this skill."
       },
       {
         "id": "skill-dodge-shadow-chaser",
@@ -12440,7 +12440,7 @@
         "label": "Additional Ability: Forgiveness Isn't Mercy",
         "kind": "additional",
         "does": [],
-        "gameText": "When another character in your squad is an Support character or another Anomaly character:\nWhen Kafka applies Shock to an enemy, the effect's duration is increased by 3s, and Basic Attack: Disordered Echo can now extend the duration of Electric Attribute Anomalies up to 13s.\nUpon entering combat or when other squad members apply an Attribute Anomaly to an enemy, if Kafka's initial Energy Regen exceeds 1.2, every 0.12 above that threshold increases her Anomaly Mastery by 10, up to a maximum increase of 140, lasting 30s. Repeated triggers reset the duration."
+        "gameText": "When another character in your squad is a Support Character or Anomaly Character:\nWhen Kafka applies Shock to an enemy, its duration is increased by 3s. The maximum Electric Attribute Anomaly duration that Basic Attack: Disordered Echo can extend is increased to 13s.\nUpon entering combat or when other squad members apply an Attribute Anomaly to an enemy, if Kafka's initial Energy Regen exceeds 1.2, every 0.12 above that increases her Anomaly Mastery by 10, up to a maximum increase of 140, lasting 30s. Repeated triggers reset the duration."
       },
       {
         "id": "mindscape-1",
@@ -12450,7 +12450,7 @@
           "dupes": 1
         },
         "does": [],
-        "gameText": "Disorder DMG dealt by the whole squad is increased by 25%. DMG dealt by Kafka's Lightning Lash ignores 15% of the target's All-Attribute RES."
+        "gameText": "Disorder DMG dealt by the whole squad is increased by 25%. DMG dealt by Kafka's Lightning Lash ignores 10% of the target's All-Attribute RES."
       },
       {
         "id": "mindscape-2",
@@ -12460,7 +12460,7 @@
           "dupes": 2
         },
         "does": [],
-        "gameText": "During Hunting Prelude, Kafka's Anomaly Proficiency increases by 40 and the DMG she deals increases by 30%. After Hunting Prelude ends, this effect lasts for another 20s."
+        "gameText": "During Hunting Prelude, Kafka's Anomaly Proficiency increases by 40 and the DMG she deals increases by 25%. After Hunting Prelude ends, this effect lasts for another 20s."
       },
       {
         "id": "mindscape-3",
@@ -12507,7 +12507,7 @@
   {
     "characterId": "1661",
     "source": "nanoka.cc",
-    "version": "3.4.4+20492413",
+    "version": "3.4.4+20539349",
     "beta": true,
     "skills": [
       {
@@ -12543,21 +12543,21 @@
         "label": "Special Attack: Off-Field",
         "kind": "skill",
         "does": [],
-        "gameText": "Press [Special Attack button] to activate:\nLeap high into the air and unleash an Energy Blast around her, dealing Ether DMG.\nAfter using this skill, the next character's Quick Assist is triggered. After switching out, Off-Field Guard80s, with repeated triggers refreshing the duration. Meanwhile, Guardian Shield2% of Robin's initial Max HP, lasting 15s.\nWhile Robin is in the Off-Field Guard state, she cannot be actively switched in except through Entry Skill: Starshine Moment, Chain Attack: Booming Downbeat, Counter Assist: Grapple, and Chain Parry. She exits the Off-Field Guard state upon being switched in.\nDuring the Off-Field Guard state, all squad members gain the Guardian Aria effect, increasing their DEF. When Robin's initial Max HP exceeds 16,000, every 1,000 additional HP grants (44 + 3 × Special Attack level) DEF, up to a maximum of (440 + 30 × Special Attack level) DEF. This effect persists for 15s after Robin's Off-Field Guard state ends. The DEF increase reaches its maximum when Robin's initial Max HP reaches 26,000.\nDuring skill activation, Anti-Interrupt level increases, and DMG taken is reduced by 40%."
+        "gameText": "Press [Special Attack button] to activate, or when another character is switched on-field during Robin's Entry Skill: Starshine Moment, Ultimate: Stellar Concerto, Chain Attack: Booming Downbeat, or Assist Follow-Up: Dazzling Cheer, Robin stays behind and automatically activates it:\nLeaps high into the air and unleashes an Energy Blast around her, dealing Ether DMG.\nWhen manually activated, this skill triggers the next character's Quick Assist.\nIf another character is switched on-field during this skill, or when the skill activates automatically, Robin enters the [term 1000051, not named in the game files] state for 80s. Repeated triggers refresh the duration. At the same time, she grants all squad members a [term 1000056, not named in the game files] equal to 2% of her initial Max HP for 15s.\nWhile Robin is in the Off-Field Guard state, she cannot be manually switched in except via Entry Skill: Starshine Moment, Chain Attack: Booming Downbeat, Counter Assist: Grapple, or Chain Parry. Being switched in ends the Off-Field Guard state.\nDuring Off-Field Guard, all squad members gain the [term 1000054, not named in the game files] effect, increasing their DEF. When Robin's initial Max HP exceeds 16,000, every additional 1,000 HP grants (44 + 3 × Special Attack level) DEF, up to a maximum of (440 + 30 × Special Attack level) DEF. This effect persists for 15s after Robin's Off-Field Guard state ends. The DEF increase reaches its maximum when Robin's initial Max HP reaches 26,000.\nWhen manually activated, Anti-Interrupt level is increased and DMG taken is reduced by 40%.\nCharacter is invulnerable while the skill is automatically activated."
       },
       {
         "id": "skill-special-attack-aftershock",
         "label": "Special Attack: Aftershock",
         "kind": "skill",
         "does": [],
-        "gameText": "While Robin is in the Off-Field Guard state, triggers when another active character in the squad hits an enemy with an attack:\nLaunches an attack forward, dealing Ether DMG.\nUpon activation, gains 20 Entry Points and grants all squad members a Guardian Shield equal to 4% of Robin's initial Max HP, lasting 15s.\nSpecial Attack: Aftershock is an Aftershock and can trigger once every 10s.\nCharacter is invulnerable while using this skill."
+        "gameText": "When Robin is in the [term 1000051, not named in the game files] state, this is triggered whenever another squad member who is currently on-field hits an enemy with an attack:\nUnleashes an attack forward, dealing Ether DMG.\nUpon activation, gains 20 [term 1000052, not named in the game files] and grants all squad members a [term 1000056, not named in the game files] equal to 4% of Robin's initial Max HP for 15s.\nSpecial Attack: Aftershock is an Aftershock and can be triggered once every 10s.\nCharacter is invulnerable while using this skill."
       },
       {
         "id": "skill-ex-special-attack-enhanced-aftershock",
         "label": "EX Special Attack: Enhanced Aftershock",
         "kind": "skill",
         "does": [],
-        "gameText": "When using Special Attack: Aftershock with 40 or more Energy, the skill is upgraded to EX Special Attack: Enhanced Aftershock:\nContinuously consumes a total of 40 Energy to fire powerful Roaring Waves forward, dealing massive Ether DMG;\nRobin's heavy attack DMG is additionally increased by (44 + 8 × Special Attack level)% of her Max HP;\nUpon activation, gains 20 Entry Points and grants all squad members a Guardian Shield equal to 8% of her initial Max HP, lasting 15s;\nEX Special Attack: Enhanced Aftershock counts as an Aftershock;\nCharacter is invulnerable while using this skill."
+        "gameText": "When activating Special Attack: Aftershock, if Energy is at least 40, the skill is upgraded to EX Special Attack: Enhanced Aftershock:\nContinuously consumes a total of 40 Energy to unleash powerful Roaring Waves forward, dealing massive Ether DMG;\nRobin's heavy attack DMG is further increased by (44 + 8 × Special Attack level)% of her Max HP;\nUpon activation, gain 20 [term 1000052, not named in the game files], and grant all squad members [term 1000056, not named in the game files] equal to 8% of Robin's initial Max HP for 15s;\nEX Special Attack: Enhanced Aftershock is an Aftershock;\nCharacter is invulnerable while using this skill."
       },
       {
         "id": "skill-chain-attack-booming-downbeat",
@@ -12571,14 +12571,14 @@
         "label": "Ultimate: Stellar Concerto",
         "kind": "skill",
         "does": [],
-        "gameText": "When Decibel Rating is at Maximum, press [Ultimate button] to activate:\nGuides a powerful Energy blast with her song, dealing massive Ether DMG.\nUpon activation, gain 1 Buff Enhance Point, and all Armorer characters in the squad recover a fixed 20 Sharpness.\nAfter using this skill, the next character's Quick Assist is triggered.\nIf another character is switched on field during this skill, Robin automatically uses Special Attack: Off-Field, and is invulnerable while using it.\nCharacter is invulnerable while using this skill."
+        "gameText": "When Decibel Rating is at Maximum, press [Ultimate button] to activate:\nUses her song to guide a powerful Energy bombardment, dealing massive Ether DMG.\nUpon activation, gain 1 [term 1000053, not named in the game files], and all Armorer characters in the squad recover a fixed 20 Sharpness.\nAfter using this skill, triggers the next character's Quick Assist.\nIf another character is switched on-field during this skill, Robin automatically uses Special Attack: Off-Field, during which she is invulnerable.\nCharacter is invulnerable while using this skill."
       },
       {
         "id": "skill-entry-skill-starshine-moment",
         "label": "Entry Skill: Starshine Moment",
         "kind": "skill",
         "does": [],
-        "gameText": "With at least 120 Entry Points, hold [Basic Attack button] or get switched on-field while in-combat to consume 120 Entry Points and activate:\nUnleash an Energy blast at enemies in front, dealing massive Ether DMG;\nUpon activating this skill, it counts as a Quick Assist;\nUpon activating this skill, Robin exits the [Off-Field Guard] state and grants all squad members a [Guardian Shield] equal to 4% of her initial Max HP, lasting 20s;\nAfter using this skill, the next character's Quick Assist is triggered;\nIf another character is switched on-field during this skill, Robin automatically uses [Special Attack: Off-Field], during which Character is invulnerable;\nCharacter is invulnerable while using this skill."
+        "gameText": "With at least 120 [term 1000052, not named in the game files], hold [Basic Attack button] or get switched on field while in-combat to consume 120 Entry Points and activate:\nUnleash an Energy blast at enemies in front, dealing massive Ether DMG;\nUpon activating this skill, it counts as a Quick Assist;\nUpon activating this skill, exit the Off-Field Guard state and grant all squad members [term 1000056, not named in the game files] equal to 4% of Robin's initial Max HP for 20s;\nAfter using this skill, trigger the next character's Quick Assist;\nIf another character is switched on field during this skill, Robin automatically unleashes Special Attack: Off-Field, and is invulnerable while it's active;\nCharacter is invulnerable while using this skill."
       },
       {
         "id": "skill-quick-assist-temporary-entry",
@@ -12606,7 +12606,7 @@
         "label": "Counter Assist: Grapple",
         "kind": "skill",
         "does": [],
-        "gameText": "When this character or the on-field character is about to be hit by certain enemy Control Skillss, press [Switch button] to activate:\nEngage the enemy in a contest of strength. If successful, neutralize the enemy's Control Skills and deal Ether DMG.\nUpon activating this skill, gain 1 Buff Enhance Point.\nCharacter is invulnerable while using this skill."
+        "gameText": "When this character or the on-field character is about to be hit by certain enemies' Control Skills, press [Switch button] to activate:\nGrapple with the enemy. Upon winning the grapple, nullify the enemy's Control Skill and deal Ether DMG.\nWhen pressing [Switch button] to switch to the next character, Robin's priority for triggering Counter Assist is lowered.\nUpon activating this skill, gain 1 [term 1000053, not named in the game files].\nCharacter is invulnerable while using this skill."
       },
       {
         "id": "skill-assist-follow-up-grapple-synergy-strike",
@@ -12620,7 +12620,7 @@
         "label": "Core Passive: Polyphonic Resonance (Core Skill level 7)",
         "kind": "core",
         "does": [],
-        "gameText": "When Robin uses certain skills, she grants all squad members a Guardian Shield equal to varying amounts of her initial Max HP, lasting 15s. When a character gains Guardian Shield repeatedly, the shield value stacks and the duration of Guardian Shield is extended, up to a maximum of 60s. The shield value cannot exceed 12% of Robin's initial Max HP. Each character's Guardian Shield value is calculated independently;\nEach time a squad member gains Guardian Shield, they enter the Rousing Aria state, increasing DMG dealt by 25% for 20s. Repeated triggers refresh the duration;\nAfter using Special Attack: Off-Field, a Quick Assist is triggered. If another character is switched on field during the skill, Robin enters the Off-Field Guard state for 80s, during which Robin cannot be actively switched in via a normal switch, and all squad members gain the Guardian Aria effect;\nDuring Off-Field Guard, when the other on-field character in the squad hits an enemy with an attack, Robin launches an Aftershock and gains Entry Points. Robin can hold up to 160 Entry Points;\nWhen Entry Points is at or above 120, normal switching is unlocked. At this time, if in-combat, Robin can be switched in normally to activate Entry Skill: Starshine Moment, consuming 120 Entry Points and exiting the Off-Field Guard state;\nUsing Entry Skill: Starshine Moment, Ultimate: Stellar Concerto, Counter Assist: Grapple, or Chain Parry grants 1 Buff Enhance Point. Up to 1 Buff Enhance Point can be held;\nWhen entering the Off-Field Guard state, if Robin has a Buff Enhance Point, she consumes 1 Buff Enhance Point to further increase the DEF bonus provided by Guardian Aria and its cap by 25%;\nAfter using Entry Skill: Starshine Moment, Ultimate: Stellar Concerto, Chain Attack: Booming Downbeat, or Assist Follow-Up: Dazzling Cheer, a Quick Assist is triggered. If another character is switched on field during the skill, Robin automatically stays on field to unleash Special Attack: Off-Field and enters the Off-Field Guard state for 80s. Repeated triggers refresh the duration. At the same time, she grants all squad members a Guardian Shield equal to 2% of her initial Max HP, lasting 15s. Robin is invulnerable while staying on field to unleash Special Attack: Off-Field;\nAfter using an Assist Follow-Up upon a successful Chain Parry, if Robin is not the active character, she automatically unleashes Special Attack: Off-Field, during which she is invulnerable;\nRobin's Counter Assist has lower priority. When other squad members use Counter Assist and successfully neutralize an enemy's Control Skills, Robin triggers Assist Follow-Up: Grapple Synergy Strike off-field;\nEach time a squad member triggers Maim, Robin recovers a fixed 15 Energy."
+        "gameText": "When Robin uses certain skills, she grants all squad members a Shield[term 1000056, not named in the game files] based on varying amounts of her initial Max HP, lasting 15s. When a character gains Guardian Shield repeatedly, the Shield value stacks and the Guardian Shield duration is extended, up to a maximum of 60s. Shield value cannot exceed 12% of Robin's initial Max HP. Each character's Guardian Shield value and duration are calculated independently;\nEach time a squad member gains Guardian Shield, they enter the [term 1000055, not named in the game files] state, increasing DMG dealt by 20% for 20s. Repeated triggers refresh the duration;\nUsing Special Attack: Off-Field triggers a Quick Assist. If another character is switched on-field during the skill, Robin enters the [term 1000051, not named in the game files] state for 80s, during which she cannot be switched in via a normal switch, and all squad members gain the [term 1000054, not named in the game files] effect;\nDuring Off-Field Guard, when another squad member currently in control hits an enemy with an attack, Robin unleashes an Aftershock and gains [term 1000052, not named in the game files]. Up to 160 Entry Points can be held;\nWhen Entry Points are at 120 or more, normal switching is unlocked. If in-combat at this time, Robin can be switched in normally to activate Entry Skill: Starshine Moment, consuming 120 Entry Points and exiting the Off-Field Guard state;\nUsing Entry Skill: Starshine Moment, Ultimate: Stellar Concerto, Counter Assist: Grapple, or Chain Parry grants 1 [term 1000053, not named in the game files]. Up to 1 Buff Enhance Point can be held;\nWhen entering the Off-Field Guard state, if Robin has Buff Enhance Point, 1 Buff Enhance Point is consumed to further increase the DEF boost granted by the Guardian Aria state and its cap by 25%;\nUsing Entry Skill: Starshine Moment, Ultimate: Stellar Concerto, Chain Attack: Booming Downbeat, or Assist Follow-Up: Dazzling Cheer triggers a Quick Assist. If another character is switched on-field during the skill, Robin automatically stays on-field to unleash Special Attack: Off-Field;\nAfter a successful Chain Parry triggers an Assist Follow-Up, if Robin is not the character currently in control, she automatically unleashes Special Attack: Off-Field;\nWhen Robin or the on-field character is about to be hit by certain enemies' Control Skills, pressing [Switch button] to switch to the next character lowers Robin's priority for triggering Counter Assist. When another squad member uses Counter Assist and successfully neutralizes the enemy's Control Skill, Robin unleashes Assist Follow-Up: Grapple Synergy Strike off-field;\nEach time any squad member triggers Maim, Robin restores a flat 15 Energy."
       },
       {
         "id": "additional-ability",
@@ -12637,7 +12637,7 @@
           "dupes": 1
         },
         "does": [],
-        "gameText": "When Robin uses Entry Skill: Starshine Moment, she gains 2 stacks of Harmonic Blessing. Up to 2 stacks of Harmonic Blessing can be held. When providing a Guardian Shield, if Robin has Harmonic Blessing, she consumes 1 stack of Harmonic Blessing to provide all squad members with a special Guardian Shield. When the active Character's Guardian Shield is broken, the special Guardian Shield blocks the excess DMG once, after which the special Guardian Shield is removed. Upon entering the battlefield, Robin gains 2 stacks of Harmonic Blessing. In Investigation Zone mode, this effect can trigger at most once every 180s. Each time Buff Enhance Point is consumed, DMG dealt by all squad members ignores 20% of enemy defense for 80s. Repeated triggers refresh the duration."
+        "gameText": "When Robin uses Entry Skill: Starshine Moment, she gains 2 stacks of Harmonic Blessing, up to a max of 2 stacks of Harmonic Blessing. When she provides [term 1000056, not named in the game files] while holding Harmonic Blessing, she consumes 1 stack of Harmonic Blessing to grant all squad members a special Guardian Shield. When the active character's Guardian Shield is broken, the special Guardian Shield blocks the excess DMG once, then the special Guardian Shield is removed. Upon entering the battlefield, she gains 2 stacks of Harmonic Blessing. In Investigation Zone mode, this effect can trigger at most once every 180s. Each time [term 1000053, not named in the game files] is consumed, DMG dealt by all squad members ignores 20% of the enemy's defense for 80s. Repeated triggers refresh the duration."
       },
       {
         "id": "mindscape-2",
@@ -12687,7 +12687,7 @@
           "dupes": 6
         },
         "does": [],
-        "gameText": "EX Special Attack: Enhanced Aftershock is guaranteed to trigger a critical hit. The effect of EX Special Attack: Enhanced Aftershock that further increases heavy attack DMG based on Max HP is boosted to 200% of its original value. Sharp DMG dealt by all squad members with the Guardian Aria effect is increased by 15%."
+        "gameText": "EX Special Attack: Enhanced Aftershock is guaranteed to trigger a critical hit. The effect of EX Special Attack: Enhanced Aftershock that additionally increases heavy attack DMG based on Max HP is boosted to 200% of its original value. Sharp DMG dealt by Characters across the whole squad with the [term 1000054, not named in the game files] effect is increased by 15%."
       }
     ]
   }
