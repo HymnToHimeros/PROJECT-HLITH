@@ -342,7 +342,9 @@
     "type": "exclusive",
     "title": "Answers in the Wind",
     "featured": [
-      "1631"
+      "1631",
+      "1351",
+      "1031"
     ],
     "start": "2026-11-11T04:00:00.000Z",
     "end": "2026-12-01T06:59:59.000Z",
@@ -357,7 +359,9 @@
     "type": "w-engine",
     "title": "Chief Sidekick",
     "featured": [
-      "14157"
+      "14157",
+      "13135",
+      "13103"
     ],
     "start": "2026-11-11T04:00:00.000Z",
     "end": "2026-12-01T06:59:59.000Z",
@@ -373,7 +377,9 @@
     "type": "w-engine",
     "title": "Incarcerating Grip",
     "featured": [
-      "14163"
+      "14163",
+      "13135",
+      "13103"
     ],
     "start": "2026-11-11T04:00:00.000Z",
     "end": "2026-12-01T06:59:59.000Z",
@@ -389,7 +395,9 @@
     "type": "exclusive",
     "title": "Outlier of Prodigies",
     "featured": [
-      "1571"
+      "1571",
+      "1351",
+      "1031"
     ],
     "start": "2026-11-11T04:00:00.000Z",
     "end": "2026-12-01T06:59:59.000Z",
