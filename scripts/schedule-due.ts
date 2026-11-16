@@ -8,14 +8,19 @@
  *   node scripts/schedule-due.ts                  due in the last 2 hours? + the next check
  *   node scripts/schedule-due.ts --plan 21        every check of the next 21 days
  *   node scripts/schedule-due.ts --now 2026-10-19T05:30:00Z --window 3h
+ *   node scripts/schedule-due.ts --since 2026-11-15T17:08:38Z   due = not imported since then
  *   node scripts/schedule-due.ts --key            the research routine's next key moment
+ *
+ * --since <ISO> (the start of the last run that imported): a check is due when its time has
+ * passed and no import ran since, looking back at most --lookback (default 72h). Without a
+ * usable --since it falls back to --window (default 2h).
  *
  * Prints `due=true|false` and `next=<ISO>`; in a GitHub Action both also go to $GITHUB_OUTPUT.
  * With --key also `next_key=<ISO>` and the key moments of the next 3 weeks (keyMoments in rhythm.ts).
  */
 import { appendFileSync, existsSync, readdirSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
-import { dueNow, keyMoments, nextCheck, planChecks, usualLength, type Plan, type SignalLog, type VersionSpan } from './schedule/rhythm.ts';
+import { dueNow, dueSince, keyMoments, nextCheck, planChecks, usualLength, type Plan, type SignalLog, type VersionSpan } from './schedule/rhythm.ts';
 
 const ROOT = resolve(import.meta.dirname, '..');
 /** Every game with a versions list (src/games/<game>/data/versions.json). */
@@ -33,6 +38,14 @@ const read = <T>(path: string): T => JSON.parse(readFileSync(resolve(ROOT, path)
 
 const now = arg('now') ? Date.parse(arg('now') ?? '') : Date.now();
 const windowMs = Number(/^(\d+(?:\.\d+)?)h$/.exec(arg('window') ?? '2h')?.[1] ?? 2) * HOUR;
+const hours = (v: string | undefined, fallback: number) => Number(/^(\d+(?:\.\d+)?)h$/.exec(v ?? '')?.[1] ?? fallback) * HOUR;
+const lookbackMs = hours(arg('lookback'), 72);
+// The last import's start; empty or unreadable means "unknown", and the window rule is used.
+const sinceArg = arg('since');
+const parsedSince = sinceArg ? Date.parse(sinceArg) : NaN;
+const useSince = Number.isFinite(parsedSince);
+// A last import "after now" (clock skew) means everything up to now is covered.
+const since = Math.min(parsedSince, now);
 const planDays = arg('plan') ? Number(arg('plan')) : undefined;
 const key = process.argv.includes('--key');
 if (Number.isNaN(now) || Number.isNaN(windowMs)) throw new Error('Bad --now or --window.');
@@ -42,7 +55,7 @@ const plans: Plan[] = GAMES.flatMap((game) => {
   const versions = read<VersionSpan[]>(`src/games/${game}/data/versions.json`);
   // Banner starts inside a version are phase 2: new banners and their notices.
   const starts = read<{ start: string }[]>(`src/games/${game}/data/banners.json`).map((x) => x.start);
-  const plan = planChecks(game, versions, rhythm[game] ?? {}, now - windowMs, (planDays ?? 30) + 1, starts, usualLength(versions));
+  const plan = planChecks(game, versions, rhythm[game] ?? {}, now - Math.max(windowMs, useSince ? lookbackMs : 0), (planDays ?? 30) + 1, starts, usualLength(versions));
   return plan ? [plan] : [];
 });
 
@@ -53,7 +66,8 @@ if (planDays !== undefined) {
   }
 }
 
-const due = dueNow(plans, now, windowMs);
+const due = useSince ? dueSince(plans, now, since, lookbackMs) : dueNow(plans, now, windowMs);
+console.log(useSince ? `rule=since ${new Date(since).toISOString()} (lookback ${lookbackMs / HOUR}h)` : `rule=window ${windowMs / HOUR}h${sinceArg !== undefined ? ' (no usable --since)' : ''}`);
 const next = nextCheck(plans, now);
 console.log(`due=${due.length > 0}`);
 for (const d of due) console.log(`  ${d.game} ${d.slot.at}: ${d.slot.why.join('; ')}`);

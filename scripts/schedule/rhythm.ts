@@ -182,6 +182,16 @@ export function dueNow(plans: Plan[], now: number, windowMs: number): { game: st
   return plans.flatMap((p) => p.slots.filter((s) => Date.parse(s.at) > now - windowMs && Date.parse(s.at) <= now).map((slot) => ({ game: p.game, slot })));
 }
 
+/**
+ * The checks no import has covered yet: their time is after the last successful import
+ * (`since`) and not in the future. Only checks from the last `lookbackMs` count, so a long
+ * gap (an import that failed for days) gives one catch-up run, not a flood.
+ */
+export function dueSince(plans: Plan[], now: number, since: number, lookbackMs: number): { game: string; slot: Slot }[] {
+  const from = Math.max(since, now - lookbackMs);
+  return plans.flatMap((p) => p.slots.filter((s) => Date.parse(s.at) > from && Date.parse(s.at) <= now).map((slot) => ({ game: p.game, slot })));
+}
+
 /** The first check after `now` over all games. */
 export function nextCheck(plans: Plan[], now: number): { game: string; slot: Slot } | undefined {
   return plans

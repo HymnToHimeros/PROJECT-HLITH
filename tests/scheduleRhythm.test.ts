@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { dueNow, expectedOffset, keyMoments, nextCheck, planChecks, type Plan, type SignalLog } from '../scripts/schedule/rhythm.ts';
+import { dueNow, dueSince, expectedOffset, keyMoments, nextCheck, planChecks, type Plan, type SignalLog } from '../scripts/schedule/rhythm.ts';
 
 const DAY = 86_400_000;
 const hsr46 = { id: '4.6', start: '2026-09-27T22:00:00.000Z', end: '2026-11-10T22:00:00.000Z' };
@@ -64,6 +64,24 @@ describe('when to look for news', () => {
     expect(dueNow(plans, Date.parse('2026-10-19T06:00:00Z'), 2 * 3_600_000).map((d) => d.slot.at)).toEqual(['2026-10-19T05:06:00.000Z']);
     expect(dueNow(plans, Date.parse('2026-10-19T08:00:00Z'), 2 * 3_600_000)).toEqual([]);
     expect(nextCheck(plans, Date.parse('2026-10-19T08:00:00Z'))?.slot.at).toBe('2026-10-19T10:30:00.000Z');
+  });
+
+  it('a check stays due until an import runs after it, however late the timer is', () => {
+    const plans = [planChecks('zzz', [zzz32], zzzLog, NOW - 2 * 3_600_000, 14)].filter((p): p is Plan => Boolean(p));
+    const HOUR = 3_600_000;
+    const LOOKBACK = 72 * HOUR;
+    const check = '2026-10-19T05:06:00.000Z';
+    const at = (iso: string) => dueSince(plans, Date.parse(iso), Date.parse('2026-10-19T00:00:00Z'), LOOKBACK).map((d) => d.slot.at);
+    // The last import was before the check: a run 9 hours late still catches it (the old 8-hour window would not).
+    expect(at('2026-10-19T14:10:00Z')).toContain(check);
+    // An import that started after the check covers it: not due again.
+    expect(dueSince(plans, Date.parse('2026-10-19T14:10:00Z'), Date.parse('2026-10-19T06:00:00Z'), LOOKBACK).map((d) => d.slot.at)).not.toContain(check);
+    // Not yet: a check in the future is never due.
+    expect(dueSince(plans, Date.parse('2026-10-19T05:00:00Z'), Date.parse('2026-10-19T00:00:00Z'), LOOKBACK).map((d) => d.slot.at)).not.toContain(check);
+    // An old gap only reaches back 72 hours: a last import long ago gives no checks older than that.
+    const old = dueSince(plans, Date.parse('2026-10-22T06:00:00Z'), Date.parse('2026-10-01T00:00:00Z'), LOOKBACK);
+    expect(old.length).toBeGreaterThan(0);
+    expect(old.every((d) => Date.parse(d.slot.at) > Date.parse('2026-10-22T06:00:00Z') - LOOKBACK)).toBe(true);
   });
 
   it('key moments for the research routine: one run when both games meet within 12 hours', () => {

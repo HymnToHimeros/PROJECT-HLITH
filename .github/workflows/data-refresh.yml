@@ -2,9 +2,11 @@
 #
 # Every 2 hours it asks `node scripts/schedule-due.ts` whether now is a check time
 # (counted from patch day: scripts/schedule/rhythm.ts). Most runs stop there.
-# GitHub often runs the timer only every 5-7 hours, so a check counts as due for
-# 8 hours after its time (--window 8h); a second run for the same check just
-# finds nothing new.
+# GitHub often runs the timer late (gaps of 5-8+ hours), so a check counts as due
+# until a run has imported after its time: the workflow looks up the start of the
+# last run whose import step succeeded (read-only, with its own token) and passes it
+# as --since; only checks from the last 72 hours count. If that lookup fails, the
+# old rule is used: due for 8 hours after its time (--window 8h).
 # When a check is due (or someone starts it by hand):
 #   1. re-imports leaks and characters, leak kits, and versions/banners/events/endgame
 #      (HSR/ZZZ; Arknights Endfield from its official news and endfield.wiki.gg);
@@ -27,6 +29,8 @@ on:
 permissions:
   contents: write
   pull-requests: write
+  # Read-only: to find when the last import ran ("Is a check due?").
+  actions: read
 
 concurrency:
   group: data-refresh
@@ -50,10 +54,32 @@ jobs:
         with:
           node-version: 22
 
+      - name: When did the last import run?
+        id: last
+        # Never fails the job: no answer means the 8-hour window rule below.
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+          IMPORT_STEP: Leaks and characters (nanoka.cc)
+        run: |
+          set +e
+          since=""
+          runs=$(gh api "repos/$GITHUB_REPOSITORY/actions/workflows/data-refresh.yml/runs?status=completed&per_page=30" \
+            --jq '.workflow_runs[] | "\(.id) \(.run_started_at)"')
+          while read -r id at; do
+            [ -n "$id" ] || continue
+            ok=$(gh api "repos/$GITHUB_REPOSITORY/actions/runs/$id/jobs" \
+              --jq "[.jobs[].steps[] | select(.name == env.IMPORT_STEP and .conclusion == \"success\")] | length")
+            if [ "${ok:-0}" -gt 0 ] 2>/dev/null; then since="$at"; break; fi
+          done <<< "$runs"
+          echo "Last import started: ${since:-unknown}"
+          echo "since=$since" >> "$GITHUB_OUTPUT"
+          exit 0
+
       - name: Is a check due?
         id: plan
         run: |
-          node scripts/schedule-due.ts --window 8h
+          node scripts/schedule-due.ts --since "${{ steps.last.outputs.since }}" --lookback 72h --window 8h
           if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then echo "go=true" >> "$GITHUB_OUTPUT"; else grep -q '^due=true' "$GITHUB_OUTPUT" && echo "go=true" >> "$GITHUB_OUTPUT" || echo "go=false" >> "$GITHUB_OUTPUT"; fi
 
       - if: steps.plan.outputs.go == 'true'
