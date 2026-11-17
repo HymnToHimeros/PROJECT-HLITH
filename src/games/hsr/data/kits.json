@@ -13616,7 +13616,7 @@
   {
     "characterId": "1514",
     "source": "nanoka.cc",
-    "version": "4.7.51",
+    "version": "4.7.52",
     "skills": [
       {
         "id": "skill-basic-atk-saw-teeth-trimming",
@@ -13706,7 +13706,7 @@
           "dupes": 2
         },
         "does": [],
-        "gameText": "After Ellen uses \"Ice Sea Diving,\" \"Sharkboo's\" action advances by 100%. When using each attack, \"Sharkboo\" regenerates 10 Energy and 1 \"Shark's Gotta Bite\" for Ellen, and increases the CRIT DMG dealt by her next \"Ice Sea Diving\" by 50%. This effect does not stack."
+        "gameText": "After Ellen uses \"Ice Sea Diving,\" \"Sharkboo\"'s action advances by 100%. When using each attack, \"Sharkboo\" regenerates 10 Energy and 1 \"Shark's Gotta Bite\" for Ellen, and increases the CRIT DMG dealt by her next \"Ice Sea Diving\" by 50%. This effect does not stack."
       },
       {
         "id": "eidolon-3",
@@ -13754,7 +13754,7 @@
   {
     "characterId": "1515",
     "source": "nanoka.cc",
-    "version": "4.7.51",
+    "version": "4.7.52",
     "skills": [
       {
         "id": "skill-basic-atk-pirouette-pianissimo",
