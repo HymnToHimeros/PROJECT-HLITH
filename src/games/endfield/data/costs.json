@@ -8373,7 +8373,7 @@
     },
     "chr_0024_deepfin": {
       "source": "endfield.wiki.gg/wiki/Alesh (CC BY-SA 4.0)",
-      "version": "wiki revision 64987",
+      "version": "wiki revision 66946",
       "promotions": [
         {
           "atLevel": 20,
@@ -10017,7 +10017,7 @@
     },
     "chr_0028_wulfa": {
       "source": "endfield.wiki.gg/wiki/Rossi (CC BY-SA 4.0)",
-      "version": "wiki revision 64991",
+      "version": "wiki revision 66443",
       "promotions": [
         {
           "atLevel": 20,
@@ -11665,7 +11665,7 @@
     },
     "chr_0032_lizhiyan": {
       "source": "endfield.wiki.gg/wiki/Arcane (CC BY-SA 4.0)",
-      "version": "wiki revision 64995",
+      "version": "wiki revision 67096",
       "promotions": [
         {
           "atLevel": 20,
@@ -13309,7 +13309,7 @@
     },
     "chr_0036_jsspsi": {
       "source": "endfield.wiki.gg/wiki/Si (CC BY-SA 4.0)",
-      "version": "wiki revision 64999",
+      "version": "wiki revision 67501",
       "promotions": [
         {
           "atLevel": 20,
@@ -13614,6 +13614,418 @@
               "item_char_skill_level_7_12": 50,
               "item_char_skill_specialize_1": 36,
               "item_plant_crylplant_2_2": 12,
+              "item_gold": 65000
+            }
+          }
+        },
+        {
+          "id": "attribute",
+          "label": "Attribute Increase",
+          "max": 4,
+          "steps": {
+            "1": {
+              "item_char_skill_level_1_6": 5,
+              "item_gold": 1000
+            },
+            "2": {
+              "item_char_skill_level_1_6": 10,
+              "item_gold": 1800
+            },
+            "3": {
+              "item_char_skill_level_7_12": 10,
+              "item_gold": 6000
+            },
+            "4": {
+              "item_char_skill_level_7_12": 20,
+              "item_gold": 12000
+            }
+          }
+        },
+        {
+          "id": "talent-1",
+          "label": "Talent 1",
+          "max": 2,
+          "steps": {
+            "1": {
+              "item_char_skill_level_1_6": 12,
+              "item_gold": 2400
+            },
+            "2": {
+              "item_char_skill_level_1_6": 40,
+              "item_gold": 8600
+            }
+          }
+        },
+        {
+          "id": "talent-2",
+          "label": "Talent 2",
+          "max": 2,
+          "steps": {
+            "1": {
+              "item_char_skill_level_1_6": 48,
+              "item_gold": 10000
+            },
+            "2": {
+              "item_char_skill_level_7_12": 28,
+              "item_gold": 24000
+            }
+          }
+        },
+        {
+          "id": "outfitting",
+          "label": "Gear Outfitting",
+          "max": 3,
+          "steps": {
+            "1": {
+              "item_gold": 1800
+            },
+            "2": {
+              "item_gold": 6500
+            },
+            "3": {
+              "item_gold": 18000
+            }
+          }
+        },
+        {
+          "id": "base-skill-1",
+          "label": "Base Skill 1",
+          "max": 2,
+          "steps": {
+            "1": {
+              "item_char_skill_level_1_6": 6,
+              "item_gold": 1600
+            },
+            "2": {
+              "item_char_skill_level_7_12": 12,
+              "item_gold": 8000
+            }
+          }
+        },
+        {
+          "id": "base-skill-2",
+          "label": "Base Skill 2",
+          "max": 2,
+          "steps": {
+            "1": {
+              "item_char_skill_level_1_6": 12,
+              "item_gold": 3000
+            },
+            "2": {
+              "item_char_skill_level_7_12": 20,
+              "item_gold": 20000
+            }
+          }
+        }
+      ]
+    },
+    "chr_argent-flow": {
+      "source": "endfield.wiki.gg/wiki/Argent_Flow (CC BY-SA 4.0)",
+      "version": "wiki revision 67128",
+      "promotions": [
+        {
+          "atLevel": 20,
+          "items": {
+            "item_char_break_stage_1_2": 8,
+            "item_plant_mushroom_1_1": 3,
+            "item_gold": 1600
+          }
+        },
+        {
+          "atLevel": 40,
+          "items": {
+            "item_char_break_stage_1_2": 25,
+            "item_plant_mushroom_1_2": 5,
+            "item_gold": 6500
+          }
+        },
+        {
+          "atLevel": 60,
+          "items": {
+            "item_char_break_stage_3_4": 24,
+            "item_plant_mushroom_1_3": 5,
+            "item_gold": 18000
+          }
+        },
+        {
+          "atLevel": 80,
+          "items": {
+            "item_char_break_stage_3_4": 36,
+            "item_char_skill_specialize_5": 20,
+            "item_plant_mushroom_2_3": 8,
+            "item_gold": 100000
+          }
+        }
+      ],
+      "tracks": [
+        {
+          "id": "basic-attack",
+          "label": "Basic Attack",
+          "max": 12,
+          "steps": {
+            "2": {
+              "item_char_skill_level_1_6": 6,
+              "item_plant_crylplant_1_1": 1,
+              "item_gold": 1000
+            },
+            "3": {
+              "item_char_skill_level_1_6": 12,
+              "item_plant_crylplant_1_1": 2,
+              "item_gold": 2700
+            },
+            "4": {
+              "item_char_skill_level_1_6": 16,
+              "item_plant_crylplant_1_2": 1,
+              "item_gold": 3200
+            },
+            "5": {
+              "item_char_skill_level_1_6": 21,
+              "item_plant_crylplant_1_2": 1,
+              "item_gold": 4200
+            },
+            "6": {
+              "item_char_skill_level_1_6": 27,
+              "item_plant_crylplant_1_2": 2,
+              "item_gold": 5400
+            },
+            "7": {
+              "item_char_skill_level_7_12": 6,
+              "item_plant_crylplant_1_3": 1,
+              "item_gold": 8200
+            },
+            "8": {
+              "item_char_skill_level_7_12": 8,
+              "item_plant_crylplant_1_3": 1,
+              "item_gold": 10500
+            },
+            "9": {
+              "item_char_skill_level_7_12": 15,
+              "item_plant_crylplant_1_3": 2,
+              "item_gold": 18000
+            },
+            "10": {
+              "item_char_skill_crown": 1,
+              "item_char_skill_level_7_12": 15,
+              "item_char_skill_specialize_4": 6,
+              "item_plant_crylplant_2_3": 3,
+              "item_gold": 24000
+            },
+            "11": {
+              "item_char_skill_crown": 2,
+              "item_char_skill_level_7_12": 24,
+              "item_char_skill_specialize_4": 16,
+              "item_plant_crylplant_2_3": 6,
+              "item_gold": 30000
+            },
+            "12": {
+              "item_char_skill_crown": 3,
+              "item_char_skill_level_7_12": 50,
+              "item_char_skill_specialize_4": 36,
+              "item_plant_crylplant_2_3": 12,
+              "item_gold": 65000
+            }
+          }
+        },
+        {
+          "id": "battle-skill",
+          "label": "Battle Skill",
+          "max": 12,
+          "steps": {
+            "2": {
+              "item_char_skill_level_1_6": 6,
+              "item_plant_crylplant_1_1": 1,
+              "item_gold": 1000
+            },
+            "3": {
+              "item_char_skill_level_1_6": 12,
+              "item_plant_crylplant_1_1": 2,
+              "item_gold": 2700
+            },
+            "4": {
+              "item_char_skill_level_1_6": 16,
+              "item_plant_crylplant_1_2": 1,
+              "item_gold": 3200
+            },
+            "5": {
+              "item_char_skill_level_1_6": 21,
+              "item_plant_crylplant_1_2": 1,
+              "item_gold": 4200
+            },
+            "6": {
+              "item_char_skill_level_1_6": 27,
+              "item_plant_crylplant_1_2": 2,
+              "item_gold": 5400
+            },
+            "7": {
+              "item_char_skill_level_7_12": 6,
+              "item_plant_crylplant_1_3": 1,
+              "item_gold": 8200
+            },
+            "8": {
+              "item_char_skill_level_7_12": 8,
+              "item_plant_crylplant_1_3": 1,
+              "item_gold": 10500
+            },
+            "9": {
+              "item_char_skill_level_7_12": 15,
+              "item_plant_crylplant_1_3": 2,
+              "item_gold": 18000
+            },
+            "10": {
+              "item_char_skill_crown": 1,
+              "item_char_skill_level_7_12": 15,
+              "item_char_skill_specialize_6": 6,
+              "item_plant_crylplant_2_3": 3,
+              "item_gold": 24000
+            },
+            "11": {
+              "item_char_skill_crown": 2,
+              "item_char_skill_level_7_12": 24,
+              "item_char_skill_specialize_6": 16,
+              "item_plant_crylplant_2_3": 6,
+              "item_gold": 30000
+            },
+            "12": {
+              "item_char_skill_crown": 3,
+              "item_char_skill_level_7_12": 50,
+              "item_char_skill_specialize_6": 36,
+              "item_plant_crylplant_2_3": 12,
+              "item_gold": 65000
+            }
+          }
+        },
+        {
+          "id": "combo-skill",
+          "label": "Combo Skill",
+          "max": 12,
+          "steps": {
+            "2": {
+              "item_char_skill_level_1_6": 6,
+              "item_plant_crylplant_1_1": 1,
+              "item_gold": 1000
+            },
+            "3": {
+              "item_char_skill_level_1_6": 12,
+              "item_plant_crylplant_1_1": 2,
+              "item_gold": 2700
+            },
+            "4": {
+              "item_char_skill_level_1_6": 16,
+              "item_plant_crylplant_1_2": 1,
+              "item_gold": 3200
+            },
+            "5": {
+              "item_char_skill_level_1_6": 21,
+              "item_plant_crylplant_1_2": 1,
+              "item_gold": 4200
+            },
+            "6": {
+              "item_char_skill_level_1_6": 27,
+              "item_plant_crylplant_1_2": 2,
+              "item_gold": 5400
+            },
+            "7": {
+              "item_char_skill_level_7_12": 6,
+              "item_plant_crylplant_1_3": 1,
+              "item_gold": 8200
+            },
+            "8": {
+              "item_char_skill_level_7_12": 8,
+              "item_plant_crylplant_1_3": 1,
+              "item_gold": 10500
+            },
+            "9": {
+              "item_char_skill_level_7_12": 15,
+              "item_plant_crylplant_1_3": 2,
+              "item_gold": 18000
+            },
+            "10": {
+              "item_char_skill_crown": 1,
+              "item_char_skill_level_7_12": 15,
+              "item_char_skill_specialize_4": 6,
+              "item_plant_crylplant_2_3": 3,
+              "item_gold": 24000
+            },
+            "11": {
+              "item_char_skill_crown": 2,
+              "item_char_skill_level_7_12": 24,
+              "item_char_skill_specialize_4": 16,
+              "item_plant_crylplant_2_3": 6,
+              "item_gold": 30000
+            },
+            "12": {
+              "item_char_skill_crown": 3,
+              "item_char_skill_level_7_12": 50,
+              "item_char_skill_specialize_4": 36,
+              "item_plant_crylplant_2_3": 12,
+              "item_gold": 65000
+            }
+          }
+        },
+        {
+          "id": "ultimate",
+          "label": "Ultimate",
+          "max": 12,
+          "steps": {
+            "2": {
+              "item_char_skill_level_1_6": 6,
+              "item_plant_crylplant_1_1": 1,
+              "item_gold": 1000
+            },
+            "3": {
+              "item_char_skill_level_1_6": 12,
+              "item_plant_crylplant_1_1": 2,
+              "item_gold": 2700
+            },
+            "4": {
+              "item_char_skill_level_1_6": 16,
+              "item_plant_crylplant_1_2": 1,
+              "item_gold": 3200
+            },
+            "5": {
+              "item_char_skill_level_1_6": 21,
+              "item_plant_crylplant_1_2": 1,
+              "item_gold": 4200
+            },
+            "6": {
+              "item_char_skill_level_1_6": 27,
+              "item_plant_crylplant_1_2": 2,
+              "item_gold": 5400
+            },
+            "7": {
+              "item_char_skill_level_7_12": 6,
+              "item_plant_crylplant_1_3": 1,
+              "item_gold": 8200
+            },
+            "8": {
+              "item_char_skill_level_7_12": 8,
+              "item_plant_crylplant_1_3": 1,
+              "item_gold": 10500
+            },
+            "9": {
+              "item_char_skill_level_7_12": 15,
+              "item_plant_crylplant_1_3": 2,
+              "item_gold": 18000
+            },
+            "10": {
+              "item_char_skill_crown": 1,
+              "item_char_skill_level_7_12": 15,
+              "item_char_skill_specialize_6": 6,
+              "item_plant_crylplant_2_3": 3,
+              "item_gold": 24000
+            },
+            "11": {
+              "item_char_skill_crown": 2,
+              "item_char_skill_level_7_12": 24,
+              "item_char_skill_specialize_6": 16,
+              "item_plant_crylplant_2_3": 6,
+              "item_gold": 30000
+            },
+            "12": {
+              "item_char_skill_crown": 3,
+              "item_char_skill_level_7_12": 50,
+              "item_char_skill_specialize_6": 36,
+              "item_plant_crylplant_2_3": 12,
               "item_gold": 65000
             }
           }
@@ -14675,7 +15087,7 @@
       },
       "wpn_claym_0018": {
         "source": "endfield.wiki.gg/wiki/Jade_Vessel (CC BY-SA 4.0)",
-        "version": "wiki revision 64959",
+        "version": "wiki revision 67090",
         "tunings": [
           {
             "atLevel": 20,
@@ -16430,7 +16842,7 @@
       },
       "wpn_sword_0006": {
         "source": "endfield.wiki.gg/wiki/Forgeborn_Scathe (CC BY-SA 4.0)",
-        "version": "wiki revision 61879",
+        "version": "wiki revision 67091",
         "tunings": [
           {
             "atLevel": 20,
@@ -17093,7 +17505,7 @@
       },
       "wpn_sword_0023": {
         "source": "endfield.wiki.gg/wiki/Dessert_Moment (CC BY-SA 4.0)",
-        "version": "wiki revision 63440",
+        "version": "wiki revision 65354",
         "tunings": [
           {
             "atLevel": 20,
@@ -17171,7 +17583,7 @@
       },
       "wpn_sword_0026": {
         "source": "endfield.wiki.gg/wiki/Farsight (CC BY-SA 4.0)",
-        "version": "wiki revision 61896",
+        "version": "wiki revision 65353",
         "tunings": [
           {
             "atLevel": 20,
@@ -17227,6 +17639,6 @@
     "item_char_skill_crown": 24
   },
   "conflicts": [
-    "Gear Outfitting I–III: 34 operator pages say T-Creds 1600 / 6500 / 18000; the Operator page says 1800 / 6500 / 18000. Ruling (MANAGER, 2026-10-15): use the operator page (unverified in game; the owner may correct it. Sources: endfield.wiki.gg/wiki/Operator (Gearing, Cost Summary) and each operator page (Operator talent cost))."
+    "Gear Outfitting I–III: 35 operator pages say T-Creds 1600 / 6500 / 18000; the Operator page says 1800 / 6500 / 18000. Ruling (MANAGER, 2026-10-15): use the operator page (unverified in game; the owner may correct it. Sources: endfield.wiki.gg/wiki/Operator (Gearing, Cost Summary) and each operator page (Operator talent cost))."
   ]
 }

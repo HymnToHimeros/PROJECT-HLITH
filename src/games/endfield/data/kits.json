@@ -3526,6 +3526,112 @@
     ]
   },
   {
+    "characterId": "chr_argent-flow",
+    "source": "endfield.wiki.gg/wiki/Argent_Flow (CC BY-SA 4.0)",
+    "version": "wiki revision 67128",
+    "skills": [
+      {
+        "id": "basic-attack",
+        "label": "Basic Attack: Dust Resplendent",
+        "kind": "skill",
+        "does": [],
+        "gameText": "BASIC ATTACK:\nAn attack with up to 5 sequences that deals Physical DMG. As the controlled operator, Final Strike also deals 23 Stagger.\nDIVE ATTACK:\nBasic attack performed in mid-air becomes a dive attack that deals Physical DMG to nearby enemies.\nFINISHER:\nBasic attack performed near a Staggered enemy becomes a finisher attack that deals massive Physical DMG and recovers some SP.\nAt level 12: BATK SEQ 1 Multiplier: 50%; BATK SEQ 2 Multiplier: 55%; BATK SEQ 3 Multiplier: 100%; BATK SEQ 4 Multiplier: 140%; BATK SEQ 5 Multiplier: 135%; Finisher ATK Multiplier: 900%; Dive ATK Multiplier: 180%."
+      },
+      {
+        "id": "battle-skill",
+        "label": "Battle Skill: Darkness Cowed",
+        "kind": "skill",
+        "does": [],
+        "gameText": "SKILL DESCRIPTION: Argent Flow sweeps his lance and deals Physical DMG to nearby enemies and applies Lift to target(s) in front of him.\nAfter Argent Flow casts his combo skill, his battle skill is temporarily changed to Bolt Rush.\nBolt Rush: Argent Flow mounts his galloper Nuli to leap into mid-air, powers up quickly, and then charges at the target to forcibly apply Electrification and deal Electric DMG to enemies within a large area in front of him. When this Electrification is applied on a target with Electric Infliction, it consumes all Electric Infliction stacks from the target and grants Electrification Status Level +1 per 1 stack consumed. After consuming the target's Electric Infliction, Argent Flow also applies 1 stack of Vulnerability.\nAt level 12: SP Cost: 100; Base DMG Multiplier: 350%; Base Stagger: 10; Bolt Rush DMG Multiplier: 700%; Bolt Rush Stagger: 10."
+      },
+      {
+        "id": "combo-skill",
+        "label": "Combo Skill: Stars Shifted",
+        "kind": "skill",
+        "does": [],
+        "gameText": "COMBO TRIGGER: When an enemy becomes Vulnerable.\nSKILL DESCRIPTION: Argent Flow wields his blade with lightning speed to unleash a multi-sequence attack that deals Electric DMG to enemies along his path. When the final sequence scores a hit, it also applies Electric Infliction. Argent Flow's battle skill is then temporarily changed to Bolt Rush.\nAt level 12: Cooldown: 18; DMG Multiplier: 360%; Stagger: 10; Battle Skill Change Duration (s): 20; Ultimate Energy Gain: 10."
+      },
+      {
+        "id": "ultimate",
+        "label": "Ultimate: Heavens Sundered",
+        "kind": "skill",
+        "does": [],
+        "gameText": "SKILL DESCRIPTION: Argent Flow mounts Nuli and charges with his lance, dealing continuous Electric DMG to targets in front of him while impaling and carrying weak enemies before him throughout the charge. After the charge ends, Argent Flow leaps into the air and unleashes a Cleansing Cleave at the ground. The slash deals Electric DMG and applies 1 stack of Electric Infliction. Argent Flow then pierces the ground with his lance, applying Crush and dealing Electric DMG to enemies within a large area.\nIf Argent Flow's ultimate charges into a non-weak enemy (that cannot be impaled and pushed), his charge will end early.\nAt level 12: Ultimate Energy Cost: 80; Charge DMG Multiplier: 175%; Cleansing Cleave DMG Multiplier: 500%; Ground Pierce DMG Multiplier: 750%; Stagger: 10."
+      },
+      {
+        "id": "talent-zenith-of-voltmancy",
+        "label": "Talent: Zenith of Voltmancy (Elite 2)",
+        "kind": "core",
+        "does": [],
+        "gameText": "When Argent Flow applies Electrification, this Electrification also increases all types of DMG Taken of the target for the same duration, and he also applies Sunderization stack(s) on the target, the number of stacks is equal to the Electrification Status Level and maxes out at 12. Sunderization lasts for 60s.\nWhen dealing Crush DMG to a target with Sunderization, this Crush DMG is increased to 1.2 times the original and detonates all Sunderization stacks. The explosion deals [Number of Sunderization stacks × 330% ATK] of Electric DMG to the target and 40% of that DMG to other enemies near the said target.\nWhen the explosion DMG of Sunderization is dealt to another enemy with Sunderization, it also detonates all Sunderization stacks of that enemy."
+      },
+      {
+        "id": "talent-springvolt-galore",
+        "label": "Talent: Springvolt Galore (Elite 3)",
+        "kind": "core",
+        "does": [],
+        "gameText": "Battle skill Bolt Rush improved: The entire team gains Arts Intensity +45 for 20s.\nFor every point of Arts Intensity that Argent Flow has, increase Sunderization explosion DMG by another 0.6%."
+      },
+      {
+        "id": "talent-stalwart",
+        "label": "Talent: Stalwart (Elite 4)",
+        "kind": "core",
+        "does": [],
+        "gameText": "Operator Will +20."
+      },
+      {
+        "id": "potential-1",
+        "label": "Potential 1: Wildswept Storm",
+        "kind": "potential",
+        "unlock": {
+          "potential": 1
+        },
+        "does": [],
+        "gameText": "Talent Zenith of Voltmancy improved: When applying Crush to a target with Sunderization, the DMG dealt by this Crush is increased to 1.4 times the original. Proportion of Sunderization explosion DMG dealt to other enemies near the target is increased to 50%."
+      },
+      {
+        "id": "potential-2",
+        "label": "Potential 2: Electrified Spring",
+        "kind": "potential",
+        "unlock": {
+          "potential": 2
+        },
+        "does": [],
+        "gameText": "Will +20, Arts Intensity +16."
+      },
+      {
+        "id": "potential-3",
+        "label": "Potential 3: Storm Blitz",
+        "kind": "potential",
+        "unlock": {
+          "potential": 3
+        },
+        "does": [],
+        "gameText": "Battle skill Bolt Rush improved: For every 1 stack of Electric Infliction consumed, Argent Flow gains Electric DMG Dealt +6% for 25s. This effect can reach 6 stacks. Duration of each stack is counted separately."
+      },
+      {
+        "id": "potential-4",
+        "label": "Potential 4: Starflow Illuminated",
+        "kind": "potential",
+        "unlock": {
+          "potential": 4
+        },
+        "does": [],
+        "gameText": "Ultimate Heavens Sundered improved: Ultimate Energy Cost -15%."
+      },
+      {
+        "id": "potential-5",
+        "label": "Potential 5: Invitation to Celestial Lights",
+        "kind": "potential",
+        "unlock": {
+          "potential": 5
+        },
+        "does": [],
+        "gameText": "Talent Springvolt Galore improved: When casting the battle skill Bolt Rush, the entire team gains an additional Arts Intensity +15.\nSunderization explosion DMG bonus per point of Argent Flow's Arts Intensity is increased to 1.2 times the original."
+      }
+    ]
+  },
+  {
     "characterId": "chr_0038_purrche",
     "source": "endfield.wiki.gg/wiki/Purrchena (CC BY-SA 4.0)",
     "version": "wiki revision 65002",

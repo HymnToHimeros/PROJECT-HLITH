@@ -255,13 +255,14 @@ export function kitFrom(text: string, who: string): KitSkill[] {
 }
 
 if (import.meta.main ?? process.argv[1]?.endsWith('import-endfield-kits.ts')) {
-  const characters = JSON.parse(readFileSync(resolve(ROOT, 'src/games/endfield/data/characters.json'), 'utf8')) as { id: string; name: string }[];
+  const characters = JSON.parse(readFileSync(resolve(ROOT, 'src/games/endfield/data/characters.json'), 'utf8')) as { id: string; gameId?: string; name: string }[];
   const pages = await pagesById();
   const cache = new Map<string, { text: string; revid: number }>();
   const kits: Kit[] = [];
   const notes: string[] = [];
   for (const c of characters) {
-    const title = pages.get(c.id);
+    // The wiki keys operators by their in-game id; ours keeps a stable id and stores the game's as gameId (Argent Flow).
+    const title = pages.get(c.gameId ?? c.id) ?? pages.get(c.id);
     if (!title) {
       notes.push(`${c.name} (${c.id}): no wiki page in the Operators table, left out`);
       continue;

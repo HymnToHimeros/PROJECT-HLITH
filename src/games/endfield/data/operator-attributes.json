@@ -123,7 +123,7 @@
   "main": "Strength",
   "secondary": "Intellect",
   "source": "endfield.wiki.gg/wiki/Alesh (CC BY-SA 4.0)",
-  "version": "wiki revision 64987"
+  "version": "wiki revision 66946"
  },
  "chr_0025_ardelia": {
   "main": "Intellect",
@@ -147,7 +147,7 @@
   "main": "Agility",
   "secondary": "Intellect",
   "source": "endfield.wiki.gg/wiki/Rossi (CC BY-SA 4.0)",
-  "version": "wiki revision 64991"
+  "version": "wiki revision 66443"
  },
  "chr_0029_pograni": {
   "main": "Will",
@@ -171,7 +171,7 @@
   "main": "Intellect",
   "secondary": "Will",
   "source": "endfield.wiki.gg/wiki/Arcane (CC BY-SA 4.0)",
-  "version": "wiki revision 64995"
+  "version": "wiki revision 67096"
  },
  "chr_0033_camille": {
   "main": "Agility",
@@ -195,12 +195,18 @@
   "main": "Intellect",
   "secondary": "Strength",
   "source": "endfield.wiki.gg/wiki/Si (CC BY-SA 4.0)",
-  "version": "wiki revision 64999"
+  "version": "wiki revision 67501"
  },
  "chr_0038_purrche": {
   "main": "Strength",
   "secondary": "Will",
   "source": "endfield.wiki.gg/wiki/Purrchena (CC BY-SA 4.0)",
   "version": "wiki revision 65002"
+ },
+ "chr_argent-flow": {
+  "main": "Will",
+  "secondary": "Strength",
+  "source": "endfield.wiki.gg/wiki/Argent_Flow (CC BY-SA 4.0)",
+  "version": "wiki revision 67128"
  }
 }
