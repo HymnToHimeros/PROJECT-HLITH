@@ -17581,6 +17581,45 @@
           }
         ]
       },
+      "wpn_lunar-calling": {
+        "source": "endfield.wiki.gg/wiki/Lunar_Calling (CC BY-SA 4.0)",
+        "version": "wiki revision 67092",
+        "tunings": [
+          {
+            "atLevel": 20,
+            "items": {
+              "item_weapon_break_low": 5,
+              "item_plant_spcstone_1_1": 3,
+              "item_gold": 2200
+            }
+          },
+          {
+            "atLevel": 40,
+            "items": {
+              "item_weapon_break_low": 18,
+              "item_plant_spcstone_1_2": 5,
+              "item_gold": 8500
+            }
+          },
+          {
+            "atLevel": 60,
+            "items": {
+              "item_weapon_break_high": 20,
+              "item_plant_spcstone_1_3": 5,
+              "item_gold": 25000
+            }
+          },
+          {
+            "atLevel": 80,
+            "items": {
+              "item_weapon_break_high": 30,
+              "item_char_skill_specialize_6": 16,
+              "item_plant_spcstone_2_3": 8,
+              "item_gold": 90000
+            }
+          }
+        ]
+      },
       "wpn_sword_0026": {
         "source": "endfield.wiki.gg/wiki/Farsight (CC BY-SA 4.0)",
         "version": "wiki revision 65353",

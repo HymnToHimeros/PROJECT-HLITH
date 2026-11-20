@@ -134,7 +134,9 @@ describe('Endfield costs data (src/games/endfield/data/costs.json)', async () =>
     expect(to20.find((n) => n.material === 'item_char_break_stage_1_2')).toBeUndefined();
     const to21 = materialsFor(chen, { level: 1, skills: Object.values(all) }, { level: 21, skills: Object.values(all) });
     expect(to21.find((n) => n.material === 'item_char_break_stage_1_2')?.amount).toBe(8);
-    expect(materialsFor('chr_argent-flow', { level: 1 }, { level: 90 })).toEqual([]);
+    // An operator with no cost data gives nothing (never guessed); Argent Flow has hers since the wiki lists her by in-game id.
+    expect(materialsFor('chr_not-listed', { level: 1 }, { level: 90 })).toEqual([]);
+    expect(materialsFor('chr_argent-flow', { level: 1 }, { level: 90 }).length).toBeGreaterThan(0);
   });
 });
 
@@ -197,7 +199,9 @@ describe('Endfield weapon costs', async () => {
     const got = new Map(out.needs.map((n) => [n.material, n.amount]));
     expect(got.get('item_weapon_expcard_high')).toBe(Math.ceil((2524080 - 105540) / 10000));
     expect(weaponMaterialsFor(id, { level: 40 }, { level: 40 })).toEqual({ needs: [] });
-    expect(weaponMaterialsFor('wpn_lunar-calling', { level: 1 }, { level: 90 })).toEqual({ needs: [] });
+    // A weapon with no cost data gives nothing (never guessed); Lunar Calling has its costs since the wiki lists it by in-game id.
+    expect(weaponMaterialsFor('wpn_not-listed', { level: 1 }, { level: 90 })).toEqual({ needs: [] });
+    expect(weaponMaterialsFor('wpn_lunar-calling', { level: 1 }, { level: 90 }).needs.length).toBeGreaterThan(0);
   });
   it('weaponFarmPlan surfaces partial and gives no stamina total while partial is set', () => {
     const note = 'Only levels 1-40 are counted; higher levels not yet on the wiki.';

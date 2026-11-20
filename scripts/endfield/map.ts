@@ -121,6 +121,8 @@ export interface WeaponItem {
   name: string;
   rarity: Rarity;
   icon?: string;
+  /** The game's own id, kept only when ours differs (a weapon first listed from an official notice). */
+  gameId?: string;
   /** Weapon type (sword, great-sword, polearm, handcannon, arts-unit). */
   type: string;
   source: string;
@@ -138,7 +140,7 @@ export function weapons(rows: Row[], images: Map<string, string>, out: Notes): W
       continue;
     }
     const icon = images.get(r.Icon ?? '');
-    list.push({ id: r.Id, name, rarity, ...(icon ? { icon } : {}), type: slug(r.Type ?? ''), source: WIKI });
+    list.push({ id: r.Id, gameId: r.Id, name, rarity, ...(icon ? { icon } : {}), type: slug(r.Type ?? ''), source: WIKI });
   }
   return list.sort((a, b) => a.id.localeCompare(b.id));
 }

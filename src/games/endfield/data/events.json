@@ -1219,5 +1219,19 @@
       "base": 8,
       "start": true
     }
+  },
+  {
+    "id": "sanity-supply-2026-11-17",
+    "title": "Sanity Supply",
+    "kind": "event",
+    "start": "2026-11-17T20:00:00.000Z",
+    "end": "2026-11-24T19:59:00.000Z",
+    "reward": null,
+    "currency": "oroberyl",
+    "serverTime": {
+      "base": 8,
+      "start": true,
+      "end": true
+    }
   }
 ]

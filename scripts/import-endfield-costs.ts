@@ -392,11 +392,11 @@ if (import.meta.main ?? process.argv[1]?.endsWith('import-endfield-costs.ts')) {
   // Weapons: each weapon page's tuning, checked against the Weapon page's Tuning table.
   const weaponGeneral = await page('Weapon');
   const wp = weaponPage(weaponGeneral.text);
-  const weaponList = JSON.parse(readFileSync(resolve(ROOT, 'src/games/endfield/data/weapons.json'), 'utf8')) as { id: string; name: string }[];
+  const weaponList = JSON.parse(readFileSync(resolve(ROOT, 'src/games/endfield/data/weapons.json'), 'utf8')) as { id: string; gameId?: string; name: string }[];
   const weaponPages = await weaponPagesById();
   const weapons: Record<string, { source: string; version: string; tunings: { atLevel: number; items: Items }[] }> = {};
   for (const w of weaponList) {
-    const title = weaponPages.get(w.id);
+    const title = weaponPages.get(w.gameId ?? w.id) ?? weaponPages.get(w.id);
     if (!title) {
       notes.push(`${w.name} (${w.id}): no wiki page in the Weapons table, left out`);
       continue;

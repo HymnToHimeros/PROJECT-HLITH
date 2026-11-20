@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { bannerType, banners, eventKind, events, officialRewards, operators, rarityOf, serverTime, utc, versions, weapons, type Row } from '../scripts/endfield/map.ts';
+import { bannerType, banners, eventKind, events, keepIds, officialRewards, operators, rarityOf, serverTime, utc, versions, weapons, type Row } from '../scripts/endfield/map.ts';
 
 // Rows as endfield.wiki.gg's Cargo tables return them (times in UTC).
 const OPS: Row[] = [
@@ -50,7 +50,11 @@ describe('Endfield lists from the wiki', () => {
     const notes = { notes: [] as string[] };
     const ops = operators(OPS, BANNERS, images, false, { notes: [] }, LAUNCH);
     const wpns = weapons([{ Weapon: 'Jade Vessel', Id: 'wpn_claym_0018', Icon: 'Jade Vessel icon.png', Type: 'Great Sword', Rarity: '6' }, { Weapon: 'Tarr 11', Id: 'wpn_x', Rarity: '3', Type: 'Sword' }], new Map([['Jade Vessel icon.png', 'https://x/j.png']]), notes);
-    expect(wpns).toEqual([{ id: 'wpn_claym_0018', name: 'Jade Vessel', rarity: 'top', icon: 'https://x/j.png', type: 'great-sword', source: 'endfield.wiki.gg (CC BY-SA)' }]);
+    expect(wpns).toEqual([{ id: 'wpn_claym_0018', gameId: 'wpn_claym_0018', name: 'Jade Vessel', rarity: 'top', icon: 'https://x/j.png', type: 'great-sword', source: 'endfield.wiki.gg (CC BY-SA)' }]);
+    // A weapon first listed from an official notice keeps our id; the wiki's id stays as gameId (Lunar Calling).
+    expect(keepIds(wpns, [{ id: 'wpn_jade-vessel', name: 'Jade Vessel' }])[0]).toMatchObject({ id: 'wpn_jade-vessel', gameId: 'wpn_claym_0018' });
+    // Same id: no gameId.
+    expect(keepIds(wpns, [])[0]?.gameId).toBeUndefined();
     const issues: Row[] = [{ Issue: 'Seal of Jade', RateUpWeapon: 'Jade Vessel', IsPermanent: '0', AsiaStartTime: '2026-10-15 04:00:00', AsiaEndTime: '2026-12-17 03:59:59', AmeuStartTime: '2026-10-15 04:00:00', AmeuEndTime: '2026-12-17 16:59:59' }];
     const list = banners(BANNERS, issues, ops, wpns, '2026-11-24T22:00:00.000Z', notes);
     const by = (t: string) => list.find((b) => b.title === t);

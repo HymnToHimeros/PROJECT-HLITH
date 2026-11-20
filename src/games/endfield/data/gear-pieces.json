@@ -8904,6 +8904,45 @@
   "version": "wiki revision 55781"
  },
  {
+  "name": "Type 50 Yinglung Hands PPE",
+  "id": "item_equip_t4_suit_atk02_hand_03",
+  "set": "Type 50 Yinglung",
+  "slot": "Gloves",
+  "rarity": 5,
+  "level": 70,
+  "stats": [
+   {
+    "stat": "Intellect",
+    "values": [
+     65,
+     71,
+     78,
+     84
+    ]
+   },
+   {
+    "stat": "Strength",
+    "values": [
+     43,
+     47,
+     51,
+     55
+    ]
+   },
+   {
+    "stat": "Combo Skill DMG Bonus",
+    "values": [
+     0.345,
+     0.38,
+     0.414,
+     0.449
+    ]
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Type_50_Yinglung_Hands_PPE (CC BY-SA 4.0)",
+  "version": "wiki revision 67086"
+ },
+ {
   "name": "Type 50 Yinglung Heavy Armor",
   "id": "item_equip_t4_suit_atk02_body_01",
   "set": "Type 50 Yinglung",

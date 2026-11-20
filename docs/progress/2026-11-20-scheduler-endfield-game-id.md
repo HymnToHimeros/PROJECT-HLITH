@@ -9,3 +9,10 @@
 - They now look up gameId first, then our id. Argent Flow now has kit text,
   costs and attributes (35 of 35 operators). The same run also brought the
   wiki's newer revisions for other operators' builds and material sources.
+- Weapons had the same gap: Lunar Calling was first listed from an official
+  notice (id wpn_lunar-calling) and the wiki lists it as wpn_sword_0025. The
+  Endfield list import now keeps the wiki's id as gameId when ours differs
+  (as for operators), and the cost import looks it up. Lunar Calling now has
+  costs and weapon skills.
+- Two tests that said "Argent Flow / Lunar Calling have no costs yet" now
+  check that they have them, plus an unlisted id that still gives nothing.
