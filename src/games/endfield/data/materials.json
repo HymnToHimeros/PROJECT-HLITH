@@ -119,12 +119,16 @@
     "kind": "Progression Materials",
     "icon": "https://endfield.wiki.gg/images/D96_Steel_Sample_4.png",
     "sources": [
+      "Advanced Progression Selection Crate Ⅰ: 2 for 1",
+      "Advanced Progression Selection Crate Ⅱ: 2 for 1",
       "Acquisition Center: AIC Trading",
-      "Hazardous Material Collection Site (20 Sanity, fixed drop)",
+      "Hazardous Material Collection Site (80 Sanity, fixed drop)",
       "Crisis Calamity: Triaggelos (120 Sanity, fixed drop)",
       "Hazardous Material Management Room (80 Sanity, random)",
       "Hazardous Material Institute (80 Sanity, random)",
-      "Crisis Calamity: Nefarith (120 Sanity, random)"
+      "Crisis Pandemonium: Rhodagn (120 Sanity, random)",
+      "Crisis Calamity: Nefarith (120 Sanity, random)",
+      "Crisis Calamity: Si (120 Sanity, random)"
     ]
   },
   {
@@ -239,12 +243,15 @@
     "kind": "Progression Materials",
     "icon": "https://endfield.wiki.gg/images/Metadiastima_Photoemission_Tube.png",
     "sources": [
+      "Advanced Progression Selection Crate Ⅰ: 2 for 1",
+      "Advanced Progression Selection Crate Ⅱ: 2 for 1",
       "Acquisition Center: AIC Trading",
-      "Hazardous Material Landfill (20 Sanity, fixed drop)",
+      "Hazardous Material Landfill (80 Sanity, fixed drop)",
       "Crisis Pandemonium: Rhodagn (120 Sanity, fixed drop)",
       "Crisis Calamity: Alleikhreos (120 Sanity, fixed drop)",
       "Hazardous Material Collection Site (80 Sanity, random)",
       "Hazardous Material Management Room (80 Sanity, random)",
+      "Hazardous Material Dissolving Pool (80 Sanity, random)",
       "Crisis Calamity: Ruan Yi (120 Sanity, random)",
       "Crisis Calamity: Nefarith (120 Sanity, random)"
     ]
@@ -321,8 +328,10 @@
     "kind": "Progression Materials",
     "icon": "https://endfield.wiki.gg/images/Quadrant_Fitting_Fluid.png",
     "sources": [
+      "Advanced Progression Selection Crate Ⅰ: 2 for 1",
+      "Advanced Progression Selection Crate Ⅱ: 2 for 1",
       "Acquisition Center: AIC Trading",
-      "Hazardous Material Institute (20 Sanity, fixed drop)",
+      "Hazardous Material Institute (80 Sanity, fixed drop)",
       "Crisis Calamity: Ruan Yi (120 Sanity, fixed drop)",
       "Hazardous Material Landfill (80 Sanity, random)",
       "Hazardous Material Containment Vault (80 Sanity, random)",
@@ -372,11 +381,14 @@
     "kind": "Progression Materials",
     "icon": "https://endfield.wiki.gg/images/Tachyon_Screening_Lattice.png",
     "sources": [
+      "Advanced Progression Selection Crate Ⅰ: 2 for 1",
+      "Advanced Progression Selection Crate Ⅱ: 2 for 1",
       "Acquisition Center: AIC Trading",
-      "Hazardous Material Management Room (20 Sanity, fixed drop)",
+      "Hazardous Material Management Room (80 Sanity, fixed drop)",
       "Crisis Calamity: Marble Aggelomoirai (120 Sanity, fixed drop)",
       "Hazardous Material Institute (80 Sanity, random)",
       "Hazardous Material Containment Vault (80 Sanity, random)",
+      "Hazardous Material Dissolving Pool (80 Sanity, random)",
       "Crisis Pandemonium: Rhodagn (120 Sanity, random)",
       "Crisis Calamity: Triaggelos (120 Sanity, random)",
       "Crisis Calamity: Alleikhreos (120 Sanity, random)"
@@ -399,13 +411,16 @@
     "kind": "Progression Materials",
     "icon": "https://endfield.wiki.gg/images/Triphasic_Nanoflake.png",
     "sources": [
+      "Advanced Progression Selection Crate Ⅰ: 2 for 1",
+      "Advanced Progression Selection Crate Ⅱ: 2 for 1",
       "Acquisition Center: AIC Trading",
-      "Hazardous Material Containment Vault (20 Sanity, fixed drop)",
+      "Hazardous Material Containment Vault (80 Sanity, fixed drop)",
       "Crisis Calamity: Nefarith (120 Sanity, fixed drop)",
       "Hazardous Material Collection Site (80 Sanity, random)",
       "Hazardous Material Landfill (80 Sanity, random)",
       "Crisis Calamity: Marble Aggelomoirai (120 Sanity, random)",
-      "Crisis Calamity: Ruan Yi (120 Sanity, random)"
+      "Crisis Calamity: Ruan Yi (120 Sanity, random)",
+      "Crisis Calamity: Si (120 Sanity, random)"
     ]
   },
   {
@@ -434,14 +449,12 @@
     "id": "item_char_skill_specialize_6",
     "name": "Warp Plasma-Coated Slide",
     "kind": "Progression Materials",
+    "icon": "https://endfield.wiki.gg/images/Warp_Plasma-Coated_Slide.png",
     "sources": [
-      "Advanced Progression Selection Crate",
-      "Protocol Space: Hazardous Material Dissolving Pool",
-      "Crisis Calamity: Si (Deep Dive)",
-      "Acquisition Center: AIC Quota Exchange",
-      "Acquisition Center: Bond Quota Exchange",
-      "Chance Drop: Certain Protocol Space: Crisis Drills",
-      "Chance Drop: Certain Protocol Space: RE-Crisis (Deep Dive)"
+      "Advanced Progression Selection Crate Ⅱ: 2 for 1",
+      "Acquisition Center: AIC Trading",
+      "Hazardous Material Dissolving Pool (80 Sanity, fixed drop)",
+      "Crisis Calamity: Si (120 Sanity, fixed drop)"
     ]
   },
   {

@@ -323,7 +323,7 @@ const same = (a: Items | null | undefined, b: Items | null | undefined) => JSON.
 const show = (x: Items | null | undefined) => (x ? Object.entries(x).map(([k, v]) => `${k} x${v}`).join(', ') : '-');
 
 if (import.meta.main ?? process.argv[1]?.endsWith('import-endfield-costs.ts')) {
-  const characters = JSON.parse(readFileSync(resolve(ROOT, 'src/games/endfield/data/characters.json'), 'utf8')) as { id: string; name: string }[];
+  const characters = JSON.parse(readFileSync(resolve(ROOT, 'src/games/endfield/data/characters.json'), 'utf8')) as { id: string; gameId?: string; name: string }[];
   const pages = await pagesById();
   const general = await page('Operator');
   const table = await promotionTable();
@@ -343,7 +343,8 @@ if (import.meta.main ?? process.argv[1]?.endsWith('import-endfield-costs.ts')) {
   const operators: Record<string, OperatorCosts> = {};
   const cache = new Map<string, { text: string; revid: number }>();
   for (const c of characters) {
-    const title = pages.get(c.id);
+    // The wiki keys operators by their in-game id (gameId when ours differs, e.g. Argent Flow).
+    const title = pages.get(c.gameId ?? c.id) ?? pages.get(c.id);
     if (!title) {
       notes.push(`${c.name} (${c.id}): no wiki page in the Operators table, left out`);
       continue;
@@ -391,11 +392,11 @@ if (import.meta.main ?? process.argv[1]?.endsWith('import-endfield-costs.ts')) {
   // Weapons: each weapon page's tuning, checked against the Weapon page's Tuning table.
   const weaponGeneral = await page('Weapon');
   const wp = weaponPage(weaponGeneral.text);
-  const weaponList = JSON.parse(readFileSync(resolve(ROOT, 'src/games/endfield/data/weapons.json'), 'utf8')) as { id: string; name: string }[];
+  const weaponList = JSON.parse(readFileSync(resolve(ROOT, 'src/games/endfield/data/weapons.json'), 'utf8')) as { id: string; gameId?: string; name: string }[];
   const weaponPages = await weaponPagesById();
   const weapons: Record<string, { source: string; version: string; tunings: { atLevel: number; items: Items }[] }> = {};
   for (const w of weaponList) {
-    const title = weaponPages.get(w.id);
+    const title = weaponPages.get(w.gameId ?? w.id) ?? weaponPages.get(w.id);
     if (!title) {
       notes.push(`${w.name} (${w.id}): no wiki page in the Weapons table, left out`);
       continue;

@@ -586,7 +586,7 @@
    }
   ],
   "source": "endfield.wiki.gg/wiki/Forgeborn_Scathe (CC BY-SA 4.0)",
-  "version": "wiki revision 61879"
+  "version": "wiki revision 67091"
  },
  {
   "weapon": "Former Finery",
@@ -828,7 +828,7 @@
    }
   ],
   "source": "endfield.wiki.gg/wiki/Jade_Vessel (CC BY-SA 4.0)",
-  "version": "wiki revision 64959"
+  "version": "wiki revision 67090"
  },
  {
   "weapon": "JET",
@@ -978,6 +978,28 @@
   ],
   "source": "endfield.wiki.gg/wiki/Long_Road (CC BY-SA 4.0)",
   "version": "wiki revision 61867"
+ },
+ {
+  "weapon": "Lunar Calling",
+  "skills": [
+   {
+    "name": "Will [L]",
+    "rank1": "Will +20",
+    "max": "Will +156"
+   },
+   {
+    "name": "ATK [L]",
+    "rank1": "ATK +5%",
+    "max": "ATK +39%"
+   },
+   {
+    "name": "Infliction: Coursing Stars",
+    "rank1": "Arts Intensity +30. When wielder's skill applies Electrification, the entire team gains ATK +7.5% for 20.00s. When the wielder consumes Arts Infliction, the wielder gains Electric DMG Dealt +12% for 20.00s. The two effects apply separately and do not stack with themselves.",
+    "max": "Arts Intensity +84. When wielder's skill applies Electrification, the entire team gains ATK +21% for 20.00s. When the wielder consumes Arts Infliction, the wielder gains Electric DMG Dealt +33.6% for 20.00s. The two effects apply separately and do not stack with themselves."
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Lunar_Calling (CC BY-SA 4.0)",
+  "version": "wiki revision 67092"
  },
  {
   "weapon": "Lupine Scarlet",

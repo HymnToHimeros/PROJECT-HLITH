@@ -983,7 +983,7 @@
  },
  {
   "characterId": "chr_0024_deepfin",
-  "source": "the game's recommendation, not ranked: Matching Skills first, then Matching Stats (endfield.wiki.gg/wiki/Alesh, CC BY-SA 4.0, revision 64987)",
+  "source": "the game's recommendation, not ranked: Matching Skills first, then Matching Stats (endfield.wiki.gg/wiki/Alesh, CC BY-SA 4.0, revision 66946)",
   "ranked": false,
   "hasMainStats": false,
   "stepSources": {
@@ -1018,7 +1018,7 @@
     "Basic Attack"
    ]
   ],
-  "version": "wiki revision 64987",
+  "version": "wiki revision 66946",
   "items": {
    "Finchaser 3.0": {
     "icon": "https://endfield.wiki.gg/images/Finchaser_3.0_icon.png",
@@ -1211,7 +1211,7 @@
  },
  {
   "characterId": "chr_0028_wulfa",
-  "source": "the game's recommendation, not ranked: Matching Skills first, then Matching Stats (endfield.wiki.gg/wiki/Rossi, CC BY-SA 4.0, revision 64991)",
+  "source": "the game's recommendation, not ranked: Matching Skills first, then Matching Stats (endfield.wiki.gg/wiki/Rossi, CC BY-SA 4.0, revision 66443)",
   "ranked": false,
   "hasMainStats": false,
   "stepSources": {
@@ -1234,7 +1234,7 @@
    "Sundering Steel"
   ],
   "skillsFirst": [],
-  "version": "wiki revision 64991",
+  "version": "wiki revision 66443",
   "items": {
    "Lupine Scarlet": {
     "icon": "https://endfield.wiki.gg/images/Lupine_Scarlet_icon.png",
@@ -1399,7 +1399,7 @@
  },
  {
   "characterId": "chr_0032_lizhiyan",
-  "source": "the game's recommendation, not ranked: Matching Skills first, then Matching Stats (endfield.wiki.gg/wiki/Arcane, CC BY-SA 4.0, revision 64995)",
+  "source": "the game's recommendation, not ranked: Matching Skills first, then Matching Stats (endfield.wiki.gg/wiki/Arcane, CC BY-SA 4.0, revision 67096)",
   "ranked": false,
   "hasMainStats": false,
   "sets": [],
@@ -1413,7 +1413,7 @@
    "Stanza of Memorials"
   ],
   "skillsFirst": [],
-  "version": "wiki revision 64995",
+  "version": "wiki revision 67096",
   "items": {
    "Type 42: Solemn Phalanx": {
     "icon": "https://endfield.wiki.gg/images/Type_42_Solemn_Phalanx_icon.png",
@@ -1534,7 +1534,7 @@
  },
  {
   "characterId": "chr_0036_jsspsi",
-  "source": "the game's recommendation, not ranked: Matching Skills first, then Matching Stats (endfield.wiki.gg/wiki/Si, CC BY-SA 4.0, revision 64999)",
+  "source": "the game's recommendation, not ranked: Matching Skills first, then Matching Stats (endfield.wiki.gg/wiki/Si, CC BY-SA 4.0, revision 67501)",
   "ranked": false,
   "hasMainStats": false,
   "sets": [],
@@ -1546,7 +1546,7 @@
    "Khravengger"
   ],
   "skillsFirst": [],
-  "version": "wiki revision 64999",
+  "version": "wiki revision 67501",
   "items": {
    "Jade Vessel": {
     "icon": "https://endfield.wiki.gg/images/Jade_Vessel_icon.png",
@@ -1594,20 +1594,30 @@
  },
  {
   "characterId": "chr_argent-flow",
-  "source": "the game's recommendation, not ranked: Matching Skills first, then Matching Stats (endfield.wiki.gg/wiki/Argent_Flow, CC BY-SA 4.0, revision 64823)",
+  "source": "the game's recommendation, not ranked: Matching Skills first, then Matching Stats (endfield.wiki.gg/wiki/Argent_Flow, CC BY-SA 4.0, revision 67128)",
   "ranked": false,
   "hasMainStats": false,
   "sets": [],
   "mainStats": {},
   "subStats": [],
   "weapons": [
-   "Lunar Calling"
+   "Lunar Calling",
+   "Complexed Industry",
+   "White Night Nova"
   ],
   "skillsFirst": [],
-  "beta": true,
-  "version": "wiki revision 64823",
+  "version": "wiki revision 67128",
   "items": {
    "Lunar Calling": {
+    "icon": "https://endfield.wiki.gg/images/Lunar_Calling_icon.png",
+    "effects": []
+   },
+   "Complexed Industry": {
+    "icon": "https://endfield.wiki.gg/images/Complexed_Industry_icon.png",
+    "effects": []
+   },
+   "White Night Nova": {
+    "icon": "https://endfield.wiki.gg/images/White_Night_Nova_icon.png",
     "effects": []
    }
   }

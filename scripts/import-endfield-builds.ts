@@ -131,7 +131,7 @@ export function buildFor(
 if (import.meta.main ?? process.argv[1]?.endsWith('import-endfield-builds.ts')) {
   const dry = process.argv.includes('--dry');
   const read = (p: string) => JSON.parse(readFileSync(resolve(ROOT, p), 'utf8'));
-  const characters = read('src/games/endfield/data/characters.json') as { id: string; name: string; releasedAt?: string }[];
+  const characters = read('src/games/endfield/data/characters.json') as { id: string; gameId?: string; name: string; releasedAt?: string }[];
   const weaponList = read('src/games/endfield/data/weapons.json') as { name: string; icon?: string }[];
   const data = read('src/games/endfield/data/community-builds.json') as CommunityBuilds;
   const weapons = new Map(weaponList.map((w) => [w.name, w]));
@@ -146,7 +146,7 @@ if (import.meta.main ?? process.argv[1]?.endsWith('import-endfield-builds.ts')) 
   for (const id of Object.keys(data.operators)) if (!characters.some((c) => c.id === id)) unknown.push(`community-builds.json: operator "${id}"`);
   for (const c of characters) {
     // An operator the Operators table doesn't list yet (not released) is read from the page of its name.
-    const title = pages.get(c.id) ?? c.name;
+    const title = pages.get(c.gameId ?? c.id) ?? pages.get(c.id) ?? c.name;
     if (!cache.has(title)) {
       try {
         cache.set(title, await page(title));

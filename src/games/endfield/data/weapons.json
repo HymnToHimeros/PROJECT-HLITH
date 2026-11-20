@@ -621,7 +621,8 @@
     "rarity": "top",
     "icon": "https://endfield.wiki.gg/images/Lunar_Calling_icon.png",
     "type": "sword",
-    "source": "endfield.wiki.gg (CC BY-SA)"
+    "source": "endfield.wiki.gg (CC BY-SA)",
+    "gameId": "wpn_sword_0025"
   },
   {
     "id": "wpn_sword_0026",
