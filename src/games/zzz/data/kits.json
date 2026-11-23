@@ -11242,57 +11242,57 @@
   {
     "characterId": "1601",
     "source": "nanoka.cc",
-    "version": "3.4.4+20539349",
+    "version": "3.4.5+20713015",
     "beta": true,
     "skills": [
       {
-        "id": "skill-basic-attack-thornbreaker",
-        "label": "Basic Attack: Thornbreaker",
+        "id": "skill-basic-attack-thornbreak",
+        "label": "Basic Attack: Thornbreak",
         "kind": "skill",
         "does": [],
-        "gameText": "Press [Basic Attack button] to activate:\nLindverne performs up to four forward attacks, dealing Genesis Flare DMG;\nRepeatedly press during the 4th attack to keep slashing enemies with an extended slash;\nWhen the heavy attack at the end of the 4th attack hits an enemy with Gash, if Wishfire is not at max and Sunbringer is still the active Character, consume all Gash stacks on the target, up to 3 stacks. For each Gash stack consumed, trigger Maim on the target once, dealing additional AoE Genesis Flare DMG;\nCharacter is invulnerable during the 4th attack;\nDuring the 3rd and 4th attacks, Anti-Interrupt Level is increased and DMG taken is reduced by 40%."
+        "gameText": "Press [Basic Attack button] to activate:\nLindverne launches up to 4 attacks forward, dealing Genesis Flare DMG.\nDuring the 4th attack, repeatedly press to continue slashing the enemy.\nWhen the finishing heavy attack of the 4th attack hits an enemy with [term 3000038, not named in the game files], if [term 1000057, not named in the game files] has not reached its maximum and Sunbringer remains the active Agent, consume all Gash stacks on the target, up to a maximum of 3 stacks. For each stack of Gash consumed, trigger 1 instance of [term 3000039, not named in the game files] on the target, dealing additional area Genesis Flare DMG.\nCharacter is invulnerable during the 4th attack.\nDuring the 3rd and 4th attacks, Anti-Interrupt Level is increased, and DMG taken is reduced by 40%."
       },
       {
-        "id": "skill-basic-attack-bannerbearer",
-        "label": "Basic Attack: Bannerbearer",
+        "id": "skill-basic-attack-flagbearer",
+        "label": "Basic Attack: Flagbearer",
         "kind": "skill",
         "does": [],
-        "gameText": "Press [Basic Attack button] to activate:\nEldreda unleashes up to 4 consecutive attacks forward, dealing Genesis Flare DMG;\nWhen the heavy attack at the end of the 4th attack hits an enemy with Gash, if Wishfire is not at max and Sunbringer is still the active Character, consumes all Gash stacks on the target, up to 3 stacks. For each Gash stack consumed, triggers Maim once on the target, dealing additional AoE Genesis Flare DMG;\nDuring the 3rd and 4th attacks, Anti-Interrupt Level is increased and DMG taken is reduced by 40%."
+        "gameText": "Press [Basic Attack button] to activate:\nEldreda launches up to 4 attacks forward, dealing Genesis Flare DMG.\nWhen the finishing heavy attack of the 4th attack hits an enemy with [term 3000038, not named in the game files], if [term 1000057, not named in the game files] has not reached its maximum and Sunbringer remains the active Agent, consume all Gash stacks on the target, up to a maximum of 3 stacks. For each stack of Gash consumed, trigger 1 instance of [term 3000039, not named in the game files] on the target, dealing additional area Genesis Flare DMG.\nDuring the 3rd and 4th attacks, Anti-Interrupt Level is increased and DMG taken is reduced by 40%."
       },
       {
-        "id": "skill-basic-attack-bannerbearer-converging-edge",
-        "label": "Basic Attack: Bannerbearer - Converging Edge",
+        "id": "skill-basic-attack-flagbearer-gathering-blades",
+        "label": "Basic Attack: Flagbearer - Gathering Blades",
         "kind": "skill",
         "does": [],
-        "gameText": "When you have enough Wishfire, hold [Basic Attack button] to activate:\nSwitch to Eldreda and attack, dealing Genesis Flare DMG;\nCharacter is invulnerable while using this skill;\nAfter using this skill, gain Chain Teeth and Flag Order."
+        "gameText": "With enough [term 1000057, not named in the game files] and while not holding [term 1000058, not named in the game files], [term 1000059, not named in the game files], or [term 1000060, not named in the game files], hold [Basic Attack button] to activate:\nSwitch to Eldreda and launch an attack, dealing Genesis Flare DMG.\nCharacter is invulnerable while using this skill.\nAfter using this skill, gain Chain Teeth and Flag Order."
       },
       {
-        "id": "skill-basic-attack-starfling",
-        "label": "Basic Attack: Starfling",
+        "id": "skill-basic-attack-shield-throw",
+        "label": "Basic Attack: Shield Throw",
         "kind": "skill",
         "does": [],
-        "gameText": "Press [Basic Attack button] to activate:\nDracaene hurls her shield forward, dealing Genesis Flare DMG.\nFor a short time after using this skill, if attacked by an enemy, she will automatically Block and swiftly hurl her shield."
+        "gameText": "Press [Basic Attack button] to activate:\nDracaene hurls her shield forward to attack, dealing Genesis Flare Damage.\nAfter using this skill, for a brief window, if hit by an enemy attack, she will automatically block and throw her shield."
       },
       {
-        "id": "skill-dodge-phase-fold",
-        "label": "Dodge: Phase Fold",
+        "id": "skill-dodge-phase-collapse",
+        "label": "Dodge: Phase Collapse",
         "kind": "skill",
         "does": [],
         "gameText": "Press [Dodge button] to activate:\nLindverne performs a quick dash dodge.\nCharacter is invulnerable while using this skill."
       },
       {
-        "id": "skill-dash-attack-void-slash-rush",
-        "label": "Dash Attack: Void Slash Rush",
+        "id": "skill-dash-attack-void-cleave",
+        "label": "Dash Attack: Void Cleave",
         "kind": "skill",
         "does": [],
-        "gameText": "Press [Basic Attack button] during a dodge to activate:\nLindverne slashes forward, dealing Genesis Flare DMG."
+        "gameText": "Press [Basic Attack button] during a dodge to activate:\nLindverne slashes enemies in front, dealing Genesis Flare DMG."
       },
       {
-        "id": "skill-dodge-counter-smoldering-fire-reignition",
-        "label": "Dodge Counter: Smoldering Fire Reignition",
+        "id": "skill-dodge-counter-rising-embers",
+        "label": "Dodge Counter: Rising Embers",
         "kind": "skill",
         "does": [],
-        "gameText": "Upon triggering a Perfect Dodge, press [Basic Attack button] to activate:\nLindverne unleashes a consecutive attack forward, dealing Genesis Flare DMG.\nAfter using this skill, press [Basic Attack button] to quickly chain into the 3rd hit of her Basic Attack.\nCharacter is invulnerable while using this skill."
+        "gameText": "When triggering a Perfect Dodge, press [Basic Attack button] to activate:\nLindverne launches a series of attacks forward, dealing Genesis Flare DMG.\nAfter using this skill, press [Basic Attack button] to quickly chain directly into the 3rd attack of a Basic Attack.\nCharacter is invulnerable while using this skill."
       },
       {
         "id": "skill-dodge-spatial-reconstruction",
@@ -11306,182 +11306,182 @@
         "label": "Dash Attack: Reality Reversal",
         "kind": "skill",
         "does": [],
-        "gameText": "Press [Basic Attack button] during a dodge to activate:\nEldreda thrusts forward, dealing Genesis Flare DMG."
+        "gameText": "Press [Basic Attack button] during a dodge to activate:\nEldreda performs a forward thrust, dealing Genesis Flare DMG."
       },
       {
-        "id": "skill-dodge-patrol",
-        "label": "Dodge: Patrol",
+        "id": "skill-dodge-expedition",
+        "label": "Dodge: Expedition",
         "kind": "skill",
         "does": [],
-        "gameText": "Move the joystick and hold [Dodge button] to activate:\nSwitch to Eldreda and enter the Nightglide state, allowing high-speed movement.\nWhile in the Nightglide state, use the joystick to steer. Release the joystick to stop.\nCharacter is invulnerable at the moment this skill activates."
+        "gameText": "While moving the joystick, hold [Dodge button] to activate:\nSwitch to Eldreda and enter the Night Glide state, allowing her to move at high speed.\nWhile in the Night Glide state, use the joystick to control her direction. Release the joystick to stop.\nCharacter is invulnerable at the moment this skill activates."
       },
       {
-        "id": "skill-dash-attack-patrol-shadow-realm-raid",
-        "label": "Dash Attack: Patrol - Shadow Realm Raid",
+        "id": "skill-dash-attack-expedition-shadowrealm-assault",
+        "label": "Dash Attack: Expedition - Shadowrealm Assault",
         "kind": "skill",
         "does": [],
-        "gameText": "In Nightglide state, press [Basic Attack button] to activate:\nEldreda performs a quick sweeping attack, dealing Genesis Flare DMG."
+        "gameText": "While in the Night Glide state, press [Basic Attack button] to activate:\nEldreda performs a swift sweeping attack, dealing Genesis Flare DMG."
       },
       {
-        "id": "skill-dodge-counter-cold-flame-returning-edge",
-        "label": "Dodge Counter: Cold Flame Returning Edge",
+        "id": "skill-dodge-counter-frostflame-edge",
+        "label": "Dodge Counter: Frostflame Edge",
         "kind": "skill",
         "does": [],
-        "gameText": "Press [Basic Attack button] during a Perfect Dodge to activate:\nEldreda launches consecutive attacks forward, dealing Genesis Flare DMG.\nAfter using this skill, press [Basic Attack button] to follow up with the 4th hit of Basic Attack.\nCharacter is invulnerable while using this skill."
+        "gameText": "When triggering a Perfect Dodge, press [Basic Attack button] to activate:\nEldreda launches a series of attacks forward, dealing Genesis Flare DMG.\nAfter using this skill, press [Basic Attack button] to chain directly into the 4th attack of a Basic Attack.\nCharacter is invulnerable while using this skill."
       },
       {
-        "id": "skill-switch-character",
-        "label": "Switch Character",
+        "id": "skill-switch-active-character",
+        "label": "Switch Active Character",
         "kind": "skill",
         "does": [],
-        "gameText": "Hold [Dodge button] to activate:\nWhen controlling Eldreda, switch to Lindverne;\nWhen controlling Lindverne, switch to Dracaene;\nWhen controlling Dracaene, switch to Eldreda;\nWhile controlling Dracaene, DMG taken is reduced by 40%. During this time, Dracaene will leave the field upon being attacked or when activating a Special Attack or Ultimate."
+        "gameText": "Hold [Dodge button] to activate:\nWhen controlling Eldreda, switch Lindverne into battle.\nWhen controlling Lindverne, switch Dracaene into battle.\nWhen controlling Dracaene, switch Eldreda into battle.\nWhile controlling Dracaene, damage received is reduced by 40%. If Dracaene is attacked or uses a Special Attack or Ultimate during this time, Dracaene will exit the field."
       },
       {
-        "id": "skill-special-attack-night-blaze",
-        "label": "Special Attack: Night Blaze",
+        "id": "skill-special-attack-nightburn",
+        "label": "Special Attack: Nightburn",
         "kind": "skill",
         "does": [],
         "gameText": "Press [Special Attack button] to activate:\nSwitch to Lindverne and launch an attack, dealing Genesis Flare DMG."
       },
       {
-        "id": "skill-ex-special-attack-night-blaze-dawnrise",
-        "label": "EX Special Attack: Night Blaze - Dawnrise",
+        "id": "skill-ex-special-attack-nightburn-dawnrise",
+        "label": "EX Special Attack: Nightburn - Dawnrise",
         "kind": "skill",
         "does": [],
-        "gameText": "When Sharpness is sufficient, press [EX Special Attack button] to activate:\nSwitch to Lindverne and launch a Synergy Attack with Eldreda, dealing Genesis Flare DMG.\nWhen the heavy attack hits an enemy with Gash, if Sunbringer is the active Agent and Wishfire is not at max, consume all Gash stacks on the target, up to 3 stacks. For each stack of Gash consumed, trigger Maim on the target once, dealing additional AoE Genesis Flare DMG.\nCharacter is invulnerable while using this skill."
+        "gameText": "With enough Sharpness, press [EX Special Attack button] to activate:\nSwitch to Lindverne and launch a coordinated attack with Eldreda, dealing Genesis Flare DMG.\nWhen the heavy attack hits an enemy with [term 3000038, not named in the game files] while Sunbringer is the active Agent and [term 1000057, not named in the game files] has not reached its maximum, consume all Gash stacks on the target, up to a maximum of 3 stacks. For each stack of Gash consumed, trigger 1 instance of [term 3000039, not named in the game files] on the target, dealing additional area Genesis Flare DMG.\nCharacter is invulnerable while using this skill."
       },
       {
-        "id": "skill-ex-special-attack-night-blaze-dawnrise-modified",
-        "label": "EX Special Attack: Night Blaze - Dawnrise (Modified)",
+        "id": "skill-ex-special-attack-nightburn-dawnrise-modified",
+        "label": "EX Special Attack: Nightburn - Dawnrise (Modified)",
         "kind": "skill",
         "does": [],
-        "gameText": "When Sharpness is sufficient, press [EX Special Attack button] after the final hit of Basic Attack: Bannerbearer, Dodge Counter: Cold Flame Returning Edge, Assist Follow-Up: Faith Unwavering, Ultimate: \"By This Wish, All Things Remade\", or EX Special Attack: Kindled Lamp - Gloom's End (Modified) to activate:\nSwitch Lindverne onto the field and launch a joint Synergy Attack with all three Sunbringers, dealing Genesis Flare DMG;\nWhen the heavy attack hits an enemy with Gash, if Wishfire has not reached its cap and Sunbringer is still the active character, consume all Gash stacks on the target, up to 3 stacks. For each Gash stack consumed, trigger Maim on the target once, dealing additional AoE Genesis Flare DMG;\nCharacter is invulnerable while using this skill."
+        "gameText": "With enough Sharpness, after the final attack of Basic Attack: Flagbearer, or after Dodge Counter: Frostflame Edge, Assist Follow-Up: Unwavering Devotion, Ultimate: \"This Wish, Shall Reshape the World\", or EX Special Attack: Kindled Light - Fading Darkness (Modified), press [EX Special Attack button] to activate:\nSwitch Lindverne onto the field and launch a coordinated attack involving all three Sunbringers, dealing Genesis Flare DMG.\nWhen the heavy attack hits an enemy with [term 3000038, not named in the game files], if [term 1000057, not named in the game files] has not reached its maximum and Sunbringer remains the active Agent, consume all Gash stacks on the target, up to a maximum of 3 stacks. For each stack of Gash consumed, trigger 1 instance of [term 3000039, not named in the game files] on the target, dealing additional area Genesis Flare DMG.\nCharacter is invulnerable while using this skill."
       },
       {
-        "id": "skill-ex-special-attack-night-blaze-end-of-the-long-dark",
-        "label": "EX Special Attack: Night Blaze - End of the Long Dark",
+        "id": "skill-ex-special-attack-nightburn-eternal-darkness-s-demise",
+        "label": "EX Special Attack: Nightburn - Eternal Darkness's Demise",
         "kind": "skill",
         "does": [],
-        "gameText": "When you have Chain Teeth, press [Special Attack button] to activate:\nConsume Chain Teeth to switch Lindverne onto the field and launch a powerful team-wide Synergy Attack with all three Sunbringers, dealing massive Genesis Flare DMG;\nAfter activating this skill, press [Basic Attack button] to quickly chain into the 4th hit of Basic Attack;\nCharacter is invulnerable while using this skill."
+        "gameText": "With [term 1000058, not named in the game files], press [Special Attack button] to activate:\nConsume Chain Teeth to switch in Lindverne and launch a powerful coordinated attack involving all three Sunbringers, dealing massive Genesis Flare DMG.\nAfter using this skill, press [Basic Attack button] to quickly chain into the 4th attack of a Basic Attack.\nCharacter is invulnerable while using this skill."
       },
       {
-        "id": "skill-special-attack-kindled-lamp",
-        "label": "Special Attack: Kindled Lamp",
+        "id": "skill-special-attack-kindled-light",
+        "label": "Special Attack: Kindled Light",
         "kind": "skill",
         "does": [],
         "gameText": "Press [Special Attack button] to activate:\nSwitch to Eldreda and launch an attack, dealing Genesis Flare DMG."
       },
       {
-        "id": "skill-ex-special-attack-kindled-lamp-gloom-s-end",
-        "label": "EX Special Attack: Kindled Lamp - Gloom's End",
+        "id": "skill-ex-special-attack-kindled-light-fading-darkness",
+        "label": "EX Special Attack: Kindled Light - Fading Darkness",
         "kind": "skill",
         "does": [],
-        "gameText": "When Sharpness is sufficient, press [EX Special Attack button] to activate:\nSwitch Eldreda onto the field and launch a Synergy Attack with Lindverne, dealing Genesis Flare DMG.\nWhen a heavy attack hits an enemy with Gash while Sunbringer is the active Agent and Wishfire is not at max, consume all Gash stacks on the target, up to 3 stacks. For each stack of Gash consumed, trigger Maim on the target once, dealing additional AoE Genesis Flare DMG.\nCharacter is invulnerable while using this skill."
+        "gameText": "With enough Sharpness, press [EX Special Attack button] to activate:\nSwitch to Eldreda and launch a coordinated attack with Lindverne, dealing Genesis Flare DMG.\nWhen the heavy attack hits an enemy with [term 3000038, not named in the game files] while Sunbringer is the active Agent and [term 1000057, not named in the game files] has not reached its maximum, consume all Gash stacks on the target, up to a maximum of 3 stacks. For each stack of Gash consumed, trigger 1 instance of [term 3000039, not named in the game files] on the target, dealing additional area Genesis Flare DMG.\nCharacter is invulnerable while using this skill."
       },
       {
-        "id": "skill-ex-special-attack-kindled-lamp-gloom-s-end-modified",
-        "label": "EX Special Attack: Kindled Lamp - Gloom's End (Modified)",
+        "id": "skill-ex-special-attack-kindled-light-fading-darkness-modified",
+        "label": "EX Special Attack: Kindled Light - Fading Darkness (Modified)",
         "kind": "skill",
         "does": [],
-        "gameText": "When Sharpness is sufficient, press [EX Special Attack button] after the final hit of Basic Attack: Thornbreaker, Dodge Counter: Smoldering Fire Reignition, Assist Follow-Up: Undying Passion, Ultimate: \"Onward, Together\", or EX Special Attack: Night Blaze - Dawnrise (Modified) to activate:\nSwitch to Eldreda and unleash a Synergy Attack with all three Sunbringers, dealing Genesis Flare DMG.\nWhen the heavy attack hits an enemy with Gash, if Wishfire isn't at max and a Sunbringer is still the active character, consume all Gash stacks on the target, up to 3 stacks. For each Gash stack consumed, trigger Maim on the target once, dealing additional AoE Genesis Flare DMG.\nCharacter is invulnerable while using this skill."
+        "gameText": "With enough Sharpness, after the final attack of Basic Attack: Thornbreak, or after Dodge Counter: Rising Embers, Assist Follow-Up: Unfaltering Zeal, Ultimate: \"Face the Road Ahead, Together\", or EX Special Attack: Nightburn - Dawnrise (Modified), press [EX Special Attack button] to activate:\nSwitch Eldreda onto the field and launch a coordinated attack involving all three Sunbringers, dealing Genesis Flare DMG.\nWhen the heavy attack hits an enemy with [term 3000038, not named in the game files], if [term 1000057, not named in the game files] has not reached its maximum and Sunbringer remains the active Agent, consume all Gash stacks on the target, up to a maximum of 3 stacks. For each stack of Gash consumed, trigger 1 instance of [term 3000039, not named in the game files] on the target, dealing additional area Genesis Flare DMG.\nCharacter is invulnerable while using this skill."
       },
       {
-        "id": "skill-ex-special-attack-kindled-lamp-torch-of-eternal-day",
-        "label": "EX Special Attack: Kindled Lamp - Torch of Eternal Day",
+        "id": "skill-ex-special-attack-kindled-light-torch-of-eternal-day",
+        "label": "EX Special Attack: Kindled Light - Torch of Eternal Day",
         "kind": "skill",
         "does": [],
-        "gameText": "When you have Flag Order, press [Special Attack button] to activate:\nConsume Flag Order to switch Eldreda onto the field and unleash a powerful AoE Synergy Attack from all three Sunbringers, dealing massive Genesis Flare DMG, and removing all Ember Scar stacks from enemies to trigger one Ashfall effect.\nAfter using this skill, press [Basic Attack button] to chain into the 4th hit of Basic Attack.\nCharacter is invulnerable while using this skill."
+        "gameText": "While holding [term 1000059, not named in the game files], press [Special Attack button] to activate:\nConsume Flag Order, switch Eldreda in, and launch a powerful All-Wishfire coordinated attack, dealing massive Genesis Flare DMG and removing all [term 1000061, not named in the game files] from enemies to trigger 1 instance of [term 1000062, not named in the game files].\nAfter using this skill, press [Basic Attack button] to chain into the 4th hit of Basic Attack: Flagbearer.\nCharacter is invulnerable while using this skill."
       },
       {
-        "id": "skill-chain-attack-building-dreams-for-all",
-        "label": "Chain Attack: Building Dreams for All",
+        "id": "skill-chain-attack-a-dream-for-all",
+        "label": "Chain Attack: \"A Dream for All\"",
         "kind": "skill",
         "does": [],
-        "gameText": "When a Chain Attack is triggered, select the character to activate:\nLindverne attacks with Eldreda in Synergy, and Lindverne stays on the field afterward, dealing Genesis Flare DMG.\nWhen a heavy attack hits an enemy with Gash, if Sunbringer is the active Agent and Wishfire is not at max, consumes all Gash stacks on the target, up to 3 stacks. For each Gash stack consumed, triggers Maim on the target once, dealing additional AoE Genesis Flare DMG.\nCharacter is invulnerable while using this skill.\nWhen Lindverne triggers a Daze Chain Attack window, Lindverne can be selected directly to activate this skill."
+        "gameText": "When a Chain Attack is triggered, select the character to activate:\nLindverne launches an attack, assisted by Eldreda, dealing Genesis Flare DMG. Lindverne remains on the field afterward.\nWhen the heavy attack hits an enemy with [term 3000038, not named in the game files], if [term 1000057, not named in the game files] has not reached its maximum and Sunbringer remains the active Agent, consume all Gash stacks on the target, up to a maximum of 3 stacks. For each stack of Gash consumed, trigger 1 instance of [term 3000039, not named in the game files] on the target, dealing additional area Genesis Flare DMG.\nCharacter is invulnerable while using this skill.\nWhen Lindverne triggers a Stun Chain Attack window, Lindverne can be selected to activate this skill."
       },
       {
-        "id": "skill-ultimate-onward-together",
-        "label": "Ultimate: \"Onward, Together\"",
+        "id": "skill-ultimate-face-the-road-ahead-together",
+        "label": "Ultimate: \"Face the Road Ahead, Together\"",
         "kind": "skill",
         "does": [],
-        "gameText": "When Decibel Rating is at Maximum, press [Ultimate button] to activate:\nLindverne launches a Synergy Attack with Eldreda and Dracaene, remaining on the field and dealing massive Genesis Flare DMG.\nIf Flag Order is available, consume Flag Order to convert it into Wish Core.\nCharacter is invulnerable while using this skill."
+        "gameText": "When Decibel Rating is at Maximum, press [Ultimate button] to activate:\nLindverne launches a coordinated attack with Eldreda and Dracaene, dealing massive Genesis Flare DMG while remaining on the field.\nWhile holding [term 1000059, not named in the game files], consume Flag Order to convert it into [term 1000060, not named in the game files].\nCharacter is invulnerable while using this skill."
       },
       {
         "id": "skill-chain-attack-in-the-name-of-sunbringer",
-        "label": "Chain Attack: In the Name of Sunbringer",
+        "label": "Chain Attack: \"In the Name of Sunbringer\"",
         "kind": "skill",
         "does": [],
-        "gameText": "When a Chain Attack is triggered, select the character to activate:\nEldreda attacks with Lindverne fighting in Synergy, and Eldreda stays on the field at the end, dealing Genesis Flare DMG;\nAfter using this skill, press [Basic Attack button] to follow up with the 4th hit of the Basic Attack;\nWhen a heavy attack hits an enemy with Gash while Sunbringer is the active Agent and Wishfire is not at max, consume all Gash stacks on the target, up to 3 stacks. For each Gash stack consumed, trigger Maim on the target once, dealing additional AoE Genesis Flare DMG;\nCharacter is invulnerable while using this skill;\nWhen Eldreda triggers a Daze Chain Attack window, Eldreda can be selected directly to activate this skill."
+        "gameText": "When a Chain Attack is triggered, select the character to activate:\nEldreda launches an attack, assisted by Lindverne, dealing Genesis Flare DMG. Eldreda remains on the field afterward.\nAfter using this skill, press [Basic Attack button] to chain directly into the 4th attack of a Basic Attack.\nWhen the heavy attack hits an enemy with [term 3000038, not named in the game files] while Sunbringer is the active Agent, and [term 1000057, not named in the game files] is not at maximum, consume all Gash stacks on the target, up to a maximum of 3 stacks. For each stack of Gash consumed, trigger 1 instance of [term 3000039, not named in the game files] on the target, dealing additional area Genesis Flare DMG.\nCharacter is invulnerable while using this skill.\nWhen Eldreda triggers a Stun Chain Attack window, Eldreda can be selected to activate this skill."
       },
       {
-        "id": "skill-ultimate-by-this-wish-all-things-remade",
-        "label": "Ultimate: \"By This Wish, All Things Remade\"",
+        "id": "skill-ultimate-this-wish-shall-reshape-the-world",
+        "label": "Ultimate: \"This Wish, Shall Reshape the World\"",
         "kind": "skill",
         "does": [],
-        "gameText": "With Wish Core, press [Ultimate button] to activate:\nEldreda warps space to launch an attack, then unleashes a Finishing Move that deals Genesis Flare DMG and removes all Ember Scar stacks from enemies to trigger one instance of Ashfall.\nUpon activating this skill, the Daze duration of all Stunned enemies is extended by 1s.\nWhen both Wish Core and Decibels are sufficient, this skill is used first.\nThis skill is not counted as a heavy attack.\nCharacter is invulnerable while using this skill."
+        "gameText": "While holding [term 1000060, not named in the game files], press [Ultimate button] to activate:\nEldreda attacks using spatial distortion, then delivers a finishing blow, dealing Genesis Flare DMG and removing all [term 1000061, not named in the game files] from enemies to trigger 1 instance of [term 1000062, not named in the game files].\nUpon activating this skill, increase the Daze duration of all Dazed enemies by 1s.\nWhen both Wishcore and Decibels are sufficient, this skill is prioritized.\nThis skill is not considered a heavy attack.\nCharacter is invulnerable while using this skill."
       },
       {
-        "id": "skill-quick-assist-dauntless-aid",
-        "label": "Quick Assist: Dauntless Aid",
+        "id": "skill-quick-assist-fearless-aid",
+        "label": "Quick Assist: Fearless Aid",
         "kind": "skill",
         "does": [],
-        "gameText": "When the active character is launched, press [Switch button] to activate:\nLindverne unleashes a consecutive attack forward, dealing Genesis Flare DMG.\nAfter using this skill, press [Basic Attack button] to quickly chain into the 3rd hit of her Basic Attack.\nCharacter is invulnerable while using this skill."
+        "gameText": "When the active character is launched, press [Switch button] to activate:\nLindverne launches a series of attacks forward, dealing Genesis Flare DMG.\nAfter using this skill, press [Basic Attack button] to quickly chain directly into the 3rd attack of a Basic Attack.\nCharacter is invulnerable while using this skill."
       },
       {
-        "id": "skill-assist-follow-up-undying-passion",
-        "label": "Assist Follow-Up: Undying Passion",
+        "id": "skill-assist-follow-up-unfaltering-zeal",
+        "label": "Assist Follow-Up: Unfaltering Zeal",
         "kind": "skill",
         "does": [],
-        "gameText": "Press [Basic Attack button] after Dracaene activates a Defensive Assist to activate:\nLindverne unleashes a swift slash forward, then triggers an explosion, dealing Genesis Flare DMG;\nAfter activating this skill, press [Basic Attack button] to quickly chain into the 4th hit of the Basic Attack;\nRepeatedly press during this skill to continuously slash enemies;\nCharacter is invulnerable while using this skill."
+        "gameText": "Press [Basic Attack button] after a Defensive Assist to activate:\nLindverne performs a swift slash forward, then detonates an explosion, dealing Genesis Flare DMG.\nAfter using this skill, press [Basic Attack button] to quickly chain directly into the 4th attack of a Basic Attack.\nDuring the skill, repeatedly press to continue slashing enemies.\nCharacter is invulnerable while using this skill."
       },
       {
-        "id": "skill-quick-assist-path-of-the-gleaming-edge",
-        "label": "Quick Assist: Path of the Gleaming Edge",
+        "id": "skill-quick-assist-blade-s-path",
+        "label": "Quick Assist: Blade's Path",
         "kind": "skill",
         "does": [],
-        "gameText": "When the active character is launched, press [Switch button] to activate:\nEldreda unleashes consecutive attacks forward, dealing Genesis Flare DMG.\nAfter activating this skill, press [Basic Attack button] to follow up with the 4th hit of her Basic Attack.\nCharacter is invulnerable while using this skill."
+        "gameText": "When the active character is launched, press [Switch button] to activate:\nEldreda launches a series of attacks forward, dealing Genesis Flare DMG.\nAfter using this skill, press [Basic Attack button] to chain directly into the 4th attack of a Basic Attack.\nCharacter is invulnerable while using this skill."
       },
       {
-        "id": "skill-assist-follow-up-faith-unwavering",
-        "label": "Assist Follow-Up: Faith Unwavering",
+        "id": "skill-assist-follow-up-unwavering-devotion",
+        "label": "Assist Follow-Up: Unwavering Devotion",
         "kind": "skill",
         "does": [],
-        "gameText": "Press [Basic Attack button] after Dracaene triggers a Defensive Assist to activate:\nEldreda unleashes a swift forward slash, then sets off an explosion, dealing Genesis Flare DMG.\nAfter using this skill, press [Basic Attack button] to follow up with the 4th hit of the Basic Attack.\nCharacter is invulnerable while using this skill."
+        "gameText": "Press [Basic Attack button] after a Defensive Assist to activate:\nEldreda performs a swift slash forward, then detonates an explosion, dealing Genesis Flare DMG.\nAfter using this skill, press [Basic Attack button] to chain directly into the 4th attack of a Basic Attack.\nCharacter is invulnerable while using this skill."
       },
       {
-        "id": "skill-defensive-assist-oath-of-steadfastness",
-        "label": "Defensive Assist: Oath of Steadfastness",
+        "id": "skill-defensive-assist-vow-of-protection",
+        "label": "Defensive Assist: Vow of Protection",
         "kind": "skill",
         "does": [],
-        "gameText": "When the on-field character is about to be attacked, press [Switch button] to activate:\nDracaene parries the enemy's attack, accumulating a large amount of Daze.\nWhen Lindverne or Eldreda is on field, this skill can also be activated by switching to the next character.\nWhen Sunbringer is in the squad, the priority for squad members to trigger Defensive Assist is increased. When the on-field character is about to be attacked and [Switch button] is pressed to switch to the next character, Dracaene's priority to trigger Defensive Assist is further increased.\nHas superior parry performance, consuming fewer Assist Points when taking high-intensity attacks.\nCharacter is invulnerable while using this skill."
+        "gameText": "When the on-field character is about to be attacked, press [Switch button] to activate:\nDracaene parries enemy attacks, accumulating a large amount of Daze.\nWhen Lindverne or Eldreda is on the field, this skill can also be activated by switching to the next character.\nWhen Sunbringer is in the squad, squad members are given higher priority for triggering Defensive Assists. When [Switch button] is pressed to switch to the next character just before the on-field character is attacked, Dracaene's Defensive Assist priority is further increased.\nThis skill has excellent parry capabilities, reducing the consumption of Assist Points when blocking powerful attacks.\nCharacter is invulnerable while using this skill."
       },
       {
-        "id": "skill-counter-assist-fortress-of-hope",
-        "label": "Counter Assist: Fortress of Hope",
+        "id": "skill-counter-assist-bastion-of-hope",
+        "label": "Counter Assist: Bastion of Hope",
         "kind": "skill",
         "does": [],
-        "gameText": "When Dracaene or the on-field Character is about to be hit by certain enemy Control Skills, press [Switch button] to activate:\nDracaene grapples with the monster. Upon winning the struggle, she neutralizes the enemy's Control Skill and deals Genesis Flare DMG;\nCharacter is invulnerable while using this skill."
+        "gameText": "When Dracaene or the on-field character is about to be hit by certain enemies' Control Skills, press [Switch button] to activate:\nEngages the enemy in a power struggle. Win the struggle to neutralize the enemy's Control Skill and deal Genesis Flare DMG.\nCharacter is invulnerable while using this skill."
       },
       {
-        "id": "skill-assist-follow-up-lighthouse-towering-in-the-sky",
-        "label": "Assist Follow-Up: Lighthouse, Towering in the Sky",
+        "id": "skill-assist-follow-up-lighthouse-in-the-sky",
+        "label": "Assist Follow-Up: Lighthouse in the Sky",
         "kind": "skill",
         "does": [],
-        "gameText": "After activating a Counter Assist, press [Basic Attack button] to activate:\nDracaene unleashes an attack, dealing massive Genesis Flare DMG. When the heavy attack hits an enemy, it directly applies 1 stack of Gash to the target.\nCharacter is invulnerable while using this skill."
+        "gameText": "After using a Counter Assist, press [Basic Attack button] to activate:\nDracaene deals massive Genesis Flare DMG. When the attack hits an enemy, it adds one stack of [term 3000038, not named in the game files] to the target.\nCharacter is invulnerable while using this skill."
       },
       {
         "id": "core-passive",
         "label": "Core Passive: Dream Manifestation = Genesis Reconstruction (Core Skill level 7)",
         "kind": "core",
         "does": [],
-        "gameText": "All DMG dealt by Sunbringer's skills is Sharp DMG, which uses DEF as the skill DMG Multiplier. Some Sharp DMG accumulates Gash buildup. When Gash buildup is full, the enemy enters Gash. Gash can stack up to 3 times. When Sunbringer is the active Agent and lands a heavy attack from certain skills on an enemy affected by Gash, all Gash stacks on the target are consumed. For each stack of Gash consumed, Maim is triggered once on the target, dealing additional AoE Genesis Flare DMG.\nWhen a critical hit is triggered, Sharp DMG does not benefit from CRIT DMG Bonus and uses Laceration DMG Bonus instead. If CRIT Rate exceeds 100% and a critical hit has been triggered, an additional Laceration check is made based on the excess CRIT Rate. If Laceration is triggered, Laceration DMG Bonus is applied one additional time. For every 1% of initial CRIT DMG Sunbringer has, initial CRIT Rate increases by 0.35%.\nSunbringer recovers 60 Sharpness upon entering the battlefield. In Investigation Zone mode, this effect can trigger once every 180s.\nUpon entering combat, Sunbringer gains Midnight Sun, increasing CRIT Rate by 40% and allowing DMG dealt to ignore 20% of the target's DEF. Midnight Sun lasts 20s. While other squad members or Dracaene are the active Agent, its duration does not decrease. Sunbringer regains Midnight Sun upon activating any EX Special Attack or Basic Attack: Bannerbearer - Converging Edge.\nDaze dealt by Dracaene's Defensive Assist is increased by 50%, and successfully parrying an enemy's attack accumulates a small amount of Gash on the enemy. Assist Follow-Up activated by Eldreda and Lindverne gains 15% increased Gash Buildup Rate and deals 20% increased DMG.\nWhen any Agent in the squad triggers Maim, Sunbringer gains 40 Wishfire for each stack of Gash removed, up to a maximum of 160 Wishfire. When Sunbringer has at least 120 Wishfire, 120 Wishfire can be consumed to activate Basic Attack: Bannerbearer - Converging Edge.\nWhen a teammate triggers Maim, if Sunbringer has enough Wishfire, Quick Assist is triggered. When Sunbringer switches on-field via Quick Assist, 120 Wishfire is consumed to immediately activate Basic Attack: Bannerbearer - Converging Edge. This effect can trigger once every 3s.\nWhen Sunbringer's Basic Attack: Bannerbearer - Converging Edge, EX Special Attack: Night Blaze - End of the Long Dark, EX Special Attack: Kindled Lamp - Torch of Eternal Day, Ultimate: \"Onward, Together\", or Ultimate: \"By This Wish, All Things Remade\" hits an enemy and deals DMG, the target accumulates Ember Scar. The amount of Ember Scar accumulated equals 60% of the actual DMG dealt by the skill. Maim triggered by any Agent in the squad also causes the target to accumulate Ember Scar equal to 40% of that instance's actual DMG. When the Finishing Move of Eldreda's EX Special Attack: Kindled Lamp - Torch of Eternal Day or Ultimate: \"By This Wish, All Things Remade\" hits an enemy, all Ember Scar is removed to trigger Ashfall once, directly deducting an equal amount of HP.\nWhen Sunbringer's attack hits a regular or Elite enemy, if the target's Ember Scar already covers all of its remaining HP, the target is executed instantly. When an enemy dies, Sunbringer recovers 40 Wishfire. This effect can trigger once every 60s."
+        "gameText": "All DMG dealt by Sunbringer's skills is Sharp DMG, and skill DMG Multipliers are based on DEF. Certain Sharp DMG builds up Gash. When Gash buildup is full, the enemy is inflicted with [term 3000038, not named in the game files]; Gash can stack up to 3 times. When certain heavy attacks from Sunbringer hit an enemy in the Gash state while Sunbringer is the active Agent and [term 1000057, not named in the game files] is not at its cap, all Gash stacks on the target are consumed. When an enemy holding Gash is defeated, all Gash stacks it holds are also consumed. For each stack of Gash consumed, trigger 1 instance of [term 3000039, not named in the game files] on the target, dealing additional area Genesis Flare DMG.\nWhen a CRIT is triggered, Sharp DMG doesn't receive the CRIT DMG Bonus and instead applies the [term 3000015, not named in the game files] Bonus. If CRIT Rate exceeds 100% and a CRIT has already been triggered, an additional Laceration check is performed based on the excess CRIT Rate; if Laceration is triggered, the Laceration DMG Bonus is applied an additional time. For every 1% of Sunbringer's initial CRIT DMG, her initial CRIT Rate increases by 0.35%.\nUpon entering the battlefield, Sunbringer recovers 60 Sharpness. In Investigation Zone mode, this effect can trigger once every 180s.\nUpon entering combat, Sunbringer gains the [term 1000063, not named in the game files] effect, increasing CRIT Rate by 40% and allowing her DMG to ignore 20% of the target's DEF. The Midnight Sun state lasts for 20s. When other squad members or Dracaene is the active Agent, the duration stops decreasing. Sunbringer regains the Midnight Sun effect upon activating any EX Special Attack or Basic Attack: Flagbearer - Gathering Blades.\nDaze inflicted by Dracaene's Defensive Assist increases by 50%. Successfully parrying an enemy attack also inflicts a small amount of Gash buildup on the enemy. Eldreda's and Lindverne's Assist Follow-Ups have 15% increased Gash Buildup Rate and 20% increased DMG.\nWhen any Agent in the squad triggers Maim, for each stack of Gash removed, Sunbringer gains 40 Wishfire, up to a maximum of 160 Wishfire. With at least 120 Wishfire and while not holding [term 1000058, not named in the game files], [term 1000059, not named in the game files], or [term 1000060, not named in the game files], consume 120 Wishfire to activate Basic Attack: Flagbearer - Gathering Blades.\nWhen a teammate triggers Maim, if Sunbringer is off-field, has sufficient Wishfire, and is not holding Chain Teeth, Flag Order, or Wishcore, a Quick Assist is triggered. When Sunbringer switches in through this Quick Assist, she consumes 120 Wishfire to immediately activate Basic Attack: Flagbearer - Gathering Blades. This effect can trigger at most once every 3s.\nWhen Sunbringer's Basic Attack: Flagbearer - Gathering Blades, EX Special Attack: Nightburn - Eternal Darkness's Demise, EX Special Attack: Kindled Light - Torch of Eternal Day, Ultimate: \"Face the Road Ahead, Together\", or Ultimate: \"This Wish, Shall Reshape the World\" hits an enemy and deals DMG, the target accumulates [term 1000061, not named in the game files], with the amount of Embermarks equal to 60% of the actual DMG dealt. Maim triggered by any Agent in the squad also causes the target to accumulate Embermarks equal to 40% of the actual DMG dealt. When the finishing hit of Eldreda's EX Special Attack: Kindled Light - Torch of Eternal Day or Ultimate: \"This Wish, Shall Reshape the World\" hits an enemy, all Embermarks on the target are removed to trigger 1 instance of [term 1000062, not named in the game files], directly reducing an equivalent amount of HP.\nWhen Sunbringer's attacks hit a Normal or Elite enemy, or when the heavy attack of her EX Special Attack or Chain Attack hits a Boss enemy, if the target's Embermarks cover all of its remaining HP, the target is immediately executed."
       },
       {
         "id": "additional-ability",
         "label": "Additional Ability: Mark of a Leader",
         "kind": "additional",
         "does": [],
-        "gameText": "When another character in your squad is a Stun character, Defense character, or another Armorer character:\nUpon entering combat, or when Sunbringer uses any EX Special Attack, Basic Attack: Bannerbearer - Converging Edge, Chain Attack, or Dash Attack: Patrol - Shadow Realm Raid, all Armorer Agents in the squad enter the United Will state. While in the United Will state, Laceration DMG increases by 25% for 45s. Re-entering the United Will state refreshes its duration."
+        "gameText": "When another character in your squad is a Stun, Defense, or Armorer character:\nUpon entering combat, or when Sunbringer uses any EX Special Attack, Basic Attack: Flagbearer - Gathering Blades, Chain Attack, or Dash Attack: Expedition - Shadowrealm Assault, all Armorer Agents in the squad enter the [term 1000064, not named in the game files] state. While in the All Wishes United state, [term 3000015, not named in the game files] is increased by 25% for 45s. Entering the All Wishes United state again refreshes its duration."
       },
       {
         "id": "mindscape-1",
@@ -11491,21 +11491,21 @@
           "dupes": 1
         },
         "does": [],
-        "gameText": "When Sunbringer enters the battlefield, she immediately gains 120 Wishfire. This effect can trigger once every 180s in Investigation Zone mode. Sunbringer's Gash Buildup Rate is increased by 10%, and DMG dealt by her skills ignores 15% of the enemy's Fire RES."
+        "gameText": "Upon entering the battlefield, Sunbringer immediately gains 120 [term 1000057, not named in the game files]. In Investigation Zone mode, this effect can trigger once every 180s. When an enemy is defeated, Sunbringer restores 80 Wishfire; this restoration effect can trigger once every 60s.Sunbringer's Gash Buildup Rate increases by 10%, and DMG dealt by skills ignores 15% of the enemy's Fire RES."
       },
       {
         "id": "mindscape-2",
-        "label": "Mindscape 2: The Heir's Banner of Rebellion",
+        "label": "Mindscape 2: Heir's Rebel Flag",
         "kind": "mindscape",
         "unlock": {
           "dupes": 2
         },
         "does": [],
-        "gameText": "The amount of Ember Scar enemies accumulate from Maim triggered by the whole squad and from Sunbringer is increased by 30%. When Sunbringer's other skills hit enemies and deal Sharp DMG, the target also accumulates Ember Scar equal to 22% of the actual DMG dealt.\nAfter using Basic Attack: Bannerbearer - Converging Edge, Sunbringer recovers an additional 150 Decibels. When an enemy's death triggers the Wishfire recovery effect of Core Passive: Dream Manifestation = Genesis Reconstruction, Sunbringer recovers an additional 40 Wishfire.\nWhen the heavy attack of Sunbringer's EX Special Attack or Chain Attack hits a Boss-Rank enemy, if the target's Ember Scar already covers all of its remaining HP, the target is immediately executed."
+        "gameText": "When Sunbringer's other skills hit enemies and deal Sharp DMG, the target also accumulates [term 1000061, not named in the game files] equal to 30% of the actual DMG dealt. When any squad member triggers [term 3000039, not named in the game files] or Sunbringer causes enemies to accumulate Embermarks, the final amount of Embermarks settled is increased by 35%.After Sunbringer uses Basic Attack: Flagbearer - Gathering Blades, she restores an additional 200 Decibels. Sunbringer's Decibel limit increases by 1,000."
       },
       {
         "id": "mindscape-3",
-        "label": "Mindscape 3: Measured Hope",
+        "label": "Mindscape 3: Three Glimmers of Hope",
         "kind": "mindscape",
         "unlock": {
           "dupes": 3
@@ -11515,13 +11515,13 @@
       },
       {
         "id": "mindscape-4",
-        "label": "Mindscape 4: Phantom of the Devotee",
+        "label": "Mindscape 4: The Devotee's Phantom",
         "kind": "mindscape",
         "unlock": {
           "dupes": 4
         },
         "does": [],
-        "gameText": "DMG dealt by Sunbringer is increased by 15%. After Dracaene activates Assist Follow-Up: Lighthouse, Towering in the Sky, press [Basic Attack button] or [Special Attack button] to immediately follow up with EX Special Attack: Night Blaze - End of the Long Dark without consuming Chain Teeth. This effect can trigger once every 60s."
+        "gameText": "Upon entering the battlefield, Sunbringer immediately gains 1,000 Decibels. In Investigation Zone mode, this effect can trigger once every 180s. Upon entering the battlefield, after Sunbringer uses Basic Attack: Flagbearer - Gathering Blades for the first time, the next EX Special Attack: Kindled Light - Torch of Eternal Day or Ultimate: \"This Wish, Shall Reshape the World\" that causes the target to accumulate [term 1000061, not named in the game files] grants an additional 65% to the Embermarks accumulation bonus from Cinematic Portrait: Heir's Rebel Flag. In Investigation Zone mode, this effect can trigger once every 180s. Sunbringer's DMG increases by 10%."
       },
       {
         "id": "mindscape-5",
@@ -11535,13 +11535,13 @@
       },
       {
         "id": "mindscape-6",
-        "label": "Mindscape 6: Hope of Day Break",
+        "label": "Mindscape 6: The Hope of Day Break",
         "kind": "mindscape",
         "unlock": {
           "dupes": 6
         },
         "does": [],
-        "gameText": "When Sunbringer uses Ultimate: \"By This Wish, All Things Remade\" and triggers Ashfall, she will quickly follow up with a special EX Special Attack: Kindled Lamp - Torch of Eternal Day that does not consume Flag Order.\nThis EX Special Attack: Kindled Lamp - Torch of Eternal Day deals no actual DMG, but causes the target to accumulate additional Ember Scar equal to 80% of the Ember Scar accumulated on the target by the previous Ultimate: \"By This Wish, All Things Remade\". It then removes all of the target's Ember Scar, triggering Ashfall once.\nDMG dealt by Sunbringer's skills ignores 15% of the target's DEF."
+        "gameText": "Upon entering the battlefield, the first Basic Attack: Flagbearer - Gathering Blades Sunbringer uses no longer grants [term 1000059, not named in the game files] and instead grants [term 1000060, not named in the game files]. In Investigation Zone mode, this effect can trigger once every 180s. After Sunbringer uses Ultimate: \"This Wish, Shall Reshape the World\" to trigger [term 1000062, not named in the game files], she will quickly follow up with a special EX Special Attack: Kindled Light - Torch of Eternal Day without consuming Flag Order. This EX Special Attack: Kindled Light - Torch of Eternal Day deals no actual damage, but directly applies [term 1000061, not named in the game files] to the target equal to 80% of the Embermarks accumulated by the target from the preceding Ultimate: \"This Wish, Shall Reshape the World\". All Embermarks on the target are then removed, triggering Emberburst once. DMG dealt by Sunbringer skills ignores 15% of the target's DEF."
       }
     ]
   },
@@ -12327,26 +12327,26 @@
   {
     "characterId": "1651",
     "source": "nanoka.cc",
-    "version": "3.4.4+20539349",
+    "version": "3.4.5+20713015",
     "beta": true,
     "skills": [
       {
-        "id": "skill-basic-attack-torment",
-        "label": "Basic Attack: Torment",
+        "id": "skill-basic-attack-torture",
+        "label": "Basic Attack: Torture",
         "kind": "skill",
         "does": [],
-        "gameText": "Press [Basic Attack button] to activate:\nUnleashes up to four strikes forward, dealing Electric DMG.\nWhen the final hit of the 4th strike hits an enemy suffering from an Attribute Anomaly, triggers [term 1000050, not named in the game files] once, dealing 2% of the original Disorder effect's DMG, plus additional DMG equal to (180 + 15 × Basic Attack level)% of Kafka's Anomaly Proficiency.\nAnti-Interrupt level is increased during the 3rd and 4th strikes."
+        "gameText": "Press [Basic Attack button] to activate:\nLaunches up to 4 attacks forward, dealing Electric DMG.\nWhen the final hit of the 4th attack hits an enemy affected by an Attribute Anomaly, it triggers 1 instance of [term 1000050, not named in the game files], dealing DMG equal to 1% of the original Disorder DMG, plus additional DMG equal to (110 + 10 × Basic Attack level)% of Kafka's Anomaly Proficiency.\nAnti-Interrupt Level is increased during the 3rd and 4th attacks."
       },
       {
-        "id": "skill-basic-attack-disordered-echo",
-        "label": "Basic Attack: Disordered Echo",
+        "id": "skill-basic-attack-discordant-echo",
+        "label": "Basic Attack: Discordant Echo",
         "kind": "skill",
         "does": [],
-        "gameText": "When Improvised Overture is at 90 or above, hold [Basic Attack button] to consume 90 [term 1000044, not named in the game files] and activate:\nDealing massive Electric DMG to enemies in front.\nWhen the skill's final hit strikes an enemy afflicted with an Electric Attribute Anomaly, it does not trigger an Attribute Anomaly. Instead, it extends the Electric Attribute Anomaly by 3s, up to a maximum of 10s.\nWhen the skill's final hit strikes an enemy afflicted with an Attribute Anomaly, it triggers a special Disorder effect, Polarity Disorder, dealing DMG equal to 20% of the original Disorder effect's DMG, plus additional DMG equal to (1640 + 130 × Basic Attack level)% of Kafka's Anomaly Proficiency. Polarity Disorder does not remove the target's Attribute Anomaly.\nCharacter is invulnerable while using this skill."
+        "gameText": "When Improvised Performance reaches at least 90 points, consume 90 points of [term 1000044, not named in the game files] and hold [Basic Attack button] to activate:\nDeals massive Electric DMG to enemies in an area ahead.\nWhen the final hit of the attack hits an enemy affected by an Electric Attribute Anomaly, it does not trigger an Attribute Anomaly, but instead extends the duration of the Electric Attribute Anomaly by 3s, up to a maximum of 10s.\nWhen the final hit of the attack hits an enemy affected by an Attribute Anomaly, it triggers a special Disorder effect called Polarity Disorder, dealing DMG equal to 25% of the original Disorder DMG, plus additional DMG equal to (1420 + 115 × Basic Attack level)% of Kafka's Anomaly Proficiency. Polarity Disorder does not remove the target's Attribute Anomaly.\nCharacter is invulnerable while using this skill."
       },
       {
-        "id": "skill-dodge-shadow-chaser",
-        "label": "Dodge: Shadow Chaser",
+        "id": "skill-dodge-shadow-pursuit",
+        "label": "Dodge: Shadow Pursuit",
         "kind": "skill",
         "does": [],
         "gameText": "Press [Dodge button] to activate:\nA quick dash dodge.\nCharacter is invulnerable while using this skill."
@@ -12356,63 +12356,63 @@
         "label": "Dash Attack: Plunder",
         "kind": "skill",
         "does": [],
-        "gameText": "Press [Basic Attack button] during a dodge to activate:\nPerform an attack forward, dealing Electric DMG."
+        "gameText": "Press [Basic Attack button] during a dodge to activate:\nAttacks forward, dealing Electric DMG."
       },
       {
-        "id": "skill-dodge-counter-vanishing-act",
-        "label": "Dodge Counter: Vanishing Act",
+        "id": "skill-dodge-counter-ephemeral",
+        "label": "Dodge Counter: Ephemeral",
         "kind": "skill",
         "does": [],
-        "gameText": "Press [Basic Attack button] during a Perfect Dodge to activate:\nPerform a quick slash forward, dealing Electric DMG.\nCharacter is invulnerable while using this skill."
+        "gameText": "Press [Basic Attack button] during a Perfect Dodge to activate:\nLaunches a quick slash forward, dealing Electric DMG.\nCharacter is invulnerable while using this skill."
       },
       {
-        "id": "skill-special-attack-nightfall-hunt",
-        "label": "Special Attack: Nightfall Hunt",
+        "id": "skill-special-attack-nocturne-hunt",
+        "label": "Special Attack: Nocturne Hunt",
         "kind": "skill",
         "does": [],
-        "gameText": "Press [Special Attack button] to activate:\nSlashes enemies in front, dealing Electric DMG."
+        "gameText": "Press [Special Attack button] to activate:\nLaunches a slash forward, dealing Electric DMG.\nAnti-Interrupt Level is increased while using this skill."
       },
       {
-        "id": "skill-special-attack-nightfall-hunt-rhapsody",
-        "label": "Special Attack: Nightfall Hunt - Rhapsody",
+        "id": "skill-special-attack-nocturne-hunt-delirium",
+        "label": "Special Attack: Nocturne Hunt - Delirium",
         "kind": "skill",
         "does": [],
-        "gameText": "With enough Energy, press [EX Special Attack button] to activate:\nUnleashes a forward slash, dealing Electric DMG;\nEnters Hunting Prelude and activates Vital View. While in Hunting Prelude, EX Special Attack: Nightfall Hunt - Recitative or EX Special Attack: Nightfall Hunt - Aria can be activated consecutively;\nWhile in Hunting Prelude, press [Dodge button] or wait for a period of time to exit Hunting Prelude. If Hunting Prelude is exited this way and no EX Special Attacks were activated during this round, 20 Energy is consumed;\nCharacter is invulnerable while using this skill."
+        "gameText": "With enough Energy, press [EX Special Attack button] to activate:\nSlashes forward, dealing Electric DMG.\nEnters Hunter's Overture and activates Vital View. While in Hunter's Overture, EX Special Attack: Nocturne Hunt - Recitative and EX Special Attack: Nocturne Hunt - Aria can be used consecutively.\nWhile in Hunter's Overture, press [Dodge button] or remain idle for a period of time to exit Hunter's Overture. If Kafka exits Hunter's Overture this way without using any EX Special Attacks during the current activation, 20 Energy is consumed.\nCharacter is invulnerable while using this skill."
       },
       {
-        "id": "skill-ex-special-attack-nightfall-hunt-recitative",
-        "label": "EX Special Attack: Nightfall Hunt - Recitative",
+        "id": "skill-ex-special-attack-nocturne-hunt-recitative",
+        "label": "EX Special Attack: Nocturne Hunt - Recitative",
         "kind": "skill",
         "does": [],
-        "gameText": "While in [term 1000045, not named in the game files], press [Basic Attack button] to activate:\nConsume Energy to unleash a forward Slash, dealing Electric DMG.\nEach Hunting Prelude allows up to 3 consecutive EX Special Attacks. Hold to trigger the final EX Special Attack: Nightfall Hunt - Recitative early.\nWhen the skill's final hit strikes an enemy afflicted with an Attribute Anomaly, triggers [term 1000050, not named in the game files] once, dealing DMG equal to 12% of the original Disorder effect, plus additional DMG equal to (1080 + 90 × Special Attack level)% of Kafka's Anomaly Proficiency.\nWhen the skill's final hit strikes an enemy afflicted with an Electric Attribute Anomaly, it does not trigger an Attribute Anomaly.\nCharacter is invulnerable while using this skill."
+        "gameText": "While [term 1000045, not named in the game files] is active, press [Basic Attack button] to activate:\nConsumes Energy and launches a forward slash, dealing Electric DMG.\nUp to 3 consecutive rounds of EX Special Attacks can be performed during each activation of Hunter's Overture. Holding the button triggers the final round of EX Special Attack: Nocturne Hunt - Recitative early.\nWhen the final hit of the attack hits an enemy affected by an Attribute Anomaly, it triggers [term 1000050, not named in the game files] once, dealing DMG equal to 15% of the original Disorder DMG, plus additional DMG equal to (1040 + 80 × Special Attack level)% of Kafka's Anomaly Proficiency.\nWhen the final hit of the attack hits an enemy affected by an Electric Attribute Anomaly, it does not trigger an Attribute Anomaly.\nCharacter is invulnerable while using this skill."
       },
       {
-        "id": "skill-ex-special-attack-nightfall-hunt-aria",
-        "label": "EX Special Attack: Nightfall Hunt - Aria",
+        "id": "skill-ex-special-attack-nocturne-hunt-aria",
+        "label": "EX Special Attack: Nocturne Hunt - Aria",
         "kind": "skill",
         "does": [],
-        "gameText": "While in [term 1000045, not named in the game files], press [EX Special Attack button] to activate:\nConsumes Energy to unleash a shot forward, dealing Electric DMG.\nEach Hunting Prelude can chain up to 3 consecutive EX Special Attacks. Hold to trigger the final EX Special Attack: Nightfall Hunt - Aria early.\nWhen this skill hits an enemy not suffering from Electric Attribute Anomaly, Anomaly Buildup Rate increases by 50%.\nCharacter is invulnerable while using this skill."
+        "gameText": "While in [term 1000045, not named in the game files], press [EX Special Attack button] to activate:\nConsumes Energy and fires shots forward, dealing Electric DMG.\nUp to 3 consecutive rounds of EX Special Attacks can be performed during each activation of Hunter's Overture. Continuing to hold the button triggers the final round of EX Special Attack: Nocturne Hunt - Aria early.\nWhen the attack hits an enemy not affected by an Electric Attribute Anomaly, Anomaly Buildup Rate is increased by 50%.\nCharacter is invulnerable while using this skill."
       },
       {
-        "id": "skill-chain-attack-cruise",
-        "label": "Chain Attack: Cruise",
+        "id": "skill-chain-attack-moonlight-concerto",
+        "label": "Chain Attack: Moonlight Concerto",
         "kind": "skill",
         "does": [],
-        "gameText": "When a Chain Attack is triggered, select the character to activate:\nUnleashes consecutive attacks forward, dealing massive Electric DMG.\nCharacter is invulnerable while using this skill."
+        "gameText": "When a Chain Attack is triggered, select the character to activate:\nLaunches multiple attacks forward, dealing massive Electric DMG.\nCharacter is invulnerable while using this skill."
       },
       {
-        "id": "skill-ultimate-elegy-for-yesterday",
-        "label": "Ultimate: Elegy for Yesterday",
+        "id": "skill-ultimate-requiem-for-yesterday",
+        "label": "Ultimate: Requiem for Yesterday",
         "kind": "skill",
         "does": [],
-        "gameText": "When Decibel Rating is at Maximum, press [Ultimate button] to activate:\nTrigger a massive explosion in a large area ahead, dealing massive Electric DMG;\nCharacter is invulnerable while using this skill."
+        "gameText": "When Decibel Rating is at Maximum, press [Ultimate button] to activate:\nCreates a large explosion ahead, dealing massive Electric DMG.\nWhen the final hit lands on an enemy affected by an Attribute Anomaly, it triggers the special Disorder effect Polarity Disorder, dealing DMG equal to 25% of the original Disorder effect and additional DMG equal to (1420 + 115 × Chain Attack level)% of Kafka's Anomaly Proficiency. Polarity Disorder does not remove the target's Attribute Anomaly.\nCharacter is invulnerable while using this skill."
       },
       {
         "id": "skill-quick-assist-caress",
         "label": "Quick Assist: Caress",
         "kind": "skill",
         "does": [],
-        "gameText": "When the active character is launched, press [Switch button] to activate:\nPerform a quick slash forward, dealing Electric DMG.\nCharacter is invulnerable while using this skill."
+        "gameText": "When the active character is launched, press [Switch button] to activate:\nPerforms a quick slashing attack forward, dealing Electric DMG.\nCharacter is invulnerable while using this skill."
       },
       {
         "id": "skill-defensive-assist-dominance",
@@ -12426,45 +12426,45 @@
         "label": "Assist Follow-Up: Monologue",
         "kind": "skill",
         "does": [],
-        "gameText": "Press [Basic Attack button] after a Defensive Assist to activate:\nFires shots while circling the enemy, then finishes with a Slash, dealing Electric DMG;\nCharacter is invulnerable while using this skill."
+        "gameText": "Press [Basic Attack button] after a Defensive Assist to activate:\nFires at the enemy while circling around them, then delivers a finishing slash, dealing Electric DMG.\nCharacter is invulnerable while using this skill."
       },
       {
         "id": "core-passive",
-        "label": "Core Passive: Finale Sonata (Core Skill level 7)",
+        "label": "Core Passive: Terminating Sonata (Core Skill level 7)",
         "kind": "core",
         "does": [],
-        "gameText": "Kafka's Anomaly Proficiency increases by 84. When using EX Special Attack: Nightfall Hunt - Recitative or EX Special Attack: Nightfall Hunt - Aria, she recovers 15 Improvised Overture, up to a max of 120 Improvised Overture.\nWhen an enemy afflicted with an Attribute Anomaly attacks, it triggers Lightning Lash once, dealing DMG equal to 3% of the original Disorder effect plus additional DMG equal to 460% of Kafka's Anomaly Proficiency. This can trigger once every 10s per enemy.\nAll DMG dealt by Kafka's Lightning Lash is considered Disorder DMG. When Lightning Lash triggers, it records the DMG dealt and bounces to nearby enemies up to 3 times, with each bounce dealing Disorder DMG reduced by 50% compared to the previous hit.\nWhen any squad member deals Disorder DMG to a target that is not Stunned, that Disorder DMG gains an additional 50% special Stun DMG Multiplier bonus.\nIf the target is already Stunned and its current Stun DMG Multiplier is no higher than 50%, the Stun DMG Multiplier for that Disorder DMG is treated as 50%."
+        "gameText": "Kafka's Anomaly Proficiency increases by 84. Using EX Special Attack: Nocturne Hunt - Recitative or EX Special Attack: Nocturne Hunt - Aria grants 15 Improvised Performance, up to a maximum of 120 points of Improvised Performance.\nWhen an enemy affected by an Attribute Anomaly attacks, Lightning Surge triggers once, dealing DMG equal to 3% of the original Disorder DMG, plus additional DMG equal to 460% of Kafka's Anomaly Proficiency. This effect can trigger once per enemy every 10s.\nAll DMG dealt by Kafka's Lightning Surge is considered Disorder DMG. When Lightning Surge triggers, the DMG dealt is recorded and bounces to nearby enemies up to 3 times, with each bounce dealing Disorder DMG reduced by 50% compared to the previous hit.\nWhen any squad member deals Disorder DMG to an enemy that is not Stunned, the DMG calculation includes an additional 40% special Stun DMG Multiplier.\nIf the target is already Stunned and its Stun DMG Multiplier is no higher than 140%, the Stun DMG Multiplier for this instance of Disorder DMG is treated as 140%."
       },
       {
         "id": "additional-ability",
-        "label": "Additional Ability: Forgiveness Isn't Mercy",
+        "label": "Additional Ability: Mercy Is Not Forgiveness",
         "kind": "additional",
         "does": [],
-        "gameText": "When another character in your squad is a Support Character or Anomaly Character:\nWhen Kafka applies Shock to an enemy, its duration is increased by 3s. The maximum Electric Attribute Anomaly duration that Basic Attack: Disordered Echo can extend is increased to 13s.\nUpon entering combat or when other squad members apply an Attribute Anomaly to an enemy, if Kafka's initial Energy Regen exceeds 1.2, every 0.12 above that increases her Anomaly Mastery by 10, up to a maximum increase of 140, lasting 30s. Repeated triggers reset the duration."
+        "gameText": "When another character in your squad is a Support or Anomaly character:\nWhen Kafka applies Shock to an enemy, the effect's duration increases by 3s. The maximum duration of Electric Attribute Anomalies extended by Basic Attack: Discordant Echo is increased to 13s.\nUpon entering combat or when another squad member applies an Attribute Anomaly to an enemy, if Kafka's initial Energy Regen exceeds 1.2, her Anomaly Mastery increases by 0.12 for every 10 of initial Energy Regen above this threshold, up to a maximum increase of 140. This effect lasts 30s, and repeated triggers reset the duration."
       },
       {
         "id": "mindscape-1",
-        "label": "Mindscape 1: Fantasy Couture Rhapsody",
+        "label": "Mindscape 1: Rhapsody of Enchanting Attire",
         "kind": "mindscape",
         "unlock": {
           "dupes": 1
         },
         "does": [],
-        "gameText": "Disorder DMG dealt by the whole squad is increased by 25%. DMG dealt by Kafka's Lightning Lash ignores 10% of the target's All-Attribute RES."
+        "gameText": "Disorder DMG dealt by all squad members increases by 25%. DMG dealt by Kafka's Lightning Surge ignores 10% of the target's All-Attribute DMG RES. When Kafka uses her Ultimate, she restores 10 Energy."
       },
       {
         "id": "mindscape-2",
-        "label": "Mindscape 2: Nightmare in the Depths of the Mist",
+        "label": "Mindscape 2: Nightmare in the Mist",
         "kind": "mindscape",
         "unlock": {
           "dupes": 2
         },
         "does": [],
-        "gameText": "During Hunting Prelude, Kafka's Anomaly Proficiency increases by 40 and the DMG she deals increases by 25%. After Hunting Prelude ends, this effect lasts for another 20s."
+        "gameText": "While in Hunter's Overture, Kafka's Anomaly Proficiency increases by 35, and her DMG increases by 25%. This effect remains active for 20s after exiting Hunter's Overture."
       },
       {
         "id": "mindscape-3",
-        "label": "Mindscape 3: Vibrato at the End of a Tragic Tale",
+        "label": "Mindscape 3: Twilight Trill",
         "kind": "mindscape",
         "unlock": {
           "dupes": 3
@@ -12474,17 +12474,17 @@
       },
       {
         "id": "mindscape-4",
-        "label": "Mindscape 4: Hunt Beneath the Moonlight",
+        "label": "Mindscape 4: Hunting by Moonlight",
         "kind": "mindscape",
         "unlock": {
           "dupes": 4
         },
         "does": [],
-        "gameText": "When Kafka's Chain Attack heavy attack hits an enemy that is both afflicted with an Attribute Anomaly and Stunned, it triggers Lightning Lash on the enemy, dealing DMG equal to 50% of the original Disorder effect. This effect can only be triggered once per enemy during the same Stunned period."
+        "gameText": "When the heavy attack of Kafka's Chain Attack strikes a Stunned enemy affected by an Attribute Anomaly, it triggers Lightning Surge, dealing DMG equal to 60% of the original Disorder DMG. This effect can trigger once per enemy per Stun period."
       },
       {
         "id": "mindscape-5",
-        "label": "Mindscape 5: To the Journey's End",
+        "label": "Mindscape 5: A Journey Dedicated to the Finality",
         "kind": "mindscape",
         "unlock": {
           "dupes": 5
@@ -12494,164 +12494,164 @@
       },
       {
         "id": "mindscape-6",
-        "label": "Mindscape 6: The Castle of Crossed Destinies",
+        "label": "Mindscape 6: Castle of Intertwined Fates",
         "kind": "mindscape",
         "unlock": {
           "dupes": 6
         },
         "does": [],
-        "gameText": "During a single Hunting Prelude, up to 6 EX Special Attacks can be activated consecutively. Each EX Special Attack activated causes subsequent EX Special Attack: Nightfall Hunt - Recitative and the Lightning Lash it triggers to ignore 15% of the target's DEF during the same Hunting Prelude, up to a maximum of 60%. This effect resets upon re-entering Hunting Prelude. After activating Basic Attack: Disordered Echo, Kafka's ATK increases by 200 for 30s; repeated triggers reset the duration. After activating Ultimate, the Energy Cost of the next 6 EX Special Attacks is reduced to 50% of the original; repeated triggers reset the number of uses."
+        "gameText": "During the same Hunter's Overture, up to 6 consecutive EX Special Attacks can be used. The DMG of EX Special Attack: Nocturne Hunt - Recitative and the Lightning Surge it triggers ignores 12% of the target's DEF. After Kafka uses her Ultimate, the Energy cost of the next 6 uses of EX Special Attack: Nocturne Hunt - Recitative or EX Special Attack: Nocturne Hunt - Aria is reduced to 50% of the original. Among them, the Anomaly Buildup Rate of EX Special Attack: Nocturne Hunt - Recitative increases by an additional 40%. Repeated triggers refresh the number of uses."
       }
     ]
   },
   {
     "characterId": "1661",
     "source": "nanoka.cc",
-    "version": "3.4.4+20539349",
+    "version": "3.4.5+20713015",
     "beta": true,
     "skills": [
       {
-        "id": "skill-basic-attack-soft-legato",
-        "label": "Basic Attack: Soft Legato",
+        "id": "skill-basic-attack-gentle-notes",
+        "label": "Basic Attack: Gentle Notes",
         "kind": "skill",
         "does": [],
-        "gameText": "Press [Basic Attack button] to activate:\nUnleashes up to 3 attacks forward, dealing Ether DMG;"
+        "gameText": "Press [Basic Attack button] to activate:\nPerforms up to three attacks forward, dealing Ether DMG."
       },
       {
-        "id": "skill-dodge-swaying-dance",
-        "label": "Dodge: Swaying Dance",
+        "id": "skill-dodge-sway-to-the-music",
+        "label": "Dodge: Sway to the Music",
         "kind": "skill",
         "does": [],
         "gameText": "Press [Dodge button] to activate:\nA quick dash dodge.\nCharacter is invulnerable while using this skill."
       },
       {
-        "id": "skill-dash-attack-featherstep-rhythm",
-        "label": "Dash Attack: Featherstep Rhythm",
+        "id": "skill-dash-attack-musical-featherstep",
+        "label": "Dash Attack: Musical Featherstep",
         "kind": "skill",
         "does": [],
-        "gameText": "Press [Basic Attack button] during a dodge to activate:\nPerform a forward attack, dealing Ether DMG."
+        "gameText": "Press [Basic Attack button] during a dodge to activate:\nAttacks ahead, dealing Ether DMG."
       },
       {
-        "id": "skill-dodge-counter-flickering-rhythm",
-        "label": "Dodge Counter: Flickering Rhythm",
+        "id": "skill-dodge-counter-twinkling-rhythm",
+        "label": "Dodge Counter: Twinkling Rhythm",
         "kind": "skill",
         "does": [],
-        "gameText": "Press [Basic Attack button] during a Perfect Dodge to activate:\nAttack enemies in front, dealing Ether DMG.\nCharacter is invulnerable while using this skill."
+        "gameText": "Press [Basic Attack button] during a Perfect Dodge to activate:\nAttacks enemies ahead, dealing Ether DMG.\nCharacter is invulnerable while using this skill."
       },
       {
-        "id": "skill-special-attack-off-field",
-        "label": "Special Attack: Off-Field",
+        "id": "skill-special-attack-all-voices-sing-with-me",
+        "label": "Special Attack: All Voices Sing With Me",
         "kind": "skill",
         "does": [],
-        "gameText": "Press [Special Attack button] to activate, or when another character is switched on-field during Robin's Entry Skill: Starshine Moment, Ultimate: Stellar Concerto, Chain Attack: Booming Downbeat, or Assist Follow-Up: Dazzling Cheer, Robin stays behind and automatically activates it:\nLeaps high into the air and unleashes an Energy Blast around her, dealing Ether DMG.\nWhen manually activated, this skill triggers the next character's Quick Assist.\nIf another character is switched on-field during this skill, or when the skill activates automatically, Robin enters the [term 1000051, not named in the game files] state for 80s. Repeated triggers refresh the duration. At the same time, she grants all squad members a [term 1000056, not named in the game files] equal to 2% of her initial Max HP for 15s.\nWhile Robin is in the Off-Field Guard state, she cannot be manually switched in except via Entry Skill: Starshine Moment, Chain Attack: Booming Downbeat, Counter Assist: Grapple, or Chain Parry. Being switched in ends the Off-Field Guard state.\nDuring Off-Field Guard, all squad members gain the [term 1000054, not named in the game files] effect, increasing their DEF. When Robin's initial Max HP exceeds 16,000, every additional 1,000 HP grants (44 + 3 × Special Attack level) DEF, up to a maximum of (440 + 30 × Special Attack level) DEF. This effect persists for 15s after Robin's Off-Field Guard state ends. The DEF increase reaches its maximum when Robin's initial Max HP reaches 26,000.\nWhen manually activated, Anti-Interrupt level is increased and DMG taken is reduced by 40%.\nCharacter is invulnerable while the skill is automatically activated."
+        "gameText": "Press [Special Attack button] to activate, or automatically activates while remaining on the field when another character is switched in during Robin's Entry Skill: Moment of Starglow, Ultimate: Stellar Concerto, Chain Attack: Booming Beat, or Assist Follow-Up: Shining Aid:\nLeaps high into the air before unleashing an energy shockwave around herself, dealing Ether DMG.\nManually activating this skill triggers the next character's Quick Assist.\nIf another character is switched onto the field while this skill is being performed, or if the skill activates automatically, Robin enters the [term 1000051, not named in the game files] state for 80s. Repeated triggers reset the duration. All squad members also gain [term 1000056, not named in the game files] equal to 2% of Robin's Max initial HP for 15s.\nWhile Robin is in the Backstage Concerto state, she can only be actively switched in through Entry Skill: Moment of Starglow, Chain Attack: Booming Beat, Counter Assist: Neverending Harmony, or a Chain Parry. She exits the Backstage Concerto state upon switching in.\nWhile Backstage Concerto is active, all squad members gain the [term 1000054, not named in the game files] effect, increasing their DEF. When Robin's initial Max HP exceeds 16,000, every additional 1,000 HP increases DEF by (44 + 3 × Special Attack level), up to a maximum of (440 + 30 × Special Attack level). This effect persists for 15s after Robin exits the Backstage Concerto state. The DEF bonus reaches its maximum when Robin's Max initial HP reaches 26,000.\nAnti-Interrupt Level is increased, and DMG taken is reduced by 40% when this skill is activated manually.\nCharacter is invulnerable when this skill activates automatically."
       },
       {
-        "id": "skill-special-attack-aftershock",
-        "label": "Special Attack: Aftershock",
+        "id": "skill-special-attack-songs-in-harmony",
+        "label": "Special Attack: Songs in Harmony",
         "kind": "skill",
         "does": [],
-        "gameText": "When Robin is in the [term 1000051, not named in the game files] state, this is triggered whenever another squad member who is currently on-field hits an enemy with an attack:\nUnleashes an attack forward, dealing Ether DMG.\nUpon activation, gains 20 [term 1000052, not named in the game files] and grants all squad members a [term 1000056, not named in the game files] equal to 4% of Robin's initial Max HP for 15s.\nSpecial Attack: Aftershock is an Aftershock and can be triggered once every 10s.\nCharacter is invulnerable while using this skill."
+        "gameText": "While Robin is in the [term 1000051, not named in the game files] state, this skill activates when an attack from another active character in the squad hits an enemy:\nLaunches an attack forward, dealing Ether DMG.\nUpon activation, gains 20 [term 1000052, not named in the game files] and grants all squad members [term 1000056, not named in the game files] equal to 4% of Robin's Max initial HP for 15s.\nSpecial Attack: Songs in Harmony is an Aftershock and can be triggered once every 10s.\nCharacter is invulnerable while using this skill."
       },
       {
-        "id": "skill-ex-special-attack-enhanced-aftershock",
-        "label": "EX Special Attack: Enhanced Aftershock",
+        "id": "skill-ex-special-attack-seismic-chorus",
+        "label": "EX Special Attack: Seismic Chorus",
         "kind": "skill",
         "does": [],
-        "gameText": "When activating Special Attack: Aftershock, if Energy is at least 40, the skill is upgraded to EX Special Attack: Enhanced Aftershock:\nContinuously consumes a total of 40 Energy to unleash powerful Roaring Waves forward, dealing massive Ether DMG;\nRobin's heavy attack DMG is further increased by (44 + 8 × Special Attack level)% of her Max HP;\nUpon activation, gain 20 [term 1000052, not named in the game files], and grant all squad members [term 1000056, not named in the game files] equal to 8% of Robin's initial Max HP for 15s;\nEX Special Attack: Enhanced Aftershock is an Aftershock;\nCharacter is invulnerable while using this skill."
+        "gameText": "When using Special Attack: Songs in Harmony with at least 40 Energy, the skill is upgraded to EX Special Attack: Seismic Chorus:\nContinuously consumes a total of 40 Energy to unleash a powerful sound wave forward, dealing massive Ether DMG.\nRobin's heavy attack DMG is additionally increased based on (44 + 8 × Special Attack level)% of her Max HP.\nUpon activation, gains 20 [term 1000052, not named in the game files] and grants all squad members [term 1000056, not named in the game files] equal to 8% of Robin's Max initial HP for 15s.\nEX Special Attack: Seismic Chorus is an Aftershock.\nCharacter is invulnerable while using this skill."
       },
       {
-        "id": "skill-chain-attack-booming-downbeat",
-        "label": "Chain Attack: Booming Downbeat",
+        "id": "skill-chain-attack-booming-beat",
+        "label": "Chain Attack: Booming Beat",
         "kind": "skill",
         "does": [],
-        "gameText": "When a Chain Attack is triggered, select the character to activate:\nUnleashes powerful Roaring Waves forward, dealing massive Ether DMG.\nAfter using this skill, triggers the next character's Quick Assist.\nIf another character is switched on field during this skill, Robin automatically uses Special Attack: Off-Field and is invulnerable while using it.\nCharacter is invulnerable while using this skill."
+        "gameText": "When a Chain Attack is triggered, select the character to activate:\nFires a powerful sound wave forward, dealing massive Ether DMG.\nAfter using this skill, the next character's Quick Assist is triggered.\nIf another character is switched onto the field while this skill is being performed, Robin automatically uses Special Attack: All Voices Sing With Me and is invulnerable for the duration.\nCharacter is invulnerable while using this skill."
       },
       {
         "id": "skill-ultimate-stellar-concerto",
         "label": "Ultimate: Stellar Concerto",
         "kind": "skill",
         "does": [],
-        "gameText": "When Decibel Rating is at Maximum, press [Ultimate button] to activate:\nUses her song to guide a powerful Energy bombardment, dealing massive Ether DMG.\nUpon activation, gain 1 [term 1000053, not named in the game files], and all Armorer characters in the squad recover a fixed 20 Sharpness.\nAfter using this skill, triggers the next character's Quick Assist.\nIf another character is switched on-field during this skill, Robin automatically uses Special Attack: Off-Field, during which she is invulnerable.\nCharacter is invulnerable while using this skill."
+        "gameText": "When Decibel Rating is at Maximum, press [Ultimate button] to activate:\nChannels a powerful energy blast through her song, dealing massive Ether DMG.\nUpon activation, gains 1 [term 1000053, not named in the game files], and all Armorer characters in the squad recover a fixed 20 Sharpness.\nAfter using this skill, the next character's Quick Assist is triggered.\nIf another character is switched onto the field while this skill is being performed, Robin automatically uses Special Attack: All Voices Sing With Me and is invulnerable for the duration.\nCharacter is invulnerable while using this skill."
       },
       {
-        "id": "skill-entry-skill-starshine-moment",
-        "label": "Entry Skill: Starshine Moment",
+        "id": "skill-entry-skill-moment-of-starglow",
+        "label": "Entry Skill: Moment of Starglow",
         "kind": "skill",
         "does": [],
-        "gameText": "With at least 120 [term 1000052, not named in the game files], hold [Basic Attack button] or get switched on field while in-combat to consume 120 Entry Points and activate:\nUnleash an Energy blast at enemies in front, dealing massive Ether DMG;\nUpon activating this skill, it counts as a Quick Assist;\nUpon activating this skill, exit the Off-Field Guard state and grant all squad members [term 1000056, not named in the game files] equal to 4% of Robin's initial Max HP for 20s;\nAfter using this skill, trigger the next character's Quick Assist;\nIf another character is switched on field during this skill, Robin automatically unleashes Special Attack: Off-Field, and is invulnerable while it's active;\nCharacter is invulnerable while using this skill."
+        "gameText": "When Robin has at least 120 [term 1000052, not named in the game files], hold [Basic Attack button] or switch her onto the field during combat to consume 120 Starglow and activate:\nUnleashes an energy blast against enemies ahead, dealing massive Ether DMG.\nActivating this skill counts as using a Quick Assist.\nUpon activation, Robin exits the Backstage Concerto state and grants all squad members [term 1000056, not named in the game files] equal to 4% of her initial Max HP for 15s.\nAfter using this skill, the next character's Quick Assist is triggered.\nAfter using this skill, if Robin is switched to a non-active character, she automatically uses Special Attack: All Voices Sing With Me and is invulnerable for the duration.\nCharacter is invulnerable while using this skill."
       },
       {
-        "id": "skill-quick-assist-temporary-entry",
-        "label": "Quick Assist: Temporary Entry",
+        "id": "skill-quick-assist-last-minute-entrance",
+        "label": "Quick Assist: Last-Minute Entrance",
         "kind": "skill",
         "does": [],
-        "gameText": "When the active character is launched, press [Switch button] to activate:\nLaunch an attack on enemies in front, dealing Ether DMG.\nCharacter is invulnerable while using this skill."
+        "gameText": "When the active character is launched, press [Switch button] to activate:\nAttack enemies in front, dealing Ether DMG.\nCharacter is invulnerable while using this skill."
       },
       {
-        "id": "skill-defensive-assist-roaring-waves-echo",
-        "label": "Defensive Assist: Roaring Waves Echo",
+        "id": "skill-defensive-assist-soundwave-reverb",
+        "label": "Defensive Assist: Soundwave Reverb",
         "kind": "skill",
         "does": [],
         "gameText": "When the on-field character is about to be attacked, press [Switch button] to activate:\nParries the enemy's attack, dealing massive Daze.\nThis skill excels at parrying enemy attacks and reduces the consumption of Assist Points when the character is under intense attacks.\nCharacter is invulnerable while using this skill."
       },
       {
-        "id": "skill-assist-follow-up-dazzling-cheer",
-        "label": "Assist Follow-Up: Dazzling Cheer",
+        "id": "skill-assist-follow-up-shining-aid",
+        "label": "Assist Follow-Up: Shining Aid",
         "kind": "skill",
         "does": [],
-        "gameText": "Press [Basic Attack button] after a Defensive Assist to activate:\nUnleashes an attack against enemies in front, dealing Ether DMG.\nAfter using this skill, triggers the next character's Quick Assist.\nIf another character is switched on-field during this skill, Robin automatically activates Special Attack: Off-Field, and is invulnerable while using it.\nCharacter is invulnerable while using this skill."
+        "gameText": "Press [Basic Attack button] after a Defensive Assist to activate:\nAttacks enemies ahead, dealing Ether DMG.\nTriggers the next character's Quick Assist upon activation.\nIf another character switches onto the field during the skill, Robin automatically uses Special Attack: All Voices Sing With Me and is invulnerable for the duration.\nCharacter is invulnerable while using this skill."
       },
       {
-        "id": "skill-counter-assist-grapple",
-        "label": "Counter Assist: Grapple",
+        "id": "skill-counter-assist-neverending-harmony",
+        "label": "Counter Assist: Neverending Harmony",
         "kind": "skill",
         "does": [],
-        "gameText": "When this character or the on-field character is about to be hit by certain enemies' Control Skills, press [Switch button] to activate:\nGrapple with the enemy. Upon winning the grapple, nullify the enemy's Control Skill and deal Ether DMG.\nWhen pressing [Switch button] to switch to the next character, Robin's priority for triggering Counter Assist is lowered.\nUpon activating this skill, gain 1 [term 1000053, not named in the game files].\nCharacter is invulnerable while using this skill."
+        "gameText": "When Robin or the on-field character is about to be hit by certain enemies' Control Skills, press [Switch button] to activate:\nEngages the enemy in a power struggle. Win the struggle to neutralize the enemy's Control Skill and deal Ether DMG.\nWhen pressing [Switch button] to switch to the next character, Robin has a lower priority for triggering a Counter Assist.\nGrants 1 [term 1000053, not named in the game files] upon activation.\nCharacter is invulnerable while using this skill."
       },
       {
-        "id": "skill-assist-follow-up-grapple-synergy-strike",
-        "label": "Assist Follow-Up: Grapple Synergy Strike",
+        "id": "skill-assist-follow-up-perfect-rhythm",
+        "label": "Assist Follow-Up: Perfect Rhythm",
         "kind": "skill",
         "does": [],
-        "gameText": "Triggered when other squad members activate a Counter Assist and successfully neutralize an enemy's Control Skills:\nFires powerful Roaring Waves forward, dealing Ether DMG.\nCharacter is invulnerable while using this skill.\nAssist Follow-Up: Grapple Synergy Strike is considered an Aftershock."
+        "gameText": "Activates when another squad member uses a Counter Assist and successfully counters an enemy's Control Skill:\nFires a powerful sound wave forward, dealing Ether DMG.\nCharacter is invulnerable while using this skill.\nAssist Follow-Up: Perfect Rhythm is an Aftershock."
       },
       {
         "id": "core-passive",
         "label": "Core Passive: Polyphonic Resonance (Core Skill level 7)",
         "kind": "core",
         "does": [],
-        "gameText": "When Robin uses certain skills, she grants all squad members a Shield[term 1000056, not named in the game files] based on varying amounts of her initial Max HP, lasting 15s. When a character gains Guardian Shield repeatedly, the Shield value stacks and the Guardian Shield duration is extended, up to a maximum of 60s. Shield value cannot exceed 12% of Robin's initial Max HP. Each character's Guardian Shield value and duration are calculated independently;\nEach time a squad member gains Guardian Shield, they enter the [term 1000055, not named in the game files] state, increasing DMG dealt by 20% for 20s. Repeated triggers refresh the duration;\nUsing Special Attack: Off-Field triggers a Quick Assist. If another character is switched on-field during the skill, Robin enters the [term 1000051, not named in the game files] state for 80s, during which she cannot be switched in via a normal switch, and all squad members gain the [term 1000054, not named in the game files] effect;\nDuring Off-Field Guard, when another squad member currently in control hits an enemy with an attack, Robin unleashes an Aftershock and gains [term 1000052, not named in the game files]. Up to 160 Entry Points can be held;\nWhen Entry Points are at 120 or more, normal switching is unlocked. If in-combat at this time, Robin can be switched in normally to activate Entry Skill: Starshine Moment, consuming 120 Entry Points and exiting the Off-Field Guard state;\nUsing Entry Skill: Starshine Moment, Ultimate: Stellar Concerto, Counter Assist: Grapple, or Chain Parry grants 1 [term 1000053, not named in the game files]. Up to 1 Buff Enhance Point can be held;\nWhen entering the Off-Field Guard state, if Robin has Buff Enhance Point, 1 Buff Enhance Point is consumed to further increase the DEF boost granted by the Guardian Aria state and its cap by 25%;\nUsing Entry Skill: Starshine Moment, Ultimate: Stellar Concerto, Chain Attack: Booming Downbeat, or Assist Follow-Up: Dazzling Cheer triggers a Quick Assist. If another character is switched on-field during the skill, Robin automatically stays on-field to unleash Special Attack: Off-Field;\nAfter a successful Chain Parry triggers an Assist Follow-Up, if Robin is not the character currently in control, she automatically unleashes Special Attack: Off-Field;\nWhen Robin or the on-field character is about to be hit by certain enemies' Control Skills, pressing [Switch button] to switch to the next character lowers Robin's priority for triggering Counter Assist. When another squad member uses Counter Assist and successfully neutralizes the enemy's Control Skill, Robin unleashes Assist Follow-Up: Grapple Synergy Strike off-field;\nEach time any squad member triggers Maim, Robin restores a flat 15 Energy."
+        "gameText": "When Robin uses certain skills, she grants all squad members varying amounts of [term 1000056, not named in the game files] based on her Max initial HP, lasting 15s. Repeatedly gaining Harmonic Shield allows characters to stack Shield and extend the duration of Harmonic Shield, up to a maximum of 60s. The total Shield cannot exceed 12% of Robin's Max initial HP. Each character's Harmonic Shield amount and duration are calculated independently.\nWhenever a squad member gains Harmonic Shield, they enter the [term 1000055, not named in the game files] state, increasing their DMG by 20% for 20s. Repeated triggers reset the duration.\nUsing Special Attack: All Voices Sing With Me triggers a Quick Assist. If another character is switched onto the field during the skill, Robin enters the [term 1000051, not named in the game files] state for 80s, during which she cannot be actively switched in through normal character switching, and all squad members gain the [term 1000054, not named in the game files] effect.\nWhile in Backstage Concerto, when another active character in the squad hits an enemy with an attack, Robin performs an Aftershock and gains [term 1000052, not named in the game files]. Up to 160 points of Starglow can be held.\nWhen Starglow reaches at least 120, normal character switching is unlocked. If Robin is in combat, she can then use Entry Skill: Moment of Starglow by switching her in normally, consuming 120 of Starglow and exiting the Backstage Concerto state.\nUsing Entry Skill: Moment of Starglow, Ultimate: Stellar Concerto, Counter Assist: Neverending Harmony, or a Chain Parry grants [term 1000053, not named in the game files]. A maximum of 1 Accent Beat can be held.\nWhen entering the Backstage Concerto state, if Robin has Accent Beat, she consumes 1 Accent Beat, increasing both the DEF bonus provided by Guardian Aria and its maximum increase by an additional 25%.\nAfter using Entry Skill: Moment of Starglow, Ultimate: Stellar Concerto, Chain Attack: Booming Beat, or Assist Follow-Up: Shining Aid, a Quick Assist is triggered. If another character is switched onto the field during any of these skills, Robin automatically remains on the field and uses Special Attack: All Voices Sing With Me.\nAfter using an Assist Follow-Up following a successful Chain Parry, Robin automatically uses Special Attack: All Voices Sing With Me if she is not the currently active character.\nWhen this character or the on-field character is about to be hit by certain enemies' Control Skills, pressing [Switch button] to switch to the next character gives Robin lower priority for triggering a Counter Assist. When another squad member uses a Counter Assist and successfully counters an enemy's Control Skill, Robin performs Assist Follow-Up: Perfect Rhythm from off-field.\nEach time any squad member triggers Maim, Robin restores a fixed 15 Energy."
       },
       {
         "id": "additional-ability",
-        "label": "Additional Ability: Heavy Beat Resonance",
+        "label": "Additional Ability: Rhythmic Resonance",
         "kind": "additional",
         "does": [],
-        "gameText": "Triggers when there is an Armorer or Stun Character in your squad:\nUpon entering the battlefield, gain 3,000 Decibels. In Investigation Zone mode, this effect can trigger once every 600s;\nATK of all Stun Characters in the squad increases by 80. This effect scales with Robin's Lv., increasing by 12 per level, up to a maximum increase of 800."
+        "gameText": "When another character in your squad is an Armorer or Stun character:\nUpon entering the battlefield, gain 3,000 Decibels. In Investigation Zone Mode, this effect can trigger once every 600s.\nAll Stun characters in the squad gain 80 ATK. This bonus increases by 12 for each of Robin's levels, up to a maximum of 800."
       },
       {
         "id": "mindscape-1",
-        "label": "Mindscape 1: Life's like a song",
+        "label": "Mindscape 1: Life Is Like a Song",
         "kind": "mindscape",
         "unlock": {
           "dupes": 1
         },
         "does": [],
-        "gameText": "When Robin uses Entry Skill: Starshine Moment, she gains 2 stacks of Harmonic Blessing, up to a max of 2 stacks of Harmonic Blessing. When she provides [term 1000056, not named in the game files] while holding Harmonic Blessing, she consumes 1 stack of Harmonic Blessing to grant all squad members a special Guardian Shield. When the active character's Guardian Shield is broken, the special Guardian Shield blocks the excess DMG once, then the special Guardian Shield is removed. Upon entering the battlefield, she gains 2 stacks of Harmonic Blessing. In Investigation Zone mode, this effect can trigger at most once every 180s. Each time [term 1000053, not named in the game files] is consumed, DMG dealt by all squad members ignores 20% of the enemy's defense for 80s. Repeated triggers refresh the duration."
+        "gameText": "When Robin uses Entry Skill: Starglow Moment, she gains 2 stacks of Harmonic Blessing; up to 2 stacks of Harmonic Blessing can be held. When granting [term 1000056, not named in the game files], if she holds Harmonic Blessing, she consumes 1 stack of Harmonic Blessing to grant all squad members a special Harmonic Shield; the special Harmonic Shield blocks one instance of DMG exceeding the current shield value, after which the special Harmonic Shield is removed; upon entering the battlefield, Robin gains 2 stacks of Harmonic Blessing, and in Investigation Zone mode this effect can trigger once every 180s; whenever [term 1000053, not named in the game files] is consumed, DMG dealt by all squad members ignores 20% of the target's DEF for 80s. Repeated triggers refresh the duration."
       },
       {
         "id": "mindscape-2",
-        "label": "Mindscape 2: Talent and Hard Work",
+        "label": "Mindscape 2: Talent and Dedication",
         "kind": "mindscape",
         "unlock": {
           "dupes": 2
         },
         "does": [],
-        "gameText": "When Robin launches an Aftershock, DMG dealt by all squad members ignores 15% of the enemy's RES for 20s. Repeated triggers refresh the duration."
+        "gameText": "When Robin uses an Aftershock, DMG dealt by all squad members ignores 15% of the enemy's RES for 20s. Repeated triggers reset the duration."
       },
       {
         "id": "mindscape-3",
-        "label": "Mindscape 3: What We Sing For",
+        "label": "Mindscape 3: Why Do We Sing?",
         "kind": "mindscape",
         "unlock": {
           "dupes": 3
@@ -12667,11 +12667,11 @@
           "dupes": 4
         },
         "does": [],
-        "gameText": "Robin's DMG is increased by 10%. When activating Special Attack: Aftershock, if the skill hasn't been upgraded, it is upgraded to EX Special Attack: Enhanced Aftershock, which doesn't consume Energy. This effect can trigger once every 60s."
+        "gameText": "Robin's DMG increases by 10%. When using Special Attack: Songs in Harmony, if the skill upgrade is not triggered, it is instead upgraded to EX Special Attack: Seismic Chorus at no Energy cost. This effect can trigger once every 60s."
       },
       {
         "id": "mindscape-5",
-        "label": "Mindscape 5: Song's Over, Party's Not",
+        "label": "Mindscape 5: The Song Ends, but We Remain",
         "kind": "mindscape",
         "unlock": {
           "dupes": 5
@@ -12681,13 +12681,13 @@
       },
       {
         "id": "mindscape-6",
-        "label": "Mindscape 6: The sky is where birds belong.",
+        "label": "Mindscape 6: The Sky Is Where Birds Belong",
         "kind": "mindscape",
         "unlock": {
           "dupes": 6
         },
         "does": [],
-        "gameText": "EX Special Attack: Enhanced Aftershock is guaranteed to trigger a critical hit. The effect of EX Special Attack: Enhanced Aftershock that additionally increases heavy attack DMG based on Max HP is boosted to 200% of its original value. Sharp DMG dealt by Characters across the whole squad with the [term 1000054, not named in the game files] effect is increased by 15%."
+        "gameText": "EX Special Attack: Seismic Chorus is guaranteed to CRIT. The additional heavy attack DMG bonus based on Max HP for EX Special Attack: Seismic Chorus increases to 200% of its original value. Sharp DMG dealt by all squad members with [term 1000054, not named in the game files] increases by 15%."
       }
     ]
   }

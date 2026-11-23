@@ -406,5 +406,125 @@
       "start": true,
       "end": true
     }
+  },
+  {
+    "id": "burning-night-into-day-2026-12-02",
+    "type": "exclusive",
+    "title": "Burning Night Into Day",
+    "featured": [
+      "1601"
+    ],
+    "start": "2026-12-02T03:00:00.000Z",
+    "end": "2027-01-12T06:59:59.000Z",
+    "serverTime": {
+      "base": 8,
+      "end": true
+    }
+  },
+  {
+    "id": "dragonfire-mirage-2026-12-02",
+    "type": "w-engine",
+    "title": "Dragonfire Mirage",
+    "featured": [
+      "14160"
+    ],
+    "start": "2026-12-02T03:00:00.000Z",
+    "end": "2027-01-12T06:59:59.000Z",
+    "serverTime": {
+      "base": 8,
+      "end": true
+    },
+    "art": "https://static.nanoka.cc/assets/zzz/Weapon_S_1601.webp"
+  },
+  {
+    "id": "iridescent-starsong-2026-12-02",
+    "type": "w-engine",
+    "title": "Iridescent Starsong",
+    "featured": [
+      "14166"
+    ],
+    "start": "2026-12-02T03:00:00.000Z",
+    "end": "2027-01-12T06:59:59.000Z",
+    "serverTime": {
+      "base": 8,
+      "end": true
+    },
+    "art": "https://static.nanoka.cc/assets/zzz/Weapon_S_1661.webp"
+  },
+  {
+    "id": "radiant-timbre-2026-12-02",
+    "type": "exclusive",
+    "title": "Radiant Timbre",
+    "featured": [
+      "1661"
+    ],
+    "start": "2026-12-02T03:00:00.000Z",
+    "end": "2027-01-12T06:59:59.000Z",
+    "serverTime": {
+      "base": 8,
+      "end": true
+    }
+  },
+  {
+    "id": "final-acts-nocturne-2027-01-01",
+    "type": "exclusive",
+    "title": "Final Act's Nocturne",
+    "featured": [
+      "1651"
+    ],
+    "start": "2027-01-01T04:00:00.000Z",
+    "end": "2027-01-21T06:59:59.000Z",
+    "serverTime": {
+      "base": 8,
+      "start": true,
+      "end": true
+    }
+  },
+  {
+    "id": "practiced-perfection-2027-01-01",
+    "type": "w-engine",
+    "title": "Practiced Perfection",
+    "featured": [
+      "14140"
+    ],
+    "start": "2027-01-01T04:00:00.000Z",
+    "end": "2027-01-12T06:59:59.000Z",
+    "serverTime": {
+      "base": 8,
+      "start": true,
+      "end": true
+    },
+    "art": "https://static.nanoka.cc/assets/zzz/Weapon_S_1401.webp"
+  },
+  {
+    "id": "requiem-araneae-2027-01-01",
+    "type": "w-engine",
+    "title": "Requiem Araneae",
+    "featured": [
+      "14165"
+    ],
+    "start": "2027-01-01T04:00:00.000Z",
+    "end": "2027-01-21T06:59:59.000Z",
+    "serverTime": {
+      "base": 8,
+      "start": true,
+      "end": true
+    },
+    "art": "https://static.nanoka.cc/assets/zzz/Weapon_S_1651.webp"
+  },
+  {
+    "id": "sworn-to-noble-courage-2027-01-01",
+    "type": "exclusive",
+    "title": "Sworn to Noble Courage",
+    "featured": [
+      "1401"
+    ],
+    "start": "2027-01-01T04:00:00.000Z",
+    "end": "2027-01-12T06:59:59.000Z",
+    "serverTime": {
+      "base": 8,
+      "start": true,
+      "end": true
+    }
   }
 ]
