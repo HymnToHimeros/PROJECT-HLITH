@@ -83,7 +83,12 @@ describe('Endfield builds.json', () => {
   const ids = new Set(characters.map((c) => c.id));
 
   it('every build is an operator we list, every weapon is in weapons.json and every set in gear-sets.json', () => {
-    expect(builds.length).toBe(characters.length);
+    // Every released operator has a build; a new one gets 14 days for the wiki to list its weapons (Kay in 1.7),
+    // as kits do (tests/endfieldKits.test.ts).
+    const GRACE = 14 * 86_400_000;
+    const built = new Set(builds.map((b) => b.characterId));
+    const out = (characters as { id: string; releasedAt?: string }[]).filter((c) => !c.releasedAt || Date.parse(c.releasedAt) + GRACE <= Date.now());
+    for (const c of out) expect(built.has(c.id), c.id).toBe(true);
     for (const b of builds) {
       expect(ids.has(b.characterId), b.characterId).toBe(true);
       expect(b.weapons.length, b.characterId).toBeGreaterThan(0);

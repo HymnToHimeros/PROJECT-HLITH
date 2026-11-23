@@ -38,6 +38,11 @@ describe('Endfield lists from the wiki', () => {
     expect(ops.find((o) => o.name === 'Si')).toMatchObject({ art: 'https://endfield.wiki.gg/images/Si_Splash_Art.png', portrait: 'https://endfield.wiki.gg/images/Si_icon.png', source: 'endfield.wiki.gg (CC BY-SA)' });
     expect(notes.notes).toContain('operator "Akekuri" left out: 4★ has no rarity tier in the contract yet');
     expect(operators(OPS, BANNERS, images, true, { notes: [] }, LAUNCH).find((o) => o.name === 'Akekuri')?.rarity).toBe('low');
+    // Only announced on the wiki (no game id, on no banner): left out, since an operator without a release date counts as out.
+    const announced = { notes: [] as string[] };
+    const withUpcoming = operators([...OPS, { Operator: 'Mimino', Id: '', Rarity: '5', Class: 'Supporter', Element: 'Physical', Headhunting: 'welfare' }], BANNERS, images, false, announced, LAUNCH);
+    expect(withUpcoming.some((o) => o.name === 'Mimino')).toBe(false);
+    expect(announced.notes).toContain('operator "Mimino" left out: no game id and no release date on the wiki yet');
     expect(rarityOf('3', true)).toBeUndefined();
   });
 
@@ -60,6 +65,11 @@ describe('Endfield lists from the wiki', () => {
     const by = (t: string) => list.find((b) => b.title === t);
     expect(by('Basic Headhunting')).toBeUndefined(); // its pool (Ardelia) is not in this test's operator list
     expect(notes.notes).toContain('banner "Basic Headhunting" left out until its operator is on the wiki');
+    // An end before the start on the wiki (Precious Scarlet: 2026-12-16 to "2026-01-07") is left out, never guessed.
+    const typo = { notes: [] as string[] };
+    const rerun: Row[] = [{ Banner: 'Precious Scarlet', RateUpOperator: 'Si', AsiaStartTime: '2026-12-16 04:00:00', AsiaEndTime: '2026-01-07 03:59:59' }];
+    expect(banners(rerun, [], ops, wpns, '2027-01-06T22:00:00.000Z', typo).some((b) => b.title === 'Precious Scarlet')).toBe(false);
+    expect(typo.notes.some((n) => n.startsWith('banner "Precious Scarlet" left out: the wiki\'s end'))).toBe(true);
     // Typhoeus and Liino are not in this test's operator list, so no alsoAvailable here (never guessed).
     expect(by('Rejuvenation')).toEqual({ id: 'rejuvenation-2026-10-15', type: 'chartered', title: 'Rejuvenation', featured: ['chr_0036_jsspsi'], start: '2026-10-15T04:00:00.000Z', end: '2026-11-05T03:59:59.000Z', serverTime: { base: 8, end: true } });
     const withPool = banners([{ ...(BANNERS[1] as Row), LimitedOperators: 'Si;Endministrator' }], [], [...ops, { id: 'chr_x', name: 'Endministrator', rarity: 'top', element: 'physical', role: 'guard', source: 'w' }], wpns, undefined, { notes: [] });

@@ -378,5 +378,16 @@
     "art": "https://endfield.wiki.gg/images/Purrchena_Splash_Art.png",
     "portrait": "https://endfield.wiki.gg/images/Purrchena_icon.png",
     "source": "endfield.wiki.gg (CC BY-SA)"
+  },
+  {
+    "id": "chr_kay",
+    "name": "Kay",
+    "rarity": "top",
+    "element": "nature",
+    "role": "vanguard",
+    "releasedAt": "2026-11-25T04:00:00.000Z",
+    "art": "https://endfield.wiki.gg/images/Kay_Splash_Art.png",
+    "portrait": "https://endfield.wiki.gg/images/Kay_icon.png",
+    "source": "endfield.wiki.gg (CC BY-SA)"
   }
 ]

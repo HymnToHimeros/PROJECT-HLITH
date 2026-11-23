@@ -639,5 +639,80 @@
       "chr_0036_jsspsi",
       "chr_0034_typhoea"
     ]
+  },
+  {
+    "id": "anvil-backpack-plus-a-pot-o-honey-2026-11-25",
+    "type": "chartered",
+    "title": "Anvil, Backpack, Plus A Pot o'Honey",
+    "featured": [
+      "chr_kay"
+    ],
+    "start": "2026-11-25T04:00:00.000Z",
+    "end": "2026-12-23T03:59:59.000Z",
+    "serverTime": {
+      "base": 8,
+      "start": true
+    },
+    "alsoAvailable": [
+      "chr_argent-flow",
+      "chr_0036_jsspsi"
+    ]
+  },
+  {
+    "id": "casual-roamer-issue-2026-11-25",
+    "type": "weapon",
+    "title": "Casual Roamer Issue",
+    "featured": [],
+    "start": "2026-11-25T04:00:00.000Z",
+    "end": "2027-01-06T21:59:59.000Z",
+    "serverTime": {
+      "base": 8,
+      "start": true,
+      "end": true
+    }
+  },
+  {
+    "id": "floaty-traveler-issue-2026-11-25",
+    "type": "weapon",
+    "title": "Floaty Traveler Issue",
+    "featured": [
+      "wpn_funnel_0011"
+    ],
+    "start": "2026-11-25T04:00:00.000Z",
+    "end": "2026-12-16T03:59:59.000Z",
+    "serverTime": {
+      "base": 8,
+      "start": true
+    },
+    "art": "https://endfield.wiki.gg/images/Delivery_Guaranteed_icon.png"
+  },
+  {
+    "id": "to-every-wish-adrift-2026-11-25",
+    "type": "rerun",
+    "title": "To Every Wish Adrift",
+    "featured": [
+      "chr_0013_aglina"
+    ],
+    "start": "2026-11-25T04:00:00.000Z",
+    "end": "2026-12-16T03:59:59.000Z",
+    "serverTime": {
+      "base": 8,
+      "start": true
+    }
+  },
+  {
+    "id": "scarlet-claws-issue-2026-12-16",
+    "type": "weapon",
+    "title": "Scarlet Claws Issue",
+    "featured": [
+      "wpn_sword_0022"
+    ],
+    "start": "2026-12-16T04:00:00.000Z",
+    "end": "2027-01-06T21:59:59.000Z",
+    "serverTime": {
+      "base": 8,
+      "start": true
+    },
+    "art": "https://endfield.wiki.gg/images/Lupine_Scarlet_icon.png"
   }
 ]
