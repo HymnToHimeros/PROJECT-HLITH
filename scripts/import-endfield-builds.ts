@@ -93,13 +93,17 @@ export function buildFor(
   weapons: Map<string, { icon?: string }>,
   beta: boolean,
   community?: { data: CommunityBuilds; sets: Map<string, GearSet> },
-): { build: RecommendedBuild | null; unknown: string[] } {
-  const { all } = recommendedWeapons(text);
+): { build: RecommendedBuild | null; unknown: string[]; notYetListed?: string[] } {
+  const { all: named } = recommendedWeapons(text);
+  // An operator not out yet may name a weapon the wiki doesn't list yet (Kay's Sweet Deal in 1.7): it is left
+  // out with a note. For a released operator an unknown name still stops the import.
+  const notYetListed = beta ? named.filter((n) => !weapons.has(n)) : [];
+  const all = named.filter((n) => !notYetListed.includes(n));
   const unknown = all.filter((n) => !weapons.has(n)).map((n) => `weapon "${n}"`);
   const own = community?.data.operators[characterId];
   for (const e of own?.sets ?? []) if (community && !community.sets.has(e.set)) unknown.push(`gear set "${e.set}" (${e.source})`);
   for (const e of own?.skills ?? []) for (const s of e.tiers.flat()) if (!(SKILLS as readonly string[]).includes(s)) unknown.push(`skill "${s}" (${e.source})`);
-  if (!all.length) return { build: null, unknown };
+  if (!all.length) return { build: null, unknown, notYetListed };
   const set = agreedSet(own?.sets ?? []);
   const skills = agreedSkills(own?.skills ?? []);
   const items: Record<string, BuildItem> = Object.fromEntries(all.map((n) => [n, { ...(weapons.get(n)?.icon ? { icon: weapons.get(n)?.icon } : {}), effects: [] }]));
@@ -125,6 +129,7 @@ export function buildFor(
       items,
     },
     unknown,
+    notYetListed,
   };
 }
 
@@ -162,6 +167,7 @@ if (import.meta.main ?? process.argv[1]?.endsWith('import-endfield-builds.ts')) 
     else notes.push(`${c.name}: no main attribute on the page`);
     const r = buildFor(c.id, title, p.revid, p.text, weapons, beta, { data, sets: setMap });
     unknown.push(...r.unknown.map((n) => `${c.name}: ${n}`));
+    for (const n of r.notYetListed ?? []) notes.push(`${c.name} (not out yet): weapon "${n}" is not on the wiki's weapon list yet, left out of the build`);
     if (r.build) builds.push(r.build);
     else notes.push(`${c.name}: no recommended weapons on the page, left out`);
   }

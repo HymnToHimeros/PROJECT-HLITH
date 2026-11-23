@@ -96,6 +96,13 @@ export function operators(rows: Row[], banners: Row[], images: Map<string, strin
     }
     // The player character (no headhunting at all) is there from the game's launch.
     const released = firstSeen.get(base) ?? (!r.Headhunting?.trim() && /^endministrator$/i.test(base) ? launch : undefined);
+    // Neither a game id nor a release date, and no banner to bring one (a free "welfare" operator like Mimino):
+    // only announced. Listing it would count it as out (no releasedAt means out), so it waits for its game id.
+    // A headhunting operator stays: its banner (wiki or official notice) gives the date.
+    if (!r.Id?.trim() && !released && !/chartered|limited/i.test(r.Headhunting ?? '')) {
+      out.notes.push(`operator "${name}" left out: no game id and no release date on the wiki yet`);
+      continue;
+    }
     const art = images.get(r.Splash ?? '');
     const portrait = images.get(r.Icon ?? '');
     list.push({
@@ -211,6 +218,8 @@ export function banners(
     const permanent = permanentFlag || !end;
     const shownEnd = end ?? versionEnd;
     if (!shownEnd) return out.notes.push(`banner "${title}" left out: no end and no current version end`);
+    // A typo on the wiki (an end before the start, e.g. the wrong year) is never shown or guessed at.
+    if (Date.parse(shownEnd) <= Date.parse(start)) return out.notes.push(`banner "${title}" left out: the wiki's end (${shownEnd}) is not after its start (${start})`);
     list.push({
       id: `${slug(title)}-${start.slice(0, 10)}`,
       type,

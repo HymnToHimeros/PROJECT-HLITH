@@ -1233,5 +1233,106 @@
       "start": true,
       "end": true
     }
+  },
+  {
+    "id": "shroomy-gathering-2026-11-21",
+    "title": "Shroomy Gathering",
+    "kind": "login",
+    "start": "2026-11-21T11:40:00.000Z",
+    "end": "2026-11-24T22:00:00.000Z",
+    "reward": null,
+    "currency": "oroberyl"
+  },
+  {
+    "id": "season-of-scattering-2026-11-25",
+    "title": "Season of Scattering",
+    "kind": "event",
+    "start": "2026-11-25T04:00:00.000Z",
+    "end": "2026-12-14T22:00:00.000Z",
+    "reward": null,
+    "currency": "oroberyl",
+    "serverTime": {
+      "base": 8,
+      "end": true
+    }
+  },
+  {
+    "id": "lucky-carrot-s-games-of-wonder-2026-12-16",
+    "title": "Lucky Carrot's Games of Wonder",
+    "kind": "event",
+    "start": "2026-12-16T04:00:00.000Z",
+    "end": "2027-01-06T22:00:00.000Z",
+    "reward": null,
+    "currency": "oroberyl",
+    "serverTime": {
+      "base": 8,
+      "start": true
+    }
+  },
+  {
+    "id": "rise-mega-arena-2026-12-16",
+    "title": "RISE! MEGA ARENA!",
+    "kind": "event",
+    "start": "2026-12-16T04:00:00.000Z",
+    "end": "2027-01-06T22:00:00.000Z",
+    "reward": null,
+    "currency": "oroberyl",
+    "serverTime": {
+      "base": 8,
+      "start": true
+    }
+  },
+  {
+    "id": "season-of-wariness-2026-12-16",
+    "title": "Season of Wariness",
+    "kind": "event",
+    "start": "2026-12-16T04:00:00.000Z",
+    "end": "2027-01-06T22:00:00.000Z",
+    "reward": null,
+    "currency": "oroberyl"
+  },
+  {
+    "id": "workers-guard-roll-call-2026-12-16",
+    "title": "Workers' Guard: Roll Call",
+    "kind": "bonus",
+    "start": "2026-12-16T04:00:00.000Z",
+    "end": "2027-01-06T22:00:00.000Z",
+    "reward": null,
+    "currency": "oroberyl",
+    "serverTime": {
+      "base": 8,
+      "start": true
+    }
+  },
+  {
+    "id": "endmin-let-s-sort-the-prezzies-2026-12-23",
+    "title": "Endmin! Let's Sort the Prezzies!",
+    "kind": "event",
+    "start": "2026-12-23T04:00:00.000Z",
+    "end": "2027-01-06T22:00:00.000Z",
+    "reward": null,
+    "currency": "oroberyl",
+    "serverTime": {
+      "base": 8,
+      "start": true
+    }
+  },
+  {
+    "id": "array-building-mend-the-old-gash-2026-12-25",
+    "title": "Array Building: Mend the Old Gash",
+    "kind": "event",
+    "start": "2026-12-25T04:00:00.000Z",
+    "end": "2027-01-06T22:00:00.000Z",
+    "reward": null,
+    "currency": "oroberyl"
+  },
+  {
+    "id": "i-dream-of-honey-waffles-2026-12-25",
+    "title": "I Dream of Honey Waffles",
+    "kind": "event",
+    "start": "2026-12-25T04:00:00.000Z",
+    "end": "2027-01-06T22:00:00.000Z",
+    "reward": null,
+    "currency": "oroberyl"
   }
 ]
