@@ -631,5 +631,12 @@
     "icon": "https://endfield.wiki.gg/images/Farsight_icon.png",
     "type": "sword",
     "source": "endfield.wiki.gg (CC BY-SA)"
+  },
+  {
+    "id": "wpn_sweet-deal",
+    "name": "Sweet Deal",
+    "rarity": "top",
+    "type": "polearm",
+    "source": "Official notice (web-news.gryphline.com)"
   }
 ]

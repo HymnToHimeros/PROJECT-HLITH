@@ -648,10 +648,10 @@
       "chr_kay"
     ],
     "start": "2026-11-25T04:00:00.000Z",
-    "end": "2026-12-23T03:59:59.000Z",
+    "end": "2026-12-23T03:59:00.000Z",
     "serverTime": {
       "base": 8,
-      "start": true
+      "end": true
     },
     "alsoAvailable": [
       "chr_argent-flow",
@@ -662,7 +662,9 @@
     "id": "casual-roamer-issue-2026-11-25",
     "type": "weapon",
     "title": "Casual Roamer Issue",
-    "featured": [],
+    "featured": [
+      "wpn_sweet-deal"
+    ],
     "start": "2026-11-25T04:00:00.000Z",
     "end": "2027-01-06T21:59:59.000Z",
     "serverTime": {
@@ -695,6 +697,20 @@
     ],
     "start": "2026-11-25T04:00:00.000Z",
     "end": "2026-12-16T03:59:59.000Z",
+    "serverTime": {
+      "base": 8,
+      "start": true
+    }
+  },
+  {
+    "id": "precious-scarlet-2026-12-16",
+    "type": "rerun",
+    "title": "Precious Scarlet",
+    "featured": [
+      "chr_0028_wulfa"
+    ],
+    "start": "2026-12-16T04:00:00.000Z",
+    "end": "2027-01-07T03:59:59.000Z",
     "serverTime": {
       "base": 8,
       "start": true
