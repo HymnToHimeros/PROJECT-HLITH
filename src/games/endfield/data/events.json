@@ -1244,6 +1244,37 @@
     "currency": "oroberyl"
   },
   {
+    "id": "array-building-mend-the-old-gash-2026-11-25",
+    "title": "Array Building: Mend the Old Gash",
+    "kind": "event",
+    "start": "2026-11-25T04:00:00.000Z",
+    "end": "2027-01-06T22:00:00.000Z",
+    "reward": null,
+    "currency": "oroberyl"
+  },
+  {
+    "id": "caps-shrooms-fungi-2026-11-25",
+    "title": "Caps! Shrooms! FUNGI!",
+    "kind": "web",
+    "start": "2026-11-25T04:00:00.000Z",
+    "end": "2026-12-23T04:00:00.000Z",
+    "reward": null,
+    "currency": "oroberyl",
+    "serverTime": {
+      "base": 8,
+      "end": true
+    }
+  },
+  {
+    "id": "i-dream-of-honey-waffles-2026-11-25",
+    "title": "I Dream of Honey Waffles",
+    "kind": "event",
+    "start": "2026-11-25T04:00:00.000Z",
+    "end": "2027-01-06T22:00:00.000Z",
+    "reward": null,
+    "currency": "oroberyl"
+  },
+  {
     "id": "season-of-scattering-2026-11-25",
     "title": "Season of Scattering",
     "kind": "event",
@@ -1316,23 +1347,5 @@
       "base": 8,
       "start": true
     }
-  },
-  {
-    "id": "array-building-mend-the-old-gash-2026-12-25",
-    "title": "Array Building: Mend the Old Gash",
-    "kind": "event",
-    "start": "2026-12-25T04:00:00.000Z",
-    "end": "2027-01-06T22:00:00.000Z",
-    "reward": null,
-    "currency": "oroberyl"
-  },
-  {
-    "id": "i-dream-of-honey-waffles-2026-12-25",
-    "title": "I Dream of Honey Waffles",
-    "kind": "event",
-    "start": "2026-12-25T04:00:00.000Z",
-    "end": "2027-01-06T22:00:00.000Z",
-    "reward": null,
-    "currency": "oroberyl"
   }
 ]
