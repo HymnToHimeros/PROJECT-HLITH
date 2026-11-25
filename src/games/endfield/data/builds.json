@@ -1399,7 +1399,7 @@
  },
  {
   "characterId": "chr_0032_lizhiyan",
-  "source": "the game's recommendation, not ranked: Matching Skills first, then Matching Stats (endfield.wiki.gg/wiki/Arcane, CC BY-SA 4.0, revision 67096)",
+  "source": "the game's recommendation, not ranked: Matching Skills first, then Matching Stats (endfield.wiki.gg/wiki/Arcane, CC BY-SA 4.0, revision 80658)",
   "ranked": false,
   "hasMainStats": false,
   "sets": [],
@@ -1413,7 +1413,7 @@
    "Stanza of Memorials"
   ],
   "skillsFirst": [],
-  "version": "wiki revision 67096",
+  "version": "wiki revision 80658",
   "items": {
    "Type 42: Solemn Phalanx": {
     "icon": "https://endfield.wiki.gg/images/Type_42_Solemn_Phalanx_icon.png",
@@ -1534,7 +1534,7 @@
  },
  {
   "characterId": "chr_0036_jsspsi",
-  "source": "the game's recommendation, not ranked: Matching Skills first, then Matching Stats (endfield.wiki.gg/wiki/Si, CC BY-SA 4.0, revision 67501)",
+  "source": "the game's recommendation, not ranked: Matching Skills first, then Matching Stats (endfield.wiki.gg/wiki/Si, CC BY-SA 4.0, revision 80665)",
   "ranked": false,
   "hasMainStats": false,
   "sets": [],
@@ -1546,7 +1546,7 @@
    "Khravengger"
   ],
   "skillsFirst": [],
-  "version": "wiki revision 67501",
+  "version": "wiki revision 80665",
   "items": {
    "Jade Vessel": {
     "icon": "https://endfield.wiki.gg/images/Jade_Vessel_icon.png",
@@ -1594,7 +1594,7 @@
  },
  {
   "characterId": "chr_argent-flow",
-  "source": "the game's recommendation, not ranked: Matching Skills first, then Matching Stats (endfield.wiki.gg/wiki/Argent_Flow, CC BY-SA 4.0, revision 67128)",
+  "source": "the game's recommendation, not ranked: Matching Skills first, then Matching Stats (endfield.wiki.gg/wiki/Argent_Flow, CC BY-SA 4.0, revision 80667)",
   "ranked": false,
   "hasMainStats": false,
   "sets": [],
@@ -1606,7 +1606,7 @@
    "White Night Nova"
   ],
   "skillsFirst": [],
-  "version": "wiki revision 67128",
+  "version": "wiki revision 80667",
   "items": {
    "Lunar Calling": {
     "icon": "https://endfield.wiki.gg/images/Lunar_Calling_icon.png",
@@ -1618,6 +1618,34 @@
    },
    "White Night Nova": {
     "icon": "https://endfield.wiki.gg/images/White_Night_Nova_icon.png",
+    "effects": []
+   }
+  }
+ },
+ {
+  "characterId": "chr_kay",
+  "source": "the game's recommendation, not ranked: Matching Skills first, then Matching Stats (endfield.wiki.gg/wiki/Kay, CC BY-SA 4.0, revision 80861)",
+  "ranked": false,
+  "hasMainStats": false,
+  "sets": [],
+  "mainStats": {},
+  "subStats": [],
+  "weapons": [
+   "Sweet Deal",
+   "Raid Comet",
+   "Chimeric Justice"
+  ],
+  "skillsFirst": [],
+  "version": "wiki revision 80861",
+  "items": {
+   "Sweet Deal": {
+    "effects": []
+   },
+   "Raid Comet": {
+    "effects": []
+   },
+   "Chimeric Justice": {
+    "icon": "https://endfield.wiki.gg/images/Chimeric_Justice_icon.png",
     "effects": []
    }
   }

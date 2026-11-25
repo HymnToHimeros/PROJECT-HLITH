@@ -171,7 +171,7 @@
   "main": "Intellect",
   "secondary": "Will",
   "source": "endfield.wiki.gg/wiki/Arcane (CC BY-SA 4.0)",
-  "version": "wiki revision 67096"
+  "version": "wiki revision 80658"
  },
  "chr_0033_camille": {
   "main": "Agility",
@@ -195,7 +195,7 @@
   "main": "Intellect",
   "secondary": "Strength",
   "source": "endfield.wiki.gg/wiki/Si (CC BY-SA 4.0)",
-  "version": "wiki revision 67501"
+  "version": "wiki revision 80665"
  },
  "chr_0038_purrche": {
   "main": "Strength",
@@ -207,6 +207,12 @@
   "main": "Will",
   "secondary": "Strength",
   "source": "endfield.wiki.gg/wiki/Argent_Flow (CC BY-SA 4.0)",
-  "version": "wiki revision 67128"
+  "version": "wiki revision 80667"
+ },
+ "chr_kay": {
+  "main": "Strength",
+  "secondary": "Agility",
+  "source": "endfield.wiki.gg/wiki/Kay (CC BY-SA 4.0)",
+  "version": "wiki revision 80861"
  }
 }

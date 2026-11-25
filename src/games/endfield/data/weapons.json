@@ -368,6 +368,21 @@
     "source": "endfield.wiki.gg (CC BY-SA)"
   },
   {
+    "id": "wpn_sweet-deal",
+    "name": "Sweet Deal",
+    "rarity": "top",
+    "type": "polearm",
+    "source": "endfield.wiki.gg (CC BY-SA)",
+    "gameId": "wpn_lance_0017"
+  },
+  {
+    "id": "wpn_lance_0018",
+    "name": "Raid Comet",
+    "rarity": "top",
+    "type": "polearm",
+    "source": "endfield.wiki.gg (CC BY-SA)"
+  },
+  {
     "id": "wpn_pistol_0002",
     "name": "Howling Guard",
     "rarity": "low",
@@ -633,10 +648,10 @@
     "source": "endfield.wiki.gg (CC BY-SA)"
   },
   {
-    "id": "wpn_sweet-deal",
-    "name": "Sweet Deal",
+    "id": "wpn_star-of-tomorrow",
+    "name": "Star of Tomorrow",
     "rarity": "top",
-    "type": "polearm",
+    "type": "handcannon",
     "source": "Official notice (web-news.gryphline.com)"
   }
 ]
