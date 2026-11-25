@@ -828,7 +828,7 @@
    }
   ],
   "source": "endfield.wiki.gg/wiki/Jade_Vessel (CC BY-SA 4.0)",
-  "version": "wiki revision 67090"
+  "version": "wiki revision 80624"
  },
  {
   "weapon": "JET",
@@ -955,7 +955,7 @@
    }
   ],
   "source": "endfield.wiki.gg/wiki/Long_Heritage (CC BY-SA 4.0)",
-  "version": "wiki revision 64960"
+  "version": "wiki revision 80625"
  },
  {
   "weapon": "Long Road",
@@ -1410,6 +1410,28 @@
   "version": "wiki revision 61813"
  },
  {
+  "weapon": "Raid Comet",
+  "skills": [
+   {
+    "name": "Strength [L]",
+    "rank1": "Strength +20",
+    "max": "Strength +156"
+   },
+   {
+    "name": "ULT Efficiency [L]",
+    "rank1": "Ultimate Gain Efficiency +5.95%",
+    "max": "Ultimate Gain Efficiency +46.43%"
+   },
+   {
+    "name": "Detonate: Skybreaker",
+    "rank1": "Nature DMG Dealt +7%. After the wielder applies a Nature Burst, the wielder gains Nature DMG Dealt +12% for 20.00s. After the wielder's skill recovers SP, the entire team gains Arts DMG Dealt +2% for 20.00s. The two effects apply separately and do not stack with themselves.",
+    "max": "Nature DMG Dealt +19.6%. After the wielder applies a Nature Burst, the wielder gains Nature DMG Dealt +33.6% for 20.00s. After the wielder's skill recovers SP, the entire team gains Arts DMG Dealt +5.6% for 20.00s. The two effects apply separately and do not stack with themselves."
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Raid_Comet (CC BY-SA 4.0)",
+  "version": "wiki revision 80627"
+ },
+ {
   "weapon": "Rapid Ascent",
   "skills": [
    {
@@ -1498,6 +1520,28 @@
   "version": "wiki revision 61832"
  },
  {
+  "weapon": "Star of Tomorrow",
+  "skills": [
+   {
+    "name": "Strength [M]",
+    "rank1": "Strength +16",
+    "max": "Strength +124"
+   },
+   {
+    "name": "ULT Efficiency [M]",
+    "rank1": "Ultimate Gain Efficiency +4.76%",
+    "max": "Ultimate Gain Efficiency +37.14%"
+   },
+   {
+    "name": "Assult: N/A",
+    "rank1": "&#8211;",
+    "max": "&#8211;"
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Star_of_Tomorrow (CC BY-SA 4.0)",
+  "version": "wiki revision 80864"
+ },
+ {
   "weapon": "Suffering's End",
   "skills": [
    {
@@ -1562,6 +1606,28 @@
   ],
   "source": "endfield.wiki.gg/wiki/Sundering_Steel (CC BY-SA 4.0)",
   "version": "wiki revision 61878"
+ },
+ {
+  "weapon": "Sweet Deal",
+  "skills": [
+   {
+    "name": "Strength [L]",
+    "rank1": "Strength +20",
+    "max": "Strength +156"
+   },
+   {
+    "name": "Nature DMG [L]",
+    "rank1": "Nature DMG Dealt +5.56%",
+    "max": "Nature DMG Dealt +43.33%"
+   },
+   {
+    "name": "Flow: Sweetening Function",
+    "rank1": "Ultimate Gain Efficiency +18%. After the wielder's skill recovers SP, the entire team gains ATK +2% for 30.00s. Max stacks for this effect: 3.00. Duration of each stack is counted separately. Effect only triggers once every 0.1s. After the wielder's skill applies an Arts Burst, the entire team gains Arts DMG Dealt +6% for 15.00s. This effect cannot stack.",
+    "max": "Ultimate Gain Efficiency +50.4%. After the wielder's skill recovers SP, the entire team gains ATK +5.6% for 30.00s. Max stacks for this effect: 3.00. Duration of each stack is counted separately. Effect only triggers once every 0.1s. After the wielder's skill applies an Arts Burst, the entire team gains Arts DMG Dealt +16.8% for 15.00s. This effect cannot stack."
+   }
+  ],
+  "source": "endfield.wiki.gg/wiki/Sweet_Deal (CC BY-SA 4.0)",
+  "version": "wiki revision 80626"
  },
  {
   "weapon": "Tarr 11",

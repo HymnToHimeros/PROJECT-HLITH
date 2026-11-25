@@ -2970,7 +2970,7 @@
   {
     "characterId": "chr_0032_lizhiyan",
     "source": "endfield.wiki.gg/wiki/Arcane (CC BY-SA 4.0)",
-    "version": "wiki revision 67096",
+    "version": "wiki revision 80658",
     "skills": [
       {
         "id": "basic-attack-array-arcana-int",
@@ -3422,7 +3422,7 @@
   {
     "characterId": "chr_0036_jsspsi",
     "source": "endfield.wiki.gg/wiki/Si (CC BY-SA 4.0)",
-    "version": "wiki revision 67501",
+    "version": "wiki revision 80665",
     "skills": [
       {
         "id": "basic-attack",
@@ -3528,7 +3528,7 @@
   {
     "characterId": "chr_argent-flow",
     "source": "endfield.wiki.gg/wiki/Argent_Flow (CC BY-SA 4.0)",
-    "version": "wiki revision 67128",
+    "version": "wiki revision 80667",
     "skills": [
       {
         "id": "basic-attack",
@@ -3734,6 +3734,112 @@
         },
         "does": [],
         "gameText": "Ultimate NAUGHTY IS BANNED! improved:\nAmbassador's Special: DMG Multiplier is increased to 1.2 times the original.\nAmbassador's Special: Arts Susceptibility is increased to 1.2 times the original."
+      }
+    ]
+  },
+  {
+    "characterId": "chr_kay",
+    "source": "endfield.wiki.gg/wiki/Kay (CC BY-SA 4.0)",
+    "version": "wiki revision 80861",
+    "skills": [
+      {
+        "id": "basic-attack",
+        "label": "Basic Attack: Wild Wacky-Whack",
+        "kind": "skill",
+        "does": [],
+        "gameText": "BASIC ATTACK:\nAn attack with up to 5 sequences that deals Physical DMG. As the controlled operator, Final Strike also deals 17 Stagger.\nDIVE ATTACK:\nBasic attack performed in mid-air becomes a dive attack that deals Physical DMG to nearby enemies.\nFINISHER:\nBasic attack performed near a Staggered enemy becomes a finisher attack that deals massive Physical DMG and recovers some SP.\nAt level 12: BATK SEQ 1 Multiplier: 48%; BATK SEQ 2 Multiplier: 52%; BATK SEQ 3 Multiplier: 60%; BATK SEQ 4 Multiplier: 90%; BATK SEQ 5 Multiplier: 132%; Finisher ATK Multiplier: 900%; Dive ATK Multiplier: 180%."
+      },
+      {
+        "id": "battle-skill",
+        "label": "Battle Skill: \"Really Heavy Bash\"",
+        "kind": "skill",
+        "does": [],
+        "gameText": "SKILL DESCRIPTION: Kay leaps into mid-air for a short power-up, salvages all her Weapons, then unleashes a powerful ground bash with her heavy hammer. The bash deals Nature DMG (based on her Hot Edgy Naives stacks), applies Nature Infliction on enemies within the area of effect, and consumes all Hot Edgy Naives stacks. If Kay consumes 3 Hot Edgy Naives stacks, she also forcibly applies Combustion on enemies.\nIf ＞ 3 Hot Edgy Naives stacks are consumed, the effects will be the same as those for 3 stacks.\nAt level 12: SP Cost: 100; DMG Multiplier: 300%; Stagger: 10; Bonus DMG Multiplier per Hot Edgy Naives: 100%; Combustion Duration (s): 5."
+      },
+      {
+        "id": "combo-skill",
+        "label": "Combo Skill: \"Really Kwik Smash\"",
+        "kind": "skill",
+        "does": [],
+        "gameText": "COMBO TRIGGER: While Kay has ≥ 1 Weapon and either Nature Infliction is applied OR Arts Burst DMG is dealt to the enemy.\nSKILL DESCRIPTION: Kay throws a Weapon at the target to deal Nature DMG. Hitting the enemy recovers some SP and also forcibly applies a Nature Burst. The Weapon will then drop at a random location in the battlefield. Kay salvages the said Weapon when the controlled operator touches it.\nAt level 12: Cooldown: 6; DMG Multiplier: 70%; Stagger: 5; Ultimate Energy Gain: 5; SP Recovery: 12."
+      },
+      {
+        "id": "ultimate",
+        "label": "Ultimate: \"Really Sweet Combi-Bonker!\"",
+        "kind": "skill",
+        "does": [],
+        "gameText": "SKILL DESCRIPTION: Kay kitbashes a combi-bonker that she swings multiple times before throwing it to cause an explosion that deals Nature DMG and applies Nature Infliction on enemies within the area of effect, recovers some SP, and leaves behind multiple Picnic Snacks. When the controlled operator touches a Picnic Snack and picks it up, Kay grants HP treatment to the said operator and recovers some SP. The attribute of Agility increases the amount of HP treatment.\nAt level 12: Ultimate Energy Cost: 150; SEQ 1 DMG Multiplier: 160%; SEQ 2 DMG Multiplier: 200%; SEQ 3 DMG Multiplier: 240%; Stagger: 20; SP Recovery: 30; Base Treatment: 405; Treatment Increase per Agility: 0.95; SP Recovery per Picnic Snack: 10."
+      },
+      {
+        "id": "talent-bottomless-arsenal",
+        "label": "Talent: Bottomless Arsenal (Elite 3)",
+        "kind": "core",
+        "does": [],
+        "gameText": "Kay starts with 3 Weapons. When the battle ends, Kay salvages all thrown Weapons.\nSalvaging a Weapon grants Kay 1 stack of Hot Edgy Naives and grants the entire team Arts DMG Dealt +1.5%, with Nature DMG Dealt getting another +1.5%. Duration: 15s. Max stacks for this effect: 3."
+      },
+      {
+        "id": "talent-have-a-waffle",
+        "label": "Talent: Have a Waffle! (Elite 3)",
+        "kind": "core",
+        "does": [],
+        "gameText": "When an enemy is Staggered or triggers a Stagger Node, it drops 1 Picnic Waffle. Effect only triggers once every 20s.\nPicnic Waffle has the same effects as Picnic Snack."
+      },
+      {
+        "id": "talent-forged",
+        "label": "Talent: Forged (Elite 4)",
+        "kind": "core",
+        "does": [],
+        "gameText": "Operator Strength +20."
+      },
+      {
+        "id": "potential-1",
+        "label": "Potential 1: Wildness Ignited",
+        "kind": "potential",
+        "unlock": {
+          "potential": 1
+        },
+        "does": [],
+        "gameText": "When entering battle, Kay gains 1 stack of Hot Edgy Naives.\nTalent Bottomless Arsenal improved: Each Weapon salvage gives the entire team an additional Arts DMG Dealt +2%, with additional Nature DMG Dealt getting another +2%, for an additional duration of +10s."
+      },
+      {
+        "id": "potential-2",
+        "label": "Potential 2: Expert Roamer",
+        "kind": "potential",
+        "unlock": {
+          "potential": 2
+        },
+        "does": [],
+        "gameText": "Strength +20, Nature DMG Dealt +10%."
+      },
+      {
+        "id": "potential-3",
+        "label": "Potential 3: Picnic Prep",
+        "kind": "potential",
+        "unlock": {
+          "potential": 3
+        },
+        "does": [],
+        "gameText": "Battle skill \"Really Heavy Bash\" enhanced: Bonus DMG Multiplier per Hot Edgy Naives stack is increased to 1.2 times the original. Ultimate \"Really Sweet Combi-Bonker!\" improved: DMG Multiplier is increased to 1.2 times the original."
+      },
+      {
+        "id": "potential-4",
+        "label": "Potential 4: \"Bonkie I Made\"",
+        "kind": "potential",
+        "unlock": {
+          "potential": 4
+        },
+        "does": [],
+        "gameText": "Ultimate \"Really Sweet Combi-Bonker!\" improved: Ultimate Energy cost -15%."
+      },
+      {
+        "id": "potential-5",
+        "label": "Potential 5: \"Kwikker Smash\"",
+        "kind": "potential",
+        "unlock": {
+          "potential": 5
+        },
+        "does": [],
+        "gameText": "Combo skill \"Really Kwik Smash\" improved: Length of cooldown -1s. DMG Multiplier is increased to 1.2 times the original. SP Recovery is increased to 1.3 times the original."
       }
     ]
   }

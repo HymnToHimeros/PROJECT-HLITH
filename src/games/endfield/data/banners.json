@@ -11,7 +11,7 @@
       "chr_0015_lifeng"
     ],
     "start": "2026-01-22T03:00:00.000Z",
-    "end": "2026-11-24T22:00:00.000Z",
+    "end": "2027-01-06T22:00:00.000Z",
     "serverTime": {
       "base": 8,
       "start": true
@@ -26,7 +26,7 @@
       "wpn_funnel_0013"
     ],
     "start": "2026-01-22T03:00:00.000Z",
-    "end": "2026-11-24T22:00:00.000Z",
+    "end": "2027-01-06T22:00:00.000Z",
     "art": "https://endfield.wiki.gg/images/Dreams_of_the_Starry_Beach_icon.png",
     "permanent": true
   },
@@ -38,7 +38,7 @@
       "wpn_sword_0016"
     ],
     "start": "2026-01-22T03:00:00.000Z",
-    "end": "2026-11-24T22:00:00.000Z",
+    "end": "2027-01-06T22:00:00.000Z",
     "art": "https://endfield.wiki.gg/images/Never_Rest_icon.png",
     "permanent": true
   },
@@ -54,7 +54,7 @@
       "chr_0015_lifeng"
     ],
     "start": "2026-01-22T03:00:00.000Z",
-    "end": "2026-11-24T22:00:00.000Z",
+    "end": "2027-01-06T22:00:00.000Z",
     "serverTime": {
       "base": 8,
       "start": true
@@ -69,7 +69,7 @@
       "wpn_lance_0012"
     ],
     "start": "2026-01-22T03:00:00.000Z",
-    "end": "2026-11-24T22:00:00.000Z",
+    "end": "2027-01-06T22:00:00.000Z",
     "art": "https://endfield.wiki.gg/images/Mountain_Bearer_icon.png",
     "permanent": true
   },
@@ -114,7 +114,7 @@
       "wpn_claym_0013"
     ],
     "start": "2026-01-22T03:00:00.000Z",
-    "end": "2026-11-24T22:00:00.000Z",
+    "end": "2027-01-06T22:00:00.000Z",
     "art": "https://endfield.wiki.gg/images/Khravengger_icon.png",
     "permanent": true
   },
@@ -126,7 +126,7 @@
       "wpn_claym_0007"
     ],
     "start": "2026-01-22T03:00:00.000Z",
-    "end": "2026-11-24T22:00:00.000Z",
+    "end": "2027-01-06T22:00:00.000Z",
     "art": "https://endfield.wiki.gg/images/Thunderberge_icon.png",
     "permanent": true
   },
@@ -488,11 +488,7 @@
       "wpn_funnel_0019"
     ],
     "start": "2026-09-02T04:00:00.000Z",
-    "end": "2026-11-25T21:59:59.000Z",
-    "serverTime": {
-      "base": 8,
-      "end": true
-    },
+    "end": "2026-11-24T21:59:59.000Z",
     "art": "https://endfield.wiki.gg/images/Umbra_of_Frigid_Eventide_icon.png"
   },
   {
@@ -669,7 +665,6 @@
     "end": "2027-01-06T21:59:59.000Z",
     "serverTime": {
       "base": 8,
-      "start": true,
       "end": true
     }
   },
@@ -681,10 +676,10 @@
       "wpn_funnel_0011"
     ],
     "start": "2026-11-25T04:00:00.000Z",
-    "end": "2026-12-16T03:59:59.000Z",
+    "end": "2026-12-16T03:59:00.000Z",
     "serverTime": {
       "base": 8,
-      "start": true
+      "end": true
     },
     "art": "https://endfield.wiki.gg/images/Delivery_Guaranteed_icon.png"
   },
@@ -696,10 +691,10 @@
       "chr_0013_aglina"
     ],
     "start": "2026-11-25T04:00:00.000Z",
-    "end": "2026-12-16T03:59:59.000Z",
+    "end": "2026-12-16T03:59:00.000Z",
     "serverTime": {
       "base": 8,
-      "start": true
+      "end": true
     }
   },
   {
@@ -710,7 +705,7 @@
       "chr_0028_wulfa"
     ],
     "start": "2026-12-16T04:00:00.000Z",
-    "end": "2027-01-07T03:59:59.000Z",
+    "end": "2027-01-06T22:00:00.000Z",
     "serverTime": {
       "base": 8,
       "start": true
@@ -724,7 +719,7 @@
       "wpn_sword_0022"
     ],
     "start": "2026-12-16T04:00:00.000Z",
-    "end": "2027-01-06T21:59:59.000Z",
+    "end": "2027-01-06T22:00:00.000Z",
     "serverTime": {
       "base": 8,
       "start": true
