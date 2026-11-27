@@ -11242,7 +11242,7 @@
   {
     "characterId": "1601",
     "source": "nanoka.cc",
-    "version": "3.4.12+20805818",
+    "version": "3.4.12+20855865",
     "beta": true,
     "skills": [
       {
@@ -11250,14 +11250,14 @@
         "label": "Basic Attack: Thornbreak",
         "kind": "skill",
         "does": [],
-        "gameText": "Press [Basic Attack button] to activate:\nLindverne launches up to 4 attacks forward, dealing Genesis Flare DMG.\nDuring the 4th attack, repeatedly press to continue slashing the enemy.\nWhen the finishing heavy attack of the 4th attack hits an enemy with [term 3000038, not named in the game files], if [term 1000057, not named in the game files] has not reached its maximum and Sunbringer remains the active Agent, consume all Gash stacks on the target, up to a maximum of 3 stacks. For each stack of Gash consumed, trigger 1 instance of [term 3000039, not named in the game files] on the target, dealing additional area Genesis Flare DMG.\nCharacter is invulnerable during the 4th attack.\nDuring the 3rd and 4th attacks, Anti-Interrupt Level is increased, and DMG taken is reduced by 40%."
+        "gameText": "Press [Basic Attack button] to activate:\nLindverne launches up to 4 attacks forward, dealing Genesis Flare DMG.\nDuring the 4th attack, repeatedly press to continue slashing the enemy.\nWhen the finishing heavy attack of the 4th attack hits an enemy with [term 3000038, not named in the game files], if [term 1000057, not named in the game files] has not reached its maximum and Sunbringer remains the active Agent, consume all Gash stacks on the target, up to a maximum of 3 stacks. For each stack of Gash consumed, trigger 1 instance of [term 3000039, not named in the game files] on the target, dealing additional area Genesis Flare DMG.\nCharacter is invulnerable for a short time during the 4th attack.\nDuring the 3rd and 4th attacks, Anti-Interrupt Level is increased, and DMG taken is reduced by 40%."
       },
       {
         "id": "skill-basic-attack-flagbearer",
         "label": "Basic Attack: Flagbearer",
         "kind": "skill",
         "does": [],
-        "gameText": "Press [Basic Attack button] to activate:\nEldreda launches up to 4 attacks forward, dealing Genesis Flare DMG.\nWhen the finishing heavy attack of the 4th attack hits an enemy with [term 3000038, not named in the game files], if [term 1000057, not named in the game files] has not reached its maximum and Sunbringer remains the active Agent, consume all Gash stacks on the target, up to a maximum of 3 stacks. For each stack of Gash consumed, trigger 1 instance of [term 3000039, not named in the game files] on the target, dealing additional area Genesis Flare DMG.\nDuring the 3rd and 4th attacks, Anti-Interrupt Level is increased and DMG taken is reduced by 40%."
+        "gameText": "Press [Basic Attack button] to activate:\nEldreda launches up to 4 attacks forward, dealing Genesis Flare DMG.\nWhen the finishing heavy attack of the 4th attack hits an enemy with [term 3000038, not named in the game files], if [term 1000057, not named in the game files] has not reached its maximum and Sunbringer remains the active Agent, consume all Gash stacks on the target, up to a maximum of 3 stacks. For each stack of Gash consumed, trigger 1 instance of [term 3000039, not named in the game files] on the target, dealing additional area Genesis Flare DMG.\nCharacter is invulnerable briefly when the 4th attack is activated.\nDuring the 3rd and 4th attacks, Anti-Interrupt Level is increased and DMG taken is reduced by 40%."
       },
       {
         "id": "skill-basic-attack-flagbearer-gathering-blades",
@@ -11362,7 +11362,7 @@
         "label": "EX Special Attack: Nightburn - Eternal Darkness's Demise",
         "kind": "skill",
         "does": [],
-        "gameText": "With [term 1000058, not named in the game files], press [Special Attack button] to activate:\nConsume Chain Teeth to switch in Lindverne and launch a powerful coordinated attack involving all three Sunbringers, dealing massive Genesis Flare DMG.\nAfter using this skill, press [Basic Attack button] to quickly chain into the 4th attack of Basic Attack: Thornbreak.\nCharacter is invulnerable while using this skill."
+        "gameText": "With [term 1000058, not named in the game files], press [EX Special Attack button] to activate:\nConsume Chain Teeth to switch in Lindverne and launch a powerful coordinated attack involving all three Sunbringers, dealing massive Genesis Flare DMG.\nAfter using this skill, press [Basic Attack button] to quickly chain into the 4th attack of Basic Attack: Thornbreak.\nCharacter is invulnerable while using this skill."
       },
       {
         "id": "skill-special-attack-kindled-light",
@@ -11390,7 +11390,7 @@
         "label": "EX Special Attack: Kindled Light - Torch of Eternal Day",
         "kind": "skill",
         "does": [],
-        "gameText": "With [term 1000059, not named in the game files], press [Special Attack button] to activate:\nConsume Flag Order to switch in Eldreda and launch a powerful coordinated attack involving all three Sunbringers, dealing massive Genesis Flare DMG. This also removes all [term 1000061, not named in the game files] from enemies to trigger 1 instance of [term 1000062, not named in the game files].\nAfter using this skill, press [Basic Attack button] to chain into the 4th attack of Basic Attack: Flagbearer.\nCharacter is invulnerable while using this skill."
+        "gameText": "With [term 1000059, not named in the game files], press [EX Special Attack button] to activate:\nConsume Flag Order to switch in Eldreda and launch a powerful coordinated attack involving all three Sunbringers, dealing massive Genesis Flare DMG. This also removes all [term 1000061, not named in the game files] from enemies to trigger 1 instance of [term 1000062, not named in the game files].\nAfter using this skill, press [Basic Attack button] to chain directly into the 4th attack of a Basic Attack: Flagbearer.\nCharacter is invulnerable while using this skill."
       },
       {
         "id": "skill-chain-attack-a-dream-for-all",
@@ -11418,7 +11418,7 @@
         "label": "Ultimate: \"This Wish, Shall Reshape the World\"",
         "kind": "skill",
         "does": [],
-        "gameText": "With [term 1000060, not named in the game files], press [Ultimate button] to activate:\nEldreda attacks using spatial distortion, then delivers a Finishing Move, dealing Genesis Flare DMG and removing all [term 1000061, not named in the game files] from enemies to trigger 1 instance of [term 1000062, not named in the game files].\nUpon activating this skill, increase the Stun duration of all Stunned enemies by 1s.\nWhen both [Wishcore] and [Decibels] are sufficient, this skill takes priority.\nThis skill is not counted as a heavy attack.\nCharacter is invulnerable while using this skill."
+        "gameText": "With [term 1000060, not named in the game files], press [Ultimate button] to activate:\nEldreda attacks using spatial distortion, then delivers a finishing move, dealing Genesis Flare DMG and removing all [term 1000061, not named in the game files] from enemies to trigger 1 instance of [term 1000062, not named in the game files].\nUpon activating this skill, increase the Stun duration of all Stunned enemies by 1s.\nWhen both Wishcore and Decibels are sufficient, this skill takes priority.\nThis skill is not counted as a heavy attack.\nCharacter is invulnerable while using this skill."
       },
       {
         "id": "skill-quick-assist-fearless-aid",
@@ -11474,7 +11474,7 @@
         "label": "Core Passive: Dream Manifestation = Genesis Reconstruction (Core Skill level 7)",
         "kind": "core",
         "does": [],
-        "gameText": "All Sunbringer DMG dealt by skills is Sharp DMG, and skill DMG Multipliers are based on DEF. Certain instances of Sharp DMG accumulate Gash Buildup. When Gash Buildup is full, the enemy enters the [term 3000038, not named in the game files] state. Gash can stack up to 3 times. When a heavy attack from certain Sunbringer skills hits an enemy afflicted with Gash, if a Sunbringer is the currently controlled Agent and [term 1000057, not named in the game files] has not reached its limit, consume all Gash stacks on the target. When an enemy with Gash is defeated, all its Gash stacks are also consumed. For each stack of Gash consumed, trigger 1 instance of [term 3000039, not named in the game files] on the target, dealing additional area Genesis Flare DMG.\nWhen a critical hit is triggered, Sharp DMG does not benefit from CRIT DMG, instead using the [term 3000015, not named in the game files] bonus in its calculation. If CRIT Rate exceeds 100% and a CRIT has already been triggered, an additional Laceration check is performed based on the excess CRIT Rate. If Laceration is triggered, the Laceration DMG Bonus is applied an additional time. For every 1% of initial CRIT DMG Sunbringer has, initial CRIT Rate increases by 0.35%.\nUpon entering the battlefield, Sunbringer recovers 60 Sharpness. In Investigation Zone mode, this effect can trigger once every 180s.\nUpon entering combat, Sunbringer gains the [term 1000063, not named in the game files] effect, increasing CRIT Rate by 40% and allowing attacks to ignore 20% of the target's DEF. The Eternal Day state lasts for 20s, and its duration does not decrease while another character in the squad or Dracaene is the currently controlled Agent. Sunbringer regains the Eternal Day effect upon performing any EX Special Attack or Basic Attack: Flagbearer - Gathering Blades.\nDaze dealt by Dracaene's Defensive Assist is increased by 50%. Successfully parrying an enemy attack accumulates a small amount of Gash Buildup on the enemy. Gash Buildup Rate and DMG dealt by Eldreda's and Lindverne's Assist Follow-Up are increased by 15% and 20%, respectively.\nWhen any Agent in the squad triggers Maim, Sunbringer gains 40 points of Wishfire for each stack of Gash removed. Up to 160 points of Wishfire can be held. When Sunbringer has at least 120 points of Wishfire and does not possess [term 1000058, not named in the game files], [term 1000059, not named in the game files], or [term 1000060, not named in the game files], 120 points of Wishfire can be consumed to perform Basic Attack: Flagbearer - Gathering Blades.\nWhen a squad member triggers Maim, if Sunbringer is off-field, has enough Wishfire, and does not possess Chain Teeth, Flag Order, or Wishcore, trigger a Quick Assist. When Sunbringer switches on-field via this Quick Assist, consume 120 points of Wishfire to directly perform Basic Attack: Flagbearer - Gathering Blades. This effect can trigger once every 3s.\nWhen Sunbringer hits an enemy and deals DMG with Basic Attack: Flagbearer - Gathering Blades, EX Special Attack: Nightburn - Eternal Darkness's Demise, EX Special Attack: Kindled Light - Torch of Eternal Day, Ultimate: \"Face the Road Ahead, Together\", or Ultimate: \"This Wish, Shall Reshape the World\", the target accumulates [term 1000061, not named in the game files], with the amount of Embermark equal to 60% of the actual DMG dealt by the skill. Maim DMG dealt by any Agent in the squad also causes the target to accumulate Embermark equal to 40% of the actual DMG dealt. When the Finishing Move of Eldreda's EX Special Attack: Kindled Light - Torch of Eternal Day or Ultimate: \"This Wish, Shall Reshape the World\" hits an enemy, remove all Embermark on the target to trigger 1 instance of [term 1000062, not named in the game files], directly reducing the target's HP by an equivalent amount.\nWhen Sunbringer hits a normal or Elite enemy with an attack, or hits a Boss enemy with a heavy attack from an EX Special Attack, Chain Attack, or Ultimate: \"Face the Road Ahead, Together\", if the amount of Embermark on the target equals or exceeds its remaining HP, immediately execute the target."
+        "gameText": "All DMG dealt by Sunbringer's skills is Sharp DMG, which uses DEF as the skill DMG Multiplier. Some Sharp DMG builds up Gash. When the Gash meter is full, the enemy enters [term 3000038, not named in the game files]. [Gash] can stack up to 3 times. When Sunbringer lands certain skills' heavy attacks on an enemy with [Gash], while she is the on-field Agent and [term 1000057, not named in the game files] has not reached its cap, she consumes all [Gash] on the target. When an enemy with [Gash] is defeated, all their [Gash] is also consumed. For each stack of [Gash] consumed, [term 3000039, not named in the game files] is triggered once on the target, dealing additional AoE Genesis Flare DMG.\nWhen a CRIT is triggered, Sharp DMG does not benefit from CRIT DMG bonuses and instead uses the [term 3000015, not named in the game files] bonus. If CRIT Rate exceeds 100% and a CRIT has been triggered, an additional Laceration check is made using the excess CRIT Rate. If a Laceration is triggered, Laceration DMG bonus is calculated one additional time. For every 1% of Sunbringer's initial CRIT DMG, her initial CRIT Rate increases by 0.35%.\nWhen Sunbringer enters the battlefield, she restores 60 Sharpness. In Investigation Zone mode, this effect can trigger once every 180s.\nWhen she enters combat, Sunbringer gains the [term 1000063, not named in the game files] effect: CRIT Rate +40%, and her DMG ignores 20% of the target's DEF. [Eternal Day] lasts 20s, and its duration does not decrease while Dracaene or other squad members are the on-field Agent. Whenever Sunbringer uses any [EX Special Attack] or [Basic Attack: Flagbearer - Gathering Blades], she regains the [Eternal Day] effect.\nDracaene's [Defensive Assist] deals 50% more Daze, and when she successfully parries an enemy attack, she can build up a small amount of [Gash] on the enemy. The Gash Buildup Rate of [Assist Follow-Up] from Eldreda and Lindverne is increased by 15%, and the DMG they deal is increased by 20%.\nWhenever any Agent in the squad triggers [Maim], for each stack of [Gash] removed, Sunbringer gains 40 [Wishfire], up to a maximum of 160. When [Wishfire] is at 120 or higher and Sunbringer has none of [term 1000058, not named in the game files], [term 1000059, not named in the game files], or [term 1000060, not named in the game files], she can consume 120 [Wishfire] to perform [Basic Attack: Flagbearer - Gathering Blades].\nWhen a teammate triggers [Maim], if Sunbringer has enough [Wishfire] and has none of [Chain Teeth], [Flag Order], or [Wishcore], a [Quick Assist] is triggered. When Sunbringer switches in on-field via this [Quick Assist], she consumes 120 [Wishfire] to directly perform [Basic Attack: Flagbearer - Gathering Blades]. This effect can trigger once every 3s.\nWhenever Sunbringer's [Basic Attack: Flagbearer - Gathering Blades], [EX Special Attack: Nightburn - Eternal Darkness's Demise], [EX Special Attack: Kindled Light - Torch of Eternal Day], [Ultimate: \"Face the Road Ahead, Together\"], or [Ultimate: \"This Wish, Shall Reshape the World\"] hits an enemy and deals DMG, it builds up [term 1000061, not named in the game files] on the target equal to 60% of the actual DMG dealt by the skill. [Maim] dealt by any Agent in the squad also builds up [Embermark] on the target equal to 40% of the actual DMG dealt. When Eldreda's [EX Special Attack: Kindled Light - Torch of Eternal Day] or [Ultimate: \"This Wish, Shall Reshape the World\"] Finishing Move hits an enemy, it can remove all [Embermark] to trigger the [term 1000062, not named in the game files] effect, directly deducting an equal amount of HP.\nWhen Sunbringer's attack hits a normal or Elite enemy, or when her [EX Special Attack], [Chain Attack], or [Ultimate: \"Face the Road Ahead, Together\"] heavy attack hits a Boss-Rank enemy, if the target's [Embermark] covers all of their remaining HP, the target is executed outright."
       },
       {
         "id": "additional-ability",
@@ -11501,7 +11501,7 @@
           "dupes": 2
         },
         "does": [],
-        "gameText": "When Sunbringer hits an enemy with other skills and deals Sharp DMG, she also builds up [term 1000061, not named in the game files] on the target, equal to 30% of the actual DMG dealt. When the whole squad triggers [term 3000039, not named in the game files] and when Sunbringer builds up [Embermark] on enemies, the final [Embermark] amount is increased by 35%. After Sunbringer uses [Basic Attack: Flagbearer - Gathering Blades], she additionally restores 200 Decibels. Sunbringer's Decibel cap is increased by 1000."
+        "gameText": "When Sunbringer hits enemies with other skills and deals Sharp DMG, the target also accumulates [term 1000061, not named in the game files] equal to 30% of the actual DMG dealt. When any Agent in the squad triggers [term 3000039, not named in the game files] or Sunbringer causes enemies to accumulate Embermark, the amount of Embermark accumulated is additionally increased by 35%. After performing Basic Attack: Flagbearer - Gathering Blades, Sunbringer recovers an additional 200 Decibels. Sunbringer's maximum Decibels increase by 1,000."
       },
       {
         "id": "mindscape-3",
@@ -11521,7 +11521,7 @@
           "dupes": 4
         },
         "does": [],
-        "gameText": "When entering the battlefield, Sunbringer immediately gains 1,000 Decibels. This effect can trigger once every 180s in Investigation Zone mode. After Sunbringer uses [Basic Attack: Flagbearer - Gathering Blades] for the first time after entering the battlefield, the next time [EX Special Attack: Kindled Light - Torch of Eternal Day] or [Ultimate: \"This Wish, Shall Reshape the World\"] causes the target to accumulate [term 1000061, not named in the game files], the [Embermark] accumulation boost from [Cinema: Heir's Banner of Rebellion] is further increased by 65%. This effect can trigger once every 180s in Investigation Zone mode. Sunbringer's DMG dealt is increased by 10%."
+        "gameText": "DMG dealt by Sunbringer increases by 10%. Upon entering the battlefield, Sunbringer immediately gains 1,000 Decibels. This effect can trigger once every 180s in Investigation Zone mode. After Sunbringer performs Basic Attack: Flagbearer - Gathering Blades for the first time, the next time EX Special Attack: Kindled Light - Torch of Eternal Day or Ultimate: \"This Wish, Shall Reshape the World\" causes the target to accumulate [term 1000061, not named in the game files], the Embermark accumulation of that skill increases by an additional 65%. In Investigation Zone mode, this effect instead can trigger once every 180s thereafter."
       },
       {
         "id": "mindscape-5",
@@ -11541,7 +11541,7 @@
           "dupes": 6
         },
         "does": [],
-        "gameText": "When Sunbringer enters the battlefield, she gains 1 additional [term 1000065, not named in the game files] effect. This effect can trigger once every 180s in Investigation Zone mode.\nAfter Sunbringer uses Ultimate: \"This Wish, Shall Reshape the World\" to trigger [term 1000062, not named in the game files], a special EX Special Attack: Kindled Light - Torch of Eternal Day will quickly follow, without consuming Flag Order.\nThis EX Special Attack: Kindled Light - Torch of Eternal Day deals no actual DMG, but directly applies [term 1000061, not named in the game files] to the target, equal to 80% of the Embermark accumulated on the target from the preceding Ultimate: \"This Wish, Shall Reshape the World\". All Embermark on the target is then removed, triggering Emberburst once.\nDMG dealt by Sunbringer's skills ignores 15% of the target's DEF."
+        "gameText": "DMG dealt by skills used by Sunbringer ignores 15% of the target's DEF. Upon entering the battlefield, Sunbringer gains 1 additional instance of the [term 1000065, not named in the game files] effect. This effect can trigger once every 180s in Investigation Zone mode. After Sunbringer uses Ultimate: \"This Wish, Shall Reshape the World\" to trigger [term 1000062, not named in the game files], a special EX Special Attack: Kindled Light - Torch of Eternal Day quickly follows without consuming Flag Order. This EX Special Attack: Kindled Light - Torch of Eternal Day deals no actual DMG but directly applies [term 1000061, not named in the game files] to the target equal to 80% of the Embermark accumulated on the target from this Ultimate: \"This Wish, Shall Reshape the World\". All Embermark on the target is then removed, triggering Emberburst once."
       }
     ]
   },
@@ -12327,7 +12327,7 @@
   {
     "characterId": "1651",
     "source": "nanoka.cc",
-    "version": "3.4.12+20805818",
+    "version": "3.4.12+20855865",
     "beta": true,
     "skills": [
       {
@@ -12342,7 +12342,7 @@
         "label": "Basic Attack: Discordant Echo",
         "kind": "skill",
         "does": [],
-        "gameText": "When Improvised Performance reaches at least 90 points, consume 90 points of [term 1000044, not named in the game files] and hold [Basic Attack button] to activate:\nDeals massive Electric DMG to enemies in an area ahead.\nWhen the final hit of the attack hits an enemy affected by an Electric Attribute Anomaly, it does not trigger an Attribute Anomaly, but instead extends the duration of the Electric Attribute Anomaly by 3s, up to a maximum of 10s.\nWhen the final hit of the attack hits an enemy affected by an Attribute Anomaly, it triggers a special Disorder effect called Polarity Disorder, dealing DMG equal to 25% of the original Disorder DMG, plus additional DMG equal to (1420 + 115 × Basic Attack level)% of Kafka's Anomaly Proficiency. Polarity Disorder does not remove the target's Attribute Anomaly.\nCharacter is invulnerable while using this skill."
+        "gameText": "When [term 1000044, not named in the game files] reaches at least 90 points, consume 90 points of Improvised Performance and hold [Basic Attack button] to activate:\nDeals massive Electric DMG to enemies in an area ahead.\nWhen the final hit of the skill hits an enemy affected by an Electric Attribute Anomaly, it does not trigger an Attribute Anomaly, but instead extends the duration of the Electric Attribute Anomaly by 3s, up to a maximum of 10s.\nWhen the final hit of the skill hits an enemy affected by an Attribute Anomaly, it triggers a special Disorder effect called Polarity Disorder, dealing DMG equal to 25% of the original Disorder DMG, plus additional DMG equal to (1420 + 115 × Basic Attack level)% of Kafka's Anomaly Proficiency. Polarity Disorder does not remove the target's Attribute Anomaly.\nCharacter is invulnerable while using this skill."
       },
       {
         "id": "skill-dodge-shadow-pursuit",
@@ -12450,7 +12450,7 @@
           "dupes": 1
         },
         "does": [],
-        "gameText": "Disorder DMG dealt by all squad members increases by 25%. DMG dealt by Kafka's Lightning Surge ignores 15% of the target's All-Attribute DMG RES. When Kafka uses her Ultimate, restore 10 Energy."
+        "gameText": "Disorder DMG dealt by all squad members increases by 25%. DMG dealt by Kafka's Lightning Surge ignores 15% of the target's All-Attribute DMG RES. When Kafka uses her Ultimate, she gains 10 Energy."
       },
       {
         "id": "mindscape-2",
@@ -12480,7 +12480,7 @@
           "dupes": 4
         },
         "does": [],
-        "gameText": "When the heavy attack of any Chain Attack from all squad members strikes a Stunned enemy affected by an Attribute Anomaly, it triggers Lightning Surge, dealing DMG equal to 60% of the original Disorder DMG. This effect can trigger once per enemy per Stun period."
+        "gameText": "When the heavy attack of any squad member's Chain Attack strikes a Stunned enemy affected by an Attribute Anomaly, Kafka triggers Lightning Surge on the enemy, dealing DMG equal to 60% of the original Disorder DMG. This effect can trigger once per enemy per Stun period."
       },
       {
         "id": "mindscape-5",
@@ -12500,14 +12500,14 @@
           "dupes": 6
         },
         "does": [],
-        "gameText": "During a single [Hunter's Overture], [EX Special Attack] can be used up to 6 times in a row. [EX Special Attack: Nocturne Hunt - Recitative] and the DMG from the [Lightning Surge] it triggers ignore 30% of the target's DEF. After Kafka uses her [Ultimate], the Energy Cost of the next 6 uses of [EX Special Attack: Nocturne Hunt - Recitative] or [EX Special Attack: Nocturne Hunt - Aria] is reduced to 50% of the original. Additionally, [EX Special Attack: Nocturne Hunt - Recitative] gains an extra 45% Anomaly Buildup Rate. Repeated triggers refresh the number of remaining uses."
+        "gameText": "During each activation of [Hunter's Overture], Kafka can use up to 6 consecutive [EX Special Attacks]. DMG dealt by [EX Special Attack: Nocturne Hunt - Recitative] and the [Lightning Surge] it triggers ignores 30% of the target's DEF. After Kafka uses her [Ultimate], the Energy Cost of the next 6 [EX Special Attacks] is reduced to 50% of the original cost. Additionally, the Anomaly Buildup Rate of [EX Special Attack: Nocturne Hunt - Recitative] is increased by an additional 45%. Repeated triggers reset the number of remaining uses."
       }
     ]
   },
   {
     "characterId": "1661",
     "source": "nanoka.cc",
-    "version": "3.4.12+20805818",
+    "version": "3.4.12+20855865",
     "beta": true,
     "skills": [
       {
