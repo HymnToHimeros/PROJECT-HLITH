@@ -371,6 +371,7 @@
     "id": "wpn_sweet-deal",
     "name": "Sweet Deal",
     "rarity": "top",
+    "icon": "https://endfield.wiki.gg/images/Sweet_Deal_icon.png",
     "type": "polearm",
     "source": "endfield.wiki.gg (CC BY-SA)",
     "gameId": "wpn_lance_0017"
@@ -379,6 +380,7 @@
     "id": "wpn_lance_0018",
     "name": "Raid Comet",
     "rarity": "top",
+    "icon": "https://endfield.wiki.gg/images/Raid_Comet_icon.png",
     "type": "polearm",
     "source": "endfield.wiki.gg (CC BY-SA)"
   },
