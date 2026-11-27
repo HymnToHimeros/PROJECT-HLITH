@@ -4,7 +4,8 @@
 # (counted from patch day: scripts/schedule/rhythm.ts). Most runs stop there.
 # GitHub often runs the timer late (gaps of 5-8+ hours), so a check counts as due
 # until a run has imported after its time: the workflow looks up the start of the
-# last run whose import step succeeded (read-only, with its own token) and passes it
+# last run in which EVERY import succeeded (scripts/last-import.ts, read-only, with its
+# own token) and passes it
 # as --since; only checks from the last 72 hours count. If that lookup fails, the
 # old rule is used: due for 8 hours after its time (--window 8h).
 # When a check is due (or someone starts it by hand):
@@ -13,8 +14,9 @@
 #   2. runs the full check (lint, types, unit tests, build, browser tests) on the result;
 #   3. puts the changes on ONE standing PR (branch scheduler/auto-data) with a plain summary;
 #   4. merges it by itself only when every changed file is a data list
-#      (src/games/*/data/*.json or scripts/schedule/rhythm.json) and the check is green.
-#      Anything else waits for MANAGER;
+#      (src/games/*/data/*.json or scripts/schedule/rhythm.json), the check is green
+#      and every import succeeded. Anything else waits for MANAGER; a failed import is
+#      named as an error on the run, and the run ends red;
 #   5. reports the run, its findings and the next check time to the owner's inbox
 #      (findings-intake, with the FINDINGS_INTAKE_KEY secret).
 # Pushes and the PR use the DATA_REFRESH_TOKEN secret, so the PR's own CI runs (main requires
@@ -57,24 +59,11 @@ jobs:
       - name: When did the last import run?
         id: last
         # Never fails the job: no answer means the 8-hour window rule below.
+        # A run counts only when every import succeeded (its "All imports succeeded" step ran): scripts/last-import.ts.
         continue-on-error: true
         env:
           GH_TOKEN: ${{ github.token }}
-          IMPORT_STEP: Leaks and characters (nanoka.cc)
-        run: |
-          set +e
-          since=""
-          runs=$(gh api "repos/$GITHUB_REPOSITORY/actions/workflows/data-refresh.yml/runs?status=completed&per_page=30" \
-            --jq '.workflow_runs[] | "\(.id) \(.run_started_at)"')
-          while read -r id at; do
-            [ -n "$id" ] || continue
-            ok=$(gh api "repos/$GITHUB_REPOSITORY/actions/runs/$id/jobs" \
-              --jq "[.jobs[].steps[] | select(.name == env.IMPORT_STEP and .conclusion == \"success\")] | length")
-            if [ "${ok:-0}" -gt 0 ] 2>/dev/null; then since="$at"; break; fi
-          done <<< "$runs"
-          echo "Last import started: ${since:-unknown}"
-          echo "since=$since" >> "$GITHUB_OUTPUT"
-          exit 0
+        run: node scripts/last-import.ts
 
       - name: Is a check due?
         id: plan
@@ -113,6 +102,14 @@ jobs:
         continue-on-error: true
         # Kit text too: a new operator's kit appears once endfield.wiki.gg publishes their page.
         run: npm run data:endfield && npm run data:endfield-kits
+
+      # Runs only when every import above succeeded. The imports carry on after an error, so GitHub reports
+      # them as "success" either way; this step is what "When did the last import run?" looks for. A run
+      # without it keeps its checks due, so the next timer run retries the failed import.
+      - name: All imports succeeded
+        id: imports
+        if: steps.plan.outputs.go == 'true' && steps.nanoka.outcome == 'success' && steps.kits.outcome == 'success' && steps.schedule.outcome == 'success' && (steps.endfield.outcome == 'success' || steps.endfield.outcome == 'skipped')
+        run: echo "Every import succeeded."
 
       - name: What changed
         id: diff
@@ -170,7 +167,7 @@ jobs:
             echo
             cat "$RUNNER_TEMP/summary.md"
             echo
-            echo "Data files only: ${{ steps.diff.outputs.data_only }} · full check: ${{ steps.check.outcome }}"
+            echo "Data files only: ${{ steps.diff.outputs.data_only }} · full check: ${{ steps.check.outcome }} · all imports: ${{ steps.imports.outcome == 'success' && 'succeeded' || 'NOT all succeeded (see the run)' }}"
           } > "$RUNNER_TEMP/body.md"
           pr=$(gh pr list --head "$BRANCH" --state open --json number --jq '.[0].number')
           if [ -z "$pr" ]; then
@@ -179,7 +176,8 @@ jobs:
           else
             gh pr edit "$pr" --body-file "$RUNNER_TEMP/body.md"
           fi
-          if [ "${{ steps.diff.outputs.data_only }}" = "true" ] && [ "${{ steps.check.outcome }}" = "success" ]; then
+          # A failed import never merges by itself, even when its partial lists pass the check: it waits, named.
+          if [ "${{ steps.diff.outputs.data_only }}" = "true" ] && [ "${{ steps.check.outcome }}" = "success" ] && [ "${{ steps.imports.outcome }}" = "success" ]; then
             # main requires CI's `check`, which runs on the PR because this push and PR come from
             # DATA_REFRESH_TOKEN (the built-in token starts no CI). Wait for it, then merge.
             if [ "$HAS_TOKEN" != "true" ]; then
@@ -217,7 +215,11 @@ jobs:
       - name: Result
         if: steps.plan.outputs.go == 'true'
         run: |
-          for o in "${{ steps.nanoka.outcome }}" "${{ steps.kits.outcome }}" "${{ steps.schedule.outcome }}" "${{ steps.endfield.outcome }}" "${{ steps.check.outcome }}"; do
-            [ "$o" = "failure" ] && exit 1
+          bad=0
+          for pair in "Leaks and characters (nanoka.cc)=${{ steps.nanoka.outcome }}" "Kits, leaks included=${{ steps.kits.outcome }}" \
+                      "Versions, banners, events, endgame=${{ steps.schedule.outcome }}" "Arknights Endfield=${{ steps.endfield.outcome }}" \
+                      "Full check=${{ steps.check.outcome }}"; do
+            # A failed step is named on the run page, so stale lists can't pass unnoticed.
+            if [ "${pair##*=}" = "failure" ]; then echo "::error::${pair%=*} failed: its lists were not refreshed (or did not pass). The next timer run retries the import."; bad=1; fi
           done
-          exit 0
+          exit $bad
