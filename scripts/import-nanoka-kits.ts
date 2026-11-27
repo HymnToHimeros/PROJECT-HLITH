@@ -65,10 +65,12 @@ const ICON: Record<string, string> = {
   Icon_SpecialReady: 'EX Special Attack button',
   Icon_SpecialReady_Rp: 'EX Special Attack button',
   Icon_SpecialReady_Ep: 'EX Special Attack button',
+  Icon_SpecialReady_Sunbringer: 'EX Special Attack button', // Sunbringer (3.4 beta): "press <…> to activate" on her EX Special Attacks
   Icon_Evade: 'Dodge button',
   Icon_Dash: 'Dodge button', // Robin (3.4 beta): "Dodge: Robin Dodge — Press <Icon_Dash> to activate: A quick dash dodge"
   Icon_Switch: 'Switch button',
   Icon_UltimateReady: 'Ultimate button',
+  Icon_Ult_Sunbringer: 'Ultimate button', // Sunbringer (3.4 beta): "press <…> to activate" on her Ultimate
 };
 /**
  * Glossary words the files leave blank (<Term:id></Term>). Names from the game
